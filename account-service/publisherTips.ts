@@ -33,9 +33,13 @@ interface Tip extends VerifiedPrefix {
   audited: number;
   extendable: boolean;
 }
+interface PublisherOwner {
+  commit: object;
+}
 interface Capture {
   key: string;
-  owner: object;
+  owner: PublisherOwner;
+  commit: object;
   context: string;
   revision: number;
   version: number;
@@ -100,7 +104,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
   const captures = new WeakMap<Snapshot, Capture>();
   // Bounded identities, not reusable numeric generations: recreating an evicted key
   // must never revive a capture or audit owned by its previous incarnation.
-  const owners = new Map<string, object>();
+  const owners = new Map<string, PublisherOwner>();
   let version = Number(db.prepare('PRAGMA data_version').get()!.data_version),
     revision = 0,
     closed = false;
@@ -111,7 +115,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     auditsCompleted = 0;
   let worker: Worker | undefined;
   const queued = new Map<string, Tip>();
-  let active: { key: string; tip: Tip; revision: number; owner: object } | undefined;
+  let active: { key: string; tip: Tip; revision: number; owner: PublisherOwner } | undefined;
   const invalidate = () => {
     revision++;
     owners.clear();
@@ -128,7 +132,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     if (owner) owners.delete(key);
     else {
       if (owners.size >= MAX_PUBLISHERS) invalidatePublisher(owners.keys().next().value!);
-      owner = {};
+      owner = { commit: {} };
     }
     owners.set(key, owner);
     return owner;
@@ -318,6 +322,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       captures.set(s, {
         key,
         owner,
+        commit: owner.commit,
         context,
         revision,
         version,
@@ -342,7 +347,12 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const c = captures.get(s);
       if (!c) return false;
       check(c.key);
-      if (c.revision !== revision || c.version !== checkVersion() || owners.get(c.key) !== c.owner)
+      if (
+        c.revision !== revision ||
+        c.version !== checkVersion() ||
+        owners.get(c.key) !== c.owner ||
+        c.commit !== c.owner.commit
+      )
         return false;
       const current = snapshot(db, s.promotion.workspace_id, s.publisher, c.prefix?.count ?? 0);
       if (!current) return false;
@@ -353,6 +363,23 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       if (!same) invalidatePublisher(c.key);
       return same;
     },
+    /** Called only after this owner commits a verified proposed decision, never before COMMIT.
+     * Reject older captures without discarding their still-authenticated prefix. Audits keep
+     * their owner: continuous appends must not suppress an independently detected corruption. */
+    committed(s: Snapshot) {
+      const c = captures.get(s);
+      if (
+        !c ||
+        closed ||
+        db.isTransaction ||
+        c.revision !== revision ||
+        c.version !== checkVersion() ||
+        owners.get(c.key) !== c.owner ||
+        c.commit !== c.owner.commit
+      )
+        return;
+      c.owner.commit = {};
+    },
     remember(s: Snapshot, auth: DeliveryAuthority, result: VerifiedPrefix) {
       const c = captures.get(s);
       if (
@@ -360,7 +387,8 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
         closed ||
         c.revision !== revision ||
         c.version !== checkVersion() ||
-        owners.get(c.key) !== c.owner
+        owners.get(c.key) !== c.owner ||
+        c.commit !== c.owner.commit
       )
         return;
       if (result.count !== c.count) return fail(c.key);

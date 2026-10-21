@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');prior='3fd6967e9e51ee166946d7fd2c0a7aecf696e13e'
+def old(f):return json.loads(subprocess.check_output(['git','--git-dir=/private/tmp/done-publisher-isolation-20261021/patch05-v2-index.git','show',prior+':'+f]))
+g=json.loads((repo/'docs/release-validation-graph.json').read_text());pg=old('docs/release-validation-graph.json');m=json.loads((repo/'docs/release-validation-manifest.json').read_text());pm=old('docs/release-validation-manifest.json')
+a={x['id']:x for x in pm['rows']};b={x['id']:x for x in m['rows']};new=set(b)-set(a)
+assert not (set(a)-set(b));assert all(b[k]==v for k,v in a.items()),[k for k,v in a.items() if b.get(k)!=v]
+assert new=={'test:test/account-service-delivery/publisher-commit-races.test.mjs'};assert all(b[k].get('blocked') for k in new)
+assert set(m['unresolved'])==set(pm['unresolved'])|new;assert m['status']==pm['status']=='blocked';assert m['exclusions']==pm['exclusions']
+for key,previous in pm['selections'].items():
+ current=m['selections'][key]
+ if key=='release':
+  assert set(current)==set(previous)|new and set(current)-new==set(previous)
+ else:assert current==previous
+assert set(m['selections'])==set(pm['selections'])
+assert g['constructions']==pg['constructions'] and len(g['constructions'])==97
+assert g['counts']['testFiles']==pg['counts']['testFiles']+1 and g['counts']['requiredTestFiles']==pg['counts']['requiredTestFiles']+1
+# Reverse comparisons catch loss and unexpected gain independently of snapshot production.
+assert set(a)==set(b)-new;assert set(pm['unresolved'])==set(m['unresolved'])-new
+result={'status':'passed','previousObligations':len(a),'obligations':len(b),'previousUnresolved':len(pm['unresolved']),'unresolved':len(m['unresolved']),'everyPriorObligationExact':True,'bidirectionalSetChecks':True,'newBlockedObligations':sorted(new),'constructionContractsAndStatusesExact':97,'testFiles':g['counts']['testFiles'],'requiredTestFiles':g['counts']['requiredTestFiles'],'aggregateReleaseRemainsBlocked':True,'scope':'Planning integrity only; no general release qualification or aggregate execution credit.'}
+(r/'planning-audit.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

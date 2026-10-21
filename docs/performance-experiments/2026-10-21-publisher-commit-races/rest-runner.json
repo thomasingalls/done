@@ -1,0 +1,32 @@
+[
+  {
+    "name": "own-only",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/api-load.mjs"
+    ],
+    "flags": {
+      "LOAD_FIRST_WRITER": "1",
+      "LOAD_OTHER_WRITER": "0",
+      "LOAD_PEER": "0"
+    },
+    "startedAt": 1792591033655,
+    "completedAt": 1792591037395,
+    "exitCode": 1
+  },
+  {
+    "name": "other-peer",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/api-load.mjs"
+    ],
+    "flags": {
+      "LOAD_FIRST_WRITER": "0",
+      "LOAD_OTHER_WRITER": "1",
+      "LOAD_PEER": "1"
+    },
+    "startedAt": 1792591037396,
+    "completedAt": 1792591059000,
+    "exitCode": 0
+  }
+]

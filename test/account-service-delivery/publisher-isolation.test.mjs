@@ -39,7 +39,7 @@ async function harness(t) {
   );
   const retained = { first: [], other: [] },
     actors = { first, other };
-  const submit = async (who) => {
+  const submit = async (who, announced = true) => {
     const x = actors[who],
       w = x.make(retained[who].length + 1);
     const r = await decideSubmission(
@@ -47,7 +47,7 @@ async function harness(t) {
       { workspaceId: x.workspace, bytes: w.bytes },
       issuer,
       () => {},
-      reuse,
+      announced ? reuse : undefined,
     );
     let previous = ZERO;
     for (const row of retained[who]) previous = link(row.w.subject, previous);
@@ -102,7 +102,7 @@ test('a same-connection unrelated publisher race retains the unchanged capture a
   const before = h.bytes('first'),
     prefix = h.reuse.tips.prefix(other);
   assert(prefix);
-  await h.submit('other');
+  await h.submit('other', false);
   assert.ok(h.bytes('first') === before, 'whole unrelated snapshot bytes remain identical');
   assert.equal(h.guard(other), false, 'changed publisher still loses its stale capture');
   assert.equal(h.guard(first), true, 'unchanged publisher must retain its capture');
@@ -181,7 +181,7 @@ test('bounded preliminary ownership evicts one publisher and key recreation neve
 test('a local race discards its active audit result while the unrelated queued audit completes', async (t) => {
   const h = await harness(t),
     other = h.capture('other');
-  await h.submit('other');
+  await h.submit('other', false);
   await h.fetch('first'); // The stale other tip is first in audit order.
   const before = h.reuse.tips.status().auditsCompleted;
   h.reuse.tips.audit();

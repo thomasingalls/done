@@ -1,0 +1,7 @@
+{
+  "result": "Potential contamination retained; no timing credit to the initial warm block.",
+  "warmReferenceFileCompletedAt": 1792591033763,
+  "nextRunnerStartedAt": 1792591033655,
+  "scope": "Next native runner was launched before wait reported terminal completion; its startup may overlap the final warm-reference tail. Functional outcomes remain retained. Repeat the entire fixed warm block after all other probes finish, and repeat own-only control serially.",
+  "measurementLimit": "Sandbox process inventory was unavailable; filesystem completion time is not an exact metric-window endpoint. Potential overlap is conservatively disqualifying, not an established duration."
+}

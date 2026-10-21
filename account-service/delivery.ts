@@ -1131,6 +1131,7 @@ export async function decideSubmission(
       hook('before-commit', 'decide-submission');
       completeAuthorization?.();
       db.exec('COMMIT');
+      if (proposed) reuse?.tips?.committed(s);
       hook('after-commit', 'decide-submission');
       return result;
     } catch (cause) {

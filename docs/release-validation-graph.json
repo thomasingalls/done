@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 517,
-    "requiredTestFiles": 511,
+    "testFiles": 518,
+    "requiredTestFiles": 512,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -8480,6 +8480,21 @@
         ]
       },
       "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-delivery/publisher-commit-races.test.mjs"
+        ]
+      },
+      "declarations": 11,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17702,7 +17717,7 @@
     },
     {
       "path": "test/account-service-delivery/controls.test.mjs",
-      "sha256": "cef22e65d83617824d356ebd25bddb4912798aa77f98e4630a7f6ad898814b0d"
+      "sha256": "5ac28ed3c5a28f9702b1723dbbfa64626b8a42eb44de192cfce581560f98ba1e"
     },
     {
       "path": "test/account-service-delivery/core.test.mjs",
@@ -17721,8 +17736,12 @@
       "sha256": "4d7c2be2f4aaf5fab8ee7af23a2716fb90b2608cacdb4bc4d948afdaa10ad585"
     },
     {
+      "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "sha256": "8424df339e2d18de898e5cb329fb10fc3c8dc2ad52ace5ce12c78877d494bccc"
+    },
+    {
       "path": "test/account-service-delivery/publisher-isolation.test.mjs",
-      "sha256": "15af4374a3e50ad0bb998d31e88d9695c01f34af48c4d8ebbbe84989d0b686f5"
+      "sha256": "d2c4e969e2367caaadc203fb923b53526bb7e645032491827d745710a2fb8c70"
     },
     {
       "path": "test/account-service-delivery/publisher-tips.test.mjs",

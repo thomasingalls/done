@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "previousObligations": 879,
+  "obligations": 880,
+  "previousUnresolved": 335,
+  "unresolved": 336,
+  "everyPriorObligationExact": true,
+  "bidirectionalSetChecks": true,
+  "newBlockedObligations": [
+    "test:test/account-service-delivery/publisher-commit-races.test.mjs"
+  ],
+  "constructionContractsAndStatusesExact": 97,
+  "testFiles": 518,
+  "requiredTestFiles": 512,
+  "aggregateReleaseRemainsBlocked": true,
+  "scope": "Planning integrity only; no general release qualification or aggregate execution credit."
+}

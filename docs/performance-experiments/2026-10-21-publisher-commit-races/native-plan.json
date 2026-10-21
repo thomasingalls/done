@@ -1,0 +1,49 @@
+{
+  "matchedOrder": [
+    "reference",
+    "candidate",
+    "candidate",
+    "reference"
+  ],
+  "readers": 6,
+  "positionsPerStream": 256,
+  "firstWriterPeriodMs": 500,
+  "otherWriterPeriodMs": 1000,
+  "peerPeriodMs": 250,
+  "discriminators": [
+    {
+      "output": "own-only",
+      "firstWriter": true,
+      "otherWriter": false,
+      "peer": false
+    },
+    {
+      "output": "other-peer",
+      "firstWriter": false,
+      "otherWriter": true,
+      "peer": true
+    }
+  ],
+  "limits": {
+    "httpMs": 10000,
+    "replayMs": 120000,
+    "rssBytes": 1073741824
+  },
+  "candidateHotOfferedToVerifiedP95CeilingMs": 2500,
+  "abortOn409": true,
+  "noSynthetic409Retry": true,
+  "additionalWarmDiscriminator": {
+    "order": [
+      "reference",
+      "candidate",
+      "candidate",
+      "reference"
+    ],
+    "preflight": "One actual scoped signed read-v2 with original page proof, wall interval retained separately outside metrics.",
+    "initialOutput": "warm-matched",
+    "initialTimingPotentiallyContaminated": true,
+    "finalOutput": "warm-matched-v2",
+    "replacementColdControl": "own-only-v2",
+    "originalColdConditionRemainsOpen": true
+  }
+}

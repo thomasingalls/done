@@ -218,3 +218,29 @@ revision fence. Integrity quarantine is retained across clears; stale audit resu
 a prefix or establish an audit count. No persisted or wire-format change, numeric rate increase,
 retry increase, deadline relaxation or reduction in verification is authorized by this optimization.
 Same-publisher contention and aggregate capacity remain separate measured acceptance conditions.
+
+
+### Known native append markers — 2026-10-21
+
+After the delivery owner actually commits a newly proposed, fully verified decision, it may replace
+a private commit marker for that publisher. A capture retains the marker it observed. A later
+marker makes that capture and its delayed memo installation obsolete; it never authorizes the
+capture or supplies accepted progress. The strict read/write snapshot guard still rejects it and
+uses the same four-attempt retry limit. No-proposed outcomes, historical retries and rollback do
+not announce a native append. The notification is synchronous after COMMIT and before external hooks;
+a notification inside a transaction or for an unowned/obsolete capture is inert.
+
+The authenticated prefix preceding that known append may remain. Its count, commitment, accepted
+cut, link and witness are not advanced by the marker. A new capture must authenticate the appended
+rows and current witness through the original census, current authority and served-row verification,
+then pass its own fresh transaction-time comparison and live custody/grant/signature/expiry checks.
+Unknown fingerprint changes, external data_version, clear/close, eviction/recreation and quarantine
+retain their original fences. The documented off-path corruption detection window remains; this
+mechanism must not claim to re-examine unserved old rows on every request.
+
+Capture commit markers are separate from publisher audit ownership. Known appends do not obsolete
+an independently completed audit or suppress its corruption quarantine. The existing128-key owner
+and128-tip/16 MiB bounds remain; markers are unique process-local objects held only by current owners
+and weakly held captures. No persistent/wire format, extra retry, rate/concurrency/work/body/deadline
+change, new queue or shared authority result is introduced. Cold concurrent verification and queued
+write bursts remain separate measured acceptance conditions.

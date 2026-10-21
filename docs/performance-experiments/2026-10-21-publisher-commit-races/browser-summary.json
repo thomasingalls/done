@@ -1,0 +1,155 @@
+{
+  "rows": [
+    {
+      "name": "browser-natural",
+      "outcome": "passed",
+      "pressure": false,
+      "forced": false,
+      "trace": false,
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 34251,
+      "clientStatuses": {
+        "200": 226,
+        "429": 10
+      },
+      "shadowStatuses": {},
+      "naturalClientStateChangeReplies": 0,
+      "injectedStateChangeReplies": 0,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "scope": "Local functional continuation evidence on an exact production client build; duplicate reads share one device session, not six independent installations or a capacity measurement."
+    },
+    {
+      "name": "browser-pressure",
+      "outcome": "passed",
+      "pressure": true,
+      "forced": false,
+      "trace": false,
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 156031,
+      "clientStatuses": {
+        "200": 299,
+        "429": 120
+      },
+      "shadowStatuses": {
+        "200": 478,
+        "429": 437
+      },
+      "naturalClientStateChangeReplies": 0,
+      "injectedStateChangeReplies": 0,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "scope": "Local functional continuation evidence on an exact production client build; duplicate reads share one device session, not six independent installations or a capacity measurement."
+    },
+    {
+      "name": "browser-remote-refusals",
+      "outcome": "passed",
+      "pressure": true,
+      "forced": true,
+      "trace": false,
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 139580,
+      "clientStatuses": {
+        "200": 294,
+        "409:state-changed": 2,
+        "429": 102,
+        "unavailable": 1
+      },
+      "shadowStatuses": {
+        "200": 398,
+        "429": 451
+      },
+      "naturalClientStateChangeReplies": 0,
+      "injectedStateChangeReplies": 2,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "scope": "Local functional continuation evidence on an exact production client build; duplicate reads share one device session, not six independent installations or a capacity measurement.",
+      "continuation": {
+        "readRefusalAt": 1792591291078,
+        "readPath": "/account/delivery/read-v2-batch",
+        "singleReadSelf": null,
+        "refusalClassificationSource": "unique time/path/device-matched known proxy injection; any available CDP hint must agree",
+        "refusedSubmitBodyUnavailableToCDP": true,
+        "remoteReceiverControl": true,
+        "nextAttemptGapMs": 1164,
+        "nextReadAt": 1792591292244,
+        "nextSuccessfulReadGapMs": 1164,
+        "firstLaterNonemptyReadAt": 1792591292244,
+        "submitRefusalAt": 1792591292087,
+        "identicalAcceptedSubmitAt": 1792591293128,
+        "identicalSubmitGapMs": 1038,
+        "identicalPendingSubmitSha256": "e4c79357228d1261c5d4420b42c7b1063ddb76527d37acb5c59c75ca89278d45",
+        "autonomous": true,
+        "manualRetryOrReload": false,
+        "scope": "Known pre-forward injected refusals; no unknown write was committed by the proxy. End-to-end client continuation, not natural state-change frequency."
+      }
+    }
+  ],
+  "allDataGuardsPassed": true,
+  "identicalFinalExports": true,
+  "knownRefusalControlAutonomouslyContinued": true,
+  "explicitRemoteReceiverControlContinued": true,
+  "naturalStateChangeExposure": 0,
+  "finding": "Separate natural-load observations from injected refusal continuation. No maximum capacity, production frequency or absence-of-starvation inference.",
+  "scope": "Real packaged client/scheduler/transport/IndexedDB/editor/service-worker in two disposable Chromium contexts, synthetic writing and exact prior build."
+}

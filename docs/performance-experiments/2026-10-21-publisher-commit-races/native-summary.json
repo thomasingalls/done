@@ -1,0 +1,543 @@
+{
+  "runs": [
+    {
+      "folder": "trace-baseline",
+      "name": "0-trace",
+      "arm": "trace",
+      "outcome": "failed",
+      "elapsedMs": 50361,
+      "replayMs": null,
+      "verifiedPositions": 581,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 96,
+          "verified": 96,
+          "offeredToVerifiedP95Ms": 34378,
+          "offeredToVerifiedMaxMs": 35855
+        },
+        "other": {
+          "offered": 48,
+          "verified": 48,
+          "offeredToVerifiedP95Ms": 138,
+          "offeredToVerifiedMaxMs": 193
+        }
+      },
+      "statuses": {
+        "200": 577,
+        "409:state-changed": 1
+      },
+      "cpuMs": 113842.998,
+      "rssSampledPeak": 515768320,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": false
+    },
+    {
+      "folder": "matched",
+      "name": "1-reference",
+      "arm": "reference",
+      "outcome": "failed",
+      "elapsedMs": 39670,
+      "replayMs": null,
+      "verifiedPositions": 517,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 75,
+          "verified": 75,
+          "offeredToVerifiedP95Ms": 26866,
+          "offeredToVerifiedMaxMs": 27853
+        },
+        "other": {
+          "offered": 37,
+          "verified": 37,
+          "offeredToVerifiedP95Ms": 78,
+          "offeredToVerifiedMaxMs": 80
+        }
+      },
+      "statuses": {
+        "200": 467,
+        "409:state-changed": 1
+      },
+      "cpuMs": 92259.058,
+      "rssSampledPeak": 514637824,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": true
+    },
+    {
+      "folder": "matched",
+      "name": "1-candidate",
+      "arm": "candidate",
+      "outcome": "failed",
+      "elapsedMs": 4005,
+      "replayMs": null,
+      "verifiedPositions": 454,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 6,
+          "verified": 6,
+          "offeredToVerifiedP95Ms": 2455,
+          "offeredToVerifiedMaxMs": 2455
+        },
+        "other": {
+          "offered": 3,
+          "verified": 3,
+          "offeredToVerifiedP95Ms": 36,
+          "offeredToVerifiedMaxMs": 36
+        }
+      },
+      "statuses": {
+        "200": 139,
+        "409:state-changed": 6
+      },
+      "cpuMs": 5929.283,
+      "rssSampledPeak": 321830912,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": true
+    },
+    {
+      "folder": "matched",
+      "name": "2-candidate",
+      "arm": "candidate",
+      "outcome": "failed",
+      "elapsedMs": 4003,
+      "replayMs": null,
+      "verifiedPositions": 494,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 6,
+          "verified": 6,
+          "offeredToVerifiedP95Ms": 2536,
+          "offeredToVerifiedMaxMs": 2536
+        },
+        "other": {
+          "offered": 3,
+          "verified": 3,
+          "offeredToVerifiedP95Ms": 48,
+          "offeredToVerifiedMaxMs": 48
+        }
+      },
+      "statuses": {
+        "200": 149,
+        "409:state-changed": 6
+      },
+      "cpuMs": 6076.54,
+      "rssSampledPeak": 322732032,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": true
+    },
+    {
+      "folder": "matched",
+      "name": "2-reference",
+      "arm": "reference",
+      "outcome": "failed",
+      "elapsedMs": 34071,
+      "replayMs": null,
+      "verifiedPositions": 579,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 66,
+          "verified": 66,
+          "offeredToVerifiedP95Ms": 22771,
+          "offeredToVerifiedMaxMs": 23757
+        },
+        "other": {
+          "offered": 33,
+          "verified": 33,
+          "offeredToVerifiedP95Ms": 144,
+          "offeredToVerifiedMaxMs": 183
+        }
+      },
+      "statuses": {
+        "200": 432,
+        "409:state-changed": 6
+      },
+      "cpuMs": 78052.205,
+      "rssSampledPeak": 471072768,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": true
+    },
+    {
+      "folder": "warm-matched",
+      "name": "1-reference",
+      "arm": "reference",
+      "outcome": "failed",
+      "elapsedMs": 13189,
+      "replayMs": null,
+      "verifiedPositions": 647,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 23,
+          "verified": 23,
+          "offeredToVerifiedP95Ms": 8535,
+          "offeredToVerifiedMaxMs": 8602
+        },
+        "other": {
+          "offered": 11,
+          "verified": 11,
+          "offeredToVerifiedP95Ms": 110,
+          "offeredToVerifiedMaxMs": 110
+        }
+      },
+      "statuses": {
+        "200": 250,
+        "409:state-changed": 4
+      },
+      "cpuMs": 28652.832,
+      "rssSampledPeak": 451166208,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 643,
+      "timingCredit": false
+    },
+    {
+      "folder": "warm-matched",
+      "name": "1-candidate",
+      "arm": "candidate",
+      "outcome": "passed",
+      "elapsedMs": 20001,
+      "replayMs": 19978,
+      "verifiedPositions": 1536,
+      "completedStreams": 6,
+      "writes": {
+        "first": {
+          "offered": 39,
+          "verified": 39,
+          "offeredToVerifiedP95Ms": 1043,
+          "offeredToVerifiedMaxMs": 1050
+        },
+        "other": {
+          "offered": 19,
+          "verified": 19,
+          "offeredToVerifiedP95Ms": 54,
+          "offeredToVerifiedMaxMs": 54
+        }
+      },
+      "statuses": {
+        "200": 521,
+        "429": 102
+      },
+      "cpuMs": 7564.795,
+      "rssSampledPeak": 282050560,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 598,
+      "timingCredit": false
+    },
+    {
+      "folder": "warm-matched",
+      "name": "2-candidate",
+      "arm": "candidate",
+      "outcome": "passed",
+      "elapsedMs": 20002,
+      "replayMs": 19959,
+      "verifiedPositions": 1536,
+      "completedStreams": 6,
+      "writes": {
+        "first": {
+          "offered": 39,
+          "verified": 39,
+          "offeredToVerifiedP95Ms": 42,
+          "offeredToVerifiedMaxMs": 46
+        },
+        "other": {
+          "offered": 19,
+          "verified": 19,
+          "offeredToVerifiedP95Ms": 42,
+          "offeredToVerifiedMaxMs": 42
+        }
+      },
+      "statuses": {
+        "200": 521,
+        "429": 96
+      },
+      "cpuMs": 7573.672,
+      "rssSampledPeak": 286654464,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 611,
+      "timingCredit": false
+    },
+    {
+      "folder": "warm-matched",
+      "name": "2-reference",
+      "arm": "reference",
+      "outcome": "failed",
+      "elapsedMs": 59862,
+      "replayMs": null,
+      "verifiedPositions": 770,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 113,
+          "verified": 113,
+          "offeredToVerifiedP95Ms": 39870,
+          "offeredToVerifiedMaxMs": 41379
+        },
+        "other": {
+          "offered": 56,
+          "verified": 56,
+          "offeredToVerifiedP95Ms": 152,
+          "offeredToVerifiedMaxMs": 172
+        }
+      },
+      "statuses": {
+        "200": 696,
+        "409:state-changed": 2
+      },
+      "cpuMs": 139388.427,
+      "rssSampledPeak": 531005440,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 594,
+      "timingCredit": false
+    },
+    {
+      "folder": "own-only",
+      "name": "0-candidate",
+      "arm": "candidate",
+      "outcome": "failed",
+      "elapsedMs": 3003,
+      "replayMs": null,
+      "verifiedPositions": 478,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 5,
+          "verified": 5,
+          "offeredToVerifiedP95Ms": 2431,
+          "offeredToVerifiedMaxMs": 2431
+        },
+        "other": {
+          "offered": 0,
+          "verified": 0,
+          "offeredToVerifiedP95Ms": null,
+          "offeredToVerifiedMaxMs": null
+        }
+      },
+      "statuses": {
+        "200": 129,
+        "409:state-changed": 6
+      },
+      "cpuMs": 5891.952,
+      "rssSampledPeak": 319602688,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": false
+    },
+    {
+      "folder": "other-peer",
+      "name": "0-candidate",
+      "arm": "candidate",
+      "outcome": "passed",
+      "elapsedMs": 21001,
+      "replayMs": 20328,
+      "verifiedPositions": 1536,
+      "completedStreams": 6,
+      "writes": {
+        "first": {
+          "offered": 0,
+          "verified": 0,
+          "offeredToVerifiedP95Ms": null,
+          "offeredToVerifiedMaxMs": null
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedP95Ms": 78,
+          "offeredToVerifiedMaxMs": 1028
+        }
+      },
+      "statuses": {
+        "200": 491,
+        "429": 99
+      },
+      "cpuMs": 10255.526,
+      "rssSampledPeak": 351125504,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": true
+    },
+    {
+      "folder": "warm-matched-v2",
+      "name": "1-reference",
+      "arm": "reference",
+      "outcome": "failed",
+      "elapsedMs": 124276,
+      "replayMs": null,
+      "verifiedPositions": 1007,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 240,
+          "verified": 240,
+          "offeredToVerifiedP95Ms": 82096,
+          "offeredToVerifiedMaxMs": 86539
+        },
+        "other": {
+          "offered": 120,
+          "verified": 120,
+          "offeredToVerifiedP95Ms": 138,
+          "offeredToVerifiedMaxMs": 175
+        }
+      },
+      "statuses": {
+        "200": 1340,
+        "429": 2
+      },
+      "cpuMs": 283008.432,
+      "rssSampledPeak": 564019200,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 618,
+      "timingCredit": true
+    },
+    {
+      "folder": "warm-matched-v2",
+      "name": "1-candidate",
+      "arm": "candidate",
+      "outcome": "passed",
+      "elapsedMs": 21004,
+      "replayMs": 20179,
+      "verifiedPositions": 1536,
+      "completedStreams": 6,
+      "writes": {
+        "first": {
+          "offered": 40,
+          "verified": 40,
+          "offeredToVerifiedP95Ms": 576,
+          "offeredToVerifiedMaxMs": 1046
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedP95Ms": 1045,
+          "offeredToVerifiedMaxMs": 1048
+        }
+      },
+      "statuses": {
+        "200": 524,
+        "429": 113
+      },
+      "cpuMs": 7352.0,
+      "rssSampledPeak": 278855680,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 619,
+      "timingCredit": true,
+      "predeclaredInteractionGuardPassed": true
+    },
+    {
+      "folder": "warm-matched-v2",
+      "name": "2-candidate",
+      "arm": "candidate",
+      "outcome": "passed",
+      "elapsedMs": 20004,
+      "replayMs": 20002,
+      "verifiedPositions": 1536,
+      "completedStreams": 6,
+      "writes": {
+        "first": {
+          "offered": 39,
+          "verified": 39,
+          "offeredToVerifiedP95Ms": 563,
+          "offeredToVerifiedMaxMs": 1037
+        },
+        "other": {
+          "offered": 19,
+          "verified": 19,
+          "offeredToVerifiedP95Ms": 44,
+          "offeredToVerifiedMaxMs": 44
+        }
+      },
+      "statuses": {
+        "200": 521,
+        "429": 101
+      },
+      "cpuMs": 7617.408,
+      "rssSampledPeak": 274694144,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 596,
+      "timingCredit": true,
+      "predeclaredInteractionGuardPassed": true
+    },
+    {
+      "folder": "warm-matched-v2",
+      "name": "2-reference",
+      "arm": "reference",
+      "outcome": "failed",
+      "elapsedMs": 28018,
+      "replayMs": null,
+      "verifiedPositions": 637,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 53,
+          "verified": 53,
+          "offeredToVerifiedP95Ms": 18585,
+          "offeredToVerifiedMaxMs": 19280
+        },
+        "other": {
+          "offered": 26,
+          "verified": 26,
+          "offeredToVerifiedP95Ms": 159,
+          "offeredToVerifiedMaxMs": 171
+        }
+      },
+      "statuses": {
+        "200": 390,
+        "409:state-changed": 3
+      },
+      "cpuMs": 64337.36,
+      "rssSampledPeak": 496271360,
+      "warmOutsideMeasurement": true,
+      "warmPreflightMs": 611,
+      "timingCredit": true
+    },
+    {
+      "folder": "own-only-v2",
+      "name": "0-candidate",
+      "arm": "candidate",
+      "outcome": "failed",
+      "elapsedMs": 3502,
+      "replayMs": null,
+      "verifiedPositions": 458,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 6,
+          "verified": 6,
+          "offeredToVerifiedP95Ms": 2463,
+          "offeredToVerifiedMaxMs": 2463
+        },
+        "other": {
+          "offered": 0,
+          "verified": 0,
+          "offeredToVerifiedP95Ms": null,
+          "offeredToVerifiedMaxMs": null
+        }
+      },
+      "statuses": {
+        "200": 125,
+        "409:state-changed": 6
+      },
+      "cpuMs": 5911.681,
+      "rssSampledPeak": 319553536,
+      "warmOutsideMeasurement": false,
+      "warmPreflightMs": null,
+      "timingCredit": true
+    }
+  ],
+  "rawRuns": 16,
+  "failedRuns": 11,
+  "originalColdAcceptanceCleared": false,
+  "cleanWarmCandidateCompletionAndInteractionGuardsPassed": true,
+  "potentiallyContaminatedBlockRetained": [
+    "warm-matched",
+    "own-only"
+  ],
+  "scope": "Every raw outcome retained; failed runs are not completed latency/throughput samples. Warm-only comparison cannot establish cold capacity, population confidence, production/WAN/phone or absence of starvation."
+}

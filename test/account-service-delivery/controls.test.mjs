@@ -28,8 +28,8 @@ async function mutant(t, control) {
             '$1 return;',
           ],
           commit: [
-            /db.exec\('COMMIT'\);\n      hook\('after-commit', 'decide-submission'\);/g,
-            "db.exec('ROLLBACK');\n      hook('after-commit', 'decide-submission');",
+            /db.exec\('COMMIT'\);\n      if \(proposed\) reuse\?\.tips\?\.committed\(s\);\n      hook\('after-commit', 'decide-submission'\);/g,
+            "db.exec('ROLLBACK');\n      if (proposed) reuse?.tips?.committed(s);\n      hook('after-commit', 'decide-submission');",
           ],
           current: [
             /hook\('after-verify', 'decide-submission'\);\n      db.exec\('BEGIN IMMEDIATE'\);\n      if \(!unchanged\(db, s, reuse\)\)/g,

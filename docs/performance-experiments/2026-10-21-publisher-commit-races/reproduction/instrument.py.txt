@@ -1,0 +1,38 @@
+from pathlib import Path
+import hashlib,json
+r=Path(__file__).parent;p=r/'source-trace/account-service/publisherTips.ts';s=p.read_text();before=hashlib.sha256(s.encode()).hexdigest()
+header='''
+// Disposable bounded observer. Anonymous metadata only; failures never affect authority.
+const observedPublishers = new Map<string, number>();
+const observedCaptures = new WeakMap<object, number>();
+let nextObservedCapture = 0;
+function observe(kind: string, key?: string, capture?: object, detail: Record<string, unknown> = {}) {
+  try {
+    const sink = (globalThis as any).__publisherTipObserve;
+    if (!sink) return;
+    if (key !== undefined && !observedPublishers.has(key) && observedPublishers.size < 128)
+      observedPublishers.set(key, observedPublishers.size);
+    if (capture && !observedCaptures.has(capture)) observedCaptures.set(capture, ++nextObservedCapture);
+    sink({ kind, publisher: key === undefined ? null : observedPublishers.get(key) ?? -1,
+      capture: capture ? observedCaptures.get(capture) : null, ...detail });
+  } catch { /* An observer cannot change an operation. */ }
+}
+'''
+def rep(a,b):
+ global s
+ assert s.count(a)==1,(a,s.count(a));s=s.replace(a,b)
+rep('export class LedgerIntegrityError extends Error {',header+'\nexport class LedgerIntegrityError extends Error {')
+rep('    revision++;\n    owners.clear();',"    observe('global-clear', undefined, undefined, {revision});\n    revision++;\n    owners.clear();")
+rep('  const invalidatePublisher = (key: string) => {',"  const invalidatePublisher = (key: string) => {\n    observe('publisher-clear', key, undefined, {prefix:tips.get(key)?.count ?? null});")
+rep('      return s;\n    },\n    prefix',"      observe('capture', key, s, {revision,count,prefix:prefix?.count ?? 0,after:options?.after ?? null,position:options?.position ?? null});\n      return s;\n    },\n    prefix")
+rep('''      if (c.revision !== revision || c.version !== checkVersion() || owners.get(c.key) !== c.owner)
+        return false;''','''      if (c.revision !== revision || c.version !== checkVersion() || owners.get(c.key) !== c.owner) {
+        observe('guard-stale',c.key,s,{count:c.count,ownerCurrent:owners.get(c.key) === c.owner,globalCurrent:c.revision === revision});
+        return false;
+      }''')
+rep('''      const same = fingerprint(current, countRows(db, current), selected) === c.fingerprint;''','''      const currentCount = countRows(db, current);
+      const same = fingerprint(current, currentCount, selected) === c.fingerprint;
+      observe(same ? 'guard-same' : 'guard-fingerprint',c.key,s,{count:c.count,currentCount,prefix:tips.get(c.key)?.count ?? null});''')
+rep('''      verifiedRows += s.rows.length;''','''      observe('remember',c.key,s,{count:c.count,rows:s.rows.length,prefix:c.prefix?.count ?? 0});
+      verifiedRows += s.rows.length;''')
+p.write_text(s);(r/'trace-identity.json').write_text(json.dumps({'changedFile':'account-service/publisherTips.ts','before':before,'after':hashlib.sha256(s.encode()).hexdigest(),'scope':'Observer-only metadata, no ordinary timing inference.'},indent=2)+'\n')

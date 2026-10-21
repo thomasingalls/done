@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { readFileSync,writeFileSync } from 'node:fs';
+import { census } from './source-candidate/scripts/account-crypto-prep/census.mjs';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done',r='/private/tmp/done-publisher-races-20261021';
+const before=JSON.parse(readFileSync(root+'/docs/account-crypto/census.json')),after=census(root);
+assert.deepEqual({...before,sources:null},{...after,sources:null});
+const old=new Map(before.sources.map(x=>[x.path,x.sha256]));assert.deepEqual([...old.keys()],after.sources.map(x=>x.path));
+const changed=after.sources.filter(x=>old.get(x.path)!==x.sha256).map(x=>x.path);assert.deepEqual(changed,['account-service/delivery.ts','account-service/publisherTips.ts']);
+writeFileSync(r+'/census-review.json',JSON.stringify({changedSourcePins:changed,domainSitesAndNonSourceMetadataExact:true,addedSources:[],removedSources:[]},null,2)+'\n');
+console.log(JSON.stringify({changedSourcePins:changed,domainSitesAndNonSourceMetadataExact:true}));
