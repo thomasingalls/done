@@ -1,0 +1,12 @@
+[
+  {
+    "name": "browser-natural-final",
+    "pressure": false,
+    "inject": false
+  },
+  {
+    "name": "browser-pressure-final",
+    "pressure": true,
+    "inject": false
+  }
+]

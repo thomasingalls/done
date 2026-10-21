@@ -261,7 +261,7 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "b690bf4bdf07ad9755ca88738bcd6beef57d8a10d5efb474e43f142f0dda255e"
+      "sha256": "290fac057e0e9203ada5ae9949b476cf2cc8ac3da703c816204a9a86b509587d"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -409,7 +409,7 @@
     },
     {
       "path": "account-service/publisherTips.ts",
-      "sha256": "07fd0d4371874c318531a1047227e88aae885c24ae48708b3009fdb6c6eb0165"
+      "sha256": "a14dbf01c01bb22cfeae5c9a9fcab069612f11fc04f1bea10291581203b53500"
     },
     {
       "path": "account-service/recovery.ts",

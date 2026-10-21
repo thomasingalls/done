@@ -1,0 +1,37 @@
+{
+  "command": [
+    "node",
+    "/private/tmp/done-cold-verification-20261021/api-load.mjs"
+  ],
+  "fixedEnvironment": {
+    "LOAD_FIRST_WRITER": "1",
+    "LOAD_OTHER_WRITER": "1",
+    "LOAD_PEER": "1",
+    "LOAD_POSITIONS": "256",
+    "LOAD_OUTPUT": "matched-final"
+  },
+  "startedAt": 1792595282078,
+  "completedAt": 1792595334288,
+  "exitCode": 1,
+  "individualOutcomes": [
+    [
+      "reference",
+      "failed"
+    ],
+    [
+      "candidate",
+      "passed"
+    ],
+    [
+      "candidate",
+      "passed"
+    ],
+    [
+      "reference",
+      "failed"
+    ]
+  ],
+  "allChildrenExitAwaited": true,
+  "expectedFailedReferencesRetained": true,
+  "scope": "Subprocess terminal completion observed before any subsequent validation/browser invocation; expected aggregate exit1 includes failing references, not blanket success."
+}

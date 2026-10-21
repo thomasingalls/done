@@ -1,0 +1,214 @@
+{
+  "runs": [
+    {
+      "arm": "reference",
+      "block": 1,
+      "outcome": "failed",
+      "replayMs": null,
+      "elapsedMs": 4003,
+      "positions": 450,
+      "writes": {
+        "first": {
+          "offered": 6,
+          "verified": 6,
+          "initialOfferedToProofMs": 2452,
+          "offeredToProofP95Ms": 2452,
+          "offeredToProofMaxMs": 2452,
+          "queueToStartMaxMs": 1954
+        },
+        "other": {
+          "offered": 3,
+          "verified": 3,
+          "initialOfferedToProofMs": 20,
+          "offeredToProofP95Ms": 40,
+          "offeredToProofMaxMs": 40,
+          "queueToStartMaxMs": 0
+        }
+      },
+      "capacityRefusals": 0,
+      "stateChangeRefusals": 6,
+      "cpuMs": 5947.073,
+      "rssPeak": 333217792,
+      "loopDelayMs": {
+        "p50": 10.100735,
+        "p95": 12.009471,
+        "p99": 28.426239,
+        "max": 120.717311
+      },
+      "publisherVerification": {
+        "publishers": 2,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3324,
+        "verifiedRows": 7184,
+        "servedChecks": 963,
+        "fullCensuses": 8,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "interactionGuardPassed": true
+    },
+    {
+      "arm": "candidate",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 20574,
+      "elapsedMs": 21004,
+      "positions": 1536,
+      "writes": {
+        "first": {
+          "offered": 41,
+          "verified": 41,
+          "initialOfferedToProofMs": 286,
+          "offeredToProofP95Ms": 1014,
+          "offeredToProofMaxMs": 1047,
+          "queueToStartMaxMs": 547
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "initialOfferedToProofMs": 33,
+          "offeredToProofP95Ms": 69,
+          "offeredToProofMaxMs": 107,
+          "queueToStartMaxMs": 1
+        }
+      },
+      "capacityRefusals": 93,
+      "stateChangeRefusals": 0,
+      "cpuMs": 8726.303,
+      "rssPeak": 346423296,
+      "loopDelayMs": {
+        "p50": 10.510335,
+        "p95": 12.115967,
+        "p99": 15.458303,
+        "max": 38.469631
+      },
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1157,
+        "servedChecks": 3302,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "interactionGuardPassed": true
+    },
+    {
+      "arm": "candidate",
+      "block": 2,
+      "outcome": "passed",
+      "replayMs": 20068,
+      "elapsedMs": 21019,
+      "positions": 1536,
+      "writes": {
+        "first": {
+          "offered": 40,
+          "verified": 40,
+          "initialOfferedToProofMs": 289,
+          "offeredToProofP95Ms": 574,
+          "offeredToProofMaxMs": 1045,
+          "queueToStartMaxMs": 545
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "initialOfferedToProofMs": 23,
+          "offeredToProofP95Ms": 78,
+          "offeredToProofMaxMs": 1047,
+          "queueToStartMaxMs": 48
+        }
+      },
+      "capacityRefusals": 94,
+      "stateChangeRefusals": 0,
+      "cpuMs": 9155.64,
+      "rssPeak": 396427264,
+      "loopDelayMs": {
+        "p50": 10.543103,
+        "p95": 12.206079,
+        "p99": 15.433727,
+        "max": 23.937023
+      },
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1121,
+        "servedChecks": 3229,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "interactionGuardPassed": true
+    },
+    {
+      "arm": "reference",
+      "block": 2,
+      "outcome": "failed",
+      "replayMs": null,
+      "elapsedMs": 4008,
+      "positions": 474,
+      "writes": {
+        "first": {
+          "offered": 6,
+          "verified": 6,
+          "initialOfferedToProofMs": 2522,
+          "offeredToProofP95Ms": 2522,
+          "offeredToProofMaxMs": 2522,
+          "queueToStartMaxMs": 2021
+        },
+        "other": {
+          "offered": 3,
+          "verified": 3,
+          "initialOfferedToProofMs": 18,
+          "offeredToProofP95Ms": 43,
+          "offeredToProofMaxMs": 43,
+          "queueToStartMaxMs": 0
+        }
+      },
+      "capacityRefusals": 0,
+      "stateChangeRefusals": 6,
+      "cpuMs": 6049.772,
+      "rssPeak": 327761920,
+      "loopDelayMs": {
+        "p50": 10.092543,
+        "p95": 13.418495,
+        "p99": 26.574847,
+        "max": 42.336255
+      },
+      "publisherVerification": {
+        "publishers": 2,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3324,
+        "verifiedRows": 7187,
+        "servedChecks": 1005,
+        "fullCensuses": 8,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "interactionGuardPassed": false
+    }
+  ],
+  "primaryColdCandidatesPassed": 2,
+  "originalWorkloadUnchanged": true,
+  "independentUnits": 4,
+  "pairedPercentageSpeedupUnavailable": true,
+  "noWarmup": true,
+  "scope": "Local fixed cold synthetic service workload, two successful candidate processes. Not a population confidence interval, universal capacity claim, production traffic or mobile hardware."
+}

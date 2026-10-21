@@ -1,0 +1,38 @@
+[
+  {
+    "name": "browser-natural",
+    "pressure": false,
+    "inject": false,
+    "cwd": "/private/tmp/done-cold-verification-20261021/source-candidate",
+    "serviceSource": "/private/tmp/done-cold-verification-20261021/source-candidate",
+    "proxySha256": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "exitCode": 1,
+    "startedAt": 1792594223440,
+    "completedAt": 1792594831953
+  },
+  {
+    "name": "browser-pressure",
+    "pressure": true,
+    "inject": false,
+    "cwd": "/private/tmp/done-cold-verification-20261021/source-candidate",
+    "serviceSource": "/private/tmp/done-cold-verification-20261021/source-candidate",
+    "proxySha256": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "exitCode": 130,
+    "startedAt": 1792594831955,
+    "completedAt": 1792594932947
+  }
+]

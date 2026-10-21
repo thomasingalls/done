@@ -36,6 +36,14 @@ interface Tip extends VerifiedPrefix {
 interface PublisherOwner {
   commit: object;
 }
+interface ColdWaiter {
+  resolve: (release: () => void) => void;
+  reject: (cause: Error) => void;
+  timer: ReturnType<typeof setTimeout>;
+}
+interface ColdLane {
+  waiters: Set<ColdWaiter>;
+}
 interface Capture {
   key: string;
   owner: PublisherOwner;
@@ -102,6 +110,24 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
   const tips = new Map<string, Tip>(),
     poisoned = new Set<string>();
   const captures = new WeakMap<Snapshot, Capture>();
+  // Scheduling only: no snapshot, rows, authority or verification result is shared.
+  const coldLanes = new Map<string, ColdLane>();
+  let coldWaiting = 0;
+  const releaseCold = (key: string, lane: ColdLane) => {
+    let released = false;
+    return () => {
+      if (released || coldLanes.get(key) !== lane) return;
+      released = true;
+      const next = lane.waiters.values().next().value;
+      if (!next) coldLanes.delete(key);
+      else {
+        lane.waiters.delete(next);
+        coldWaiting--;
+        clearTimeout(next.timer);
+        next.resolve(releaseCold(key, lane));
+      }
+    };
+  };
   // Bounded identities, not reusable numeric generations: recreating an evicted key
   // must never revive a capture or audit owned by its previous incarnation.
   const owners = new Map<string, PublisherOwner>();
@@ -249,6 +275,13 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     invalidate,
     close() {
       closed = true;
+      for (const lane of coldLanes.values())
+        for (const waiter of lane.waiters) {
+          clearTimeout(waiter.timer);
+          waiter.reject(Error('Closed publisher verifier'));
+        }
+      coldLanes.clear();
+      coldWaiting = 0;
       invalidate();
       void worker?.terminate();
     },
@@ -257,6 +290,8 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     },
     status: () => ({
       publishers: tips.size,
+      coldLanes: coldLanes.size,
+      coldWaiting,
       captureOwners: owners.size,
       quarantined: poisoned.size,
       auditActive: !!active,
@@ -271,6 +306,52 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       auditsStarted,
       auditsCompleted,
     }),
+    /** Cold requests take fresh captures in FIFO order. A warmed group drains before
+     * returning to ordinary concurrency, so queued writes cannot starve its reads.
+     * Each caller still owns every authorization, expiry, guard and SQL operation. */
+    enter(workspace: string, publisher?: string): (() => void) | Promise<() => void> {
+      if (closed) throw Error('Closed publisher verifier');
+      checkVersion();
+      let header: Snapshot | null;
+      db.exec('BEGIN');
+      try {
+        header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);
+        db.exec('COMMIT');
+      } finally {
+        if (db.isTransaction) db.exec('ROLLBACK');
+      }
+      if (!header) return () => {};
+      const id = publisher ?? JSON.parse(header.promotion.request).candidate.signer;
+      const key = header.account.id + ':' + id;
+      check(key);
+      let lane = coldLanes.get(key);
+      if (!lane) {
+        const tip = tips.get(key);
+        if (tip?.extendable && tip.context === publisherContext(header)) return () => {};
+        if (coldLanes.size >= MAX_PUBLISHERS) throw Error('Cold publisher capacity');
+        lane = { waiters: new Set() };
+        coldLanes.set(key, lane);
+        return releaseCold(key, lane);
+      }
+      if (coldWaiting >= MAX_PUBLISHERS) throw Error('Cold publisher capacity');
+      const owned = lane;
+      return new Promise((resolve, reject) => {
+        const waiter: ColdWaiter = {
+          resolve,
+          reject,
+          // This never extends the enclosing HTTP deadline or the signed request lifetime.
+          timer: setTimeout(() => {
+            if (owned.waiters.delete(waiter)) {
+              coldWaiting--;
+              reject(Error('Cold publisher wait expired'));
+            }
+          }, 10000),
+        };
+        waiter.timer.unref();
+        owned.waiters.add(waiter);
+        coldWaiting++;
+      });
+    },
     checkedServed() {
       servedChecks++;
     },

@@ -244,3 +244,34 @@ and128-tip/16 MiB bounds remain; markers are unique process-local objects held o
 and weakly held captures. No persistent/wire format, extra retry, rate/concurrency/work/body/deadline
 change, new queue or shared authority result is introduced. Cold concurrent verification and queued
 write bursts remain separate measured acceptance conditions.
+
+
+### Bounded cold publisher admission — 2026-10-21
+
+A core may start a FIFO scheduling lane when an account/publisher lacks a context-matching,
+extendable verified prefix. Existing lane entries take precedence over a newly warmed prefix;
+the group drains before the lane is removed and ordinary warm concurrency resumes. Different
+publishers have separate lanes. At most128 lanes and128 total waiting entries are retained.
+Each waiting entry has a10s scheduling limit; this neither resets nor extends its enclosing
+HTTP deadline or signed request expiry. Exhaustion, timeout and closure fail closed.
+
+Admission follows each operation's own current authority verification and, for reads, its signed
+request scope, reader and expiry checks. The scheduling header itself is captured in a short
+native transaction, including when membership/recovery capture requires one. That transaction
+ends before any queue wait. A waiter recaptures and independently authenticates on its turn.
+This scheduling recapture precedes any native guard attempt; the original four competing-commit
+attempts remain. Every original transaction guard, served-row proof, current custody/grant,
+completion authorization, signing-purpose and far-side expiry check still applies.
+
+The lane shares only ordering, never snapshots, mutable census maps, request authorization or
+signing results. Original compact prefixes remain owned by publisherTips with the same witness,
+audit, commit-marker, quarantine, external-version, clear, eviction and close fences. No lane
+advances a ledger count or installs proof. A release is idempotent and cannot remove a later
+incarnation; finally releases it on all operation exits. Close rejects waiters, retires their
+timers and makes late releases inert. Clear changes no queue authority because none is held;
+subsequent captures must still satisfy every original fence.
+
+This is a bounded cold-start scheduling change. It changes no persisted or wire format, factor,
+rate/refill, burst/concurrency/work/body limit, native guard-attempt limit or existing deadline.
+It does not establish unrestricted capacity, general absence of starvation, supported-device
+performance or permission to promote a new rate policy.

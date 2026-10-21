@@ -1,0 +1,7 @@
+# Candidate narrowing before matched HTTP measurements
+
+The first candidate admitted whole operations before authority verification. Existing unchanged inbound/core.test.mjs paused the first authority crypto call and awaited an independent append: admission incorrectly blocked that append until10s timeout (affected-tests.log). The same run retained one indentation-sensitive omission-anchor failure. No native timing runs used that candidate.
+
+Revised candidate admits only after the operation independently verifies current authority (and each read request signature/scope/time). A waiter then recaptures and independently authenticates on its turn, before any native guard attempt. This scheduling recapture does not spend or increase the four original competing-commit guard attempts; the entire original retry loop and security statements are checked independently as exact AST after removing the scheduling envelope. Admission ends in finally. No authority result is shared. The original delay/append test stays unchanged. Three mutation source strings in two old fixture files change only indentation after wrapping functions.
+
+A new close test initially expected storage-unavailable; after narrowed admission, close can win earlier authority verification and yields original unavailable. The assertion was corrected to that original exact result in the new test; no old assertion changed. Both failed logs are preserved. Original prospective workload, acceptance/interaction guards, fixed arm order and bounds remain unchanged.

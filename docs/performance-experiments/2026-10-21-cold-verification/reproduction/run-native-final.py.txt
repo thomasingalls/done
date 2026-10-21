@@ -1,0 +1,12 @@
+from pathlib import Path
+import os,subprocess,time,json
+r=Path(__file__).parent
+assert not (r/'matched-final').exists()
+env={**os.environ,'LOAD_FIRST_WRITER':'1','LOAD_OTHER_WRITER':'1','LOAD_PEER':'1','LOAD_POSITIONS':'256','LOAD_OUTPUT':'matched-final'}
+cmd=['node',str(r/'api-load.mjs')];at=time.time_ns()//1000000
+with (r/'native-final-invocation.log').open('w') as out:p=subprocess.run(cmd,env=env,stdout=out,stderr=subprocess.STDOUT)
+rows=json.loads((r/'matched-final/results.json').read_text());expected=[('reference','failed'),('candidate','passed'),('candidate','passed'),('reference','failed')]
+status=[(x['arm'],x['outcome']) for x in rows]
+receipt={'command':cmd,'fixedEnvironment':{k:env[k] for k in ['LOAD_FIRST_WRITER','LOAD_OTHER_WRITER','LOAD_PEER','LOAD_POSITIONS','LOAD_OUTPUT']},'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode,'individualOutcomes':status,'allChildrenExitAwaited':True,'expectedFailedReferencesRetained':status==expected,'scope':'Subprocess terminal completion observed before any subsequent validation/browser invocation; expected aggregate exit1 includes failing references, not blanket success.'}
+(r/'native-final-runner.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))
+assert status==expected and p.returncode==1

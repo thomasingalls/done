@@ -1,0 +1,52 @@
+from pathlib import Path
+import subprocess,json,hashlib,gzip,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');dest=r/'evidence-build';load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');prior=start['priorTree'];pgit=['git','--git-dir=/private/tmp/done-publisher-races-20261021/patch06-index.git','--work-tree='+str(repo)]
+def run(args):return subprocess.check_output(args,cwd=repo)
+def old(f):return run(pgit+['show',prior+':'+f])
+assert run(['git','rev-parse','HEAD']).decode().strip()==start['base']
+assert run(['git','diff','--cached','--name-only'])==b''
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+priorPackets={}
+for name in ['live-sync-attribution','ordinary-receive-batching','sync-capacity','sync-continuation','publisher-isolation','publisher-commit-races']:
+ p=repo/'docs/performance-experiments'/('2026-10-21-'+name);lines=(p/'SHA256SUMS').read_text().splitlines()
+ for line in lines:
+  h,f=line.split('  ',1);assert sha((p/f).read_bytes())==h
+ priorPackets[name]=len(lines)
+append=['docs/completed.md','docs/decisions.md','docs/performance.md','docs/account-receive-transport.md']
+for f in append:assert (repo/f).read_bytes().startswith(old(f))
+for f in ['docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:assert (repo/f).read_bytes()==old(f)
+allowed=set(append+['account-service/delivery.ts','account-service/publisherTips.ts','test/account-service-delivery/controls.test.mjs','test/account-service-inbound/controls.test.mjs','docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json'])
+assert set(run(pgit+['diff','--name-only',prior,'--']).decode().splitlines())==allowed
+priorPaths=set(run(pgit+['ls-tree','-r','--name-only',prior]).decode().splitlines());new=set(run(['git','ls-files','--others','--exclude-standard']).decode().splitlines())-priorPaths
+assert new=={'test/account-service-delivery/cold-verification.test.mjs'},new
+preservation=load(r/'preservation-review.json');assert preservation['status']=='passed' and preservation['originalDeliveryASTExactAfterRemovingOnlyScheduling'] and preservation['originalPublisherVerifierASTExactAfterRemovingOnlyScheduling'];assert sum(x['assertionASTsExact'] for x in preservation['oldTestRows'])==23
+for name,count in [('affected-tests-release',143),('planning-tests',109)]:
+ log=(r/(name+'.log')).read_text();counts={k:int(re.search(r'ℹ '+k+r' (\d+)',log)[1]) for k in ['tests','pass','fail','cancelled','skipped','todo']};assert counts['tests']==counts['pass']==count and all(counts[k]==0 for k in ['fail','cancelled','skipped','todo'])
+checks=load(r/'final-checks.json');assert len(checks)==19 and all(x['exitCode']==0 for x in checks)
+omissions=load(r/'omissions.json');assert len(omissions)==10 and all(x['exitCode']==1 and x['mutatedOccurrences']==1 and x['intendedAssertionFailure'] for x in omissions)
+assert '6 !== 1' in (r/'regression-before.log').read_text();assert 'requires a transaction' in (r/'membership-regression-before-v2.log').read_text()
+assert 'No read transaction held during async verification' in (r/'affected-tests.log').read_text()
+source=load(r/'source-identity.json');assert source['candidate']['changedProductionFiles']==['account-service/delivery.ts','account-service/publisherTips.ts']
+for f,h in source['candidate']['sha256'].items():assert sha((repo/f).read_bytes())==h
+assert len(source['candidate']['sha256'])==803
+for f,h in load(r/'identity.json')['affectedRepositoryFilesSha256'].items():assert sha((repo/f).read_bytes())==h
+pc=json.loads(old('docs/account-crypto/census.json'));c=load(repo/'docs/account-crypto/census.json');assert {**c,'sources':None}=={**pc,'sources':None}
+assert load(r/'census-review.json')['changedSourcePins']==['account-service/delivery.ts','account-service/publisherTips.ts']
+planning=load(r/'planning-audit.json');assert planning['everyPriorObligationExact'] and planning['previousObligations']==880 and planning['obligations']==881 and planning['unresolved']==337 and planning['constructionContractsAndStatusesExact']==97
+native=load(r/'native-summary-final.json');candidates=[x for x in native['runs'] if x['arm']=='candidate'];assert len(candidates)==2 and all(x['outcome']=='passed' and x['positions']==1536 and x['interactionGuardPassed'] and x['publisherVerification']['fullCensuses']==2 and x['publisherVerification']['coldLanes']==x['publisherVerification']['coldWaiting']==0 for x in candidates)
+audits=[]
+for folder in ['matched','matched-final']:audits+=load(r/folder/'cold-audit.json')
+assert len(audits)==8
+for x in audits:
+ for a in x['accounts']:assert a['seedAndAllStoredWiresExact'] and a['unacknowledgedStored']==0
+browser=load(r/'browser-summary.json');assert len(browser['rows'])==2 and browser['allDataGuardsPassed'] and browser['identicalFinalExports']
+assert all(x['outcome']=='passed' and len(x['guards'])==4 and all(x['guards'].values()) for x in browser['rows'])
+initial=load(r/'browser-runner-initial.json');assert [x['exitCode'] for x in initial]==[1,130]
+assert load(r/'browser-natural/result.json')['outcome']=='failed'
+finalBrowser=load(r/'browser-runner.json');nr=load(r/'native-final-runner.json');assert nr['completedAt']<=finalBrowser[0]['startedAt'] and finalBrowser[-1]['completedAt']<=checks[0]['startedAt'];assert all(x['exitCode']==0 for x in finalBrowser)
+for f,v in load(dest/'artifact-provenance.json').items():
+ b=(dest/f).read_bytes();assert sha(b)==v['storedSha256'];assert sha(gzip.decompress(b) if f.endswith('.gz') else b)==v['sourceSha256']
+assert load(dest/'privacy-audit.json')['knownExactValuesChecked']==35
+result={'status':'passed','baseCommit':start['base'],'priorTree':prior,'immutablePriorPatchesVerified':6,'priorPacketChecksumCounts':priorPackets,'frozenSourceFilesPerArm':803,'exactPriorPatch02ClientAssets':110,'currentNodeAndChromiumApiExecutableHashAndPrivateFixtureIdentities':'identity.json','newRegressionCases':16,'affectedCasesPassed':143,'planningCasesPassed':109,'effectiveOmissions':10,'oldAssertionASTsExact':23,'originalDeliveryAndPublisherVerifierASTsExactAfterRemovingOnlyScheduling':True,'rawNativeRuns':8,'failedNativeReferencesRetained':4,'finalColdCandidateRunsPassed':2,'positionsPerFinalCandidate':1536,'finalHotWriteP95Ms':[x['writes']['first']['offeredToProofP95Ms'] for x in candidates],'originalColdLocalAcceptanceCleared':True,'coldStoredWireAndProofAudits':8,'unacknowledgedStoredWrites':0,'finalBrowserJourneysPassed':2,'failedAndInterruptedBrowserJourneysRetained':2,'actualClientFullDataGuardsPassed':True,'generalQualificationPaused':True,'priorObligationsExact':880,'obligations':881,'unresolved':337,'constructionContractsAndStatusesExact':97,'newNativeObligationBlockedFromAggregateCredit':True,'realIndexEmpty':True,'otherSeatProgressAndDeferredFormattingExact':True,'knownExactPrivateValuesChecked':35,'matches':0,'scope':'Local cold synthetic acceptance and functional Chromium client checks; no safe rate/capacity promotion, universal starvation claim, physical Firefox/Android/WAN or production adoption. No real staging, sign, commit, push, preview restart, merge or deployment.'}
+(dest/'verification.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result,indent=2))

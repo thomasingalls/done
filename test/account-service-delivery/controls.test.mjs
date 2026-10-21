@@ -28,12 +28,12 @@ async function mutant(t, control) {
             '$1 return;',
           ],
           commit: [
-            /db.exec\('COMMIT'\);\n      if \(proposed\) reuse\?\.tips\?\.committed\(s\);\n      hook\('after-commit', 'decide-submission'\);/g,
-            "db.exec('ROLLBACK');\n      if (proposed) reuse?.tips?.committed(s);\n      hook('after-commit', 'decide-submission');",
+            /db.exec\('COMMIT'\);\n        if \(proposed\) reuse\?\.tips\?\.committed\(s\);\n        hook\('after-commit', 'decide-submission'\);/g,
+            "db.exec('ROLLBACK');\n        if (proposed) reuse?.tips?.committed(s);\n        hook('after-commit', 'decide-submission');",
           ],
           current: [
-            /hook\('after-verify', 'decide-submission'\);\n      db.exec\('BEGIN IMMEDIATE'\);\n      if \(!unchanged\(db, s, reuse\)\)/g,
-            "hook('after-verify', 'decide-submission');\n      db.exec('BEGIN IMMEDIATE');\n      if (false)",
+            /hook\('after-verify', 'decide-submission'\);\n        db.exec\('BEGIN IMMEDIATE'\);\n        if \(!unchanged\(db, s, reuse\)\)/g,
+            "hook('after-verify', 'decide-submission');\n        db.exec('BEGIN IMMEDIATE');\n        if (false)",
           ],
           generation: [
             /if \(generation !== \(auth.history \? historyGeneration\(auth.history, epoch\) : auth.generation\)\)\n    return mismatch;/g,

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 518,
-    "requiredTestFiles": 512,
+    "testFiles": 519,
+    "requiredTestFiles": 513,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -8415,6 +8415,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-service-delivery/cold-verification.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-delivery/cold-verification.test.mjs"
+        ]
+      },
+      "declarations": 15,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -17716,8 +17731,12 @@
       "sha256": "def194f3503d542fb44997ce76e75847e4a43b8ee5937b02bec9f9b725123f40"
     },
     {
+      "path": "test/account-service-delivery/cold-verification.test.mjs",
+      "sha256": "579e76d98bb328024603603cc8a84aa049d882fcffb37284d8c45a758e192b0d"
+    },
+    {
       "path": "test/account-service-delivery/controls.test.mjs",
-      "sha256": "5ac28ed3c5a28f9702b1723dbbfa64626b8a42eb44de192cfce581560f98ba1e"
+      "sha256": "599f7e5a3d221859a7f1a4dedce812b517c7be16fbed8aa49cd9e7da8bdae6ee"
     },
     {
       "path": "test/account-service-delivery/core.test.mjs",
@@ -17757,7 +17776,7 @@
     },
     {
       "path": "test/account-service-inbound/controls.test.mjs",
-      "sha256": "d43414495aa2e4593955705a2bc26ac70dcd434fcdab2d4c971490218101ca44"
+      "sha256": "0e8c83e22b7f5124819042680a92136797c95a19626a8206a78013bbce7e6ecd"
     },
     {
       "path": "test/account-service-inbound/core.test.mjs",

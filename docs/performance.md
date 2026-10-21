@@ -2003,3 +2003,21 @@ The [bounded marker repair](./performance-experiments/2026-10-21-publisher-commi
 The original COLD six-session256-position mixed workload remains failed. First hot writes offered at500ms verify at2955/3036ms; the following five queued writes drain in84/92ms and race out four read attempts. Retain both failed pairs and the stopped interaction-guard miss. This is not a cold-capacity pass. A separate real signed preflight read defines a WARM discriminator; all warm-read cost/status remains separate. In two clean warm pairs, repaired replay completes1536 positions at20.179/20.002s with all40/39 hot and20/19 other writes verified, hot offered-to-proof p95 576/563ms against2500ms. References fail at120s replay or409. Failed references are censored, so no completed paired speedup percentage is reported.
 
 All16 native stores pass independent exact-wire/proof audits, including11 failed runs. Keep the first potentially overlapping warm block and repeat it completely after other probes finish. Three actual-client journeys pass complete exports, writing, Undo/Redo and locked offline reopening (34.251/156.031/139.580s catch-up); known remote read and identical pending submit continue after1164/1038ms. No natural state-changed browser exposure; submit refusal body missing to CDP remains explicit. These are local Chromium functional controls, not browser speed, physical-phone/Firefox/WAN, maximum capacity, production adoption, population confidence or generalized qualification. Cold first-verification fan-out/queued bursts are the next bounded target; shipped16/64 remains. No preview or publication changes.
+
+
+## Cold publisher verification and queued write burst — 2026-10-21
+
+[Phase07 protocol and preserved evidence](./performance-experiments/2026-10-21-cold-verification/README.md). Counterbalanced fresh-service reference/candidate/candidate/reference, no warmup, same1024-row publisher, six scoped sessions×256 positions, hot500ms writer, unrelated1000ms writer and250ms reader. All original rate/work/concurrency/HTTP/120s replay/1GiB RSS limits and independent original proofs remain. Admission shares order only; each waited request recaptures and authenticates.
+
+| Final cold run | Reference1 | Candidate1 | Candidate2 | Reference2 |
+|---|---:|---:|---:|---:|
+| Verified positions |450 (failed409)|1536|1536|474 (failed409)|
+| Replay |not completed|20.574s|20.068s|not completed|
+| Verified hot/other writes |6/3|41/20|40/20|6/3|
+| First hot offered-to-proof |2452ms|286ms|289ms|2522ms|
+| Hot offered-to-proof p95 |2452ms|1014ms|574ms|2522ms|
+| Capacity refusals |0|93|94|0|
+
+Both candidates meet the added2500ms interaction guard, retain exactly two whole censuses (one/account), and finish without state-change replies, quarantine or remaining waiters. CPU8.73/9.16s, sampledRSS346/396MB. All8 original/final stores pass read-only original-wire/link/signature audits. Failed references preclude a completed paired percentage-speedup estimate. These are two correlated-workload process replications on one machine, not a confidence interval, rate-policy approval, general no-starvation claim or maximum-capacity measurement.
+
+Exact patch02 packaged-client normal/duplicate-reader functional journeys pass34.246/139.577s catch-up, full exports, two-way writes, Undo/Redo and locked offline reopening. No paired browser speedup or physical Android/Firefox/WAN/production claim. Retain the initial candidate's unchanged-regression failure, membership-enabled600s browser failure/interrupted repeat, initial first-epoch success and all fixture corrections; only final-source runs receive final-source acceptance credit. General qualification remains paused.
