@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,hashlib,subprocess,shutil,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-capacity-trace';load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+subprocess.run(['python3',str(r/'identity.py')],stdout=subprocess.DEVNULL,check=True,env=env);checks=load(r/'final-checks.json');assert len(checks)==7 and all(x['exitCode']==0 for x in checks);assert all(x['exitCode']==0 for x in load(r/'build-receipts.json'));assert load(r/'calibration-parity.json')['status']=='passed';assert load(r/'evidence-review.json')['status']=='passed';assert len(load(r/'observer-ast.json')['rows'])==8
+for old in(repo/'docs/performance-experiments').iterdir():
+ if old==packet or not(old/'SHA256SUMS').exists():continue
+ for line in(old/'SHA256SUMS').read_text().splitlines():
+  h,f=line.split('  ',1);assert sha((old/f).read_bytes())==h,str(old/f)
+if not packet.exists():shutil.copytree(r/'evidence-build',packet)
+for f,v in load(packet/'artifact-provenance.json').items():assert sha((packet/f).read_bytes())==v['storedSha256'],f
+assert load(packet/'privacy-audit.json')['matches']==0
+result={'status':'passed','all803WorkingRuntimeAnd875TestBlobsExact':True,'all881Obligations337Unresolved97StatusesExact':True,'allSixteenDataJourneysAnd1920PeerKeys':True,'all1586Corrected429sAnd29ClientRetriesAttributed':True,'all29RetryBodiesExact':True,'noObservedProcessOrActiveSlotRefusal':True,'independentControlActual3ReadsQualified':True,'sourceObserverASTs':8,'fakeClockDecisionParityOperations':20000,'originalBudgetCasesAcrossArms':22,'fullMatchedBuildsPassed':True,'priorPatchAndPacketIdentitiesExact':True,'workingRates':'16/64','temporaryMeasuredRates':'32/128','realIndexUnchangedAndNoStaging':True,'generalQualificationPaused':True,'scope':'Mechanism tracing; no runtime adoption or production/device/general capacity claim.'};(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');(packet/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+str(p.relative_to(packet))+'\n'for p in sorted(packet.rglob('*'))if p.is_file()and p.name!='SHA256SUMS'));print(json.dumps(result,indent=2))

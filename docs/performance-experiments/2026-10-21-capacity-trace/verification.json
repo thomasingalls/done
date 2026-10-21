@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "all803WorkingRuntimeAnd875TestBlobsExact": true,
+  "all881Obligations337Unresolved97StatusesExact": true,
+  "allSixteenDataJourneysAnd1920PeerKeys": true,
+  "all1586Corrected429sAnd29ClientRetriesAttributed": true,
+  "all29RetryBodiesExact": true,
+  "noObservedProcessOrActiveSlotRefusal": true,
+  "independentControlActual3ReadsQualified": true,
+  "sourceObserverASTs": 8,
+  "fakeClockDecisionParityOperations": 20000,
+  "originalBudgetCasesAcrossArms": 22,
+  "fullMatchedBuildsPassed": true,
+  "priorPatchAndPacketIdentitiesExact": true,
+  "workingRates": "16/64",
+  "temporaryMeasuredRates": "32/128",
+  "realIndexUnchangedAndNoStaging": true,
+  "generalQualificationPaused": true,
+  "scope": "Mechanism tracing; no runtime adoption or production/device/general capacity claim."
+}

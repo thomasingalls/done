@@ -1,0 +1,120 @@
+/** Scoped operation policy. These are admission limits, not measured server capacity.
+ * A session has room for interactive submit + peer reads; a process ceiling, concurrency,
+ * existing byte bounds and deadlines still cap work. Renewed access/grants share the same key. */
+import { labNote as __lab_note, labScope as __lab_scope } from './labCapacityTrace.ts';
+export const REQUEST_LIMITS = Object.freeze({
+  sessionBurst: 120,
+  sessionPerSecond: 32,
+  processBurst: 480,
+  processPerSecond: 128,
+  active: 16,
+  sessionActive: 4,
+  sessions: 1024,
+});
+type Bucket = { tokens: number; last: number; active: number };
+export type RequestReservation = (() => void) & {
+  /** Includes the already charged admission unit. Additional work is reserved atomically. */
+  reserveWork(total: number): boolean;
+  /** Refund only work that never started; every admitted HTTP request costs at least one unit. */
+  settleWork(started: number): void;
+};
+export class ScopedRequestBudget {
+  #now: () => number;
+  #sessions = new Map<string, Bucket>();
+  #process: Bucket;
+  #invalid: Bucket;
+  constructor(now = () => performance.now()) {
+    this.#now = now;
+    this.#process = { tokens: REQUEST_LIMITS.processBurst, last: now(), active: 0 };
+    this.#invalid = { tokens: 120, last: now(), active: 0 };
+  }
+  #refill(b: Bucket, burst: number, rate: number, now: number) {
+    b.tokens = Math.min(burst, b.tokens + (Math.max(0, now - b.last) * rate) / 1000);
+    b.last = Math.max(b.last, now);
+  }
+  /** Invalid bearer attempts have a separate bounded allowance, not one bucket per input. */
+  invalid(): boolean {
+    this.#refill(this.#invalid, 120, 2, this.#now());
+    if (this.#invalid.tokens < 1) return false;
+    this.#invalid.tokens--;
+    return true;
+  }
+  /** Only pass a service-held session key. A rejected session never debits the shared ceiling. */
+  acquire(key: string): RequestReservation | undefined {
+    const now = this.#now(),
+      l = REQUEST_LIMITS;
+    __lab_scope(key);
+    let b = this.#sessions.get(key);
+    if (!b) {
+      // Forget only fully replenished, inactive buckets: churn cannot reset spent tokens.
+      for (const [id, item] of this.#sessions) {
+        this.#refill(item, l.sessionBurst, l.sessionPerSecond, now);
+        if (!item.active && item.tokens === l.sessionBurst) this.#sessions.delete(id);
+      }
+      if (this.#sessions.size >= l.sessions) { __lab_note('acquire-refused',{reason:1}); return; }
+      b = { tokens: l.sessionBurst, last: now, active: 0 };
+      this.#sessions.set(key, b);
+    }
+    this.#refill(b, l.sessionBurst, l.sessionPerSecond, now);
+    if (b.tokens < 1 || b.active >= l.sessionActive) { __lab_note('acquire-refused',{reason:2,sessionRate:Number(b.tokens<1),sessionActive:Number(b.active>=l.sessionActive),sessionTokens:b.tokens,sessionInFlight:b.active,now}); return; }
+    this.#refill(this.#process, l.processBurst, l.processPerSecond, now);
+    if (this.#process.tokens < 1 || this.#process.active >= l.active) { __lab_note('acquire-refused',{reason:3,processRate:Number(this.#process.tokens<1),processActive:Number(this.#process.active>=l.active),processTokens:this.#process.tokens,processInFlight:this.#process.active,now}); return; }
+    b.tokens--;
+    b.active++;
+    this.#process.tokens--;
+    this.#process.active++;
+    __lab_note('acquired',{sessionTokens:b.tokens,processTokens:this.#process.tokens,sessionInFlight:b.active,processInFlight:this.#process.active,now});
+    const session = b;
+    let released = false,
+      reserved = 1,
+      toppedUp = false,
+      settled = false;
+    const release = () => {
+      if (released) return;
+      released = true;
+      session.active--;
+      this.#process.active--;
+      __lab_note('released',{sessionInFlight:session.active,processInFlight:this.#process.active});
+    };
+    const refill = () => {
+      const at = this.#now();
+      this.#refill(session, l.sessionBurst, l.sessionPerSecond, at);
+      this.#refill(this.#process, l.processBurst, l.processPerSecond, at);
+    };
+    return Object.freeze(
+      Object.assign(release, {
+        reserveWork: (total: number) => {
+          if (
+            released ||
+            settled ||
+            toppedUp ||
+            !Number.isSafeInteger(total) ||
+            total < 1 ||
+            total > l.sessionBurst
+          )
+            { __lab_note('work-refused',{reason:4}); return false; }
+          refill();
+          const extra = total - reserved;
+          if (session.tokens < extra || this.#process.tokens < extra) { __lab_note('work-refused',{reason:5,sessionRate:Number(session.tokens<extra),processRate:Number(this.#process.tokens<extra),sessionTokens:session.tokens,processTokens:this.#process.tokens,total,extra}); return false; }
+          session.tokens -= extra;
+          this.#process.tokens -= extra;
+          reserved = total;
+          toppedUp = true;
+          __lab_note('work-reserved',{reserved,sessionTokens:session.tokens,processTokens:this.#process.tokens});
+          return true;
+        },
+        settleWork: (started: number) => {
+          if (released || settled) return;
+          if (!Number.isSafeInteger(started) || started < 0 || started > reserved)
+            throw Error('Invalid started request work');
+          settled = true;
+          refill();
+          const unused = reserved - Math.max(1, started);
+          session.tokens = Math.min(l.sessionBurst, session.tokens + unused);
+          this.#process.tokens = Math.min(l.processBurst, this.#process.tokens + unused);
+          __lab_note('settled',{reserved,started,unused,sessionTokens:session.tokens,processTokens:this.#process.tokens});
+        },
+      }),
+    );
+  }
+}

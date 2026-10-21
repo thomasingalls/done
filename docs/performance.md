@@ -2105,3 +2105,21 @@ Reference catchup drift7.33%; instrumented32.1–38.7 s catchups cannot be compa
 All8full data journeys pass;960keys/60foreground markers reach peers. Fixed pressure R,C;C,R;R,C pairs all pass local C<=max(16,R+3), all fail catchup and peer<=1.10R. Foreground pair passes. Reference drift9.05%within15%; no favorable reruns. Equal temporary32/128service,121cards/13kGoals/600positions, two browser roots, explicit focus and identical low-overhead sensors. No physical/mobile/Firefox/WAN or maximum capacity claim.
 
 Runtime candidate held and exact original helper restored. More capacity refusals and existing1s/2s explicit-refusal waits suggest a next pacing/admission study; no causal throttle-cost attribution or safe numeric change established. Six new regressions preserve every byte/tail/chunk/checkpoint and owner boundary; both helpers pass14cases, four omissions fail.112affected final units,93planning cases and relevant build/type/census/inventory checks pass. Overall case census2481→2487only;881/337/97planning state and16/64defaults retained. Sequential patch11contains tests/evidence, no runtime adoption, preview/publication or general qualification.
+
+
+## Capacity refusals and exact client retry waits — 2026-10-21
+
+[Phase12prospective design and raw homes](./performance-experiments/2026-10-21-capacity-trace/README.md). Same R/Ctyping candidate and temporary32/128policy, two browser roots, original121cards/13kGoals/600positions and full data guards. Corrected eight-case trace follows retained eight observer-incomplete runs; no favorable arm selection.
+
+| Run | Catchup ms | Local offer→DOM p95 ms | Client429s | B actual wait union ms | Duplicate charged work |
+|---|---:|---:|---:|---:|---:|
+|v2-1-R-feedback|26554|10.3|1|1009|310|
+|v2-2-C-feedback|37644|9.1|13|13033|655|
+|v2-3-C-feedback|35627|7.1|11|11049|588|
+|v2-4-R-feedback|26015|13.2|1|1001|304|
+|v2-5-R-ordinary|24055|20.3|0|0|0|
+|v2-6-C-ordinary|21510|6.9|0|0|0|
+|v2-7-R-independent|25513|13.9|1|1003|216|
+|v2-8-C-independent|24517|8.6|2|2002|206|
+
+All1586corrected refusals are session-rate predicates,29client refusals are work top-up failures,1610scoped dispatches joined and29same-byte retries exercise1s waits (no observed2s waits). Every full data guard/1920peer keys passes across16runs. Feedback traffic is endogenous to client demand. Independent pressure has72offers/0skips but actual3-read template rather than intended4; no exact4-read-control claim. Cshadow work655/588vsR310/304supports scoped concurrent duplicate-work admission as the next candidate, without proof/authority reuse or rate changes. Keep ordinary/fixed3diagnostic and observer/host/platform limitations.22budget cases,20000decision-parity operations,8business-ASTproofs and relevant builds/planning pass. Runtime803files/tests875blobs/default16/64and881/337/97state unchanged; evidence-only patch12, no adoption/publication/general qualification.

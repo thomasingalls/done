@@ -1,0 +1,12 @@
+{
+  "phaseComplete": "Exact corrected native/client/proxy attribution; all original diagnostic limitations retained.",
+  "workingRuntimeChanged": false,
+  "candidateAccepted": false,
+  "numericRateChange": false,
+  "nextBoundedRepair": "Bound concurrent identical read work at the scoped handler before extra batch-work reservation, retaining one admission unit per request. Match same service-held budget scope, route and exact handler-owned body bytes; no response/proof reuse. Release with the original handler lifetime, preserve all authorization/native checks for admitted work, pair with held exact-word comparison candidate. Test feedback pressure, ordinary catchup and an explicitly count-filtered4-read independent-load control.",
+  "why": "Corrected C feedback spends655/588work units on shadow requests versus R310/304. All570/515Cstarted shadow reads arrive during the parent request;537/485reserve their work before that parent releases. All actual-client429s are session-rate top-up failures, with13.033/11.049seconds actual receiver wait union in C versus1.009/1.001s in R. Ordinary C21.510s vsR24.055s and fixed3-read-load C24.517s vsR25.513s do not reproduce the large regression.",
+  "limits": "Closed feedback workload changes competing offers with client demand; no general causal throttle-cost, production/device/maximum-capacity or policy-promotion claim. Independent-pressure actual template is3reads, not the intended4; exact4control remains required next phase.",
+  "configuredDefaults": "16/64",
+  "temporaryMeasuredPolicy": "32/128",
+  "generalQualificationPaused": true
+}

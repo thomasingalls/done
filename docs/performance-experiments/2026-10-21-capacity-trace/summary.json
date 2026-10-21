@@ -1,0 +1,535 @@
+{
+  "runs": [
+    {
+      "name": "v2-1-R-feedback",
+      "arm": "R",
+      "pressure": "feedback",
+      "catchupMs": 26554,
+      "localDOM": {
+        "n": 120,
+        "p50": 2.89990234375,
+        "p95": 10.300048828125,
+        "max": 24.10009765625,
+        "min": 1.800048828125
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 17657,
+        "p95": 25569.10009765625,
+        "max": 26465.10009765625,
+        "min": 8977.699951171875
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 200,
+          "statuses": {
+            "200": 199,
+            "429": 1
+          },
+          "chargedWork": 649,
+          "startedBinaryReadsOrSubmissions": 630,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 1
+        },
+        "shadow": {
+          "offered": 480,
+          "statuses": {
+            "200": 70,
+            "429": 410
+          },
+          "chargedWork": 310,
+          "startedBinaryReadsOrSubmissions": 214,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 96
+        }
+      },
+      "refusalPredicates": {
+        "sessionRate": 411
+      },
+      "refusalStages": {
+        "work-refused": 97,
+        "acquire-refused": 314
+      },
+      "waitDurations": {
+        "n": 1,
+        "p50": 1009,
+        "p95": 1009,
+        "max": 1009,
+        "min": 1009
+      },
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 1009
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-2-C-feedback",
+      "arm": "C",
+      "pressure": "feedback",
+      "catchupMs": 37644,
+      "localDOM": {
+        "n": 120,
+        "p50": 3.300048828125,
+        "p95": 9.10009765625,
+        "max": 21.60009765625,
+        "min": 1.800048828125
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 28795.5,
+        "p95": 36741.199951171875,
+        "max": 37640.199951171875,
+        "min": 20091.199951171875
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 220,
+          "statuses": {
+            "200": 207,
+            "429": 13
+          },
+          "chargedWork": 669,
+          "startedBinaryReadsOrSubmissions": 634,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 13
+        },
+        "shadow": {
+          "offered": 528,
+          "statuses": {
+            "200": 168,
+            "429": 360
+          },
+          "chargedWork": 655,
+          "startedBinaryReadsOrSubmissions": 570,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 85
+        }
+      },
+      "refusalPredicates": {
+        "sessionRate": 373
+      },
+      "refusalStages": {
+        "acquire-refused": 275,
+        "work-refused": 98
+      },
+      "waitDurations": {
+        "n": 13,
+        "p50": 1001,
+        "p95": 1009,
+        "max": 1009,
+        "min": 1001
+      },
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 13033
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-3-C-feedback",
+      "arm": "C",
+      "pressure": "feedback",
+      "catchupMs": 35627,
+      "localDOM": {
+        "n": 120,
+        "p50": 3.099853515625,
+        "p95": 7.099853515625,
+        "max": 20.099853515625,
+        "min": 2
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 26659.10009765625,
+        "p95": 34615.699951171875,
+        "max": 35513.699951171875,
+        "min": 17974.199951171875
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 217,
+          "statuses": {
+            "200": 206,
+            "429": 11
+          },
+          "chargedWork": 666,
+          "startedBinaryReadsOrSubmissions": 633,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 11
+        },
+        "shadow": {
+          "offered": 519,
+          "statuses": {
+            "200": 152,
+            "429": 367
+          },
+          "chargedWork": 588,
+          "startedBinaryReadsOrSubmissions": 515,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 73
+        }
+      },
+      "refusalPredicates": {
+        "sessionRate": 378
+      },
+      "refusalStages": {
+        "acquire-refused": 294,
+        "work-refused": 84
+      },
+      "waitDurations": {
+        "n": 11,
+        "p50": 1004,
+        "p95": 1009,
+        "max": 1009,
+        "min": 1000
+      },
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 11049
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-4-R-feedback",
+      "arm": "R",
+      "pressure": "feedback",
+      "catchupMs": 26015,
+      "localDOM": {
+        "n": 120,
+        "p50": 3,
+        "p95": 13.199951171875,
+        "max": 31.199951171875,
+        "min": 1.89990234375
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 17217.800048828125,
+        "p95": 25146.699951171875,
+        "max": 26045.699951171875,
+        "min": 8522.800048828125
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 202,
+          "statuses": {
+            "200": 201,
+            "429": 1
+          },
+          "chargedWork": 651,
+          "startedBinaryReadsOrSubmissions": 632,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 1
+        },
+        "shadow": {
+          "offered": 486,
+          "statuses": {
+            "200": 70,
+            "429": 416
+          },
+          "chargedWork": 304,
+          "startedBinaryReadsOrSubmissions": 196,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 108
+        }
+      },
+      "refusalPredicates": {
+        "sessionRate": 417
+      },
+      "refusalStages": {
+        "work-refused": 109,
+        "acquire-refused": 308
+      },
+      "waitDurations": {
+        "n": 1,
+        "p50": 1001,
+        "p95": 1001,
+        "max": 1001,
+        "min": 1001
+      },
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 1001
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-5-R-ordinary",
+      "arm": "R",
+      "pressure": "none",
+      "catchupMs": 24055,
+      "localDOM": {
+        "n": 120,
+        "p50": 3,
+        "p95": 20.300048828125,
+        "max": 24.099853515625,
+        "min": 2
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 15222,
+        "p95": 23125.39990234375,
+        "max": 24023.39990234375,
+        "min": 6513.89990234375
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 201,
+          "statuses": {
+            "200": 201
+          },
+          "chargedWork": 650,
+          "startedBinaryReadsOrSubmissions": 632,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 0
+        }
+      },
+      "refusalPredicates": {},
+      "refusalStages": {},
+      "waitDurations": null,
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 0
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-6-C-ordinary",
+      "arm": "C",
+      "pressure": "none",
+      "catchupMs": 21510,
+      "localDOM": {
+        "n": 120,
+        "p50": 3.10009765625,
+        "p95": 6.900146484375,
+        "max": 23.5,
+        "min": 2.10009765625
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 12534.400146484375,
+        "p95": 20398.60009765625,
+        "max": 21297.60009765625,
+        "min": 3803.199951171875
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 198,
+          "statuses": {
+            "200": 198
+          },
+          "chargedWork": 647,
+          "startedBinaryReadsOrSubmissions": 630,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 0
+        }
+      },
+      "refusalPredicates": {},
+      "refusalStages": {},
+      "waitDurations": null,
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 0
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-7-R-independent",
+      "arm": "R",
+      "pressure": "independent",
+      "catchupMs": 25513,
+      "localDOM": {
+        "n": 120,
+        "p50": 2.900146484375,
+        "p95": 13.900146484375,
+        "max": 26.10009765625,
+        "min": 1.800048828125
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 16752.199951171875,
+        "p95": 24691.60009765625,
+        "max": 25590.60009765625,
+        "min": 8034.60009765625
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 202,
+          "statuses": {
+            "200": 201,
+            "429": 1
+          },
+          "chargedWork": 651,
+          "startedBinaryReadsOrSubmissions": 632,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 1
+        },
+        "independent": {
+          "offered": 72,
+          "statuses": {
+            "200": 72
+          },
+          "chargedWork": 216,
+          "startedBinaryReadsOrSubmissions": 216,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 0
+        }
+      },
+      "refusalPredicates": {
+        "sessionRate": 1
+      },
+      "refusalStages": {
+        "work-refused": 1
+      },
+      "waitDurations": {
+        "n": 1,
+        "p50": 1003,
+        "p95": 1003,
+        "max": 1003,
+        "min": 1003
+      },
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 1003
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 72,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "v2-8-C-independent",
+      "arm": "C",
+      "pressure": "independent",
+      "catchupMs": 24517,
+      "localDOM": {
+        "n": 120,
+        "p50": 3,
+        "p95": 8.599853515625,
+        "max": 18.7998046875,
+        "min": 1.7998046875
+      },
+      "peerDOM": {
+        "n": 120,
+        "p50": 15495.199951171875,
+        "p95": 23446.800048828125,
+        "max": 24343.800048828125,
+        "min": 6767.800048828125
+      },
+      "roleSummary": {
+        "client": {
+          "offered": 202,
+          "statuses": {
+            "200": 200,
+            "429": 2
+          },
+          "chargedWork": 651,
+          "startedBinaryReadsOrSubmissions": 631,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 2
+        },
+        "independent": {
+          "offered": 72,
+          "statuses": {
+            "200": 68,
+            "429": 4
+          },
+          "chargedWork": 206,
+          "startedBinaryReadsOrSubmissions": 204,
+          "refundedWork": 0,
+          "failedTopupAdmissions": 2
+        }
+      },
+      "refusalPredicates": {
+        "sessionRate": 6
+      },
+      "refusalStages": {
+        "work-refused": 4,
+        "acquire-refused": 2
+      },
+      "waitDurations": {
+        "n": 2,
+        "p50": 1000,
+        "p95": 1002,
+        "max": 1002,
+        "min": 1000
+      },
+      "waitUnionMsByDevice": {
+        "A": 0,
+        "B": 2002
+      },
+      "incompleteWaits": 0,
+      "pressureOffers": {
+        "offered": 72,
+        "skipped": 0
+      }
+    }
+  ],
+  "all1586RefusalsAreSessionRate": true,
+  "all29ClientRefusalsAreWorkTopup": true,
+  "sameByteRetryBodiesAll29": true,
+  "allActualWaitsNominal1000Ms": true,
+  "duplicateOverlap": [
+    {
+      "name": "v2-1-R-feedback",
+      "startedReadsArrivingDuringParent": 214,
+      "allStartedShadowReads": 214,
+      "startedReadsReservedDuringParent": 193
+    },
+    {
+      "name": "v2-2-C-feedback",
+      "startedReadsArrivingDuringParent": 570,
+      "allStartedShadowReads": 570,
+      "startedReadsReservedDuringParent": 537
+    },
+    {
+      "name": "v2-3-C-feedback",
+      "startedReadsArrivingDuringParent": 515,
+      "allStartedShadowReads": 515,
+      "startedReadsReservedDuringParent": 485
+    },
+    {
+      "name": "v2-4-R-feedback",
+      "startedReadsArrivingDuringParent": 196,
+      "allStartedShadowReads": 196,
+      "startedReadsReservedDuringParent": 169
+    },
+    {
+      "name": "v2-5-R-ordinary"
+    },
+    {
+      "name": "v2-6-C-ordinary"
+    },
+    {
+      "name": "v2-7-R-independent"
+    },
+    {
+      "name": "v2-8-C-independent"
+    }
+  ],
+  "independentPressureLimitation": "The capture predicate selected first aggregate, not specifically4reads. All72offers used a3-read template in each arm (216planned read units rather than intended288). Preserve this as fixed3-read diagnostic, not an exact4-read control; require explicit count filtering in the next repair phase."
+}

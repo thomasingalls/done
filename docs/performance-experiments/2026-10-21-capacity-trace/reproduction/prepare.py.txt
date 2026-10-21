@@ -1,0 +1,57 @@
+from pathlib import Path
+import json,hashlib,shutil
+r=Path(__file__).parent;previous=Path('/private/tmp/done-word-comparison-20261021');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda b:hashlib.sha256(b).hexdigest();edits={}
+native='''import { AsyncLocalStorage } from 'node:async_hooks';
+import { appendFileSync } from 'node:fs';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+const owner = new AsyncLocalStorage<{id:number;scope:number}>(), scopes=new Map<string,number>();
+let pending:unknown[]=[], total=0, dropped=0;
+const routes=['/account/delivery/read-v2','/account/delivery/read-v2-batch','/account/delivery/submit','/account/grant/v1/begin','/account/grant/v1/finish'];
+export function labNote(event:string,data:Record<string,number>={}){if(total++>=250000){dropped++;return;}pending.push({at:Date.now(),mono:performance.now(),id:owner.getStore()?.id??0,scope:owner.getStore()?.scope??0,event,...data});}
+export function labScope(key:string){let ordinal=scopes.get(key);if(!ordinal&&scopes.size<1024){ordinal=scopes.size+1;scopes.set(key,ordinal);}const state=owner.getStore();if(state)state.scope=ordinal??0;labNote('scope');}
+export async function labRun(request:IncomingMessage,response:ServerResponse,task:()=>Promise<void>){const header=request.headers['x-done-lab-request-id'];const id=typeof header==='string'&&/^[1-9][0-9]{0,8}$/.test(header)?Number(header):0;return owner.run({id,scope:0},async()=>{labNote('request',{route:routes.indexOf(request.url??'')+1});response.once('finish',()=>labNote('response',{status:response.statusCode}));try{return await task();}finally{labNote('handler-end');}});}
+function flush(){if(!pending.length)return;const rows=pending;pending=[];const path=process.env.SYNC_OUT;if(path)appendFileSync(path+'/native-capacity.jsonl',rows.map(x=>JSON.stringify(x)).join('\\n')+'\\n'+JSON.stringify({event:'flush',at:Date.now(),dropped})+'\\n');}
+setInterval(flush,500).unref();process.on('exit',flush);
+'''
+client='''type Probe={call:(path:string)=>number;note:(id:number,event:string,attempt:number,value?:number)=>void};
+const probe=()=> (globalThis as typeof globalThis & {__capacity?:Probe}).__capacity;
+export const labCall=(path:string)=>probe()?.call(path)??0;
+export const labNote=(id:number,event:string,attempt:number,value=0)=>probe()?.note(id,event,attempt,value);
+'''
+def change(path,old,new):
+ s=path.read_text();assert s.count(old)==1,(str(path),old);path.write_text(s.replace(old,new));edits.setdefault(str(path.relative_to(r)),[]).append({'before':old,'after':new})
+ident={}
+for arm in ['R','C']:
+ dest=r/('source-'+arm);shutil.copytree(previous/('source-'+arm),dest,symlinks=True);shutil.rmtree(dest/'test/live-sync-attribution');shutil.rmtree(dest/'dist');shutil.copytree(repo/'test',dest/'test',dirs_exist_ok=True)
+ originals={}
+ for name in ['account-service/requestBudget.ts','account-service/scoped-http.ts','src/account/scopedTransport.ts']:
+  originals[name]=(dest/name).read_bytes();(r/(arm+'-'+Path(name).name+'.original.txt')).write_bytes(originals[name])
+ (dest/'account-service/labCapacityTrace.ts').write_text(native);(dest/'src/account/labCapacityProbe.ts').write_text(client)
+ p=dest/'account-service/requestBudget.ts';change(p,'export const REQUEST_LIMITS',"import { labNote as __lab_note, labScope as __lab_scope } from './labCapacityTrace.ts';\nexport const REQUEST_LIMITS")
+ change(p,'    let b = this.#sessions.get(key);','    __lab_scope(key);\n    let b = this.#sessions.get(key);')
+ change(p,'      if (this.#sessions.size >= l.sessions) return;',"      if (this.#sessions.size >= l.sessions) { __lab_note('acquire-refused',{reason:1}); return; }")
+ change(p,'    if (b.tokens < 1 || b.active >= l.sessionActive) return;',"    if (b.tokens < 1 || b.active >= l.sessionActive) { __lab_note('acquire-refused',{reason:2,sessionRate:Number(b.tokens<1),sessionActive:Number(b.active>=l.sessionActive),sessionTokens:b.tokens,sessionInFlight:b.active,now}); return; }")
+ change(p,'    if (this.#process.tokens < 1 || this.#process.active >= l.active) return;',"    if (this.#process.tokens < 1 || this.#process.active >= l.active) { __lab_note('acquire-refused',{reason:3,processRate:Number(this.#process.tokens<1),processActive:Number(this.#process.active>=l.active),processTokens:this.#process.tokens,processInFlight:this.#process.active,now}); return; }")
+ change(p,'    const session = b;',"    __lab_note('acquired',{sessionTokens:b.tokens,processTokens:this.#process.tokens,sessionInFlight:b.active,processInFlight:this.#process.active,now});\n    const session = b;")
+ change(p,'      this.#process.active--;',"      this.#process.active--;\n      __lab_note('released',{sessionInFlight:session.active,processInFlight:this.#process.active});")
+ change(p,'            return false;\n          refill();',"            { __lab_note('work-refused',{reason:4}); return false; }\n          refill();")
+ change(p,'          if (session.tokens < extra || this.#process.tokens < extra) return false;',"          if (session.tokens < extra || this.#process.tokens < extra) { __lab_note('work-refused',{reason:5,sessionRate:Number(session.tokens<extra),processRate:Number(this.#process.tokens<extra),sessionTokens:session.tokens,processTokens:this.#process.tokens,total,extra}); return false; }")
+ change(p,'          toppedUp = true;',"          toppedUp = true;\n          __lab_note('work-reserved',{reserved,sessionTokens:session.tokens,processTokens:this.#process.tokens});")
+ change(p,'          this.#process.tokens = Math.min(l.processBurst, this.#process.tokens + unused);',"          this.#process.tokens = Math.min(l.processBurst, this.#process.tokens + unused);\n          __lab_note('settled',{reserved,started,unused,sessionTokens:session.tokens,processTokens:this.#process.tokens});")
+ p=dest/'account-service/scoped-http.ts';change(p,"import { HISTORY_EXCHANGE_LIMIT }", "import { labRun as __lab_run } from './labCapacityTrace.ts';\nimport { HISTORY_EXCHANGE_LIMIT }")
+ change(p,'  return async (request: IncomingMessage, response: ServerResponse): Promise<void> => {','  return async (request: IncomingMessage, response: ServerResponse): Promise<void> => __lab_run(request,response,async()=>{')
+ s=p.read_text();assert s.endswith('  };\n}\n');p.write_text(s[:-len('  };\n}\n')]+'  });\n}\n');edits.setdefault(str(p.relative_to(r)),[]).append({'before':'  };\n}\n','after':'  });\n}\n'})
+ p=dest/'src/account/scopedTransport.ts';s=p.read_text();p.write_text("import { labCall as __lab_callFor, labNote as __lab_note } from './labCapacityProbe';\n"+s);edits.setdefault(str(p.relative_to(r)),[]).append({'before':s,'after':p.read_text()})
+ change(p,'    for (let attempt = 0; ; attempt++) {',"    const __lab_call = __lab_callFor(path);\n    for (let attempt = 0; ; attempt++) {")
+ change(p,'      const response = await this.#fetch(new URL(path, this.#pin.origin), {',"      __lab_note(__lab_call,'dispatch',attempt);\n      const response = await this.#fetch(new URL(path, this.#pin.origin), {")
+ change(p,"          'Content-Type': type,", "          'Content-Type': type,\n          'X-Done-Lab-Call': String(__lab_call),\n          'X-Done-Lab-Attempt': String(attempt),")
+ change(p,'      if (signal.aborted) {',"      __lab_note(__lab_call,'response',attempt,response.status);\n      if (signal.aborted) {")
+ change(p,'      await new Promise<void>((resolve, reject) => {',"      __lab_note(__lab_call,'wait-start',attempt,1000*(attempt+1));\n      await new Promise<void>((resolve, reject) => {")
+ change(p,'        if (signal.aborted) abort();\n      });',"        if (signal.aborted) abort();\n      });\n      __lab_note(__lab_call,'wait-end',attempt);")
+ paths=json.loads((previous/'source-identity.json').read_text())[arm]['sha256'];ident[arm]={'originalHashes':{f:sha((previous/('source-'+arm)/f).read_bytes())for f in paths},'instrumentedHashes':{f:sha((dest/f).read_bytes())for f in paths},'observerFiles':{f:sha((dest/f).read_bytes())for f in ['account-service/labCapacityTrace.ts','src/account/labCapacityProbe.ts']},'testHashes':{str(f.relative_to(dest)):sha(f.read_bytes())for f in(dest/'test').rglob('*')if f.is_file()}}
+ for name,b in originals.items():
+  restored=(dest/name).read_text()
+  for edit in reversed(edits[str((dest/name).relative_to(r))]):
+   assert restored.count(edit['after'])==1;restored=restored.replace(edit['after'],edit['before'])
+  assert restored.encode()==b
+(r/'source-identity.json').write_text(json.dumps(ident,indent=2)+'\n');(r/'observer-edits.json').write_text(json.dumps(edits,indent=2)+'\n');print('R/C clones prepared; reverse observer edits byte-exact')

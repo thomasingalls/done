@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "arm": "R",
+      "path": "account-service/requestBudget.ts",
+      "originalSha256": "ee97bf0522ff538fbb5ac03b9b8e231c2d341af2d36ea38ed8b341c06a68de3c",
+      "instrumentedSha256": "ff71fa23e1814c4f2da15edfcb5ce4774d48210fbf587a354b33a9fe7844bb2a",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "R",
+      "path": "account-service/scoped-http.ts",
+      "originalSha256": "3c4593d0f45ddbbd492a4a3ac2e27b8f89be382ff50e56f12df6767696edefcc",
+      "instrumentedSha256": "39bf9ea9b88e2dca49b1220e28da72b1b0abcb509091a5d185e8811a21679707",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "R",
+      "path": "src/account/scopedTransport.ts",
+      "originalSha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7",
+      "instrumentedSha256": "d0b0a24989a76d14e16a52feedbd3ae4fbe2f8e99e42f287c0c5b9f42379d2a1",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "R",
+      "path": "scripts/lib/account-gateway.mjs",
+      "originalSha256": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f",
+      "instrumentedSha256": "d949e310d3adcca23f9e224bdb1f5f2cfed4f39dbcd7195f54003c83e1eb56e6",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "C",
+      "path": "account-service/requestBudget.ts",
+      "originalSha256": "ee97bf0522ff538fbb5ac03b9b8e231c2d341af2d36ea38ed8b341c06a68de3c",
+      "instrumentedSha256": "ff71fa23e1814c4f2da15edfcb5ce4774d48210fbf587a354b33a9fe7844bb2a",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "C",
+      "path": "account-service/scoped-http.ts",
+      "originalSha256": "3c4593d0f45ddbbd492a4a3ac2e27b8f89be382ff50e56f12df6767696edefcc",
+      "instrumentedSha256": "39bf9ea9b88e2dca49b1220e28da72b1b0abcb509091a5d185e8811a21679707",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "C",
+      "path": "src/account/scopedTransport.ts",
+      "originalSha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7",
+      "instrumentedSha256": "d0b0a24989a76d14e16a52feedbd3ae4fbe2f8e99e42f287c0c5b9f42379d2a1",
+      "originalBusinessASTExact": true
+    },
+    {
+      "arm": "C",
+      "path": "scripts/lib/account-gateway.mjs",
+      "originalSha256": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f",
+      "instrumentedSha256": "d949e310d3adcca23f9e224bdb1f5f2cfed4f39dbcd7195f54003c83e1eb56e6",
+      "originalBusinessASTExact": true
+    }
+  ],
+  "scope": "Independent AST normalization removes only declared observer nodes/headers/wrapper and normalizes single-statement refusal blocks; all original business AST nodes match."
+}

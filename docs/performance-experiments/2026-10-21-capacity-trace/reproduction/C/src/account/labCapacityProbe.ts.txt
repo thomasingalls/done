@@ -1,0 +1,4 @@
+type Probe={call:(path:string)=>number;note:(id:number,event:string,attempt:number,value?:number)=>void};
+const probe=()=> (globalThis as typeof globalThis & {__capacity?:Probe}).__capacity;
+export const labCall=(path:string)=>probe()?.call(path)??0;
+export const labNote=(id:number,event:string,attempt:number,value=0)=>probe()?.note(id,event,attempt,value);

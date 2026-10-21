@@ -1,0 +1,67 @@
+from pathlib import Path
+import json,collections,math,statistics
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text())
+def distribution(v):
+ v=sorted(v);return {'n':len(v),'p50':v[math.ceil(.5*len(v))-1],'p95':v[math.ceil(.95*len(v))-1],'max':v[-1],'min':v[0]}if v else None
+def union(intervals):
+ result=0;end=-math.inf
+ for a,b in sorted(intervals):
+  if b>max(a,end):result+=b-max(a,end)
+  end=max(end,b)
+ return result
+
+def native(folder,data):
+ rows=[json.loads(s)for s in(folder/'native-capacity.jsonl').read_text().splitlines()];assert max((x.get('dropped',0)for x in rows),default=0)==0;by=collections.defaultdict(list)
+ for row in rows:
+  if row.get('id',0)>0:by[row['id']].append(row)
+ proxies=[p for p in data['proxy']if data['startedAt']<=p['at']<=data['completedAt']];refusals=[];charges=[]
+ for p in proxies:
+  ns=by[p['id']+1];fails=[n for n in ns if n['event']in['acquire-refused','work-refused']]
+  if p.get('status')==429:
+   assert len(fails)==1,(folder.name,p['id'],fails);n=fails[0];assert any(n.get(k)for k in ['sessionRate','processRate','sessionActive','processActive'])or n['reason']in[1,4]
+   refusals.append({'request':p['id'],'at':p['at'],'headersAt':p.get('headersAt'),'role':p['role'],'device':p.get('device'),'path':p['path'],'labCall':p['labCall'],'labAttempt':p['labAttempt'],'native':n})
+  acquired=[n for n in ns if n['event']=='acquired'];settled=[n for n in ns if n['event']=='settled'];reserved=[n for n in ns if n['event']=='work-reserved'];released=[n for n in ns if n['event']=='released']
+  if acquired:
+   assert len(acquired)==len(settled)==len(released)==1,(folder.name,p['id'],[len(x)for x in[acquired,settled,released]])
+   s=settled[0];assert s['reserved']==(reserved[0]['reserved']if reserved else 1);assert s['unused']==s['reserved']-max(1,s['started']);charged=1+sum(x['reserved']-1 for x in reserved)-s['unused'];assert charged==max(1,s['started'])
+   charges.append({'request':p['id'],'at':p['at'],'role':p['role'],'device':p.get('device'),'path':p['path'],'status':p.get('status'),'charged':charged,'started':s['started'],'reserved':s['reserved'],'refunded':s['unused'],'scope':s['scope'],'native':s})
+ summary={}
+ for role in sorted(set(p['role']for p in proxies)):
+  selected=[p for p in proxies if p['role']==role];c=[x for x in charges if x['role']==role];summary[role]={'offered':len(selected),'statuses':dict(collections.Counter(str(p.get('status'))for p in selected)),'chargedWork':sum(x['charged']for x in c),'startedBinaryReadsOrSubmissions':sum(x['started']for x in c),'refundedWork':sum(x['refunded']for x in c),'failedTopupAdmissions':sum(x['status']==429 for x in c)}
+ return {'refusals':refusals,'charges':charges,'roleSummary':summary,'refusalPredicates':dict(collections.Counter(k for x in refusals for k in ['sessionRate','processRate','sessionActive','processActive']if x['native'].get(k))),'refusalStages':dict(collections.Counter(x['native']['event']for x in refusals)),'all429sJoined':True,'nativeRows':len(rows),'proxies':proxies}
+results=[]
+for case in load(r/'browser-plan.json'):
+ folder=r/case['name'];d=load(folder/'result.json');assert d['outcome']=='passed'and all(d['guards'].values())and d['all120EditorKeysReachedPeer'];n=native(folder,d);assert d['pressure']==case['pressure'];cap=d['capacityBeforeReopen'];assert len(cap)==2 and all(x['overflow']==0 for x in cap);begin,end=d['startedAt'],d['completedAt'];waits=[];calls=[];joinedDispatches=0
+ for device,index in [('A',0),('B',1)]:
+  rows=cap[index]['rows'];groups=collections.defaultdict(list)
+  for row in rows:groups[row['id']].append(row)
+  measured=[p for p in n['proxies']if p['role']=='client'and p.get('device')==device and p['labCall']>0]
+  for p in measured:
+   events=groups[p['labCall']];dispatch=[e for e in events if e['event']=='dispatch'and e['attempt']==p['labAttempt']];response=[e for e in events if e['event']=='response'and e['attempt']==p['labAttempt']];assert len(dispatch)==len(response)==1,(case['name'],p['id']);assert response[0]['value']==p['status'];joinedDispatches+=1
+  for logical,events in groups.items():
+   related=[p for p in d['proxy']if p['role']=='client'and p.get('device')==device and p['labCall']==logical];measuredRelated=[p for p in related if begin<=p['at']<=end]
+   if not measuredRelated:continue
+   attempts=sorted(related,key=lambda x:x['labAttempt']);assert len({p['bodySha256']for p in related})==1,(case['name'],device,logical)
+   calls.append({'device':device,'call':logical,'attempts':[{'request':p['id'],'attempt':p['labAttempt'],'status':p.get('status'),'at':p['at'],'headersAt':p.get('headersAt'),'bodySha256':p['bodySha256']}for p in attempts]})
+   for start in[e for e in events if e['event']=='wait-start']:
+    finish=[e for e in events if e['event']=='wait-end'and e['attempt']==start['attempt']];assert len(finish)<=1;finishAt=finish[0]['at']if finish else None;row={'device':device,'call':logical,'attempt':start['attempt'],'nominalMs':start['value'],'startAt':start['at'],'endAt':finishAt,'actualMs':finishAt-start['at']if finishAt is not None else None,'complete':finishAt is not None}
+    if finishAt is not None:assert row['actualMs']>=row['nominalMs']-5
+    if start['at']<=end and(finishAt is None or finishAt>=begin):waits.append(row)
+  for p in measured:
+   if p['status']==429:assert p['labCall']in groups
+ # Every measured delivery/grant request must be traced, including any429.
+ for p in n['proxies']:
+  if p['role']=='client'and p['path'].startswith(('/account/delivery/','/account/grant/')):assert p['labCall']>0,(case['name'],p['id'])
+ offers=d['concurrent']['offers'];base=614;local=[];peer=[];handling=[]
+ for i,o in enumerate(offers):
+  dates=[next(x['at']for x in b['rows']if x['at']>=o['at']-2 and x['lengths'][0]>=base+i+1)for b in d['browsers']];local.append(dates[0]-o['at']);peer.append(dates[1]-o['at'])
+ assert len(offers)==120;assert d['roots'][0]['pid']!=d['roots'][1]['pid'];pressureOffers=d['pressureOffers']
+ if case['pressure']=='independent':assert len(pressureOffers)==72 and all(x['scheduledAt']==pressureOffers[0]['scheduledAt']+i*250 for i,x in enumerate(pressureOffers))
+ else:assert not pressureOffers
+ intervals={who:[(max(begin,x['startAt']),min(end,x['endAt']))for x in waits if x['device']==who and x['complete']]for who in ['A','B']};row={**case,'outcome':d['outcome'],'catchupMs':d['caughtAt']-begin,'localDOM':distribution(local),'peerDOM':distribution(peer),'roleSummary':n['roleSummary'],'refusalPredicates':n['refusalPredicates'],'refusalStages':n['refusalStages'],'refusals':n['refusals'],'charges':n['charges'],'all429sJoined':n['all429sJoined'],'joinedClientDispatches':joinedDispatches,'logicalCalls':calls,'waits':waits,'waitDurations':distribution([x['actualMs']for x in waits if x['complete']]),'waitUnionMsByDevice':{who:union(intervals[who])for who in intervals},'incompleteWaits':sum(not x['complete']for x in waits),'pressureOffers':{'offered':len(pressureOffers),'skipped':sum(x['skipped']for x in pressureOffers)},'fullDataGuards':d['guards'],'all120KeysReachedPeer':True,'capturedBeforeOfflineNavigation':True};results.append(row)
+summary={'rows':results,'allEightDataGuards':True,'allMeasured429sNativelyAttributed':all(x['all429sJoined']for x in results),'workingRuntimeUnchanged':True,'noTimingPromotion':'Instrumented mechanism study; no production/device/maximum-capacity or numeric-rate adoption.'};(r/'analysis.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps([{k:v for k,v in x.items()if k in['name','catchupMs','localDOM','roleSummary','refusalPredicates','refusalStages','waitUnionMsByDevice','waitDurations','incompleteWaits','pressureOffers']}for x in results],indent=2))
+# Retain native-only results for all eight original observer-incomplete journeys.
+original=[]
+for case in load(r/'observer-v1/browser-plan.json'):
+ d=load(r/case['name']/'result.json');nn=native(r/case['name'],d);original.append({**case,'outcome':d['outcome'],'catchupMs':d['caughtAt']-d['startedAt'],'roleSummary':nn['roleSummary'],'refusalPredicates':nn['refusalPredicates'],'refusalStages':nn['refusalStages'],'clientRetryJoinComplete':False,'limitation':'Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim.'})
+(r/'original-native-summary.json').write_text(json.dumps(original,indent=2)+'\n')

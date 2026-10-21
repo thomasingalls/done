@@ -1,0 +1,11 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { appendFileSync } from 'node:fs';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+const owner = new AsyncLocalStorage<{id:number;scope:number}>(), scopes=new Map<string,number>();
+let pending:unknown[]=[], total=0, dropped=0;
+const routes=['/account/delivery/read-v2','/account/delivery/read-v2-batch','/account/delivery/submit','/account/grant/v1/begin','/account/grant/v1/finish'];
+export function labNote(event:string,data:Record<string,number>={}){if(total++>=250000){dropped++;return;}pending.push({at:Date.now(),mono:performance.now(),id:owner.getStore()?.id??0,scope:owner.getStore()?.scope??0,event,...data});}
+export function labScope(key:string){let ordinal=scopes.get(key);if(!ordinal&&scopes.size<1024){ordinal=scopes.size+1;scopes.set(key,ordinal);}const state=owner.getStore();if(state)state.scope=ordinal??0;labNote('scope');}
+export async function labRun(request:IncomingMessage,response:ServerResponse,task:()=>Promise<void>){const header=request.headers['x-done-lab-request-id'];const id=typeof header==='string'&&/^[1-9][0-9]{0,8}$/.test(header)?Number(header):0;return owner.run({id,scope:0},async()=>{labNote('request',{route:routes.indexOf(request.url??'')+1});response.once('finish',()=>labNote('response',{status:response.statusCode}));try{return await task();}finally{labNote('handler-end');}});}
+function flush(){if(!pending.length)return;const rows=pending;pending=[];const path=process.env.SYNC_OUT;if(path)appendFileSync(path+'/native-capacity.jsonl',rows.map(x=>JSON.stringify(x)).join('\n')+'\n'+JSON.stringify({event:'flush',at:Date.now(),dropped})+'\n');}
+setInterval(flush,500).unref();process.on('exit',flush);
