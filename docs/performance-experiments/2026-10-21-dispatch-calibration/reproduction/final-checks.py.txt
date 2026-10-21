@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,subprocess,time,sys
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');receipts=[]
+checks=[('analysis',['python3',str(r/'analyze.py')]),('identity',['python3',str(r/'identity.py')]),('evidence-review',['python3',str(r/'review-evidence.py')]),('census-check',['node','scripts/account-crypto-prep/run.mjs']),('inventory-check',['node','scripts/release-validation/check.mjs']),('manifest-check',['node','scripts/release-validation/plan.mjs'])]
+if len(sys.argv)>1:
+ start=next(i for i,x in enumerate(checks)if x[0]==sys.argv[1]);receipts=[x for x in json.loads((r/'final-checks.json').read_text())if x['name']in [c[0]for c in checks[:start]]and x['exitCode']==0];assert len(receipts)==start;checks=checks[start:]
+for name,cmd in checks:
+ at=time.time_ns()//1000000
+ with (r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=repo,stdout=log,stderr=subprocess.STDOUT)
+ receipts.append({'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'final-checks.json').write_text(json.dumps(receipts,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

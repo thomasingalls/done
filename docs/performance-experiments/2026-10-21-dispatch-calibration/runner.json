@@ -1,0 +1,212 @@
+[
+  {
+    "name": "control-normal",
+    "static": true,
+    "fault": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607047081,
+    "completedAt": 1792607066610,
+    "exitCode": 0
+  },
+  {
+    "name": "control-fault",
+    "static": true,
+    "fault": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607066612,
+    "completedAt": 1792607085496,
+    "exitCode": 0
+  },
+  {
+    "name": "1-OE",
+    "block": 1,
+    "condition": "OE",
+    "isolated": false,
+    "focused": false,
+    "target": "editor",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607085497,
+    "completedAt": 1792607135203,
+    "exitCode": 0
+  },
+  {
+    "name": "1-FE",
+    "block": 1,
+    "condition": "FE",
+    "isolated": false,
+    "focused": true,
+    "target": "editor",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607135206,
+    "completedAt": 1792607182415,
+    "exitCode": 0
+  },
+  {
+    "name": "1-IE",
+    "block": 1,
+    "condition": "IE",
+    "isolated": true,
+    "focused": true,
+    "target": "editor",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607182417,
+    "completedAt": 1792607233527,
+    "exitCode": 0
+  },
+  {
+    "name": "1-FP",
+    "block": 1,
+    "condition": "FP",
+    "isolated": false,
+    "focused": true,
+    "target": "plain",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607233529,
+    "completedAt": 1792607282125,
+    "exitCode": 0
+  },
+  {
+    "name": "1-IP",
+    "block": 1,
+    "condition": "IP",
+    "isolated": true,
+    "focused": true,
+    "target": "plain",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607282127,
+    "completedAt": 1792607333272,
+    "exitCode": 0
+  },
+  {
+    "name": "2-IP",
+    "block": 2,
+    "condition": "IP",
+    "isolated": true,
+    "focused": true,
+    "target": "plain",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607333274,
+    "completedAt": 1792607384074,
+    "exitCode": 0
+  },
+  {
+    "name": "2-FP",
+    "block": 2,
+    "condition": "FP",
+    "isolated": false,
+    "focused": true,
+    "target": "plain",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607384075,
+    "completedAt": 1792607437001,
+    "exitCode": 0
+  },
+  {
+    "name": "2-IE",
+    "block": 2,
+    "condition": "IE",
+    "isolated": true,
+    "focused": true,
+    "target": "editor",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607437002,
+    "completedAt": 1792607489097,
+    "exitCode": 0
+  },
+  {
+    "name": "2-FE",
+    "block": 2,
+    "condition": "FE",
+    "isolated": false,
+    "focused": true,
+    "target": "editor",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607489100,
+    "completedAt": 1792607538287,
+    "exitCode": 0
+  },
+  {
+    "name": "2-OE",
+    "block": 2,
+    "condition": "OE",
+    "isolated": false,
+    "focused": false,
+    "target": "editor",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "startedAt": 1792607538290,
+    "completedAt": 1792607590271,
+    "exitCode": 0
+  }
+]

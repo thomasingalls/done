@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "fixedDenominator": 12,
+  "fullAppJourneys": 10,
+  "editorJourneysWith120PeerVerifiedKeys": 6,
+  "plainInputAppControls": 4,
+  "staticSensorControls": 2,
+  "three80msFaultsDetectedByDOMRAFHeartbeatAndLongtask": true,
+  "rawDOMPercentilesIndependentlyReconstructed": {
+    "control-normal": {
+      "offerToDOMp95": 4.900146484375,
+      "beforeinputToDOMp95": 0.60009765625
+    },
+    "control-fault": {
+      "offerToDOMp95": 6.199951171875,
+      "beforeinputToDOMp95": 0.60009765625
+    },
+    "1-OE": {
+      "offerToDOMp95": 9.7998046875,
+      "beforeinputToDOMp95": 1.599853515625
+    },
+    "1-FE": {
+      "offerToDOMp95": 14.39990234375,
+      "beforeinputToDOMp95": 1.39990234375
+    },
+    "1-IE": {
+      "offerToDOMp95": 16.39990234375,
+      "beforeinputToDOMp95": 1.5
+    },
+    "1-FP": {
+      "offerToDOMp95": 4.2001953125,
+      "beforeinputToDOMp95": 0.5
+    },
+    "1-IP": {
+      "offerToDOMp95": 4,
+      "beforeinputToDOMp95": 0.60009765625
+    },
+    "2-IP": {
+      "offerToDOMp95": 3.800048828125,
+      "beforeinputToDOMp95": 0.5
+    },
+    "2-FP": {
+      "offerToDOMp95": 6.7998046875,
+      "beforeinputToDOMp95": 0.699951171875
+    },
+    "2-IE": {
+      "offerToDOMp95": 11.5,
+      "beforeinputToDOMp95": 1.800048828125
+    },
+    "2-FE": {
+      "offerToDOMp95": 14.599853515625,
+      "beforeinputToDOMp95": 1.5
+    },
+    "2-OE": {
+      "offerToDOMp95": 8.39990234375,
+      "beforeinputToDOMp95": 1.800048828125
+    }
+  },
+  "focusedVisibilityAndBrowserRootAssignmentsVerified": true,
+  "noBenchmarkOverlapInRecordedPlan": true,
+  "prior16msMissesUnchanged": true,
+  "generalQualificationPaused": true,
+  "scope": "Measurement integrity only; no changed acceptance criterion, policy adoption or physical keyboard-to-paint claim."
+}

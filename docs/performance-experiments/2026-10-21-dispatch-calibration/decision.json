@@ -1,0 +1,15 @@
+{
+  "boundedPhaseComplete": true,
+  "focusOrBrowserOwnershipConsistentlyReducesDelay": false,
+  "focusObservedAll120EventsInAll12Journeys": true,
+  "all80msFaultsDetected": true,
+  "interpretation": "These traces locate the larger editor delay after browser keydown timestamp assignment and before renderer capture handling, with larger renderer heartbeat gaps. Driver timer gaps are smaller. This supports a renderer/background-work hypothesis; it does not identify one causal application function.",
+  "priorPhase09ProfileEvidence": "Repeated verifiedRecords comparisons/projections and verificationOwnership cleanup are the measured application hotspots; different instrumented runs, not per-keystroke causal stack attribution.",
+  "nextBoundedTarget": "Reduce repeated owner-local record verification/comparison work using existing authenticated carrier/view-selection ownership where justified; preserve all byte-change, authority, fresh inventory, invalidation, cleanup and projection isolation checks. Establish a failing discriminator before a repair.",
+  "configuredDefault": "16/session64/process",
+  "temporaryPolicyThisPhase": "32/session128/process",
+  "prior16msMissesUnchanged": true,
+  "policyAdoptionApproved": false,
+  "generalQualificationPaused": true,
+  "noRuntimeTestOrSecurityChange": true
+}

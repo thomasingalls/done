@@ -1,0 +1,62 @@
+[
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-dispatch-calibration-20261021/analyze.py"
+    ],
+    "startedAt": 1792607611355,
+    "completedAt": 1792607612254,
+    "exitCode": 0
+  },
+  {
+    "name": "identity",
+    "command": [
+      "python3",
+      "/private/tmp/done-dispatch-calibration-20261021/identity.py"
+    ],
+    "startedAt": 1792607612254,
+    "completedAt": 1792607615068,
+    "exitCode": 0
+  },
+  {
+    "name": "evidence-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-dispatch-calibration-20261021/review-evidence.py"
+    ],
+    "startedAt": 1792607615068,
+    "completedAt": 1792607615210,
+    "exitCode": 0
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792607615211,
+    "completedAt": 1792607615840,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792607615840,
+    "completedAt": 1792607616862,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792607616863,
+    "completedAt": 1792607619056,
+    "exitCode": 0
+  }
+]

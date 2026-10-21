@@ -2061,3 +2061,27 @@ Six uninstrumented exact-client journeys plus two both-renderer profile journeys
 |pressure2-D / pressure2-B|145821 / 29694|79.64|12 / 9.2|True / True|
 
 Typing acceptance remains failed. Preserve16.8ms pressure1-B against16ms; later9.2ms does not erase it. Decomposition puts the missed arm's offer→beforeinput p95 at16.3ms and event→DOM at0.7ms. Quantiles are not additive, host/CDP offer includes dispatch/scheduling, and mutation is not paint. Both mapped renderer profiles are mechanism-only; native crypto/IDB durations are asynchronous wall time. Keep 16/64 pending dispatch/control/foreground/device discrimination.68 original budget cases across Mac/Linux and 109 planning cases pass; all 881 obligations, 337 unresolved obligations and 97 construction statuses stay exact. No runtime/test/default change, preview/publication or general qualification.
+
+
+## Typing dispatch calibration and browser ownership — 2026-10-21
+
+[Prospective phase10 and raw evidence](./performance-experiments/2026-10-21-dispatch-calibration/README.md). Exact temporary B32/128 source/client/fixtures;10 restored duplicate-pressure app journeys and two static native-input controls. Whole journeys are units;120dependent keys are not independent replications. All data guards pass with native-control coverage explicitly limited; six editor journeys deliver all 120 new keys to the peer. Actual root process/binary/focus checks pass in every journey.
+
+| Run | Offer→DOM p95 ms | Browser keydown→handler p95 ms | Beforeinput→DOM p95 ms | Renderer late p95 ms | Driver worker/parent late p95 ms |
+|---|---:|---:|---:|---:|---|
+|control-normal|4.9|0.6|0.6|2|3/3|
+|control-fault|6.2|0.6|0.6|1.9|3/2|
+|1-OE|9.8|8.5|1.6|18.8|2/2|
+|1-FE|14.4|12.4|1.4|18|2/2|
+|1-IE|16.4|14.5|1.5|19.3|2/2|
+|1-FP|4.2|0.6|0.5|1.9|2/2|
+|1-IP|4|0.6|0.6|1.6|2/2|
+|2-IP|3.8|0.6|0.5|1.9|3/2|
+|2-FP|6.8|1.1|0.7|1.6|3/2|
+|2-IE|11.5|9.6|1.8|19.2|2/2|
+|2-FE|14.6|12.8|1.5|21.2|2/2|
+|2-OE|8.4|6.9|1.8|17.2|2/3|
+
+Three 80 ms beforeinput faults at indices30/60/90 all trigger independent DOM/RAF/heartbeat/longtask sensors; overall p95 alone hides these2.5% stalls. None of the focus/order or independent-root comparisons consistently meets>=3ms and>=20% reduction in both blocks. Native-input controls omit new editor writes and induced background work, so do not identify a pure editor effect. Renderer queuing is supported by the input timestamp/handler gap and larger renderer timer lateness, while driver lateness remains2–3ms. Together with prior profile hotspots, this selects owner-local verification/comparison reuse as the next bounded target, preserving all trust/byte/invalidation/cleanup fences.
+
+Reference catchup drift7.33%; instrumented32.1–38.7 s catchups cannot be compared with prior different-sensor/workload timings. Keep prior 16 ms misses,16/64 defaults, all 875 old-test blobs/803 runtime files and 881/337/97 planning state exact. Six affected integrity/planning checks pass; no full-suite/general qualification, physical keyboard-to-paint, preview/publication or runtime adoption.

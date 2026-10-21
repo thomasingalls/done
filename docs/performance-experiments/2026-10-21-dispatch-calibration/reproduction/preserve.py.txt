@@ -1,0 +1,29 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir(exist_ok=False);provenance={};sha=lambda b:hashlib.sha256(b).hexdigest()
+def put(f,name,compress=False):
+ b=f.read_bytes();p=dest/(name+('.gz'if compress else''));p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0)if compress else b);provenance[str(p.relative_to(dest))]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+for n in ['README.md','protocol.md','starting.json','source-identity.json','preflight.json','plan.json','runner.json','identity.json','summary.json','decision.json','evidence-review.json','final-checks.json','operational-notes.md']:put(r/n,n)
+put(r/'analysis.json','analysis.json',True)
+for f in sorted(r.glob('*.log')):put(f,'checks/'+f.name,True)
+for f in sorted(r.iterdir()):
+ if f.is_file()and f.suffix in ['.py','.mjs']:put(f,'reproduction/'+f.name+'.txt')
+for f in sorted((r/'source-B/test/live-sync-attribution').iterdir()):
+ if f.is_file():put(f,'reproduction/browser/'+f.name+'.txt')
+put(r/'source-B/account-service/requestBudget.ts','reproduction/requestBudget-B.ts.txt')
+for case in json.loads((r/'runner.json').read_text()):
+ folder=r/case['name']
+ for n in ['result.json','invocation.log','runner.json']+([]if case.get('static')else['services.log']):put(folder/n,'runs/'+case['name']+'/'+n,True)
+ for f in sorted((folder/'node-monitors').glob('*.json')):put(f,'runs/'+case['name']+'/node-monitors/'+f.name,True)
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for who in ['a','b']:
+  secrets.append(d[who]['code'])
+  for c in d[who]['credentials']:secrets.extend(c[k]for k in ['privateKey','credentialId','userHandle']if c.get(k))
+values=set()
+for s in secrets:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for f in dest.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.name.endswith('.gz')else b;assert not any(v in b for v in values),str(f.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownPrivateRawAndEscapedValues':len(values),'matches':0,'scope':'Explicit numeric/source whitelist; browser fixture codes/credentials/keys/storage/DBs excluded. Roles omit process args/env. Known-value scan is not general DLP.'},indent=2)+'\n');print(len(provenance),'provenance files',len(values),'known private values checked')

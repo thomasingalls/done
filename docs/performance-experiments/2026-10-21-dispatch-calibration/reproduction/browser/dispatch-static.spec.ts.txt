@@ -1,0 +1,21 @@
+import { test, expect } from '@playwright/test';
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { installDispatchProbe, browserIdentity, clockBrackets } from './dispatch-probe';
+
+test('native input timing control and deliberately blocked input', async ({ browser }) => {
+  const out = process.env.SYNC_OUT!, fault = process.env.DISPATCH_FAULT === '1';
+  const result: any = { outcome: 'starting', fault, target: 'plain' }; const c = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  try {
+    result.root = await browserIdentity(browser); await c.addInitScript(installDispatchProbe, { fault }); const p = await c.newPage();
+    await p.goto('data:text/html,<title>Disposable dispatch control</title><body></body>'); await p.bringToFront(); await p.evaluate(() => (window as any).__dispatch.plain());
+    result.clocks = await clockBrackets(p); result.startedAt = Date.now(); result.concurrent = { startedAt: Date.now(), offers: [] };
+    for (let i = 0; i < 120; i++) { const scheduledAt = result.concurrent.startedAt + i * 150; await new Promise(r => setTimeout(r, Math.max(0, scheduledAt - Date.now()))); const at = Date.now(); await p.keyboard.press('w'); result.concurrent.offers.push({ scheduledAt, at, returnedAt: Date.now() }); }
+    await p.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    expect(await p.locator('#dispatch-control').inputValue()).toBe('w'.repeat(120)); result.completedAt = Date.now(); result.dispatch = [await p.evaluate(() => (window as any).__dispatch.read())];
+    expect(result.dispatch[0].events.filter((e: any) => e.kind === 'beforeinput')).toHaveLength(120); expect(result.dispatch[0].plainRows).toHaveLength(120);
+    expect(result.dispatch[0].events.every((e: any) => e.focused && e.visible === 'visible' && e.active === 'plain')).toBe(true);
+    if (fault) expect(result.dispatch[0].faults.map((e: any) => e.index)).toEqual([30, 60, 90]); result.outcome = 'passed';
+  } catch (error) { result.outcome = 'failed'; result.error = String(error); throw error; }
+  finally { result.driver = (globalThis as any).__dispatchNodeSnapshot?.(); await c.close(); writeFileSync(join(out, 'result.json'), JSON.stringify(result, null, 2)); }
+});

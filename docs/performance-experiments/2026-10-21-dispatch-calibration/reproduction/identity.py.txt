@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,subprocess,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=Path('/private/tmp/done-coupled-capacity-20261021');sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());git=['git','--git-dir='+str(p/'patch09-index.git')]
+source=json.loads((r/'source-identity.json').read_text())
+for f,h in source['B']['sha256'].items():assert sha(r/'source-B'/f)==h
+for f,h in source['D']['sha256'].items():assert sha(repo/f)==h
+pre=json.loads((r/'preflight.json').read_text());closure={f.name:sha(f)for f in (r/'source-B/test/live-sync-attribution').iterdir()if f.is_file()};assert closure==pre['browserClosure']
+original={str(f.relative_to(p/'source-B')):sha(f)for f in (p/'source-B/test').rglob('*')if f.is_file()};current={str(f.relative_to(r/'source-B')):sha(f)for f in (r/'source-B/test').rglob('*')if f.is_file()};changes=[f for f,h in current.items()if original.get(f)!=h];assert set(changes)=={'test/live-sync-attribution/playwright.config.ts','test/live-sync-attribution/live-sync.spec.ts','test/live-sync-attribution/dispatch-probe.ts','test/live-sync-attribution/dispatch-static.spec.ts'},changes
+workingTests=0
+for row in subprocess.check_output(git+['ls-tree','-r',start['priorTree'],'--','test'],text=True).splitlines():
+ meta,f=row.split('\t',1);blob=meta.split()[2];b=(repo/f).read_bytes();assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==blob,f;workingTests+=1
+for f in ['docs/account-crypto/census.json','docs/release-validation-manifest.json','docs/release-validation-graph.json','docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:
+ assert(repo/f).read_bytes()==subprocess.check_output(git+['show',start['priorTree']+':'+f]),f
+previous=json.loads((p/'identity.json').read_text());build={str(f.relative_to(r/'client-dist')):sha(f)for f in (r/'client-dist').rglob('*')if f.is_file()};assert build==previous['exactPatch02Client110Assets']
+for f,h in previous['priorPrivateFixtureSha256'].items():assert sha(Path(f))==h
+roots=[]
+for row in json.loads((r/'runner.json').read_text()):
+ d=json.loads((r/row['name']/'result.json').read_text());roots.extend([d['root']]if row.get('static')else d['roots'])
+assert len({x['sha256']for x in roots})==len({x['version']['product']for x in roots})==1
+for root in roots:assert sha(Path(root['executable']))==root['sha256']
+result={'status':'passed','sourceBExactPhase09':True,'workingRuntime803FilesUnchanged':True,'workingTestBlobsExactPriorTree':workingTests,'onlyTemporaryHarnessFilesChanged':changes,'browserClosureSha256':closure,'actualRootBrowserBinarySha256':roots[0]['sha256'],'actualRootBrowserExecutable':roots[0]['executable'],'actualBrowserVersion':roots[0]['version'],'actualRootBinaryAttestationImprovesPriorAPIOnlyScope':True,'client110AssetsExact':build,'privateFixtureSha256':previous['priorPrivateFixtureSha256'],'allObligationsAndConstructionStatusesUnchanged':True,'workingDefault':'16/64','harnessSha256':{f.name:sha(f)for f in r.iterdir()if f.is_file()and f.suffix in ['.py','.mjs']},'generalQualificationPaused':True};(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print('Source, actual browser binary, fixtures and875working test blobs verified')

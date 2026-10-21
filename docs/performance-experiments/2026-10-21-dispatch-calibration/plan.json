@@ -1,0 +1,82 @@
+[
+  {
+    "name": "1-OE",
+    "block": 1,
+    "condition": "OE",
+    "isolated": false,
+    "focused": false,
+    "target": "editor"
+  },
+  {
+    "name": "1-FE",
+    "block": 1,
+    "condition": "FE",
+    "isolated": false,
+    "focused": true,
+    "target": "editor"
+  },
+  {
+    "name": "1-IE",
+    "block": 1,
+    "condition": "IE",
+    "isolated": true,
+    "focused": true,
+    "target": "editor"
+  },
+  {
+    "name": "1-FP",
+    "block": 1,
+    "condition": "FP",
+    "isolated": false,
+    "focused": true,
+    "target": "plain"
+  },
+  {
+    "name": "1-IP",
+    "block": 1,
+    "condition": "IP",
+    "isolated": true,
+    "focused": true,
+    "target": "plain"
+  },
+  {
+    "name": "2-IP",
+    "block": 2,
+    "condition": "IP",
+    "isolated": true,
+    "focused": true,
+    "target": "plain"
+  },
+  {
+    "name": "2-FP",
+    "block": 2,
+    "condition": "FP",
+    "isolated": false,
+    "focused": true,
+    "target": "plain"
+  },
+  {
+    "name": "2-IE",
+    "block": 2,
+    "condition": "IE",
+    "isolated": true,
+    "focused": true,
+    "target": "editor"
+  },
+  {
+    "name": "2-FE",
+    "block": 2,
+    "condition": "FE",
+    "isolated": false,
+    "focused": true,
+    "target": "editor"
+  },
+  {
+    "name": "2-OE",
+    "block": 2,
+    "condition": "OE",
+    "isolated": false,
+    "focused": false,
+    "target": "editor"
+  }
+]

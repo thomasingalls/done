@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "sourceBExactPhase09": true,
+  "client110AssetsExact": true,
+  "privateFixtureHashesExact": true,
+  "priorPatches01Through09Exact": true,
+  "browserClosure": {
+    "devices.ts": "9a6992af600a27d7b58e32d557782289ac67350c148cf25a062670208de56226",
+    "seed-initial.config.ts": "fe3a2546a7e6b656336ce3d69ba0cdf1a843855d339eb82d46d1ff6537dd911f",
+    "seed-initial.spec.ts": "6cd7055e89710516da1c7bd21ec3259d6c94861cfd70962f7c36e45883df4b47",
+    "dispatch-static.spec.ts": "9da960bd7cfad23cac72967681254baa3b31640e8a5fe2ce7ed5fcad8eb5844e",
+    "dispatch-probe.ts": "b7fadc18a96aafe69e74a313c97eb17dfc81b9fb058dad07eaa5ccecc7d13526",
+    "runtime.mjs": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "inspect-fixture.mjs": "1371c1bd15f0c97b0d0647e282ad63b5063424a37b8af3b78269850a08b05732",
+    "playwright.config.ts": "d344d212e2f2ccaa161b713f944e57548f257a56c1cbf23f919e5ea92687849d",
+    "live-sync.spec.ts": "26080c5dd0bb7e53fc1453fc5f90cb95d5704351c3ea81078f4422f815e48109"
+  },
+  "newInputObserverInTemporaryHarnessOnly": true,
+  "scope": "Original budget cases already cover exact same B source in phase09; no runtime/default/test changes."
+}
