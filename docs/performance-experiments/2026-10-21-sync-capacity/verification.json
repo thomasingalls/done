@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "priorPacketChecksumCounts": {
+    "2026-10-21-live-sync-attribution": 139,
+    "2026-10-21-ordinary-receive-batching": 207
+  },
+  "priorPatchesExact": true,
+  "allPriorRuntimeAndTestBytesExact": true,
+  "defaultProductionIdentities": 803,
+  "clientBuildIdentities": 110,
+  "appendOnlyDocuments": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md"
+  ],
+  "progressAndDeferredFormattingExact": true,
+  "ordinaryBrowserJourneysPassed": 14,
+  "allTypingGuards": true,
+  "contentionFailuresPreserved": 6,
+  "readerOnlyControlsPassed": 2,
+  "coldStoreAudits": 10,
+  "defaultBudgetCasesPassed": 17,
+  "artifactProvenanceEntriesVerified": 141,
+  "knownExactPrivateValuesChecked": 35,
+  "matches": 0,
+  "planningObligations": 878,
+  "unresolvedObligations": 334,
+  "sourceHead": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "realStagingEmpty": true,
+  "scope": "Evidence integrity checks. Failed API journeys remain failed; no maximum-capacity or production-policy qualification. No staging, signing, commit, push, merge, preview restart or deployment."
+}

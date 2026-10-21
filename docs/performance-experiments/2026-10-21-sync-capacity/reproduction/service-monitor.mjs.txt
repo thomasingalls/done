@@ -1,0 +1,17 @@
+import {writeFileSync} from 'node:fs';
+import {performance,monitorEventLoopDelay} from 'node:perf_hooks';
+const rows=[],phases=[];
+let active,interval,histogram,metrics;
+globalThis.__capacityObserve=row=>{if(rows.length<30000)rows.push({at:Date.now(),...row})};
+process.on('message',msg=>{
+ if(typeof msg.phase!=='string')return;
+ phases.push({phase:msg.phase,offeredAt:msg.at,observedAt:Date.now()});
+ if(msg.phase==='catchup'){
+  histogram=monitorEventLoopDelay({resolution:10});histogram.enable();active={start:performance.now(),cpu:process.cpuUsage(),elu:performance.eventLoopUtilization(),rss:[process.memoryUsage().rss]};
+  interval=setInterval(()=>active.rss.push(process.memoryUsage().rss),20);interval.unref();
+ }else if(active){
+  clearInterval(interval);histogram.disable();metrics={elapsedMs:performance.now()-active.start,cpu:process.cpuUsage(active.cpu),eventLoopUtilization:performance.eventLoopUtilization(active.elu),rssSampledPeak:Math.max(...active.rss),rssStart:active.rss[0],rssEnd:process.memoryUsage().rss,rssSamples:active.rss.length,samplingMs:20,loopDelayMs:{p50:histogram.percentile(50)/1e6,p95:histogram.percentile(95)/1e6,p99:histogram.percentile(99)/1e6,max:histogram.max/1e6}};active=undefined;
+ }
+});
+process.channel?.unref();
+process.on('exit',()=>{clearInterval(interval);histogram?.disable();writeFileSync(process.env.SYNC_OUT+'/service-diagnostic.json',JSON.stringify({rows,phases,metrics,scope:'Anonymous numeric diagnostics only, outside ordinary timing; session ordinals are not session identifiers.'},null,2)+'\n')});

@@ -1,0 +1,48 @@
+from pathlib import Path
+import collections,json,math,statistics
+r=Path(__file__).parent
+plan=json.loads((r/'browser-plan.json').read_text())
+def quantile(xs,p=.95):
+ xs=sorted(xs);return xs[math.ceil(len(xs)*p)-1] if xs else None
+def charP95(d,who,name):
+ base=len('Sync target A:')+(600 if name=='concurrent' else sum(len(' L'+str(i)+';') for i in range(30)))
+ xs=[]
+ for i,offer in enumerate(d[name]['offers']):
+  at=next(x['at'] for x in d['browsers'][who]['rows'] if x['at']>=offer['at']-2 and x['lengths'][0]>=base+i+1)
+  xs.append(at-offer['at'])
+ return quantile(xs)
+def burstP95(d,who):
+ base=len('Sync target A:');xs=[]
+ for i,offer in enumerate(d['bursts']):
+  base+=len(' L'+str(i)+';')
+  at=next(x['at'] for x in d['browsers'][who]['rows'] if x['at']>=offer['offeredAt']-2 and x['lengths'][0]>=base)
+  xs.append(at-offer['offeredAt'])
+ return quantile(xs)
+rows={}
+raw={}
+for run in plan:
+ d=json.loads((r/run['name']/'result.json').read_text());raw[run['name']]=d
+ assert d['outcome']=='passed' and all(d['guards'].values()),run['name']
+ assert d['fixture']['activeDayCards']==121
+ assert next(x for x in d['initialArchive']['entries'] if x['name']=='master.md')['characters']==13000
+ n=[x for x in d['network'] if d['startedAt']<=x['at']<=d['completedAt']]
+ metric='concurrent' if run['mode']=='catchup' else 'continuous'
+ reads=[x for x in n if x['device']=='B' and x['path'].endswith(('/read-v2','/read-v2-batch'))]
+ row=dict(run,outcome=d['outcome'],guards=d['guards'],drainMs=d['caughtAt']-d['startedAt'] if 'caughtAt' in d else None,localP95Ms=charP95(d,0,metric),peerP95Ms=charP95(d,1,metric),statuses=dict(collections.Counter(str(x.get('status')) for x in n)),receiverHttpReads=len(reads),requestedInnerBodies=sum(len(x.get('batch',[x])) for x in reads),finalExport=d['finalExport'])
+ if run['mode']=='foreground':row.update(isolatedLocalP95Ms=burstP95(d,0),isolatedPeerP95Ms=burstP95(d,1))
+ rows[run['name']]=row
+comparisons=[]
+for block in [1,2]:
+ reference='factorial-0-'+str(block)+'-D'
+ for arm in ['S','P','B']:
+  name='factorial-0-'+str(block)+'-'+arm;b=rows[reference];c=rows[name]
+  assert raw[reference]['initialArchive']==raw[name]['initialArchive'] and b['finalExport']==c['finalExport']
+  comparisons.append(dict(block=block,arm=arm,referenceMs=b['drainMs'],candidateMs=c['drainMs'],improvementPercent=100*(1-c['drainMs']/b['drainMs']),localGuard=c['localP95Ms']<=max(16,b['localP95Ms']+3),peerGuard=c['peerP95Ms']<=1.1*b['peerP95Ms']))
+b=rows['confirm-0-3-D'];c=rows['confirm-0-3-B'];assert b['finalExport']==c['finalExport']
+comparisons.append(dict(block=3,arm='B',referenceMs=b['drainMs'],candidateMs=c['drainMs'],improvementPercent=100*(1-c['drainMs']/b['drainMs']),localGuard=c['localP95Ms']<=max(16,b['localP95Ms']+3),peerGuard=c['peerP95Ms']<=1.1*b['peerP95Ms']))
+b=rows['boundary-75-D'];c=rows['boundary-75-B'];boundary=dict(referenceMs=b['drainMs'],candidateMs=c['drainMs'],improvementPercent=100*(1-c['drainMs']/b['drainMs']),localGuard=c['localP95Ms']<=max(16,b['localP95Ms']+3),peerGuard=c['peerP95Ms']<=1.1*b['peerP95Ms']);assert b['finalExport']==c['finalExport']
+b=rows['foreground-0-D'];c=rows['foreground-0-B'];foreground=dict(localGuard=c['localP95Ms']<=max(16,b['localP95Ms']+3),peerGuard=c['peerP95Ms']<=1.1*b['peerP95Ms'],isolatedLocalGuard=c['isolatedLocalP95Ms']<=max(16,b['isolatedLocalP95Ms']+3),isolatedPeerGuard=c['isolatedPeerP95Ms']<=1.1*b['isolatedPeerP95Ms']);assert b['finalExport']==c['finalExport']
+primary=[x for x in comparisons if x['arm']=='B'];ref=[x['referenceMs'] for x in primary]
+result=dict(rows=rows,comparisons=comparisons,boundary=boundary,foreground=foreground,medianPrimaryImprovementPercent=statistics.median(x['improvementPercent'] for x in primary),meaningfulSignal=statistics.median(x['improvementPercent'] for x in primary)>=15 and all(x['improvementPercent']>0 for x in primary),allTypingGuards=all(x['localGuard'] and x['peerGuard'] for x in comparisons+[boundary]) and all(foreground.values()),referenceDrift=max(ref)/min(ref)-1,scope='Descriptive fixed-fixture local intervention, not measured production capacity or numeric policy adoption.')
+(r/'browser-summary.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({k:v for k,v in result.items() if k!='rows'},indent=2))

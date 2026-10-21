@@ -1962,3 +1962,19 @@ Receiver HTTP reads fall from 620–622 to 161–166 in the latency-added arms. 
 Loopback candidate runs record 6–8 HTTP 429s versus 1–4 for reference, and show almost no catch-up improvement. This supports a separate bounded capacity/rate experiment; it does not establish a safe increase or isolate every cause. The +75 ms arms have zero 429s. Retain the slow V1 prototype, V2's missed target, V3 classification counterexamples/interrupted plan and the complete final paired denominator. Source/build hashes, per-pair guard values and independently reconstructed raw DOM observations remain in the packet.
 
 These are descriptive local Chromium journeys on matching encrypted synthetic fixtures (121 cards, 13,000-byte Goals, exactly 600 missing accepted positions), with new typing independently offered during draining. No physical Android/Firefox/WAN, production adoption, capacity, full-suite or generalized qualification claim. Foreground publication timing is still separate. New test obligations stay blocked; no preview or deployment changes.
+
+
+## Scoped sync rate and capacity investigation — 2026-10-21
+
+The [controlled investigation](./performance-experiments/2026-10-21-sync-capacity/README.md) keeps the patch 02 client exact and changes only temporary service refill literals, with burst/concurrency/verification bounds fixed. Fourteen restored browser journeys pass complete export/writing/Undo/offline-reopen and all predeclared typing guards.
+
+| Loopback 600-position workload, two factorial blocks | Block 1 | Reversed block 2 |
+| --- | ---: | ---: |
+| Default 16/session,64/process | 33.243s | 33.743s |
+| Session 64,process 64 | 22.575s | 23.088s |
+| Session 16,process 256 | 34.281s | 33.798s |
+| Session 64,process 256 | 23.115s | 23.085s |
+
+A third default/combined pair 33.764→23.586s gives 30.5% median paired improvement across the three primary contrasts. Session-only improvement is 31.6–32.1%; process-only has no benefit in this fixture. At +75ms, the one pair changes 38.721→37.737s (2.54%). The instrumented default run sees five session-top-up refusals and no process/concurrency refusal; next admissions follow by 1004–1011ms. This identifies policy-plus-retry cost, not an additive allocation of each wait to elapsed time.
+
+The separate six-session/competing-writer probe fails all six fixed arms with 409 state-changed before 429, so it supplies no qualified sustained-capacity or safe-policy estimate. Reader-only controls pass; all actual stored seed/interactive wires and proofs pass cold independent verification. The probe stops on 409 and does not test the app's full continuation policy. Source shared-revision invalidation is a hypothesis for the next discriminating experiment. Keep shipped 16/64, preserve raw failures/resources/pilots and investigate contention/continuation before any numeric promotion. No production/WAN/phone/Firefox, maximum-capacity, full-suite or generalized qualification claim.

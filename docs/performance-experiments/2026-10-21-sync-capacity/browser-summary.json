@@ -1,0 +1,642 @@
+{
+  "rows": {
+    "factorial-0-1-D": {
+      "name": "factorial-0-1-D",
+      "arm": "D",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 33243,
+      "localP95Ms": 8.900146484375,
+      "peerP95Ms": 33452,
+      "statuses": {
+        "200": 207,
+        "429": 12
+      },
+      "receiverHttpReads": 175,
+      "requestedInnerBodies": 666,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-1-S": {
+      "name": "factorial-0-1-S",
+      "arm": "S",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 22575,
+      "localP95Ms": 9.199951171875,
+      "peerP95Ms": 21622.800048828125,
+      "statuses": {
+        "200": 201
+      },
+      "receiverHttpReads": 162,
+      "requestedInnerBodies": 618,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-1-P": {
+      "name": "factorial-0-1-P",
+      "arm": "P",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 34281,
+      "localP95Ms": 9.5,
+      "peerP95Ms": 33254.10009765625,
+      "statuses": {
+        "200": 205,
+        "429": 12
+      },
+      "receiverHttpReads": 174,
+      "requestedInnerBodies": 665,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-1-B": {
+      "name": "factorial-0-1-B",
+      "arm": "B",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 23115,
+      "localP95Ms": 11.89990234375,
+      "peerP95Ms": 21963.10009765625,
+      "statuses": {
+        "200": 201
+      },
+      "receiverHttpReads": 161,
+      "requestedInnerBodies": 619,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-2-B": {
+      "name": "factorial-0-2-B",
+      "arm": "B",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 2,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 23085,
+      "localP95Ms": 12.300048828125,
+      "peerP95Ms": 22087.699951171875,
+      "statuses": {
+        "200": 201
+      },
+      "receiverHttpReads": 162,
+      "requestedInnerBodies": 623,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-2-P": {
+      "name": "factorial-0-2-P",
+      "arm": "P",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 2,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 33798,
+      "localP95Ms": 10.699951171875,
+      "peerP95Ms": 32698.800048828125,
+      "statuses": {
+        "200": 206,
+        "429": 12
+      },
+      "receiverHttpReads": 175,
+      "requestedInnerBodies": 666,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-2-S": {
+      "name": "factorial-0-2-S",
+      "arm": "S",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 2,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 23088,
+      "localP95Ms": 10.10009765625,
+      "peerP95Ms": 21932,
+      "statuses": {
+        "200": 202
+      },
+      "receiverHttpReads": 163,
+      "requestedInnerBodies": 624,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "factorial-0-2-D": {
+      "name": "factorial-0-2-D",
+      "arm": "D",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 2,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 33743,
+      "localP95Ms": 8.39990234375,
+      "peerP95Ms": 32901.39990234375,
+      "statuses": {
+        "200": 207,
+        "429": 12
+      },
+      "receiverHttpReads": 175,
+      "requestedInnerBodies": 666,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "confirm-0-3-D": {
+      "name": "confirm-0-3-D",
+      "arm": "D",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 3,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 33764,
+      "localP95Ms": 18.599853515625,
+      "peerP95Ms": 32919.2998046875,
+      "statuses": {
+        "200": 206,
+        "429": 12
+      },
+      "receiverHttpReads": 175,
+      "requestedInnerBodies": 666,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "confirm-0-3-B": {
+      "name": "confirm-0-3-B",
+      "arm": "B",
+      "mode": "catchup",
+      "delay": 0,
+      "block": 3,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 23586,
+      "localP95Ms": 6,
+      "peerP95Ms": 22530.89990234375,
+      "statuses": {
+        "200": 203
+      },
+      "receiverHttpReads": 163,
+      "requestedInnerBodies": 624,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "boundary-75-D": {
+      "name": "boundary-75-D",
+      "arm": "D",
+      "mode": "catchup",
+      "delay": 75,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 38721,
+      "localP95Ms": 7.39990234375,
+      "peerP95Ms": 37534,
+      "statuses": {
+        "200": 214
+      },
+      "receiverHttpReads": 168,
+      "requestedInnerBodies": 631,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "boundary-75-B": {
+      "name": "boundary-75-B",
+      "arm": "B",
+      "mode": "catchup",
+      "delay": 75,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 37737,
+      "localP95Ms": 10.7998046875,
+      "peerP95Ms": 36658.699951171875,
+      "statuses": {
+        "200": 209
+      },
+      "receiverHttpReads": 165,
+      "requestedInnerBodies": 624,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      }
+    },
+    "foreground-0-D": {
+      "name": "foreground-0-D",
+      "arm": "D",
+      "mode": "foreground",
+      "delay": 0,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": null,
+      "localP95Ms": 10.900146484375,
+      "peerP95Ms": 2256.39990234375,
+      "statuses": {
+        "200": 170
+      },
+      "receiverHttpReads": 117,
+      "requestedInnerBodies": 117,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51709,
+            "characters": 51709
+          }
+        ],
+        "files": 2,
+        "bytes": 64709,
+        "sha256": "09f55ac91ce4180d83db2b264595beeeba75e725feb0be168e1d5753d2410638"
+      },
+      "isolatedLocalP95Ms": 5.10009765625,
+      "isolatedPeerP95Ms": 613.800048828125
+    },
+    "foreground-0-B": {
+      "name": "foreground-0-B",
+      "arm": "B",
+      "mode": "foreground",
+      "delay": 0,
+      "block": 1,
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": null,
+      "localP95Ms": 10.5,
+      "peerP95Ms": 2250.900146484375,
+      "statuses": {
+        "200": 170
+      },
+      "receiverHttpReads": 117,
+      "requestedInnerBodies": 117,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51709,
+            "characters": 51709
+          }
+        ],
+        "files": 2,
+        "bytes": 64709,
+        "sha256": "09f55ac91ce4180d83db2b264595beeeba75e725feb0be168e1d5753d2410638"
+      },
+      "isolatedLocalP95Ms": 5.099853515625,
+      "isolatedPeerP95Ms": 670.400146484375
+    }
+  },
+  "comparisons": [
+    {
+      "block": 1,
+      "arm": "S",
+      "referenceMs": 33243,
+      "candidateMs": 22575,
+      "improvementPercent": 32.09096651926722,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "block": 1,
+      "arm": "P",
+      "referenceMs": 33243,
+      "candidateMs": 34281,
+      "improvementPercent": -3.122461871672222,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "block": 1,
+      "arm": "B",
+      "referenceMs": 33243,
+      "candidateMs": 23115,
+      "improvementPercent": 30.46656438949553,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "block": 2,
+      "arm": "S",
+      "referenceMs": 33743,
+      "candidateMs": 23088,
+      "improvementPercent": 31.57691965741043,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "block": 2,
+      "arm": "P",
+      "referenceMs": 33743,
+      "candidateMs": 33798,
+      "improvementPercent": -0.16299676970037424,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "block": 2,
+      "arm": "B",
+      "referenceMs": 33743,
+      "candidateMs": 23085,
+      "improvementPercent": 31.58581039030317,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "block": 3,
+      "arm": "B",
+      "referenceMs": 33764,
+      "candidateMs": 23586,
+      "improvementPercent": 30.14453263831299,
+      "localGuard": true,
+      "peerGuard": true
+    }
+  ],
+  "boundary": {
+    "referenceMs": 38721,
+    "candidateMs": 37737,
+    "improvementPercent": 2.5412566824203897,
+    "localGuard": true,
+    "peerGuard": true
+  },
+  "foreground": {
+    "localGuard": true,
+    "peerGuard": true,
+    "isolatedLocalGuard": true,
+    "isolatedPeerGuard": true
+  },
+  "medianPrimaryImprovementPercent": 30.46656438949553,
+  "meaningfulSignal": true,
+  "allTypingGuards": true,
+  "referenceDrift": 0.01567247240020464,
+  "scope": "Descriptive fixed-fixture local intervention, not measured production capacity or numeric policy adoption."
+}

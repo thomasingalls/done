@@ -1,0 +1,196 @@
+{
+  "api-primary": [
+    {
+      "block": 1,
+      "arm": "D",
+      "outcome": "failed",
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7087,
+      "refusals": {
+        "409:state-changed": 7
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 6
+      },
+      "cpuMs": 15077.742,
+      "rssPeak": 427163648,
+      "maxEventLoopDelayMs": 91.226111,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    },
+    {
+      "block": 1,
+      "arm": "S",
+      "outcome": "failed",
+      "verifiedPositions": 67,
+      "completedStreams": 0,
+      "elapsedMs": 8002,
+      "refusals": {
+        "409:state-changed": 6
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 7
+      },
+      "cpuMs": 16956.806,
+      "rssPeak": 408698880,
+      "maxEventLoopDelayMs": 44.662783,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    },
+    {
+      "block": 1,
+      "arm": "B",
+      "outcome": "failed",
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7001,
+      "refusals": {
+        "409:state-changed": 7
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 6
+      },
+      "cpuMs": 15568.27,
+      "rssPeak": 429015040,
+      "maxEventLoopDelayMs": 31.506431,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    },
+    {
+      "block": 2,
+      "arm": "B",
+      "outcome": "failed",
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7002,
+      "refusals": {
+        "409:state-changed": 7
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 6
+      },
+      "cpuMs": 15561.244,
+      "rssPeak": 429080576,
+      "maxEventLoopDelayMs": 39.387135,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    },
+    {
+      "block": 2,
+      "arm": "S",
+      "outcome": "failed",
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7005,
+      "refusals": {
+        "409:state-changed": 7
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 6
+      },
+      "cpuMs": 15617.503,
+      "rssPeak": 436011008,
+      "maxEventLoopDelayMs": 38.600703,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    },
+    {
+      "block": 2,
+      "arm": "D",
+      "outcome": "failed",
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7001,
+      "refusals": {
+        "409:state-changed": 7
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 6
+      },
+      "cpuMs": 15945.041,
+      "rssPeak": 433602560,
+      "maxEventLoopDelayMs": 32.489471,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    }
+  ],
+  "api-control-single": [
+    {
+      "block": 0,
+      "arm": "D",
+      "outcome": "passed",
+      "verifiedPositions": 64,
+      "completedStreams": 1,
+      "elapsedMs": 1002,
+      "refusals": {},
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 0
+      },
+      "cpuMs": 1002.734,
+      "rssPeak": 189153280,
+      "maxEventLoopDelayMs": 32.161791,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    }
+  ],
+  "api-control-readers": [
+    {
+      "block": 0,
+      "arm": "D",
+      "outcome": "passed",
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 2530,
+      "refusals": {},
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 0
+      },
+      "cpuMs": 4976.384,
+      "rssPeak": 311001088,
+      "maxEventLoopDelayMs": 47.349759,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    }
+  ],
+  "api-pilot": [
+    {
+      "block": 0,
+      "arm": "D",
+      "outcome": "passed",
+      "verifiedPositions": 384,
+      "completedStreams": 0,
+      "elapsedMs": 17027,
+      "refusals": {},
+      "liveVerifiedWrites": {
+        "first": 33,
+        "other": 16
+      },
+      "cpuMs": 37335.744,
+      "rssPeak": 482033664,
+      "maxEventLoopDelayMs": 98.959359,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    }
+  ],
+  "api-pilot-v2": [
+    {
+      "block": 0,
+      "arm": "D",
+      "outcome": "failed",
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 6001,
+      "refusals": {
+        "409:unclassified": 7
+      },
+      "liveVerifiedWrites": {
+        "first": 0,
+        "other": 5
+      },
+      "cpuMs": 14782.943,
+      "rssPeak": 428310528,
+      "maxEventLoopDelayMs": 119.865343,
+      "scope": "Failed contention rows do not estimate complete replay performance or maximum capacity."
+    }
+  ]
+}

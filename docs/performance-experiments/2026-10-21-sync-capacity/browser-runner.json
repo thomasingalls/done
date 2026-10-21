@@ -1,0 +1,240 @@
+[
+  {
+    "name": "factorial-0-1-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1,
+    "startedAt": "2026-10-21T10:58:40.181786+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T10:59:29.324921+00:00"
+  },
+  {
+    "name": "factorial-0-1-S",
+    "arm": "S",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1,
+    "startedAt": "2026-10-21T10:59:29.326102+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:00:06.576535+00:00"
+  },
+  {
+    "name": "factorial-0-1-P",
+    "arm": "P",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1,
+    "startedAt": "2026-10-21T11:00:06.577317+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:00:54.498945+00:00"
+  },
+  {
+    "name": "factorial-0-1-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1,
+    "startedAt": "2026-10-21T11:00:54.499668+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:01:31.651879+00:00"
+  },
+  {
+    "name": "factorial-0-2-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2,
+    "startedAt": "2026-10-21T11:01:31.652724+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:02:08.976731+00:00"
+  },
+  {
+    "name": "factorial-0-2-P",
+    "arm": "P",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2,
+    "startedAt": "2026-10-21T11:02:08.977249+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:02:57.469650+00:00"
+  },
+  {
+    "name": "factorial-0-2-S",
+    "arm": "S",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2,
+    "startedAt": "2026-10-21T11:02:57.470431+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:03:34.643051+00:00"
+  },
+  {
+    "name": "factorial-0-2-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2,
+    "startedAt": "2026-10-21T11:03:34.643580+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:04:22.282730+00:00"
+  },
+  {
+    "name": "confirm-0-3-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 3,
+    "startedAt": "2026-10-21T11:04:22.283615+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:05:10.780005+00:00"
+  },
+  {
+    "name": "confirm-0-3-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 3,
+    "startedAt": "2026-10-21T11:05:10.781037+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:05:48.327343+00:00"
+  },
+  {
+    "name": "boundary-75-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 75,
+    "block": 1,
+    "startedAt": "2026-10-21T11:05:48.328255+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:06:42.555925+00:00"
+  },
+  {
+    "name": "boundary-75-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 75,
+    "block": 1,
+    "startedAt": "2026-10-21T11:06:42.556902+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:07:35.256156+00:00"
+  },
+  {
+    "name": "foreground-0-D",
+    "arm": "D",
+    "mode": "foreground",
+    "delay": 0,
+    "block": 1,
+    "startedAt": "2026-10-21T11:07:35.257195+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:08:30.886827+00:00"
+  },
+  {
+    "name": "foreground-0-B",
+    "arm": "B",
+    "mode": "foreground",
+    "delay": 0,
+    "block": 1,
+    "startedAt": "2026-10-21T11:08:30.887563+00:00",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "returncode": 0,
+    "completedAt": "2026-10-21T11:09:26.589189+00:00"
+  }
+]
