@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,collections,math
+r=Path(__file__).parent
+
+def distribution(v):
+ v=sorted(v);return {'n':len(v),'p50':v[math.ceil(.5*len(v))-1],'p95':v[math.ceil(.95*len(v))-1],'max':v[-1]}if v else None
+result=[]
+for arm in ['D','B']:
+ folder=r/('diagnostic-'+arm);raw=json.loads((folder/'result.json').read_text());assert raw['diagnostic'];offers=raw['concurrent']['offers'];window=(offers[0]['at'],offers[-1]['returnedAt']);case={'arm':arm,'typingWindowEpochMs':window,'profiles':{},'inputDecomposition':{}}
+ for i,name in enumerate(['sender','receiver']):
+  profile=json.loads((folder/(name+'.cpuprofile')).read_text());clock=raw['profileClocks'][name];nodes={n['id']:n for n in profile['nodes']};parent={c:n['id']for n in nodes.values()for c in n.get('children',[])};clockUncertainty=clock['startedAfter']-clock['startedBefore'];anchor=(clock['startedBefore']+clock['startedAfter'])/2;elapsed=0;selftime=collections.Counter();inclusive=collections.Counter();sampleCounts=collections.Counter();sampleWindows=[];total=0
+  def key(id):
+   c=nodes[id]['callFrame'];return(c['functionName'],c['url'],c['lineNumber'],c['columnNumber'])
+  for id,delta in zip(profile['samples'],profile['timeDeltas']):
+   before=anchor+elapsed;elapsed+=delta/1000;at=anchor+elapsed
+   dt=max(0,min(at,window[1])-max(before,window[0]));
+   if not dt:continue
+   selftime[key(id)]+=dt;sampleCounts[key(id)]+=1;seen=set();n=id
+   while n:
+    k=key(n)
+    if k not in seen:inclusive[k]+=dt;seen.add(k)
+    n=parent.get(n)
+   sampleWindows.append({'at':at,'ms':dt,'nodeId':id});total+=dt
+  top=lambda counter:[{'function':k[0],'url':k[1],'line0':k[2],'column0':k[3],'sampleWeightedMs':v,'samplesSelf':sampleCounts[k]}for k,v in counter.most_common(35)]
+  case['profiles'][name]={'totalSampleWeightedMs':total,'samplingIntervalUs':1000,'wallClockAnchorUncertaintyMs':clockUncertainty,'profileSpanMs':(profile['endTime']-profile['startTime'])/1000,'selfTop':top(selftime),'inclusiveTop':top(inclusive),'scope':'Sampler wall-time weight, not exact CPU accounting. Exclusive frames and inclusive ancestors kept separate; idle/native/internal work may be unattributed. Midpoint wall anchor uncertainty retained.'}
+  browser=raw['browsers'][i];tasks=[t for t in browser['longtasks']if window[0]<=t['at']<=window[1]];case['profiles'][name]['longTasksDuringTyping']=tasks
+ # Discriminate keyboard-offer->browser beforeinput from event->DOM mutation and event->next RAF.
+ a=raw['browsers'][0];events=[e for e in a['inputs']if offers[0]['at']-2<=e['at']<=offers[-1]['returnedAt']+10 and e['type']=='insertText'and e['dataLength']==1];assert len(events)==120,len(events)
+ rows=[];base=len('Sync target A:')+600
+ for j,(o,e)in enumerate(zip(offers,events)):
+  target=base+j+1;dom=next(x['at']for x in a['rows']if x['at']>=o['at']-2 and x['lengths'][0]>=target)
+  rows.append({'index':j,'offerToBeforeInputMs':e['at']-o['at'],'beforeInputToDomMs':dom-e['at'],'offerToDomMs':dom-o['at'],'beforeInputToRafMs':e['rafAt']-e['at'],'keyboardCallMs':o['returnedAt']-o['at'],'longTaskAtOffer':any(t['at']<=o['at']<=t['at']+t['ms']for t in a['longtasks'])})
+ case['inputDecomposition']={'rows':rows,'metrics':{k:distribution([x[k]for x in rows])for k in ['offerToBeforeInputMs','beforeInputToDomMs','offerToDomMs','beforeInputToRafMs','keyboardCallMs']},'scope':'Host offer and renderer clock differ; sub-ms/negative small gaps are resolution/skew. DOM mutation is not painted pixels. Profiler perturbs these diagnostics; no timing gate credit.'}
+ result.append(case)
+(r/'profile-summary.json').write_text(json.dumps(result,indent=2)+'\n')
+for x in result:
+ print(x['arm'],x['inputDecomposition']['metrics'])
+ for n,p in x['profiles'].items():print(n,'self',[(v['function'],round(v['sampleWeightedMs'],1))for v in p['selfTop'][:8]],'inclusive',[(v['function'],round(v['sampleWeightedMs'],1))for v in p['inclusiveTop'][:10]])

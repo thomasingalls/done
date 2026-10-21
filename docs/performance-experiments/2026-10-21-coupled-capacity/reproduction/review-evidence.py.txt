@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,math,hashlib
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());pre=load(r/'preflight.json');assert all(x['cases']==17 and x['exitCode']==0 for x in pre['receipts'])
+raw=load(r/'native/results.json');assert len(raw)==4 and [(x['block'],x['arm'])for x in raw]==[(x['block'],x['arm'])for x in load(r/'native-plan.json')]
+audit=load(r/'native/cold-audit.json');assert len(audit)==4
+for a in audit:
+ assert len(a['accounts'])==7
+ for x in a['accounts']:assert x['seedAndAllStoredWiresExact']and x['unacknowledgedStored']==0 and x['offeredWrites']==x['liveVerifiedWrites']==x['storedNewAccepted']
+for x in raw:
+ m=x['metrics'];assert m['publisherVerification']['fullCensuses']==7 and m['publisherVerification']['quarantined']==0 and m['publisherVerification']['coldWaiting']==0 and m['publisherVerification']['coldLanes']==0
+ f=r/'native'/(x['block']+'-'+x['arm']+'-service')/'container-inspect.json';h=load(f)['HostConfig'];assert h['NanoCpus']==10**9 and h['Memory']==h['MemorySwap']==1024**3 and h['PidsLimit']==128 and h['ReadonlyRootfs'];assert m['cgroupAfter']['cpu.max']=='100000 100000' and m['cgroupAfter']['memory.max']=='1073741824'and m['cgroupAfter']['memory.swap.max']=='0'
+dom={x['directory']:x for x in load(r/'analysis.json')};plan=load(r/'browser-plan.json');assert len(dom)==len(plan)==8
+# Independent reconstruction: use observed thresholds, direct percentile extraction, no analyzer helper.
+reconstructed={}
+for case in plan:
+ d=load(r/case['name']/'result.json');assert d['outcome']=='passed'and len(d['guards'])==4 and all(d['guards'].values());v=[]
+ for j,o in enumerate(d['concurrent']['offers']):
+  target=len('Sync target A:')+600+j+1;ends=[]
+  for b in d['browsers']:
+   eligible=[a['at']for a in b['rows']if a['at']>=o['at']-2 and a['lengths'][0]>=target];assert eligible;ends.append(min(eligible)-o['at'])
+  v.append(ends)
+ assert len(v)==120;p95=[sorted(a[i]for a in v)[113]for i in [0,1]];a=dom[case['name']]['concurrent'];assert p95==[a['localDomMs']['p95'],a['peerDomMs']['p95']];reconstructed[case['name']]={'localP95':p95[0],'peerP95':p95[1]}
+ if case['diagnostic']:assert d['profileClocks'].keys()=={'sender','receiver'} and all((r/case['name']/(n+'.cpuprofile')).is_file()for n in ['sender','receiver'])
+native=load(r/'native-summary.json');assert native['gatePassed'] and native['driftPercent']<=15
+bs=load(r/'browser-summary.json');assert bs['allEightFunctionalGuardsPass'];nr=load(r/'native-runner.json');br=load(r/'browser-runner.json');assert len(br)==8 and all(x['exitCode']==0 for x in br);assert nr['exitCode']==0 and nr['completedAt']<=br[0]['startedAt'];assert all(br[i]['completedAt']<=br[i+1]['startedAt']for i in range(7));assert max(x['completedAt']for x in pre['receipts'])<=nr['startedAt']
+x={'status':'passed','independentOriginalStoredWireAudits':4,'distinctPublishersPerRun':7,'totalPublisherAudits':28,'allOfferedWritesVerified':True,'noStoredUnacknowledgedWrites':True,'nativeGates':native['gates'],'eightClientFunctionalJourneys':True,'sixUninstrumentedPlusTwoDiagnostic':True,'rawDOMSecondImplementation':reconstructed,'typingGatesPassed':bs['allSixUninstrumentedTypingGuardsPass'],'diagnosticsExcludedTimingCredit':True,'noRecordedBenchmarkOverlap':True,'runtimeDefaultsUnchanged':'16/64','generalQualificationPaused':True,'scope':'Evidence integrity; this does not turn missed review gates into passes or confer production capacity/release qualification.'};(r/'evidence-review.json').write_text(json.dumps(x,indent=2)+'\n');print(json.dumps(x,indent=2))

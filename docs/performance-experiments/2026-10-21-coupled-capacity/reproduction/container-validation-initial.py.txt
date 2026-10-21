@@ -1,0 +1,9 @@
+from pathlib import Path
+import subprocess,json,time,os
+r=Path(__file__).parent;image=json.loads((r/'container-image.json').read_text())['Id'];rows=[]
+for arm in ['D','B']:
+ source=r/('source-'+arm);args=['docker','run','--rm','--network=none','--cpus=1','--memory=1g','--memory-swap=1g','--pids-limit=128','--cap-drop=ALL','--security-opt=no-new-privileges','--read-only','--tmpfs','/tmp:rw,nosuid,nodev,size=128m','--user',str(os.getuid())+':'+str(os.getgid()),'--volume',str(source/'account-service')+':/app/account-service:ro','--volume',str(source/'account-protocol')+':/app/account-protocol:ro','--volume',str(source/'test')+':/app/test:ro','--entrypoint','node',image,'--test','--test-concurrency=1','test/account-sessions/request-budget.test.mjs','test/account-sessions/request-budget-work.test.mjs','test/account-sessions/inbound-batch-budget.test.mjs'];at=time.time_ns()//1000000
+ with (r/('linux-budget-'+arm+'.log')).open('w')as log:p=subprocess.run(args,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'arm':arm,'command':args,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'container-validation.json').write_text(json.dumps(rows,indent=2)+'\n');print(arm,p.returncode,flush=True)
+ assert p.returncode==0
+cmd=['docker','run','--rm','--network=none','--entrypoint','node',image,'-p','JSON.stringify({node:process.version,platform:process.platform,arch:process.arch,versions:process.versions})'];(r/'linux-runtime.json').write_bytes(subprocess.check_output(cmd))

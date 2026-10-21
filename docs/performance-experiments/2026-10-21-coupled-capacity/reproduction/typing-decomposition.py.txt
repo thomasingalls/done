@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,math
+r=Path(__file__).parent;rows=[]
+for case in json.loads((r/'browser-plan.json').read_text()):
+ d=json.loads((r/case['name']/'result.json').read_text());o=d['concurrent']['offers'];a=d['browsers'][0];e=[x for x in a['inputs']if o[0]['at']-2<=x['at']<=o[-1]['returnedAt']+10 and x['type']=='insertText'and x['dataLength']==1];assert len(e)==120;v=[]
+ for j,(offer,event)in enumerate(zip(o,e)):
+  dom=next(x['at']for x in a['rows']if x['at']>=offer['at']-2 and x['lengths'][0]>=len('Sync target A:')+600+j+1);v.append({'index':j,'offerToBeforeinput':event['at']-offer['at'],'beforeinputToDOM':dom-event['at'],'offerToDOM':dom-offer['at'],'beforeinputToRAF':event['rafAt']-event['at'],'keyboardRoundtrip':offer['returnedAt']-offer['at']})
+ rows.append({'name':case['name'],'diagnostic':case['diagnostic'],'rows':v,'p95':{k:sorted(x[k]for x in v)[113]for k in v[0]if k!='index'},'scope':'Quantiles are not additive; host offer contains automation/dispatch/renderer scheduling. DOM mutation is not painted pixels. Clock resolution/skew can create tiny negative subintervals.'})
+(r/'typing-decomposition.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps([{k:v for k,v in x.items()if k!='rows'}for x in rows],indent=2))

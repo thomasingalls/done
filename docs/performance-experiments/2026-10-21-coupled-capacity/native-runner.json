@@ -1,0 +1,9 @@
+{
+  "command": [
+    "node",
+    "/private/tmp/done-coupled-capacity-20261021/api-load.mjs"
+  ],
+  "startedAt": 1792601824413,
+  "completedAt": 1792601897460,
+  "exitCode": 0
+}

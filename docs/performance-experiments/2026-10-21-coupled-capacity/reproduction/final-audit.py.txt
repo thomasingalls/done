@@ -1,0 +1,32 @@
+from pathlib import Path
+import json,hashlib,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-coupled-capacity';load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');identity=load(r/'identity.json');git=['git','--git-dir=/private/tmp/done-rate-review-20261021/patch08-index.git'];allowed={'docs/completed.md','docs/decisions.md','docs/performance.md'}
+for x in start['priorPatches']:assert sha(Path(x['patch']).read_bytes())==x['sha256']
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==start['base']
+index=Path(subprocess.check_output(['git','rev-parse','--git-path','index'],cwd=repo,text=True).strip());assert sha(index.read_bytes())==start['realIndexSha256'];assert not subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo)
+# All tracked/cumulative files and archived evidence have a single immutable home.
+count=0
+for line in subprocess.check_output(git+['ls-tree','-r',start['priorTree']],text=True).splitlines():
+ meta,f=line.split('\t',1);mode,kind,blob=meta.split();assert kind=='blob';p=repo/f;data=p.read_bytes()
+ if f in allowed:assert data.startswith(subprocess.check_output(git+['show',start['priorTree']+':'+f])),f
+ else:assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==blob,f
+ count+=1
+for f,h in identity['harnessSha256'].items():assert sha((r/f).read_bytes())==h,f
+for old in (repo/'docs/performance-experiments').iterdir():
+ if old==packet or not(old/'SHA256SUMS').exists():continue
+ for line in (old/'SHA256SUMS').read_text().splitlines():
+  h,f=line.split('  ',1);assert sha((old/f).read_bytes())==h,str(old/f)
+checks=load(r/'final-checks.json');assert len(checks)==12 and all(x['exitCode']==0 for x in checks)
+assert 'ℹ pass 109' in (r/'planning-tests.log').read_text()
+for arm in ['D','B']:
+ for prefix in ['budget-','linux-budget-']:
+  text=(r/(prefix+arm+'.log')).read_text();assert 'pass 17' in text and 'fail 0' in text and 'skipped 0' in text
+assert len(load(r/'container-validation.json'))==2
+review=load(r/'evidence-review.json');assert review['status']=='passed' and review['eightClientFunctionalJourneys'] and not review['typingGatesPassed'];assert load(r/'native-summary.json')['gatePassed'];assert not load(r/'browser-summary.json')['allSixUninstrumentedTypingGuardsPass']
+provenance=load(packet/'artifact-provenance.json')
+for f,x in provenance.items():assert sha((packet/f).read_bytes())==x['storedSha256'],f
+privacy=load(packet/'privacy-audit.json');assert privacy['matches']==0
+result={'status':'passed','priorCumulativeFilesCompared':count,'onlyPriorFilesChanged':sorted(allowed),'appendOnlyDocs':True,'priorPatches01Through08Exact':True,'priorPacketsAllChecksumsValid':True,'realIndexSha256Unchanged':start['realIndexSha256'],'finalChecksPassed':12,'unchangedBudgetCasesAcrossMacAndLinux':68,'planningCasesPassed':109,'nativeColdProcessRuns':4,'nativeColdPublisherAudits':28,'fullClientJourneys':8,'typingGateMissRetained':True,'nativeConstrainedGatesPassed':True,'defaults':'16/64','workingRuntimeTestsPlanningAndSecurityContractsUnchanged':True,'generalQualificationPaused':True,'scope':'Final evidence and unchanged-tree audit; no source adoption, commit, preview, push, merge or deployment.'}
+(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n')
+(packet/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+str(p.relative_to(packet))+'\n'for p in sorted(packet.rglob('*'))if p.is_file()and p.name!='SHA256SUMS'))
+print(json.dumps(result,indent=2))

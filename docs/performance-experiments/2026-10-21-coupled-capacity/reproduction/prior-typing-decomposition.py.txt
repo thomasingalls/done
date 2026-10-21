@@ -1,0 +1,10 @@
+from pathlib import Path
+import json,math,hashlib
+r=Path(__file__).parent;prior=Path('/private/tmp/done-rate-review-20261021');rows=[]
+for case in json.loads((prior/'browser-plan.json').read_text()):
+ if not case['pressure']:continue
+ f=prior/case['name']/'result.json';d=json.loads(f.read_text());offers=d['concurrent']['offers'];a=d['browsers'][0];events=[x for x in a['inputs']if offers[0]['at']-2<=x['at']<=offers[-1]['returnedAt']+10 and x['type']=='insertText'and x['dataLength']==1];assert len(events)==120;v=[]
+ for j,(o,e)in enumerate(zip(offers,events)):
+  dom=next(x['at']for x in a['rows']if x['at']>=o['at']-2 and x['lengths'][0]>=len('Sync target A:')+600+j+1);v.append({'offerToBeforeinput':e['at']-o['at'],'beforeinputToDOM':dom-e['at'],'offerToDOM':dom-o['at'],'beforeinputToRAF':e['rafAt']-e['at']})
+ rows.append({'name':case['name'],'priorRawSha256':hashlib.sha256(f.read_bytes()).hexdigest(),'rows':v,'p95':{k:sorted(x[k]for x in v)[math.ceil(.95*len(v))-1]for k in v[0]},'scope':'Retrospective decomposition of retained prior guard miss. Quantiles are not additive. Host/CDP offer is not a physical keyboard timestamp; browser mutation is not painted pixels.'})
+(r/'prior-typing-decomposition.json').write_text(json.dumps(rows,indent=2)+'\n')

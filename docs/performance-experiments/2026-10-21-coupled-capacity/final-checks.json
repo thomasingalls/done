@@ -1,0 +1,136 @@
+[
+  {
+    "name": "linux-budget",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/container-validation.py"
+    ],
+    "startedAt": 1792602723905,
+    "completedAt": 1792602733528,
+    "exitCode": 0
+  },
+  {
+    "name": "dom-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/analyze-dom.py",
+      "/private/tmp/done-coupled-capacity-20261021/ordinary-D/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/ordinary-B/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/pressure1-D/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/pressure1-B/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/pressure2-B/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/pressure2-D/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/diagnostic-D/result.json",
+      "/private/tmp/done-coupled-capacity-20261021/diagnostic-B/result.json"
+    ],
+    "startedAt": 1792602733528,
+    "completedAt": 1792602733633,
+    "exitCode": 0
+  },
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/analyze.py"
+    ],
+    "startedAt": 1792602733633,
+    "completedAt": 1792602733682,
+    "exitCode": 0
+  },
+  {
+    "name": "input-decomposition",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/typing-decomposition.py"
+    ],
+    "startedAt": 1792602733682,
+    "completedAt": 1792602733742,
+    "exitCode": 0
+  },
+  {
+    "name": "profiles",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/profile-analysis.py"
+    ],
+    "startedAt": 1792602733743,
+    "completedAt": 1792602734065,
+    "exitCode": 0
+  },
+  {
+    "name": "source-maps",
+    "command": [
+      "node",
+      "/private/tmp/done-coupled-capacity-20261021/map-profiles.mjs"
+    ],
+    "startedAt": 1792602734065,
+    "completedAt": 1792602734292,
+    "exitCode": 0
+  },
+  {
+    "name": "identity",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/identity.py"
+    ],
+    "startedAt": 1792602796677,
+    "completedAt": 1792602797782,
+    "exitCode": 0
+  },
+  {
+    "name": "evidence-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/review-evidence.py"
+    ],
+    "startedAt": 1792602797782,
+    "completedAt": 1792602797886,
+    "exitCode": 0
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792602797886,
+    "completedAt": 1792602798671,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792602798671,
+    "completedAt": 1792602799716,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792602799717,
+    "completedAt": 1792602801977,
+    "exitCode": 0
+  },
+  {
+    "name": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-first-authority/registry.test.mjs"
+    ],
+    "startedAt": 1792602801978,
+    "completedAt": 1792602845650,
+    "exitCode": 0
+  }
+]

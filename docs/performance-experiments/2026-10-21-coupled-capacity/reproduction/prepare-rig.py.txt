@@ -1,0 +1,50 @@
+from pathlib import Path
+import json,hashlib,subprocess
+r=Path(__file__).parent;p=Path('/private/tmp/done-rate-review-20261021');sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest()
+# Retain independent hash identities, original fixtures/client; original test closure except temporary browser profiler.
+m=json.loads((p/'source-identity.json').read_text()); sources={a:m[a] for a in ['D','B']}
+for a in sources:
+ for f,h in sources[a]['sha256'].items():assert sha(r/('source-'+a)/f)==h
+(r/'source-identity.json').write_text(json.dumps(sources,indent=2)+'\n')
+# Container service uses line IPC, exact production imports under cached image /app, counters and cgroup reads.
+s=(p/'api-server.mjs').read_text().replace("const root='/private/tmp/done-rate-review-20261021',source=process.argv[2],state=process.argv[3];mkdirSync(state,{recursive:false,mode:0o700});","const root='/experiment',source='/app',state='/state';\nconst cgroup=()=>Object.fromEntries(['cpu.max','cpu.stat','memory.max','memory.swap.max','memory.current','memory.peak','memory.events','pids.max'].map(n=>[n,readFileSync('/sys/fs/cgroup/'+n,'utf8').trim()]));\nprocess.send=(m,cb)=>{process.stdout.write(JSON.stringify(m)+'\\n',cb)};process.disconnect=()=>{process.stdin.destroy();};\nconst {createInterface}=await import('node:readline');const lines=createInterface({input:process.stdin});lines.on('line',line=>process.emit('message',JSON.parse(line)));")
+s=s.replace("server.listen(0,'127.0.0.1',resolve)","server.listen(53110,'0.0.0.0',resolve)")
+s=s.replace("metrics={startedReads:0,","metrics={cgroupBefore:cgroup(),startedReads:0,")
+s=s.replace('metrics:{publisherVerification:', 'metrics:{cgroupBefore:m.cgroupBefore,cgroupAfter:cgroup(),publisherVerification:')
+(r/'container-server.mjs').write_text(s)
+# Local fork adapter relays numeric IPC only, docker published ephemeral loopback port.
+(r/'api-server.mjs').write_text('''import {spawn,execFileSync} from 'node:child_process';
+import {createInterface} from 'node:readline';
+import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+const root='/private/tmp/done-coupled-capacity-20261021',source=process.argv[2],state=process.argv[3];mkdirSync(state,{mode:0o700});
+const image=JSON.parse(readFileSync(root+'/container-image.json')).Id;
+const args=['run','--rm','--interactive','--cpus=1','--memory=1g','--memory-swap=1g','--pids-limit=128','--cap-drop=ALL','--security-opt=no-new-privileges','--read-only','--tmpfs','/tmp:rw,nosuid,nodev,size=64m','--user',String(process.getuid())+':'+String(process.getgid()),'--cidfile',state+'/container.cid','--publish','127.0.0.1::53110','--volume',root+':/experiment:ro','--volume',state+':/state:rw','--volume',source+'/account-service:/app/account-service:ro','--volume',source+'/account-protocol:/app/account-protocol:ro','--entrypoint','node',image,'/experiment/container-server.mjs'];
+writeFileSync(state+'/docker-command.json',JSON.stringify(args,null,2)+'\\n');
+const child=spawn('docker',args,{stdio:['pipe','pipe','inherit']});
+createInterface({input:child.stdout}).on('line',line=>{const msg=JSON.parse(line);if(msg.ready){const id=readFileSync(state+'/container.cid','utf8').trim();const inspected=JSON.parse(execFileSync('docker',['inspect',id]));const x=inspected[0],h=x.HostConfig;writeFileSync(state+'/container-inspect.json',JSON.stringify({Id:x.Id,Image:x.Image,Config:{User:x.Config.User,Entrypoint:x.Config.Entrypoint,Cmd:x.Config.Cmd},HostConfig:{NanoCpus:h.NanoCpus,Memory:h.Memory,MemorySwap:h.MemorySwap,PidsLimit:h.PidsLimit,ReadonlyRootfs:h.ReadonlyRootfs,CapDrop:h.CapDrop,SecurityOpt:h.SecurityOpt},NetworkSettings:{Ports:x.NetworkSettings.Ports},Mounts:x.Mounts},null,2)+'\\n');msg.port=Number(x.NetworkSettings.Ports['53110/tcp'][0].HostPort);}process.send?.(msg)});
+process.on('message',msg=>child.stdin.write(JSON.stringify(msg)+'\\n'));
+child.on('exit',(code,signal)=>{process.exitCode=code??1;process.disconnect();});
+process.on('SIGTERM',()=>{try{const id=readFileSync(state+'/container.cid','utf8').trim();execFileSync('docker',['stop','--time','10',id],{stdio:'ignore'});}catch{}child.kill('SIGTERM');});
+''')
+# Adapt native driver to seven real authorities; each reader indexes its own signed scope/session.
+s=(p/'api-load.mjs').read_text().replace('/private/tmp/done-rate-review-20261021','/private/tmp/done-coupled-capacity-20261021')
+s=s.replace("for(const who of ['first','other'])", "for(const who of ['first','other','publisher1','publisher2','publisher3','publisher4','publisher5'])")
+s=s.replace("const grants={first:[],other:[]};","const grants=Object.fromEntries(['first','other','publisher1','publisher2','publisher3','publisher4','publisher5'].map(w=>[w,[]]));")
+s=s.replace("let after=0,batches=0;const at=Date.now();", "const who=index===0?'first':'publisher'+index;let after=0,batches=0;const at=Date.now();")
+s=s.replace("query(data.first,after+i)","query(data[who],after+i)").replace("'first',index,'replay-'","who,0,'replay-'")
+s=s.replace("data.first.retained.length","data[who].retained.length").replace("requests[i],data.first,data.first.retained.slice(0,through)","requests[i],data[who],data[who].retained.slice(0,through)")
+s=s.replace('Six sessions of one first-epoch workspace plus an unrelated account; not six different authority histories or production capacity.','Six distinct first-epoch account publishers, one scoped replay session each plus independent unrelated account; one CPU and1GiB enforced cgroup; not production capacity.')
+assert 'data.first' not in s;s=s.replace("writeFileSync(output+'/'+name+'.log',logs)","writeFileSync(output+'/'+name+'.log',logs)")
+(r/'api-load.mjs').write_text(s)
+s=(p/'audit-api.mjs').read_text().replace('/private/tmp/done-rate-review-20261021','/private/tmp/done-coupled-capacity-20261021').replace("for(const who of ['first','other'])", "for(const who of ['first','other','publisher1','publisher2','publisher3','publisher4','publisher5'])").replace("offered=run.writes[who].length,verified=run.writes[who].filter", "offered=(run.writes[who]??[]).length,verified=(run.writes[who]??[]).filter")
+(r/'audit-api.mjs').write_text(s)
+(r/'run-native.py').write_text('''from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent
+cmd=['node',str(r/'api-load.mjs')];env={**os.environ,'LOAD_PLAN':'native-plan.json','LOAD_OUTPUT':'native','LOAD_POSITIONS':'256','LOAD_READERS':'6','LOAD_FIRST_WRITER':'1','LOAD_OTHER_WRITER':'1','LOAD_PEER':'1'}
+at=time.time_ns()//1000000
+with (r/'native-launch.log').open('w') as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+(r/'native-runner.json').write_text(json.dumps({'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode},indent=2)+'\\n');print(p.returncode)
+raise SystemExit(p.returncode)
+''')
+print('Rig source prepared; no measurements started')

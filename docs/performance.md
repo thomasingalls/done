@@ -2037,3 +2037,27 @@ Exact patch02 packaged-client normal/duplicate-reader functional journeys pass34
 The single-session D/S pair is68.654/31.686s. The32/64 primary fails the relative native fairness gate: median per-run hot offered-to-proof p95 182→315.5ms; separate-account peer607→1133.5ms. Every absolute2.5s/resource guard passes; small quantile samples and1s retry steps remain qualified. Process128 variants pass local native gates but are diagnostic, with no production-capacity or adoption claim.
 
 Three restored actual-client600-update D/S pairs improve 31.46% at median. All10 normal/foreground/duplicate-pressure client journeys pass full data/edit/offline guards; all predeclared typing gates: False. Repeated-reference drift 0.07%. No physical Firefox/Android/WAN, container sizing, maximum sustained capacity or deployed-version claim. Pressure local typing also misses16ms (12.0→17.8ms). Keep16/64 pending a bounded typing/coupled-policy/container/multiple-publisher investigation. Preserve complete raw denominator, gate misses and the native stdout collision note; no new aggregate qualification credit.
+
+
+## Coupled rate capacity, distinct cold publishers and typing — 2026-10-21
+
+[Prospective phase09 and evidence](./performance-experiments/2026-10-21-coupled-capacity/README.md). Four D,B,B,D cold runs enforce Linux cgroup: 1 CPU, 1 GiB, zero swap and pids 128; driver/oracle outside. Six genuinely distinct 256-row publishers each replay256signed positions, plus separate account writes/reads and first-publisher500ms writer. Current service modules mounted read-only; cached image supplies dependencies, not a new release artifact.
+
+| Run | Replay ms | Offered/verified first/other writes |429s| CPU ms | RSS MB |
+|---|---:|---|---:|---:|---:|
+|1 D|21357|42/21|82|10440.7|189.4|
+|2 B|10501|20/10|12|8926.0|184.2|
+|3 B|10565|21/10|12|8929.1|184.3|
+|4 D|21080|42/21|77|10639.5|186.0|
+
+All 1,536 positions and original live/cold wire/link/proof checks pass in every run. Seven censuses/run, no OOM/quarantine/pending lanes; all declared fairness/resource guards pass. Actual CPU throttling occurred. No maximum/production/long-history/platform-capacity claim.
+
+Six uninstrumented exact-client journeys plus two both-renderer profile journeys preserve full exports, two-way writing, Undo/Redo and locked offline reopen.
+
+| Pair | D/B catchup ms | Improvement % | Local p95 D/B ms | Local/peer guards |
+|---|---|---:|---|---|
+|ordinary-D / ordinary-B|33760 / 24646|27.0|14.4 / 10.4|True / True|
+|pressure1-D / pressure1-B|139896 / 25653|81.66|9.5 / 16.8|False / True|
+|pressure2-D / pressure2-B|145821 / 29694|79.64|12 / 9.2|True / True|
+
+Typing acceptance remains failed. Preserve16.8ms pressure1-B against16ms; later9.2ms does not erase it. Decomposition puts the missed arm's offer→beforeinput p95 at16.3ms and event→DOM at0.7ms. Quantiles are not additive, host/CDP offer includes dispatch/scheduling, and mutation is not paint. Both mapped renderer profiles are mechanism-only; native crypto/IDB durations are asynchronous wall time. Keep 16/64 pending dispatch/control/foreground/device discrimination.68 original budget cases across Mac/Linux and 109 planning cases pass; all 881 obligations, 337 unresolved obligations and 97 construction statuses stay exact. No runtime/test/default change, preview/publication or general qualification.

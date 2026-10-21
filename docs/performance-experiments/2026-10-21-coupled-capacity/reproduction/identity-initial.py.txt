@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,hashlib,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');prior=Path('/private/tmp/done-rate-review-20261021');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());git=['git','--git-dir='+str(prior/'patch08-index.git')]
+for f in ['docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:
+ assert (repo/f).read_bytes()==subprocess.check_output(git+['show',start['priorTree']+':'+f]),f
+for arm,values in json.loads((r/'source-identity.json').read_text()).items():
+ for f,h in values['sha256'].items():assert sha(r/('source-'+arm)/f)==h
+ if arm=='D':assert all(sha(repo/f)==h for f,h in values['sha256'].items())
+ original={str(f.relative_to(prior/('source-'+arm))):sha(f)for f in (prior/('source-'+arm)/'test').rglob('*')if f.is_file()and f.suffix in ['.mjs','.ts']};current={str(f.relative_to(r/('source-'+arm))):sha(f)for f in (r/('source-'+arm)/'test').rglob('*')if f.is_file()and f.suffix in ['.mjs','.ts']};changes=[f for f,h in current.items()if original.get(f)!=h];assert changes==['test/live-sync-attribution/live-sync.spec.ts'],changes
+ for f,h in original.items():
+  if f.startswith('test/live-sync-attribution/'):continue
+  assert sha(repo/f)==h,f
+pre=json.loads((r/'preflight.json').read_text());closure={f.name:sha(f)for f in (r/'source-D/test/live-sync-attribution').iterdir()if f.is_file()};assert pre['browserClosure']==closure
+assert closure=={f.name:sha(f)for f in (r/'source-B/test/live-sync-attribution').iterdir()if f.is_file()}
+p=json.loads((prior/'identity.json').read_text());build={str(f.relative_to(r/'client-dist')):sha(f)for f in (r/'client-dist').rglob('*')if f.is_file()};assert build==p['clientBuildSha256']
+for f,h in p['privateFixtureSha256'].items():assert sha(Path(f))==h
+image=json.loads((r/'container-image.json').read_text());man=json.loads((repo/'docs/release-validation-manifest.json').read_text());graph=json.loads((repo/'docs/release-validation-graph.json').read_text());assert len(man['rows'])==881 and len(man['unresolved'])==337 and len(graph['constructions'])==97
+x={'status':'passed','environment':p['environment'],'browser':p['browser'],'browserHashScope':p['browserHashScope'],'sourceFilesPerArm':803,'testClosureOnlyTemporaryProfilerDiff':True,'workingRuntimeAndTestsUnchanged':True,'browserClosureSha256':closure,'exactPatch02Client110Assets':build,'priorPrivateFixtureSha256':p['privateFixtureSha256'],'newNativeFixtureSha256':{n:sha(r/'private-api'/n)for n in ['fixture.json','account.sqlite','authority.sqlite']},'containerImage':{'id':image['Id'],'architecture':image['Architecture'],'os':image['Os'],'RepoDigests':image['RepoDigests']},'linuxOracleSchemaSha256':sha(r/'source-D/docs/account-crypto/first-authority.json'),'dockerRuntime':(r/'docker-runtime.txt').read_text().strip(),'harnessSha256':{f.name:sha(f)for f in r.iterdir()if f.is_file()and f.suffix in ['.py','.mjs']},'obligations':881,'unresolved':337,'constructions':97,'generalQualificationPaused':True,'scope':'Runtime modules mounted read-only from identified candidate. Cached image provides Node/dependencies; not a rebuilt/deployable release artifact or full dependency store attestation.'};(r/'identity.json').write_text(json.dumps(x,indent=2)+'\n');print('Identity verified; runtime/tests/defaults/planning unchanged')

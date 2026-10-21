@@ -1,0 +1,146 @@
+[
+  {
+    "name": "ordinary-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": false,
+    "diagnostic": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-D",
+    "startedAt": 1792601924105,
+    "completedAt": 1792601973505,
+    "exitCode": 0
+  },
+  {
+    "name": "ordinary-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": false,
+    "diagnostic": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-B",
+    "startedAt": 1792601973508,
+    "completedAt": 1792602012898,
+    "exitCode": 0
+  },
+  {
+    "name": "pressure1-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-D",
+    "startedAt": 1792602012901,
+    "completedAt": 1792602168820,
+    "exitCode": 0
+  },
+  {
+    "name": "pressure1-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-B",
+    "startedAt": 1792602168823,
+    "completedAt": 1792602209281,
+    "exitCode": 0
+  },
+  {
+    "name": "pressure2-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-B",
+    "startedAt": 1792602209284,
+    "completedAt": 1792602252955,
+    "exitCode": 0
+  },
+  {
+    "name": "pressure2-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-D",
+    "startedAt": 1792602252957,
+    "completedAt": 1792602415128,
+    "exitCode": 0
+  },
+  {
+    "name": "diagnostic-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-D",
+    "startedAt": 1792602415130,
+    "completedAt": 1792602569651,
+    "exitCode": 0
+  },
+  {
+    "name": "diagnostic-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-coupled-capacity-20261021/source-B",
+    "startedAt": 1792602569654,
+    "completedAt": 1792602614688,
+    "exitCode": 0
+  }
+]

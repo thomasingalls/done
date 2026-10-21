@@ -1,0 +1,18 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
+import {basename} from 'node:path';
+const root='/private/tmp/done-coupled-capacity-20261021';
+const require=createRequire('/Users/thomasingalls/.codex/worktrees/7fda/done/package.json');
+const lib='/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping';
+const {TraceMap,originalPositionFor}=require(lib),cache=new Map();
+const rows=JSON.parse(readFileSync(root+'/profile-summary.json'));
+for(const row of rows)for(const p of Object.values(row.profiles))for(const kind of ['selfTop','inclusiveTop'])for(const frame of p[kind]){
+ if(!frame.url.startsWith('http://localhost:53781/assets/'))continue;
+ const asset=basename(new URL(frame.url).pathname);
+ try{
+  let map=cache.get(asset);if(!map){map=new TraceMap(JSON.parse(readFileSync(root+'/client-dist/assets/'+asset+'.map')));cache.set(asset,map)}
+  frame.original=originalPositionFor(map,{line:frame.line0+1,column:frame.column0});
+ }catch(e){frame.mapFailure=String(e)}
+}
+writeFileSync(root+'/mapped-profiles.json',JSON.stringify(rows,null,2)+'\n');
+for(const r of rows){console.log(r.arm);for(const [n,p]of Object.entries(r.profiles)){console.log(n);for(const k of ['selfTop','inclusiveTop'])console.log(k,p[k].slice(0,15).map(f=>({ms:Math.round(f.sampleWeightedMs),function:f.function,original:f.original})))}}

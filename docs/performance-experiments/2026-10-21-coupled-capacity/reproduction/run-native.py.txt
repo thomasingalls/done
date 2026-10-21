@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent
+cmd=['node',str(r/'api-load.mjs')];env={**os.environ,'LOAD_PLAN':'native-plan.json','LOAD_OUTPUT':'native','LOAD_POSITIONS':'256','LOAD_READERS':'6','LOAD_FIRST_WRITER':'1','LOAD_OTHER_WRITER':'1','LOAD_PEER':'1'}
+at=time.time_ns()//1000000
+with (r/'native-launch.log').open('w') as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+(r/'native-runner.json').write_text(json.dumps({'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode},indent=2)+'\n');print(p.returncode)
+raise SystemExit(p.returncode)

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "ordinary-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": false,
+    "diagnostic": false
+  },
+  {
+    "name": "ordinary-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": false,
+    "diagnostic": false
+  },
+  {
+    "name": "pressure1-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false
+  },
+  {
+    "name": "pressure1-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false
+  },
+  {
+    "name": "pressure2-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false
+  },
+  {
+    "name": "pressure2-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": false
+  },
+  {
+    "name": "diagnostic-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": true
+  },
+  {
+    "name": "diagnostic-B",
+    "arm": "B",
+    "mode": "catchup",
+    "pressure": true,
+    "diagnostic": true
+  }
+]

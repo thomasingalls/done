@@ -1,0 +1,4542 @@
+[
+  {
+    "arm": "D",
+    "typingWindowEpochMs": [
+      1792602422231,
+      1792602440095
+    ],
+    "profiles": {
+      "sender": {
+        "totalSampleWeightedMs": 17864.0,
+        "samplingIntervalUs": 1000,
+        "wallClockAnchorUncertaintyMs": 116,
+        "profileSpanMs": 140954.145,
+        "selfTop": [
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 13731.46533203125,
+            "samplesSelf": 9322
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 608.544677734375,
+            "samplesSelf": 420
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 597.28955078125,
+            "samplesSelf": 402
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 303.04931640625,
+            "samplesSelf": 205
+          },
+          {
+            "function": "V",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6391,
+            "sampleWeightedMs": 256.9619140625,
+            "samplesSelf": 175
+          },
+          {
+            "function": "readIfMatches",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8606,
+            "sampleWeightedMs": 250.5185546875,
+            "samplesSelf": 168
+          },
+          {
+            "function": "read",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8712,
+            "sampleWeightedMs": 159.130859375,
+            "samplesSelf": 107
+          },
+          {
+            "function": "(garbage collector)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 123.88330078125,
+            "samplesSelf": 75
+          },
+          {
+            "function": "t",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 15,
+            "sampleWeightedMs": 106.5205078125,
+            "samplesSelf": 72
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7458,
+            "sampleWeightedMs": 99.9931640625,
+            "samplesSelf": 68
+          },
+          {
+            "function": "now",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 46.825439453125,
+            "samplesSelf": 32
+          },
+          {
+            "function": "X",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8155,
+            "sampleWeightedMs": 45.379638671875,
+            "samplesSelf": 36
+          },
+          {
+            "function": "select",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8454,
+            "sampleWeightedMs": 39.218994140625,
+            "samplesSelf": 27
+          },
+          {
+            "function": "A",
+            "url": "http://localhost:53781/assets/spoolRecord-DQv6tAoq.js",
+            "line0": 0,
+            "column0": 1987,
+            "sampleWeightedMs": 37.25048828125,
+            "samplesSelf": 26
+          },
+          {
+            "function": "F",
+            "url": "http://localhost:53781/assets/verificationMemo-BUQq9-xh.js",
+            "line0": 0,
+            "column0": 2755,
+            "sampleWeightedMs": 32.852294921875,
+            "samplesSelf": 23
+          },
+          {
+            "function": "structuredClone",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 32.015869140625,
+            "samplesSelf": 22
+          },
+          {
+            "function": "verify",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 31.708740234375,
+            "samplesSelf": 22
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 592,
+            "sampleWeightedMs": 28.932861328125,
+            "samplesSelf": 20
+          },
+          {
+            "function": "encode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 25.890625,
+            "samplesSelf": 18
+          },
+          {
+            "function": "MS",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 46,
+            "column0": 476,
+            "sampleWeightedMs": 25.07421875,
+            "samplesSelf": 17
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7270,
+            "sampleWeightedMs": 24.39208984375,
+            "samplesSelf": 17
+          },
+          {
+            "function": "transaction",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 23.29931640625,
+            "samplesSelf": 16
+          },
+          {
+            "function": "n",
+            "url": "http://localhost:53781/assets/custodyCrypto-C44ppXTm.js",
+            "line0": 0,
+            "column0": 104,
+            "sampleWeightedMs": 20.791748046875,
+            "samplesSelf": 14
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 26308,
+            "sampleWeightedMs": 20.129150390625,
+            "samplesSelf": 13
+          },
+          {
+            "function": "r",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 235,
+            "sampleWeightedMs": 19.25,
+            "samplesSelf": 13
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6674,
+            "sampleWeightedMs": 18.916015625,
+            "samplesSelf": 13
+          },
+          {
+            "function": "text",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 89695,
+            "sampleWeightedMs": 18.130615234375,
+            "samplesSelf": 12
+          },
+          {
+            "function": "Fd",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 9,
+            "column0": 7845,
+            "sampleWeightedMs": 17.515625,
+            "samplesSelf": 12
+          },
+          {
+            "function": "Ie",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 0,
+            "column0": 4698,
+            "sampleWeightedMs": 17.430419921875,
+            "samplesSelf": 12
+          },
+          {
+            "function": "decode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 16.57177734375,
+            "samplesSelf": 11
+          },
+          {
+            "function": "verify",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8866,
+            "sampleWeightedMs": 15.572021484375,
+            "samplesSelf": 11
+          },
+          {
+            "function": "Yc",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 93011,
+            "sampleWeightedMs": 15.3359375,
+            "samplesSelf": 11
+          },
+          {
+            "function": "hi",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 28098,
+            "sampleWeightedMs": 14.38232421875,
+            "samplesSelf": 10
+          },
+          {
+            "function": "Sr",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3213,
+            "sampleWeightedMs": 13.667236328125,
+            "samplesSelf": 10
+          },
+          {
+            "function": "Cr",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 1,
+            "column0": 7667,
+            "sampleWeightedMs": 13.660888671875,
+            "samplesSelf": 9
+          }
+        ],
+        "inclusiveTop": [
+          {
+            "function": "(root)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17864.0,
+            "samplesSelf": 0
+          },
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 13731.46533203125,
+            "samplesSelf": 9322
+          },
+          {
+            "function": "verify",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8866,
+            "sampleWeightedMs": 916.186767578125,
+            "samplesSelf": 11
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 756.1484375,
+            "samplesSelf": 402
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 275,
+            "sampleWeightedMs": 738.3466796875,
+            "samplesSelf": 2
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/writeSession-CS4wejtt.js",
+            "line0": 1,
+            "column0": 2878,
+            "sampleWeightedMs": 622.38720703125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 608.544677734375,
+            "samplesSelf": 420
+          },
+          {
+            "function": "readIfMatches",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8606,
+            "sampleWeightedMs": 406.47705078125,
+            "samplesSelf": 168
+          },
+          {
+            "function": "v",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 52526,
+            "sampleWeightedMs": 406.47705078125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "validate",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 57023,
+            "sampleWeightedMs": 369.083740234375,
+            "samplesSelf": 2
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 42439,
+            "sampleWeightedMs": 365.03466796875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 36972,
+            "sampleWeightedMs": 363.58056640625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "read",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8712,
+            "sampleWeightedMs": 310.524169921875,
+            "samplesSelf": 107
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 303.04931640625,
+            "samplesSelf": 205
+          },
+          {
+            "function": "J",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7578,
+            "sampleWeightedMs": 295.936279296875,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7614,
+            "sampleWeightedMs": 295.931396484375,
+            "samplesSelf": 3
+          },
+          {
+            "function": "gu",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 110928,
+            "sampleWeightedMs": 283.621337890625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "V",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6391,
+            "sampleWeightedMs": 283.155029296875,
+            "samplesSelf": 175
+          },
+          {
+            "function": "H",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6650,
+            "sampleWeightedMs": 278.64306640625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "od",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 121637,
+            "sampleWeightedMs": 273.357177734375,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 123049,
+            "sampleWeightedMs": 273.357177734375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "verifyProposed",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 85007,
+            "sampleWeightedMs": 271.639404296875,
+            "samplesSelf": 2
+          },
+          {
+            "function": "ld",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 122987,
+            "sampleWeightedMs": 270.293212890625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "id",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 121224,
+            "sampleWeightedMs": 270.293212890625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "flush",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 59215,
+            "sampleWeightedMs": 245.3564453125,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 53076,
+            "sampleWeightedMs": 240.790283203125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 43,
+            "column0": 35373,
+            "sampleWeightedMs": 239.279296875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 1059,
+            "sampleWeightedMs": 239.279296875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "es",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 446,
+            "sampleWeightedMs": 239.279296875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "$o",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 7,
+            "column0": 8885,
+            "sampleWeightedMs": 239.279296875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "input",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 55,
+            "column0": 1393,
+            "sampleWeightedMs": 236.26025390625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "g",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 43,
+            "column0": 34370,
+            "sampleWeightedMs": 236.26025390625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "beforeCommit",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 18217,
+            "sampleWeightedMs": 230.82763671875,
+            "samplesSelf": 3
+          },
+          {
+            "function": "ie",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 54,
+            "column0": 12621,
+            "sampleWeightedMs": 223.848876953125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "submit",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 46,
+            "column0": 78144,
+            "sampleWeightedMs": 220.760986328125,
+            "samplesSelf": 1
+          }
+        ],
+        "scope": "Sampler wall-time weight, not exact CPU accounting. Exclusive frames and inclusive ancestors kept separate; idle/native/internal work may be unattributed. Midpoint wall anchor uncertainty retained.",
+        "longTasksDuringTyping": []
+      },
+      "receiver": {
+        "totalSampleWeightedMs": 17864.0,
+        "samplingIntervalUs": 1000,
+        "wallClockAnchorUncertaintyMs": 95,
+        "profileSpanMs": 140874.282,
+        "selfTop": [
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 15410.486083984375,
+            "samplesSelf": 10446
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 621.096923828125,
+            "samplesSelf": 421
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7270,
+            "sampleWeightedMs": 349.8994140625,
+            "samplesSelf": 236
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 337.09912109375,
+            "samplesSelf": 227
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 126.49658203125,
+            "samplesSelf": 253
+          },
+          {
+            "function": "(garbage collector)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 97.79638671875,
+            "samplesSelf": 58
+          },
+          {
+            "function": "r",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 235,
+            "sampleWeightedMs": 52.984619140625,
+            "samplesSelf": 38
+          },
+          {
+            "function": "verify",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 50.150390625,
+            "samplesSelf": 35
+          },
+          {
+            "function": "normalizeWhiteSpace",
+            "url": "",
+            "line0": 1923,
+            "column0": 28,
+            "sampleWeightedMs": 45.3369140625,
+            "samplesSelf": 29
+          },
+          {
+            "function": "Sr",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3213,
+            "sampleWeightedMs": 44.822998046875,
+            "samplesSelf": 31
+          },
+          {
+            "function": "select",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8454,
+            "sampleWeightedMs": 24.514404296875,
+            "samplesSelf": 17
+          },
+          {
+            "function": "elementText",
+            "url": "",
+            "line0": 5090,
+            "column0": 20,
+            "sampleWeightedMs": 24.1103515625,
+            "samplesSelf": 17
+          },
+          {
+            "function": "n",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 122,
+            "sampleWeightedMs": 23.759033203125,
+            "samplesSelf": 16
+          },
+          {
+            "function": "encode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 22.3408203125,
+            "samplesSelf": 15
+          },
+          {
+            "function": "transaction",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17.93212890625,
+            "samplesSelf": 12
+          },
+          {
+            "function": "n",
+            "url": "http://localhost:53781/assets/custodyCrypto-C44ppXTm.js",
+            "line0": 0,
+            "column0": 104,
+            "sampleWeightedMs": 16.086181640625,
+            "samplesSelf": 11
+          },
+          {
+            "function": "t",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 15,
+            "sampleWeightedMs": 15.284423828125,
+            "samplesSelf": 10
+          },
+          {
+            "function": "decode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 15.000244140625,
+            "samplesSelf": 10
+          },
+          {
+            "function": "fetch",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 14.2138671875,
+            "samplesSelf": 10
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 592,
+            "sampleWeightedMs": 9.397216796875,
+            "samplesSelf": 7
+          },
+          {
+            "function": "Ml",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 16,
+            "column0": 275,
+            "sampleWeightedMs": 9.0859375,
+            "samplesSelf": 6
+          },
+          {
+            "function": "encodeInto",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 8.894775390625,
+            "samplesSelf": 6
+          },
+          {
+            "function": "i",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 571,
+            "sampleWeightedMs": 8.75439453125,
+            "samplesSelf": 6
+          },
+          {
+            "function": "get",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 7.601806640625,
+            "samplesSelf": 5
+          },
+          {
+            "function": "continue",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 7.584228515625,
+            "samplesSelf": 5
+          },
+          {
+            "function": "h",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 2421,
+            "sampleWeightedMs": 7.515625,
+            "samplesSelf": 5
+          },
+          {
+            "function": "",
+            "url": "/private/tmp/done-live-sync-attribution-20261021/browser-diagnostics.js",
+            "line0": 12,
+            "column0": 11,
+            "sampleWeightedMs": 7.4921875,
+            "samplesSelf": 5
+          },
+          {
+            "function": "_",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 3745,
+            "sampleWeightedMs": 7.25341796875,
+            "samplesSelf": 5
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 26308,
+            "sampleWeightedMs": 6.849365234375,
+            "samplesSelf": 5
+          },
+          {
+            "function": "get result",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 6.087158203125,
+            "samplesSelf": 4
+          },
+          {
+            "function": "t",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 46,
+            "column0": 19180,
+            "sampleWeightedMs": 6.02294921875,
+            "samplesSelf": 4
+          },
+          {
+            "function": "shouldSkipForTextMatching",
+            "url": "",
+            "line0": 5086,
+            "column0": 34,
+            "sampleWeightedMs": 5.923095703125,
+            "samplesSelf": 4
+          },
+          {
+            "function": "getMissing",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 3,
+            "column0": 15180,
+            "sampleWeightedMs": 5.8955078125,
+            "samplesSelf": 4
+          },
+          {
+            "function": "x",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 10032,
+            "sampleWeightedMs": 5.69580078125,
+            "samplesSelf": 4
+          },
+          {
+            "function": "V",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6391,
+            "sampleWeightedMs": 5.587890625,
+            "samplesSelf": 4
+          }
+        ],
+        "inclusiveTop": [
+          {
+            "function": "(root)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17864.0,
+            "samplesSelf": 0
+          },
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 15410.486083984375,
+            "samplesSelf": 10446
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 621.096923828125,
+            "samplesSelf": 421
+          },
+          {
+            "function": "step",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 31502,
+            "sampleWeightedMs": 472.8662109375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "step",
+            "url": "http://localhost:53781/assets/writeSession-CS4wejtt.js",
+            "line0": 1,
+            "column0": 2850,
+            "sampleWeightedMs": 471.3671875,
+            "samplesSelf": 3
+          },
+          {
+            "function": "step",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 247,
+            "sampleWeightedMs": 471.272216796875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "p",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 0,
+            "column0": 1416,
+            "sampleWeightedMs": 434.419677734375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "o.onsuccess",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7264,
+            "sampleWeightedMs": 366.48388671875,
+            "samplesSelf": 3
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7270,
+            "sampleWeightedMs": 357.483642578125,
+            "samplesSelf": 236
+          },
+          {
+            "function": "check",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 4044,
+            "sampleWeightedMs": 341.5009765625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 337.09912109375,
+            "samplesSelf": 227
+          },
+          {
+            "function": "Sr",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3213,
+            "sampleWeightedMs": 335.42822265625,
+            "samplesSelf": 31
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3466,
+            "sampleWeightedMs": 335.42822265625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3748,
+            "sampleWeightedMs": 333.92919921875,
+            "samplesSelf": 3
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 275,
+            "sampleWeightedMs": 194.065185546875,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/writeSession-CS4wejtt.js",
+            "line0": 1,
+            "column0": 2878,
+            "sampleWeightedMs": 175.418701171875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "verify",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8866,
+            "sampleWeightedMs": 163.04150390625,
+            "samplesSelf": 4
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 144.822021484375,
+            "samplesSelf": 253
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 41150,
+            "sampleWeightedMs": 115.74853515625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "validate",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 57023,
+            "sampleWeightedMs": 115.732666015625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 36972,
+            "sampleWeightedMs": 107.522705078125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "evaluate",
+            "url": "",
+            "line0": 304,
+            "column0": 10,
+            "sampleWeightedMs": 100.541748046875,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "",
+            "line0": 0,
+            "column0": 1,
+            "sampleWeightedMs": 100.541748046875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "callMatchedElements",
+            "url": "",
+            "line0": 0,
+            "column0": 29,
+            "sampleWeightedMs": 99.022705078125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "(garbage collector)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 97.79638671875,
+            "samplesSelf": 58
+          },
+          {
+            "function": "querySelectorAll",
+            "url": "",
+            "line0": 6910,
+            "column0": 18,
+            "sampleWeightedMs": 93.583740234375,
+            "samplesSelf": 1
+          },
+          {
+            "function": "_queryEngineAll",
+            "url": "",
+            "line0": 6958,
+            "column0": 17,
+            "sampleWeightedMs": 92.019775390625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "queryAll",
+            "url": "",
+            "line0": 7009,
+            "column0": 16,
+            "sampleWeightedMs": 78.938232421875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "elementText",
+            "url": "",
+            "line0": 5090,
+            "column0": 20,
+            "sampleWeightedMs": 76.935302734375,
+            "samplesSelf": 17
+          },
+          {
+            "function": "SubtleCrypto.<computed>",
+            "url": "/private/tmp/done-live-sync-attribution-20261021/browser-diagnostics.js",
+            "line0": 28,
+            "column0": 44,
+            "sampleWeightedMs": 69.333251953125,
+            "samplesSelf": 2
+          },
+          {
+            "function": "gu",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 110928,
+            "sampleWeightedMs": 66.2236328125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "r",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 235,
+            "sampleWeightedMs": 52.984619140625,
+            "samplesSelf": 38
+          },
+          {
+            "function": "verify",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 50.150390625,
+            "samplesSelf": 35
+          },
+          {
+            "function": "ne",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 1,
+            "column0": 2802,
+            "sampleWeightedMs": 49.234375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "Oe",
+            "url": "http://localhost:53781/assets/inboundLedger-5ZDchHH-.js",
+            "line0": 0,
+            "column0": 5159,
+            "sampleWeightedMs": 47.7939453125,
+            "samplesSelf": 1
+          }
+        ],
+        "scope": "Sampler wall-time weight, not exact CPU accounting. Exclusive frames and inclusive ancestors kept separate; idle/native/internal work may be unattributed. Midpoint wall anchor uncertainty retained.",
+        "longTasksDuringTyping": []
+      }
+    },
+    "inputDecomposition": {
+      "rows": [
+        {
+          "index": 0,
+          "offerToBeforeInputMs": 1.89990234375,
+          "beforeInputToDomMs": 0.7001953125,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 11.900146484375,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 1,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 6.0,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 2,
+          "offerToBeforeInputMs": 1.89990234375,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 5.5,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 3,
+          "offerToBeforeInputMs": 1.39990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 5.2001953125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 4,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 5.099853515625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 5,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 6,
+          "offerToBeforeInputMs": 1,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.60009765625,
+          "beforeInputToRafMs": 5.300048828125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 7,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 5.10009765625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 8,
+          "offerToBeforeInputMs": 2.60009765625,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 3.199951171875,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 9,
+          "offerToBeforeInputMs": 1.89990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.39990234375,
+          "beforeInputToRafMs": 12.800048828125,
+          "keyboardCallMs": 15,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 10,
+          "offerToBeforeInputMs": 1,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.5,
+          "beforeInputToRafMs": 5.5,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 11,
+          "offerToBeforeInputMs": 1.89990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.39990234375,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 12,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 13,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 14,
+          "offerToBeforeInputMs": 1.199951171875,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 4.60009765625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 15,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 4.599853515625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 16,
+          "offerToBeforeInputMs": 1.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.60009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 17,
+          "offerToBeforeInputMs": 1,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.60009765625,
+          "beforeInputToRafMs": 4.800048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 18,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 6.099853515625,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 19,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 20,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 21,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.199951171875,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 22,
+          "offerToBeforeInputMs": 1.39990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 23,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 24,
+          "offerToBeforeInputMs": 2.699951171875,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 3.699951171875,
+          "beforeInputToRafMs": 8.800048828125,
+          "keyboardCallMs": 13,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 25,
+          "offerToBeforeInputMs": 2.699951171875,
+          "beforeInputToDomMs": 0.900146484375,
+          "offerToDomMs": 3.60009765625,
+          "beforeInputToRafMs": 8.300048828125,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 26,
+          "offerToBeforeInputMs": 3.10009765625,
+          "beforeInputToDomMs": 1.5,
+          "offerToDomMs": 4.60009765625,
+          "beforeInputToRafMs": 10.7998046875,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 27,
+          "offerToBeforeInputMs": 1.39990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 4.400146484375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 28,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 29,
+          "offerToBeforeInputMs": 16.5,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 17.10009765625,
+          "beforeInputToRafMs": 4.89990234375,
+          "keyboardCallMs": 22,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 30,
+          "offerToBeforeInputMs": 4.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 4.800048828125,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 31,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.199951171875,
+          "beforeInputToRafMs": 5.599853515625,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 32,
+          "offerToBeforeInputMs": 2.89990234375,
+          "beforeInputToDomMs": 0.900146484375,
+          "offerToDomMs": 3.800048828125,
+          "beforeInputToRafMs": 7.60009765625,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 33,
+          "offerToBeforeInputMs": 3.39990234375,
+          "beforeInputToDomMs": 1.2001953125,
+          "offerToDomMs": 4.60009765625,
+          "beforeInputToRafMs": 9.800048828125,
+          "keyboardCallMs": 15,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 34,
+          "offerToBeforeInputMs": 2.89990234375,
+          "beforeInputToDomMs": 1.300048828125,
+          "offerToDomMs": 4.199951171875,
+          "beforeInputToRafMs": 10.10009765625,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 35,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.699951171875,
+          "beforeInputToRafMs": 6.39990234375,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 36,
+          "offerToBeforeInputMs": 2.699951171875,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 3.5,
+          "beforeInputToRafMs": 6.400146484375,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 37,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.0,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 38,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.60009765625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 39,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 6.10009765625,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 40,
+          "offerToBeforeInputMs": 2.800048828125,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 4,
+          "beforeInputToRafMs": 9.800048828125,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 41,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 3.300048828125,
+          "beforeInputToRafMs": 8.099853515625,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 42,
+          "offerToBeforeInputMs": 2.89990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 3.39990234375,
+          "beforeInputToRafMs": 4.0,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 43,
+          "offerToBeforeInputMs": 5.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 6.10009765625,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 44,
+          "offerToBeforeInputMs": 7.60009765625,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 8.199951171875,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 45,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.199951171875,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 46,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.699951171875,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 47,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 48,
+          "offerToBeforeInputMs": 1.199951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 5.199951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 49,
+          "offerToBeforeInputMs": 2.699951171875,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 3.699951171875,
+          "beforeInputToRafMs": 7.400146484375,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 50,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.199951171875,
+          "beforeInputToRafMs": 5.099853515625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 51,
+          "offerToBeforeInputMs": 2.39990234375,
+          "beforeInputToDomMs": 0.900146484375,
+          "offerToDomMs": 3.300048828125,
+          "beforeInputToRafMs": 6.5,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 52,
+          "offerToBeforeInputMs": 3,
+          "beforeInputToDomMs": 1.39990234375,
+          "offerToDomMs": 4.39990234375,
+          "beforeInputToRafMs": 12.699951171875,
+          "keyboardCallMs": 17,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 53,
+          "offerToBeforeInputMs": 3.10009765625,
+          "beforeInputToDomMs": 1.39990234375,
+          "offerToDomMs": 4.5,
+          "beforeInputToRafMs": 10.199951171875,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 54,
+          "offerToBeforeInputMs": 2.699951171875,
+          "beforeInputToDomMs": 0.900146484375,
+          "offerToDomMs": 3.60009765625,
+          "beforeInputToRafMs": 6.60009765625,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 55,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 56,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.199951171875,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 57,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 58,
+          "offerToBeforeInputMs": 6.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 7.300048828125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 59,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.699951171875,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 60,
+          "offerToBeforeInputMs": 2.199951171875,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 3,
+          "beforeInputToRafMs": 6.400146484375,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 61,
+          "offerToBeforeInputMs": 3.699951171875,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 4.89990234375,
+          "beforeInputToRafMs": 9.699951171875,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 62,
+          "offerToBeforeInputMs": 3.300048828125,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 4.5,
+          "beforeInputToRafMs": 10.5,
+          "keyboardCallMs": 15,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 63,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 64,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.39990234375,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 65,
+          "offerToBeforeInputMs": 2.199951171875,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 3.199951171875,
+          "beforeInputToRafMs": 7.300048828125,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 66,
+          "offerToBeforeInputMs": 3.10009765625,
+          "beforeInputToDomMs": 1.2998046875,
+          "offerToDomMs": 4.39990234375,
+          "beforeInputToRafMs": 9.699951171875,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 67,
+          "offerToBeforeInputMs": 2.39990234375,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 3.199951171875,
+          "beforeInputToRafMs": 6.0,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 68,
+          "offerToBeforeInputMs": 3.800048828125,
+          "beforeInputToDomMs": 1.300048828125,
+          "offerToDomMs": 5.10009765625,
+          "beforeInputToRafMs": 10.39990234375,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 69,
+          "offerToBeforeInputMs": 4.300048828125,
+          "beforeInputToDomMs": 1.39990234375,
+          "offerToDomMs": 5.699951171875,
+          "beforeInputToRafMs": 10.300048828125,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 70,
+          "offerToBeforeInputMs": 5.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 5.60009765625,
+          "beforeInputToRafMs": 4.2998046875,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 71,
+          "offerToBeforeInputMs": 25,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 25.699951171875,
+          "beforeInputToRafMs": 4.60009765625,
+          "keyboardCallMs": 31,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 72,
+          "offerToBeforeInputMs": 22.5,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 23,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 27,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 73,
+          "offerToBeforeInputMs": 3,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 3.39990234375,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 74,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 2,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 75,
+          "offerToBeforeInputMs": 1.89990234375,
+          "beforeInputToDomMs": 0.7001953125,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 5.7001953125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 76,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.89990234375,
+          "offerToDomMs": 3,
+          "beforeInputToRafMs": 8.599853515625,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 77,
+          "offerToBeforeInputMs": 2.199951171875,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.89990234375,
+          "beforeInputToRafMs": 5.800048828125,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 78,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 7.699951171875,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 79,
+          "offerToBeforeInputMs": 1.39990234375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 80,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.699951171875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 81,
+          "offerToBeforeInputMs": 2.39990234375,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 3.39990234375,
+          "beforeInputToRafMs": 8.300048828125,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 82,
+          "offerToBeforeInputMs": 2.199951171875,
+          "beforeInputToDomMs": 1.10009765625,
+          "offerToDomMs": 3.300048828125,
+          "beforeInputToRafMs": 7.800048828125,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 83,
+          "offerToBeforeInputMs": 2.699951171875,
+          "beforeInputToDomMs": 1.300048828125,
+          "offerToDomMs": 4,
+          "beforeInputToRafMs": 8.699951171875,
+          "keyboardCallMs": 13,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 84,
+          "offerToBeforeInputMs": 3.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 3.800048828125,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 85,
+          "offerToBeforeInputMs": 22,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 22.5,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 27,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 86,
+          "offerToBeforeInputMs": 3.199951171875,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 3.699951171875,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 87,
+          "offerToBeforeInputMs": 0.89990234375,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.5,
+          "beforeInputToRafMs": 4.0,
+          "keyboardCallMs": 5,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 88,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.2998046875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 89,
+          "offerToBeforeInputMs": 1.39990234375,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2,
+          "beforeInputToRafMs": 4.2001953125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 90,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 1.89990234375,
+          "beforeInputToRafMs": 5.300048828125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 91,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 5.599853515625,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 92,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.39990234375,
+          "beforeInputToRafMs": 4.900146484375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 93,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 5.199951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 94,
+          "offerToBeforeInputMs": 1,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.5,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 95,
+          "offerToBeforeInputMs": 4.300048828125,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 5.5,
+          "beforeInputToRafMs": 9.800048828125,
+          "keyboardCallMs": 15,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 96,
+          "offerToBeforeInputMs": 1.199951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 4.60009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 97,
+          "offerToBeforeInputMs": 1.89990234375,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 4.2001953125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 98,
+          "offerToBeforeInputMs": 4.699951171875,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 5.300048828125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 99,
+          "offerToBeforeInputMs": 18,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 18.5,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 23,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 100,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.400146484375,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 101,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 5.800048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 102,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 5.699951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 103,
+          "offerToBeforeInputMs": 5.199951171875,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 6.39990234375,
+          "beforeInputToRafMs": 9.60009765625,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 104,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.699951171875,
+          "beforeInputToRafMs": 4.800048828125,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 105,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.39990234375,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 106,
+          "offerToBeforeInputMs": 1.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.60009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 107,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 108,
+          "offerToBeforeInputMs": 2.5,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 3.199951171875,
+          "beforeInputToRafMs": 7.5,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 109,
+          "offerToBeforeInputMs": 3.199951171875,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 4.39990234375,
+          "beforeInputToRafMs": 8.699951171875,
+          "keyboardCallMs": 13,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 110,
+          "offerToBeforeInputMs": 3.10009765625,
+          "beforeInputToDomMs": 1.599853515625,
+          "offerToDomMs": 4.699951171875,
+          "beforeInputToRafMs": 7.599853515625,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 111,
+          "offerToBeforeInputMs": 2.89990234375,
+          "beforeInputToDomMs": 1.300048828125,
+          "offerToDomMs": 4.199951171875,
+          "beforeInputToRafMs": 9.400146484375,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 112,
+          "offerToBeforeInputMs": 12.89990234375,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 13.5,
+          "beforeInputToRafMs": 4.900146484375,
+          "keyboardCallMs": 18,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 113,
+          "offerToBeforeInputMs": 5.699951171875,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 6.199951171875,
+          "beforeInputToRafMs": 4.900146484375,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 114,
+          "offerToBeforeInputMs": 1,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.5,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 115,
+          "offerToBeforeInputMs": 1.699951171875,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.199951171875,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 116,
+          "offerToBeforeInputMs": 1,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.60009765625,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 117,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.699951171875,
+          "beforeInputToRafMs": 5.300048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 118,
+          "offerToBeforeInputMs": 3.39990234375,
+          "beforeInputToDomMs": 1.2001953125,
+          "offerToDomMs": 4.60009765625,
+          "beforeInputToRafMs": 9.10009765625,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 119,
+          "offerToBeforeInputMs": 4.89990234375,
+          "beforeInputToDomMs": 1.2001953125,
+          "offerToDomMs": 6.10009765625,
+          "beforeInputToRafMs": 7.2001953125,
+          "keyboardCallMs": 13,
+          "longTaskAtOffer": false
+        }
+      ],
+      "metrics": {
+        "offerToBeforeInputMs": {
+          "n": 120,
+          "p50": 2,
+          "p95": 7.60009765625,
+          "max": 25
+        },
+        "beforeInputToDomMs": {
+          "n": 120,
+          "p50": 0.60009765625,
+          "p95": 1.300048828125,
+          "max": 1.599853515625
+        },
+        "offerToDomMs": {
+          "n": 120,
+          "p50": 2.699951171875,
+          "p95": 8.199951171875,
+          "max": 25.699951171875
+        },
+        "beforeInputToRafMs": {
+          "n": 120,
+          "p50": 5.0,
+          "p95": 10.300048828125,
+          "max": 12.800048828125
+        },
+        "keyboardCallMs": {
+          "n": 120,
+          "p50": 8,
+          "p95": 17,
+          "max": 31
+        }
+      },
+      "scope": "Host offer and renderer clock differ; sub-ms/negative small gaps are resolution/skew. DOM mutation is not painted pixels. Profiler perturbs these diagnostics; no timing gate credit."
+    }
+  },
+  {
+    "arm": "B",
+    "typingWindowEpochMs": [
+      1792602576866,
+      1792602594723
+    ],
+    "profiles": {
+      "sender": {
+        "totalSampleWeightedMs": 17857.0,
+        "samplingIntervalUs": 1000,
+        "wallClockAnchorUncertaintyMs": 114,
+        "profileSpanMs": 30973.909,
+        "selfTop": [
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 13796.919677734375,
+            "samplesSelf": 9359
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 610.63818359375,
+            "samplesSelf": 414
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 594.987548828125,
+            "samplesSelf": 407
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 314.774658203125,
+            "samplesSelf": 215
+          },
+          {
+            "function": "readIfMatches",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8606,
+            "sampleWeightedMs": 258.6220703125,
+            "samplesSelf": 172
+          },
+          {
+            "function": "V",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6391,
+            "sampleWeightedMs": 249.184814453125,
+            "samplesSelf": 170
+          },
+          {
+            "function": "read",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8712,
+            "sampleWeightedMs": 171.8515625,
+            "samplesSelf": 114
+          },
+          {
+            "function": "(garbage collector)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 145.68359375,
+            "samplesSelf": 85
+          },
+          {
+            "function": "t",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 15,
+            "sampleWeightedMs": 115.734619140625,
+            "samplesSelf": 76
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7458,
+            "sampleWeightedMs": 109.251220703125,
+            "samplesSelf": 72
+          },
+          {
+            "function": "X",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8155,
+            "sampleWeightedMs": 49.383056640625,
+            "samplesSelf": 39
+          },
+          {
+            "function": "encode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 47.50732421875,
+            "samplesSelf": 32
+          },
+          {
+            "function": "MS",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 46,
+            "column0": 476,
+            "sampleWeightedMs": 37.193359375,
+            "samplesSelf": 25
+          },
+          {
+            "function": "A",
+            "url": "http://localhost:53781/assets/spoolRecord-DQv6tAoq.js",
+            "line0": 0,
+            "column0": 1987,
+            "sampleWeightedMs": 34.866943359375,
+            "samplesSelf": 24
+          },
+          {
+            "function": "select",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8454,
+            "sampleWeightedMs": 33.619384765625,
+            "samplesSelf": 23
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 592,
+            "sampleWeightedMs": 30.889892578125,
+            "samplesSelf": 22
+          },
+          {
+            "function": "now",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 28.571044921875,
+            "samplesSelf": 20
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6674,
+            "sampleWeightedMs": 28.4248046875,
+            "samplesSelf": 20
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7270,
+            "sampleWeightedMs": 28.15283203125,
+            "samplesSelf": 19
+          },
+          {
+            "function": "Fd",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 9,
+            "column0": 7845,
+            "sampleWeightedMs": 26.541259765625,
+            "samplesSelf": 18
+          },
+          {
+            "function": "F",
+            "url": "http://localhost:53781/assets/verificationMemo-BUQq9-xh.js",
+            "line0": 0,
+            "column0": 2755,
+            "sampleWeightedMs": 24.8125,
+            "samplesSelf": 17
+          },
+          {
+            "function": "Ie",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 0,
+            "column0": 4698,
+            "sampleWeightedMs": 24.16943359375,
+            "samplesSelf": 16
+          },
+          {
+            "function": "structuredClone",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 23.92041015625,
+            "samplesSelf": 16
+          },
+          {
+            "function": "n",
+            "url": "http://localhost:53781/assets/custodyCrypto-C44ppXTm.js",
+            "line0": 0,
+            "column0": 104,
+            "sampleWeightedMs": 18.378173828125,
+            "samplesSelf": 13
+          },
+          {
+            "function": "decode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17.498779296875,
+            "samplesSelf": 12
+          },
+          {
+            "function": "digest",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17.3994140625,
+            "samplesSelf": 12
+          },
+          {
+            "function": "verify",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 16.378173828125,
+            "samplesSelf": 11
+          },
+          {
+            "function": "Yc",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 93011,
+            "sampleWeightedMs": 16.377685546875,
+            "samplesSelf": 11
+          },
+          {
+            "function": "L",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 1,
+            "column0": 15602,
+            "sampleWeightedMs": 15.438720703125,
+            "samplesSelf": 10
+          },
+          {
+            "function": "hi",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 28098,
+            "sampleWeightedMs": 15.1337890625,
+            "samplesSelf": 10
+          },
+          {
+            "function": "$",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 9,
+            "column0": 70,
+            "sampleWeightedMs": 14.825927734375,
+            "samplesSelf": 10
+          },
+          {
+            "function": "text",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 89695,
+            "sampleWeightedMs": 14.631103515625,
+            "samplesSelf": 10
+          },
+          {
+            "function": "verify",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8866,
+            "sampleWeightedMs": 14.52783203125,
+            "samplesSelf": 11
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6712,
+            "sampleWeightedMs": 13.659912109375,
+            "samplesSelf": 9
+          },
+          {
+            "function": "get",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 12.01220703125,
+            "samplesSelf": 8
+          }
+        ],
+        "inclusiveTop": [
+          {
+            "function": "(root)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17857.0,
+            "samplesSelf": 0
+          },
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 13796.919677734375,
+            "samplesSelf": 9359
+          },
+          {
+            "function": "verify",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8866,
+            "sampleWeightedMs": 938.8359375,
+            "samplesSelf": 11
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 763.650146484375,
+            "samplesSelf": 414
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 275,
+            "sampleWeightedMs": 719.9853515625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/writeSession-CS4wejtt.js",
+            "line0": 1,
+            "column0": 2878,
+            "sampleWeightedMs": 599.65087890625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 594.987548828125,
+            "samplesSelf": 407
+          },
+          {
+            "function": "readIfMatches",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8606,
+            "sampleWeightedMs": 416.76171875,
+            "samplesSelf": 172
+          },
+          {
+            "function": "v",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 52526,
+            "sampleWeightedMs": 416.76171875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "validate",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 57023,
+            "sampleWeightedMs": 386.71435546875,
+            "samplesSelf": 5
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 42439,
+            "sampleWeightedMs": 379.54345703125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 36972,
+            "sampleWeightedMs": 378.661376953125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "read",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8712,
+            "sampleWeightedMs": 325.050048828125,
+            "samplesSelf": 114
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 314.774658203125,
+            "samplesSelf": 215
+          },
+          {
+            "function": "J",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7578,
+            "sampleWeightedMs": 304.012451171875,
+            "samplesSelf": 3
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7614,
+            "sampleWeightedMs": 299.379638671875,
+            "samplesSelf": 2
+          },
+          {
+            "function": "V",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6391,
+            "sampleWeightedMs": 291.26953125,
+            "samplesSelf": 170
+          },
+          {
+            "function": "verifyProposed",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 85007,
+            "sampleWeightedMs": 285.070068359375,
+            "samplesSelf": 1
+          },
+          {
+            "function": "H",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6650,
+            "sampleWeightedMs": 282.955078125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "gu",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 110928,
+            "sampleWeightedMs": 262.986328125,
+            "samplesSelf": 1
+          },
+          {
+            "function": "od",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 121637,
+            "sampleWeightedMs": 249.74462890625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 123049,
+            "sampleWeightedMs": 248.1904296875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "id",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 121224,
+            "sampleWeightedMs": 246.659423828125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "ld",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 122987,
+            "sampleWeightedMs": 245.17529296875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "beforeCommit",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 18217,
+            "sampleWeightedMs": 237.115234375,
+            "samplesSelf": 1
+          },
+          {
+            "function": "flush",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 59215,
+            "sampleWeightedMs": 230.782958984375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 53076,
+            "sampleWeightedMs": 226.22802734375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "inspect",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 86170,
+            "sampleWeightedMs": 214.707275390625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "y",
+            "url": "http://localhost:53781/assets/accountEnvelopePreparation-B2XMdPIO.js",
+            "line0": 0,
+            "column0": 1008,
+            "sampleWeightedMs": 214.707275390625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "$o",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 7,
+            "column0": 8885,
+            "sampleWeightedMs": 212.97021484375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 43,
+            "column0": 35373,
+            "sampleWeightedMs": 211.47119140625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 1059,
+            "sampleWeightedMs": 211.47119140625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "es",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 8,
+            "column0": 446,
+            "sampleWeightedMs": 211.47119140625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 17753,
+            "sampleWeightedMs": 210.39990234375,
+            "samplesSelf": 5
+          },
+          {
+            "function": "input",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 55,
+            "column0": 1393,
+            "sampleWeightedMs": 209.964111328125,
+            "samplesSelf": 0
+          }
+        ],
+        "scope": "Sampler wall-time weight, not exact CPU accounting. Exclusive frames and inclusive ancestors kept separate; idle/native/internal work may be unattributed. Midpoint wall anchor uncertainty retained.",
+        "longTasksDuringTyping": []
+      },
+      "receiver": {
+        "totalSampleWeightedMs": 17857.0,
+        "samplingIntervalUs": 1000,
+        "wallClockAnchorUncertaintyMs": 118,
+        "profileSpanMs": 30877.186,
+        "selfTop": [
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 12072.6728515625,
+            "samplesSelf": 8218
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 1259.590576171875,
+            "samplesSelf": 845
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7270,
+            "sampleWeightedMs": 914.965576171875,
+            "samplesSelf": 603
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 904.399169921875,
+            "samplesSelf": 604
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 608.27978515625,
+            "samplesSelf": 468
+          },
+          {
+            "function": "(garbage collector)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 189.233154296875,
+            "samplesSelf": 119
+          },
+          {
+            "function": "select",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8454,
+            "sampleWeightedMs": 127.449951171875,
+            "samplesSelf": 85
+          },
+          {
+            "function": "verify",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 119.54345703125,
+            "samplesSelf": 81
+          },
+          {
+            "function": "r",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 235,
+            "sampleWeightedMs": 85.967529296875,
+            "samplesSelf": 60
+          },
+          {
+            "function": "Sr",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3213,
+            "sampleWeightedMs": 85.94677734375,
+            "samplesSelf": 58
+          },
+          {
+            "function": "n",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 122,
+            "sampleWeightedMs": 73.635009765625,
+            "samplesSelf": 51
+          },
+          {
+            "function": "encode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 51.529052734375,
+            "samplesSelf": 35
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 592,
+            "sampleWeightedMs": 41.59375,
+            "samplesSelf": 29
+          },
+          {
+            "function": "transaction",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 34.36279296875,
+            "samplesSelf": 23
+          },
+          {
+            "function": "t",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 15,
+            "sampleWeightedMs": 30.1650390625,
+            "samplesSelf": 20
+          },
+          {
+            "function": "normalizeWhiteSpace",
+            "url": "",
+            "line0": 1923,
+            "column0": 28,
+            "sampleWeightedMs": 29.694091796875,
+            "samplesSelf": 21
+          },
+          {
+            "function": "get",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 26.646484375,
+            "samplesSelf": 19
+          },
+          {
+            "function": "SubtleCrypto.<computed>",
+            "url": "/private/tmp/done-live-sync-attribution-20261021/browser-diagnostics.js",
+            "line0": 28,
+            "column0": 44,
+            "sampleWeightedMs": 25.745849609375,
+            "samplesSelf": 17
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 26308,
+            "sampleWeightedMs": 25.386962890625,
+            "samplesSelf": 17
+          },
+          {
+            "function": "n",
+            "url": "http://localhost:53781/assets/custodyCrypto-C44ppXTm.js",
+            "line0": 0,
+            "column0": 104,
+            "sampleWeightedMs": 21.7890625,
+            "samplesSelf": 15
+          },
+          {
+            "function": "Cr",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3794,
+            "sampleWeightedMs": 20.96435546875,
+            "samplesSelf": 14
+          },
+          {
+            "function": "fetch",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 20.83349609375,
+            "samplesSelf": 14
+          },
+          {
+            "function": "elementText",
+            "url": "",
+            "line0": 5090,
+            "column0": 20,
+            "sampleWeightedMs": 19.383056640625,
+            "samplesSelf": 13
+          },
+          {
+            "function": "U",
+            "url": "http://localhost:53781/assets/localBaselineRecord-L4i3Zjg0.js",
+            "line0": 0,
+            "column0": 36352,
+            "sampleWeightedMs": 19.36328125,
+            "samplesSelf": 13
+          },
+          {
+            "function": "V",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6391,
+            "sampleWeightedMs": 18.078857421875,
+            "samplesSelf": 12
+          },
+          {
+            "function": "decode",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 16.654052734375,
+            "samplesSelf": 11
+          },
+          {
+            "function": "open",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 15.86328125,
+            "samplesSelf": 11
+          },
+          {
+            "function": "encodeInto",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 15.365966796875,
+            "samplesSelf": 11
+          },
+          {
+            "function": "get result",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 15.178466796875,
+            "samplesSelf": 10
+          },
+          {
+            "function": "now",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 14.26025390625,
+            "samplesSelf": 10
+          },
+          {
+            "function": "MS",
+            "url": "http://localhost:53781/assets/localGenesis-CNkue6fx.js",
+            "line0": 46,
+            "column0": 476,
+            "sampleWeightedMs": 14.130859375,
+            "samplesSelf": 10
+          },
+          {
+            "function": "Yc",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 93011,
+            "sampleWeightedMs": 13.619873046875,
+            "samplesSelf": 9
+          },
+          {
+            "function": "_",
+            "url": "http://localhost:53781/assets/admissionHistory-nO4apN9K.js",
+            "line0": 0,
+            "column0": 3745,
+            "sampleWeightedMs": 13.550537109375,
+            "samplesSelf": 9
+          },
+          {
+            "function": "Fd",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 9,
+            "column0": 7845,
+            "sampleWeightedMs": 13.466064453125,
+            "samplesSelf": 9
+          },
+          {
+            "function": "structuredClone",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 13.227783203125,
+            "samplesSelf": 9
+          }
+        ],
+        "inclusiveTop": [
+          {
+            "function": "(root)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 17857.0,
+            "samplesSelf": 0
+          },
+          {
+            "function": "(idle)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 12072.6728515625,
+            "samplesSelf": 8218
+          },
+          {
+            "function": "(program)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 1259.590576171875,
+            "samplesSelf": 845
+          },
+          {
+            "function": "step",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 31502,
+            "sampleWeightedMs": 1231.93310546875,
+            "samplesSelf": 1
+          },
+          {
+            "function": "step",
+            "url": "http://localhost:53781/assets/writeSession-CS4wejtt.js",
+            "line0": 1,
+            "column0": 2850,
+            "sampleWeightedMs": 1230.42822265625,
+            "samplesSelf": 4
+          },
+          {
+            "function": "step",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 247,
+            "sampleWeightedMs": 1230.41650390625,
+            "samplesSelf": 3
+          },
+          {
+            "function": "p",
+            "url": "http://localhost:53781/assets/contentCompaction-CewN0-bq.js",
+            "line0": 0,
+            "column0": 1416,
+            "sampleWeightedMs": 1151.48583984375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "o.onsuccess",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7264,
+            "sampleWeightedMs": 938.987060546875,
+            "samplesSelf": 2
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 7270,
+            "sampleWeightedMs": 928.35595703125,
+            "samplesSelf": 603
+          },
+          {
+            "function": "K",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7276,
+            "sampleWeightedMs": 904.399169921875,
+            "samplesSelf": 604
+          },
+          {
+            "function": "check",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 4044,
+            "sampleWeightedMs": 896.343505859375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "Sr",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3213,
+            "sampleWeightedMs": 878.4423828125,
+            "samplesSelf": 58
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3748,
+            "sampleWeightedMs": 876.908203125,
+            "samplesSelf": 7
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 3466,
+            "sampleWeightedMs": 876.908203125,
+            "samplesSelf": 2
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/cpuBudget-BZY3L4Fm.js",
+            "line0": 0,
+            "column0": 275,
+            "sampleWeightedMs": 655.156494140625,
+            "samplesSelf": 3
+          },
+          {
+            "function": "Y",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 7724,
+            "sampleWeightedMs": 650.546630859375,
+            "samplesSelf": 468
+          },
+          {
+            "function": "verify",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8866,
+            "sampleWeightedMs": 636.715576171875,
+            "samplesSelf": 3
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/writeSession-CS4wejtt.js",
+            "line0": 1,
+            "column0": 2878,
+            "sampleWeightedMs": 586.686767578125,
+            "samplesSelf": 3
+          },
+          {
+            "function": "validate",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 57023,
+            "sampleWeightedMs": 466.51806640625,
+            "samplesSelf": 8
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 41150,
+            "sampleWeightedMs": 451.715087890625,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 36972,
+            "sampleWeightedMs": 442.58203125,
+            "samplesSelf": 1
+          },
+          {
+            "function": "(garbage collector)",
+            "url": "",
+            "line0": -1,
+            "column0": -1,
+            "sampleWeightedMs": 189.233154296875,
+            "samplesSelf": 119
+          },
+          {
+            "function": "SubtleCrypto.<computed>",
+            "url": "/private/tmp/done-live-sync-attribution-20261021/browser-diagnostics.js",
+            "line0": 28,
+            "column0": 44,
+            "sampleWeightedMs": 170.9716796875,
+            "samplesSelf": 17
+          },
+          {
+            "function": "A",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 36129,
+            "sampleWeightedMs": 168.651123046875,
+            "samplesSelf": 1
+          },
+          {
+            "function": "Oe",
+            "url": "http://localhost:53781/assets/inboundLedger-5ZDchHH-.js",
+            "line0": 0,
+            "column0": 5159,
+            "sampleWeightedMs": 161.63720703125,
+            "samplesSelf": 3
+          },
+          {
+            "function": "gu",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 110928,
+            "sampleWeightedMs": 159.658203125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "ne",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 1,
+            "column0": 2802,
+            "sampleWeightedMs": 144.517822265625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "a",
+            "url": "http://localhost:53781/assets/deviceDataRemoval-D4jAUmBJ.js",
+            "line0": 1,
+            "column0": 36218,
+            "sampleWeightedMs": 139.15185546875,
+            "samplesSelf": 1
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 63818,
+            "sampleWeightedMs": 137.656005859375,
+            "samplesSelf": 1
+          },
+          {
+            "function": "G",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 6918,
+            "sampleWeightedMs": 137.656005859375,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/custodyCrypto-C44ppXTm.js",
+            "line0": 0,
+            "column0": 4573,
+            "sampleWeightedMs": 137.072998046875,
+            "samplesSelf": 0
+          },
+          {
+            "function": "select",
+            "url": "http://localhost:53781/assets/verifiedRecords-CTTeOULv.js",
+            "line0": 0,
+            "column0": 8454,
+            "sampleWeightedMs": 136.137939453125,
+            "samplesSelf": 85
+          },
+          {
+            "function": "cd",
+            "url": "http://localhost:53781/assets/main-D051acnu.js",
+            "line0": 8,
+            "column0": 122658,
+            "sampleWeightedMs": 132.346923828125,
+            "samplesSelf": 0
+          },
+          {
+            "function": "",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 73248,
+            "sampleWeightedMs": 120.97265625,
+            "samplesSelf": 0
+          },
+          {
+            "function": "check",
+            "url": "http://localhost:53781/assets/AccountDevices-DOVEP3jr.js",
+            "line0": 5,
+            "column0": 31684,
+            "sampleWeightedMs": 120.97265625,
+            "samplesSelf": 0
+          }
+        ],
+        "scope": "Sampler wall-time weight, not exact CPU accounting. Exclusive frames and inclusive ancestors kept separate; idle/native/internal work may be unattributed. Midpoint wall anchor uncertainty retained.",
+        "longTasksDuringTyping": []
+      }
+    },
+    "inputDecomposition": {
+      "rows": [
+        {
+          "index": 0,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 10.199951171875,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 1,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.400146484375,
+          "offerToDomMs": 2.400146484375,
+          "beforeInputToRafMs": 5.800048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 2,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.400146484375,
+          "beforeInputToRafMs": 5.199951171875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 3,
+          "offerToBeforeInputMs": 1.900146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 4.89990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 4,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 5.89990234375,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 5,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 5.099853515625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 6,
+          "offerToBeforeInputMs": 3.7001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 4.300048828125,
+          "beforeInputToRafMs": 4.7998046875,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 7,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.2001953125,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 8,
+          "offerToBeforeInputMs": 1.2001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 9,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 14.900146484375,
+          "keyboardCallMs": 17,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 10,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 6.10009765625,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 11,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 12,
+          "offerToBeforeInputMs": 1.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.60009765625,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 13,
+          "offerToBeforeInputMs": 1.400146484375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.900146484375,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 14,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.699951171875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 15,
+          "offerToBeforeInputMs": 3.300048828125,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 3.900146484375,
+          "beforeInputToRafMs": 4.60009765625,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 16,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 17,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.2998046875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 18,
+          "offerToBeforeInputMs": 1.900146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 5.599853515625,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 19,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.800048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 20,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.7998046875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 21,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 22,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.400146484375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 23,
+          "offerToBeforeInputMs": 2.400146484375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 4.0,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 24,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 25,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 26,
+          "offerToBeforeInputMs": 2.7001953125,
+          "beforeInputToDomMs": 0.89990234375,
+          "offerToDomMs": 3.60009765625,
+          "beforeInputToRafMs": 6.199951171875,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 27,
+          "offerToBeforeInputMs": 3,
+          "beforeInputToDomMs": 1,
+          "offerToDomMs": 4,
+          "beforeInputToRafMs": 8.300048828125,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 28,
+          "offerToBeforeInputMs": 6.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 6.7001953125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 29,
+          "offerToBeforeInputMs": 24.10009765625,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 24.7001953125,
+          "beforeInputToRafMs": 5.0,
+          "keyboardCallMs": 29,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 30,
+          "offerToBeforeInputMs": 6.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 7.300048828125,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 31,
+          "offerToBeforeInputMs": 2.400146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 3,
+          "beforeInputToRafMs": 5.300048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 32,
+          "offerToBeforeInputMs": 2.400146484375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 33,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 34,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 35,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 36,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 37,
+          "offerToBeforeInputMs": 2.7001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 3.300048828125,
+          "beforeInputToRafMs": 4.699951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 38,
+          "offerToBeforeInputMs": 1.900146484375,
+          "beforeInputToDomMs": 0.800048828125,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 6.099853515625,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 39,
+          "offerToBeforeInputMs": 2.60009765625,
+          "beforeInputToDomMs": 1.10009765625,
+          "offerToDomMs": 3.7001953125,
+          "beforeInputToRafMs": 8.699951171875,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 40,
+          "offerToBeforeInputMs": 4.400146484375,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 5.400146484375,
+          "beforeInputToRafMs": 8.89990234375,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 41,
+          "offerToBeforeInputMs": 5.7001953125,
+          "beforeInputToDomMs": 1.39990234375,
+          "offerToDomMs": 7.10009765625,
+          "beforeInputToRafMs": 11.7998046875,
+          "keyboardCallMs": 19,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 42,
+          "offerToBeforeInputMs": 4.7001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 5.2001953125,
+          "beforeInputToRafMs": 4.599853515625,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 43,
+          "offerToBeforeInputMs": 12.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 13.10009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 17,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 44,
+          "offerToBeforeInputMs": 3.400146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 4,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 45,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 46,
+          "offerToBeforeInputMs": 2.7001953125,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 3.10009765625,
+          "beforeInputToRafMs": 4.2998046875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 47,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 48,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2,
+          "beforeInputToRafMs": 5.300048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 49,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 4.400146484375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 50,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.5,
+          "beforeInputToRafMs": 4.2001953125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 51,
+          "offerToBeforeInputMs": 2.60009765625,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 3.2001953125,
+          "beforeInputToRafMs": 4.89990234375,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 52,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 4.400146484375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 53,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.400146484375,
+          "offerToDomMs": 1.7001953125,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 54,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 55,
+          "offerToBeforeInputMs": 2.5,
+          "beforeInputToDomMs": 0.400146484375,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 56,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 57,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.400146484375,
+          "offerToDomMs": 2.400146484375,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 58,
+          "offerToBeforeInputMs": 2.900146484375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 3.400146484375,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 59,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 60,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.400146484375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 61,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.2001953125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 62,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.400146484375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 63,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.2001953125,
+          "beforeInputToRafMs": 3.89990234375,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 64,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.89990234375,
+          "offerToDomMs": 3.10009765625,
+          "beforeInputToRafMs": 6.0,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 65,
+          "offerToBeforeInputMs": 3.5,
+          "beforeInputToDomMs": 1.2001953125,
+          "offerToDomMs": 4.7001953125,
+          "beforeInputToRafMs": 9.10009765625,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 66,
+          "offerToBeforeInputMs": 3.10009765625,
+          "beforeInputToDomMs": 1.699951171875,
+          "offerToDomMs": 4.800048828125,
+          "beforeInputToRafMs": 11.10009765625,
+          "keyboardCallMs": 15,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 67,
+          "offerToBeforeInputMs": 3.7001953125,
+          "beforeInputToDomMs": 1.2998046875,
+          "offerToDomMs": 5,
+          "beforeInputToRafMs": 9.0,
+          "keyboardCallMs": 13,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 68,
+          "offerToBeforeInputMs": 3.7001953125,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 4.900146484375,
+          "beforeInputToRafMs": 10.099853515625,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 69,
+          "offerToBeforeInputMs": 3,
+          "beforeInputToDomMs": 1.2001953125,
+          "offerToDomMs": 4.2001953125,
+          "beforeInputToRafMs": 8.10009765625,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 70,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.2998046875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 71,
+          "offerToBeforeInputMs": 7,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 7.60009765625,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 12,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 72,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.400146484375,
+          "offerToDomMs": 2.400146484375,
+          "beforeInputToRafMs": 4.2001953125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 73,
+          "offerToBeforeInputMs": 1.400146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 74,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.60009765625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 75,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 3,
+          "beforeInputToRafMs": 5.199951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 76,
+          "offerToBeforeInputMs": 2.400146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 3,
+          "beforeInputToRafMs": 5.699951171875,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 77,
+          "offerToBeforeInputMs": 3.2001953125,
+          "beforeInputToDomMs": 1.199951171875,
+          "offerToDomMs": 4.400146484375,
+          "beforeInputToRafMs": 9.5,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 78,
+          "offerToBeforeInputMs": 3.7001953125,
+          "beforeInputToDomMs": 1.2998046875,
+          "offerToDomMs": 5,
+          "beforeInputToRafMs": 10.599853515625,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 79,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 6.699951171875,
+          "keyboardCallMs": 10,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 80,
+          "offerToBeforeInputMs": 4.60009765625,
+          "beforeInputToDomMs": 1.300048828125,
+          "offerToDomMs": 5.900146484375,
+          "beforeInputToRafMs": 8.199951171875,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 81,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 82,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.2001953125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 83,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 5,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 84,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 85,
+          "offerToBeforeInputMs": 4.60009765625,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 5.2001953125,
+          "beforeInputToRafMs": 4.0,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 86,
+          "offerToBeforeInputMs": 16.2001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 16.800048828125,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 21,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 87,
+          "offerToBeforeInputMs": 2.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.0,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 88,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 89,
+          "offerToBeforeInputMs": 2.900146484375,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 3.900146484375,
+          "beforeInputToRafMs": 7.099853515625,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 90,
+          "offerToBeforeInputMs": 3.5,
+          "beforeInputToDomMs": 1.0,
+          "offerToDomMs": 4.5,
+          "beforeInputToRafMs": 9.0,
+          "keyboardCallMs": 13,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 91,
+          "offerToBeforeInputMs": 4,
+          "beforeInputToDomMs": 1.300048828125,
+          "offerToDomMs": 5.300048828125,
+          "beforeInputToRafMs": 10.7001953125,
+          "keyboardCallMs": 16,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 92,
+          "offerToBeforeInputMs": 3.300048828125,
+          "beforeInputToDomMs": 1.10009765625,
+          "offerToDomMs": 4.400146484375,
+          "beforeInputToRafMs": 6.900146484375,
+          "keyboardCallMs": 11,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 93,
+          "offerToBeforeInputMs": 1.800048828125,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.400146484375,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 94,
+          "offerToBeforeInputMs": 2.60009765625,
+          "beforeInputToDomMs": 0.699951171875,
+          "offerToDomMs": 3.300048828125,
+          "beforeInputToRafMs": 6.0,
+          "keyboardCallMs": 9,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 95,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 96,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 97,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 98,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.800048828125,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 99,
+          "offerToBeforeInputMs": 22.300048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 22.800048828125,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 27,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 100,
+          "offerToBeforeInputMs": 20.900146484375,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 21.5,
+          "beforeInputToRafMs": 4.300048828125,
+          "keyboardCallMs": 26,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 101,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.2001953125,
+          "beforeInputToRafMs": 4.2998046875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 102,
+          "offerToBeforeInputMs": 1.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.7001953125,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 5,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 103,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 104,
+          "offerToBeforeInputMs": 1.60009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.10009765625,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 105,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.599853515625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 106,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 107,
+          "offerToBeforeInputMs": 1.300048828125,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 1.900146484375,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 108,
+          "offerToBeforeInputMs": 2,
+          "beforeInputToDomMs": 0.60009765625,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 5.300048828125,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 109,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.2001953125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 110,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.800048828125,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 111,
+          "offerToBeforeInputMs": 2.400146484375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.900146484375,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 112,
+          "offerToBeforeInputMs": 4.2001953125,
+          "beforeInputToDomMs": 0.39990234375,
+          "offerToDomMs": 4.60009765625,
+          "beforeInputToRafMs": 4.099853515625,
+          "keyboardCallMs": 8,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 113,
+          "offerToBeforeInputMs": 1.400146484375,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 1.900146484375,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 114,
+          "offerToBeforeInputMs": 9.800048828125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 10.300048828125,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 14,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 115,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.5,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 116,
+          "offerToBeforeInputMs": 2.2001953125,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.7001953125,
+          "beforeInputToRafMs": 4.699951171875,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 117,
+          "offerToBeforeInputMs": 1.5,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2,
+          "beforeInputToRafMs": 4.10009765625,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 118,
+          "offerToBeforeInputMs": 1.7001953125,
+          "beforeInputToDomMs": 0.599853515625,
+          "offerToDomMs": 2.300048828125,
+          "beforeInputToRafMs": 4.199951171875,
+          "keyboardCallMs": 6,
+          "longTaskAtOffer": false
+        },
+        {
+          "index": 119,
+          "offerToBeforeInputMs": 2.10009765625,
+          "beforeInputToDomMs": 0.5,
+          "offerToDomMs": 2.60009765625,
+          "beforeInputToRafMs": 4.39990234375,
+          "keyboardCallMs": 7,
+          "longTaskAtOffer": false
+        }
+      ],
+      "metrics": {
+        "offerToBeforeInputMs": {
+          "n": 120,
+          "p50": 2.2001953125,
+          "p95": 7,
+          "max": 24.10009765625
+        },
+        "beforeInputToDomMs": {
+          "n": 120,
+          "p50": 0.5,
+          "p95": 1.2001953125,
+          "max": 1.699951171875
+        },
+        "offerToDomMs": {
+          "n": 120,
+          "p50": 2.7001953125,
+          "p95": 7.60009765625,
+          "max": 24.7001953125
+        },
+        "beforeInputToRafMs": {
+          "n": 120,
+          "p50": 4.400146484375,
+          "p95": 10.099853515625,
+          "max": 14.900146484375
+        },
+        "keyboardCallMs": {
+          "n": 120,
+          "p50": 7,
+          "p95": 17,
+          "max": 29
+        }
+      },
+      "scope": "Host offer and renderer clock differ; sub-ms/negative small gaps are resolution/skew. DOM mutation is not painted pixels. Profiler perturbs these diagnostics; no timing gate credit."
+    }
+  }
+]
