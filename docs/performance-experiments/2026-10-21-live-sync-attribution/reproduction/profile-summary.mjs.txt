@@ -1,0 +1,35 @@
+import {readFileSync,writeFileSync,existsSync} from 'node:fs';
+import {join,basename} from 'node:path';
+import {createRequire} from 'node:module';
+const root='/private/tmp/done-live-sync-attribution-20261021';
+const require=createRequire(createRequire(join(root,'source/package.json')).resolve('@babel/core'));
+const {TraceMap,originalPositionFor}=require('@jridgewell/trace-mapping');
+const cache=new Map();
+function location(frame,dist){
+ let url=frame.url, line=frame.lineNumber+1,column=frame.columnNumber;
+ if(url?.startsWith('http://localhost:53781/assets/')){
+  const path=join(dist,'assets',basename(new URL(url).pathname)+'.map');
+  if(existsSync(path)){
+   if(!cache.has(path))cache.set(path,new TraceMap(JSON.parse(readFileSync(path,'utf8'))));
+   const p=originalPositionFor(cache.get(path),{line,column});
+   if(p.source)return {source:p.source,line:p.line,column:p.column,name:p.name??frame.functionName};
+  }
+ }
+ return {source:url?.replace(root+'/','')||'(native)',line,column,name:frame.functionName};
+}
+const outputs=[];
+for(const dir of process.argv.slice(2)){
+ const data=JSON.parse(readFileSync(join(dir,'result.json'),'utf8'));
+ const dist=join(root,data.diagnostic?'diagnostic-dist-final':'ordinary-dist');
+ for(const name of ['receiver.cpuprofile','server.cpuprofile','incomplete-receiver.cpuprofile']){
+  const path=join(dir,name);if(!existsSync(path))continue;
+  const p=JSON.parse(readFileSync(path,'utf8')), nodes=new Map(p.nodes.map(n=>[n.id,n])), totals=new Map();
+  for(let i=0;i<(p.samples?.length??0);i++){
+   const node=nodes.get(p.samples[i]),loc=location(node.callFrame,dist),key=JSON.stringify(loc),us=p.timeDeltas[i];
+   totals.set(key,(totals.get(key)??0)+us);
+  }
+  outputs.push({directory:basename(dir),profile:name,scope:name==='server.cpuprofile'?'whole process including setup and guardrails':'measured browser phase',durationMs:(p.endTime-p.startTime)/1000,sampledMs:p.timeDeltas.reduce((n,t)=>n+t,0)/1000,samples:p.samples.length,topSelf:[...totals].sort((a,b)=>b[1]-a[1]).slice(0,60).map(([loc,us])=>({...JSON.parse(loc),ms:us/1000}))});
+ }
+}
+writeFileSync(join(root,'profiles-summary.json'),JSON.stringify(outputs,null,2)+'\n');
+for(const row of outputs)console.log(JSON.stringify({...row,topSelf:row.topSelf.slice(0,15)},null,2));

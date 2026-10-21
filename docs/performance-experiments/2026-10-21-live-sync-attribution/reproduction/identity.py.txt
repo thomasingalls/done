@@ -1,0 +1,26 @@
+from pathlib import Path
+import subprocess,json,hashlib
+r=Path('/private/tmp/done-live-sync-attribution-20261021');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+revision=json.loads((r/'source.json').read_text())['revision']
+archivePaths=json.loads((r/'source.json').read_text())['archivePaths']
+productionPaths=subprocess.check_output(['git','ls-tree','-r','--name-only',revision,'--',*archivePaths],cwd=repo,text=True).splitlines()
+# Probe modifications stay under the added test directory, outside these release paths.
+sourceIdentity={};disagreements=[]
+for path in productionPaths:
+ p=r/'source'/path
+ if not p.is_file():continue # submodule/directory entries, if any, are not implied as files
+ expected=subprocess.check_output(['git','show',revision+':'+path],cwd=repo)
+ actual=p.read_bytes();sourceIdentity[path]=sha(actual)
+ if actual!=expected:disagreements.append(path)
+if disagreements:raise RuntimeError(disagreements)
+node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+environment=json.loads(subprocess.check_output([node,'--input-type=module','-e',"import os from 'node:os';console.log(JSON.stringify({node:process.version,platform:process.platform,arch:process.arch,osRelease:os.release(),cpuModel:os.cpus()[0].model,logicalCpus:os.cpus().length,totalBytes:os.totalmem()}));"],text=True))
+core=['src/crdt/'+n+'.ts' for n in ['accountReceive','accountSyncDriver','receivePrefetch','receiveGroup','admissionQueue','accountBatchPolicy']]+['src/account/notifications.ts']
+identity={'baseHead':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),'release':revision,'environment':environment,'browser':json.loads((r/'browser-build.json').read_text()),'exactReleaseSourceFiles':len(sourceIdentity),'sourceSha256':sourceIdentity,'diagnosticChangedSources':{},'builds':{},'primaryProbeSha256':json.loads((r/'primary-probe-sha256.json').read_text()),'sameCoreReleaseAndBranch':{p:sha((repo/p).read_bytes())==sourceIdentity[p] for p in core}}
+for path in ['src/crdt/accountReceive.ts','src/crdt/accountSyncDriver.ts','src/crdt/batchWindow.ts','src/account/notifications.ts']:
+ identity['diagnosticChangedSources'][path]={'ordinary':sha((r/'source'/path).read_bytes()),'diagnostic':sha((r/'diagnostic-source'/path).read_bytes())}
+for name in ['ordinary-dist','diagnostic-dist-final']:
+ identity['builds'][name]={str(p.relative_to(r/name)):sha(p.read_bytes()) for p in sorted((r/name).rglob('*')) if p.is_file()}
+(r/'identity.json').write_text(json.dumps(identity,indent=2)+'\n')
+print(json.dumps({'exactReleaseSourceFiles':len(sourceIdentity),'sourceDisagreements':disagreements,'sameCoreReleaseAndBranch':identity['sameCoreReleaseAndBranch'],'environment':environment},indent=2))

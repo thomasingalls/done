@@ -1,0 +1,56 @@
+diff --git a/private/tmp/done-live-sync-attribution-20261021/source/src/crdt/accountSyncDriver.ts b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/crdt/accountSyncDriver.ts
+index 55be037a..9cf15aa5 100644
+--- a/private/tmp/done-live-sync-attribution-20261021/source/src/crdt/accountSyncDriver.ts
++++ b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/crdt/accountSyncDriver.ts
+@@ -197,6 +197,7 @@ export function createSyncScheduler(options: {
+       return;
+     }
+     active = name;
++    try { (globalThis as any).__syncTrace?.('lane-start', name); } catch {}
+     const lane = lanes[name];
+     work = Promise.resolve()
+       .then(async () => {
+@@ -227,6 +228,7 @@ export function createSyncScheduler(options: {
+         if (position < lane.position)
+           throw new ContentError('repair-required', 'Durable lane position regressed');
+         lane.position = position;
++        try { (globalThis as any).__syncTrace?.('lane-end', name, position, result.kind); } catch {}
+         // A retained submit receipt already contributes to the composed inbound prefix.
+         // Publish that verified aggregate without scheduling a network read of our own write.
+         if (
+diff --git a/private/tmp/done-live-sync-attribution-20261021/source/src/account/notifications.ts b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/account/notifications.ts
+index 38266ee9..1436d030 100644
+--- a/private/tmp/done-live-sync-attribution-20261021/source/src/account/notifications.ts
++++ b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/account/notifications.ts
+@@ -100,6 +100,7 @@ export function startNotifications(options: {
+             health(true);
+           }
+           signal.throwIfAborted();
++          try { (globalThis as any).__syncTrace?.('notification', event); } catch {}
+           options.wake(event);
+         });
+       } catch {
+diff --git a/private/tmp/done-live-sync-attribution-20261021/source/src/crdt/batchWindow.ts b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/crdt/batchWindow.ts
+index efb27617..5dc4d0f8 100644
+--- a/private/tmp/done-live-sync-attribution-20261021/source/src/crdt/batchWindow.ts
++++ b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/crdt/batchWindow.ts
+@@ -24,6 +24,7 @@ export function createBatchWindow(timing: BatchTiming, now: () => number) {
+       const at = now();
+       first ??= at;
+       due = Math.min(first + maxMs, at + quietMs);
++      try { (globalThis as any).__syncTrace?.('batch-note', quietMs, maxMs, due); } catch {}
+     },
+     close() {
+       if (first !== undefined) {
+diff --git a/private/tmp/done-live-sync-attribution-20261021/source/src/crdt/accountReceive.ts b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/crdt/accountReceive.ts
+index bc3c2050..e2991fd3 100644
+--- a/private/tmp/done-live-sync-attribution-20261021/source/src/crdt/accountReceive.ts
++++ b/private/tmp/done-live-sync-attribution-20261021/diagnostic-source/src/crdt/accountReceive.ts
+@@ -3197,6 +3197,7 @@ async function openReceivingWorkspace(
+           scheduler.wake(options.networkLogin?.getSnapshot() === 'remembered' ? 'online' : 'gate');
+         });
+         unsubscribeLocal = workspace.outgoing((bytes) => {
++          try { (globalThis as any).__syncTrace?.('local-admitted', bytes.length); } catch {}
+           bytes.fill(0);
+           scheduler.wake('local');
+         });

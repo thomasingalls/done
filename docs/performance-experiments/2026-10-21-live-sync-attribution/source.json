@@ -1,0 +1,30 @@
+{
+  "revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+  "archivePaths": [
+    "src",
+    "account-service",
+    "account-protocol",
+    "public",
+    "private",
+    "relay",
+    "scripts",
+    "vite",
+    "wasm",
+    "vendor-patches",
+    "index.html",
+    "local.html",
+    "vite.config.ts",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "tsconfig.json",
+    "tsconfig.app.json",
+    "tsconfig.node.json",
+    "test/device-enrollment",
+    "test/packaged-account"
+  ],
+  "node": "24.18.0",
+  "installedLockSha256": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8",
+  "frozenLockSha256": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8",
+  "existingPrivateSeedAvailable": false
+}

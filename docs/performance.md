@@ -1926,3 +1926,23 @@ synthetic Markdown, fixed delay and omitted browser pre-dispatch time limit gene
 16 ms p95 budget remains unmet. Next recommendation is verified-view/reservation reuse on the
 online path, then unchanged-authority authentication reuse, then Goals planning/projection.
 No runtime changes or publication. Release validation remains paused.
+
+
+## 2026-10-21 — Ordinary live sync and catch-up on the released application
+
+Release `faf465f7`, rebuilt with fourteen public entry-asset matches, is measured on a synthetic
+121-card/13,000-character Goals pair in local headless Chromium. Four primary restored journeys
+separate foreground input from a receiver missing exactly 600 accepted updates. At 0/75 ms added
+request latency, isolated input-to-peer DOM p50 is 535.6/680.8 ms, continuous p95 is
+2,278.2/2,457.1 ms, and backlog completion is observed by 33.691/57.919 seconds. The receiver makes
+620/622 signed limit-one reads; there are three/zero HTTP 429s. New input during catch-up has peer
+p95 32.663/56.825 seconds, while local DOM p95 remains 13.9/8.0 ms.
+
+Two separate diagnostics identify the publication wait and repeated transport/authority/storage
+work; content hints arrive promptly. All six journeys preserve full exports, both-way writing,
+Undo/Redo and locked-document offline reopening. A fresh checked fixture recipe passes. Keep the
+failed constructors, smaller-Goals pilots and diagnostic clock correction. These are per-journey
+descriptive timings; DOM is not physical paint or proof of local durable acceptance. No phone,
+Firefox, WAN, capacity, whole-process cold reopen, runtime speedup or qualification claim follows.
+Next compare ordinary bounded read batching with original receipts and every existing guard, then
+publication timing independently of disk flush. [Protocol, raw evidence and exact limits](./performance-experiments/2026-10-21-live-sync-attribution/README.md).

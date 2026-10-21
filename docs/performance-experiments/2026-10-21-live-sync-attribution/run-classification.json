@@ -1,0 +1,16 @@
+{
+  "pilotWorkloadMismatch": [
+    "ordinary-foreground-0",
+    "ordinary-foreground-75"
+  ],
+  "primary": [
+    "primary-foreground-0",
+    "primary-foreground-75",
+    "primary-catchup-0",
+    "primary-catchup-75"
+  ],
+  "diagnostic": [
+    "diagnostic-foreground-0",
+    "diagnostic-catchup-75"
+  ]
+}

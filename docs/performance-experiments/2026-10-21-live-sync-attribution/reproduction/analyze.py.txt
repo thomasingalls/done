@@ -1,0 +1,120 @@
+from pathlib import Path
+import collections, hashlib, json, math, sys
+
+root = Path(__file__).parent
+def distribution(values):
+    values = sorted(values)
+    if not values: return None
+    return {'n':len(values),'p50':values[math.ceil(.5*len(values))-1],
+            'p95':values[math.ceil(.95*len(values))-1],'max':values[-1], 'min':values[0]}
+
+def interval_union(intervals):
+    total = 0; finish = -math.inf
+    for start,end in sorted(intervals):
+        if end > max(start,finish): total += end-max(start,finish)
+        finish = max(finish,end)
+    return total
+
+def first(rows, after, index, length):
+    return next((r['at'] for r in rows if r['at'] >= after-2 and r['lengths'][index] >= length),None)
+
+def cost_delta(before, after):
+    before=before or {};after=after or {}
+    return {k:{'calls':v.get('calls',0)-before.get(k,{}).get('calls',0),
+               'totalMs':v.get('totalMs',0)-before.get(k,{}).get('totalMs',0),
+               'cumulativeMaxMsThroughEnd':v.get('maxMs',0)} for k,v in after.items()}
+
+def ledger_delta(before, after):
+    before=before or {};after=after or {}
+    return {'counts':{k:v-before.get(k,0) for k,v in after.items() if isinstance(v,(float,int))},
+            'work':{k:v-before.get('work',{}).get(k,0) for k,v in after.get('work',{}).items()},
+            'timings':cost_delta(before.get('timings'),after.get('timings')),
+            'costs':cost_delta(before.get('costs'),after.get('costs')),
+            'cumulativeQueuePeaksThroughEnd':after.get('queuePeaks')}
+
+def summarize(path):
+    data=json.loads(path.read_text());start=data.get('startedAt');end=data.get('completedAt',data.get('failedAt'))
+    result={'directory':path.parent.name,'mode':data['mode'],'delay':data['delay'],
+            'diagnostic':data['diagnostic'],'outcome':data['outcome'],'guards':data.get('guards'),
+            'export':data.get('export'),'finalExport':data.get('finalExport'),
+            'offlineReopenMs':data.get('offlineReopenMs'),'hostBefore':data.get('hostBefore'),'hostAfter':data.get('hostAfter')}
+    if start is None:return result
+    result['elapsedMs']=end-start
+    network=[r for r in data['network'] if start<=r['at']<=end]
+    proxy=[r for r in data['proxy'] if start<=r['at']<=end]
+    result['httpStatuses']=dict(collections.Counter(str(r.get('status')) for r in network))
+    result['requestsByPath']=dict(collections.Counter(r['path'] for r in network))
+    result['bodyUnavailableAfter200']=sum(r.get('bodyUnavailable',False) and r.get('status')==200 for r in network)
+    result['failedAfter200']=sum('failedAt' in r and r.get('status')==200 for r in network)
+    result['serverToHeadersMsByPath']={p:distribution([r['headersAt']-r['forwardAt'] for r in proxy if r['path']==p and 'headersAt' in r]) for p in sorted(set(r['path'] for r in proxy))}
+    browser=data.get('browsers') or data.get('partialBrowsers')
+    if not browser or not all(browser):return result
+    a,b=browser
+    result['clientReportedProgress']={who:{'first':x['progress'][0] if x['progress'] else None,'last':x['progress'][-1] if x['progress'] else None} for who,x in [('A',a),('B',b)]}
+    result['readSummary']={}
+    for who in ['A','B']:
+        reads=[r for r in network if r['device']==who and r['path'].endswith('/read-v2')]
+        result['readSummary'][who]={'requests':len(reads),'self':sum(r['self'] for r in reads),
+                                  'entriesObserved':sum(r.get('entries',0) for r in reads),
+                                  'entriesPerReply':dict(collections.Counter(str(r.get('entries')) for r in reads)),
+                                  'limits':dict(collections.Counter(str(r['limit']) for r in reads)),
+                                  'transportIntervalUnionMs':interval_union([(max(start,r['at']),min(end,r.get('bodyAt',r.get('headersAt',end)))) for r in reads])}
+    result['notificationFrames']=dict(collections.Counter((r['device']+':'+r['event']) for r in data['frames'] if start<=r['at']<=end))
+    result['longTasks']={who:{'count':len(tasks),'totalMs':sum(t['ms'] for t in tasks),'maxMs':max([t['ms'] for t in tasks],default=0)} for who,x in [('A',a),('B',b)] for tasks in [[t for t in x['longtasks'] if start<=t['at']<=end]]}
+    result['burstRows']=[]
+    target=len('Sync target A:')
+    for row in data.get('bursts',[]):
+        target+=len(f' L{row["index"]};')
+        local=first(a['rows'],row['offeredAt'],0,target);peer=first(b['rows'],row['offeredAt'],0,target)
+        assert local is not None and peer is not None, ('missing burst DOM observation',path,row)
+        submits=[r for r in network if r['device']=='A' and r['path'].endswith('/submit') and r['at']>=row['offeredAt'] and r['at']<=peer]
+        submit=submits[0] if submits else None
+        observed_prefix=next((p['at'] for p in a['progress'] if row['offeredAt']<=p['at']<=peer and p['accepted']>max([q['accepted'] for q in a['progress'] if q['at']<row['offeredAt']],default=-1)),None)
+        old_trace_position=max([p['args'][2] for p in a['trace'] if p['at']<row['offeredAt'] and p['args'][:2]==['lane-end','send'] and len(p['args'])>3],default=-1)
+        trace_prefix=next((p['at'] for p in a['trace'] if row['offeredAt']<=p['at']<=peer and p['args'][:2]==['lane-end','send'] and len(p['args'])>3 and p['args'][3]=='progress' and p['args'][2]>old_trace_position),None)
+        admission=next((r['at'] for r in a['trace'] if row['offeredAt']<=r['at']<=peer and r['args'][0]=='local-admitted'),None)
+        due=next((r['args'][3] for r in a['trace'] if row['offeredAt']<=r['at']<=peer and r['args'][0]=='batch-note' and r['args'][2]==2000 and r['args'][3]>=row['offeredAt']),None)
+        lane=next((r['at'] for r in a['trace'] if row['offeredAt']<=r['at']<=peer and r['args'][:2]==['lane-start','send']),None)
+        hint=next((r['at'] for r in b['trace'] if row['offeredAt']<=r['at']<=peer and r['args']==['notification','content']),None)
+        read=next((r['at'] for r in network if r['device']=='B' and r['path'].endswith('/read-v2') and not r['self'] and hint and hint<=r['at']<=peer),None)
+        result['burstRows'].append({'sendLaneStartMs':lane-row['offeredAt'] if lane else None,'notificationMs':hint-row['offeredAt'] if hint else None,'peerReadStartMs':read-row['offeredAt'] if read else None,'localAdmittedMs':admission-row['offeredAt'] if admission else None, 'batchDueMs':due-row['offeredAt'] if due else None, 'index':row['index'],'offeredAt':row['offeredAt'],'localDomMs':local-row['offeredAt'],
+            'peerDomMs':peer-row['offeredAt'],'assertionObservedByMs':row['observedBy']-row['offeredAt'],
+            'sendRequestMs':submit['at']-row['offeredAt'] if submit else None,
+            'submitHeadersMs':submit['headersAt']-row['offeredAt'] if submit and 'headersAt' in submit else None,
+            'clientReportedAcceptedPrefixMs':observed_prefix-row['offeredAt'] if observed_prefix else None,
+            'verifiedSendLaneCompletionMs':trace_prefix-row['offeredAt'] if trace_prefix else None})
+    if result['burstRows']:
+        result['burstMetrics']={k:distribution([r[k] for r in result['burstRows'] if r[k] is not None]) for k in ['sendLaneStartMs','notificationMs','peerReadStartMs','localAdmittedMs','batchDueMs','localDomMs','peerDomMs','sendRequestMs','submitHeadersMs','clientReportedAcceptedPrefixMs','verifiedSendLaneCompletionMs']}
+    for name in ['continuous','concurrent']:
+        if name not in data:continue
+        run=data[name];values=[]
+        # Continuous is preceded by all 30 markers; concurrent starts after the fixed 600-character backlog.
+        base=target if name=='continuous' else len('Sync target A:')+600
+        for i,row in enumerate(run['offers']):
+            local=first(a['rows'],row['at'],0,base+i+1);peer=first(b['rows'],row['at'],0,base+i+1)
+            if local is None or peer is None:
+                values.append({'index':i,'missing':True});continue
+            values.append({'index':i,'localDomMs':local-row['at'],'peerDomMs':peer-row['at'],'offerLatenessMs':row['at']-row['scheduledAt']})
+        assert not any(r.get('missing') for r in values), ('missing character observation',path,name)
+        result[name]={'characters':len(values),'localDomMs':distribution([r['localDomMs'] for r in values]),'peerDomMs':distribution([r['peerDomMs'] for r in values]),'offerLatenessMs':distribution([r['offerLatenessMs'] for r in values]),'rows':values}
+    if 'caughtAt' in data:
+        result['backlogDrainMs']=data['caughtAt']-start
+        result['backlogCurve']=[]
+        for n in [1,50,100,200,300,400,500,600]:
+            at=first(b['rows'],start,0,len('Sync target A:')+n)
+            result['backlogCurve'].append({'characters':n,'visibleAfterMs':at-start if at else None})
+    if data['diagnostic']:
+        result['diagnostic']={'ledgerDelta':{who:ledger_delta(data['before'][i].get('ledger'),x.get('ledger')) for i,(who,x) in enumerate([('A',a),('B',b)])},
+                              'nativeDelta':{who:cost_delta(data['before'][i].get('native'),x.get('native')) for i,(who,x) in enumerate([('A',a),('B',b)])},
+                              'traceCountA':len(a['trace']),'traceCountB':len(b['trace']),
+                              'notificationsB':[r for r in b['trace'] if r['args'][0]=='notification' and start<=r['at']<=end]}
+    return result
+
+paths=[Path(p) for p in sys.argv[1:]] or sorted(root.glob('ordinary-*/result.json'))
+rows=[summarize(path) for path in paths]
+(root/'analysis.json').write_text(json.dumps(rows,indent=2)+'\n')
+for r in rows:
+    compact={k:r[k] for k in ['directory','mode','delay','outcome','backlogDrainMs','burstMetrics','readSummary','httpStatuses'] if k in r}
+    for k in ['continuous','concurrent']:
+        if k in r:compact[k]={a:b for a,b in r[k].items() if a!='rows'}
+    print(json.dumps(compact,indent=2))
