@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "allEightJourneysUseExactFrozenFourVariantAndCommonInputs": true,
+  "clientFiles": 110,
+  "allProductionRuntimeAndProtocolBytesExact23": true,
+  "newAnalyzerAndTestMatchFrozen17CaseInputs": true,
+  "privateFixtureExact": true,
+  "realHeadAndIndexUnchangedUnstaged": true
+}

@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,hashlib,gzip,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-phase-isolation';sha=lambda b:hashlib.sha256(b).hexdigest();s=json.loads((r/'starting.json').read_text());m=json.loads((r/'patches/manifest.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+assert sha(Path(m['patch24']).read_bytes())==m['patch24Sha256'];assert len(m['independentSequentialApply01Through24'])==24
+for v in m['independentSequentialApply01Through24']:assert v['expectedTree']==v['independentCleanApplyTree']and sha(Path(v['patch']).read_bytes())==v['sha256']
+for line in(p/'SHA256SUMS').read_text().splitlines():h,f=line.split('  ',1);assert sha((p/f).read_bytes())==h
+for row in json.loads((p/'artifact-provenance.json').read_text()):
+ b=(r/row['source']).read_bytes();a=(p/row['artifact']).read_bytes();assert sha(b)==row['sourceSha256'];assert sha(a)==row['artifactSha256'];assert(gzip.decompress(a)if row['artifact'].endswith('.gz')else a)==b
+changed=set(m['runtimeFilesChanged'])
+for f,h in s['runtimeFiles'].items():assert sha((repo/f).read_bytes())==(sha((r/'source'/f).read_bytes())if f in changed else h),f
+for f in ['completed.md','decisions.md','performance.md']:assert(repo/'docs'/f).read_bytes().startswith((r/'before/docs'/f).read_bytes())
+for name,work in [('patch24-index.git',repo),('verify24-index.git',r/'clean-apply24'),('verify01-24-index.git',r/'clean-apply01-24')]:
+ q=subprocess.run(['git','-C',str(work),'--git-dir='+str(r/name),'--work-tree='+str(work),'write-tree'],env=env,check=True,capture_output=True,text=True);assert not q.stderr;assert q.stdout.strip()==m['expectedCumulativeTree24']
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==s['head'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index').read_bytes())==s['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+out={'status':'passed','tree24':m['expectedCumulativeTree24'],'patch24Sha256':m['patch24Sha256'],'direct24After23':True,'fullSequence01Through24':True,'packetFiles':sum(f.is_file()for f in p.rglob('*')),'allProvenanceExact':True,'allProductionRuntimeBytesExact23':True,'allOldTestFilesByteExact23':True,'allOtherBase23FilesBlobExact':True,'realHeadAndIndexUnchangedUnstaged':True,'noPublication':True};(r/'patches/post-package-verification.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

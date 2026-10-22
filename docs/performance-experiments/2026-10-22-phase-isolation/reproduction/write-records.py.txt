@@ -1,0 +1,68 @@
+from pathlib import Path
+import json
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');a=json.loads((r/'analysis.json').read_text());meta=json.loads((r/'metadata-review.json').read_text());assert len(a['runs'])==8
+for f in ['evidence-review','sensitivity','process-cleanup','frozen-input-review','challenge']:assert json.loads((r/(f+'.json')).read_text())['status']=='passed'
+assert 'pass 86'in(r/'planning-tests.log').read_text();assert len(json.loads((r/'native-audit.json').read_text()))==8
+for f in ['completed.md','decisions.md','performance.md']:assert(repo/'docs'/f).read_bytes()==(r/'before/docs'/f).read_bytes()
+p=repo/'docs/performance-experiments/2026-10-22-phase-isolation';p.mkdir();link='./performance-experiments/2026-10-22-phase-isolation/README.md';table='|Condition|Peer p95, seconds (both runs)|Writer submissions|Displayed max backlog|\n|---|---:|---:|---:|\n';labels={'A':'Neither (21)','B':'Request-local only (22)','C':'Publication reuse only (21 + adapter23)','D':'Both (23)'}
+for label,rows in a['conditions'].items():table+='|'+labels[label]+'|'+'/'.join(f"{x['peerP95Ms']/1000:.2f}"if x['peerComplete']else'incomplete'for x in rows)+'|'+'/'.join(str(x['requests'])for x in rows)+'|'+'/'.join(str(x['displayedMaxBacklog'])for x in rows)+'|\n'
+completed=f'''\n\n### Phase24 — authority components isolated; publication cadence and displayed backlog measured
+
+**Date:** 2026-10-22 · **Commit:** sequential diagnostic patch24 after23, unsigned/uncommitted · **Status:** bounded isolation complete; original candidate23 remains held.
+
+[Evidence]({link}) preserves all eight fixed A,B,D,C,C,D,B,A journeys with the original 110 client artifacts, four native conditions, H6/M2/Q2 state and 1CPU/1GiB policy. Request-local-only peer p95 is 15.26/9.72s versus neither 5.49/9.68s; publication-only is 26.28/27.78s and both 36.63/31.30s. Publication reuse produces 116–120 distinct submissions versus 61–78 without it and displayed max backlog 52–66 versus 5–12. Both publication contrasts agree in sign; neither phase demonstrates an end-to-end responsiveness win in these finite journeys. All 120 keys, original foreground/local/continuation and exercised data/cold/pending/full-export/UndoRedo/isolation/native seed/prefix/signature guards pass. Background replay is deliberately censored at 90s: no600s acceptance inference, no release promotion.
+
+Seventeen new analyzer regressions, six real analyzer omission controls, seven independent evidence/native controls and 48 selected publication checks across isolated-C/combined-D pass. Raw timing, baseline-normalized displayed-progress integral and exact body/retry census are independently reconstructed. New fixture-clock, narrow-selector denominator and sandbox-listener failures are preserved. No application/protocol or old-test bytes changed. The new diagnostic test is an additional blocked adapter obligation; all prior882/338 remain exact, now883/339, qualification paused. Eight owned containers and32 recorded browser roots are stopped/absent. No staging, signing, commit, push, preview8443, merge or deployment.
+'''
+with(repo/'docs/completed.md').open('a')as f:f.write(completed)
+with(repo/'docs/decisions.md').open('a')as f:f.write(f'''\n\n### Isolate component effects before treating faster publication as faster sync
+
+**Date:** 2026-10-22 · **Status:** phase24 diagnostic complete; phase23 remains held.
+
+Keep request-local history sharing and publication reuse as separate factors. The fixed mirrored eight-journey study shows increased distinct submissions and displayed receiver backlog whenever publication reuse is enabled, with request-local sharing also failing to improve live peer latency under this load. This does not establish a population effect or the mediating mechanism. Preserve all outcomes rather than promote cryptographic work counts or request p95. [Evidence]({link}).
+
+Next trace all four native conditions with identical original client bytes and closed observational metadata. Follow submission acceptance, requested/returned publisher prefixes, existing displayed progress and authority-cache/proof/census work. The UI progress probe is not native-commit or durable-receive authority. Treat live-witness invalidation of the existing strict receive cache as a hypothesis to test, not permission to broaden reuse. Retain every current authority/history, witness/served, custody/session/grant/expiry, snapshot/owner/version/commit and retry fence; no quota, retry or timeout tuning. Ninety-second replay censoring is diagnostic only; the original heavy acceptance and general qualification remain held/paused.
+''')
+with(repo/'docs/performance.md').open('a')as f:f.write(f'''\n\n### 2026-10-22 — phase24 four-condition cadence/backlog isolation
+
+Fixed prospective A,B,D,C,C,D,B,A; two whole journeys per condition, original110 client files, trusted120 inputs at500ms, same H6/M2/Q2 and1CPU/1GiB/zero swap/16session64process policy. All observations retained. [Packet]({link}).
+
+{table}
+All complete-peer p95s miss2500ms; local p95 remains below16ms. Publication request p95 is122–207ms with reuse versus1409–1989ms without it. Repeated exact-body submission attempts are zero; the added requests are distinct bodies. Background replay is censored at fixed90s and cannot establish600s acceptance. All original foreground delivery/continuation/native/data/cold-pending/whole-export/reverse/UndoRedo/isolation checks pass. The displayed backlog is baseline-normalized status-notification evidence, not a certified ledger. Eight finite dependent journeys, no p-values or population/capacity/WAN inference. Source/runtime/client/security/rate/retry bytes unchanged; diagnostic analyzer adds17 regression cases and one blocked obligation (883/339). Candidate23 stays held.
+''')
+(p/'README.md').write_text(f'''# Phase24: isolate authority optimizations and sync backlog
+
+**Status:** diagnostic isolation complete; candidate23 remains **held**. No runtime repair or performance promotion.
+
+The prospectively frozen four-condition design separates request-local authority/history sharing22 from the publication adapter23. A=21 neither; B=22 only; C=true21 with only the reviewed23 publication hunks; D=23 both. C is a coherent complete native source tree, not a mixed-module replacement. Exact hashes and the minimal publication diff are preserved. All variants run with the same protocol, wrapper, original110 client artifacts, cloned seeded state, isolated browser profiles and cold service caches.
+
+Fixed order A,B,D,C,C,D,B,A gives each condition two mirrored whole journeys. The journey is the analysis unit; keys, requests and progress samples are dependent observations. These finite, nonrandomized results expose component effects for this diagnostic workload, not population or stable tail distributions. Host drift remains possible; reversal checks consistency without eliminating nonlinear drift.
+
+{table}
+Enabling publication reuse raises unique submissions from61–78 to116–120 and increases displayed backlog in both conditional contrasts. Zero repeated body identities means these counts are distinct submissions, not retry amplification. All peer samples are complete. Request-local sharing also does not improve live latency in these journeys. No phase is promoted; faster publication p95 alone does not satisfy responsiveness.
+
+## Scope and retained gates
+
+Same H6/M2/Q2 with original1024/256/32 history workloads, four independent browser roots and10contexts each,1CPU/1GiB/zero swap/pids128,16session64process policy.120 trusted focused inputs at500ms; original16ms local/2500ms complete-peer and30s delivery observations are unchanged. All local and foreground delivery outcomes pass, every peer p95 fails2500ms. Competing background load stops at a predeclared90s; replay is explicitly censored, not credited or failed at600s. No quota/retry/request timeout or security guard changed. No native/client/crypto instrumentation in this phase; original DOM/input/status probe and closed HTTP body/error observer only.
+
+Original120s automatic continuation, exact whole exports, guaranteed pending offline writing, actual same-profile cold reopen without reinjection, retained encrypted delivery records, reverse writing, Undo/Redo and account isolation pass for all8. Independent Node/OpenSSL native inspection validates ciphertext digests, envelope/wrapper/acceptance signatures, exact publisher prefixes, every seed row, distinct account/workspace/device identities and unchanged background accounts. Source/frozen-input and resource-envelope reviews include the actual mounted variant. All8 owned containers and32 recorded roots are stopped/absent; no owned persistent profiles or localhost53781 gateway remain.
+
+## Analysis and tests
+
+The new diagnostic helper in scripts/lib/sync-cadence-analysis.mjs reconstructs complete/missing per-key latency, exact submission identity/cadence and displayed sender/receiver progress. Seventeen hand-derived regression cases cover fixed trusted denominators, missing peers, unequal starting positions, repeated requests, account/phase separation, invalid timing, negative clock samples, counter regression and censoring. Six actual source omissions are detected. A separate Python raw-time/grid algorithm independently checks each key and backlog integral in both directions, rather than borrowing helper output. Seven altered-evidence/native-ciphertext controls are detected.
+
+Progress is a UI notification proxy: it does not certify native acceptance or durable ingestion. Sender and receiver initial positions differ; each series is normalized to its own last pre-input baseline. Leading/negative progress differences and negative sub-ms clock samples remain visible rather than clamped. Renderer/host clock brackets, incomplete observations and observed subsets are retained. No full-peer quantile is invented for missing data.
+
+All24 selected publication cases pass on C and D,48 total. One new negative-clock fixture initially put the sample before the measurement baseline; its failed attempt remains and the fixture is corrected. The first native selection matched17 instead of the wrapper's expected24; the selector was broadened without removing cases. A default-sandbox run then refused its loopback listener; the failure is retained and the authorized isolated-network run passes. These are fixture/runner limitations, not erased inconvenient results.
+
+No production runtime, protocol, original client or old test bytes change in this patch. All86 planning tests pass. Crypto census and construction bytes are exact; all prior882 obligation rows/338 unresolved entries are preserved, plus one blocked analyzer-adapter obligation:883/339. No qualification receipt or clean-full-suite claim; the prior17 broad failures remain unresolved in the prior record.
+
+## Next boundary and artifacts
+
+The next bounded phase will trace all four native conditions with original client bytes: submission acceptance and receive request/response prefixes, cache hits/misses and authority/census work. Ordinary inbound cache still includes live witnesses while publication reuse omits them. This is a concrete hypothesis for measurement, not an established mediator or permission to skip fresh ledger/authorization checks.
+
+protocol.md is prospective. analysis.json.gz and journeys retain all8 whole observations, counters, partial snapshots, runner/identity/command/log receipts. measurement-identity.json.gz and variant-closure.json identify exact sources; variants snapshots retain the four changed native modules. Reproduction text includes scripts and the temporary90s-censor lab. SHA256SUMS/provenance protect correspondence. Private fixture/state databases/profiles/keys/codes and browser error-context artifacts are excluded;36 known private values are checked after decompression, with a curated path audit rather than a universal DLP claim.
+
+Sequential patch24 follows23; all are already reflected in the cumulative checkout, unstaged/uncommitted. No actual commit/push/preview8443/merge/deploy; general release qualification stays paused.
+''')
+(r/'record-outcome.json').write_text(json.dumps({'status':'bounded diagnostic complete, candidate23 held','appendOrder':['completed.md','decisions.md','performance.md'],'diagnosticJourneys':8,'newRegressions':17,'nativeConditions':4,'qualification':meta,'noRuntimeOrOldTestChanges':True,'noPromotionOrPublication':True},indent=2)+'\n');print('Recorded completed before decisions/performance;24 diagnostic closed')

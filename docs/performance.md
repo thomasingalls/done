@@ -2241,3 +2241,17 @@ Six real signed native cases on certified/continued bootstrap/discovery/catalog 
 |4-R|1.8|5470.1|1733|77|320.3|
 
 All120 keys are observed; original delivery/local/replay/data/continuation/native/cold-pending/full-export guards pass in all4. Quiet429s0/0/0/0, history409s0/0/0/0; one reference membership409, no candidate membership409 or grant403. Whole journeys are the unit; these dependent finite observations establish no population/WAN/device capacity or separate23 causal effect. Publication p95 improves while submission count rises, so request-local wins do not establish end-to-end responsiveness. Paired affected422/440 cases retain the same17 failures;18 new regressions and6+6 controls pass. Preserve interrupted/no-image infrastructure attempts and common durable-result harness repair,3 harness checks, timer/observer limitations and all original gates. No qualification or publication.
+
+
+### 2026-10-22 — phase24 four-condition cadence/backlog isolation
+
+Fixed prospective A,B,D,C,C,D,B,A; two whole journeys per condition, original110 client files, trusted120 inputs at500ms, same H6/M2/Q2 and1CPU/1GiB/zero swap/16session64process policy. All observations retained. [Packet](./performance-experiments/2026-10-22-phase-isolation/README.md).
+
+|Condition|Peer p95, seconds (both runs)|Writer submissions|Displayed max backlog|
+|---|---:|---:|---:|
+|Neither (21)|5.49/9.68|78/78|5/11|
+|Request-local only (22)|15.26/9.72|61/64|12/9|
+|Publication reuse only (21 + adapter23)|26.28/27.78|120/120|52/54|
+|Both (23)|36.63/31.30|116/120|66/63|
+
+All complete-peer p95s miss2500ms; local p95 remains below16ms. Publication request p95 is122–207ms with reuse versus1409–1989ms without it. Repeated exact-body submission attempts are zero; the added requests are distinct bodies. Background replay is censored at fixed90s and cannot establish600s acceptance. All original foreground delivery/continuation/native/data/cold-pending/whole-export/reverse/UndoRedo/isolation checks pass. The displayed backlog is baseline-normalized status-notification evidence, not a certified ledger. Eight finite dependent journeys, no p-values or population/capacity/WAN inference. Source/runtime/client/security/rate/retry bytes unchanged; diagnostic analyzer adds17 regression cases and one blocked obligation (883/339). Candidate23 stays held.

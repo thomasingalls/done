@@ -1,0 +1,34 @@
+[
+  {
+    "name": "1-A",
+    "variant": "A"
+  },
+  {
+    "name": "2-B",
+    "variant": "B"
+  },
+  {
+    "name": "3-D",
+    "variant": "D"
+  },
+  {
+    "name": "4-C",
+    "variant": "C"
+  },
+  {
+    "name": "5-C",
+    "variant": "C"
+  },
+  {
+    "name": "6-D",
+    "variant": "D"
+  },
+  {
+    "name": "7-B",
+    "variant": "B"
+  },
+  {
+    "name": "8-A",
+    "variant": "A"
+  }
+]

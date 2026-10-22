@@ -1,0 +1,9 @@
+from pathlib import Path
+import subprocess,os,json,shutil
+r=Path(__file__).parent;s=r/'source';original=(s/'scripts/lib/sync-cadence-analysis.mjs').read_text();env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+controls=[('invent-complete-peer','complete: values.every((v) => v !== null)','complete: true'),('count-retries-as-new','uniqueBodies: identities.size','uniqueBodies: requests.length'),('ignore-phase',"v.label === label && v.phase === phase && v.path", "v.label === label && v.path"),('ignore-input-denominator','inputs.length !== expectedInputs ||','false ||'),('discard-starting-offset','delta: counter - base[field]','delta: counter'),('clamp-negative-clock','return sample ? sample.at - offer.at : null','return sample ? Math.max(0, sample.at - offer.at) : null')];rows=[]
+for name,old,new in controls:
+ assert original.count(old)==1,(name,original.count(old));p=r/('mutant-'+name);(p/'scripts/lib').mkdir(parents=True);(p/'test').mkdir();(p/'scripts/lib/sync-cadence-analysis.mjs').write_text(original.replace(old,new));shutil.copy2(s/'test/sync-cadence-analysis.test.mjs',p/'test/sync-cadence-analysis.test.mjs')
+ with(r/('control-'+name+'.log')).open('w')as log:v=subprocess.run(['node','--test','test/sync-cadence-analysis.test.mjs'],cwd=p,env=env,stdout=log,stderr=subprocess.STDOUT)
+ assert v.returncode!=0 and 'AssertionError'in(r/('control-'+name+'.log')).read_text(),name;rows.append({'name':name,'detected':True,'exitCode':v.returncode})
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(json.dumps(rows))

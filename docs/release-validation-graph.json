@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 520,
-    "requiredTestFiles": 514,
+    "testFiles": 521,
+    "requiredTestFiles": 515,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -13041,6 +13041,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/sync-cadence-analysis.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/sync-cadence-analysis.test.mjs"]
+      },
+      "declarations": 17,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/sync.test.ts",
       "status": "required",
       "invocation": {
@@ -15912,6 +15922,10 @@
     {
       "path": "scripts/lib/receipts.mjs",
       "sha256": "98162e80898939a0d436be1160c37b2a9bbaecc57e96a4697104722b573e663c"
+    },
+    {
+      "path": "scripts/lib/sync-cadence-analysis.mjs",
+      "sha256": "1ed24e7a2faad9d90ad1981a6825f4231dfb64c3ff5a6070d784bb29c058f1b9"
     },
     {
       "path": "scripts/lib/traceability.mjs",
@@ -19544,6 +19558,10 @@
     {
       "path": "test/store.test.ts",
       "sha256": "7d3de761e6e601f359b9511f2f90312e0ee4267f6634496064f194e6d83a5207"
+    },
+    {
+      "path": "test/sync-cadence-analysis.test.mjs",
+      "sha256": "ad4456bbe5c6f3785d347273d18b00b581187d9980fc73eab8c0f5adc02b68c0"
     },
     {
       "path": "test/sync.test.ts",

@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "cryptoCensusAndConstructionBytesExact": true,
+  "allPrior882ObligationRowsExact": true,
+  "allPrior338UnresolvedRetained": true,
+  "totalObligations": 883,
+  "totalUnresolved": 339,
+  "onlyNewObligation": "test:test/sync-cadence-analysis.test.mjs",
+  "new17CaseDenominatorIndependentlyMatched": true,
+  "newAdapterStatus": "Review the exact runtime case denominator and fixture/process ownership adapter.",
+  "noQualificationReceiptsOrPromotion": true,
+  "allProductionBytesExact23": true
+}

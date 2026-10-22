@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,re,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');a=json.loads((r/'before/docs/account-crypto/census.json').read_text());b=json.loads((repo/'docs/account-crypto/census.json').read_text());assert a==b;assert(repo/'docs/account-crypto/constructions.json').read_bytes()==(r/'before/docs/account-crypto/constructions.json').read_bytes()
+a=json.loads((r/'before/docs/release-validation-manifest.json').read_text());b=json.loads((repo/'docs/release-validation-manifest.json').read_text());old={v['id']:v for v in a['rows']};new={v['id']:v for v in b['rows']};assert all(new.get(k)==v for k,v in old.items());added=set(new)-set(old);assert added=={'test:test/sync-cadence-analysis.test.mjs'},added;row=new[next(iter(added))];assert row['path']=='test/sync-cadence-analysis.test.mjs';names=re.findall(r"test\(\s*'([^']+)'",(repo/row['path']).read_text());assert len(names)==17 and len(set(names))==17
+assert all(v in b['unresolved']for v in a['unresolved']);assert len(b['rows'])==883
+if'stage'in row:
+ assert row['stage']['argv'][-1]==row['path'];cases=row['stage']['expect']['cases'];assert {v['id']for v in cases}=={row['path']+'::'+v for v in names};assert len(cases)==17 and all(v['outcome']=='pass'for v in cases);status='existing reviewed generic adapter; no qualification execution'
+else:assert 'blocked'in row;status=row['blocked']
+assert 'pass 17'in(r/'analyzer-check-1.log').read_text();assert 'pass 86'in(r/'planning-tests.log').read_text()
+for f,h in json.loads((r/'starting.json').read_text())['runtimeFiles'].items():assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+out={'status':'passed','cryptoCensusAndConstructionBytesExact':True,'allPrior882ObligationRowsExact':True,'allPrior338UnresolvedRetained':True,'totalObligations':len(b['rows']),'totalUnresolved':len(b['unresolved']),'onlyNewObligation':row['id'],'new17CaseDenominatorIndependentlyMatched':True,'newAdapterStatus':status,'noQualificationReceiptsOrPromotion':True,'allProductionBytesExact23':True};(r/'metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))
