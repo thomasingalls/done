@@ -1,0 +1,14 @@
+from pathlib import Path
+import subprocess,os,json,time,hashlib
+r=Path(__file__).parent;s=r/'source';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+assert (s/'dist/index.html').is_file()
+inputs={str(p.relative_to(s)):sha(p)for d in ['account-service','account-protocol','src','scripts','docs','dist','test/account-continuation-lab']for p in (s/d).rglob('*')if p.is_file()}
+identity={'baseTree18':'fc7ac49010091cf59e29ccc51d9dc310a7fe7a1a','diagnosticOnly':True,'sourceFiles':inputs,'outerFiles':{str(p.relative_to(r)):sha(p)for p in [r/'protocol.md',r/'transforms.json',r/'instrument.py',r/'container-service.mjs',r/'observer.mjs',r/'run.py']},'flags':{'VITE_ACCOUNT_BATCH':'coordinated-2000','APP_BUILD_DATE':'2026-10-21','APP_BUILD_REVISION':'c1177575801a8eeab60b63883a3c701625ada215-dirty'},'otherFlags':'configuration defaults; no .env files in frozen copy','plan':['1-D','2-D']}
+(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for name in identity['plan']:
+ for f,h in inputs.items():assert sha(s/f)==h,f
+ out=r/name;out.mkdir(mode=0o700)
+ env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'FAIR_OUT':str(out),'FAIR_VARIANT':'D','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'startedAt':at,'finishedAt':int(time.time()*1000),'command':cmd,'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+ if p.returncode:raise RuntimeError('Diagnostic journey failed; preserve and investigate')

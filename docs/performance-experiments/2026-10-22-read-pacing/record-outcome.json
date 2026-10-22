@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "scope": "diagnostic trace closed; repair still proposed",
+  "base18StillHeld": true,
+  "runtimeChanges": 0,
+  "oldTestChanges": 0,
+  "ratesRetryCapsDeadlinesUnchanged": true,
+  "qualificationObligations": 882,
+  "unresolved": 338,
+  "completedAppendedBeforeOtherState": true,
+  "noPublication": true
+}

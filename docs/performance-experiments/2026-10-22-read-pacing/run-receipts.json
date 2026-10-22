@@ -1,0 +1,28 @@
+[
+  {
+    "name": "1-D",
+    "startedAt": 1792679924816,
+    "finishedAt": 1792680057503,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "2-D",
+    "startedAt": 1792680057610,
+    "finishedAt": 1792680187188,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "exitCode": 0
+  }
+]

@@ -5022,3 +5022,10 @@ The scoped checkpoint retry mechanism is repaired, but the **candidate remains h
 ## 2026-10-22 — Phase18 ordinary receive progress under contention
 
 [Decision and evidence](./performance-experiments/2026-10-22-ordinary-receive/README.md): reuse full verified authority proof only inside one bounded core, keyed by exact serialized pin+all native header fields except rows, with verifier identity and fresh custody checks. Retain all live witnesses and current transaction/session/expiry/ledger/snapshot checks. Do not widen rates or deadlines or coalesce first verifications in this slice. Private cache reset/close/eviction never supplies commit authority. Replace the cold scheduler-display proxy with exact retained encrypted delivery-record equality plus authenticated export; preserve the UI observation separately. Current status **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**.
+
+
+### Read conflict repair targets stale capture exposure before changing retry policy
+
+**Date:**2026-10-22 · **Status:** next bounded repair proposed; phase19 evidence only.
+
+The returned conflict consumed four native verification attempts because actual committed writing invalidated snapshots; its subsequent one-second client backoff matched the established schedule. The other diagnostic journey had no Q409 yet remained slow. Keep rates, the four-attempt cap and failure pacing unchanged while separating verified authority from fresh live ledger capture, as the earlier history-catalog path does. Any such repair must compare all current authority inputs before using fresh ledger evidence and retain exact final ordinary snapshot, owner/version/commit, custody/grant/session, history/served-proof and expiry checks. No cache projection widening or concurrent-lane authority change is approved by this evidence. Submission round-trip cost is also material but still needs native stage attribution. [Evidence](./performance-experiments/2026-10-22-read-pacing/README.md).

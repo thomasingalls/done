@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,hashlib,gzip,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-read-pacing';sha=lambda b:hashlib.sha256(b).hexdigest();m=json.loads((r/'patches/manifest.json').read_text());s=json.loads((r/'starting.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+assert sha(Path(m['patch19']).read_bytes())==m['patch19Sha256'];assert m['previousCumulativeTree18']==s['baseTree18'];assert m['runtimeChanges']==0 and m['oldTestChanges']==0
+for row in m['independentSequentialApply01Through19']:assert row['expectedTree']==row['independentCleanApplyTree'] and sha(Path(row['patch']).read_bytes())==row['sha256']
+assert len(m['independentSequentialApply01Through19'])==19
+for line in(p/'SHA256SUMS').read_text().splitlines():h,f=line.split('  ',1);assert sha((p/f).read_bytes())==h
+for row in json.loads((p/'artifact-provenance.json').read_text()):
+ b=(r/row['source']).read_bytes();assert sha(b)==row['sourceSha256'],row['source'];artifact=(p/row['artifact']).read_bytes();assert sha(artifact)==row['artifactSha256'];assert (gzip.decompress(artifact)if row['artifact'].endswith('.gz')else artifact)==b
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes())
+for f in p.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.suffix=='.gz'else b
+  for v in secrets:assert v not in b,str(f)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==s['head'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index').read_bytes())==s['realIndexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+for row in json.loads((r/'transforms.json').read_text()):assert sha((repo/row['file']).read_bytes())==row['beforeSha256']
+for f in ['completed.md','decisions.md','performance.md']:assert(repo/'docs'/f).read_bytes().startswith((r/'before'/f).read_bytes())
+out={'status':'passed','patch19Sha256':m['patch19Sha256'],'tree19':m['expectedCumulativeTree19'],'direct19After18':True,'fullSequential01Through19':True,'packetFiles':sum(f.is_file()for f in p.rglob('*')),'allPacketHashesAndProvenanceExact':True,'knownPrivateValues':len(secrets),'privateMatchesAfterDecompression':0,'old18TreeFilesExceptThreeJournalAppendsExact':True,'realHeadAndIndexUnchanged':True,'runtimeAndOldTestsUnchanged':True,'noPublication':True};(r/'patches/post-package-verification.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

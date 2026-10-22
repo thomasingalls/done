@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,collections,math
+r=Path(__file__).parent;out=[]
+for name in ['1-D','2-D']:
+ x=json.loads((r/name/'result.json').read_text());ev=[e for t in x['traces']for e in t['events']];by=collections.defaultdict(list)
+ for e in ev:by[e['bodySha256']].append(e)
+ attempts=[]
+ for q in x['network']:
+  if q['label']!='Q1'or q['phase']!='measured'or not q['path'].startswith('/account/delivery/read-v2'):continue
+  cur=None
+  for e in by[q['bodySha256']]:
+   if e['tag']=='read-attempt':cur={'attemptAt':e['at'],'retry':e['retry'],'httpStatus':q.get('status'),'publisherIsReader':e['publisherSha256']==e['readerSha256']};attempts.append(cur)
+   if cur:
+    if e['tag']in ['authority-hit','authority-miss']:cur['reuse']=e['tag']
+    if e['tag']in ['read-captured','read-authority','read-admitted','read-census','read-served','read-current']:cur[e['tag']]=e['at']
+    if e['tag']=='guard-refused':cur['guard']=e['predicate']
+ stats={}
+ for hit in ['authority-hit','authority-miss']:
+  arr=sorted(a['read-authority']-a['read-captured']for a in attempts if a.get('reuse')==hit and 'read-authority'in a)
+  if arr:stats[hit]={'n':len(arr),'p50':arr[math.ceil(len(arr)*.5)-1],'p95':arr[math.ceil(len(arr)*.95)-1],'max':max(arr)}
+ out.append({'name':name,'Q1NativeAuthorityMs':stats,'readAttempts':attempts,'exhaustedHttpAttempts':[a for a in attempts if a['httpStatus']==409]})
+(r/'native-stage-analysis.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps([{'name':v['name'],'authorityMs':v['Q1NativeAuthorityMs']}for v in out],indent=2))

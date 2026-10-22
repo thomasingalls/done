@@ -1,0 +1,6 @@
+{
+  "status": "interrupted-owned-read-only-check",
+  "pid": 88708,
+  "reason": "Initial exact-base check spawned one git-show process per27230 files. Replace with direct Git blob identities; patch not yet generated. No application/test outcome changed.",
+  "at": 1792680927749
+}

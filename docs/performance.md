@@ -2198,3 +2198,8 @@ The scoped checkpoint retry mechanism is repaired, but the **candidate remains h
 | fixed-v2/4-R | 2.6 | 11939.6 | 0 | not complete at original deadline | False |
 
 Full original pending/save/cold-profile/raw encrypted delivery/whole-export/reverse/Undo/Redo/isolation/native prefix guards pass.18 new regressions/10 implementation and6 evidence/native controls; same16 old affected failures. Status **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**. No deployed-device, release qualification or maximum-capacity claim.
+
+
+### 2026-10-22 — diagnostic read/publication/retry trace, no candidate promotion
+
+Two fixed cumulative18 instrumented journeys,H6/M2/Q2,1CPU/1GiB,120 trusted keys at500ms,90s diagnostic load boundary. Q0/Q1 rate refusals0/0; Q409 counts0/1. The returned batch state-changed409 spends4614ms in four same-publisher commit races, including4399ms captured→authority verification, then999.1ms client backoff and3ms scheduler lateness. Native rejected-snapshot counts40/41;23/28 same-owner commit changes and17/13 unrelated original-publisher live-witness fingerprint changes. Writer submit HTTP p95=1333/1424ms; envelope preparation54.3/60.3ms and submission preparation36.1/32.4ms. Instrumented peer p95=9021/16234.3ms, all120 complete. These are mechanism observations, not matched performance acceptance; phase18's uninstrumented regression remains held. All data guards/native proof audit pass;61+21 unchanged existing regressions, four controlled cases and six fault controls pass. No runtime/rate/deadline/security/old-test changes, no qualification or publication. [Packet](./performance-experiments/2026-10-22-read-pacing/README.md).

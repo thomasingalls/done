@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,hashlib,collections,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());identity=json.loads((r/'measurement-identity.json').read_text());manifest=json.loads(Path('/private/tmp/done-ordinary-receive-20261022/patches/manifest.json').read_text())
+for row in manifest['independentSequentialApply01Through18']:assert sha(Path(row['patch']))==row['sha256']
+assert start['baseTree18']==manifest['expectedCumulativeTree18'];assert sha(Path(manifest['patch18']))==start['canonical18Sha256']
+for f,h in identity['sourceFiles'].items():assert sha(r/'source'/f)==h,f
+for f,h in identity['outerFiles'].items():assert sha(r/f)==h,f
+for row in json.loads((r/'transforms.json').read_text()):
+ p=r/'source'/row['file'];assert sha(p)==row['afterSha256'];t=p.read_text();assert t.startswith(row['prefix']);t=t[len(row['prefix']):]
+ for before,after,n in reversed(row['replacements']):assert t.count(after)==n;t=t.replace(after,before)
+ assert hashlib.sha256(t.encode()).hexdigest()==row['beforeSha256'];assert sha(repo/row['file'])==row['beforeSha256'],row['file']
+assert 'if (false && !current)'not in(repo/'account-service/delivery.ts').read_text()
+assert json.loads((r/'sensitivity.json').read_text())['status']=='passed'
+# Independently reconstruct returned refusal and its exact scheduler clock directly from raw events.
+checks=[]
+for name in ['1-D','2-D']:
+ x=json.loads((r/name/'result.json').read_text());startAt=x['startedAt'];allEvents=[e for t in x['traces']for e in t['events']];assert all(t['dropped']==0 for t in x['traces']);closed=[e for e in allEvents if e['tag']=='http-result'and e.get('status')==409]
+ result=[]
+ for q in x['network']:
+  if q['phase']!='measured' or q.get('status')!=409:continue
+  g=[e for e in allEvents if e['bodySha256']==q['bodySha256']and e['path']==q['path']];replies=[e for e in closed if e['bodySha256']==q['bodySha256']];assert len(replies)==1 and replies[0]['reason']=='state-changed'
+  attempts=[e for e in g if e['tag']=='read-attempt'];failed=[e for e in g if e['tag']=='guard-refused'];assert [v['retry']for v in attempts]==[0,1,2,3];assert len(failed)==4 and all(v['predicate']=='owner-fence'and v['commitChanged']and not any(v[k]for k in ['ownerChanged','revisionChanged','versionChanged'])for v in failed)
+  nativeMs=g[-1]['at']-attempts[0]['at'];assert 4500<=nativeMs<=5000
+  actor=next(a for a in x['pacing']if a['label']==q['label']);events=actor['rows'];failure=next(e for e in events if e['tag']=='lane-result'and e['name']=='receive'and e['kind']=='unknown'and q['at']<=e['at']<=q['headersAt']+100);schedule=next(e for e in events if e['tag']=='lane-scheduled'and e['name']=='receive'and e['failures']==1 and e['at']>=failure['at']);begin=next(e for e in events if e['tag']=='lane-begin'and e['name']=='receive'and e['at']>schedule['at']);assert abs(schedule['due']-schedule['at']-1000)<3;assert 0<=begin['at']-schedule['due']<=20
+  result.append({'label':q['label'],'path':q['path'],'bodySha256':q['bodySha256'],'fourCommitFences':True,'nativeWorkMs':nativeMs,'httpMs':q['headersAt']-q['at'],'retryDelayMs':schedule['due']-schedule['at'],'retryBeginLatenessMs':begin['at']-schedule['due']})
+ assert x['pendingBeforeClose']['archive']==x['offlineColdWriterReopen']['archive'];assert x['offlineColdWriterReopen']['sameProfile']and x['offlineColdWriterReopen']['noStorageStateReinjection'];assert x['automaticOriginalWritingRecovered']and x['originalWholeExportEquality']and x['automaticPendingConverged'];assert all(x['guards'].values())
+ for previous in x['pendingBeforeClose']['retainedDelivery']:
+  after=next(v for v in x['offlineColdWriterReopen']['retainedDelivery']if v['store']==previous['store']);assert set(previous['entries'])<=set(after['entries']);assert len(set(after['entries']))==after['records']
+ assert x['originalRecoveredAt']-x['loadStoppedAt']<=120000 and x['pendingConvergedAt']-x['pendingReconnectAt']<=120000
+ checks.append({'name':name,'returned409s':result,'allDataGuards':True,'physicalOldEncryptedRecordsRetained':True,'serverEventDrops':0,'clientEventDrops':sum(a['dropped']for a in x['pacing'])})
+assert len(checks[0]['returned409s'])==0 and len(checks[1]['returned409s'])==1
+assert 'tests 61'in(r/'existing-native.log').read_text()and 'fail 0'in(r/'existing-native.log').read_text();assert '21 passed'in(r/'existing-scheduler.log').read_text();assert 'tests 2'in(r/'read-conflict-v2.log').read_text()and 'fail 0'in(r/'read-conflict-v2.log').read_text();assert '2 passed'in(r/'scheduler-mechanism-v2.log').read_text()
+(r/'evidence-review.json').write_text(json.dumps({'status':'passed','prior18PatchIdentitiesExact':True,'instrumentationReversedToExactRuntimeBase':True,'allFrozenExecutingInputsExact':True,'fourMechanismCasesPass':True,'existingRegressions':{'native':61,'scheduler':21,'failures':0},'rawEvidenceReconstruction':checks,'runtimeProductionChanges':0,'oldTestChanges':0,'scope':'Independent closed-outcome and clock reconstruction, exact cold exports/old ciphertext records; not global release qualification.'},indent=2)+'\n');print(json.dumps(checks,indent=2))
