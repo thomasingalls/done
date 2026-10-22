@@ -1,0 +1,98 @@
+[
+  {
+    "name": "1-B",
+    "condition": "B",
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-fairness-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-account-fairness-20261021/source",
+    "startedAt": 1792619896556,
+    "completedAt": 1792619987472,
+    "exitCode": 0
+  },
+  {
+    "name": "2-S",
+    "condition": "S",
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-fairness-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-account-fairness-20261021/source",
+    "startedAt": 1792619987577,
+    "completedAt": 1792620372678,
+    "exitCode": 0
+  },
+  {
+    "name": "3-U",
+    "condition": "U",
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-fairness-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-account-fairness-20261021/source",
+    "startedAt": 1792620372774,
+    "completedAt": 1792620487227,
+    "exitCode": 1
+  },
+  {
+    "name": "4-U",
+    "condition": "U",
+    "block": 2,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-fairness-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-account-fairness-20261021/source",
+    "startedAt": 1792620487324,
+    "completedAt": 1792620601260,
+    "exitCode": 1
+  },
+  {
+    "name": "5-S",
+    "condition": "S",
+    "block": 2,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-fairness-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-account-fairness-20261021/source",
+    "startedAt": 1792620601363,
+    "completedAt": 1792620962028,
+    "exitCode": 0
+  },
+  {
+    "name": "6-B",
+    "condition": "B",
+    "block": 2,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-fairness-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-account-fairness-20261021/source",
+    "startedAt": 1792620962132,
+    "completedAt": 1792621053161,
+    "exitCode": 0
+  }
+]

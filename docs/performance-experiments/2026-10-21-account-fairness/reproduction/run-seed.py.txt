@@ -1,0 +1,5 @@
+from pathlib import Path
+import subprocess,json,os,time,hashlib
+r=Path(__file__).parent;s=r/'source';out=r/'seed-attempt-1';out.mkdir(mode=0o700);cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-fairness-lab/seed.config.ts'];env={**os.environ,'FAIR_OUT':str(out),'FAIR_DIST':str(s/'dist')};at=time.time_ns()//1000000
+with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+(r/'seed-receipt.json').write_text(json.dumps({'command':cmd,'cwd':str(s),'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode},indent=2)+'\n');print('Seed exit',p.returncode);raise SystemExit(p.returncode)

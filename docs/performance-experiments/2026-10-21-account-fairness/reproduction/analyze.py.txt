@@ -1,0 +1,40 @@
+from pathlib import Path
+import json,math,collections
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());plan=load(r/'run-plan.json');runs=[]
+def stats(xs):
+ xs=sorted(xs);return {'n':len(xs),'p50':xs[math.ceil(len(xs)*.50)-1],'p95':xs[math.ceil(len(xs)*.95)-1],'max':xs[-1],'min':xs[0]}if xs else {'n':0}
+for case in plan:
+ data=load(r/case['name']/'result.json');probes=data.get('probes',data.get('partialProbes',[]));labels=data.get('actorLabels',[]);row={'name':case['name'],'condition':case['condition'],'outcome':data['outcome'],'selected':data.get('selected',[]),'catchups':data.get('catchups',[]),'offers':len(data.get('offers',[])),'guards':data.get('guards',{}),'all120KeysReachedPeer':data.get('all120KeysReachedPeer',False)};keys=[]
+ if probes and 'Q0'in labels and 'Q1'in labels and data.get('startedAt'):
+  a,b=probes[labels.index('Q0')],probes[labels.index('Q1')];bases=[data['before'][i]['lengths'][-1]['length']for i in range(2)];until=max([x.get('completedAt',data.get('failedAt',0))for x in row['catchups']],default=data['startedAt'])
+  for i,o in enumerate(data['offers'],1):
+   found=[next((x['at']for x in probe['lengths']if x['at']>=o['at']-5 and x['length']>=base+i),None)for probe,base in zip([a,b],bases)];keys.append({'index':i,'offer':o['at'],'localAt':found[0],'peerAt':found[1],'localMs':found[0]-o['at']if found[0]else None,'peerMs':found[1]-o['at']if found[1]else None,'offerLatenessMs':o['at']-o['scheduledAt'],'duringReplay':o['at']<=until,'cold18s':i<=36})
+  for sliceName,predicate in [('all',lambda x:True),('cold18s',lambda x:x['cold18s']),('duringReplay',lambda x:x['duringReplay'])]:
+   selected=[x for x in keys if predicate(x)];row[sliceName]={k:stats([x[k]for x in selected if x[k]is not None])for k in ['localMs','peerMs','offerLatenessMs']};row[sliceName]['missingLocal']=sum(x['localMs']is None for x in selected);row[sliceName]['missingPeer']=sum(x['peerMs']is None for x in selected)
+  events=[x for x in a['events']if x['kind']=='beforeinput'and x['at']>=data['startedAt']-2 and x['at']<=data.get('keysObservedBy',data.get('failedAt',float('inf')))];row['trustedFocusedVisibleInputs']={'count':len(events),'all':all(x['trusted']and x['focused']and x['visible']=='visible'for x in events)};row['keys']=keys;row['replayOverlapMs']=max(0,until-data['startedAt'])
+  row['progressGapsMs']={label:stats([b['at']-a['at']for a,b in zip(p['progress'],p['progress'][1:])if a['at']>=data['startedAt']and b['at']<=data.get('completedAt',float('inf'))])for label,p in zip(labels,probes)if p}
+ n=[x for x in data.get('network',[])if x.get('phase')=='measured'];row['statusesByDevice']={label:dict(collections.Counter(str(x.get('status','missing'))for x in n if x['label']==label))for label in labels};row['retryLinks']=[]
+ # Repeated captured body after a capacity refusal is a direct observer of same-byte application retry, not an external retry loop.
+ for x in n:
+  if x.get('status')==429:
+   nxt=next((y for y in n if y['id']>x['id']and y['label']==x['label']and y['path']==x['path']and y.get('bodySha256')==x.get('bodySha256')),None);row['retryLinks'].append({'label':x['label'],'refusedId':x['id'],'nextId':nxt['id']if nxt else None,'afterHeadersMs':nxt['at']-x['headersAt']if nxt else None})
+ delivered={label:set()for label in labels}
+ for request in n:
+  if request.get('status')!=200:continue
+  pages=request.get('pages',[])if request.get('pages')is not None else[]
+  if request.get('pages')is None and 'next'in request:pages=[request]
+  for i,page in enumerate(pages):
+   query=request.get('batch',[request])[i];publisher=query.get('publisherSha256')
+   if not publisher:continue
+   for pos in range(query['after']+1,page['next']+1):delivered[request['label']].add((publisher,pos))
+ row['uniqueDecodedReadDeliveriesByDevice']={k:len(v)for k,v in delivered.items()};row['decodedDeliveredPositionsByAccount']={account:sum(len(v)for k,v in delivered.items()if k.startswith(account))for account in ['H','M','Q']};row['deliveryCountQualification']='Distinct publisher/position per device from decoded successful replies; not a claim that HTTP200 alone establishes durable receipt. Whole exports and independent cold signatures are separate guards.'
+ row['metrics']=data.get('metrics');runs.append(row)
+pairs=[]
+for block,baseIndex,loaded in [(1,0,[1,2]),(2,5,[4,3])]:
+ b=runs[baseIndex]
+ for j in loaded:
+  c=runs[j];valid=all(x.get('all',{}).get('localMs',{}).get('n')==120 and x.get('all',{}).get('peerMs',{}).get('n')==120 and x['outcome']=='passed'for x in [b,c]);checks={}
+  if valid:checks={'localTyping':c['all']['localMs']['p95']<=max(16,b['all']['localMs']['p95']+3),'peerFairness':c['all']['peerMs']['p95']<=max(2500,1.10*b['all']['peerMs']['p95']+20),'replayDeadline':all(x['outcome']=='passed'and x['completedAt']-x['startedAt']<=600000 for x in c['catchups']),'keysDeliveryDeadline':max(x['peerMs']for x in c['keys'])<=30000};
+  pairs.append({'block':block,'baseline':b['name'],'loaded':c['name'],'complete':valid,'checks':checks,'passed':valid and all(checks.values())})
+bs=[x.get('all',{}).get('peerMs',{}).get('p95')for x in [runs[0],runs[-1]]];drift=100*(max(bs)/min(bs)-1)if all(v is not None and v>0 for v in bs)else None
+out={'runs':runs,'pairs':pairs,'baselinePeerP95DriftPercent':drift,'relativeInterpretationAllowed':drift is not None and drift<=15,'allSixFunctionalJourneys':all(x['outcome']=='passed'for x in runs),'allPrimaryPairGates':all(x['passed']for x in pairs),'absolute2500msPeerMisses':[x['name']for x in runs if x.get('all',{}).get('peerMs',{}).get('p95',float('inf'))>2500],'fairnessAcceptance':all(x['passed']for x in pairs)and drift is not None and drift<=15,'policy':'unchanged16/64','scope':'Finite local three-account/six-two-two-device benchmark on final candidate; not a user capacity estimate, physical-device result or generalized qualification.'};(r/'analysis.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items()if k!='runs'},indent=2));print('rows:');print('\n'.join(str({k:x.get(k)for k in ['name','outcome','all','replayOverlapMs']})for x in runs))

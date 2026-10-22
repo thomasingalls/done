@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json,os,time,hashlib
+r=Path(__file__).parent;s=r/'source';plan=json.loads((r/'run-plan.json').read_text());identity=json.loads((r/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();rows=[]
+for case in plan:
+ for f,h in identity['harness'].items():assert sha(s/'test/account-fairness-lab'/f)==h,f
+ for f,h in identity['sourceInputs'].items():assert sha(s/f)==h,f
+ out=r/case['name'];out.mkdir(mode=0o700);env={**os.environ,'FAIR_OUT':str(out),'FAIR_DIST':str(s/'dist'),'FAIR_CONDITION':case['condition']};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-fairness-lab/playwright.config.ts'];at=time.time_ns()//1000000
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**case,'command':cmd,'cwd':str(s),'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+ # A functional failure remains a failure. Keep the declared denominator and all later independent arms.
+print('Fixed six-run plan finished; failures:',sum(x['exitCode']!=0 for x in rows))

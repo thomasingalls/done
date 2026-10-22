@@ -1,0 +1,93 @@
+{
+  "status": "does not clear the declared local fairness gates",
+  "baseCommit": "c1177575801a8eeab60b63883a3c701625ada215",
+  "actualDistinctPrincipalsAccountsAndWorkspaces": 3,
+  "realEnrolledDevices": [
+    6,
+    2,
+    2
+  ],
+  "newHistoryPositions": [
+    1024,
+    256,
+    32
+  ],
+  "actualSeedAcceptedTotals": [
+    1034,
+    262,
+    38
+  ],
+  "fixedRunCount": 6,
+  "functionalPassed": 4,
+  "functionalFailed": 2,
+  "fairnessAcceptance": false,
+  "pairs": [
+    {
+      "block": 1,
+      "baseline": "1-B",
+      "loaded": "2-S",
+      "complete": true,
+      "checks": {
+        "localTyping": true,
+        "peerFairness": true,
+        "replayDeadline": true,
+        "keysDeliveryDeadline": true
+      },
+      "passed": true
+    },
+    {
+      "block": 1,
+      "baseline": "1-B",
+      "loaded": "3-U",
+      "complete": false,
+      "checks": {},
+      "passed": false
+    },
+    {
+      "block": 2,
+      "baseline": "6-B",
+      "loaded": "5-S",
+      "complete": true,
+      "checks": {
+        "localTyping": true,
+        "peerFairness": true,
+        "replayDeadline": true,
+        "keysDeliveryDeadline": true
+      },
+      "passed": true
+    },
+    {
+      "block": 2,
+      "baseline": "6-B",
+      "loaded": "4-U",
+      "complete": false,
+      "checks": {},
+      "passed": false
+    }
+  ],
+  "baselinePeerP95DriftPercent": 0.7859144753556979,
+  "peerKeysMissingAtFailedSnapshots": {
+    "3-U": 10,
+    "4-U": 41
+  },
+  "all120LocalInputObservationsInAllSixRuns": true,
+  "quietRecorded429s": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "heavyQuietRefusalsPerRun": {
+    "membershipDiscover409": 6,
+    "grantBegin403InsufficientScope": 6
+  },
+  "nativeColdAudits": 6,
+  "nativeAuditControlsDetected": 3,
+  "allSeedRowsAndOtherAccountsAcceptedWritingPreserved": true,
+  "productionCodeOldTestsAndPolicyUnchanged": true,
+  "policy": "16/64",
+  "generalQualificationPaused": true,
+  "scope": "Finite local end-to-end benchmark at exact final candidate; no supported-user capacity, physical-device or generalized qualification claim. Failed contexts were closed at the original writing guard, leaving replay censored and pending local durability/eventual recovery unobserved."
+}

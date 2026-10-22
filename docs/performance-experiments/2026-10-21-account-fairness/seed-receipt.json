@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "test/account-fairness-lab/seed.config.ts"
+  ],
+  "cwd": "/private/tmp/done-account-fairness-20261021/source",
+  "startedAt": 1792618594879,
+  "completedAt": 1792619805300,
+  "exitCode": 0
+}

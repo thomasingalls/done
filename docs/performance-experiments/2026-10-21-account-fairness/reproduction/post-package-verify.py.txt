@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,subprocess,hashlib,gzip,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');m=json.loads((r/'patches-v2/manifest.json').read_text());sha=lambda b:hashlib.sha256(b).hexdigest();env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};steps=m['independentSequentialApply01Through14'];assert len(steps)==14
+for x in steps:assert sha(Path(x['patch']).read_bytes())==x['sha256']and x['expectedTree']==x['independentCleanApplyTree']
+files=0;packets=[]
+for p in sorted((repo/'docs/performance-experiments').iterdir()):
+ if not(p/'SHA256SUMS').exists():continue
+ for line in(p/'SHA256SUMS').read_text().splitlines():
+  h,f=line.split('  ',1);assert sha((p/f).read_bytes())==h,str(p/f);files+=1
+ packets.append(p.name)
+p=repo/'docs/performance-experiments/2026-10-21-account-fairness';fixture=json.loads((r/'private-fixture/fixture.json').read_text());values=set()
+for a in fixture['accounts']:
+ for d in a['actors']:
+  strings=[d['code']]+[c[k]for c in d['credentials']for k in ['privateKey','credentialId','userHandle']if c.get(k)]
+  for s in strings:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+key=(Path(fixture['state'])/'operator.key').read_bytes();values.update([key,key.hex().encode()])
+for f in p.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.name.endswith('.gz')else b;assert not any(v in b for v in values),str(f.relative_to(p))
+out=lambda args:subprocess.check_output(args,env=env);git=['git','--git-dir='+str(r/'patch14-v2-index.git'),'--work-tree='+str(repo)];assert out(git+['write-tree']).decode().strip()==m['expectedCumulativeTree'];assert out(git+['diff',m['expectedCumulativeTree'],'--'])==b'';subprocess.run(git+['diff','--check',m['baseTree'],m['expectedCumulativeTree']],check=True,env=env)
+idx=Path(out(['git','-C',str(repo),'rev-parse','--git-path','index']).decode().strip());assert sha(idx.read_bytes())==m['realIndexSha256'];assert out(['git','-C',str(repo),'diff','--cached','--name-only'])==b'';result={'status':'passed','all14HistoricalPatchHashesAndIndependentApplyTreesExact':True,'independentDirectPatch14ApplyAtSignedCandidate':True,'expectedCumulativeTree':m['expectedCumulativeTree'],'patch14Sha256':m['patch14Sha256'],'packetFilesChecked':files,'packetCount':len(packets),'knownPrivateValuesCheckedAfterDecompression':len(values),'privateMatches':0,'workingTreeMatchesFrozenCumulativeTree':True,'realIndexUnchangedAndUnstaged':True,'publication':'No commit, push, preview change, merge or deployment.'};(r/'patches-v2/post-package-verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

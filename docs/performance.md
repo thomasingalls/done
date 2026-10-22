@@ -2132,3 +2132,22 @@ All1586corrected refusals are session-rate predicates,29client refusals are work
 All primary pair guards pass: pressure143.423/140.523→67.082/67.091s (53.23%/52.26%), local p95 13.8/11.8→7.4/9.6ms. Ordinary33.602→34.156s and independent51.363→51.475s are slightly slower; foreground8.9→9.2ms is roughly unchanged. The Bdiagnostic28.077→29.084s also passes its guard but grants no policy adoption. Reference drift2.06% is within15%. Every journey retains full export/two-way/Undo/locked-offline guards and120new peer keys; foreground adds30 markers per arm. Independent wire hash joins prove4-read template,72offers and0skips in both fixed-load arms. Keep phase11 and phase12 failures/limitations, dependent per-key observations and lack of supported mobile/Firefox/WAN/general capacity evidence. No universally faster typing/sync claim; ordinary catch-up still~34s.
 
 Original HTTP duplicate counterexample, five appended regressions, six omission controls, exact source/old-test AST review,50native/112word/105planning cases and matched type/build/budget/isolation checks are preserved. All881rows/337unresolved/97statuses/contracts stay exact; new cases stay blocked from aggregate qualification credit. Local unsigned sequential patch13, no staging/publication or generalized qualification.
+
+
+## 2026-10-22 — Unequal-account catch-up versus editing on c1177575
+
+[Phase14 packet](./performance-experiments/2026-10-21-account-fairness/README.md) freezes three genuine accounts with6/2/2 enrolled workspace credentials and1024/256/32 new accepted source positions. Four roots/ten native profiles, actual packaged client and current production overlays at1CPU/1GiB/no swap;120 genuine keys independently offered500ms. Fresh serial B,S,U,U,S,B, no retries or source/rate changes.
+
+| Run | Outcome | Local p95 ms | Peer p95 ms | Large replay seconds |
+|---|---|---:|---|---|
+|1-B|passed|2.6|738|—|
+|2-S|passed|4.1|1219.2|354.39|
+|3-U|failed|2.5|incomplete (110/120)|censored at writing failure|
+|4-U|failed|2.2|incomplete (79/120)|censored at writing failure|
+|5-S|passed|3.5|1151.9|330.252|
+|6-B|passed|2.9|743.8|—|
+
+
+The fixed fairness decision fails. Baseline peer drift0.786% passes; lighter-load guards pass despite higher peer latency. Both heavy arms miss the original30s writing guard with10/41 keys unobserved. Their observed-only peer p95 values are not full120-key estimates; all partial timestamps/counts remain. Local p95 stays2.2–4.1ms, so fast local echo does not establish timely sync. Heavy catch-up cancellation is censored at the quiet failure, not a600s observation. Membership-discovery409 and grant403 insufficient-scope occur six times each on the heavy quiet receiver; no quiet429 is recorded. Do not infer cause from statuses alone.
+
+Independent OpenSSL/native-prefix/seed-row audits of all six stores, three corruption controls, participant/resource/source checks and full/partial metric reconstruction pass. H/M accepted writing and all seed rows are exact. Failed profiles close without final storageState, limiting pending-durability/recovery claims. Preserve setup failures and all six outcomes. All existing obligations/old tests/source804 bytes remain; no rate adoption, aggregate qualification credit, staging or publication.

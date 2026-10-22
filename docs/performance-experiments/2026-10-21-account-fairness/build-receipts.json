@@ -1,0 +1,44 @@
+[
+  {
+    "name": "types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1792618312580,
+    "completedAt": 1792618313132,
+    "exitCode": 0
+  },
+  {
+    "name": "build",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "startedAt": 1792618313132,
+    "completedAt": 1792618316545,
+    "exitCode": 0
+  },
+  {
+    "name": "budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "startedAt": 1792618316545,
+    "completedAt": 1792618316643,
+    "exitCode": 0
+  },
+  {
+    "name": "isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "startedAt": 1792618316643,
+    "completedAt": 1792618316711,
+    "exitCode": 0
+  }
+]

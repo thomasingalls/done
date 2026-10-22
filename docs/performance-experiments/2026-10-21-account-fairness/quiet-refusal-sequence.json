@@ -1,0 +1,295 @@
+{
+  "rows": [
+    {
+      "name": "1-B",
+      "quietRefusals": []
+    },
+    {
+      "name": "2-S",
+      "quietRefusals": []
+    },
+    {
+      "name": "3-U",
+      "quietRefusals": [
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 2954,
+          "headersMs": 5206,
+          "elapsedMs": 2252,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 5209,
+          "headersMs": 5428,
+          "elapsedMs": 219,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 6445,
+          "headersMs": 9301,
+          "elapsedMs": 2856,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 9304,
+          "headersMs": 9563,
+          "elapsedMs": 259,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 11576,
+          "headersMs": 14060,
+          "elapsedMs": 2484,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 14063,
+          "headersMs": 14322,
+          "elapsedMs": 259,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 18333,
+          "headersMs": 20805,
+          "elapsedMs": 2472,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 20808,
+          "headersMs": 21006,
+          "elapsedMs": 198,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 29017,
+          "headersMs": 31443,
+          "elapsedMs": 2426,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 31447,
+          "headersMs": 31774,
+          "elapsedMs": 327,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 47787,
+          "headersMs": 49631,
+          "elapsedMs": 1844,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 49633,
+          "headersMs": 49812,
+          "elapsedMs": 179,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        }
+      ]
+    },
+    {
+      "name": "4-U",
+      "quietRefusals": [
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 2767,
+          "headersMs": 5096,
+          "elapsedMs": 2329,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 5099,
+          "headersMs": 5312,
+          "elapsedMs": 213,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 6326,
+          "headersMs": 8606,
+          "elapsedMs": 2280,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 8609,
+          "headersMs": 9191,
+          "elapsedMs": 582,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 11202,
+          "headersMs": 13543,
+          "elapsedMs": 2341,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 13546,
+          "headersMs": 13751,
+          "elapsedMs": 205,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 17762,
+          "headersMs": 20142,
+          "elapsedMs": 2380,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 20145,
+          "headersMs": 20400,
+          "elapsedMs": 255,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 28412,
+          "headersMs": 30905,
+          "elapsedMs": 2493,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 30909,
+          "headersMs": 31109,
+          "elapsedMs": 200,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "offeredMs": 47122,
+          "headersMs": 49446,
+          "elapsedMs": 2324,
+          "status": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null
+        },
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "offeredMs": 49449,
+          "headersMs": 49703,
+          "elapsedMs": 254,
+          "status": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope"
+        }
+      ]
+    },
+    {
+      "name": "5-S",
+      "quietRefusals": []
+    },
+    {
+      "name": "6-B",
+      "quietRefusals": []
+    }
+  ],
+  "scope": "Post-outcome closed-label observer sequence; no cause inferred from status/timing. Uncaptured409 reason remains unknown."
+}

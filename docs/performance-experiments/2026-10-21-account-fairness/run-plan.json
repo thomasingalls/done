@@ -1,0 +1,32 @@
+[
+  {
+    "name": "1-B",
+    "condition": "B",
+    "block": 1
+  },
+  {
+    "name": "2-S",
+    "condition": "S",
+    "block": 1
+  },
+  {
+    "name": "3-U",
+    "condition": "U",
+    "block": 1
+  },
+  {
+    "name": "4-U",
+    "condition": "U",
+    "block": 2
+  },
+  {
+    "name": "5-S",
+    "condition": "S",
+    "block": 2
+  },
+  {
+    "name": "6-B",
+    "condition": "B",
+    "block": 2
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "requestKeys": [
+      "v",
+      "candidate",
+      "certification",
+      "recovery",
+      "originSignature"
+    ],
+    "certificationKeys": [
+      "members",
+      "recoveryStateDigest",
+      "approver",
+      "signature"
+    ],
+    "candidateKeys": [
+      "v",
+      "kind",
+      "preparation",
+      "accountId",
+      "principalId",
+      "workspaceId",
+      "lineageId",
+      "authRoot",
+      "generation",
+      "proposedEpoch",
+      "signer",
+      "actors",
+      "coverage",
+      "checkpoint",
+      "wraps",
+      "signature"
+    ],
+    "offerKeys": [
+      "v",
+      "kind",
+      "epoch",
+      "head",
+      "signature"
+    ],
+    "epochKeys": [
+      "v",
+      "kind",
+      "pin",
+      "requestDigest",
+      "accountId",
+      "principalId",
+      "workspaceId",
+      "lineageId",
+      "epoch",
+      "parent",
+      "generation",
+      "certification",
+      "owner",
+      "capabilities",
+      "acceptancePublicKey",
+      "heads"
+    ],
+    "initialCertifiedMembers": 2,
+    "latestCertifiedMembers": 6
+  }
+]
