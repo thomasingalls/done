@@ -1,0 +1,92 @@
+[
+  {
+    "name": "1-trace-U",
+    "observed": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-membership-continuation-20261022/source",
+    "startedAt": 1792652916981,
+    "completedAt": 1792652942201,
+    "exitCode": 1
+  },
+  {
+    "name": "2-exact-U",
+    "observed": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-membership-continuation-20261022/source",
+    "startedAt": 1792652942296,
+    "completedAt": 1792652963341,
+    "exitCode": 1
+  },
+  {
+    "name": "3-trace-U",
+    "observed": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-membership-continuation-20261022/source",
+    "startedAt": 1792653225319,
+    "completedAt": 1792653228561,
+    "exitCode": 1
+  },
+  {
+    "name": "4-exact-U",
+    "observed": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-membership-continuation-20261022/source",
+    "startedAt": 1792653228591,
+    "completedAt": 1792653231183,
+    "exitCode": 1
+  },
+  {
+    "name": "5-trace-U",
+    "observed": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-membership-continuation-20261022/source",
+    "startedAt": 1792653332012,
+    "completedAt": 1792653465118,
+    "exitCode": 0
+  },
+  {
+    "name": "6-exact-U",
+    "observed": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-membership-continuation-20261022/source",
+    "startedAt": 1792653465219,
+    "completedAt": 1792653595604,
+    "exitCode": 0
+  }
+]

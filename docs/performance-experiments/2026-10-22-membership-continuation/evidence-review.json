@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "reports": [
+    {
+      "name": "5-trace-U",
+      "independentReconstruction": "passed",
+      "deadlineVisibleKeys": [
+        120,
+        82
+      ],
+      "closedReasonsJoinedToReceiver": 10,
+      "writerOfflineArchiveExact": true,
+      "allDataGuards": true
+    },
+    {
+      "name": "6-exact-U",
+      "independentReconstruction": "passed",
+      "deadlineVisibleKeys": [
+        120,
+        81
+      ],
+      "closedReasonsJoinedToReceiver": 10,
+      "writerOfflineArchiveExact": true,
+      "allDataGuards": true
+    }
+  ],
+  "originalAcceptanceStillFailed": true
+}

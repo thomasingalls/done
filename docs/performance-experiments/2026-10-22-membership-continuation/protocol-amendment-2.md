@@ -1,0 +1,5 @@
+# Pre-workload harness amendment2
+
+Runs3/4 fail before any t0 in the NEW importer: the pinned Playwright bundle exports StorageScript through a factory, not directly as a constructor. Preserve the exact failed helper and identities. Correct only that invocation. An independent browser-only probe now verifies complete Q0 and Q1 origins, every database/store/record and localStorage byte-for-byte both after import and after closing/reopening each entire persistent browser process. The original setStorageState probe and all prior failures remain. A sandbox-denied probe launch is also retained separately; the authorized launch succeeds.
+
+Fixed measured plan5-trace-U then6-exact-U, both retained independent of outcome. Four startup failures have zero workload observations and remain outside timing denominators. No original writing deadline or durability condition changes. Source/client/policy exact, importer used only before workload; subsequent cold reopening uses original profile files with no reinjection.

@@ -1,0 +1,41 @@
+from pathlib import Path
+import shutil,json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-membership-continuation';sha=lambda b:hashlib.sha256(b).hexdigest();provenance=[]
+def copy(src,dst,compress=False):
+ src=Path(src);target=p/(dst+'.gz'if compress else dst);target.parent.mkdir(parents=True,exist_ok=True);b=src.read_bytes();target.write_bytes(gzip.compress(b,mtime=0)if compress else b);provenance.append({'source':str(src.relative_to(r)),'artifact':str(target.relative_to(p)),'sourceSha256':sha(b),'artifactSha256':sha(target.read_bytes())})
+for f in ['protocol.md','protocol-amendment-1.md','protocol-amendment-2.md','analysis.json','evidence-review.json','sensitivity.json','observer-parity.json','profile-seed-probe.json','import-probe.json','storage-importer-identity.json','measurement-identity.json','starting.json','run-receipts.json','run-plan.json','native-tests.json','native-tests-v2.json','final-checks.json'] :copy(r/f,f)
+copy(r/'native-audit.json','native-audit.json',True)
+for d in ['1-trace-U','2-exact-U','3-trace-U','4-exact-U','5-trace-U','6-exact-U']:
+ for f in ['result.json','invocation.log','services.log','container-identity.json','docker-command.json']:
+  if(r/d/f).exists():copy(r/d/f,'runs/'+d+'/'+f,True)
+for f in ['analysis.log','evidence-review.log','sensitivity.log','observer-parity.log','native-audit.log','native-exact-tests.log','native-observed-tests.log','native-exact-tests-v2.log','native-observed-tests-v2.log','host-removal-tests.log','lab-types.log','lab-explicit-types.log','lab-explicit-types-v2.log','lab-explicit-types-v3.log','lab-explicit-types-final.log','import-probe.log','profile-seed-probe.log','profile-seed-probe-v2.log','failed-profile-comparison.log','control-missing-snapshot-refusal.log','control-false-original-pass.log','control-false-cold-archive.log','control-missing-input.log','control-native-ciphertext.log','final-checks.log']:
+ if(r/f).exists():copy(r/f,'checks/'+f,True)
+for f in ['prepare-lab.py','freeze-and-run.py','observer.mjs','container-service.mjs','observer-parity.mjs','observer-parity-initial.mjs','extract-storage.mjs','profile-seed-probe.mjs','import-probe.mjs','inspect-failed-profile.mjs','native-preflight.py','native-preflight-v2.py','analyze.py','review-evidence.py','audit-native.mjs','sensitivity.py','write-records.py','package-evidence.py','final-checks.py','prepare-patch.py']:
+ copy(r/f,'reproduction/'+f+'.txt')
+for f in (r/'source/test/account-continuation-lab').iterdir():
+ if f.is_file():copy(f,'reproduction/lab/'+f.name+'.txt')
+for f in ['grants.ts','membershipLocator.ts','publisherTips.ts']:copy(r/'observed-account-service'/f,'reproduction/observed/'+f+'.txt')
+for f in(r/'startup-attempts').rglob('*'):
+ if f.is_file():copy(f,'reproduction/startup-attempts/'+str(f.relative_to(r/'startup-attempts'))+'.txt')
+(p/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+# Public packet never contains raw profiles, DBs, state/fixture/storage dumps or codes.
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def private(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   private(w)
+ elif isinstance(v,list):
+  for w in v:private(w)
+private(fixture)
+key=Path(fixture['state'])/'operator.key'
+if key.exists():secrets.add(key.read_bytes())
+scanned=0
+for f in p.rglob('*'):
+ if not f.is_file():continue
+ b=f.read_bytes();b=gzip.decompress(b)if f.suffix=='.gz'else b
+ for secret in secrets:assert secret not in b,'private material detected in '+str(f)
+ scanned+=1
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','filesScannedAfterDecompression':scanned,'knownPrivateValues':len(secrets),'matches':0,'excluded':['raw enrollment fixture','SQLite databases','persistent browser profiles','storageState dumps','codes and credential keys','generated error-context snapshots'],'scope':'Exact known-value scan, not a universal DLP guarantee.'},indent=2)+'\n')
+(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'))
+print(json.dumps({'files':sum(f.is_file()for f in p.rglob('*')),'privateValuesScanned':len(secrets),'knownPrivateMatches':0,'packet':str(p)}))

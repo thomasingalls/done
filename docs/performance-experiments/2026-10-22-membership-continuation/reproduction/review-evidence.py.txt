@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,sys,collections
+r=Path(__file__).parent;replacement=json.loads(Path(sys.argv[2]).read_text())if len(sys.argv)>2 else None;reports=[]
+for c in json.loads((r/'run-plan.json').read_text()):
+ x=replacement if replacement is not None and c['name']==sys.argv[1]else json.loads((r/c['name']/'result.json').read_text());network=x['network'];start=x['startedAt'];end=x['originalDeliveryDeadlineAt']
+ # Reconstruct original deadline and per-device visible prefixes, rather than accepting later-success booleans.
+ assert 29.9<=(end-x['typingFinishedAt'])/1000<=30.5,'original deadline'
+ prefixes=[]
+ for p in x['probesAtDeadline']:
+  ordered=sorted(p['lengths'],key=lambda z:z['at']);baseline=[z for z in ordered if z['at']<=start][-1]['length'];prefixes.append(ordered[-1]['length']-baseline)
+ assert prefixes[0]==120 and 0<=prefixes[1]<120 and x['originalDeliveryPassed'] is False,'original delivery failure retained'
+ offered=[e for e in x['probesAtDeadline'][0]['events']if e['kind']=='beforeinput'and start<=e['at']<=x['typingFinishedAt']];assert len(offered)==len(x['offers'])==120 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in offered),'trusted input denominator'
+ assert x['loadStoppedAt']>=end and x['automaticOriginalWritingRecovered']and x['originalWholeExportEquality']and x['loadStoppedAt']<=x['originalRecoveredAt']<=x['loadStoppedAt']+120000,'original automatic recovery'
+ assert x['pendingBeforeClose']['archive']==x['offlineColdWriterReopen']['archive'],'cold writer full archive identity'
+ assert x['pendingBeforeClose']['acceptedUnchangedOffline']and x['offlineColdWriterReopen']['noStorageStateReinjection']and x['offlineColdWriterReopen']['sameProfile'],'genuine pending/cold profile'
+ assert not any(n['phase']=='offline-pending'and n['label']in ['Q0','Q0-reopened']and n['path']=='/account/delivery/submit'and n.get('status')==200 for n in network),'pending edit not accepted while offline'
+ assert x['automaticPendingConverged']and x['pendingReconnectAt']<=x['pendingConvergedAt']<=x['pendingReconnectAt']+120000 and all(x['guards'].values()),'automatic pending delivery and data guards'
+ native=[e for t in x['traces']for e in t['events']];closed=[e for e in native if e['tag']=='http-result'and e.get('status',0)>=400];q1=[n for n in network if n['label']=='Q1'];state=[]
+ for e in closed:
+  matching=[n for n in q1 if n['path']==e['path']and n['bodySha256']==e['bodySha256']and n.get('status')==e['status']];assert matching,'native refusal joins real receiver request'
+  if e['path'].endswith('/discover'):
+   assert e['refusal']=='state-changed'and e['status']==409,'closed domain refusal reason';state.append(e)
+  else:assert e['scope']=='removal'and e['refusal']=='insufficient-scope'and e['status']==403,'removal grant correctly refused'
+ assert len(state)==5 and len(closed)==10,'exact refusal denominators'
+ if c['observed']:
+  for e in state:
+   owned=[z for z in native if z['id']==e['id']];failed=[z for z in owned if z['tag']=='membership-unchanged-false'];mismatch=[z for z in owned if z['tag']=='publisher-fingerprint-changed'];assert len(failed)==len(mismatch)==4 and sorted(z['retry']for z in failed)==list(range(4)),'four snapshot fence refusals';assert all(z['promotionWitnessChanged']and not any(z[k]for k in ['ownWitnessChanged','contextChanged','rowCountChanged'])for z in mismatch),'first publisher witness mismatch'
+  denied=[z for z in native if z['tag']=='grant-no-authorized-key'];assert len(denied)==5 and all(z['scope']=='removal'for z in denied),'safe terminal-scope fallback'
+ else:assert {e['tag']for e in native}=={'http-result'},'exact server has no domain observers'
+ assert not any(n.get('status')==429 for n in network if n['label'].startswith('Q')),'quiet refuses not rate refusals'
+ reports.append({'name':c['name'],'independentReconstruction':'passed','deadlineVisibleKeys':prefixes,'closedReasonsJoinedToReceiver':len(closed),'writerOfflineArchiveExact':True,'allDataGuards':True})
+if replacement is None:(r/'evidence-review.json').write_text(json.dumps({'status':'passed','reports':reports,'originalAcceptanceStillFailed':True},indent=2)+'\n')
+print(json.dumps({'status':'passed','reports':reports}))
