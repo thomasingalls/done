@@ -7131,9 +7131,10 @@ test('history early-epoch lookup verifies only the latest complete timeline and 
     );
     assert.equal(
       exchangeCount,
-      authorityCount + count,
-      'the complete latest history already contains epochs one and two',
+      count,
+      'one complete history supplies native authority and its earlier memberships',
     );
+    assert(authorityCount > 0, 'the standalone authority denominator still verifies its successor');
   } finally {
     db.close();
   }
@@ -7352,4 +7353,154 @@ test('v2 late-ledger refuses a membership-removal transition across the authorit
   assert.equal(changed, true);
   assert.equal(answer.kind, 'unknown');
   assert.equal('bytes' in answer, false);
+});
+
+// Phase22: independent normal protocol verification is the work denominator, never a server cache.
+async function completeAuthorityWork(t, run) {
+  const domains = [
+    'done/admission-successor/v1',
+    'done/device-certification-epoch/v1',
+    'done/device-membership-admission/v2',
+  ];
+  const counts = Object.fromEntries(domains.map((domain) => [domain, 0]));
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  const mocked = t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    for (const domain of domains)
+      if (Buffer.from(args[3]).includes(Buffer.from(domain))) counts[domain]++;
+    return verify(...args);
+  });
+  try {
+    return { result: await run(), counts };
+  } finally {
+    mocked.mock.restore();
+  }
+}
+
+for (const later of [false, true])
+  for (const operation of ['bootstrap', 'discovery', 'catalog'])
+    test(`single request shares one complete ${later ? 'continued' : 'certified'} authority timeline for ${operation}`, async (t) => {
+      const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+      const { snapshot } = await import('../../account-service/delivery.ts');
+      const { membershipProofChain } = await import('../../account-service/membershipLocator.ts');
+      const db = await discoveryDatabase(x);
+      let s;
+      try {
+        db.exec('BEGIN');
+        s = snapshot(db, x.workspace);
+        db.exec('ROLLBACK');
+      } finally {
+        db.close();
+      }
+      const base = {
+        pin: x.authority.pin,
+        request: JSON.parse(s.promotion.request),
+        receipt: JSON.parse(s.promotion.result),
+      };
+      const expected = await completeAuthorityWork(t, () =>
+        verifyMembershipChain(membershipProofChain(s), base),
+      );
+      const q = membershipLocatorRequests(x);
+      const request =
+        operation === 'bootstrap'
+          ? q.bootstrap()
+          : operation === 'discovery'
+            ? q.discovery()
+            : await continuationHistoryRequest(x, {
+                epoch: later ? 4 : 3,
+                head: later ? x.admission.head : x.certification.head,
+              });
+      const actual = await completeAuthorityWork(t, () =>
+        operation === 'bootstrap'
+          ? x.authority.owner.membershipBootstrap(x.f.core, request)
+          : operation === 'discovery'
+            ? x.authority.owner.discoverMembership(x.f.core, request)
+            : x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request),
+      );
+      assert.equal(
+        operation === 'catalog' ? actual.result.ok : actual.result.kind,
+        operation === 'catalog' ? true : `membership-${operation}`,
+        JSON.stringify(actual.result),
+      );
+      assert.deepEqual(
+        actual.counts,
+        expected.counts,
+        'native eligibility and one complete independently verified history suffice for this request',
+      );
+      const checked =
+        operation === 'bootstrap'
+          ? await verifyMembershipBootstrapResponse(actual.result, request, x.authority.pin)
+          : operation === 'discovery'
+            ? await verifyMembershipDiscoveryResponse(actual.result, request, base, 1000)
+            : await verifyHistoryCheckpointPage(actual.result.page, request, x.authority.pin);
+      assert(checked);
+      if (operation !== 'catalog') assert.deepEqual(actual.result.proofs, expected.result.proofs);
+    });
+
+async function nativeHistoryEvidenceFixture(t) {
+  const { x } = await openingHistoryFixture(t);
+  const request = membershipLocatorRequests(x).bootstrap();
+  let issuer;
+  const answer = await x.authority.owner.membershipBootstrap({
+    membershipBootstrap(input, value) {
+      issuer = value;
+      return x.f.core.membershipBootstrap(input, value);
+    },
+  }, request);
+  assert.equal(answer.kind, 'membership-bootstrap');
+  const { snapshot, verifyWorkspaceAuthorityWithHistory } =
+    await import('../../account-service/delivery.ts');
+  const db = await discoveryDatabase(x);
+  let s;
+  try {
+    db.exec('BEGIN');
+    s = snapshot(db, x.workspace);
+    db.exec('ROLLBACK');
+  } finally {
+    db.close();
+  }
+  return { x, s, issuer, verify: verifyWorkspaceAuthorityWithHistory };
+}
+
+for (const fault of [
+  'recovery-draft', 'recovery-confirmation', 'activation', 'native-credential',
+  'workspace', 'request-digest', 'offer', 'successor-row', 'transfer-row',
+  'retained-delivery', 'successor-signature', 'certification-signature', 'pending-delivery',
+])
+  test(`single history producer refuses ${fault} damage before exposing verified evidence`, async (t) => {
+    const f = await nativeHistoryEvidenceFixture(t), s = structuredClone(f.s);
+    const alter = (row, key, mutate) => { const value = JSON.parse(row[key]); mutate(value); row[key] = JSON.stringify(value); };
+    if (fault === 'recovery-draft') alter(s.recovery, 'draft', v => { v.principalId = 'ee'.repeat(16); });
+    if (fault === 'recovery-confirmation') alter(s.recovery, 'result', v => { v.recoveryStateDigest = 'ee'.repeat(32); });
+    if (fault === 'activation') alter(s.promotion, 'activation', v => { v.challenge.context.credentialId = 'ee'.repeat(16); });
+    if (fault === 'native-credential') s.credential.id = 'ee'.repeat(16);
+    if (fault === 'workspace') s.promotion.workspace_id = 'ee'.repeat(16);
+    if (fault === 'request-digest') s.promotion.request_digest = 'ee'.repeat(32);
+    if (fault === 'offer') alter(s.promotion, 'offer', v => { v.head = 'ee'.repeat(32); });
+    if (fault === 'successor-row') s.successor.preparation_id = 'ee'.repeat(16);
+    if (fault === 'transfer-row') s.transfer.workspace_id = 'ee'.repeat(16);
+    if (fault === 'retained-delivery' || fault === 'pending-delivery')
+      alter(s.transfer, 'delivery', v => { v.certificate.signature = '00'.repeat(64); });
+    if (fault === 'successor-signature') alter(s.successor, 'artifact', v => { v.signature = '00'.repeat(64); });
+    if (fault === 'certification-signature') alter(s.transfer, 'artifact', v => { v.signature = '00'.repeat(64); });
+    if (fault === 'pending-delivery') {
+      s.transfer.artifact = null;
+      s.transfer.boundary_witness = null;
+      s.promotion.successor_head = JSON.parse(s.successor.artifact).head;
+    }
+    await assert.rejects(f.verify(s, f.issuer));
+  });
+
+test('single history producer retains protocol brands and the original standalone delivery-authority shape', async (t) => {
+  const f = await nativeHistoryEvidenceFixture(t);
+  const { verifyWorkspaceAuthority } = await import('../../account-service/delivery.ts');
+  const { historyMembershipAt } = await import('../../account-protocol/admissionHistory.ts');
+  const result = await f.verify(f.s, f.issuer);
+  assert.deepEqual(result.authority, await verifyWorkspaceAuthority(f.s, f.issuer));
+  assert.equal('history' in result.authority, false, 'early delivery dispatch stays unchanged');
+  assert.equal(historyMembershipAt(result.history, 1).state.epoch, 1);
+  assert.equal(historyMembershipAt(result.history, 2).state.epoch, 2);
+  assert.equal(historyMembershipAt(result.history, 3).state.epoch, 3);
+  assert.throws(() => historyMembershipAt(structuredClone(result.history), 1), /Unverified/);
+  const again = await f.verify(f.s, f.issuer);
+  assert.notStrictEqual(again.history, result.history, 'this phase never retains cross-request evidence');
 });

@@ -34,9 +34,7 @@ import {
 } from '../account-protocol/historyExchange.ts';
 import { membershipState } from '../account-protocol/membership.ts';
 import {
-  verifyEarlyHistory,
-  verifyCertificationHistory,
-  extendMembershipHistory,
+  type AdmissionHistory,
   historyMembershipAt,
 } from '../account-protocol/admissionHistory.ts';
 import { decodePositionResponse } from '../account-protocol/positionDecision.ts';
@@ -49,13 +47,12 @@ import {
   snapshotBytes,
   selectPublisher,
   census,
-  verifyCurrentWorkspaceAuthority,
+  verifyCurrentWorkspaceAuthorityWithHistory,
   type DeliveryIssuer,
   type DeliveryHook,
   type Snapshot,
   type DeliveryAuthority,
 } from './delivery.ts';
-import { membershipProofChain } from './membershipLocator.ts';
 import { membershipEnabled } from './membershipStore.ts';
 import { rethrowAuthorization } from './authorization.ts';
 
@@ -87,24 +84,10 @@ const zero = EMPTY_HISTORY_CHECKPOINT;
 // Discard that attempt and reverify a fresh snapshot within the existing bounded retry loop.
 class HistorySnapshotChanged extends Error {}
 /** Resolve historical eligibility from the same verified chain, never a producer-supplied key. */
-async function memberships(s: Snapshot, auth: DeliveryAuthority, pin: DeliveryIssuer['pin']) {
-  let history = auth.history;
-  if (!history) {
-    const base = { pin, request: auth.request, receipt: auth.receipt };
-    const c = auth.certificationSuccessor;
-    // Each complete timeline retains its verified earlier memberships. Rebuilding each
-    // prefix separately repeats cryptography while live publisher heads keep advancing.
-    history = c
-      ? await verifyCertificationHistory(c, auth.successor, base, { epoch: 3, head: c.head })
-      : await verifyEarlyHistory(base, auth.successor);
-    if (s.recoveries?.length || s.rotations?.length || s.continuations?.length)
-      for (const proof of membershipProofChain(s).continuations)
-        history = await extendMembershipHistory(proof, history);
-  }
+function memberships(auth: DeliveryAuthority, history: AdmissionHistory) {
   if (history.current.tip !== auth.a.tip || history.current.head !== auth.a.head)
     throw Error('History checkpoint membership changed');
-  // These lookups require the protocol's private verified identity. No shape-only cache,
-  // request authority or transaction permission is introduced by reusing this evidence.
+  // Lookup accepts only the protocol's private verified identity; no request or commit authority.
   return new Map(history.authorities.map((a) => [a.tip, historyMembershipAt(history, a.tip)]));
 }
 function record(db: DatabaseSync, workspace: string, hash: string): RecordRow | null {
@@ -233,8 +216,11 @@ export async function exchangeHistoryCheckpoint(
       let before = capture(catalogRead);
       db.exec('ROLLBACK');
       if (!before) return no('unavailable');
-      const auth = await verifyCurrentWorkspaceAuthority(before.original, issuer),
-        authorities = await memberships(before.original, auth, issuer.pin);
+      const { authority: auth, history } = await verifyCurrentWorkspaceAuthorityWithHistory(
+        before.original,
+        issuer,
+      );
+      const authorities = memberships(auth, history);
       const membership = authorities.get(auth.a.tip)!,
         p = membershipState(membership);
       await verifyHistoryExchange(r, membership, now());

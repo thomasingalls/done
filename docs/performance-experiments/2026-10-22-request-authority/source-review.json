@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "standaloneFalseBranchAstEquivalentAfterReviewedDeliveryLocalSpelling": true,
+  "everyOtherDeliveryMechanismAstExact": true,
+  "currentMembershipPredicateEquivalent": true,
+  "allOriginalNativeGuardsRetained": true,
+  "completeHistorySeparateFromEarlyDeliveryDispatch": true,
+  "onlyOldTestChangeStrongerOperationCountExpectation": true,
+  "protocolSourceUnchanged": true
+}

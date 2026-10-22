@@ -1,3 +1,7 @@
+import {
+  verifyCertificationHistory,
+  verifyEarlyHistory,
+} from '../account-protocol/admissionHistory.ts';
 import { reuseInboundAuthority, type InboundAuthorityReuse } from './inboundAuthorityReuse.ts';
 import { isPrunedDecision, verifyPrunedDecision } from './prunedDecision.ts';
 import { recoveryRows, type RecoveryRow } from './recoveryStore.ts';
@@ -38,10 +42,13 @@ import {
   CONTENT_DELIVERY_LIMIT,
   verifyContentDelivery,
   verifyCertificationSuccessor,
+  parseCertificationSuccessor,
+  parseContentDelivery,
   type CertificationSuccessor,
 } from '../account-protocol/contentDelivery.ts';
 import {
   verifySuccessor,
+  parseSuccessor,
   SUCCESSOR_LIMIT,
   type AdmissionSuccessor,
 } from '../account-protocol/successor.ts';
@@ -69,6 +76,7 @@ import { isDeepStrictEqual } from 'node:util';
 import {
   parseAdmissionRequest,
   parseReceipt,
+  same,
   verifyAdmissionRequest,
   verifyReceipt,
   requestDigest,
@@ -373,9 +381,10 @@ export function read(
     if (db.isTransaction) db.exec('ROLLBACK');
   }
 }
-export async function verifyWorkspaceAuthority(
+async function verifyNativeWorkspaceAuthority(
   s: WorkspaceAuthoritySnapshot,
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+  completeHistory = false,
 ) {
   // Continuation mutation is a private development entry point until general history/transport
   // composition lands. The old 1–3 reader must never silently treat the old anchor as current.
@@ -405,7 +414,7 @@ export async function verifyWorkspaceAuthority(
       },
     });
   await verifyAdmissionRequest(request, state);
-  await verifyReceipt(receipt, request, issuer.pin);
+  if (!completeHistory) await verifyReceipt(receipt, request, issuer.pin);
   const activation = parseRetainedActivation(JSON.parse(p.activation ?? 'null'));
   if (
     !activation.proofHash ||
@@ -446,11 +455,13 @@ export async function verifyWorkspaceAuthority(
       Buffer.byteLength(s.successor.boundary_witness) > 1024
     )
       throw Error('Oversized retained boundary witness');
-    successor = await verifySuccessor(
-      JSON.parse(s.successor.artifact),
-      { pin: issuer.pin, request, receipt },
-      { epoch: 1, head: firstA.head },
-    );
+    successor = completeHistory
+      ? parseSuccessor(JSON.parse(s.successor.artifact))
+      : await verifySuccessor(
+          JSON.parse(s.successor.artifact),
+          { pin: issuer.pin, request, receipt },
+          { epoch: 1, head: firstA.head },
+        );
     if (
       s.successor.workspace_id !== p.workspace_id ||
       (!s.transfer?.artifact && successor.head !== p.successor_head) ||
@@ -472,14 +483,18 @@ export async function verifyWorkspaceAuthority(
     )
       throw Error('Invalid retained transfer');
     const base = { pin: issuer.pin, request, receipt };
-    const { delivery } = await verifyContentDelivery(JSON.parse(row.delivery), base, successor);
+    // A completed history verifies the embedded delivery. Its retained native copy must
+    // still match exactly; a pending transfer has no such proof and is verified normally.
+    const delivery =
+      completeHistory && row.artifact
+        ? parseContentDelivery(JSON.parse(row.delivery))
+        : (await verifyContentDelivery(JSON.parse(row.delivery), base, successor)).delivery;
     if (row.artifact) {
-      certificationSuccessor = await verifyCertificationSuccessor(
-        JSON.parse(row.artifact),
-        base,
-        successor,
-        delivery,
-      );
+      certificationSuccessor = completeHistory
+        ? parseCertificationSuccessor(JSON.parse(row.artifact))
+        : await verifyCertificationSuccessor(JSON.parse(row.artifact), base, successor, delivery);
+      if (completeHistory && !same(certificationSuccessor.epoch.delivery, delivery))
+        throw Error('Retained certification delivery changed');
       if (p.successor_head !== certificationSuccessor.head)
         throw Error('Current certification pointer changed');
     }
@@ -487,6 +502,18 @@ export async function verifyWorkspaceAuthority(
   const a = certificationSuccessor
     ? { ...firstA, tip: 3, head: certificationSuccessor.head }
     : secondA;
+  const history = completeHistory
+    ? certificationSuccessor
+      ? await verifyCertificationHistory(
+          certificationSuccessor,
+          successor,
+          { pin: issuer.pin, request, receipt },
+          { epoch: 3, head: certificationSuccessor.head },
+        )
+      : await verifyEarlyHistory({ pin: issuer.pin, request, receipt }, successor)
+    : undefined;
+  if (history && !isDeepStrictEqual(history.current, a))
+    throw Error('Native authority and verified history disagree');
   const certification = certificationSuccessor?.epoch.delivery.certificate ?? request.certification;
   const members = await Promise.all(
     certification.members.map(async (member) => ({
@@ -507,28 +534,48 @@ export async function verifyWorkspaceAuthority(
     request: p.request_digest,
   };
   return {
-    pin: { ...issuer.pin },
-    a,
-    scope,
-    key,
-    seal,
-    generation: epoch.generation,
-    credential: member.id,
-    members,
-    certification,
-    firstA,
-    secondA,
-    successor,
-    certificationSuccessor,
-    certificationBoundary: s.transfer?.boundary_witness
-      ? parseWitness(JSON.parse(s.transfer.boundary_witness))
-      : null,
-    boundaryWitness: s.successor?.boundary_witness
-      ? parseWitness(JSON.parse(s.successor.boundary_witness))
-      : null,
-    request,
-    receipt,
+    history,
+    authority: {
+      pin: { ...issuer.pin },
+      a,
+      scope,
+      key,
+      seal,
+      generation: epoch.generation,
+      credential: member.id,
+      members,
+      certification,
+      firstA,
+      secondA,
+      successor,
+      certificationSuccessor,
+      certificationBoundary: s.transfer?.boundary_witness
+        ? parseWitness(JSON.parse(s.transfer.boundary_witness))
+        : null,
+      boundaryWitness: s.successor?.boundary_witness
+        ? parseWitness(JSON.parse(s.successor.boundary_witness))
+        : null,
+      request,
+      receipt,
+    },
   };
+}
+/** Standalone authority callers retain their original evidence shape and ledger path. */
+export async function verifyWorkspaceAuthority(
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+) {
+  return (await verifyNativeWorkspaceAuthority(s, issuer)).authority;
+}
+/** Produce a complete private-branded timeline once; no caller can supply a verified shape. */
+export async function verifyWorkspaceAuthorityWithHistory(
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+) {
+  const captured = structuredClone({ ...s, rows: undefined });
+  const result = await verifyNativeWorkspaceAuthority(captured, issuer, true);
+  if (!result.history) throw Error('Missing verified workspace history');
+  return { authority: result.authority, history: result.history };
 }
 export interface LedgerBoundary {
   successor: {
@@ -555,19 +602,22 @@ export type DeliveryAuthority = Omit<
   ledgerBoundaries?: ReadonlyMap<string, LedgerBoundary[]>;
 };
 type Authority = DeliveryAuthority;
-export const verifyCurrentWorkspaceAuthority = async (
-  s: WorkspaceAuthoritySnapshot,
-  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
-): Promise<Authority> => {
-  const auth: Authority =
+const needsMembershipHistory = (s: WorkspaceAuthoritySnapshot) =>
+  Boolean(
     s.recoveries?.length ||
     s.rotations?.length ||
     s.continuations?.length ||
     s.membershipTransfers?.length ||
     s.membershipCancellations?.length ||
-    s.removalPreparation
-      ? await resolveMembershipDeliveryAuthority(s, issuer)
-      : await verifyWorkspaceAuthority(s, issuer);
+    s.removalPreparation,
+  );
+export const verifyCurrentWorkspaceAuthority = async (
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+): Promise<Authority> => {
+  const auth: Authority = needsMembershipHistory(s)
+    ? await resolveMembershipDeliveryAuthority(s, issuer)
+    : await verifyWorkspaceAuthority(s, issuer);
   if (!s.removalPreparation) return auth;
   if (!auth.history) throw Error('Removal needs verified membership');
   const row = s.removalPreparation;
@@ -583,6 +633,17 @@ export const verifyCurrentWorkspaceAuthority = async (
     throw Error('Retained removal scope changed');
   return { ...auth, removal };
 };
+/** Complete history is separate from publisher-selected delivery authority. Ledger dispatch
+ * and native guards keep their existing early/later paths. This result is request-local. */
+export async function verifyCurrentWorkspaceAuthorityWithHistory(
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+): Promise<{ authority: DeliveryAuthority; history: AdmissionHistory }> {
+  if (!needsMembershipHistory(s)) return verifyWorkspaceAuthorityWithHistory(s, issuer);
+  const authority = await verifyCurrentWorkspaceAuthority(s, issuer);
+  if (!authority.history) throw Error('Missing current membership history');
+  return { authority, history: authority.history };
+}
 /** A publisher starts at its own verified certification; it has no earlier ledger. */
 export function selectPublisher(auth: Authority, publisher?: string): Authority {
   const id = publisher ?? auth.credential;

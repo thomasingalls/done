@@ -1,0 +1,7 @@
+from pathlib import Path
+import subprocess,os,json
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'};rows=[]
+for name,cmd in [('census-record',['node','scripts/account-crypto-prep/run.mjs','--record']),('census-check',['node','scripts/account-crypto-prep/run.mjs']),('inventory-record',['node','scripts/release-validation/check.mjs','--record']),('inventory-check',['node','scripts/release-validation/check.mjs']),('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),('manifest-check',['node','scripts/release-validation/plan.mjs']),('planning-tests',['node','--test','--test-concurrency=1','test/account-crypto-prep/census.test.mjs','test/account-crypto-prep/contracts.test.mjs','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs'])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(r/'planning-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception('Preserve and review planning disagreement '+name)

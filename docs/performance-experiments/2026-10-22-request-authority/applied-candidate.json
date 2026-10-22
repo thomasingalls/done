@@ -1,0 +1,7 @@
+{
+  "account-service/delivery.ts": "150ddd4dcd98cf16b08106772014f7f73910eb741f3b730fb1aeffb1e630923b",
+  "account-service/membershipHistory.ts": "97be69ee260fe514b0ad9ebf2effd228734aca5810170fd789a6ae46dbcd2d4e",
+  "account-service/membershipLocator.ts": "81c64139cdc53f4f01e01d205c2d80ba081e39ae083e16bb355621ef6f06c0fa",
+  "account-service/historyCheckpoint.ts": "032d45af98bebdaedbdb06d7d0e489957f4685954a962ad9f09a1e892061b224",
+  "test/account-ceremony/content-transfer.test.mjs": "ea03e3a770f5f2b04916ff8fe54dcc9327634d45a18698903a674c4b300ed225"
+}

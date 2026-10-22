@@ -6050,7 +6050,7 @@
           "test/account-ceremony/content-transfer.test.mjs"
         ]
       },
-      "declarations": 111,
+      "declarations": 114,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16587,7 +16587,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "e195c3dd339589a8ca96d34fa03b2813c6a97343ce12c9fcdfbe103197f7a11c"
+      "sha256": "ea03e3a770f5f2b04916ff8fe54dcc9327634d45a18698903a674c4b300ed225"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",

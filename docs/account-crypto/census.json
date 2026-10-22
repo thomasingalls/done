@@ -265,7 +265,7 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+      "sha256": "150ddd4dcd98cf16b08106772014f7f73910eb741f3b730fb1aeffb1e630923b"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -305,7 +305,7 @@
     },
     {
       "path": "account-service/historyCheckpoint.ts",
-      "sha256": "23d6c5d55f6405d6ff2508b1da04f5919cc5188965418d8356dc51d78020b668"
+      "sha256": "032d45af98bebdaedbdb06d7d0e489957f4685954a962ad9f09a1e892061b224"
     },
     {
       "path": "account-service/historySources.ts",
@@ -345,11 +345,11 @@
     },
     {
       "path": "account-service/membershipHistory.ts",
-      "sha256": "41b8158d6269cc0bace7ac921f3dd7bfcc088c5f40693f76ebd5521925bee5be"
+      "sha256": "97be69ee260fe514b0ad9ebf2effd228734aca5810170fd789a6ae46dbcd2d4e"
     },
     {
       "path": "account-service/membershipLocator.ts",
-      "sha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361"
+      "sha256": "81c64139cdc53f4f01e01d205c2d80ba081e39ae083e16bb355621ef6f06c0fa"
     },
     {
       "path": "account-service/membershipStore.ts",
@@ -3617,7 +3617,7 @@
       "sites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 686
+          "line": 747
         }
       ]
     },

@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,hashlib,gzip
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-request-authority';sha=lambda b:hashlib.sha256(b).hexdigest();rows=[]
+def cp(f,to,z=False):
+ f=Path(f);b=f.read_bytes();d=p/(to+'.gz'if z else to);d.parent.mkdir(parents=True,exist_ok=True);d.write_bytes(gzip.compress(b,mtime=0)if z else b);rows.append({'source':str(f.relative_to(r)),'artifact':str(d.relative_to(p)),'sourceSha256':sha(b),'artifactSha256':sha(d.read_bytes())})
+for f in ['protocol.md','protocol-initial.md','starting.json','implementation-edits.json','old-expectation-update.json','applied-candidate.json','source-review.json','metadata-review.json','affected-comparison.json','affected-receipts.json','challenge.json','planning-receipts.json','record-outcome.json']:cp(r/f,f)
+for f in sorted(r.glob('*.log')):
+ if not f.name.startswith(('package','prepare-patch','post')):cp(f,'checks/'+f.name,True)
+for f in [*r.glob('*.py'),*r.glob('*.mjs')]:cp(f,'reproduction/'+f.name+'.txt')
+for f in ['account-service/delivery.ts','account-service/membershipHistory.ts','account-service/membershipLocator.ts','account-service/historyCheckpoint.ts','test/account-ceremony/content-transfer.test.mjs']:cp(r/'source'/f,'candidate/'+f+'.txt',True)
+(p/'artifact-provenance.json').write_text(json.dumps(rows,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes());n=0
+for f in p.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.suffix=='.gz'else b;assert not any(v in b for v in secrets),f;n+=1
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownPrivateValues':len(secrets),'matches':0,'filesAfterDecompression':n,'scope':'known-value and source/file selection audit, not universal DLP; no profiles/DBs/keys/codes included'},indent=2)+'\n')
+(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'));print('Packaged',sum(f.is_file()for f in p.rglob('*')),'files;36 known private values absent')
