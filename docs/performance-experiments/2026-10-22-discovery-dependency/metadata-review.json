@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "sources": 400,
+  "onlySourceHashesChanged": [
+    "account-service/delivery.ts",
+    "account-service/membershipLocator.ts",
+    "account-service/publisherTips.ts"
+  ],
+  "domainLabelsKindsAndSitePathsExact": true,
+  "domainCount": 197,
+  "all881ObligationRowsExact": true,
+  "unresolved": 337,
+  "qualificationStatus": "blocked"
+}

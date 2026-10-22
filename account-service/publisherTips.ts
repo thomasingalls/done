@@ -5,10 +5,11 @@ import type { DatabaseSync } from 'node:sqlite';
 import { Worker } from 'node:worker_threads';
 import {
   snapshot,
-  snapshotBytes,
+  snapshotBytesForPurpose,
   type Snapshot,
   type DeliveryAuthority,
   type DecisionRow,
+  type SnapshotPurpose,
 } from './delivery.ts';
 import { parseWitness } from './deliveryWitness.ts';
 
@@ -57,6 +58,7 @@ interface Capture {
   limit?: number;
   served: DecisionRow[];
   fingerprint: string;
+  purpose?: SnapshotPurpose;
   terminal: boolean;
 }
 const MAX_PUBLISHERS = 128,
@@ -269,8 +271,17 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     if (active?.key !== key) queued.set(key, tip);
     pump();
   };
-  const fingerprint = (s: Snapshot, count: number, served: DecisionRow[]) =>
-    JSON.stringify([snapshotBytes(s), count, snapshotBytes({ ...s, rows: served })]);
+  const fingerprint = (
+    s: Snapshot,
+    count: number,
+    served: DecisionRow[],
+    purpose?: SnapshotPurpose,
+  ) =>
+    JSON.stringify([
+      snapshotBytesForPurpose(s, purpose),
+      count,
+      snapshotBytesForPurpose({ ...s, rows: served }, purpose),
+    ]);
   return {
     invalidate,
     close() {
@@ -358,7 +369,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     capture(
       workspace: string,
       publisher?: string,
-      options?: { after?: number; limit?: number; position?: number },
+      options?: { after?: number; limit?: number; position?: number; purpose?: SnapshotPurpose },
     ) {
       checkVersion();
       const header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);
@@ -413,7 +424,8 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
         limit: options?.limit,
         served,
         terminal: s.rows.at(-1)?.kind === 'accepted' || !s.rows.length,
-        fingerprint: fingerprint(s, count, served),
+        fingerprint: fingerprint(s, count, served, options?.purpose),
+        ...(options?.purpose ? { purpose: options.purpose } : {}),
       });
       return s;
     },
@@ -424,9 +436,12 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     served(s: Snapshot) {
       return captures.get(s)?.served;
     },
-    guard(s: Snapshot) {
+    guard(s: Snapshot, purpose?: SnapshotPurpose) {
       const c = captures.get(s);
       if (!c) return false;
+      // A caller cannot broaden a full capture after verification, or use a discovery
+      // capture for an ordinary read/write comparison.
+      if (c.purpose !== purpose) return false;
       check(c.key);
       if (
         c.revision !== revision ||
@@ -438,7 +453,8 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const current = snapshot(db, s.promotion.workspace_id, s.publisher, c.prefix?.count ?? 0);
       if (!current) return false;
       const selected = c.after === undefined ? [] : servedRows(db, current, c.after, c.limit!);
-      const same = fingerprint(current, countRows(db, current), selected) === c.fingerprint;
+      const same =
+        fingerprint(current, countRows(db, current), selected, purpose) === c.fingerprint;
       // Reject the changed snapshot and discard only its publisher's preliminary evidence.
       // Other publishers still have to pass their own fresh transaction-time comparison.
       if (!same) invalidatePublisher(c.key);

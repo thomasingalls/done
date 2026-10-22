@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,hashlib,os,subprocess,time
+r=Path(__file__).parent;s=r/'source';repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');prior=Path('/private/tmp/done-membership-continuation-20261022');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();old=json.loads((prior/'measurement-identity.json').read_text())
+assert json.loads((r/'challenge.json').read_text())['status']=='passed'and len(json.loads((r/'challenge.json').read_text())['controls'])==12
+assert json.loads((r/'affected-comparison.json').read_text())['newFailures']==0
+assert 'pass 13' in(r/'new-regressions-exact-final.log').read_text()
+assert (r/'explicit-types.log').read_bytes()==b''and(r/'lint-final.log').read_bytes()==b''
+changed=[]
+for f,h in old['sourceInputs'].items():
+ assert sha(prior/'source'/f)==h,f
+ if sha(s/f)!=h:changed.append(f)
+ assert sha(s/f)==sha(repo/f),f
+assert sorted(changed)==['account-service/delivery.ts','account-service/membershipLocator.ts','account-service/publisherTips.ts'],changed
+for f,h in old['clientIdentity'].items():assert sha(s/'dist'/f)==h,f
+before=(r/'before/test/account-ceremony/content-transfer.test.mjs').read_bytes();assert(s/'test/account-ceremony/content-transfer.test.mjs').read_bytes().startswith(before)
+files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'playwright-storage-source.txt',r/'freeze-and-run.py',*list((s/'test/account-continuation-lab').glob('*'))]
+identity={'baseCommit':old['baseCommit'],'referenceInputs':old['sourceInputs'],'candidateInputs':{f:sha(s/f)for f in old['sourceInputs']},'onlyChangedRuntimeFiles':changed,'clientFiles':old['clientIdentity'],'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'runPlan':json.loads((r/'run-plan.json').read_text()),'newCasesSourceSha256':sha(s/'test/account-ceremony/content-transfer.test.mjs'),'oldCasePrefixSha256':hashlib.sha256(before).hexdigest(),'oldCasePrefixByteExact':True,'referenceImage':json.loads((r/'container-image.json').read_text())['Id'],'priorPrivateFixtureSha256':old['privateFixtureSha256']}
+(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for c in identity['runPlan']:
+ for f,h in identity['files'].items():assert sha(r/f)==h,f
+ for f,h in identity['candidateInputs'].items():assert sha(s/f)==h,f
+ for f,h in identity['referenceInputs'].items():assert sha(prior/'source'/f)==h,f
+ for p in(r/'reference-account-service').glob('*.ts'):assert sha(p)==sha(prior/'source/account-service'/p.name)
+ out=r/c['name'];out.mkdir(mode=0o700);env={**os.environ,'FAIR_OUT':str(out),'FAIR_VARIANT':c['variant'],'FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'cwd':str(s),'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+print('All four fixed journeys preserved; failures',sum(v['exitCode']!=0 for v in rows))

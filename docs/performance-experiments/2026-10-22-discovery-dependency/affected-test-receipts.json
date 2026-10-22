@@ -1,0 +1,44 @@
+[
+  {
+    "name": "reference",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-sessions/grants.test.mjs",
+      "test/account-membership/locator.test.mjs",
+      "test/account-membership/removal.test.mjs",
+      "test/account-membership/rotation.test.mjs",
+      "test/account-membership/rotation-history.test.mjs",
+      "test/account-membership/replacement-reading.test.mjs",
+      "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "test/account-service-delivery/cold-verification.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-discovery-dependency-20261022/reference-source",
+    "startedAt": 1792655500008,
+    "completedAt": 1792655627349,
+    "exitCode": 1
+  },
+  {
+    "name": "candidate",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-sessions/grants.test.mjs",
+      "test/account-membership/locator.test.mjs",
+      "test/account-membership/removal.test.mjs",
+      "test/account-membership/rotation.test.mjs",
+      "test/account-membership/rotation-history.test.mjs",
+      "test/account-membership/replacement-reading.test.mjs",
+      "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "test/account-service-delivery/cold-verification.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-discovery-dependency-20261022/source",
+    "startedAt": 1792655627350,
+    "completedAt": 1792655757864,
+    "exitCode": 1
+  }
+]

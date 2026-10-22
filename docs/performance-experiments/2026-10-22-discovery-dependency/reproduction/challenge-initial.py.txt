@@ -1,0 +1,21 @@
+from pathlib import Path
+import subprocess,shutil,json,time
+r=Path(__file__).parent;s=r/'source';rows=[]
+mutations=[
+ ('first-witness-dependency','account-service/delivery.ts',"purpose === 'membership-discovery' && s?.publisher","false",'discovery completes once while the unrelated first publisher'),
+ ('project-first-publisher-own-witness','account-service/delivery.ts',"purpose === 'membership-discovery' && s?.publisher","purpose === 'membership-discovery' && s",'discovery projection removes exactly'),
+ ('drop-own-witness','account-service/delivery.ts',"{ ...s, promotion: { ...s.promotion, delivery_witness: null } }","{ ...s, publisherWitness: null, promotion: { ...s.promotion, delivery_witness: null } }",'discovery projection removes exactly'),
+ ('drop-authority-state','account-service/delivery.ts',"{ ...s, promotion: { ...s.promotion, delivery_witness: null } }","{ ...s, account: { ...s.account, state: 'fixed' }, promotion: { ...s.promotion, delivery_witness: null } }",'discovery projection removes exactly'),
+ ('drop-row-prefix','account-service/delivery.ts',"{ ...s, promotion: { ...s.promotion, delivery_witness: null } }","{ ...s, rows: [], promotion: { ...s.promotion, delivery_witness: null } }",'discovery projection removes exactly'),
+ ('drop-captured-purpose','account-service/publisherTips.ts','if (c.purpose !== purpose) return false;','', 'discovery snapshot purpose is captured'),
+ ('drop-external-version-fence','account-service/publisherTips.ts','c.version !== checkVersion()','false', 'discovery snapshot purpose is captured'),
+ ('drop-current-discovery-snapshot','account-service/membershipLocator.ts',"if (!unchanged(db, before, reuse, 'membership-discovery')) {",'if (false) {','discovery retries its own publisher append'),
+ ('drop-complete-history-census','account-service/membershipLocator.ts','await verifiedCensus(before, auth, reuse);','', 'discovery never hides same-count requesting-publisher'),
+ ('drop-transaction-authorization','account-service/membershipLocator.ts','const authorize = issuer.authorize?.(db, {','const authorize = undefined && issuer.authorize?.(db, {','discovery reauthorizes a revoked session'),
+ ('drop-request-expiry','account-service/membershipLocator.ts','request.expiresAt <= at','false','discovery refuses request expiry reached'),
+]
+for name,file,needle,replacement,pattern in mutations:
+ dest=r/'mutants'/name;shutil.copytree(s,dest,symlinks=True);p=dest/file;data=p.read_text();assert data.count(needle)==1,(name,data.count(needle));p.write_text(data.replace(needle,replacement));cmd=['node','--test','--test-name-pattern='+pattern,'test/account-ceremony/content-transfer.test.mjs'];at=int(time.time()*1000)
+ with(r/(name+'-control.log')).open('w')as log:done=subprocess.run(cmd,cwd=dest,stdout=log,stderr=subprocess.STDOUT)
+ log=(r/(name+'-control.log')).read_text();assert done.returncode!=0 and 'AssertionError' in log,(name,done.returncode,log[-2000:]);rows.append({'name':name,'file':file,'testPattern':pattern,'exitCode':done.returncode,'assertionDetected':True,'startedAt':at,'completedAt':int(time.time()*1000)});(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(name,'detected',flush=True)
+print('All11 deliberate controls detected by their assertions.')

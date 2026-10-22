@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-discovery-dependency';sha=lambda b:hashlib.sha256(b).hexdigest();provenance=[]
+def copy(src,dst,compress=False):
+ src=Path(src);target=p/(dst+'.gz'if compress else dst);target.parent.mkdir(parents=True,exist_ok=True);b=src.read_bytes();target.write_bytes(gzip.compress(b,mtime=0)if compress else b);provenance.append({'source':str(src.relative_to(r)),'artifact':str(target.relative_to(p)),'sourceSha256':sha(b),'artifactSha256':sha(target.read_bytes())})
+for name in ['protocol.md','starting.json','measurement-identity.json','run-plan.json','run-receipts.json','analysis.json','evidence-review.json','source-review.json','preflight-provenance.json','metadata-review.json','source-site-pin-review.json','affected-comparison.json','affected-failure-review.json','affected-test-receipts.json','native-tests-v2.json','challenge.json','challenge-incomplete.json','challenge-v2.json','sensitivity.json','final-checks.json','storage-importer-identity.json','process-cleanup.json']:copy(r/name,name)
+copy(r/'native-audit.json','native-audit.json',True)
+for c in json.loads((r/'run-plan.json').read_text()):
+ for f in ['result.json','invocation.log','services.log','container-identity.json','docker-command.json']:copy(r/c['name']/f,'runs/'+c['name']+'/'+f,True)
+# Retain passing and failed checks, native/baseline failures and every control log.
+for f in sorted(r.glob('*.log')):copy(f,'checks/'+f.name,True)
+for name in ['prepare-lab.py','freeze-and-run.py','compare-tests.py','challenge.py','challenge-initial.py','challenge-v2.py','native-preflight.py','source-review.mjs','preflight-provenance.mjs','review-metadata.py','analyze.py','review-evidence.py','audit-native.mjs','sensitivity.py','sensitivity-initial.py','write-records.py','final-checks.py','prepare-patch.py','package-evidence.py','container-service.mjs','observer.mjs']:copy(r/name,'reproduction/'+name+'.txt')
+for f in(r/'source/test/account-continuation-lab').iterdir():
+ if f.is_file():copy(f,'reproduction/lab/'+f.name+'.txt')
+for f in ['account-service/delivery.ts','account-service/publisherTips.ts','account-service/membershipLocator.ts','test/account-ceremony/content-transfer.test.mjs']:
+ copy(r/'source'/f,'reproduction/candidate/'+f+'.txt',True);copy(r/'before'/f,'reproduction/before/'+f+'.txt',True)
+(p/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes());scanned=0
+for f in p.rglob('*'):
+ if not f.is_file():continue
+ b=f.read_bytes();b=gzip.decompress(b)if f.suffix=='.gz'else b
+ for value in secrets:assert value not in b,'private material in '+str(f)
+ scanned+=1
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownPrivateValues':len(secrets),'filesScannedAfterDecompression':scanned,'matches':0,'excluded':['raw fixture','native DB','browser profiles/storage','codes/keys/tokens/operator key','generated browser error snapshots','full dependency-image inspection'],'scope':'Exact known-value scan, not a universal DLP guarantee.'},indent=2)+'\n')
+(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'));print(json.dumps({'packet':str(p),'files':sum(f.is_file()for f in p.rglob('*')),'knownPrivateValuesScanned':len(secrets),'matches':0}))

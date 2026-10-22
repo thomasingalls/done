@@ -343,12 +343,23 @@ export function snapshotBytes(s: Snapshot | null): string {
     })),
   });
 }
+export type SnapshotPurpose = 'membership-discovery';
+export function snapshotBytesForPurpose(s: Snapshot | null, purpose?: SnapshotPurpose): string {
+  // A joined publisher authenticates its own ledger. The first publisher's ordinary writing
+  // changes only this witness, not the retained membership authority or requesting ledger.
+  return snapshotBytes(
+    purpose === 'membership-discovery' && s?.publisher
+      ? { ...s, promotion: { ...s.promotion, delivery_witness: null } }
+      : s,
+  );
+}
+
 export function read(
   db: DatabaseSync,
   workspace: string,
   publisher?: string,
   reuse?: DeliveryVerification,
-  options?: { after?: number; limit?: number; position?: number },
+  options?: { after?: number; limit?: number; position?: number; purpose?: SnapshotPurpose },
 ) {
   db.exec('BEGIN');
   try {
@@ -855,10 +866,16 @@ export async function verifiedCensus(s: Snapshot, auth: Authority, reuse?: Deliv
     throw cause;
   }
 }
-export function unchanged(db: DatabaseSync, s: Snapshot, reuse?: DeliveryVerification) {
+export function unchanged(
+  db: DatabaseSync,
+  s: Snapshot,
+  reuse?: DeliveryVerification,
+  purpose?: SnapshotPurpose,
+) {
   return reuse?.tips
-    ? reuse.tips.guard(s)
-    : snapshotBytes(snapshot(db, s.promotion.workspace_id, s.publisher)) === snapshotBytes(s);
+    ? reuse.tips.guard(s, purpose)
+    : snapshotBytesForPurpose(snapshot(db, s.promotion.workspace_id, s.publisher), purpose) ===
+        snapshotBytesForPurpose(s, purpose);
 }
 /** Freshly authenticate the predecessor's signed link and every row actually served. */
 export async function verifyServed(

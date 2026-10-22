@@ -144,7 +144,9 @@ export async function discoverMembership(
   }
   for (let retry = 0; retry < 4; retry++) {
     try {
-      const before = read(db, request.workspaceId, request.credentialId, reuse);
+      const before = read(db, request.workspaceId, request.credentialId, reuse, {
+        purpose: 'membership-discovery',
+      });
       if (!before) return no('unavailable');
       const auth = selectPublisher(
           await verifyCurrentWorkspaceAuthority(before, issuer),
@@ -173,7 +175,7 @@ export async function discoverMembership(
         await membershipDiscoveryResponseMessage(response),
       );
       db.exec('BEGIN');
-      if (!unchanged(db, before, reuse)) {
+      if (!unchanged(db, before, reuse, 'membership-discovery')) {
         db.exec('ROLLBACK');
         continue;
       }

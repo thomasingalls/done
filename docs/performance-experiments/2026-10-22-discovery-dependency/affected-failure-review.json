@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "same16FailureTitlesAndErrorHeaders": true,
+  "failures": [
+    {
+      "title": "next-device preparation binds the certified parent and survives a lost reply",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Missing expected exception."
+      ]
+    },
+    {
+      "title": "next-device preparation binds the certified parent and survives a lost reply with one login",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Missing expected exception."
+      ]
+    },
+    {
+      "title": "continuation schema requires explicit offline opt-in and preserves retained session/account rows",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    },
+    {
+      "title": "private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    },
+    {
+      "title": "continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: {\"ok\":false,\"refusal\":\"unavailable\"}",
+        "false !== true"
+      ]
+    },
+    {
+      "title": "schema-16 pending comparison upgrades explicitly without replacing its messages",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    },
+    {
+      "title": "three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: {\"kind\":\"unknown\",\"reason\":\"ledger-integrity\"}",
+        "+ actual - expected",
+        "+ 'unknown'",
+        "- 'decision'"
+      ]
+    },
+    {
+      "title": "later native slot resumes activation after index interruption and rejects changed retained reading",
+      "errorHeader": [
+        "page.evaluate: Error: Malformed preparation"
+      ]
+    },
+    {
+      "title": "browser comparison by existing composes with the real continuation relay and key handoff after restart",
+      "errorHeader": [
+        "Error: Replacement source owner is unavailable"
+      ]
+    },
+    {
+      "title": "browser comparison by new composes with the real continuation relay and key handoff after restart",
+      "errorHeader": [
+        "Error: Replacement source owner is unavailable"
+      ]
+    },
+    {
+      "title": "retained connection coordinates invitation through third-device certification with existing approving",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Lost delivered/. Input:",
+        "'TypeError: owner.prepareReplacement is not a function'"
+      ]
+    },
+    {
+      "title": "retained connection coordinates invitation through third-device certification with new approving",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Lost delivered/. Input:",
+        "'TypeError: owner.prepareReplacement is not a function'"
+      ]
+    },
+    {
+      "title": "schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    },
+    {
+      "title": "removal schema upgrades only offline from 18 and refuses an older host",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    },
+    {
+      "title": "rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    },
+    {
+      "title": "replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows",
+      "errorHeader": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+        "26 !== 25"
+      ]
+    }
+  ],
+  "qualification": "No classification as stale is inferred solely from baseline reproduction; failures remain open."
+}

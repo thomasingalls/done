@@ -1,0 +1,7 @@
+from pathlib import Path
+import json,subprocess,os
+r=Path(__file__).parent;env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+old=json.loads(subprocess.check_output(['git','show','c1177575:docs/account-crypto/census.json'],env=env));new=json.load(open('docs/account-crypto/census.json'));(r/'before/crypto-census.json').write_text(json.dumps(old,indent=2)+'\n');a={x['path']:x['sha256']for x in old['sources']};b={x['path']:x['sha256']for x in new['sources']};changed=[p for p in a if a[p]!=b[p]];assert sorted(changed)==['account-service/delivery.ts','account-service/membershipLocator.ts','account-service/publisherTips.ts'];assert set(a)==set(b)
+def domains(ds):return sorted((d['label'],d['kind'],tuple(sorted(s['path']for s in d['sites'])))for d in ds)
+assert domains(old['domains'])==domains(new['domains']);manifest=json.load(open('docs/release-validation-manifest.json'));assert manifest['rows']==json.load(open(r/'before/release-validation-manifest.json'))['rows'];planner=json.loads((r/'manifest-record-v2.log').read_text().splitlines()[0]);assert planner['unresolved']==337 and planner['obligations']==881
+(r/'metadata-review.json').write_text(json.dumps({'status':'passed','sources':len(b),'onlySourceHashesChanged':changed,'domainLabelsKindsAndSitePathsExact':True,'domainCount':len(new['domains']),'all881ObligationRowsExact':True,'unresolved':planner['unresolved'],'qualificationStatus':manifest['status']},indent=2)+'\n');print('Metadata review passed:400sources,197domains,881rows exact; no qualification credit.')

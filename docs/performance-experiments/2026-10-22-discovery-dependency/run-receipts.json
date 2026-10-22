@@ -1,0 +1,62 @@
+[
+  {
+    "name": "1-R",
+    "variant": "R",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-discovery-dependency-20261022/source",
+    "startedAt": 1792656308968,
+    "completedAt": 1792656440540,
+    "exitCode": 0
+  },
+  {
+    "name": "2-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-discovery-dependency-20261022/source",
+    "startedAt": 1792656440746,
+    "completedAt": 1792656573300,
+    "exitCode": 0
+  },
+  {
+    "name": "3-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-discovery-dependency-20261022/source",
+    "startedAt": 1792656573507,
+    "completedAt": 1792656704562,
+    "exitCode": 0
+  },
+  {
+    "name": "4-R",
+    "variant": "R",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-discovery-dependency-20261022/source",
+    "startedAt": 1792656704761,
+    "completedAt": 1792656835443,
+    "exitCode": 0
+  }
+]

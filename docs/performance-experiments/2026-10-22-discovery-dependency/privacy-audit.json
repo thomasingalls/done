@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "knownPrivateValues": 36,
+  "filesScannedAfterDecompression": 150,
+  "matches": 0,
+  "excluded": [
+    "raw fixture",
+    "native DB",
+    "browser profiles/storage",
+    "codes/keys/tokens/operator key",
+    "generated browser error snapshots",
+    "full dependency-image inspection"
+  ],
+  "scope": "Exact known-value scan, not a universal DLP guarantee."
+}

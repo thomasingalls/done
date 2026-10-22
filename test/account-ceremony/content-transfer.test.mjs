@@ -6553,3 +6553,390 @@ test('retained generation-one reader adopts admitted history across interrupted 
   f.restart();
   assert.match(JSON.stringify(await f.run()), /Snapshot-only retained handoff writing/);
 });
+
+async function discoveryDatabase(x) {
+  const db = new DatabaseSync(x.f.path);
+  const { enableMembershipStore } = await import('../../account-service/membershipStore.ts');
+  enableMembershipStore(db);
+  return db;
+}
+
+// Discovery race regressions use the same real signed enrollment/authority owners as the cases above.
+function discoverySigningCut(x, request, cut, authorization) {
+  let calls = 0;
+  const result = x.authority.owner.discoverMembership(
+    {
+      discoverMembership(input, issuer) {
+        return x.f.core.discoverMembership(input, {
+          ...issuer,
+          async discovery(body) {
+            const response = await issuer.discovery(body);
+            await cut(++calls);
+            return response;
+          },
+        });
+      },
+    },
+    request,
+    authorization,
+  );
+  return { result, calls: () => calls };
+}
+
+test('discovery completes once while the unrelated first publisher appends at every signing cut', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const before = x.f.rows('publisher_decisions');
+  let previous = '00'.repeat(32);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    const wire = x.make(n, 'unrelated first-publisher writing', { epoch: 4 });
+    previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+  });
+  const response = await call.result;
+  assert.equal(response.kind, 'membership-discovery', JSON.stringify(response));
+  assert.equal(call.calls(), 1, 'another publisher writing must not restart discovery');
+  assert.deepEqual(x.f.rows('publisher_decisions'), before, 'requesting publisher is unchanged');
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000)).history.current
+      .tip,
+    4,
+  );
+});
+
+test('discovery retries its own publisher append and returns only the freshly covered history', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n !== 1) return;
+    const wire = x.make(1, 'requesting publisher writing', {
+      epoch: 4,
+      credential: x.context.candidate.id,
+      signer: x.keys.new,
+    });
+    decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+  });
+  const response = await call.result;
+  assert.equal(response.kind, 'membership-discovery');
+  assert.equal(call.calls(), 2);
+  assert.equal(x.f.rows('publisher_decisions').filter((r) => r.kind === 'accepted').length, 1);
+  await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000);
+});
+
+test('discovery still refuses continuous changes to its own publisher after four attempts', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  let previous = '00'.repeat(32);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    const wire = x.make(n, 'requesting publisher keeps writing', {
+      epoch: 4,
+      credential: x.context.candidate.id,
+      signer: x.keys.new,
+    });
+    previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'state-changed' });
+  assert.equal(call.calls(), 4);
+});
+
+test('first publisher discovery retains its own witness under continuous signing-time writes', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const request = q.discovery(x.credential, x.keys.existing, { epoch: 1, head: x.offer.head });
+  let previous = '00'.repeat(32);
+  const call = discoverySigningCut(x, request, async (n) => {
+    const wire = x.make(n, 'first publisher discovers its own stream', { epoch: 4 });
+    previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'state-changed' });
+  assert.equal(call.calls(), 4);
+});
+
+test('discovery rebuilds a genuine membership certification committed during signing', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const d = await continuationDelivery(x, x.exchange('new'));
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  let installed;
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n === 1) installed = await d.transfer(d.request('new', 'install', d.installation));
+  });
+  const response = await call.result;
+  assert.equal(call.calls(), 2);
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000)).history.current
+      .head,
+    installed.certification.head,
+  );
+});
+
+test('discovery retains exact other authority fields and external-version invalidation', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const call = discoverySigningCut(x, q.discovery(), async () => {
+    mutate(x, (db) => db.exec("UPDATE recovery SET draft=draft || ' '"));
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'state-changed' });
+  assert.equal(call.calls(), 4);
+});
+
+test('discovery never hides a deleted requesting-publisher prefix behind current membership', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const wire = x.make(1, 'prefix that must remain', {
+    epoch: 4,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n === 1)
+      mutate(x, (db) =>
+        db
+          .prepare('DELETE FROM publisher_decisions WHERE credential_id=?')
+          .run(x.context.candidate.id),
+      );
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'ledger-integrity' });
+  assert.equal(
+    call.calls(),
+    1,
+    'the fresh census must refuse the damaged prefix before another reply is signed',
+  );
+});
+
+test('discovery never hides same-count requesting-publisher corruption after verification', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const wire = x.make(1, 'row whose signature must remain valid', {
+    epoch: 4,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n === 1)
+      mutate(x, (db) =>
+        db
+          .prepare('UPDATE publisher_decisions SET response=? WHERE credential_id=?')
+          .run(Buffer.from('invalid signed head'), x.context.candidate.id),
+      );
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'ledger-integrity' });
+});
+
+test('discovery reauthorizes a revoked session after signing even with discovery capture purpose', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x),
+    g = await continuationGrants(x);
+  const grant = await g.grant(
+    { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.candidate.id },
+    x.keys.new,
+  );
+  const call = discoverySigningCut(
+    x,
+    q.discovery(),
+    async () => g.revoke(),
+    x.f.core.grants.authorize(grant.grantToken),
+  );
+  await assert.rejects(call.result, denial('sign-in-required'));
+  assert.equal(call.calls(), 1);
+});
+
+test('discovery refuses request expiry reached while signing the response', async (t) => {
+  let now = 1000;
+  const x = await continuationFixture(t, { now: () => now }),
+    q = membershipLocatorRequests(x);
+  const call = discoverySigningCut(x, q.discovery(), async () => {
+    now = 61000;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'unavailable' });
+  assert.equal(call.calls(), 1);
+});
+
+test('discovery snapshot purpose is captured and must match both guard directions', async (t) => {
+  const x = await continuationFixture(t);
+  const { read: capture, unchanged } = await import('../../account-service/delivery.ts');
+  const { createDeliveryVerification } =
+    await import('../../account-service/deliveryVerification.ts');
+  const db = await discoveryDatabase(x),
+    reuse = createDeliveryVerification({ db, path: x.f.path, signal() {} });
+  const check = (s, purpose) => {
+    db.exec('BEGIN');
+    try {
+      return unchanged(db, s, reuse, purpose);
+    } finally {
+      db.exec('ROLLBACK');
+    }
+  };
+  try {
+    const full = capture(db, x.workspace, x.context.candidate.id, reuse);
+    const discovery = capture(db, x.workspace, x.context.candidate.id, reuse, {
+      purpose: 'membership-discovery',
+    });
+    assert(check(full));
+    assert(
+      !check(full, 'membership-discovery'),
+      'a full capture cannot be widened after verification',
+    );
+    assert(check(discovery, 'membership-discovery'));
+    assert(!check(discovery), 'discovery capture cannot authorize an ordinary comparison');
+    const external = capture(db, x.workspace, x.context.candidate.id, reuse, {
+      purpose: 'membership-discovery',
+    });
+    mutate(x, (other) => other.exec('CREATE TABLE phase16_external_probe (value INTEGER)'));
+    assert(
+      !check(external, 'membership-discovery'),
+      'unknown external writes retain the data_version fence',
+    );
+    const afterExternal = capture(db, x.workspace, x.context.candidate.id, reuse, {
+      purpose: 'membership-discovery',
+    });
+    reuse.clear();
+    assert(!check(afterExternal, 'membership-discovery'), 'clear/ownership fence still applies');
+    reuse.close();
+    assert.throws(() => check(discovery, 'membership-discovery'));
+  } finally {
+    reuse.close();
+    db.close();
+  }
+});
+
+test('discovery projection removes exactly the unrelated witness and retains every other snapshot field', async (t) => {
+  const x = await continuationFixture(t);
+  const { read: capture, snapshotBytesForPurpose: snapshotBytes } =
+    await import('../../account-service/delivery.ts');
+  const db = await discoveryDatabase(x);
+  try {
+    const joined = capture(db, x.workspace, x.context.candidate.id),
+      first = capture(db, x.workspace, x.credential);
+    const changed = structuredClone(joined);
+    changed.promotion.delivery_witness = 'another first publisher witness';
+    assert.notEqual(
+      snapshotBytes(joined),
+      snapshotBytes(changed),
+      'ordinary comparison stays exact',
+    );
+    assert.equal(
+      snapshotBytes(joined, 'membership-discovery'),
+      snapshotBytes(changed, 'membership-discovery'),
+    );
+    const own = structuredClone(first);
+    own.promotion.delivery_witness = 'first publisher own witness';
+    assert.notEqual(
+      snapshotBytes(first, 'membership-discovery'),
+      snapshotBytes(own, 'membership-discovery'),
+    );
+    for (const [name, edit] of [
+      [
+        'own witness',
+        (s) => {
+          s.publisherWitness = 'changed';
+        },
+      ],
+      [
+        'row prefix',
+        (s) => {
+          s.rows.push({
+            account_id: s.account.id,
+            ordinal: 1,
+            position: 1,
+            kind: 'accepted',
+            submission: new Uint8Array([1]),
+            response: new Uint8Array([2]),
+          });
+        },
+      ],
+      [
+        'account state',
+        (s) => {
+          s.account.state = 'changed';
+        },
+      ],
+      [
+        'credential state',
+        (s) => {
+          s.credential.state = 'changed';
+        },
+      ],
+      [
+        'recovery authority',
+        (s) => {
+          s.recovery.draft += ' ';
+        },
+      ],
+      [
+        'promotion authority',
+        (s) => {
+          s.promotion.acceptance_seal += ' ';
+        },
+      ],
+      [
+        'membership proof',
+        (s) => {
+          s.continuations[0].artifact += ' ';
+        },
+      ],
+      [
+        'removal preparation',
+        (s) => {
+          s.removalPreparation = { parent: 'changed' };
+        },
+      ],
+      [
+        'rotation',
+        (s) => {
+          s.rotations = [{ artifact: 'changed' }];
+        },
+      ],
+    ]) {
+      const next = structuredClone(joined);
+      edit(next);
+      assert.notEqual(
+        snapshotBytes(joined, 'membership-discovery'),
+        snapshotBytes(next, 'membership-discovery'),
+        name,
+      );
+    }
+  } finally {
+    db.close();
+  }
+});
+
+test('uncached discovery also ignores unrelated writing while retaining complete own census', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const { discoverMembership } = await import('../../account-service/membershipLocator.ts');
+  const db = await discoveryDatabase(x);
+  let calls = 0,
+    previous = '00'.repeat(32);
+  try {
+    const response = await x.authority.owner.discoverMembership(
+      {
+        discoverMembership(input, issuer) {
+          return discoverMembership(
+            db,
+            input,
+            {
+              ...issuer,
+              async discovery(body) {
+                const response = await issuer.discovery(body);
+                const wire = x.make(++calls, 'uncached unrelated writing', { epoch: 4 });
+                previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+                return response;
+              },
+            },
+            () => 1000,
+            () => {},
+          );
+        },
+      },
+      q.discovery(),
+    );
+    assert.equal(response.kind, 'membership-discovery');
+    assert.equal(calls, 1);
+    await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000);
+  } finally {
+    db.close();
+  }
+});

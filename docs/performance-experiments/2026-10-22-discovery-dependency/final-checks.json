@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "candidateStatus": "held; heavy delivery remains failed",
+  "baseCommit": "c1177575801a8eeab60b63883a3c701625ada215",
+  "priorEvidence14And15ByteExact": true,
+  "priorJournalsExactPrefixes": true,
+  "changedRuntimeFiles": [
+    "account-service/delivery.ts",
+    "account-service/membershipLocator.ts",
+    "account-service/publisherTips.ts"
+  ],
+  "newRegressionCases": 13,
+  "allOriginalTestBytesRetained": true,
+  "deliberateImplementationControlsDetected": 12,
+  "sourceReviewOmissionsDetected": 2,
+  "independentEvidenceNativeCorruptionsDetected": 6,
+  "preexistingBroadFailuresOnBothSnapshots": 16,
+  "newBroadFailures": 0,
+  "unchangedLinuxGrantDiscoveryExecutions": 50,
+  "planningCases": 92,
+  "sourceInputs": 804,
+  "clientFilesByteExact": 110,
+  "nativeInspectorFunctionByteExact": true,
+  "originalNativeStoresUnchangedAfterCorruptionControl": true,
+  "all97ContractsAndStatusesExact": true,
+  "onlyConstructionMetadataChange": "source coordinate674\u2192685",
+  "all881ObligationRowsExact": true,
+  "unresolved": 337,
+  "realIndexUnchangedAndUnstaged": true,
+  "realIndexSha256": "b62efd08544eced15eca95d8666fc325b716671f62bf80e0dff61cea5730d5c6",
+  "otherSeatProgressUnchanged": true,
+  "noPublicationOrQualificationCredit": true
+}

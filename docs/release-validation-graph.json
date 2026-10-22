@@ -6050,7 +6050,7 @@
           "test/account-ceremony/content-transfer.test.mjs"
         ]
       },
-      "declarations": 84,
+      "declarations": 97,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15124,7 +15124,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "ada4bbb02353345bbfbe21ae050564e4c52f2f79c41995b97093d5bcd613855a"
+      "sha256": "08e8cced264dea925303f46a7b11162b55c76637486f888ad6c2da5f6d4170f5"
     },
     {
       "path": "package.json",
@@ -16572,7 +16572,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "07a5250c87d7a8e718a3d4ad82d3eec9ae8f97a9509d40ee18efd0eee961e21a"
+      "sha256": "6cc3fcc3d7096e503f9af7862815f1a6c7840164f12f9a6ec1f5b05ac3188c81"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",
