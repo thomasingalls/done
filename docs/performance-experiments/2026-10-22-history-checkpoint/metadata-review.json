@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "onlySourceHashChanged": [
+    "account-service/historyCheckpoint.ts"
+  ],
+  "sources": 400,
+  "domainCount": 197,
+  "domainLabelsKindsAndSitePathsExact": true,
+  "allConstructionBytesExact": true,
+  "all881ObligationRowsExact": true,
+  "unresolved": 337,
+  "qualificationStatus": "blocked",
+  "planningOnly": true
+}

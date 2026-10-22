@@ -5007,3 +5007,13 @@ Treat post-load recovery and durability as separate outcomes from the original r
 Use an explicit purpose captured privately and checked again at discovery commit. Omit only promotion.delivery_witness for an actual joined publisher; retain its own complete ledger and all current-authority/ownership fences. Keep full ordinary comparisons and the original serializer interface. [Phase16](./performance-experiments/2026-10-22-discovery-dependency/README.md) demonstrates the defect on original code, passes13new regressions and detects12deliberate implementation omissions without modifying old case bodies or security contracts.
 
 Do not infer performance acceptance from removal of one refusal chain. Both candidate heavy journeys eliminate membership409/removal403 but miss the original delivery guard with smaller visible peer prefixes than either reference; history-checkpoint409s now block the next receive stage. Retain the implementation as a held local development candidate and preserve the original failures. A separate checkpoint trace must establish coherent-head/history/current-authority behavior before choosing its repair; do not copy discovery's projection into that response or raise rates. Automatic post-load and offline-cold-profile durability guards pass, which does not clear responsiveness,16existing broad-case failures or generalized qualification. No publication.
+
+
+## 2026-10-22 — Phase17 history checkpoint and receive gating
+
+Keep receiving behind its authenticated history gate. Remove redundant membership verification and, for catalog reads, move live publisher capture after expensive immutable authority verification. Require exact current header agreement except the live witness/rows which the fresh complete census verifies. Reuse proof identity only, never session or commit authority. Other history actions and full final fences remain. [Evidence](./performance-experiments/2026-10-22-history-checkpoint/README.md) records accepted for the scoped checkpoint repair; heavy fairness remains held; heavy acceptance False. Do not raise rates, extend deadlines, skip403s or turn failed/censored histories into success. The mount regression is now checked independently before startup.
+
+
+### Phase17 acceptance clarification
+
+The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.

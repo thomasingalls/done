@@ -1,0 +1,24 @@
+from pathlib import Path
+import subprocess,os,json,time,shutil
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while not(r/'pilot-reuse/result.json').exists():time.sleep(5)
+print('Pilot finished; starting checks separately',flush=True)
+# Preserve the independently found prototype counterexample, on both source identities.
+for f in ['account-service/historyCheckpoint.ts','test/account-ceremony/content-transfer.test.mjs']:shutil.copy2(repo/f,s/f)
+ref=r/'regression-baseline-source';shutil.copy2(s/'test/account-ceremony/content-transfer.test.mjs',ref/'test/account-ceremony/content-transfer.test.mjs');shutil.copy2(r/'reference-account-service/historyCheckpoint.ts',ref/'account-service/historyCheckpoint.ts')
+rows=[]
+for name,cwd,expected in [('original-finalized-publisher',ref,0),('prototype-finalized-publisher',s,1)]:
+ cmd=['node','--test','--test-name-pattern=history complete timeline includes epochs after','test/account-ceremony/content-transfer.test.mjs']
+ with(r/(name+'-v2.log')).open('w')as f:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ assert p.returncode==expected,(name,p.returncode);rows.append({'name':name,'exitCode':p.returncode,'expected':expected})
+(r/'prototype-counterexample.json').write_text(json.dumps(rows,indent=2)+'\n')
+p=repo/'account-service/historyCheckpoint.ts';text=p.read_text();old='  return new Map(history.authorities.map((a) => [a.tip, historyMembershipAt(history, a.tip)]));';new='''  const result = new Map<number, ReturnType<typeof historyMembershipAt>>();
+  // A removed publisher's own authority list ends at finalization. The workspace
+  // timeline still contains every later epoch, including pending enrollment.
+  for (let epoch = 1; epoch <= history.current.tip; epoch++)
+    result.set(epoch, historyMembershipAt(history, epoch));
+  return result;''';assert old in text;p.write_text(text.replace(old,new))
+subprocess.run(['node','node_modules/oxfmt/bin/oxfmt',str(p)],cwd=repo,env=env,check=True,stdout=(r/'format-runtime.log').open('w'))
+p=repo/'test/account-ceremony/content-transfer.test.mjs';base=(r/'before/content-transfer.test.mjs').read_bytes();whole=p.read_bytes();assert whole.startswith(base);added=r/'new-tests-only.mjs';added.write_bytes(whole[len(base):]);subprocess.run(['node','node_modules/oxfmt/bin/oxfmt',str(added)],cwd=repo,env=env,check=True,stdout=(r/'format-new-tests.log').open('w'));p.write_bytes(base+b'\n'+added.read_bytes());assert p.read_bytes().startswith(base)
+for f in ['account-service/historyCheckpoint.ts','test/account-ceremony/content-transfer.test.mjs']:shutil.copy2(repo/f,s/f)
+p=r/'challenge.py';p.write_text(p.read_text().replace("historyMembershipAt(history, a.tip)","historyMembershipAt(history, epoch)"))

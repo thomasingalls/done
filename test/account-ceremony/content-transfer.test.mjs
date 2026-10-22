@@ -6940,3 +6940,332 @@ test('uncached discovery also ignores unrelated writing while retaining complete
     db.close();
   }
 });
+
+async function continuationHistoryRequest(x, overrides = {}, key = x.keys.new) {
+  const request = {
+    v: 1,
+    kind: 'history-checkpoint-request',
+    workspaceId: x.workspace,
+    lineageId: x.context.lineageId,
+    epoch: 4,
+    head: x.admission.head,
+    credentialId: x.context.candidate.id,
+    nonce: 'b7'.repeat(32),
+    expiresAt: 61000,
+    action: 'read',
+    payload: 'catalog',
+    signature: '00'.repeat(64),
+    ...overrides,
+  };
+  request.signature = signed(key, await historyExchangeMessage(request));
+  return request;
+}
+
+test('history catalog reuses the current branded membership timeline instead of verifying its admission twice', async (t) => {
+  const x = await continuationFixture(t);
+  const request = await continuationHistoryRequest(x);
+  let admissionVerifications = 0;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/device-membership-admission/v2')))
+      admissionVerifications++;
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
+  assert.equal(response.ok, true, JSON.stringify(response));
+  assert.equal(
+    admissionVerifications,
+    1,
+    'the current authority already verifies this exact admission',
+  );
+  const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+  assert.equal(page.catalog.sequence, 0);
+  assert.equal(page.checkpoint, null);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.candidate.id).position, 0);
+});
+
+function historySigningCut(x, request, cut, authorization) {
+  let calls = 0;
+  const result = x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, issuer) {
+        return x.f.core.exchangeHistoryCheckpoint(input, {
+          ...issuer,
+          async historyPage(body) {
+            const response = await issuer.historyPage(body);
+            await cut(++calls);
+            return response;
+          },
+        });
+      },
+    },
+    request,
+    authorization,
+  );
+  return { result, calls: () => calls };
+}
+
+for (const continuous of [false, true])
+  test(`history timeline reuse retains ${continuous ? 'four-attempt refusal' : 'fresh-head retry'} during writing`, async (t) => {
+    const x = await continuationFixture(t);
+    const request = await continuationHistoryRequest(x);
+    let previous = '00'.repeat(32);
+    const call = historySigningCut(x, request, async (n) => {
+      if (!continuous && n > 1) return;
+      const wire = x.make(n, 'writing while history is signed', { epoch: 4 });
+      previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+    });
+    const response = await call.result;
+    if (continuous) {
+      assert.deepEqual(response, { ok: false, refusal: 'state-changed' });
+      assert.equal(call.calls(), 4);
+      assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+    } else {
+      assert.equal(response.ok, true, JSON.stringify(response));
+      assert.equal(call.calls(), 2);
+      const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+      assert.deepEqual(
+        page.heads.find((h) => h.credentialId === x.context.existing.id),
+        {
+          credentialId: x.context.existing.id,
+          position: 1,
+          link: previous,
+        },
+      );
+    }
+  });
+
+for (const fault of ['authority', 'old-row', 'membership-proof'])
+  test(`history timeline reuse refuses ${fault} damage without returning a catalog`, async (t) => {
+    const x = await continuationFixture(t);
+    const request = await continuationHistoryRequest(x);
+    if (fault === 'old-row') {
+      const wire = x.make(1, 'retained writing before damage', { epoch: 4 });
+      decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+    }
+    const call = historySigningCut(x, request, async (n) => {
+      if (n > 1) return;
+      mutate(x, (db) =>
+        db.exec(
+          fault === 'authority'
+            ? "UPDATE accounts SET state='pending'"
+            : fault === 'old-row'
+              ? "UPDATE delivery_decisions SET submission=X'00' WHERE position=1"
+              : "UPDATE membership_ceremonies SET artifact='{}'",
+        ),
+      );
+    });
+    assert.deepEqual(await call.result, {
+      ok: false,
+      refusal: fault === 'old-row' ? 'ledger-integrity' : 'unavailable',
+    });
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });
+
+test('history timeline reuse retains transaction-time session revocation', async (t) => {
+  const x = await continuationFixture(t),
+    request = await continuationHistoryRequest(x),
+    g = await continuationGrants(x);
+  const grant = await g.grant(
+    { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.candidate.id },
+    x.keys.new,
+  );
+  const call = historySigningCut(
+    x,
+    request,
+    async () => g.revoke(),
+    x.f.core.grants.authorize(grant.grantToken),
+  );
+  await assert.rejects(call.result, denial('sign-in-required'));
+  assert.equal(call.calls(), 1);
+  assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+});
+
+test('history timeline reuse refuses a request that expires during signing', async (t) => {
+  let now = 1000;
+  const x = await continuationFixture(t, { now: () => now });
+  const call = historySigningCut(x, await continuationHistoryRequest(x), async () => {
+    now = 61000;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'unavailable' });
+  assert.equal(call.calls(), 1);
+  assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+});
+
+test('history early-epoch lookup verifies only the latest complete timeline and reuses its earlier memberships', async (t) => {
+  const { x, r } = await openingHistoryFixture(t);
+  let count = 0,
+    issuer;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/admission-successor/v1'))) count++;
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, value) {
+        issuer = value;
+        return x.f.core.exchangeHistoryCheckpoint(input, value);
+      },
+    },
+    r,
+  );
+  assert.equal(response.ok, true, JSON.stringify(response));
+  const exchangeCount = count;
+  const { snapshot, verifyCurrentWorkspaceAuthority } =
+    await import('../../account-service/delivery.ts');
+  const db = await discoveryDatabase(x);
+  try {
+    count = 0;
+    db.exec('BEGIN');
+    const captured = snapshot(db, x.workspace);
+    db.exec('ROLLBACK');
+    const auth = await verifyCurrentWorkspaceAuthority(captured, issuer);
+    const authorityCount = count;
+    count = 0;
+    await verifyCertificationHistory(
+      auth.certificationSuccessor,
+      auth.successor,
+      { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
+      { epoch: 3, head: auth.a.head },
+    );
+    assert.equal(
+      exchangeCount,
+      authorityCount + count,
+      'the complete latest history already contains epochs one and two',
+    );
+  } finally {
+    db.close();
+  }
+  await verifyHistoryCheckpointPage(response.page, r, x.authority.pin);
+});
+
+test('history complete timeline still resolves a retained checkpoint under its earlier membership', async (t) => {
+  const { setup: historySetup } = await import('../account-history/service-fixture.mjs');
+  const f = await historySetup(t);
+  const head = await f.upload(1, 'writing under the earlier membership');
+  const checkpoint = await f.create(null, [head]);
+  const publish = await f.makeRequest('publish', checkpoint);
+  await f.check(publish, await f.exchange(publish));
+  const admit = await f.makeRequest('admit', await f.admit(checkpoint));
+  await f.check(admit, await f.exchange(admit));
+  await f.advance();
+  const request = await f.makeRequest('read', 'latest');
+  assert.equal(request.epoch, 2);
+  const page = await f.check(request, await f.exchange(request));
+  assert.equal(page.checkpoint.manifest.epoch, 1);
+  assert.deepEqual(page.checkpoint, checkpoint);
+  assert.equal(page.heads.length, 2);
+  assert.deepEqual(
+    page.heads.find((h) => h.credentialId === head.credentialId),
+    head,
+  );
+  assert.equal(page.heads.find((h) => h.credentialId !== head.credentialId).position, 0);
+  assert.equal(page.catalog.sequence, 1);
+});
+
+for (const fault of ['head', 'epoch', 'signature'])
+  test(`history timeline reuse preserves ${fault} request validation`, async (t) => {
+    const x = await continuationFixture(t);
+    const request = await continuationHistoryRequest(
+      x,
+      fault === 'head' ? { head: 'fa'.repeat(32) } : fault === 'epoch' ? { epoch: 3 } : {},
+    );
+    if (fault === 'signature') request.signature = '00'.repeat(64);
+    assert.deepEqual(await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request), {
+      ok: false,
+      refusal: 'unavailable',
+    });
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });
+
+test('history complete timeline includes epochs after the original publisher was finalized', async (t) => {
+  const x = await removalFixture(t);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const prep = await removalRequest(x, x.context.existing.id, 'new');
+  const { request } = await rotationRequest(x, prep);
+  const rotation = await x.authority.owner.commitRotation(x.f.core, request);
+  assert.equal(rotation.ok, true, JSON.stringify(rotation));
+  const y = await admitNext(x, rotation.rotation);
+  assert.equal(y.admission.epoch.epoch, 5);
+  const query = await continuationHistoryRequest(y, { epoch: 5 });
+  const response = await y.authority.owner.exchangeHistoryCheckpoint(y.f.core, query);
+  assert.equal(response.ok, true, JSON.stringify(response));
+  const page = await verifyHistoryCheckpointPage(response.page, query, y.authority.pin);
+  assert.equal(page.catalog.sequence, 0);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.existing.id).position, 0);
+  assert.equal(
+    page.heads.find((h) => h.credentialId === y.entry.input.candidate.credentialId).position,
+    0,
+  );
+});
+
+test('history catalog captures fresh publisher heads after authority verification despite continuous signed writing', async (t) => {
+  const { x } = await openingHistoryFixture(t);
+  const request = await continuationHistoryRequest(x, { epoch: 3, head: x.certification.head });
+  let armed = false,
+    appends = 0,
+    previous = '00'.repeat(32);
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (armed) {
+      armed = false;
+      const wire = x.make(++appends, 'writing during authority verification', { epoch: 3 });
+      previous = decision(x, await x.deliveryCall(wire), wire, previous, 3).head.link;
+    }
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, issuer) {
+        return x.f.core.exchangeHistoryCheckpoint(input, {
+          ...issuer,
+          check(...args) {
+            issuer.check(...args);
+            armed = true;
+          },
+        });
+      },
+    },
+    request,
+  );
+  armed = false; // Response verification below is outside the service interleaving.
+  assert.equal(response.ok, true, JSON.stringify(response));
+  assert.equal(appends, 1, 'a catalog read captures heads after the one authority pass');
+  const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+  assert.deepEqual(
+    page.heads.find((h) => h.credentialId === x.context.existing.id),
+    { credentialId: x.context.existing.id, position: 1, link: previous },
+  );
+});
+
+for (const fault of ['authority-input', 'old-row'])
+  test(`catalog's late publisher capture refuses ${fault} changed during authority verification`, async (t) => {
+    const { x } = await openingHistoryFixture(t);
+    if (fault === 'old-row') {
+      const wire = x.make(1, 'retained writing before authority cut', { epoch: 3 });
+      decision(x, await x.deliveryCall(wire), wire, undefined, 3);
+    }
+    const request = await continuationHistoryRequest(x, { epoch: 3, head: x.certification.head });
+    let changed = false;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (!changed) {
+        changed = true;
+        mutate(x, (db) =>
+          db.exec(
+            fault === 'old-row'
+              ? "UPDATE delivery_decisions SET submission=X'00' WHERE position=1"
+              : "UPDATE promotions SET offer='{}'",
+          ),
+        );
+      }
+      return verify(...args);
+    });
+    assert.deepEqual(await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request), {
+      ok: false,
+      refusal: fault === 'old-row' ? 'ledger-integrity' : 'unavailable',
+    });
+    assert.equal(changed, true);
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });

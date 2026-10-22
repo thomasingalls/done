@@ -2165,3 +2165,22 @@ Stopping competing catch-up allows complete original writing to arrive automatic
 [Phase16](./performance-experiments/2026-10-22-discovery-dependency/README.md) retains fixed R,C,C,R at identical client/source envelope16/64. Candidate discovery compares the relevant publisher history without the unrelated first publisher's changing witness. Six membership409s and six removal-grant403s per reference disappear in both candidates. However, all original delivery guards fail: peer prefixes78/65reference versus38/45candidate out of120. Each candidate instead encounters six history-checkpoint409s, four explicitly state-changed and two uncaptured. The candidate is held; no speedup or complete-peer percentile/drift claim follows.
 
 Local offer-to-DOM p95 remains below16ms; complete writing and a separate guaranteed-offline edit pass automatic recovery, genuine same-profile cold reopen, whole exports and Undo/Redo after load-stop. Large H replays are censored at the quiet failure, not observed600s failures. Full reports preserve native signatures/prefixes, original failures, clocks/resources,13new regressions, mutation/source controls and16common broad-preflight failures. Next inspect checkpoint capture/guard and receive continuation without weakening current heads/history/authority. Sequential patch16 only; no deployment or qualification credit.
+
+
+## 2026-10-22 — Phase17 history checkpoint and receive gating
+
+[Phase17](./performance-experiments/2026-10-22-history-checkpoint/README.md) retains fixed-v2 R,C,C,R, identical client and1CPU/1GiB/zero-swap16/64 envelope. Quiet history409s reference [6, 6], candidate [0, 0]; full heavy acceptance **False**.
+
+| Run | Q1 history409 | Local p95 ms | Complete peer p95 ms | Original delivery | Replay600s |
+|---|---:|---:|---:|---|---|
+| 1-R | 6 | 3.8 | incomplete (46/120) | False | False |
+| 2-C | 0 | 2.6 | 8993.5 | True | False |
+| 3-C | 0 | 2.7 | 5090.8 | True | False |
+| 4-R | 6 | 2.8 | incomplete (76/120) | False | False |
+
+Incomplete references have no full peer p95/drift ratio. All four post-load automatic recovery/pending/save/cold-profile/full-export/reverse/Undo/Redo/isolation guards and native accepted-prefix audits pass.17 new regressions,8 implementation and6 evidence/native controls; same16 old affected failures remain. Candidate status: accepted for the scoped checkpoint repair; heavy fairness remains held. Preserve reuse-only pilot7history409s/H600 failures and the startup-invalid first comparison, without substitution. No deployed-device or generalized qualification claim.
+
+
+### Phase17 acceptance clarification
+
+The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.

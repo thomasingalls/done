@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "invent-original-pass",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "drop-input",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "alter-cold-archive",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "erase-history-refusal",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "alter-native-refusal",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "native-ciphertext-digest",
+      "exitCode": 1,
+      "assertionDetected": true
+    }
+  ]
+}

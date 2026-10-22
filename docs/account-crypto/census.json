@@ -305,7 +305,7 @@
     },
     {
       "path": "account-service/historyCheckpoint.ts",
-      "sha256": "503946fb7655065a2366a1e400b0877c32efab7d2653b7588edb5aada8be70ba"
+      "sha256": "23d6c5d55f6405d6ff2508b1da04f5919cc5188965418d8356dc51d78020b668"
     },
     {
       "path": "account-service/historySources.ts",

@@ -1,0 +1,57 @@
+[
+  {
+    "name": "candidate-affected-final-v2",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs"
+    ],
+    "exitCode": 1
+  },
+  {
+    "name": "new-regressions",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=history timeline reuse|history catalog|history early-epoch lookup|history complete timeline|catalog's late",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "types-final",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--ignoreConfig",
+      "--target",
+      "es2024",
+      "--module",
+      "nodenext",
+      "--moduleResolution",
+      "nodenext",
+      "--allowImportingTsExtensions",
+      "--skipLibCheck",
+      "--types",
+      "node",
+      "account-service/historyCheckpoint.ts"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "lint-final",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/historyCheckpoint.ts",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,time,json,shutil
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while 'freeze-and-run 1' not in (r/'run-final.log').read_text():time.sleep(5)
+assert (r/'2-C/result.json').exists()
+for f in ['run-receipts.json','freeze-and-run-final.log','run-final.log']:shutil.copy2(r/f,r/'aborted-schedule'/f)
+for name,cmd in [('mount-review',['node',str(r/'check-mounts.mjs')]),('source-review',['node',str(r/'source-review.mjs')]),('freeze-and-run-v2',['python3',str(r/'freeze-and-run-v2.py')]),('analysis',['python3',str(r/'analyze.py')]),('native-audit',['node',str(r/'audit-native.mjs')]),('evidence-review',['python3',str(r/'review-evidence.py')])]:
+ with(r/(name+'-fixed-v2.log')).open('w')as f:p=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception(name+' failed; preserve all outputs')
+print('Fixed-v2 journeys and independent review complete',flush=True)

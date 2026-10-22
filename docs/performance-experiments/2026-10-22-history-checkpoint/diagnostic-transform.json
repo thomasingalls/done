@@ -1,0 +1,5 @@
+{
+  "originalGuard": "      if (\n        (fast?.tips &&\n          [...publisherSnapshots.values(), ...cutSnapshots].some((s) => !unchanged(db, s, fast))) ||\n        captureBytes(capture()) !== captureBytes(before)\n      ) {\n        db.exec('ROLLBACK');\n        continue;\n      }\n",
+  "beforeSha256": "503946fb7655065a2366a1e400b0877c32efab7d2653b7588edb5aada8be70ba",
+  "afterSha256": "92c91b15106487173665454d4ad408b160a4a9b2ba1bf5a7287e94456a225cd8"
+}

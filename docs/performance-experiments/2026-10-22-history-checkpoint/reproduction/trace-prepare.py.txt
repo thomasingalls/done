@@ -1,0 +1,26 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;s=r/'source';d=r/'diagnostic-account-service';shutil.copytree(r/'reference-account-service',d)
+p=d/'historyCheckpoint.ts';old=p.read_text();text=old
+text="import {observe} from '/experiment/observer.mjs';\n"+text
+text=text.replace("for (let retry = 0; retry < 4; retry++) {","for (let retry = 0; retry < 4; retry++) { observe('history-attempt',{retry});")
+text=text.replace('const auth = await verifyCurrentWorkspaceAuthority(before.original, issuer),','observe(\'history-captured\');\n      const auth = await verifyCurrentWorkspaceAuthority(before.original, issuer),')
+text=text.replace('const membership = historyMembership(authorities.get(auth.a.tip)!),',"observe('history-authority');\n      const membership = historyMembership(authorities.get(auth.a.tip)!),")
+text=text.replace('const verifyCuts = async (c: HistoryCheckpoint) => {',"observe('history-ledgers');\n      const verifyCuts = async (c: HistoryCheckpoint) => {")
+text=text.replace("throw new HistorySnapshotChanged();", "{ observe('history-later-capture-race'); throw new HistorySnapshotChanged(); }")
+start=text.index('      if (\n        (fast?.tips &&\n          [...publisherSnapshots.values(), ...cutSnapshots]')
+end=text.index('      issuer.check(auth.seal',start)
+original=text[start:end]
+text=text[:start]+'''      const live=capture();
+      const guards=fast?.tips?[...publisherSnapshots.values(),...cutSnapshots].map(s=>({publisher:s.publisher?'joined':'first',unchanged:unchanged(db,s,fast),nativeSnapshotEqual:snapshotBytes({...s,rows:[]})===snapshotBytes({...snapshot(db,r.workspaceId,s.publisher),rows:[]})})):[];
+      const captureEqual=captureBytes(live)===captureBytes(before);
+      observe('history-commit-check',{guards,captureEqual,originalWitnessEqual:live?.original.promotion.delivery_witness===before.original.promotion.delivery_witness,catalogEqual:JSON.stringify(live?.catalog)===JSON.stringify(before.catalog)});
+      if(guards.some(s=>!s.unchanged)||!captureEqual){db.exec('ROLLBACK');continue;}
+'''+text[end:]
+text=text.replace("hook('after-verify', 'history-checkpoint');", "observe('history-signed'); hook('after-verify', 'history-checkpoint');")
+p.write_text(text)
+# Capture the exact replacement, enabling independent removal/parity checks.
+(r/'diagnostic-transform.json').write_text(json.dumps({'originalGuard':original,'beforeSha256':hashlib.sha256(old.encode()).hexdigest(),'afterSha256':hashlib.sha256(text.encode()).hexdigest()},indent=2)+'\n')
+p=r/'container-service.mjs';p.write_text(p.read_text().replace("'/account/grant/v1/begin'].includes", "'/account/grant/v1/begin','/account/history/v1/checkpoint'].includes"))
+# Verify actual route spelling separately before starting.
+p=s/'test/account-continuation-lab/runtime.mjs';p.write_text(p.read_text().replace("process.env.FAIR_VARIANT==='R'?root+'/reference-account-service'", "process.env.FAIR_VARIANT==='D'?root+'/diagnostic-account-service':process.env.FAIR_VARIANT==='R'?root+'/reference-account-service'"))

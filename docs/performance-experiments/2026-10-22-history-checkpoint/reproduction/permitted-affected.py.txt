@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,json,re,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};files=['test/account-ceremony/content-transfer.test.mjs','test/account-history/service.test.mjs','test/account-history/pruning.test.mjs','test/account-history/checkpoint.test.mjs','test/account-membership/rotation-history.test.mjs'];rows=[]
+for name,source in [('reference','reference-source'),('candidate','source')]:
+ cmd=['node','--test','--test-concurrency=1',*files];at=int(time.time()*1000)
+ with(r/(name+'-affected-permitted.log')).open('w')as f:p=subprocess.run(cmd,cwd=r/source,env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode,'localListeningPermitted':True});(r/'permitted-affected-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+def failed(x):return sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',x,re.M)))
+def totals(x):return {k:int(re.search(r'ℹ '+k+r' (\d+)',x).group(1))for k in ['tests','pass','fail','cancelled','skipped']}
+a=(r/'reference-affected-permitted.log').read_text();b=(r/'candidate-affected-permitted.log').read_text();n=set(failed(b))-set(failed(a));assert not n,n;assert 'EPERM'not in a and 'EPERM'not in b
+(r/'affected-comparison.json').write_text(json.dumps({'status':'passed','reference':totals(a),'candidate':totals(b),'unchangedFailureNames':failed(a),'newFailures':len(n),'resolvedFailures':sorted(set(failed(a))-set(failed(b))),'scope':'Permitted loopback listeners. Preserve earlier sandbox EPERM results separately; unchanged old failures remain unresolved, not automatically classified as stale.'},indent=2)+'\n');print('Final permitted comparison recorded',flush=True)

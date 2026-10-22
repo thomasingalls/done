@@ -37,8 +37,7 @@ import {
   verifyEarlyHistory,
   verifyCertificationHistory,
   extendMembershipHistory,
-  historyMembership,
-  type AdmissionHistory,
+  historyMembershipAt,
 } from '../account-protocol/admissionHistory.ts';
 import { decodePositionResponse } from '../account-protocol/positionDecision.ts';
 import {
@@ -89,28 +88,24 @@ const zero = EMPTY_HISTORY_CHECKPOINT;
 class HistorySnapshotChanged extends Error {}
 /** Resolve historical eligibility from the same verified chain, never a producer-supplied key. */
 async function memberships(s: Snapshot, auth: DeliveryAuthority, pin: DeliveryIssuer['pin']) {
-  const base = { pin, request: auth.request, receipt: auth.receipt },
-    result = new Map<number, AdmissionHistory>();
-  result.set(1, await verifyEarlyHistory(base));
-  if (auth.successor) result.set(2, await verifyEarlyHistory(base, auth.successor));
-  if (auth.certificationSuccessor) {
+  let history = auth.history;
+  if (!history) {
+    const base = { pin, request: auth.request, receipt: auth.receipt };
     const c = auth.certificationSuccessor;
-    result.set(
-      3,
-      await verifyCertificationHistory(c, auth.successor, base, { epoch: 3, head: c.head }),
-    );
+    // Each complete timeline retains its verified earlier memberships. Rebuilding each
+    // prefix separately repeats cryptography while live publisher heads keep advancing.
+    history = c
+      ? await verifyCertificationHistory(c, auth.successor, base, { epoch: 3, head: c.head })
+      : await verifyEarlyHistory(base, auth.successor);
+    if (s.recoveries?.length || s.rotations?.length || s.continuations?.length)
+      for (const proof of membershipProofChain(s).continuations)
+        history = await extendMembershipHistory(proof, history);
   }
-  if (s.recoveries?.length || s.rotations?.length || s.continuations?.length) {
-    let latest = result.get(auth.certificationSuccessor ? 3 : auth.successor ? 2 : 1)!;
-    for (const proof of membershipProofChain(s).continuations) {
-      latest = await extendMembershipHistory(proof, latest);
-      result.set(latest.current.tip, latest);
-    }
-  }
-  const current = result.get(auth.a.tip);
-  if (!current || current.current.head !== auth.a.head)
+  if (history.current.tip !== auth.a.tip || history.current.head !== auth.a.head)
     throw Error('History checkpoint membership changed');
-  return result;
+  // These lookups require the protocol's private verified identity. No shape-only cache,
+  // request authority or transaction permission is introduced by reusing this evidence.
+  return new Map(history.authorities.map((a) => [a.tip, historyMembershipAt(history, a.tip)]));
 }
 function record(db: DatabaseSync, workspace: string, hash: string): RecordRow | null {
   if (hash === zero) return null;
@@ -153,8 +148,15 @@ export async function exchangeHistoryCheckpoint(
   const fast = r.action === 'read' || r.action === 'source' ? reuse : undefined;
   // A pruning commit replaces old wire bytes under the same authority. Never reuse through it.
   if (!fast) reuse?.clear();
-  const capture = () => {
-    const original = fast?.tips ? fast.tips.capture(r.workspaceId) : snapshot(db, r.workspaceId);
+  const catalogRead = r.action === 'read' && r.payload === 'catalog';
+  const capture = (authorityOnly = false) => {
+    // Catalog authorization owns no publisher-history evidence yet. Capture and verify
+    // those live histories only after the expensive immutable authority verification.
+    const original = authorityOnly
+      ? snapshot(db, r.workspaceId, undefined, Number.MAX_SAFE_INTEGER)
+      : fast?.tips
+        ? fast.tips.capture(r.workspaceId)
+        : snapshot(db, r.workspaceId);
     if (!original) return null;
     const publishers = db
       .prepare(
@@ -162,7 +164,7 @@ export async function exchangeHistoryCheckpoint(
       )
       .all(original.account.id, original.account.id, HISTORY_HEAD_LIMIT + 1);
     if (publishers.length > HISTORY_HEAD_LIMIT) throw Error('Too many history publishers');
-    const streams = publishers.map(
+    const streams = (authorityOnly ? [] : publishers).map(
       (v) =>
         (fast?.tips
           ? fast.tips.capture(r.workspaceId, String(v.credential_id))
@@ -228,14 +230,31 @@ export async function exchangeHistoryCheckpoint(
   for (let retry = 0; retry < 4; retry++) {
     try {
       db.exec('BEGIN');
-      const before = capture();
+      let before = capture(catalogRead);
       db.exec('ROLLBACK');
       if (!before) return no('unavailable');
       const auth = await verifyCurrentWorkspaceAuthority(before.original, issuer),
         authorities = await memberships(before.original, auth, issuer.pin);
-      const membership = historyMembership(authorities.get(auth.a.tip)!),
+      const membership = authorities.get(auth.a.tip)!,
         p = membershipState(membership);
       await verifyHistoryExchange(r, membership, now());
+      if (catalogRead) {
+        db.exec('BEGIN');
+        const current = capture();
+        db.exec('ROLLBACK');
+        const authorityBytes = (s: Snapshot) =>
+          snapshotBytes({
+            ...s,
+            rows: [],
+            promotion: { ...s.promotion, delivery_witness: null },
+          });
+        // Only the live witness is outside authority verification. The fresh census
+        // below verifies that witness and its complete ledger; all other header inputs
+        // must still be exactly those whose authority was just verified.
+        if (!current || authorityBytes(current.original) !== authorityBytes(before.original))
+          continue;
+        before = current;
+      }
       if (before.discard) {
         const old = parseHistoryExchange(JSON.parse(String(before.discard.request))),
           at = authorities.get(old.epoch);
@@ -251,7 +270,7 @@ export async function exchangeHistoryCheckpoint(
         )
           throw Error('Invalid retained checkpoint cancellation');
         // The signed intent remains evidence after its network lifetime has elapsed.
-        await verifyHistoryExchange(old, historyMembership(at), old.expiresAt - 1);
+        await verifyHistoryExchange(old, at, old.expiresAt - 1);
       }
       const rawCatalog = before.catalog;
       const catalog = rawCatalog
@@ -307,7 +326,7 @@ export async function exchangeHistoryCheckpoint(
               (await historyCheckpointHash(cp)) !== hash
             )
               throw Error('Retried checkpoint changed');
-            await verifyHistoryCheckpointAdmission(receipt.admission, cp, historyMembership(at));
+            await verifyHistoryCheckpointAdmission(receipt.admission, cp, at);
             const value = { checkpoint: cp, admission: receipt.admission };
             verified.set(hash, value);
             return value;
@@ -317,7 +336,7 @@ export async function exchangeHistoryCheckpoint(
         }
         const history = authorities.get(raw.manifest?.epoch);
         if (!history) throw Error('Unknown checkpoint epoch');
-        const at = historyMembership(history),
+        const at = history,
           checkpoint = await verifyHistoryCheckpoint(raw, at);
         if (
           row.workspace_id !== p.workspaceId ||

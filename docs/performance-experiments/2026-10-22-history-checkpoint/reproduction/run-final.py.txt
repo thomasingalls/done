@@ -1,0 +1,12 @@
+from pathlib import Path
+import subprocess,os,time,json
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while 'Final permitted comparison recorded' not in (r/'permitted-affected.log').read_text():
+ if 'Traceback'in(r/'permitted-affected.log').read_text():raise Exception('Permitted preflight failed; no measurement started')
+ time.sleep(5)
+assert json.loads((r/'affected-comparison.json').read_text())['newFailures']==0
+for name,cmd in [('source-review',['node',str(r/'source-review.mjs')]),('freeze-and-run',['python3',str(r/'freeze-and-run.py')]),('analysis',['python3',str(r/'analyze.py')]),('native-audit',['node',str(r/'audit-native.mjs')])]:
+ with(r/(name+'-final.log')).open('w')as f:p=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception(name+' failed; preserve all outputs')
+print('Fixed journeys and independent audit complete',flush=True)

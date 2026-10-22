@@ -1,0 +1,17 @@
+from pathlib import Path
+import shutil,subprocess,os,json,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+def run(name,cmd,cwd):
+ at=int(time.time()*1000)
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(cwd),'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'preflight-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True);return p.returncode
+# The early prototype is over before running checks or changing frozen inputs.
+assert (r/'pilot-reuse/result.json').exists()
+for f in ['account-service/historyCheckpoint.ts','test/account-ceremony/content-transfer.test.mjs']:shutil.copy2(repo/f,s/f)
+ref=r/'reference-source';shutil.copytree(s,ref,symlinks=True)
+shutil.copy2(r/'reference-account-service/historyCheckpoint.ts',ref/'account-service/historyCheckpoint.ts');shutil.copy2(r/'before/content-transfer.test.mjs',ref/'test/account-ceremony/content-transfer.test.mjs')
+files=['test/account-ceremony/content-transfer.test.mjs','test/account-history/service.test.mjs','test/account-history/pruning.test.mjs','test/account-history/checkpoint.test.mjs','test/account-membership/rotation-history.test.mjs']
+for name,cwd in [('reference',ref),('candidate',s)]:run(name+'-affected',['node','--test','--test-concurrency=1',*files],cwd)
+run('new-regressions',['node','--test','--test-name-pattern=history timeline reuse|history catalog reuses|history early-epoch lookup|history complete timeline','test/account-ceremony/content-transfer.test.mjs'],s)
+run('types-final',['node','node_modules/typescript/bin/tsc','--noEmit','--ignoreConfig','--target','es2024','--module','nodenext','--moduleResolution','nodenext','--allowImportingTsExtensions','--skipLibCheck','--types','node','account-service/historyCheckpoint.ts'],s)
+run('lint-final',['node','node_modules/oxlint/bin/oxlint','account-service/historyCheckpoint.ts','test/account-ceremony/content-transfer.test.mjs'],s)
