@@ -1,0 +1,85 @@
+from pathlib import Path
+import json,time,hashlib,math,collections
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');a=json.loads((r/'analysis.json').read_text());aff=json.loads((r/'affected-comparison.json').read_text());assert aff['sameFailureIdentities']and aff['newCases']==18
+for f in ['broad-types-review.json','source-review.json','challenge.json','frozen-input-review.json','metadata-review.json','process-cleanup.json','evidence-review.json','sensitivity.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+assert(r/'types-affected.log').read_text()==''and(r/'lint.log').read_text()==''
+assert all(v['exitCode']==0 for v in json.loads((r/'planning-receipts.json').read_text()));assert 'ℹ tests 86'in(r/'planning-tests.log').read_text()and 'ℹ fail 0'in(r/'planning-tests.log').read_text()
+assert not(r/'record-outcome.json').exists();packet=repo/'docs/performance-experiments/2026-10-22-read-authority';packet.mkdir(parents=True,exist_ok=False)
+passed=a['heavyFairnessAcceptance'];status='passes the original measured heavy-case gates'if passed else'HELD: original heavy-case gate still fails'
+rows=[];pub=[]
+for v in a['runs']:
+ x=json.loads((r/v['name']/'result.json').read_text());q=[p for p in x['network']if p['label']=='Q0'and p['path']=='/account/delivery/submit'and p['phase']=='measured'];lat=sorted(p['headersAt']-p['at']for p in q if p.get('headersAt'));assert len(lat)==len(q);pub.append({'name':v['name'],'measuredWriterSubmissions':len(q),'distinctBodies':len(set(p['bodySha256']for p in q)),'statuses':dict(collections.Counter(p.get('status')for p in q)),'writerSubmitP95Ms':lat[math.ceil(.95*len(lat))-1]});peer=f"{v['peerObservedSubsetMs']['p95']/1000:.3f}"if v['peerSampleComplete']else'censored subset';rows.append(f"|{v['name']}|{v['localMs']['p95']:.1f}|{peer}|{v['peerKeysObserved']}/120|{'pass'if v['gates']['allBackgroundReplay600s']else'fail'}|{'pass'if v['primaryAcceptance']else'held'}|")
+(r/'publication-observations.json').write_text(json.dumps({'status':'descriptive only','runs':pub,'scope':'No post-hoc acceptance gate; complete first120 trusted positions remain primary. Distinct request-body counts are observed publication cadence, not independent units.'},indent=2)+'\n')
+peer=[v['peerObservedSubsetMs']['p95']/1000 if v['peerSampleComplete']else None for v in a['runs']];local=[v['localMs']['p95']for v in a['runs']];gates=all(all(v['guards'].values())for v in a['runs']);assert gates
+link='./performance-experiments/2026-10-22-read-authority/README.md'
+completed=f'''
+
+### Phase26 — stable read-authority proof reused; original heavy case rerun
+
+**Date:** 2026-10-22 · **Commit:** sequential patch26 after25, unsigned/uncommitted · **Status:** {status}; general qualification paused.
+
+Ordinary v2 reads now use the same stable mathematical header projection and verifier identity as publication through the existing bounded private core pool. Only decision rows and the two live witnesses are omitted; pin, publisher, all remaining current/future native fields and immutable boundaries remain. Missing core pool retains the original strict verifier/read-group semantics. Fresh original-snapshot ledger/witness/full-census, served-byte and per-request role/signature/time/scope checks, current grant/session/custody and completion, post-signing expiry, late snapshot/native owner/version/commit checks and four-attempt fence remain AST-exact. No new cache budget, quota/retry/deadline, protocol or client changes. [Evidence]({link}).
+
+All18 new regressions pass; five genuine read/publication/history counterexamples fail on25. The62 focused cache/race cases and seven deliberate implementation omissions pass/detect respectively. All old cases/assertions are retained; the shared test fixture explicitly clears only the authority pool after warming the ledger, so publication count cases still begin cold even though reads can now warm their proof. Paired affected {aff['reference']['tests']}/{aff['candidate']['tests']} cases retain exactly the same{aff['reference']['fail']} failures ({aff['reference']['pass']}/{aff['candidate']['pass']} pass). The prior cold-clear failure is preserved. Affected TypeScript/lint and86 planning checks pass; all883 obligation rows/339 unresolved and construction bytes stay exact, with no new aggregate credit.
+
+Fixed uninstrumented R25,C26,C26,R25 original600s comparison: complete peer p95 seconds {peer}; local p95 milliseconds {local}. All4 journeys retain all120 keys, original/pending writing, same-profile offline cold reopening without storage reinjection, exact encrypted retained records/whole exports, reverse/UndoRedo/isolation and independently verified native seed/envelope/wrapper/accepted-prefix data. Each acceptance gate is recorded separately; no observed subset or faster proof count substitutes for2500ms complete-peer p95. Original110 client files and1CPU/1GiB/16session64process policy are unchanged. Finite local repeated journeys do not establish physical-device/WAN, population or clean-full-suite behavior.
+
+Preserved validation mistakes: first new two-account assertion compared the shared fixture workspace ID instead of account identity (15/16 passed); corrected to independent account identity. The first AST review expected an identifier rename before traversal reached the child; corrected the review traversal expectation, product unchanged. An overbroad ad-hoc compiler command reports the same unrelated B2 RequestInit.duplex error on both reference and candidate; the affected graph typecheck passes. The broad-error reviewer initially expected legacy compiler exit2 instead of actual1; its failed assertion and original script remain, and a separate review confirms nonzero exit1 and byte-identical TS2353 diagnostics in both arms. All initial logs/scripts remain. No journey replaced, performance threshold extended, or old failure erased. All owned containers/profiles/gateway stopped. No actual staging/signing/commit/push/preview8443/merge/deploy.
+'''
+# Durable completion is written first, before advancing decisions/performance.
+p=repo/'docs/completed.md';assert p.read_bytes()==(r/'before/docs/completed.md').read_bytes();p.write_text(p.read_text()+completed);completedAt=time.time_ns()
+decision=f'''
+
+### Share stable read proof evidence without sharing live authority
+
+**Date:** 2026-10-22 · **Status:** phase26 {status}; qualification/publication separate.
+
+Use one private mathematical verifier identity for normalized publication and v2-read headers in the existing core-owned pool. The pool key is exact serialized context, while verifier identity is checked after lookup; separate callbacks over equal normalized inputs would replace each other's entries. The pure projection is unchanged and drops only decision rows and promotion.delivery_witness/publisherWitness. Its proof producers/resolvers do not consume those live fields. Retain all other native/future fields, pin, publisher and immutable history boundaries. Missing pool keeps original strict verification, not an implicit global or group cache. Retain private brands, detached mutable projections, fresh custody replay, bounds/LRU/revision/input/clear/close fences.
+
+A hit provides mathematical evidence only. Resolve reader/publisher roles and verify each request/signature/extent/expiry afresh, recapture live ledger after authority, compare stable headers, verify original live witnesses/full census/served bytes and perform all final native transaction/authorization/custody/completion checks. No quota, retry clock, corruption-detection window or four-attempt increase. [Evidence]({link}). Existing old tests retain their assertions; publication fixtures now explicitly own their cold authority state rather than depend on read-purpose separation.
+
+The four fixed whole journeys are the original acceptance comparison, including600s background replay, not the90s diagnostic from24/25. Preserve every outcome and all prior17 affected failures; keep general883/339 qualification paused. Discovery/catalog reuse and flow control remain separate follow-ups. {('The candidate clears this finite measured heavy workload; broader device and release checks remain separate.' if passed else 'The candidate remains held despite verified proof reuse; investigate the remaining measured bottleneck without promoting operation counts or extending the gate.')}
+'''
+p=repo/'docs/decisions.md';assert p.read_bytes()==(r/'before/docs/decisions.md').read_bytes();p.write_text(p.read_text()+decision)
+perf=f'''
+
+### 2026-10-22 — phase26 stable read authority reuse, original heavy comparison
+
+Fixed prospective R25,C26,C26,R25, original110 client files, H6/M2/Q2 with1024/256/32 histories,1CPU/1GiB/zero swap,16session64process, trusted120 keys at500ms. Only the read proof adapter/common verifier identity changes runtime. [Packet]({link}).
+
+|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|
+|---|---:|---:|---:|---|---|
+'''+ '\n'.join(rows)+f'''
+
+Status: **{status}**. Original16ms local/2500ms complete-peer p95,30s delivery,600s replay and120s continuation limits unchanged. Every exercised pending/cold same-profile/no-reinjection/retained-record/whole-export/native proof/prefix/reverse/UndoRedo/isolation guard passes. All timings, failures and finite within-journey dependence remain explicit. The uninstrumented comparison isolates26 against held23 runtime (unchanged through25); it does not measure per-call cache hits, exclusive CPU or population effects. Eighteen regressions,62 focused cases, seven implementation and six independent evidence/native fault controls support the boundary. Paired affected suites retain the same17 failures; general qualification paused, no publication.
+'''
+p=repo/'docs/performance.md';assert p.read_bytes()==(r/'before/docs/performance.md').read_bytes();p.write_text(p.read_text()+perf)
+(packet/'README.md').write_text(f'''# Phase26 — stable read-authority proof reuse
+
+**Outcome: {status}.** This is a development implementation and finite local comparison; no deployment or general qualification.
+
+Ordinary v2 reads and publications share the existing bounded mathematical header proof. The projection excludes only decision rows and promotion.delivery_witness/publisherWitness. Native pin/publisher/authority/history/future-field contexts, private brands and lifecycle bounds remain exact. No-pool reads keep strict behavior. Fresh live ledger/witness/full census, served bytes, per-request authorization/signature/roles/expiry, custody and final native commit fences remain unchanged. `source-review.json` independently reverses only the adapter/common verifier rename and compares the entire production module AST. The generic cache implementation and all other runtime/protocol/client bytes are unchanged.
+
+## Original acceptance comparison
+
+Unit of analysis is a whole disposable journey, not120 independent keystrokes. Fixed R25,C26,C26,R25, original H6/M2/Q2 fixture,110 unchanged client files,1CPU/1GiB/zero swap,16/64 limits. Retain all4 outcomes and original16ms local/2500ms complete-peer/30s delivery/600s replay/120s continuation gates. Each starts from cloned native state and independent disposable profiles. Same closed HTTP observer; no native crypto/client instrumentation, polling or rebuild. Clock brackets, raw observations, complete denominator and missingness remain in results and independent evidence reconstruction. Fixed order brackets drift; this is neither a population sample nor physical-phone/WAN validation.
+
+|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|
+|---|---:|---:|---:|---|---|
+'''+ '\n'.join(rows)+f'''
+
+Every journey passes the exercised data/continuation/cold/pending/isolation/whole-export/UndoRedo and independent native OpenSSL seed/envelope/wrapper/acceptance/prefix checks. See `analysis.json.gz`, `evidence-review.json`, `native-audit.json.gz`, `publication-observations.json` and all4 `journeys/` raw files. No proof-count or observed-subset speed claim substitutes for primary gates. The runtime reference is25, byte-identical to23;24/25 diagnostic instrumentation is absent.
+
+## Regression and challenge evidence
+
+18 new cases pass; five fail on old25 for genuine committed interleaved/independent writes, common proof ownership, account separation and branded certified/continued history. Fresh witness/ciphertext/request/grant/completion/custody/expiry, future-input, oversize, clear/close/in-flight/failure/pin/no-pool/group/final four-attempt checks are retained.62 focused cases pass. Seven real omission mutations are detected. All old test bytes/cases/assertions remain except the explicit authority-pool clear after ledger warmup in the shared fixture. This preserves a cold proof precondition for existing publication operation-count assertions.
+
+Paired affected suites: {aff['reference']['tests']} total/{aff['reference']['pass']} pass/{aff['reference']['fail']} fail → {aff['candidate']['tests']}/{aff['candidate']['pass']}/{aff['candidate']['fail']}, identical failure identities; no clean-full-suite claim. The known cold-clear failure remains. Affected TypeScript graph/lint and86 planning checks pass. All883 obligations/339 unresolved entries and construction bytes remain exact; new cases remain within blocked obligations, with no aggregate credit. General qualification paused.
+
+## Preserved failures and limits
+
+The initial new shared-workspace assumption fails15/16; corrected only to actual independent account identity. Initial AST-review traversal expectation fails before child rename; only review fixed. The overbroad ad-hoc compiler command encounters the same unrelated B2 RequestInit.duplex issue on reference/candidate; targeted affected graph passes. The first reviewer incorrectly expected compiler exit2 instead of actual1; its failure remains, with a separate byte-identical-diagnostic/nonzero-exit review. These logs/scripts are preserved under `checks/` and `reproduction/`. No measured journey substituted or acceptance threshold changed. Previous17 failures remain unresolved in their own workstream. Discovery/catalog reuse and flow control remain separate follow-ups.
+
+Source and apparatus identities are frozen in `measurement-identity.json.gz`; `artifact-provenance.json` and `SHA256SUMS` bind curated files to private originals. Profiles/native databases/fixture codes/private keys stay outside the packet; known-value scan checks36 private values after decompression, not universal DLP. All owned test processes are cleaned up; production and preview8443 untouched. Sequential26 is already reflected in the cumulative checkout after25: do not reapply it here. No real staging/signing/commit/push/merge/deployment.
+''')
+(r/'record-outcome.json').write_text(json.dumps({'status':'recorded','completedWrittenBeforeDecisionsAndPerformance':True,'completedAtNs':completedAt,'recordedAtNs':time.time_ns(),'heavyAcceptance':passed,'peerP95Seconds':peer,'localP95Milliseconds':local,'pairedAffected':aff,'realPublication':False},indent=2)+'\n');print(status,peer)

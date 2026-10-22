@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "restore-live-read-context",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority survives live appends"
+    },
+    {
+      "control": "split-verifier-identity",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority shares a single proof"
+    },
+    {
+      "control": "omit-future-native-context",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority retains every future"
+    },
+    {
+      "control": "omit-fresh-ledger-witness",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority refuses a freshly corrupt"
+    },
+    {
+      "control": "omit-fresh-custody-replay",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority retains fresh custody"
+    },
+    {
+      "control": "omit-final-native-guard",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority retains fresh final native"
+    },
+    {
+      "control": "omit-current-grant",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "stable read authority still performs current transaction"
+    }
+  ]
+}

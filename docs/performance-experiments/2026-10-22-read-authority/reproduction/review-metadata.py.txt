@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,hashlib,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');a=json.loads((r/'before/docs/account-crypto/census.json').read_text());b=json.loads((repo/'docs/account-crypto/census.json').read_text());old={v['path']:v['sha256']for v in a['sources']};new={v['path']:v['sha256']for v in b['sources']};assert old.keys()==new.keys();sourceCount=len(new);changes=sorted(k for k in old if old[k]!=new[k]);assert changes==['account-service/delivery.ts'];labels=lambda v:sorted((d['label'],d['kind'],tuple(sorted(s['path']for s in d['sites'])))for d in v['domains']);assert labels(a)==labels(b);assert(repo/'docs/account-crypto/constructions.json').read_bytes()==(r/'before/docs/account-crypto/constructions.json').read_bytes()
+a=json.loads((r/'before/docs/release-validation-manifest.json').read_text());b=json.loads((repo/'docs/release-validation-manifest.json').read_text());assert a['rows']==b['rows'];assert a['unresolved']==b['unresolved'];assert a['exclusions']==b['exclusions']and a['selections']==b['selections'];assert len(a['rows'])==len(b['rows'])==883;assert len(b['unresolved'])==339
+# Independently account for new test names in actual execution and blocked aggregate rows.
+pub='test/account-service-delivery/publisher-commit-races.test.mjs';ceremony='test/account-ceremony/content-transfer.test.mjs';names=[]
+for f in [pub,ceremony]:assert (repo/f).read_text().replace('  // Warm ledger evidence independently; each case explicitly owns its authority warmup.\n  reuse.authority.clear();\n','').startswith((r/'before'/f).read_text()),f
+suffix=(repo/pub).read_text()[len((r/'before'/pub).read_text()):];pubnames=re.findall(r"test\('([^']+)'",(r/'read-regressions.mjs').read_text());assert len(pubnames)==16 and len(set(pubnames))==16
+names=[*pubnames,*['stable read authority reuses branded '+v+' history across independent publisher ledgers'for v in ['certified','continued']]]
+log=(r/'candidate26-affected.log').read_text()
+for name in names:assert log.count('✔ '+name+' (')==1,name
+for f in [pub,ceremony]:
+ row=next(x for x in b['rows']if x['id']=='test:'+f);assert'blocked'in row and 'stage'not in row,f
+for name in names:assert not any(name in json.dumps(row.get('stage',row.get('stages',{})))for row in b['rows']),name
+for f,h in json.loads((r/'starting.json').read_text())['runtimeFiles'].items():
+ if f not in changes:assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+out={'status':'passed','sourceCount':sourceCount,'onlyRuntimeSourceHashChanged':changes,'domainLabelKindAndPathSetsExact':True,'constructionBytesExact':True,'all883ObligationRowsExact':True,'all339UnresolvedExact':True,'noNewAggregateCredit':True,'allOldTestBytesExactExceptExplicitColdAuthorityFixture':True,'all18NewCasesIndependentlyObservedAndRemainUncredited':True,'protocolAndClientBytesExact':True};(r/'metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

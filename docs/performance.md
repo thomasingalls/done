@@ -2271,3 +2271,17 @@ Four fixed instrumented A,B,D,C journeys, original110 client files and same diag
 For combined-D, complete native-matched120-position reply-to-display p95 is31.07s and reply-to-first-request p95 is30.42s. Returned-body-to-display p95 is38.9ms on87/120 observed position bodies only; C is44.3ms on98/120. All raw missingness, negative clock differences and byte-level proof matches remain. Writer-D authority has119hits/1miss, only77 authority signatures total; ordinary receiving still repeats77 per miss. Receiver-D read-census+served sums3.48s plus history/discovery census0.27s, compared56.40s read+prelude authority wall. This is finite diagnostic attribution, not a speedup acceptance or causal mediation proof. Publication does not raise absolute miss count; the same costly receive path falls behind the faster submission cadence.
 
 All foreground/local/continuation/native/cold/export/reverse/UndoRedo/isolation guards pass; background replay is censored, all peer p95s still miss2500ms.13 independent evidence/native/guard controls and10 frame cases pass. Browser body omissions coincide with requestfailed observations; exact retrieval cause is unrecorded, and no timing was invented. One intended90000ms diagnostic load duration is89999ms; raw1ms resolution and original strict-check failure are preserved without changing request/performance/continuation/600s limits. No runtime, old-test, qualification883/339 or publication changes.
+
+
+### 2026-10-22 — phase26 stable read authority reuse, original heavy comparison
+
+Fixed prospective R25,C26,C26,R25, original110 client files, H6/M2/Q2 with1024/256/32 histories,1CPU/1GiB/zero swap,16session64process, trusted120 keys at500ms. Only the read proof adapter/common verifier identity changes runtime. [Packet](./performance-experiments/2026-10-22-read-authority/README.md).
+
+|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|
+|---|---:|---:|---:|---|---|
+|1-R|5.9|35.111|120/120|pass|held|
+|2-C|3.8|2.688|120/120|pass|held|
+|3-C|5.5|2.774|120/120|pass|held|
+|4-R|4.2|31.372|120/120|pass|held|
+
+Status: **HELD: original heavy-case gate still fails**. Original16ms local/2500ms complete-peer p95,30s delivery,600s replay and120s continuation limits unchanged. Every exercised pending/cold same-profile/no-reinjection/retained-record/whole-export/native proof/prefix/reverse/UndoRedo/isolation guard passes. All timings, failures and finite within-journey dependence remain explicit. The uninstrumented comparison isolates26 against held23 runtime (unchanged through25); it does not measure per-call cache hits, exclusive CPU or population effects. Eighteen regressions,62 focused cases, seven implementation and six independent evidence/native fault controls support the boundary. Paired affected suites retain the same17 failures; general qualification paused, no publication.

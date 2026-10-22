@@ -1,0 +1,7 @@
+from pathlib import Path
+import subprocess,os,json
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+for label,s in [('reference',r/'reference-full'),('candidate',r/'source')]:
+ cmd=['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--module','ESNext','--moduleResolution','bundler','--lib','ES2022,DOM,DOM.Iterable','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit',*map(str,sorted((s/'account-service').glob('*.ts')))];v=subprocess.run(cmd,cwd=s,env=env,capture_output=True,text=True);p=r/('types-broad-confirmed-'+label+'.log');p.write_text(v.stdout+v.stderr);assert v.returncode!=0;assert p.read_text()==(r/'types.log').read_text();assert 'b2.ts(131,9): error TS2353:'in p.read_text();rows.append({'variant':label,'exitCode':v.returncode,'sameErrorAsOriginalBroadInvocation':True})
+assert(r/'types-affected.log').read_text()==''
+(r/'broad-types-review.json').write_text(json.dumps({'status':'passed','scope':'same unrelated B2 RequestInit.duplex error in ad-hoc broad command, not a passing project typecheck','initialReviewerMistake':'expected legacy tsc exit2, actual1; original script/log retained','runs':rows,'affectedGraphTypecheckPassed':True},indent=2)+'\n');print(json.dumps(rows))

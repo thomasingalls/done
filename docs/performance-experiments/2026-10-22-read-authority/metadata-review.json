@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "sourceCount": 400,
+  "onlyRuntimeSourceHashChanged": [
+    "account-service/delivery.ts"
+  ],
+  "domainLabelKindAndPathSetsExact": true,
+  "constructionBytesExact": true,
+  "all883ObligationRowsExact": true,
+  "all339UnresolvedExact": true,
+  "noNewAggregateCredit": true,
+  "allOldTestBytesExactExceptExplicitColdAuthorityFixture": true,
+  "all18NewCasesIndependentlyObservedAndRemainUncredited": true,
+  "protocolAndClientBytesExact": true
+}

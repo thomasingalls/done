@@ -1,0 +1,9 @@
+from pathlib import Path
+r=Path(__file__).parent;s=r/'source';p=s/'account-service/delivery.ts';t=p.read_text();t=t.replace('// The verifier identity separates this purpose from strict ordinary inbound contexts.','// Reads and publications share only this stable mathematical header proof identity.').replace('authenticatePublicationHeader','authenticateStableHeader');a='''              before,
+              issuer,
+              verifyCurrentWorkspaceAuthority,
+              reuse?.authority,''';b='''              reuse?.authority ? workspaceAuthorityHeader(before) : before,
+              issuer,
+              reuse?.authority ? authenticateStableHeader : verifyCurrentWorkspaceAuthority,
+              reuse?.authority,''';assert t.count(a)==1;p.write_text(t.replace(a,b))
+p=s/'test/account-service-delivery/publisher-commit-races.test.mjs';t=p.read_text();a='  await h.fetch();\n  return h;';assert t.count(a)==1;t=t.replace(a,'  await h.fetch();\n  // Warm ledger evidence independently; each case explicitly owns its authority warmup.\n  reuse.authority.clear();\n  return h;');p.write_text(t+(r/'read-regressions.mjs').read_text());print('Candidate26 and16 regression cases prepared privately')

@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,os,subprocess,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+def run(name,cmd,cwd=s,expected=0):
+ with(r/(name+'.log')).open('w')as f:v=subprocess.run(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ print(name,v.returncode,flush=True);assert v.returncode==expected,name
+for f in ['test/account-service-delivery/publisher-commit-races.test.mjs','test/account-ceremony/content-transfer.test.mjs']:
+ before=(r/'before'/f).read_text();now=(s/f).read_text();prefix=before if 'ceremony' in f else before.replace('  await h.fetch();\n  return h;','  await h.fetch();\n  // Warm ledger evidence independently; each case explicitly owns its authority warmup.\n  reuse.authority.clear();\n  return h;');assert now.startswith(prefix)
+ p=r/('new-'+Path(f).name);p.write_text(now[len(prefix):]);run('format-'+p.stem,['node','node_modules/oxfmt/bin/oxfmt','--config','/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json','--write',str(p)]);(s/f).write_text(prefix+'\n'+p.read_text())
+run('format-runtime',['node','node_modules/oxfmt/bin/oxfmt','--config','/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json','--write','account-service/delivery.ts'])
+files=['test/account-service-delivery/publisher-commit-races.test.mjs','test/account-ceremony/content-transfer.test.mjs']
+run('new-formatted',['node','--test','--test-name-pattern=stable read authority',*files])
+d=r/'counterexample';shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);shutil.copy2(r/'before/account-service/delivery.ts',d/'account-service/delivery.ts')
+run('new-reference',['node','--test','--test-name-pattern=stable read authority',*files],d,1)
+log=(r/'new-reference.log').read_text();assert 'ℹ fail 5'in log,log[-1500:]
+run('cache-and-races',['node','--test','--test-concurrency=1','test/account-sessions/inbound-authority-cache.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-delivery/cold-verification.test.mjs'])
+run('types',['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--module','ESNext','--moduleResolution','bundler','--lib','ES2022,DOM,DOM.Iterable','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit',*map(str,sorted((s/'account-service').glob('*.ts')))])
+run('lint',['node','node_modules/oxlint/bin/oxlint','account-service/delivery.ts',*files])

@@ -1,0 +1,26 @@
+from pathlib import Path
+import subprocess,os,json,time,re,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+while True:
+ if(r/'run-receipts.json').exists():
+  receipts=json.loads((r/'run-receipts.json').read_text())
+  if any(v['exitCode']for v in receipts):raise Exception('Preserve failed workload; do not substitute')
+  if len(receipts)==4:break
+ if'Traceback'in(r/'run.log').read_text():raise Exception('Measurement machinery failed; preserve')
+ time.sleep(3)
+for f in ['audit-native.mjs','cleanup.py']:
+ p=r/f;p.write_text(p.read_text().replace('/private/tmp/done-publication-authority-20261022',str(r)))
+for label,cmd in [('analysis',['python3','analyze.py']),('review',['python3','review-evidence.py']),('native-audit',['node','audit-native.mjs']),('sensitivity',['python3','sensitivity.py']),('cleanup',['python3','cleanup.py'])]:
+ with(r/(label+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(label,p.returncode,flush=True)
+ if p.returncode:raise Exception('Preserve and investigate '+label)
+files=['test/account-ceremony/content-transfer.test.mjs','test/account-history/service.test.mjs','test/account-history/pruning.test.mjs','test/account-history/checkpoint.test.mjs','test/account-membership/rotation-history.test.mjs']+[str(p.relative_to(s))for p in sorted((s/'test/account-sessions').glob('*.test.mjs'))]+['test/account-service-inbound/core.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-delivery/cold-verification.test.mjs'];rows=[]
+d=r/'reference-full';shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True)
+for f in ['account-service/delivery.ts','test/account-ceremony/content-transfer.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs']:shutil.copy2(r/'before'/f,d/f)
+for label,source in [('reference25',d),('candidate26',s)]:
+ cmd=['node','--test','--test-concurrency=1',*files]
+ with(r/(label+'-affected.log')).open('w')as log:p=subprocess.run(cmd,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'label':label,'command':cmd,'cwd':str(source),'exitCode':p.returncode});(r/'affected-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(label,p.returncode,flush=True)
+fails=lambda x:sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',x,re.M)));counts=lambda x:{k:int(re.search('ℹ '+k+r' (\d+)',x).group(1))for k in ['tests','pass','fail','cancelled','skipped']};a=(r/'reference25-affected.log').read_text();b=(r/'candidate26-affected.log').read_text();out={'reference':counts(a),'candidate':counts(b),'sameFailureIdentities':fails(a)==fails(b),'referenceFailures':fails(a),'candidateFailures':fails(b),'newCases':counts(b)['tests']-counts(a)['tests']};(r/'affected-comparison.json').write_text(json.dumps(out,indent=2)+'\n');assert out['sameFailureIdentities']and out['newCases']==18,out;print('Affected comparison passes with original failures retained',flush=True)
+# Reproduce the overbroad compiler invocation separately; the affected graph passed before measurement.
+cmd=['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--module','ESNext','--moduleResolution','bundler','--lib','ES2022,DOM,DOM.Iterable','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit',*map(str,sorted((d/'account-service').glob('*.ts')))];p=subprocess.run(cmd,cwd=d,env=env,capture_output=True,text=True);(r/'types-reference-broad.log').write_text(p.stdout+p.stderr);assert p.returncode==2;assert (r/'types.log').read_text()==(r/'types-reference-broad.log').read_text();print('Same unrelated b2 RequestInit duplex compiler failure reproduced on reference',flush=True)

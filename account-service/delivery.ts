@@ -1036,8 +1036,8 @@ export async function verifyServed(
     throw cause;
   }
 }
-// The verifier identity separates this purpose from strict ordinary inbound contexts.
-const authenticatePublicationHeader = (
+// Reads and publications share only this stable mathematical header proof identity.
+const authenticateStableHeader = (
   s: WorkspaceAuthoritySnapshot,
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
 ) => verifyCurrentWorkspaceAuthority(s, issuer);
@@ -1054,7 +1054,7 @@ function publicationAuthority(
     undefined,
     workspaceAuthorityHeader(s),
     issuer,
-    authenticatePublicationHeader,
+    authenticateStableHeader,
     reuse.authority,
   );
 }
@@ -1459,9 +1459,9 @@ export async function readInbound(
         const auth = selectPublisher(
             await reuseInboundAuthority(
               authorityReuse,
-              before,
+              reuse?.authority ? workspaceAuthorityHeader(before) : before,
               issuer,
-              verifyCurrentWorkspaceAuthority,
+              reuse?.authority ? authenticateStableHeader : verifyCurrentWorkspaceAuthority,
               reuse?.authority,
             ),
             before.publisher,

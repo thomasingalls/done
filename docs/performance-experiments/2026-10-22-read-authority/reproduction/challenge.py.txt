@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,os,subprocess,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+cases=[
+ ('restore-live-read-context','account-service/delivery.ts','reuse?.authority ? workspaceAuthorityHeader(before) : before,','before,','stable read authority survives live appends'),
+ ('split-verifier-identity','account-service/delivery.ts','reuse?.authority ? authenticateStableHeader : verifyCurrentWorkspaceAuthority,','verifyCurrentWorkspaceAuthority,','stable read authority shares a single proof'),
+ ('omit-future-native-context','account-service/delivery.ts','promotion: { ...s.promotion, delivery_witness: null },','promotion: { ...s.promotion, delivery_witness: null, future_read: null },','stable read authority retains every future'),
+ ('omit-fresh-ledger-witness','account-service/delivery.ts','await verifyLedgerWitness(witness, auth, count, commitment);','/* deliberately omitted witness check */','stable read authority refuses a freshly corrupt'),
+ ('omit-fresh-custody-replay','account-service/inboundAuthorityReuse.ts','for (const check of previous.checks)','for (const check of [])','stable read authority retains fresh custody'),
+ ('omit-final-native-guard','account-service/delivery.ts','const current = unchanged(db, s, reuse);','const current = true;','stable read authority retains fresh final native'),
+ ('omit-current-grant','account-service/delivery.ts',None,None,'stable read authority still performs current transaction'),
+];rows=[]
+for name,f,a,b,pattern in cases:
+ d=r/('mutant-'+name);shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);p=d/f;t=p.read_text()
+ if name=='omit-current-grant':
+  i=t.index('export async function readInbound(');body=t[i:];start=body.index('        const completeAuthorization = issuer.authorize?.');stop=body.index('        const answer = issuer.inboundPage(',start);body=body[:start]+'        const completeAuthorization = undefined;\n'+body[stop:];t=t[:i]+body
+ else:assert t.count(a)==1,(name,t.count(a));t=t.replace(a,b)
+ p.write_text(t);cmd=['node','--test','--test-name-pattern='+pattern,'test/account-service-delivery/publisher-commit-races.test.mjs']
+ with(r/('control-'+name+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ assert v.returncode!=0,name;log=(r/('control-'+name+'.log')).read_text();assert'AssertionError'in log or'ERR_ASSERTION'in log,name;rows.append({'control':name,'detected':True,'exitCode':v.returncode,'pattern':pattern});print(name,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')

@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "wholeDeliveryAstExactAfterOnlyReadAdapterAndCommonVerifierRename": true,
+  "sameProjectionAndVerifierForReadAndPublication": true,
+  "originalNoPoolStrictVerifierAndGroupOwnership": true,
+  "projectionOmitsOnlyRowsAndTwoLiveWitnesses": true,
+  "allOtherNativeFutureFieldsAndImmutableBoundariesRetained": true,
+  "existingBoundedPoolImplementationUnchanged": true,
+  "allLiveCensusServedRequestAuthorizationCustodyExpiryAndNativeCommitGuardsExact": true,
+  "allOldTestBytesExactApartFromExplicitColdAuthorityFixture": true,
+  "liveFieldsAbsentFromNativeAuthorityProducerAndResolverReads": true
+}
