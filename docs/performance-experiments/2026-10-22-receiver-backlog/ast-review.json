@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "files": [
+    {
+      "variant": "A",
+      "file": "delivery.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "A",
+      "file": "inboundAuthorityReuse.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "A",
+      "file": "membershipLocator.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "A",
+      "file": "historyCheckpoint.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "B",
+      "file": "delivery.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "B",
+      "file": "inboundAuthorityReuse.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "B",
+      "file": "membershipLocator.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "B",
+      "file": "historyCheckpoint.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "C",
+      "file": "delivery.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "C",
+      "file": "inboundAuthorityReuse.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "C",
+      "file": "membershipLocator.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "C",
+      "file": "historyCheckpoint.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "D",
+      "file": "delivery.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "D",
+      "file": "inboundAuthorityReuse.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "D",
+      "file": "membershipLocator.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    },
+    {
+      "variant": "D",
+      "file": "historyCheckpoint.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverStatementsImportsAndAwaitWrappers": true
+    }
+  ],
+  "allUnderlyingGuardsExpressionsBranchesAndCallsExact": true
+}

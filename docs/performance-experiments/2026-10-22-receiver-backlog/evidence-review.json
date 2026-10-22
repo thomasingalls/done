@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "1-A",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "2-B",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "3-D",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "4-C",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    }
+  ]
+}

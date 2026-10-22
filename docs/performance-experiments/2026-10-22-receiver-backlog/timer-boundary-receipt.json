@@ -1,0 +1,14 @@
+{
+  "status": "diagnostic timer resolution qualified, raw outcomes retained",
+  "originalExactPredicateFailure": "1-A loadStoppedAt-startedAt=89999ms vs intended90000ms",
+  "actualDurationsMs": [
+    89999,
+    90001,
+    90000,
+    90000
+  ],
+  "analysisLowerBoundaryMs": 89999,
+  "reason": "integer host time and timer dispatch resolution; no data normalized and no request/performance/continuation or600s acceptance gate changed",
+  "noJourneySubstitution": true,
+  "originalStrictAnalysisAndFailurePreserved": true
+}

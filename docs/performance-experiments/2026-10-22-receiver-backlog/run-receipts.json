@@ -1,0 +1,58 @@
+[
+  {
+    "name": "1-A",
+    "variant": "A",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792696612529,
+    "completedAt": 1792696742316,
+    "exitCode": 0
+  },
+  {
+    "name": "2-B",
+    "variant": "B",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792696742399,
+    "completedAt": 1792696870347,
+    "exitCode": 0
+  },
+  {
+    "name": "3-D",
+    "variant": "D",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792696870428,
+    "completedAt": 1792696998822,
+    "exitCode": 0
+  },
+  {
+    "name": "4-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792696998904,
+    "completedAt": 1792697129346,
+    "exitCode": 0
+  }
+]

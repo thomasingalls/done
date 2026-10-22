@@ -1,0 +1,31 @@
+from pathlib import Path
+import json,math,sys,hashlib
+r=Path(__file__).parent;analysis=json.loads((r/'analysis.json').read_text());rows=[]
+for report in analysis['runs']:
+ name=report['name'];x=json.loads(Path(sys.argv[2]).read_text())if len(sys.argv)>2 and name==sys.argv[1]else json.loads((r/name/'result.json').read_text());assert len(x['offers'])==120;assert [o['index']for o in x['offers']]==list(range(120));assert x['outcome']=='passed';start=x['startedAt'];end=x['foregroundObservedAt'];assert x['loadStoppedAt']>=start+89999 and x['backgroundReplayPassed']is None and x['backgroundReplayCensored'];timings=[]
+ for p in x['probesAtDeadline']:
+  baseline=[v['length']for v in p['lengths']if v['at']<=start][-1];vals=[]
+  for i,o in enumerate(x['offers']):
+   at=[v['at']for v in p['lengths']if v['at']>=o['at']-5 and v['length']>=baseline+i+1];vals.append(at[0]-o['at']if at else None)
+  timings.append(vals)
+ for j,field in enumerate(['localMs','peerMs']):assert timings[j]==[v[field]for v in report['inputs']['keys']],(name,field)
+ events=[e for e in x['probesAtDeadline'][0]['events']if e['kind']=='beforeinput'and start<=e['at']<=x['typingFinishedAt']];assert len(events)==120 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in events)
+ for j,field in enumerate(['local','peer']):
+  vals=[v for v in timings[j]if v is not None];assert report['inputs'][field]['complete']==(len(vals)==120);assert report['inputs'][field]['missing']==120-len(vals);assert report['inputs'][field]['observed']['n']==len(vals)
+  if vals:assert report['inputs'][field]['observed']['p95']==sorted(vals)[math.ceil(.95*len(vals))-1]
+ # A second, timestamp-grid formulation independently checks the progress integral.
+ sender=x['probesAtDeadline'][0]['progress'];peer=x['probesAtDeadline'][1]['progress'];baseS=[v['accepted']for v in sender if v['at']<=start][-1];baseP=[v['received']for v in peer if v['at']<=start][-1];grid=sorted({start,end,*[v['at']for v in sender+peer if start<v['at']<=end]});pending=[];area=0
+ for i,t in enumerate(grid):
+  a=[v['accepted']for v in sender if v['at']<=t][-1]-baseS;b=[v['received']for v in peer if v['at']<=t][-1]-baseP;pending.append(a-b)
+  if i+1<len(grid):area+=(a-b)*(grid[i+1]-t)
+ backlog=report['backlog'];assert backlog['baselineAccepted']==baseS and backlog['baselineReceived']==baseP;assert backlog['maxPendingDelta']==max(pending);assert backlog['minPendingDelta']==min(pending);assert backlog['pendingAtEnd']==pending[-1];assert abs(backlog['backlogAreaPositionMs']-area)<.001
+ requests=[v for v in x['network']if v['label']=='Q0'and v['phase']=='measured'and v['path']=='/account/delivery/submit'];cad=report['cadence'];assert cad['requests']==len(requests);assert cad['uniqueBodies']==len({v['bodySha256']for v in requests});assert cad['repeatedBodyAttempts']==len(requests)-cad['uniqueBodies'];lat=sorted(v['headersAt']-v['at']for v in requests if'headersAt'in v);assert cad['observedLatencyMs']['n']==len(lat)
+ if lat:assert cad['observedLatencyMs']['p95']==lat[math.ceil(.95*len(lat))-1]
+ assert all(x['guards'].values());assert x['offlineColdWriterReopen']['sameProfile']and x['offlineColdWriterReopen']['noStorageStateReinjection'];assert x['pendingBeforeClose']['archive']==x['offlineColdWriterReopen']['archive'];assert x['offlineColdWriterReopen']['retainedDeliveryByteExact'];assert any(v['records']>0 for v in x['pendingBeforeClose']['retainedDelivery'])
+ for before in x['pendingBeforeClose']['retainedDelivery']:
+  after=next(v for v in x['offlineColdWriterReopen']['retainedDelivery']if v['store']==before['store']);assert len(before['entries'])==len(set(before['entries']))==before['records'];assert len(after['entries'])==len(set(after['entries']))==after['records'];assert set(before['entries']).issubset(after['entries'])
+ assert x['automaticOriginalWritingRecovered']and x['originalWholeExportEquality']and x['automaticPendingConverged'];assert 0<=x['originalRecoveredAt']-x['loadStoppedAt']<=120000;assert 0<=x['pendingConvergedAt']-x['pendingReconnectAt']<=120000
+ identity=json.loads((r/name/'container-identity.json').read_text());assert identity['Image']==json.loads((r/'measurement-identity.json').read_text())['image'];mount=next(v for v in identity['Mounts']if v['Destination']=='/app/account-service');assert mount['Source']==str(r/'variants'/report['variant']/'account-service')and mount['RW']is False;assert len({v['pid']for v in x['roots']})==4
+ h=identity['HostConfig'];assert(h['NanoCpus'],h['Memory'],h['MemorySwap'],h['PidsLimit'],h['ReadonlyRootfs'])==(1000000000,1073741824,1073741824,128,True);assert x.get('resourceStop')is None and x['metrics']['rssSampledPeak']<1073741824;assert all(v['dropped']==0 for part in x['traces']for v in part['events']if v['tag']=='observer-counts')
+ rows.append({'name':name,'timingsAndMissingnessIndependentlyReconstructed':True,'displayedProgressGridAndIntegralIndependentlyChecked':True,'exactSubmissionIdentityCensus':True,'coldDurabilityAndNativeResourceGuards':True,'no600sAcceptanceClaim':True})
+if len(sys.argv)==1:(r/'evidence-review.json').write_text(json.dumps({'status':'passed','runs':rows},indent=2)+'\n');print(json.dumps(rows))

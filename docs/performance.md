@@ -2255,3 +2255,19 @@ Fixed prospective A,B,D,C,C,D,B,A; two whole journeys per condition, original110
 |Both (23)|36.63/31.30|116/120|66/63|
 
 All complete-peer p95s miss2500ms; local p95 remains below16ms. Publication request p95 is122–207ms with reuse versus1409–1989ms without it. Repeated exact-body submission attempts are zero; the added requests are distinct bodies. Background replay is censored at fixed90s and cannot establish600s acceptance. All original foreground delivery/continuation/native/data/cold-pending/whole-export/reverse/UndoRedo/isolation checks pass. The displayed backlog is baseline-normalized status-notification evidence, not a certified ledger. Eight finite dependent journeys, no p-values or population/capacity/WAN inference. Source/runtime/client/security/rate/retry bytes unchanged; diagnostic analyzer adds17 regression cases and one blocked obligation (883/339). Candidate23 stays held.
+
+
+### 2026-10-22 — phase25 proof reuse, cadence and receive backlog trace
+
+Four fixed instrumented A,B,D,C journeys, original110 client files and same diagnostic90s competition. Native spans are overlapping wall wait, not exclusive CPU. [Full packet](./performance-experiments/2026-10-22-receiver-backlog/README.md).
+
+|Condition|Q1 read cache misses|Repeated read-authority signatures|Read authority wait, s|Discovery/history authority wait, s|Distinct submissions|Wait before request p95, s|
+|---|---:|---:|---:|---:|---:|---:|
+|A|79|6083|41.17|10.84|77|2.26|
+|B|70|5390|36.87|18.42|71|5.25|
+|D|68|5236|36.16|20.24|120|30.42|
+|C|74|5698|38.16|13.90|120|29.56|
+
+For combined-D, complete native-matched120-position reply-to-display p95 is31.07s and reply-to-first-request p95 is30.42s. Returned-body-to-display p95 is38.9ms on87/120 observed position bodies only; C is44.3ms on98/120. All raw missingness, negative clock differences and byte-level proof matches remain. Writer-D authority has119hits/1miss, only77 authority signatures total; ordinary receiving still repeats77 per miss. Receiver-D read-census+served sums3.48s plus history/discovery census0.27s, compared56.40s read+prelude authority wall. This is finite diagnostic attribution, not a speedup acceptance or causal mediation proof. Publication does not raise absolute miss count; the same costly receive path falls behind the faster submission cadence.
+
+All foreground/local/continuation/native/cold/export/reverse/UndoRedo/isolation guards pass; background replay is censored, all peer p95s still miss2500ms.13 independent evidence/native/guard controls and10 frame cases pass. Browser body omissions coincide with requestfailed observations; exact retrieval cause is unrecorded, and no timing was invented. One intended90000ms diagnostic load duration is89999ms; raw1ms resolution and original strict-check failure are preserved without changing request/performance/continuation/600s limits. No runtime, old-test, qualification883/339 or publication changes.

@@ -1,0 +1,2 @@
+import {writeFileSync} from 'node:fs';
+export async function preserveResult(path,result,cleanup){try{await cleanup();}catch(cause){result.cleanupError=String(cause);throw cause;}finally{writeFileSync(path,JSON.stringify(result,null,2)+'\n');}}

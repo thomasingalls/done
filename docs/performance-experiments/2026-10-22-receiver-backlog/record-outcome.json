@@ -1,0 +1,14 @@
+{
+  "status": "bounded diagnostic trace complete, candidate23 held",
+  "appendOrder": [
+    "completed.md",
+    "decisions.md",
+    "performance.md"
+  ],
+  "journeys": 4,
+  "newFrameRegressionsInPacket": 10,
+  "independentControls": 13,
+  "actualRuntimeAndOldTestsUnchanged": true,
+  "qualification": "883/339 byte-exact, paused",
+  "noPromotionOrPublication": true
+}

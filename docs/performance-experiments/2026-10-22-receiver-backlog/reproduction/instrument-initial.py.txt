@@ -1,0 +1,43 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;changes=[];sha=lambda x:hashlib.sha256(x).hexdigest();prefix="import { observe, sha, span } from '/experiment/observer.mjs';\n"
+def edit(label,file,old,new,count=1,scope=None):
+ p=r/'variants'/label/'account-service'/file;before=p.read_text();text=before
+ if scope:
+  a=text.index(scope[0]);b=text.index(scope[1],a)if scope[1]else len(text);body=text[a:b];assert body.count(old)==count,(label,file,old,body.count(old));text=text[:a]+body.replace(old,new)+text[b:]
+ else:assert text.count(old)==count,(label,file,old,text.count(old));text=text.replace(old,new)
+ p.write_text(text);changes.append({'variant':label,'file':file,'beforeSha256':sha(before.encode()),'afterSha256':sha(text.encode()),'old':old,'new':new,'count':count})
+for label in 'ABCD':
+ submit=('export async function decideSubmission(','export interface ReadIssuer')
+ inbound=('export async function readInbound(',None)
+ call='publicationAuthority(s, issuer, reuse)'if label in 'CD'else'verifyCurrentWorkspaceAuthority(s, issuer)'
+ edit(label,'delivery.ts','await '+call,"await span('submit-authority',()=>"+call+')',scope=submit)
+ for old,new in [('await verifiedCensus(s, auth, reuse)',"await span('submit-census',()=>verifiedCensus(s, auth, reuse))"),('await verifyWire(bytes, auth)',"await span('submit-wire',()=>verifyWire(bytes, auth))"),('releaseCold = await pending;',"releaseCold = await span('submit-cold-wait',()=>pending);")]:edit(label,'delivery.ts',old,new,scope=submit)
+ edit(label,'delivery.ts',"        phase = 'commit';","        observe('submit-verified');\n        phase = 'commit';",scope=submit)
+ edit(label,'delivery.ts',"        phase = 'storage';","        observe('read-attempt',{retry,after:request.after,publisherSha:sha(request.publisher)});\n        phase = 'storage';",scope=inbound)
+ edit(label,'delivery.ts','await reuseInboundAuthority(',"await span('inbound-authority',()=>reuseInboundAuthority(",scope=inbound)
+ edit(label,'delivery.ts','              reuse?.authority,\n            ),','              reuse?.authority,\n            )),',scope=inbound)
+ for old,new in [('await verifiedCensus(s, auth, reuse)',"await span('inbound-census',()=>verifiedCensus(s, auth, reuse))"),('await verifyServed(s, auth, request.after, reuse)',"await span('inbound-served',()=>verifyServed(s, auth, request.after, reuse))")]:edit(label,'delivery.ts',old,new,scope=inbound)
+ edit(label,'delivery.ts',"        if (request.after > ledger.through)","        observe('read-prefix',{after:request.after,through:ledger.through,publisherSha:sha(request.publisher)});\n        if (request.after > ledger.through)",scope=inbound)
+ edit(label,'inboundAuthorityReuse.ts','    const previous = cache ? cached?.entry : state.entry;','''    const previous = cache ? cached?.entry : state.entry;
+    observe('authority-cache',{hit:Boolean(previous?.context.equals(captured)&&previous.verify===verify),verifier:verify.name,contextSha256:key,contextBytes:captured.byteLength,liveWitnessSha256:sha(String(snapshot.promotion.delivery_witness)),publisherWitnessSha256:sha(String('publisherWitness'in snapshot?snapshot.publisherWitness:null))});''')
+ # Both forms retain their original normal proof owner, with only wall/crypto labels added.
+ for file,scope,startvar,firstarg,tag in [('membershipLocator.ts',('export async function discoverMembership(','\n}'),'const { authority, history }','before','discovery-authority-history'),('historyCheckpoint.ts',None,'const { authority: auth, history }','before.original','history-authority-history')]:
+  if label in 'BD':
+   old=startvar+' = await verifyCurrentWorkspaceAuthorityWithHistory(\n        '+firstarg+',\n        issuer,\n      );';new=startvar+" = await span('"+tag+"',()=>verifyCurrentWorkspaceAuthorityWithHistory(\n        "+firstarg+',\n        issuer,\n      ));';edit(label,file,old,new,scope=scope)
+  else:
+   tag=tag.removesuffix('-history');old='await verifyCurrentWorkspaceAuthority('+firstarg+', issuer)';edit(label,file,old,"await span('"+tag+"',()=>verifyCurrentWorkspaceAuthority("+firstarg+', issuer))',scope=scope)
+ if label in 'AC':edit(label,'membershipLocator.ts','await verifyMembershipChain(membershipProofChain(before), base)',"await span('discovery-second-chain',()=>verifyMembershipChain(membershipProofChain(before), base))",scope=('export async function discoverMembership(','\n}'))
+ for old,new in [('await verifiedCensus(before, auth, reuse)',"await span('discovery-census',()=>verifiedCensus(before, auth, reuse))"),('await issuer.discovery(body)',"await span('discovery-sign',()=>issuer.discovery(body))")]:edit(label,'membershipLocator.ts',old,new,scope=('export async function discoverMembership(','\n}'))
+ edit(label,'historyCheckpoint.ts','await verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse)',"await span('history-census',()=>verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse))")
+ for file in ['delivery.ts','inboundAuthorityReuse.ts','membershipLocator.ts','historyCheckpoint.ts']:
+  p=r/'variants'/label/'account-service'/file;old=p.read_text();p.write_text(prefix+old);changes.append({'variant':label,'file':file,'beforeSha256':sha(old.encode()),'afterSha256':sha(p.read_bytes()),'old':'','new':prefix,'count':1,'prefix':True})
+(r/'transforms.json').write_text(json.dumps(changes,indent=2)+'\n')
+state={(v['variant'],v['file']):(r/'variants'/v['variant']/'account-service'/v['file']).read_text()for v in changes}
+for v in reversed(changes):
+ k=(v['variant'],v['file']);t=state[k];assert sha(t.encode())==v['afterSha256']
+ if v.get('prefix'):assert t.startswith(v['new']);t=t[len(v['new']):]
+ else:assert t.count(v['new'])==v['count'];t=t.replace(v['new'],v['old'])
+ assert sha(t.encode())==v['beforeSha256'];state[k]=t
+prior=Path('/private/tmp/done-phase-isolation-20261022');assert all(t==(prior/'variants'/label/'account-service'/f).read_text()for(label,f),t in state.items())
+(r/'source-review.json').write_text(json.dumps({'status':'passed','transformCount':len(changes),'nativeVariantFiles':len(state),'allTransformsReverseToExact24NativeVariants':True,'noClientOrProtocolChanges':True,'noGuardsBranchesClocksCacheContextsOrResultsChanged':True,'spansAreOverlappingObservationalWallTimeOnly':True},indent=2)+'\n');print('All',len(changes),'observational transforms reverse to exact native variant inputs')
