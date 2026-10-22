@@ -1,0 +1,12 @@
+{
+  "runtimeSources": 296,
+  "parseErrors": 0,
+  "findings": 22,
+  "authorityCalls": 98,
+  "authorityCallsDispositionedExactlyOnce": 98,
+  "siteNeedlesLinesAndHashesVerified": true,
+  "sourceHashesVerified": true,
+  "S02DiscoveryOwnerLine": 152,
+  "newTestsOrBenchmarks": 0,
+  "sourceWrites": 0
+}

@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,hashlib,subprocess,os
+r=Path(__file__).parent;s=r/'source';sha=lambda b:hashlib.sha256(b).hexdigest();base=json.loads((r/'starting.json').read_text());tr=json.loads((r/'transforms.json').read_text());state={f:(s/f).read_text()for f in {x['file']for x in tr}}
+for x in reversed(tr):
+ t=state[x['file']];assert sha(t.encode())==x['afterSha256'];assert t.startswith(x['prefix']);t=t[len(x['prefix']):]
+ # Independently restrict reversible replacements to observational wrappers/labels.
+ for a,b,n in reversed(x['replacements']):
+  assert ('observe('in b or 'span('in b or 'pace('in b or "}));"in b or '));' in b or 'tracedHistory' in b or 'const tracedHistory' in b),(x['file'],a,b)
+  if x['scope']:
+   i=t.index(x['scope'][0]);j=t.index(x['scope'][1],i);body=t[i:j];assert body.count(b)==n,(x['file'],b);t=t[:i]+body.replace(b,a)+t[j:]
+  else:assert t.count(b)==n,(x['file'],b);t=t.replace(b,a)
+ assert sha(t.encode())==x['beforeSha256'];state[x['file']]=t
+for f,h in base['runtimeFiles'].items():assert sha(state[f].encode()if f in state else(s/f).read_bytes())==h,f
+idx=Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index');assert sha(idx.read_bytes())==base['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd='/Users/thomasingalls/.codex/worktrees/7fda/done',env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'})==b''
+out={'status':'passed','instrumentedRuntimeFiles':sorted(state),'allOtherRuntimeFilesExact':True,'reversedEveryScopedTransformationToBase20':True,'noTrackedRuntimeOrTestChanges':True,'realIndexUnchanged':True,'diagnosticObserverOverhead':'await wrappers and crypto counters; async wall spans/process CPU deltas can overlap, not exclusive CPU attribution'};(r/'source-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

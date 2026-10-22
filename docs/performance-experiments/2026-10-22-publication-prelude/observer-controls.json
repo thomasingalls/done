@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "originalTrueAndFalseCryptoPreserved": true,
+  "sameReturnAndExceptionObjects": true,
+  "spanPairingAndCryptoCountsExact": true,
+  "contextlessCryptoEmitsNoEvents": true,
+  "boundedOverflowReported": true,
+  "noProductRegressionClaim": true
+}

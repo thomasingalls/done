@@ -1,0 +1,7 @@
+{
+  "state": "failed before app startup and browser restoration, no measured journey",
+  "cause": "wrapper imported dropped; observer did not export it",
+  "repair": "export existing bounded drop counter, no runtime/test change",
+  "retained": "startup-failed-observer-export",
+  "fixedPlan": "same two predetermined journeys, no completed measurement replaced"
+}

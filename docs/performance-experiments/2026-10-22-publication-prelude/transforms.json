@@ -1,0 +1,453 @@
+[
+  {
+    "file": "account-service/publisherTips.ts",
+    "beforeSha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d",
+    "afterSha256": "e21282bbdcc074bb4f768d191c716b3b12dec92d5f67718323887ea6010d7d16",
+    "prefix": "import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n",
+    "scope": null,
+    "replacements": [
+      [
+        "      if (!c) return false;",
+        "      if (!c) { observe('guard-refused',{predicate:'capture-missing'}); return false; }",
+        1
+      ],
+      [
+        "      if (c.purpose !== purpose) return false;",
+        "      if (c.purpose !== purpose) { observe('guard-refused',{predicate:'purpose'}); return false; }",
+        1
+      ],
+      [
+        "      )\n        return false;\n      const current = snapshot",
+        "      ) { observe('guard-refused',{predicate:'owner-fence',revisionChanged:c.revision!==revision,versionChanged:c.version!==version,ownerChanged:owners.get(c.key)!==c.owner,commitChanged:c.commit!==c.owner.commit,publisherSha256:sha(s.publisher??'')}); return false; }\n      const current = snapshot",
+        1
+      ],
+      [
+        "      if (!current) return false;",
+        "      if (!current) { observe('guard-refused',{predicate:'snapshot-missing'}); return false; }",
+        1
+      ],
+      [
+        "      if (!same) invalidatePublisher(c.key);",
+        "      if (!same) { observe('guard-refused',{predicate:'fingerprint',publisherSha256:sha(s.publisher??''),changedFields:Object.keys(s).filter(k=>JSON.stringify(s[k])!==JSON.stringify(current[k])),promotionChangedFields:Object.keys(s.promotion).filter(k=>JSON.stringify(s.promotion[k])!==JSON.stringify(current.promotion[k]))}); invalidatePublisher(c.key); }",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/inboundAuthorityReuse.ts",
+    "beforeSha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe",
+    "afterSha256": "e661964bceb605487e2888c3ea274210da1b3cb6d234fc9395e1ad5a16c5ef9e",
+    "prefix": "import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n",
+    "scope": null,
+    "replacements": [
+      [
+        "    if (previous?.context.equals(captured) && previous.verify === verify) {",
+        "    if (previous?.context.equals(captured) && previous.verify === verify) { observe('authority-hit');",
+        1
+      ],
+      [
+        "    const checks: Check[] = [];",
+        "    observe('authority-miss');\n    const checks: Check[] = [];",
+        1
+      ],
+      [
+        "    current();\n    if (captured.byteLength",
+        "    observe('authority-verified');\n    current();\n    if (captured.byteLength",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/crdt/accountSyncDriver.ts",
+    "beforeSha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed",
+    "afterSha256": "57df2121541e97a5bc341a6c7069e889d06032e4ec1f18b2d3bb6a32a91d6146",
+    "prefix": "const pace=(tag:string,data:Record<string,unknown>={})=>{(globalThis as any).__readPacing?.(tag,data);};\n",
+    "scope": null,
+    "replacements": [
+      [
+        "        const result =\n          name === 'receive'",
+        "        pace('lane-begin',{name,failures:lane.failures,position:lane.position});\n        const result =\n          name === 'receive'",
+        1
+      ],
+      [
+        "        if (stopped) return;\n        const position",
+        "        pace('lane-result',{name,kind:result.kind,position:'acceptedThrough' in result?result.acceptedThrough:result.receivedThrough});\n        if (stopped) return;\n        const position",
+        1
+      ],
+      [
+        "        ready();\n      })",
+        "        pace('lane-scheduled',{name,due:lane.due??null,failures:lane.failures,dirty:lane.dirty});\n        ready();\n      })",
+        1
+      ],
+      [
+        "        if (!stopped) {\n          if (options.gate()",
+        "        pace('lane-threw',{name});\n        if (!stopped) {\n          if (options.gate()",
+        1
+      ],
+      [
+        "        active = undefined;\n        work = undefined;",
+        "        pace('lane-finished',{name});\n        active = undefined;\n        work = undefined;",
+        1
+      ],
+      [
+        "    if (stopped) return;\n    if (options.gate() === 'offline')",
+        "    pace('wake',{cause,target:target??null,active:active??null,sendDue:lanes.send.due??null,receiveDue:lanes.receive.due??null,sendFailures:lanes.send.failures,receiveFailures:lanes.receive.failures});\n    if (stopped) return;\n    if (options.gate() === 'offline')",
+        1
+      ],
+      [
+        "  let status = await ops.deliveryStatus();",
+        "  pace('send-status-start');\n  let status = await ops.deliveryStatus();\n  pace('send-status-end',{accepted:status.acceptedThrough});",
+        1
+      ],
+      [
+        "      const prepared = await ops.prepareNextEnvelope();",
+        "      pace('send-envelope-start',{position});\n      const prepared = await ops.prepareNextEnvelope();\n      pace('send-envelope-end',{position,prepared:!!prepared});",
+        1
+      ],
+      [
+        "    const submission = await ops.prepareSubmission(position);",
+        "    pace('send-submission-start',{position});\n    const submission = await ops.prepareSubmission(position);\n    pace('send-submission-end',{position,kind:submission.kind});",
+        1
+      ],
+      [
+        "  await ops.submitPending(token);",
+        "  pace('send-submit-start',{position});\n  await ops.submitPending(token);\n  pace('send-submit-end',{position});",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/crdt/accountReceive.ts",
+    "beforeSha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc",
+    "afterSha256": "367ef44bdc0eb23bd4052365248c29beef96b4bc64371b5c79282e87e04efe18",
+    "prefix": "const pace=(tag:string,data:Record<string,unknown>={})=>{(globalThis as any).__readPacing?.(tag,data);};\n",
+    "scope": null,
+    "replacements": [
+      [
+        "          const authority = await refreshAuthority(operatorToken ?? '');",
+        "          pace('receive-discovery-start');\n          const authority = await refreshAuthority(operatorToken ?? '');\n          pace('receive-discovery-end',{kind:authority.kind});",
+        1
+      ],
+      [
+        "            if (await receiveHistory()) {",
+        "            pace('receive-history-start');\n            const tracedHistory=await receiveHistory();\n            pace('receive-history-end',{installed:tracedHistory});\n            if (tracedHistory) {",
+        1
+      ],
+      [
+        "            const step = await driveReceiveStep(result, operatorToken ?? '', gate);",
+        "            pace('receive-step-start');\n            const step = await driveReceiveStep(result, operatorToken ?? '', gate);\n            pace('receive-step-end',{kind:step.kind,position:step.receivedThrough});",
+        1
+      ],
+      [
+        "        requests = await prepareGroup();",
+        "        pace('receive-prepare-start');\n        requests = await prepareGroup();\n        pace('receive-prepare-end',{requests:requests.length});",
+        1
+      ],
+      [
+        "          pages = collected.pages;",
+        "          pace('receive-network-end',{pages:collected.pages.length,attempted:collected.attempted});\n          pages = collected.pages;",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/delivery.ts",
+    "beforeSha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d",
+    "afterSha256": "e2a79e5ee037cf90531afe5cc5c6e46e0bb29a7bcb7cce30f355231b05e5571a",
+    "prefix": "",
+    "scope": [
+      "export async function decideSubmission(",
+      "export interface ReadIssuer"
+    ],
+    "replacements": [
+      [
+        "await verifyCurrentWorkspaceAuthority(s, issuer)",
+        "await span('submit-authority',()=>verifyCurrentWorkspaceAuthority(s, issuer))",
+        1
+      ],
+      [
+        "s = read(db, workspace, publisher, reuse, {",
+        "observe('submit-attempt',{retry});\n        s = syncSpan('submit-capture',()=>read(db, workspace, publisher, reuse, {",
+        1
+      ],
+      [
+        "position: decodeNetworkEnvelope(decodeSubmission(bytes).envelope).seq,\n        });",
+        "position: decodeNetworkEnvelope(decodeSubmission(bytes).envelope).seq,\n        }));",
+        1
+      ],
+      [
+        "releaseCold = await pending;",
+        "releaseCold = await span('submit-cold-wait',()=>pending);",
+        1
+      ],
+      [
+        "await verifiedCensus(s, auth, reuse)",
+        "await span('submit-census',()=>verifiedCensus(s, auth, reuse))",
+        1
+      ],
+      [
+        "await verifyWire(bytes, auth)",
+        "await span('submit-wire',()=>verifyWire(bytes, auth))",
+        1
+      ],
+      [
+        "        phase = 'commit';\n        hook('after-verify'",
+        "        observe('submit-verified');\n        phase = 'commit';\n        observe('submit-commit-start');\n        hook('after-verify'",
+        1
+      ],
+      [
+        "        return result;",
+        "        observe('submit-commit-end',{kind:result.kind});\n        return result;",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/delivery.ts",
+    "beforeSha256": "e2a79e5ee037cf90531afe5cc5c6e46e0bb29a7bcb7cce30f355231b05e5571a",
+    "afterSha256": "ce50d436b4e55a012828ddad7a17ee4a48d3d9bfb2732fd340f765b6bc4c586c",
+    "prefix": "",
+    "scope": [
+      "export async function readAccepted(",
+      "export async function readInbound("
+    ],
+    "replacements": [
+      [
+        "await verifyCurrentWorkspaceAuthority(s, issuer)",
+        "await span('readback-authority',()=>verifyCurrentWorkspaceAuthority(s, issuer))",
+        1
+      ],
+      [
+        "await verifiedCensus(s, auth, reuse)",
+        "await span('readback-census',()=>verifiedCensus(s, auth, reuse))",
+        1
+      ],
+      [
+        "await verifyServed(s, auth, request.after, reuse)",
+        "await span('readback-served',()=>verifyServed(s, auth, request.after, reuse))",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/delivery.ts",
+    "beforeSha256": "ce50d436b4e55a012828ddad7a17ee4a48d3d9bfb2732fd340f765b6bc4c586c",
+    "afterSha256": "11386e6a0f574fddbc688f5595e11096b3488d92174108062667d98611e0d37d",
+    "prefix": "import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n",
+    "replacements": [],
+    "scope": null
+  },
+  {
+    "file": "account-service/membershipLocator.ts",
+    "beforeSha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361",
+    "afterSha256": "bcb4779bc2ea666f7bf4fcf377ad211dc7b02c0a54c3c2aaef41c0d8733e112e",
+    "prefix": "import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n",
+    "scope": [
+      "export async function discoverMembership(",
+      "\n}"
+    ],
+    "replacements": [
+      [
+        "await verifyCurrentWorkspaceAuthority(before, issuer)",
+        "await span('discovery-authority',()=>verifyCurrentWorkspaceAuthority(before, issuer))",
+        1
+      ],
+      [
+        "await verifyMembershipChain(membershipProofChain(before), base)",
+        "await span('discovery-second-chain',()=>verifyMembershipChain(membershipProofChain(before), base))",
+        1
+      ],
+      [
+        "await verifyMembershipDiscoveryRequest(request, issuer.pin, history, now())",
+        "await span('discovery-request',()=>verifyMembershipDiscoveryRequest(request, issuer.pin, history, now()))",
+        1
+      ],
+      [
+        "await verifiedCensus(before, auth, reuse)",
+        "await span('discovery-census',()=>verifiedCensus(before, auth, reuse))",
+        1
+      ],
+      [
+        "await issuer.discovery(body)",
+        "await span('discovery-sign',()=>issuer.discovery(body))",
+        1
+      ],
+      [
+        "      db.exec('BEGIN');",
+        "      observe('discovery-response-verified');\n      db.exec('BEGIN');",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/historyCheckpoint.ts",
+    "beforeSha256": "23d6c5d55f6405d6ff2508b1da04f5919cc5188965418d8356dc51d78020b668",
+    "afterSha256": "01deece631e09276966f5937923b7b9a12a2b0f830e1d4643a0d38b71e61b992",
+    "prefix": "import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n",
+    "scope": null,
+    "replacements": [
+      [
+        "await verifyCurrentWorkspaceAuthority(before.original, issuer)",
+        "await span('history-authority',()=>verifyCurrentWorkspaceAuthority(before.original, issuer))",
+        1
+      ],
+      [
+        "await memberships(before.original, auth, issuer.pin)",
+        "await span('history-timeline',()=>memberships(before.original, auth, issuer.pin))",
+        1
+      ],
+      [
+        "await verifyHistoryExchange(r, membership, now())",
+        "await span('history-request',()=>verifyHistoryExchange(r, membership, now()))",
+        1
+      ],
+      [
+        "await verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse)",
+        "await span('history-census',()=>verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse))",
+        1
+      ],
+      [
+        "      const signedCatalog = changed ?",
+        "      observe('history-cuts-complete');\n      const signedCatalog = changed ?",
+        1
+      ],
+      [
+        "      hook('after-verify', 'history-checkpoint');",
+        "      observe('history-response-signed');\n      hook('after-verify', 'history-checkpoint');",
+        1
+      ],
+      [
+        "      return { ok: true as const, page };",
+        "      observe('history-commit-complete');\n      return { ok: true as const, page };",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/membershipHistory.ts",
+    "beforeSha256": "41b8158d6269cc0bace7ac921f3dd7bfcc088c5f40693f76ebd5521925bee5be",
+    "afterSha256": "5ff76d513f00adfa2be9a6e69505b72e9404a5b0022688a5974ab901adcd6f2e",
+    "prefix": "import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n",
+    "scope": null,
+    "replacements": [
+      [
+        "const anchor = await verifyWorkspaceAuthority(",
+        "const anchor = await span('authority-anchor',()=>verifyWorkspaceAuthority(",
+        1
+      ],
+      [
+        "    issuer,\n  );",
+        "    issuer,\n  ));",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/crdt/accountReceive.ts",
+    "beforeSha256": "367ef44bdc0eb23bd4052365248c29beef96b4bc64371b5c79282e87e04efe18",
+    "afterSha256": "615b45eb5ea843f81321fe82ea352045ae1867a50a6473662b987098551c5ffd",
+    "prefix": "",
+    "scope": [
+      "  const refreshAuthority = (token:",
+      "      const prepared = await runCaptureTask(async (task) => {\n        await assertCurrent(task);\n        const { marker }"
+    ],
+    "replacements": [
+      [
+        "        const prepared = await runCaptureTask(async (task) => {",
+        "        pace('discovery-prepare-start');\n        const prepared = await runCaptureTask(async (task) => {",
+        1
+      ],
+      [
+        "        if (!canReceive()) return { kind: 'paused' as const };\n        const response",
+        "        pace('discovery-prepare-end');\n        if (!canReceive()) return { kind: 'paused' as const };\n        pace('discovery-http-start');\n        const response",
+        1
+      ],
+      [
+        "        if (!response) {",
+        "        pace('discovery-http-end',{response:!!response});\n        if (!response) {",
+        1
+      ],
+      [
+        "          const answer = await network.wait(() =>",
+        "          pace('discovery-proof-start');\n          const answer = await network.wait(() =>",
+        1
+      ],
+      [
+        "          const result = await installMembership(",
+        "          pace('discovery-proof-end');\n          pace('discovery-install-start');\n          const result = await installMembership(",
+        1
+      ],
+      [
+        "          discoveryDue = revision === discoveryRevision",
+        "          pace('discovery-install-end');\n          discoveryDue = revision === discoveryRevision",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/crdt/accountReceive.ts",
+    "beforeSha256": "615b45eb5ea843f81321fe82ea352045ae1867a50a6473662b987098551c5ffd",
+    "afterSha256": "5111333e512e1662e8c7ad75d03a4dabe270d92338626407b9bbf7bc9627e116",
+    "prefix": "",
+    "scope": [
+      "  const fetchHistory = () =>",
+      "  const installHistory = ("
+    ],
+    "replacements": [
+      [
+        "      const prepared = await runCaptureTask(async (task, owner, route) => {",
+        "      pace('history-prepare-start');\n      const prepared = await runCaptureTask(async (task, owner, route) => {",
+        1
+      ],
+      [
+        "      if (!prepared) return null;",
+        "      pace('history-prepare-end',{prepared:!!prepared});\n      if (!prepared) return null;",
+        1
+      ],
+      [
+        "      const catalog = (",
+        "      pace('history-catalog-start');\n      const catalog = (",
+        1
+      ],
+      [
+        "      stamp.check();\n      historyDue",
+        "      pace('history-catalog-end');\n      stamp.check();\n      historyDue",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/account/historyHttp.ts",
+    "beforeSha256": "db4511ce5bc9a1fc4baf6706d40727ac58baba1f7e57cafe9fa9ae8c9f0cd358",
+    "afterSha256": "97b845a071d4596ecda871249513508ebf443865208aa4532cf626aed967ea6b",
+    "prefix": "const pace=(tag:string,data:Record<string,unknown>={})=>{(globalThis as any).__readPacing?.(tag,data);};\n",
+    "scope": null,
+    "replacements": [
+      [
+        "    await verifyHistoryExchange(request, authority, Date.now());",
+        "    pace('history-transport-request-start');\n    await verifyHistoryExchange(request, authority, Date.now());\n    pace('history-transport-request-end');",
+        1
+      ],
+      [
+        "    const response = await send('/account/history/v1/checkpoint'",
+        "    pace('history-http-start');\n    const response = await send('/account/history/v1/checkpoint'",
+        1
+      ],
+      [
+        "    const limit = HISTORY_PAGE_LIMIT + 64;",
+        "    pace('history-http-headers',{status:response.status});\n    const limit = HISTORY_PAGE_LIMIT + 64;",
+        1
+      ],
+      [
+        "      const page = await verifyHistoryCheckpointPage(",
+        "      pace('history-body-end',{bytes:length});\n      pace('history-response-proof-start');\n      const page = await verifyHistoryCheckpointPage(",
+        1
+      ],
+      [
+        "      live();\n      return page;",
+        "      pace('history-response-proof-end');\n      live();\n      return page;",
+        1
+      ]
+    ]
+  }
+]

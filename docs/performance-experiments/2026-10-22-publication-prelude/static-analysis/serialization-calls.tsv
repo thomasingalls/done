@@ -1,0 +1,792 @@
+file	line	callee	owner	lexical_loop_lines
+account-service/authority.ts	146	JSON.parse	unlock	
+account-service/authority.ts	265	JSON.parse	recoverPin	
+account-service/backup/b2.ts	36	JSON.parse	json	
+account-service/backup/b2.ts	110	JSON.stringify	call	
+account-service/backup/b2.ts	242	JSON.stringify	listScoped	208
+account-service/backup/config.ts	30	JSON.parse	privateJson	
+account-service/backup/cycle.ts	10	JSON.stringify	identity	
+account-service/backup/restore-archive.ts	120	JSON.parse	json	
+account-service/backup/snapshot.ts	101	JSON.parse	capture	96
+account-service/backup/snapshot.ts	130	JSON.stringify	capture	
+account-service/ceremony.ts	51	JSON.parse	readJSON	
+account-service/ceremony.ts	57	JSON.parse	view	
+account-service/ceremony.ts	181	JSON.parse	relayCeremony	161
+account-service/ceremony.ts	255	JSON.stringify	relayCeremony	161
+account-service/ceremony.ts	264	JSON.parse	relayCeremony	161
+account-service/ceremony.ts	272	JSON.parse	relayCeremony	161,266
+account-service/ceremony.ts	279	JSON.parse	relayCeremony	161
+account-service/ceremony.ts	280	JSON.parse	relayCeremony	161
+account-service/ceremony.ts	289	JSON.parse	relayCeremony	161,284
+account-service/ceremony.ts	324	JSON.stringify	setOnce	161
+account-service/contentCheckpoint.ts	65	JSON.parse	exchangeCheckpoint	41
+account-service/contentCheckpoint.ts	69	JSON.parse	exchangeCheckpoint	41
+account-service/contentCheckpoint.ts	103	JSON.stringify	exchangeCheckpoint	41
+account-service/contentCheckpoint.ts	104	JSON.stringify	exchangeCheckpoint	41
+account-service/contentCheckpoint.ts	108	JSON.stringify	exchangeCheckpoint	41
+account-service/contentTransfer.ts	86	JSON.parse	transferContent	56
+account-service/contentTransfer.ts	96	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	97	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	98	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	99	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	100	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	135	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	168	JSON.stringify	transferContent	56
+account-service/contentTransfer.ts	173	JSON.stringify	transferContent	56
+account-service/core.ts	818	JSON.parse	<module>	
+account-service/core.ts	826	JSON.parse	<module>	
+account-service/core.ts	881	JSON.stringify	<module>	
+account-service/core.ts	973	JSON.parse	finish	
+account-service/core.ts	993	JSON.parse	inspect	
+account-service/core.ts	1090	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1094	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1128	JSON.parse	<module>	
+account-service/core.ts	1139	JSON.parse	<module>	
+account-service/core.ts	1141	JSON.parse	<module>	
+account-service/core.ts	1148	JSON.parse	<module>	
+account-service/core.ts	1153	JSON.parse	<module>	
+account-service/core.ts	1159	JSON.parse	<module>	
+account-service/core.ts	1170	JSON.parse	<module>	
+account-service/core.ts	1171	JSON.parse	<module>	
+account-service/core.ts	1172	JSON.parse	<module>	
+account-service/core.ts	1192	JSON.parse	beginPromotion	
+account-service/core.ts	1208	JSON.parse	beginPromotion	
+account-service/core.ts	1239	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1240	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1241	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1279	JSON.parse	<module>	
+account-service/core.ts	1300	JSON.parse	<module>	
+account-service/core.ts	1312	JSON.parse	<module>	
+account-service/core.ts	1318	JSON.parse	<module>	
+account-service/core.ts	1330	JSON.parse	<module>	
+account-service/core.ts	1364	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1373	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1394	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1415	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1432	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1432	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/core.ts	1466	JSON.parse	current	
+account-service/core.ts	1474	JSON.parse	current	
+account-service/core.ts	1543	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1549	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1596	JSON.parse	<module>	
+account-service/core.ts	1637	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1680	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/core.ts	1696	JSON.parse	finishRecovery	
+account-service/core.ts	1710	JSON.parse	inspect	
+account-service/core.ts	1720	JSON.parse	finishRecovery	
+account-service/delivery.ts	242	JSON.parse	snapshotWorkspaceAuthority	
+account-service/delivery.ts	304	JSON.parse	snapshot	
+account-service/delivery.ts	338	JSON.stringify	snapshotBytes	
+account-service/delivery.ts	391	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	392	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	393	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	399	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	409	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	412	JSON.stringify	verifyWorkspaceAuthority	
+account-service/delivery.ts	413	JSON.stringify	verifyWorkspaceAuthority	
+account-service/delivery.ts	424	JSON.stringify	verifyWorkspaceAuthority	
+account-service/delivery.ts	428	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	450	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	475	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	478	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	524	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	527	JSON.parse	verifyWorkspaceAuthority	
+account-service/delivery.ts	575	JSON.parse	verifyCurrentWorkspaceAuthority	
+account-service/delivery.ts	677	JSON.stringify	subjectKey	
+account-service/delivery.ts	730	JSON.parse	census	
+account-service/delivery.ts	734	JSON.stringify	census	
+account-service/delivery.ts	755	JSON.stringify	census	
+account-service/delivery.ts	1151	JSON.stringify	decideSubmission	1005
+account-service/delivery.ts	1155	JSON.stringify	decideSubmission	1005
+account-service/deliveryVerification.ts	70	structuredClone	check	
+account-service/deliveryVerification.ts	87	structuredClone	check	
+account-service/deliveryVerification.ts	92	structuredClone	check	
+account-service/development-http.ts	75	JSON.stringify	send	
+account-service/development-http.ts	152	JSON.parse	<anonymous>	
+account-service/development-runtime.ts	53	JSON.parse	openDevelopmentAccountService	
+account-service/development-runtime.ts	60	JSON.stringify	openDevelopmentAccountService	
+account-service/development-state.ts	8	JSON.stringify	lockDevelopmentState	
+account-service/enrollment.ts	108	JSON.parse	verifyEnrollmentRow	
+account-service/enrollment.ts	114	JSON.stringify	verifyEnrollmentRow	
+account-service/enrollment.ts	120	JSON.parse	verifyEnrollmentRow	
+account-service/enrollment.ts	122	JSON.stringify	verifyEnrollmentRow	
+account-service/enrollment.ts	122	JSON.stringify	verifyEnrollmentRow	
+account-service/enrollment.ts	163	JSON.stringify	transaction	
+account-service/enrollment.ts	193	JSON.parse	<callback:rows.some>	
+account-service/enrollment.ts	198	JSON.parse	view	
+account-service/enrollment.ts	199	JSON.parse	view	
+account-service/enrollment.ts	206	JSON.parse	view	
+account-service/enrollment.ts	210	JSON.stringify	view	
+account-service/enrollment.ts	210	JSON.stringify	view	
+account-service/enrollment.ts	231	JSON.parse	run	
+account-service/enrollment.ts	256	JSON.stringify	run	
+account-service/enrollment.ts	268	JSON.parse	run	
+account-service/enrollment.ts	322	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/enrollment.ts	354	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/enrollment.ts	379	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/enrollment.ts	381	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/enrollment.ts	422	JSON.parse	run	
+account-service/enrollment.ts	429	JSON.parse	run	
+account-service/enrollment.ts	497	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/grants.ts	180	JSON.parse	begin	
+account-service/grants.ts	194	JSON.parse	begin	
+account-service/grants.ts	195	JSON.stringify	begin	
+account-service/grants.ts	203	JSON.stringify	begin	
+account-service/grants.ts	221	JSON.stringify	begin	
+account-service/grants.ts	273	structuredClone	begin	
+account-service/grants.ts	330	structuredClone	<callback:ThisExpression.undefined.withAccess>	
+account-service/historyCheckpoint.ts	176	JSON.parse	capture	
+account-service/historyCheckpoint.ts	224	JSON.stringify	captureBytes	
+account-service/historyCheckpoint.ts	259	JSON.parse	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	303	JSON.parse	get	230
+account-service/historyCheckpoint.ts	310	JSON.parse	get	230
+account-service/historyCheckpoint.ts	349	JSON.parse	get	230
+account-service/historyCheckpoint.ts	559	JSON.parse	exchangeHistoryCheckpoint	230,543
+account-service/historyCheckpoint.ts	652	JSON.stringify	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	658	JSON.stringify	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	659	JSON.stringify	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	671	JSON.stringify	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	676	JSON.stringify	exchangeHistoryCheckpoint	230
+account-service/historySources.ts	57	JSON.parse	historySources	51
+account-service/historySources.ts	62	JSON.stringify	historySources	51
+account-service/inboundAuthorityReuse.ts	99	structuredClone	copyAuthority	
+account-service/inboundAuthorityReuse.ts	124	serialize	context	
+account-service/inboundAuthorityReuse.ts	160	structuredClone	reuseInboundAuthority	159
+account-service/inboundAuthorityReuse.ts	171	structuredClone	reuseInboundAuthority	
+account-service/inboundAuthorityReuse.ts	174	structuredClone	check	
+account-service/lostDeviceRecovery.ts	207	JSON.parse	view	
+account-service/lostDeviceRecovery.ts	213	JSON.parse	view	
+account-service/lostDeviceRecovery.ts	232	JSON.stringify	commit	
+account-service/lostDeviceRecovery.ts	244	JSON.parse	commit	
+account-service/lostDeviceRecovery.ts	248	JSON.stringify	commit	
+account-service/lostDeviceRecovery.ts	267	JSON.parse	commit	
+account-service/lostDeviceRecovery.ts	268	JSON.parse	commit	
+account-service/lostDeviceRecovery.ts	329	JSON.parse	commit	317
+account-service/lostDeviceRecovery.ts	418	JSON.stringify	commit	
+account-service/lostDeviceRecovery.ts	419	JSON.stringify	commit	
+account-service/lostDeviceRecovery.ts	428	JSON.stringify	commit	
+account-service/lostDeviceRecovery.ts	437	JSON.stringify	commit	433
+account-service/lostDeviceRecovery.ts	443	JSON.stringify	commit	433
+account-service/lostDeviceRecovery.ts	481	JSON.parse	read	
+account-service/lostDeviceRecovery.ts	482	JSON.parse	read	
+account-service/lostDeviceRecovery.ts	487	JSON.parse	read	
+account-service/lostDeviceRecovery.ts	548	JSON.parse	read	
+account-service/lostDeviceRecovery.ts	671	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	672	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	675	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	680	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	696	JSON.parse	<callback:ThisExpression.transaction>	
+account-service/lostDeviceRecovery.ts	705	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/lostDeviceRecovery.ts	742	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/lostDeviceRecovery.ts	743	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/lostDeviceRecovery.ts	767	JSON.parse	<callback:ThisExpression.transaction>	
+account-service/lostDeviceRecovery.ts	791	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	851	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	868	JSON.parse	run	
+account-service/lostDeviceRecovery.ts	913	JSON.stringify	<callback:ThisExpression.transaction>	
+account-service/membership.ts	84	JSON.parse	capture	
+account-service/membership.ts	90	JSON.parse	capture	
+account-service/membership.ts	94	JSON.parse	<callback:LogicalExpression.map>	
+account-service/membership.ts	99	JSON.parse	<callback:LogicalExpression.map>	
+account-service/membership.ts	120	JSON.stringify	bytes	
+account-service/membership.ts	141	JSON.parse	admitMembership	129
+account-service/membership.ts	149	JSON.parse	admitMembership	129
+account-service/membership.ts	157	JSON.parse	admitMembership	129
+account-service/membership.ts	178	JSON.parse	admitMembership	129
+account-service/membership.ts	214	JSON.parse	admitMembership	129,211
+account-service/membership.ts	249	structuredClone	admitMembership	129
+account-service/membership.ts	299	JSON.stringify	admitMembership	129
+account-service/membership.ts	300	JSON.stringify	admitMembership	129
+account-service/membership.ts	306	JSON.stringify	admitMembership	129
+account-service/membership.ts	316	JSON.stringify	admitMembership	129,312
+account-service/membershipAuthority.ts	42	JSON.parse	verifyPendingMembership	
+account-service/membershipAuthority.ts	44	JSON.parse	verifyPendingMembership	
+account-service/membershipAuthority.ts	54	JSON.parse	verifyPendingMembership	
+account-service/membershipCancellation.ts	56	JSON.parse	capture	
+account-service/membershipCancellation.ts	71	JSON.stringify	bytes	
+account-service/membershipCancellation.ts	91	JSON.parse	cancelMembership	72
+account-service/membershipCancellation.ts	94	JSON.parse	cancelMembership	72
+account-service/membershipCancellation.ts	126	JSON.parse	cancelMembership	72,117
+account-service/membershipCancellation.ts	151	structuredClone	<callback:p.roster.filter().map>	72
+account-service/membershipCancellation.ts	196	JSON.stringify	cancelMembership	72
+account-service/membershipCancellation.ts	197	JSON.stringify	cancelMembership	72
+account-service/membershipCancellation.ts	208	JSON.stringify	cancelMembership	72
+account-service/membershipCancellation.ts	218	JSON.stringify	cancelMembership	72,214
+account-service/membershipCheckpoint.ts	33	JSON.parse	retainedCheckpoint	
+account-service/membershipHistory.ts	42	JSON.parse	resolveMembershipDeliveryAuthority	
+account-service/membershipHistory.ts	44	JSON.parse	resolveMembershipDeliveryAuthority	
+account-service/membershipHistory.ts	80	JSON.parse	append	
+account-service/membershipHistory.ts	102	JSON.parse	applyRotationsBefore	99
+account-service/membershipHistory.ts	103	JSON.parse	applyRotationsBefore	99
+account-service/membershipHistory.ts	126	JSON.parse	resolveMembershipDeliveryAuthority	120
+account-service/membershipHistory.ts	147	JSON.parse	resolveMembershipDeliveryAuthority	120
+account-service/membershipHistory.ts	169	JSON.parse	resolveMembershipDeliveryAuthority	120
+account-service/membershipHistory.ts	173	JSON.parse	resolveMembershipDeliveryAuthority	120
+account-service/membershipHistory.ts	204	structuredClone	resolveMembershipDeliveryAuthority	
+account-service/membershipLocator.ts	52	JSON.parse	<callback:LogicalExpression.flatMap>	
+account-service/membershipLocator.ts	59	JSON.parse	<callback:LogicalExpression.flatMap>	
+account-service/membershipLocator.ts	60	JSON.parse	<callback:LogicalExpression.flatMap>	
+account-service/membershipLocator.ts	64	JSON.parse	membershipProofChain	
+account-service/membershipLocator.ts	65	JSON.parse	membershipProofChain	
+account-service/membershipLocator.ts	68	JSON.parse	<callback:LogicalExpression.map>	
+account-service/membershipLocator.ts	69	JSON.parse	<callback:LogicalExpression.map>	
+account-service/membershipTransfer.ts	67	JSON.parse	capture	
+account-service/membershipTransfer.ts	86	JSON.stringify	bytes	
+account-service/membershipTransfer.ts	133	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	134	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	135	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	136	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	137	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	171	JSON.parse	transferMembership	87,162
+account-service/membershipTransfer.ts	194	structuredClone	<callback:p.heads.map>	87
+account-service/membershipTransfer.ts	210	structuredClone	<callback:p.roster.map>	87
+account-service/membershipTransfer.ts	263	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	269	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	270	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	285	JSON.stringify	transferMembership	87
+account-service/membershipTransfer.ts	297	JSON.stringify	transferMembership	87,293
+account-service/notifications.ts	60	JSON.stringify	fail	
+account-service/notifications.ts	96	JSON.parse	handle	
+account-service/private-server.ts	42	JSON.stringify	send	
+account-service/private-server.ts	133	JSON.parse	<callback:createServer>	
+account-service/protocol.ts	100	JSON.stringify	canonical	
+account-service/protocol.ts	101	JSON.stringify	canonical	
+account-service/protocol.ts	106	JSON.stringify	<callback:Object.keys().sort().map>	
+account-service/prunedCheckpoint.ts	72	JSON.stringify	preparePrunedCheckpoint	
+account-service/prunedDecision.ts	113	JSON.stringify	preparePrunedDecision	
+account-service/prunedDecision.ts	124	JSON.parse	verifyPrunedDecision	
+account-service/public-maintenance.ts	95	JSON.stringify	save	
+account-service/public-maintenance.ts	117	JSON.parse	load	
+account-service/public-restore.ts	76	JSON.stringify	marker	
+account-service/public-restore.ts	92	JSON.parse	readMarker	
+account-service/public-server.ts	22	JSON.stringify	<callback:createServer>	
+account-service/public-state.ts	49	JSON.stringify	writeNew	
+account-service/public-state.ts	55	JSON.parse	readJson	
+account-service/public-state.ts	86	JSON.parse	readExpectedPin	
+account-service/publisherTips.ts	72	JSON.stringify	publisherContext	
+account-service/publisherTips.ts	280	JSON.stringify	fingerprint	
+account-service/publisherTips.ts	311	JSON.stringify	<callback:ArrayExpression.reduce>	
+account-service/publisherTips.ts	335	JSON.parse	enter	
+account-service/publisherTips.ts	377	JSON.parse	capture	
+account-service/publisherTips.ts	391	JSON.parse	capture	
+account-service/publisherTips.ts	433	JSON.parse	prefix	
+account-service/publisherTips.ts	523	JSON.stringify	remember	523
+account-service/publisherTips.ts	526	JSON.stringify	remember	524
+account-service/publisherTips.ts	535	JSON.parse	failure	
+account-service/recoveryCheckpoints.ts	35	JSON.stringify	recoveryCheckpoints	
+account-service/recoveryHistory.ts	37	JSON.parse	captureRecoveryHistory	
+account-service/recoveryHistory.ts	76	JSON.parse	verify	
+account-service/recoveryHistory.ts	77	JSON.parse	verify	
+account-service/removalPreparation.ts	57	JSON.stringify	bytes	45
+account-service/removalPreparation.ts	88	JSON.parse	prepareRemoval	45
+account-service/removalPreparation.ts	129	JSON.stringify	prepareRemoval	45
+account-service/replacementCheckpoint.ts	55	JSON.parse	retainedReplacementCheckpoint	
+account-service/replacementCheckpoint.ts	222	JSON.stringify	exchangeReplacementCheckpoint	96
+account-service/rotation.ts	67	JSON.parse	commitRotation	58
+account-service/rotation.ts	73	JSON.parse	commitRotation	58
+account-service/rotation.ts	81	JSON.stringify	bytes	58
+account-service/rotation.ts	100	JSON.parse	commitRotation	58,90
+account-service/rotation.ts	194	JSON.stringify	commitRotation	58
+account-service/rotation.ts	195	JSON.stringify	commitRotation	58
+account-service/rotation.ts	209	JSON.stringify	commitRotation	58,206
+account-service/rotation.ts	215	JSON.stringify	commitRotation	58,206
+account-service/scoped-http.ts	199	JSON.stringify	send	
+account-service/scoped-http.ts	342	JSON.parse	<anonymous>	
+account-service/session-custody.ts	70	JSON.stringify	seal	
+account-service/session-custody.ts	77	JSON.parse	open	
+account-service/session-host.ts	117	JSON.stringify	send	
+account-service/session-host.ts	145	JSON.parse	<anonymous>	
+account-service/session-http.ts	33	JSON.stringify	send	
+account-service/session-http.ts	75	JSON.parse	<anonymous>	
+account-service/sessions.ts	64	SESSION_SCHEMA.indexOf	<module>	
+account-service/sessions.ts	307	JSON.parse	<module>	
+account-service/sessions.ts	318	JSON.parse	<module>	
+account-service/sessions.ts	355	JSON.parse	<callback:ThisExpression.undefined>	
+account-service/sessions.ts	408	JSON.stringify	<callback:ThisExpression.undefined>	
+account-service/sessions.ts	419	JSON.parse	finish	
+account-service/sessions.ts	531	JSON.stringify	<module>	
+account-service/sessions.ts	576	JSON.stringify	createRecovery	
+account-service/sessions.ts	595	JSON.stringify	recoveryResult	
+account-service/sessions.ts	660	JSON.stringify	cancelRecovery	
+account-service/successor.ts	63	JSON.stringify	admitPrepared	
+account-service/successor.ts	96	JSON.parse	admitPrepared	84
+account-service/successor.ts	104	JSON.stringify	admitPrepared	84
+account-service/successor.ts	180	JSON.stringify	admitPrepared	84
+account-service/successor.ts	180	JSON.stringify	admitPrepared	84
+account-service/successor.ts	201	JSON.parse	admitPrepared	84
+account-service/successor.ts	214	JSON.stringify	admitPrepared	84
+account-service/successor.ts	219	JSON.stringify	admitPrepared	84
+account-service/webauthn.ts	46	JSON.parse	common	
+src/account/accountHttp.ts	20	JSON.stringify	accountServiceFetch	
+src/account/accountHttp.ts	20	JSON.stringify	accountServiceFetch	
+src/account/accountSignIn.ts	49	JSON.stringify	request	
+src/account/approvalVault.ts	165	JSON.parse	load	
+src/account/approvalVault.ts	171	JSON.stringify	save	
+src/account/contentReader.ts	163	Y.applyUpdate	apply	163
+src/account/deviceEnrollment.ts	259	JSON.stringify	bootstrapRequest	
+src/account/deviceEnrollment.ts	274	JSON.parse	readResponse	
+src/account/deviceEnrollment.ts	402	JSON.stringify	<callback:owner.withLogin>	
+src/account/deviceEnrollment.ts	620	JSON.stringify	<callback:withCeremonyVault>	
+src/account/deviceRemoval.ts	39	JSON.stringify	parseDeviceRemovalProgress	
+src/account/deviceRemoval.ts	106	structuredClone	persist	
+src/account/deviceRemoval.ts	106	structuredClone	persist	
+src/account/deviceRemoval.ts	162	structuredClone	<callback:network>	
+src/account/deviceRemoval.ts	244	structuredClone	<callback:network>	
+src/account/deviceRemovalHttp.ts	38	JSON.stringify	post	
+src/account/deviceRemovalHttp.ts	81	JSON.parse	post	
+src/account/deviceRemovalVault.ts	267	structuredClone	snapshot	
+src/account/deviceRemovalVault.ts	272	structuredClone	load	
+src/account/firstDeviceSetup.ts	161	JSON.stringify	request	
+src/account/firstDeviceSetup.ts	561	structuredClone	registrationView	
+src/account/historyHttp.ts	50	JSON.stringify	<anonymous>	
+src/account/historyHttp.ts	97	JSON.parse	<anonymous>	
+src/account/historyMaintenance.ts	47	JSON.stringify	parseHistoryMaintenanceProgress	
+src/account/historyMaintenance.ts	168	structuredClone	save	
+src/account/historyMaintenance.ts	168	structuredClone	save	
+src/account/historyMaintenance.ts	222	structuredClone	exchange	
+src/account/historyMaintenance.ts	282	structuredClone	finish	
+src/account/historyMaintenance.ts	357	structuredClone	runHistoryMaintenance	
+src/account/historyMaintenance.ts	358	structuredClone	runHistoryMaintenance	
+src/account/historyMaintenance.ts	359	structuredClone	runHistoryMaintenance	
+src/account/lostDeviceRecovery.ts	52	JSON.stringify	<anonymous>	
+src/account/lostDeviceRecovery.ts	72	JSON.parse	<anonymous>	
+src/account/lostDeviceRecovery.ts	142	structuredClone	beginLostDeviceRecovery	
+src/account/lostRecoveryRoutes.ts	24	JSON.stringify	rememberRecoveryRoute	
+src/account/lostRecoveryRoutes.ts	33	JSON.parse	rememberedRecoveryRoutes	29
+src/account/membershipEnrollment.ts	81	JSON.parse	responseJson	
+src/account/membershipEnrollment.ts	168	JSON.stringify	request	
+src/account/membershipInvitation.ts	97	JSON.stringify	membershipInvitationUrl	
+src/account/membershipReader.ts	60	structuredClone	loadMembershipWriting	
+src/account/membershipReader.ts	264	Y.applyUpdate	<callback:owner.withInstalledKey>	228,230,264
+src/account/networkLogin.ts	74	JSON.stringify	postSession	
+src/account/networkLogin.ts	94	JSON.parse	postSession	
+src/account/networkLogin.ts	126	structuredClone	issued	
+src/account/networkLogin.ts	271	structuredClone	initialize	
+src/account/networkLogin.ts	451	structuredClone	<callback:task.wait>	
+src/account/packagedConfig.ts	106	JSON.parse	readConfig	
+src/account/packagedConfig.ts	147	JSON.parse	loadPackagedConfig	
+src/account/packagedConfig.ts	171	JSON.parse	<callback:retainDiscoveryHints>	
+src/account/packagedConfig.ts	174	JSON.stringify	<callback:retainDiscoveryHints>	
+src/account/privateDeliveryHttp.ts	134	JSON.parse	privateDeliveryPost	
+src/account/privateDiscoveryHttp.ts	38	JSON.stringify	privateDiscoveryPost	
+src/account/privateDiscoveryHttp.ts	38	JSON.stringify	privateDiscoveryPost	
+src/account/privateDiscoveryHttp.ts	55	JSON.stringify	privateDiscoveryPost	
+src/account/privateDiscoveryHttp.ts	111	JSON.parse	privateDiscoveryPost	
+src/account/promotionOpening.ts	28	structuredClone	authorizePromotionOpening	
+src/account/promotionOpening.ts	28	structuredClone	authorizePromotionOpening	
+src/account/promotionOpening.ts	42	JSON.stringify	authorizePromotionOpening	
+src/account/promotionOpening.ts	60	JSON.stringify	consumePromotionOpening	
+src/account/recoveryOpening.ts	21	structuredClone	createRecoveryOpening	
+src/account/recoveryOpening.ts	34	structuredClone	verify	
+src/account/recoveryOwner.ts	130	JSON.stringify	check	
+src/account/recoveryOwner.ts	130	JSON.stringify	check	
+src/account/recoveryOwner.ts	267	structuredClone	send	
+src/account/recoveryOwner.ts	280	structuredClone	<callback:owned>	
+src/account/recoveryOwner.ts	375	structuredClone	<callback:owned>	
+src/account/recoveryOwner.ts	394	structuredClone	<callback:owned>	
+src/account/recoveryOwner.ts	394	structuredClone	<callback:owned>	
+src/account/recoveryTransition.ts	20	structuredClone	prepareRecoveryCommit	
+src/account/recoveryTransition.ts	21	structuredClone	prepareRecoveryCommit	
+src/account/recoveryTransition.ts	22	structuredClone	prepareRecoveryCommit	
+src/account/recoveryTransition.ts	23	structuredClone	prepareRecoveryCommit	
+src/account/scopedTransport.ts	151	JSON.stringify	openNotifications	
+src/account/scopedTransport.ts	186	JSON.parse	<module>	165
+src/account/scopedTransport.ts	215	JSON.stringify	<module>	
+src/account/scopedTransport.ts	220	JSON.parse	<module>	
+src/account/scopedTransport.ts	238	JSON.stringify	<module>	
+src/account/scopedTransport.ts	238	JSON.stringify	<module>	
+src/account/scopedTransport.ts	241	JSON.stringify	<module>	
+src/account/scopedTransport.ts	241	JSON.stringify	<module>	
+src/account/scopedTransport.ts	244	JSON.stringify	<module>	
+src/account/scopedTransport.ts	244	JSON.stringify	<module>	
+src/account/scopedTransport.ts	253	JSON.stringify	<module>	
+src/account/scopedTransport.ts	258	JSON.parse	<module>	
+src/account/scopedTransport.ts	266	JSON.stringify	<module>	
+src/account/scopedTransport.ts	266	JSON.stringify	<module>	
+src/account/scopedTransport.ts	321	JSON.stringify	<module>	308
+src/account/scopedTransport.ts	354	JSON.parse	<module>	308
+src/account/sessionVault.ts	138	JSON.stringify	current	
+src/account/sessionVault.ts	138	JSON.stringify	current	
+src/account/sessionVault.ts	161	JSON.parse	load	
+src/account/sessionVault.ts	177	JSON.stringify	save	
+src/account/sessionVault.ts	209	JSON.stringify	<callback:transaction>	206
+src/account/setupMetadata.ts	23	JSON.stringify	withSetupMetadataLock	
+src/account/slotUnlock.ts	347	structuredClone	verifySessionSlotUnlock	
+src/account/slotUnlock.ts	360	structuredClone	verifyRecoverySlotUnlock	
+src/account/slotUnlock.ts	417	JSON.parse	verifyAttempt	
+src/crdt/accountAccess.ts	33	structuredClone	<callback:task.wait>	
+src/crdt/accountAuthority.ts	12	sameBytes	equal	
+src/crdt/accountAuthority.ts	84	structuredClone	check	
+src/crdt/accountCapture.ts	536	copyBatch	<callback:live.write>	
+src/crdt/accountCapture.ts	769	structuredClone	openOwnedCapturedAccountWorkspace	
+src/crdt/accountDelivery.ts	494	JSON.stringify	<callback:withState>	
+src/crdt/accountDelivery.ts	494	JSON.stringify	<callback:withState>	
+src/crdt/accountInbound.ts	228	Y.decodeUpdate	validateBody	228
+src/crdt/accountJournal.ts	12	structuredClone	openAccountJournalSession	
+src/crdt/accountLedgerMetrics.ts	149	structuredClone	accountLedgerMetrics	
+src/crdt/accountLedgerMetrics.ts	151	structuredClone	accountLedgerMetrics	
+src/crdt/accountLedgerMetrics.ts	176	structuredClone	value	
+src/crdt/accountMembership.ts	79	JSON.parse	membershipEventEpoch	
+src/crdt/accountMembership.ts	127	JSON.stringify	verifyInstalledMembership	111
+src/crdt/accountReceive.ts	286	sameBytes	authenticate	
+src/crdt/accountReceive.ts	295	sameBytes	authenticate	
+src/crdt/accountReceive.ts	315	sameBytes	assertCurrent	
+src/crdt/accountReceive.ts	324	sameBytes	assertCurrent	
+src/crdt/accountReceive.ts	396	structuredClone	initialize	
+src/crdt/accountReceive.ts	441	structuredClone	initializeJoined	
+src/crdt/accountReceive.ts	486	structuredClone	<callback:verified.verify>	
+src/crdt/accountReceive.ts	487	structuredClone	<callback:verified.verify>	
+src/crdt/accountReceive.ts	496	structuredClone	validate	
+src/crdt/accountReceive.ts	691	structuredClone	validate	
+src/crdt/accountReceive.ts	1471	sameBytes	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1570	JSON.stringify	beforeCommit	
+src/crdt/accountReceive.ts	1570	JSON.stringify	beforeCommit	
+src/crdt/accountReceive.ts	1669	sameBytes	<callback:runCaptureTask>	1666
+src/crdt/accountReceive.ts	1755	JSON.stringify	beforeCommit	
+src/crdt/accountReceive.ts	1755	JSON.stringify	beforeCommit	
+src/crdt/accountReceive.ts	2198	structuredClone	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2606	sameBytes	refreshCustody	
+src/crdt/accountReceive.ts	2763	structuredClone	openReceivingWorkspace	
+src/crdt/accountRotation.ts	226	JSON.stringify	<callback:vault.withInstalledKey>	
+src/crdt/accountSpool.ts	40	structuredClone	openSpoolWorkspace	
+src/crdt/accountStartup.ts	212	Y.applyUpdate	<callback:withRecoveryUnderPermit>	
+src/crdt/accountSuccessor.ts	179	JSON.parse	verifyInstalledSuccessor	178
+src/crdt/accountSuccessor.ts	201	JSON.stringify	verifyInstalledSuccessor	178
+src/crdt/accountSyncDriver.ts	132	JSON.stringify	publish	
+src/crdt/accountSyncDriver.ts	132	JSON.stringify	publish	
+src/crdt/accountUploadActivation.ts	73	JSON.stringify	activateAccountUpload	
+src/crdt/accountWorkspace.ts	14	structuredClone	openOwnedAccountWorkspace	
+src/crdt/admissionDocument.ts	22	applyUpdate	replayRecovery	21
+src/crdt/admissionDocument.ts	23	applyUpdate	replayRecovery	23
+src/crdt/admissionDocument.ts	73	applyUpdate	prepareIntent	73
+src/crdt/admissionDocument.ts	81	Y.mergeUpdates	prepareIntent	
+src/crdt/admissionQueue.ts	413	applyUpdate	validateRemote	
+src/crdt/admissionQueue.ts	427	applyUpdate	promote	
+src/crdt/admittedWorkspace.ts	145	JSON.stringify	encode	
+src/crdt/admittedWorkspace.ts	220	structuredClone	createAdmittedWorkspace	
+src/crdt/admittedWorkspace.ts	257	JSON.parse	prepareWorkspace	
+src/crdt/admittedWorkspace.ts	361	structuredClone	prepareWorkspace	361
+src/crdt/admittedWorkspace.ts	375	structuredClone	prepareWorkspace	
+src/crdt/admittedWorkspace.ts	381	structuredClone	prepareWorkspace	
+src/crdt/admittedWorkspace.ts	390	structuredClone	prepareWorkspace	
+src/crdt/admittedWorkspace.ts	401	structuredClone	prepareWorkspace	400
+src/crdt/admittedWorkspace.ts	405	Y.mergeUpdates	prepareWorkspace	
+src/crdt/admittedWorkspace.ts	485	JSON.parse	prepareText	
+src/crdt/admittedWorkspace.ts	540	applyUpdate	<callback:doc.transact>	
+src/crdt/admittedWorkspace.ts	592	applyUpdate	prepare	
+src/crdt/admittedWorkspace.ts	774	applyUpdate	<callback:session.subscribe>	
+src/crdt/admittedWorkspace.ts	885	structuredClone	read	
+src/crdt/admittedWorkspace.ts	912	structuredClone	command	
+src/crdt/admittedWorkspace.ts	992	structuredClone	text	
+src/crdt/admittedWorkspace.ts	1031	structuredClone	input	
+src/crdt/contentCheckpoint.ts	40	Y.encodeStateAsUpdate	createContentCheckpoint	
+src/crdt/contentCheckpoint.ts	63	structuredClone	createContentCheckpoint	
+src/crdt/contentCheckpoint.ts	112	Y.applyUpdate	open	
+src/crdt/contentCompaction.ts	54	sameBytes	equalStoredRecord	
+src/crdt/contentCompaction.ts	55	sameBytes	equalStoredRecord	
+src/crdt/contentCompaction.ts	66	Y.decodeUpdate	validateContentUpdates	65
+src/crdt/contentCompaction.ts	67	Y.applyUpdate	validateContentUpdates	65
+src/crdt/contentCompaction.ts	186	Y.mergeUpdates	<callback:task.step>	
+src/crdt/contentRecord.ts	239	JSON.stringify	witnessPayload	
+src/crdt/contentRecord.ts	242	JSON.stringify	counterPayload	
+src/crdt/contentRotation.ts	271	sameBytes	<callback:guard>	250
+src/crdt/contentRotation.ts	275	sameBytes	<callback:guard>	250
+src/crdt/contentStore.ts	439	structuredClone	openSnapshot	
+src/crdt/contentStore.ts	451	structuredClone	<callback:task.step>	
+src/crdt/contentStore.ts	452	structuredClone	<callback:task.step>	
+src/crdt/contentStore.ts	454	structuredClone	<callback:task.step>	
+src/crdt/contentStore.ts	455	structuredClone	<callback:task.step>	
+src/crdt/contentStore.ts	648	structuredClone	<callback:task.step>	623
+src/crdt/contentStore.ts	692	structuredClone	<callback:task.step>	664
+src/crdt/contentStore.ts	703	structuredClone	<callback:task.step>	664
+src/crdt/contentStore.ts	1029	structuredClone	<callback:task.step>	
+src/crdt/contentStore.ts	1066	structuredClone	verifyBaselineTransition	
+src/crdt/contentStore.ts	1141	structuredClone	<callback:task.wait>	
+src/crdt/contentStore.ts	1514	copyBatch	<callback:task.step>	
+src/crdt/creationSeed.ts	49	structuredClone	captureCreationSeed	
+src/crdt/creationSeed.ts	73	JSON.stringify	sealCreationSeed	
+src/crdt/creationSeed.ts	145	JSON.parse	openCreationSeed	
+src/crdt/custody.ts	1076	copyBatch	<callback:task.step>	
+src/crdt/custody.ts	1202	copyBatch	<callback:live.write>	
+src/crdt/custody.ts	1331	copyBatch	<callback:live.write>	
+src/crdt/custodyRecord.ts	387	JSON.stringify	recordPayload	
+src/crdt/custodyRecord.ts	417	sameBytes	equalValues	
+src/crdt/custodyRecord.ts	425	sameBytes	recordEqual	
+src/crdt/days.ts	290	collection.toArray().indexOf	indexOfCard	
+src/crdt/deliveryRecord.ts	103	JSON.stringify	encodeDeliveryEntry	
+src/crdt/deliveryRecord.ts	127	JSON.parse	decodeDeliveryEntry	
+src/crdt/deliveryRecord.ts	172	JSON.parse	inspectDeliverySteps	167
+src/crdt/deliveryRecord.ts	184	JSON.parse	inspectDeliverySteps	167
+src/crdt/deliveryRecord.ts	291	JSON.stringify	expectedAt	271
+src/crdt/deliveryRecord.ts	356	JSON.stringify	verifyDelivery	301
+src/crdt/deliveryRecord.ts	374	JSON.stringify	verifyDelivery	301
+src/crdt/deviceDataRemoval.ts	287	JSON.parse	<callback:guard>	
+src/crdt/handoffHistory.ts	108	Y.encodeStateAsUpdate	mergeHandoffHistory	
+src/crdt/handoffHistory.ts	110	Y.applyUpdate	mergeHandoffHistory	
+src/crdt/handoffHistory.ts	133	Y.encodeStateAsUpdate	replayHandoffStream	
+src/crdt/handoffHistory.ts	134	Y.applyUpdate	replayHandoffStream	
+src/crdt/handoffHistory.ts	160	Y.applyUpdate	replayHandoffStream	138,160
+src/crdt/handoffHistory.ts	218	Y.encodeStateAsUpdate	verifyHandoffHistoryAdvance	
+src/crdt/handoffHistory.ts	219	Y.encodeStateAsUpdate	verifyHandoffHistoryAdvance	
+src/crdt/handoffHistory.ts	221	Y.applyUpdate	verifyHandoffHistoryAdvance	
+src/crdt/handoffHistory.ts	222	Y.applyUpdate	verifyHandoffHistoryAdvance	
+src/crdt/historyCheckpoint.ts	49	Y.encodeStateAsUpdate	apply	
+src/crdt/historyCheckpoint.ts	51	Y.applyUpdate	apply	
+src/crdt/historyCheckpoint.ts	75	structuredClone	createHistoryCheckpoint	
+src/crdt/historyCheckpoint.ts	89	Y.encodeStateAsUpdate	createHistoryCheckpoint	
+src/crdt/historyCheckpoint.ts	160	Y.applyUpdate	openHistoryCheckpoint	
+src/crdt/historyInstall.ts	55	JSON.stringify	encodeHistoryInstall	
+src/crdt/historyInstall.ts	153	Y.encodeStateAsUpdate	verifyHistoryInstall	
+src/crdt/historySource.ts	73	structuredClone	readHistorySource	
+src/crdt/historySource.ts	74	structuredClone	readHistorySource	
+src/crdt/historySource.ts	75	structuredClone	readHistorySource	
+src/crdt/historySource.ts	76	structuredClone	readHistorySource	
+src/crdt/historySource.ts	77	structuredClone	readHistorySource	
+src/crdt/historySource.ts	78	structuredClone	readHistorySource	
+src/crdt/historySource.ts	79	structuredClone	readHistorySource	
+src/crdt/historySource.ts	81	structuredClone	readHistorySource	
+src/crdt/historySource.ts	153	Y.encodeStateAsUpdate	readHistorySource	
+src/crdt/historySource.ts	190	Y.encodeStateAsUpdate	readHistorySource	
+src/crdt/historySource.ts	242	Y.encodeStateAsUpdate	readHistorySource	
+src/crdt/historySource.ts	279	Y.applyUpdate	readHistorySource	
+src/crdt/historySource.ts	369	Y.encodeStateAsUpdate	readHistorySource	294
+src/crdt/historySource.ts	372	Y.applyUpdate	readHistorySource	294
+src/crdt/historySource.ts	466	Y.applyUpdate	readHistorySource	402,428,464
+src/crdt/inboundLedger.ts	62	JSON.stringify	heldInboundContext	
+src/crdt/inboundLedger.ts	112	JSON.parse	inspectInboundSteps	107
+src/crdt/inboundLedger.ts	136	JSON.parse	inspectInboundSteps	134
+src/crdt/inboundLedger.ts	337	sameBytes	<anonymous>	
+src/crdt/inboundLedger.ts	344	sameBytes	<callback:values.some>	
+src/crdt/inboundLedger.ts	362	Y.decodeUpdate	append	361
+src/crdt/inboundLedger.ts	363	Y.applyUpdate	append	361
+src/crdt/inboundLedger.ts	415	Y.applyUpdate	check	398
+src/crdt/inboundLedger.ts	569	JSON.stringify	verifyInboundLedger	558
+src/crdt/inboundLedger.ts	612	JSON.stringify	verifyInboundLedger	558
+src/crdt/inboundRecord.ts	89	JSON.stringify	encodeInboundRecord	
+src/crdt/incrementalAccountLedger.ts	81	JSON.parse	fields	
+src/crdt/incrementalAccountLedger.ts	93	sameBytes	appendedRecords	90
+src/crdt/incrementalAccountLedger.ts	120	sameBytes	contentReplacement	112
+src/crdt/incrementalAccountLedger.ts	313	sameBytes	extendAccountLedger	302
+src/crdt/incrementalAccountLedger.ts	474	sameBytes	same	
+src/crdt/joinedAccount.ts	150	JSON.stringify	joinedPayload	
+src/crdt/joinedAccount.ts	620	Y.encodeStateAsUpdate	baseline	
+src/crdt/joinedAccount.ts	673	Y.encodeStateAsUpdate	baseline	
+src/crdt/joinedAccount.ts	764	structuredClone	installCertifiedAccount	
+src/crdt/journalEra.ts	55	JSON.stringify	wrapAccountJournal	
+src/crdt/journalEra.ts	62	sameBytes	unwrapAccountJournal	
+src/crdt/journalEra.ts	73	sameBytes	unwrapAccountJournal	
+src/crdt/journalEra.ts	73	JSON.stringify	unwrapAccountJournal	
+src/crdt/legacyCleanup.ts	80	JSON.stringify	<callback:withRecoveryUnderPermit>	78
+src/crdt/legacyCleanup.ts	81	JSON.stringify	<callback:withRecoveryUnderPermit>	78
+src/crdt/legacyCleanupEncoding.ts	13	JSON.stringify	cleanupFields	
+src/crdt/legacyCleanupRecord.ts	68	JSON.stringify	cleanupPayload	
+src/crdt/legacyCleanupRecord.ts	118	JSON.stringify	digest	
+src/crdt/legacyCleanupStorage.ts	13	JSON.stringify	same	
+src/crdt/legacyCleanupStorage.ts	13	JSON.stringify	same	
+src/crdt/legacyCoordinator.ts	183	structuredClone	advance	
+src/crdt/legacyExport.ts	148	JSON.parse	readPacket	
+src/crdt/legacyExport.ts	191	JSON.stringify	project	179
+src/crdt/legacyExport.ts	200	Y.decodeUpdate	project	179
+src/crdt/legacyExport.ts	201	Y.applyUpdate	project	179
+src/crdt/legacyExport.ts	255	JSON.stringify	<callback:task.step>	
+src/crdt/legacyImport.ts	120	Y.applyUpdate	<callback:withPreactiveContentUnderPermit>	117
+src/crdt/legacyImport.ts	145	Y.applyUpdate	<callback:withPreactiveContentUnderPermit>	143
+src/crdt/legacyImportPlan.ts	116	entry.content.indexOf	prepareImportPlan	97
+src/crdt/legacyImportPlan.ts	124	JSON.stringify	<callback:task.wait>	
+src/crdt/legacyImportPlan.ts	181	JSON.stringify	importCursor	
+src/crdt/legacyImportPlan.ts	181	JSON.stringify	importCursor	
+src/crdt/legacyImportPlan.ts	203	Y.encodeStateAsUpdate	encodeImportSlice	
+src/crdt/legacyImportPlan.ts	218	JSON.stringify	verifyImportedProjection	
+src/crdt/legacyImportPlan.ts	218	JSON.stringify	verifyImportedProjection	
+src/crdt/legacyImportPlan.ts	219	JSON.stringify	verifyImportedProjection	
+src/crdt/legacyImportPlan.ts	220	JSON.stringify	verifyImportedProjection	
+src/crdt/legacyImportRecord.ts	58	JSON.stringify	payload	
+src/crdt/legacyImportRecord.ts	63	JSON.stringify	sameImportBinding	
+src/crdt/legacyImportRecord.ts	63	JSON.stringify	sameImportBinding	
+src/crdt/legacyImportRecord.ts	247	stages.indexOf	advanceImportClaim	
+src/crdt/legacyImportRecord.ts	247	stages.indexOf	advanceImportClaim	
+src/crdt/legacySelection.ts	101	Y.applyUpdate	<callback:task.step>	99
+src/crdt/legacySource.ts	159	Y.decodeUpdate	<callback:task.step>	158
+src/crdt/legacySource.ts	160	Y.applyUpdate	<callback:task.step>	158
+src/crdt/legacySource.ts	169	JSON.stringify	inspectLegacySource	
+src/crdt/legacySource.ts	169	JSON.stringify	inspectLegacySource	
+src/crdt/legacySource.ts	176	JSON.stringify	<callback:task.wait>	
+src/crdt/localBaselineAnchor.ts	139	JSON.stringify	baselineCounterPayload	
+src/crdt/localBaselineAuthority.ts	26	JSON.stringify	digest	
+src/crdt/localBaselineMetadata.ts	22	structuredClone	stored	
+src/crdt/localBaselineMetadata.ts	38	JSON.stringify	parse	
+src/crdt/localBaselineMetadata.ts	38	JSON.stringify	parse	
+src/crdt/localBaselineMetadata.ts	40	structuredClone	parse	
+src/crdt/localBaselineRecord.ts	260	JSON.stringify	encodeLocalBaseline	
+src/crdt/localBaselineRecord.ts	267	sameBytes	decodeLocalBaseline	
+src/crdt/localBaselineRecord.ts	267	JSON.stringify	decodeLocalBaseline	
+src/crdt/localBaselineRecord.ts	286	sameBytes	<callback:ArrayExpression.find>	
+src/crdt/localBaselineRecord.ts	290	sameBytes	assertBaselineAuthenticationMessage	
+src/crdt/localBaselineReplay.ts	131	structuredClone	captureContext	
+src/crdt/localBaselineReplay.ts	186	Y.applyUpdate	documentState	185
+src/crdt/localBaselineReplay.ts	188	Y.encodeStateAsUpdate	documentState	
+src/crdt/localBaselineReplay.ts	394	sameBytes	<callback:spool.sourceRecords.find>	386
+src/crdt/localBaselineReplay.ts	461	JSON.stringify	streams	
+src/crdt/localBaselineReplay.ts	471	sameBytes	summarizeBaseline	
+src/crdt/localBaselineReplay.ts	572	JSON.stringify	replayLocalBaseline	
+src/crdt/localBaselineReplay.ts	572	JSON.stringify	replayLocalBaseline	
+src/crdt/localBaselineReuse.ts	40	JSON.stringify	authority	
+src/crdt/localBaselineReuse.ts	90	structuredClone	createBaselineReuse	
+src/crdt/localBaselineReuse.ts	112	structuredClone	<callback:verified.verify>	
+src/crdt/localBaselineReuse.ts	250	structuredClone	advance	
+src/crdt/localBaselineShadow.ts	134	sameBytes	matchesBaselineReplay	
+src/crdt/localBaselineShadow.ts	135	JSON.stringify	matchesBaselineReplay	
+src/crdt/localBaselineShadow.ts	135	JSON.stringify	matchesBaselineReplay	
+src/crdt/localBaselineShadow.ts	200	structuredClone	verifyCompleteLocalBaseline	
+src/crdt/localBaselineStorage.ts	132	keys.result.indexOf	<callback:guard>	124
+src/crdt/localBaselineStorage.ts	142	sameBytes	<callback:guard>	124
+src/crdt/localBaselineStorage.ts	146	sameBytes	<callback:guard>	124
+src/crdt/localBaselineStorage.ts	205	structuredClone	<callback:task.step>	
+src/crdt/localBaselineStorage.ts	244	JSON.stringify	anchorLocalBaseline	
+src/crdt/localBaselineStorage.ts	245	JSON.stringify	anchorLocalBaseline	
+src/crdt/localBaselineStorage.ts	471	sameBytes	openEncryptedBaselineSnapshot	456
+src/crdt/localBaselineStorage.ts	486	JSON.stringify	openEncryptedBaselineSnapshot	
+src/crdt/localBaselineStorage.ts	486	JSON.stringify	openEncryptedBaselineSnapshot	
+src/crdt/localClear.ts	138	JSON.stringify	<callback:withExclusiveSlot>	
+src/crdt/localClear.ts	138	JSON.stringify	<callback:withExclusiveSlot>	
+src/crdt/localClear.ts	142	JSON.stringify	<callback:withExclusiveSlot>	
+src/crdt/localClear.ts	142	JSON.stringify	<callback:withExclusiveSlot>	
+src/crdt/localClearStorage.ts	22	JSON.stringify	same	
+src/crdt/localClearStorage.ts	22	JSON.stringify	same	
+src/crdt/localGenesis.ts	300	structuredClone	<callback:session.run>	
+src/crdt/localGenesisRecord.ts	180	JSON.stringify	claimAuthentication	
+src/crdt/localGenesisRecord.ts	230	JSON.stringify	matchLocalCustody	
+src/crdt/localGenesisRecord.ts	230	JSON.stringify	matchLocalCustody	
+src/crdt/localGenesisStorage.ts	182	JSON.stringify	localCensus	
+src/crdt/localGenesisStorage.ts	182	JSON.stringify	localCensus	
+src/crdt/localProtection.ts	74	phases.indexOf	parse	
+src/crdt/localProtection.ts	113	JSON.stringify	authenticate	
+src/crdt/localProtection.ts	130	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	130	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	148	Y.applyUpdate	encodeCopy	146
+src/crdt/localProtection.ts	151	Y.encodeStateAsUpdate	encodeCopy	
+src/crdt/localProtection.ts	290	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	290	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	290	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	305	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	305	JSON.stringify	<callback:guard>	
+src/crdt/localProtection.ts	323	JSON.stringify	check	
+src/crdt/localProtection.ts	323	JSON.stringify	check	
+src/crdt/localRecovery.ts	151	Y.decodeUpdate	integrate	
+src/crdt/localRecovery.ts	153	Y.applyUpdate	integrate	
+src/crdt/localRecovery.ts	219	JSON.stringify	<callback:readRecoveryCustody>	
+src/crdt/localRecovery.ts	219	JSON.stringify	<callback:readRecoveryCustody>	
+src/crdt/localRecovery.ts	232	JSON.stringify	<callback:task.step>	
+src/crdt/localRetentionPlan.ts	86	JSON.stringify	key	
+src/crdt/localRetentionPlan.ts	88	structuredClone	clone	
+src/crdt/localRetentionPlan.ts	97	sameBytes	exact	
+src/crdt/localRetentionPlan.ts	143	structuredClone	retentionPlanReport	
+src/crdt/localRetentionPlan.ts	148	structuredClone	inspectRetentionPlan	
+src/crdt/localRetentionPlan.ts	169	structuredClone	copyRetentionCandidate	
+src/crdt/localRetentionPlan.ts	174	structuredClone	copyRetentionMaterial	
+src/crdt/localRetentionPlan.ts	206	structuredClone	reservedRetentionVerifier	
+src/crdt/localRetentionPlan.ts	437	JSON.parse	planLocalRetention	427
+src/crdt/localRetentionPlan.ts	443	sameBytes	<callback:decoded.sources.some>	427
+src/crdt/localRetentionStorage.ts	287	structuredClone	removePlannedLocalHistory	
+src/crdt/membershipReading.ts	171	structuredClone	captureMembershipReading	
+src/crdt/membershipReading.ts	226	structuredClone	replayMembershipReading	
+src/crdt/membershipReading.ts	265	Y.encodeStateAsUpdate	replayMembershipReading	
+src/crdt/membershipReading.ts	306	Y.applyUpdate	replayMembershipReading	267,299,306
+src/crdt/membershipSource.ts	335	structuredClone	prepareNativeReplacement	
+src/crdt/ownedStartup.ts	82	structuredClone	openOwnedWorkspace	
+src/crdt/persistence.ts	187	Y.applyUpdate	<callback:readJournal().filter>	
+src/crdt/promotionAdmission.ts	130	structuredClone	<callback:task.wait>	
+src/crdt/promotionAdmission.ts	165	structuredClone	<callback:task.wait>	
+src/crdt/promotionAdmission.ts	184	structuredClone	<callback:task.wait>	
+src/crdt/promotionAdmission.ts	195	structuredClone	<callback:task.wait>	
+src/crdt/promotionGenesis.ts	130	JSON.stringify	withVerifiedGenesis	
+src/crdt/promotionGenesis.ts	130	JSON.stringify	withVerifiedGenesis	
+src/crdt/promotionGenesis.ts	208	Y.encodeStateAsUpdate	<callback:withRecoveryUnderPermit>	
+src/crdt/promotionGenesis.ts	257	JSON.stringify	<callback:withRecoveryUnderPermit>	256
+src/crdt/promotionGenesis.ts	257	JSON.stringify	<callback:withRecoveryUnderPermit>	256
+src/crdt/promotionGenesis.ts	307	Y.applyUpdate	<callback:withRecoveryUnderPermit>	
+src/crdt/promotionRecord.ts	266	JSON.stringify	promotionPayload	
+src/crdt/promotionRecord.ts	336	sameBytes	equalPromotion	
+src/crdt/promotionRecord.ts	341	sameBytes	equalPromotion	
+src/crdt/promotionRecord.ts	354	JSON.stringify	storePromotion	
+src/crdt/promotionRecord.ts	354	JSON.stringify	storePromotion	
+src/crdt/receiveSelection.ts	53	publishers.indexOf	completed	
+src/crdt/recoveryReading.ts	85	structuredClone	openRecoveryReading	
+src/crdt/recoveryReading.ts	117	Y.applyUpdate	openRecoveryReading	
+src/crdt/recoverySource.ts	57	structuredClone	readRecoverySource	
+src/crdt/recoverySource.ts	58	structuredClone	readRecoverySource	
+src/crdt/recoverySource.ts	59	structuredClone	readRecoverySource	
+src/crdt/recoverySource.ts	60	structuredClone	readRecoverySource	
+src/crdt/recoverySource.ts	122	structuredClone	readRecoverySource	
+src/crdt/recoverySource.ts	135	Y.encodeStateAsUpdate	readRecoverySource	
+src/crdt/recoverySource.ts	139	Y.applyUpdate	readRecoverySource	
+src/crdt/recoverySource.ts	169	Y.applyUpdate	readRecoverySource	
+src/crdt/recoverySource.ts	266	Y.encodeStateAsUpdate	readRecoverySource	190
+src/crdt/recoverySource.ts	272	Y.applyUpdate	readRecoverySource	190
+src/crdt/recoverySource.ts	325	structuredClone	readRecoverySource	290,310
+src/crdt/recoverySource.ts	388	Y.applyUpdate	readRecoverySource	290,310,332,384
+src/crdt/recoverySource.ts	412	Y.encodeStateAsUpdate	readRecoverySource	
+src/crdt/replacementCheckpoint.ts	49	structuredClone	createReplacementCheckpoint	
+src/crdt/replacementCheckpoint.ts	65	Y.encodeStateAsUpdate	createReplacementCheckpoint	64
+src/crdt/replacementCheckpoint.ts	67	Y.applyUpdate	createReplacementCheckpoint	64
+src/crdt/replacementCheckpoint.ts	74	Y.encodeStateAsUpdate	createReplacementCheckpoint	
+src/crdt/replacementCheckpoint.ts	146	Y.applyUpdate	openReplacementCheckpoint	
+src/crdt/replacementSource.ts	52	structuredClone	openReplacementSource	
+src/crdt/replacementSource.ts	53	structuredClone	openReplacementSource	
+src/crdt/replacementSource.ts	55	structuredClone	openReplacementSource	
+src/crdt/replacementSource.ts	245	Y.applyUpdate	<callback:run>	245
+src/crdt/selectionSnapshots.ts	69	structuredClone	capture	
+src/crdt/selectionSnapshots.ts	79	structuredClone	restore	
+src/crdt/serialize.ts	164	lines.indexOf	findHeadings	163
+src/crdt/slotIndex.ts	200	structuredClone	bindSlot	
+src/crdt/sourceCapture.ts	101	JSON.stringify	encodeSourceCapsule	
+src/crdt/sourceCapture.ts	126	JSON.parse	decodeSourceCapsule	
+src/crdt/sourceCapture.ts	163	sameBytes	decodeSourceCapsule	
+src/crdt/sourceCapture.ts	193	sameBytes	<callback:incoming.map>	
+src/crdt/sourceCapture.ts	252	sameBytes	scanCapturedSourceSteps	245
+src/crdt/spoolRecord.ts	163	JSON.stringify	encodeSpoolEntry	
+src/crdt/spoolRecord.ts	185	JSON.parse	decodeSpoolEntry	
+src/crdt/spoolRecord.ts	260	JSON.parse	inspectSpoolSteps	252
+src/crdt/spoolRecord.ts	272	JSON.parse	inspectSpoolSteps	252
+src/crdt/spoolRecord.ts	481	JSON.stringify	verifySpool	408
+src/crdt/spoolRecord.ts	536	JSON.stringify	verifySpoolWitness	530
+src/crdt/startupClassification.ts	101	structuredClone	parseSlot	
+src/crdt/startupClassification.ts	167	structuredClone	<callback:task.wait>	
+src/crdt/verificationMemo.ts	32	sameBytes	<callback:inputs.every>	
+src/crdt/verificationMemo.ts	34	structuredClone	check	
+src/crdt/verificationMemo.ts	44	structuredClone	check	
+src/crdt/verificationMemo.ts	45	structuredClone	check	
+src/crdt/verifiedRecords.ts	49	sameBytes	<callback:a.every>	
+src/crdt/verifiedRecords.ts	118	structuredClone	select	
+src/crdt/verifiedRecords.ts	130	structuredClone	readIfMatches	
+src/crdt/verifiedRecords.ts	142	structuredClone	read	
+src/crdt/verifiedRecords.ts	194	sameBytes	verify	185
+src/crdt/verifiedRecords.ts	223	structuredClone	verify	
+src/crdt/workspaceChannel.ts	25	JSON.stringify	connectWorkspaceChannel	
+src/crdt/writeSession.ts	37	JSON.stringify	slotPermitName	
+src/crdt/yjs.ts	43	Y.encodeStateAsUpdate	encodeState	
+src/crdt/yjs.ts	58	Y.encodeStateAsUpdate	encodeIntegratedState	
+src/crdt/yjs.ts	103	JSON.stringify	writeJSON	
+src/crdt/yjs.ts	135	JSON.parse	readJSON	
+src/crdt/yjs.ts	187	Y.applyUpdate	normalizedIntegratedState	
+src/crdt/yjs.ts	308	equalBytes	sameEncoding	
+src/crdt/yjs.ts	313	equalBytes	sameEncoding	
+src/crdt/yjs.ts	346	equalBytes	sameDocState	
+src/crdt/yjs.ts	349	equalBytes	sameDocState	
+src/crdt/yjs.ts	359	equalBytes	sameDocState	
+src/crdt/yjs.ts	387	equalBytes	provesIntegratedCoverage	
+src/crdt/yjs.ts	391	Y.decodeUpdate	provesIntegratedCoverage	
+src/crdt/yjs.ts	506	Y.applyUpdate	check	
+src/crdt/yjs.ts	515	equalBytes	check	
+src/crdt/yjs.ts	518	equalBytes	check	
+src/crdt/yjs.ts	522	equalBytes	check	
+src/crdt/yjs.ts	551	applyUpdate	coversGenesis	
+src/crdt/yjs.ts	575	Y.applyUpdate	applyUpdate	
+src/crdt/yjs.ts	682	Y.applyUpdate	<anonymous>	
+src/crdt/yjs.ts	768	structuredClone	<callback:forkHistory>	
+src/crdt/yjs.ts	918	applyUpdate	catchUpText	
+src/editor/admittedText.ts	72	JSON.stringify	encode	
+src/editor/admittedText.ts	115	JSON.parse	prepare	
+src/editor/admittedText.ts	243	applyUpdate	<callback:session.subscribe>	
+src/editor/textChannel.ts	20	JSON.stringify	connectTextChannel	

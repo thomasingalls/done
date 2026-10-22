@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "instrumentedRuntimeFiles": [
+    "account-service/delivery.ts",
+    "account-service/historyCheckpoint.ts",
+    "account-service/inboundAuthorityReuse.ts",
+    "account-service/membershipHistory.ts",
+    "account-service/membershipLocator.ts",
+    "account-service/publisherTips.ts",
+    "src/account/historyHttp.ts",
+    "src/crdt/accountReceive.ts",
+    "src/crdt/accountSyncDriver.ts"
+  ],
+  "allOtherRuntimeFilesExact": true,
+  "reversedEveryScopedTransformationToBase20": true,
+  "noTrackedRuntimeOrTestChanges": true,
+  "realIndexUnchanged": true,
+  "diagnosticObserverOverhead": "await wrappers and crypto counters; async wall spans/process CPU deltas can overlap, not exclusive CPU attribution"
+}

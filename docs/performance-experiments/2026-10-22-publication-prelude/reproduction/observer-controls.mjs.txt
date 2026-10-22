@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+const original={verify:crypto.subtle.verify.bind(crypto.subtle),importKey:crypto.subtle.importKey.bind(crypto.subtle),sign:crypto.subtle.sign.bind(crypto.subtle)};
+const o=await import('./observer.mjs');
+const keys=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']),bytes=new Uint8Array([1,2,3]),sig=await original.sign('Ed25519',keys.privateKey,bytes);
+assert.equal(await original.verify('Ed25519',keys.publicKey,sig,bytes),true);
+assert.equal(await crypto.subtle.verify('Ed25519',keys.publicKey,sig,bytes),true);
+assert.deepEqual(o.take(),[{tag:'observer-counts',dropped:0,recorded:0}]);
+const ctx={id:1,path:'/control',startedAt:Date.now(),crypto:new Map()},value={same:true},failure=Error('same exception');
+await o.contexts.run(ctx,async()=>{
+ assert.strictEqual(await o.span('submit-authority',()=>value),value);
+ await assert.rejects(o.span('submit-authority',()=>{throw failure}),e=>e===failure);
+ assert.strictEqual(o.syncSpan('submit-capture',()=>value),value);
+ assert.throws(()=>o.syncSpan('submit-capture',()=>{throw failure}),e=>e===failure);
+ await o.span('submit-wire',async()=>{
+  assert.equal(await crypto.subtle.verify('Ed25519',keys.publicKey,sig,bytes),true);
+  const changed=bytes.slice();changed[0]^=1;assert.equal(await crypto.subtle.verify('Ed25519',keys.publicKey,sig,changed),false);
+ });
+ o.summary(ctx,200);
+});
+let events=o.take();assert.equal(events.at(-1).dropped,0);const spans=events.filter(e=>e.tag==='span-end');assert.equal(spans.length,5);assert.deepEqual(spans.map(s=>s.ok),[true,false,true,false,true]);const c=events.find(e=>e.tag==='crypto-summary');assert.equal(c.rows.length,1);assert.equal(c.rows[0].stage,'submit-wire');assert.equal(c.rows[0].count,2);assert.equal(c.rows[0].bins.reduce((a,b)=>a+b,0),2);
+o.contexts.run(ctx,()=>{for(let i=0;i<200003;i++)o.observe('closed-control',{n:i})});events=o.take();assert.equal(events.at(-1).dropped,3);assert.equal(events.at(-1).recorded,200000);
+writeFileSync(new URL('observer-controls.json',import.meta.url),JSON.stringify({status:'passed',originalTrueAndFalseCryptoPreserved:true,sameReturnAndExceptionObjects:true,spanPairingAndCryptoCountsExact:true,contextlessCryptoEmitsNoEvents:true,boundedOverflowReported:true,noProductRegressionClaim:true},null,2)+'\n');console.log('Observer controls passed');

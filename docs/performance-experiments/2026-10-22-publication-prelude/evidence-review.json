@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "1-D",
+      "quietSubmitRequests": 72,
+      "submitHttpP95Ms": 1873,
+      "submitAuthorityP95Ms": 1749.6817100000044,
+      "sumAuthorityWallOverSumHttpWall": 0.9298771632334071,
+      "authoritySignaturesPerRequest": 77,
+      "authorityDigestsPerRequest": 205,
+      "commitP95Ms": 5.5584579999995185,
+      "allCriticalQuietRequestsExactlyJoined": 94,
+      "quiet429": 0,
+      "allTrustedInputAndPendingGuards": true,
+      "replayCensoredAt90s": true,
+      "observerDrops": 0,
+      "maxEndpointEventVsNativeSpanDeltaMs": 31.25854199999594
+    },
+    {
+      "name": "2-D",
+      "quietSubmitRequests": 76,
+      "submitHttpP95Ms": 1589,
+      "submitAuthorityP95Ms": 1572.552708999996,
+      "sumAuthorityWallOverSumHttpWall": 0.9242239448111216,
+      "authoritySignaturesPerRequest": 77,
+      "authorityDigestsPerRequest": 205,
+      "commitP95Ms": 24.126458999991883,
+      "allCriticalQuietRequestsExactlyJoined": 98,
+      "quiet429": 0,
+      "allTrustedInputAndPendingGuards": true,
+      "replayCensoredAt90s": true,
+      "observerDrops": 0,
+      "maxEndpointEventVsNativeSpanDeltaMs": 19.511084000001574
+    }
+  ],
+  "sensitivity": [
+    {
+      "control": "drop-trusted-input",
+      "detected": true
+    },
+    {
+      "control": "drop-native-authority-span",
+      "detected": true
+    },
+    {
+      "control": "alter-crypto-count",
+      "detected": true
+    },
+    {
+      "control": "hide-observer-overflow",
+      "detected": true
+    }
+  ],
+  "limitations": "async wall stages include contention; process CPU interval is global, not exclusive stage CPU;90s backlog censoring; diagnostics not promotion"
+}

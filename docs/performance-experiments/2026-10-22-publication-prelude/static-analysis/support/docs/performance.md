@@ -1,0 +1,2219 @@
+# done — Performance budget history
+
+**Append-only.** One entry per measurement, oldest first. Numbers are never edited after the fact — a
+re-measurement is a new entry. The budgets themselves live in **TRD §12** and are normative there; this
+file records what was actually measured against them.
+
+**Why this is checked in.** `scripts/check-budget.mjs` enforces the initial-JS budget on every build and
+exits non-zero when it is exceeded, which is the right enforcement and the wrong memory: it prints a number
+and forgets it. A threshold that is only ever compared against itself tells you that something broke, never
+when or by how much. [sequencing.md](./sequencing.md) §3.1 makes the sharper version of the argument for
+latency: Stage 1's encrypted store adds a key-store read, an unseal and per-record decryption to cold
+start, so **without a recorded plaintext baseline a regression from encryption is both invisible and
+unattributable**, and the budget conversation afterwards has nothing to argue from.
+
+**The window closes at Stage 1.** Every plaintext number that is not recorded before the encrypted store
+lands is a number that can never be taken again. **Six of the latency rows were taken before it closed.**
+
+**The seventh did not need the window and could not have used it.** The journal write measures a
+construction the app does not contain, from its specification, because it gates a _selection_ rather than a
+feature — a number that arrives after the construction is chosen cannot influence the choice. It is the only
+row here taken that way, and it is the one that found a budget exceeded. The remaining six measure things
+that do not exist yet and arrive with their features.
+
+## How to record a measurement
+
+Two harnesses, two commands. The bundle is below; latency has its own section and its own pair.
+
+```bash
+pnpm build
+```
+
+The build prints the initial-JS figure and fails if it exceeds the budget. To get an append-ready row for
+this file instead of reading it off the build log:
+
+```bash
+pnpm budget --record
+```
+
+Paste the row into the table below, with the commit it was measured at. **Recording is deliberately
+manual.** Appending on every build would write a row for each local rebuild and turn the history into
+noise; what is worth recording is a measurement someone chose to take.
+
+**A measurement without a commit is not a measurement.** The hash is what makes a number attributable,
+which is the entire purpose of the file.
+
+---
+
+## Initial JS bundle — budget < 350 kB gzipped
+
+Enforced build-failing by `scripts/check-budget.mjs`; the budget covers the entry module plus everything
+the HTML preloads, and excludes lazily-loaded chunks by design.
+
+| Date       | Commit    | Measured | Budget   | Headroom           | Store     | Note                                                                                                                             |
+| ---------- | --------- | -------- | -------- | ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-18 | `e4969a0` | 306.2 kB | 350.0 kB | 43.8 kB (87% used) | plaintext | **Baseline.** First recorded measurement. `pnpm build` on Node 26, one chunk, css 4.7 kB informational                           |
+| 2026-08-18 | `c611666` | 306.3 kB | 350.0 kB | 43.7 kB (88% used) | plaintext | The latency harness's boot marks: `src/lib/marks.ts` and four call sites, about 100 bytes. Measured on the branch that adds them |
+
+**Context for the baseline.** The Phase 2 decision record put `temporal-polyfill` at about 21 kB gzipped
+of this total — an estimate carried forward rather than re-measured here, and it deletes itself when the
+platform ships Temporal (`src/lib/temporal.ts` is the only file permitted to import it). The remaining
+headroom is what Stage 1's cryptography and Stage 4's envelope layer have to fit inside.
+
+---
+
+## Latency budgets
+
+**Seven of TRD §12's thirteen latency rows now have numbers.** The other six measure things that do not
+exist yet — search, the key store, the envelope layer, the in-memory index — and they arrive with their
+features, where their first measurement _is_ their baseline. **The journal write is the exception and has
+its own section below**: it is the one row that gates a _selection_ rather than a feature, so it is measured
+before the code exists, from the specification.
+
+Run it, then turn the run into rows:
+
+```bash
+pnpm test:latency
+```
+
+```bash
+pnpm latency:record
+```
+
+**It is not part of `pnpm check`, on purpose.** These are measurements, not assertions, and two of them
+running at once measure the contention rather than the app — hence one worker, no parallelism and no
+retries, since a retried measurement is a second sample silently reported as the first. Recording stays a
+deliberate act, for the same reason `--record` is opt-in for the bundle.
+
+### What the harness measures, and how
+
+The method is written down because a baseline is only worth having if the run compared against it did the
+same thing.
+
+| Convention     | What it means                                                                                                                                                                                                                                                                                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Painted**    | One frame _plus a task_. `requestAnimationFrame` runs before the frame is committed, so the callback alone is too early; a task queued from inside it runs after the paint. This over-measures by whatever a `setTimeout(0)` costs, identically every time                                                                                                       |
+| **Started**    | The browser's own event timestamp, never a clock on the test side. Timing a click from the driver would fold the CDP round trip into every number and attribute it to the app                                                                                                                                                                                    |
+| **p95**        | Nearest-rank over 120 samples, so a reported p95 is always a sample that actually happened                                                                                                                                                                                                                                                                       |
+| **Keystrokes** | One per 50 ms. Pressing keys as fast as the driver allows measures throughput under a firehose — it reports about 120 ms p95 in a plain textarea, which is a fact about the harness. "Keystroke → paint" is a per-keystroke latency and each keystroke needs its own frame                                                                                       |
+| **The corpus** | 20 days × 15 cards and a 400-line master list: **650 update records, 283.9 kB on disk.** Fixed rather than realistic, so the encrypted run can reproduce it exactly. An earlier six-day version produced a 60 ms cold start, which sounds like good news and is useless — per-record decryption would vanish into the noise, and catching it is the entire point |
+| **`android`**  | Pixel 7 emulation **plus a 4× CPU throttle**. Emulation on its own changes the viewport and the user agent and nothing else, so an unthrottled mobile project measures the development machine twice and reports it as two devices. 4× is Lighthouse's convention for a mid-tier phone, not a handset                                                            |
+
+Four of the marks are emitted by the app itself (`src/lib/marks.ts`), because content-root load has no DOM
+signal: `done:boot`, `done:store-open`, `done:content-root`, `done:store-ready`. **That seam is the one
+Stage 1 extends** — the same marks will bracket a key-store read, an unseal and per-record decryption, so a
+number that moves has one place to have moved. Everything else is observed from outside the app and costs
+the bundle nothing.
+
+### Measurements
+
+| Date       | Commit    | Metric                                   | android      | desktop     | Budget          | Store     |
+| ---------- | --------- | ---------------------------------------- | ------------ | ----------- | --------------- | --------- |
+| 2026-08-18 | `c611666` | first run → Today editable               | 369.5 ms     | 131.3 ms    | —               | plaintext |
+| 2026-08-18 | `c611666` | **cold start → Today editable**          | **235.4 ms** | **72.4 ms** | **< 2.5 s**     | plaintext |
+| 2026-08-18 | `c611666` | warm start → Today editable              | 228.9 ms     | 69.2 ms     | < 1.0 s         | plaintext |
+| 2026-08-18 | `c611666` | **content-root load (encoded state)**    | **54.3 ms**  | **10.2 ms** | **< 500 ms**    | plaintext |
+| 2026-08-18 | `c611666` | boot: module graph evaluated             | 68.2 ms      | 29.5 ms     | —               | plaintext |
+| 2026-08-18 | `c611666` | keystroke → paint, compose field         | 6.4 ms       | 5.0 ms      | < 16 ms p95     | plaintext |
+| 2026-08-18 | `c611666` | keystroke → paint, card editor           | 9.9 ms       | 6.2 ms      | < 16 ms p95     | plaintext |
+| 2026-08-18 | `c611666` | card focus → editable                    | 22.6 ms      | 8.1 ms      | < 50 ms         | plaintext |
+| 2026-08-18 | `c611666` | day-to-day navigation, `goTo` (response) | 27.3 ms      | 8.4 ms      | < 100 ms        | plaintext |
+| 2026-08-18 | `c611666` | day-to-day navigation, `goTo` (settled)  | 40.8 ms      | 23.3 ms     | < 100 ms        | plaintext |
+| 2026-08-18 | `c611666` | day-to-day navigation, `step` (response) | 46.9 ms      | 5.2 ms      | < 100 ms        | plaintext |
+| 2026-08-18 | `c611666` | day-to-day navigation, `step` (settled)  | 276.9 ms     | 288.7 ms    | n/a — see below | plaintext |
+
+**A note on the commit.** `c611666` is the parent. These were taken on the branch that adds the harness,
+against a working tree that also carried `src/lib/marks.ts` and its four call sites — about 100 bytes of
+initial JS, which moved the bundle from 306.2 kB to 306.3 kB. **The hash wants correcting to the harness
+commit when it lands**, because a measurement without a commit is not a measurement.
+
+### What the numbers say
+
+**Every budget with a harness is met, most of them by an order of magnitude.** The interesting content is
+in the margins rather than the verdicts.
+
+**Cold start has enormous headroom, and content-root load is where it will go.** 54.3 ms of a 500 ms budget
+on the throttled profile, against 650 records. That row scaled roughly linearly with the corpus during
+development — 166 records read in 10.5 ms, 650 in 54.3 ms on the same profile — which is exactly the
+sensitivity the Stage 1 comparison needs, and exactly the row that absorbs per-record decryption.
+
+**The `android` column is the one to read.** It is 3–5× the desktop figure on every start-up row, and the
+gap is the throttle doing its job. Two rows are closer than they look on a slow device: `card focus →
+editable` at 22.6 ms of 50 ms, and `day-to-day navigation` settled at 40.8 ms of 100 ms.
+
+**Day-to-day navigation is two different paths, and TRD §12 has one row for them.** A peek, the menu and
+`t` call `goTo`, which swaps the date immediately. A drag or Alt-Arrow calls `step`, which animates for
+`SNAP_MS` — 220 ms in `src/ui/App.tsx` — and swaps the date underneath once the movement has landed. So
+`step` settled is ~280 ms and **cannot be under 100 ms by construction**, while its response is 5–47 ms.
+Both readings are recorded and only the unambiguous ones are asserted. **§12 does not say which path it
+means, or whether "navigation" is the app responding or the day being in place.** That is a definition to
+settle, not a budget to fail; asserting the settled `step` figure would be asserting `SNAP_MS`.
+
+**Keystroke → paint is measured on two surfaces**, because the budget has one row and the app has two
+paths: the compose field is a plain textarea with nothing to mount (PRD §4), and a card is CodeMirror with
+the live-preview decoration path. The editor is the slower one and the sustained-typing surface, so it is
+the number to watch; both are comfortably inside 16 ms even throttled.
+
+### One journal record, and what encryption adds
+
+**This is the only §12 row that gates a selection rather than a feature**, so it is measured before Stage 1
+builds it — a number that arrives after the construction is chosen cannot influence the choice. The
+benchmark therefore bundles the construction from row 2's specification rather than importing it from the
+app, and **reproduces a published vector byte for byte before it measures anything**, because a benchmark of
+the wrong construction produces numbers that look exactly like the right ones.
+
+**Four cumulative levels, because the difference is the interesting quantity.** §12's row names the AEAD, but
+what a keystroke waits for is the whole synchronous write, and today's journal already pays for base64 and a
+`localStorage.setItem`. Batch means, taken on 2026-08-19 against `66a7c6a` plus the device runner, with the
+p95 of a single write in the last column — **that column is the budget's own statistic and only the Pixel 9a
+supplies it honestly**, for the reason under the table:
+
+| Level                         | Payload | desktop     | 4× throttle  | Pixel 9a      | 9a p95      |
+| ----------------------------- | ------- | ----------- | ------------ | ------------- | ----------- |
+| plaintext write, as today     | 18 B    | 5.9 µs      | 9.6 µs       | 4.9 µs        | 10 µs       |
+| seal                          | 18 B    | 7.4 µs      | 26.4 µs      | 91.8 µs       | 120 µs      |
+| seal + base64                 | 18 B    | 8.9 µs      | 29.9 µs      | 90.0 µs       | 125 µs      |
+| **seal + base64 + `setItem`** | 18 B    | **12.8 µs** | **49.1 µs**  | **100.7 µs**  | **145 µs**  |
+| plaintext write, as today     | 419 B   | 8.8 µs      | 21.6 µs      | 19.9 µs       | 30 µs       |
+| seal                          | 419 B   | 10.5 µs     | 39.0 µs      | 203.0 µs      | 225 µs      |
+| seal + base64                 | 419 B   | 13.9 µs     | 52.2 µs      | 220.8 µs      | 250 µs      |
+| **seal + base64 + `setItem`** | 419 B   | **18.0 µs** | **72.4 µs**  | **235.5 µs**  | **295 µs**  |
+| plaintext write, as today     | 4 kB    | 30.5 µs     | 125.9 µs     | 161.0 µs      | 175 µs      |
+| seal                          | 4 kB    | 29.7 µs     | 120.0 µs     | 1275.6 µs     | 1515 µs     |
+| seal + base64                 | 4 kB    | 53.6 µs     | 221.5 µs     | 1447.8 µs     | 1785 µs     |
+| **seal + base64 + `setItem`** | 4 kB    | **63.8 µs** | **265.7 µs** | **1498.3 µs** | **1930 µs** |
+
+**The budget is met at the payloads the journal actually sees and exceeded by about twice at 4 kB.** 145 µs and
+295 µs against 1 ms at 18 and 419 bytes; **1 930 µs at 4 kB.** This was recorded as a Stage 1 defect rather than
+as a budget revision — see [decisions.md](./decisions.md). **It has since been resolved by a built and measured
+WASM seal**, and the numbers are below; this table is left as the baseline the fix is measured against.
+
+**Two runs, and the ordering was checked rather than assumed.** Every level reproduces within 1.4% across two
+independent runs on the phone. Because sizes are measured smallest-first, the largest payload is also the
+latest, so the device runner repeats the 18 B and 4 kB seals at the end: they came back 7% and 2% slower, well
+inside the 15% threshold. **The 4 kB figure is a payload effect and not a warm phone.**
+
+**The 4× CPU throttle was not conservative — it was wrong.** It predicted 265.7 µs at 4 kB against an actual
+1 498.3 µs, understating by 5.6×, and it understates the common case by 2×. An emulated profile would have let
+this breach ship. The reason is visible in the ratios: against desktop, the 9a runs the **cipher** 12×, 19×
+and 43× slower as the payload grows, while the **base64-and-storage** path runs only 1.3×, 2.3× and 5.3×
+slower. A phone is not uniformly N× slower, which is exactly what row 2's extrapolation assumed — the pure-JS
+arithmetic degrades and the paths that reach native code do not.
+
+**Why no faster path exists today.** The journal write is synchronous by construction, WebCrypto is async, so
+there is no hardware-accelerated route to reach for. That is TRD §10.10's "one new primitive, and it is on the
+crash path", now with a number against it.
+
+**Row 2's Node figure survives contact with the browser.** It recorded 7.8 µs for an 18-byte seal in Node on
+this machine; Chrome gives 7.4 µs. So the two caveats row 2 raised against its own number — Node's
+`Buffer.from().toString('base64')`, and V8-in-Node — turn out not to have mattered _for the seal_. They matter
+one level up, which is why base64 is a level here rather than an assumption.
+
+**How it is measured, and the two things that had to be fixed.** Batches are sized from a probe to a target
+duration rather than fixed at a count: a fixed 100 quantized every result to a whole microsecond on a 100 µs
+clock, which made two adjacent levels report the same number and let noise put them in the wrong order. And
+every runner serves the page cross-origin isolated, because Chrome coarsens `performance.now()` to 100 µs
+without it and 5 µs with it, and a 12 µs write is invisible at the former. Both runners assert isolation rather
+than hoping for it.
+
+**The p95 column comes only from the phone, and that is structural.** CDP's CPU throttle stalls the thread
+rather than simulating a slower core, so its stalls land _inside_ individually-timed operations and become the
+tail — demonstrated rather than asserted, since on the throttled profile the plaintext level shows the same
+five-fold tail inflation while performing no cryptography at all. So the throttled column is a mean and nothing
+else, and §12's statistic needed hardware.
+
+**Taking it needs no cable.** `node scripts/bench-journal-device.mjs` serves the same construction, from the
+same module and the same constants as the Playwright suite, to any device that can reach a trustworthy origin —
+`adb reverse`, or a Tailscale MagicDNS URL. Results post back into the same file.
+
+### Which XChaCha20-Poly1305 implementation
+
+**The 4 kB breach above had two candidate causes and they wanted different fixes.** Either pure-JS 32-bit
+arithmetic is inherently slow on this hardware, or V8 on ARM handles one library's particular code shape
+badly. The first needs a WASM dependency against 43.7 kB of bundle headroom; the second needs a different
+import. A second pure-JS implementation is the cheap discriminator, and a WASM one is the ceiling.
+
+**Every candidate reproduces row 2's published vector byte for byte before it is measured**, and the page
+refuses to run if one does not — all of them are the same construction on the wire, so a swap would be an
+implementation change with no format consequence, but that is a claim and the vector is what checks it.
+Means on the Pixel 9a, 2026-08-19:
+
+| Implementation                            | 18 B       | 419 B       | 4 kB        | vs noble at 4 kB |
+| ----------------------------------------- | ---------- | ----------- | ----------- | ---------------- |
+| `@noble/ciphers` (selected)               | 84.7 µs    | 190.6 µs    | 1 247.8 µs  | 1.00×            |
+| `@stablelib/xchacha20poly1305`            | 62.3 µs    | 169.8 µs    | 1 237.5 µs  | **0.99×**        |
+| **libsodium (WASM)**                      | **6.2 µs** | **11.3 µs** | **51.5 µs** | **0.04×**        |
+| `@noble` ChaCha20-Poly1305, 12-byte nonce | 53.3 µs    | 166.0 µs    | 1 269.2 µs  | 1.02×            |
+
+**The discriminator answered cleanly: it is not the library.** Two independent pure-JS implementations land
+within 1% of each other at 4 kB. **Pure-JS arithmetic is the wall on this hardware**, so the cheap fix — swap
+the import — does not exist.
+
+**WASM buys 24× at 4 kB**, 14× at the common case, and would resolve the breach with room:
+
+| Payload | full write today | with a WASM seal | margin |
+| ------- | ---------------- | ---------------- | ------ |
+| 18 B    | 101 µs           | **15 µs**        | 66×    |
+| 419 B   | 235 µs           | **44 µs**        | 23×    |
+| 4 kB    | 1 498 µs         | **274 µs**       | 3.6×   |
+
+**The fix that works is not the fix that is available.** libsodium is 550 kB unpacked against 43.7 kB of
+headroom, so it cannot ship — it is here as a ceiling, to price the option before anyone builds a small
+module. What it establishes is that the ceiling is high enough to be worth the work.
+
+**Its instantiation cost is 37 ms from bundle evaluation to callable**, measured from the module rather than
+from the `await`, since an earlier version timed the await and reported 0.0 ms — true, useless, and hiding
+the number that matters. **That window is one in which a crash journal cannot seal**, which is why an inlined
+module compiled synchronously is the only shape worth considering (TRD §12). 37 ms is libsodium's whole
+library; a minimal module would be far less.
+
+**One result vindicates a selection rather than questioning it.** The 12-byte-nonce reference costs 0.63× at
+18 B and **1.02× at 4 kB**, so XChaCha's extra HChaCha20 block is about a third of a small seal and nothing at
+all where the budget actually breaks. Row 2 chose the 24-byte nonce on grounds that had nothing to do with
+speed, and it turns out to cost nothing where speed matters.
+
+### What a WASM seal would cost the bundle
+
+**Measured rather than estimated, because the 550 kB figure quoted above is unpacked size and the budget
+counts gzipped bytes.** Bundled with a single function imported, so the tree-shaker has every chance:
+
+|                                        | minified | gzipped      | against 43.7 kB of headroom     |
+| -------------------------------------- | -------- | ------------ | ------------------------------- |
+| `@noble/ciphers` (selected today)      | 15.2 kB  | **5.1 kB**   | fits, and is what ships now     |
+| libsodium-wrappers                     | 447.4 kB | **149.2 kB** | **3.4× the entire headroom**    |
+| A Rust-compiled wasm ChaCha20-Poly1305 | 49.9 kB  | **17.5 kB**  | fits                            |
+| …the same, base64-inlined              | 63.2 kB  | **24.3 kB**  | **fits, with 19.4 kB to spare** |
+
+**A libsodium subset build is not the way through.** 149.2 kB is already its _standard_ build rather than the
+sumo one, so the reduction has been applied; going further needs an emscripten toolchain, and emscripten's
+runtime glue is a fixed cost that does not obviously fall under 43.7 kB. libsodium priced the option and is
+not the option.
+
+**A purpose-built module does fit, and the inlined figure is the one that matters.** Synchronous compilation
+needs the bytes present rather than fetched (§12), which means base64 in the bundle and a third more raw size —
+and it still lands at 24.3 kB, a little over half the headroom. **The 17.5 kB row is measured from an
+off-the-shelf package that is not itself adoptable**: it exposes only the 12-byte-nonce construction, where row
+2 selected the 24-byte nonce and the width is load-bearing. It is a proxy for what the category weighs, not a
+candidate.
+
+**Which changes the shape of the remaining objection rather than removing it.** The concern was that a small
+module means shipping a hand-rolled primitive, against §13.10's criterion of _reviewed and widely implemented_.
+But the RustCrypto `chacha20poly1305` crate is audited and carries `XChaCha20Poly1305`, and `rustc`, `cargo`
+and `wasm-pack` are already on the development machine — so the question is whether compiling a reviewed
+implementation through a second toolchain satisfies that criterion, which is a question for review 3a rather
+than a fact this file can settle. **Nothing here has been built; these are sizes, not a working seal.**
+
+**All of the above is superseded by a built module, and the size estimate was wrong by 6×.** The proxy weighed a
+package exposing only the 12-byte-nonce construction; the real 24-byte-nonce module, compiled purpose-made without
+wasm-bindgen, is **6 465 bytes raw**. What follows measures it rather than estimating it.
+
+---
+
+### The WASM seal, built and measured
+
+**Date:** 2026-08-19 · **Commit:** `9b49b74` · Crate: `wasm/journal-seal`, pinned
+`chacha20poly1305` 0.10.1 / `chacha20` 0.9.1 / `poly1305` 0.8.0.
+
+`no_std`, no allocator, no wasm-bindgen, fixed static buffers, one exported `seal`. It is checked against
+draft-irtf-cfrg-xchacha-03 §A.3.1 and all four of row 2's composition vectors by `pnpm wasm:verify`, which runs
+inside `pnpm check` — and it verifies the **generated module** rather than the crate's `target/` artifact, so the
+thing checked is the thing that ships and no Rust toolchain is needed to check it.
+
+#### The budget row
+
+Journal write on a Pixel 9a, p95 of 4 000 single writes, against §12's 1 ms. Both columns come from the same
+device session, so this is a paired comparison rather than two measurements:
+
+| Payload  | JS today (`@noble`) | **WASM seal** | Speed-up | Against the budget |
+| -------- | ------------------- | ------------- | -------- | ------------------ |
+| 18 B     | 145 µs              | **35 µs**     | 4.1×     | 28.6× margin       |
+| 419 B    | 295 µs              | **65 µs**     | 4.5×     | 15.4× margin       |
+| **4 kB** | **1 915 µs** ✗      | **240 µs** ✓  | **8.0×** | **4.2× margin**    |
+
+**The JS baseline reproduces the recorded breach to 0.8%** — 1 915 µs here against the 1 930 µs above — so this is
+the same measurement re-taken, not a rerun that drifted. **The breach is closed at every payload measured.**
+
+#### Which implementation, second run
+
+Means on the Pixel 9a, same session. Every comparable candidate reproduces row 2's published vector before it is
+measured, and the page refuses to run if one does not:
+
+| Implementation                            | 18 B       | 419 B      | 4 kB        | vs noble   | Instantiation           |
+| ----------------------------------------- | ---------- | ---------- | ----------- | ---------- | ----------------------- |
+| `@noble/ciphers` (ships today)            | 86.3 µs    | 195.7 µs   | 1 258.1 µs  | 1.00×      | —                       |
+| `@stablelib/xchacha20poly1305`            | 61.8 µs    | 169.4 µs   | 1 235.4 µs  | 1.02×      | —                       |
+| libsodium (WASM)                          | 6.2 µs     | 11.3 µs    | 51.8 µs     | 24.27×     | 36.4 ms, **awaited**    |
+| **`journal-seal` (Rust wasm, inlined)**   | **4.4 µs** | **9.6 µs** | **45.3 µs** | **27.79×** | **1.5 ms, synchronous** |
+| `@noble` ChaCha20-Poly1305, 12-byte nonce | 53.8 µs    | 165.6 µs   | 1 274.6 µs  | 0.99×      | —                       |
+
+**It beats the ceiling.** libsodium was measured to price what any WASM cipher could buy; the purpose-built module
+is faster than it — 45.3 µs against 51.8 — at **1/34th of the bundle cost**.
+
+**The two instantiation figures are different in kind, and the difference is the point.** libsodium's 36.4 ms is a
+window in which the bundle has evaluated and the journal cannot seal. The 1.5 ms here is not a window at all: it is
+paid synchronously inside bundle evaluation, so there is no interval in which the app can accept an edit that the
+journal cannot write.
+
+#### What it costs the bundle, measured through the bundler
+
+Same method as the estimates above — one entry importing a single sealing function, minified, then gzipped:
+
+| Implementation                          | minified   | gzipped    | against 43.7 kB of headroom                        |
+| --------------------------------------- | ---------- | ---------- | -------------------------------------------------- |
+| `@noble/ciphers` (ships today)          | 15.5 kB    | 5.2 kB     | fits                                               |
+| `@stablelib/xchacha20poly1305`          | 17.7 kB    | 4.7 kB     | fits                                               |
+| libsodium-wrappers                      | 458.2 kB   | 152.8 kB   | 3.5× the entire headroom                           |
+| **`journal-seal` (Rust wasm, inlined)** | **9.4 kB** | **4.5 kB** | **fits, and is 0.7 kB less than what it replaces** |
+
+**Adopting it reduces the bundle**, which is the result nobody predicted: the WASM question was framed throughout
+as buying speed with bytes, and at 4.5 kB against `@noble`'s 5.2 kB there is no trade to make. The `@noble` and
+libsodium rows reproduce the earlier measurement within a few percent, which is what says the method is the same.
+
+**The initial-JS row in this file does not move yet**, because nothing in `src/` imports the module — the journal is
+Stage 1's to build. The table above is what that integration will cost, and it is negative.
+
+#### Two things that were asserted and are now checked
+
+**§12 says compilation has a synchronous form. It does, with three orders of magnitude to spare.** This was worth
+checking rather than trusting, because a cap on synchronous main-thread compilation would have invalidated the
+argument entirely. **Chromium's cap is 8 MB**, reported by its own `RangeError`; the module is 6 465 bytes.
+Synchronous instantiation succeeds and reproduces the published KAT in **Chromium (0.9 ms), Firefox (3.0 ms) and
+WebKit (2.0 ms)**.
+
+**`opt-level` was the whole difference, and optimising for size was spending the wrong currency.** The first build
+used `opt-level = "z"` and reached only 1.17× over `@noble`. Sweeping the setting showed size barely responds while
+speed doubles, so the crate is built at `opt-level = 3` with `+simd128`:
+
+| Build               | raw wasm    | gzipped     | 4 kB seal (Node) |
+| ------------------- | ----------- | ----------- | ---------------- |
+| `opt-level = "z"`   | 5 247 B     | 2 451 B     | 20.7 µs          |
+| `opt-level = "s"`   | 5 257 B     | 2 709 B     | 12.9 µs          |
+| `opt-level = 2`     | 6 595 B     | 3 037 B     | 11.7 µs          |
+| `opt-level = 3`     | 6 903 B     | 3 146 B     | 11.7 µs          |
+| **`3` + `simd128`** | **6 465 B** | **3 076 B** | **10.1 µs**      |
+
+**`+simd128` is a support-floor commitment rather than an optimisation**, because a module compiled with it fails
+to instantiate where SIMD is absent instead of running slowly. It is inside the floor §10.11 already states: wasm
+SIMD is Baseline from Safari 16.4, where that floor's binding constraint is Ed25519 at Safari 17.0. Verified
+rather than assumed — 73 SIMD-prefix bytes emitted against 1 without the flag, and all three engines instantiate it.
+
+#### What the numbers say next
+
+**The cipher has stopped being the dominant term, exactly as predicted.** At 4 kB the full write is 240 µs p95 of
+which the seal is 70 µs, so base64 and `setItem` are now roughly 170 µs — **more than twice the cryptography.** The
+earlier run called this inversion while the cipher still dominated; it is now the measured state, and further work
+against this budget is base64 work rather than crypto work.
+
+**The projection was slightly conservative, which is worth more than if it had been exact.** 274 µs was projected
+for the 4 kB write from libsodium's ceiling; the actual is 240 µs p95. The reasoning that produced the estimate was
+sound, which is the part that generalizes.
+
+### Still absent
+
+| Metric (TRD §12)                         | Budget                           | Why there is no number  |
+| ---------------------------------------- | -------------------------------- | ----------------------- |
+| Search results (10k items)               | < 150 ms                         | No search yet — Stage 3 |
+| Key store open → `K_g` unsealed          | < 100 ms                         | No key store — Stage 1  |
+| Envelope sign (async, off the edit path) | < 5 ms p95                       | Stage 4                 |
+| Envelope verify on receipt               | < 2 ms p95                       | Stage 4                 |
+| First-sync checkpoint verify             | < 1.5 s                          | Stage 4                 |
+| In-memory index first build              | < 1.5 s, off the cold-start path | Stage 3                 |
+
+**These are not waiting on the harness.** They arrive with their features, and their first measurement is
+their baseline — which is the one thing the six rows above could not have said if they had been left until
+Stage 1 had landed.
+
+---
+
+## When a budget is revised rather than met
+
+TRD §12 calls these "build-failing thresholds, not aspirations", and §3.2 of
+[sequencing.md](./sequencing.md) allows one alternative to meeting a budget: **a number the budget has been
+consciously revised to.** A revision is a decision, so it goes in [decisions.md](./decisions.md) with the
+measurement that forced it, and the TRD is updated — the revised figure is normative there, not here. This
+file records that the measurement happened and what it said.
+
+For cold start specifically, TRD §12 names the honest responses in advance: fewer stored records through
+more aggressive trimming (§6.1), or a revised budget — **not moving verification onto a lazy path where it
+silently stops happening.**
+
+
+## 2026-09-14 — Current Local application latency integration (budget gate failed)
+
+The source was based on signed `d8b8e00e` plus the reversible source patch and source pins in the
+[retained execution packet](./account-conformance-runs/2026-09-14-browser-application-latency/README.md).
+This is a dirty-source bounded validation run, not an immutable release qualification. All 12 project/cases
+executed without skips or retries; all 30 measurements survive in the packet. The two project teardowns
+fail because of three collected timing overruns. These failures are not treated as passing tests.
+
+Both projects admitted 300 cards across 20 days and 400 Goals lines through the real Local UI, drained,
+cold-reopened and verified the whole corpus. Mandatory factor entry is automated setup, excluded from
+application latency: launch-to-prompt and confirmation-to-editor are recorded separately. The cold/warm
+budgets apply to their sums. The new encrypted load/replay marks measure the factor-unlocked admission
+carrier read/decryption and journal-inclusive Yjs replay plus owner initialization, not the old plaintext
+marks. Missing marks now fail instead of supplying zero. The storage census reports encrypted payload
+bytes and journal UTF-8 bytes, not physical disk allocation.
+
+| Measurement (ms) | Desktop | Android emulation, CPU 4x | Bound |
+| --- | ---: | ---: | ---: |
+| Cold application work, excluding factor entry | 254.2 | 817.3 | <2500 |
+| Warm application work, excluding factor entry | 229.0 | 737.2 | <1000 |
+| Encrypted load and replay | 6.4 | 27.5 | <500 |
+| Compose typing p95, 120 keystrokes | 2.5 | 11.1 | <16 |
+| Card editor typing p95, 120 keystrokes | **18.3** | **84.2** | **<16 — failed** |
+| Card focus to editable | 7.4 | **61.4** | **<50 — Android failed** |
+| Peek navigation response / settled | 7.8 / 23.3 | 40.8 / 55.2 | <100 each |
+| Keyboard navigation response | 0.7 | 26.7 | <100 |
+
+Rounded display only; retained rows contain the original precision and actual viewport/CPU notes.
+Seeded editor work uses a 1280×900 viewport. This is host/emulator evidence, not a handset measurement.
+The keyboard transition's chosen animation is recorded separately and has no <100 ms settled assertion.
+No numeric budget or test deadline was raised. Timing failures are delayed until project teardown to keep
+later observations; functional failures remain immediate. The adapter independently enforces the same
+nine numeric predicates and rejects threshold equality, omitted metrics and malformed measurements.
+
+The earlier run is also retained: desktop card typing measured 16.7 ms, and the Android fixture timed out
+before seeding because its Lock button was in a closed off-screen menu. That helper now opens the menu
+normally. This correction explains the setup timeout, not the measured typing overruns. Timer calibration,
+frame scheduling and editor/admission profiling are the next bounded investigation; the cause and a
+performance repair are not established by this packet. The historical plaintext baselines remain unchanged.
+
+
+## 2026-09-14 — Local latency diagnostic pilot (`dbc64150` application)
+
+This separate pilot completes measurement calibration and CPU profiling; it does not repair or
+pass the preceding application latency gate. [Prospective protocol](./latency-diagnosis.md) and
+[retained evidence](./account-conformance-runs/2026-09-14-application-latency-diagnosis/README.md).
+The application source and original nine budgets are unchanged. Two reverse-order blocks each
+contain 120 trusted keys at 50 ms gaps. Both projects use 1280×900 and the same UI-seeded,
+cold-verified 300-card/400-line corpus. CPU 4x remains emulation on this host, not a handset.
+
+| Surface p95, ms | Desktop block 1 / 2 | CPU-4x Android block 1 / 2 |
+| --- | --- | --- |
+| Plain textarea | 1.6 / 1.4 | 7.0 / 6.0 |
+| Bare CodeMirror | 1.9 / 15.5 | 8.6 / 19.0 |
+| Admitted card | 17.2 / 18.3 | 92.9 / 93.7 |
+
+All 1,440 raw timing samples and 12 aggregate rows are retained. The recorder is unchanged;
+its frame-plus-task timestamp is a paint proxy, not proof of presentation of the particular
+character. CodeMirror block variability makes scheduler/JIT/GC effects a live limitation.
+These dependent samples do not support independent-sample confidence intervals or subtraction
+of control p95 from card p95. Card text and history accumulate across blocks.
+
+Separate CPU profiles cover 60 further card keys and ten focus/close cycles per project.
+Sampling uses 1,000 µs intervals, and retains raw samples and mapped call locations. Typing
+profiles attribute 647.2 / 3,106.6 ms inclusive to `prepareIntent`, including
+371.3 / 1,775.5 ms in `forkWorkspaceHistory`; `sameDocState` projection verification accounts
+for 237.1 / 1,104.3 ms, desktop / Android. The nested inclusive times overlap and must not be
+added. These are sampled aggregates across the profiled workload, not per-key quantiles, exact
+CPU timings or estimated causal speedups. Focus profiles place the largest identified application
+stack at mounting the admitted editor (23.0 / 105.5 ms across ten cycles), but include closing,
+automation waits and profiler overhead; this does not establish the cause of the prior focus tail.
+
+The evidence supports targeting private document/history copying and projection verification
+first. Preserve journal-before-publication, refusal isolation, undo and pending-dependency checks;
+validate any optimization semantically and against the unchanged application gate. Further recorder
+calibration and focus profiling remain separate.
+
+The first diagnostic attempt was cancelled after inspecting only the owned disposable browser:
+the app service worker intercepted the control URL and returned the unlock page. That attempt,
+its exact source patch and drained-process receipt are retained. Controls now use their own
+disposable context with service workers blocked, a dedicated asset prefix, and explicit title/input
+assertions. The application context retains its normal service worker. The completed run has
+four passed cases, no skips/retries, and preserves all added writing through lock and cold reopen.
+The two native runner controls also pass. No personal browser, app package or deployment changed.
+
+
+## 2026-09-14 — F-17 complete comparison repair (application budget still failed)
+
+This bounded repair is based on signed `5ffce895`; its [construction](./f17-comparison.md) and
+[retained evidence](./account-conformance-runs/2026-09-14-f17-comparison/README.md) preserve the
+prospective protocol, final source patch/pins, every exploratory/intermediate/final profile,
+correctness controls, native receipts and failed packaged gate. All integrated content is still
+verified at every transition. Long values passed through the pinned V1 writer's `writeString`
+method can remain exact ordered string fields during comparison; any difference reconstructs
+ordinary bytes and uses the existing normalization fallback. No persistence or wire format changes.
+
+The unchanged Node item-count profile uses 100,000 visible characters, one warmup and five measured
+samples, baseline then candidate. Whole-command acceptance includes an in-memory durable carrier;
+it is not a browser input-to-paint or physical-storage measurement. Final medians in milliseconds:
+
+| Yjs items | Comparison before / after | Whole command before / after |
+| --- | ---: | ---: |
+| 1,000 | 1.700 / 0.492 | 16.233 / 13.735 |
+| 10,000 | 3.730 / 3.986 | 22.907 / 23.473 |
+| 100,000 | 24.705 / 25.501 | 141.388 / 127.044 |
+
+The first exploratory implementation slowed dense histories, so the final candidate retains the
+ordinary encoder for histories with no long text item among the first 64 structs. This probe only
+selects the implementation; it never omits content. Final sequential results remain mixed. A
+prospectively added comparison-only check uses ten warmups per variant and twenty alternating
+AB/BA pairs, with separate baseline/candidate bundles and no concurrent tests or profiling:
+
+| Yjs items | Comparison median before / after, ms |
+| --- | ---: |
+| 1,000 | 1.555 / 0.280 |
+| 10,000 | 3.295 / 3.296 |
+| 100,000 | 17.791 / 17.825 |
+
+This supports a useful gain with longer text items and no consistent measured dense-history
+regression in these checks. Samples share host/JIT/GC state and do not establish a population
+estimate or a universal speedup. Whole-document and undo-history forks are unchanged. The earlier
+control pilot remains the recorder calibration reference; no new recorder claim is made.
+
+The unchanged packaged application gate ran alone against the current Local UI, seeded and
+cold-verified with 300 cards and 400 Goals lines. All 12 project/cases execute without skips or
+retries and all 30 aggregate measurements survive. Two project teardowns report the collected
+card-typing overruns; the run is failed and its process group drained. Final values, rounded:
+
+| Measurement (ms) | Desktop | Android emulation, CPU 4x | Bound |
+| --- | ---: | ---: | ---: |
+| Cold application work, excluding factor entry | 187.2 | 648.4 | <2500 |
+| Warm application work, excluding factor entry | 225.9 | 690.0 | <1000 |
+| Encrypted load and replay | 4.8 | 18.3 | <500 |
+| Compose typing p95, 120 keys | 3.1 | 10.4 | <16 |
+| Card typing p95, 120 keys | **16.2** | **77.2** | **<16 — failed** |
+| Card focus to editable | 8.1 | 44.2 | <50 |
+| Peek navigation response / settled | 8.7 / 21.6 | 40.6 / 55.3 | <100 each |
+| Keyboard navigation response | 9.1 | 22.8 | <100 |
+
+Earlier card typing was 18.3/84.2 ms and focus 7.4/61.4 ms. Those cross-run differences are not
+controlled causal estimates. Both seeded editor workloads use 1280×900; CPU throttling remains
+host emulation, not handset evidence. The frame-plus-task recorder remains a paint proxy. No
+numeric budget or deadline changed. Passing focus in this run does not settle its previous tail.
+
+The final full unit suite passes 96 files / 1,030 cases. Comparison agrees with the frozen full
+normalization reference over 150 existing and 200 new histories, including unequal values at equal
+clocks; the existing 500 fork histories remain. Ignoring retained string values fails two tests.
+Native pending and original-order delivery each pass 100 generated histories plus their directed
+crash/pressure cases; the old content/publication mutants are detected. Owned workspace admission
+passes ten cases and four mutations. All 99 pure runner checks, type and scoped style gates pass.
+The corrected test-generator setup and initial out-of-allow-list native invocation remain recorded.
+
+F-17 remains partial. Next is a bounded document/history fork-cost repair preserving private
+staging, refused-edit isolation, undo and pending delivery, followed by this unchanged application
+gate. Dense-history and device capacity, focus, remaining command/campaign adapters and immutable
+release qualification remain open. Personal browser, package and deployment are untouched.
+
+
+## 2026-09-14 — F-17 detached-fork repair (Android typing budget still failed)
+
+Based on signed `e2c93b05`, this [bounded experiment](./f17-forks.md) changes only the Yjs seam's
+runtime document construction. Admission still has a detached canonical draft and a separate
+private undo history, full verification on every transition, and unchanged publication ordering.
+[Evidence](./account-conformance-runs/2026-09-14-f17-forks/README.md) retains the prospective protocol,
+its refinement after semantic failures, final source patch/pins, every pilot/final sample, failed
+controls, full native reports and the unchanged failed application gate.
+
+The naïve public V2-codec swap was rejected. Directed tests demonstrate different legacy JSON
+conversion and adjacent unpaired-surrogate behavior. A generated isolation check shrank a third
+failure to a one-byte binary value: V2's decoder returned a view into the update, which the fork
+then cleared. Paired private codecs now use V2 struct compression with V1 JSON stringify/parse,
+independent string-edge replacement and detached binary buffers. Those temporary bytes never
+become a persistence or transport representation.
+
+A new test also fails against the signed V1 baseline: a binary leaf nested inside an arbitrary
+object/array aliases the temporary update and becomes zero when that update is cleared. The new
+fork detaches these leaves too. This is a demonstrated runtime-fork defect for that content shape;
+this evidence does not establish that personal writing used the shape or lost data. The baseline
+counterexample remains distinct from the three defects in the rejected candidate.
+
+Final sequential Node medians use 100k visible characters at the declared item counts, one warmup
+and five measured forks/comparisons, and six admitted commands with the first excluded. Whole
+commands use a controlled in-memory durable carrier, not physical browser storage:
+
+| Yjs items | Fork before / after, ms | Whole command before / after, ms |
+| --- | ---: | ---: |
+| 1,000 | 1.385 / 0.849 | 13.585 / 15.210 |
+| 10,000 | 4.971 / 3.498 | 26.115 / 23.815 |
+| 100,000 | 42.866 / 28.577 | 130.601 / 116.110 |
+
+Whole-command observations remain mixed. A predeclared alternating fork-only check uses ten
+warmups per variant and twenty AB/BA pairs with separate bundles. Correctness checks and disposal
+occur outside timing. No tests or other profiles ran concurrently with these measurements:
+
+| Yjs items | Fork median before / after, ms |
+| --- | ---: |
+| 1,000 | 0.695 / 0.415 |
+| 10,000 | 3.119 / 1.779 |
+| 100,000 | 36.897 / 22.252 |
+
+This meets the prospective rule: at least a 20% fork gain in a declared stratum with no consistent
+>10% fork regression in another. Samples share host/JIT/GC state; they establish neither a
+population estimate nor a universal speedup. The initial plain-V2 pilot is retained separately
+and is not used as evidence for the revised paired codec. Undo-stack copying remains unchanged.
+
+The unchanged packaged application gate ran alone against the UI-seeded, cold-verified 300-card /
+400-line corpus. All 12 project/cases execute without skips/retries and all 30 metrics survive.
+One project teardown reports Android card typing over budget; the run is failed and drained.
+Rounded values in milliseconds:
+
+| Measurement | Desktop | Android emulation, CPU 4x | Bound |
+| --- | ---: | ---: | ---: |
+| Cold application work, excluding factor entry | 223.7 | 704.0 | <2500 |
+| Warm application work, excluding factor entry | 208.0 | 627.4 | <1000 |
+| Encrypted load and replay | 5.2 | 23.2 | <500 |
+| Compose typing p95, 120 keys | 5.9 | 9.8 | <16 |
+| Card typing p95, 120 keys | 15.2 | **69.4** | **<16 — Android failed** |
+| Card focus to editable | 7.4 | 35.7 | <50 |
+| Peek navigation response / settled | 8.1 / 23.1 | 36.6 / 62.4 | <100 each |
+| Keyboard navigation response | 0.5 | 13.9 | <100 |
+
+Previous typing was 16.2/77.2 ms and focus 8.1/44.2 ms. These cross-run differences are descriptive,
+not controlled causal estimates. Both seeded editor workloads use 1280x900. CPU throttling is host
+emulation, not a handset, and the frame-plus-task recorder remains a paint proxy. Desktop meets its
+typing bound in this observation; this does not close the complete gate or the earlier focus tail.
+No numeric budget, deadline, recorder, personal app or deployment changed.
+
+The final unit suite passes 96 files / 1,035 cases. Two hundred generated Unicode/nested-content
+cases compare with a frozen V1 reference and exercise isolation in both directions; 150 generated
+undo/redo histories compare repeated forks against an unforked history and check selection metadata.
+Existing 500 fork and 350 comparison histories remain. Pending-map aliasing and omission of redone
+links each fail their intended control. Native pending and original-order delivery each pass 100
+histories plus directed crash/pressure cases. Owned admission passes ten cases and four mutations;
+all 99 pure runner, type, scoped style, inventory and authority checks pass.
+
+F-17 remains partial. Next isolate remaining undo-history and duplicate-preparation costs on the
+revised runtime before choosing an ownership or history-copy change. Private staging, refused-edit
+isolation, undo, pending delivery and full verification remain hard constraints. Dense-history,
+physical-device capacity, focus, command/campaign integration and immutable qualification remain open.
+
+
+## 2026-09-14 — Residual preparation and undo-history profile
+
+At signed `1fd04afa`, the unchanged browser diagnostic passes four cases with cold reopen, no retries
+and process drain. This evidence-only phase changes no runtime, test contract or budget. The last
+independent application gate remains failed at 15.2/69.4 ms desktop/CPU-4x Android card typing.
+[Protocol, full tables and next design](./f17-history-profile.md).
+[Evidence and retained analysis](./account-conformance-runs/2026-09-14-f17-history-profile/README.md).
+
+Twelve diagnostic p95 rows retain 1,440 raw timings. Over the two reverse-order blocks, desktop
+textarea/bare-CodeMirror/card values are 2.5/1.8, 2.4/17.9 and 15.0/16.4 ms; Android CPU-4x values
+are 5.1/5.4, 7.3/18.0 and 73.0/73.9 ms. Later bare-CodeMirror tails preserve the recorder/scheduler
+uncertainty. Do not subtract these controls or interpret the diagnostic as a new budget pass.
+
+Separate 60-key profiles attribute the following inclusive sampled milliseconds:
+
+| Work | Desktop | Android CPU 4x |
+| --- | ---: | ---: |
+| Private preparation | 542.9 | 2555.5 |
+| Admission document fork | 166.4 | 752.5 |
+| History document fork | 148.2 | 730.9 |
+| Undo/redo stack copying | 157.8 | 738.2 |
+| Full comparison after admission | 186.4 | 774.4 |
+| Publication listeners | 64.4 | 522.9 |
+
+Preparation includes both forks and stack copying; do not sum nested totals. The stack-item callback
+has 137.9/645.9 ms own sampled time, which cannot isolate native structuredClone from other inline
+work. Separate ten-cycle focus profiles attribute 19.3/100.6 ms to mounting; these are not per-event
+quantiles. Raw CPU profiles and complete resolved node mappings survive in the packet. Full generated
+source maps remain in the raw run with retained hashes, not duplicated into the bounded packet.
+
+The Node probe retains 360 measured document/history forks across nine declared strata, with five
+warmups per variant and twenty alternating pairs. At 1,000 human groups and 100,000 visible characters
+(3,000 integrated items), history medians with zero/one/100 targets per before/after selection are
+1.848/8.802/559.527 ms; corresponding document medians are 1.153/1.180/1.348 ms. All medians/ranges,
+state hashes and samples survive, including a 12.721 ms document-fork tail in another stratum.
+The document is fixed within each metadata comparison, but cross-depth item complexity grows.
+Synthetic target keys share the master-text basis; redo and redone counts are zero. These dependent,
+increasing-stratum-order host observations do not estimate a customer distribution or a causal
+application speedup. They do support metadata copying as a bounded next target alongside the browser
+stack attribution.
+
+Next prototype a specialized fully detached selection-metadata copy with structuredClone fallback,
+preserving within-item graph identity and separate clones across items. Pin generated value/alias,
+undo/redo and restoration oracles plus a deliberate sharing fault control before production edits.
+Keep both drafts, deletion sets, redone links, admission order and full verification unchanged. The
+prospective timing rule requires >=20% median improvement in both nonzero-metadata 1,000-group strata
+without consistent >10% regression in zero-metadata controls; then run semantic/native controls and
+the unchanged application gate alone. This optimization is not expected to close Android typing by
+itself. Duplicate preparation, full comparison, publication and device-capacity work remain open.
+
+All 99 pure runner checks, TypeScript, scoped style, inventory and authority checks pass. All 260
+prior general contracts, exclusions, 52 personal/vector pins and L-2 are unchanged. This phase adds
+no product correctness claim and no immutable release qualification.
+
+
+## 2026-09-14 — Metadata-copy attempts rejected under the prospective rule
+
+At signed `8c5fdaee`, two private selection-metadata copiers were tested and then discarded. The
+production seam is byte-for-byte restored. [Prospective protocol and disposition](./f17-metadata.md).
+[Candidates, all timings and regression evidence](./account-conformance-runs/2026-09-14-f17-metadata/README.md).
+
+Both candidates preserve deep values/reference graphs in 200 generated cases, pass 150 generated
+undo/redo histories with restored master/card selections, and pass directed fallback/cycle/accessor
+checks. A nested-ID sharing mutation fails the intended source-isolation assertion for each. The
+first uses a recursive shape dispatcher; the second uses direct constructors with the same descriptor,
+shape and per-item memo safeguards. Each distinct source gets one full fixed-count measurement run:
+nine strata, five warmups each and twenty alternating baseline/candidate pairs. No tests or other
+profiles ran concurrently with timing. At 1,000 human undo groups:
+
+| Candidate | Targets per before/after map | Baseline / candidate median, ms | Gain |
+| --- | ---: | ---: | ---: |
+| Recursive dispatcher | 1 | 8.552 / 8.118 | 5.1% |
+| Recursive dispatcher | 100 | 576.683 / 460.767 | 20.1% |
+| Direct constructors | 1 | 8.456 / 7.583 | 10.3% |
+| Direct constructors | 100 | 571.345 / 396.992 | 30.5% |
+
+The rule required >=20% improvement in both nonzero-metadata 1,000-group strata, without consistent
+>10% regression in zero-metadata controls. Neither candidate meets the first requirement. The first
+has one 12.5% slower empty-history median among its three equivalent empty controls; the second's
+empty controls vary from 3.2% faster to 7.4% slower. All 720 measurements, all nine strata per attempt,
+ranges, complete candidate sources/patches and bundle hashes remain. The second implementation's
+larger stress-stratum gain does not justify lowering the rule after observation. These dependent
+single-host observations retain increasing-order/JIT/GC and synthetic-target-layout limitations;
+no measured application improvement follows.
+
+Three new regression cases remain against the original production implementation. A shallow metadata
+copy in that retained implementation fails the intended source-isolation assertion. The final full
+unit suite passes 96 files / 1,038 tests; owned execution of the changed suite passes all 15 cases
+with process drain. All 99 pure runner checks, TypeScript, scoped style, inventory and authority gates
+pass. The planning inventory and two fixed-denominator fixtures now account for 2,018 general cases.
+The initial planning refusal and stale 2,015 denominator assertions are retained; none was bypassed.
+
+Because the production candidates were rejected, the conditional runtime-native/application campaign
+was not reached. The last application typing gate remains failed at 15.2/69.4 ms desktop/CPU-4x
+Android; no new budget or native pass is claimed. F-17 stays partial. Next define an owned preparation
+handoff, its accepted-basis/writer binding, refusal/disposal behavior and Account source coverage
+before removing a duplicate draft. Keep full per-transition verification and use the existing two-draft
+implementation as the differential reference. Full comparison, publication, physical-device capacity,
+command/campaign integration and immutable qualification remain open.
+
+
+## 2026-09-14 — Preparation ownership contract and reference controls
+
+At signed `213ada08`, define the [private preparation contract](./f17-preparation-contract.md) before
+attempting to remove the first canonical-derived draft. The proposed context binds owner identity,
+accepted revision, writer, job and slice. A failed storage attempt retains its already consumed
+handoff for exact retry; a new preparation requires a fresh context. Keep canonical state private,
+full post-promotion comparison and the independent Account source-coverage probe. The generic path
+remains a reference. The actual private component, its rejection/cleanup controls and subsequent
+Local/Account integration have not been implemented in this phase.
+
+Four added cases exercise the current production path: 80 generated admission histories with an
+independent accepted-state/cold-carrier ledger; no-op revision and remote-writer collision behavior;
+discard/close history ownership; and 160 generated complete pending-state source checks. Stale draft,
+premature promotion, missing disposal and omitted source verification each fail the intended control.
+All 1,042 unit tests, 99 runner self-tests and 57 owned cases across the affected suites pass. Initial
+fixture mistakes and final control outputs are retained in the
+[evidence packet](./account-conformance-runs/2026-09-14-f17-preparation-contract/README.md).
+
+Production bytes are unchanged, so this phase performs no new application/native timing and makes
+no speedup claim. Last application typing is still 15.2/69.4 ms desktop/CPU-4x Android, with Android
+failing <16 ms. F-17 remains partial; all budgets, recorder limitations and handset/immutable
+qualification requirements remain. Next build the actual private handoff with rejection and disposal
+tests, then qualify Local integration against the reference before timing; Account source activation
+needs a separate gate.
+
+
+## 2026-09-14 — Private preparation ownership component, not yet integrated
+
+At signed `6c5502fd`, implement the [private handoff component](./f17-handoff.md) without wiring it
+into admission or the editor. Context identity binds verified local head, job, slice, revision and
+writer. Storage retry retains exact prepared bytes/history. Close revokes new authority while leases
+keep in-flight writes' references alive until release. Full verification is required before source
+capture and again after the matching durable canonical promotion, before history transfer. These
+callbacks must preserve the existing canonical/source checks when the component is integrated.
+
+Twenty component cases include 120 generated independent text/revision/undo/cold-replay histories;
+eight deliberate faults fail the intended assertions. Two new cleanup tests first reproduced gaps in
+late async-result erasure and collection of a closing command's returned buffers; both are fixed.
+The first revision-binding control was masked by its fixture retaining an unexpected borrow through
+cleanup. It now releases on that failure path. All first failures, code variants and final evidence
+are retained in the [packet](./account-conformance-runs/2026-09-14-f17-handoff/README.md).
+
+The owned runner passes all 20 cases with drain. Full units pass 97 files / 1,062 cases on the same
+default command run alone, after a concurrent run timed out in two unchanged five-second tests
+(Account liveness and position decisions). All 99 runner self-tests and type/style/authority checks
+pass. The standalone pass does not resolve loaded-host headroom or establish concurrency as the
+cause. No timeout or application budget changes, and no application/native timing is run here.
+
+No existing runtime source changes. The new component has no editor/admission caller, so there is
+no product speedup claim. The last typing observation is still 15.2/69.4 ms desktop/CPU-4x Android,
+with Android failing <16 ms. Next integrate Local against the legacy reference through semantic and
+native pressure/crash checks, then use a prospectively specified performance comparison and the
+unchanged application gate. Account source integration, handset capacity and immutable qualification
+remain separate; F-17 is partial.
+
+
+## 2026-09-14 — Private Local handoff: functional integration before timing
+
+At signed `0c84e5cc`, integrate the private preparation owner through an explicit Local constructor
+selection. The candidate avoids the first canonical-derived draft while retaining a detached history,
+actual transaction capture, exact retry, write leases, per-slice renewal and complete comparison
+before publication. Default Local and Account factories retain the reference path. Sharing the
+command helper does change internal code on that reference path, so the next performance comparison
+must also retain the signed baseline; do not assume its timing stayed identical.
+
+The 23 original workspace cases run against both strategies. Each additionally checks no-op/writer
+renewal, reentrant submission and the same 80 generated text/revision/undo/redo/cold-replay histories
+(seed 140925). Two Local-specific close/adoption cases bring the workspace total to 54. Eight owned
+files pass 155 cases; full units pass alone at unchanged limits (97 files / 1,093 tests). The native
+pending-state and original-order delivery campaigns each pass directed cases and 100 generated
+histories. The final owned workspace catalogue passes ten cases and four mutations with drain.
+All 99 runner self-tests and type/style/authority checks pass.
+
+A directed native initialization test first exposed a new private-integration gap: an event labeled
+remote after Local adoption was tolerated because the adopted document already matched canonical.
+The workspace now checks source and revision; failure retains the projection-mismatch cause through
+startup. The original source/report, directed repair and final campaign survive. Removing that check
+reproduces the intended native failure. Separate unit controls detect omitted adoption comparison
+and erasure of a leased write. [Implementation](./f17-local-handoff.md);
+[evidence](./account-conformance-runs/2026-09-14-f17-local-handoff/README.md).
+
+No performance measurement or application-budget change occurs. The last application gate remains
+15.2/69.4 ms desktop/CPU-4x Android typing against <16 ms, with Android failing. Functional agreement
+is not evidence of a speedup. Next specify a balanced comparison prospectively, run it and the
+unchanged application gate, then decide Local default activation. Account source activation,
+physical-device capacity and immutable qualification remain separate. After the F-17 disposition,
+resume the 96 command / 63 campaign wrapper obligations and remaining qualification repairs.
+
+
+## 2026-09-14 — Private Local performance comparison and activation disposition (`L-1`)
+
+The prospectively frozen B/R/C comparison passes its relative criteria: 54 sessions, 3,456 measured
+commands, six balanced orders, all semantic/replay assertions passing. The private candidate improves
+paired medians by 10.2%/12.0% versus current reference/signed `0c84e5cc` at 10,000 items and
+29.7%/29.0% at 100,000 items; the medium result is narrow. Tail and reference-baseline regression
+rules pass, with all raw observations and warning output retained. This synthetic Node comparison
+does not measure encrypted storage or paint.
+
+The unchanged application gate on a disposable candidate activation variant fails Android card
+typing: 63.5 ms p95 against <16 ms; desktop is 12.9 ms. Other budgeted metrics pass. All twelve
+cases execute, all thirty measurements survive, no retry occurs, and processes drain normally.
+The prospective document's seven-per-project count was a clerical error; the exact frozen stage
+always contains six per project. The original protocol and this correction both remain.
+
+Do not activate Local by default. Keep the candidate private and F-17 partial. The last reference
+application observation is still 15.2/69.4 ms; do not treat the separate candidate run as a paired
+browser speedup estimate. Next diagnose remaining candidate browser cost before choosing another
+repair. General integration remains 261 files / 2,073 dispositions (11 N/A), with 96 command and
+63 campaign obligations; no aggregate or physical-device qualification follows. No product source,
+test, adapter, personal package or browser changes occur in this performance phase.
+[Protocol and results](./f17-local-performance.md);
+[evidence](./account-conformance-runs/2026-09-14-f17-local-performance/README.md).
+
+
+## 2026-09-15 — Physical Pixel 9a R/C/C/R companion
+
+The four-session companion completes on Android 17 / Chrome 152.0.7977.83, using the native narrow
+viewport and no CPU/device emulation. Card-typing p95 is 107.9, 87.1, 86.9 and 108.3 ms (R/C/C/R):
+19.3% and 19.8% lower for C within the two opposite-order pairs, still failing <16 ms in all four.
+Compose p95 is 14.8, 14.4, 14.2 and 15.7 ms; all compose, focus, cold/warm startup and replay budgets
+pass. All 960 trusted-key samples survive, and full-corpus plus exact edited-card cold-reopen checks
+pass per session. The unchanged prior CPU-4x candidate gate remains failed at 63.5 ms; this companion
+does not replace it or authorize default activation.
+
+The measured typing viewport is 411.43×403.81 CSS pixels, DPR 2.625, with the phone keyboard open.
+Separate frame-interval medians are 16.6–16.7 ms. Median delivered key intervals are 67.7–68.0 ms in
+compose and 140.9–158.8 ms in cards, despite the same 50 ms driver pause after command completion;
+this is not a fixed delivered-input-rate comparison. Battery temperature rises 34.6→37.6 °C while
+charge stays 81%. Preserve these period/cadence limitations and all failed setup/diagnostic attempts.
+No valid comparison session was rerun. Native on-screen keyboard/composition/undo testing remains
+pending. Keep Local handoff private and profile the remaining card path after that manual check.
+[Protocol](./f17-pixel9a.md); [raw evidence and independent recomputation](./account-conformance-runs/2026-09-15-f17-pixel9a/README.md).
+
+
+## 2026-09-15 — Close the phone comparison and resume candidate diagnosis
+
+The operator cancels the remaining physical-device campaign, including the planned manual
+keyboard exercise. Preserve its completed four-session evidence without claiming that exercise
+passed. The fixture server exited cleanly after removing its five owned USB reverse forwards;
+the dedicated ADB server on port 5047 is stopped. Keep the emulation reference values and use
+roughly 1.5 times card-typing latency for planning only: C 87.0/63.5 = 1.37; R 108.1/69.4 = 1.56.
+These separate sessions are not a controlled hardware calibration or evidence for other metrics.
+Resume the [bounded private-candidate browser profile](./f17-local-profile.md) once, with unchanged
+samples and source-mapped attribution before another repair. Default activation stays refused.
+
+
+## 2026-09-15 — Attribute remaining private Local card work
+
+The unchanged owned browser diagnostic passes once on the isolated Local handoff variant:
+4 cases, no retries/skips, 1,440 raw timings, 4 CPU profiles, exact text/cold-reopen checks and
+process drain (208.584-second stage). Full maps independently reproduce 2,168 mapped nodes;
+79 mapped application source files match the activated candidate. Original workspace identity
+is unchanged during execution. Card diagnostic p95 is 14.6/13.7 ms desktop and 80.5/68.7 ms
+CPU-4x Android across the two blocks; these do not replace the prior 12.9/63.5 ms application
+gate observation. The later bare-CodeMirror tail persists and limits timing interpretation.
+Across separate 60-key profiles, full history copying takes 345.2/1,558.4 ms desktop/Android,
+including document copying 170.3/770.1 and stack copying 172.4/778.8. Full comparison uses
+190.2/804.8 ms and publication/listeners 61.4/489.9 ms. Nested totals overlap; callback self time
+does not isolate structuredClone. Native/unmapped and GC samples are retained.
+
+Next define and test an ownership contract for private immutable selection snapshots: detach
+at capture, safely reuse only owned sealed values, detach on restore, and prove foreign/stale
+reference, nested-alias, undo/redo and lifetime behavior. Keep generic history forks fully detached,
+full verification and durable admission unchanged. Both rejected metadata copiers remain rejected;
+no speedup or default activation follows from this diagnosis. F-17 is partial; adapter obligations
+remain 0 test-file / 96 command / 63 campaign. [Protocol and next phase](./f17-local-profile.md);
+[evidence](./account-conformance-runs/2026-09-15-f17-local-profile/README.md).
+
+
+## 2026-09-15 — Selection-snapshot ownership contract and baseline controls
+
+Define the [private selection-snapshot contract](./f17-selection-snapshots.md): capture a detached
+payload once behind an owner-issued opaque token, reuse only same-owner tokens in explicitly owned
+metadata, restore detached selections, and invalidate on owner close without erasing snapshots a
+live sibling history still needs. Generic metadata forks remain fully detached. Weak-key lifetime
+must not be replaced by a strong global registry; shallow freezing does not establish immutability.
+The component and its owner/forgery/closed-token controls are the next phase, not implemented here.
+
+Six owned suites pass 118 cases with no skips/retries and process drain. Four new registrations
+cover 96 generated retained-branch histories, frozen/lookalike generic metadata, and 80 generated
+master/card ledger histories under each current preparation strategy. The independent ledger
+checks text, selections, undo/redo, revision, failed-write retry/discard, remote prefixes and cold
+replay. Three faults are detected: shallow nested sharing, empty before capture and stale after
+capture. The first sharing attempt failed earlier at prototype normalization; production-shaped
+cloned fixture metadata makes the corrected control reach the intended alias assertion. Both
+attempts remain. No production defect was identified and all runtime bytes remain unchanged.
+
+All 17 selected runner/registration checks, TypeScript, scoped source style, inventory/manifest and
+authority checks pass. Exactly four cases and one denominator-title update are reviewed; all other
+contracts, deadlines and exclusions remain. General integration is 261 files / 2,077 dispositions
+(11 not applicable). Wrapper obligations remain 0 test-file / 96 command / 63 campaign. Full unit,
+native and timing aggregates are not rerun in this baseline-only phase. F-17 remains partial, the
+application gate remains failed, and the rough 1.5× Pixel card estimate remains planning context.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-contract/README.md).
+
+
+## 2026-09-15 — Unmounted private selection-snapshot owner
+
+Implement [the private selection owner](./f17-selection-owner.md) without connecting it to the
+editor. Capture detaches and validates a complete selection Map behind a fresh opaque token;
+restore returns a fresh graph; metadata fork reuses recognized tokens in a new outer Map. Foreign,
+forged, cloned and closed-owner tokens refuse. A private WeakMap supplies identity and lifetime,
+with no strong inventory or per-branch revocation. Reentrant close during capture prevents issuance.
+History-to-owner binding and workspace shutdown ordering remain explicit integration obligations.
+
+Seven owned suites pass **127 cases**, including nine new component cases and the unchanged
+adjacent history/admission/delivery regressions, with no skips/retries and process groups drained.
+The component runs 200 generated graph/isolation examples (seed 150903), 160 independent branch/
+group lifetime histories (150904), and 80 malformed sparse-array examples (150905). The last
+property exposed a defect in the initial unmounted validator: extra properties could disguise
+holes from a key-count/Array.every check. Requiring consecutive array indexes fixes the retained
+minimal counterexample. Original source/test, failed run and repaired pass survive. Four deliberate
+faults are detected: borrowed input, lent restore payload, shared owner registry and invalidation
+of a token retained by a sibling branch. GC timing and forensic erasure are not claimed.
+
+All 17 selected runner checks, TypeScript, scoped source format/lint, inventory/manifest, crypto
+census and authority checks pass. One reviewed source and one nine-case adapter are added; prior
+runtime files, contracts, deadlines, exclusions and crypto classifications are preserved apart from
+the exact denominator-test title update. General integration is **262 files / 2,086 dispositions
+(11 not applicable)**. The 96 command / 63 campaign obligations remain. Five prior phase packets,
+52 personal/vector pins, append-only record prefixes and L-2 are preserved. No full unit, native
+or performance aggregate is run in this unmounted phase; the application gate remains failed at
+12.9/63.5 ms desktop/CPU-4x Android card p95. No default activation or speedup is claimed.
+
+Next integrate an explicit private Local variant with workspace/history owner binding and all
+metadata producers/consumers converted together. Retain the generic reference and current Local
+handoff for comparison. Generated/native retry, discard, grouping, slicing, remote, reentrancy and
+close checks precede a new prospective performance comparison and the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-owner/README.md).
+
+
+## 2026-09-15 — Explicit private Local selection-snapshot integration
+
+Integrate [owner-bound selection history](./f17-selection-integration.md) through the explicit
+internal `local-snapshots` variant. Default Local/Account and the existing reference/Local-handoff
+paths remain available. A workspace capability binds even empty histories to its live owner;
+generic forks refuse owned histories. Group before/after capture, history fork, undo/redo metadata
+transfer and detached restore now use recognized opaque tokens together. History documents, stacks,
+ranges and restored selections stay detached. No token or history handle is exposed to the UI.
+Private admission retains its complete comparison, revision/job/slice/writer binding, byte leases,
+retry and source guards. Teardown disposes histories after write/preparation drain, then closes the
+snapshot owner. A targeted startup check found a new cleanup gap: synchronous opener throws escaped
+the initial Promise.catch. A surrounding try/catch repairs it; original source/test and red/green
+runs are preserved. The defect preceded history allocation and is not evidence of content loss.
+
+All **86 workspace cases** pass, including the same 27 shared cases under three variants, existing
+Local controls, and new activation/startup/close checks. The new seam suite passes five cases,
+including 120 generated retained-branch/cursor histories (seed 150906). Existing accepted-state
+and independent master/card selection ledgers run 80 histories per variant (140925/150902).
+Thirteen affected and timing-follow-up owned suites pass **215 cases** with no skips/retries and
+process groups drained. Five deliberate faults fail their intended assertions: missing history
+binding, cloned tokens, stale after capture, omitted undo transfer and premature owner close.
+
+Native pending-state and original-order delivery campaigns each pass directed cases plus **100
+generated histories** (seed 8941), explicitly selecting the new variant in disposable Chromium
+profiles. The owned workspace catalogue passes **10 cases and all four mutations**, with browser
+and process drain. The first native run passed all ten cases but its whole-state pending-history
+mutation destroyed the active candidate and timed out before reaching the privacy assertion. The
+replacement fault exposes the candidate undo stack without replacing the accepted document; the
+original error run and both catalogue definitions remain, with the same assertion and limits. Full units initially pass 99 files / 1,141 tests before startup repair; the next
+run times out in the same two unchanged five-second Account-liveness/position-decision cases noted
+previously. Both pass in isolation, and one unchanged full repeat after repair passes **99 files /
+1,141 tests**. All runs remain; the cause is not established and loaded-host qualification stays open.
+
+All 21 selected runner checks, types, scoped source style, inventory/manifest, census and authority
+checks pass. Registration adds five seam cases and thirty workspace cases while retaining every
+previous case and contract except the denominator-title update and the reviewed pending-history
+mutation target repair. General integration is **263 files /
+2,121 dispositions (11 not applicable)**, with 0 test-file / 96 command / 63 campaign obligations
+remaining. Only the Yjs seam, admitted workspace and the snapshot owner's descriptive comment change
+runtime source bytes in this phase. Crypto classifications, six prior packets, 52 personal/vector
+pins, append-only prefixes and L-2 remain intact. No performance measurement or default activation
+occurs. F-17 remains partial and the application gate remains 12.9/63.5 ms desktop/CPU-4x Android
+card p95, with Android failing <16 ms. Next specify and run a balanced comparison with the reference,
+existing Local handoff and appropriate signed baseline before the unchanged application gate.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-integration/README.md).
+
+
+## 2026-09-15 — Private Local selection-snapshot performance decision
+
+The [prospective four-variant comparison](./f17-selection-performance.md) completes **64 fresh
+sessions, 5,248 warmups and 4,096 measured insertions**, with all exact text/caret/revision/history
+and canonical cold-replay checks passing. B is complete signed `0c84e5cc`; R/H/S share current
+runtime/dependency bytes with explicit reference, Local-handoff and Local-snapshot selection.
+Four balanced orders cover three 100,000-character document item-count strata plus a deeper
+10,000-item history growing from 256 to 320 undo groups. The memory carrier excludes encryption,
+IndexedDB and paint; this is a host engineering comparison, not fleet qualification.
+
+The snapshot increment over H is **2.9%** at 10,000 items with shallow history and **10.3%** with
+deeper history. The prospective rule requires >=10% in both, so the relative gate **fails**.
+Cumulative S/R and S/B benefits and all median/p95 regression guardrails pass. At 100,000 items
+S is 0.7% slower than H by median paired ratio; the substantial cumulative gain comes from the
+existing handoff. Preserve the mixed result rather than declaring a broad snapshot speedup.
+
+The unchanged application gate runs **once** on a disposable current-source build with exactly
+one runtime patch selecting `local-snapshots` at the Local opener. All twelve cases execute and
+all thirty measurement rows are retained; browser, process group and localhost server drain.
+Card p95 is **12.2/75.1 ms desktop/CPU-4x Android** against <16 ms. Android focus is
+**54.2 ms** against <50 ms; both Android budgets fail. The remaining budgeted metrics pass. The failure is reported through the deferred afterAll budget hook,
+not a navigation correctness failure. The earlier H observation (12.9/63.5 ms) is a separate,
+unpaired run; its difference from this run is not a controlled browser treatment effect.
+
+Default Local and Account retain the reference. No runtime, adapter, manifest, census or registry
+changes occur in this phase. F-17 stays partial; general integration remains **263 files / 2,121
+dispositions (11 not applicable)** and unresolved obligations remain **0 test-file / 96 command /
+63 campaign**. Seven preceding evidence packets, 52 personal/vector pins, append-only prefixes
+and L-2 are preserved. The packet embeds all command observations, helper/protocol bytes,
+application measurements/receipts and preservation data; large pinned inputs and bundles remain
+under ignored local test-results with hashes. No personal app, phone, relay or deployment changes.
+
+Next: Review and sign the accumulated bounded phases, then profile the snapshot application variant to separate remaining document/history fork, full comparison and publication costs before choosing another repair. Retain the unchanged budgets and failed measurements.
+[Retained evidence](./account-conformance-runs/2026-09-15-f17-selection-performance/README.md).
+
+| Seed items / history | Signed B | Current R | Handoff H | Snapshots S |
+| --- | ---: | ---: | ---: | ---: |
+| 1,000 / 24–88 groups | 12.41 | 12.57 | 12.26 | 11.84 |
+| 10,000 / 24–88 groups | 21.06 | 21.21 | 18.53 | 18.06 |
+| 100,000 / 24–88 groups | 92.34 | 94.57 | 63.85 | 64.48 |
+| 10,000 / 256–320 groups | 22.74 | 22.81 | 20.51 | 18.48 |
+
+Values are medians of four session medians, in milliseconds. Decisions use the retained paired
+ratios, not ratios of this summary table. Raw within-session timings are dependent.
+
+
+## 2026-09-15 — Reconcile the F-17 signed commit backlog
+
+Eight completed bounded phases are grouped into five newly signed descendant commits above
+`0c84e5cc`: `67d31c75` Local handoff; `a245fb7f` its performance/Pixel/profile evidence;
+`ffc0d370` selection contract and unmounted owner; `15eb389c` private Local snapshot integration;
+and `e2d42fac` the final performance decision. All five signatures verify. A following documentation
+commit carries this reconciliation. No existing commit or historical receipt identity is rewritten.
+
+The final content commit contains all 219 original pending files byte-for-byte. The handoff,
+component and integration checkpoints match respectively 1,059, 1,061 and 1,062 non-document
+files of their retained frozen phase inputs, including tests/runners/configuration; corresponding
+registry/census snapshots also match. The grouping uses exact saved versions where available,
+combines related phases where useful, and recovers append-only records by verified byte prefixes.
+Unavailable intermediate mutable summaries are not invented; the current checkpoint is reconciled
+here. All 177 files across eight original evidence packets, 52 personal/vector pins and L-2 remain
+unchanged. Three unrelated root files are left untracked and untouched.
+
+[Commit map and reproducible checks](./account-conformance-runs/2026-09-15-f17-commit-backlog/README.md).
+The original phase results are not reruns at the new commit IDs. F-17 remains partial, defaults
+remain reference, and the latest application gate remains failed at 12.2/75.1 ms desktop/CPU-4x
+card p95, with Android focus 54.2 ms. Counts remain 263 files / 2,121 dispositions (11 not applicable),
+with 0 test-file / 96 command / 63 campaign obligations unresolved. No runtime or test changes,
+measurement campaign, personal app operation or deployment occur during this bookkeeping turn.
+
+The backlog through this performance phase is closed. Next profile the snapshot application's
+remaining document/history fork, complete comparison and publication costs before another repair;
+retain the unchanged budgets, failed observations and loaded-host uncertainty.
+
+
+## 2026-09-15 — F-17 exploratory optimization round 1
+
+Three isolated agent prototypes (primitive-string fork transport, bounded comparison scratch pooling, and conservative private publication reuse) compose above signed `20a535c4`. All twelve serial browser timing sessions pass exact text, undo/redo and cold reopen. On the held-aside full corpus, B/C/C/B gives about 9.4% paired median improvement; paired p95 improvements are 8.6% early and 5.6% later. These are incremental exploratory gains; the application budget remains unmet. Combined focused checks pass 5 files /126 cases and TypeScript. Review found and repaired boxed-string sharing eligibility and stale publication after surrogate normalization; publication now conservatively excludes emoji-bearing snapshots. A separate profiling postcheck exposed a premature immediate Undo assertion; a bounded follow-up reproduces the unchanged immediate read and observes the same action settle within 160 ms, then passes redo/cold reopen. All failed evidence remains.
+
+Allocation sampling suggests less churn with slightly more retained heap; it does not establish a GC-time improvement. Keep the combined patch as the next experimental baseline, then remove components in controlled comparisons and target remaining editor/rendering/history costs. No main runtime/test/default changes, full suites or release gate runs occur. Counts remain 263 files /2,121 dispositions (11 not applicable), with 0 test-file /96 command /63 campaign obligations unresolved. F-17 remains partial. [Assessment](./f17-exploration-r1.md); [patches, data and logs](./performance-experiments/2026-09-15-f17-r1/README.md).
+
+
+## 2026-09-15 — F-17 exploratory component removal and editor projection
+
+Round one is signed and signature-verified as `cc0f85c5`. Round two keeps primitive-string preparation reuse, bounded comparison pooling and an editor projection shortcut as the next experimental combination. Two forward/reverse ablation blocks show conditional median gains of about 5.8%/5.9% for preparation, 5.5%/6.7% for pooling and 2.9%/3.3% for publication, early/later respectively; these are not additive effects. Publication is parked because its requested-Unicode guard is mixed early and slower in both later comparisons, with substantial host variation and an explicitly retained setup-assertion limitation. Its useful ordinary-text result and patch survive.
+
+The editor shortcut removes unchanged-text scans and redundant CodeMirror selection transactions while retaining every authoritative read. Review preserved forced composition-end reconciliation. Against preparation + pooling, four serial full-corpus sessions give 3.3% early /4.0% later paired median gains; p95 gains are 5.0%/7.3%, including one individual later p95 regression of 1.0%. A separate single Unicode pair with explicit setup assertions passes and gives 2.4%/2.5% median gains. It is a guard observation, not a broad effect estimate. No direct net comparison against the previous complete combination is claimed.
+
+All 18 fresh browser sessions /1,440 measured keys /1,872 warmup keys pass exact typing, bounded undo/redo and cold reopen; browsers and loopback servers drain. The selected composition passes 4 focused files /127 cases and TypeScript. Earlier helpers, raw data, component patches and the complete selected patch are retained. No full unit/native/release or new memory/profile campaign runs. Main runtime/tests/defaults remain unchanged; F-17 remains partial. Counts stay 263 files /2,121 dispositions (11 not applicable), with 0 test-file /96 command /63 campaign obligations unresolved. The latest unchanged application gate stays 12.2/75.1 ms desktop/CPU4 card p95, with Android focus 54.2 ms.
+
+Next profile the selected combination and make another bounded optimization decision; reserve native IME/pending/remote, scratch-lifetime/memory and unchanged application-gate qualification for RC entry. The Rust/Wasm assessment identifies a substantial potential engine/integration migration, with existing journal encryption already using a narrow Wasm kernel. It starts no migration. Prior evidence, personal/package/vector pins and L-2 remain unchanged. [Assessment](./f17-exploration-r2.md); [source and evidence](./performance-experiments/2026-09-15-f17-r2/README.md).
+
+
+## 2026-09-15 — F-17 selected-combination profile and primitive any strings
+
+Round two is signed and signature-verified as `602e4cee`. Two full-corpus diagnostic profiles identify repeated native UTF-8 encoding in top-level Yjs value strings as a remaining target: dominant fork callsites take 1340/1351 ms inclusive and complete comparison 999/996 ms across 60 profiled keys; all encodeInto self samples total 515/468 ms. Inclusive values overlap, and sampled allocation (225.3/223.8 MB including collected objects) is neither retained heap nor comparable to round one's smaller profiling corpus.
+
+The candidate extends existing private immutable-string fork transport and complete comparison fields to primitive ContentAny strings. Only the Yjs seam differs at runtime from the prior selected preparation + pool + editor combination. Nested objects, binary detachment, native outgoing format, full normalization, pending dependency checks and scratch cleanup remain. Eight new focused cases, including 150 generated differential cases, plus 126 affected regressions pass; TypeScript and scoped formatting pass. Two deliberate faults are detected, including a generated false-equality counterexample. The initial unsupported-undefined fixture failure and formatting failure are retained; exact candidate runtime bytes are restored before build.
+
+Four serial ordinary-text sessions selected/candidate/candidate/selected all pass. Paired median gains are **12.7% early /13.7% later**, with **29.7% /30.1% p95 gains**; every individual comparison favors the candidate. Median-of-session values fall from 53.90/55.55 to 47.05/47.95 ms, and p95 from 72.85/74.40 to 51.20/52.00 ms. The separate explicit-Unicode pair passes and improves medians by 7.8%/11.0%. All six timing sessions /480 measured keys /624 warmups and both separate diagnostic sessions pass exact text, bounded undo/redo and cold reopen, with browser/server drain. No candidate memory profile or full release gate ran; p95 gains do not establish a GC-time reduction. Small session count, dependent keys and host variation remain explicit.
+
+Retain the extension in the experimental combination, preserving all prior patches and observations. Next share one per-snapshot UI card lookup across the nine Collections; emitted-source inspection confirms repeated index construction, while React Compiler already caches some other components. Keep the detached authoritative projection fresh and use focused guards plus another short paired screen. Native/private-codec/scratch-memory and unchanged application qualification remain ahead of RC entry. Main runtime/tests/defaults are unchanged; F-17 stays partial and the latest actual gate remains 12.2/75.1 ms desktop/CPU4 card p95 with Android focus 54.2 ms. Counts remain 263 files /2,121 dispositions (11 not applicable), with 0 test-file /96 command /63 campaign obligations unresolved. Prior packet, personal/package/vector pins, append-only records and L-2 are preserved. [Assessment](./f17-exploration-r3.md); [source and evidence](./performance-experiments/2026-09-15-f17-r3/README.md).
+
+
+## 2026-09-15 — F-17 shared UI card lookup experiment
+
+Round three is signed and signature-verified as `55ab217e`. This increment shares a detached-snapshot card lookup from WorkspaceUiProvider across Collections, preserving every authoritative read, current memberships/actions/status and last-ID-wins/missing-ID behavior. Only two UI runtime files differ from the selected combination. The actual React Compiler build confirms removal of the Collection Map construction site and its placement in the provider memo; these are static sites, not measured execution/allocation counts or an exactly-once guarantee.
+
+Seven new cases include 50 generated publication histories; six affected files add 42 cases. All 49 unique focused cases, TypeScript and scoped formatting pass. Deliberately stale-index and wrong-key faults fail five/seven and seven/seven cases, including generated counterexamples; source is restored before final checks/build. No candidate correctness failure is observed. The unavailable formatter discovery and premature all-session analysis invocation are retained tooling/orchestration errors, with no timing session discarded or rerun.
+
+All six serial browser sessions /480 measured keys /624 warmups pass text, bounded undo/redo, cold reopen and browser/server closure. Two opposite-order ordinary pairs yield 0.3% early /2.7% later median gains. Later p95 improves 4.9%, but early p95 worsens 8.0% in both pairs. A separate explicit-Unicode guard passes, with mixed timing and later p95 worsening 7.6%. Small session count and 40-sample block p95 limit inference; no causal population effect, GC/heap benefit or budget pass is established.
+
+Preserve the UI-only and complete patches as an optional component, but keep round three's preparation + pool + editor + primitive value-string combination as the selected baseline. Deferring selection reflects the mixed tail result, not a minimum percentage win requirement. Next refresh CPU/allocation profiles of that combination before choosing one narrow comparison-byte, document/history allocation or membership repair. Native/private-codec/scratch-memory and unchanged application qualification remain ahead of RC entry.
+
+Main runtime/tests/defaults are unchanged. F-17 stays partial; the latest actual gate remains 12.2/75.1 ms desktop/CPU4 card p95 with Android focus 54.2 ms. Counts remain 263 files /2,121 dispositions (11 not applicable), with 0 test-file /96 command /63 campaign obligations unresolved. The previous packet's 74 file identities, 52 personal/package/vector pins, append-only records and L-2 are preserved. Personal app/server, phone, relay and deployment remain untouched. [Assessment](./f17-exploration-r4.md); [source and evidence](./performance-experiments/2026-09-15-f17-r4/README.md).
+
+
+## 2026-09-15 — F-17 application workspace/history growth diagnostic
+
+Following signed `ac0b84ce`, the operator adopts architectural cost reduction while retaining the R3 combination. Eight serial fresh encrypted Local sessions cross 300/600 seeded cards with retained/cleared history after 1,000 trusted editor keys, in two reversed blocks. A build-only hook proves identical canonical/history-document bytes, content, selections, revision/group/writer across clear. Actual deep undo ranges are 1,010–1,090 versus 8–88. All 1,280 main timing samples and 7,424 untimed setup/warmup keys survive; exact text, one-key undo/redo, cold reopen and owned process drain pass. Six real-Yjs hook cases include two discriminating faults; both small native smoke branches pass.
+
+The first full attempt's immediate accelerated-setup text check fails; a separate reproduction observes delayed visibility settle within 548.6 ms, reaches 1,002 groups and passes undo/redo/reopen. The original 80 measured samples, repro 160 and smoke 32 remain separate from the main comparison. Before campaign-v2, only the untimed 100-key checkpoint changes to a 3,000 ms bounded exact-text wait. Product deadlines, measured 50 ms gaps and all factorial conditions remain unchanged. No product input-loss repair is claimed.
+
+Paired 600/300 deep median ratios are 1.593 with history retained and 1.452 after clearing; all individual size comparisons increase. Retained/cleared median ratios are 1.053 at 600 cards and a mixed 0.959 at 300. Actual struct counts are 2,797/5,577 and remain constant early→deep; the edited card adds 1,001 encoded bytes. Whole-document work is the clearer priority, but this does not isolate individual functions or establish strict complexity. Clearing history does not measure persistent buffers' full benefit because both arms still fork the document. Accelerated setup, append typing, two selection targets, one host and few session replicates limit generalization.
+
+Next: conservative repaired-basis eligibility for the text command's one pre-repair scan, preserving queued-remote, source, refusal/retry/discard and ownership behavior. Incremental publication, persistent buffers with full verification, then incremental verification's proof/policy follow separately. Static repair prep is retained; no optimization is implemented here. No full suite, CPU/allocation profile, phone campaign or application gate runs. Main runtime/tests/defaults and counts remain unchanged: 618 obligations; 263 files /2,121 dispositions (11 not applicable); 0 test-file /96 command /63 campaign unresolved. F-17 remains partial; last gate 12.2/75.1 ms card p95 and 54.2 ms Android focus remain. All 66 previous-packet files, 52 personal/vector pins, root perspective, L-2 and append-only prefixes verify. [Assessment](./f17-growth-r1.md); [evidence](./performance-experiments/2026-09-15-f17-growth-r1/README.md).
+
+
+## 2026-09-15 — F-17 membership-repair eligibility experiment
+
+The growth diagnostic is committed signed and signature-verified as `62b19f94`. The next isolated candidate adds a per-owner WeakSet of repaired histories. Successful command execution records only that candidate; trusted forks inherit from the accepted basis, and every remote event invalidates before apply/publication. Only text on a known repaired basis skips its single pre-command scan. Structural/undo/redo repair, full verification, source capture, pending/refusal/retry/discard and existing history ownership remain. The unconditional adapter supplies the differential oracle; no public workspace flag authorizes the shortcut.
+
+Nine affected files pass 176 tests, including 18 new cases and 60 generated differential histories. Dirty remote subscriber input and later pending membership dependencies repair before the queued repair command. Account system/human source bytes reconstruct the complete accepted state. Missing remote invalidation and premature accepted-cleanliness faults fail all four selected owner-mode assertions each. TypeScript and the final focused repeat pass. Initial sparse-checkout and fixture-type corrections remain; no runtime correctness repair was needed.
+
+All six serial browser sessions /480 measured keys /624 warmups pass exact text, bounded undo/redo, existing cold-corpus/edited-card reopen checks and owned process drain. Two opposite-order ordinary pairs yield 5.5% early /10.1% later median gains, with 12.1%/9.4% p95 gains. Individual later median gains vary 4.50%–15.64%; Unicode medians improve 4.86%/4.41%. Every paired median/p95 favors the candidate, but this small screen establishes no fleet, memory, GC, long-history or budget claim. The first loopback launch was sandbox-blocked before browser creation; its log and drained parent record remain without a child result. New identities run the unchanged measurement with host permission.
+
+Retain repair eligibility on the R3 combination. Next incremental publication, then persistent text-history buffers with full verification, then incremental verification's separate proof/policy decision. Keep optional UI/publication patches. No main runtime/test/default, full-gate or release-adapter change occurs: F-17 stays partial; last gate is 12.2/75.1 ms card p95 and 54.2 ms Android focus. Counts remain 618 obligations; 263 files /2,121 dispositions (11 not applicable); 0 test-file /96 command /63 campaign unresolved. The prior packet, 52 personal/package/vector pins, root perspective, append-only prefixes and L-2 verify unchanged. New phase work is uncommitted. [Assessment](./f17-repair-r1.md); [source and evidence](./performance-experiments/2026-09-15-f17-repair-r1/README.md).
+
+
+## 2026-09-15 — F-17 incremental publication experiment
+
+The membership-repair phase is signed and signature-verified as `e0a87263`. The next isolated candidate keeps a private accepted-revision projection cache, observes actual changed Yjs types, refreshes changed and normalization-sensitive fields, and falls back for structural/unknown changes or stale plans. Remote input invalidates before apply/publication, every public read remains detached, and full verification remains. Other owner modes retain the full reader. The new cache is not integrated into main runtime or default activation.
+
+Final controls pass 218 unique tests in 13 files, including nine new cases /60 generated histories, prior normalization/editor controls, TypeScript and scoped formatting. Missing normalization refresh, ignored structural fallback and aliased output faults each trigger their designated assertion. A real candidate defect returned stale undo counts after the existing out-of-band history-clear diagnostic; reading the two current scalar stack lengths repairs it. A separate split-pair fixture had already normalized its input before the intended fork; its setup assertion is corrected using distinct writer items. Original source/tests/failures and final controls remain. Timing runs only after fault restoration and builds.
+
+All six serial browser sessions /480 measured keys /624 warmups pass text, bounded undo/redo, existing corpus/edited-card reopen checks and owned process drain. Ordinary early median effects reverse sign; later medians regress 3.7% and 21.0% across opposite-order pairs, with p95 regressions 9.3% and 27.1%. Median paired ratios give 1.1% early /12.3% later median regression and 0.3%/18.2% p95 regression. The separate Unicode guard also regresses, by 8.2%/1.3% at the median. No sample is discarded or rerun. The small screen does not establish stable effect size, causality, memory/GC, deep-history or population claims.
+
+Park this implementation as an optional patch; keep R3 preparation + comparison pool + editor shortcut + primitive value-string reuse + membership-repair eligibility as the selected combination. Preserve the new controls and useful source-work reduction. Public whole-snapshot cloning remains; no profile attributes the regression. Next persistent text-history buffers with full verification, then incremental verification's separate proof/policy. Native ownership/memory/Account composition and the unchanged application gate still precede RC entry.
+
+Main runtime/tests/defaults and release counts remain unchanged: 618 obligations; 263 files /2,121 dispositions (11 not applicable); 0 test-file /96 command /63 campaign unresolved. F-17 stays partial; last actual gate remains 12.2/75.1 ms card p95 and 54.2 ms Android focus. All 416 frozen source/bundle/helper identities, the previous packet, 52 personal/package/vector pins, original control inputs, root perspective, signed append-only prefixes and L-2 verify unchanged. Personal app/server, phone, relay and deployment remain untouched. New phase is uncommitted. [Assessment](./f17-publication-r1.md); [source and evidence](./performance-experiments/2026-09-15-f17-publication-r1/README.md).
+
+
+## 2026-09-15 — F-17 persistent text-history buffer experiment
+
+The publication phase is signed and signature-verified as `85a58bd4`. The next isolated candidate introduces explicit retirement and one-time reownership of a previous accepted state, permitting two Local document/history objects to alternate. A saved native delta brings the retired buffer forward, followed by full undo/redo stack copying and a full comparison with the accepted basis before editing. Existing post-admission full verification remains. Actual text-only changes authorize retirement; remote/structural/undo/metadata paths reset it. A conservative normalization guard excludes surrogate-bearing and unsupported shapes, so the Unicode condition uses fresh forks.
+
+All 224 unique affected tests across 15 files pass, including 14 new cases /60 new generated histories. Premature retirement, omitted catch-up and shared-history faults are detected. Real object identity, mutable range/metadata detachment, consumed-byte erasure, selection, slicing, undo/redo, refusal/retry/discard, write-lease close and cold replay are checked. An initial close-fixture assumption and mistaken negative-zero expectation are corrected. A native-fork probe confirms that sparse holes and extra/nonenumerable properties change; the original guard's eligibility gap is repaired. Original source/tests/failures survive.
+
+The first four browser sessions all pass but do not favor the candidate. Final lifetime review finds an unnecessary strong lastAdopted reference after finish/close; the current bounded slot now supplies that identity. The complete original frozen source/build/control snapshot and 320 measured keys /416 warmups remain separate. After repair, 121 affected ownership/workspace cases, TypeScript and all three faults pass again. The rebuilt final candidate completes six fresh sessions /480 measurements /624 warmups, all passing semantic, treatment and process-drain checks. Every ordinary candidate block records exactly 40 reuses; selected and Unicode blocks record zero. All 418 final source/bundle/helper identities remain frozen.
+
+Final ordinary paired medians regress 6.8% early /4.0% later, with 5.0%/4.3% p95 regressions; every individual ordinary pair is slower. Unicode fallback medians regress 3.2%/2.1%, with mixed p95. The small descriptive screen does not establish cause, stable effect size, GC/heap, long-session or population claims. No sample is discarded or pooled across the two versions.
+
+Preserve this implementation and its retirement controls as an optional prototype; keep R3 + membership-repair eligibility selected. Next measure the added catch-up comparison and stack-copy costs against the saved fork, and specify replay-basis equivalence before considering a cheaper replacement for the prototype's added check. The existing post-admission comparison stays fixed. Incremental stack mirroring, wider normalization eligibility and native ownership/crash/memory/Account qualification remain; incremental verification of the existing canonical check is a separate later proof/policy decision.
+
+Main runtime/tests/defaults and release counts are unchanged: 618 obligations; 263 files /2,121 dispositions (11 not applicable); 0 test-file /96 command /63 campaign unresolved. F-17 stays partial; last actual gate remains 12.2/75.1 ms card p95 and 54.2 ms Android focus. No aggregate receipt or budget change is added. Previous packet, 52 personal/package/vector pins, root perspective, signed append-only prefixes and L-2 verify unchanged. Personal app/server, phone, relay and deployment remain untouched. New phase is uncommitted. [Assessment](./f17-buffers-r1.md); [source and evidence](./performance-experiments/2026-09-15-f17-buffers-r1/README.md).
+
+
+## 2026-09-15 — F-17 replay cost accounting and bounded equivalence
+
+The first buffer phase is signed and signature-verified as `aa54be31`. Four fixed instrumented application sessions /320 measured keys separate the added comparison (11.03/10.75 ms early/later) from native replay (0.95/0.97 ms), full catch-up stack copying (0.09/0.47 ms) and the selected fresh document fork (8.97/8.85 ms). These are component means, with inclusive scopes distinguished; no quantile subtraction or causal speedup is inferred from them.
+
+The replay variant replaces only the prototype's added full comparison with an exact-predecessor/native-delta invariant and an idle transaction fence. Every existing full post-admission canonical comparison, writer/revision/slice check and complete detached history copy remains. Transactional drift still refuses before another append. Raw private-field/payload/stack/delta mutation is explicitly outside the sole-mutator contract and not validated by replay; a directed test demonstrates that limitation. The later canonical check is not used to justify a wrong pre-write basis. Pinned-source reasoning covers normalization exclusions, text-only transitions, old redone links, reset and disposal.
+
+All 227 tests /16 files pass, including three new cases /100 generated replay histories (seed 171511) and the retained 60 workspace histories (171510). The new histories compare integrated/deleted state, per-clock redone relations, full stacks, nested-value detachment, native replay and later complete undo/redo. Four faults detect a missing idle fence, premature retirement, omitted replay and shared mutable stacks. TypeScript project compilation and scoped formatting pass. The failed formatter path and ineffective initial compiler invocation survive with corrections; no in-contract counterexample remains from this bounded campaign.
+
+Six separate application sessions /480 measured keys /624 warmups pass text, bounded undo/redo, marker/count corpus checks, edited-card reopen and owned process drain. Both ordinary pairs favor replay: median paired gains 21.1% early /20.5% later, with p95 gains 21.5%/19.8%. Medians of session medians move 45.90→36.20 ms early and 45.65→36.30 ms later. Every ordinary candidate block actually reuses 40 histories; selected and Unicode reuse zero. The Unicode fallback median improves 2.6% early and regresses 0.7% later; its p95 improves 9.3%/1.5%. All ten diagnostic/performance sessions remain separate and retained. One host, two ordinary pairs, dependent keys and an unverified later history depth limit inference. Surrogates anywhere in the guarded history, including valid emoji, still disable reuse.
+
+Recommend R3 + repair eligibility + replay buffers for the RC combination. Park the UI/publication candidates and the first guarded buffer variant. At the operator's direction this closes the optimization round: choose/freeze the combination, integrate it and qualify native ownership/crash/close/memory, shared Account effects and the unchanged application gate. Larger rewrites, incremental stack mirroring, broader normalization and incremental canonical verification become later work. Record any accepted latency shortfall explicitly as release debt without changing a failing receipt. This phase does not activate defaults or complete RC qualification.
+
+Main runtime/tests and release counts remain unchanged: 618 obligations; 263 files /2,121 dispositions (11 not applicable); 0 test-file /96 command /63 campaign unresolved. F-17 remains partial; last actual gate remains 12.2/75.1 ms desktop/CPU4 card p95 and 54.2 ms Android focus. Both source/build freezes, the preceding packet, 52 personal/package/vector pins, root perspective, append-only prefixes and L-2 verify unchanged. Personal app/server, phone, relay and deployment remain untouched. New phase is uncommitted. [Assessment](./f17-replay-r1.md); [source and evidence](./performance-experiments/2026-09-15-f17-replay-r1/README.md).
+
+
+## 2026-09-15 — F-17 selected combination integrated and functionally qualified
+
+The preceding replay assessment is signed and signature-verified as `902cc397`. At the operator's
+selection, the exact six runtime files from that measured candidate are now maintained source:
+R3 preparation/value-string reuse, bounded comparison scratch pooling, editor projection shortcut,
+membership-repair eligibility and restricted Local replay buffers. Every existing full canonical
+comparison and complete detached history copy remains. Optional UI/publication patches and the
+first buffer's added comparison stay out. The Local and Account constructors still select the
+reference; shared comparison/editor/command improvements are integrated, while replay remains
+available only through the explicit private Local composition. No default activation is claimed.
+
+Eight maintained suites and additions to two existing suites add 68 cases. The audit recovers
+13 codec controls from the signed R3 archive that were absent from the later combined patch,
+including two 150-history generated tests (seeds 193917/150917). The normalization probe loses only
+its exploratory file output; two tests receive AST-equivalent formatting. All earlier assertions
+and case identities remain, apart from one administrative denominator title. The full unit command
+passes twice, first 105 files/1,196 tests and then 107 files/1,209 tests after coverage recovery.
+The final formatting-only change is AST-checked and passes its owned test afterward.
+
+Two separately identified owned epochs pass 29 Vitest files/365 cases and the workspace catalogue's
+10 cases/4 mutations. Both native campaigns select `local-snapshots`: pending projection passes
+12 cases and delivery passes eight, each with 100 generated histories (seed 8941) and one actual
+renderer death. Pressure/retry, pending dependencies, projection drift, original delivery order,
+undo, encrypted cold replay and channel handoff retain their directed checks. Stage groups drain;
+the catalogue records five closed origins and browser drain, and standalone runners complete their
+awaited browser/server shutdown and outer process-group checks. Nine isolated faults catch missing
+fencing, premature retirement, omitted replay, shared history, fork-marker and comparison corruption,
+remote invalidation, composition reconciliation and false accepted-basis cleanliness.
+
+TypeScript, scoped formatting/lint, pinned Yjs/seam, authority/census, manifest/inventory and 27
+runner checks pass. Initial formatting, stale census and denominator failures remain with their
+repairs. The remote-history mutation receives a reviewed anchor adjustment for the new braced
+block; its identity and discriminating assertion are unchanged. The planning manifest grows past
+800,000 bytes, so only that administrative file ceiling increases to 850,000 (final 805,675 bytes).
+Stage/case deadlines and report/log/runtime/performance limits are unchanged. The first standalone
+native attempt uses a directory outside Vite's allowlist and stops before a semantic result; it
+remains recorded separately from the passing run in the supported ignored output directory.
+
+Planning now contains 626 obligations and 290 required test files, with 271 general files/2,189
+dispositions (11 not applicable). The 159 unresolved rows are unchanged: zero test-file, 96 command
+and 63 campaign. No wrapper or immutable release receipt is earned. F-17 remains partial and the
+last actual unchanged application gate remains 12.2/75.1 ms desktop/CPU4 card p95, with Android
+focus 54.2 ms. This functional phase produces no new performance measurement or heap claim.
+
+Optimization exploration is closed. Next qualify lifetime/memory and remaining native crash/close
+and shared Account composition boundaries, then run the unchanged application gate on the selected
+combination and decide default Local activation. Any accepted shortfall needs an explicit release
+debt while preserving the failed gate. Account buffer activation, wider normalization, incremental
+history copying and architectural rewrites remain excluded. The prior archives, 52 personal/vector
+pins, root perspective, append-only record prefixes and L-2 are preserved; personal app/server,
+phone, relay and deployment remain untouched. This new integration phase is uncommitted.
+[Phase and scope](./f17-rc-integration.md);
+[frozen source, receipts and controls](./account-conformance-runs/2026-09-15-f17-rc-integration/README.md).
+
+
+## 2026-09-15 — F-17 lifetime evidence passes; core-receive qualification hits its existing deadline
+
+The selected integration is signed and signature-verified as `132bc7d3`. Its runtime, tests,
+registrations, defaults and formats remain unchanged throughout this phase. The fixed controlled-
+carrier Chromium campaign passes four reference/candidate/candidate/reference sessions, 1,920 main
+text edits and 152 collection checkpoints. Each mode uses the currently integrated common code;
+this compares preparation modes, not a historical pre-optimization runtime.
+
+Candidate sessions each create 36 workspace histories versus 508 for the reference across the same
+editing, reset, pressure, discard, retry and close/reopen sequence. Actual candidate text batches
+create one or two histories versus 40 for reference batches. Quiescent text retains at most two
+candidate histories and one reference history; pending/leased work can retain two in either mode.
+All observed histories are destroyed and collected after close despite retaining five closed facade
+objects per session. Idle listeners do not accumulate. Scratch remains at most two encoders with
+256 KiB/1,024-slot per-encoder caps and cleared byte/string fields. Large input actually crosses
+both caps before cleanup (about 1.36 MB/1,601 fields); small input, reentry and throwing encoders
+retain correctness. Three deliberate faults detect strong history retention, missing idle-listener
+removal and uncleared scratch strings. Every campaign/control browser context and process drains.
+
+The measurements establish a bounded workspace-history/scratch result, not whole-application memory
+release. A supplementary probe confirms that a retained closed facade still holds its destroyed
+canonical admission document and writing in both modes; dropping that facade permits collection.
+The const canonical binding and destroy-only disposal predate this integration. The initial
+protocol's broad word “document” must be read as the instrumented workspace-history documents;
+it does not establish eager release of every document. Record canonical-facade cleanup as a separate
+existing hardening opportunity, not a buffer regression or forensic-erasure guarantee. Total heap
+rises by about 1.8 MB in both modes during this short instrumented fixture; no general heap saving,
+long-session or handset claim follows. The initial import error, invalid read-during-close observer
+and wrong canonical-length field remain with their corrected probes.
+
+Ten complete owned Account files pass 102 cases: receive/editor, all five sync files, editing,
+handoff, capture and admission. Original-order receive, authored sources, pending dependencies,
+compaction/cold replay, cancellation, page loss, close/drain and R-01 historical 600 KiB boundaries
+retain their checks. All owned groups drain. Core receive fails twice at its unchanged 300-second
+stage bound (300.612 and 300.660 seconds including drain), after 16 and 15 passing cases respectively.
+Both complete-file attempts remain failed; neither is replaced by their partial cases. The final
+authority-change case passes alone in 8.086 seconds (9.971 seconds for its diagnostic command),
+with the existing 40-second case timeout, but this earns no complete-file receipt. This reinforces
+the previously recorded 297/300-second headroom concern; it does not prove that every timing
+variation has the same cause or that the combination caused no runtime slowdown.
+
+The bounded lifetime assessment is complete. Overall Account qualification remains open on one
+file, so do not advance to default activation or claim the planned 119-case selection passed.
+Next repair/qualify the existing core-receive fixture's execution headroom using the preserved
+attempts and unchanged semantic/case contracts; avoid a blind deadline increase. Then run the
+unchanged application gate and decide Local activation with explicit latency-debt disposition.
+Optimization exploration stays closed; Account buffer activation remains excluded.
+
+Planning is unchanged: 626 obligations, 290 required files, 271 general files/2,189 dispositions
+(11 not applicable), and zero test-file/96 command/63 campaign unresolved adapter rows. Those counts
+do not encode this new failed execution attempt. F-17 remains partial; no application latency,
+immutable release or whole-wrapper receipt is added. Prior evidence, personal/vector pins, source,
+append-only records and L-2 remain unchanged. Personal app/server, phone, relay and deployment are
+untouched. This new evidence/checkpoint phase is uncommitted.
+[Protocol and assessment](./f17-rc-lifetime.md);
+[retained source, observations and failures](./account-conformance-runs/2026-09-15-f17-rc-lifetime/README.md).
+
+
+## 2026-09-15 — One core-receive headroom repair qualifies at unchanged limits
+
+The preceding lifetime/Account checkpoint is signed and signature-verified as `52a6aa80`.
+The operator limited this phase to one investigation and repair round. A standalone, filtered
+pending-dependencies probe passes in 10.084 seconds; timing wrappers observe 75 browser-bundle
+evaluations taking 7.342 seconds, versus 0.165 seconds in navigation and small teardown costs.
+This diagnostic is one synthetic case on one host, not a complete-file receipt or application
+performance result. It identifies repeated inherited bundle setup as a substantial fixture cost;
+it does not attribute every earlier timeout or timing variation to that cause.
+
+Receive now supplies its full transitive browser bundle through the existing fixture chain.
+Each page setup loads that bundle once while retaining ancestor configuration/bindings, the original
+genesis page, cold replacement pages, real storage, credential checks and all promotion transitions.
+Nine ancestor fixtures forward an optional override; calls without it keep their previous path.
+No production code, native test bodies, generated counts/seeds, mutants or deadlines change.
+
+The single owned validation attempt passes both files: **17 core-receive cases in 149.007 seconds
+against 300 seconds**, and **12 ordered-editor cases in 150.515 seconds against 480 seconds**.
+The cases retain 12 receive/10 editor generated histories, renderer death, exact content/evidence,
+pending dependencies, mutation controls and close/drain assertions. Both worker/browser groups drain.
+The prior core-receive 300-second failures remain failed, and the earlier editor 307.237-second
+result remains historical. This run clears the bounded core-receive headroom blocker; it is not
+an unchanged-input rerun of all 119 previously selected Account cases or immutable qualification.
+
+Four runner checks and scoped formatting pass. Planning records change only ten fixture hashes
+and the manifest inventory digest: 626 obligations, 290 required files, 271 general files/2,189
+dispositions (11 not applicable), zero test-file/96 command/63 campaign unresolved rows remain.
+The initial pre-record inventory refusal and mistaken unavailable Prettier invocation are retained;
+the installed oxfmt and separately executed runner checks pass. No failed native attempt occurred
+in this round. Runtime, budgets, personal/vector pins, prior evidence, append-only records and L-2
+are preserved. The repair and this checkpoint are uncommitted.
+
+Stop here at the requested single-round boundary. Next is the unchanged application-latency gate
+on the selected integration, then default Local activation with explicit disposition of any accepted
+latency debt. F-17 remains partial; larger optimization exploration and Account buffers stay out.
+Personal app/server, phone, relay and deployment are untouched.
+[Investigation, exact repair and owned receipts](./account-conformance-runs/2026-09-15-core-receive-headroom/README.md).
+
+
+## 2026-09-15 — Frozen Local combination activated with explicit RC latency debt
+
+The receive-fixture repair is signed and signature-verified as `e38be54c`. One unchanged application-
+latency stage runs on the frozen integrated runtime with exactly one disposable change: the Local
+factory selects `local-snapshots`. All twelve test bodies complete; thirty measurement rows and
+four 120-key sample counts survive, with browser/process/server drain. The unchanged harness keeps
+summary rows and sample counts, not individual key arrays; this packet cannot independently
+recompute typing percentiles from raw key timings. This narrows the protocol's broad “all samples”
+wording without changing the recorder or inventing absent samples.
+
+The gate **fails**: CPU-4x Android card p95 is **38.7 ms** against <16 ms and settled goTo navigation
+is **113.6 ms** against <100 ms. Desktop card p95 is **9.0 ms** and Android focus is **35.4 ms**;
+all other budgeted measurements pass. The final Android case carries the deferred afterAll timing
+failure; it is not a failed navigation functional assertion. Earlier 12.2/75.1 ms card and 54.2 ms
+focus observations remain separate, unpaired historical results; these differences are not a causal
+speedup estimate or handset/population evidence.
+
+The initial protocol allowed only known card/focus exceptions, so its recorded activation eligibility
+is false. Under the operator's broader instruction to accept the best combination for the RC and
+defer larger architecture work, a separate explicit post-measurement disposition accepts both
+remaining timing misses as open F-17 RC debt. Neither the original rule/result nor any threshold,
+test outcome or runner disposition changes. The implementation-review debt has its own owner,
+evidence, scope and closure criterion; the older Stage 0 debt namespace is untouched.
+
+The exact measured candidate then passes seven maintained suites/**147 cases**, the native workspace
+catalogue's **ten cases/four mutations**, and **eight normal Local application cases**, including
+20 generated edit/undo/redo histories and cold reopen. All ten owned stages share the application's
+input identity and drain. The catalogue uses the internal factory with real encrypted admission;
+normal-factory coverage comes from the application tests. The prospective wording is corrected
+explicitly before this functional run. An initial selection draft named a nonexistent editor unit
+file and refused before execution; the registered projection suite was selected instead.
+
+After those checks, apply the exact measured one-line argument in `openAdmittedWorkspace` to the
+main tree. The full source/dependency identity matches the measured candidate before record updates.
+Account constructors and the internal default remain reference; full verification, detached stack
+copying, idle fencing, fallback and formats stay unchanged. TypeScript, scoped format and inventory/
+manifest checks pass. Prior evidence, personal/vector pins, append-only prefixes and L-2 are retained.
+No personal build/server, phone, relay or deployment is changed. This new phase is uncommitted.
+
+F-17 stays partial with explicit RC debt. Counts stay 626 obligations, 290 required files, 271 general
+files/2,189 dispositions (11 not applicable), and zero test-file/96 command/63 campaign unresolved.
+Next return to command/campaign wrapper integration: exact dependency/vector reuse and complete
+output retention, then remaining qualification repairs and immutable validation. The failed timing
+receipt remains visible in eventual release reporting; no machine-readable waiver or release pass
+is supplied here. Larger optimization work stays deferred.
+[Protocol and disposition](./f17-rc-activation.md); [exact evidence](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
+
+
+## 2026-10-10 — Desktop Account typing: per-key cost grows with every stored edit
+
+Diagnostic at `23fd688d`, after the operator reported obvious desktop input latency and a flickering
+saving indicator on the public installation, worse with sync. Unthrottled headless Chromium against a
+local account service in the deployed configuration; 200 realistic-cadence keys per block. This is not
+a budget run and no gate changes.
+
+Local typing is unaffected: key-to-paint 4.0/6.4 ms p50/p95, with no growth after 1,000 edits. On the
+Account path the same measure is 16.9/82 ms on a fresh account, 133/285 ms after 320 edits, 382/696 ms
+after 1,020 and 711/1,400 ms after 2,020. Key to the character stably in the editor is 27.7/210 ms
+fresh and 4,962/12,510 ms after 2,020 edits. Profiled main-thread CPU per key rises from 196 ms to
+985 ms, about 0.35 ms per key for every prior edit, and the longest single task from 115 ms to
+1,749 ms. The synchronous input handler stays near 3 ms p50; the work is in continuations after
+content-store transactions, which re-validate every stored account record. Keys queue behind those
+tasks, which is what shows the indicator. The `outbound` store gains about 1.1 rows per key and never
+shrinks.
+
+Stopping the service does not remove the cost (747 against 789 ms per key of IndexedDB-callback work),
+so the network is not the cause. The handler's p95 also grows with undo depth under the Account's
+`reference` preparation, to 56 ms after about 2,200 edits.
+
+Three read-only studies ran beside the measurement and are retained with it: a trace of the client's
+per-edit work, an audit of what the protocol and service require per edit, and a requirements study
+for the CRDT. They find that the implementation departs from the TRD in four places (sync work in the
+write path, a position per 50 ms pass, verification on local replay, an append-only proof log) and
+that the wire protocol and the CRDT are not where this cost is.
+
+One host under load, one device, one run per condition, a small workspace and no cold reopen; saturated
+blocks ran slower than their requested cadence, so those latencies are lower bounds. F-17 stays
+partial. The earlier gate's two misses are unchanged and were not rerun.
+[Measurement, studies, raw data and limits](./performance-experiments/2026-10-10-account-desktop-typing/README.md).
+
+## 2026-10-11 — Account batching must include local flush scheduling
+
+The [bounded batching packet](./performance-experiments/2026-10-11-account-batching/README.md)
+compares publication-only and coordinated local-flush/publication timing on copies of the same
+already-grown account. Publication-only barely changes deep stalls; the selected 300ms quiet / 2s
+maximum coordinated policy lowers stable-text p95 from 285–337.5ms to 57.1ms, and sampled CPU/key
+from about 150ms to 96ms. Ordinary Account builds now select it; Local-only scheduling is unchanged.
+A reference build override retains the prior behavior without changing persistent formats.
+
+The packet includes uninterrupted history, current cold-open and compaction costs, heap, queue job
+counts/times, two-device typing and peer arrival, and focused crash/retry evidence. Batching does not
+make existing cold history cheap: the fixed-history cold opening remains about 12–13s and the largest
+candidate compaction still takes about one second. No phone latency, general release-validation or
+production-publication claim follows from these disposable desktop measurements.
+
+## 2026-10-11 — Linear delivery-prefix verification on existing-history cold open
+
+The [cold-opening packet](./performance-experiments/2026-10-11-account-cold-open/README.md) repairs
+quadratic prefix reconstruction in complete delivery verification and constructs one nested census
+per preliminary validation. Against the signed batching parent `4bcac419`, five alternating pairs
+of the same existing 2,320-edit / 295-position fixture improve median offline unlock-to-editor from
+11.62s to 4.21s (63.7%). Prefix computations fall from 173,755 to 885; all three complete delivery and
+inbound verifications remain. Independent signed histories establish linear link-hash counts through
+1,000 positions. Source parses fall from 72,985 to 44,733, without changing the five physical loads.
+
+Three receiver pairs (51 inbound head records) remain about 1.17s, and three fresh pairs about 0.26s.
+Retained heap and first-edit guards show no material regression. Ordinary-build online/deep and
+offline/approved-device edit/reopen checks pass without diagnostic globals. Focused corruption,
+completeness, pending-dependency, crash/retry and cancellation checks pass; an older stale ledger
+mutation control fails on both parent and candidate and is explicitly retained as a limitation.
+
+The deep fixture still exceeds the 2.5s budget. Repeated source parsing, coverage checks and the
+preliminary/live-owner boundary remain opportunities. Static assets are installed before measurement;
+virtual unlock is inside it. These desktop samples do not establish phone performance, peak heap,
+large receive-history scaling or network catch-up latency. No deployment or release-validation resume.
+
+## 2026-10-11 — Parse each source once within the cold census
+
+The [census follow-up](./performance-experiments/2026-10-11-account-cold-census/README.md) consolidates
+catalogue, sequence and allocation-metadata parsing into one validation per physical source capsule
+per spool census. It also replaces hexadecimal-string equality with direct canonical byte comparison.
+Decoded updates are erased; temporary scalar descriptions do not enter the returned ledger view.
+
+Against the already repaired cold-open working tree, five alternating deep-history pairs improve
+median opening from 4.07s to 3.44s (15.4%, 625ms). Source parses fall from 44,733 to 25,897, with full
+passes, crypto counts and physical reads unchanged. Receiving-device and fresh-account medians remain
+about 1.16s and 0.26s. Deep collected heap increases about 0.28MB at the median with overlapping
+ranges; first-card medians are both 26ms. All 22 measured opens and the focused correctness/recovery
+checks pass. Exact patches, raw observations, profile, predeclared predictions and limitations are
+retained in the packet.
+
+The 2.5s deep cold-open budget remains unresolved. Preliminary recovery still repeats full validation
+inside one owner; scoped reuse there is the next candidate, before a more delicate cross-owner
+handoff. Coverage checking remains substantial. These results do not qualify network catch-up,
+phone performance or peak heap; no deployment or release-validation campaign occurred.
+
+## 2026-10-11 — Reuse the preliminary owner's verified snapshot
+
+The [recovery follow-up](./performance-experiments/2026-10-11-account-cold-recovery/README.md) reuses
+one successful semantic validation within a single preliminary recovery owner. Its second read still
+authenticates storage and checks the complete counter and sealed rows; any change revalidates. Journal
+reads stay fresh, and live-owner validation remains independent. Nine new boundary tests plus eight
+native regressions pass, including an effective weakened-identity control.
+
+Five deep pairs against the preceding census repair improve the original observation from 3.43s to
+2.92s (14.9%). Preliminary validation count falls two to one, native decryptions 12,411 to 8,286, and
+physical reads stay five. Collected heap stays near 17.5MB; extra temporary copying is recorded.
+
+The receiver's preliminary work falls 402ms to 240ms, but Playwright visibility polling obscures the
+gain in its final observation. A separately recorded in-page frame probe confirms deep 3.11s to 2.58s
+and receiver 0.85s to 0.71s in three alternating pairs each. These values are not directly comparable
+with older polling-based measurements; both methods and all raw observations are retained. Future
+cold-open comparisons should include the frame timestamp. No phone or hardware-scanout claim follows.
+
+The 2.5s budget remains unresolved. Live-owner accepted-source coverage checking is now the strongest
+remaining measured candidate (~0.6s inclusive in a separate profile). No new coverage strategy,
+cross-owner handoff, production rollout or release-validation campaign was introduced.
+
+## 2026-10-11 — Prepare one baseline for accepted-source coverage
+
+The [coverage follow-up](./performance-experiments/2026-10-11-account-cold-coverage/README.md) shares
+only baseline serialization within the live incremental owner's synchronous coverage call. Each
+original still receives an independent fork and complete comparison, including pending state and
+deletions. Preparation is disposed on success/refusal; full/reference and isolated audit checks retain
+the previous algorithm. No stored format or cross-owner reuse changes.
+
+Five alternating deep-history pairs improve the in-page editor-frame median from 2.577s to 2.341s
+(9.2%, 236ms). Coverage falls 615ms to 376ms (38.9%) while retaining all 2,355 independent checks;
+one prepared baseline replaces repeated setup. Full passes, physical reads, source parses and native
+crypto counts remain unchanged. Receiver frame medians are both 0.699s; fresh medians are 0.193/0.204s,
+with overlapping ranges and essentially unchanged owner/recovery work. Deep collected heap rises
+0.29MB at the median with overlapping ranges; first-edit medians remain 23ms.
+
+All five candidate deep samples are below 2.5s on this desktop fixture. This does not qualify phone,
+arbitrary-history or network-catch-up performance. All 22 paired opens, 25 focused unit tests and eight
+native regressions pass, plus separate profile and ordinary-build edit/reopen checks. Two initial
+generated-test attempts hit the same fixture error before candidate comparison; evidence records the
+correction. Build/type/lint/Yjs/bundle/origin checks pass. The remaining profile points to census
+parsing and byte/text conversion; inclusive costs overlap and are not predicted removable time.
+
+All four cold-open slices are recorded together in the cold-open integration commit on signed parent
+`4bcac419`. The experiment packets retain their original working-tree descriptions and tested source
+hashes. Nothing has been deployed; release validation remains paused, and the other seat's live
+progress file remains untouched.
+
+## 2026-10-11 — Client receive scheduling, custody equality and substantial-workspace evidence
+
+The [client receive packet](./performance-experiments/2026-10-11-client-receive/README.md) compares
+local deployed-source `86275345` (runtime identical to `c609d8c7`) with the preserved candidate
+patch/build hashes. A real disposable pair uses 120 cards, 12 KB Goals and 600 queued accepted
+positions. Both baselines miss the original 600-second catch-up deadline; candidates complete in
+307.083/318.043 seconds. The second baseline's explicitly separate continuation completes in
+938.398 seconds, a 66.1% paired reduction. The second pair reduces own/peer reads from 599/600 to
+150/600 and catch-up long tasks from 8,446 (p95 79 ms) to one (53 ms). Verification/admission and
+one-position pages remain intact; periodic authenticated discovery and legacy notifications remain.
+
+Observed post-catch-up burst-to-peer medians are 3,642 ms baseline and 2,362/2,358 ms candidate,
+including batching and assertion polling. Distinct newly accepted writer reply intervals at depth
+are essentially unchanged (2,264/2,285 ms medians). Complete exported writing agrees, and four
+matched offline opens reproduce the same 54,211-byte digest. No HTTP capacity refusals occurred.
+
+Identical completed-receiver cold opens remain about 6.9 seconds, over the unchanged 2.5-second
+budget, with identical native verification counts. Offline input medians stay around 14–15 ms;
+p95 is mixed (18.4/23.6 ms baseline, 24.3/24.0 candidate). No offline input improvement is claimed.
+A separate profile identifies received coverage reconstruction and byte/text conversion as remaining
+cold-open costs. Post-catch-up tasks exceeding one second remain; compaction attribution needs a
+captured profile. Phone, WAN, indefinite history and release qualification remain unmeasured here.
+
+The final source adds delayed fixed failure notices, Account details and lane-specific retries.
+Known integrity/size/closed/conflict stops remain terminal; unexpected failures back off automatically.
+Measured and final source/bundle identities differ only by recorded follow-up observation/refusal/retry
+corrections. Focused tests and final build pass. One final packaged attempt failed during initial
+enrollment before the recovery test; its isolated rerun passed and the unexplained refusal remains
+recorded for follow-up before publication. Nothing is deployed; release qualification remains paused.
+
+## 2026-10-11 — Enrollment refusal investigation before publication
+
+Client receive work and its measurements are signed as `34f9b0b9`. The
+[bounded follow-up](./performance-experiments/2026-10-11-enrollment-history-race/README.md) reproduces
+the second-device opening failure: three of six pairings receive `409 unavailable` from the history
+checkpoint route. A temporary service diagnostic identifies `Empty publisher authority changed`.
+An ordinary first-device upload changes the stored witness between two captures, and the history
+reader reports an error instead of restarting its snapshot verification. The check came from
+deployed service optimization `c609d8c7`. The original run lacked a refusal body, so its precise cause
+cannot be recovered retrospectively; the new runs establish this concrete defect with the same symptom.
+
+The local repair retries only the two explicit snapshot-race checks within the existing four-attempt
+bound. All five directed controls pass, including authority/row-damage refusals; 35 affected service
+regressions and six repaired packaged pairings pass. The second matched check concerns a concurrent
+append during retained checkpoint-cut verification. No client behavior, authentication, schema or
+format changes. These are correctness observations, not new performance measurements or qualification.
+The original stopped-receive notice/manual retry journey also passes, including reverse-direction
+editing. The repair is local; no publication has been prepared or deployed.
+
+## 2026-10-12 — Deployed receive attribution before batching
+
+The user confirmed both actual devices on `77657e23` and two-way sync restored; catch-up remains
+slow. The signed recovery checkpoint is `7f76a59f6249a03b822d73de63e96bcf98fb96df` in `ol-infra`.
+The [new attribution packet](./performance-experiments/2026-10-12-receive-attribution/README.md)
+measures that unchanged frontend locally: 600 positions take 308.307 seconds, versus 374.759 seconds
+with 75 ms added per request. A separate diagnostic run takes 306.068 seconds. Each completes both
+directions, export equality and offline reopen; the ordinary deep received-history opens remain
+about 6.8 seconds. These are three individual observations, not phone or public-service measurements.
+
+The diagnostic counts 4,286 content loads and 5,793 authority checks, with 195 seconds accumulated
+inside authority checks versus 0.248 seconds in coverage checks. Inclusive timers overlap. Sampled
+hex self time is 84.9 seconds: 44.5 in marker comparison and 40.3 in custody authentication
+serialization. Read-write transactions accumulate only 0.78 seconds; reducing commits alone misses
+the main cost. Own-stream reads remain 149–150 per 600 useful reads.
+
+Next prototype: redundant own-poll suppression and exact marker comparison without hex, then
+amortized owned processing of existing one-position receipts. Keep receipt formats and per-entry
+authentication intact. Any grouped commit needs ordered witness extension, bounds, expiry and
+authority checks, authenticated readback and abort/retry controls. Coverage and new multi-position
+receipt formats are not selected for this first repair. Runtime remains unchanged; release validation
+stays paused. The packet also records the requested read-only disk investigation; nothing was deleted.
+
+## 2026-10-12 — Own-stream poll suppression and exact marker-byte equality
+
+Measurements are signed as `ee234d06`. The [first repair](./performance-experiments/2026-10-12-receive-first-repair/README.md)
+compares the same canonical authenticated marker bytes without hex conversion, and suppresses recent
+own-stream checks during productive peer catch-up only when verified delivery has no unresolved
+submission. Current-key retries with historical refusal responses remain eligible; authority changes
+reset the hint. Empty peer responses finish the ordinary sweep instead of causing duplicate reads.
+Fresh authority checks, native receipt formats and retry back-off remain unchanged.
+
+The final local restored 600-position run takes 254.318 seconds versus 328.126 seconds in a fresh
+frozen baseline (22.5% less time); own reads fall from 150 to 44. With 75 ms added per request, the
+final candidate takes 302.023 seconds against the previous packet's 374.759-second delayed baseline
+(19.4% less time; no fresh delayed baseline). All five journeys, including the preserved intermediate
+candidate, pass both-way writing, complete exports and offline reopen. Cold opening remains around
+seven seconds. These are single serial desktop observations; no phone or release claim follows.
+
+Sixteen focused unit and five native checks pass, plus type/build/targeted lint/format checks. One
+older fault-control expectation fails identically on pinned pre-repair source and is preserved as
+an existing fixture limitation, not changed to weaken a safeguard. The repair and evidence are
+committed signed as `534252e1`. Next: grouped owned processing of current-format receipts. No publication or resumed
+release validation; `docs/progress.md` is unchanged.
+
+## 2026-10-12 — Group existing receive receipts
+
+The previous repair is signed as `534252e1`. The [grouped implementation](./performance-experiments/2026-10-12-receive-groups/README.md)
+collects up to four separate limit-one replies sequentially outside admission, then verifies and
+commits their original content/evidence pairs with one checked witness transition and readback.
+It preserves exact receipt bytes and allows the pre-group reader to cold-open the result.
+
+For the same 600-position fixture, fresh first-repair baseline catch-up takes 248.795 seconds;
+grouped catch-up takes 79.125 seconds (68.2% less time). Added-75-ms catch-up takes 193.074 seconds,
+against the prior delayed observation's 302.023 seconds (36.1% less; no fresh delayed baseline).
+All three journeys pass both-way export equality and offline reopen. Burst medians remain around
+2.34 seconds; cold opening remains around seven seconds. The delayed candidate has one unattributed
+1.189-second long task. No phone or public-service inference is made from these individual runs.
+
+A preparation-inclusive four-receipt count comparison reduces content loads 16→4, read-only
+transactions 220→47 and write transactions 8→2. Per-entry authentication is retained. Thirty-two
+focused unit and seventeen native cases pass, including group atomicity, stale/invalid evidence,
+expiry, authority change, both native size bounds, older-reader compatibility, lost HTTP tails and
+locking during collection. Build/type/targeted lint/format checks pass. This repair/evidence is committed signed as
+`54811c93` and unpublished. This phase introduced no concurrent prefetch or release-validation resumption.
+
+## 2026-10-12 — Prefetch current-format receive replies
+
+Receipt grouping is signed as `54811c93`. The [bounded prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
+uses at most two concurrent reads within the unchanged four-receipt turn and 250 ms launch window.
+Full supported-page reservations and retained bytes share the existing 4 MiB collection ceiling.
+Out-of-order replies still enter authentication and commit in prefix order; gaps never advance,
+and cancellation drains/erases speculation. Self reads remain singleton. No receipt/service schema
+change, migration or relaxed verification was introduced.
+
+With 75 ms added per request, a fresh grouped baseline takes 194.602 seconds for the same 600-position
+fixture; prefetch takes 100.978 seconds, 48.1% less. Local prefetch takes 68.961 seconds versus the
+prior grouped observation's 79.125 seconds (12.8% less; no fresh local baseline). All three journeys
+pass complete export equality and offline reopening, with receiver sending during catch-up and
+similar writer submit-response intervals. The delayed candidate reads four concurrent-writer
+positions beyond the original backlog before the catch-up observation; no peer cursor repeats.
+
+Delayed burst median remains 2.352 seconds, cold open 6.804–6.907 seconds across candidates, and a
+1.238-second delayed long task remains unattributed. No primary HTTP response is non-200 or 429;
+HTTP-200 `ERR_ABORTED` browser events remain and are retained. Fifty-two focused units, twenty-one
+native cases and build/type/targeted lint/format checks pass. Content-redacted samples reproduce
+all three primary and three supplementary summaries. Repair/evidence are signed as `460fefd8` and
+unpublished. No phone campaign or resumed release validation occurred.
+
+## 2026-10-12 — Foreground reference-audit stalls
+
+The [captured stall and focused repair](./performance-experiments/2026-10-12-foreground-stall/README.md)
+start from signed prefetch `460fefd8`. A natural traced run captures a 1,530 ms main-thread task:
+1,178 ms sampled in inbound verification, including 1,106 ms in reference coverage. An earlier
+capture had no audit/task; both remain in evidence. Receipt-by-receipt budget boundaries alone left
+~277 ms tasks. A second profile identified the initial receipt census and final self-coverage array;
+these now use the same maintenance budget too.
+
+A matched controlled collision reduces input sent→admitted text from 2,157 to 24 ms and maximum
+task from 2,178 to 64 ms. Audit interruption retains the fully authenticated incremental view under
+its exact binding, leaves the audit due, and retries it at idle maintenance. Two retry/completion
+checks and offline full-export equality pass; no partial oracle state publishes. Reference coverage,
+physical census, native atomicity, mismatch refusal and lifetime/authority invalidation remain.
+
+The ordinary delayed 600-position journey passes, with maximum task 73 ms but catch-up elapsed
+112.521 seconds versus retained prefetch 100.978 seconds, **11.4% slower**. This is below the
+predeclared >15% investigation threshold; it is not a throughput gain or a fresh paired ordinary
+comparison. Burst median is 2.366 seconds and offline cold opening 7.497 seconds. There are no
+primary non-200 responses/429s; 73 HTTP-200 browser abort events remain recorded. All seven packaged
+observations, 72 focused units, three native cases and type/build/targeted lint/format checks pass.
+Work is uncommitted/unpublished; release validation remains paused. Total history/audit cost,
+individual large synchronous proofs, deep opening and phone evidence remain separate work.
+
+## 2026-10-12 — Received-history cold opening
+
+Working tree on signed **`d1e5e5ea`**, bound to exact runtime hashes and patch in the
+[received-open packet](./performance-experiments/2026-10-12-received-open/README.md). That signed base
+is the completed foreground-audit responsiveness repair, not a deployed release.
+
+On the same synthetic 120-card / 600+ received-position fixture (54,211 exported Markdown bytes),
+three unprofiled offline opens per arm: first completed editor frame median **7.054→2.622 s**, final
+range **2.502–2.909 s**; polling-observer median **7.422→2.972 s**. Reusing one coverage document per
+verification pass and proving integrated struct/deletion coverage accounts for most of the improvement;
+omitting redundant outer/nested receipt re-encoding adds a smaller gain. Native crypto counts and the
+complete archive digest are unchanged; every timing observation also accepts and cold-recovers an edit.
+Heap stays about 17.4 MB. Baseline confirmation differs by under 1.2%. The **2.5-second budget remains
+unmet**, and no phone or arbitrary-history-size claim follows.
+
+The final isolated CPU profile reduces inclusive coverage checks from about 2,931 to 37 ms;
+baseline document reconstruction separately cost about 1,289 ms. Hex/unhex remain about 371/373 ms
+self time. Profiles are separate from timing samples; one overlapping-test profile is marked confounded.
+A packaged two-device functional regression also passes complete exports, both-way later edits and
+offline replay. No generalized release validation was resumed; per-key admission remains the next slice.
+
+## 2026-10-12 — Account text admission without workspace forks
+
+The received-open repair is now signed as **`68ca241d`**. The
+[text-admission packet](./performance-experiments/2026-10-12-text-admission/README.md) measures the
+next working-tree slice on the same synthetic 120-card / 600+ received-position fixture. Three
+interleaved observations per arm (120 keys each): handler median-of-medians **7.6→2.1 ms**;
+run-level handler p95 **11.2–11.8→3.1–3.5 ms**. Key-to-visible-frame median-of-medians
+**11.4→6.2 ms**, p95 **15.5–16.4→12.9–13.9 ms**. Every candidate key avoids workspace forks and
+full projection comparison. Every run undoes/redoes the whole block and reopens offline correctly.
+
+Direct text is the branch default after meeting the predeclared improvement/correctness criteria;
+`VITE_ACCOUNT_TEXT_ADMISSION=reference` retains the full native Account preparation path.
+[The contract](./account-text-admission.md) preserves journal-before-apply, exact human source
+bytes and workspace undo, with conservative fallback and a full projection audit on ordinary close.
+No format change or deployment. Type/build, 244 focused tests and the real two-device text/undo/
+offline-reopen regression pass. Release validation remains paused.
+
+One CPU-4x observation per arm improves handler median **27.1→6.2 ms** and visible-text p95
+**128.2→57.1 ms**, still above the 16 ms budget; the largest background task is 170/176 ms.
+This is not physical-phone acceptance. The isolated direct profile leaves UI/CodeMirror work and
+background storage verification/copying as measured residual costs. Large target texts, structural
+commands, long-session history growth and public-device measurements remain separate work.
+
+
+## 2026-10-12 — Exclusive Account warm ledger loads
+
+On merged main `24481b82` (deployed source `9465fb04`), the
+[warm-load packet](./performance-experiments/2026-10-12-warm-ledger/README.md) first attributes
+CPU-4x flush stalls to full old-row comparison/cloning. Three final matched pairs on the retained
+120-card/600+ received-position fixture reduce aggregate long-task duration **39.4%** and maximum
+task **170→131 ms**. Median of handler medians is **6.0→5.8 ms**. All six sessions preserve
+120-key undo/redo and offline replay. Frame p95 improves in each pair, but worst frame samples
+increase to **156.9–166.5 ms**; dispatch-based measurement omits blocking before event delivery,
+and input still waits behind an active flush. This is not a claim that every keystroke is faster.
+
+Nine full row reads (33.14 MB measured plaintext payload) become nine counter/shape checks plus
+126 rolling old-row checks (0.78 MB ciphertext). Approximately **92.07 MB of detached record copies
+remain**. IndexedDB count/key-bound guards are not constant time: synthetic CPU-4x median
+1.2 ms at 600 rows versus 4.4 ms at 10,000. Warm reuse defaults on for exclusive v9 owners after
+focused correctness and timing checks; explicit warm/reference overrides retain full reads.
+The accepted detection window, bounded rolling audits and resume invalidation are documented in
+[the contract](./account-warm-ledger-loads.md). No format change or deployment.
+
+[Local retention remains design-only](./account-local-retention-design.md). The separate approved
+cleanup removes 16.08 GB of allocated duplicate/temp material, retaining fixtures, evidence and
+11.19 MB of nonidentical document variants. See [the cleanup record](./performance-experiments/2026-10-12-warm-ledger/cleanup.md).
+Release validation remains paused.
+
+
+## 2026-10-12 — Private Account verifier ownership
+
+The warm-ledger slice is signed as **`e88c19a5`**. The next working-tree
+[ownership packet](./performance-experiments/2026-10-12-owned-verification/README.md) attributes
+approximately 33 MB of record copies to caller-detached storage loads and two additional 29.5 MB
+copies to verifier input/retention. The verifier also deep-clones its semantic result, outside the
+record-byte counter. It now reuses exact private prefixes and owns the result/candidate directly,
+with backing-buffer-aware cleanup and unchanged caller isolation.
+
+Three serial CPU-4x matched pairs on the retained 120-card/600+ received-position fixture reduce
+record-copy bytes **64.0% (92.07→33.16 MB/120 keys)**. Aggregate long-task duration falls
+**61.3% (2,111→818 ms across three sessions)** and maximum **104→60 ms**. Median of session
+handler medians is **5.9→5.6 ms**; median of frame p95s **39.0→23.8 ms**. All sessions retain
+nine flushes, nine warm loads and the same 126 physical-audit rows, and pass complete block
+undo/redo and offline replay. Timings, baseline attribution profile and pilot remain separate.
+
+Tails remain mixed: pair 1's maximum frame worsens **46.0→101.2 ms**, pair 3's p95 worsens
+**39.0→45.8 ms**, and candidate worst frame is **117.6 ms**. Dispatch timing omits pre-dispatch
+blocking. CPU-4x is not a physical-phone measurement; the 16 ms p95 budget remains unmet.
+The branch enables the private ownership mode after meeting predeclared criteria and focused
+native/unit/packaged checks. `VITE_ACCOUNT_RECORD_OWNERSHIP=0` or the full reference ledger
+restores the cloned verifier. No publication. About 33 MB/session of caller-detached copies,
+history-dependent equality/graph work and local retention remain; release validation stays paused.
+
+
+## 2026-10-12 — Account storage selection without outward history copies
+
+The verifier-ownership slice is signed as **`f4f01228`**. The next working-tree
+[storage-selection packet](./performance-experiments/2026-10-12-storage-selection/README.md)
+compares three fresh CPU-4x sessions per arm on the retained 120-card/600+ received-position fixture.
+Small verified selections replace journal source-presence full loads and selected sync/status reads;
+ordinary full-record callers keep detached bytes. Per 120 keys, recorded copies fall
+**33.16 MB→29,404 bytes (99.91%)** with nine dirty flushes, nine warm loads and the same
+126 physical-audit rows / 781,609 ciphertext bytes in every session. Each passes full undo/redo
+and offline replay.
+
+Reference sessions have 13 tasks totaling 739 ms at/above 50 ms; no such tasks appear in the three
+candidate sessions. This does not mean total CPU work fell by 739 ms: it is a thresholded metric.
+Median of session handler medians increases **5.8→6.1 ms**, and median frame p95 increases
+**36.2→38.8 ms**. Frame medians worsen in every pair; candidate worst frame **115.7 ms**.
+The predeclared 10% regression limits are met, but the 16 ms p95 budget remains unmet and this
+is not a typical-input-speed improvement. Aggregate admission-flush elapsed time falls
+**2,558.5→2,055.9 ms (19.6%)**, while per-key admission waits sum **773.7→812.4 ms**.
+Those dependent elapsed spans are not additive CPU attribution.
+
+Selections are the incremental v9 Account default after focused correctness checks; explicit
+`VITE_ACCOUNT_SELECTIVE_LOADS=0`, disabling warm loads or the full reference ledger retains full
+copies. The private lease expires synchronously and selected results stay isolated from retained
+state. No stored-format change, publication or phone evidence. Async-flush queueing, full-record
+consumers and history-dependent verification/container work remain. Release validation is paused.
+
+## 2026-10-12 — Remove journal-flush waits from ordinary Account typing
+
+Storage selection is signed as **`7b088f80`**. The next
+[packet](./performance-experiments/2026-10-12-journal-flush-admission/README.md) profiles the
+remaining queue wait: three inputs wait 35.6–65.1 ms, wholly within timed flushes, contributing
+161.8 of 163.7 ms of admission waiting. These are elapsed spans, not synchronous CPU.
+
+The candidate runs timed Account snapshot copies separately from synchronous journal admission.
+Every input still journals before application. Foreground FIFO, explicit durability/remote
+barriers, forced content acknowledgement, exact snapshot cleanup and guarded close remain.
+The next batch's revision/deadline survives completion of an older copy. No format/audit change.
+
+Three fresh CPU-4x pairs (120 cards, 600+ received positions, 120 offline keys, single undo history)
+reduce aggregate local queue wait **630.9→7.9 ms (98.7%)**, worst key-to-visible frame
+**100.2→40.3 ms**, and median session frame p95 **22.6→20.3 ms**. Handler median stays near
+unchanged (**5.7→5.6 ms**). Frame medians remain near one display frame; pair two worsens
+16.0→16.5 ms. Both arms have zero >=50 ms tasks. All sessions retain nine dirty flushes,
+nine warm selective loads and 126 audited rows / 781,609 ciphertext bytes. Source boundaries
+vary slightly; record copies remain 28.8–29.7 KB. Do not describe elapsed flush/wait spans
+as additive CPU savings.
+
+Every comparison passes undo/redo and cold replay. Controlled queue tests and native renderer
+crashes cover admission during the copy; packaged two-device delivery/undo/offline recovery passes.
+The background path is now the local default, with `VITE_ACCOUNT_BACKGROUND_FLUSH=0` restoring
+timed FIFO barriers. This slice is uncommitted/unpublished. The **16 ms p95 budget is not met**;
+explicit barriers and receives can still delay typing. Online latency and physical-phone gains
+are unmeasured. History-dependent verification/containers and local retention remain. Release
+validation stays paused.
+
+
+## 2026-10-12 — Online typing reveals verification stalls; Goals size adds smaller synchronous cost
+
+Measured signed **`9ba0ae63`**, the timed-flush repair, with build-only numeric instrumentation.
+[Packet, all sessions and profiles](./performance-experiments/2026-10-12-online-typing/README.md).
+Two fresh sessions per offline/online condition for a 615-character card and Goals 3 / 12 / 64 KB,
+120 keys each, CPU-4x on the joined device, roughly 120 cards / 600+ received positions.
+Online uses a 75 ms per-request proxy plus ten peer edits to another card. Profiled diagnostics
+are separate from comparison numbers. Initial mismatched setup is retained and excluded before
+any timing; all matched seeds and all 19 timing/diagnostic observations pass correctness checks.
+
+| Target | Offline frame p95, both sessions ms | Online frame p95, both sessions ms |
+| --- | --- | --- |
+| Card, 615 characters | 20.1 / 20.1 | 431.4 / 510.4 |
+| Goals 3 KB | 22.9 / 21.7 | 491.2 / 488.0 |
+| Goals 12 KB | 22.2 / 23.6 | 496.0 / 432.2 |
+| Goals 64 KB stress case | 29.8 / 28.2 | 493.1 / 431.8 |
+
+Online input waits sum **3.81–4.91 s per 120 keys**, versus **1.8–5.8 ms offline**;
+**90–94%** overlaps owned remote admission. Multiple inputs can wait behind one job, and async
+spans are not additive CPU costs. There are **129–145 online long tasks**, maxima **138–180 ms**,
+and worst visible frame **833.4 ms**. All timing requests return 200; lanes progress and converge.
+The card profile attributes **3.66 s** to non-custody byte comparison (predominantly ledger)
+and **3.35 s** to custody payload encoding. Repeated same-history checks and owned-reservation
+fallbacks remain despite warm/selective loading. Detailed counters and source trace are retained.
+
+Offline Goals planning averages **2.32 / 2.31 / 2.68 ms per key** at 3 / 12 / 64 KB; whole
+projection averages **1.88 / 2.74 / 6.98 ms**. String/read/diff substeps account for only
+**0.21 / 0.39 / 1.65 ms** of that projection, so persistent planning and string comparison
+alone cannot be credited with eliminating the entire measured cost. Different size seeds have
+different source-row counts; within-size comparisons restore the identical seed.
+
+This is a descriptive measurement, not a new repair or qualification. Two repeats, CPU emulation,
+synthetic Markdown, fixed delay and omitted browser pre-dispatch time limit generality. The
+16 ms p95 budget remains unmet. Next recommendation is verified-view/reservation reuse on the
+online path, then unchanged-authority authentication reuse, then Goals planning/projection.
+No runtime changes or publication. Release validation remains paused.
+
+
+## 2026-10-21 — Ordinary live sync and catch-up on the released application
+
+Release `faf465f7`, rebuilt with fourteen public entry-asset matches, is measured on a synthetic
+121-card/13,000-character Goals pair in local headless Chromium. Four primary restored journeys
+separate foreground input from a receiver missing exactly 600 accepted updates. At 0/75 ms added
+request latency, isolated input-to-peer DOM p50 is 535.6/680.8 ms, continuous p95 is
+2,278.2/2,457.1 ms, and backlog completion is observed by 33.691/57.919 seconds. The receiver makes
+620/622 signed limit-one reads; there are three/zero HTTP 429s. New input during catch-up has peer
+p95 32.663/56.825 seconds, while local DOM p95 remains 13.9/8.0 ms.
+
+Two separate diagnostics identify the publication wait and repeated transport/authority/storage
+work; content hints arrive promptly. All six journeys preserve full exports, both-way writing,
+Undo/Redo and locked-document offline reopening. A fresh checked fixture recipe passes. Keep the
+failed constructors, smaller-Goals pilots and diagnostic clock correction. These are per-journey
+descriptive timings; DOM is not physical paint or proof of local durable acceptance. No phone,
+Firefox, WAN, capacity, whole-process cold reopen, runtime speedup or qualification claim follows.
+Next compare ordinary bounded read batching with original receipts and every existing guard, then
+publication timing independently of disk flush. [Protocol, raw evidence and exact limits](./performance-experiments/2026-10-21-live-sync-attribution/README.md).
+
+
+## Ordinary catch-up batching — 2026-10-21
+
+The [bounded comparison packet](./performance-experiments/2026-10-21-ordinary-receive-batching/README.md) compares signed branch `27dc7d78` with a receiver using the existing optional batch route and request-local authority reuse. It preserves original signed limit-one replies/receipts, every verifier, four-page turn, cancellation/deadline/bounds and numeric rates.
+
+| Restored 600-update backlog, three pairs each | Reference median | Candidate median | Median paired improvement |
+| --- | ---: | ---: | ---: |
+| +75 ms per account request | 59.389 s | 39.233 s | 33.7% |
+| Loopback | 33.727 s | 33.675 s | 0.15% |
+
+Receiver HTTP reads fall from 620–622 to 161–166 in the latency-added arms. Original inner requests remain individually signed and verified. All fourteen journeys pass complete exports, two-way writing, Undo/Redo, locked offline document reopen and predeclared local/peer typing guards. Isolated foreground peer p95 changes 702.7→753.9 ms (within the 10% guard); continuous peer p95 is 2,296.6→2,288.7 ms. This does not replace TRD latency budgets.
+
+Loopback candidate runs record 6–8 HTTP 429s versus 1–4 for reference, and show almost no catch-up improvement. This supports a separate bounded capacity/rate experiment; it does not establish a safe increase or isolate every cause. The +75 ms arms have zero 429s. Retain the slow V1 prototype, V2's missed target, V3 classification counterexamples/interrupted plan and the complete final paired denominator. Source/build hashes, per-pair guard values and independently reconstructed raw DOM observations remain in the packet.
+
+These are descriptive local Chromium journeys on matching encrypted synthetic fixtures (121 cards, 13,000-byte Goals, exactly 600 missing accepted positions), with new typing independently offered during draining. No physical Android/Firefox/WAN, production adoption, capacity, full-suite or generalized qualification claim. Foreground publication timing is still separate. New test obligations stay blocked; no preview or deployment changes.
+
+
+## Scoped sync rate and capacity investigation — 2026-10-21
+
+The [controlled investigation](./performance-experiments/2026-10-21-sync-capacity/README.md) keeps the patch 02 client exact and changes only temporary service refill literals, with burst/concurrency/verification bounds fixed. Fourteen restored browser journeys pass complete export/writing/Undo/offline-reopen and all predeclared typing guards.
+
+| Loopback 600-position workload, two factorial blocks | Block 1 | Reversed block 2 |
+| --- | ---: | ---: |
+| Default 16/session,64/process | 33.243s | 33.743s |
+| Session 64,process 64 | 22.575s | 23.088s |
+| Session 16,process 256 | 34.281s | 33.798s |
+| Session 64,process 256 | 23.115s | 23.085s |
+
+A third default/combined pair 33.764→23.586s gives 30.5% median paired improvement across the three primary contrasts. Session-only improvement is 31.6–32.1%; process-only has no benefit in this fixture. At +75ms, the one pair changes 38.721→37.737s (2.54%). The instrumented default run sees five session-top-up refusals and no process/concurrency refusal; next admissions follow by 1004–1011ms. This identifies policy-plus-retry cost, not an additive allocation of each wait to elapsed time.
+
+The separate six-session/competing-writer probe fails all six fixed arms with 409 state-changed before 429, so it supplies no qualified sustained-capacity or safe-policy estimate. Reader-only controls pass; all actual stored seed/interactive wires and proofs pass cold independent verification. The probe stops on 409 and does not test the app's full continuation policy. Source shared-revision invalidation is a hypothesis for the next discriminating experiment. Keep shipped 16/64, preserve raw failures/resources/pilots and investigate contention/continuation before any numeric promotion. No production/WAN/phone/Firefox, maximum-capacity, full-suite or generalized qualification claim.
+
+
+## Client continuation and publisher-tip invalidation — 2026-10-21
+
+The [bounded mechanism packet](./performance-experiments/2026-10-21-sync-continuation/README.md) keeps the exact patch 02 client/default policy and uses a separate observer-only service copy. Nine actual packaged-browser journeys pass complete export/writing/Undo/offline guards. A targeted injected remote-batch refusal is followed by an automatic remote attempt after 1172ms; an injected refused submit is later accepted with identical pending bytes. Natural browser pressure produces no client-facing state-changed reply. These functional controls do not establish production frequency or behavior under unlimited repeated refusals.
+
+Original full native contention fails with and without observation at 7.015/7.004s. Six unrelated fingerprint invalidations precede 28 hot stale-revision guards. A deterministic same-connection comparison confirms that the hot snapshot bytes remain identical while a valid unrelated commit and stale guard advance the shared revision. Smaller controls pass; own-writer discriminators retain later failures with 492/586 verified positions. Keep failed runs, different workload sizes and instrumented timing separate. Fourteen cold SQL wire/proof audits and all unchanged targeted invariants pass. No maximum-capacity/rate promotion, phone/Firefox/WAN, release/security qualification or production adoption claim; candidate publisher-scoped invalidation needs its own bounded repair/regression phase.
+
+
+## Publisher-scoped snapshot-race invalidation — 2026-10-21
+
+The [bounded repair packet](./performance-experiments/2026-10-21-publisher-isolation/README.md) changes only publisherTips runtime ownership. A fingerprint race now discards its publisher's preliminary evidence without advancing the global revision for byte-identical unrelated captures. Bounded unique owners fence captures, stale remember and active audits; global external/clear/close/audit safety fences remain. No rate, retry, format or verification change.
+
+In two fixed matched pairs of the original six-session256-position mixed workload, reference arms fail at6.039/6.003s with zero hot writes/read positions; candidates still fail at15.139/15.148s but verify24/27 hot writes and545/554 positions. These are failures with different stopping times, not completed throughput estimates. The full unrelated-writer+reader/no-hot-writer discriminator passes1536 positions,20 other writes and all independent proofs (20.166s replay;100429 responses including repeats). Both-writer/no-peer still fails after505 positions and14/7 verified writes. All six cold stores retain exact original wires and valid accepted proofs. Same-publisher contention and maximum capacity remain open; shipped16/64 refill stays.
+
+Three restored actual-client journeys pass full export/writing/Undo/offline-reopen guards: natural catch-up33.768s, duplicate pressure152.792s, and pressure plus known refused remote batch/submit158.162s. The injected remote read autonomously succeeds after1136ms and identical pending submit after1038ms. Natural browser state-change exposure is zero. These are local Chromium functional checks with duplicate reads sharing a session, not a matched browser speed, phone/Firefox/WAN, production adoption or generalized qualification claim. All114 affected cases, six effective omission controls and109 planning cases pass; failures/corrections remain preserved. New test obligation stays blocked, every prior gate remains, and no publication or preview change occurs.
+
+
+## Known append markers and remaining cold bursts — 2026-10-21
+
+The [bounded marker repair](./performance-experiments/2026-10-21-publisher-commit-races/README.md) prevents known valid same-publisher commits from destroying authenticated prefixes when old reads lose the strict native guard. Captures/memo results become obsolete; audits retain ownership and corruption quarantine. No queue, stored/wire change, authority check waiver, retry/rate/deadline increase. The old implementation fails the new regression;127 affected cases,11 effective omission controls and109 planning cases pass.
+
+The original COLD six-session256-position mixed workload remains failed. First hot writes offered at500ms verify at2955/3036ms; the following five queued writes drain in84/92ms and race out four read attempts. Retain both failed pairs and the stopped interaction-guard miss. This is not a cold-capacity pass. A separate real signed preflight read defines a WARM discriminator; all warm-read cost/status remains separate. In two clean warm pairs, repaired replay completes1536 positions at20.179/20.002s with all40/39 hot and20/19 other writes verified, hot offered-to-proof p95 576/563ms against2500ms. References fail at120s replay or409. Failed references are censored, so no completed paired speedup percentage is reported.
+
+All16 native stores pass independent exact-wire/proof audits, including11 failed runs. Keep the first potentially overlapping warm block and repeat it completely after other probes finish. Three actual-client journeys pass complete exports, writing, Undo/Redo and locked offline reopening (34.251/156.031/139.580s catch-up); known remote read and identical pending submit continue after1164/1038ms. No natural state-changed browser exposure; submit refusal body missing to CDP remains explicit. These are local Chromium functional controls, not browser speed, physical-phone/Firefox/WAN, maximum capacity, production adoption, population confidence or generalized qualification. Cold first-verification fan-out/queued bursts are the next bounded target; shipped16/64 remains. No preview or publication changes.
+
+
+## Cold publisher verification and queued write burst — 2026-10-21
+
+[Phase07 protocol and preserved evidence](./performance-experiments/2026-10-21-cold-verification/README.md). Counterbalanced fresh-service reference/candidate/candidate/reference, no warmup, same1024-row publisher, six scoped sessions×256 positions, hot500ms writer, unrelated1000ms writer and250ms reader. All original rate/work/concurrency/HTTP/120s replay/1GiB RSS limits and independent original proofs remain. Admission shares order only; each waited request recaptures and authenticates.
+
+| Final cold run | Reference1 | Candidate1 | Candidate2 | Reference2 |
+|---|---:|---:|---:|---:|
+| Verified positions |450 (failed409)|1536|1536|474 (failed409)|
+| Replay |not completed|20.574s|20.068s|not completed|
+| Verified hot/other writes |6/3|41/20|40/20|6/3|
+| First hot offered-to-proof |2452ms|286ms|289ms|2522ms|
+| Hot offered-to-proof p95 |2452ms|1014ms|574ms|2522ms|
+| Capacity refusals |0|93|94|0|
+
+Both candidates meet the added2500ms interaction guard, retain exactly two whole censuses (one/account), and finish without state-change replies, quarantine or remaining waiters. CPU8.73/9.16s, sampledRSS346/396MB. All8 original/final stores pass read-only original-wire/link/signature audits. Failed references preclude a completed paired percentage-speedup estimate. These are two correlated-workload process replications on one machine, not a confidence interval, rate-policy approval, general no-starvation claim or maximum-capacity measurement.
+
+Exact patch02 packaged-client normal/duplicate-reader functional journeys pass34.246/139.577s catch-up, full exports, two-way writes, Undo/Redo and locked offline reopening. No paired browser speedup or physical Android/Firefox/WAN/production claim. Retain the initial candidate's unchanged-regression failure, membership-enabled600s browser failure/interrupted repeat, initial first-epoch success and all fixture corrections; only final-source runs receive final-source acceptance credit. General qualification remains paused.
+
+
+## Revisit rate/capacity after cold verification — 2026-10-21
+
+[Prospective phase08 and full evidence](./performance-experiments/2026-10-21-rate-review/README.md). Working runtime remains16/session64/process. Only disposable service refill literals differ; all limits, checks, fixtures and exact patch02 client stay. Eight counterbalanced cold processes (D,S,P,B then B,P,S,D), plus one asymmetric1024-position D/S pair, all complete independently verified reads/offered writes. All10 stores pass cold original-wire/proof audits.
+
+| Session/process | Six-session replay in two runs |
+|---|---:|
+|16/64|20.141s /20.745s|
+|32/64|20.881s /20.416s|
+|16/128|11.408s /11.093s|
+|32/128|9.845s /10.142s|
+
+The single-session D/S pair is68.654/31.686s. The32/64 primary fails the relative native fairness gate: median per-run hot offered-to-proof p95 182→315.5ms; separate-account peer607→1133.5ms. Every absolute2.5s/resource guard passes; small quantile samples and1s retry steps remain qualified. Process128 variants pass local native gates but are diagnostic, with no production-capacity or adoption claim.
+
+Three restored actual-client600-update D/S pairs improve 31.46% at median. All10 normal/foreground/duplicate-pressure client journeys pass full data/edit/offline guards; all predeclared typing gates: False. Repeated-reference drift 0.07%. No physical Firefox/Android/WAN, container sizing, maximum sustained capacity or deployed-version claim. Pressure local typing also misses16ms (12.0→17.8ms). Keep16/64 pending a bounded typing/coupled-policy/container/multiple-publisher investigation. Preserve complete raw denominator, gate misses and the native stdout collision note; no new aggregate qualification credit.
+
+
+## Coupled rate capacity, distinct cold publishers and typing — 2026-10-21
+
+[Prospective phase09 and evidence](./performance-experiments/2026-10-21-coupled-capacity/README.md). Four D,B,B,D cold runs enforce Linux cgroup: 1 CPU, 1 GiB, zero swap and pids 128; driver/oracle outside. Six genuinely distinct 256-row publishers each replay256signed positions, plus separate account writes/reads and first-publisher500ms writer. Current service modules mounted read-only; cached image supplies dependencies, not a new release artifact.
+
+| Run | Replay ms | Offered/verified first/other writes |429s| CPU ms | RSS MB |
+|---|---:|---|---:|---:|---:|
+|1 D|21357|42/21|82|10440.7|189.4|
+|2 B|10501|20/10|12|8926.0|184.2|
+|3 B|10565|21/10|12|8929.1|184.3|
+|4 D|21080|42/21|77|10639.5|186.0|
+
+All 1,536 positions and original live/cold wire/link/proof checks pass in every run. Seven censuses/run, no OOM/quarantine/pending lanes; all declared fairness/resource guards pass. Actual CPU throttling occurred. No maximum/production/long-history/platform-capacity claim.
+
+Six uninstrumented exact-client journeys plus two both-renderer profile journeys preserve full exports, two-way writing, Undo/Redo and locked offline reopen.
+
+| Pair | D/B catchup ms | Improvement % | Local p95 D/B ms | Local/peer guards |
+|---|---|---:|---|---|
+|ordinary-D / ordinary-B|33760 / 24646|27.0|14.4 / 10.4|True / True|
+|pressure1-D / pressure1-B|139896 / 25653|81.66|9.5 / 16.8|False / True|
+|pressure2-D / pressure2-B|145821 / 29694|79.64|12 / 9.2|True / True|
+
+Typing acceptance remains failed. Preserve16.8ms pressure1-B against16ms; later9.2ms does not erase it. Decomposition puts the missed arm's offer→beforeinput p95 at16.3ms and event→DOM at0.7ms. Quantiles are not additive, host/CDP offer includes dispatch/scheduling, and mutation is not paint. Both mapped renderer profiles are mechanism-only; native crypto/IDB durations are asynchronous wall time. Keep 16/64 pending dispatch/control/foreground/device discrimination.68 original budget cases across Mac/Linux and 109 planning cases pass; all 881 obligations, 337 unresolved obligations and 97 construction statuses stay exact. No runtime/test/default change, preview/publication or general qualification.
+
+
+## Typing dispatch calibration and browser ownership — 2026-10-21
+
+[Prospective phase10 and raw evidence](./performance-experiments/2026-10-21-dispatch-calibration/README.md). Exact temporary B32/128 source/client/fixtures;10 restored duplicate-pressure app journeys and two static native-input controls. Whole journeys are units;120dependent keys are not independent replications. All data guards pass with native-control coverage explicitly limited; six editor journeys deliver all 120 new keys to the peer. Actual root process/binary/focus checks pass in every journey.
+
+| Run | Offer→DOM p95 ms | Browser keydown→handler p95 ms | Beforeinput→DOM p95 ms | Renderer late p95 ms | Driver worker/parent late p95 ms |
+|---|---:|---:|---:|---:|---|
+|control-normal|4.9|0.6|0.6|2|3/3|
+|control-fault|6.2|0.6|0.6|1.9|3/2|
+|1-OE|9.8|8.5|1.6|18.8|2/2|
+|1-FE|14.4|12.4|1.4|18|2/2|
+|1-IE|16.4|14.5|1.5|19.3|2/2|
+|1-FP|4.2|0.6|0.5|1.9|2/2|
+|1-IP|4|0.6|0.6|1.6|2/2|
+|2-IP|3.8|0.6|0.5|1.9|3/2|
+|2-FP|6.8|1.1|0.7|1.6|3/2|
+|2-IE|11.5|9.6|1.8|19.2|2/2|
+|2-FE|14.6|12.8|1.5|21.2|2/2|
+|2-OE|8.4|6.9|1.8|17.2|2/3|
+
+Three 80 ms beforeinput faults at indices30/60/90 all trigger independent DOM/RAF/heartbeat/longtask sensors; overall p95 alone hides these2.5% stalls. None of the focus/order or independent-root comparisons consistently meets>=3ms and>=20% reduction in both blocks. Native-input controls omit new editor writes and induced background work, so do not identify a pure editor effect. Renderer queuing is supported by the input timestamp/handler gap and larger renderer timer lateness, while driver lateness remains2–3ms. Together with prior profile hotspots, this selects owner-local verification/comparison reuse as the next bounded target, preserving all trust/byte/invalidation/cleanup fences.
+
+Reference catchup drift7.33%; instrumented32.1–38.7 s catchups cannot be compared with prior different-sensor/workload timings. Keep prior 16 ms misses,16/64 defaults, all 875 old-test blobs/803 runtime files and 881/337/97 planning state exact. Six affected integrity/planning checks pass; no full-suite/general qualification, physical keyboard-to-paint, preview/publication or runtime adoption.
+
+
+## Exact comparison prototype — held after app catchup regression — 2026-10-21
+
+[Phase11 prospective contract and complete evidence](./performance-experiments/2026-10-21-word-comparison/README.md). V3 actual built helper passes all unchanged micro guards: aligned equal/late67.3–68.6%, cooperative71.1–84.2% faster; V1/V2failed early/short controls remain. No timing assertion substitutes for exact semantic tests.
+
+| Run | Catchup ms | Local offer→DOM p95 ms | Keydown stamp→handler p95 ms | HTTP429s |
+|---|---:|---:|---:|---:|
+|1-R-catchup|37223|13.9|12.4|12|
+|2-C-catchup|56038|7.2|2.1|31|
+|3-C-catchup|53435|8.1|1.5|28|
+|4-R-catchup|34133|9.8|7.8|10|
+|5-R-catchup|35172|14.8|13.4|10|
+|6-C-catchup|53909|6.5|1.9|28|
+|7-R-foreground|—|7.2|1.3|0|
+|8-C-foreground|—|5.4|0.9|0|
+
+All8full data journeys pass;960keys/60foreground markers reach peers. Fixed pressure R,C;C,R;R,C pairs all pass local C<=max(16,R+3), all fail catchup and peer<=1.10R. Foreground pair passes. Reference drift9.05%within15%; no favorable reruns. Equal temporary32/128service,121cards/13kGoals/600positions, two browser roots, explicit focus and identical low-overhead sensors. No physical/mobile/Firefox/WAN or maximum capacity claim.
+
+Runtime candidate held and exact original helper restored. More capacity refusals and existing1s/2s explicit-refusal waits suggest a next pacing/admission study; no causal throttle-cost attribution or safe numeric change established. Six new regressions preserve every byte/tail/chunk/checkpoint and owner boundary; both helpers pass14cases, four omissions fail.112affected final units,93planning cases and relevant build/type/census/inventory checks pass. Overall case census2481→2487only;881/337/97planning state and16/64defaults retained. Sequential patch11contains tests/evidence, no runtime adoption, preview/publication or general qualification.
+
+
+## Capacity refusals and exact client retry waits — 2026-10-21
+
+[Phase12prospective design and raw homes](./performance-experiments/2026-10-21-capacity-trace/README.md). Same R/Ctyping candidate and temporary32/128policy, two browser roots, original121cards/13kGoals/600positions and full data guards. Corrected eight-case trace follows retained eight observer-incomplete runs; no favorable arm selection.
+
+| Run | Catchup ms | Local offer→DOM p95 ms | Client429s | B actual wait union ms | Duplicate charged work |
+|---|---:|---:|---:|---:|---:|
+|v2-1-R-feedback|26554|10.3|1|1009|310|
+|v2-2-C-feedback|37644|9.1|13|13033|655|
+|v2-3-C-feedback|35627|7.1|11|11049|588|
+|v2-4-R-feedback|26015|13.2|1|1001|304|
+|v2-5-R-ordinary|24055|20.3|0|0|0|
+|v2-6-C-ordinary|21510|6.9|0|0|0|
+|v2-7-R-independent|25513|13.9|1|1003|216|
+|v2-8-C-independent|24517|8.6|2|2002|206|
+
+All1586corrected refusals are session-rate predicates,29client refusals are work top-up failures,1610scoped dispatches joined and29same-byte retries exercise1s waits (no observed2s waits). Every full data guard/1920peer keys passes across16runs. Feedback traffic is endogenous to client demand. Independent pressure has72offers/0skips but actual3-read template rather than intended4; no exact4-read-control claim. Cshadow work655/588vsR310/304supports scoped concurrent duplicate-work admission as the next candidate, without proof/authority reuse or rate changes. Keep ordinary/fixed3diagnostic and observer/host/platform limitations.22budget cases,20000decision-parity operations,8business-ASTproofs and relevant builds/planning pass. Runtime803files/tests875blobs/default16/64and881/337/97state unchanged; evidence-only patch12, no adoption/publication/general qualification.
+
+
+## 2026-10-21 — Combined duplicate-read flow control and comparison
+
+[Phase13 packet](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) uses a fixed12-journey matched R/C design with actual16/64 primary policy, repeated reversed feedback pressure, ordinary catch-up, independently offered exact four-read contention, foreground typing and a separately labeled temporary32/128 diagnostic. Runtime differences are bounded exact concurrent batch exclusion plus the held V3 exact-word comparator. No tracing hooks, numeric rate/refill, burst/active/session/work limit, wire/storage, authority, verification lease or retry policy change. Source closure803→804 includes build tools/test helpers; crypto TS inventory399→400.
+
+All primary pair guards pass: pressure143.423/140.523→67.082/67.091s (53.23%/52.26%), local p95 13.8/11.8→7.4/9.6ms. Ordinary33.602→34.156s and independent51.363→51.475s are slightly slower; foreground8.9→9.2ms is roughly unchanged. The Bdiagnostic28.077→29.084s also passes its guard but grants no policy adoption. Reference drift2.06% is within15%. Every journey retains full export/two-way/Undo/locked-offline guards and120new peer keys; foreground adds30 markers per arm. Independent wire hash joins prove4-read template,72offers and0skips in both fixed-load arms. Keep phase11 and phase12 failures/limitations, dependent per-key observations and lack of supported mobile/Firefox/WAN/general capacity evidence. No universally faster typing/sync claim; ordinary catch-up still~34s.
+
+Original HTTP duplicate counterexample, five appended regressions, six omission controls, exact source/old-test AST review,50native/112word/105planning cases and matched type/build/budget/isolation checks are preserved. All881rows/337unresolved/97statuses/contracts stay exact; new cases stay blocked from aggregate qualification credit. Local unsigned sequential patch13, no staging/publication or generalized qualification.
+
+
+## 2026-10-22 — Unequal-account catch-up versus editing on c1177575
+
+[Phase14 packet](./performance-experiments/2026-10-21-account-fairness/README.md) freezes three genuine accounts with6/2/2 enrolled workspace credentials and1024/256/32 new accepted source positions. Four roots/ten native profiles, actual packaged client and current production overlays at1CPU/1GiB/no swap;120 genuine keys independently offered500ms. Fresh serial B,S,U,U,S,B, no retries or source/rate changes.
+
+| Run | Outcome | Local p95 ms | Peer p95 ms | Large replay seconds |
+|---|---|---:|---|---|
+|1-B|passed|2.6|738|—|
+|2-S|passed|4.1|1219.2|354.39|
+|3-U|failed|2.5|incomplete (110/120)|censored at writing failure|
+|4-U|failed|2.2|incomplete (79/120)|censored at writing failure|
+|5-S|passed|3.5|1151.9|330.252|
+|6-B|passed|2.9|743.8|—|
+
+
+The fixed fairness decision fails. Baseline peer drift0.786% passes; lighter-load guards pass despite higher peer latency. Both heavy arms miss the original30s writing guard with10/41 keys unobserved. Their observed-only peer p95 values are not full120-key estimates; all partial timestamps/counts remain. Local p95 stays2.2–4.1ms, so fast local echo does not establish timely sync. Heavy catch-up cancellation is censored at the quiet failure, not a600s observation. Membership-discovery409 and grant403 insufficient-scope occur six times each on the heavy quiet receiver; no quiet429 is recorded. Do not infer cause from statuses alone.
+
+Independent OpenSSL/native-prefix/seed-row audits of all six stores, three corruption controls, participant/resource/source checks and full/partial metric reconstruction pass. H/M accepted writing and all seed rows are exact. Failed profiles close without final storageState, limiting pending-durability/recovery claims. Preserve setup failures and all six outcomes. All existing obligations/old tests/source804 bytes remain; no rate adoption, aggregate qualification credit, staging or publication.
+
+
+## 2026-10-22 — Membership409 and removal-grant403 mechanism
+
+[Phase15](./performance-experiments/2026-10-22-membership-continuation/README.md) retains two heavy final-candidate journeys plus four pre-workload harness failures. Both original quiet delivery guards still fail. Server-side closed labels expose state-changed membership discovery after four snapshot losses; every traced loss observes the unrelated first publisher's promotion witness changing. The client tries terminal-removal discovery, correctly gets insufficient-scope for an active member, and eventually waits30s between discovery attempts. Neither quiet account sees429. No rate or auth repair is adopted.
+
+Stopping competing catch-up allows complete original writing to arrive automatically; a separate guaranteed-offline edit survives actual writer-browser close/reopen from the same profile, retains the complete archive and syncs on reconnect. Reverse writing, Undo/Redo and peer offline cold reopen pass. The canonical report preserves all times, exact refusal joins, missing-key denominators, native signature/prefix audits, observer parity, sensitivity controls, unchanged-case checks and setup failures. Subsequent recovery does not clear the original fairness blocker. Next bound discovery's relevant authority/publisher dependency and test safety falsifiers before changing production behavior. Source/client16/64, prior evidence and qualification pause remain; sequential patch15 only, no publication.
+
+
+## 2026-10-22 — Discovery false races removed; heavy catch-up remains blocked
+
+[Phase16](./performance-experiments/2026-10-22-discovery-dependency/README.md) retains fixed R,C,C,R at identical client/source envelope16/64. Candidate discovery compares the relevant publisher history without the unrelated first publisher's changing witness. Six membership409s and six removal-grant403s per reference disappear in both candidates. However, all original delivery guards fail: peer prefixes78/65reference versus38/45candidate out of120. Each candidate instead encounters six history-checkpoint409s, four explicitly state-changed and two uncaptured. The candidate is held; no speedup or complete-peer percentile/drift claim follows.
+
+Local offer-to-DOM p95 remains below16ms; complete writing and a separate guaranteed-offline edit pass automatic recovery, genuine same-profile cold reopen, whole exports and Undo/Redo after load-stop. Large H replays are censored at the quiet failure, not observed600s failures. Full reports preserve native signatures/prefixes, original failures, clocks/resources,13new regressions, mutation/source controls and16common broad-preflight failures. Next inspect checkpoint capture/guard and receive continuation without weakening current heads/history/authority. Sequential patch16 only; no deployment or qualification credit.
+
+
+## 2026-10-22 — Phase17 history checkpoint and receive gating
+
+[Phase17](./performance-experiments/2026-10-22-history-checkpoint/README.md) retains fixed-v2 R,C,C,R, identical client and1CPU/1GiB/zero-swap16/64 envelope. Quiet history409s reference [6, 6], candidate [0, 0]; full heavy acceptance **False**.
+
+| Run | Q1 history409 | Local p95 ms | Complete peer p95 ms | Original delivery | Replay600s |
+|---|---:|---:|---:|---|---|
+| 1-R | 6 | 3.8 | incomplete (46/120) | False | False |
+| 2-C | 0 | 2.6 | 8993.5 | True | False |
+| 3-C | 0 | 2.7 | 5090.8 | True | False |
+| 4-R | 6 | 2.8 | incomplete (76/120) | False | False |
+
+Incomplete references have no full peer p95/drift ratio. All four post-load automatic recovery/pending/save/cold-profile/full-export/reverse/Undo/Redo/isolation guards and native accepted-prefix audits pass.17 new regressions,8 implementation and6 evidence/native controls; same16 old affected failures remain. Candidate status: accepted for the scoped checkpoint repair; heavy fairness remains held. Preserve reuse-only pilot7history409s/H600 failures and the startup-invalid first comparison, without substitution. No deployed-device or generalized qualification claim.
+
+
+### Phase17 acceptance clarification
+
+The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.
+
+
+## 2026-10-22 — Phase18 ordinary receive progress under contention
+
+[Phase18 packet](./performance-experiments/2026-10-22-ordinary-receive/README.md), fixed R,C,C,R with unchanged client and1CPU/1GiB/zero-swap16/64 policy. Repeated authority proof dominates17 diagnostic reads755/769ms median; diagnostic timing is not acceptance. Original final heavy acceptance **False**.
+
+| Run | Local p95 ms | Complete peer p95 ms | Q429, whole journey | All five H replay | Original guards |
+|---|---:|---:|---:|---|---|
+| fixed-v2/1-R | 2.8 | 10531.1 | 0 | not complete at original deadline | False |
+| fixed-v2/2-C | 3.1 | 20968.1 | 0 | 256.0s | False |
+| fixed-v2/3-C | 2.8 | 19989.7 | 0 | 254.0s | False |
+| fixed-v2/4-R | 2.6 | 11939.6 | 0 | not complete at original deadline | False |
+
+Full original pending/save/cold-profile/raw encrypted delivery/whole-export/reverse/Undo/Redo/isolation/native prefix guards pass.18 new regressions/10 implementation and6 evidence/native controls; same16 old affected failures. Status **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**. No deployed-device, release qualification or maximum-capacity claim.
+
+
+### 2026-10-22 — diagnostic read/publication/retry trace, no candidate promotion
+
+Two fixed cumulative18 instrumented journeys,H6/M2/Q2,1CPU/1GiB,120 trusted keys at500ms,90s diagnostic load boundary. Q0/Q1 rate refusals0/0; Q409 counts0/1. The returned batch state-changed409 spends4614ms in four same-publisher commit races, including4399ms captured→authority verification, then999.1ms client backoff and3ms scheduler lateness. Native rejected-snapshot counts40/41;23/28 same-owner commit changes and17/13 unrelated original-publisher live-witness fingerprint changes. Writer submit HTTP p95=1333/1424ms; envelope preparation54.3/60.3ms and submission preparation36.1/32.4ms. Instrumented peer p95=9021/16234.3ms, all120 complete. These are mechanism observations, not matched performance acceptance; phase18's uninstrumented regression remains held. All data guards/native proof audit pass;61+21 unchanged existing regressions, four controlled cases and six fault controls pass. No runtime/rate/deadline/security/old-test changes, no qualification or publication. [Packet](./performance-experiments/2026-10-22-read-pacing/README.md).
+
+
+### 2026-10-22 — late-ledger capture, fixed heavy comparison
+
+HELD: scoped capture repair passes; original heavy performance acceptance remains unmet. Same frozen110 client assets, H6/M2/Q2,1CPU/1GiB,120 trusted500ms inputs; original16ms/2500ms/30s/600s/120s gates.
+
+|Run|Local p95 ms|Peer p95 ms|Quiet read409|Slowest H s|
+|---|---:|---:|---:|---:|
+|1-R|6.7|26277.2|1|310.8|
+|2-C|7.2|12403.3|0|322.4|
+|3-C|6.2|7108.2|0|295.6|
+|4-R|5.6|17304.3|1|265.2|
+
+Every outcome is retained; finite dependent observations, no general tenant-capacity inference. Independent native signature/seed/prefix and offline persistent-profile/export/retained-record guards pass.15 added regressions,5 omissions,6 evidence/native controls and unchanged affected-suite failure comparison. [Packet](./performance-experiments/2026-10-22-late-ledger/README.md). No rate, retry/deadline, cache-context or security relaxation, no publication or general qualification.

@@ -1,0 +1,52 @@
+[
+  {
+    "file": "README.md",
+    "sha256": "fa5d0f6c60f6de76acba7e28a087d01893571c4772c8c498a2995f5372658b54",
+    "bytes": 2616
+  },
+  {
+    "file": "docs/development.md",
+    "sha256": "f0641041c8f49e30c47b9c9cc8a6c0896a2d8fa03c753aba2d29ba9c06f66ba8",
+    "bytes": 13051
+  },
+  {
+    "file": "docs/account-crypto/transport.md",
+    "sha256": "d58d87cd4f50f07d1f8c80692c1186f51a528e78de2755caa4f0416e79eacae8",
+    "bytes": 15665
+  },
+  {
+    "file": "docs/account-crypto/account-ledger.md",
+    "sha256": "0a1374f741de98078fb516e6d0be00f80c0b4606b19f12e93dce89a47677809e",
+    "bytes": 18746
+  },
+  {
+    "file": "docs/account-warm-ledger-loads.md",
+    "sha256": "fb2060ec0f4cdf6939de190ecc76f2d2fd29627bd45977bcfbb286f6fe153284",
+    "bytes": 6521
+  },
+  {
+    "file": "docs/account-bulk-custody-reads.md",
+    "sha256": "c61d389f648cedbb9ef0abb3285b41323263bf3c1f814fb009cfa6d86fde8c63",
+    "bytes": 4291
+  },
+  {
+    "file": "docs/account-authority-authentication-reuse.md",
+    "sha256": "478dc2a0b081bb9aab15c11e7a81c87d117b3da9bfcfb8412f9133323e4cc9f2",
+    "bytes": 6044
+  },
+  {
+    "file": "docs/account-prepared-remote-handoff-design.md",
+    "sha256": "271a0b5419cc54b6651d82d8cd1f337f09f7adc0305ad4ebc3ed54cf508123a6",
+    "bytes": 7230
+  },
+  {
+    "file": "docs/performance.md",
+    "sha256": "5d7607dd2fb8c4e2c8138b20ce90b11e37c2a6da74c9d9fcde1f69a848953984",
+    "bytes": 199390
+  },
+  {
+    "file": "account-protocol/admissionHistory.ts",
+    "sha256": "37d2961c41be794a834399a7b5878d5066f952930dcc0e69592a4f8e1bb15d19",
+    "bytes": 23758
+  }
+]

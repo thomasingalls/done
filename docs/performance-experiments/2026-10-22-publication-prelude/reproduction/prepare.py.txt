@@ -1,0 +1,30 @@
+from pathlib import Path
+import shutil,json,hashlib,subprocess,os
+r=Path('/private/tmp/done-publication-prelude-20261022');r.mkdir(exist_ok=True,mode=0o700)
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');old=Path('/private/tmp/done-late-ledger-20261022');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip();idx=Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index');prior=json.loads((old/'patches/manifest.json').read_text());assert prior['expectedCumulativeTree20']=='a6249fa1172b039c4a04388875e1070b767d1810'
+assert sha(idx)==prior['realIndexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+files={str(p.relative_to(repo)):sha(p) for d in ['account-service','account-protocol','src'] for p in (repo/d).rglob('*') if p.is_file()}
+for f,h in files.items():assert sha(old/'source'/f)==h,f
+start={'head':head,'baseTree20':prior['expectedCumulativeTree20'],'indexSha256':sha(idx),'priorPatchManifest':prior,'runtimeFiles':files,'privateFixtureSha256':sha(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json'))}
+(r/'starting.json').write_text(json.dumps(start,indent=2)+'\n')
+(r/'protocol.md').write_text('''# Phase21: publication authority and receiver prelude attribution
+
+Prospective bounded diagnostic on cumulative patch20, before copying/instrumenting/running. Two fixed complete seeded H6/M2/Q2 journeys; 120 trusted focused keys at500ms, unchanged30s delivery observation, competing load stopped at90s after first input. Then original120s automatic recovery, durable offline pending edit, actual same-profile cold reopen, two-way writing, Undo/Redo and account isolation guards. This explicitly censors backlog replay; it cannot establish the600s gate. No performance acceptance comparison or population capacity inference.
+
+Separate native submission capture, authority, cold-lane waiting, census, wire verification and final transaction; self read-back authority/census; discovery authority, second membership-chain verification, request proof, ledger census and response; history authority, timeline reconstruction, request, live capture/cut checks and signing. Client scheduler, publication preparation/HTTP plus discovery/history local preparation, HTTP and proof/install stages. Correlate exact request SHA256, process identities and clocks. Record crypto-call counts/wall-time bins by request/stage, global CPU/loop/resource counters; overlapping async spans are never exclusive CPU attribution.
+
+Instrumentation only in disposable source/client copies. Reverse transforms must recover exact cumulative20 inputs. Closed labels/numbers/hashes only; no keys,codes,credentials,plaintext or bodies. Two fixed runs, no replacement for bad results, no concurrent competing benchmarks. Original16ms/2500ms gates unchanged but diagnostic values cannot promote the held candidate. Drop counters invalidate completeness. Independent source/output reconstruction and fault controls before closure.
+
+Static survey runs separately without benchmarks, with a finite declared source/callsite denominator and full hashes. Its opportunities are hypotheses unless dynamically measured; no claim that static analysis exhaustively proves every possible speedup. Inspect analogous optimization, invalidation/lifetime/security requirements and falsifier per candidate.
+
+Preserve every authority/history, live witness/ledger, ownership/version, custody, grant/session, request scope/signature, expiry, rollback and commit guard. No rates16/64, limits, retry cap/clock, product runtime or old tests changed. General qualification paused. Exit is bounded attribution, independently checked static map and next repair contract with sequential evidence-only patch21 after20. No real staging/signing/commit/push/preview8443 change/merge/deploy.
+''')
+s=r/'source';shutil.copytree(old/'source',s,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist','.receipts'))
+(s/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
+# Lab already contains original guard improvements; use diagnostic19's90s+client collection only.
+for name in ['common.ts','continuation.spec.ts']:
+ shutil.copy2(Path('/private/tmp/done-read-pacing-20261022/source/test/account-continuation-lab')/name,s/'test/account-continuation-lab'/name)
+p=s/'test/account-continuation-lab/runtime.mjs';t=p.read_text().replace(str(old),str(r));a="(f==='account-service'&&process.env.FAIR_VARIANT==='D'?root+'/diagnostic-account-service':f==='account-service'&&process.env.FAIR_VARIANT==='R'?root+'/reference-account-service':source+'/'+f)";assert a in t;t=t.replace(a,"(source+'/'+f)");p.write_text(t)
+shutil.copy2(old/'container-image.json',r/'container-image.json');shutil.copy2(Path('/private/tmp/done-read-pacing-20261022/container-service.mjs'),r/'container-service.mjs')
+print('Base20 exact runtime copy, prospective protocol and real-index identity recorded')

@@ -1,0 +1,237 @@
+import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+/** Internal original-source envelope preparation. The caller owns the sole carrier and authority. */
+import { guardedSubtle, hex, random, type Bytes } from './custodyCrypto';
+import {
+  decodeSourceCapsule,
+  eraseCapsule,
+  captureError,
+  type CaptureRoute,
+} from './sourceCapture';
+import {
+  encodeSpoolEntry,
+  extendSpoolWitness,
+  networkRoute,
+  NET_SEAL_LIMIT,
+  type SpoolEntry,
+  type SpoolState,
+  type SourceRef,
+  positionSources,
+  nextSpoolPosition,
+  MAX_POSITION_SOURCES,
+  MAX_POSITION_BYTES,
+} from './spoolRecord';
+import { assertAdmittedEnvelope, sealNetworkEnvelope } from '../../account-protocol/envelope';
+import { ContentError } from './contentRecord';
+import type { SessionTask } from './writeSession';
+import type { prepareAccountCustody } from './custody';
+import type { CpuCheckpoint } from './cpuBudget';
+export interface PersistedEnvelope {
+  position: number;
+  bytes: Bytes;
+}
+type Owner = ReturnType<typeof prepareAccountCustody>;
+export interface EnvelopePreparationContext {
+  batchSources?: true;
+  key(): Bytes;
+  signer(): CryptoKey;
+  whenDurable(): Promise<unknown>;
+  checkPublication(
+    task: SessionTask,
+    owner: Owner,
+    route: CaptureRoute,
+    currentRecords?: readonly import('./contentRecord').OpenedRecord[],
+  ): Promise<void>;
+  inspect(records: Awaited<ReturnType<Owner['carrier']['load']>>, route: CaptureRoute): SpoolState;
+  run<T>(
+    operation: (task: SessionTask, owner: Owner, route: CaptureRoute) => Promise<T>,
+  ): Promise<T>;
+}
+/** Select a bounded contiguous run of still-unallocated originals; never merge their bytes. */
+export async function selectEnvelopeSources(
+  state: SpoolState,
+  route: CaptureRoute,
+  batch: boolean,
+  subtle: SubtleCrypto,
+  checkpoint?: CpuCheckpoint,
+): Promise<SourceRef[]> {
+  const began = ledgerWorkStart();
+  try {
+    const used = new Set((state.origin?.consumed ?? []).map((s) => s.id + ':' + s.index));
+    for (const position of state.positions) {
+      const pause = checkpoint?.();
+      if (pause) await pause;
+      for (const source of positionSources(position)) used.add(source.id + ':' + source.index);
+    }
+    const selected: SourceRef[] = [];
+    let actor = '',
+      kind = '',
+      epoch = 0,
+      total = 0;
+    for (const [id, bytes] of state.sources) {
+      const pause = checkpoint?.();
+      if (pause) await pause;
+      const c = decodeSourceCapsule(bytes, route);
+      let hash: string | undefined;
+      try {
+        for (const [index, source] of c.sources.entries()) {
+          if (used.has(id + ':' + index)) continue;
+          if (
+            selected.length &&
+            (!batch ||
+              selected.length >= MAX_POSITION_SOURCES ||
+              source.actor !== actor ||
+              source.kind !== kind ||
+              c.epoch !== epoch ||
+              total + source.bytes.length > MAX_POSITION_BYTES)
+          )
+            return selected;
+          hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+          selected.push({ id, index, hash });
+          epoch = c.epoch;
+          actor = source.actor;
+          kind = source.kind;
+          total += source.bytes.length;
+        }
+      } finally {
+        eraseCapsule(c);
+      }
+    }
+    const pause = checkpoint?.();
+    if (pause) await pause;
+    return selected;
+  } finally {
+    measureLedgerWork('envelopeSelection', began);
+  }
+}
+export function createEnvelopePreparation(context: EnvelopePreparationContext) {
+  const runCaptureTask = context.run;
+  const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
+  const verified = async (task: SessionTask, owner: Owner, route: CaptureRoute) => {
+    const records = await owner.carrier.load(task);
+    try {
+      return { records, state: context.inspect(records, route) };
+    } catch (cause) {
+      for (const r of records) r.bytes.fill(0);
+      throw cause;
+    }
+  };
+  const append = async (
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    route: CaptureRoute,
+    entry: SpoolEntry,
+  ) => {
+    const bytes = encodeSpoolEntry(entry, route);
+    try {
+      const before = await owner.carrier.spoolWitness(task);
+      const after = await task.wait(() => extendSpoolWitness(before, bytes, subtleFor(task)));
+      await owner.carrier.appendSpool(
+        task,
+        { kind: entry.type === 'envelope' ? 'outbound' : 'heads', bytes },
+        {
+          before,
+          after,
+          beforeCommit: () => context.checkPublication(task, owner, route),
+        },
+      );
+    } finally {
+      bytes.fill(0);
+    }
+  };
+  return {
+    prepareNextEnvelope: async (): Promise<PersistedEnvelope | null> => {
+      await context.whenDurable();
+      return runCaptureTask(async (task, owner, route) => {
+        // Sources are now durable. New journal appends during this operation belong to a later grant.
+        let { records, state } = await verified(task, owner, route);
+        let wire: Bytes | undefined;
+        const originals: import('./sourceCapture').SourceUpdate[] = [];
+        try {
+          // Same just-loaded complete view; every append still obtains a fresh publication census.
+          await context.checkPublication(task, owner, route, records);
+          let position = state.positions.find((p) => !p.wire) ?? state.positions.at(-1);
+          const allocate = !position || !!position.wire;
+          const selected = allocate
+            ? await task.wait(() =>
+                selectEnvelopeSources(state, route, context.batchSources === true, subtleFor(task)),
+              )
+            : positionSources(position!);
+          if (!selected.length) return null;
+          const number = allocate ? nextSpoolPosition(state) : position!.position;
+          for (const ref of selected) {
+            const capsule = decodeSourceCapsule(state.sources.get(ref.id)!, route);
+            try {
+              const source = capsule.sources[ref.index]!;
+              originals.push({ ...source, bytes: source.bytes.slice() });
+            } finally {
+              eraseCapsule(capsule);
+            }
+          }
+          const body = {
+            actor_id: originals[0]!.actor,
+            actor_kind: originals[0]!.kind,
+            updates: originals.map((s) => s.bytes),
+          };
+          // Includes singleton and resumed positions. A known size failure consumes no allocation.
+          assertAdmittedEnvelope({ ...networkRoute(route), seq: number }, body);
+          if (allocate) {
+            await append(
+              task,
+              owner,
+              route,
+              selected.length === 1
+                ? {
+                    type: 'position',
+                    position: number,
+                    source: selected[0]!,
+                  }
+                : {
+                    type: 'position-batch',
+                    position: number,
+                    sources: selected,
+                  },
+            );
+            countLedgerWork('positions');
+            for (const r of records) r.bytes.fill(0);
+            ({ records, state } = await verified(task, owner, route));
+            position = state.positions.at(-1)!;
+          }
+          if (state.attempts + 1 >= NET_SEAL_LIMIT)
+            throw new ContentError('rotation-required', 'Network invocation budget exhausted');
+          const attempt = state.attempts + 1;
+          await append(task, owner, route, {
+            type: 'attempt',
+            position: position!.position,
+            attempt,
+          });
+          // This acknowledged continuation owns exactly one invocation. No persisted grant is reusable.
+          wire = await task.wait(() =>
+            sealNetworkEnvelope(
+              { ...networkRoute(route), seq: number },
+              body,
+              context.key(),
+              context.signer(),
+              task.step(() => random(12)),
+              subtleFor(task),
+            ),
+          );
+          await append(task, owner, route, {
+            type: 'envelope',
+            position: position!.position,
+            attempt,
+            wire,
+          });
+          for (const r of records) r.bytes.fill(0);
+          ({ records, state } = await verified(task, owner, route));
+          const saved = state.positions.find((p) => p.position === position!.position)?.wire;
+          if (!saved) captureError('Persisted envelope missing after commit');
+          return task.step(() => ({ position: position!.position, bytes: saved!.slice() }));
+        } finally {
+          for (const source of originals) source.bytes.fill(0);
+          wire?.fill(0);
+          for (const r of records) r.bytes.fill(0);
+        }
+      });
+    },
+  };
+}

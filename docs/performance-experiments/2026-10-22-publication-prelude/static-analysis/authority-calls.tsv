@@ -1,0 +1,99 @@
+file	line	callee	owner	lexical_loop_lines
+account-service/ceremony.ts	93	verifyWorkspaceAuthority	ceremonyBootstrap	83
+account-service/ceremony.ts	169	verifyWorkspaceAuthority	relayCeremony	161
+account-service/contentCheckpoint.ts	48	verifyWorkspaceAuthority	exchangeCheckpoint	41
+account-service/contentTransfer.ts	63	verifyWorkspaceAuthority	transferContent	56
+account-service/delivery.ts	569	resolveMembershipDeliveryAuthority	verifyCurrentWorkspaceAuthority	
+account-service/delivery.ts	570	verifyWorkspaceAuthority	verifyCurrentWorkspaceAuthority	
+account-service/delivery.ts	1022	verifyCurrentWorkspaceAuthority	decideSubmission	1005
+account-service/delivery.ts	1223	verifyCurrentWorkspaceAuthority	readAccepted	1214
+account-service/delivery.ts	1376	reuseInboundAuthority	readInbound	1367
+account-service/discovery.ts	68	verifyWorkspaceAuthority	discoverAuthority	62
+account-service/discovery.ts	85	verifyDiscoveryResponse	discoverAuthority	62
+account-service/enrollment.ts	280	verifyCurrentWorkspaceAuthority	run	
+account-service/grants.ts	153	verifyCurrentWorkspaceAuthority	begin	
+account-service/historyCheckpoint.ts	98	verifyCertificationHistory	memberships	
+account-service/historyCheckpoint.ts	99	verifyEarlyHistory	memberships	
+account-service/historyCheckpoint.ts	102	extendMembershipHistory	memberships	101
+account-service/historyCheckpoint.ts	236	verifyCurrentWorkspaceAuthority	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	240	verifyHistoryExchange	exchangeHistoryCheckpoint	230
+account-service/historyCheckpoint.ts	273	verifyHistoryExchange	exchangeHistoryCheckpoint	230
+account-service/lostDeviceRecovery.ts	243	verifyCurrentWorkspaceAuthority	commit	
+account-service/lostDeviceRecovery.ts	286	verifyEarlyHistory	commit	
+account-service/lostDeviceRecovery.ts	313	verifyCurrentWorkspaceAuthority	commit	
+account-service/lostDeviceRecovery.ts	370	extendMembershipHistory	commit	
+account-service/lostDeviceRecovery.ts	530	verifyCurrentWorkspaceAuthority	read	
+account-service/lostDeviceRecovery.ts	575	verifyCurrentWorkspaceAuthority	read	571
+account-service/lostDeviceRecovery.ts	817	verifyCurrentWorkspaceAuthority	run	
+account-service/membership.ts	145	verifyCurrentWorkspaceAuthority	admitMembership	129
+account-service/membershipAuthority.ts	23	resolveMembershipDeliveryAuthority	verifyPendingMembership	
+account-service/membershipAuthority.ts	29	verifyMembershipChain	verifyPendingMembership	
+account-service/membershipCancellation.ts	114	resolveMembershipDeliveryAuthority	cancelMembership	72
+account-service/membershipCheckpoint.ts	63	verifyCurrentWorkspaceAuthority	readMembershipCheckpoint	55
+account-service/membershipHistory.ts	45	verifyWorkspaceAuthority	resolveMembershipDeliveryAuthority	
+account-service/membershipHistory.ts	59	verifyCertificationHistory	resolveMembershipDeliveryAuthority	
+account-service/membershipHistory.ts	60	verifyEarlyHistory	resolveMembershipDeliveryAuthority	
+account-service/membershipHistory.ts	114	extendMembershipHistory	applyRotationsBefore	99
+account-service/membershipHistory.ts	141	extendMembershipHistory	resolveMembershipDeliveryAuthority	120
+account-service/membershipHistory.ts	156	extendMembershipHistory	resolveMembershipDeliveryAuthority	120
+account-service/membershipHistory.ts	176	extendMembershipHistory	resolveMembershipDeliveryAuthority	120
+account-service/membershipLocator.ts	95	verifyCurrentWorkspaceAuthority	membershipBootstrap	85
+account-service/membershipLocator.ts	97	verifyMembershipChain	membershipBootstrap	85
+account-service/membershipLocator.ts	152	verifyCurrentWorkspaceAuthority	discoverMembership	145
+account-service/membershipLocator.ts	156	verifyMembershipChain	discoverMembership	145
+account-service/membershipTransfer.ts	156	resolveMembershipDeliveryAuthority	transferMembership	87
+account-service/publisherAudit.worker.ts	19	verifyCurrentWorkspaceAuthority	<module>	
+account-service/removalDiscovery.ts	50	verifyCurrentWorkspaceAuthority	discoverRemoval	46
+account-service/removalPreparation.ts	51	resolveMembershipDeliveryAuthority	prepareRemoval	45
+account-service/rotation.ts	64	verifyCurrentWorkspaceAuthority	commitRotation	58
+account-service/successor.ts	99	verifyWorkspaceAuthority	admitPrepared	84
+src/account/contentReader.ts	101	verifyCertificationHistory	openApprovedWriting	
+src/account/deviceRemovalVault.ts	147	verifyMembershipChain	openDeviceRemovalVault	
+src/account/deviceRemovalVault.ts	172	verifyMembershipChain	openDeviceRemovalVault	
+src/account/deviceRemovalVault.ts	213	verifyMembershipChain	openDeviceRemovalVault	
+src/account/historyHttp.ts	45	verifyHistoryExchange	<anonymous>	
+src/account/lostRecoveryProgress.ts	74	verifyEarlyHistory	verifyLostRecoveryProgress	
+src/account/lostRecoveryProgress.ts	91	verifyMembershipChain	verifyLostRecoveryProgress	
+src/account/membershipConnection.ts	139	verifyMembershipChain	completedConnection	
+src/account/membershipConnection.ts	249	verifyMembershipChain	advanceMembershipConnection	
+src/account/membershipConnection.ts	288	verifyMembershipChain	advanceMembershipConnection	
+src/account/membershipConnection.ts	317	verifyMembershipChain	advanceMembershipConnection	
+src/account/membershipConnection.ts	341	verifyMembershipChain	advanceMembershipConnection	
+src/account/membershipConnection.ts	450	verifyMembershipChain	advanceMembershipConnection	
+src/account/membershipInvitation.ts	26	verifyMembershipChain	heldMembershipSource	
+src/account/membershipReader.ts	61	verifyMembershipChain	loadMembershipWriting	
+src/account/recoveryDetachment.ts	36	verifyMembershipChain	verifyRecoveryDetachment	
+src/account/recoveryTransition.ts	84	verifyEarlyHistory	prepareRecoveryCommit	
+src/crdt/accountMembership.ts	67	verifyMembershipChain	installedMembershipHistory	
+src/crdt/accountMembership.ts	139	createAdmissionPrefixVerifier	check	
+src/crdt/accountReceive.ts	1798	verifyAdmissionHistory	<callback:task.wait>	
+src/crdt/accountReceive.ts	1946	verifyMembershipChain	<callback:task.wait>	
+src/crdt/accountReceive.ts	2243	verifyMembershipDiscoveryResponse	<callback:network.wait>	
+src/crdt/accountReceive.ts	2321	verifyDiscoveryResponse	<callback:network.wait>	
+src/crdt/accountRotation.ts	119	verifyMembershipChain	<callback:withPromotionRoot>	
+src/crdt/accountRotation.ts	122	verifyMembershipChain	<callback:withPromotionRoot>	
+src/crdt/accountRotation.ts	155	verifyMembershipChain	<callback:withPromotionRoot>	
+src/crdt/accountSuccessor.ts	83	verifyCertificationHistory	heldCaptureRoute	
+src/crdt/accountSuccessor.ts	107	verifyAdmissionHistory	heldCaptureRoute	
+src/crdt/accountSuccessor.ts	217	createAdmissionPrefixVerifier	check	
+src/crdt/historyCustody.ts	31	verifyMembershipChain	<callback:withAccountProgressCustody>	
+src/crdt/historyCustody.ts	32	verifyEarlyHistory	<callback:withAccountProgressCustody>	
+src/crdt/joinedAccount.ts	527	verifyMembershipChain	<callback:task.wait>	
+src/crdt/joinedAccount.ts	535	verifyCertificationHistory	<callback:task.wait>	
+src/crdt/localBaselineAuthority.ts	143	createAdmissionPrefixVerifier	verifyBaselineAuthority	
+src/crdt/membershipReading.ts	188	verifyMembershipChain	verifyReplacementReading	
+src/crdt/membershipReading.ts	206	verifyMembershipChain	verifyReplacementReading	
+src/crdt/membershipSource.ts	140	verifyEarlyHistory	<callback:withPromotionRoot>	
+src/crdt/membershipSource.ts	340	verifyMembershipChain	<callback:withNativeHistorySource>	
+src/crdt/recoverySource.ts	225	verifyMembershipChain	readRecoverySource	190
+src/crdt/rotationObservation.ts	57	verifyMembershipChain	<callback:withRotationCustody>	
+src/crdt/rotationObservation.ts	59	verifyMembershipChain	<callback:withRotationCustody>	
+src/crdt/rotationObservation.ts	61	verifyEarlyHistory	<callback:withRotationCustody>	
+src/crdt/rotationObservation.ts	116	verifyMembershipChain	<callback:withRotationCustody>	
+src/crdt/rotationObservation.ts	138	verifyMembershipChain	<callback:withRotationCustody>	
+src/crdt/rotationObservation.ts	167	verifyMembershipChain	<callback:withRotationCustody>	
+src/crdt/rotationObservation.ts	230	verifyMembershipChain	<callback:withRotationCustody>	214
+src/crdt/rotationObservation.ts	231	verifyEarlyHistory	<callback:withRotationCustody>	214
+src/crdt/rotationObservation.ts	310	verifyMembershipChain	<callback:withRotationCustody>	214
+src/crdt/rotationObservation.ts	334	AwaitExpression.createAdmissionPrefixVerifier	verifyDetachedPrefix	
+src/crdt/rotationObservation.ts	362	AwaitExpression.createAdmissionPrefixVerifier	verifyRetainedDetachedPrefix	
