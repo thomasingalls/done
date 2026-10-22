@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 519,
-    "requiredTestFiles": 513,
+    "testFiles": 520,
+    "requiredTestFiles": 514,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -6050,7 +6050,7 @@
           "test/account-ceremony/content-transfer.test.mjs"
         ]
       },
-      "declarations": 108,
+      "declarations": 109,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -8745,6 +8745,21 @@
         "argv": ["node", "--test", "--test-concurrency=1", "test/account-sessions/http.test.mjs"]
       },
       "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-sessions/inbound-authority-cache.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-authority-cache.test.mjs"
+        ]
+      },
+      "declarations": 17,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16572,7 +16587,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "72d0e46becf6a9fd27b8ad6726121fbf79fb2adccde0d2e6b44820259ecdaff8"
+      "sha256": "28b06a61f4b4feebd20117c52af8590d6a0fdc6ce7023ccb20621efa2a6b1b1a"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",
@@ -17865,6 +17880,10 @@
     {
       "path": "test/account-sessions/http.test.mjs",
       "sha256": "7eaf931326a2383acbbfc9d2ef19e4df68dd7db6f07e80e7c0afa6db42df0cc1"
+    },
+    {
+      "path": "test/account-sessions/inbound-authority-cache.test.mjs",
+      "sha256": "6c4e88cea4e2264410c8c0a58981bfa87b60b44368370d26942a26cd04dc36a0"
     },
     {
       "path": "test/account-sessions/inbound-authority-reuse.test.mjs",

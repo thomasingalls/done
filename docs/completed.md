@@ -15380,3 +15380,8 @@ Broad preflight has the same16 existing failures in166reference/179candidate cas
 ### Phase17 acceptance clarification
 
 The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.
+
+
+## 2026-10-22 — Phase18 ordinary receive progress under contention
+
+[Evidence](./performance-experiments/2026-10-22-ordinary-receive/README.md): **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**. Repeated authority verification dominated ordinary reads; bounded core-private evidence reuse retains exact native inputs/fresh custody and every original ledger/current transaction fence.18 new regressions and10 implementation omissions pass; six evidence/native controls and all pending/offline same-profile cold/export/continuation guards pass. Original fixed R,C,C,R heavy acceptance **False**. Same16 old broad failures remain; all881 prior obligations preserved plus one blocked adapter review (882/338); qualification paused. Preserve cold-display proxy failure, wrong new Error fixture, timed-out deliberate mutant and sandbox listener failures. No publication or preview update.

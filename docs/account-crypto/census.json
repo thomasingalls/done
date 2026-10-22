@@ -265,11 +265,11 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "2cd181c865ddf49e70abc45b3e2faa58d4444af08f517f1537642313c77deb98"
+      "sha256": "8858a9e53cdf8534aa7924cc5bae5ba234fcdfe0540c2ff9b88681d436aa983c"
     },
     {
       "path": "account-service/deliveryVerification.ts",
-      "sha256": "c273ebe4887f7dddcd104fd820aa564d80cc8be7388712f5d4cd526c5062456e"
+      "sha256": "99011fbb1c93b478c52fd58d1d941f055563e4c355aac2cbb72e2a072a35d73c"
     },
     {
       "path": "account-service/deliveryWitness.ts",
@@ -313,7 +313,7 @@
     },
     {
       "path": "account-service/inboundAuthorityReuse.ts",
-      "sha256": "ab030f647cd50c5865798bdf28717ac45880bb83cda528937d3b5c689729c9d9"
+      "sha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe"
     },
     {
       "path": "account-service/inboundBatch.ts",

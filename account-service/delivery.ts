@@ -1361,7 +1361,13 @@ export async function readInbound(
         });
         if (!s) return unknown('unavailable');
         const auth = selectPublisher(
-            await reuseInboundAuthority(authorityReuse, s, issuer, verifyCurrentWorkspaceAuthority),
+            await reuseInboundAuthority(
+              authorityReuse,
+              s,
+              issuer,
+              verifyCurrentWorkspaceAuthority,
+              reuse?.authority,
+            ),
             s.publisher,
           ),
           { reader, publisher } = resolveInboundRoles(auth, request);

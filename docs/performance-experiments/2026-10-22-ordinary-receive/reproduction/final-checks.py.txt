@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,hashlib,subprocess,os,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda b:hashlib.sha256(b).hexdigest();start=json.loads((r/'starting.json').read_text());identity=json.loads((r/'measurement-identity.json').read_text());outcome=json.loads((r/'record-outcome.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+for f,h in identity['files'].items():assert sha((r/f).read_bytes())==h,f
+for f,h in identity['candidateInputs'].items():assert sha((r/'source'/f).read_bytes())==h,f;assert sha((repo/f).read_bytes())==h,f
+for f,h in identity['clientFiles'].items():assert sha((r/'source/dist'/f).read_bytes())==h
+for f,h in identity['newTestFiles'].items():assert sha((repo/f).read_bytes())==h
+assert sha((repo/'test/account-ceremony/content-transfer.test.mjs').read_bytes())==identity['appendOnlyCeremonyTestSha256']
+assert (repo/'test/account-ceremony/content-transfer.test.mjs').read_bytes().startswith((r/'before/content-transfer.test.mjs').read_bytes())
+assert (repo/'test/account-sessions/inbound-authority-reuse.test.mjs').read_bytes()==(r/'before/inbound-authority-reuse.test.mjs').read_bytes()
+assert len(re.findall(r'^test\(', (repo/'test/account-sessions/inbound-authority-cache.test.mjs').read_text(),re.M))==17
+assert (repo/'docs/progress.md').read_bytes()==(r/'before/progress.md').read_bytes()
+prior=Path('/private/tmp/done-history-checkpoint-20261022');assert(r/'audit-native.mjs').read_text().replace(str(r),str(prior))==(prior/'audit-native.mjs').read_text()
+assert json.loads((prior/'patches/manifest.json').read_text())==start['priorPatchManifest']
+for row in start['priorPatchManifest']['independentSequentialApply01Through17']:assert sha(Path(row['patch']).read_bytes())==row['sha256']
+for folder in ['2026-10-21-account-fairness','2026-10-22-membership-continuation','2026-10-22-discovery-dependency','2026-10-22-history-checkpoint']:
+ p=repo/'docs/performance-experiments'/folder
+ for line in(p/'SHA256SUMS').read_text().splitlines():h,file=line.split('  ',1);assert sha((p/file).read_bytes())==h
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];index=Path(subprocess.check_output(['git','rev-parse','--git-path','index'],cwd=repo,env=env,text=True).strip());assert sha(index.read_bytes())==start['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+for name in ['source-review','metadata-review','sensitivity','process-cleanup','evidence-review']:assert json.loads((r/(name+'.json')).read_text())['status']=='passed'
+out={'status':'passed','baseCommit':start['head'],'priorCumulativeTree17':start['baseTree17'],'candidateStatus':outcome['candidateStatus'],'heavyFairnessAcceptance':outcome['heavyFairnessAcceptance'],'runtimeFilesChanged':identity['onlyChangedRuntimeFiles'],'newRegressions':18,'allRuntimeClientAndNewTestSourcesMatchFrozenIdentities':True,'nativeInspectorBodyByteExactTo17':True,'oldTestPrefixesExact':True,'allPriorPatchAndPacketBytesExact':True,'otherSeatProgressUnchanged':True,'realIndexUnchangedAndUnstaged':True,'realIndexSha256':start['indexSha256'],'publication':'No actual stage/commit/push/preview/merge/deploy or general qualification.'};(r/'final-checks.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

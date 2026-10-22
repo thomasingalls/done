@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "everyPreviousEncryptedDeliveryRowRetainedInOrder": true,
+  "rows": [
+    {
+      "store": "heads",
+      "previousRecords": 466,
+      "currentRecords": 468,
+      "previousSha256": "10a2c9925576f5e0b0d49dfaa7faa7aa2c4a5cb4c4e9e856f2bcd486a72da81e",
+      "recomputedOldPrefixSha256": "10a2c9925576f5e0b0d49dfaa7faa7aa2c4a5cb4c4e9e856f2bcd486a72da81e",
+      "currentSha256": "036c016a8172b9e05448b26ac23c3f133acc0e12650161cdb211a9a3380b3751"
+    },
+    {
+      "store": "outbound",
+      "previousRecords": 476,
+      "currentRecords": 478,
+      "previousSha256": "ff1b0952badfd14d4eb4319ef1da2b36a7d53b5cd9e5297d28fb7ddcf87227c4",
+      "recomputedOldPrefixSha256": "ff1b0952badfd14d4eb4319ef1da2b36a7d53b5cd9e5297d28fb7ddcf87227c4",
+      "currentSha256": "b7ee9751de0838ceeeae1762e648a29a0f265fcc0b4138c608b9e2cd1837df10"
+    }
+  ]
+}

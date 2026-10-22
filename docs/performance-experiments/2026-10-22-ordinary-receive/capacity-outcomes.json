@@ -1,0 +1,364 @@
+{
+  "status": "observed",
+  "runs": [
+    {
+      "name": "fixed-v2/1-R",
+      "refusals": {
+        "Q0": {
+          "requests": 177,
+          "byReason": []
+        },
+        "Q1": {
+          "requests": 169,
+          "byReason": []
+        },
+        "H1": {
+          "requests": 1009,
+          "byReason": []
+        },
+        "H2": {
+          "requests": 1011,
+          "byReason": []
+        },
+        "H3": {
+          "requests": 1011,
+          "byReason": []
+        },
+        "H4": {
+          "requests": 1012,
+          "byReason": []
+        },
+        "H5": {
+          "requests": 1015,
+          "byReason": []
+        },
+        "M1": {
+          "requests": 193,
+          "byReason": []
+        }
+      },
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1792676133603,
+          "outcome": "failed",
+          "finishedAt": 1792676738611
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792676133603,
+          "outcome": "failed",
+          "finishedAt": 1792676738617
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792676133603,
+          "outcome": "failed",
+          "finishedAt": 1792676738622
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792676133603,
+          "outcome": "failed",
+          "finishedAt": 1792676738625
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792676133603,
+          "outcome": "failed",
+          "finishedAt": 1792676738630
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792676133603,
+          "completedAt": 1792676186404,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ]
+    },
+    {
+      "name": "fixed-v2/2-C",
+      "refusals": {
+        "Q0": {
+          "requests": 97,
+          "byReason": []
+        },
+        "Q1": {
+          "requests": 106,
+          "byReason": [
+            [
+              [
+                "read-v2-batch",
+                409,
+                "body-unavailable"
+              ],
+              1
+            ],
+            [
+              [
+                "read-v2",
+                409,
+                "state-changed"
+              ],
+              1
+            ]
+          ]
+        },
+        "H1": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "H2": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "H3": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "H4": {
+          "requests": 1394,
+          "byReason": []
+        },
+        "H5": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "M1": {
+          "requests": 92,
+          "byReason": [
+            [
+              [
+                "read-v2-batch",
+                429,
+                "capacity"
+              ],
+              1
+            ]
+          ]
+        }
+      },
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1792676776297,
+          "completedAt": 1792677032262,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792676776297,
+          "completedAt": 1792677026225,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792676776297,
+          "completedAt": 1792677027298,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792676776297,
+          "completedAt": 1792677015156,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792676776297,
+          "completedAt": 1792677027734,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792676776297,
+          "completedAt": 1792676789805,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ]
+    },
+    {
+      "name": "fixed-v2/3-C",
+      "refusals": {
+        "Q0": {
+          "requests": 89,
+          "byReason": []
+        },
+        "Q1": {
+          "requests": 98,
+          "byReason": [
+            [
+              [
+                "read-v2-batch",
+                409,
+                "body-unavailable"
+              ],
+              1
+            ]
+          ]
+        },
+        "H1": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "H2": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "H3": {
+          "requests": 1618,
+          "byReason": []
+        },
+        "H4": {
+          "requests": 1394,
+          "byReason": []
+        },
+        "H5": {
+          "requests": 1620,
+          "byReason": []
+        },
+        "M1": {
+          "requests": 92,
+          "byReason": [
+            [
+              [
+                "read-v2-batch",
+                429,
+                "capacity"
+              ],
+              1
+            ]
+          ]
+        }
+      },
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1792677070171,
+          "completedAt": 1792677323703,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792677070171,
+          "completedAt": 1792677319106,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792677070171,
+          "completedAt": 1792677324143,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792677070171,
+          "completedAt": 1792677302502,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792677070171,
+          "completedAt": 1792677317113,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792677070171,
+          "completedAt": 1792677083636,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ]
+    },
+    {
+      "name": "fixed-v2/4-R",
+      "refusals": {
+        "Q0": {
+          "requests": 175,
+          "byReason": []
+        },
+        "Q1": {
+          "requests": 179,
+          "byReason": []
+        },
+        "H1": {
+          "requests": 1039,
+          "byReason": []
+        },
+        "H2": {
+          "requests": 1040,
+          "byReason": []
+        },
+        "H3": {
+          "requests": 1040,
+          "byReason": []
+        },
+        "H4": {
+          "requests": 1040,
+          "byReason": []
+        },
+        "H5": {
+          "requests": 1041,
+          "byReason": []
+        },
+        "M1": {
+          "requests": 193,
+          "byReason": []
+        }
+      },
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1792677361854,
+          "outcome": "failed",
+          "finishedAt": 1792677963067
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792677361854,
+          "outcome": "failed",
+          "finishedAt": 1792677967305
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792677361854,
+          "outcome": "failed",
+          "finishedAt": 1792677967308
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792677361854,
+          "outcome": "failed",
+          "finishedAt": 1792677967311
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792677361854,
+          "outcome": "failed",
+          "finishedAt": 1792677967315
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792677361854,
+          "completedAt": 1792677407563,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ]
+    }
+  ],
+  "scope": "Actual HTTP response classifications by label during measured load; no assumption that every capacity refusal identifies the exact token/concurrency predicate."
+}

@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "roles": [
+    "R",
+    "C",
+    "D"
+  ],
+  "allFiveApplicationRootsCheckedIndependently": true,
+  "sevenMountsExact": true,
+  "originalBrokenSelectorRejected": true,
+  "resourceEnvelopeRetained": true
+}

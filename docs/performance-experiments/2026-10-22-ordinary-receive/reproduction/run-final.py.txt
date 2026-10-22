@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while 'Final preflight complete'not in(r/'final-preflight.log').read_text():
+ if 'Traceback'in(r/'final-preflight.log').read_text():raise Exception('Final preflight failed')
+ time.sleep(3)
+for name,cmd in [('mount-review',['node',str(r/'check-mounts.mjs')]),('freeze-and-run',['python3',str(r/'freeze-and-run.py')]),('analysis',['python3',str(r/'analyze.py')]),('native-audit',['node',str(r/'audit-native.mjs')]),('evidence-review',['python3',str(r/'review-evidence.py')])]:
+ with(r/(name+'-final.log')).open('w')as log:p=subprocess.run(cmd,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception(name+' failed; preserve all outputs')
+print('Final four journeys and independent evidence reconstruction complete',flush=True)

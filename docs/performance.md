@@ -2184,3 +2184,17 @@ Incomplete references have no full peer p95/drift ratio. All four post-load auto
 ### Phase17 acceptance clarification
 
 The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.
+
+
+## 2026-10-22 — Phase18 ordinary receive progress under contention
+
+[Phase18 packet](./performance-experiments/2026-10-22-ordinary-receive/README.md), fixed R,C,C,R with unchanged client and1CPU/1GiB/zero-swap16/64 policy. Repeated authority proof dominates17 diagnostic reads755/769ms median; diagnostic timing is not acceptance. Original final heavy acceptance **False**.
+
+| Run | Local p95 ms | Complete peer p95 ms | Q429, whole journey | All five H replay | Original guards |
+|---|---:|---:|---:|---|---|
+| fixed-v2/1-R | 2.8 | 10531.1 | 0 | not complete at original deadline | False |
+| fixed-v2/2-C | 3.1 | 20968.1 | 0 | 256.0s | False |
+| fixed-v2/3-C | 2.8 | 19989.7 | 0 | 254.0s | False |
+| fixed-v2/4-R | 2.6 | 11939.6 | 0 | not complete at original deadline | False |
+
+Full original pending/save/cold-profile/raw encrypted delivery/whole-export/reverse/Undo/Redo/isolation/native prefix guards pass.18 new regressions/10 implementation and6 evidence/native controls; same16 old affected failures. Status **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**. No deployed-device, release qualification or maximum-capacity claim.

@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+while 'Final four journeys and independent evidence reconstruction complete'not in(r/'run-final.log').read_text():
+ if 'Traceback'in(r/'run-final.log').read_text():raise Exception('Measured schedule or review failed; preserve outputs')
+ time.sleep(5)
+for name in ['post-checks','sensitivity','cleanup','write-records','final-checks','package-evidence','prepare-patch']:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(['python3',str(r/(name+'.py'))],env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception(name+' failed; preserve outputs')
+print('Post-run evidence, records and sequential patch18 prepared',flush=True)

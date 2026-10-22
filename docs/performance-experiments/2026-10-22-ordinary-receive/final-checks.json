@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "baseCommit": "c1177575801a8eeab60b63883a3c701625ada215",
+  "priorCumulativeTree17": "66df2f5b3d575eb8efa0928761dfd2cd28975e4d",
+  "candidateStatus": "HELD: backlog replay improves, but live peer latency regresses to20\u201321s p95 versus10.5\u201311.9s reference (target2.5s)",
+  "heavyFairnessAcceptance": false,
+  "runtimeFilesChanged": [
+    "account-service/delivery.ts",
+    "account-service/deliveryVerification.ts",
+    "account-service/inboundAuthorityReuse.ts"
+  ],
+  "newRegressions": 18,
+  "allRuntimeClientAndNewTestSourcesMatchFrozenIdentities": true,
+  "nativeInspectorBodyByteExactTo17": true,
+  "oldTestPrefixesExact": true,
+  "allPriorPatchAndPacketBytesExact": true,
+  "otherSeatProgressUnchanged": true,
+  "realIndexUnchangedAndUnstaged": true,
+  "realIndexSha256": "b62efd08544eced15eca95d8666fc325b716671f62bf80e0dff61cea5730d5c6",
+  "publication": "No actual stage/commit/push/preview/merge/deploy or general qualification."
+}

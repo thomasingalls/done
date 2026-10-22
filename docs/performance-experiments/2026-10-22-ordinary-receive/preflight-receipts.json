@@ -1,0 +1,141 @@
+[
+  {
+    "name": "baseline-branded-regression",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=independent continuation reads reuse",
+      "/private/tmp/done-ordinary-receive-20261022/reference-source/test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-ordinary-receive-20261022/reference-source",
+    "startedAt": 1792674860430,
+    "finishedAt": 1792674861434,
+    "exitCode": 1
+  },
+  {
+    "name": "new-cache-regressions-final",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-sessions/inbound-authority-cache.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792674861434,
+    "finishedAt": 1792674862503,
+    "exitCode": 0
+  },
+  {
+    "name": "new-branded-regression",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=independent continuation reads reuse",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792674862503,
+    "finishedAt": 1792674863350,
+    "exitCode": 0
+  },
+  {
+    "name": "types-final",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--ignoreConfig",
+      "--target",
+      "ES2022",
+      "--lib",
+      "ES2022,DOM",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "bundler",
+      "--types",
+      "node",
+      "--strict",
+      "--skipLibCheck",
+      "--allowImportingTsExtensions",
+      "--noEmit",
+      "account-service/inboundAuthorityReuse.ts",
+      "account-service/deliveryVerification.ts",
+      "account-service/delivery.ts"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792674863350,
+    "finishedAt": 1792674863496,
+    "exitCode": 0
+  },
+  {
+    "name": "reference-affected",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs",
+      "test/account-sessions/ceremony-login.test.mjs",
+      "test/account-sessions/client.test.mjs",
+      "test/account-sessions/core.test.mjs",
+      "test/account-sessions/enrollment-client.test.mjs",
+      "test/account-sessions/enrollment.test.mjs",
+      "test/account-sessions/grants.test.mjs",
+      "test/account-sessions/host.test.mjs",
+      "test/account-sessions/http.test.mjs",
+      "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "test/account-sessions/inbound-batch-budget.test.mjs",
+      "test/account-sessions/inbound-batch.test.mjs",
+      "test/account-sessions/notifications.test.mjs",
+      "test/account-sessions/renewal-window.test.mjs",
+      "test/account-sessions/request-budget-work.test.mjs",
+      "test/account-sessions/request-budget.test.mjs",
+      "test/account-sessions/restart.test.mjs",
+      "test/account-sessions/scoped-client.test.mjs",
+      "test/account-sessions/scoped-http.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-ordinary-receive-20261022/reference-source",
+    "startedAt": 1792674863498,
+    "finishedAt": 1792675010306,
+    "exitCode": 1
+  },
+  {
+    "name": "candidate-affected",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs",
+      "test/account-sessions/ceremony-login.test.mjs",
+      "test/account-sessions/client.test.mjs",
+      "test/account-sessions/core.test.mjs",
+      "test/account-sessions/enrollment-client.test.mjs",
+      "test/account-sessions/enrollment.test.mjs",
+      "test/account-sessions/grants.test.mjs",
+      "test/account-sessions/host.test.mjs",
+      "test/account-sessions/http.test.mjs",
+      "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "test/account-sessions/inbound-batch-budget.test.mjs",
+      "test/account-sessions/inbound-batch.test.mjs",
+      "test/account-sessions/notifications.test.mjs",
+      "test/account-sessions/renewal-window.test.mjs",
+      "test/account-sessions/request-budget-work.test.mjs",
+      "test/account-sessions/request-budget.test.mjs",
+      "test/account-sessions/restart.test.mjs",
+      "test/account-sessions/scoped-client.test.mjs",
+      "test/account-sessions/scoped-http.test.mjs",
+      "test/account-sessions/inbound-authority-cache.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-ordinary-receive-20261022/source",
+    "startedAt": 1792675010307,
+    "finishedAt": 1792675152523,
+    "exitCode": 1
+  }
+]

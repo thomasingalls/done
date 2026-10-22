@@ -1,0 +1,26 @@
+from pathlib import Path
+import shutil
+r=Path(__file__).parent;a=r/'aborted-physical-equality';a.mkdir()
+for f in ['protocol.md','measurement-identity.json','run-plan.json','run-receipts.json','freeze-and-run.py','run-final.py','run-final.log','freeze-and-run-final.log','review-evidence.py']:
+ if(r/f).exists():shutil.copy2(r/f,a/(f+'.txt'if f.endswith('.py')else f))
+p=r/'source/test/account-continuation-lab/continuation.spec.ts';shutil.copy2(p,a/'continuation.spec.ts.txt');s=p.read_text()
+old="const bytes=new TextEncoder().encode(JSON.stringify(normalize([info.name,store,rows]))),hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(x=>x.toString(16).padStart(2,'0')).join('');output.push({store,records:rows[0].length,sha256:hash});"
+new="const hash=async(value:any)=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(normalize(value)))))).map(x=>x.toString(16).padStart(2,'0')).join('');const entries=await Promise.all(rows[0].map((key:any,i:number)=>hash([info.name,store,key,rows[1][i]])));output.push({store,records:rows[0].length,sha256:await hash([info.name,store,rows]),entries});"
+assert s.count(old)==1;s=s.replace(old,new)
+old='expect(coldDelivery).toEqual(result.pendingBeforeClose.retainedDelivery);'
+new="for(const previous of result.pendingBeforeClose.retainedDelivery){const current=coldDelivery.find((s:any)=>s.store===previous.store);expect(current).toBeTruthy();expect(new Set(current!.entries).size).toBe(current!.records);expect(current!.entries).toEqual(expect.arrayContaining(previous.entries));}"
+assert s.count(old)==1;s=s.replace(old,new);p.write_text(s)
+p=r/'review-evidence.py';s=p.read_text();old=" assert x['pendingBeforeClose']['retainedDelivery']==x['offlineColdWriterReopen']['retainedDelivery'];assert x['offlineColdWriterReopen']['retainedDeliveryByteExact'];assert any(v['records']>0 for v in x['pendingBeforeClose']['retainedDelivery']);"
+new=""" assert x['offlineColdWriterReopen']['retainedDeliveryByteExact'];assert any(v['records']>0 for v in x['pendingBeforeClose']['retainedDelivery'])
+ for old in x['pendingBeforeClose']['retainedDelivery']:
+  new=next(v for v in x['offlineColdWriterReopen']['retainedDelivery']if v['store']==old['store'])
+  assert len(old['entries'])==len(set(old['entries']))==old['records'];assert len(new['entries'])==len(set(new['entries']))==new['records'];assert set(old['entries']).issubset(new['entries']),'prior sealed delivery record changed or disappeared'"""
+assert old in s;s=s.replace(old,new);p.write_text(s)
+p=r/'freeze-and-run.py';s=p.read_text().replace("{'name':str(i+1)+'-'+v", "{'name':'fixed-v2/'+str(i+1)+'-'+v");p.write_text(s)
+p=r/'protocol.md';p.write_text(p.read_text()+'''\n## First fixed reference: overly strict cold observer\nThe first fixed reference delivered all120 and retained exact offline whole-export writing, then the new physical observer found heads466→468 and outbound476→478. It incorrectly required total-store equality. Independent offline read-only inspection of that exact failed profile reconstructs every original aggregate prefix hash exactly (cold-append-inspection.json): all previous rows remain unchanged, opening appended records. Preserve failed1-R and the frozen first lab/identity under aborted-physical-equality; no candidate was run and no source repair changed. Correct final observer hashes each original key+value separately and requires every pre-close encrypted delivery record to remain byte-identical after cold opening, while allowing additional records. Independent reviewer checks exact subset/count/unique identities and a dropped/altered original row must fail. Exact authenticated export and all other data guards remain. New full fixed-v2 R,C,C,R uses fresh services/profiles and the corrected identical observer, with the same source, client, rates and original deadlines. No favorable replacement of an app outcome or timing claim from the aborted comparison.\n''')
+p=r/'sensitivity.py';s=p.read_text().replace("x['offlineColdWriterReopen']['retainedDelivery'][0]['sha256']='00'*32", "x['offlineColdWriterReopen']['retainedDelivery'][0]['entries'][0]='00'*32");p.write_text(s)
+# Documentation drafts must describe actual record-preservation property, not total-store equality.
+p=r/'write-records.py';s=p.read_text().replace('exact hashes/counts of all encrypted heads/outbound keys+values after lock and after same-profile offline cold reopen','per-record hashes/counts requiring every original encrypted heads/outbound key+value to survive unchanged after same-profile offline cold reopen, allowing additional records')
+s=s.replace('The independent reviewer asserts nonempty exact retained-delivery equality;', 'A first fixed reference exposed an overly strict total-store equality assumption: opening appends two records to each store. Independent inspection reconstructs every original prefix hash exactly; preserve that failed run and start a complete fresh fixed-v2 comparison with the same app sources. The independent reviewer asserts nonempty original-record preservation with unique identities;')
+p.write_text(s)
+print('Preserved first reference; corrected physical observer to retain every original record')
