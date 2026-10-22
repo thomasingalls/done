@@ -1,0 +1,7 @@
+from pathlib import Path
+import json,math,collections
+r=Path(__file__).parent;rows=[]
+for label in ['1-R','2-C','3-C','4-R']:
+ x=json.loads((r/label/'result.json').read_text());q=[v for v in x['network']if v['label']=='Q0'and v['path']=='/account/delivery/submit'and v['phase']=='measured'];v=sorted(t['headersAt']-t['at']for t in q if t.get('headersAt'));assert len(v)==len(q)
+ rows.append({'name':label,'measuredWriterSubmissions':len(q),'statuses':dict(collections.Counter(t.get('status')for t in q)),'writerSubmitP95Ms':v[math.ceil(.95*len(v))-1]})
+(r/'publication-observations.json').write_text(json.dumps({'status':'descriptive only','runs':rows,'interpretation':'Fixed offered typing inputs, client artifacts and rates unchanged. Faster publication and higher submission counts coexist with worse peer latency. This observation does not isolate22 vs23 or establish the cause; no extra measured run or post-hoc acceptance gate.'},indent=2)+'\n');print(json.dumps(rows))

@@ -7504,3 +7504,38 @@ test('single history producer retains protocol brands and the original standalon
   const again = await f.verify(f.s, f.issuer);
   assert.notStrictEqual(again.history, result.history, 'this phase never retains cross-request evidence');
 });
+for (const later of [false, true])
+  test(`publication authority reuse keeps independent joined and original streams under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+    const epoch = later ? 4 : 3;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    let offers = 0;
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) offers++;
+      return verify(...args);
+    });
+    let original = '00'.repeat(32),
+      joined = '00'.repeat(32),
+      warmed;
+    for (let n = 1; n <= 3; n++) {
+      const first = x.make(n, 'original stream', { epoch });
+      original = decision(x, await x.deliveryCall(first), first, original, epoch).head.link;
+      const second = x.make(n, 'joined stream', {
+        epoch,
+        credential: x.context.candidate.id,
+        signer: x.keys.new,
+      });
+      joined = decision(x, await x.deliveryCall(second), second, joined, epoch).head.link;
+      if (n === 1) {
+        warmed = offers;
+        assert(warmed > 0);
+      } else
+        assert.equal(
+          offers,
+          warmed,
+          'both real live witnesses change without changing their respective authority contexts',
+        );
+    }
+    assert.equal(x.f.rows('delivery_decisions').length, 3);
+    assert.equal(x.f.rows('publisher_decisions').length, 3);
+  });

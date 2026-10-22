@@ -1,0 +1,11 @@
+{
+  "file": "account-service/delivery.ts",
+  "beforeSha256": "150ddd4dcd98cf16b08106772014f7f73910eb741f3b730fb1aeffb1e630923b",
+  "afterSha256": "2a7c477573094eb568dcd8035d452f1216dea713407a06e8e5035f978ced730f",
+  "changes": [
+    "shared pure projection renamed without body change",
+    "private publication verifier identity/adapter uses existing core pool",
+    "only decideSubmission authority call changes; original snapshot retained everywhere else"
+  ],
+  "otherRuntimeFilesChanged": 0
+}

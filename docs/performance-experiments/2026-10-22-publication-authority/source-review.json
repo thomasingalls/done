@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "wholeDeliveryAstExactAfterOnlyReviewedAdapterCallAndProjectionRename": true,
+  "sharedProjectionBodyUnchanged": true,
+  "projectionOmitsOnlyRowsAndTwoLiveWitnesses": true,
+  "allOtherNativeFutureFieldsAndImmutableBoundariesRetained": true,
+  "existingInboundCacheCallAndContextUnchanged": true,
+  "publicationVerifierFunctionIdentityDistinct": true,
+  "existingBoundedPoolImplementationUnchanged": true,
+  "allLiveCensusWireAuthorizationCustodyAndNativeCommitGuardsExact": true,
+  "allOldTestBytesExactPrefixes": true,
+  "liveFieldsAbsentFromNativeAuthorityProducerAndResolverReads": true
+}

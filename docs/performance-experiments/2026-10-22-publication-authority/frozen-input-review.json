@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "allFrozenNativeClientLabObserverAndTestInputsExactAfter4Journeys": true,
+  "clientFiles": 110,
+  "privateFixtureHashExact": true,
+  "referenceRuntime21Exact": true,
+  "actualCheckoutRuntimeAndTestsMatchCandidate": true,
+  "allOldTestBytesExactPrefixes": true,
+  "realHeadAndIndexExactUnstaged": true
+}

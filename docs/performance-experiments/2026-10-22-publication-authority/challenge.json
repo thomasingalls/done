@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "restore-per-publication-reconstruction",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "publication authority is verified once"
+    },
+    {
+      "control": "omit-future-native-context",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "publication authority context retains a future"
+    },
+    {
+      "control": "omit-fresh-ledger-witness",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "publication authority reuse still rejects a damaged fresh"
+    },
+    {
+      "control": "omit-fresh-custody-replay",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "publication authority reuse keeps fresh native custody"
+    },
+    {
+      "control": "omit-final-native-guard",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "publication authority reuse retains the four-attempt"
+    },
+    {
+      "control": "omit-current-grant",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "publication authority reuse cannot bypass a freshly revoked"
+    }
+  ]
+}

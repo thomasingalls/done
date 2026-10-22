@@ -1,0 +1,56 @@
+{
+  "reference": {
+    "tests": 422,
+    "pass": 405,
+    "fail": 17,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "candidate": {
+    "tests": 440,
+    "pass": 423,
+    "fail": 17,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "sameFailureIdentities": true,
+  "referenceFailures": [
+    "browser comparison by existing composes with the real continuation relay and key handoff after restart",
+    "browser comparison by new composes with the real continuation relay and key handoff after restart",
+    "clear during a cold wait requires fresh verification after handoff",
+    "continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage",
+    "continuation schema requires explicit offline opt-in and preserves retained session/account rows",
+    "later native slot resumes activation after index interruption and rejects changed retained reading",
+    "next-device preparation binds the certified parent and survives a lost reply",
+    "next-device preparation binds the certified parent and survives a lost reply with one login",
+    "private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes",
+    "removal schema upgrades only offline from 18 and refuses an older host",
+    "replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows",
+    "retained connection coordinates invitation through third-device certification with existing approving",
+    "retained connection coordinates invitation through third-device certification with new approving",
+    "rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host",
+    "schema-16 pending comparison upgrades explicitly without replacing its messages",
+    "schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt",
+    "three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart"
+  ],
+  "candidateFailures": [
+    "browser comparison by existing composes with the real continuation relay and key handoff after restart",
+    "browser comparison by new composes with the real continuation relay and key handoff after restart",
+    "clear during a cold wait requires fresh verification after handoff",
+    "continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage",
+    "continuation schema requires explicit offline opt-in and preserves retained session/account rows",
+    "later native slot resumes activation after index interruption and rejects changed retained reading",
+    "next-device preparation binds the certified parent and survives a lost reply",
+    "next-device preparation binds the certified parent and survives a lost reply with one login",
+    "private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes",
+    "removal schema upgrades only offline from 18 and refuses an older host",
+    "replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows",
+    "retained connection coordinates invitation through third-device certification with existing approving",
+    "retained connection coordinates invitation through third-device certification with new approving",
+    "rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host",
+    "schema-16 pending comparison upgrades explicitly without replacing its messages",
+    "schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt",
+    "three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart"
+  ],
+  "newCases": 18
+}

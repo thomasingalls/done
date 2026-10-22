@@ -1,0 +1,20 @@
+{
+  "status": "new whole experiment planned before run",
+  "priorAttempt": "interrupted-attempt-1",
+  "causeObserved": "Docker unexpected EOF and disappearing socket; exact daemon cause unknown",
+  "priorDataPerformanceOutcome": "incomplete, not credited",
+  "newPlan": [
+    "R",
+    "C",
+    "C",
+    "R"
+  ],
+  "appNativeAndClientCodeUnchangedFromInterruptedAttempt": true,
+  "commonHarnessChanges": [
+    "partial durability at existing trace boundaries",
+    "guaranteed final result on cleanup failure",
+    "dead-child control refusal"
+  ],
+  "harnessTestsPassed": 3,
+  "noResourceDeadlineRetryLimitChanges": true
+}

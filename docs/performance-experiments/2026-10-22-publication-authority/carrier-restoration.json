@@ -1,0 +1,11 @@
+{
+  "status": "restored exact pinned dependency before measured series",
+  "priorStartupAttempt": "startup-attempt-2-no-image",
+  "applicationStarted": false,
+  "rootIdentitiesOrInputsOffered": 0,
+  "manifestAndImageId": "sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b",
+  "platform": "linux/arm64",
+  "node": "v24.18.0",
+  "networkDisabledVersionCheckPassed": true,
+  "appClientLimitsAndDeadlinesUnchanged": true
+}

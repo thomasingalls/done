@@ -6050,7 +6050,7 @@
           "test/account-ceremony/content-transfer.test.mjs"
         ]
       },
-      "declarations": 114,
+      "declarations": 115,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -8509,7 +8509,7 @@
           "test/account-service-delivery/publisher-commit-races.test.mjs"
         ]
       },
-      "declarations": 11,
+      "declarations": 27,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16587,7 +16587,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "ea03e3a770f5f2b04916ff8fe54dcc9327634d45a18698903a674c4b300ed225"
+      "sha256": "01ae07c887d5ef8f432ea586ffc74454194c29bbf7b132460d10929e04897154"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",
@@ -17775,7 +17775,7 @@
     },
     {
       "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
-      "sha256": "8424df339e2d18de898e5cb329fb10fc3c8dc2ad52ace5ce12c78877d494bccc"
+      "sha256": "24556d19b6ed9f50dcde56ee51c2f77b1728588ee5e789ce3915cad2f5633452"
     },
     {
       "path": "test/account-service-delivery/publisher-isolation.test.mjs",

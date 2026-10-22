@@ -1036,6 +1036,29 @@ export async function verifyServed(
     throw cause;
   }
 }
+// The verifier identity separates this purpose from strict ordinary inbound contexts.
+const authenticatePublicationHeader = (
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+) => verifyCurrentWorkspaceAuthority(s, issuer);
+function publicationAuthority(
+  s: Snapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+  reuse?: DeliveryVerification,
+) {
+  if (!reuse?.authority) return verifyCurrentWorkspaceAuthority(s, issuer);
+  // Authority never consumes the two live witnesses or decision rows. The original s
+  // still reaches fresh witnessed census and every ordinary native commit guard.
+  // All other native/future fields, including immutable boundaries, remain in context.
+  return reuseInboundAuthority(
+    undefined,
+    workspaceAuthorityHeader(s),
+    issuer,
+    authenticatePublicationHeader,
+    reuse.authority,
+  );
+}
+
 export async function decideSubmission(
   db: DatabaseSync,
   input: unknown,
@@ -1080,7 +1103,7 @@ export async function decideSubmission(
       let auth: Authority, ledger: Awaited<ReturnType<typeof census>>;
       try {
         phase = 'verify';
-        auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
+        auth = selectPublisher(await publicationAuthority(s, issuer, reuse), s.publisher);
         if (!releaseCold && reuse?.tips) {
           const pending = reuse.tips.enter(workspace, publisher);
           const waited = pending instanceof Promise;
@@ -1385,7 +1408,7 @@ function resolveInboundRoles(auth: Authority, request: InboundReadRequest) {
   return { reader, publisher };
 }
 
-function inboundAuthorityHeader(s: Snapshot) {
+function workspaceAuthorityHeader(s: Snapshot) {
   // Live witnesses and rows belong to the fresh ledger verification below. Every
   // other native input, including future header fields, must retain its identity.
   return {
@@ -1479,7 +1502,8 @@ export async function readInbound(
           limit: request.limit,
         });
         if (!s) return unknown('unavailable');
-        if (!isDeepStrictEqual(inboundAuthorityHeader(before), inboundAuthorityHeader(s))) continue;
+        if (!isDeepStrictEqual(workspaceAuthorityHeader(before), workspaceAuthorityHeader(s)))
+          continue;
         const ledger = await verifiedCensus(s, auth, reuse);
         if (request.after > ledger.through) return unknown('out-of-order');
         const page: InboundReadPage = {

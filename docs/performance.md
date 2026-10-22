@@ -2227,3 +2227,17 @@ Two fixed instrumented cumulative20 H6/M2/Q2 journeys,1CPU/1GiB,120 trusted inpu
 ### 2026-10-22 — phase22 single-request authority/history work reduction
 
 Six real signed native cases on certified/continued bootstrap/discovery/catalog match one independent full-history operation after failing the old duplicate-work comparison. Certified successor-domain verifies13→8 and certification-domain3→2; these are structural counts, not latency estimates.20 new+31 old focused cases pass; paired402/422 affected cases retain17 identical failures. No protocol/client/rate/retry/security changes; no measured latency promotion. Final fixed coupled benchmark is assigned prospectively to publication-reuse phase23, with original gates unchanged. [Packet](./performance-experiments/2026-10-22-request-authority/README.md).
+
+
+### 2026-10-22 — phase23 publication reuse, combined22+23 heavy comparison
+
+**HELD:** all complete-peer p95s miss the unchanged2500ms gate, and both candidates regress relative to both references. Fixed R21,C23,C23,R21, original110 client files, H6/M2/Q2 with1024/256/32 histories,120 trusted focused inputs at500ms,1CPU/1GiB/zero swap, unchanged16/64 rates and original16ms/30s/600s/120s guards. [Evidence](./performance-experiments/2026-10-22-publication-authority/README.md).
+
+|Run|Local p95 ms|Complete peer p95 ms|Writer submit p95 ms|Writer submits|Slowest H replay s|
+|---|---:|---:|---:|---:|---:|
+|1-R|3.5|5557.4|1580|72|323.7|
+|2-C|4.7|36213.2|140|120|298.3|
+|3-C|2.3|32867.4|127|120|262.5|
+|4-R|1.8|5470.1|1733|77|320.3|
+
+All120 keys are observed; original delivery/local/replay/data/continuation/native/cold-pending/full-export guards pass in all4. Quiet429s0/0/0/0, history409s0/0/0/0; one reference membership409, no candidate membership409 or grant403. Whole journeys are the unit; these dependent finite observations establish no population/WAN/device capacity or separate23 causal effect. Publication p95 improves while submission count rises, so request-local wins do not establish end-to-end responsiveness. Paired affected422/440 cases retain the same17 failures;18 new regressions and6+6 controls pass. Preserve interrupted/no-image infrastructure attempts and common durable-result harness repair,3 harness checks, timer/observer limitations and all original gates. No qualification or publication.

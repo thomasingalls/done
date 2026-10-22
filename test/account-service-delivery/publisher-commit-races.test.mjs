@@ -330,3 +330,334 @@ test('served tail corruption after a known append is refused before any page is 
   });
   assert.equal(h.reuse.tips.status().quarantined, 1);
 });
+function publicationWork(t) {
+  let offers = 0;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) offers++;
+    return verify(...args);
+  });
+  return () => offers;
+}
+const publicationIssuer = (h) =>
+  h.x.authority.owner.decideSubmission({ decideSubmission: (_input, issuer) => issuer }, {});
+
+test('publication authority is verified once across successive genuine committed appends', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t);
+  await h.append();
+  assert.equal(offers(), 1);
+  await h.append();
+  await h.append();
+  assert.equal(offers(), 1, 'ordinary live witness changes cannot rebuild unchanged authority');
+  assert.equal(h.retained.length, 7);
+  await h.fetch(4);
+});
+
+test('publication authority reuse keeps fresh native custody checks on every warm request', async (t) => {
+  const h = await harness(t),
+    native = publicationIssuer(h),
+    offers = publicationWork(t);
+  let checks = 0;
+  const issuer = {
+    ...native,
+    check(...args) {
+      checks++;
+      native.check(...args);
+    },
+  };
+  for (const n of [5, 6]) {
+    const wire = h.x.make(n);
+    const response = await decideSubmission(
+      h.db,
+      { workspaceId: h.x.workspace, bytes: wire.bytes },
+      issuer,
+      () => {},
+      h.reuse,
+    );
+    assert.equal(response.kind, 'decision');
+    assert.equal(
+      checks,
+      (n - 4) * 2,
+      'fresh cached custody proof and final transaction custody both run',
+    );
+  }
+  assert.equal(offers(), 1);
+});
+
+test('publication authority reuse never caches member wire signatures or invalid requests', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t);
+  await h.append();
+  const wire = h.x.make(6),
+    damaged = wire.bytes.slice();
+  damaged[damaged.length - 1] ^= 1;
+  assert.deepEqual(await h.submit({ bytes: damaged }), {
+    kind: 'unknown',
+    reason: 'invalid-request',
+  });
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 5);
+  const good = await h.submit(wire);
+  assert.equal(good.kind, 'decision');
+  assert.equal(offers(), 1);
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 6);
+});
+
+test('publication authority clear requires full verification before warming again', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t);
+  await h.append();
+  h.reuse.clear();
+  await h.append();
+  await h.append();
+  assert.equal(offers(), 2);
+});
+
+test('publication without an authority cache retains independent full verification', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t),
+    uncached = { ...h.reuse, authority: undefined };
+  for (const n of [5, 6])
+    assert.equal((await h.submit(h.x.make(n), () => {}, uncached)).kind, 'decision');
+  assert.equal(offers(), 2);
+});
+
+test('publication authority context retains a future native promotion field', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t);
+  h.db.exec(
+    "ALTER TABLE promotions ADD COLUMN future_publication TEXT; UPDATE promotions SET future_publication='first'",
+  );
+  await h.append();
+  assert.equal(offers(), 1);
+  h.db.exec("UPDATE promotions SET future_publication='second'");
+  await h.append();
+  await h.append();
+  assert.equal(offers(), 2);
+});
+
+test('publication authority oversized native contexts verify fully on every request', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t);
+  h.db.exec('ALTER TABLE promotions ADD COLUMN future_publication TEXT');
+  h.db.prepare('UPDATE promotions SET future_publication=?').run('x'.repeat(2 * 1024 * 1024));
+  await h.append();
+  await h.append();
+  assert.equal(offers(), 2);
+});
+
+test('publication authority reuse cannot hide a changed service pin', async (t) => {
+  const h = await harness(t),
+    native = publicationIssuer(h);
+  await h.append();
+  const issuer = { ...native, pin: { ...native.pin, authRoot: 'ff'.repeat(32) } };
+  const wire = h.x.make(6);
+  const response = await decideSubmission(
+    h.db,
+    { workspaceId: h.x.workspace, bytes: wire.bytes },
+    issuer,
+    () => {},
+    h.reuse,
+  );
+  assert.equal(response.kind, 'unknown');
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 5);
+  await h.append();
+});
+
+test('publication authority reuse still rejects a damaged fresh live ledger witness', async (t) => {
+  const h = await harness(t);
+  await h.append();
+  // Advance through the other real core: the fresh witness has a new event count,
+  // so refusal must not rely only on a changed same-count cached witness string.
+  assert.equal((await h.x.call(h.x.make(6, 'independently committed suffix'))).kind, 'decision');
+  const raw = h.db.prepare('SELECT delivery_witness FROM promotions').get().delivery_witness;
+  const witness = JSON.parse(raw);
+  witness.signature = '00'.repeat(64);
+  h.db.prepare('UPDATE promotions SET delivery_witness=?').run(JSON.stringify(witness));
+  assert.deepEqual(await h.submit(h.x.make(7)), { kind: 'unknown', reason: 'ledger-integrity' });
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 6);
+});
+
+test('publication authority reuse cannot bypass a freshly revoked transaction grant', async (t) => {
+  const h = await harness(t),
+    native = publicationIssuer(h);
+  await h.append();
+  const { AuthorizationRefused } = await import('../../account-service/authorization.ts');
+  let authorizations = 0;
+  const issuer = {
+    ...native,
+    authorize() {
+      authorizations++;
+      throw new AuthorizationRefused('sign-in-required');
+    },
+  };
+  const wire = h.x.make(6);
+  await assert.rejects(
+    decideSubmission(
+      h.db,
+      { workspaceId: h.x.workspace, bytes: wire.bytes },
+      issuer,
+      () => {},
+      h.reuse,
+    ),
+    AuthorizationRefused,
+  );
+  assert.equal(authorizations, 1);
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 5);
+});
+
+test('publication authority cache never revives an in-flight proof after clear', async (t) => {
+  const h = await harness(t);
+  let entered, release;
+  const arrived = new Promise((resolve) => {
+      entered = resolve;
+    }),
+    held = new Promise((resolve) => {
+      release = resolve;
+    });
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  let armed = true,
+    offers = 0;
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) {
+      offers++;
+      if (armed) {
+        armed = false;
+        entered();
+        await held;
+      }
+    }
+    return verify(...args);
+  });
+  const wire = h.x.make(5),
+    pending = h.submit(wire);
+  await arrived;
+  h.reuse.clear();
+  release();
+  assert.equal((await pending).kind, 'unknown');
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 4);
+  assert.equal((await h.submit(wire)).kind, 'decision');
+  assert.equal((await h.submit(h.x.make(6))).kind, 'decision');
+  assert.equal(offers, 2);
+});
+
+test('publication authority close during a warm wire verification cannot publish', async (t) => {
+  const h = await harness(t);
+  await h.append();
+  let armed = true;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (armed && Buffer.from(args[3]).includes(Buffer.from('done/envelope-submission/v1'))) {
+      armed = false;
+      h.reuse.close();
+    }
+    return verify(...args);
+  });
+  assert.equal((await h.submit(h.x.make(6))).kind, 'unknown');
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 5);
+});
+
+test('publication authority retry retains exactly the committed bytes after a lost reply', async (t) => {
+  const h = await harness(t),
+    wire = h.x.make(5);
+  assert.equal(
+    (
+      await h.submit(wire, (phase) => {
+        if (phase === 'after-commit') throw Error('lost test reply');
+      })
+    ).kind,
+    'unknown',
+  );
+  const expected = new Uint8Array(
+    h.db.prepare('SELECT response FROM delivery_decisions WHERE position=5').get().response,
+  );
+  const first = await h.submit(wire),
+    second = await h.submit(wire);
+  assert.equal(first.kind, 'decision');
+  assert.equal(second.kind, 'decision');
+  assert.deepEqual(first.bytes, expected);
+  assert.deepEqual(second.bytes, expected);
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 5);
+});
+
+test('publication authority failures are not cached and repaired native evidence can warm normally', async (t) => {
+  const h = await harness(t),
+    offers = publicationWork(t);
+  const saved = h.db.prepare('SELECT result FROM promotions').get().result;
+  const receipt = JSON.parse(saved);
+  receipt.signature = '00'.repeat(64);
+  h.db.prepare('UPDATE promotions SET result=?').run(JSON.stringify(receipt));
+  for (let i = 0; i < 2; i++) assert.equal((await h.submit(h.x.make(5))).kind, 'unknown');
+  assert.equal(offers(), 2);
+  h.db.prepare('UPDATE promotions SET result=?').run(saved);
+  await h.append();
+  await h.append();
+  assert.equal(offers(), 3);
+});
+
+test('publication authority reuse separates two accounts even in a shared bounded evidence pool', async (t) => {
+  const a = await harness(t),
+    b = await harness(t),
+    offers = publicationWork(t);
+  const shared = { ...b.reuse, authority: a.reuse.authority };
+  await a.append();
+  assert.equal((await b.submit(b.x.make(5), () => {}, shared)).kind, 'decision');
+  const cold = offers();
+  assert.equal(cold, 2);
+  await a.append();
+  assert.equal((await b.submit(b.x.make(6), () => {}, shared)).kind, 'decision');
+  assert.equal(offers(), cold);
+  assert.notEqual(a.x.request.candidate.accountId, b.x.request.candidate.accountId);
+  for (const h of [a, b])
+    assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 6);
+});
+
+test('publication authority reuse retains the four-attempt fence under genuine competing appends', async (t) => {
+  const h = await harness(t);
+  await h.append();
+  const { decodeSubmission } = await import('../../account-protocol/submission.ts');
+  const { hash } = await import('./fixtures.mjs');
+  const target = h.x.make(6, 'target must never be recorded'),
+    targetHash = hash(decodeSubmission(target.bytes).envelope);
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  let races = 0,
+    appending = false,
+    previous = ZERO;
+  for (const old of h.retained) previous = link(old.w.subject, previous);
+  const competing = [];
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    const message = Buffer.from(args[3]);
+    if (
+      !appending &&
+      races < 4 &&
+      message.includes(Buffer.from('done/envelope-submission/v1')) &&
+      message.includes(Buffer.from(targetHash))
+    ) {
+      appending = true;
+      try {
+        const wire = h.x.make(6 + races++, 'genuine competing publisher write'),
+          result = await h.x.call(wire);
+        const accepted = proof(
+          result,
+          h.x.offer.epoch.acceptancePublicKey,
+          wire.subject,
+          previous,
+          wire.parent,
+        );
+        assert.equal(accepted.kind, 'accepted');
+        previous = accepted.head.link;
+        competing.push({ wire, result });
+      } finally {
+        appending = false;
+      }
+    }
+    return verify(...args);
+  });
+  assert.deepEqual(await h.submit(target), { kind: 'unknown', reason: 'state-changed' });
+  assert.equal(races, 4);
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 9);
+  const later = await h.submit(target);
+  assert.equal(later.kind, 'decision');
+  assert.deepEqual(later.bytes, competing[0].result.bytes);
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 9);
+});
