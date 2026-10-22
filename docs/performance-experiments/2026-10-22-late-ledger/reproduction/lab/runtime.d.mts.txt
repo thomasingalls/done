@@ -1,0 +1,5 @@
+export function start(state: string, dist: string): Promise<void>;
+export function stop(): Promise<void>;
+export function control(kind: string): Promise<{metrics: unknown}>;
+export let resourceStop: string | undefined;
+export let readyIdentity: unknown;

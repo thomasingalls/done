@@ -1,0 +1,20 @@
+from pathlib import Path
+import json,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+a=json.loads((r/'before/docs/account-crypto/census.json').read_text());b=json.loads((repo/'docs/account-crypto/census.json').read_text());old={v['path']:v['sha256']for v in a['sources']};new={v['path']:v['sha256']for v in b['sources']};assert old.keys()==new.keys();assert [f for f in old if old[f]!=new[f]]==['account-service/delivery.ts'];sourceCount=len(new);labels=lambda v:sorted((d['label'],d['kind'],tuple(sorted(s['path']for s in d['sites'])))for d in v['domains']);assert labels(a)==labels(b)
+assert (repo/'docs/account-crypto/constructions.json').read_bytes()==(r/'before/docs/account-crypto/constructions.json').read_bytes()
+a=json.loads((r/'before/docs/release-validation-manifest.json').read_text());b=json.loads((repo/'docs/release-validation-manifest.json').read_text());old={v['id']:v for v in a['rows']};new={v['id']:v for v in b['rows']};assert old.keys()==new.keys();diff=[k for k in old if old[k]!=new[k]];assert set(diff)=={'test:test/account-service-inbound/core.test.mjs','campaign:scripts/account-service-inbound/run.mjs'},diff
+core='test:test/account-service-inbound/core.test.mjs';campaign='campaign:scripts/account-service-inbound/run.mjs'
+before=old[core];after=new[core];bc=before['stage']['expect']['cases'];ac=after['stage']['expect']['cases'];added=[v for v in ac if v not in bc];assert all(v in ac for v in bc)and len(added)==12
+rest=json.loads(json.dumps(after));rest['stage']['expect']['cases']=bc;assert rest==before
+# Independent runtime titles agree with source census, direct stage and both wrapper consumers.
+assert ac==json.loads((r/'denominator-preview.json').read_text())['cases']
+passed=set(re.findall(r'^✔ (.*?) \([\d.]+ms\)',(r/'new-cases-final.log').read_text(),re.M));assert len(passed)==15;assert {v['id'].split('::',1)[1]for v in added}<=passed
+before=old[campaign];after=new[campaign];rest=json.loads(json.dumps(after))
+for path in [('stage','expect','cases'),('stage','expect','steps',1,'expect','cases')]:
+ x=before;y=after;z=rest
+ for part in path[:-1]:x=x[part];y=y[part];z=z[part]
+ key=path[-1];assert all(v in y[key]for v in x[key]);assert [v for v in y[key]if v not in x[key]]==added;z[key]=x[key]
+assert rest==before
+plan=json.loads((r/'manifest-record.log').read_text().splitlines()[0]);assert plan['obligations']==882 and plan['unresolved']==338
+(r/'metadata-review.json').write_text(json.dumps({'status':'passed','sources':sourceCount,'sourceHashChanges':['account-service/delivery.ts'],'allDomainLabelsKindsAndPathsRetained':True,'constructionBytesExact':True,'all882OldObligationsRetained':True,'onlyChangedObligations':sorted(diff),'old9DirectCasesAndAllOldWrapperCasesRetained':True,'same12NewCasesMatchIndependentRuntimeAndAllConsumers':True,'sameDeadlineAndProcessPolicy':True,'obligations':882,'unresolved':338,'qualificationPausedAndBlocked':True,'noAggregateCreditFromFocusedRuns':True},indent=2)+'\n');print('Metadata review passed',flush=True)

@@ -1,0 +1,254 @@
+{
+  "status": "passed",
+  "scope": "actual HTTP errors during original measured load; native JSON reason joined by exact request hash when available",
+  "runs": [
+    {
+      "name": "1-R",
+      "variant": "R",
+      "labels": {
+        "Q0": {
+          "requests": 104,
+          "failedRequests": []
+        },
+        "Q1": {
+          "requests": 109,
+          "failedRequests": [
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "status": 409,
+              "browserReason": "state-changed",
+              "nativeReasons": [
+                "state-changed"
+              ],
+              "atMs": 38263,
+              "requestMs": 4903,
+              "bodySha256": "644e617bd3a224f413ba6cdbf348cc236b3cab508bcf2ac76cb7bd58e0c845e7"
+            }
+          ]
+        },
+        "M1": {
+          "requests": 110,
+          "failedRequests": [
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "status": 429,
+              "browserReason": "capacity",
+              "nativeReasons": [
+                "capacity"
+              ],
+              "atMs": 12760,
+              "requestMs": 13,
+              "bodySha256": "086fa60f3319b528492d50584bc4ff1c8d9b14c0df9e93c5a66924b86de6cb8f"
+            }
+          ]
+        },
+        "H1": {
+          "requests": 1637,
+          "failedRequests": []
+        },
+        "H2": {
+          "requests": 1640,
+          "failedRequests": []
+        },
+        "H3": {
+          "requests": 1639,
+          "failedRequests": []
+        },
+        "H4": {
+          "requests": 1434,
+          "failedRequests": []
+        },
+        "H5": {
+          "requests": 1654,
+          "failedRequests": []
+        }
+      }
+    },
+    {
+      "name": "2-C",
+      "variant": "C",
+      "labels": {
+        "Q0": {
+          "requests": 98,
+          "failedRequests": []
+        },
+        "Q1": {
+          "requests": 124,
+          "failedRequests": []
+        },
+        "M1": {
+          "requests": 108,
+          "failedRequests": []
+        },
+        "H1": {
+          "requests": 1639,
+          "failedRequests": []
+        },
+        "H2": {
+          "requests": 1645,
+          "failedRequests": [
+            {
+              "path": "/account/membership/v2/discover",
+              "status": 401,
+              "browserReason": "grant-required",
+              "nativeReasons": [
+                "grant-required"
+              ],
+              "atMs": 299150,
+              "requestMs": 1452,
+              "bodySha256": "26dfa8bcd9438d3aa88a7b42a7916bc765b1cf7c197e29ea13ac1c29d3209e26"
+            }
+          ]
+        },
+        "H3": {
+          "requests": 1644,
+          "failedRequests": []
+        },
+        "H4": {
+          "requests": 1429,
+          "failedRequests": [
+            {
+              "path": "/account/membership/v2/discover",
+              "status": 401,
+              "browserReason": "grant-required",
+              "nativeReasons": [
+                "grant-required"
+              ],
+              "atMs": 298830,
+              "requestMs": 1467,
+              "bodySha256": "d90f2cecb8ea0e15e98e0ba147d55ad8694fee401f5dcb8e665a507a696b8e22"
+            }
+          ]
+        },
+        "H5": {
+          "requests": 1644,
+          "failedRequests": [
+            {
+              "path": "/account/membership/v2/discover",
+              "status": 401,
+              "browserReason": "grant-required",
+              "nativeReasons": [
+                "grant-required"
+              ],
+              "atMs": 299054,
+              "requestMs": 1458,
+              "bodySha256": "e000e9344d3848b30283371bee7b171d30b744d3558619259aa3af61b0ce4c30"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3-C",
+      "variant": "C",
+      "labels": {
+        "Q0": {
+          "requests": 92,
+          "failedRequests": []
+        },
+        "Q1": {
+          "requests": 136,
+          "failedRequests": []
+        },
+        "M1": {
+          "requests": 98,
+          "failedRequests": [
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "status": 429,
+              "browserReason": "capacity",
+              "nativeReasons": [
+                "capacity"
+              ],
+              "atMs": 13103,
+              "requestMs": 18,
+              "bodySha256": "286f3f525ea3737e0558cec7d57feaa1f5c8742dad877f9141ceb2a02827df67"
+            }
+          ]
+        },
+        "H1": {
+          "requests": 1631,
+          "failedRequests": []
+        },
+        "H2": {
+          "requests": 1632,
+          "failedRequests": []
+        },
+        "H3": {
+          "requests": 1636,
+          "failedRequests": []
+        },
+        "H4": {
+          "requests": 1411,
+          "failedRequests": []
+        },
+        "H5": {
+          "requests": 1632,
+          "failedRequests": []
+        }
+      }
+    },
+    {
+      "name": "4-R",
+      "variant": "R",
+      "labels": {
+        "Q0": {
+          "requests": 92,
+          "failedRequests": []
+        },
+        "Q1": {
+          "requests": 101,
+          "failedRequests": [
+            {
+              "path": "/account/delivery/read-v2",
+              "status": 409,
+              "browserReason": "state-changed",
+              "nativeReasons": [
+                "state-changed"
+              ],
+              "atMs": 37182,
+              "requestMs": 4742,
+              "bodySha256": "b09bd7c47f842e468fae6074792877b13f14d5e3bccd95d3aebb85ce30091e01"
+            }
+          ]
+        },
+        "M1": {
+          "requests": 93,
+          "failedRequests": [
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "status": 429,
+              "browserReason": "capacity",
+              "nativeReasons": [
+                "capacity"
+              ],
+              "atMs": 13113,
+              "requestMs": 5,
+              "bodySha256": "7ad65b44157e9a5e6f42680554b47d303371521b4df4c334a530d78930f2bfe4"
+            }
+          ]
+        },
+        "H1": {
+          "requests": 1617,
+          "failedRequests": []
+        },
+        "H2": {
+          "requests": 1624,
+          "failedRequests": []
+        },
+        "H3": {
+          "requests": 1624,
+          "failedRequests": []
+        },
+        "H4": {
+          "requests": 1400,
+          "failedRequests": []
+        },
+        "H5": {
+          "requests": 1623,
+          "failedRequests": []
+        }
+      }
+    }
+  ]
+}

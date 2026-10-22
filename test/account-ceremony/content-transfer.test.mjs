@@ -7292,3 +7292,64 @@ test('independent continuation reads reuse branded history evidence without repe
   }
   assert.equal(admissions, 1);
 });
+
+for (const stream of ['first-publisher', 'reader-own'])
+  test(`v2 late-ledger continuation ${stream} capture survives writing during authenticated request verification`, async (t) => {
+    const x = await continuationFixture(t),
+      publisher = stream === 'first-publisher' ? x.credential : x.context.candidate.id;
+    const q = query(
+      x,
+      0,
+      8,
+      { epoch: 4, head: x.admission.head, reader: x.context.candidate.id, publisher },
+      x.keys.new,
+    );
+    const unsigned = Buffer.from(
+        JSON.stringify(JSON.parse(Buffer.from(q).toString()).slice(0, -1)),
+      ),
+      verify = crypto.subtle.verify.bind(crypto.subtle);
+    const retained = [];
+    let calls = 0,
+      previous = '00'.repeat(32);
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (Buffer.from(args[3]).equals(unsigned)) {
+        calls++;
+        const w = x.make(calls, 'first publisher writes during verified request', { epoch: 4 }),
+          r = await x.deliveryCall(w);
+        previous = decision(x, r, w, previous, 4).head.link;
+        retained.push({ w, r, epoch: 4 });
+      }
+      return verify(...args);
+    });
+    page(x, await read(x, q), q, stream === 'first-publisher' ? retained : []);
+    assert.equal(calls, 1, 'same and unrelated live witnesses are captured after verification');
+    assert.equal(x.f.rows('publisher_decisions').length, 0, 'reader own stream remains empty');
+  });
+
+test('v2 late-ledger refuses a membership-removal transition across the authority-to-ledger boundary', async (t) => {
+  const x = await continuationFixture(t),
+    q = query(
+      x,
+      0,
+      8,
+      { epoch: 4, head: x.admission.head, reader: x.context.candidate.id, publisher: x.credential },
+      x.keys.new,
+    );
+  const unsigned = Buffer.from(JSON.stringify(JSON.parse(Buffer.from(q).toString()).slice(0, -1))),
+    verify = crypto.subtle.verify.bind(crypto.subtle);
+  let changed = false;
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (!changed && Buffer.from(args[3]).equals(unsigned)) {
+      changed = true;
+      const preparation = await removalRequest(x, x.context.candidate.id);
+      const { request } = await rotationRequest(x, preparation);
+      const removed = await x.authority.owner.commitRotation(x.f.core, request);
+      assert.equal(removed.ok, true, JSON.stringify(removed));
+    }
+    return verify(...args);
+  });
+  const answer = await read(x, q);
+  assert.equal(changed, true);
+  assert.equal(answer.kind, 'unknown');
+  assert.equal('bytes' in answer, false);
+});

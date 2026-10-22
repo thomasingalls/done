@@ -1,0 +1,14 @@
+from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while True:
+ if(r/'run-receipts.json').exists():
+  rows=json.loads((r/'run-receipts.json').read_text())
+  if any(x['exitCode']for x in rows):raise RuntimeError('Preserve failed journey')
+  if len(rows)==4:break
+ if 'Traceback'in(r/'run.log').read_text():raise RuntimeError('Heavy runner failed')
+ time.sleep(5)
+for name,cmd in [('analysis',['python3',str(r/'analyze.py')]),('read-refusals',['python3',str(r/'read-refusals.py')]),('native-audit',['node',str(r/'audit-native.mjs')]),('evidence-review',['python3',str(r/'review-evidence.py')]),('sensitivity',['python3',str(r/'sensitivity.py')])]:
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise RuntimeError('Evidence step failed; preserve output: '+name)

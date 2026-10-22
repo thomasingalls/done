@@ -1,0 +1,21 @@
+from pathlib import Path
+import subprocess,os,json,time,re
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+while True:
+ if(r/'run-receipts.json').exists():
+  receipts=json.loads((r/'run-receipts.json').read_text())
+  if any(x['exitCode']for x in receipts):raise RuntimeError('Heavy journey failed; no substitute runs')
+  if len(receipts)==4:break
+ if 'Traceback'in(r/'run.log').read_text():raise RuntimeError('Heavy runner failed')
+ time.sleep(5)
+files=['test/account-ceremony/content-transfer.test.mjs','test/account-history/service.test.mjs','test/account-history/pruning.test.mjs','test/account-history/checkpoint.test.mjs','test/account-membership/rotation-history.test.mjs']+[str(p.relative_to(r/'source'))for p in sorted((r/'source/test/account-sessions').glob('*.test.mjs'))]+['test/account-service-inbound/core.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-delivery/cold-verification.test.mjs']
+rows=[]
+for name,source in [('reference',r/'reference-source'),('candidate',r/'source')]:
+ cmd=['node','--test','--test-concurrency=1',*files];at=int(time.time()*1000)
+ with(r/(name+'-affected.log')).open('w')as log:p=subprocess.run(cmd,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(source),'exitCode':p.returncode,'startedAt':at,'finishedAt':int(time.time()*1000),'historicalGitObjects':'Read-only existing common Git directory resolves immutable4bb09042 historical source; no index changes.'});(r/'affected-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+def fails(x):return sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',x,re.M)))
+def counts(x):return{k:int(re.search('ℹ '+k+r' (\d+)',x).group(1))for k in ['tests','pass','fail','cancelled','skipped']}
+a=(r/'reference-affected.log').read_text();b=(r/'candidate-affected.log').read_text();assert 'EPERM'not in a+b;assert 'not a git repository'not in a+b
+assert fails(a)==fails(b),(fails(a),fails(b));assert counts(b)['tests']-counts(a)['tests']==15
+(r/'affected-comparison.json').write_text(json.dumps({'status':'passed','reference':counts(a),'candidate':counts(b),'unchangedFailures':fails(a),'newFailures':[],'newCases':15,'preservedInitialFixtureFailure':'reference-focused.log missing Git object lookup for existing historical-size fixture; use read-only GIT_DIR, no old test changes.'},indent=2)+'\n');print('Broad affected comparison complete',flush=True)

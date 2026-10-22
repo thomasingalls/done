@@ -1,0 +1,66 @@
+[
+  {
+    "name": "census-record",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs",
+      "--record"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-crypto-prep/census.test.mjs",
+      "test/account-crypto-prep/contracts.test.mjs",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs"
+    ],
+    "exitCode": 0
+  }
+]

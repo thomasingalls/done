@@ -65,6 +65,7 @@ import {
 } from '../account-protocol/inboundTransport.ts';
 import type { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
 import {
   parseAdmissionRequest,
   parseReceipt,
@@ -1323,6 +1324,17 @@ function resolveInboundRoles(auth: Authority, request: InboundReadRequest) {
   return { reader, publisher };
 }
 
+function inboundAuthorityHeader(s: Snapshot) {
+  // Live witnesses and rows belong to the fresh ledger verification below. Every
+  // other native input, including future header fields, must retain its identity.
+  return {
+    ...s,
+    rows: [],
+    publisherWitness: null,
+    promotion: { ...s.promotion, delivery_witness: null },
+  };
+}
+
 /** V2 is a separate purpose and route; it cannot reinterpret a v1 spool read. */
 export async function readInbound(
   db: DatabaseSync,
@@ -1355,20 +1367,20 @@ export async function readInbound(
     for (let retry = 0; retry < 4; retry++) {
       try {
         phase = 'storage';
-        const s = read(db, request.workspace, request.publisher, reuse, {
-          after: request.after,
-          limit: request.limit,
-        });
-        if (!s) return unknown('unavailable');
+        // Authority verification holds no live publisher-prefix capture across crypto.
+        db.exec('BEGIN');
+        const before = snapshot(db, request.workspace, request.publisher, Number.MAX_SAFE_INTEGER);
+        db.exec('COMMIT');
+        if (!before) return unknown('unavailable');
         const auth = selectPublisher(
             await reuseInboundAuthority(
               authorityReuse,
-              s,
+              before,
               issuer,
               verifyCurrentWorkspaceAuthority,
               reuse?.authority,
             ),
-            s.publisher,
+            before.publisher,
           ),
           { reader, publisher } = resolveInboundRoles(auth, request);
         if (
@@ -1401,6 +1413,12 @@ export async function readInbound(
             continue;
           }
         }
+        const s = read(db, request.workspace, request.publisher, reuse, {
+          after: request.after,
+          limit: request.limit,
+        });
+        if (!s) return unknown('unavailable');
+        if (!isDeepStrictEqual(inboundAuthorityHeader(before), inboundAuthorityHeader(s))) continue;
         const ledger = await verifiedCensus(s, auth, reuse);
         if (request.after > ledger.through) return unknown('out-of-order');
         const page: InboundReadPage = {

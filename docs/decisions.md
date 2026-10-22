@@ -5029,3 +5029,10 @@ The scoped checkpoint retry mechanism is repaired, but the **candidate remains h
 **Date:**2026-10-22 · **Status:** next bounded repair proposed; phase19 evidence only.
 
 The returned conflict consumed four native verification attempts because actual committed writing invalidated snapshots; its subsequent one-second client backoff matched the established schedule. The other diagnostic journey had no Q409 yet remained slow. Keep rates, the four-attempt cap and failure pacing unchanged while separating verified authority from fresh live ledger capture, as the earlier history-catalog path does. Any such repair must compare all current authority inputs before using fresh ledger evidence and retain exact final ordinary snapshot, owner/version/commit, custody/grant/session, history/served-proof and expiry checks. No cache projection widening or concurrent-lane authority change is approved by this evidence. Submission round-trip cost is also material but still needs native stage attribution. [Evidence](./performance-experiments/2026-10-22-read-pacing/README.md).
+
+
+### Capture live inbound ledger only after current authority/request verification
+
+**Date:**2026-10-22 · **Status:** implemented bounded development candidate, performance status in phase20 packet.
+
+Take immutable native authority evidence first, verify it and the signed reader, and then capture the selected live ledger. Compare every non-live native authority field, including future fields, before consuming that fresh ledger. Only the two ordinary live witnesses and rows differ across this stage boundary; fresh witness/census/served proof checks and the final complete ordinary snapshot, owner/version/commit, custody/grant/session/completion and expiry checks still govern issuance. Keep the exact existing cache context and limits; do not broaden reuse or retry policy here. Real post-capture races and real removal rotation remain refusals. [Evidence and original gates](./performance-experiments/2026-10-22-late-ledger/README.md); publication/receiver-prelude optimization remains separate. No qualification or publication authorization.

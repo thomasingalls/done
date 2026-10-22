@@ -2203,3 +2203,17 @@ Full original pending/save/cold-profile/raw encrypted delivery/whole-export/reve
 ### 2026-10-22 — diagnostic read/publication/retry trace, no candidate promotion
 
 Two fixed cumulative18 instrumented journeys,H6/M2/Q2,1CPU/1GiB,120 trusted keys at500ms,90s diagnostic load boundary. Q0/Q1 rate refusals0/0; Q409 counts0/1. The returned batch state-changed409 spends4614ms in four same-publisher commit races, including4399ms captured→authority verification, then999.1ms client backoff and3ms scheduler lateness. Native rejected-snapshot counts40/41;23/28 same-owner commit changes and17/13 unrelated original-publisher live-witness fingerprint changes. Writer submit HTTP p95=1333/1424ms; envelope preparation54.3/60.3ms and submission preparation36.1/32.4ms. Instrumented peer p95=9021/16234.3ms, all120 complete. These are mechanism observations, not matched performance acceptance; phase18's uninstrumented regression remains held. All data guards/native proof audit pass;61+21 unchanged existing regressions, four controlled cases and six fault controls pass. No runtime/rate/deadline/security/old-test changes, no qualification or publication. [Packet](./performance-experiments/2026-10-22-read-pacing/README.md).
+
+
+### 2026-10-22 — late-ledger capture, fixed heavy comparison
+
+HELD: scoped capture repair passes; original heavy performance acceptance remains unmet. Same frozen110 client assets, H6/M2/Q2,1CPU/1GiB,120 trusted500ms inputs; original16ms/2500ms/30s/600s/120s gates.
+
+|Run|Local p95 ms|Peer p95 ms|Quiet read409|Slowest H s|
+|---|---:|---:|---:|---:|
+|1-R|6.7|26277.2|1|310.8|
+|2-C|7.2|12403.3|0|322.4|
+|3-C|6.2|7108.2|0|295.6|
+|4-R|5.6|17304.3|1|265.2|
+
+Every outcome is retained; finite dependent observations, no general tenant-capacity inference. Independent native signature/seed/prefix and offline persistent-profile/export/retained-record guards pass.15 added regressions,5 omissions,6 evidence/native controls and unchanged affected-suite failure comparison. [Packet](./performance-experiments/2026-10-22-late-ledger/README.md). No rate, retry/deadline, cache-context or security relaxation, no publication or general qualification.

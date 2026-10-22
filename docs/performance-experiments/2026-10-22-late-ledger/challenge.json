@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "restore-early-capture",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "v2 late-ledger accepts",
+      "startedAt": 1792682885031,
+      "finishedAt": 1792682885601
+    },
+    {
+      "name": "omit-authority-comparison",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "v2 late-ledger compares",
+      "startedAt": 1792682885634,
+      "finishedAt": 1792682886055
+    },
+    {
+      "name": "omit-final-guard",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "v2 late-ledger retains four final owner",
+      "startedAt": 1792682886088,
+      "finishedAt": 1792682886497
+    },
+    {
+      "name": "omit-final-grant",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "v2 late-ledger retains current grant",
+      "startedAt": 1792682886531,
+      "finishedAt": 1792682886910
+    },
+    {
+      "name": "omit-future-header",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "v2 late-ledger compares future",
+      "startedAt": 1792682886945,
+      "finishedAt": 1792682887312
+    }
+  ]
+}

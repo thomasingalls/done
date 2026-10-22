@@ -1,0 +1,5 @@
+{
+  "pid": 6936,
+  "status": "terminated-task-owned-test-worker",
+  "reason": "New late-capture fault hook recursively captured its own genuine append; first attempt preserved and fixture fixed with an appending fence."
+}

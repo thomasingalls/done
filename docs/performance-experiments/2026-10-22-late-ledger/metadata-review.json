@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "sources": 400,
+  "sourceHashChanges": [
+    "account-service/delivery.ts"
+  ],
+  "allDomainLabelsKindsAndPathsRetained": true,
+  "constructionBytesExact": true,
+  "all882OldObligationsRetained": true,
+  "onlyChangedObligations": [
+    "campaign:scripts/account-service-inbound/run.mjs",
+    "test:test/account-service-inbound/core.test.mjs"
+  ],
+  "old9DirectCasesAndAllOldWrapperCasesRetained": true,
+  "same12NewCasesMatchIndependentRuntimeAndAllConsumers": true,
+  "sameDeadlineAndProcessPolicy": true,
+  "obligations": 882,
+  "unresolved": 338,
+  "qualificationPausedAndBlocked": true,
+  "noAggregateCreditFromFocusedRuns": true
+}
