@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -48,6 +49,7 @@ for (const kind of ['promotion', 'joined'] as const)
         { timeout: 30000 },
       );
       for (const p of [page, pair.second]) {
+        await openMenuSection(p, 'Account');
         await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
         await p.goto('/');
         await p.evaluate(chunk.code);
@@ -85,6 +87,7 @@ for (const kind of ['promotion', 'joined'] as const)
       await source.goto('/');
       await openSaved(source, code, kind === 'joined');
       await add(source, 'Current generation writing for the replacement');
+      await openMenuSection(source, 'Account');
       await source.getByRole('button', { name: 'Devices', exact: true }).click();
       await source.getByRole('button', { name: 'Connect another device', exact: true }).click();
       await source.evaluate(chunk.code);
@@ -232,6 +235,7 @@ for (const kind of ['promotion', 'joined'] as const)
         'Survivor replies to the replacement',
         { timeout: 30000 },
       );
+      await openMenuSection(replacement, 'Account');
       await replacement.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await replacement.goto('/');
       await openSaved(replacement, fresh.code, true);
@@ -243,6 +247,7 @@ for (const kind of ['promotion', 'joined'] as const)
       );
       if (kind === 'promotion') {
         // The replacement has never held generation one. It now owns the next rotation and invitation.
+        await openMenuSection(replacement, 'Account');
         await replacement.getByRole('button', { name: 'Devices', exact: true }).click();
         await expect(
           replacement.getByRole('button', { name: 'Remove device', exact: true }),
@@ -270,17 +275,20 @@ for (const kind of ['promotion', 'joined'] as const)
         await expect(source.locator('.shell')).toHaveCount(0, { timeout: 70000 });
         await source.goto('/');
         await openSaved(source, code);
+        await openMenuSection(source, 'Sync');
         await expect(source.getByText('Removed from account.', { exact: false })).toBeVisible();
         await expect(source.locator('.shell')).not.toContainText(
           'Replacement writing after the next removal',
         );
         await add(source, 'Detached survivor keeps its own writing');
+        await openMenuSection(replacement, 'Account');
         await replacement.getByRole('button', { name: 'Lock workspace', exact: true }).click();
         await replacement.goto('/');
         await openSaved(replacement, fresh.code, true);
         await expect(replacement.locator('.shell')).toContainText(
           'Replacement writing after the next removal',
         );
+        await openMenuSection(replacement, 'Account');
         await replacement.getByRole('button', { name: 'Devices', exact: true }).click();
         await expect(replacement.locator('.account-device-list li')).toHaveCount(1);
         await replacement
@@ -328,6 +336,7 @@ for (const kind of ['promotion', 'joined'] as const)
           [replacement, fresh.code],
           [newcomer, last.code],
         ] as const) {
+          await openMenuSection(p, 'Account');
           await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
           await p.goto('/');
           await openSaved(p, code, true);

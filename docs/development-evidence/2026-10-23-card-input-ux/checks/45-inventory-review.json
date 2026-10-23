@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "added": [
+    "test/compose.test.tsx",
+    "test/geometry/card-focus.spec.ts",
+    "test/geometry/compose-input.spec.ts",
+    "test/geometry/duplicate-card.spec.ts"
+  ],
+  "changedInputs": [
+    "test/compose.test.tsx",
+    "test/geometry/card-focus.spec.ts",
+    "test/geometry/compose-input.spec.ts",
+    "test/geometry/duplicate-card.spec.ts",
+    "test/release-validation/general-tests.test.mjs",
+    "test/workspaceAdmission.test.ts"
+  ],
+  "existingTestDelta": {
+    "file": "test/workspaceAdmission.test.ts",
+    "declarations": 4,
+    "propertyLines": 115,
+    "executableCases": 25
+  },
+  "otherFieldsUnchanged": true,
+  "manifestStatus": "blocked",
+  "obligations": 887,
+  "unresolved": 343,
+  "newRows": [
+    {
+      "id": "test:test/compose.test.tsx",
+      "kind": "test",
+      "path": "test/compose.test.tsx",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/compose.test.tsx"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/geometry/card-focus.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/card-focus.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/geometry/compose-input.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/compose-input.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/geometry/duplicate-card.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/duplicate-card.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    }
+  ]
+}

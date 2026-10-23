@@ -5161,3 +5161,131 @@ prove universal safety or that failed hosted runs passed. Source/image identity,
 rollback, private registry, offline infrastructure checks and rollout verification
 remain required. Operator retains both merge buttons; generalized qualification
 remains paused. See [handoff](./account-sync-catch-up-publication.md).
+
+
+### Native editing gestures keep semantic admission
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch37 · **Against:** PRD §4.8 / TRD §5.4
+
+**Orientation.** Default CodeMirror word-delete, bracket-indent and Shift-Enter transactions were rejected
+by the admitted editor, while Cmd-Enter unexpectedly toggled tasks.
+
+**Decision.** Adapt known text semantics through the existing private preparation/admission path. Never
+accept arbitrary extension document transactions to make shortcuts work. Explicitly consume Cmd/Ctrl-Enter
+so disabling task toggle cannot expose the default blank-line command. Keep click-to-toggle and its
+semantic command. Mobile pauses remain a separate profiling task.
+
+
+### Card Enter returns focus to the same card
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch38 · **Against:**PRD §4.8 / TRD §5.4
+
+**Orientation.** The operator wants Enter to finish card editing and Shift-Enter to allow multiline text.
+They explicitly retain the old split behavior on three Shift-Enters.
+
+**Decision.** Completion focuses that card's static surface and retains its caret for deliberate Enter
+reopening. Pointer blur continues to respect its actual destination. A held Enter cannot repeatedly
+reopen a newly completed card. Goals Enter/list behavior and admitted mutation/undo semantics stay.
+
+
+### Sidebar collapse changes organization, not session lifetime
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch40 · **Against:**PRD §6.6 / sidebar clarification
+
+**Orientation.** Account, protection and personalization fragmented related controls; sync lane details
+and export/history were mixed. The operator asked whether switching/sign-out could be combined.
+
+**Decision.** Use native initially closed disclosures with mounted children. Keep dates/update availability
+outside settings disclosures. Keep both switch and sign-out because their remembered-login effects
+are intentionally different; explain that distinction. Group service-history maintenance with export,
+while Devices retains membership/lifecycle history. No implicit sign-out, revocation or cancellation.
+
+
+### Duplicate reads its admitted predecessor and reuses card creation
+
+**Date:**2026-10-23 · **Scope:**bounded UX patch44
+
+Choose a semantic duplicate-by-card-ID command rather than composing from the UI’s text snapshot.
+Writing queued before the click must be included when admission runs. Use the existing compose
+mechanism to create a fresh Scheduled card on the source’s current day, with the complete text,
+current actor attribution and source ID provenance. This reuses freeze, discrete undo and canonical
+registration instead of cloning CRDT identity or inventing a second creation path.
+
+Done’s unlock protects editing/moving its source; duplication does neither. No new action appears
+on frozen days, no arbitrary destination capability is added, and unfiled/missing sources refuse.
+The source’s creation timestamp/author are not copied as though a new action were historical writing.
+
+
+### Whole-line Cut copies accepted writing before admitted deletion
+
+**Date:**2026-10-23 · **Scope:**bounded UX patch50
+
+Extend the native Cut event rather than intercept Cmd-X with an asynchronous clipboard prompt.
+When every selection is empty, copy complete logical lines, unioning duplicate/adjacent ranges;
+include an existing following newline. Use existing semantic selection replacement for deletion.
+Successful event clipboard writing/read-back precedes submission. A missing/refused clipboard,
+closed/frozen surface, active composition or queued predecessor cannot delete writing.
+
+Choose a visible wait/refusal while earlier input is pending instead of extending relative
+selections over uncopied queued text or adding a new conditional-mutation protocol in this slice.
+This can require retrying Cut during storage stalls; the invariant is more important than hiding
+that refusal. Local admission can still delay the deletion after copying; retry admits it once.
+
+
+### Repository bookkeeping remains authoritative during release preparation
+
+**Date:**2026-10-23 · **Commit:**follow-up to `d1c2784b`, sequential patch59 · **Against:**PRD v9 / TRD v8
+
+**Orientation.** PR57's ordinary CI failed its authority-map runtime census. Eleven edited
+editor/sidebar sources and one new presentation component had not been reviewed and recorded.
+The final distroless/release evidence was also retained only in an external tool's artifact store,
+instead of the repository's established evidence directories. The operator explicitly reaffirmed
+that the repository's procedure takes precedence over optional third-party tooling.
+
+**Decision.** Review the complete census delta against original and current Git objects, then use
+the existing recorder. Preserve all197 domain definitions/sites and the registry, construction
+dispositions and authority-map bytes. Keep the tool's original artifacts as historical snapshots
+but copy their exact bytes and independently verify their archive populations/hashes in the
+repository. This adds portable compressed evidence rather than a competing registry or closure
+claim. Run the ordinary contract/bookkeeping gates; paused generalized qualification and an
+operator's earlier acceptance of local tests do not waive these checks. Complete the append-only
+records before closing this seat's active slice or refreshing tree-bound receipts.
+
+The follow-up changes documentation and the reviewed census snapshot only. Keep the exact tested
+ARM64 image bound to signed `d1c2784b`; compare every allowlisted build input independently before
+carrying its evidence across the bookkeeping commit. Publishing, operator merges and deployment
+remain separate actions.
+
+
+### Expanded bookkeeping review requires a fresh artifact after fixture corrections
+
+**Date:**2026-10-23 · **Commit:**sequential patch59 · **Against:**PRD v9 / TRD v8
+
+**Orientation.** After the preceding decision, the broader checks found a stale execution manifest
+and two stale adapter count fixtures. This expands that entry's documentation-only scope; its
+1651-file context-equality observation remains valid only before these additional test-file edits.
+
+**Decision.** Review additions against independent runtime collection and preserve every old
+obligation, contract and blocker. The two fixtures take three literal corrections only; no case,
+assertion or deadline is removed. Keep the earlier image bound to signed `d1c2784b`. Since the
+fixture changes enter the allowlisted test context, rebuild and check the final signed source
+rather than carrying the earlier whole-context equality claim beyond its observed scope.
+Publishing, operator merges and deployment remain separate actions.
+
+
+### Keep the refreshed artifact bound to its signed build source
+
+**Date:**2026-10-23 · **Commit:**sequential patch60 · **Against:**publication procedure / patch59
+
+**Orientation.** Patch59's two fixture count corrections enter the allowlisted build context.
+A new native ARM64 artifact is therefore built and checked from clean signed d8b3f22b. The
+hosted contract, inventory and adapter steps pass that exact source; their longer unit step
+is still running in the retained snapshot.
+
+**Decision.** Preserve the new image/source identities and exact observations in the established
+repository evidence packet. This follow-up changes documentation only. Keep the image labeled
+with its actual signed build source and compare the full allowlisted context before carrying
+it across the evidence commit or application merge. Do not rebuild merely to relabel a docs-only
+head. Keep all lower package findings, earlier failed attempts, browser/server boundary limits
+and the open AMD64/generalized qualification boundaries. Operator merges, exact private image
+publication, infrastructure review and deployment remain separate.

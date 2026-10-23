@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "changedInputHashes": [
+    "test/geometry/sidebar-polish.spec.ts"
+  ],
+  "staticDeclarationChange": [
+    1,
+    2
+  ],
+  "allOtherTestsDispositionsCountsAndFieldsPreserved": true,
+  "newCasesInPreviouslyUncreditedFile": true,
+  "qualificationCreditAdded": false,
+  "manifest": {
+    "status": "blocked",
+    "obligations": 891,
+    "unresolved": 347
+  },
+  "rows": [
+    {
+      "id": "test:test/geometry/sidebar-polish.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/sidebar-polish.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { pairedEditors, openSaved, add } from './devices';
 import { startService, stopService, startBackend, stopProcess } from './server';
@@ -37,6 +38,7 @@ test('a legacy session host receives both ways across restart without requesting
       'Legacy writing retained across restart',
       { timeout: 20000 },
     );
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.context().setOffline(true);
     await page.goto('/');
@@ -58,6 +60,7 @@ test('a legacy session host receives both ways across restart without requesting
 const historyPanel = (page: Page) =>
   page.getByRole('region', { name: 'History maintenance', exact: true });
 async function inspectHistory(page: Page) {
+  await openMenuSection(page, 'Data');
   await page.getByRole('button', { name: 'History maintenance', exact: true }).click();
   await historyPanel(page).getByRole('button', { name: 'Check history', exact: true }).click();
   await expect(
@@ -100,6 +103,7 @@ test('a false capability hint and history outage cannot bypass cold retained his
       'This writing arrives only in authenticated history',
       { timeout: 20000 },
     );
+    await openMenuSection(second, 'Account');
     await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await second.evaluate(() => localStorage.setItem('done.account-service.membership.v2', '0'));
     await second.route('**/__account-setup/config', async (route) => {

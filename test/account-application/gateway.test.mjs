@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer, request } from 'node:http';
+import { connect } from 'node:net';
+import { once } from 'node:events';
 import { randomBytes } from 'node:crypto';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -266,4 +268,91 @@ test('gateway drains an active reply and closes connections that become idle dur
   } finally {
     clearTimeout(timer);
   }
+});
+
+test('gateway closes unrequested preconnections while draining an admitted reply exactly once', async (t) => {
+  const { directory, packaged } = buildFixture();
+  let enter, release;
+  const entered = new Promise((resolve) => {
+    enter = resolve;
+  });
+  const barrier = new Promise((resolve) => {
+    release = resolve;
+  });
+  let accepted = 0;
+  const upstream = createServer(async (req, res) => {
+    const chunks = [];
+    for await (const chunk of req) chunks.push(chunk);
+    assert.equal(Buffer.concat(chunks).toString(), 'accepted original');
+    accepted++;
+    enter();
+    await barrier;
+    res.end('completed admitted reply');
+  });
+  const servicePort = await listen(upstream);
+  const app = await startAccountGateway({ port: 0, origin, servicePort, packaged });
+  const idle = connect(app.port, '127.0.0.1');
+  let pending, timer;
+  t.after(async () => {
+    clearTimeout(timer);
+    release();
+    idle.destroy();
+    await pending?.catch(() => {});
+    await app.close();
+    await stop(upstream);
+    rmSync(directory, { recursive: true, force: true });
+  });
+  await once(idle, 'connect');
+  pending = send(app.port, '/__account-setup/finish', 'accepted original');
+  await entered;
+  const idleClosed = once(idle, 'close');
+  let finished = false;
+  const closing = app.close().then(() => {
+    finished = true;
+  });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(finished, false, 'shutdown must wait for the admitted operation');
+  release();
+  assert.equal((await pending).body.toString(), 'completed admitted reply');
+  assert.equal(accepted, 1);
+  await Promise.race([
+    Promise.all([closing, idleClosed]),
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(Error('Unrequested preconnection held shutdown open')), 1000);
+    }),
+  ]);
+});
+
+test('gateway closes incomplete HTTP headers without forwarding an unadmitted request', async (t) => {
+  const { directory, packaged } = buildFixture();
+  let accepted = 0;
+  const upstream = createServer((req, res) => {
+    accepted++;
+    req.resume();
+    res.end('control');
+  });
+  const servicePort = await listen(upstream);
+  const app = await startAccountGateway({ port: 0, origin, servicePort, packaged });
+  const partial = connect(app.port, '127.0.0.1');
+  let timer;
+  t.after(async () => {
+    clearTimeout(timer);
+    partial.destroy();
+    await app.close();
+    await stop(upstream);
+    rmSync(directory, { recursive: true, force: true });
+  });
+  await once(partial, 'connect');
+  partial.write(
+    'POST /account/not-admitted HTTP/1.1\r\nHost: ' + new URL(origin).host + '\r\nX-Incomplete:',
+  );
+  assert.equal((await send(app.port, '/account/control')).body.toString(), 'control');
+  const partialClosed = once(partial, 'close');
+  await Promise.race([
+    Promise.all([app.close(), partialClosed]),
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(Error('Incomplete headers held shutdown open')), 1000);
+    }),
+  ]);
+  assert.equal(accepted, 1, 'only the complete control request can reach the API');
 });

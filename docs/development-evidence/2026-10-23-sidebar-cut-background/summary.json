@@ -1,0 +1,55 @@
+{
+  "status": "passed-with-explicit-investigation-limits",
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "priorCumulativeTree": "3fd9f5e4f6563de27edcc9130310995735d8b18a",
+  "runtimeTree": "de673417780e9e93fcf17e302903cc69d9a0ab39",
+  "phases": [
+    48,
+    49,
+    50,
+    51,
+    52
+  ],
+  "unit": {
+    "files": 160,
+    "passed": 1927,
+    "existingSkipped": 1
+  },
+  "builtGeometry": {
+    "passed": 168,
+    "existingPlatformSkipped": 24
+  },
+  "firefoxCases": 7,
+  "packagedAccountCases": 12,
+  "adapterInventoryCases": 27,
+  "typeBuildBudgetOriginFormatLint": "passed",
+  "initialGzipKB": 232.7,
+  "budgetKB": 350,
+  "formalQualification": {
+    "status": "paused/blocked",
+    "obligations": 891,
+    "unresolved": 347,
+    "newTestFilesUncredited": 4
+  },
+  "preview": {
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "workerVersion": "2a6601d4bf9f",
+    "gatewayPid": 24540,
+    "retainedApiPid": 52585,
+    "apiRestarted": false,
+    "httpsAssetsVerified": 60,
+    "disposableSmokeWidths": [
+      1280,
+      420
+    ]
+  },
+  "investigation": {
+    "runtimeSyncChanges": false,
+    "hiddenStateObserved": false,
+    "freezeVerified": false,
+    "recommendation": "Physical-device lifecycle tracing before selecting a background repair; optional narrowly scoped encrypted inbox only after policy/security design."
+  },
+  "committed": false,
+  "pushed": false,
+  "productionDeployed": false
+}

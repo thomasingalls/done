@@ -82,10 +82,19 @@ Operator keys belong in the agreed SOPS/Kubernetes custody path, never in the PV
 ## Container boundary
 
 The root `Dockerfile` builds the application and the focused runtime checks under Node 24.18.0.
-Its base image is pinned by multi-platform digest; the initial exercised target is `linux/arm64`.
+The runtime uses digest-pinned distroless `cc-debian13:nonroot`, with that same Node executable
+copied from the pinned build image. A separate digest-pinned Go 1.27.3 stage builds static age
+v1.3.2. The final image retains their licenses and age's compiler/module build information;
+it contains no shell, package manager, Go compiler, age plugins or OS archive commands.
+Production archive creation uses Node zlib/tar-stream and launches only age. Node remains on
+`PATH`, so the exec entrypoint, workers, maintenance commands and readiness probes retain their
+existing command forms. Shell-based `docker exec` troubleshooting requires a separate debug
+container, not changes to the production image.
+
 The final image contains the packaged assets, account implementation and production dependencies,
 without Vite, tests, a Git checkout or development state. `.dockerignore` allowlists source inputs,
-excluding retained data, exports, keys and personal root notes from the build context.
+excluding retained data, exports, keys and personal root notes from the build context. All image
+bases are pinned by multi-platform digest, supporting `linux/arm64` and `linux/amd64`.
 
 Build from a clean checkout of the intended commit:
 
@@ -103,6 +112,34 @@ it is not an immutable publication artifact. Publish and select by registry dige
 or running this smoke command does not push an image or modify an existing installation. The smoke
 command creates named disposable Docker volumes/containers and records its result below
 `test-results/public-runtime/`; it never mounts host service state.
+
+Also run the existing runtime/gateway, backup, restore and maintenance cases **inside the final
+image**. Builder-stage success alone does not verify the final executable/library boundary:
+
+```sh
+docker build --platform linux/arm64 --target dependencies -t done-public-image-tools .
+node scripts/test-runtime-image.mjs done-public:REVISION done-public-image-tools /tmp/done-image-check
+```
+
+Use the actual image tag in place of `done-public:REVISION` and matching platforms for both
+images. The harness checks the unmounted runtime inventory first, then mounts existing tests
+and disposable test-only key generation/archive tools read-only. These tools are independent
+archive oracles, not runtime dependencies; they never replace production Node or age. Original
+per-case deadlines remain. The harness also checks old/new X25519 age payload compatibility
+in both directions, including wrong-key and tamper refusal. The separate uninstrumented
+two-container smoke above exercises serving, identity/ownership, restart and shutdown.
+
+The 2026-10-23 distroless candidate passes these checks on native ARM64. AMD64 validation
+remains open: two emulated builds failed the existing eight-second backup-worker readiness
+check in the unchanged Debian builder, before constructing the final runtime. A diagnostic
+against that Debian image observed first readiness after 10,245 ms; this is not a passing
+regression result. Run the normal build, final-image harness and uninstrumented smoke on a
+native AMD64 runner before claiming that platform verified. No test deadline was changed.
+
+The signed ARM64 candidate and its later gateway/fixture checks are retained in the
+[repository release packet](./development-evidence/2026-10-23-distroless-release/README.md).
+That packet preserves the original exploration and failed attempts as historical records;
+its final artifact metadata defines the tested source and image for publication.
 
 Account operations use incremental ledger verification and the corresponding editor snapshot path
 by default. For a diagnostic rollback, add `--build-arg VITE_ACCOUNT_LEDGER=reference` to the image
@@ -122,7 +159,8 @@ changes no stored/wire format and needs no migration. Local-only flushing is unc
 [batching packet](./performance-experiments/2026-10-11-account-batching/README.md) records the measured
 tradeoff, journal-before-acknowledgment rule, immediate locking and best-effort hidden-page sending.
 
-The same image has three commands, using exec-form entrypoint `node scripts/public-account.mjs`:
+The serving lifecycle uses three commands in the same image, through the exec-form entrypoint
+`node scripts/public-account.mjs`:
 
 1. Run `initialize` explicitly once with a writable data volume and the externally provisioned
    operator key. Save its public JSON output as the independently mounted expected pin. An incomplete
@@ -145,8 +183,9 @@ a fresh Docker named volume; Kubernetes PVC provisioning must establish equivale
 Exec readiness probes are `node scripts/public-healthcheck.mjs api` and
 `node scripts/public-healthcheck.mjs app`; the API listener is intentionally loopback-only. Use
 SIGTERM and enough termination grace for admitted requests to drain before SIGKILL. The service
-refuses new requests during shutdown. Future offline migration/restore commands must participate
-in the same ownership lock; no such maintenance command is implemented by this container phase.
+refuses new requests during shutdown. The existing offline `restore` and `maintenance-*` commands
+retain the same ownership lock and exec command forms; see [restore](./public-restore.md) and
+[maintenance](./public-maintenance.md). They require no runtime shell.
 
 ## Initial runtime evidence — 2026-10-09
 

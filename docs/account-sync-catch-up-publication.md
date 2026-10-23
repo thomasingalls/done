@@ -107,3 +107,38 @@ Backup is healthy with zero unprotected change age; its cumulative 15 historical
 failures are retained, not called zero. The GHCR package is verified private with
 its existing release credential; no credential is recorded. No cluster mutation,
 image publication or merge occurs in this preparation.
+
+
+## Verified publication and production rollout — 2026-10-23
+
+Application PR #56 merged as `6d1baffc58df5c46f414e8ba229d85026d3b610b`;
+[Infrastructure PR #20](https://codeberg.org/oxidationlabs/ol-infra/pulls/20) merged
+as `67a622f6add9eebed0f0a84ad713b542a1eb973a`, preserving signed infrastructure
+commit `d0ce0dc7173202351d20026cf57d45a332e3b6dc` and its exact tree. The exact
+tested private image was published, verified remotely and reconciled through
+the Justfile. All seven Kustomizations are ready at that merge; the replacement
+Pod runs both tested-image containers with zero restarts.
+
+Production serves **Version 51d8550d**. All60 precache URLs and worker bytes
+match the tested artifact through normal DNS/TLS; public identity, the original
+PVC and non-image Deployment settings remain exact. Backups are healthy with
+a successful post-restart upload and no unprotected pending change. The old
+process's15 failures remain historical evidence even though the restarted
+process counter is zero. No maintenance Job, migration or storage reset ran.
+
+[Rollout evidence](development-evidence/2026-10-23-sync-production-rollout/README.md)
+records exact observations, limits and reproduction sources. Actual-device
+adoption, two-way typing, catch-up, undo, lock/reopen and offline reopening
+remain pending operator confirmation without clearing storage. General
+qualification remains paused and the disappearing-account report unresolved.
+
+
+### Actual-device feedback after rollout
+
+The operator subsequently reports substantially improved catch-up and live sync,
+with inter-device delay close to real time and undo included in positive feedback.
+[Verbatim feedback and limits](development-evidence/2026-10-23-sync-production-rollout/operator-device-feedback.json)
+are retained separately from the server probes. Long-backlog catch-up was not
+exercised on actual devices; individual lock/offline outcomes and per-device
+version labels were not supplied in that reply. No measured latency or WebSocket
+comparison is claimed, and qualification remains paused.

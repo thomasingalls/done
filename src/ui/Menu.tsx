@@ -1,3 +1,4 @@
+import { MenuSection } from './MenuSection';
 import { SyncNotice } from './SyncNotice';
 import { AccountHistory } from './AccountHistory';
 import { NetworkLoginNotice } from './NetworkLoginNotice';
@@ -19,7 +20,18 @@ export interface MenuProps {
   onClose: () => void;
   ref?: React.Ref<HTMLElement>;
 }
-const NEARBY = [-7, -2, -1, 0, 1, 2, 7];
+const NEARBY = [-1, 0, 1];
+const openNativeDatePicker = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  const input = event.currentTarget;
+  if (typeof input.showPicker !== 'function') return;
+  try {
+    input.showPicker();
+    // Avoid a second native default activation toggling the newly opened picker.
+    event.preventDefault();
+  } catch {
+    // Keep ordinary native focus/date entry if the browser refuses this request.
+  }
+};
 export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   const {
     workspace,
@@ -88,9 +100,47 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   return (
     <aside className="menu" id="menu" aria-label="Menu" ref={ref}>
       <AppUpdateNotice beforeReload={workspace.whenDurable} />
-      <section className="menu-section">
-        <h2 className="menu-heading">Day</h2>
-        <p className="menu-note">{formatDayLong(date)}</p>
+      <nav className="menu-section menu-date-nav" aria-label="Day">
+        <label className="menu-date-control">
+          <span>{formatDayLong(date)}</span>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+          >
+            <rect x="3" y="5" width="18" height="16" rx="2" />
+            <path d="M7 3v4m10-4v4M3 11h18" />
+          </svg>
+          {/* Keep native date entry as the fallback; explicitly request the picker
+              from anywhere on the overlaid control, not just its native indicator. */}
+          <input
+            className="menu-native-date"
+            type="date"
+            aria-label="Go to date"
+            value={date}
+            onClick={openNativeDatePicker}
+            onKeyDown={(event) => {
+              if (
+                (event.key === 'Enter' || event.key === ' ') &&
+                !event.altKey &&
+                !event.ctrlKey &&
+                !event.metaKey &&
+                !event.shiftKey
+              )
+                openNativeDatePicker(event);
+            }}
+            onChange={(event) => {
+              if (/^\d{4}-\d{2}-\d{2}$/.test(event.target.value)) {
+                onGoTo(event.target.value as ISODate);
+                onClose();
+              }
+            }}
+          />
+        </label>
         <div className="menu-days">
           {NEARBY.map((offset) => {
             const target = addDays(today, offset);
@@ -109,21 +159,170 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             );
           })}
         </div>
-        <label className="menu-row">
-          Go to date
-          <input
-            className="menu-input"
-            type="date"
-            aria-label="Go to date"
-            value={date}
-            onChange={(e) => {
-              if (/^\d{4}-\d{2}-\d{2}$/.test(e.target.value)) onGoTo(e.target.value as ISODate);
+      </nav>
+      <MenuSection title="Account">
+        {accountId && <AccountIdentity id={accountId} />}
+        <div className="menu-group">
+          <h3 className="menu-subheading">Identity and preferences</h3>
+          <div className="menu-metadata">
+            <div className="menu-row">
+              <span>User</span>
+              <span className="menu-value">
+                <span
+                  className="actor-swatch"
+                  style={{ '--actor-color': actor.color } as React.CSSProperties}
+                />
+                {actor.name}
+              </span>
+            </div>
+            <div className="menu-row">
+              <span>Version</span>
+              <span className="menu-value">{import.meta.env['VITE_APP_VERSION']}</span>
+            </div>
+          </div>
+          <form
+            className="menu-preferences"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void save();
             }}
-          />
-        </label>
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">Data</h2>
+          >
+            <label className="menu-field">
+              <span>Device</span>
+              <input
+                className="menu-input"
+                value={deviceName}
+                aria-label="Device name"
+                disabled={saving}
+                onChange={(e) => setDeviceName(e.target.value)}
+              />
+            </label>
+            {accountWorkspace && (
+              <div className="menu-row">
+                <span>Device code</span>
+                <code className="menu-value" aria-label="Device code" title={snapshot.deviceId}>
+                  {deviceCode(snapshot.deviceId)}
+                </code>
+              </div>
+            )}
+            <label className="menu-field">
+              <span>Name</span>
+              <input
+                className="menu-input"
+                value={name}
+                aria-label="User name"
+                disabled={saving}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+            <div className="menu-preference-pair">
+              <label className="menu-field">
+                <span>Color</span>
+                <input
+                  className="menu-color"
+                  type="color"
+                  value={color}
+                  aria-label="User color"
+                  disabled={saving}
+                  onChange={(e) => setColor(e.target.value)}
+                />
+              </label>
+              <label className="menu-field">
+                <span>Day rollover</span>
+                <select
+                  className="menu-input"
+                  value={rollover}
+                  aria-label="Day rollover hour"
+                  disabled={saving}
+                  onChange={(e) => setRollover(Number(e.target.value))}
+                >
+                  {Array.from({ length: 24 }, (_, hour) => (
+                    <option key={hour} value={hour}>
+                      {String(hour).padStart(2, '0')}:00
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <button type="submit" className="menu-button" disabled={saving}>
+              {saving ? 'Saving…' : 'Save preferences'}
+            </button>
+            {saved && (
+              <p role="status" className="menu-note">
+                {saved}
+              </p>
+            )}
+          </form>
+        </div>
+        <div className="menu-group">
+          <h3 className="menu-subheading">Protection</h3>
+
+          <p className="menu-note">
+            {protection === 'automatic'
+              ? 'Opens automatically. Anyone using this browser can open your list.'
+              : 'Unlock code enabled. Your local copy requires an unlock code.'}
+          </p>
+          {protection === 'automatic' ? (
+            <button className="menu-button" onClick={protect}>
+              Add an unlock code
+            </button>
+          ) : (
+            <button className="menu-button" onClick={lock}>
+              Lock workspace
+            </button>
+          )}
+        </div>
+        <div className="menu-group">
+          <h3 className="menu-subheading">On this device</h3>
+          {showDevices && (
+            <button className="menu-button" onClick={showDevices}>
+              Devices
+            </button>
+          )}
+          {switchAccount && (
+            <button className="menu-button" onClick={switchAccount}>
+              Use another account
+            </button>
+          )}
+          {networkLogin && !devices?.detached && (
+            <>
+              {switchAccount && (
+                <p className="menu-note">
+                  Use another account keeps this account’s login remembered. Sign out ends that
+                  login. Both keep your writing on this device.
+                </p>
+              )}
+              <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
+            </>
+          )}
+          <RemoveFromDeviceButton slotId={slotId} />
+        </div>
+      </MenuSection>
+      <MenuSection title="Sync">
+        {sync && (
+          <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} details />
+        )}
+        {devices?.detached ? (
+          <p className="menu-note" role="status">
+            Removed from account. This local copy can be edited and exported, but it no longer
+            syncs.
+          </p>
+        ) : (
+          !networkLogin && (
+            <p className="menu-note">
+              {accountWorkspace
+                ? 'Account connected. Approved devices can sync writing.'
+                : 'Saved only in this browser. Sync is off.'}
+            </p>
+          )
+        )}
+        {connectAccount && (
+          <button className="menu-button" onClick={connectAccount}>
+            Set up sync
+          </button>
+        )}
+      </MenuSection>
+      <MenuSection title="Data">
         <div className="menu-row">
           <span>Local data</span>
           <span className="menu-value">{storage}</span>
@@ -139,7 +338,6 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             {exportError}
           </p>
         )}
-        <RemoveFromDeviceButton slotId={slotId} />
         <div className="menu-days">
           <button
             className="menu-day"
@@ -156,155 +354,8 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             Redo
           </button>
         </div>
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">Protection</h2>
-        <p className="menu-note">
-          {protection === 'automatic'
-            ? 'Opens automatically. Anyone using this browser can open your list.'
-            : 'Unlock code enabled. Your local copy requires an unlock code.'}
-        </p>
-        {protection === 'automatic' ? (
-          <button className="menu-button" onClick={protect}>
-            Add an unlock code
-          </button>
-        ) : (
-          <button className="menu-button" onClick={lock}>
-            Lock workspace
-          </button>
-        )}
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">{accountWorkspace ? 'Account' : 'Sync'}</h2>
-        {accountWorkspace && (
-          <div className="menu-row">
-            <span>Name</span>
-            <span className="menu-value">{actor.name}</span>
-          </div>
-        )}
-        {accountId && <AccountIdentity id={accountId} />}
-        {sync && (
-          <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} details />
-        )}
-        {showDevices && (
-          <button className="menu-button" onClick={showDevices}>
-            Devices
-          </button>
-        )}
         {devices?.history && <AccountHistory run={devices.history} />}
-        {switchAccount && (
-          <button className="menu-button" onClick={switchAccount}>
-            Use another account
-          </button>
-        )}
-        {devices?.detached ? (
-          <p className="menu-note" role="status">
-            Removed from account. This local copy can be edited and exported, but it no longer
-            syncs.
-          </p>
-        ) : (
-          networkLogin && <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
-        )}
-        {!networkLogin && !devices?.detached && (
-          <p className="menu-note">
-            {accountWorkspace
-              ? 'Account connected. Approved devices can sync writing.'
-              : 'Saved only in this browser. Sync is off.'}
-          </p>
-        )}
-        {connectAccount && (
-          <button className="menu-button" onClick={connectAccount}>
-            Set up sync
-          </button>
-        )}
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">Personalize</h2>
-        <div className="menu-row">
-          <span>Actor</span>
-          <span className="menu-value">
-            <span
-              className="actor-swatch"
-              style={{ '--actor-color': actor.color } as React.CSSProperties}
-            />
-            {actor.name}
-          </span>
-        </div>
-        <div className="menu-row">
-          <span>Version</span>
-          <span className="menu-value">{import.meta.env['VITE_APP_VERSION']}</span>
-        </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void save();
-          }}
-        >
-          <label className="menu-row">
-            <span>Device</span>
-            <input
-              className="menu-input"
-              value={deviceName}
-              aria-label="Device name"
-              disabled={saving}
-              onChange={(e) => setDeviceName(e.target.value)}
-            />
-          </label>
-          {accountWorkspace && (
-            <div className="menu-row">
-              <span>Device code</span>
-              <code className="menu-value" aria-label="Device code" title={snapshot.deviceId}>
-                {deviceCode(snapshot.deviceId)}
-              </code>
-            </div>
-          )}
-          <label className="menu-row">
-            <span>Name</span>
-            <input
-              className="menu-input"
-              value={name}
-              aria-label="Actor name"
-              disabled={saving}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
-          <label className="menu-row">
-            <span>Color</span>
-            <input
-              className="menu-color"
-              type="color"
-              value={color}
-              aria-label="Actor color"
-              disabled={saving}
-              onChange={(e) => setColor(e.target.value)}
-            />
-          </label>
-          <label className="menu-row">
-            <span>Day rollover</span>
-            <select
-              className="menu-input"
-              value={rollover}
-              aria-label="Day rollover hour"
-              disabled={saving}
-              onChange={(e) => setRollover(Number(e.target.value))}
-            >
-              {Array.from({ length: 24 }, (_, hour) => (
-                <option key={hour} value={hour}>
-                  {String(hour).padStart(2, '0')}:00
-                </option>
-              ))}
-            </select>
-          </label>
-          <button type="submit" className="menu-button" disabled={saving}>
-            {saving ? 'Saving…' : 'Save preferences'}
-          </button>
-          {saved && (
-            <p role="status" className="menu-note">
-              {saved}
-            </p>
-          )}
-        </form>
-      </section>
+      </MenuSection>
       <InstallPanel />
     </aside>
   );

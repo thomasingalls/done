@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page, type TestInfo } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -154,6 +155,7 @@ test('one-off pasted cleanup helper authenticates files and factor, removes sour
   await master.press('ControlOrMeta+End');
   await page.keyboard.insertText('Later writing survives the cleanup helper');
   await expect(master).toContainText('Later writing survives the cleanup helper');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
   const modernJournals = await page.evaluate(
@@ -254,6 +256,7 @@ test('saved files, renderer death, resumed selection and ordinary editor cold re
     'true',
   );
   const output = info.outputPath('destination.zip');
+  await openMenuSection(reopened, 'Data');
   await save(reopened, 'Export markdown', output);
   const exported = unzip(output);
   expect(exported.filter((e) => e.path !== 'unfiled.md')).toEqual(
@@ -267,6 +270,7 @@ test('saved files, renderer death, resumed selection and ordinary editor cold re
   await master.press('ControlOrMeta+End');
   await reopened.keyboard.insertText('Later accepted edit');
   await expect(master).toContainText('Later accepted edit');
+  await openMenuSection(reopened, 'Account');
   await reopened.getByRole('button', { name: 'Lock workspace' }).click();
   await expect(reopened.locator('.cm-editor')).toHaveCount(0);
   await reopened.reload();

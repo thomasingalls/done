@@ -1,0 +1,369 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-ux-20261023-patches/playwright.sidebar-cut.config.ts",
+      "sidebar-polish.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-ux-20261023-patches/playwright.sidebar-cut.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-48-reference",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-48-reference",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-ux-20261023-patches/checks-48/reference-browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node /Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 54176 --strictPort",
+      "cwd": "/private/tmp/done-ux-20261023-patches/reference-47",
+      "port": 54176,
+      "reuseExistingServer": false,
+      "env": {
+        "APP_BUILD_REVISION": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61-dirty",
+        "APP_BUILD_DATE": "2026-10-23"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "sidebar-polish.spec.ts",
+      "file": "sidebar-polish.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "sidebar preferences have readable fields and consistent targets at 320px",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8264,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                      "column": 62,
+                      "line": 12
+                    },
+                    "snippet": "  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                        "column": 62,
+                        "line": 12
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n\n  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:04:41.498Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-48-reference/sidebar-polish-sidebar-pre-83c69-consistent-targets-at-320px-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                    "column": 62,
+                    "line": 12
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-cb724b3d339e0f3c876d",
+          "file": "sidebar-polish.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "sidebar preferences have readable fields and consistent targets at 1280px",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5745,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                      "column": 62,
+                      "line": 12
+                    },
+                    "snippet": "  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                        "column": 62,
+                        "line": 12
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n\n  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:04:51.126Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-48-reference/sidebar-polish-sidebar-pre-d8677-onsistent-targets-at-1280px-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                    "column": 62,
+                    "line": 12
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-93f212f03d66c5919396",
+          "file": "sidebar-polish.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "sidebar preferences have readable fields and consistent targets at 320px",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6037,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                      "column": 62,
+                      "line": 12
+                    },
+                    "snippet": "  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                        "column": 62,
+                        "line": 12
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n\n  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:04:57.488Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-48-reference/sidebar-polish-sidebar-pre-83c69-consistent-targets-at-320px-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                    "column": 62,
+                    "line": 12
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-de3cdb2fd25c38f932a3",
+          "file": "sidebar-polish.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "sidebar preferences have readable fields and consistent targets at 1280px",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5767,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                      "column": 62,
+                      "line": 12
+                    },
+                    "snippet": "  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                        "column": 62,
+                        "line": 12
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#menu').locator('[data-menu-section=\"Account\"]').getByText('User', { exact: true })\u001b[22m\n\n\n  10 |     const menu = page.locator('#menu');\n  11 |     const account = menu.locator('[data-menu-section=\"Account\"]');\n> 12 |     await expect(account.getByText('User', { exact: true })).toBeVisible();\n     |                                                              ^\n  13 |     await expect(account.getByText('Actor', { exact: true })).toHaveCount(0);\n  14 |     for (const label of ['Device name', 'User name']) {\n  15 |       const field = account.getByRole('textbox', { name: label, exact: true });\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts:12:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:05:04.157Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-48-reference/sidebar-polish-sidebar-pre-d8677-onsistent-targets-at-1280px-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/sidebar-polish.spec.ts",
+                    "column": 62,
+                    "line": 12
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-0fbeea323fbaeeaef384",
+          "file": "sidebar-polish.spec.ts",
+          "line": 6,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T10:04:40.829Z",
+    "duration": 29462.223,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

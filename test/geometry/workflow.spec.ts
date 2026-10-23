@@ -1,7 +1,8 @@
 import { test } from '../release-validation/browser-fixture';
-import { openApp, reloadApp } from './openApp';
+import { openApp, reloadApp, openMenuSection } from './openApp';
 /** Browser regressions for Phase 2 interactions that unit tests cannot cover. */
 
+import { addDays } from '../../src/lib/date';
 import { expect, type Locator, type Page } from '@playwright/test';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
@@ -214,6 +215,7 @@ test.describe('Phase 2 workflow', () => {
       window.dispatchEvent(event);
     });
 
+    await openMenuSection(page, 'Install');
     const install = page.getByRole('button', { name: 'Install', exact: true });
     await expect(install).toBeVisible();
     await install.click();
@@ -261,7 +263,7 @@ test.describe('Phase 2 workflow', () => {
     await page.clock.fastForward(4_100);
 
     await openMenu(page);
-    await page.locator('.menu-day').first().click();
+    await page.getByLabel('Go to date', { exact: true }).fill('2026-08-01');
     await expect(activeDay(page)).toHaveAttribute('data-date', '2026-08-01');
     await expect(activeDay(page).getByText('kept after compaction')).toBeVisible();
     await expect(activeDay(page).locator('.card[data-frozen="true"]')).toHaveCount(1);
@@ -276,12 +278,15 @@ test.describe('Phase 2 workflow', () => {
     await openApp(page);
     await openMenu(page);
 
+    await openMenuSection(page, 'Account');
     await page.getByRole('textbox', { name: 'Device name' }).fill('Kitchen laptop');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Save preferences' }).click();
     await expect(page.getByText('Preferences saved.')).toBeVisible();
     await page.waitForTimeout(100);
     await reloadApp(page);
     await openMenu(page);
+    await openMenuSection(page, 'Account');
     await expect(page.getByRole('textbox', { name: 'Device name' })).toHaveValue('Kitchen laptop');
   });
 
@@ -290,8 +295,11 @@ test.describe('Phase 2 workflow', () => {
     await openApp(page);
     await openMenu(page);
 
-    await page.getByRole('textbox', { name: 'Actor name' }).fill('Phase Two Tester');
+    await openMenuSection(page, 'Account');
+    await page.getByRole('textbox', { name: 'User name' }).fill('Phase Two Tester');
+    await openMenuSection(page, 'Account');
     await page.getByRole('combobox', { name: 'Day rollover hour' }).selectOption('4');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Save preferences' }).click();
     await expect(page.getByText('Preferences saved.')).toBeVisible();
     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();
@@ -299,7 +307,86 @@ test.describe('Phase 2 workflow', () => {
     await page.waitForTimeout(100);
     await reloadApp(page);
     await openMenu(page);
-    await expect(page.getByRole('textbox', { name: 'Actor name' })).toHaveValue('Phase Two Tester');
+    await openMenuSection(page, 'Account');
+    await expect(page.getByRole('textbox', { name: 'User name' })).toHaveValue('Phase Two Tester');
     await expect(page.getByRole('combobox', { name: 'Day rollover hour' })).toHaveValue('4');
   });
 });
+
+for (const width of [420, 1280]) {
+  test(`sidebar native date navigation at ${width}px keeps only Yesterday Today Tomorrow`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openApp(page);
+    const today = (await activeDay(page).getAttribute('data-date'))!;
+    await openMenu(page);
+    const nav = page.getByRole('navigation', { name: 'Day', exact: true });
+    await expect(nav.getByRole('button')).toHaveText(['Yesterday', 'Today', 'Tomorrow']);
+    const picker = nav.getByLabel('Go to date', { exact: true });
+    await expect(picker).toHaveAttribute('type', 'date');
+    await expect(picker).toHaveValue(today);
+    await picker.fill(addDays(today, 10));
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(today, 10));
+    await openMenu(page);
+    await expect(picker).toHaveValue(addDays(today, 10));
+    await nav.getByRole('button', { name: 'Yesterday', exact: true }).click();
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(today, -1));
+    await openMenu(page);
+    await nav.getByRole('button', { name: 'Tomorrow', exact: true }).click();
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(today, 1));
+    await openMenu(page);
+    await nav.getByRole('button', { name: 'Today', exact: true }).click();
+    await expect(activeDay(page)).toHaveAttribute('data-date', today);
+  });
+}
+
+for (const width of [420, 1280]) {
+  test(`sidebar sections start collapsed and retain preferences at ${width}px`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openApp(page);
+    await openMenu(page);
+    const menu = page.locator('#menu');
+    const sections = menu.locator('details.menu-disclosure');
+    await expect(sections).toHaveCount(4);
+    await expect(sections.locator('summary')).toHaveText(['Account', 'Sync', 'Data', 'Install']);
+    for (const section of await sections.all()) await expect(section).not.toHaveAttribute('open');
+    await expect(menu.getByLabel('Device name', { exact: true })).toBeHidden();
+    const account = sections.filter({
+      has: page.getByRole('heading', { name: 'Account', exact: true }),
+    });
+    await account.locator('summary').focus();
+    await account.locator('summary').press('Enter');
+    await expect(
+      account.getByRole('button', { name: 'Add an unlock code', exact: true }),
+    ).toBeVisible();
+    await expect(
+      account.getByRole('button', { name: 'Use another account', exact: true }),
+    ).toBeVisible();
+    await expect(
+      account.getByRole('button', { name: 'Remove from this device', exact: true }),
+    ).toBeVisible();
+    await expect(account.getByRole('button', { name: 'Export markdown', exact: true })).toHaveCount(
+      0,
+    );
+    await account.getByLabel('Device name', { exact: true }).fill('UX test device');
+    await account.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    await expect(account.getByRole('status')).toContainText('Preferences saved.');
+    await account.locator('summary').click();
+    await expect(account.getByLabel('Device name', { exact: true })).toBeHidden();
+    await account.locator('summary').click();
+    await expect(account.getByLabel('Device name', { exact: true })).toHaveValue('UX test device');
+    await page.screenshot({ path: info.outputPath(`sidebar-${width}.png`) });
+    await reloadApp(page);
+    await openMenu(page);
+    for (const section of await sections.all()) await expect(section).not.toHaveAttribute('open');
+    await account.locator('summary').click();
+    await expect(account.getByLabel('Device name', { exact: true })).toHaveValue('UX test device');
+    const data = sections.filter({ has: page.getByRole('heading', { name: 'Data', exact: true }) });
+    await data.locator('summary').click();
+    await expect(data.getByRole('button', { name: 'Export markdown', exact: true })).toBeVisible();
+    await expect(data.getByRole('button', { name: 'Lock workspace', exact: true })).toHaveCount(0);
+  });
+}

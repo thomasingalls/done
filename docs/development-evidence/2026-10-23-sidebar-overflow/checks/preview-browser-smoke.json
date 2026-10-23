@@ -1,0 +1,120 @@
+{
+  "status": "passed",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "workerVersion": "d541133789ab",
+  "profiles": "fresh disposable Chromium contexts; no existing browser profile or account",
+  "observations": [
+    {
+      "width": 280,
+      "baseTextPx": 16,
+      "buttons": [
+        {
+          "label": "Yesterday",
+          "clearLeft": 12.4375,
+          "clearRight": 12.453125,
+          "required": 9
+        },
+        {
+          "label": "Today",
+          "clearLeft": 12.453125,
+          "clearRight": 12.453125,
+          "required": 9
+        },
+        {
+          "label": "Tomorrow",
+          "clearLeft": 12.4375,
+          "clearRight": 12.453125,
+          "required": 9
+        }
+      ],
+      "panelFitsViewport": true,
+      "noHorizontalOverflow": true,
+      "removalActionReachable": true,
+      "pageErrors": []
+    },
+    {
+      "width": 420,
+      "baseTextPx": 24,
+      "buttons": [
+        {
+          "label": "Yesterday",
+          "clearLeft": 20.6875,
+          "clearRight": 20.703125,
+          "required": 13
+        },
+        {
+          "label": "Today",
+          "clearLeft": 20.6875,
+          "clearRight": 20.703125,
+          "required": 13
+        },
+        {
+          "label": "Tomorrow",
+          "clearLeft": 20.6875,
+          "clearRight": 20.703125,
+          "required": 13
+        }
+      ],
+      "panelFitsViewport": true,
+      "noHorizontalOverflow": true,
+      "removalActionReachable": true,
+      "pageErrors": []
+    },
+    {
+      "width": 320,
+      "baseTextPx": 32,
+      "buttons": [
+        {
+          "label": "Yesterday",
+          "clearLeft": 17.3125,
+          "clearRight": 17.328125,
+          "required": 17
+        },
+        {
+          "label": "Today",
+          "clearLeft": 17.3125,
+          "clearRight": 17.328125,
+          "required": 17
+        },
+        {
+          "label": "Tomorrow",
+          "clearLeft": 72.015625,
+          "clearRight": 72.03125,
+          "required": 17
+        }
+      ],
+      "panelFitsViewport": true,
+      "noHorizontalOverflow": true,
+      "removalActionReachable": true,
+      "pageErrors": []
+    },
+    {
+      "width": 1280,
+      "baseTextPx": 16,
+      "buttons": [
+        {
+          "label": "Yesterday",
+          "clearLeft": 12.4375,
+          "clearRight": 12.453125,
+          "required": 9
+        },
+        {
+          "label": "Today",
+          "clearLeft": 12.453125,
+          "clearRight": 12.453125,
+          "required": 9
+        },
+        {
+          "label": "Tomorrow",
+          "clearLeft": 12.4375,
+          "clearRight": 12.453125,
+          "required": 9
+        }
+      ],
+      "panelFitsViewport": true,
+      "noHorizontalOverflow": true,
+      "removalActionReachable": true,
+      "pageErrors": []
+    }
+  ]
+}

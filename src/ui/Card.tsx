@@ -89,6 +89,7 @@ export const Card = ({
   const { id, text } = card;
   const [editing, setEditing] = useState(autoFocusAt !== undefined);
   const staticHost = useRef<HTMLDivElement>(null);
+  const returnFocus = useRef(false);
   const editorHost = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const pendingCaret = useRef<{ x: number; y: number } | null>(null);
@@ -106,7 +107,13 @@ export const Card = ({
   useEffect(() => {
     if (editing) return;
     const host = staticHost.current;
-    if (host) renderStatic(host, text);
+    if (host) {
+      renderStatic(host, text);
+      if (returnFocus.current) {
+        returnFocus.current = false;
+        host.focus();
+      }
+    }
   }, [editing, text]);
 
   useEffect(() => {
@@ -117,7 +124,12 @@ export const Card = ({
     const bridge: CardHooks = {
       split: (at, tailFrom) => latestHooks.current.split(at, tailFrom),
       mergeBackwards: () => latestHooks.current.mergeBackwards(),
-      leave: () => latestHooks.current.leave(),
+      leave: () => {
+        pendingPosition.current = view.current?.state.selection.main.head ?? null;
+        returnFocus.current = true;
+        setEditing(false);
+        latestHooks.current.leave();
+      },
     };
 
     const handle = mountEditor(parent, { kind: 'card', id }, [
@@ -130,6 +142,9 @@ export const Card = ({
           parent.closest('.card')?.contains(event.relatedTarget)
         )
           return;
+        // A split/merge request is consumed when focus leaves, just as it is
+        // for Enter/Escape. Otherwise the parent's request reopens this editor.
+        latestHooks.current.leave();
         setEditing(false);
       }),
     ]);
@@ -316,7 +331,7 @@ export const Card = ({
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
     if (editing || (event.key !== 'Enter' && event.key !== ' ')) return;
     event.preventDefault();
-    open();
+    if (!event.repeat) open();
   };
 
   const label = titleOf(text) || 'Empty card';
@@ -335,8 +350,10 @@ export const Card = ({
           !(
             event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)
           )
-        )
+        ) {
+          latestHooks.current.leave();
           setEditing(false);
+        }
       }}
       data-reordering={reorder?.dragging === true}
       style={

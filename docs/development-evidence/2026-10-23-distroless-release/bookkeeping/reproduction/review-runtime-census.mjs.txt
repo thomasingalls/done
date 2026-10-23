@@ -1,0 +1,77 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const [repository, directory, mode = 'before'] = process.argv.slice(2);
+const root = resolve(repository), out = resolve(directory);
+mkdirSync(out, { recursive: true });
+const source = 'd1c2784bef0ccc3ea88d99dfd82f1db3a83af384';
+const recorded = '5934ea7a31dc84314f5c442c276a64312ed50ed9';
+const git = (...args) => execFileSync('git', ['-C', root, ...args]);
+const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const snapshot = 'docs/account-crypto/census.json';
+const beforePath = join(out, 'census-before.json');
+if (!existsSync(beforePath)) writeFileSync(beforePath, git('show', source + ':' + snapshot));
+const before = JSON.parse(readFileSync(beforePath));
+const { census, checkRegistry } = await import(pathToFileURL(join(root, 'scripts/account-crypto-prep/census.mjs')));
+const current = census(root);
+assert.deepEqual({ ...current, sources: [] }, { ...before, sources: [] });
+const reviewed = {
+  'src/crdt/workspaceCommands.ts': 'Duplicate is a semantic command using the existing compose/freeze/actor/undo owner; no new authority or cryptographic domain.',
+  'src/editor/admittedCommands.ts': 'Word deletion and newline use existing text preparation and admission.',
+  'src/editor/admittedEditor.ts': 'Shortcuts and native cut keep accepted-text, clipboard-before-delete, pending/composition/refusal and semantic admission checks.',
+  'src/editor/admittedText.ts': 'Adds the two semantic text action names; no change to authentication or persistence boundaries.',
+  'src/editor/cardCommands.ts': 'Enter leaves editing; Shift-Enter retains splitting through the existing hooks.',
+  'src/editor/keymap.ts': 'Consume Cmd-Enter without changing writing or checkbox state.',
+  'src/ui/Card.tsx': 'Consume stale autofocus and return focus deliberately; mutations remain owned by admitted hooks.',
+  'src/ui/Collection.tsx': 'Duplicate dispatches the semantic command; existing freeze and action restrictions remain.',
+  'src/ui/Compose.tsx': 'Leave IME confirmation to the keyboard; use the same submission owner.',
+  'src/ui/InstallPanel.tsx': 'Use mounted native disclosure; keep existing install/storage-permission owner.',
+  'src/ui/Menu.tsx': 'Date activation, field styling and regrouping use existing save/protection/session/history/removal callbacks; no implicit lifecycle action.',
+  'src/ui/MenuSection.tsx': 'New presentation-only native disclosure keeps children and status owners mounted.',
+};
+const old = new Map(before.sources.map((s) => [s.path, s.sha256]));
+const now = new Map(current.sources.map((s) => [s.path, s.sha256]));
+const changes = current.sources.filter((s) => old.get(s.path) !== s.sha256);
+assert.deepEqual(changes.map((s) => s.path), Object.keys(reviewed).sort());
+assert.deepEqual([...old.keys()].filter((p) => !now.has(p)), []);
+assert.equal(changes.filter((s) => !old.has(s.path)).length, 1);
+for (const s of before.sources) assert.equal(sha(git('show', recorded + ':' + s.path)), s.sha256, s.path);
+const tracked = git('ls-files', '--', 'account-protocol', 'account-service', 'src').toString().trim().split('\n').filter((p) => {
+  if (!p.endsWith('.ts') && !p.endsWith('.tsx')) return false;
+  const stem = p.slice(0, p.lastIndexOf('.'));
+  return !['.test', '.spec', '.d'].some((end) => stem.endsWith(end));
+}).sort();
+assert.deepEqual(current.sources.map((s) => s.path), tracked);
+for (const s of current.sources) {
+  assert.equal(sha(readFileSync(join(root, s.path))), s.sha256, s.path);
+  assert.equal(sha(git('show', source + ':' + s.path)), s.sha256, s.path);
+}
+assert.equal(git('diff', '--name-only', recorded, source, '--', 'account-protocol', 'account-service').toString(), '');
+const registry = JSON.parse(readFileSync(join(root, 'docs/account-crypto/registry.json')));
+assert.deepEqual(checkRegistry(current, registry), []);
+const protectedFiles = ['docs/account-crypto/registry.json', 'docs/account-crypto/constructions.json', 'docs/review/remediation/S0-2/authority-map.md'];
+const pins = protectedFiles.map((path) => {
+  const bytes = readFileSync(join(root, path));
+  assert.deepEqual(bytes, git('show', source + ':' + path), path);
+  return { path, sha256: sha(bytes) };
+});
+writeFileSync(join(out, 'census-expected.json'), JSON.stringify(current, null, 2) + '\n');
+if (mode === 'after') assert.deepEqual(JSON.parse(readFileSync(join(root, snapshot))), current);
+else assert.equal(mode, 'before');
+const result = {
+  status: 'passed', mode, source, priorRecordedSource: recorded,
+  beforeSources: before.sources.length, currentSources: current.sources.length,
+  domains: current.domains.length, domainDefinitionsAndSitesUnchanged: true,
+  changedExistingSources: changes.filter((s) => old.has(s.path)).length,
+  addedSources: changes.filter((s) => !old.has(s.path)).map((s) => s.path),
+  sourcePopulationIndependentlyMatchesGit: true, priorPinsMatchOriginalGitBlobs: true,
+  currentPinsMatchSignedGitAndFilesystem: true, accountProtocolAndServiceUnchanged: true,
+  classificationsAndConstructionDispositionsUnchanged: pins,
+  reviewedChanges: changes.map((s) => ({ ...s, previousSha256: old.get(s.path) ?? null, review: reviewed[s.path] })),
+};
+writeFileSync(join(out, 'census-review-' + mode + '.json'), JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify(result, null, 2));

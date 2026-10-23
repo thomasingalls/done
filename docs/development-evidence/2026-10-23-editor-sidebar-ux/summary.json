@@ -1,0 +1,53 @@
+{
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "phases": [
+    37,
+    38,
+    39,
+    40,
+    41
+  ],
+  "status": "implemented-tested-sequential-patches-prepared-unsigned",
+  "unit": {
+    "filesPassed": 158,
+    "casesPassed": 1883,
+    "existingSkipped": 1
+  },
+  "productionFrontendGeometry": {
+    "passed": 132,
+    "existingPlatformSkipped": 24,
+    "failed": 0
+  },
+  "selectedPackagedAccounts": {
+    "passed": 14,
+    "failed": 0
+  },
+  "affectedAdapters": {
+    "passed": 17
+  },
+  "inventoryRegressions": {
+    "passed": 10
+  },
+  "build": {
+    "passed": true,
+    "initialGzipKB": 232.7,
+    "budgetKB": 350,
+    "originIsolation": true
+  },
+  "securityBoundary": "No account-service/account-protocol/src-crdt/session/custody/storage-format/rate/durability/verification code changed. Editor mutations remain semantic admitted commands. This is not a security audit or qualification result.",
+  "oldFixtures": "Navigation-only AST comparison preserves old logic after explicitly stripping disclosure calls/imports/single-statement wrappers; welcome menu helper and additive device-list assertions are named exceptions. All 3 deliberate removed-assertion/changed-expectation/changed-wait controls detected.",
+  "phoneDeletion": "Operator reports improvement but periodic pauses and syncing warnings remain; not repaired or remeasured here.",
+  "cleanup": {
+    "testPortListeners": 0,
+    "ports": [
+      54173,
+      53221,
+      53222
+    ]
+  },
+  "committed": false,
+  "pushed": false,
+  "previewUpdated": false,
+  "deployed": false,
+  "qualification": "paused"
+}

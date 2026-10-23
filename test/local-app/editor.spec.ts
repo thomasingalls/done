@@ -1,7 +1,7 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
 import * as fc from 'fast-check';
-import { openApp, reloadApp, protectApp } from '../geometry/openApp';
+import { openApp, reloadApp, protectApp, openMenuSection } from '../geometry/openApp';
 import { addDays } from '../../src/lib/date';
 const day = (page: Page) => page.locator('.day-panel[data-active="true"]');
 const faults = async (page: Page) =>
@@ -74,6 +74,7 @@ test('discarded editor input never appears, and locking disposes the mounted edi
     .getByRole('button', { name: 'Discard pending input' })
     .click();
   await allowStorage(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await expect(page.locator('.cm-editor')).toHaveCount(0);
   await expect(page.getByText('accepted', { exact: true })).toHaveCount(0);
@@ -128,6 +129,7 @@ test('Goals Move is explicit, resets to Copy, disables a full destination and un
   await expect(content).toHaveText('keep');
   await expect(day(page).locator('.collection[data-section="done"] .card')).toHaveCount(1);
   await expect(goals.getByRole('radio', { name: 'Copy to', exact: true })).toBeChecked();
+  await openMenuSection(page, 'Data');
   await page.getByRole('button', { name: 'Undo', exact: true }).click();
   await expect(content).toHaveText('keeptransfer');
   await expect(day(page).locator('.collection[data-section="done"] .card')).toHaveCount(0);
@@ -363,10 +365,12 @@ test('generated compose and history sequences match a separate ledger before and
           redo.length = 0;
           values.unshift(text);
         } else if (action === 'undo' && undo.length) {
+          await openMenuSection(page, 'Data');
           await page.getByRole('button', { name: 'Undo', exact: true }).click();
           redo.push([...values]);
           values = undo.pop()!;
         } else if (action === 'redo' && redo.length) {
+          await openMenuSection(page, 'Data');
           await page.getByRole('button', { name: 'Redo', exact: true }).click();
           undo.push([...values]);
           values = redo.pop()!;

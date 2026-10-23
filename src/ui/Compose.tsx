@@ -23,6 +23,7 @@ export const Compose = ({ placeholder, onSubmit }: ComposeProps): React.ReactEle
   const [value, setValue] = useState('');
   const [pending, setPending] = useState(false);
   const submitting = useRef(false);
+  const composing = useRef(false);
 
   const submit = (): void => {
     const text = value.trim();
@@ -50,8 +51,26 @@ export const Compose = ({ placeholder, onSubmit }: ComposeProps): React.ReactEle
         placeholder={placeholder}
         aria-label={placeholder}
         onChange={(event) => setValue(event.target.value)}
+        onCompositionStart={() => {
+          composing.current = true;
+        }}
+        onCompositionEnd={() => {
+          composing.current = false;
+        }}
+        onBlur={() => {
+          composing.current = false;
+        }}
         onKeyDown={(event) => {
-          if (event.key !== 'Enter' || event.shiftKey) return;
+          // An IME owns Enter while confirming its preedit. Some keyboards
+          // report only keyCode 229; others need the composition session flag.
+          if (
+            event.key !== 'Enter' ||
+            event.shiftKey ||
+            event.nativeEvent.isComposing ||
+            event.nativeEvent.keyCode === 229 ||
+            composing.current
+          )
+            return;
           event.preventDefault();
           submit();
         }}

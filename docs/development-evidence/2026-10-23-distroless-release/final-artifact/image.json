@@ -1,0 +1,20 @@
+{
+  "tag": "done-public:d1c2784b",
+  "source": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+  "indexDigest": "sha256:a26278f6c36952f074355ca6378ae09c96bd9e3bfbc6ca4fbfb5910fcf3f6ae6",
+  "runtimeManifestDigest": "sha256:5203dad8362c19eb003ce17ca39ddf5e7e691477e23d600ffc25e31a436d4e20",
+  "runtimeConfigDigest": "sha256:4587d730e2edbaa7374e79d7f75dec9a329f5017fb1f864cfa3bc6e90aff09ee",
+  "archiveSha256": "4d7e2a82579c9174f073ca50264d25b14ca3b21bb193eb76afbecb21643eb17b",
+  "archiveBytes": 73255424,
+  "archivePath": "/private/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/codex-security-artifacts-67013a46d0d7a12a3d212f4ce16b269b41f48ba83e35de626b532a901919ec94/artifacts/2026-10-23-arm64-release-final/candidate-image.tar",
+  "runtimeSourceFilesMatched": 122,
+  "frontendFiles": 110,
+  "platform": "linux/arm64",
+  "user": "65532:65532",
+  "entrypoint": [
+    "node",
+    "scripts/public-account.mjs"
+  ],
+  "sizeBytes": 314242777,
+  "compatibleRollback": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29"
+}

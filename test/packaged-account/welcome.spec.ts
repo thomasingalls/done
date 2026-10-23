@@ -1,14 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
-import { openApp, protectApp } from '../geometry/openApp';
+import { openApp, protectApp, openMenuSection } from '../geometry/openApp';
 import { authenticator, createdAccount } from '../device-enrollment/helpers';
 import { startService, stopService } from './server';
 
 async function menu(page: Page) {
-  if (
-    !(await page.getByRole('button', { name: 'Add an unlock code', exact: true }).isVisible()) &&
-    (await page.getByRole('button', { name: 'Open menu', exact: true }).isVisible())
-  )
-    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
+  await openMenuSection(page, 'Account');
 }
 async function add(page: Page, text: string) {
   const input = page.locator('.day-panel[data-active=true] [placeholder="What got done?"]');
@@ -84,8 +80,11 @@ test('protection is optional, retains the full list, and remains required on col
     await countCredentials(page);
     await openApp(page);
     await add(page, 'Keep this before protection');
+    await openMenuSection(page, 'Account');
     await page.getByLabel('Device name', { exact: true }).fill('My laptop');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Save preferences' }).click();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Add an unlock code' }).click();
     await page.getByRole('button', { name: 'Keep opening automatically' }).click();
     await expect(page.locator('.shell')).toContainText('Keep this before protection');
@@ -152,6 +151,7 @@ test('sync adds required protection, preserves writing, and combines the final a
     await openApp(page);
     await add(page, 'My existing local work');
     await authenticator(page);
+    await openMenuSection(page, 'Sync');
     await page.getByRole('button', { name: 'Set up sync' }).click();
     await page.getByRole('button', { name: 'Sync this list' }).click();
     await expect(page.getByText('Sync requires local protection.', { exact: false })).toBeVisible();
@@ -204,8 +204,10 @@ test('locked local data can be explicitly removed and startup waits for Start fr
     await openApp(page);
     await add(page, 'Only local copy');
     await protectApp(page);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace' }).click();
     await expect(page.getByLabel('Unlock code', { exact: true })).toBeVisible();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Remove from this device', exact: true }).click();
     await page.getByRole('button', { name: 'Continue to confirmation' }).click();
     await expect(page.getByRole('button', { name: 'Remove local data' })).toBeDisabled();
@@ -267,6 +269,7 @@ test('an interrupted protection transition resumes after reload with the saved c
         return native(name);
       };
     });
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Add an unlock code' }).click();
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     const code = (await page.getByLabel('Generated unlock code').textContent())!;

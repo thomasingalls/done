@@ -1,0 +1,1056 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-ux-20261023-patches/playwright.card-input.config.ts",
+      "card-focus.spec.ts",
+      "task-ux.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-ux-20261023-patches/playwright.card-input.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-42-candidate",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-42-candidate",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-ux-20261023-patches/checks-42/candidate-browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node /Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 54174 --strictPort",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "port": 54174,
+      "reuseExistingServer": false,
+      "env": {
+        "APP_BUILD_REVISION": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61-dirty",
+        "APP_BUILD_DATE": "2026-10-23"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "card-focus.spec.ts",
+      "file": "card-focus.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "split focus can leave by clicking another input and stays there while typing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3288,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:22.130Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-0b7f285b5cfb3f3fa473",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "split focus can Tab through its actions and leave the card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 788,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:26.256Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-0dcb3c3b0bbf18be1d32",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        },
+        {
+          "title": "merge focus can leave by clicking another input and stays there while typing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1101,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:27.050Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-aae093a4c0bc782f0879",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "merge focus can Tab through its actions and leave the card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 796,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:28.157Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-ef9db7109838368c67b3",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        },
+        {
+          "title": "split focus can leave by clicking another input and stays there while typing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1527,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:38.759Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-adaaa97e2cecd5286453",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "split focus can Tab through its actions and leave the card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 839,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:40.795Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-af337c5cc48f72fca04c",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        },
+        {
+          "title": "merge focus can leave by clicking another input and stays there while typing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1065,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:41.642Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-cf586a0e16b5f4c130fc",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "merge focus can Tab through its actions and leave the card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 704,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:42.714Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-8f5deb6c921dc1d76b47",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "task-ux.spec.ts",
+      "file": "task-ux.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Scheduled quick entry accepts multiline tasks on the selected day and persists them",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 996,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:28.968Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-88daa38f7113f76bb9f8",
+          "file": "task-ux.spec.ts",
+          "line": 17,
+          "column": 1
+        },
+        {
+          "title": "Done moves require unlock, remain reachable by keyboard, and respect the Next cap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1183,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:29.970Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-c0c40a5e92b593a2a3d5",
+          "file": "task-ux.spec.ts",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "next keyboard reorder is undoable and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1361,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:31.160Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-7001176c45de1eddb98f",
+          "file": "task-ux.spec.ts",
+          "line": 92,
+          "column": 3
+        },
+        {
+          "title": "scheduled keyboard reorder is undoable and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1180,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:32.527Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-f97efa3ff9db9f23e0f3",
+          "file": "task-ux.spec.ts",
+          "line": 92,
+          "column": 3
+        },
+        {
+          "title": "native card Enter completes without inserting text on either browser platform",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 641,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:37.728Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-2e57e48d2f84f150d289",
+          "file": "task-ux.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "Scheduled quick entry accepts multiline tasks on the selected day and persists them",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1009,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:43.432Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-5c1865f3f7e6ff041b48",
+          "file": "task-ux.spec.ts",
+          "line": 17,
+          "column": 1
+        },
+        {
+          "title": "Done moves require unlock, remain reachable by keyboard, and respect the Next cap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 923,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:44.446Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-9cd519d6d3bbe593eec1",
+          "file": "task-ux.spec.ts",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "next keyboard reorder is undoable and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Keyboard grips are exercised on desktop; mobile uses the touch drag tests.",
+                  "location": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/task-ux.spec.ts",
+                    "line": 96,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:45.375Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Keyboard grips are exercised on desktop; mobile uses the touch drag tests.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/task-ux.spec.ts",
+                        "line": 96,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-b5e10737c2e733a0d013",
+          "file": "task-ux.spec.ts",
+          "line": 92,
+          "column": 3
+        },
+        {
+          "title": "scheduled keyboard reorder is undoable and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Keyboard grips are exercised on desktop; mobile uses the touch drag tests.",
+                  "location": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/task-ux.spec.ts",
+                    "line": 96,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 152,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:45.547Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Keyboard grips are exercised on desktop; mobile uses the touch drag tests.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/task-ux.spec.ts",
+                        "line": 96,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-15696fef58c9dd402499",
+          "file": "task-ux.spec.ts",
+          "line": 92,
+          "column": 3
+        },
+        {
+          "title": "native card Enter completes without inserting text on either browser platform",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 639,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:29:49.811Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "05fb8918e6c4eebbf12a-dd1c10b4b019a2f18e74",
+          "file": "task-ux.spec.ts",
+          "line": 206,
+          "column": 1
+        }
+      ],
+      "suites": [
+        {
+          "title": "Mac card keyboard",
+          "file": "task-ux.spec.ts",
+          "line": 129,
+          "column": 6,
+          "specs": [
+            {
+              "title": "next Enter finishes on the same card and a second Enter resumes at the caret",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1042,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:33.712Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-7e6b785e067fe1fdc8c7",
+              "file": "task-ux.spec.ts",
+              "line": 142,
+              "column": 5
+            },
+            {
+              "title": "done Enter finishes on the same card and a second Enter resumes at the caret",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1054,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:34.760Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-a63ccf78fb84bb0dc9bd",
+              "file": "task-ux.spec.ts",
+              "line": 142,
+              "column": 5
+            },
+            {
+              "title": "scheduled Enter finishes on the same card and a second Enter resumes at the caret",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1044,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:35.820Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-2641e1d796a43d8e53d2",
+              "file": "task-ux.spec.ts",
+              "line": 142,
+              "column": 5
+            },
+            {
+              "title": "three Shift Enters split a card and completion stays closed after automatic split focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 851,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:36.870Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-b676cb262f38bbd75ab0",
+              "file": "task-ux.spec.ts",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "next Enter finishes on the same card and a second Enter resumes at the caret",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 991,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:45.704Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-e9b5ff8a07e2297ef234",
+              "file": "task-ux.spec.ts",
+              "line": 142,
+              "column": 5
+            },
+            {
+              "title": "done Enter finishes on the same card and a second Enter resumes at the caret",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:46.702Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-c97493ed3e6215001c01",
+              "file": "task-ux.spec.ts",
+              "line": 142,
+              "column": 5
+            },
+            {
+              "title": "scheduled Enter finishes on the same card and a second Enter resumes at the caret",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1287,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:47.743Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-42537ee0c7495ae5035e",
+              "file": "task-ux.spec.ts",
+              "line": 142,
+              "column": 5
+            },
+            {
+              "title": "three Shift Enters split a card and completion stays closed after automatic split focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 770,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-23T09:29:49.035Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "05fb8918e6c4eebbf12a-01845bd26644fedfeb2c",
+              "file": "task-ux.spec.ts",
+              "line": 177,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T09:29:21.442Z",
+    "duration": 29134.204999999998,
+    "expected": 24,
+    "skipped": 2,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

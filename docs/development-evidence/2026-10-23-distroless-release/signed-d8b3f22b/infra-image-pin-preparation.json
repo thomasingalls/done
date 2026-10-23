@@ -1,0 +1,26 @@
+{
+  "infraRepository": "/Users/thomasingalls/Code/ol-infra",
+  "localBaseCommit": "86c2a18405a73388c7e32a47d7873d3438d0fb50",
+  "scope": "Local preparation only; refresh and review remote base before an infrastructure PR.",
+  "paths": [
+    "infra/apps/done/components/runtime/kustomization.yaml"
+  ],
+  "baseFileSha256": "70d617d4fa442774315381ea1f708842ed39ddda72cb9f3ee3a5b81b84e184fe",
+  "proposedFileSha256": "d57fbf8558325e4c263deb3fda59b74140a68fbb616efa86b304c19466566a95",
+  "patchSha256": "c705172f815c3a052e060a4f1f4c5555cb20eda1fefae06870d4150be3f5117c",
+  "testedSource": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+  "currentIndex": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "proposedIndex": "sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb",
+  "gitApplyCheck": true,
+  "independentYamlEqualityExceptImageDigest": true,
+  "runtimeCommandManifestsMatchFinalImageCompatibilityCheck": true,
+  "applied": false,
+  "published": false,
+  "deployed": false,
+  "activationPrerequisites": [
+    "Operator application merge preserving signed commits",
+    "Merged build-input equality against tested source",
+    "Exact private image publication, remote digest and authenticated pull verification",
+    "Fresh infrastructure base and separate operator merge"
+  ]
+}

@@ -423,6 +423,12 @@ purpose.
 | Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
 | Any collection → reordered        | Deliberate                   | Long-press then drag on touch/pen; drag or arrow keys on the reorder grip on desktop. Writable days only. |
 
+**Duplicate** on a live card in Next, Done or Scheduled creates a new Scheduled card on the
+same writable day, preserving the complete multiline Markdown and leaving the source unchanged.
+It is one undoable action with a new card identity and the source ID as item provenance. A locked
+Done card can be duplicated without unlocking because its writing and membership are unchanged.
+Creation still passes storage admission and frozen-day checks.
+
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
 
@@ -645,12 +651,20 @@ lists, task checkboxes, rules. **No images. No tables in v1** — tables are bot
 cost and genuinely unpleasant to author by hand, which is precisely the case agent assistance would change
 (§5.8).
 
-Behaviors that matter disproportionately: list continuation on Enter, `Tab`/`Shift-Tab` indentation, checkbox
-toggle by click and keystroke, clean selection across formatting marks.
+Behaviors that matter disproportionately: list continuation on Enter in Goals, `Tab`/`Shift-Tab` and
+`Cmd/Ctrl-]` / `Cmd/Ctrl-[` indentation, checkbox toggle by click, clean selection across formatting marks.
+On macOS, Option-Backspace deletes the preceding word or selection. With no selection, Cmd-X cuts
+the current complete line (including its following newline when present); selected text still cuts
+normally. Clipboard refusal keeps the writing. Cut waits for pending writing/composition to finish
+so it cannot delete text that was not copied. Deletion remains one admitted, undoable edit. Cmd/Ctrl-Enter does not toggle
+checkboxes or insert a blank line. Shift-Enter inserts an admitted plain newline.
 
-Inside a card, **three consecutive returns splits into a new card.** Three is a starting guess — likely too
-undiscoverable, and expected to drop to two or one once the interaction proves out. It is a tunable, not a
-decision (§11).
+Inside a card, **Enter finishes editing and focuses that same static card**; a second Enter reopens it
+at the preceding caret. Shift-Enter adds a plain newline. **Three consecutive Shift-Enters split into a
+new card**, retaining the existing split behavior on the explicit multiline gesture. Goals retains list
+continuation on Enter. Escape also returns focus to the static card. Completion does not move writing or
+change its Done guard, frozen-day rules, storage admission or undo history. Outside focus movement consumes any split/merge focus
+request, so leaving by mouse or Tab cannot reopen the editor or reclaim focus.
 
 **TRD.** TRD §5 (editor).
 
@@ -3172,3 +3186,18 @@ is built; and whether a revoked device can be wiped remotely.
 delegation rules and management UI; human collaboration — invitations, sharing, multi-workspace navigation and
 permissions; the survivability package's implementation; and the operational and legal program — vendor
 contracts, jurisdiction-specific notices, support playbooks and filing obligations.
+
+
+## Sidebar organization — operator UX clarification, 2026-10-23
+
+Date navigation stays directly visible: a date/calendar ghost control backed by a native date input,
+with Yesterday, Today and Tomorrow beneath it. Account, Sync, Data and Install are native collapsible
+sections, closed by default on a fresh mount. Account combines identity/preferences, local protection,
+devices and session/lifecycle actions. Sync contains sending/receiving status and setup. Data groups
+readable export with history maintenance. Device membership/history remains reached through Devices.
+Installation is omitted when already installed; an available app update remains outside the disclosures.
+
+Use another account and Sign out retain their distinct §6.6 effects. Switching preserves the remembered
+login; sign-out ends it. Both retain local writing. Collapsing a section does not reset a form, cancel
+an in-flight operation or change authorization. This organizational clarification changes no protection,
+removal, history-maintenance or synchronization guarantee.

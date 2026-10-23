@@ -1,0 +1,154 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-non-overlap-20261023-patches/playwright.withheld-upload.config.ts",
+      "non-overlap-withheld-upload.control.spec.ts",
+      "--grep",
+      "first-to-second"
+    ],
+    "configFile": "/private/tmp/done-non-overlap-20261023-patches/playwright.withheld-upload.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-non-overlap-20261023-patches/artifacts-54-withheld-upload",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-non-overlap-20261023-patches/checks-54/withheld-upload-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "non-overlap-withheld-upload.control.spec.ts",
+      "file": "non-overlap-withheld-upload.control.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "confirmed uploads survive non-overlapping sessions first-to-second",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 34684,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\nCall Log:\n- Timeout 20000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\nCall Log:\n- Timeout 20000ms exceeded while waiting on the predicate\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlap-withheld-upload.control.spec.ts:105:63",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlap-withheld-upload.control.spec.ts",
+                      "column": 63,
+                      "line": 105
+                    },
+                    "snippet": "  103 |       });\n  104 |       await add(sender, marker);\n> 105 |       await expect.poll(() => !!accepted, { timeout: 20000 }).toBe(true);\n      |                                                               ^\n  106 |       const wire = decodeSubmit(accepted!.request);\n  107 |       const envelope = decodeNetworkEnvelope(decodeSubmission(wire.bytes).envelope);\n  108 |       const responseBytes = accepted!.response;"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlap-withheld-upload.control.spec.ts",
+                        "column": 63,
+                        "line": 105
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\nCall Log:\n- Timeout 20000ms exceeded while waiting on the predicate\n\n  103 |       });\n  104 |       await add(sender, marker);\n> 105 |       await expect.poll(() => !!accepted, { timeout: 20000 }).toBe(true);\n      |                                                               ^\n  106 |       const wire = decodeSubmit(accepted!.request);\n  107 |       const envelope = decodeNetworkEnvelope(decodeSubmission(wire.bytes).envelope);\n  108 |       const responseBytes = accepted!.response;\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlap-withheld-upload.control.spec.ts:105:63"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:32:33.940Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-non-overlap-20261023-patches/artifacts-54-withheld-upload/non-overlap-withheld-uploa-da906-ng-sessions-first-to-second/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlap-withheld-upload.control.spec.ts",
+                    "column": 63,
+                    "line": 105
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa32b45d856316ec51d2-f438b9024a0dd64c7499",
+          "file": "non-overlap-withheld-upload.control.spec.ts",
+          "line": 63,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T12:32:33.589Z",
+    "duration": 36031.017,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -89,12 +89,14 @@
   .menu {
     grid-area: menu;
     inline-size: var(--menu-width);
+    max-inline-size: 100%;
+    min-inline-size: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     /* The menu is its own scroll container; horizontal swipes still close it. */
     touch-action: pan-y;
     padding: var(--space-4);
-    gap: var(--space-5);
+    gap: var(--space-2);
     border-inline-end: 1px solid var(--color-border);
   }
 
@@ -659,18 +661,173 @@
 
   /* ---- Menu contents ---------------------------------------------------- */
 
+  .menu > * {
+    flex-shrink: 0;
+    min-inline-size: 0;
+  }
+
   .menu-section {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
   }
 
+  .menu-date-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    min-block-size: 2.75rem;
+    padding: var(--space-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-2);
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .menu-date-control > span {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .menu-date-control > svg {
+    flex: none;
+  }
+
+  .menu-date-control:hover,
+  .menu-date-control:focus-within {
+    background: var(--color-bg);
+    border-color: var(--color-border);
+  }
+
+  .menu-date-control:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .menu-native-date {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* Blink's native calendar indicator should cover the visible date label too. */
+  .menu-native-date::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset: 0;
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .menu-date-nav {
+    margin-block-end: var(--space-2);
+  }
+
+  .menu-date-nav .menu-day {
+    /* Fit complete labels before distributing space; wrap when text grows. */
+    flex: 1 1 auto;
+    min-block-size: 2.5rem;
+    padding-inline: var(--space-2);
+  }
+
+  .menu-disclosure {
+    display: block;
+    flex: 0 0 auto;
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .menu-disclosure > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: 2.75rem;
+    gap: var(--space-2);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .menu-disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu-disclosure > summary::after {
+    content: '';
+    inline-size: 0.4rem;
+    block-size: 0.4rem;
+    margin-inline-end: var(--space-2);
+    border-inline-end: 1px solid currentColor;
+    border-block-end: 1px solid currentColor;
+    transform: rotate(-45deg);
+    color: var(--color-text-dim);
+    flex: none;
+  }
+
   .menu-heading {
-    font-size: 0.75rem;
+    min-inline-size: 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .menu-disclosure[open] > summary::after {
+    transform: rotate(45deg);
+  }
+
+  .menu-disclosure > summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-1);
+  }
+
+  .menu-section-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-2) var(--space-5);
+  }
+
+  .menu-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .menu-group + .menu-group {
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .menu-subheading {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.875rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  }
+
+  .menu-note {
+    margin: 0;
     color: var(--color-text-faint);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .menu-metadata,
+  .menu-preferences {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .menu-metadata {
+    padding-block-end: var(--space-1);
   }
 
   .menu-row {
@@ -678,33 +835,67 @@
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-3);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--color-text-dim);
+  }
+
+  .menu-row > span:first-child {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
   }
 
   .menu-value {
     color: var(--color-text);
     text-align: end;
+    overflow-wrap: anywhere;
+    min-inline-size: 0;
   }
 
-  .menu-input {
+  .menu-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
     min-inline-size: 0;
-    max-inline-size: 9rem;
-    padding: 0.2rem var(--space-2);
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+  }
+
+  .menu-preference-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--space-3);
+  }
+
+  .menu-input,
+  .menu-color {
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: 2.5rem;
+    padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-1);
+    border-radius: var(--radius-2);
     background: var(--color-bg);
     color: var(--color-text);
-    text-align: end;
+    font: inherit;
+    text-align: start;
   }
 
   .menu-color {
-    inline-size: 2.5rem;
-    block-size: 1.5rem;
-    padding: 0;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-1);
-    background: transparent;
+    padding: var(--space-1);
+  }
+
+  .menu-input:focus-visible,
+  .menu-color:focus-visible,
+  .menu-button:focus-visible,
+  .menu-day:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .menu .account-identity {
+    min-inline-size: 0;
+    margin: 0;
+    font-size: 0.8125rem;
   }
 
   .menu-days {
@@ -716,11 +907,13 @@
   .menu-day,
   .menu-button {
     font-size: 0.8125rem;
-    padding: 0.2rem var(--space-2);
+    min-block-size: 2.5rem;
+    padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-2);
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     color: var(--color-text-dim);
+    max-inline-size: 100%;
   }
 
   .menu-day[data-current='true'] {
@@ -734,7 +927,21 @@
   }
 
   .menu-button {
-    align-self: flex-start;
+    min-inline-size: 0;
+    align-self: stretch;
+    text-align: start;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .menu .sync-details,
+  .menu-section-content > section[aria-label='History maintenance'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-inline-size: 0;
+    font-size: 0.8125rem;
+    overflow-wrap: anywhere;
   }
 
   .actor-swatch {

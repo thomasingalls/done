@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -40,6 +41,7 @@ test('a native survivor retries its exact old upload after replacement admission
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   try {
     pair = await pairedEditors(page, browser, true);
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(pair.second, pair.next.code);
@@ -122,6 +124,7 @@ test('a native survivor retries its exact old upload after replacement admission
     expect(attempts[0]!.gen).toBe(1);
     await thirdContext.setOffline(true);
     await add(third, 'Journal original survives replacement retry');
+    await openMenuSection(third, 'Account');
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
 
     await page.goto('/');
@@ -142,12 +145,14 @@ test('a native survivor retries its exact old upload after replacement admission
       .toBe('applying');
     await page.goto('/');
     await openSaved(page, pair.first.code);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Devices', exact: true }).click();
     await expect(page.locator('.account-device-list li')).toHaveCount(2);
     await expect(
       page.locator('.account-device-list li').filter({ hasText: 'Device ' + target.slice(0, 8) }),
     ).toHaveCount(0);
     await page.getByRole('button', { name: 'Back to writing', exact: true }).click();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     // This focused boundary check intentionally admits but does not approve the replacement.
@@ -186,6 +191,7 @@ test('a native survivor retries its exact old upload after replacement admission
     expect(old.length).toBeGreaterThanOrEqual(3);
     expect(new Set(old.map((a) => a.bytes)).size).toBe(1);
     expect(attempts.some((a) => a.gen === 2 && a.parent)).toBe(true);
+    await openMenuSection(third, 'Account');
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await third.goto('/');
     await openSaved(third, three.code, true);

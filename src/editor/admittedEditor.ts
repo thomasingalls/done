@@ -88,14 +88,19 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
           );
         },
       },
+      bind('Mod-Backspace', 'deleteWordBackward', 'Alt-Backspace'),
       bind('Enter', 'enter'),
+      bind('Shift-Enter', 'newline'),
       bind('Tab', 'indent'),
       bind('Shift-Tab', 'outdent'),
+      bind('Mod-]', 'indent'),
+      bind('Mod-[', 'outdent'),
       bind('Mod-b', 'bold'),
       bind('Mod-i', 'italic'),
       bind('Mod-e', 'code'),
       bind('Mod-Shift-x', 'strike'),
-      bind('Mod-Enter', 'task'),
+      // Consume this explicitly: the default keymap would insert a blank line.
+      { key: 'Mod-Enter', preventDefault: true, run: () => true },
     ]),
     keymap.of(defaultKeymap),
     markdown({ base: markdownLanguage, addKeymap: false }),
@@ -157,20 +162,65 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
         return input({ name: 'insert', text: content });
       },
       cut(event, view) {
-        if (!event.clipboardData) return false;
+        event.preventDefault();
         try {
-          document.read();
-        } catch {
-          event.preventDefault();
+          const snapshot = document.read();
+          if (snapshot.editable === false || !isEditable)
+            throw Error('This writing is not editable.');
+          // Copy only the accepted text the user can see. A queued predecessor
+          // could otherwise expand a relative selection to writing not copied.
+          if (document.status.pendingItems || composing || view.composing)
+            throw Error(
+              'Wait for pending writing to save or composition to finish before cutting.',
+            );
+          if (document.status.state !== 'active')
+            throw Error('Editing is unavailable. Reopen after resolving the storage problem.');
+          if (!event.clipboardData)
+            throw Error('The clipboard is unavailable. Your writing was kept.');
+          const current = view.state.selection;
+          const linewise = current.ranges.every((range) => range.empty);
+          let ranges = linewise
+            ? current.ranges.map((range) => {
+                const line = view.state.doc.lineAt(range.head);
+                return EditorSelection.range(
+                  line.from,
+                  Math.min(view.state.doc.length, line.to + 1),
+                );
+              })
+            : current.ranges.filter((range) => !range.empty);
+          if (linewise) {
+            const merged: typeof ranges = [];
+            for (const range of ranges) {
+              const last = merged.at(-1);
+              if (last && range.from <= last.to)
+                merged[merged.length - 1] = EditorSelection.range(
+                  last.from,
+                  Math.max(last.to, range.to),
+                );
+              else merged.push(range);
+            }
+            ranges = merged;
+          }
+          const selected = EditorSelection.create(
+            ranges,
+            Math.max(0, ranges.indexOf(current.main)),
+          );
+          if (selected.ranges.every((range) => range.empty)) return true;
+          const text = selected.ranges
+            .map((range) => view.state.sliceDoc(range.from, range.to))
+            .join('\n');
+          try {
+            event.clipboardData.setData('text/plain', text);
+            if (event.clipboardData.getData('text/plain') !== text)
+              throw Error('Clipboard refused');
+          } catch {
+            throw Error('Could not write to the clipboard. Your writing was kept.');
+          }
+          return input({ name: 'insert', text: '' }, selected.toJSON());
+        } catch (error) {
+          report(error);
           return true;
         }
-        const selected = view.state.selection;
-        event.clipboardData.setData(
-          'text/plain',
-          selected.ranges.map((r) => view.state.sliceDoc(r.from, r.to)).join('\n'),
-        );
-        event.preventDefault();
-        return input({ name: 'insert', text: '' }, selected.toJSON());
       },
       copy(event) {
         try {

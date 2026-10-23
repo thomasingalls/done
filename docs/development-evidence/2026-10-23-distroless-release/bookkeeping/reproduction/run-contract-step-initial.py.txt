@@ -1,0 +1,26 @@
+from pathlib import Path
+import hashlib, json, os, re, subprocess
+
+root = Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+out = Path(__file__).resolve().parent / 'checks'
+workflow = root / '.github/workflows/ci.yml'
+document = json.loads(subprocess.check_output(['ruby', '-ryaml', '-rjson', '-e', 'puts JSON.generate(YAML.safe_load(File.read(ARGV.fetch(0))))', str(workflow)], text=True))
+steps = [s for s in document['jobs']['build']['steps'] if s.get('name') == 'Check security contracts and published vectors']
+assert len(steps) == 1
+commands = steps[0]['run'].split(' && ')
+assert all(re.fullmatch(r'pnpm [a-z:-]+', command) for command in commands)
+environment = dict(os.environ)
+node_runtime = '/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin'
+environment['PATH'] = node_runtime + os.pathsep + environment['PATH']
+runtime = subprocess.check_output([node_runtime + '/node', '--version'], text=True).strip()
+assert runtime == 'v24.18.0'
+results = []
+for command in commands:
+    name = command.split()[1]
+    with (out / (name.replace(':', '-') + '.log')).open('w') as log:
+        result = subprocess.run(['/opt/homebrew/bin/pnpm', name], cwd=root, env=environment, stdout=log, stderr=subprocess.STDOUT, timeout=600)
+    results.append({'packageScript': name, 'exit': result.returncode, 'log': name.replace(':', '-') + '.log'})
+    print(json.dumps(results[-1]), flush=True)
+record = {'runtime': runtime, 'commandPopulationHome': '.github/workflows/ci.yml', 'workflowSha256': hashlib.sha256(workflow.read_bytes()).hexdigest(), 'step': steps[0]['name'], 'commands': results, 'allPassed': all(r['exit'] == 0 for r in results), 'generalizedQualificationRun': False}
+(out / 'contract-step.json').write_text(json.dumps(record, indent=2) + '\n')
+raise SystemExit(0 if record['allPassed'] else 1)

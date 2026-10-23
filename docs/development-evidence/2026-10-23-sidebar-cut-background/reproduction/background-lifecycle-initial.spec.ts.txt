@@ -1,0 +1,42 @@
+import { test, expect } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
+import { pairedEditors, add } from './devices';
+import { startService, stopService } from './server';
+
+test('observe live background reception and forced browser suspension without changing sync policy', async ({ page, browser }, info) => {
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  try {
+    pair = await pairedEditors(page, browser, true);
+    const receiver = pair.second;
+    const cover = await pair.other.newPage();
+    await cover.goto('about:blank'); await cover.bringToFront();
+    const visibility = await receiver.evaluate(() => ({ visibility: document.visibilityState, focus: document.hasFocus(), userAgent: navigator.userAgent }));
+    const first = 'Arrived while the other page was in front';
+    await add(page, first);
+    await expect(receiver.locator('.shell')).toContainText(first, { timeout: 15000 });
+    const cdp = await pair.other.newCDPSession(receiver);
+    await cdp.send('Page.setWebLifecycleState', { state: 'frozen' });
+    const second = 'Arrived during the forced freeze';
+    const accepted = page.waitForResponse(response => response.url().endsWith('/account/delivery/submit') && response.status() === 200);
+    await add(page, second); await accepted;
+    // Deliberate observation window, not a latency or battery benchmark. Inspect
+    // renderer DOM through CDP without scheduling JavaScript in the frozen page.
+    await page.waitForTimeout(1500);
+    const frozen = await cdp.send('DOMSnapshot.captureSnapshot', { computedStyles: [] });
+    expect(frozen.strings.includes(second)).toBe(false);
+    const resumeAt = Date.now();
+    await cdp.send('Page.setWebLifecycleState', { state: 'active' });
+    await expect(receiver.locator('.shell')).toContainText(second, { timeout: 15000 });
+    const returnMs = Date.now() - resumeAt;
+    await writeFile(info.outputPath('observation.json'), JSON.stringify({
+      status: 'passed', visibility, liveReceiverCaughtUp: true,
+      forcedFreeze: { frozenDomContainsNewCard: false, observationWindowMs: 1500, returnMs },
+      limitations: ['Headless Chromium with Playwright defaults; not installed mobile or power-saver coverage.', 'DOM polling and automation affect background scheduling.', 'Forced CDP freeze demonstrates suspension, not OS scheduling frequency.'],
+      realAccountsUsed: false, securityPolicyChanged: false,
+    }, null, 2) + '\n');
+    await cdp.detach();
+  } finally {
+    await pair?.other.close(); await stopService(service);
+  }
+});

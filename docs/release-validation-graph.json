@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 521,
-    "requiredTestFiles": 515,
+    "testFiles": 530,
+    "requiredTestFiles": 524,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -5915,7 +5915,7 @@
           "test/account-application/gateway.test.mjs"
         ]
       },
-      "declarations": 5,
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -9747,6 +9747,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/admittedClipboard.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/admittedClipboard.test.ts"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/admittedEditorProjection.test.ts",
       "status": "required",
       "invocation": {
@@ -9767,7 +9777,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/admittedText.test.ts"]
       },
-      "declarations": 15,
+      "declarations": 17,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -9863,7 +9873,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/cardCommands.test.ts"]
       },
-      "declarations": 12,
+      "declarations": 14,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -9885,6 +9895,16 @@
         "packages": []
       },
       "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/compose.test.tsx",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/compose.test.tsx"]
+      },
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10229,6 +10249,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/geometry/card-focus.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/geometry/cards.spec.ts",
       "status": "required",
       "invocation": {
@@ -10236,6 +10267,50 @@
         "packages": ["test:geometry"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/compose-input.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/cut.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/date-picker.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/duplicate-card.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 1,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10257,7 +10332,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 6,
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10295,6 +10370,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/geometry/sidebar-polish.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/geometry/sync.spec.ts",
       "status": "required",
       "invocation": {
@@ -10312,7 +10398,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 4,
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10334,7 +10420,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 11,
+      "declarations": 13,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -11379,6 +11465,17 @@
     },
     {
       "path": "test/packaged-account/multi-tab-protection.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/non-overlapping-sessions.spec.ts",
       "status": "required",
       "invocation": {
         "config": "playwright.packaged-account.config.ts",
@@ -13257,18 +13354,18 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 57,
+      "declarations": 61,
       "propertyFamilies": [
         {
-          "line": 1049,
+          "line": 1164,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 1152,
+          "line": 1267,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 1687,
+          "line": 1802,
           "form": "fc.asyncProperty"
         }
       ],
@@ -15889,7 +15986,7 @@
     },
     {
       "path": "scripts/lib/account-gateway.mjs",
-      "sha256": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f"
+      "sha256": "90c20c3d8c1067825d7954c358d14bf6fb482cda182bd28b5138120cce1972c0"
     },
     {
       "path": "scripts/lib/asvs-5.0.0-index.json",
@@ -16380,6 +16477,10 @@
       "sha256": "3b20e667d564625806074644e1e732d706673547b42b4baedb67861323ab884f"
     },
     {
+      "path": "scripts/test-runtime-image.mjs",
+      "sha256": "474e0473e2d9c01c52b789cc615e625e8f8f29a5bf137a91e5d283a2cbef93e8"
+    },
+    {
       "path": "scripts/upgrade-account-setup.mjs",
       "sha256": "9e110256e460c5abf495f78a37bbfece2e36d8f08c11491d4d2380f97508f1ef"
     },
@@ -16537,7 +16638,7 @@
     },
     {
       "path": "test/account-application/gateway.test.mjs",
-      "sha256": "3b20f7207452290c523ed923677fc03064c88b59f56a0b72e530efe8cedafc7e"
+      "sha256": "4485a3502e3d26fb646e57119d18c16fdf54058f73944e97225f932176d924f1"
     },
     {
       "path": "test/account-application/removal-route.test.mjs",
@@ -18252,16 +18353,20 @@
       "sha256": "2c86562f979da14bcb0154a24611516c4c4f0b376ed958e915c3de5fee037278"
     },
     {
+      "path": "test/admittedClipboard.test.ts",
+      "sha256": "262a06a78033a57ed75d16fdf9f3b75770927076501d1ca98c6afc30310f38ea"
+    },
+    {
       "path": "test/admittedEditorProjection.test.ts",
       "sha256": "4f3e58c34436e5f17cf73f88af754e0609dfd1faaf600378c6ae016c4d0233a1"
     },
     {
       "path": "test/admittedText.test.ts",
-      "sha256": "f29d38d1ef576ee5f9bf17322ca1a30c96cbe8a2b1cb85169fd1a9b3ba4e26b8"
+      "sha256": "51d505fedde679cd548da8aa12d057b7f42a74180ca734cd49eabe429ac91b71"
     },
     {
       "path": "test/app-upgrades/upgrades.spec.ts",
-      "sha256": "682cd9ed1cf688363e95a16a7525ebc4bdbb6f5cc34108cff45fb46d1297be2a"
+      "sha256": "2c0057961eaa1a5db575e24043f69ca75e2b46dd0ea3a709b8e4e325f25f5c03"
     },
     {
       "path": "test/appUpdate.test.ts",
@@ -18293,7 +18398,7 @@
     },
     {
       "path": "test/cardCommands.test.ts",
-      "sha256": "64060be12bc8d567d2b714a7d609faf1b1db59334fbd50fcfb387e59d7c9cf1a"
+      "sha256": "35cf900dfc0ba143355ce8a6e29e1554b80188023368566a46cf7c1d85ed402e"
     },
     {
       "path": "test/commands.test.ts",
@@ -18302,6 +18407,10 @@
     {
       "path": "test/compiler-loading/development.spec.ts",
       "sha256": "8e28c6b2f2600294ac733913fa3f2f08ce69d4cb9b0c54c5754d01603cf3b776"
+    },
+    {
+      "path": "test/compose.test.tsx",
+      "sha256": "d5655aaf89a6291063a6a8e15a9d4cbe20a3d575ea5f0886cde8a369346a91f1"
     },
     {
       "path": "test/configDiscoveryCompatibility.test.ts",
@@ -18381,11 +18490,11 @@
     },
     {
       "path": "test/device-enrollment/flow.spec.ts",
-      "sha256": "d50d4803988ea7afa36626b193092e03b0a57579a6f8425e5912b66170359abf"
+      "sha256": "54dc06459d43a1a223fe35f0c73b7e1b62a6761448d8dbaf660d13dda5830ba0"
     },
     {
       "path": "test/device-enrollment/helpers.ts",
-      "sha256": "38f94e1f9cbc987418f72c24a4f0849bd19c510c2f375b2f9714b16ed5833942"
+      "sha256": "78ec52dd123458f3c2ce75b29fd14ed990145cfbbe82d701b3c39510b6f3d071"
     },
     {
       "path": "test/deviceDataRemovalRegression.test.ts",
@@ -18421,11 +18530,11 @@
     },
     {
       "path": "test/first-device-setup/setup.spec.ts",
-      "sha256": "9bda67997aab5c50f3fab7a4c7643a1058f84d191d243f469d110fc17c57502f"
+      "sha256": "210039efc6eeb28a46b345315b289e24f4ac80119570575570120047c6956ae5"
     },
     {
       "path": "test/first-device-upgrade/checkpoint-stage.spec.ts",
-      "sha256": "270351d363dd3207b8f832cd213f3444fdcec08143cc0116960ef9c955b443dc"
+      "sha256": "7c84622749c4e860f9433386480da67b2b83e7602b629339dc5bba6cb2597177"
     },
     {
       "path": "test/first-device-upgrade/state.test.mjs",
@@ -18433,7 +18542,7 @@
     },
     {
       "path": "test/first-device-upgrade/upgrade.spec.ts",
-      "sha256": "6b2a9091a0e40162267548efc5e8c0d157124cce55a38862dcd14ca0149228d9"
+      "sha256": "6fcffd036146ccdff518d01e1ee51fbbf6fa63fdd7e96d6e52fb6f6e39973edd"
     },
     {
       "path": "test/firstDeviceSetupAccess.test.ts",
@@ -18452,16 +18561,36 @@
       "sha256": "7e48276855a886dfcd98827fa7b9bddc2499601e57685e32993885526ae90e45"
     },
     {
+      "path": "test/geometry/card-focus.spec.ts",
+      "sha256": "2897408a71869e6d2780fcc2693d18d42aaf8538a16afd97d3f69be8e38e8c37"
+    },
+    {
       "path": "test/geometry/cards.spec.ts",
       "sha256": "59d9d5871e3bdc62c125518f3f5fcd58c24ca082085f4dbfeaa99251852caca3"
     },
     {
+      "path": "test/geometry/compose-input.spec.ts",
+      "sha256": "cba2c0f37c8012a5c6882895fa0ed5b42cce2c608316cd815617f44db8796cdc"
+    },
+    {
+      "path": "test/geometry/cut.spec.ts",
+      "sha256": "26df57d5aa76ab5a2d45aa70b9d7562b1162303ef019ff3e94d54b3decfa5e90"
+    },
+    {
+      "path": "test/geometry/date-picker.spec.ts",
+      "sha256": "213edcd213c33166e04b7fc299e05b1787a1b9de5ed6c4a3f080d0018c694ac9"
+    },
+    {
+      "path": "test/geometry/duplicate-card.spec.ts",
+      "sha256": "c6f00f2fb5334732ff9792aa4929836d0cc3ee30f01f415d9907a2e1321414f7"
+    },
+    {
       "path": "test/geometry/install.spec.ts",
-      "sha256": "590a2735814fe468c6c99a34909495b928acbb4a6ec9b446751719120fa46812"
+      "sha256": "f16590c1713bdacb521af97bdae4982a70feec95b077e537e1ef814f122cfa55"
     },
     {
       "path": "test/geometry/keyboard.spec.ts",
-      "sha256": "c3e622bb35be959d12cd06a70d0a1a9b5af741ab3a752b2b01e98e9f895616c1"
+      "sha256": "5f60dea86cd024d388db4df2fb3c202fb7cf79d3fd779f9dd4c8fe9840fdd570"
     },
     {
       "path": "test/geometry/layout.spec.ts",
@@ -18473,19 +18602,23 @@
     },
     {
       "path": "test/geometry/openApp.ts",
-      "sha256": "1700c9f5437ad46b1d465c5fb1228c21872d879ede02eb54007cea50a0ad9793"
+      "sha256": "d59d8b72e9ca7e02a3f53d07544d8cf33206cdc164c794c9254905e48306d83e"
     },
     {
       "path": "test/geometry/reorder.spec.ts",
       "sha256": "dca8215a4a1f482daeb88604b5a318fed4f6db3f0ec7b8d89ec97a88fc99811d"
     },
     {
+      "path": "test/geometry/sidebar-polish.spec.ts",
+      "sha256": "2e187f2d8e01a2867ab44628512ee4b0a76e91d95892e016211919236ac012a0"
+    },
+    {
       "path": "test/geometry/sync.spec.ts",
-      "sha256": "c03a3a365bb07abd6ba46276a108998d59bfdca537f4d4e401bac1942680228d"
+      "sha256": "2993e7e28ebeb727b2ce1cf4de71aa54e59838e79ec24e37af628cbb7773cbf5"
     },
     {
       "path": "test/geometry/task-ux.spec.ts",
-      "sha256": "47aa13a6bff02400af01d800372768473bceef9db44f408a3338619e6bf68a12"
+      "sha256": "87737fe6f542814aabb79e4fac88cc4513e41765be4797b625ac0e83feed2619"
     },
     {
       "path": "test/geometry/wheel.spec.ts",
@@ -18493,7 +18626,7 @@
     },
     {
       "path": "test/geometry/workflow.spec.ts",
-      "sha256": "00d16be5db784b7167a20c5264678a3cb04bf7a3fdb717b76ff79b7b8689293d"
+      "sha256": "9e72d7d8024f989d31dbe552b3a8cba15911be506f3402ebd1452bb9b05106ae"
     },
     {
       "path": "test/gestureTargets.test.ts",
@@ -18621,7 +18754,7 @@
     },
     {
       "path": "test/latency/measure.ts",
-      "sha256": "c7c5246ee735ab926a5f4bc5949b67ed085fcb49d75de10c642c143b04a9e284"
+      "sha256": "5f7ff7e64113993985f855ce0e896592444b2136bcd13052066f2bec39ca266c"
     },
     {
       "path": "test/latency/profile.ts",
@@ -18805,15 +18938,15 @@
     },
     {
       "path": "test/local-app/editor.spec.ts",
-      "sha256": "804b89796d6e1d192219c2387c83cd6b08d5bdc3c895e11b88832c26c2bb5135"
+      "sha256": "47e9ac6554e7fcd37d7b2c25d80d9c7d802b6b9abd40e302d04ac791ee5616a5"
     },
     {
       "path": "test/local-app/packaged.spec.ts",
-      "sha256": "418ec4b1866a93ec11246f260d62ba417222f396e159625a7870d26095cbb5ac"
+      "sha256": "e985cbd705ec80e18a5dc76ba125e059be027f7e69b00a66fccaaabb5138d2d7"
     },
     {
       "path": "test/local-app/startup.spec.ts",
-      "sha256": "42e242bc16946e83dd7a49f835fdd797f75c6109493314c7e0cc05aa54c57ef1"
+      "sha256": "1d8a36470582a93b1d302c31d4c34ed87c047e588fba8b65e212d4dcb568fe73"
     },
     {
       "path": "test/local-baseline/anchor-browser.ts",
@@ -18837,7 +18970,7 @@
     },
     {
       "path": "test/local-baseline/lifecycle-owner.spec.ts",
-      "sha256": "b53b0eb3121195be7ae5a2c8f55b6b5e1d3f8d8645b91eb47e5a7de036402d83"
+      "sha256": "d1bbbb8b61eea126579bdcf9bffce4bb858bee80ef59a6ec1181881e1754e778"
     },
     {
       "path": "test/local-baseline/lifecycle-probe.ts",
@@ -18853,15 +18986,15 @@
     },
     {
       "path": "test/local-baseline/reader-first.spec.ts",
-      "sha256": "d0ffe17463d315167a56eaf7ffd3e4503c3df97fe67f26a69725c269b59bd7f4"
+      "sha256": "1c96b76a38183e3bf4c3db99d6ea2b64f97b7fd0cb320328c21c1c9995aa092c"
     },
     {
       "path": "test/local-baseline/reader-rollout.ts",
-      "sha256": "84b5fb7ae4b81a92f298f31c10afeec676c74ca15af1639b787d744d6084af57"
+      "sha256": "717a72233a783e1f87924c50f7d38dd043c0dc01b3f00cc75510949f6d1f413e"
     },
     {
       "path": "test/local-baseline/removal-checkpoint.spec.ts",
-      "sha256": "65cc6617d80a3ef78fe9e0af5f7920aab5fe9ec3d1a9aa37c5a4a4996863cd67"
+      "sha256": "d06bb306d07546c01fc7e338fd029e12ea5c2585ef1dd8524b54c5e075307254"
     },
     {
       "path": "test/local-baseline/removal.native.mjs",
@@ -18873,7 +19006,7 @@
     },
     {
       "path": "test/local-baseline/transition-owner.spec.ts",
-      "sha256": "232a64b9878ad05b3f13650821e07f44fa20eafc83076802ffd8763005959af0"
+      "sha256": "d124477b69d7f0cc75f554646961c480c1fda4e308eb1ace2a80c18043c75144"
     },
     {
       "path": "test/local-clear/browser.mjs",
@@ -18985,11 +19118,11 @@
     },
     {
       "path": "test/packaged-account/account-creation-entry.spec.ts",
-      "sha256": "d7bb66e4810316e899c12875d9a00b2b290d2428fc1ddc54e19d8e7337002615"
+      "sha256": "b3d2344ccdb91087ec4d194517d6f868c98602b12ee7d6bb5f0f80c2ebb67975"
     },
     {
       "path": "test/packaged-account/bootstrap-compatibility.spec.ts",
-      "sha256": "6b66dacf65f0819dbe08050304b968d708795515a248c80bd48e94f1cc405059"
+      "sha256": "80931a2f2f7c5e3ad059e524b8e3281443b48f4b58d89504aea49ede464767ef"
     },
     {
       "path": "test/packaged-account/content-rotation.spec.ts",
@@ -18997,11 +19130,11 @@
     },
     {
       "path": "test/packaged-account/device-list.spec.ts",
-      "sha256": "0055ba9458080098b48019b227fd5ecb485b49233077c943019e6d1bda45b37e"
+      "sha256": "5f4891adbaf207e96241eeaf72cf9d57fa2671567754a360761ad570a88f9a79"
     },
     {
       "path": "test/packaged-account/device-removal.spec.ts",
-      "sha256": "33d7a6b45196f29a3e64aaa8ef9233947f0cfed1952bbfd43a2fa5bb59b79fa7"
+      "sha256": "19054189eda5c1c8a913bebe8e1e279fb92545de1574f33245bb425577a1ab84"
     },
     {
       "path": "test/packaged-account/devices.ts",
@@ -19013,11 +19146,11 @@
     },
     {
       "path": "test/packaged-account/enrollment-batch.spec.ts",
-      "sha256": "6af38d3575132d23e738fab60fc258c370491bf29a93e71b8df89980beb4b98d"
+      "sha256": "dccc561365196e98d76608e2a654e2b45db1506895e95afdbfc95bb8894ada4f"
     },
     {
       "path": "test/packaged-account/enrollment-capacity.spec.ts",
-      "sha256": "cedb0fd4416185b3176c9c1269cb835544a7e6d820abf6acc25bb84147518bd6"
+      "sha256": "0dcec941ac1487f6b0ecb0afe1781cb06da0122b66c3eb47d61b5686ea869ccd"
     },
     {
       "path": "test/packaged-account/enrollment-open.spec.ts",
@@ -19025,7 +19158,7 @@
     },
     {
       "path": "test/packaged-account/enrollment-progress.spec.ts",
-      "sha256": "d26bac9d9f0ce91226ff2717b1ee202ba0289b6d9cda13f9fa939807da976647"
+      "sha256": "53dd08c29a209e703705157c3c275bc1e02f8089929cefb3060c50f240482b4d"
     },
     {
       "path": "test/packaged-account/enrollment-retry.spec.ts",
@@ -19033,11 +19166,11 @@
     },
     {
       "path": "test/packaged-account/enrollment-state-retry.spec.ts",
-      "sha256": "00c8f64410013cd4f5ae5a8742a11afec9bb092112039e7c4aebf8781caf26e7"
+      "sha256": "64fff4a18fd6f455162134714a34542836fb258d672addf9a3b2b3b9fd547788"
     },
     {
       "path": "test/packaged-account/generation-retry.spec.ts",
-      "sha256": "13d91b7d775c952c9c5cdbff23f65cf3fa9d1a129fa60a6f04e096d737a5811b"
+      "sha256": "0f24e8caab50422cc6300e1bae4e15129f4703ff567261727ec89e2cb3a83f2e"
     },
     {
       "path": "test/packaged-account/history-clock.spec.ts",
@@ -19045,7 +19178,7 @@
     },
     {
       "path": "test/packaged-account/history.spec.ts",
-      "sha256": "9887726ec156869061277cb99f77db9d0e2c39ddeabf1f4043d386de2b9917bf"
+      "sha256": "ca5aed5cfbaa8b884ffc7ba8c2b09fa09f826c7a0bcf1e35e9794a1c5c7fcf36"
     },
     {
       "path": "test/packaged-account/local-removal-flow.spec.ts",
@@ -19053,55 +19186,59 @@
     },
     {
       "path": "test/packaged-account/membership-connection.spec.ts",
-      "sha256": "e0977cd467d865e774b17812deaae045bfea1acd26cb1d00130a2db6ed0d3100"
+      "sha256": "74a5b9e70daf49cf912923ac4cb7f9a8f703fd84f6637506c33b81c77d990768"
     },
     {
       "path": "test/packaged-account/membership-custody.spec.ts",
-      "sha256": "8602f5c6988cf30a39ecf8eeb9d7cf8f13760a84e16a4069c2a73b8d0da3df44"
+      "sha256": "abd4b37f435f17795de43a3f459edbd236d6f99ac487bb7de17a572d5a0fbee7"
     },
     {
       "path": "test/packaged-account/missed-rotations.spec.ts",
-      "sha256": "cdc9ea7d3b3cc4a523dbc073682b91deec622d0917b65b32d9da9b8bb0d87032"
+      "sha256": "f0a7c6e894713ff6dea380c9ffef7ea5da328f07b4fdcc389863fe51243b1361"
     },
     {
       "path": "test/packaged-account/multi-tab-protection.spec.ts",
-      "sha256": "d5bebea8c2eb9e31f35cb560bfeb5dcdd53bcf2a15315b0338a555295f2c4a87"
+      "sha256": "ac474298334b1f482c665df5c6d3985e85d177522fac577affb8fd64a5ab6a28"
+    },
+    {
+      "path": "test/packaged-account/non-overlapping-sessions.spec.ts",
+      "sha256": "a10a4f1ed05915e3005273b5e248347b188f416b94170334a2e83dac5552d59f"
     },
     {
       "path": "test/packaged-account/offline.spec.ts",
-      "sha256": "6ab7dd81a835baddf0d0c4b1a086bc3061a74834ac591d5fa9e57ca065b4f4e5"
+      "sha256": "e447cbfd74f9fb573beb4cdaf133368291400283e3af62448ed8877d03807aa9"
     },
     {
       "path": "test/packaged-account/passkey-local-access.spec.ts",
-      "sha256": "ae49e0de7bbd61cd71ba808484b3ceb1e3a6c1da72feb2cd56defb5d85b336ef"
+      "sha256": "fde6165dcfbf06b02d4bf6b4c49ca8a8a6c245d5dd3719801903d14bc1f4f36c"
     },
     {
       "path": "test/packaged-account/receiver-compatibility.spec.ts",
-      "sha256": "e12dd4c41001d6eef53af93aed58455cc28e168af6b1f3f9109bb3823a3e00e6"
+      "sha256": "5b9ca14d415e6eb3a1e6069f7fb89c69335f77e613ce876e04c8e0ec0fbe8551"
     },
     {
       "path": "test/packaged-account/recovery-progress-isolation.spec.ts",
-      "sha256": "22ea3ac309b8abb17b3c540d5e2125ebd878cef623afd47a0dad876ebe3e602e"
+      "sha256": "b15a9bf8c7bdd9466325c3cd85dbb78997cfe160a20b0ae62a66e0ee0a9fd86e"
     },
     {
       "path": "test/packaged-account/recovery.spec.ts",
-      "sha256": "e8062623b17c4626f1d33c0cc0264c584c6964326a057611689f24ec68297711"
+      "sha256": "55eda38e9020c0ee30ec24713897337bab632e5dd7774ec7f6cbd7613fd9488e"
     },
     {
       "path": "test/packaged-account/removal-custody.spec.ts",
-      "sha256": "56c2c5a810d8ccfb36c6a39f2895afced7dce78c12ed3e5fe34d862a705ca4b1"
+      "sha256": "a4d2dd4a401ada414395d52cf12369b169bb1e0c43b51fc5a8f5f9ce95c6b640"
     },
     {
       "path": "test/packaged-account/removal-observation.spec.ts",
-      "sha256": "f8b8c753ff9ef0bbdd331a64a3b8c61e67b7422cb04c684a1876e276e65e1b8b"
+      "sha256": "7036b867508c95b47836825c84e14187ceaf0b92f4fc12516a11019895189718"
     },
     {
       "path": "test/packaged-account/removal-regressions.spec.ts",
-      "sha256": "2c8e9cf46ab15f7ae553df9d495db049bb9592766cb258828ee14f23811d2872"
+      "sha256": "e15ca40eb07354c6d6f87f36f55541c835edfab9c4416b5402a1230477c07052"
     },
     {
       "path": "test/packaged-account/replacement-handoff.spec.ts",
-      "sha256": "f99cfcb04704b2c88b68c256e9e822632eb2c534b13b9efec5d6973033eb25f6"
+      "sha256": "581f372e6f4847101cd16a365a8f0e943bdb9f94f5b575a62c2800e7806bfbef"
     },
     {
       "path": "test/packaged-account/server.ts",
@@ -19113,7 +19250,7 @@
     },
     {
       "path": "test/packaged-account/sessions.spec.ts",
-      "sha256": "ad52c8fe75f011be4366bf327fa753fcfda88b74fcb516e0eac72eb0c3d6800c"
+      "sha256": "7ffed34b4b5b55d236802a7659564e32c211310636346bf60eba06a27d67a33f"
     },
     {
       "path": "test/packaged-account/sync-login.spec.ts",
@@ -19125,15 +19262,15 @@
     },
     {
       "path": "test/packaged-account/text-admission.spec.ts",
-      "sha256": "11cb3b1ed24605a18fcaf6e27f1ec15a19a9c10bd561d96d5927055fe24cd232"
+      "sha256": "9ffe33442de8e1571c739e0217de7540b423947a56d9be66d80a800c45626db7"
     },
     {
       "path": "test/packaged-account/updates.spec.ts",
-      "sha256": "ead835b230d62312635ff41a69ea624258488b7e49d2037dd4ef466835f9f789"
+      "sha256": "23385ba5aa7f3c3fce86ce1b93993cf8d7322433af2f25e000ad4ae7fa5757c7"
     },
     {
       "path": "test/packaged-account/welcome.spec.ts",
-      "sha256": "5e0d7eae7ba7a47aa9c179539ffdfe62640d64a4fa0943f7ab2b4b3f421f3743"
+      "sha256": "a78f63bf78394052dfd845bd5e72a56980ffb3e702af953f279911b6ce1cc936"
     },
     {
       "path": "test/packagedConfig.test.ts",
@@ -19165,7 +19302,7 @@
     },
     {
       "path": "test/private-migration/rehearsal.spec.ts",
-      "sha256": "151056d9f8d4c5f06853e8e66e21aae861ea6ad03b9cc38ccd212cfac76146eb"
+      "sha256": "ef329efe77bd3f630a9996c550b495af70f91740b87a54241c8390e6d06a362f"
     },
     {
       "path": "test/privateAccess.test.ts",
@@ -19273,7 +19410,7 @@
     },
     {
       "path": "test/release-validation/campaign-wrappers.test.mjs",
-      "sha256": "e350fba875932a466e85d76a1b9f221ebfa3b249b92453ecff6a7cbcf0730542"
+      "sha256": "4e540823a1f6f9a8b1292fac6c5724ff8befe63ec777505a58d3cf1a6c1078cb"
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",
@@ -19309,11 +19446,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "3c30bdd0cacf7291e0081d45830ac922f4c6efce9a8fcdc5034ae4b030d61bfc"
+      "sha256": "47c73118be30bb86ae3256b2dc393a07943fbd2cda98d2f7edacccf5c4f937f8"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "d11cc83c6898c1d83ed2366a15a9da2c20861f9a573233af74359d265e13f44b"
+      "sha256": "4085129ec09b945b43cd862e0dafcfeaa52329740b8da77ffa44ae1f7e629f6a"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -19353,7 +19490,7 @@
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "f7cb07145fba759686a76e0af72abc6b34c6d45064fa3ed359590039e680a34d"
+      "sha256": "f2f7a02b469879bb767c46da84e3db05117d25fce44b0703e5d93bdc0229875e"
     },
     {
       "path": "test/release-validation/stage.test.mjs",
@@ -19749,7 +19886,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "3d6af916703e98becc38ceb7c942c78fab8d2cd569ab3101317bd491e07ff890"
+      "sha256": "b4255d79126d789d42e69001c817e496e3d9e9e01d01dd20a670a004952eb6b2"
     },
     {
       "path": "test/workspacePreparation.test.ts",

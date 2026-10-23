@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-23",
+  "source": "Operator feedback in this conversation following the production update/check request",
+  "releaseContext": "Server verified at Version 51d8550d; no separate per-device version labels or browser inventory supplied in this reply",
+  "verbatim": "hey, nice. catch up and real-time sync were massively better, undo, etc. i don't have a good unsynced backlog for observing long catchups, but the delay between devices is close to real time. i think this is getting very close to what it would look like with a websockets connection between the devices, which is pretty exciting.",
+  "evidenceType": "Qualitative operator observation on actual devices, without instrumentation",
+  "reported": [
+    "Catch-up and live sync substantially improved",
+    "Delay between devices close to real time",
+    "Undo included in positive feedback, without a separate detailed scenario"
+  ],
+  "notEstablished": [
+    "Long-backlog catch-up; operator lacked a suitable unsynced backlog",
+    "Individual lock/reopen and offline-reopen outcomes were not described",
+    "A measured latency value or WebSocket comparison",
+    "Independent version confirmation for each device"
+  ],
+  "scope": "Human feedback complements the server/artifact verification; it does not broaden the finite local benchmark or change qualification status"
+}

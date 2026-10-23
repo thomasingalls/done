@@ -1,0 +1,30 @@
+[
+  {
+    "direction": "first-to-second",
+    "acceptedPosition": 5,
+    "exactCommittedUploadAndResponse": true,
+    "clientVerifiedAcceptance": true,
+    "senderClosedAndOfflineBeforeReceiverOpened": true,
+    "receiverInitiallyOfflineAndMissingMarker": true,
+    "receiverOfflineNetworkProbeFailed": true,
+    "receiverOfflineNavigatorOnlineHint": true,
+    "apiRestartedBetweenUploadAndReceive": true,
+    "catchupMs": 1810.666916000002,
+    "receiverOfflineReopenRetainedWriting": true,
+    "pageErrors": []
+  },
+  {
+    "direction": "second-to-first",
+    "acceptedPosition": 2,
+    "exactCommittedUploadAndResponse": true,
+    "clientVerifiedAcceptance": true,
+    "senderClosedAndOfflineBeforeReceiverOpened": true,
+    "receiverInitiallyOfflineAndMissingMarker": true,
+    "receiverOfflineNetworkProbeFailed": true,
+    "receiverOfflineNavigatorOnlineHint": true,
+    "apiRestartedBetweenUploadAndReceive": true,
+    "catchupMs": 1809.9385829999956,
+    "receiverOfflineReopenRetainedWriting": true,
+    "pageErrors": []
+  }
+]

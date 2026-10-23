@@ -23,6 +23,8 @@ export type TextAction =
       readonly name:
         | 'backspace'
         | 'delete'
+        | 'deleteWordBackward'
+        | 'newline'
         | 'moveLineUp'
         | 'moveLineDown'
         | 'enter'

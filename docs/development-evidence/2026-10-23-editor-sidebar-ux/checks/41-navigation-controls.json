@@ -1,0 +1,14 @@
+[
+  {
+    "name": "removed assertion",
+    "detected": true
+  },
+  {
+    "name": "changed expectation",
+    "detected": true
+  },
+  {
+    "name": "changed wait",
+    "detected": true
+  }
+]

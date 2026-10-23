@@ -1,0 +1,32 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+const root = '/Users/thomasingalls/.codex/worktrees/7fda/done';
+const scratch = '/private/tmp/done-pr57-bookkeeping-20261023/checks';
+const { compileManifest, selectStages } = await import(pathToFileURL(join(root, 'scripts/release-validation/manifest.mjs')));
+const { manifestSnapshot } = await import(pathToFileURL(join(root, 'scripts/release-validation/manifest-snapshot.mjs')));
+const old = JSON.parse(readFileSync(join(root, 'docs/release-validation-manifest.json')));
+const current = compileManifest(root, JSON.parse(readFileSync(join(root, 'docs/release-validation-graph.json'))));
+writeFileSync(join(scratch, 'manifest-before.json'), JSON.stringify(old));
+writeFileSync(join(scratch, 'manifest-proposed.json'), manifestSnapshot(current));
+const before = new Map(old.rows.map((r) => [r.id, r]));
+const after = new Map(current.rows.map((r) => [r.id, r]));
+const changes = current.rows.filter((r) => JSON.stringify(r) !== JSON.stringify(before.get(r.id))).map((r) => {
+  const original = before.get(r.id);
+  return { id: r.id, kind: r.kind, added: !original,
+    keysChanged: original ? [...new Set([...Object.keys(r), ...Object.keys(original)])].filter((k) => JSON.stringify(r[k]) !== JSON.stringify(original[k])) : Object.keys(r),
+    oldCases: original?.stage?.expect?.cases?.length, newCases: r.stage?.expect?.cases?.length,
+    oldStageId: original?.stage?.id, newStageId: r.stage?.id,
+  };
+});
+const wrappers = selectStages(current, 'wrapper-account-receive-editor');
+const record = {
+  topLevelKeys: Object.keys(current), oldRows: old.rows.length, currentRows: current.rows.length,
+  oldStatus: old.status, currentStatus: current.status,
+  oldUnresolved: old.unresolved?.length, currentUnresolved: current.unresolved?.length,
+  removedRows: old.rows.filter((r) => !after.has(r.id)).map((r) => r.id), changes,
+  receiveEditor: wrappers.map((s) => ({ id: s.id, cases: s.expect.cases.length, steps: s.expect.steps.map((x) => ({ argv: x.argv, cases: x.expect.cases?.length, expect: x.expect.kind })) })),
+  generalCount: selectStages(current, 'general-tests').reduce((n,s)=>n+s.expect.cases.length,0),
+};
+writeFileSync(join(scratch, 'manifest-delta.json'), JSON.stringify(record, null, 2) + '\n');
+console.log(JSON.stringify(record, null, 2));

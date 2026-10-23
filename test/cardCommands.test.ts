@@ -52,9 +52,9 @@ const editor = (doc: string, cursor: number) => {
   });
   views.push(view);
 
-  const press = (key: string): void => {
+  const press = (key: string, shiftKey = false): void => {
     view.contentDOM.dispatchEvent(
-      new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }),
+      new KeyboardEvent('keydown', { key, shiftKey, bubbles: true, cancelable: true }),
     );
   };
 
@@ -78,21 +78,21 @@ describe('the split gesture', () => {
       `text${'\n'.repeat(CARD_SPLIT_RETURNS - 2)}`,
       4 + CARD_SPLIT_RETURNS - 2,
     );
-    press('Enter');
+    press('Enter', true);
     expect(calls.split).toEqual([]);
   });
 
   it('fires on the return that reaches it, and consumes the ones before', () => {
     const doc = `text${returns}`;
     const { calls, press } = editor(doc, doc.length);
-    press('Enter');
+    press('Enter', true);
     expect(calls.split).toEqual([[4, doc.length]]);
   });
 
   it('leaves the tail of the card to the new one', () => {
     const doc = `head${returns}tail`;
     const { calls, press } = editor(doc, 4 + returns.length);
-    press('Enter');
+    press('Enter', true);
     // The first half keeps `head`; the second starts at `tail`.
     expect(calls.split).toEqual([[4, 4 + returns.length]]);
   });
@@ -101,7 +101,7 @@ describe('the split gesture', () => {
     const doc = `text${returns}`;
     const { view, calls, press } = editor(doc, doc.length);
     view.dispatch({ selection: { anchor: 0, head: doc.length } });
-    press('Enter');
+    press('Enter', true);
     expect(calls.split).toEqual([]);
   });
 });
@@ -125,5 +125,15 @@ describe('leaving', () => {
     const { calls, press } = editor('a card', 3);
     press('Escape');
     expect(calls.leaves).toBe(1);
+  });
+});
+
+describe('finishing a card', () => {
+  it('plain Enter leaves even after two newlines, without splitting or changing text', () => {
+    const { view, calls, press } = editor('head\n\ntail', 6);
+    press('Enter');
+    expect(calls.leaves).toBe(1);
+    expect(calls.split).toEqual([]);
+    expect(view.state.doc.toString()).toBe('head\n\ntail');
   });
 });

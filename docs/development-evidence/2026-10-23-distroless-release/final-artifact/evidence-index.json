@@ -1,0 +1,190 @@
+{
+  "files": [
+    {
+      "path": "build-metadata.json",
+      "bytes": 2425,
+      "sha256": "51d0a0957835d2b78e887f3a28da0073b24c89af6f8b518492494472cbe1b98a"
+    },
+    {
+      "path": "build.log",
+      "bytes": 23319,
+      "sha256": "34ba86e016713ff7b5762d44af3fd7c1c3585005382f578b5f5b31556e3c1a65"
+    },
+    {
+      "path": "check-infra-commands.py",
+      "bytes": 2448,
+      "sha256": "b33e39a9de509547f5aeadce7ebbd7438144fe48a19be14c5111063bcf9f738c"
+    },
+    {
+      "path": "check-infra-final.py",
+      "bytes": 2448,
+      "sha256": "40c819bee6da9c07b821880b1e5ecdcd4b2d563615c9da67ddcd06e59a3ffe0d"
+    },
+    {
+      "path": "check-tls.mjs",
+      "bytes": 2664,
+      "sha256": "fb484c447c52417cc1c7071484a599f101e9dd0d878e82dc66a655d207110d5b"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1125,
+      "sha256": "5a70dd4c98b644f7f8a036d307a9a367639e815a229045b83797bb57831169d6"
+    },
+    {
+      "path": "extract-image.log",
+      "bytes": 1036,
+      "sha256": "92d71b1ab3078774277cee70fa2b6df5e5866620b9dc3435e159dbd00d8954f8"
+    },
+    {
+      "path": "extract-image.py",
+      "bytes": 3118,
+      "sha256": "e62ca450f76743dcd28bfe23a97b4cfa3dba230add86bfdb8bf27a6e8861fe0a"
+    },
+    {
+      "path": "frontend-before.json",
+      "bytes": 17673,
+      "sha256": "637140ff1a6759a0114d715d8edc07a6deb6b1c23bc7bee903c032daa99177ef"
+    },
+    {
+      "path": "image.json",
+      "bytes": 1036,
+      "sha256": "92d71b1ab3078774277cee70fa2b6df5e5866620b9dc3435e159dbd00d8954f8"
+    },
+    {
+      "path": "infra-command-compatibility.json",
+      "bytes": 2870,
+      "sha256": "3fec682b5a8068e55e6ce901164e56647e5786c6636c2cf9e560b7fe020cf02e"
+    },
+    {
+      "path": "infra-command-compatibility.log",
+      "bytes": 112,
+      "sha256": "04f73c96127cc2ea15bea4f30c0cf48743e6637b0d8b6e3c2626fa8d087e43df"
+    },
+    {
+      "path": "predecessor-frontend-before.json",
+      "bytes": 15507,
+      "sha256": "9e697b6bb6846b4190ffe1b281650b005d72d5ca4bef8790bca26c9c25bfe5da"
+    },
+    {
+      "path": "prepare-source.py",
+      "bytes": 2512,
+      "sha256": "cda3eb6d1ca9fabeaa9b6ce891616adaea8127c0a8b040d0b248d2be0f700352"
+    },
+    {
+      "path": "prepare-tests.py",
+      "bytes": 1229,
+      "sha256": "cd0f901d33c59b567376d370605556ca50e034d442b4f06c5ffce761d6175edb"
+    },
+    {
+      "path": "prepare-upgrade.log",
+      "bytes": 128,
+      "sha256": "eccda367d167fb5aefd4bf9d79a7f9051e8ddb499be2fee4b35016e83eedab6a"
+    },
+    {
+      "path": "prepare-upgrade.py",
+      "bytes": 3689,
+      "sha256": "57e9e3640c6f90c28faccf4c8bc4d12bc45354d7d8abc885cdade7019345b85c"
+    },
+    {
+      "path": "publication-upgrade.spec.ts.txt",
+      "bytes": 6405,
+      "sha256": "45a94a1573a679b2e30a0c3524c7d08f7bd79493e5723f3606ac26b53387e49e"
+    },
+    {
+      "path": "runtime-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-final/backup.tap",
+      "bytes": 2477,
+      "sha256": "871b70cd85dd0073192d122f9b94393478a6c96d3010b5d3935bd0458d11f607"
+    },
+    {
+      "path": "runtime-final/maintenance.tap",
+      "bytes": 2243,
+      "sha256": "3a087415f28bc9fd27c48566c8ba044669887be5fa9de6e701728ca9cdcf2203"
+    },
+    {
+      "path": "runtime-final/restore.tap",
+      "bytes": 2079,
+      "sha256": "d95088ce477b7357c899716784092db8b035cce15dd8248552fb8576ffb80df4"
+    },
+    {
+      "path": "runtime-final/runtime-gateway.tap",
+      "bytes": 4988,
+      "sha256": "af765471bee788a9840700d8c9675e4e22ddcfe5921e4530e47fcfce1385e1c1"
+    },
+    {
+      "path": "runtime-final/runtime-image-check.json",
+      "bytes": 2709,
+      "sha256": "4ad548303bea7bbdedebfb5d2be7ca52fbb57671236850e2148c9e7e6ca53eea"
+    },
+    {
+      "path": "runtime-source-files.json",
+      "bytes": 19312,
+      "sha256": "94497b7d40579049a536ee1177d359f9adacbf8b1a72ab899c4078fa08a50d1c"
+    },
+    {
+      "path": "scan.log",
+      "bytes": 607,
+      "sha256": "6cb8bdb599cf484811287c859f5b50b44c83b3d41a504131e2d874f5f70964a8"
+    },
+    {
+      "path": "smoke.log",
+      "bytes": 891,
+      "sha256": "220bcee40be2c86714b75698e06f240faacc6eb5574c72582177bd29c20114ee"
+    },
+    {
+      "path": "source-prepare.log",
+      "bytes": 3105,
+      "sha256": "493511f8584e81ebd06a7436a90944547181a5432dc3d0e5080260cc1c7ef156"
+    },
+    {
+      "path": "source.json",
+      "bytes": 3105,
+      "sha256": "493511f8584e81ebd06a7436a90944547181a5432dc3d0e5080260cc1c7ef156"
+    },
+    {
+      "path": "tls.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tls/tls-check.json",
+      "bytes": 201,
+      "sha256": "420edd9771bc62e3786dc10d49f8a50ea20da5cb2a6bbf95ea67cb152080f7cf"
+    },
+    {
+      "path": "upgrade-apparatus.json",
+      "bytes": 992,
+      "sha256": "3aa5e626bbbe68b254b37818dc29c37eb164c936332865c2b285564626f83652"
+    },
+    {
+      "path": "upgrade-results.json",
+      "bytes": 4106,
+      "sha256": "3c4d792f698958f1115d5857483dc38ebae0c29810bde477b6230456ec37e59f"
+    },
+    {
+      "path": "upgrade.log",
+      "bytes": 408,
+      "sha256": "776c1b73dd4625d4e379d92fe026b3b9cea3163c3a16fe751c9c126cd62ba2e6"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 2532,
+      "sha256": "e0fbd482fd1423dc6417ac2115cf77ba555ba939f6779dddb0ede7337bab474e"
+    },
+    {
+      "path": "verify-and-retain.py",
+      "bytes": 5170,
+      "sha256": "d17566c102cfaca11816b9dcc99282ef1d8bc84267c415767e14af0bcf8f1ffe"
+    },
+    {
+      "path": "vulnerabilities.json",
+      "bytes": 281668,
+      "sha256": "ea87fa1ca12062cbd3812002957e1f02e09faebdb882bce6f9cb0d55a784ebad"
+    }
+  ],
+  "excluded": "Image/source tar archives remain local. No private keys, service databases, browser profiles or dependency trees are retained in the evidence zip."
+}

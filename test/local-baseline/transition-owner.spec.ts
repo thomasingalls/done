@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { build } from 'vite';
 // @ts-expect-error Shared native test instrumentation is JavaScript.
@@ -67,6 +68,7 @@ const physicalHistory = (page: Page) =>
   });
 const panel = (p: Page) => p.getByRole('region', { name: 'History maintenance', exact: true });
 async function inspect(p: Page) {
+  await openMenuSection(p, 'Data');
   await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
   await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
   await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
@@ -227,6 +229,7 @@ test(
             .toMatchObject({ kind: 'planned', previousRevision: 3, survivors: 0 });
         }
       // The joined owner starts another admission; the original owner remains open across it.
+      await openMenuSection(second, 'Account');
       await second.getByRole('button', { name: 'Devices', exact: true }).click();
       await second.getByRole('button', { name: 'Connect another device', exact: true }).click();
       await unlock(second, pair.next.code);
@@ -248,6 +251,7 @@ test(
       await expect
         .poll(async () => await check(page), { timeout: 20000 })
         .toMatchObject({ kind: 'matched', mode: 'continued', authorityEpoch: 5 });
+      await openMenuSection(page, 'Account');
       await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await page.goto('/');
       await openSaved(page, pair.first.code);

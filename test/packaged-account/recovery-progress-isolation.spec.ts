@@ -1,10 +1,11 @@
 import { writeFile } from 'node:fs/promises';
 import { test, expect, type Page } from '@playwright/test';
-import { openApp } from '../geometry/openApp';
+import { openApp, openMenuSection } from '../geometry/openApp';
 import { authenticator } from '../device-enrollment/helpers';
 import { startService, stopService } from './server';
 
 async function protectAndRegister(page: Page) {
+  await openMenuSection(page, 'Sync');
   await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
   await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
   await page.getByRole('button', { name: 'Continue', exact: true }).click();

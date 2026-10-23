@@ -1,0 +1,15 @@
+{
+  "baseCommit": "77669ec79f78779d77e500d0f163c0299156b968",
+  "baselineProductionCommit": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "comparedPaths": [
+    "account-service",
+    "account-protocol",
+    "src/account",
+    "src/crdt/accountReceive.ts",
+    "src/crdt/accountSyncDriver.ts",
+    "src/crdt/accountDelivery.ts"
+  ],
+  "changedComparedPaths": [],
+  "newTestSha256": "a10a4f1ed05915e3005273b5e248347b188f416b94170334a2e83dac5552d59f",
+  "trackedOldTestChanges": []
+}

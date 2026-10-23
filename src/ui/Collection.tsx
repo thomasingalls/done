@@ -116,6 +116,11 @@ export const Collection = ({
         hint: 'Remove this card',
         run: () => void execute({ kind: 'remove', id }),
       };
+      const duplicate: CardAction = {
+        label: 'Duplicate',
+        hint: 'Duplicate to Scheduled',
+        run: () => void execute({ kind: 'duplicate', id }),
+      };
 
       if (section === 'next') {
         return [
@@ -125,6 +130,7 @@ export const Collection = ({
             hint: 'Move to Scheduled',
             run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
           },
+          duplicate,
           remove,
         ];
       }
@@ -148,6 +154,7 @@ export const Collection = ({
                 to: { date: addDays(date, 1), section: 'scheduled' },
               }),
           },
+          duplicate,
           remove,
         ];
       }
@@ -166,6 +173,7 @@ export const Collection = ({
           run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
           requiresUnlock: true,
         },
+        duplicate,
         remove,
       ];
     },

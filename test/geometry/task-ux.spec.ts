@@ -1,6 +1,6 @@
-import { expect, type Page } from '@playwright/test';
+import { devices, expect, type Page } from '@playwright/test';
 import { test } from '../release-validation/browser-fixture';
-import { openApp, reloadApp } from './openApp';
+import { openApp, reloadApp, openMenuSection } from './openApp';
 
 const day = (page: Page) => page.locator('.day-panel[data-active="true"]');
 const cards = (page: Page, section: string) =>
@@ -113,11 +113,106 @@ for (const section of ['next', 'scheduled']) {
       .press('ArrowDown');
     await expect(cards(page, section).nth(0)).toContainText('second');
     await expect(cards(page, section).nth(1)).toContainText('first');
+    await openMenuSection(page, 'Data');
     await page.locator('#menu').getByRole('button', { name: 'Undo', exact: true }).click();
     await expect(cards(page, section).nth(0)).toContainText('first');
+    await openMenuSection(page, 'Data');
     await page.locator('#menu').getByRole('button', { name: 'Redo', exact: true }).click();
     await reloadApp(page);
     await expect(cards(page, section).nth(0)).toContainText('second');
     await expect(cards(page, section).nth(1)).toContainText('first');
   });
 }
+
+// Exercise Mac hardware gestures in both layouts. Android virtual keyboards synthesize
+// unmodified Enter; their plain completion path is checked separately below.
+test.describe('Mac card keyboard', () => {
+  test.use({
+    userAgent: devices['Desktop Chrome'].userAgent.replace(
+      /\([^)]*\)/,
+      '(Macintosh; Intel Mac OS X 10_15_7)',
+    ),
+  });
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() =>
+      Object.defineProperty(navigator, 'platform', { get: () => 'MacIntel' }),
+    );
+  });
+  for (const section of ['next', 'done', 'scheduled']) {
+    test(`${section} Enter finishes on the same card and a second Enter resumes at the caret`, async ({
+      page,
+    }) => {
+      await openApp(page);
+      await add(page, 'alpha beta', section === 'next' ? 'scheduled' : section);
+      if (section === 'next')
+        await cards(page, 'scheduled')
+          .getByRole('button', { name: 'Move to Next: alpha beta', exact: true })
+          .click();
+      const card = cards(page, section).first();
+      const surface = card.locator('.card-surface');
+      await surface.focus();
+      await surface.press('Enter');
+      const editor = card.locator('.cm-content');
+      await expect(editor).toBeFocused();
+      await editor.press('Home');
+      await editor.press('ArrowRight');
+      await editor.press('Shift+Enter');
+      await expect(editor.locator('.cm-line')).toHaveText(['a', 'lpha beta']);
+      await editor.press('Enter');
+      await expect(card).toHaveAttribute('data-editing', 'false');
+      await expect(surface).toBeFocused();
+      await surface.press('Enter');
+      await expect(editor).toBeFocused();
+      await page.keyboard.insertText('|');
+      await expect(editor.locator('.cm-line')).toHaveText(['a', '|lpha beta']);
+      await editor.press('ControlOrMeta+z');
+      await expect(editor.locator('.cm-line')).toHaveText(['a', 'lpha beta']);
+      await editor.press('Enter');
+      await reloadApp(page);
+      await expect(cards(page, section).first()).toContainText('lpha beta');
+      await expect(cards(page, section)).toHaveCount(1);
+    });
+  }
+
+  test('three Shift Enters split a card and completion stays closed after automatic split focus', async ({
+    page,
+  }) => {
+    await openApp(page);
+    await add(page, 'headtail');
+    await cards(page, 'scheduled').first().locator('.card-surface').click();
+    const editor = cards(page, 'scheduled').first().locator('.cm-content');
+    await editor.press('Home');
+    for (let i = 0; i < 4; i++) await editor.press('ArrowRight');
+    await editor.press('Shift+Enter');
+    await editor.press('Shift+Enter');
+    await expect(cards(page, 'scheduled')).toHaveCount(1);
+    await editor.press('Shift+Enter');
+    await expect(cards(page, 'scheduled')).toHaveCount(2);
+    const second = cards(page, 'scheduled').nth(1);
+    await expect(second.locator('.cm-content')).toBeFocused();
+    await page.keyboard.insertText('|');
+    await expect(second.locator('.cm-content')).toHaveText('|tail');
+    await second.locator('.cm-content').press('Enter');
+    await expect(second).toHaveAttribute('data-editing', 'false');
+    await expect(second.locator('.card-surface')).toBeFocused();
+    await second.locator('.card-surface').press('Enter');
+    await second.locator('.cm-content').press('ControlOrMeta+z');
+    await expect(second.locator('.cm-content')).toHaveText('tail');
+    await second.locator('.cm-content').press('ControlOrMeta+z');
+    await expect(cards(page, 'scheduled')).toHaveCount(1);
+  });
+});
+
+test('native card Enter completes without inserting text on either browser platform', async ({
+  page,
+}) => {
+  await openApp(page);
+  await add(page, 'native completion');
+  const card = cards(page, 'scheduled').first();
+  await card.locator('.card-surface').click();
+  await expect(card.locator('.cm-content')).toBeFocused();
+  await card.locator('.cm-content').press('Enter');
+  await expect(card).toHaveAttribute('data-editing', 'false');
+  await expect(card.locator('.card-surface')).toBeFocused();
+  await expect(card.locator('.card-surface')).toHaveText('native completion');
+});

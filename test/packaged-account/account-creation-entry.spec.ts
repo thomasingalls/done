@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { openApp } from '../geometry/openApp';
+import { openApp, openMenuSection } from '../geometry/openApp';
 import { startService, stopService } from './server';
 
 test.beforeEach(({ page }) => page.setDefaultTimeout(15000));
@@ -40,6 +40,7 @@ for (const carrier of ['database', 'journal'] as const)
       ).toBeVisible();
       expect(begins).toBe(0);
       const slot = new URL(page.url()).pathname.split('/')[2]!;
+      await openMenuSection(page, 'Account');
       await page.getByRole('button', { name: 'Remove from this device', exact: true }).click();
       await page.getByRole('button', { name: 'Continue to confirmation' }).click();
       await page.getByLabel('Type REMOVE to confirm').fill('REMOVE');
@@ -147,6 +148,7 @@ test('direct sync entry returns an automatic Local list to protection without as
     await expect(page.locator('input[type=password]')).toHaveCount(0);
     await page.getByRole('button', { name: 'Back to local workspace', exact: true }).click();
     await expect(page.locator('.shell')).toContainText('Keep this automatic list');
+    await openMenuSection(page, 'Account');
     await expect(
       page.getByRole('button', { name: 'Add an unlock code', exact: true }),
     ).toBeVisible();

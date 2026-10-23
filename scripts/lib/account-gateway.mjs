@@ -72,9 +72,11 @@ export async function startAccountGateway({
   const serve = packagedApplication(packaged);
   let closing;
   const streams = new Set();
+  const unrequested = new Set();
   const server = createServer(
     { headersTimeout: 10000, requestTimeout: 15000 },
     (request, response) => {
+      unrequested.delete(request.socket);
       // closeIdleConnections at shutdown misses responses still in flight. Reap
       // them as they finish, and stop admitting polls on existing keep-alive sockets.
       response.once('close', () => {
@@ -97,6 +99,13 @@ export async function startAccountGateway({
       serve(request, response);
     },
   );
+  server.on('connection', (socket) => {
+    if (closing) return void socket.destroy();
+    // Node's idle-connection reaper misses speculative sockets before their first
+    // complete HTTP headers. They have not dispatched an operation to the API.
+    unrequested.add(socket);
+    socket.once('close', () => unrequested.delete(socket));
+  });
   await new Promise((accept, reject) => {
     server.once('error', reject);
     server.listen(port, address, accept);
@@ -109,6 +118,8 @@ export async function startAccountGateway({
         streams.clear();
         server.close(accept);
         server.closeIdleConnections();
+        for (const socket of unrequested) socket.destroy();
+        unrequested.clear();
       })),
   });
 }

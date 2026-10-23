@@ -1,0 +1,412 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-ux-20261023-patches/playwright.sidebar-overflow-firefox.config.ts",
+      "sidebar-polish.spec.ts",
+      "date-picker.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-ux-20261023-patches/playwright.sidebar-overflow-firefox.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-53-candidate-firefox",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-ux-20261023-patches/checks-53/candidate-firefox.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node /Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 54180 --strictPort",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "port": 54180,
+      "reuseExistingServer": false,
+      "env": {
+        "APP_BUILD_REVISION": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61-dirty",
+        "APP_BUILD_DATE": "2026-10-23"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "date-picker.spec.ts",
+      "file": "date-picker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "date text, padding and icon all request the picker, as do Enter and Space",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5140,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:15.380Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-3491cdf2a51f108c573b",
+          "file": "date-picker.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "date text requests the real native picker during user activation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1169,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:23.222Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-6a44e372e4c054eaf9bd",
+          "file": "date-picker.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "a missing or refused picker API retains native date entry and navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1157,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:24.398Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-ce6df5125a82eff93468",
+          "file": "date-picker.spec.ts",
+          "line": 47,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "sidebar-polish.spec.ts",
+      "file": "sidebar-polish.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "sidebar preferences have readable fields and consistent targets at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2775,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:25.589Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-d8003f61fae74f7e4857",
+          "file": "sidebar-polish.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "sidebar preferences have readable fields and consistent targets at 1280px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:28.372Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-8336e60c48c3ff563631",
+          "file": "sidebar-polish.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "sidebar labels fit at 280px with 16px base text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1453,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:29.629Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-0660de4d9059a54922aa",
+          "file": "sidebar-polish.spec.ts",
+          "line": 58,
+          "column": 3
+        },
+        {
+          "title": "sidebar labels fit at 360px with 24px base text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1545,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:31.087Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-49632fc76716cb67c3bc",
+          "file": "sidebar-polish.spec.ts",
+          "line": 58,
+          "column": 3
+        },
+        {
+          "title": "sidebar labels fit at 320px with 32px base text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2006,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:32.638Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-8d7f786aae1fcf62a83b",
+          "file": "sidebar-polish.spec.ts",
+          "line": 58,
+          "column": 3
+        },
+        {
+          "title": "sidebar labels fit at 1280px with 16px base text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1424,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:34.653Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7d67cc5341c557b3144b-0b76621ae165da09e977",
+          "file": "sidebar-polish.spec.ts",
+          "line": 58,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T11:32:14.448Z",
+    "duration": 22161.648,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

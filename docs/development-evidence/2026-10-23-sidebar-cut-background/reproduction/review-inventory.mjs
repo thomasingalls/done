@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {readFileSync}from'node:fs';
+import {pathToFileURL}from'node:url';
+import {resolve}from'node:path';
+const root=process.cwd(), baseline=process.argv[2];assert(baseline,'Pass the prior planning snapshot path');
+const {buildInventory}=await import(pathToFileURL(resolve(root,'scripts/release-validation/inventory.mjs')));
+const {compileManifest}=await import(pathToFileURL(resolve(root,'scripts/release-validation/manifest.mjs')));
+const old=JSON.parse(readFileSync(baseline)),next=buildInventory(root,JSON.parse(readFileSync('scripts/release-validation/policy.json')));
+const added=['test/admittedClipboard.test.ts','test/geometry/sidebar-polish.spec.ts','test/geometry/date-picker.spec.ts','test/geometry/cut.spec.ts'].sort();
+assert.deepEqual(next.tests.filter(t=>!old.tests.some(o=>o.path===t.path)).map(t=>t.path).sort(),added);
+const a=structuredClone(old),b=structuredClone(next),before=new Map(a.inputs.map(t=>[t.path,t.sha256]));
+const changed=b.inputs.filter(t=>t.sha256!==before.get(t.path)).map(t=>t.path).sort();
+assert.deepEqual(changed,[...added,'test/geometry/workflow.spec.ts','test/first-device-setup/setup.spec.ts','test/first-device-upgrade/upgrade.spec.ts'].sort());
+b.tests=b.tests.filter(t=>!added.includes(t.path));b.inputs=a.inputs;b.counts.testFiles-=4;b.counts.requiredTestFiles-=4;assert.deepEqual(b,a);
+const m=compileManifest(root,next),newRows=m.rows.filter(r=>added.some(t=>r.id.includes(t)));assert.equal(newRows.length,4);assert(newRows.every(r=>r.blocked&&!r.stage));assert.equal(m.status,'blocked');
+console.log(JSON.stringify({status:'passed',added,changedInputHashes:changed,allExistingDeclarationsDispositionsAndOtherFieldsUnchanged:true,obligations:m.rows.length,unresolved:m.unresolved.length,newRows},null,2));

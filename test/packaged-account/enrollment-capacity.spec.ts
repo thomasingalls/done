@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors } from './devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
@@ -17,6 +18,7 @@ test('approval history retains its request and progress through an explicit capa
     retried = false;
   try {
     pair = await pairedEditors(page, browser, true);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Devices', exact: true }).click();
     await page.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(page, pair.first.code);

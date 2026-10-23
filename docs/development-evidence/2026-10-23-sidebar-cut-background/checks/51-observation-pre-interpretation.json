@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "visibility": {
+    "visibility": "visible",
+    "focus": true,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36"
+  },
+  "liveReceiverCaughtUp": true,
+  "forcedFreeze": {
+    "requested": true,
+    "freezeVerified": false,
+    "ticksBefore": "study-tick:4",
+    "ticksAfter": "study-tick:41",
+    "frozenDomContainsNewCard": true,
+    "observationWindowMs": 1500,
+    "returnMs": 4
+  },
+  "limitations": [
+    "Headless Chromium with Playwright defaults; not installed mobile or power-saver coverage.",
+    "DOM polling and automation affect background scheduling.",
+    "Forced CDP freeze demonstrates suspension, not OS scheduling frequency."
+  ],
+  "realAccountsUsed": false,
+  "securityPolicyChanged": false
+}

@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "addedRequiredFile": "test/packaged-account/non-overlapping-sessions.spec.ts",
+  "allExistingTestsInputsDispositionsAndRowsUnchanged": true,
+  "addedQualificationCredit": false,
+  "manifest": {
+    "status": "blocked",
+    "obligations": 892,
+    "unresolved": 348
+  },
+  "newRow": {
+    "id": "test:test/packaged-account/non-overlapping-sessions.spec.ts",
+    "kind": "test",
+    "path": "test/packaged-account/non-overlapping-sessions.spec.ts",
+    "invocation": {
+      "config": "playwright.packaged-account.config.ts",
+      "packages": [
+        "test:packaged-account"
+      ]
+    },
+    "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+  }
+}

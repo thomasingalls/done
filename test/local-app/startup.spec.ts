@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
 
@@ -31,6 +32,7 @@ const enroll = async (page: Page) => {
   return code;
 };
 const lock = async (page: Page) => {
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
   await state(page, 'unlock-required');
 };

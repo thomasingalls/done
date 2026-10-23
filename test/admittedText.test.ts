@@ -323,3 +323,36 @@ describe('admitted Goals text', () => {
     }
   });
 });
+
+// Native shortcuts remain semantic intents: storage refusal never publishes speculative text.
+describe('native shortcut admission', () => {
+  it.each([
+    ['deleteWordBackward', 'keep '],
+    ['newline', 'keep word\n'],
+    ['indent', '  keep word'],
+  ] as const)(
+    '%s waits for storage and retains one undoable accepted change',
+    async (name, after) => {
+      const f = await fixture();
+      try {
+        await f.doc.input(insert('keep word')).accepted;
+        const outgoing = f.emitted.length;
+        f.refuse();
+        f.pause();
+        const ticket = f.doc.input({ name });
+        expect(f.doc.read().text).toBe('keep word');
+        expect(f.emitted).toHaveLength(outgoing);
+        f.resume();
+        await ticket.accepted;
+        expect(f.doc.read().text).toBe(after);
+        expect(f.emitted).toHaveLength(outgoing + 1);
+        await f.doc.input({ name: 'undo' }).accepted;
+        expect(f.doc.read().text).toBe('keep word');
+        await f.doc.input({ name: 'redo' }).accepted;
+        expect(f.doc.read().text).toBe(after);
+      } finally {
+        await f.doc.close();
+      }
+    },
+  );
+});

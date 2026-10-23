@@ -1,0 +1,625 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-ux-20261023-patches/playwright.card-input.config.ts",
+      "card-focus.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-ux-20261023-patches/playwright.card-input.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-ux-20261023-patches/checks-42/reference-browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node /Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 54174 --strictPort",
+      "cwd": "/private/tmp/done-ux-20261023-patches/reference-41",
+      "port": 54174,
+      "reuseExistingServer": false,
+      "env": {
+        "APP_BUILD_REVISION": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61-dirty",
+        "APP_BUILD_DATE": "2026-10-23"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "card-focus.spec.ts",
+      "file": "card-focus.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "split focus can leave by clicking another input and stays there while typing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8087,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"15aaa3d0-c196-4357-9bc1-f1be0bf64658\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"15aaa3d0-c196-4357-9bc1-f1be0bf64658\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:67:24",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 24,
+                      "line": 67
+                    },
+                    "snippet": "  65 |     await page.keyboard.insertText('|');\n  66 |     await field(page).click();\n> 67 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n  70 |     await expect(field(page)).toHaveValue('another task');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 24,
+                        "line": 67
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"15aaa3d0-c196-4357-9bc1-f1be0bf64658\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n\n  65 |     await page.keyboard.insertText('|');\n  66 |     await field(page).click();\n> 67 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n  70 |     await expect(field(page)).toHaveValue('another task');\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:67:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:04.345Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-split-focus-can-3e0a1-nd-stays-there-while-typing-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 24,
+                    "line": 67
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-0b7f285b5cfb3f3fa473",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "split focus can Tab through its actions and leave the card",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5954,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"855bf2aa-a1c1-42b7-ab9a-71fe26414984\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"855bf2aa-a1c1-42b7-ab9a-71fe26414984\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 24,
+                      "line": 89
+                    },
+                    "snippet": "  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 24,
+                        "line": 89
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"855bf2aa-a1c1-42b7-ab9a-71fe26414984\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n\n  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:13.679Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-split-focus-can-80f67--actions-and-leave-the-card-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 24,
+                    "line": 89
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-0dcb3c3b0bbf18be1d32",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        },
+        {
+          "title": "merge focus can leave by clicking another input and stays there while typing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6012,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\nExpected: \u001b[32m\"another task\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" aria-busy=\"false\" class=\"compose-field\" aria-label=\"What’s scheduled?\" placeholder=\"What’s scheduled?\"></textarea>\u001b[22m\n\u001b[2m       - unexpected value \"\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\nExpected: \u001b[32m\"another task\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" aria-busy=\"false\" class=\"compose-field\" aria-label=\"What’s scheduled?\" placeholder=\"What’s scheduled?\"></textarea>\u001b[22m\n\u001b[2m       - unexpected value \"\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:70:31",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 31,
+                      "line": 70
+                    },
+                    "snippet": "  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n> 70 |     await expect(field(page)).toHaveValue('another task');\n     |                               ^\n  71 |     await field(page).press('Enter');\n  72 |     await expect(card).toHaveAttribute('data-editing', 'false');\n  73 |     await expect(field(page)).toBeFocused();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 31,
+                        "line": 70
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\nExpected: \u001b[32m\"another task\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" aria-busy=\"false\" class=\"compose-field\" aria-label=\"What’s scheduled?\" placeholder=\"What’s scheduled?\"></textarea>\u001b[22m\n\u001b[2m       - unexpected value \"\"\u001b[22m\n\n\n  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n> 70 |     await expect(field(page)).toHaveValue('another task');\n     |                               ^\n  71 |     await field(page).press('Enter');\n  72 |     await expect(card).toHaveAttribute('data-editing', 'false');\n  73 |     await expect(field(page)).toBeFocused();\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:70:31"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:20.317Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-merge-focus-can-3acc2-nd-stays-there-while-typing-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 31,
+                    "line": 70
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-aae093a4c0bc782f0879",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "merge focus can Tab through its actions and leave the card",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6096,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"95d4f7e7-54e0-4a5c-b06a-1d22a7609fe7\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"95d4f7e7-54e0-4a5c-b06a-1d22a7609fe7\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 24,
+                      "line": 89
+                    },
+                    "snippet": "  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 24,
+                        "line": 89
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"95d4f7e7-54e0-4a5c-b06a-1d22a7609fe7\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n\n  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:27.018Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-merge-focus-can-f92be--actions-and-leave-the-card-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 24,
+                    "line": 89
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-ef9db7109838368c67b3",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        },
+        {
+          "title": "split focus can leave by clicking another input and stays there while typing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5969,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"4b92b1a6-2a7d-4cba-9946-418cb7ce9c7a\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"4b92b1a6-2a7d-4cba-9946-418cb7ce9c7a\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:67:24",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 24,
+                      "line": 67
+                    },
+                    "snippet": "  65 |     await page.keyboard.insertText('|');\n  66 |     await field(page).click();\n> 67 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n  70 |     await expect(field(page)).toHaveValue('another task');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 24,
+                        "line": 67
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"4b92b1a6-2a7d-4cba-9946-418cb7ce9c7a\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n\n  65 |     await page.keyboard.insertText('|');\n  66 |     await field(page).click();\n> 67 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n  70 |     await expect(field(page)).toHaveValue('another task');\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:67:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:33.809Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-split-focus-can-3e0a1-nd-stays-there-while-typing-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 24,
+                    "line": 67
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-adaaa97e2cecd5286453",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "split focus can Tab through its actions and leave the card",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5992,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"530609da-76e8-4dd2-9eff-d0e8230e210d\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"530609da-76e8-4dd2-9eff-d0e8230e210d\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 24,
+                      "line": 89
+                    },
+                    "snippet": "  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 24,
+                        "line": 89
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"530609da-76e8-4dd2-9eff-d0e8230e210d\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n\n  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:40.453Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-split-focus-can-80f67--actions-and-leave-the-card-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 24,
+                    "line": 89
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-af337c5cc48f72fca04c",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        },
+        {
+          "title": "merge focus can leave by clicking another input and stays there while typing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5994,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\nExpected: \u001b[32m\"a\u001b[7mnother task\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"a\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" aria-busy=\"false\" class=\"compose-field\" aria-label=\"What’s scheduled?\" placeholder=\"What’s scheduled?\">a</textarea>\u001b[22m\n\u001b[2m       - unexpected value \"a\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\nExpected: \u001b[32m\"a\u001b[7mnother task\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"a\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" aria-busy=\"false\" class=\"compose-field\" aria-label=\"What’s scheduled?\" placeholder=\"What’s scheduled?\">a</textarea>\u001b[22m\n\u001b[2m       - unexpected value \"a\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:70:31",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 31,
+                      "line": 70
+                    },
+                    "snippet": "  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n> 70 |     await expect(field(page)).toHaveValue('another task');\n     |                               ^\n  71 |     await field(page).press('Enter');\n  72 |     await expect(card).toHaveAttribute('data-editing', 'false');\n  73 |     await expect(field(page)).toBeFocused();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 31,
+                        "line": 70
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\nExpected: \u001b[32m\"a\u001b[7mnother task\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"a\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"]').getByRole('textbox', { name: 'What’s scheduled?' })\u001b[22m\n\u001b[2m    14 × locator resolved to <textarea rows=\"1\" aria-busy=\"false\" class=\"compose-field\" aria-label=\"What’s scheduled?\" placeholder=\"What’s scheduled?\">a</textarea>\u001b[22m\n\u001b[2m       - unexpected value \"a\"\u001b[22m\n\n\n  68 |     await expect(field(page)).toBeFocused();\n  69 |     await field(page).pressSequentially('another task');\n> 70 |     await expect(field(page)).toHaveValue('another task');\n     |                               ^\n  71 |     await field(page).press('Enter');\n  72 |     await expect(card).toHaveAttribute('data-editing', 'false');\n  73 |     await expect(field(page)).toBeFocused();\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:70:31"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:47.133Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-merge-focus-can-3acc2-nd-stays-there-while-typing-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 31,
+                    "line": 70
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-cf586a0e16b5f4c130fc",
+          "file": "card-focus.spec.ts",
+          "line": 61,
+          "column": 3
+        },
+        {
+          "title": "merge focus can Tab through its actions and leave the card",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5957,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"d133d107-7957-4b22-b9e0-9a347b172264\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"d133d107-7957-4b22-b9e0-9a347b172264\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                      "column": 24,
+                      "line": 89
+                    },
+                    "snippet": "  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                        "column": 24,
+                        "line": 89
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\nExpected: \u001b[32m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card[data-section=\"scheduled\"]').first()\u001b[22m\n\u001b[2m    14 × locator resolved to <article class=\"card\" data-editing=\"true\" data-frozen=\"false\" data-guarded=\"false\" data-reordering=\"false\" data-section=\"scheduled\" data-card=\"d133d107-7957-4b22-b9e0-9a347b172264\">…</article>\u001b[22m\n\u001b[2m       - unexpected value \"true\"\u001b[22m\n\n\n  87 |     await remove.focus();\n  88 |     await remove.press('Tab');\n> 89 |     await expect(card).toHaveAttribute('data-editing', 'false');\n     |                        ^\n  90 |     await expect(field(page)).toBeFocused();\n  91 |     await field(page).press('Shift+Tab');\n  92 |     await expect(remove).toBeFocused();\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts:89:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T09:28:53.806Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-42-reference/card-focus-merge-focus-can-f92be--actions-and-leave-the-card-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/card-focus.spec.ts",
+                    "column": 24,
+                    "line": 89
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e8015f19c7e3c1e8378f-8f5deb6c921dc1d76b47",
+          "file": "card-focus.spec.ts",
+          "line": 79,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T09:28:03.608Z",
+    "duration": 56551.449,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 8,
+    "flaky": 0
+  }
+}

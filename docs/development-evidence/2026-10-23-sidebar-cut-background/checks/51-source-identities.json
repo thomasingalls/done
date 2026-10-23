@@ -1,0 +1,53 @@
+{
+  "runtimeSourceTree": "28cae9414a261aff278cd7f4cc90e32f2d010bc7",
+  "files": [
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+    },
+    {
+      "path": "src/account/notifications.ts",
+      "sha256": "5c0fdd0aaa19c0257ef5cc36d295eba825cf147ee753af047726a60fcdd3ec2c"
+    },
+    {
+      "path": "src/account/networkLogin.ts",
+      "sha256": "8fe6372238634d22f78585d9c6ed07335e3c1347c784b43fdaefcca31ed8d031"
+    },
+    {
+      "path": "src/account/scopedTransport.ts",
+      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7"
+    },
+    {
+      "path": "account-protocol/session.ts",
+      "sha256": "dec966a7116a614abab3f856af5d751b2a0e70c8117a3658aa4c9f6a8f04fe47"
+    },
+    {
+      "path": "account-protocol/scopedGrant.ts",
+      "sha256": "b00614a10cf776998a0a09173e3cfcf2b8757a1df3c384025701e97a990540d6"
+    },
+    {
+      "path": "vite/precacheServiceWorker.ts",
+      "sha256": "a3e0e68082d447ac4e238bd1d2e4a9982ca553411c642d285aa61906b3730bb7"
+    },
+    {
+      "path": "src/ui/LocalApp.tsx",
+      "sha256": "38e892894dafc5f8a910c103a54019bc21b2233386908ede33d741efe38858b4"
+    },
+    {
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77"
+    },
+    {
+      "path": "test/packaged-account/server.ts",
+      "sha256": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b"
+    },
+    {
+      "path": "test/device-enrollment/helpers.ts",
+      "sha256": "78ec52dd123458f3c2ce75b29fd14ed990145cfbbe82d701b3c39510b6f3d071"
+    }
+  ]
+}

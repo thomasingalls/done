@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "phase": 53,
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "priorCumulativeTree": "d56027b40bb81bda057dadd6f7b305e8eff50a8c",
+  "runtimeInputTree": "651020eadae2620fcfc18f0cb4afded17b1f9912",
+  "productionChanges": [
+    "src/styles/shell.css"
+  ],
+  "baselineNewCasesFailed": 8,
+  "chromiumSourceCasesPassed": 50,
+  "firefoxCasesPassed": 9,
+  "builtChromiumCasesPassed": 18,
+  "inventoryCasesPassed": 10,
+  "typeBuildBudgetOriginFormatLint": "passed",
+  "preview": {
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "workerVersion": "d541133789ab",
+    "gatewayPid": 29351,
+    "apiPidUnchanged": 52585,
+    "apiRestarted": false,
+    "httpsAssets": 60,
+    "smokeCases": 4
+  },
+  "qualification": {
+    "status": "paused/blocked",
+    "obligations": 891,
+    "unresolved": 347,
+    "creditAdded": false
+  },
+  "committed": false,
+  "pushed": false,
+  "productionDeployed": false
+}

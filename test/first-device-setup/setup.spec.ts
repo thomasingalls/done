@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -20,6 +21,7 @@ async function local(page: Page, path = entry) {
   return code;
 }
 async function start(page: Page, code: string) {
+  await openMenuSection(page, 'Sync');
   await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
   await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
   if (['', 'You'].includes(await page.getByLabel('Your name', { exact: true }).inputValue()))
@@ -147,9 +149,11 @@ test('a locked local workspace keeps account creation and switching available fo
 }) => {
   const localCode = await local(page);
   const beforeLocal = await slot(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
   await expect(page.locator('[data-state="unlock-required"]')).toBeVisible();
   await page.reload();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await phase(page, 'account-choice');
   await expect(page.locator('.cm-editor')).toHaveCount(0);
@@ -169,7 +173,9 @@ test('a locked local workspace keeps account creation and switching available fo
   await compose.fill('Only the other person’s writing');
   await compose.press('Enter');
   expect(await slot(page)).toEqual(beforeLocal);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await page.getByRole('button', { name: 'Open local-only workspace' }).click();
   await expect(page.locator('[data-state="unlock-required"]')).toBeVisible();
@@ -188,6 +194,7 @@ test('a locked local workspace keeps account creation and switching available fo
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await page
     .getByRole('button', { name: `Unlock Another person, account ${id}`, exact: true })
@@ -243,6 +250,7 @@ test('password-manager app switching preserves code-saving and confirmation step
     });
     expect(await page.evaluate(() => (window as any).setupPageInstance)).toBe(instance);
   };
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
   await page.getByLabel('Your name', { exact: true }).fill('Mobile setup');
@@ -267,6 +275,7 @@ test('password-manager app switching preserves code-saving and confirmation step
   await expect(page.locator('.shell')).toBeVisible();
   expect(await page.evaluate(() => (window as any).setupPageInstance)).toBe(instance);
   // Explicit lock still ends the open session and requires its factors again.
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
   await phase(page, 'unlock');
   await expect(page.locator('.cm-editor')).toHaveCount(0);
@@ -276,6 +285,7 @@ test('homepage opens the app, account choice stays explicit, and a first account
   page,
 }) => {
   await page.goto('/');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await phase(page, 'account-choice');
   await expect(page.getByRole('heading', { name: 'Choose an account', exact: true })).toBeVisible();
@@ -283,6 +293,7 @@ test('homepage opens the app, account choice stays explicit, and a first account
   await phase(page, 'account-choice');
   await page.goto('/');
   await expect(page.locator('.shell')).toBeVisible();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await phase(page, 'account-choice');
   await authenticator(page);
@@ -317,6 +328,7 @@ test('root entry and explicit account choice preserve Local writing while a sepa
   await expect(page.getByLabel('Unlock code', { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByLabel('Unlock code', { exact: true })).toBeVisible();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
   await expect(
@@ -355,6 +367,7 @@ test('create a second account on this device, resume it, and switch between isol
 }, testInfo) => {
   const a = await connectedAccount(page);
   const beforeA = await slot(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   const bCode = await startNewAccount(page, 'Alex');
   expect(bCode).not.toBe(a.code);
@@ -384,7 +397,7 @@ test('create a second account on this device, resume it, and switch between isol
   const bId = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
   expect(bId).not.toBe(a.id);
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(0);
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Alex');
   const compose = page.locator(
     '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
   );
@@ -397,6 +410,7 @@ test('create a second account on this device, resume it, and switch between isol
   const b = await slot(page, bSlot!);
   expect(b.stores).toEqual(beforeB.stores);
   expect(b.account).toBeDefined();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   const list = page.getByRole('list', { name: 'Saved accounts' });
   await expect(list.getByRole('listitem')).toHaveCount(2);
@@ -421,6 +435,7 @@ test('create a second account on this device, resume it, and switch between isol
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await list.getByRole('button', { name: `Unlock Alex, account ${bId}`, exact: true }).click();
   await page.reload();
@@ -439,6 +454,7 @@ test('leaving a new account before code confirmation keeps one resumable draft a
 }) => {
   const a = await connectedAccount(page);
   const beforeA = await slot(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
   await page.getByLabel('Your name', { exact: true }).fill('New person');
@@ -472,8 +488,11 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
 }) => {
   const code = await local(page),
     before = await slot(page);
-  await page.getByLabel('Actor name', { exact: true }).fill('Original name');
+  await openMenuSection(page, 'Account');
+  await page.getByLabel('User name', { exact: true }).fill('Original name');
+  await openMenuSection(page, 'Account');
   await page.getByLabel('Device name', { exact: true }).fill('Original device');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();
   await authenticator(page);
@@ -509,7 +528,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await expect(page.locator('.shell')).toBeVisible({ timeout: 20000 });
   expect((await slot(page)).stores).toEqual(before.stores);
   expect((await slot(page)).account).toBeDefined();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Original name');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Original name');
   await expect(page.getByLabel('Device name', { exact: true })).toHaveValue('Original device');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
@@ -520,6 +539,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await compose.fill('Writing after account setup');
   await compose.press('Enter');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(2);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await phase(page, 'unlock');
   await expect(page.getByRole('heading', { name: 'Unlock Original name’s account' })).toBeVisible();
@@ -570,6 +590,7 @@ test('daily unlock rejects a wrong code before prompting and lets a cancelled pa
   await confirmAndApprove(page);
   await expect(page.locator('.shell')).toBeVisible();
   const before = await slot(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await phase(page, 'unlock');
   await expect(page.getByText('You can unlock on this device offline.')).toBeVisible();
@@ -618,6 +639,7 @@ test('daily unlock rejects a wrong code before prompting and lets a cancelled pa
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await reopen(page, code);
   await expect(page.locator('.shell')).toBeVisible();
@@ -636,7 +658,7 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
   await confirmAndApprove(page);
   await expect(page.locator('.shell')).toBeVisible();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Alex');
   const credentials = await cdp.send('WebAuthn.getCredentials', { authenticatorId });
   expect(credentials.credentials).toHaveLength(1);
   expect(credentials.credentials[0]?.userName).toBe(
@@ -644,9 +666,12 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   );
   // Model the prior preview: its encrypted identity is still "You" and the UI
   // record predates name/connected fields. Its actual keys and writing stay intact.
-  await page.getByLabel('Actor name', { exact: true }).fill('You');
+  await openMenuSection(page, 'Account');
+  await page.getByLabel('User name', { exact: true }).fill('You');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await phase(page, 'unlock');
   await page.evaluate(async () => {
@@ -682,13 +707,16 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   await page.getByLabel('Your name', { exact: true }).fill('Thomas');
   await page.getByRole('button', { name: 'Continue to writing' }).click();
   await expect(page.locator('.shell')).toBeVisible();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Thomas');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Thomas');
   expect((await cdp.send('WebAuthn.getCredentials', { authenticatorId })).credentials).toHaveLength(
     1,
   );
-  await page.getByLabel('Actor name', { exact: true }).fill('Tom');
+  await openMenuSection(page, 'Account');
+  await page.getByLabel('User name', { exact: true }).fill('Tom');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await expect(page.getByRole('heading', { name: 'Unlock Tom’s account' })).toBeVisible();
   await page.reload();
@@ -696,7 +724,7 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   await page.screenshot({ path: testInfo.outputPath('named-account-unlock.png') });
   await reopen(page, code);
   await expect(page.locator('.shell')).toBeVisible();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Tom');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Tom');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
@@ -733,12 +761,14 @@ test('use another account opens device connection without a passkey or changing 
       return nativeGet(options);
     };
   });
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await phase(page, 'account-choice');
   await expect(page.locator('.cm-editor')).toHaveCount(0);
   await page.reload();
   await phase(page, 'account-choice');
   await expect(page.getByRole('link', { name: 'Connect another device' })).toHaveCount(0);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Connect devices', exact: true })).toBeVisible();
   await expect(page.getByLabel('Invitation from your other device')).toBeVisible();
@@ -775,7 +805,9 @@ test('saved account choice works by keyboard and still requires local unlock', a
   page,
 }, testInfo) => {
   const a = await connectedAccount(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
   const savedAccounts = page.getByRole('list', { name: 'Saved accounts' });
@@ -868,6 +900,7 @@ test('local protection retains its unconfirmed code; browser Back retains accoun
 }) => {
   await page.goto('/');
   await expect(page.locator('.shell')).toBeVisible();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Add an unlock code', exact: true }).click();
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
   const localCode = (await page.getByLabel('Generated unlock code').textContent())!;
@@ -890,6 +923,7 @@ test('local protection retains its unconfirmed code; browser Back retains accoun
   await page.getByRole('button', { name: 'Back to Today' }).click();
   await expect(page.locator('.shell')).toBeVisible();
   const before = await slot(page);
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await phase(page, 'account-choice');
   await expect(page.locator('.cm-editor')).toHaveCount(0);
@@ -929,6 +963,7 @@ test('browser Back redisplays recovery only within its unfinished ceremony and w
   page,
 }) => {
   await page.goto('/');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   const code = await startNewAccount(page, 'Recovery navigation');
   const auth = await authenticator(page);
@@ -997,6 +1032,7 @@ test('Back during registration drains the owner and resumes the saved passkey pr
   page,
 }) => {
   await page.goto('/');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   const code = await startNewAccount(page, 'Pending registration');
   const auth = await authenticator(page);
@@ -1056,7 +1092,9 @@ test('legacy entry read failure keeps an explicit error instead of guessing a fr
 
 test('locking waits for native cleanup before exposing a live unlock form', async ({ page }) => {
   const { code } = await connectedAccount(page);
-  await page.getByLabel('Actor name', { exact: true }).fill('After drain');
+  await openMenuSection(page, 'Account');
+  await page.getByLabel('User name', { exact: true }).fill('After drain');
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();
   await page.evaluate(() => {
@@ -1071,6 +1109,7 @@ test('locking waits for native cleanup before exposing a live unlock form', asyn
     });
   });
   try {
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await expect(
       page.getByRole('heading', { name: 'Locking and finishing storage operations…', exact: true }),

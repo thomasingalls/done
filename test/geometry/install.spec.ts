@@ -1,6 +1,6 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect } from '@playwright/test';
-import { openApp } from './openApp';
+import { openApp, openMenuSection } from './openApp';
 
 test('macOS Firefox defaults identify the browser and Install checks storage without menu-install guidance', async ({
   page,
@@ -23,6 +23,7 @@ test('macOS Firefox defaults identify the browser and Install checks storage wit
   await page.setViewportSize({ width: 1280, height: 900 });
   await openApp(page);
   await expect(page.getByLabel('Device name', { exact: true })).toHaveValue('Firefox - macOS');
+  await openMenuSection(page, 'Install');
   const install = page.getByRole('region', { name: 'Install', exact: true });
   await expect(install).not.toContainText('browser’s menu');
   await install.getByRole('button', { name: 'Install', exact: true }).click();

@@ -1,0 +1,58 @@
+[
+  {
+    "file": "test/app-upgrades/upgrades.spec.ts",
+    "insertions": 1
+  },
+  {
+    "file": "test/first-device-setup/setup.spec.ts",
+    "insertions": 38
+  },
+  {
+    "file": "test/first-device-upgrade/checkpoint-stage.spec.ts",
+    "insertions": 1
+  },
+  {
+    "file": "test/first-device-upgrade/upgrade.spec.ts",
+    "insertions": 3
+  },
+  {
+    "file": "test/latency/measure.ts",
+    "insertions": 1
+  },
+  {
+    "file": "test/local-baseline/lifecycle-owner.spec.ts",
+    "insertions": 12
+  },
+  {
+    "file": "test/local-baseline/reader-first.spec.ts",
+    "insertions": 2
+  },
+  {
+    "file": "test/local-baseline/reader-rollout.ts",
+    "insertions": 1
+  },
+  {
+    "file": "test/local-baseline/removal-checkpoint.spec.ts",
+    "insertions": 2
+  },
+  {
+    "file": "test/local-baseline/transition-owner.spec.ts",
+    "insertions": 3
+  },
+  {
+    "file": "test/packaged-account/generation-retry.spec.ts",
+    "insertions": 2
+  },
+  {
+    "file": "test/packaged-account/recovery.spec.ts",
+    "insertions": 15
+  },
+  {
+    "file": "test/packaged-account/removal-observation.spec.ts",
+    "insertions": 2
+  },
+  {
+    "file": "test/packaged-account/replacement-handoff.spec.ts",
+    "insertions": 5
+  }
+]

@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors, credentials, restoreAuthenticator, openSaved, add } from './devices';
 import { startService, stopService, startBackend, stopProcess, origin } from './server';
@@ -70,6 +71,7 @@ test('packaged session host enrolls both devices, renews after restart and retai
       { timeout: 20000 },
     );
     const saved = await credentials(pair.next.auth);
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.other.setOffline(true);
     await pair.second.close();

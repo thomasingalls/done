@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -37,6 +38,7 @@ test('original and joined native custody preserve prior setup, interrupted progr
   try {
     pair = await pairedEditors(page, browser, true);
     for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await p.goto('/');
       await p.evaluate(script);

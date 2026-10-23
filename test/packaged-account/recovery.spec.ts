@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { credentials, restoreAuthenticator, add, pairedEditors, openSaved } from './devices';
 import { startService, stopService } from './server';
@@ -47,7 +48,9 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     );
     const recovery = pair.first.recovery;
     const passkeys = await credentials(pair.first.auth);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
 
     await next.goto('/');
@@ -55,8 +58,10 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     let assertionCount = 0;
     nextAuth.cdp.on('WebAuthn.credentialAsserted', () => assertionCount++);
     await expect(next.locator('.shell')).toBeVisible();
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Use another account', exact: true }).click();
     await expect(next.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Use another account', exact: true }).click();
     await next
       .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })
@@ -99,17 +104,20 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     );
     await add(next, 'Writing from the recovered device');
     await sent;
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.getByRole('button', { name: /^Open saved recovery, account/ }).click();
     await next.getByLabel('Unlock code', { exact: true }).fill(code);
     await next.getByRole('button', { name: 'Unlock saved recovery', exact: true }).click();
     await next.getByRole('button', { name: 'Open recovered writing', exact: true }).click();
     await expect(next.locator('.shell')).toContainText('Writing from the recovered device');
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await expect(
       next.getByRole('button', { name: 'Connect another device', exact: true }),
     ).toBeEnabled();
     await next.getByRole('button', { name: 'Back to writing', exact: true }).click();
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.screenshot({ path: info.outputPath('recovery-chooser.png') });
     for (const [old, oldCode, joined] of [
@@ -124,6 +132,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       ).toBeVisible();
       await old.goto('/');
       await openSaved(old, oldCode, joined);
+      await openMenuSection(old, 'Sync');
       await expect(old.getByText('Removed from account.', { exact: false })).toBeVisible();
       await expect(old.locator('.shell')).toContainText('Keep the first device writing');
       await expect(old.locator('.shell')).not.toContainText('Writing from the recovered device');
@@ -132,11 +141,13 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
         if (/\/account\/(delivery|notifications)\//.test(r.url())) requests.push(r.url());
       });
       await add(old, 'Writing in this detached copy');
+      await openMenuSection(old, 'Account');
       await old.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await old.goto('/');
       await openSaved(old, oldCode, joined);
       await expect(old.locator('.shell')).toContainText('Writing in this detached copy');
       expect(requests).toEqual([]);
+      await openMenuSection(old, 'Account');
       await old.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     }
     const openRecovered = async () => {
@@ -148,6 +159,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       await expect(next.locator('.shell')).toBeVisible();
     };
     await openRecovered();
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await next.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(next, code);
@@ -178,6 +190,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     });
     await add(third, 'Retained only by the replacement history snapshot');
     await expect.poll(() => attempted).toBe(true);
+    await openMenuSection(third, 'Data');
     await third.getByRole('button', { name: 'History maintenance', exact: true }).click();
     const proposal = third.getByRole('region', { name: 'History maintenance', exact: true });
     await proposal.getByRole('button', { name: 'Check history', exact: true }).click();
@@ -186,6 +199,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       'Snapshot saved. Verify it from another approved device.',
       { timeout: 15000 },
     );
+    await openMenuSection(next, 'Data');
     await next.getByRole('button', { name: 'History maintenance', exact: true }).click();
     const verification = next.getByRole('region', { name: 'History maintenance', exact: true });
     await verification.getByRole('button', { name: 'Check history', exact: true }).click();
@@ -198,6 +212,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       { timeout: 15000 },
     );
     // A subsequent key rotation must keep the existing saved recovery code useful.
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await next.getByRole('button', { name: 'Remove device', exact: true }).click();
     await next.getByRole('button', { name: 'Confirm removal', exact: true }).click();
@@ -210,10 +225,12 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     );
     await add(next, 'Writing after recovery and rotation');
     await rotated;
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await expect(third.locator('.shell')).toHaveCount(0, { timeout: 25000 });
     // Use the original browser, which still holds its separate detached local slot.
     await page.goto('/accounts');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page
       .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })
@@ -241,6 +258,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       'Writing from a device enrolled after recovery',
     );
     await expect(page.locator('.shell')).not.toContainText('Writing in this detached copy');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await expect(page.getByRole('button', { name: /^Unlock Device owner/ })).toHaveCount(1);
     await expect(page.getByRole('button', { name: /^Open saved recovery, account/ })).toHaveCount(
@@ -277,6 +295,7 @@ test('a never-paired account recovers and admits its next device without an orig
     await add(page, 'Offline writing before pairing');
     const saved = await credentials(first.auth);
     const firstContext = page.context();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.close();
     const reopened = await firstContext.newPage();
@@ -303,6 +322,7 @@ test('a never-paired account recovers and admits its next device without an orig
     try {
       await add(reopened, 'Saved only in the history snapshot');
       await expect.poll(() => blocked).toBeGreaterThan(0);
+      await openMenuSection(reopened, 'Data');
       await reopened.getByRole('button', { name: 'History maintenance', exact: true }).click();
       const history = reopened.getByRole('region', { name: 'History maintenance', exact: true });
       await history.getByRole('button', { name: 'Check history', exact: true }).click();
@@ -325,9 +345,11 @@ test('a never-paired account recovers and admits its next device without an orig
     } finally {
       db.close();
     }
+    await openMenuSection(reopened, 'Account');
     await reopened.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.goto('/accounts');
     const auth = await restoreAuthenticator(next, saved);
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Use another account', exact: true }).click();
     await next
       .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })
@@ -356,11 +378,13 @@ test('a never-paired account recovers and admits its next device without an orig
     await sent;
     // This owner holds only generation two. Its recovery intent must establish the older
     // snapshot and handoff coverage before it can produce a new current-key snapshot.
+    await openMenuSection(next, 'Data');
     await next.getByRole('button', { name: 'History maintenance', exact: true }).click();
     const history = next.getByRole('region', { name: 'History maintenance', exact: true });
     await history.getByRole('button', { name: 'Check history', exact: true }).click();
     await history.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
     await expect(history).toContainText('Verified snapshot 3 is saved.', { timeout: 15000 });
+    await openMenuSection(next, 'Account');
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await next.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(next, code);

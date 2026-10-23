@@ -1,8 +1,10 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { pairedEditors, add } from './devices';
 import { startService, stopService } from './server';
 
 async function showDevices(page: Page, count: number) {
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Devices', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Devices', exact: true })).toBeVisible();
   await expect(page.locator('.account-device-list li')).toHaveCount(count);
@@ -56,6 +58,25 @@ test('verified Devices is available on both account owners; Back preserves writi
       );
       await p.getByRole('button', { name: 'Back to writing', exact: true }).click();
       await expect(p.locator('.shell')).toContainText('Keep the first device writing');
+      // New sidebar grouping assertions.
+      await openMenuSection(p, 'Account');
+      const account = p.getByRole('region', { name: 'Account', exact: true });
+      for (const name of ['Devices', 'Lock workspace', 'Use another account', 'Sign out'])
+        await expect(account.getByRole('button', { name, exact: true })).toBeVisible();
+      await expect(
+        account.getByRole('button', { name: 'Export markdown', exact: true }),
+      ).toHaveCount(0);
+      await openMenuSection(p, 'Sync');
+      const sync = p.getByRole('region', { name: 'Sync', exact: true });
+      await expect(sync.getByText(/^Sending:/)).toBeVisible();
+      await expect(sync.getByText(/^Receiving:/)).toBeVisible();
+      await openMenuSection(p, 'Data');
+      await expect(
+        p
+          .getByRole('region', { name: 'Data', exact: true })
+          .getByRole('button', { name: 'Export markdown', exact: true }),
+      ).toBeVisible();
+      // End new sidebar grouping assertions.
     }
     await add(pair.second, 'Writing after visiting Devices');
     await expect(page.locator('.shell')).toContainText('Writing after visiting Devices', {
@@ -86,7 +107,9 @@ test('device codes match across owners and custom names sync beside them, includ
   const service = await startService(info.outputPath('service'), undefined, true, true);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   const rename = async (target: Page, name: string) => {
+    await openMenuSection(target, 'Account');
     await target.getByLabel('Device name', { exact: true }).fill(name);
+    await openMenuSection(target, 'Account');
     await target.getByRole('button', { name: 'Save preferences', exact: true }).click();
     await expect(
       target.getByRole('status').filter({ hasText: 'Preferences saved.' }),

@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { spawn, execFileSync, type ChildProcess } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
@@ -120,6 +121,7 @@ test('a genuine retained local-only Account commits an authenticated v6 checkpoi
       sessionStorage.getItem('done.account-setup.selected-slot'),
     ))!;
     expect(slot).toMatch(/^account-[a-f0-9]{32}$/);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     expect(await marker(page, slot)).toMatchObject({
       v: 5,

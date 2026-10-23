@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors, openSaved, add } from './devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
@@ -50,6 +51,7 @@ test('joined device invites a third through packaged UI; all three retain and ex
     const panel = (p: typeof page) =>
       p.getByRole('region', { name: 'History maintenance', exact: true });
     for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Data');
       await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
       await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
       await expect(
@@ -67,6 +69,7 @@ test('joined device invites a third through packaged UI; all three retain and ex
         { timeout: 15000 },
       );
     }
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     console.log('Joined Devices open');
     await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
@@ -121,6 +124,7 @@ test('joined device invites a third through packaged UI; all three retain and ex
       [pair.second, pair.next.code, true],
       [third, next.code, true],
     ] as const) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await p.goto('/');
       await openSaved(p, code, joining);
@@ -130,6 +134,7 @@ test('joined device invites a third through packaged UI; all three retain and ex
       await expect(p.locator('.shell')).toContainText(
         'Joined device writing after approving the third',
       );
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Devices', exact: true }).click();
       await expect(p.locator('.account-device-list [data-device-state=certified]')).toHaveCount(3);
       await p.screenshot({
@@ -171,6 +176,7 @@ test('pending connection cancellation recovers after losing its reply and reopen
   third.setDefaultTimeout(15000);
   try {
     pair = await pairedEditors(page, browser, true);
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(pair.second, pair.next.code);
@@ -190,13 +196,17 @@ test('pending connection cancellation recovers after losing its reply and reopen
     expect(lost).toBe(true);
     await third.reload();
     await unlock(third, next.code);
-    await expect(third.getByRole('status')).toContainText('The connection was cancelled.', {
+    await expect(
+      third.getByRole('status').filter({ hasText: 'The connection was cancelled.' }),
+    ).toContainText('The connection was cancelled.', {
       timeout: 15000,
     });
     await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toHaveCount(
       0,
     );
-    await expect(pair.second.getByRole('status')).toContainText('The connection was cancelled.', {
+    await expect(
+      pair.second.getByRole('status').filter({ hasText: 'The connection was cancelled.' }),
+    ).toContainText('The connection was cancelled.', {
       timeout: 20000,
     });
     await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
@@ -207,6 +217,7 @@ test('pending connection cancellation recovers after losing its reply and reopen
       'Writing continues after cancelling the pending connection',
       { timeout: 20000 },
     );
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
     await expect(
@@ -232,6 +243,7 @@ test('first joining device opens an admitted sole-device history baseline and re
     pair = await pairedEditors(page, browser, true, {
       beforeInvite: async () => {
         await add(page, 'Sole-device writing covered before the first invitation');
+        await openMenuSection(page, 'Data');
         await page.getByRole('button', { name: 'History maintenance', exact: true }).click();
         const panel = page.getByRole('region', { name: 'History maintenance', exact: true });
         await panel.getByRole('button', { name: 'Check history', exact: true }).click();
@@ -245,6 +257,7 @@ test('first joining device opens an admitted sole-device history baseline and re
     await expect(pair.second.locator('.shell')).toContainText(
       'Sole-device writing covered before the first invitation',
     );
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.other.setOffline(true);
     await pair.second.goto('/');

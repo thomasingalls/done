@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { expect, type Page } from '@playwright/test';
 import { build, type Plugin } from 'vite';
 import { execFileSync } from 'node:child_process';
@@ -140,8 +141,10 @@ export async function switchApplication(
   version: string,
 ) {
   for (const d of devices) {
-    if (await d.page.locator('.shell').count())
+    if (await d.page.locator('.shell').count()) {
+      await openMenuSection(d.page, 'Account');
       await d.page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    }
     await d.page.goto('/');
     expect(await d.page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
   }

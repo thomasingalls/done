@@ -1,0 +1,216 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-non-overlap-20261023-patches/playwright.non-overlap.config.ts",
+      "non-overlapping-sessions.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-non-overlap-20261023-patches/playwright.non-overlap.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-non-overlap-20261023-patches/artifacts-54-initial",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-non-overlap-20261023-patches/checks-54/initial-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "non-overlapping-sessions.spec.ts",
+      "file": "non-overlapping-sessions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "confirmed uploads survive non-overlapping sessions first-to-second",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 24660,
+                  "error": {
+                    "message": "Error: Service shutdown timeout: /private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node scripts/serve-account.mjs\n(node:36342) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nAccount packaged development: http://localhost:53221/\n",
+                    "stack": "Error: Service shutdown timeout: /private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node scripts/serve-account.mjs\n(node:36342) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nAccount packaged development: http://localhost:53221/\n\n    at Timeout._onTimeout (/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server.ts:61:9)",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server.ts",
+                      "column": 9,
+                      "line": 61
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mserver.ts:61\n\n  59 |       child.kill('SIGKILL');\n  60 |       reject(\n> 61 |         Error(\n     |         ^\n  62 |           `Service shutdown timeout: ${child.spawnargs.join(' ')}\\n${processOutput.get(child)?.()}`,\n  63 |         ),\n  64 |       );"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server.ts",
+                        "column": 9,
+                        "line": 61
+                      },
+                      "message": "Error: Service shutdown timeout: /private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node scripts/serve-account.mjs\n(node:36342) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nAccount packaged development: http://localhost:53221/\n\n\n   at server.ts:61\n\n  59 |       child.kill('SIGKILL');\n  60 |       reject(\n> 61 |         Error(\n     |         ^\n  62 |           `Service shutdown timeout: ${child.spawnargs.join(' ')}\\n${processOutput.get(child)?.()}`,\n  63 |         ),\n  64 |       );\n    at Timeout._onTimeout (/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server.ts:61:9)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:25:41.274Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-non-overlap-20261023-patches/artifacts-54-initial/non-overlapping-sessions-c-c0d30-ng-sessions-first-to-second/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server.ts",
+                    "column": 9,
+                    "line": 61
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1564e6d264b7e69a5805-fdf15a568c9f0af18a46",
+          "file": "non-overlapping-sessions.spec.ts",
+          "line": 45,
+          "column": 3
+        },
+        {
+          "title": "confirmed uploads survive non-overlapping sessions second-to-first",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 12933,
+                  "error": {
+                    "message": "Error: response.body: Protocol error (Network.getResponseBody): No data found for resource with given identifier\nResponse body is not available for a response that was navigated away from. Read response.body() before triggering any navigation.",
+                    "stack": "Error: response.body: Protocol error (Network.getResponseBody): No data found for resource with given identifier\nResponse body is not available for a response that was navigated away from. Read response.body() before triggering any navigation.\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlapping-sessions.spec.ts:83:59",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlapping-sessions.spec.ts",
+                      "column": 59,
+                      "line": 83
+                    },
+                    "snippet": "  81 |       const wire = decodeSubmit(new Uint8Array(response.request().postDataBuffer()!));\n  82 |       const envelope = decodeNetworkEnvelope(decodeSubmission(wire.bytes).envelope);\n> 83 |       const responseBytes = new Uint8Array(await response.body());\n     |                                                           ^\n  84 |       const decision = decodePositionResponse(responseBytes);\n  85 |       expect(decision.kind).toBe('accepted');\n  86 |       if (decision.kind !== 'accepted') throw Error('Upload was not accepted');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlapping-sessions.spec.ts",
+                        "column": 59,
+                        "line": 83
+                      },
+                      "message": "Error: response.body: Protocol error (Network.getResponseBody): No data found for resource with given identifier\nResponse body is not available for a response that was navigated away from. Read response.body() before triggering any navigation.\n\n  81 |       const wire = decodeSubmit(new Uint8Array(response.request().postDataBuffer()!));\n  82 |       const envelope = decodeNetworkEnvelope(decodeSubmission(wire.bytes).envelope);\n> 83 |       const responseBytes = new Uint8Array(await response.body());\n     |                                                           ^\n  84 |       const decision = decodePositionResponse(responseBytes);\n  85 |       expect(decision.kind).toBe('accepted');\n  86 |       if (decision.kind !== 'accepted') throw Error('Upload was not accepted');\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlapping-sessions.spec.ts:83:59"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:26:09.020Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-non-overlap-20261023-patches/artifacts-54-initial/non-overlapping-sessions-c-5ca64-ng-sessions-second-to-first/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/non-overlapping-sessions.spec.ts",
+                    "column": 59,
+                    "line": 83
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1564e6d264b7e69a5805-88b135bf60f7d46d0a15",
+          "file": "non-overlapping-sessions.spec.ts",
+          "line": 45,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T12:25:40.877Z",
+    "duration": 41649.195,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

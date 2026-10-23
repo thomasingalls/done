@@ -15567,3 +15567,463 @@ matching the retained predecessor, healthy backups with zero unprotected pending
 change age and15 retained historical failures, plus private GHCR visibility.
 No image rebuild, cluster change or release merge; publication and actual-device
 adoption remain distinct next stages.
+
+
+### Publish and verify the sync catch-up production release
+
+**Date:**2026-10-23 · **Source:**signed51d8550d · **Status:**production server verified; actual-device adoption pending; qualification paused.
+
+The operator merged application PR56 as6d1baffc and infrastructure PR20 as67a622f6, preserving signed heads and exact trees. Publish the existing private tested image index`sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29` without rebuilding; verify remote bytes, private visibility and authenticated digest pull. Infrastructure signed commitd0ce0dc7 retains the publication/render evidence. An initial automatic approval rejection caused no upload; explicit operator approval of the exact private image preceded the successful publication. The operator created and merged the infrastructure PR.
+
+After fresh merge/signature/tree/offline checks, reconcile through the existing Justfile:done,flux-system,done-public. All seven Kustomizations and Git source are ready at67a622f6. One replacement Pod runs both exact-image containers ready with zero restarts; process source and Node24.18 match. Independent before/after live Deployment spec comparison changes only three image fields; original bound10Gi PVC UID/spec and public service identity remain exact. Normal public DNS/TLS serves Version51d8550d, worker15a5cf03f50b and all60 precache URLs with tested hashes; all68 public static/routing/configuration/privacy probes pass. Wrong-origin config returns403; backup/environment paths return404. No production account contents or keys read; no accounts, migration, maintenance Jobs, restore or storage reset.
+
+Backups are healthy with successful post-restart upload and zero unprotected change age. The old process's15 cumulative failures remain recorded; the replacement's zero is a process counter reset. Bounded new-container diagnostic counts are zero, not a complete publisher audit. [Durable evidence](./development-evidence/2026-10-23-sync-production-rollout/README.md) preserves observations, exact commands, proof sources and hashes. Actual-device update/two-way typing/catch-up/undo/lock/offline checks were requested and remain pending; server rollout is established separately. The unexplained disappearing-account report remains unresolved. Prior rollback images and883/339 paused qualification state remain. No new production performance or universal-device claim. This checkpoint is prepared locally; its documentation is not yet signed or pushed.
+
+Retained evidence-packaging correction: its first temporary-index whitespace check omitted the explicit signed base and compared the full historic tree against an unborn HEAD, producing unrelated pre-existing whitespace warnings. Scope every comparison to signedb54d9fb8; no old formatting/source/test change or production operation results from this packaging failure. The packet retains the initial failure.
+
+
+### Record positive actual-device sync feedback after production rollout
+
+**Date:** 2026-10-23 · **Release:** `51d8550d` · **Status:** operator reports substantially improved catch-up and live sync; long-backlog behavior remains unverified on actual devices.
+
+[Operator feedback](./development-evidence/2026-10-23-sync-production-rollout/operator-device-feedback.json) supplies the verbatim observation and its limits. Inter-device delay is described as close to real time, with undo included in positive feedback. A suitable unsynced backlog was unavailable; this does not establish long-backlog performance, a measured latency or equivalence to WebSockets. Individual lock/offline outcomes and per-device version labels were not separately supplied. Preserve the earlier server-verification checkpoint and observations; qualification remains paused. Documentation-only follow-up patch36 follows the immutable rollout-evidence patch35. No application, protocol, tests or production changes.
+
+
+### Native editor shortcuts pass semantic admission
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch37 · **Stage:** bounded UX
+
+**Exit.** Option-Backspace word deletion, Cmd/Ctrl bracket indentation and Shift-Enter plain newline
+use semantic admission. Cmd/Ctrl-Enter is a no-op; checkbox clicks and undo remain. All four new checks
+fail on signed c4a66c79. Affected keyboard coverage passes across both layout projects (16 unchanged/
+restored cases plus the 2 corrected task cases); 44 unit cases, TypeScript and focused lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md) retains fixture mistakes
+and the sandbox launch refusal. New storage-refusal cases preserve accepted-only projection and one
+undoable change. Phone deletion stalls are recorded, not repaired. No protocol/storage format/security
+policy or deployment changes. This phase is prepared as a sequential patch, not committed.
+
+
+### Card completion preserves focus and multiline splitting
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch38 · **Stage:**bounded UX
+
+**Exit.** Enter/Escape return to the same static card, and Enter reopens at the preceding caret.
+Shift-Enter adds a newline; three Shift-Enters retain split. Four baseline counterexamples fail.
+Affected browser suites22 pass with2 existing named skips;37 unit cases, TypeScript and focused lint
+pass. Existing split/merge assertions remain, with only the new split modifier and one completion case.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md) records Android synthesis
+and the corrected Mac hardware fixtures plus separate Android Enter coverage. Done/frozen guards,
+admission and shared undo remain. No commit, preview update, publication or qualification advancement.
+
+
+### Compact sidebar date navigation retains native input
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch39 · **Stage:**bounded UX
+
+**Exit.** Date/calendar ghost control uses an overlaid native date input; Yesterday/Today/Tomorrow are
+the only adjacent-day actions. Both width counterexamples fail on baseline.26 workflow cases pass in
+two projects, including the explicit frozen-history date selection. TypeScript/focused lint pass.
+
+**Notes.** Picker appearance is browser-owned; no custom calendar, persisted state or timezone/security
+change. [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md). No publication.
+
+
+### Sidebar groups everyday controls into closed disclosures
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch40 · **Stage:**bounded UX
+
+**Exit.** Account combines personalization/protection and device/session actions; Sync holds lane details;
+Data groups history maintenance/export; Install is collapsible. All default closed; date/update controls
+stay accessible. Native disclosure keeps stateful children mounted. Two baseline width counterexamples
+fail; four candidate width/project checks, TypeScript and focused lint pass. Screenshots inspected.
+
+**Notes.** Sign-out remains distinct from switching under PRD §6.6, with explicit explanatory text.
+Runtime lifecycle/security effects remain unchanged. Existing walkthrough navigation and combined
+regression checks are the next bounded fixture phase. No full-suite, phone performance or release claim.
+
+
+### Editor/sidebar UX regression and sequential patch handoff
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch41 · **Stage:**bounded UX validation
+
+**Exit.** Existing walkthroughs follow the new disclosures. AST comparison plus3 sensitivity controls
+preserves old assertions/control flow. Exact census fixtures and the generated planning snapshot track
+the added cases without changing dispositions or qualification credit. All158 unit files pass (1883
+passed/1 existing skip), full built-frontend geometry132 pass/24 existing platform skips, selected
+packaged accounts14/14,17 adapter and10 inventory checks, build/type/lint/format/budget/origin checks pass.
+
+**Notes.** [Evidence and limitations](development-evidence/2026-10-23-editor-sidebar-ux/README.md) retains
+failed fixture/HMR/census/snapshot-review attempts and their corrections. History/private-migration/
+optional-baseline navigation is source-reviewed, not a claim those whole campaigns ran. Phone deletion
+pauses remain. Five exact sequential patches37–41 are prepared, already represented in the cumulative
+checkout, with no real Git staging/commit/push/preview update/deployment or qualification resumption.
+
+
+### Automatically focused cards release outside focus
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch42 · **Stage:**bounded UX
+
+**Exit.** Outside blur clears the collection’s split/merge focus request. Eight browser counterexamples
+fail on cumulative patch41; the repaired combined card/task run passes24 with2 existing platform skips.
+Internal action focus remains unlocked; outside click/Tab stay outside while further writing is entered,
+and accepted writing survives reopen. TypeScript, focused lint and card-command unit checks pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) records the exact baseline,
+invalid first build metadata and a candidate port-conflict attempt. This establishes a reproducible trap,
+not the cause of every unknown modifier sequence or the intermittent physical Gboard report. No storage,
+protocol, credentials or frozen/Done policy changes. Preview8443 remains on patches37–41. No commit/deploy.
+
+
+### Quick entry respects IME confirmation without claiming the intermittent phone defect solved
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch43 · **Stage:**bounded UX
+
+**Exit.** Enter owned by an IME (native composition flag, keyCode229 or an active composition session)
+is not cancelled or submitted. Blur releases a cancelled session. Three unit counterexamples and four
+browser counterexamples fail on the unchanged patch41 Compose; six final unit cases and four Chromium
+composition journeys pass. Tests retain visible drafts, enabled Add, multiline/refused/pending submission
+semantics and actual card persistence. TypeScript and focused lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) separates the verified
+confirmation defect from UX-13. The operator uses Gboard, recalls no trigger and observed normal
+suggestion taps. No physical keyboard reproduction exists, so the intermittent invisible-text report
+remains unresolved. The textarea remains native and all submissions use existing storage admission.
+No commit, preview replacement or deployment.
+
+
+### Duplicate cards into Scheduled through existing admitted creation
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch44 · **Stage:**bounded UX
+
+**Exit.** Duplicate is available in all three live sections, including locked Done. It creates a new
+independent Scheduled card on the same writable day, retaining the exact multiline source and its
+ID as provenance. Twenty positive unit counterexamples fail without the command (five rejection
+controls already pass); all25 new cases pass across five preparation modes. Full workspace admission
+passes238 with1 existing skip. Six browser journeys pass with undo/redo, independent edits and reopen.
+TypeScript, focused lint/format and an exact old-source preservation check pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) covers queued writing,
+accepted-only projection, full Next, deleted sources, execution-time freeze and durable byte replay.
+The command reuses compose rather than copying CRDT identity or using a stale UI text snapshot.
+No stored-format, credential, sync authority or publication changes. Sequential patch only.
+
+
+### Combined card/input UX validation and preview handoff
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch45 · **Stage:**bounded regression evidence
+
+**Exit.** All159 unit files pass (1914 passed/1 existing named skip). The built frontend’s full
+geometry suite passes150 with24 existing platform skips. Type/build,232.7kB initial gzip budget,
+origin isolation, focused format and27 adapter/inventory cases pass. The exact general census moves
+2511→2536 for25 new admitted-duplication cases; all other bytes in that old fixture remain. Four new
+test files are required but remain uncredited/blocked pending separate aggregate adapter review.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) preserves counterexamples,
+the stale-count/snapshot failures and overly broad first inventory review. The reviewed graph changes
+only test inputs/counts/declaration locations; formal qualification remains paused (887 obligations/
+343 unresolved). Local preview8443 now serves the exact tested runtime;60 HTTPS assets, deep links and
+two fresh-context browser smokes pass, with API PID/service identity retained. Initial preview probes
+used wrong routes and then omitted Origin; both were refused before stopping the old gateway. Only
+the frontend gateway was restarted. UX-13 remains unresolved on physical Gboard. No commit/push or
+production deployment. Sequential patches42–45 extend immutable37–41.
+
+
+### Additional sidebar and macOS Cut requests retained in the UX queue
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch46 · **Stage:**product queue only
+
+**Exit.** UX-15–17 record the operator’s requested sidebar styling/spacing pass, preference for
+User over Actor, full date-control picker target, and macOS whole-line Cmd-X behavior. The supplied
+Account screenshot is preserved byte for byte as a linked product reference.
+
+**Notes.** These are queued for after the current work. No application code, tests, preview or
+security policy changed. The reported date/Cut behavior has not been reproduced in this slice.
+The documentation/screenshot change needs no runtime test; patch/replay checks retain the existing
+uncommitted sequence and leave the real Git index unchanged.
+
+
+### Background sync feasibility investigation queued
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch47 · **Stage:**product queue only
+
+**Exit.** UX-18 records the operator’s ready-on-return goal and a design-only investigation of
+app/OS lifecycle boundaries, browser support, background mechanisms, encrypted prefetch versus
+full application, key/authentication custody, energy/permission costs and measurable fallbacks.
+
+**Notes.** No feasibility conclusion, browser guarantee or implementation is claimed. Current
+unfocus behavior still needs tracing. Existing protection, lock and admission requirements remain;
+remembered unlocking and transport replacement are not implicitly selected. No app/test/preview
+changes; documentation-only sequential patch with replay checks.
+
+
+### Sidebar preferences and access controls gain consistent spacing
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch48 · **Stage:**bounded UX
+
+**Exit.** Sidebar fields use full-width text inputs, paired color/rollover controls, separated
+preference/protection/device groups and consistent button sizes. Visible/accessibility identity
+wording uses User. Four baseline checks fail;34 combined browser cases plus4 dark/light layout
+checks pass. Narrow/wide screenshots inspected; typecheck/focused lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md) retains
+source-only review of three old fixtures: only Actor-name locators become User-name locators;
+all assertions are preserved. Full historical setup/upgrade campaigns are not claimed. No
+authorization, lifecycle, data-format or default-disclosure behavior changes. Patch only.
+
+
+### Whole date target requests the native calendar
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch49 · **Stage:**bounded UX
+
+**Exit.** Text, padding and icon share explicit native showPicker activation, including Enter/Space.
+Missing/refused APIs keep native date entry. Four baseline activation checks fail and two fallback
+controls pass. Six Chromium and three real Firefox headless cases pass; native requests return
+inside user activation. TypeScript/focused lint pass.
+
+**Notes.** Native popup appearance remains browser-owned. The tests establish request acceptance,
+not physical-device calendar presentation. Date semantics and frozen-day rules are unchanged.
+[Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md). No publication.
+
+
+### Whole-line native Cut preserves clipboard and storage boundaries
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch50 · **Stage:**bounded UX
+
+**Exit.** Empty selections cut complete lines; ordinary selected cuts remain. Duplicate/adjacent
+carets do not duplicate clipboard text. Copying succeeds before semantic deletion; locked/frozen,
+pending/composing, empty or clipboard-refused paths preserve writing. Five baseline unit and four
+trusted-event browser counterexamples fail. Final41 focused unit cases,8 Chromium and4 Firefox
+journeys pass, with undo/redo, storage retry and reopen. Type/lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md) retains the
+invalid selection API attempt, adjacent-range defect, fixture type error and protected clipboard
+event timing mistake. The native write observer now forwards/captures synchronously. No arbitrary
+transaction bypass, plaintext persistence or protocol-format change. Earlier pending text requires
+a retry, deliberately. No commit or deployment.
+
+
+### Background sync feasibility traced without changing sync policy
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch51 · **Stage:**UX-18 investigation
+
+**Exit.** [Investigation](background-sync-feasibility.md) traces the existing hide-flush, live
+notification/receive scheduler, short-lived network authority, lock cleanup and static-only worker.
+Primary browser/spec sources establish a capability matrix and constraints. A bounded design
+compares live continuation, encrypted inbox/outbox and full worker application, with next steps,
+rough effort and security/physical-device acceptance conditions.
+
+**Notes.** The two-device headless observation did not enter the intended hidden/frozen states.
+The initial suspension assertion failed; a timer control showed the requested freeze was not
+established, and the receiver remained visible/focused. This is retained as inconclusive platform
+evidence, not a background-sync pass or latency result. Ordinary live sync worked. Source/receipts
+are preserved in the evidence packet. No background credential, worker, sync-policy or permission
+change. Physical-device lifecycle measurement is the recommended next implementation slice.
+
+
+### Sidebar/date/Cut validation and preview, with background study retained
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch52 · **Stage:**bounded UX validation
+
+**Exit.** All160 unit files pass (1927 passed/1 existing skip), full built-browser geometry168
+pass/24 existing platform skips,7 actual Firefox cases,12 existing packaged-account journeys
+and27 adapter/inventory cases pass. Type/build,232.7/350kB gzip budget, origin isolation and
+focused lint/format pass. Exact source/build identities and narrow label-only fixture review
+are retained. Four new test files remain required but uncredited in formal qualification.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md) includes
+the failed Cut/probe attempts, source trace and primary-source background report. No physical
+background/suspension or performance result is claimed. Qualification remains paused/blocked
+(891 obligations/347 unresolved). Local preview8443 serves the tested runtime, with60 HTTPS
+assets/deep links and two disposable-context smoke checks; only the gateway restarted, retaining
+API PID52585/service identity/data. Patches48–52 extend immutable37–47. No real staging, commit,
+push, merge or production deployment.
+
+
+### Sidebar labels fit without clipping at narrow widths and enlarged text
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch53 · **Stage:**bounded styling
+
+**Exit.** CSS-only runtime repair lets complete day labels determine button width and wrap,
+caps the sidebar to its viewport, keeps icons/sections from shrinking, tightens collapsed
+spacing and permits long expanded control text to wrap. Eight baseline counterexamples fail;
+50 source Chromium,9 actual Firefox,18 built-frontend and10 inventory cases pass. Type/build,
+budget/origin and focused lint/format pass. Existing test assertions remain intact.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-overflow/README.md) preserves the
+fractional-edge test correction, timing/inspection mistakes and exact source/build receipts.
+No physical mobile scaling claim or new formal qualification credit. Preview8443 serves worker
+`d541133789ab`;60 HTTPS assets/two deep links and four disposable-context smoke cases pass.
+Only the gateway restarted; API PID52585/service identity/data remain. No functional/security
+owner changes, real staging, commit, push, merge or production deployment.
+
+
+### Confirmed uploads sync between non-overlapping device sessions
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch54 · **Stage:**bounded sync regression
+
+**Exit.** New creating→enrolled and enrolled→creating browser cases confirm exact server
+acceptance against independently read committed SQLite bytes and the client frontier, close
+and disconnect the sender, restart the API, then open the receiver offline before restoring
+only its network. Both receive and retain writing on another offline reopen. Final run:
+4 passed including existing offline/session restart journeys; both withheld-upload/download
+sensitivity controls fail at the intended boundaries. Type/build/budget/origin/lint/format
+and10 inventory cases pass. No pre-existing test or production runtime change.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-non-overlapping-sync/README.md) retains
+all harness failures and corrections, controls, artifact identities and limits. Chromium’s
+optimistic onLine hint is distinguished from a proven uncached-request network denial.
+These are isolated contexts/new renderers, not physical-device or cross-engine tests. No
+simultaneous-online requirement was reproduced after confirmed upload; the operator’s
+perceived delay remains unexplained. Qualification remains paused/blocked, with the new
+required file uncredited. Preview and real accounts untouched; sequential patch only.
+
+### Distroless runtime candidate, with ARM64 verification and an open AMD64 gate
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch55 · **Stage:**bounded image hardening
+
+**Exit.** Runtime now uses digest-pinned distroless CC/Debian13, retains Node24.18.0 and
+builds static age1.3.2 with pinned Go1.27.3. Only the Node/age executables and their licenses/
+provenance are copied from toolchain stages. No runtime shell, package manager or OS archive
+tools. Application/protocol source, dependency lockfile, non-root identity, private state,
+external key custody and exec probe/maintenance forms remain unchanged.
+
+**Evidence.** Native ARM64 build and all31 final-image runtime/gateway, backup, restore and
+maintenance cases pass at their original deadlines. Six old/new X25519 payload round trips,
+12 wrong-key/tamper refusals, strict/default TLS controls and the uninstrumented two-container
+identity/ownership/restart smoke pass. Syntax, focused lint/format and10 inventory cases pass.
+One independent read-only review found no concrete bypass/regression. Same-database offline
+Trivy0.75.0 scans: release baseline5 critical/78 high; candidate0 critical/0 high, with25
+medium/8 low/1 unknown retained. The initial candidate exposed age's old embedded Go, so
+that binary was updated rather than suppressing its findings. Scanner presence is not a
+demonstrated remote exploit; Debian's MiniZip/zlib applicability caveat remains recorded.
+
+**Limits.** Full verification remains blocked on AMD64: two emulated builds fail the existing
+eight-second backup-worker readiness gate in the unchanged Debian build stage. A separate
+first-startup observation becomes ready after10,245ms; it is not credited as the full test.
+No old test, assertion or deadline changed. Native AMD64 build/final-image/smoke checks remain
+required. Exploratory image/source identities, full scans, all failed attempts and commands
+are retained in Codex Security's standalone `done` collection under `artifacts/55-distroless`.
+Patch54 is preserved; patch55 is a separate sequential source patch. No signing, push, merge,
+preview update or deployment. Generalized release qualification remains paused/blocked.
+
+### Release browser fixtures follow collapsed Account and concurrent progress statuses
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch56 · **Stage:**bounded fixture repair
+
+**Exit.** The direct Local-to-sync entry test now opens the collapsed Account section before
+checking Add an unlock code. Cancellation checks select the existing cancellation status while
+the progress indicator can also expose a status role. Both affected journeys pass against the
+unchanged signed e86bd26c frontend and server on isolated test ports53225/53226 (2/2). All
+existing assertions, cases and deadlines remain; no runtime or authority change. The first
+full packaged run's stale-fixture failures and separate gateway teardown failures are retained
+in the managed signed-UX-image evidence. Planning inventory is refreshed without release credit.
+
+### Gateway shutdown reaps connections that have never dispatched an HTTP request
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch57 · **Stage:**bounded lifecycle repair
+
+**Exit.** Track sockets only until their first complete HTTP request. On shutdown, close those
+unadmitted preconnections and incomplete headers, while retaining existing stream cancellation,
+idle cleanup and draining of dispatched operations. The signed e86bd26c image reproduces the
+old shutdown hold until a disposable raw client disconnects. Two new regressions fail against
+the old implementation; all7 gateway cases pass after the11-line repair. One new case holds
+an admitted operation across shutdown and verifies its exact reply and single dispatch. No
+accepted operation is added to the unrequested set after dispatch; no authority, retry, body,
+session or framing policy changes. Existing tests/assertions/deadlines remain intact.
+
+**Notes.** This follows the full release browser run's development-server teardown failures.
+The original source-only idle probe reported its boolean after cleanup and is not valid
+deadline evidence; the corrected exact-image probe captures the decision before cleanup.
+Native ARM64 artifact rebuild, affected browser reruns and publication remain separate.
+Evidence and the original failures are retained under managed signed-UX-image artifacts.
+
+### Browser fixtures wait for the writing shell and focus the passkey requester
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch58 · **Stage:**bounded fixture repair
+
+**Exit.** Three navigation sites wait for the existing writing shell before opening a collapsed
+sidebar section. The two-tab protection test brings the requesting tab to the foreground before
+the native passkey ceremony; both previously cancelled cases then pass with their writer-barrier,
+factor, reload and retained-writing assertions intact. Missed-rotation removal locates the exact
+device code instead of the retired display-name prefix. No application, authority or storage
+change; every existing case, assertion and deadline remains. The planning inventory updates only
+the four changed source hashes, without release credit.
+
+**Evidence and limits.** The original packaged run retains79 passes/11 failures. An affected-file
+rerun retains26 passes/3 failures: the new exact-code selector fixes the remaining rotation
+locator; two update builds initially lacked complete disposable build inputs, then HTML symlinks
+produced outside-root asset paths. Restoring regular-file signed build inputs yields3/3 final
+passes, including queued offline update and saved-passkey setup continuation. Thus all original
+failures have passing reruns, not a new single clean90-case run. The earlier focused passkey
+control also passes2/2. Browser checks use the exact e86bd26c image frontend, isolated host
+services with signed gateway repair dcb4e9bb, and test-only successor builds. All failed attempts
+and apparatus corrections remain in managed signed-UX-image evidence. Signed final ARM64 image
+rebuild and its exact-image checks remain separate; no publication or deployment.
+
+
+### PR57 release bookkeeping follows the repository's authority and evidence owners
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch59 · **Stage:**bounded bookkeeping repair
+
+**Exit.** The hosted security-contract step correctly refused an unreviewed runtime census.
+Independent Git/blob/population review establishes400→401 sources:11 edited editor/sidebar
+sources and the new presentation-only MenuSection. All197 domain definitions and source sites,
+registry classifications, construction dispositions and authority-map bytes remain unchanged.
+The existing recorder refreshes the census only after that review. Optional tool storage no
+longer substitutes for repository evidence: the original distroless, preparation and exact-image
+archives are copied byte-for-byte into the established repository evidence directory, with every
+archive member's population, size and hash independently checked.
+
+**Wider bookkeeping.** Review of actual runtime collection and the retained full report establishes
+37 added general cases and25 added receive-editor wrapper cases. Two old adapter fixtures receive
+three count/title literal corrections. Every old manifest row, non-case contract, case assertion,
+deadline and execution selection remains; exactly nine new required files remain uncredited and
+blocked. The manifest now records892 obligations/348 unresolved. The graph changes only those two
+fixture hashes. No checker, test, assertion, deadline, security guarantee or qualification blocker
+was removed. Generalized qualification remains paused.
+
+**Checks.** All ten commands in CI's security-contract/vector step pass on Node24.18.0/pnpm11.20.0;
+18 census/contract/registry cases,10 inventory cases and175 release-adapter cases pass. Build,
+origin/budget and traceability checks pass; the trace reports101 claims,28/28 current defects with
+named falsifiers and9 registered debts. Final tree-bound receipts are refreshed after these records
+and again after signing. [Evidence](development-evidence/2026-10-23-distroless-release/README.md)
+retains the original hosted error, reviews, failed auditor assumptions, the pinned-manager launch
+failure and reruns. Two initial rolling local logs were overwritten; their explicitly identified
+transcript excerpts are retained without claiming complete original stdout.
+
+**Remaining boundary.** The earlier ARM64 image stays bound to signed d1c2784b. The two fixture
+files enter the allowlisted Docker context, so release preparation requires a fresh signed-source
+build and exact-image checks. No image was relabeled, published or deployed; operator merges and
+production rollout remain separate. This closes only this seat's bookkeeping slice.
+
+
+### Refreshed signed ARM64 artifact after repository bookkeeping repair
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch60 · **Stage:**bounded release preparation
+
+**Exit.** Clean signed source d8b3f22b builds a fresh native ARM64 distroless image. All122 runtime
+source files match the signed archive. All33 final-image cases pass at their existing deadlines,
+including gateway draining, backup/restore/maintenance, six old/new age round trips and12 wrong-key/
+tamper refusals. Uninstrumented container restart/identity/session/precache smoke, default/explicit
+TLS controls and production Node command compatibility pass. The exact51d8550d→candidate→old→new
+frontend rehearsal passes protected original/joined profiles, queued/offline writing, wrong-code
+refusal, undo/redo and two-way delivery. Both frontend populations and bytes remain unchanged.
+
+**Bookkeeping.** Patch59 is signed and pushed as d8b3f22b. Hosted run39992803591 passes the formerly
+failing contract step plus complete inventory and adapters for that source; its longer unit step
+is still running in the retained snapshot. Twelve genuine passing receipts against the clean signed
+tree are retained. [Repository evidence](development-evidence/2026-10-23-distroless-release/signed-d8b3f22b/README.md)
+contains exact image/source identities, reports, reproduction material and independently verified
+archive/copy indexes. This follow-up changes documentation only; image labels retain d8b3f22b,
+with full allowlisted-input equality checked before carry-forward and after signing.
+
+**Limits.** The same pinned offline scanner/database reports0 critical/0 high/25 medium/8 low/
+1 unknown without suppressions. This is not an exhaustive security proof. The browser rehearsal
+uses candidate host Node24 services throughout, not predecessor-server rollback or physical-device
+observation. Earlier failed runs and the open AMD64 boundary remain. No old test, assertion,
+deadline, source census classification or security guarantee changes. Generalized qualification
+stays paused/blocked at892 obligations/348 unresolved. An independently checked infrastructure
+pin patch is retained unapplied against the local base; no image publication, infrastructure
+mutation, merge or deployment. Other seat's progress document remains intact.

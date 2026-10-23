@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { openApp, protectApp } from '../geometry/openApp';
+import { openApp, protectApp, openMenuSection } from '../geometry/openApp';
 import { authenticator, createdAccount } from '../device-enrollment/helpers';
 import { startService, stopService } from './server';
 
@@ -12,6 +12,8 @@ async function addWriting(page: Page) {
   await expect(page.locator('.shell')).toContainText(writing);
 }
 async function syncSetup(page: Page, first = true) {
+  await expect(page.locator('.shell')).toBeVisible();
+  await openMenuSection(page, 'Sync');
   await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
   await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
   if (first)

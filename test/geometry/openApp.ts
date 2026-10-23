@@ -12,7 +12,27 @@ export const unlockApp = async (page: Page) => {
   }
   await expect(page.locator('.shell[data-local-workspace]')).toBeVisible();
 };
+/** Follow the visible disclosure before exercising its existing actions. */
+export const openMenuSection = async (
+  page: Page,
+  name: 'Account' | 'Sync' | 'Data' | 'Install',
+) => {
+  const menu = page.locator('#menu');
+  // Recovery/unlock screens may expose the same lifecycle action outside the writing shell.
+  if (!(await menu.count())) return;
+  const trigger = page.getByRole('button', { name: 'Open menu', exact: true });
+  if (
+    (await trigger.isVisible()) &&
+    (await page.locator('.shell').getAttribute('data-menu')) !== 'open'
+  )
+    await trigger.click();
+  const section = menu.locator(`details[data-menu-section="${name}"]`);
+  // Historical upgrade fixtures intentionally serve predecessors with no disclosures.
+  if (!(await section.count())) return;
+  if ((await section.getAttribute('open')) === null) await section.locator('summary').click();
+};
 export const protectApp = async (page: Page) => {
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Add an unlock code', exact: true }).click();
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
   const code = (await page.getByLabel('Generated unlock code').textContent())!;

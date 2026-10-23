@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { compileManifest } from '/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/release-validation/manifest.mjs';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const scratch='/private/tmp/done-ux-20261023-patches/checks-53';
+const a=JSON.parse(readFileSync(scratch+'/inventory-before.json'));
+const b=JSON.parse(readFileSync(root+'/docs/release-validation-graph.json'));
+const file='test/geometry/sidebar-polish.spec.ts';
+const changed=b.inputs.filter(x=>a.inputs.find(y=>x.path===y.path)?.sha256!==x.sha256).map(x=>x.path);
+assert.deepEqual(changed,[file]);
+const before=a.tests.find(t=>t.path===file), after=b.tests.find(t=>t.path===file);
+assert.equal(after.declarations,before.declarations+1);
+const restored=structuredClone(b);restored.inputs=a.inputs;restored.tests.find(t=>t.path===file).declarations=before.declarations;assert.deepEqual(restored,a);
+const m=compileManifest(root,b);const rows=m.rows.filter(r=>r.id.includes(file));assert.equal(rows.length,1);assert(rows.every(r=>r.blocked&&!r.stage));assert.equal(m.status,'blocked');
+const receipt={status:'passed',changedInputHashes:changed,staticDeclarationChange:[before.declarations,after.declarations],allOtherTestsDispositionsCountsAndFieldsPreserved:true,newCasesInPreviouslyUncreditedFile:true,qualificationCreditAdded:false,manifest:{status:m.status,obligations:m.rows.length,unresolved:m.unresolved.length},rows};
+writeFileSync(scratch+'/inventory-review.json',JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt));

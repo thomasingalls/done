@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { openApp } from '../geometry/openApp';
+import { openApp, openMenuSection } from '../geometry/openApp';
 import { authenticator } from '../device-enrollment/helpers';
 import { startService, stopService } from './server';
 
@@ -27,6 +27,7 @@ for (const unlockOther of [false, true])
       await openApp(other);
       await expect(other.locator('.shell')).toContainText(writing);
       await authenticator(page);
+      await openMenuSection(page, 'Sync');
       await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
       await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
       await page.getByRole('button', { name: 'Continue', exact: true }).click();
@@ -44,6 +45,7 @@ for (const unlockOther of [false, true])
       }
       await page.getByRole('button', { name: 'Continue to sync setup', exact: true }).click();
       await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+      await page.bringToFront();
       await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
       await expect(
         page.getByRole('heading', { name: 'Try your new passkey', exact: true }),

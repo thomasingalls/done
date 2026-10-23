@@ -1,0 +1,136 @@
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { join, relative } from 'node:path';
+import { pathToFileURL } from 'node:url';
+const root = '/Users/thomasingalls/.codex/worktrees/7fda/done';
+const scratch = '/private/tmp/done-pr57-bookkeeping-20261023/checks';
+const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+const at = (p) => JSON.parse(readFileSync(join(root, p)));
+const source = 'd1c2784bef0ccc3ea88d99dfd82f1db3a83af384';
+const { compileManifest, selectStages } = await import(pathToFileURL(join(root, 'scripts/release-validation/manifest.mjs')));
+const { manifestSnapshot } = await import(pathToFileURL(join(root, 'scripts/release-validation/manifest-snapshot.mjs')));
+const old = JSON.parse(git('show', source + ':docs/release-validation-manifest.json'));
+const graph = at('docs/release-validation-graph.json');
+const priorGraph = JSON.parse(git('show', source + ':docs/release-validation-graph.json'));
+const changedGraphInputs = graph.inputs.filter((entry) => priorGraph.inputs.find((x) => x.path === entry.path)?.sha256 !== entry.sha256).map((x) => x.path);
+assert.deepEqual(changedGraphInputs, ['test/release-validation/campaign-wrappers.test.mjs', 'test/release-validation/generated-tests.test.mjs']);
+assert.deepEqual({ ...graph, inputs: priorGraph.inputs }, priorGraph);
+const literalEdits = [
+  ['test/release-validation/campaign-wrappers.test.mjs', [
+    ['three original commands, 299 cases and disposable browser', 'three original commands, 324 cases and disposable browser'],
+    ['assert.equal(s.expect.cases.length, 299);', 'assert.equal(s.expect.cases.length, 324);'],
+  ]],
+  ['test/release-validation/generated-tests.test.mjs', [['    2499,\n', '    2536,\n']]],
+];
+for (const [path, edits] of literalEdits) {
+  let text = git('show', source + ':' + path);
+  for (const [before, after] of edits) {
+    assert.equal(text.split(before).length, 2);
+    text = text.replace(before, after);
+  }
+  assert.equal(readFileSync(join(root, path), 'utf8'), text, path);
+}
+const current = compileManifest(root, graph);
+const previous = new Map(old.rows.map((r) => [r.id, r]));
+const rows = new Map(current.rows.map((r) => [r.id, r]));
+assert.equal(old.rows.length, 883); assert.equal(current.rows.length, 892);
+assert.equal(old.unresolved.length, 339); assert.equal(current.unresolved.length, 348);
+for (const key of ['schema', 'status', 'claim', 'exclusions']) assert.deepEqual(current[key], old[key], key);
+const expectedAdded = [
+  'test:test/admittedClipboard.test.ts', 'test:test/compose.test.tsx',
+  'test:test/geometry/card-focus.spec.ts', 'test:test/geometry/compose-input.spec.ts',
+  'test:test/geometry/cut.spec.ts', 'test:test/geometry/date-picker.spec.ts',
+  'test:test/geometry/duplicate-card.spec.ts', 'test:test/geometry/sidebar-polish.spec.ts',
+  'test:test/packaged-account/non-overlapping-sessions.spec.ts',
+].sort();
+const added = current.rows.filter((r) => !previous.has(r.id));
+assert.deepEqual(added.map((r) => r.id).sort(), expectedAdded);
+assert.deepEqual(Object.keys(current.selections), Object.keys(old.selections));
+for (const [name, ids] of Object.entries(old.selections)) {
+  if (name !== 'release') assert.deepEqual(current.selections[name], ids, name);
+  else {
+    assert.deepEqual(current.selections[name].filter((id) => previous.has(id)), ids);
+    assert.deepEqual(current.selections[name].filter((id) => !previous.has(id)).sort(), expectedAdded);
+  }
+}
+for (const row of added) { assert(row.blocked); assert.equal(row.stage, undefined); }
+assert.deepEqual(current.unresolved.filter((id) => !old.unresolved.includes(id)).sort(), expectedAdded);
+for (const id of old.unresolved) assert(current.unresolved.includes(id));
+const rename = (id) => id
+  .replace('preserve the 2499-case file denominator', 'preserve the 2536-case file denominator')
+  .replace('three original commands, 299 cases and disposable browser', 'three original commands, 324 cases and disposable browser');
+let caseArrays = 0;
+function equalContract(before, after, path) {
+  if (Array.isArray(before)) {
+    if (path.endsWith('.cases')) {
+      caseArrays++;
+      const original = before.map((c) => ({ ...c, id: rename(c.id) }));
+      const ids = new Set(original.map((c) => c.id));
+      assert.equal(new Set(after.map((c) => c.id)).size, after.length, path);
+      assert.deepEqual(after.filter((c) => ids.has(c.id)), original, path);
+      return;
+    }
+    assert(Array.isArray(after)); assert.equal(after.length, before.length, path);
+    before.forEach((value, i) => equalContract(value, after[i], path + '[' + i + ']'));
+  } else if (before && typeof before === 'object') {
+    assert.deepEqual(Object.keys(after).sort(), Object.keys(before).sort(), path);
+    for (const key of Object.keys(before)) equalContract(before[key], after[key], path + '.' + key);
+  } else assert.deepEqual(after, before, path);
+}
+for (const row of old.rows) { assert(rows.has(row.id)); equalContract(row, rows.get(row.id), row.id); }
+const deltas = [
+  ['test:test/admittedText.test.ts', 14, 17],
+  ['test:test/cardCommands.test.ts', 8, 9],
+  ['test:test/geometry/workflow.spec.ts', 22, 30],
+  ['test:test/workspaceAdmission.test.ts', 214, 239],
+];
+for (const [id, before, after] of deltas) {
+  assert.equal(previous.get(id).stage.expect.cases.length, before);
+  assert.equal(rows.get(id).stage.expect.cases.length, after);
+}
+const active = JSON.parse(readFileSync(join(scratch, 'independent-vitest-collection.json')));
+const prior = JSON.parse(readFileSync(join(scratch, 'prior-runtime-case-reports.json')));
+const selected = [];
+for (const module of prior.modules) {
+  const file = 'test/' + module.name.split('/test/').at(-1);
+  assert.equal(git('diff', '--name-only', prior.source, '--', file), '');
+  const expected = rows.get('test:' + file).stage.expect.cases;
+  const observed = module.assertionResults.map((c) => ({ id: file + '::' + JSON.stringify([...c.ancestorTitles, c.title]), outcome: c.status === 'pending' ? 'not-applicable' : c.status === 'passed' ? 'pass' : c.status }));
+  const sorted = (values) => [...values].sort((a,b)=>a.id.localeCompare(b.id));
+  assert.deepEqual(sorted(observed), sorted(expected.map(({id,outcome})=>({id,outcome}))));
+  const actualNames = active.filter((c) => relative(root,c.file) === file).map((c) => c.name).sort();
+  const expectedNames = expected.filter((c) => c.outcome === 'pass').map((c) => JSON.parse(c.id.split('::')[1]).join(' > ')).sort();
+  assert.deepEqual(actualNames, expectedNames);
+  selected.push({ file, cases: expected.length, activeCollected: actualNames.length, existingNamedSkip: expected.filter((c) => c.outcome !== 'pass') });
+}
+const browser = JSON.parse(readFileSync(join(scratch, 'independent-workflow-collection.json')));
+assert.deepEqual(browser.errors, []);
+const workflow = [];
+function walk(suite, names = []) {
+  const next = suite.title === 'workflow.spec.ts' ? names : [...names, suite.title];
+  for (const spec of suite.specs ?? []) for (const test of spec.tests) workflow.push('test/geometry/workflow.spec.ts::' + JSON.stringify([test.projectName, ...next, spec.title]));
+  for (const child of suite.suites ?? []) walk(child, next);
+}
+for (const suite of browser.suites) walk(suite);
+assert.deepEqual(workflow.sort(), rows.get('test:test/geometry/workflow.spec.ts').stage.expect.cases.map((c) => c.id).sort());
+const [wrapper] = selectStages(current, 'wrapper-account-receive-editor');
+assert.equal(wrapper.expect.cases.length, 324);
+assert.equal(wrapper.expect.steps[1].expect.cases.length, 311);
+assert.equal(wrapper.expect.steps[2].expect.cases.length, 13);
+const general = selectStages(current, 'general-tests').reduce((n,s)=>n+s.expect.cases.length,0);
+assert.equal(general, 2536); assert.equal(deltas.reduce((n,[_id,a,b])=>n+b-a,0), 37);
+const result = {
+  status:'passed', oldRows:883, newRows:892, oldUnresolved:339, newUnresolved:348,
+  newBlockedRows:expectedAdded, oldRowsAndNonCaseContractsPreserved:true,
+  oldCaseObjectsAndRelativeOrderPreserved:true, reviewedCaseArrays:caseArrays,
+  existingCaseRetitles:['2499→2536 in the already-updated general-tests fixture title','299→324 in the receive-editor wrapper fixture title'],
+  graphChangedOnlyTwoReviewedSourceHashes:changedGraphInputs, literalFixtureEditsOnly:true,
+  generalCases:{before:2499,after:general,delta:37,byFile:deltas},
+  receiveEditor:{before:299,after:324,vitest:311,native:13},
+  independentRuntimeCollection:selected, browserCollected:workflow.length,
+  priorRuntimeReportSource:prior.source, generalizedQualificationRun:false,
+};
+writeFileSync(join(scratch,'manifest-review.json'),JSON.stringify(result,null,2)+'\n');
+writeFileSync(join(scratch,'manifest-reviewed.json'),manifestSnapshot(current));
+console.log(JSON.stringify(result,null,2));

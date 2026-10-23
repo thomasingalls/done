@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors, credentials, restoreAuthenticator, openSaved, add } from './devices';
 import {
@@ -27,8 +28,10 @@ test('both devices retain offline edits across independent API and application r
     await add(page, 'Queued on A while account service is down');
     await add(pair.second, 'Queued on B while account service is down');
     await serviceUnavailable;
-    for (const p of [page, pair.second])
+    for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    }
     await firstContext.setOffline(true);
     await pair.other.setOffline(true);
     await page.close();
@@ -54,8 +57,10 @@ test('both devices retain offline edits across independent API and application r
       savedB = await credentials(bAuth);
     const deepA = a.url(),
       deepB = b.url();
-    for (const p of [a, b])
+    for (const p of [a, b]) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    }
     await a.close();
     await b.close();
     const reopenedA = await firstContext.newPage(),

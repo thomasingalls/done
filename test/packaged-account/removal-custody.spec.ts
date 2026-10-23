@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -34,6 +35,7 @@ for (const actor of ['promotion', 'joined'] as const) {
       pair.second.setDefaultTimeout(15000);
       console.log(actor, 'paired');
       for (const p of [page, pair.second]) {
+        await openMenuSection(p, 'Account');
         await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
         await p.goto('/');
         await p.evaluate(chunk.code);
@@ -119,6 +121,7 @@ for (const actor of ['promotion', 'joined'] as const) {
       await active.goto('/');
       await openSaved(active, args.code, actor === 'joined');
       await add(active, 'Writing after local generation activation');
+      await openMenuSection(active, 'Account');
       await active.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await active.goto('/');
       await openSaved(active, args.code, actor === 'joined');

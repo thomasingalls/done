@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "version": "c4a66c79-dirty",
+  "workerVersion": "bbdf2a6c9379",
+  "profiles": "fresh disposable Chromium contexts; no existing browser data or real account used",
+  "observations": [
+    {
+      "width": 1280,
+      "mergeOutsideFocus": true,
+      "quickEntryDraftRetained": true,
+      "chromiumCompositionConfirmation": true,
+      "duplicateToScheduled": true,
+      "pageErrors": []
+    },
+    {
+      "width": 420,
+      "mergeOutsideFocus": true,
+      "quickEntryDraftRetained": true,
+      "chromiumCompositionConfirmation": true,
+      "duplicateToScheduled": true,
+      "pageErrors": []
+    }
+  ]
+}

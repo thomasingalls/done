@@ -25,7 +25,10 @@ get a bounded scope and evidence before implementation. General release qualific
 - **UX-06 — Continuous mobile deletion.** The operator's barometer: “can I hold down backspace on mobile
   and watch the line disappear without pauses?” Pauses remain. Reproduce and measure sustained deletion
   on a physical phone, including while sync is active, alongside the existing typing measurements.
-  Preserve writing, undo and durability guarantees while attributing the pauses.
+  Preserve writing, undo and durability guarantees while attributing the pauses. On 2026-10-23,
+  after the sync release, the operator reports improvement but periodic pauses remain during held
+  deletion on a phone; longer pauses also show the syncing warning. Native-input smoothness is not
+  established. This UX patch series records the observation without claiming a performance repair.
 - **UX-07 — Saving-status layout movement.** “Still saving” warnings currently move the text around.
   They make remaining latency visible during debugging, but this movement is unacceptable in the user
   experience. Keep save state truthful while making status changes preserve editor layout, selection,
@@ -57,6 +60,77 @@ get a bounded scope and evidence before implementation. General release qualific
   and does not answer the whole need. Preserve the premise that actively prioritizing helps the user
   do the work; automatic recurring tasks or AI-selected priorities are not the solution requested here.
   This is a design problem to explore, not a selected lens or implementation.
+
+- **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
+  sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
+  focus request, reopening the editor and stealing later input. Regression checks cover outside
+  click and action Tab navigation. This explains one path, not every possible focus defect.
+- **UX-13 — Intermittent invisible mobile quick entry.** Android with Gboard: the Today add-item
+  field sometimes shows no text and Add stays disabled while keyboard suggestions follow typing.
+  The operator does not recall a reliable trigger; suggestion taps have also worked normally.
+  Track separately from UX-12 and from IME-confirmation handling. Do not infer a physical-phone
+  repair from synthetic events or a Chromium mobile user agent. Patch43 separately repairs
+  IME confirmation being mistaken for submission; the intermittent phone symptom stays open.
+- **UX-14 — Duplicate cards to Scheduled.** Add a Duplicate control in Next, Done and Scheduled,
+  retaining the source and copying its whole multiline body into a new Scheduled card. Preserve
+  writable-day and durability rules; do not turn duplication into movement out of Done.
+
+- **UX-15 — Sidebar presentation and user-facing vocabulary.** Queued 2026-10-23 for after
+  the current work. Revisit styling, spacing, vertical rhythm and visual balance in Account
+  and the other sidebar sections. The operator’s [Account screenshot](product-references/2026-10-23-sidebar-account.png)
+  is the visual reference: form rows are crowded while section/action spacing and control
+  alignment feel uneven. Prefer **User** to **Actor** in the visible identity label; this is
+  wording for the interface, not a change to internal actor identity or authorization.
+  Related to UX-01/UX-03; no redesign or implementation is selected by this queue entry.
+- **UX-16 — Whole date control opens the native picker.** Queued 2026-10-23. The operator
+  reports that only the calendar icon currently opens the picker. Make the displayed date
+  and calendar icon one complete click/tap target, retaining native date selection and
+  keyboard access. Reproduce on the current preview, including Firefox/macOS, before repair;
+  the earlier overlay implementation is not evidence that every browser opens from its full area.
+- **UX-17 — macOS whole-line Cut.** Queued 2026-10-23. Cmd-X currently appears to do nothing
+  when the operator expects the current whole line to be cut. With no text selected, copy
+  the whole line to the clipboard and delete it; retain ordinary cutting of a selection.
+  Reproduce in Goals and card editors before choosing the repair. Check clipboard success/
+  refusal, native user-gesture permissions, storage admission, undo and line/EOF boundaries
+  without deleting writing that was not successfully copied. Extends UX-04; implementation
+  and regression tests are deferred until after the current work.
+
+- **UX-18 — Background sync and ready-on-return feasibility.** Queued 2026-10-23 as a
+  design investigation, **not implementation**. The operator wants an unfocused PWA to keep
+  up so reopening does not begin with a catch-up wait. Treat “sync likely pauses on unfocus”
+  as a reported concern to trace, not an established browser-independent cause.
+  - Distinguish an unfocused but running window, hidden tab, minimized app, suspended process,
+    phone screen lock, closed app and an explicitly locked workspace. Establish what the app
+    stops itself versus what the browser/OS stops, including the existing notifications,
+    reconnect and lifecycle owners. Measure transfer, verification and apply time separately.
+  - Produce a current browser/OS capability matrix for desktop Chrome/Firefox and mobile
+    Android/iOS, installed and ordinary-tab contexts. Evaluate service-worker Push, one-off
+    Background Sync, Periodic Background Sync and foreground continuation where supported;
+    verify wake/time/permission constraints, battery/data costs and delivery guarantees from
+    primary documentation and device observations. No mechanism or compatibility claim is
+    selected by this queue entry.
+  - Compare keeping the existing unlocked runtime working, background transfer of encrypted
+    records for later verified application, and full background verification/application.
+    Identify authentication, key custody, renewal, multi-tab/storage ownership, replay and
+    retry requirements for each. Preserve fresh authority/history checks and canonical storage
+    admission; downloaded ciphertext or a notification must never count as accepted writing.
+  - Keep existing protected-workspace lock/sign-out/removal guarantees. Do not persist unlock
+    secrets or silently add remembered unlocking to enable background work. If an option needs
+    a changed guarantee, make that an explicit separate decision; remember-me remains deferred.
+  - Deliver a recommendation with tradeoffs, bounded implementation phases/effort, an honest
+    fallback when background work cannot finish, and physical-device acceptance measurements
+    across background/return boundaries. Target writing already caught up on return where
+    feasible, without promising continuous execution or immediate freshness without evidence.
+  Related: device-setup interruption, UX-06/UX-07 and the separately deferred WebSocket transport
+  question. Investigate lifecycle and transport separately; switching transport is not a
+  selected remedy. No runtime or service-worker changes authorized by this reminder.
+
+**Implementation/investigation status, 2026-10-23:** UX-15 is implemented in patch48
+(sidebar layout and User vocabulary); UX-16 in patch49 (whole native date target); UX-17 in
+patch50 (whole-line Cut with clipboard/storage guards). UX-18’s investigation is complete in
+patch51: [findings and proposed next phases](background-sync-feasibility.md). Background sync
+behavior is unchanged; physical-device lifecycle evidence is still needed before selecting a repair.
+[UI evidence and limits](development-evidence/2026-10-23-sidebar-cut-background/README.md).
 
 ## Earlier conversation items retained
 

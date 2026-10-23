@@ -1,7 +1,7 @@
 import { test } from '../release-validation/browser-fixture';
 /** The Local build has no transport attached; the legacy provider stays covered by its core harnesses. */
 import { expect } from '@playwright/test';
-import { openApp, reloadApp } from './openApp';
+import { openApp, reloadApp, openMenuSection } from './openApp';
 
 test('Local editing and reload work with no relay or plaintext identity cache', async ({
   page,
@@ -10,6 +10,7 @@ test('Local editing and reload work with no relay or plaintext identity cache', 
   const sockets: string[] = [];
   page.on('websocket', (socket) => sockets.push(socket.url()));
   await openApp(page);
+  await openMenuSection(page, 'Sync');
   await expect(page.getByText('Saved only in this browser. Sync is off.')).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Relay endpoint' })).toHaveCount(0);
   const compose = page.locator(

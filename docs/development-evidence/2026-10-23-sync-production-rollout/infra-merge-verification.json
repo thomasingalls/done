@@ -1,0 +1,35 @@
+{
+  "status": "verified",
+  "merge": "67a622f6add9eebed0f0a84ad713b542a1eb973a",
+  "parents": [
+    "bbaf35f9ccc07a6fbb25d25cbdc6512d4d33120f",
+    "d0ce0dc7173202351d20026cf57d45a332e3b6dc"
+  ],
+  "subject": "Merge pull request 'deploy(done): release sync catch-up and device connection improvements' (#20) from codex/done-sync-51d8550d into main",
+  "tree": "286f8c5dbf5af3906272b61e1b50527197ae64d6",
+  "signedCommit": "d0ce0dc7173202351d20026cf57d45a332e3b6dc",
+  "signedCommitVerified": true,
+  "treeMatchesSignedCommit": true,
+  "image": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "offlineCheck": {
+    "ok": true,
+    "scope": "offline render and focused deployment-boundary checks",
+    "image": "ghcr.io/thomasingalls/done@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+    "baseResources": 11,
+    "operatorJobs": [
+      "initialize",
+      "maintenance-prepare",
+      "maintenance-status",
+      "maintenance-resume",
+      "maintenance-prune"
+    ],
+    "pendingInputs": [
+      "actual-origin browser account/passkey, offline reopening, two-device delivery and authenticated notification stream checks"
+    ],
+    "clusterContacted": false,
+    "secretsDecrypted": false,
+    "releaseValidation": "paused"
+  },
+  "justfileMatchesOperatorWrapper": true,
+  "observedAt": "2026-10-23T06:49:23.162998+00:00"
+}

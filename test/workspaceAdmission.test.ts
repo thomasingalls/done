@@ -233,6 +233,121 @@ describe.each(referenceAndOptimizedWorkspacePreparations)(
   (preparation) => {
     const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
     const insert = (text: string) => ({ name: 'insert' as const, text });
+    describe('card duplication', () => {
+      it.each(['next', 'scheduled', 'done'] as const)(
+        'duplicates the whole %s card to Scheduled with new identity, one undo and durable replay',
+        async (section) => {
+          const f = await fixture();
+          try {
+            const body = 'Title\n- one\n  - nested\n\nNotes **stay** here  \n';
+            const created = await f.doc.command({
+              kind: 'compose',
+              text: body,
+              to: { ...next, section },
+            }).accepted;
+            const id = (created.value as { id: string }).id;
+            const before = f.doc.read();
+            const source = before.cards.find((card) => card.id === id)!;
+            const result = await f.doc.command({ kind: 'duplicate', id }).accepted;
+            expect(result.value).toBe(true);
+            const after = f.doc.read();
+            expect(after.cards).toHaveLength(2);
+            expect(after.cards.find((card) => card.id === id)).toEqual(source);
+            const copy = after.cards.find((card) => card.id !== id)!;
+            expect(copy).toEqual({
+              id: expect.any(String),
+              text: body,
+              author: identity.id,
+              origin: id,
+              location: { date: next.date, section: 'scheduled' },
+            });
+            expect(copy.id).not.toBe(id);
+            expect(after.undo).toBe(before.undo + 1);
+            await f.doc.command({ kind: 'undo' }).accepted;
+            expect(f.doc.read().cards).toEqual([source]);
+            await f.doc.command({ kind: 'redo' }).accepted;
+            expect(f.doc.read().cards).toEqual(after.cards);
+            await f.doc.whenDurable();
+            const replay = createDoc();
+            try {
+              for (const bytes of [...f.disk, ...f.wal]) applyUpdate(replay, bytes);
+              const cold = await fixture(encodeState(replay));
+              try {
+                expect(cold.doc.read().cards).toEqual(after.cards);
+              } finally {
+                await cold.doc.close();
+              }
+            } finally {
+              replay.destroy();
+            }
+          } finally {
+            await f.doc.close();
+          }
+        },
+      );
+
+      it('waits behind pending writing, duplicates its accepted text and leaves a full Next unchanged', async () => {
+        const f = await fixture();
+        try {
+          const id = await create(f.doc, 'source');
+          await create(f.doc, 'second');
+          await create(f.doc, 'third');
+          const before = f.doc.read(),
+            outgoing = f.emitted.length;
+          f.refuse();
+          f.pause();
+          const edit = f.doc.text({ kind: 'card', id }).input(insert(' updated'), selection(6));
+          const duplicate = f.doc.command({ kind: 'duplicate', id });
+          expect(f.doc.read()).toEqual(before);
+          expect(f.emitted).toHaveLength(outgoing);
+          f.resume();
+          await edit.accepted;
+          expect((await duplicate.accepted).value).toBe(true);
+          const after = f.doc.read();
+          expect(after.days.find((day) => day.date === next.date)!.next).toHaveLength(3);
+          expect(after.cards).toHaveLength(4);
+          expect(after.cards.find((card) => card.id === id)!.text).toBe('source updated');
+          const copy = after.cards.find((card) => card.origin === id)!;
+          expect(copy.text).toBe('source updated');
+          expect(copy.location).toEqual({ date: next.date, section: 'scheduled' });
+          await f.doc.command({ kind: 'undo' }).accepted;
+          expect(f.doc.read().cards).toHaveLength(3);
+          expect(f.doc.read().cards.find((card) => card.id === id)!.text).toBe('source updated');
+        } finally {
+          f.resume();
+          await f.doc.close();
+        }
+      });
+
+      it('refuses missing/deleted sources and rechecks freeze after a queued predecessor', async () => {
+        const f = await fixture();
+        try {
+          expect((await f.doc.command({ kind: 'duplicate', id: 'missing' }).accepted).value).toBe(
+            false,
+          );
+          const removed = await create(f.doc);
+          await f.doc.command({ kind: 'remove', id: removed }).accepted;
+          expect((await f.doc.command({ kind: 'duplicate', id: removed }).accepted).value).toBe(
+            false,
+          );
+          const id = await create(f.doc, 'keep frozen');
+          const before = f.doc.read().cards;
+          f.refuse();
+          f.pause();
+          const predecessor = master(f.doc).input(insert('unrelated pending Goals'));
+          const duplicate = f.doc.command({ kind: 'duplicate', id });
+          f.setDate('2026-09-11');
+          f.resume();
+          await predecessor.accepted;
+          expect((await duplicate.accepted).value).toBe(false);
+          expect(f.doc.read().cards).toEqual(before);
+          expect(f.doc.read().master).toBe('unrelated pending Goals');
+        } finally {
+          f.resume();
+          await f.doc.close();
+        }
+      });
+    });
     describe('admitted workspace commands and history', () => {
       it('keeps line movement private until retry, then preserves undo/redo and cold text', async () => {
         const f = await fixture();

@@ -1,0 +1,22 @@
+{
+  "directory": "/private/tmp/done-sidebar-overflow-preview-20261023-2ccdd6jc",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "appPort": 53219,
+  "servicePort": 53220,
+  "retainedApiPid": 52585,
+  "previousGatewayPid": 24540,
+  "previousPreview": "/private/tmp/done-sidebar-cut-preview-20261023-4rxljx9m",
+  "build": "/private/tmp/done-sidebar-overflow-preview-20261023-2ccdd6jc/build",
+  "version": "c4a66c79-dirty",
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "sourceTree": "651020eadae2620fcfc18f0cb4afded17b1f9912",
+  "status": "ready",
+  "committed": false,
+  "deployed": false,
+  "previewGatewayOnlyUpdated": true,
+  "retainedApiRestarted": false,
+  "workerVersion": "d541133789ab",
+  "gatewayPid": 29351,
+  "verification": "/private/tmp/done-sidebar-overflow-preview-20261023-2ccdd6jc/https-verification.json",
+  "browserSmoke": "/private/tmp/done-sidebar-overflow-preview-20261023-2ccdd6jc/browser-smoke.json"
+}

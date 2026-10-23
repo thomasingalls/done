@@ -1,0 +1,27 @@
+{
+  "infraRepository": "/Users/thomasingalls/Code/ol-infra",
+  "localBaseCommit": "973fdcc1eb28e2a77a6d9cf81efba93e7deaad1d",
+  "scope": "Local preparation only; remote base must be refreshed before an infrastructure PR.",
+  "paths": [
+    "infra/apps/done/components/runtime/kustomization.yaml"
+  ],
+  "baseFileSha256": "70d617d4fa442774315381ea1f708842ed39ddda72cb9f3ee3a5b81b84e184fe",
+  "proposedFileSha256": "5ba00ac1cfd3ecdf1eb587eff81096dc4f7291df08b5c7daae1d286d5f438f70",
+  "patchSha256": "36dabf3e8c9c2648ad477115f53573e5057ba99318ffee2a23da09e94fabdae9",
+  "testedSource": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+  "currentIndex": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "proposedIndex": "sha256:a26278f6c36952f074355ca6378ae09c96bd9e3bfbc6ca4fbfb5910fcf3f6ae6",
+  "gitApplyCheck": true,
+  "independentYamlEqualityExceptImageDigest": true,
+  "runtimeCommandManifestsMatchFinalImageCompatibilityCheck": true,
+  "applied": false,
+  "signed": false,
+  "published": false,
+  "deployed": false,
+  "activationPrerequisites": [
+    "Operator merges application PR with a merge commit preserving signed identities",
+    "Verify merged build inputs match the tested source",
+    "Publish exact tested image to the intended private registry and verify index/runtime digests plus authenticated pull",
+    "Refresh and review infrastructure base before applying this one-file patch"
+  ]
+}

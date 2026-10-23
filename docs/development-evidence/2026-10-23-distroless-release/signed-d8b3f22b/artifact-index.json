@@ -1,0 +1,57 @@
+{
+  "source": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+  "files": [
+    {
+      "path": "evidence.zip",
+      "bytes": 118505,
+      "sha256": "eadb669b3be02cf05e97df94f79ca97f5a979493b9d85979c1d73df7903b353c"
+    },
+    {
+      "path": "evidence-index.json",
+      "bytes": 9412,
+      "sha256": "3071b3af3ae87c6dd55ee60d7b3cd18f566449104a165af2d111a84fbf901e20"
+    },
+    {
+      "path": "source.json",
+      "bytes": 3434,
+      "sha256": "0b5ebc61378ca7e1b97fd9f8da708c6e65937b6c38a8ae7963c4d4041d13d310"
+    },
+    {
+      "path": "image.json",
+      "bytes": 886,
+      "sha256": "c6be3c4ac39081602c42b24c5aab238a2e4f0758ca673397eb542ec25ca21ad4"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 2452,
+      "sha256": "d3b386bdddb9dfe8a5a75279813b4692dc4321511b445974c3b5c69600de3a69"
+    },
+    {
+      "path": "infra-image-pin.patch",
+      "bytes": 724,
+      "sha256": "c705172f815c3a052e060a4f1f4c5555cb20eda1fefae06870d4150be3f5117c"
+    },
+    {
+      "path": "infra-image-pin-preparation.json",
+      "bytes": 1328,
+      "sha256": "0a80c0d61d1cbb4efc41f2773cbb4bfc01eff13ee95420a048e453de6f05c3a6"
+    },
+    {
+      "path": "hosted-bookkeeping-status.json",
+      "bytes": 4969,
+      "sha256": "8d4d6d100c7800ad3bf29af9e1b74bd17190b2a6cb624f517e9cd6d5e58b12f7"
+    },
+    {
+      "path": "check-image-carry-forward.py",
+      "bytes": 2060,
+      "sha256": "1b6fa53e87b9c0c424c534eb58016fb32561a298616aed5869624531fb42ba99"
+    },
+    {
+      "path": "carry-forward.json",
+      "bytes": 475,
+      "sha256": "da26532c2d93777203bac3a7ac7ef3651ef2777f6a0b2c9f14f3c096232ee852"
+    }
+  ],
+  "archiveMembersIndependentlyChecked": 59,
+  "qualification": "none; existing blocks retained"
+}

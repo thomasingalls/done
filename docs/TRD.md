@@ -571,8 +571,11 @@ renderer and the editor share one stylesheet and one markdown-to-HTML path.
 Beyond stock CM6 markdown: list continuation on Enter (including Enter on an empty list item, which outdents then
 terminates), `Tab`/`Shift-Tab` indentation, click-to-toggle checkboxes, idempotent `Cmd-B`/`Cmd-I` wrapping.
 
-In card editors additionally: three consecutive returns splits (§4.7), backspace at position 0 merges upward,
-`Escape` blurs and unmounts back to static.
+In card editors additionally: Enter finishes editing and returns focus to the same static card; the next
+Enter reopens at the preceding caret. Shift-Enter inserts an admitted plain newline, with three consecutive
+Shift-Enters retaining the split gesture (§4.7). Backspace at position 0 merges upward. Escape also
+unmounts back to static and returns focus. Goals Enter continues lists. Cmd/Ctrl bracket indentation and
+macOS Option-Backspace word deletion use semantic admission; Cmd/Ctrl-Enter is explicitly a no-op.
 
 The split threshold is a **named constant**, not a literal. The PRD expects it to change.
 

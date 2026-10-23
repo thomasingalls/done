@@ -1,0 +1,60 @@
+{
+  "observedAt": "2026-10-23 14:49:12 UTC",
+  "repository": "thomasingalls/done",
+  "visibility": "PRIVATE",
+  "branch": "codex/improve-task-scheduling-ux",
+  "commitsPushed": 24,
+  "allPushedCommitsHaveVerifiedGitSignatures": true,
+  "head": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+  "pr": {
+    "url": "https://github.com/thomasingalls/done/pull/57",
+    "title": "Polish editor and sidebar UX and ship a distroless ARM64 runtime",
+    "state": "OPEN",
+    "base": "main",
+    "mergeable": "MERGEABLE",
+    "isDraft": false
+  },
+  "prArtifactAttached": true,
+  "mainBefore": "6d1baffc58df5c46f414e8ba229d85026d3b610b",
+  "mergeBase": "b54d9fb8ae66388cba8efc8b6c5e6213ef042909",
+  "mainTreeMatchesMergeBase": true,
+  "headMatchesTestedSource": true,
+  "prBodyImageIdentitiesIndependentlyMatched": true,
+  "localDockerImageVerified": {
+    "tag": "done-public:d1c2784b",
+    "indexDigest": "sha256:a26278f6c36952f074355ca6378ae09c96bd9e3bfbc6ca4fbfb5910fcf3f6ae6",
+    "architecture": "arm64",
+    "revision": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384"
+  },
+  "canonicalArtifactMetadata": "image.json",
+  "checkObservation": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/thomasingalls/done/actions/runs/39972700274/job/120479248077",
+      "name": "Build and regression gates",
+      "startedAt": "2026-10-23T14:48:02Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-23T14:47:54Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/thomasingalls/done/actions/runs/39972700274/job/120479250559",
+      "name": "Full check (operator resumed)",
+      "startedAt": "2026-10-23T14:47:54Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    }
+  ],
+  "infrastructurePatch": "infra-image-pin.patch",
+  "infrastructureReceipt": "infra-image-pin-preparation.json",
+  "imagePublished": false,
+  "infrastructurePatchApplied": false,
+  "infrastructurePrCreated": false,
+  "deploymentChanged": false,
+  "checkoutClean": true,
+  "next": "Operator application merge commit; verify merged build inputs, publish exact tested image and verify registry digests/authenticated pull, then prepare infrastructure PR."
+}
