@@ -1,0 +1,132 @@
+{
+  "scope": "Post-merge production rollout metadata, runtime identity and backup health; no account contents, keys or login credentials",
+  "observedAt": "2026-10-23T06:52:12.922957+00:00",
+  "infraMerge": "67a622f6add9eebed0f0a84ad713b542a1eb973a",
+  "build": "51d8550d",
+  "image": "ghcr.io/thomasingalls/done@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "status": "passed",
+  "actualDeviceAdoption": "pending",
+  "generalQualification": "paused",
+  "flux": [
+    {
+      "kind": "Kustomization",
+      "name": "apps",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "Kustomization",
+      "name": "done",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "Kustomization",
+      "name": "done-public",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "Kustomization",
+      "name": "flux-system",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "Kustomization",
+      "name": "gateway",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "Kustomization",
+      "name": "infra",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "Kustomization",
+      "name": "kgateway",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    },
+    {
+      "kind": "GitRepository",
+      "name": "flux-system",
+      "ready": true,
+      "revision": "main@sha1:67a622f6add9eebed0f0a84ad713b542a1eb973a"
+    }
+  ],
+  "backupHealth": {
+    "status": 200,
+    "health": {
+      "enabled": true,
+      "busy": false,
+      "stage": "idle",
+      "lastFailureStage": null,
+      "failures": 0,
+      "lastCheckedAt": 1792738308428,
+      "lastSnapshotAt": 1792738218417,
+      "lastUploadedAt": 1792738220795,
+      "lastPrunedAt": 1792738223395,
+      "snapshotBytes": 5104083,
+      "uploadedBytes": 1994115,
+      "totalUploadedBytes": 1994115,
+      "attemptedUploadBytes": 1994115,
+      "backups": 1,
+      "dirtySince": null,
+      "snapshotAgeMs": 115071,
+      "unprotectedChangeAgeMs": 0,
+      "healthy": true,
+      "reportAgeMs": 1136
+    }
+  },
+  "backupCounterBeforeRestart": 15,
+  "diagnosticCounts": {
+    "api": {
+      "ledger-integrity": 0,
+      "UnhandledPromiseRejection": 0,
+      "uncaughtException": 0,
+      "startup failed": 0
+    },
+    "app": {
+      "ledger-integrity": 0,
+      "UnhandledPromiseRejection": 0,
+      "uncaughtException": 0,
+      "startup failed": 0
+    }
+  },
+  "deployed": true,
+  "singleReadyPod": true,
+  "zeroRestarts": true,
+  "deploymentSpecOnlyImagesChanged": true,
+  "pod": {
+    "name": "done-7486cf7f4d-ffwl4",
+    "uid": "60f14d6d-cab8-41f5-b0d7-462bd8965935",
+    "startedAt": "2026-10-23T06:50:12Z",
+    "containers": [
+      {
+        "name": "api",
+        "ready": true,
+        "restartCount": 0,
+        "imageID": "ghcr.io/thomasingalls/done@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29"
+      },
+      {
+        "name": "app",
+        "ready": true,
+        "restartCount": 0,
+        "imageID": "ghcr.io/thomasingalls/done@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29"
+      }
+    ]
+  },
+  "retainedVolume": {
+    "uid": "3562362c-909b-4003-8829-e93412c47b23",
+    "pv": "pvc-3562362c-909b-4003-8829-e93412c47b23",
+    "phase": "Bound",
+    "storage": "10Gi"
+  },
+  "runtimeSource": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "node": "v24.18.0",
+  "diagnosticScope": "Last 500 lines from each replacement container in preceding 10 minutes; counts do not establish a full publisher audit",
+  "completedAt": "2026-10-23T06:52:15.542254+00:00"
+}

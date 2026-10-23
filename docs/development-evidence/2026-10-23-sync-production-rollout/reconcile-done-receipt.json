@@ -1,0 +1,14 @@
+{
+  "command": [
+    "just",
+    "--justfile",
+    "/Users/thomasingalls/Code/ol-infra/justfile",
+    "flux-sync",
+    "done",
+    "--timeout=5m"
+  ],
+  "expectedRevision": "67a622f6add9eebed0f0a84ad713b542a1eb973a",
+  "startedAt": "2026-10-23T06:49:59.914449+00:00",
+  "completedAt": "2026-10-23T06:50:27.461203+00:00",
+  "exitCode": 0
+}

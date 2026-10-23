@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "scope": "offline render and focused deployment-boundary checks",
+  "image": "ghcr.io/thomasingalls/done@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "baseResources": 11,
+  "operatorJobs": [
+    "initialize",
+    "maintenance-prepare",
+    "maintenance-status",
+    "maintenance-resume",
+    "maintenance-prune"
+  ],
+  "pendingInputs": [
+    "actual-origin browser account/passkey, offline reopening, two-device delivery and authenticated notification stream checks"
+  ],
+  "clusterContacted": false,
+  "secretsDecrypted": false,
+  "releaseValidation": "paused"
+}

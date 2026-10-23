@@ -15567,3 +15567,16 @@ matching the retained predecessor, healthy backups with zero unprotected pending
 change age and15 retained historical failures, plus private GHCR visibility.
 No image rebuild, cluster change or release merge; publication and actual-device
 adoption remain distinct next stages.
+
+
+### Publish and verify the sync catch-up production release
+
+**Date:**2026-10-23 · **Source:**signed51d8550d · **Status:**production server verified; actual-device adoption pending; qualification paused.
+
+The operator merged application PR56 as6d1baffc and infrastructure PR20 as67a622f6, preserving signed heads and exact trees. Publish the existing private tested image index`sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29` without rebuilding; verify remote bytes, private visibility and authenticated digest pull. Infrastructure signed commitd0ce0dc7 retains the publication/render evidence. An initial automatic approval rejection caused no upload; explicit operator approval of the exact private image preceded the successful publication. The operator created and merged the infrastructure PR.
+
+After fresh merge/signature/tree/offline checks, reconcile through the existing Justfile:done,flux-system,done-public. All seven Kustomizations and Git source are ready at67a622f6. One replacement Pod runs both exact-image containers ready with zero restarts; process source and Node24.18 match. Independent before/after live Deployment spec comparison changes only three image fields; original bound10Gi PVC UID/spec and public service identity remain exact. Normal public DNS/TLS serves Version51d8550d, worker15a5cf03f50b and all60 precache URLs with tested hashes; all68 public static/routing/configuration/privacy probes pass. Wrong-origin config returns403; backup/environment paths return404. No production account contents or keys read; no accounts, migration, maintenance Jobs, restore or storage reset.
+
+Backups are healthy with successful post-restart upload and zero unprotected change age. The old process's15 cumulative failures remain recorded; the replacement's zero is a process counter reset. Bounded new-container diagnostic counts are zero, not a complete publisher audit. [Durable evidence](./development-evidence/2026-10-23-sync-production-rollout/README.md) preserves observations, exact commands, proof sources and hashes. Actual-device update/two-way typing/catch-up/undo/lock/offline checks were requested and remain pending; server rollout is established separately. The unexplained disappearing-account report remains unresolved. Prior rollback images and883/339 paused qualification state remain. No new production performance or universal-device claim. This checkpoint is prepared locally; its documentation is not yet signed or pushed.
+
+Retained evidence-packaging correction: its first temporary-index whitespace check omitted the explicit signed base and compared the full historic tree against an unborn HEAD, producing unrelated pre-existing whitespace warnings. Scope every comparison to signedb54d9fb8; no old formatting/source/test change or production operation results from this packaging failure. The packet retains the initial failure.

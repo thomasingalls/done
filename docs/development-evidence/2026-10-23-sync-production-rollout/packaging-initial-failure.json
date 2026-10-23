@@ -1,0 +1,9 @@
+{
+  "scope": "Documentation-only isolated patch packaging; no cluster operation",
+  "failure": "git diff --cached --check without an explicit base in a temporary bare repository with unborn HEAD compared the full staged source tree to an empty tree, reporting unrelated pre-existing whitespace.",
+  "patchWrittenBeforeFailure": false,
+  "productIndexModified": false,
+  "oldFilesReformatted": false,
+  "correction": "Use explicit signed source b54d9fb8 for every temporary-index diff; preserve all existing source and tests.",
+  "productionVerificationAffected": false
+}
