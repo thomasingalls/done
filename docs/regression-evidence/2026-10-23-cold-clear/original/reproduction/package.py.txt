@@ -1,0 +1,32 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/regression-evidence/2026-10-23-cold-clear';s=Path('/private/tmp/done-cold-clear-clock-20261023');rows=[];sha=lambda b:hashlib.sha256(b).hexdigest()
+def cp(f,to,z=False):
+ data=f.read_bytes();out=p/(to+'.gz'if z else to);out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(gzip.compress(data,mtime=0)if z else data);rows.append({'source':str(f.relative_to(r))if f.is_relative_to(r)else str(f),'artifact':str(out.relative_to(p)),'sourceSha256':sha(data),'artifactSha256':sha(out.read_bytes())})
+# Explicit reports/scripts only; never private native databases, profiles or fixture keys.
+for name in ['starting.json','protocol.md','source-review.json','challenge.json','affected-receipt.json','validation-receipts.json','final-validation-receipts.json','harness-correction.json','read-contract-alignment.json','clock-discontinuity.json','seed-review-correction.json','seed-native-audit.json','applied-candidate.json','planning-receipts.json','metadata-review.json','record-outcome.json']:cp(r/name,name,z=name=='starting.json')
+for root,label in [(r,'original'),(s,'clock-supplement')]:
+ for name in ['protocol.md','analysis.json','run-plan.json','run-receipts.json','measurement-identity.json','evidence-review.json','native-audit.json','sensitivity.json','frozen-input-review.json','process-cleanup.json']:
+  cp(root/name,label+'/'+name,z=name in ['analysis.json','measurement-identity.json','native-audit.json'])
+ for name in ['observer-review.json','clock-review.json','clock-sensitivity.json','execution-receipts.json']:
+  if(root/name).exists():cp(root/name,label+'/'+name)
+ for folder in ['1-C','2-C']:
+  for name in ['result.json','runner.json','container-identity.json','docker-command.json','invocation.log']:
+   cp(root/folder/name,label+'/'+folder+'/'+name,z=True)
+ for f in [*root.glob('*.py'),*root.glob('*.mjs')]:cp(f,label+'/reproduction/'+f.name+'.txt')
+ for f in root.glob('*.log'):
+  if not f.name.startswith(('package','prepare-patch','post')):cp(f,label+'/checks/'+f.name,True)
+(p/'artifact-provenance.json').write_text(json.dumps(rows,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes())
+for f in p.rglob('*'):
+ if f.is_file():
+  data=f.read_bytes();data=gzip.decompress(data)if f.suffix=='.gz'else data;assert not any(v in data for v in secrets),f
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownBenchmarkPrivateValues':len(secrets),'matches':0,'scope':'selected artifacts and known fixture values only; no databases/profiles/private key files/codes, not universal DLP'},indent=2)+'\n');(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'));print('30 packet files',sum(f.is_file()for f in p.rglob('*')))

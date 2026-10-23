@@ -849,7 +849,7 @@ test('stable read authority clear and close cannot revive a retained proof', asy
   assert.equal((await stableRead(h)).result.kind, 'unknown');
 });
 
-test('stable read authority fails closed when clear races the initial proof', async (t) => {
+test('stable read authority rejects a retired initial proof and verifies afresh after clear', async (t) => {
   const h = await harness(t),
     verify = crypto.subtle.verify.bind(crypto.subtle);
   let offers = 0;
@@ -858,7 +858,10 @@ test('stable read authority fails closed when clear races the initial proof', as
       h.reuse.clear();
     return verify(...args);
   });
-  assert.equal((await stableRead(h)).result.kind, 'unknown');
+  const { q, result } = await stableRead(h);
+  assert.equal(result.kind, 'decision');
+  assert.equal(offers, 2, 'the interrupted proof cannot authorize the returned page');
+  pageProof(result, q, h.x, h.retained);
   await h.fetch();
   await h.fetch();
   assert.equal(offers, 2);

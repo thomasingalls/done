@@ -1,0 +1,20 @@
+from pathlib import Path
+import json,hashlib,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=r/'source';start=json.loads((r/'starting.json').read_text());m=json.loads((r/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+for f,h in m['files'].items():assert sha(r/f)==h,f
+for key in ['candidateInputs','testFiles']:
+ for f,h in m[key].items():assert sha(s/f)==h,f
+for f,h in m['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+for f,h in start['runtimeFiles'].items():assert sha(repo/f)==h,f
+receipts=json.loads((r/'run-receipts.json').read_text());assert len(receipts)==2 and all(v['variant']=='C'and v['exitCode']==0 for v in receipts)
+for v in receipts:
+ identity=json.loads((r/v['name']/'container-identity.json').read_text());mount=next(x for x in identity['Mounts']if x['Destination']=='/app/account-service');assert mount['Source']==str(s/'account-service')and not mount['RW'];assert identity['Image']==m['image']
+old=Path('/private/tmp/done-prelude-proof-reuse-20261022');prior=json.loads((old/'starting.json').read_text());assert sha(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json'))==prior['privateFixtureSha256'];native=json.loads((r/'native-audit.json').read_text());earlier=json.loads((old/'native-audit.json').read_text())[0]
+for v in native:
+ # Independent28 native records pin every original background position and quiet prefix.
+ assert v['accounts'][:2]==earlier['accounts'][:2]
+ for key,identity in earlier['identities'].items():
+  label,credential,position=key.split(':')
+  if label!='Q'or int(position)<=32:assert v['identities'][key]==identity
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index'))==start['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+out={'status':'passed','twoExactProspectiveFinalCandidateJourneys':True,'allFrozenRuntimeApparatusAndTestInputsExact':True,'clientFiles':len(m['clientFiles']),'originalFixtureAndNativeSeedPositionsIndependentOfCurrentRunMatch28':True,'nativeImageAndReadOnlyVariantMountsExact':True,'absoluteGateCheckNoRelativeSpeedClaim':True,'actualRuntimeHeadAndIndexUnchangedUnstaged':True};(r/'frozen-input-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

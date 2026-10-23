@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "host-wall-step",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "renderer-post-step",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "input-before-dispatch",
+      "detected": true,
+      "exitCode": 1
+    }
+  ]
+}

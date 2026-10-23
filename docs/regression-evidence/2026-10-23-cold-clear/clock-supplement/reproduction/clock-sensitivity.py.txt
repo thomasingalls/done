@@ -1,0 +1,14 @@
+from pathlib import Path
+import json,subprocess
+r=Path(__file__).parent;assert json.loads((r/'clock-review.json').read_text())['status']=='passed';name='1-C';rows=[]
+for label in ['host-wall-step','renderer-post-step','input-before-dispatch']:
+ x=json.loads((r/name/'result.json').read_text())
+ if label=='host-wall-step':x['offers'][70]['clockAfter']['wall']+=180
+ elif label=='renderer-post-step':
+  for v in x['clocksAfter'][0]:v['renderer']+=180
+ else:
+  events=[v for v in x['probesAtDeadline'][0]['events']if v['kind']=='beforeinput'and x['startedAt']<=v['at']<=x['typingFinishedAt']];events[70]['at']=x['offers'][70]['at']-180
+ p=r/('private-clock-control-'+label+'.json');p.write_text(json.dumps(x))
+ with(r/('clock-control-'+label+'.log')).open('w')as log:v=subprocess.run(['python3',str(r/'review-clock.py'),name,str(p)],stdout=log,stderr=subprocess.STDOUT)
+ assert v.returncode!=0 and'AssertionError'in(r/('clock-control-'+label+'.log')).read_text();p.unlink();rows.append({'control':label,'detected':True,'exitCode':v.returncode});print(label,'detected',flush=True)
+(r/'clock-sensitivity.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')

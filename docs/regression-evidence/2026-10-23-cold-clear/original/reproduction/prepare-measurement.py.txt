@@ -1,0 +1,7 @@
+from pathlib import Path
+import shutil,json
+r=Path(__file__).parent;s=r/'source';old=Path('/private/tmp/done-prelude-proof-reuse-20261022');lab=s/'test/account-continuation-lab';assert not lab.exists();shutil.copytree(old/'source/test/account-continuation-lab',lab);p=lab/'runtime.mjs';p.write_text(p.read_text().replace(str(old),str(r)));assert not(s/'dist').exists();shutil.copytree(old/'source/dist',s/'dist')
+for f in ['container-image.json','container-service.mjs','observer.mjs','analyze.py','review-evidence.py','audit-native.mjs','sensitivity.py','cleanup.py']:shutil.copy2(old/f,r/f)
+for f in ['audit-native.mjs','cleanup.py']:
+ p=r/f;p.write_text(p.read_text().replace(str(old),str(r)))
+p=r/'analyze.py';t=p.read_text();a="'measuredJourneys':4,'fixedOrder':['R','C','C','R']";b="'measuredJourneys':len(rows),'fixedOrder':['C','C']";assert t.count(a)==1;t=t.replace(a,b).replace("'incompleteReferenceDriftOrLatencyRatioNotComputed':True", "'absoluteFinalRuntimeAcceptanceOnlyNoRelativeSpeedClaim':True");p.write_text(t);print('Original110clients/full600s lab prepared; only root and final absoluteC,C summary differ')

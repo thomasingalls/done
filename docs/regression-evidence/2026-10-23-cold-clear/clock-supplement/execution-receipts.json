@@ -1,0 +1,58 @@
+[
+  {
+    "name": "run",
+    "command": [
+      "python3",
+      "freeze-and-run.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "analyze.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "review",
+    "command": [
+      "python3",
+      "review-evidence.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "native-audit",
+    "command": [
+      "node",
+      "audit-native.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "sensitivity",
+    "command": [
+      "python3",
+      "sensitivity.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "clock-review",
+    "command": [
+      "python3",
+      "review-clock.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "cleanup",
+    "command": [
+      "python3",
+      "cleanup.py"
+    ],
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "knownBenchmarkPrivateValues": 36,
+  "matches": 0,
+  "scope": "selected artifacts and known fixture values only; no databases/profiles/private key files/codes, not universal DLP"
+}

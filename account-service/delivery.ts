@@ -2,7 +2,11 @@ import {
   verifyCertificationHistory,
   verifyEarlyHistory,
 } from '../account-protocol/admissionHistory.ts';
-import { reuseInboundAuthority, type InboundAuthorityReuse } from './inboundAuthorityReuse.ts';
+import {
+  AuthorityCacheClearedError,
+  reuseInboundAuthority,
+  type InboundAuthorityReuse,
+} from './inboundAuthorityReuse.ts';
 import { isPrunedDecision, verifyPrunedDecision } from './prunedDecision.ts';
 import { recoveryRows, type RecoveryRow } from './recoveryStore.ts';
 import type {
@@ -1597,6 +1601,12 @@ export async function readInbound(
         db.exec('COMMIT');
         return { kind: 'decision', bytes: answer };
       } catch (cause) {
+        if (cause instanceof AuthorityCacheClearedError) {
+          if (db.isTransaction) db.exec('ROLLBACK');
+          // A clear retired only mathematical evidence. Re-read and authenticate in the
+          // existing four attempts; never extend the signed request's lifetime.
+          continue;
+        }
         note(cause);
         reuse?.clear();
         if (db.isTransaction) db.exec('ROLLBACK');

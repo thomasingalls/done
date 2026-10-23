@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,subprocess,os,time
+r=Path(__file__).parent;plans=json.loads((r/'run-plan.json').read_text());folders=[r/v['name']for v in plans];ids=[];pids=set()
+for d in folders:
+ f=d/'container.cid'
+ if f.exists():
+  value=f.read_text().strip();q=subprocess.run(['docker','inspect','--format','{{.State.Running}}',value],capture_output=True,text=True);assert (q.returncode==0 and q.stdout.strip()=='false')or(q.returncode!=0 and ('no such object' in q.stderr.lower() or 'no such container' in q.stderr.lower())),(str(d),'cannot establish stopped container',q.stderr);ids.append(value)
+ f=d/'result.json'
+ if f.exists():
+  for x in json.loads(f.read_text()).get('roots',[]):
+   if isinstance(x.get('pid'),int):pids.add(x['pid'])
+for pid in pids:
+ try:os.kill(pid,0)
+ except ProcessLookupError:continue
+ raise AssertionError('A recorded browser root PID is still present: '+str(pid))
+q=subprocess.run(['pgrep','-f',' --user-data-dir=/private/tmp/done-cold-clear-retry-20261023/'],capture_output=True,text=True);assert q.returncode==1,'Owned persistent browser profile is still active'
+q=subprocess.run(['lsof','-nP','-iTCP:53781','-sTCP:LISTEN'],capture_output=True,text=True);assert q.returncode==1 and not q.stdout.strip(),'Disposable gateway still listening'
+out={'status':'passed','ownedContainerIdsChecked':len(ids),'ownedContainersRunning':0,'recordedBrowserRootsChecked':len(pids),'recordedBrowserRootsPresent':0,'ownedPersistentProfilesRunning':0,'disposableGateway53781Listening':False,'productionPreviewAndUserBrowsersUntouched':True,'checkedAt':int(time.time()*1000)};(r/'process-cleanup.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

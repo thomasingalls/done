@@ -1,0 +1,48 @@
+from pathlib import Path
+import json,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path('/private/tmp/done-cold-clear-clock-20261023')
+for f in ['source-review.json','challenge.json','metadata-review.json','frozen-input-review.json']:assert json.loads((r/f).read_text())['status']=='passed'
+for f in ['clock-review.json','clock-sensitivity.json','frozen-input-review.json']:assert json.loads((s/f).read_text())['status']=='passed'
+assert json.loads((r/'affected-receipt.json').read_text())['pass']==494
+assert all(x['exitCode']==0 for x in json.loads((r/'planning-receipts.json').read_text()))
+assert 'ℹ tests 86' in (r/'planning-tests.log').read_text() and 'ℹ fail 0' in (r/'planning-tests.log').read_text()
+assert not(r/'record-outcome.json').exists()
+p=repo/'docs/regression-evidence/2026-10-23-cold-clear';p.mkdir(parents=True,exist_ok=False)
+body='''
+
+### Phase30 — recapture a retired cold proof within the original bounded native read
+
+**Date:** 2026-10-23 · **Commit:** sequential patch30 after29, unsigned/uncommitted · **Status:**494 affected cases pass; final clock-valid heavy pair clears original gates; qualification paused.
+
+The real cold-clear liveness regression introduced by51c17a93 now continues by capturing and verifying fresh inputs. The shared evidence primitive still rejects the retired proof. Only a live owner/cache with byte-exact input and changed cache revision gets a typed transient error; close, owner loss and changed input are checked first and remain hard refusals. Only native readInbound handles that type by rollback/continue in its existing four attempts. It keeps the original request/expiry and all fresh ledger, custody, witness, grant and commit checks. Other consumers, errors and no-pool fallback are unchanged. No schema, format, keys, quota or authorization policy changes. [Evidence](./regression-evidence/2026-10-23-cold-clear/README.md).
+
+Ten appended cases exercise one/repeated clears, close, changed input, custody, grant begin/completion, expiry, warm reuse and closed read-group ownership. The same11 selected cases on29 produce7 failures/4 passes; repaired11 pass.105 focused cases and494 complete affected cases pass, zero fail/skip/cancel. Seven intentional faults are detected by assertions, including returning retired evidence, retrying closed/changed input, exempting the four-attempt bound, omitted completion/expiry and retrying unrelated errors. One phase26 native expectation previously required whole-request unknown after a clear; its original cut and follow-up reads are retained, but it now requires two complete proofs before accepting the first page and independently verifies that page. All other old cases/assertions/options/deadlines stay exact. Source AST reversal verifies only the precise invalidation partition/new read catch; all other runtime/protocol/client bytes match29.86 planning checks pass;883 obligations/339 unresolved, crypto domains and constructions remain unchanged.
+
+Original C,C: both native/data/durability journeys pass; first reports local119/120,p95323.9ms and peer731.7ms, second local2.9/peer714.1ms. Its original acceptance remains false. Inspection finds all120 trusted keys/DOM increments, but from key71 renderer input precedes host dispatch by178–180ms: a clock alignment discontinuity makes the original filter select the next frame and censor the last. The OS/NTP/suspend cause is unknown. Same-renderer diagnostic0.5ms is not promoted to primary evidence. Preserve this held series and all raw outcomes.
+
+A separate prospective C,C on exact same native/client bytes adds only host wall/monotonic observations and post-window renderer clock brackets, with unchanged workload, old timing anchors and gates plus a predeclared4ms clock-validity gate. Both pass:120/120 keys; local p954.3/4.8ms (16ms gate), peer689.5/709.7ms (2.5s gate), all600s background replay,30s original delivery,120s recovery, exports, native bytes, storage/offline and resource guards. Host clock spread1.222/1.220ms; all clock constraints pass. Three clock faults and six evidence/native faults are detected. Complete source/observer AST, frozen native/client identities, native OpenSSL/seed/prefix audit and cleanup pass. This is finite absolute candidate acceptance, not a relative improvement or universal-device claim. Never pool the valid second original run into this pair.
+
+Preserved machinery corrections: initial negative SQL counter omitted an existing filter suffix; corrected prefix, same tests/production cut, initial invalid negative retained. Initial focused103/104 exposed the explicit native liveness expectation above. First frozen reviewer incorrectly compared new experimental second-Q publisher positions as seed; independent seed capture narrows to exact genuine identities and agrees with prior28/current audits. Original failed reviewer and correction retained. Initial application stopped at the original false performance gate before copying; application later requires the separate clock-valid pair and preserves original false analysis. No actual staging/signing/commit/push/preview8443/merge/deploy. Next close missing routine-CI coverage and run local functional CI/full unit surface before push; generalized qualification remains paused.
+'''
+f=repo/'docs/completed.md';assert f.read_bytes()==(r/'before/docs/completed.md').read_bytes();f.write_text(f.read_text()+body);at=time.time_ns()
+f=repo/'docs/decisions.md';assert f.read_bytes()==(r/'before/docs/decisions.md').read_bytes();f.write_text(f.read_text()+'''
+
+### Retry cache retirement only after distinguishing it from hard authority invalidation
+
+**Date:** 2026-10-23 · **Status:** phase30 bounded native repair and final finite acceptance.
+
+A generic evidence owner must refuse retired work; its native read caller may retry only a typed revision clear with live/exact input. Partition the existing invalidation predicate with hard close/input conditions first, keep the four-attempt loop and original request clock, then perform full fresh capture/verification. Never classify close, custody, signature, authorization or expiry as transient, or waive the generic proof fence. One old native whole-request-unknown expectation is explicitly aligned with fresh continuation using immediate two-proof and independent page checks; preserve its cut and all other old assertions/deadlines. [Evidence](./regression-evidence/2026-10-23-cold-clear/README.md).
+
+Clock-invalid primary measurements stay held even when a different clock suggests fast typing. A separate predeclared pair on exact native/client bytes, original gates/anchors and extra clock-validity observations establishes the final finite result; preserve both series separately, do not replace or pool runs or relax16ms/2.5s. Host-only observations reverse to the original harness AST and do not change runtime. Detect deliberate clock/evidence/native faults independently. Source/metadata agreement does not award qualification credit: all883/339 stay exact; routine functional CI is separate from paused aggregate qualification. Complete local tests before pushing, then request later signing/publication separately.
+''')
+f=repo/'docs/performance.md';assert f.read_bytes()==(r/'before/docs/performance.md').read_bytes();f.write_text(f.read_text()+'''
+
+### 2026-10-23 — phase30 final native continuation candidate, clock-valid absolute acceptance
+
+[Packet](./regression-evidence/2026-10-23-cold-clear/README.md). Same phase28 native/client workload with the bounded cold-clear repair: H6/M2/Q2,1024/256/32 histories,1CPU/1GiB,16/64 capacity,120 trusted keys every500ms, original16ms local/2.5s complete peer/30s original/600s replay/120s recovery gates. Original C,C remains timing-invalid/held: first119local,p95323.9ms after observed178–180ms clock discontinuity; all120 actual events and increments present; OS cause unknown. Original second2.9/714.1ms stays separate. Diagnostic same-renderer p950.5ms does not replace the primary anchor.
+
+Separately prospective exact-source C,C with host-only clock observations and additional4ms stability/causality gate passes both journeys: local p954.3/4.8ms; peer689.5/709.7ms, all120 samples, full replay/data/resource/offline/pending-durability/continuation guards. Host wall/monotonic spread1.222/1.220ms; five-point pre/post renderer brackets and120 input ordering pass. Three clock and six original evidence/native controls detect faults; frozen source/observer AST/native seed audits/cleanup pass. Finite absolute result only, no relative speedup or production/real-device guarantee. No client/native instrumentation; retain both series and failed reviewers. No publication or aggregate qualification.
+''')
+(p/'README.md').write_text('# Phase30 — bounded cold-clear continuation and clock-valid final candidate\n'+body+'\nPacket subdirectories original/ and clock-supplement/ contain separate protocols, results and audits. Checks/reproduction retain failed attempts and exact source reviews. No private database, browser profile or test credential material is included. Known-value scan is bounded, not universal DLP. This patch is already reflected in the cumulative checkout; do not reapply here.\n')
+(r/'record-outcome.json').write_text(json.dumps({'status':'recorded','completedWrittenBeforeDecisionsAndPerformance':True,'completedAtNs':at,'recordedAtNs':time.time_ns(),'tests':494,'finalPerformance':'separate clock-valid C,C passes all original gates; original held pair retained','qualification':'paused;883/339 exact','publication':'none'},indent=2)+'\n')
+print('30 durable outcome recorded')

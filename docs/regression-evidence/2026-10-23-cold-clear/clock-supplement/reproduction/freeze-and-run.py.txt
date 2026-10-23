@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,hashlib,os,subprocess,time
+r=Path(__file__).parent;s=r/'source';old=Path('/private/tmp/done-cold-clear-retry-20261023');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();prior=json.loads((old/'measurement-identity.json').read_text());assert json.loads((r/'observer-review.json').read_text())['status']=='passed';assert json.loads((old/'process-cleanup.json').read_text())['status']=='passed'
+for f,h in prior['candidateInputs'].items():assert sha(s/f)==h,f
+for f,h in prior['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+plan=[{'name':'1-C','variant':'C'},{'name':'2-C','variant':'C'}];assert not(r/'run-plan.json').exists();(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n');files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'freeze-and-run.py',r/'review-observer.mjs',r/'review-clock.py',*list((s/'test/account-continuation-lab').glob('*'))];m={'original30IdentitySha256':sha(old/'measurement-identity.json'),'original30NativeAndClientInputs':prior['candidateInputs'],'clientFiles':prior['clientFiles'],'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'image':prior['image'],'plan':plan,'scope':'New prospective pair with identical30native/client/workload/old metrics plus host-only clock validity observations; every original failed/invalid timing outcome retained separately'};(r/'measurement-identity.json').write_text(json.dumps(m,indent=2)+'\n');rows=[]
+for c in plan:
+ for f,h in m['files'].items():assert sha(r/f)==h,f
+ for f,h in m['original30NativeAndClientInputs'].items():assert sha(s/f)==h,f
+ for f,h in m['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+ out=r/c['name'];out.mkdir(mode=0o700);env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'FAIR_OUT':str(out),'FAIR_VARIANT':'C','FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True);assert p.returncode==0,'Preserve failed journey; no substitution'

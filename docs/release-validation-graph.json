@@ -8428,7 +8428,7 @@
           "test/account-service-delivery/cold-verification.test.mjs"
         ]
       },
-      "declarations": 15,
+      "declarations": 24,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17765,7 +17765,7 @@
     },
     {
       "path": "test/account-service-delivery/cold-verification.test.mjs",
-      "sha256": "579e76d98bb328024603603cc8a84aa049d882fcffb37284d8c45a758e192b0d"
+      "sha256": "0f555d045d2d4a19473b8c81c4bcfd3ee7387951d0d6fb2114da2e76c60c4886"
     },
     {
       "path": "test/account-service-delivery/controls.test.mjs",
@@ -17789,7 +17789,7 @@
     },
     {
       "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
-      "sha256": "fbffeb1fa07971c4662d245349baa82dfb2add712bbb7738405ac01b0ec3bb46"
+      "sha256": "a9ae6849535d6557aa7a8c719c4cee2221381366113e73661f93097a83b8f750"
     },
     {
       "path": "test/account-service-delivery/publisher-isolation.test.mjs",

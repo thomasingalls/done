@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,os,subprocess,time
+r=Path(__file__).parent;s=r/'source';old=Path('/private/tmp/done-prelude-proof-reuse-20261022');start=json.loads((r/'starting.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();client=json.loads((old/'measurement-identity.json').read_text())['clientFiles'];base=start['runtimeFiles']
+assert json.loads((r/'source-review.json').read_text())['status']=='passed';assert json.loads((r/'challenge.json').read_text())['status']=='passed';aff=json.loads((r/'affected-receipt.json').read_text());assert(aff['tests'],aff['pass'],aff['fail'],aff['skipped'])==(494,494,0,0)
+assert(r/'types-affected.log').read_text()==(r/'lint.log').read_text()==''
+for label,n in [('new-after-complete',11),('focused-complete',105)]:
+ text=(r/(label+'.log')).read_text();assert 'ℹ tests '+str(n)in text and'ℹ fail 0'in text
+assert 'ℹ tests 11'in(r/'new-before-complete.log').read_text()and 'ℹ fail 7'in(r/'new-before-complete.log').read_text()
+changed=sorted(f for f,h in base.items()if sha(s/f)!=h);assert changed==['account-service/delivery.ts','account-service/inboundAuthorityReuse.ts']
+for f,h in client.items():assert sha(s/'dist'/f)==h,f
+assert len(client)==110
+for f in(old/'source/test/account-continuation-lab').iterdir():
+ if f.is_file():assert(s/'test/account-continuation-lab'/f.name).read_text()==f.read_text().replace(str(old),str(r)),f
+for p in(s/'account-service').glob('*.ts'):assert "'/experiment/observer"not in p.read_text()
+plan=[{'name':'1-C','variant':'C'},{'name':'2-C','variant':'C'}];assert not(r/'run-plan.json').exists();(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n');files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'freeze-and-run.py',*list((s/'test/account-continuation-lab').glob('*'))]
+identity={'baseTree29':start['baseTree29'],'baselineInputs':base,'candidateInputs':{f:sha(s/f)for f in base},'changedRuntimeFilesSince29':changed,'clientFiles':client,'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'testFiles':{f:sha(s/f)for f in ['test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs']},'plan':plan,'image':json.loads((r/'container-image.json').read_text())['Id'],'scope':'two prospective original full600s final-runtime absolute acceptance journeys, no relative speed claim; original gates/clients/resource/quota/workload; no native/client instrumentation'};(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for c in plan:
+ for f,h in identity['files'].items():assert sha(r/f)==h,f
+ for f,h in identity['candidateInputs'].items():assert sha(s/f)==h,f
+ for f,h in client.items():assert sha(s/'dist'/f)==h,f
+ out=r/c['name'];out.mkdir(mode=0o700);env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'FAIR_OUT':str(out),'FAIR_VARIANT':'C','FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True);assert p.returncode==0,'Preserve failed journey; no selective substitute'

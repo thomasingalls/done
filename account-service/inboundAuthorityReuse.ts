@@ -40,6 +40,13 @@ export interface InboundAuthorityCache {
   clear(): void;
   close(): void;
 }
+/** Only a clear of a still-live cache with exact unchanged input permits a native recapture. */
+export class AuthorityCacheClearedError extends Error {
+  constructor() {
+    super('Read authority owner or input changed');
+    this.name = 'AuthorityCacheClearedError';
+  }
+}
 const caches = new WeakMap<InboundAuthorityCache, CacheState>();
 const remove = (cache: CacheState, key: string) => {
   const old = cache.entries.get(key);
@@ -142,13 +149,10 @@ export async function reuseInboundAuthority(
   const current = () => {
     const next = context();
     try {
-      if (
-        !state.live ||
-        (cache && (!cache.live || cache.revision !== revision)) ||
-        !next ||
-        !next.equals(captured!)
-      )
+      if (!state.live || (cache && !cache.live) || !next || !next.equals(captured!))
         throw Error('Read authority owner or input changed');
+      // Closure or input mutation above is never a retryable cache event.
+      if (cache && cache.revision !== revision) throw new AuthorityCacheClearedError();
     } finally {
       next?.fill(0);
     }

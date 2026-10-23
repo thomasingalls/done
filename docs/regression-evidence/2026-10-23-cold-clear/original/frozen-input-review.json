@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "twoExactProspectiveFinalCandidateJourneys": true,
+  "allFrozenRuntimeApparatusAndTestInputsExact": true,
+  "clientFiles": 110,
+  "originalFixtureAndNativeSeedPositionsIndependentOfCurrentRunMatch28": true,
+  "nativeImageAndReadOnlyVariantMountsExact": true,
+  "absoluteGateCheckNoRelativeSpeedClaim": true,
+  "actualRuntimeHeadAndIndexUnchangedUnstaged": true
+}

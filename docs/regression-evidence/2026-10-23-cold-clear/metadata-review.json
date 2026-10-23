@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "onlyTwoReviewedNativeSourceHashesChanged": [
+    "account-service/delivery.ts",
+    "account-service/inboundAuthorityReuse.ts"
+  ],
+  "domainLabelsKindsAndPathSetsExact": true,
+  "constructionBytesExact": true,
+  "all883Rows339UnresolvedExact": true,
+  "allOtherRuntimeProtocolClientBytesExact29": true,
+  "onlyTenCasesAddedAndOneNativeContinuationExpectationExplicitlyAligned": true,
+  "noNewAggregateCredit": true,
+  "generalQualificationPaused": true
+}
