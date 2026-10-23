@@ -1,0 +1,51 @@
+{
+  "status": "recorded",
+  "completedBeforeDecisionsAndPerformance": true,
+  "completedAtNs": 1792704620121657000,
+  "recordedAtNs": 1792704620124861000,
+  "mechanism": [
+    {
+      "name": "2-I",
+      "originalGates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      },
+      "receiverReadCacheHits": 272,
+      "receiverReadCacheMisses": 0,
+      "receiverAuthorityHistoryWaitMs": 37674.5617679999,
+      "receiverReadAuthorityWaitMs": 214.02762700009407,
+      "receiverFreshLedgerServedWaitMs": 6541.794594000203,
+      "receiverCompletePositionWaitForRequestP95Ms": 2323,
+      "receiverBodySubsetBodyToDisplayP95Ms": 49,
+      "bodySubsetN": 92,
+      "allNativeRequestMatches": 426,
+      "unmatched": 0
+    },
+    {
+      "name": "3-I",
+      "originalGates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      },
+      "receiverReadCacheHits": 276,
+      "receiverReadCacheMisses": 0,
+      "receiverAuthorityHistoryWaitMs": 28368.186641999975,
+      "receiverReadAuthorityWaitMs": 169.45170400001007,
+      "receiverFreshLedgerServedWaitMs": 5438.199120999932,
+      "receiverCompletePositionWaitForRequestP95Ms": 1937,
+      "receiverBodySubsetBodyToDisplayP95Ms": 52.099853515625,
+      "bodySubsetN": 99,
+      "allNativeRequestMatches": 426,
+      "unmatched": 0
+    }
+  ],
+  "runtimeChange": false,
+  "initialFailedAttemptRetained": true,
+  "performancePromotion": false
+}

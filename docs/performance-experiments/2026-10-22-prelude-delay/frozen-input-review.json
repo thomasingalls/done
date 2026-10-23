@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "bothNewJourneysUseExactFrozenObserved26Inputs": true,
+  "all110ClientFilesExact": true,
+  "allProductionRuntimeAndOldTestsUnchanged26": true,
+  "all883Obligations339UnresolvedAndMetadataByteExact26": true,
+  "initialFailedAttemptInputsPreserved": true,
+  "signedHeadAndIndexUnchangedClean": true
+}

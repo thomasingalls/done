@@ -1,0 +1,70 @@
+{
+  "initialPlan": [
+    "1-I",
+    "2-I"
+  ],
+  "attempted": [
+    "1-I"
+  ],
+  "remainingInitialPlanNotRun": true,
+  "initialOutcome": "failed; no complete replay/durability/native acceptance conclusion",
+  "observations": [
+    "Docker CLI unexpected EOF at21:05:33UTC",
+    "owned-container destroy event; final process status unavailable",
+    "daemon reachable and exact pinned image still present"
+  ],
+  "cause": "unknown; do not attribute to application or memory without evidence",
+  "preservedInputs": [
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/protocol.md",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/protocol.md",
+      "sha256": "a2f22d726b23d2df239437501888ced22b4d09649e9ee39a0c208286d1a81cd2"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/freeze-and-run.py",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/freeze-and-run.py",
+      "sha256": "1f6f407ac12cac467eeaf57f4d6e445379d563d4b492bcf59d0050f49e98634d"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/run-plan.json",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/run-plan.json",
+      "sha256": "27d64ddeee4bc95d6fcf56b56ba41803c5ca0cd49293e2f6c20c42a7642143d6"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/run-receipts.json",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/run-receipts.json",
+      "sha256": "ca3871302356ad62e7fe48be080edc8311180b78ede7c3d0935125bbf136d5db"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/measurement-identity.json",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/measurement-identity.json",
+      "sha256": "9b9886b4b08360fd1adfb87b8e7a17d8de9cb4bef0c8c5d685720bbceeb5329a"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/run.log",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/run.log",
+      "sha256": "f29ef9b0a2b7ac5dc7d0e0525ec4a340b45965a8b6da4ba29a35ff3ed157d44f"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/after-runs.py",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/after-runs.py",
+      "sha256": "d345457a13f7778caa1a325bd407d917b6132197f45a2247fb58ca95b0a52368"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/after-runs.log",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/after-runs.log",
+      "sha256": "57219f9bd3fd58ba08f2db7def463f6c307d88a508f69ae1043e04ef04ccb1b7"
+    },
+    {
+      "original": "/private/tmp/done-prelude-delay-20261022/source/test/account-continuation-lab/runtime.mjs",
+      "preserved": "/private/tmp/done-prelude-delay-20261022/failed-series1/runtime.mjs",
+      "sha256": "cc626da6a0933e9b7152578aa86adb04554bd2b2daf43e03a86ce416ee512d8a"
+    }
+  ],
+  "rawFailedJourney": "1-I/",
+  "newProspectiveSeries": [
+    "2-I",
+    "3-I"
+  ],
+  "noReplacementOrAcceptanceCredit": true
+}

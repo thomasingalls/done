@@ -2285,3 +2285,15 @@ Fixed prospective R25,C26,C26,R25, original110 client files, H6/M2/Q2 with1024/2
 |4-R|4.2|31.372|120/120|pass|held|
 
 Status: **HELD: original heavy-case gate still fails**. Original16ms local/2500ms complete-peer p95,30s delivery,600s replay and120s continuation limits unchanged. Every exercised pending/cold same-profile/no-reinjection/retained-record/whole-export/native proof/prefix/reverse/UndoRedo/isolation guard passes. All timings, failures and finite within-journey dependence remain explicit. The uninstrumented comparison isolates26 against held23 runtime (unchanged through25); it does not measure per-call cache hits, exclusive CPU or population effects. Eighteen regressions,62 focused cases, seven implementation and six independent evidence/native fault controls support the boundary. Paired affected suites retain the same17 failures; general qualification paused, no publication.
+
+
+### 2026-10-22 — phase27 remaining prelude proof trace
+
+Two fixed instrumented26 journeys after one preserved failed Docker EOF attempt; original110 clients/full600s workload/resource/rate/timing/data guards, no native repair. [Packet](./performance-experiments/2026-10-22-prelude-delay/README.md). Spans are overlapping await wall, not exclusive CPU.
+
+|Journey|Q1 read proof hits/misses|Q1 discovery+catalog authority wall,s|Q1 read authority wall,s|Q1 fresh ledger/served wall,s|
+|---|---:|---:|---:|---:|
+|2-I|272/0|37.67|0.21|6.54|
+|3-I|276/0|28.37|0.17|5.44|
+
+All stage counts, native request matches, available response-frame proof matches, missing bodies and independent native record/signature/prefix checks remain in the packet. Body-subset quantiles never stand in for complete peer latency or native commit authority. The first failed attempt has no completed cold/pending/replay acceptance credit; no journey or threshold was silently replaced. Actual runtime/old tests/metadata remain exact26, qualification883/339 paused. New uninstrumented repair acceptance is separate.

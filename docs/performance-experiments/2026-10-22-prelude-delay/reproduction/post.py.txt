@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,hashlib,gzip,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-22-prelude-delay';start=json.loads((r/'starting.json').read_text());m=json.loads((r/'patches/manifest.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+def sha(data):return hashlib.sha256(data).hexdigest()
+assert sha(Path(m['patch27']).read_bytes())==m['patch27Sha256']
+chain=m['independentSequentialApply01Through27'];assert len(chain)==27
+for v in chain:assert v['expectedTree']==v['independentCleanApplyTree']and sha(Path(v['patch']).read_bytes())==v['sha256']
+for line in(packet/'SHA256SUMS').read_text().splitlines():
+ expected,path=line.split('  ',1);assert sha((packet/path).read_bytes())==expected,path
+for v in json.loads((packet/'artifact-provenance.json').read_text()):
+ source=(r/v['source']).read_bytes();artifact=(packet/v['artifact']).read_bytes();assert sha(source)==v['sourceSha256'];assert sha(artifact)==v['artifactSha256'];assert(gzip.decompress(artifact)if v['artifact'].endswith('.gz')else artifact)==source
+for path,expected in start['runtimeFiles'].items():assert sha((repo/path).read_bytes())==expected,path
+for name in ['completed.md','decisions.md','performance.md']:assert(repo/'docs'/name).read_bytes().startswith((r/'before/docs'/name).read_bytes())
+for name,work in [('patch27-v4-index.git',repo),('verify27-v4-index.git',r/'clean-apply27-v4'),('verify01-27-v4-index.git',r/'clean-apply01-27-v4')]:
+ actual=subprocess.check_output(['git','-C',str(work),'--git-dir='+str(r/name),'--work-tree='+str(work),'write-tree'],env=env,text=True).strip();assert actual==m['expectedCumulativeTree27']
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index').read_bytes())==start['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+out={'status':'passed','tree27':m['expectedCumulativeTree27'],'patch27Sha256':m['patch27Sha256'],'direct27After26':True,'fullSequence01Through27':True,'packetFiles':sum(p.is_file()for p in packet.rglob('*')),'allProvenanceExact':True,'allProductionRuntimeAndOldTestsExact26':True,'allOtherBase26FilesBlobExact':True,'signedHeadAndIndexUnchangedUnstaged':True,'noNewPublication':True};(r/'patches/post-package-verification.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

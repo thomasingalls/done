@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "transformCount": 25,
+  "files": [
+    "delivery.ts",
+    "historyCheckpoint.ts",
+    "membershipLocator.ts",
+    "inboundAuthorityReuse.ts"
+  ],
+  "allObservationsReverseToExact26": true,
+  "noGuardsBranchesResultsLimitsOrClientChanged": true
+}

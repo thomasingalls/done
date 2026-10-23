@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,subprocess,sqlite3,shutil
+r=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';rows=[]
+for name in ['alter-cache-outcome','erase-authority-span','forge-request-time','drop-native-match']:
+ a=json.loads((r/'trace-analysis.json').read_text());run=next(v for v in a['runs']if v['variant']=='I')
+ if name=='alter-cache-outcome':c=next(c for q in run['matchedRequests']for c in q['cache']);c['hit']=not c['hit']
+ elif name=='erase-authority-span':q=next(v for v in run['matchedRequests']if any(e['name']=='inbound-authority'for e in v['spans']));q['spans']=[e for e in q['spans']if e['name']!='inbound-authority']
+ elif name=='forge-request-time':run['positionTimeline'][0]['firstReadRequestAt']+=10000
+ else:run['matchedRequests'].pop()
+ p=r/('private-trace-control-'+name+'.json');p.write_text(json.dumps(a))
+ with(r/('trace-control-'+name+'.log')).open('w')as log:q=subprocess.run(['python3',str(r/'review-trace.py'),str(p)],stdout=log,stderr=subprocess.STDOUT)
+ assert q.returncode!=0 and 'AssertionError'in(r/('trace-control-'+name+'.log')).read_text(),name;rows.append({'control':name,'detected':True,'exitCode':q.returncode});p.unlink()
+p=r/'private-header-control.sqlite';shutil.copy2(r/'2-I/state/account.sqlite',p);db=sqlite3.connect(p);db.execute("UPDATE promotions SET offer=offer||' ' WHERE rowid=(SELECT min(rowid)FROM promotions)");db.commit();db.close()
+with(r/'trace-control-native-header.log').open('w')as log:q=subprocess.run([node,str(r/'audit-header.mjs'),'--inspect',str(p)],stdout=log,stderr=subprocess.STDOUT)
+assert q.returncode!=0 and 'all non-live native authority fields/pin stay exact'in(r/'trace-control-native-header.log').read_text();rows.append({'control':'protected-header-byte-change','detected':True,'exitCode':q.returncode});p.unlink()
+p=r/'private-relaxed-guard.ts';text=(r/'diagnostic-account-service/delivery.ts').read_text();assert 'retry < 4'in text;p.write_text(text.replace('retry < 4','retry < 5',1))
+with(r/'trace-control-native-guard.log').open('w')as log:q=subprocess.run([node,str(r/'review-ast.mjs'),str(p)],stdout=log,stderr=subprocess.STDOUT)
+assert q.returncode!=0 and 'AssertionError'in(r/'trace-control-native-guard.log').read_text();rows.append({'control':'relaxed-native-four-attempt-fence','detected':True,'exitCode':q.returncode});p.unlink()
+(r/'trace-sensitivity.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(json.dumps(rows))

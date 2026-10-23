@@ -1,0 +1,26 @@
+[
+  {
+    "check": "daemon",
+    "exitCode": 0,
+    "summary": "\"29.9.2\" 4107407360 2\n",
+    "stderr": ""
+  },
+  {
+    "check": "owned-container",
+    "exitCode": 1,
+    "summary": "saved",
+    "stderr": "error: no such object: 07dcd43db8d69e626d03a49838588941ef0721fe064b2430a6ea378531d735e2\n"
+  },
+  {
+    "check": "owned-events",
+    "exitCode": 0,
+    "summary": "{\"Type\":\"container\",\"Action\":\"destroy\",\"Actor\":{\"ID\":\"07dcd43db8d69e626d03a49838588941ef0721fe064b2430a6ea378531d735e2\",\"Attributes\":{\"desktop.docker.io/binds/0/Source\":\"",
+    "stderr": ""
+  },
+  {
+    "check": "carrier",
+    "exitCode": 0,
+    "summary": "sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b\n",
+    "stderr": ""
+  }
+]

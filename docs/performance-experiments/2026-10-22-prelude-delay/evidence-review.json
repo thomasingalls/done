@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "2-I",
+      "all120IndependentTimingObservationsReconstructed": true,
+      "peerObservationsComplete": true,
+      "history409s": 0,
+      "nativeRefusalBodiesComplete": true,
+      "coldPendingArchiveExact": true,
+      "sameProfileNoReinjection": true,
+      "resourceEnvelopeExact": true
+    },
+    {
+      "name": "3-I",
+      "all120IndependentTimingObservationsReconstructed": true,
+      "peerObservationsComplete": true,
+      "history409s": 0,
+      "nativeRefusalBodiesComplete": true,
+      "coldPendingArchiveExact": true,
+      "sameProfileNoReinjection": true,
+      "resourceEnvelopeExact": true
+    }
+  ],
+  "scope": "Independent raw-time/event/refusal/identity/cold-archive reconstruction; no full-peer quantile inferred for incomplete references."
+}

@@ -1,0 +1,73 @@
+from pathlib import Path
+import json,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');assert not(r/'record-outcome.json').exists()
+for f in ['audits-complete.json','ast-review.json','source-review.json','frozen-input-review.json','evidence-review.json','trace-review.json','sensitivity.json','trace-sensitivity.json','process-cleanup.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+tr=json.loads((r/'trace-analysis.json').read_text());a=json.loads((r/'analysis.json').read_text());assert len(tr['runs'])==2;details=[];table=[]
+for v in tr['runs']:
+ q=v['perLabel']['Q1'];sp=q['spans'];get=lambda k:sp.get(k,{}).get('sumMs',0);authority=get('discovery-authority-history')+get('history-authority-history');live=get('discovery-census')+get('history-census')+get('inbound-census')+get('inbound-served');read=get('inbound-authority');details.append({'name':v['name'],'originalGates':next(q['gates']for q in a['runs']if q['name']==v['name']),'receiverReadCacheHits':q['readCacheHits'],'receiverReadCacheMisses':q['readCacheMisses'],'receiverAuthorityHistoryWaitMs':authority,'receiverReadAuthorityWaitMs':read,'receiverFreshLedgerServedWaitMs':live,'receiverCompletePositionWaitForRequestP95Ms':v['positionSlicesMs']['waitForRequestMs'].get('p95'),'receiverBodySubsetBodyToDisplayP95Ms':v['positionSlicesMs']['bodyToDisplayMs'].get('p95'),'bodySubsetN':v['positionSlicesMs']['bodyToDisplayMs']['n'],'allNativeRequestMatches':len(v['matchedRequests']),'unmatched':len(v['unmatchedRequests'])});table.append(f"|{v['name']}|{q['readCacheHits']}/{q['readCacheMisses']}|{authority/1000:.2f}|{read/1000:.2f}|{live/1000:.2f}|")
+assert all(v['unmatched']==0 for v in details);(r/'mechanism-summary.json').write_text(json.dumps({'status':'observed','runs':details,'scope':'summed overlapping native request wall waits, not exclusive CPU; body timing subset explicitly censored'},indent=2)+'\n')
+packet=repo/'docs/performance-experiments/2026-10-22-prelude-delay';packet.mkdir(parents=True,exist_ok=False);link='./performance-experiments/2026-10-22-prelude-delay/README.md'
+completed=f'''
+
+### Phase27 — remaining receiver prelude delay traced after signed26
+
+**Date:** 2026-10-22 · **Commit:** sequential evidence patch27 after26, unsigned/uncommitted · **Status:** diagnostic trace closed, next repair separate;2500ms gate unchanged, qualification paused.
+
+Phases14–26 are signed locally through82bf63e2, each tree/signature independently verified; no push. [Evidence]({link}) keeps the original26 complete-peer2.688/2.774s held result, exact110 client files and two additional fixed instrumented whole journeys. Native wall waits distinguish reusable complete authority/history from live census/served/request/signing work. Receiver summary: {json.dumps(details)}. These are overlapping await walls, not exclusive CPU or population/acceptance estimates. All observed measured Q0/Q1 requests match native whole-body identities; available reply frames match independently verified native accepted envelopes/prefixes. Missing body times remain missing, UI progress is a proxy.
+
+One earlier trace attempt failed: Docker CLI unexpected EOF, destroy event and lost control channel; exact cause unknown. Its original foreground delivery completed, but background replay/cold/pending/native completion could not be established. Preserve the entire failed result and original inputs; no success replacement or data-guard credit. The original two-run plan stopped after that failure; a separately predeclared fixed pair followed after daemon/image availability checks, with host exit logging only. All three attempts remain distinguishable. New complete journeys pass exercised original/pending writing, same-profile offline cold reopening without reinjection, exact retained records/full export, reverse/UndoRedo/isolation and native OpenSSL seed/envelope/wrapper/accepted-prefix checks.10 frame cases, exact reverse25transforms/four-file independent AST guard proof and12 altered evidence/native/trace/header/guard controls pass. All owned containers/profiles/gateway stopped. An old trace-control assumption required a cache miss, but the measured cache events were all hits; its StopIteration and original script are preserved. The corrected control flips an actual observed outcome and is independently detected, without altering source or measurement.
+
+Actual production/protocol/client/old-test and883/339 qualification metadata bytes are exact26. No new cache, runtime change, quota/retry/resource/deadline increase, qualification credit or performance promotion. Next bounded repair is selected only against this evidence and explicit complete-proof/early-delivery-shape ownership, with fresh live/request/authorization/custody/native commit checks and an original uninstrumented coupled rerun. Existing17 failures are still unresolved and will be investigated historically after that repair. No new staging/signing/commit/push/preview8443/merge/deploy.
+'''
+p=repo/'docs/completed.md';assert p.read_bytes()==(r/'before/docs/completed.md').read_bytes();p.write_text(p.read_text()+completed);at=time.time_ns()
+decision=f'''
+
+### Reuse complete prelude proof evidence only through an explicit owner
+
+**Date:** 2026-10-22 · **Status:** phase27 mechanism evidence; no runtime repair in this patch.
+
+The [trace]({link}) separates the remaining receiver's discovery/catalog authority/history work from ordinary read-proof reuse and fresh live ledger/served work. Native verification counts are method-specific (complete history costs differ from ordinary authority); do not substitute one count or overlapped process CPU for another. Current26 HTTP read p95102/119ms versus discovery2150/2603ms and catalog2145/1448ms motivated this trace, but do not by themselves establish exclusive authority cost. All future repair candidates retain the2.5s original gate and fixed uninstrumented comparison.
+
+A complete `{ '{authority, history}' }` proof has different early-epoch output semantics from standalone delivery authority. Never attach a complete history to early public delivery authority and accidentally switch ledger dispatch. Equal native contexts with distinct verifier purposes must coexist within one existing bounded core pool rather than evict each other or allocate another full budget. Keep all native/future fields, publisher, pin and immutable boundaries in the stable context; omit only proven non-authority rows/live witnesses. Continue fresh request/role/signature/scope/time, live witness/full census/served/cut, grant/session/custody/completion and final native ownership/version/commit/four-attempt checks. Bootstrap and checkpoint mutations/source paths need separate scope decisions; no automatic broadening.
+
+Preserve the initial Docker EOF failure as incomplete, including unrun cold/pending checks and unknown cause; a new predeclared pair is additional evidence, not an erased failure. Host-only child-exit logging improves observability without changing native/resource/timing policy. General883/339 qualification remains paused, and prior17 failures remain named; local full functional tests precede any future push.14–26 signed locally is distinct from published or deployed.
+'''
+p=repo/'docs/decisions.md';assert p.read_bytes()==(r/'before/docs/decisions.md').read_bytes();p.write_text(p.read_text()+decision)
+perf=f'''
+
+### 2026-10-22 — phase27 remaining prelude proof trace
+
+Two fixed instrumented26 journeys after one preserved failed Docker EOF attempt; original110 clients/full600s workload/resource/rate/timing/data guards, no native repair. [Packet]({link}). Spans are overlapping await wall, not exclusive CPU.
+
+|Journey|Q1 read proof hits/misses|Q1 discovery+catalog authority wall,s|Q1 read authority wall,s|Q1 fresh ledger/served wall,s|
+|---|---:|---:|---:|---:|
+'''+ '\n'.join(table)+'''
+
+All stage counts, native request matches, available response-frame proof matches, missing bodies and independent native record/signature/prefix checks remain in the packet. Body-subset quantiles never stand in for complete peer latency or native commit authority. The first failed attempt has no completed cold/pending/replay acceptance credit; no journey or threshold was silently replaced. Actual runtime/old tests/metadata remain exact26, qualification883/339 paused. New uninstrumented repair acceptance is separate.
+'''
+p=repo/'docs/performance.md';assert p.read_bytes()==(r/'before/docs/performance.md').read_bytes();p.write_text(p.read_text()+perf)
+(packet/'README.md').write_text(f'''# Phase27 — remaining discovery/catalog delay
+
+**Diagnostic evidence only; original26 remains held at2.688/2.774s peer p95 versus2500ms.**14–26 signed locally through82bf63e2; no publication. No runtime or old-test change in27.
+
+Two fixed instrumented26 whole journeys preserve original110 clients, H6/M2/Q2 seeded1024/256/32 histories,4roots10contexts,1CPU1GiBzero swap/pids128,16/64 rates,120trusted500ms keys and original16ms/2500ms/30s/600s/120s/data checks. Host wire metadata and25 observational native transformations are the only changes; all reverse byte-exact and four-file AST review strips only observer syntax, retaining all underlying guards/branches/calls. No extra app requests, DB polling, client source edits or rebuild. Instrumentation perturbs scheduling; this is neither acceptance nor a population/physical-mobile/WAN performance estimate.
+
+|Journey|Q1 read proof hits/misses|Q1 discovery+catalog authority wall,s|Q1 read authority wall,s|Q1 fresh ledger/served wall,s|
+|---|---:|---:|---:|---:|
+'''+ '\n'.join(table)+f'''
+
+See `mechanism-summary.json`, `trace-analysis.json.gz`, raw `journeys/` and independent `trace-review.json`. Request bodySHA/path/status binds stages to browser requests. Native OpenSSL independently verifies envelope/wrapper/accepted-prefix signatures and every retained seed record; returned frames are unverified observations until matched to that ledger. Missing body/decoder observations stay missing; body-to-display subsets and UI progress do not prove complete/native durability. Await span sums overlap other process activity and are not exclusive CPU.
+
+## Preserved infrastructure failure
+
+The initial1-I failed after a Docker CLI unexpected EOF and destroy event; cause unknown. Original foreground keys reached the peer, but four background histories ultimately timed out and cold/pending/native final checks did not run. No complete data or acceptance credit. Original inputs/scripts/plan/receipts and raw failed result remain under `initial-failure/` and private1-I; no profile, database or key is curated. The initial second run was not executed. After daemon/exact-image checks, a separately predeclared fixed pair2-I,3-I used identical native inputs/limits and host-only exit logging. All three attempts remain visible; no selective replacement or threshold extension.
+
+The new two journeys pass their exercised original/pending/cold real-profile/no-reinjection/retained-record/whole-export/reverse/UndoRedo/isolation and independent native seed/envelope/wrapper/accepted-prefix checks.10 frame tests and12 deliberate evidence/native/trace/header/guard faults detect alterations. The first trace-control script assumed a miss and raised StopIteration on the all-hit measured cohort; its failed log/source remain. The corrected control flips an observed hit outcome and is detected without touching the measurements. Source/provenance/frozen checks bind every actual/client/observational input, and all owned processes are stopped.36 known private values are checked after decompression; that is a known-value/source-selection audit, not universal DLP.
+
+## Next scope and limits
+
+Complete authority/history is a mathematical proof, not request/grant/ledger/commit authority. Preserve early standalone authority shape and private history brands; avoid equal-context/different-verifier cache eviction within the existing bounded owner. Native/future inputs, publisher, pin, immutable boundaries, all live witness/full census/served/cut checks, fresh request/signature/roles/time/grant/session/custody/completion and final native owner/version/commit/four attempts stay fresh. Any28 repair must first demonstrate genuine signed redundant work/failure boundaries and pass original uninstrumented coupled acceptance; no quota/cache-budget/clock increase.
+
+All current runtime, protocol, old tests and883 obligations/339 unresolved metadata are exact26. General qualification remains paused; prior17 failures are not called stale or resolved here. Their introduction/repair and local full suite come after the next bounded performance repair, before future push/sign/release planning. This patch is pendingunsigned sequential27 after26; do not reapply it to the cumulative checkout. No staging/signing/push/preview8443/merge/deploy.
+''')
+(r/'record-outcome.json').write_text(json.dumps({'status':'recorded','completedBeforeDecisionsAndPerformance':True,'completedAtNs':at,'recordedAtNs':time.time_ns(),'mechanism':details,'runtimeChange':False,'initialFailedAttemptRetained':True,'performancePromotion':False},indent=2)+'\n');print(json.dumps(details,indent=2))

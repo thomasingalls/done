@@ -1,0 +1,13 @@
+{
+  "status": "corrected before finalization",
+  "initialPatchSha256": "a4da41e83a0986db83afb443c93d02e8d1b062d3a138e978aa6ca6182767fafa",
+  "initialTree": "1c76ef434106f72fa97b813c6928a8b5dc3c85fb",
+  "initialPatchPreserved": "packaging-attempt1/patches/27-discovery-catalog-delay-evidence.patch",
+  "cause": "mechanical phase-number replacement accidentally renamed verifier sha256 and key Sha256 to sha276/Sha276",
+  "effect": "post-package checker raised AttributeError; native source/evidence and independent clean application were unaffected",
+  "repair": "correct SHA-256 function/key, preserve failed checker/log and regenerate artifact with this record",
+  "noRuntimeOrMeasurementChange": true,
+  "secondPackagingAttempt": "stopped before writing revised patch because the preserved patches directory already existed; failed log/source retained",
+  "directoryRepair": "allow existing shared artifact directory; use fresh disposable v3 indices and views",
+  "additionalVerifierSpelling": "uppercase SHA276SUMS was also produced by the original substitution; checker rewritten with explicit SHA256 function, keys and checksum-file name"
+}
