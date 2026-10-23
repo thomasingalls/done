@@ -160,13 +160,79 @@ test('Cmd Delete respects a wrapped display line', async ({ page }) => {
   await expect.poll(() => lines(editor)).toEqual([text]);
 });
 
-test('Cmd Enter toggles a todo with one undo/redo step', async ({ page }) => {
+test('Cmd Enter leaves task text and undo history unchanged; click still toggles', async ({
+  page,
+}) => {
   const editor = await seed(page, '- [ ] task');
+  const markdown = () =>
+    editor.evaluate((element) => {
+      const view = (element as HTMLElement & { cmTile?: { root?: { view?: EditorView } } }).cmTile
+        ?.root?.view;
+      if (!view) throw Error('No Goals EditorView');
+      return view.state.doc.toString();
+    });
   await editor.press('Meta+Enter');
-  await expect.poll(() => lines(editor)).toEqual(['- [x] task']);
+  await expect.poll(markdown).toBe('- [ ] task');
   await editor.press('Meta+z');
-  await expect.poll(() => lines(editor)).toEqual(['- [ ] task']);
+  await expect.poll(markdown).toBe('');
   await editor.press('Meta+Shift+z');
-  await expect.poll(() => lines(editor)).toEqual(['- [x] task']);
+  await expect.poll(markdown).toBe('- [ ] task');
+  await editor.press('Shift+Enter');
+  await page.keyboard.insertText('other');
+  await expect.poll(markdown).toBe('- [ ] task\nother');
+  await page.locator('.goals .cm-md-task').click();
+  await expect.poll(markdown).toBe('- [x] task\nother');
+  await editor.press('Meta+z');
+  await expect.poll(markdown).toBe('- [ ] task\nother');
+  await editor.press('Meta+Shift+z');
+  await expect.poll(markdown).toBe('- [x] task\nother');
+  await expect(page.locator('.goals .admission-status')).not.toContainText('admission adapter');
+});
+
+test('Option Backspace deletes words and selections with undo and durable reopen', async ({
+  page,
+}) => {
+  const editor = await seed(page, 'keep café word');
+  await editor.press('Alt+Backspace');
+  await expect.poll(() => lines(editor)).toEqual(['keep café ']);
+  await editor.press('Meta+z');
+  await expect.poll(() => lines(editor)).toEqual(['keep café word']);
+  await select(editor, 5, 10);
+  await editor.press('Alt+Backspace');
+  await expect.poll(() => lines(editor)).toEqual(['keep word']);
+  await editor.press('Meta+z');
+  await expect.poll(() => lines(editor)).toEqual(['keep café word']);
+  await editor.press('Meta+Shift+z');
+  await expect.poll(() => lines(editor)).toEqual(['keep word']);
+  await reloadApp(page);
+  await expect.poll(() => lines(page.locator('.goals .cm-content'))).toEqual(['keep word']);
+});
+
+test('Cmd brackets indent and outdent the selected lines through admission', async ({ page }) => {
+  const editor = await seed(page, 'one\ntwo');
+  await select(editor, 0, 7);
+  await editor.press('Meta+]');
+  await expect.poll(() => lines(editor)).toEqual(['  one', '  two']);
+  await editor.press('Meta+[');
+  await expect.poll(() => lines(editor)).toEqual(['one', 'two']);
+  await editor.press('Meta+z');
+  await expect.poll(() => lines(editor)).toEqual(['  one', '  two']);
+  await editor.press('Meta+Shift+z');
+  await expect.poll(() => lines(editor)).toEqual(['one', 'two']);
+  await expect(page.locator('.goals .admission-status')).not.toContainText('admission adapter');
+});
+
+test('Shift Enter adds a plain newline while Goals Enter still continues lists', async ({
+  page,
+}) => {
+  const editor = await seed(page, '- item');
+  await editor.press('Enter');
+  await expect.poll(() => lines(editor)).toEqual(['- item', '- ']);
+  await editor.press('Meta+z');
+  await expect.poll(() => lines(editor)).toEqual(['- item']);
+  await editor.press('Shift+Enter');
+  await expect.poll(() => lines(editor)).toEqual(['- item', '']);
+  await editor.press('Meta+z');
+  await expect.poll(() => lines(editor)).toEqual(['- item']);
   await expect(page.locator('.goals .admission-status')).not.toContainText('admission adapter');
 });

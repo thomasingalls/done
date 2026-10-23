@@ -25,7 +25,10 @@ get a bounded scope and evidence before implementation. General release qualific
 - **UX-06 — Continuous mobile deletion.** The operator's barometer: “can I hold down backspace on mobile
   and watch the line disappear without pauses?” Pauses remain. Reproduce and measure sustained deletion
   on a physical phone, including while sync is active, alongside the existing typing measurements.
-  Preserve writing, undo and durability guarantees while attributing the pauses.
+  Preserve writing, undo and durability guarantees while attributing the pauses. On 2026-10-23,
+  after the sync release, the operator reports improvement but periodic pauses remain during held
+  deletion on a phone; longer pauses also show the syncing warning. Native-input smoothness is not
+  established. This UX patch series records the observation without claiming a performance repair.
 - **UX-07 — Saving-status layout movement.** “Still saving” warnings currently move the text around.
   They make remaining latency visible during debugging, but this movement is unacceptable in the user
   experience. Keep save state truthful while making status changes preserve editor layout, selection,

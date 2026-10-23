@@ -6,6 +6,7 @@ import {
   indentMore,
   indentLess,
   insertNewline,
+  deleteGroupBackward,
   moveLineUp,
   moveLineDown,
 } from '@codemirror/commands';
@@ -45,6 +46,8 @@ const deleteCluster =
 export const textCommands: Record<Exclude<TextAction['name'], 'insert'>, StateCommand> = {
   backspace: (target) => deleteMarkupBackward(target) || deleteCluster(false)(target),
   delete: deleteCluster(true),
+  deleteWordBackward: deleteGroupBackward,
+  newline: insertNewline,
   moveLineUp,
   moveLineDown,
   enter: (target) => continueList(target) || insertNewline(target),

@@ -5161,3 +5161,16 @@ prove universal safety or that failed hosted runs passed. Source/image identity,
 rollback, private registry, offline infrastructure checks and rollout verification
 remain required. Operator retains both merge buttons; generalized qualification
 remains paused. See [handoff](./account-sync-catch-up-publication.md).
+
+
+### Native editing gestures keep semantic admission
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch37 · **Against:** PRD §4.8 / TRD §5.4
+
+**Orientation.** Default CodeMirror word-delete, bracket-indent and Shift-Enter transactions were rejected
+by the admitted editor, while Cmd-Enter unexpectedly toggled tasks.
+
+**Decision.** Adapt known text semantics through the existing private preparation/admission path. Never
+accept arbitrary extension document transactions to make shortcuts work. Explicitly consume Cmd/Ctrl-Enter
+so disabling task toggle cannot expose the default blank-line command. Keep click-to-toggle and its
+semantic command. Mobile pauses remain a separate profiling task.

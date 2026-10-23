@@ -15587,3 +15587,18 @@ Retained evidence-packaging correction: its first temporary-index whitespace che
 **Date:** 2026-10-23 · **Release:** `51d8550d` · **Status:** operator reports substantially improved catch-up and live sync; long-backlog behavior remains unverified on actual devices.
 
 [Operator feedback](./development-evidence/2026-10-23-sync-production-rollout/operator-device-feedback.json) supplies the verbatim observation and its limits. Inter-device delay is described as close to real time, with undo included in positive feedback. A suitable unsynced backlog was unavailable; this does not establish long-backlog performance, a measured latency or equivalence to WebSockets. Individual lock/offline outcomes and per-device version labels were not separately supplied. Preserve the earlier server-verification checkpoint and observations; qualification remains paused. Documentation-only follow-up patch36 follows the immutable rollout-evidence patch35. No application, protocol, tests or production changes.
+
+
+### Native editor shortcuts pass semantic admission
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch37 · **Stage:** bounded UX
+
+**Exit.** Option-Backspace word deletion, Cmd/Ctrl bracket indentation and Shift-Enter plain newline
+use semantic admission. Cmd/Ctrl-Enter is a no-op; checkbox clicks and undo remain. All four new checks
+fail on signed c4a66c79. Affected keyboard coverage passes across both layout projects (16 unchanged/
+restored cases plus the 2 corrected task cases); 44 unit cases, TypeScript and focused lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md) retains fixture mistakes
+and the sandbox launch refusal. New storage-refusal cases preserve accepted-only projection and one
+undoable change. Phone deletion stalls are recorded, not repaired. No protocol/storage format/security
+policy or deployment changes. This phase is prepared as a sequential patch, not committed.

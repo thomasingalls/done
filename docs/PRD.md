@@ -645,8 +645,10 @@ lists, task checkboxes, rules. **No images. No tables in v1** — tables are bot
 cost and genuinely unpleasant to author by hand, which is precisely the case agent assistance would change
 (§5.8).
 
-Behaviors that matter disproportionately: list continuation on Enter, `Tab`/`Shift-Tab` indentation, checkbox
-toggle by click and keystroke, clean selection across formatting marks.
+Behaviors that matter disproportionately: list continuation on Enter in Goals, `Tab`/`Shift-Tab` and
+`Cmd/Ctrl-]` / `Cmd/Ctrl-[` indentation, checkbox toggle by click, clean selection across formatting marks.
+On macOS, Option-Backspace deletes the preceding word or selection. Cmd/Ctrl-Enter does not toggle
+checkboxes or insert a blank line. Shift-Enter inserts an admitted plain newline.
 
 Inside a card, **three consecutive returns splits into a new card.** Three is a starting guess — likely too
 undiscoverable, and expected to drop to two or one once the interaction proves out. It is a tunable, not a

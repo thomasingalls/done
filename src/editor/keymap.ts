@@ -19,7 +19,6 @@ import {
   toggleInlineCode,
   toggleItalic,
   toggleStrikethrough,
-  toggleTask,
 } from './commands';
 
 export interface Binding {
@@ -89,8 +88,8 @@ export const editorBindings: Binding[] = [
   },
   {
     key: 'Mod-Enter',
-    run: toggleTask as Command,
-    description: 'Toggle the task checkbox on every line the selection touches',
+    run: () => true,
+    description: 'Reserved; does not change writing or task checkboxes',
     preventDefault: true,
   },
   {
