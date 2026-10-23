@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "reason": "Review expected runtime source hashes in planning inputs, which inventory does not collect",
+  "expectedChangedInputs": 10,
+  "actualChangedInputs": 6,
+  "runtimeSourceIdentity": "record separately in build identity"
+}

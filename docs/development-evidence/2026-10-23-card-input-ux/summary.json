@@ -1,0 +1,52 @@
+{
+  "status": "passed-with-explicit-open-device-observation",
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "runtimeSourceTree": "4b1c1fa2662e629dc99454cf5c7ad507eaf63838",
+  "phases": [
+    42,
+    43,
+    44,
+    45
+  ],
+  "unit": {
+    "files": 159,
+    "passed": 1914,
+    "existingSkipped": 1
+  },
+  "builtFrontend": {
+    "passed": 150,
+    "existingPlatformSkipped": 24
+  },
+  "adapterAndInventoryTests": 27,
+  "typeBuildBudgetOriginFormat": "passed",
+  "initialGzipKB": 232.7,
+  "budgetKB": 350,
+  "qualification": {
+    "status": "paused/blocked",
+    "obligations": 887,
+    "unresolved": 343,
+    "newUnreviewedTestFiles": 4,
+    "newCredit": false
+  },
+  "preview": {
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "version": "c4a66c79-dirty",
+    "workerVersion": "bbdf2a6c9379",
+    "gatewayPid": 14471,
+    "retainedApiPid": 52585,
+    "apiRestarted": false,
+    "httpsAssetsVerified": 60,
+    "browserWidths": [
+      1280,
+      420
+    ]
+  },
+  "open": [
+    "Intermittent invisible quick-entry text on physical Android/Gboard not reproduced; cause and repair unconfirmed.",
+    "No claim to eliminate every possible unknown modifier/focus sequence.",
+    "Physical-phone continuous-delete latency remains separate."
+  ],
+  "committed": false,
+  "pushed": false,
+  "productionDeployed": false
+}

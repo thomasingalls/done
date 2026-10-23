@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 521,
-    "requiredTestFiles": 515,
+    "testFiles": 525,
+    "requiredTestFiles": 519,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9889,6 +9889,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/compose.test.tsx",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/compose.test.tsx"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/configDiscoveryCompatibility.test.ts",
       "status": "required",
       "invocation": {
@@ -10229,6 +10239,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/geometry/card-focus.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/geometry/cards.spec.ts",
       "status": "required",
       "invocation": {
@@ -10236,6 +10257,28 @@
         "packages": ["test:geometry"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/compose-input.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/duplicate-card.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 1,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -13257,18 +13300,18 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceAdmission.test.ts"]
       },
-      "declarations": 57,
+      "declarations": 61,
       "propertyFamilies": [
         {
-          "line": 1049,
+          "line": 1164,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 1152,
+          "line": 1267,
           "form": "fc.asyncProperty"
         },
         {
-          "line": 1687,
+          "line": 1802,
           "form": "fc.asyncProperty"
         }
       ],
@@ -18304,6 +18347,10 @@
       "sha256": "8e28c6b2f2600294ac733913fa3f2f08ce69d4cb9b0c54c5754d01603cf3b776"
     },
     {
+      "path": "test/compose.test.tsx",
+      "sha256": "d5655aaf89a6291063a6a8e15a9d4cbe20a3d575ea5f0886cde8a369346a91f1"
+    },
+    {
       "path": "test/configDiscoveryCompatibility.test.ts",
       "sha256": "a4a16b78e50a1a9a102308e580df81084e84455e046b8ca2d04124b34f982de4"
     },
@@ -18452,8 +18499,20 @@
       "sha256": "7e48276855a886dfcd98827fa7b9bddc2499601e57685e32993885526ae90e45"
     },
     {
+      "path": "test/geometry/card-focus.spec.ts",
+      "sha256": "2897408a71869e6d2780fcc2693d18d42aaf8538a16afd97d3f69be8e38e8c37"
+    },
+    {
       "path": "test/geometry/cards.spec.ts",
       "sha256": "59d9d5871e3bdc62c125518f3f5fcd58c24ca082085f4dbfeaa99251852caca3"
+    },
+    {
+      "path": "test/geometry/compose-input.spec.ts",
+      "sha256": "cba2c0f37c8012a5c6882895fa0ed5b42cce2c608316cd815617f44db8796cdc"
+    },
+    {
+      "path": "test/geometry/duplicate-card.spec.ts",
+      "sha256": "c6f00f2fb5334732ff9792aa4929836d0cc3ee30f01f415d9907a2e1321414f7"
     },
     {
       "path": "test/geometry/install.spec.ts",
@@ -19309,7 +19368,7 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "c7e47a427e9aeafd5c17658e648d0e67622ab0ad723c4dd2582a8e47c1d6bda0"
+      "sha256": "47c73118be30bb86ae3256b2dc393a07943fbd2cda98d2f7edacccf5c4f937f8"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
@@ -19749,7 +19808,7 @@
     },
     {
       "path": "test/workspaceAdmission.test.ts",
-      "sha256": "3d6af916703e98becc38ceb7c942c78fab8d2cd569ab3101317bd491e07ff890"
+      "sha256": "b4255d79126d789d42e69001c817e496e3d9e9e01d01dd20a670a004952eb6b2"
     },
     {
       "path": "test/workspacePreparation.test.ts",

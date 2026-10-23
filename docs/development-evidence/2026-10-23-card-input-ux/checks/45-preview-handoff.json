@@ -1,0 +1,21 @@
+{
+  "directory": "/private/tmp/done-card-input-preview-20261023-p7psbu8x",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "appPort": 53219,
+  "servicePort": 53220,
+  "retainedApiPid": 52585,
+  "previousGatewayPid": 7830,
+  "previousPreview": "/private/tmp/done-ux-preview-20261023-q3gpz_fl",
+  "build": "/private/tmp/done-card-input-preview-20261023-p7psbu8x/build",
+  "version": "c4a66c79-dirty",
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "sourceTree": "4b1c1fa2662e629dc99454cf5c7ad507eaf63838",
+  "status": "ready",
+  "committed": false,
+  "deployed": false,
+  "gatewayPid": 14471,
+  "verification": "/private/tmp/done-card-input-preview-20261023-p7psbu8x/https-verification.json",
+  "previewGatewayOnlyUpdated": true,
+  "retainedApiRestarted": false,
+  "browserSmoke": "/private/tmp/done-card-input-preview-20261023-p7psbu8x/browser-smoke.json"
+}

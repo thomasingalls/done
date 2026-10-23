@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "file": "test/release-validation/general-tests.test.mjs",
+  "changes": "two count/title values 2511 to 2536",
+  "allOtherBytesUnchanged": true
+}

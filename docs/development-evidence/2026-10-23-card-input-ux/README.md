@@ -73,3 +73,45 @@ the newly added describe block reproduces the old workspace test file byte for b
 
 Phase44 exit recorded in completed.md. Active work advances to combined validation and inventory
 freshness. Formal release qualification remains paused; these checks do not assign new credit.
+
+## Phase45 combined validation and handoff
+
+- Full Vitest:159 files,1914 passed,1 existing named skip (1915 total).
+- Full production-frontend geometry:150 passed,24 existing platform skips (174 total), one worker/no retries.
+- TypeScript, Yjs patch check, Vite production build,232.7/350kB initial-JS gzip budget,
+ 57-file origin-isolation check and affected formatting pass.
+-27 adapter/inventory cases pass. The old general census failed at2511 vs2536 and changes only
+ two exact values/title words. Removing the new workspace describe restores every old source byte.
+
+Planning inventory first correctly refused stale inputs. The first review mistakenly expected runtime
+source hashes in a graph that inventories tests/planning inputs; that review failed before regeneration.
+The corrected independent review checks exactly four new required test files, their six changed/new
+input hashes, four workspace declaration sites and115-line property-location shifts. All other fields,
+existing dispositions and blocks remain. The four new files receive no aggregate credit:887 obligations/
+343 unresolved; formal qualification remains paused. Runtime identity is separately recorded against
+356 source files in the phase44 tree and110 built files.
+
+The read-only preview preflight first tried incorrect GET config routes, then the actual POST route
+without its required Origin. Both failed before any gateway stop. After reading the application route
+contract, the correct same-origin public-config request matched its original hash. The frontend
+gateway alone was replaced; API PID52585 and its data remained running. Normal TLS checks verify60
+built assets plus two deep links; fresh Chromium1280/420 contexts check merge/outside focus, composing
+quick entry and Duplicate with no page errors. No existing browser profile/account was used.
+
+Preview: https://mbp.tail0e0d4.ts.net:8443, Version c4a66c79-dirty, worker bbdf2a6c9379. The visible
+version label is unchanged for this cumulative uncommitted source; the service-worker content changed.
+Use the sidebar update or a normal reload to adopt it. Original preview build is retained for rollback.
+
+Phase45 exit is recorded in completed.md. The patch sequence is prepared and verification checks its
+exact replay/cumulative tree without changing the real Git index. Nothing is committed, pushed or
+deployed to production. UX-13’s physical Android/Gboard observation remains open.
+
+## Reproduction
+
+Use the installed Node24 runtime and repository dependencies; no package install/lockfile change was
+needed. `reproduction/playwright.card-input.config.ts` selects isolated Vite source/reference41;
+`playwright.card-input-built.config.ts` serves the production build. All contexts are disposable.
+The inventory review takes the prior planning snapshot as its first argument (extract the snapshot
+from patch41’s resulting tree) and compares it with the current source. Absolute scratch paths in
+these configs identify this run and need replacement on another machine. Logs/receipts retain
+failed attempts; a passing rerun does not erase them.

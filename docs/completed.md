@@ -15708,3 +15708,23 @@ TypeScript, focused lint/format and an exact old-source preservation check pass.
 accepted-only projection, full Next, deleted sources, execution-time freeze and durable byte replay.
 The command reuses compose rather than copying CRDT identity or using a stale UI text snapshot.
 No stored-format, credential, sync authority or publication changes. Sequential patch only.
+
+
+### Combined card/input UX validation and preview handoff
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch45 · **Stage:**bounded regression evidence
+
+**Exit.** All159 unit files pass (1914 passed/1 existing named skip). The built frontend’s full
+geometry suite passes150 with24 existing platform skips. Type/build,232.7kB initial gzip budget,
+origin isolation, focused format and27 adapter/inventory cases pass. The exact general census moves
+2511→2536 for25 new admitted-duplication cases; all other bytes in that old fixture remain. Four new
+test files are required but remain uncredited/blocked pending separate aggregate adapter review.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) preserves counterexamples,
+the stale-count/snapshot failures and overly broad first inventory review. The reviewed graph changes
+only test inputs/counts/declaration locations; formal qualification remains paused (887 obligations/
+343 unresolved). Local preview8443 now serves the exact tested runtime;60 HTTPS assets, deep links and
+two fresh-context browser smokes pass, with API PID/service identity retained. Initial preview probes
+used wrong routes and then omitted Origin; both were refused before stopping the old gateway. Only
+the frontend gateway was restarted. UX-13 remains unresolved on physical Gboard. No commit/push or
+production deployment. Sequential patches42–45 extend immutable37–41.

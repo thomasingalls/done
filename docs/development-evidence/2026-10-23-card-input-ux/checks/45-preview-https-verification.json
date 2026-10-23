@@ -1,0 +1,313 @@
+{
+  "status": "passed",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "workerVersion": "bbdf2a6c9379",
+  "normalTlsVerification": true,
+  "publicApiConfigUnchanged": true,
+  "publicApiConfigSha256": "dface6756553bf846a4d9de34ce05877a06a28f96b5381e4e3c7b3f44d7864e0",
+  "retainedApiPid": 52585,
+  "apiRestarted": false,
+  "builtAssets": [
+    {
+      "path": "/assets/AccountDevices-CG79XgG-.js",
+      "bytes": 115422,
+      "sha256": "bebe1d5ac95ade1439e1ee894b174ea175b757b4c408ae232f20b4658b2c55a9"
+    },
+    {
+      "path": "/assets/AccountEnrollmentApp-BP7EaCx3.js",
+      "bytes": 53682,
+      "sha256": "162232be7e2b3782c717146afb11de9816398ad127cb18d3abe46f66691e4df3"
+    },
+    {
+      "path": "/assets/AccountRecoveryApp-DqTYKdxB.js",
+      "bytes": 29310,
+      "sha256": "3daee754635481129647099b6ac9297cf368e5d4204ee85087d80fa993fc6fac"
+    },
+    {
+      "path": "/assets/AccountSetupApp-4p0oU6xV.js",
+      "bytes": 47575,
+      "sha256": "e2b0849118b87c67110cfc5edd9332fb7c781b3c934703e060b67787f275b601"
+    },
+    {
+      "path": "/assets/DeviceDataRemoval-WqaCMWrh.js",
+      "bytes": 15228,
+      "sha256": "c4be5bad9778ff6b4762953d4a75941068c8adebd33a8d5c1b9561c9137645e6"
+    },
+    {
+      "path": "/assets/LocalApp-pNvURust.js",
+      "bytes": 24596,
+      "sha256": "a251cf7d64ee43cf99d59fb94472fbb4fa874c7f11f12c9c6f01abc6c17bbd44"
+    },
+    {
+      "path": "/assets/LocalEntry-D9VA4OBT.js",
+      "bytes": 718,
+      "sha256": "61f4964fcd9ccbad055e9d58a8eb204878ff5f081883bfc845cac740f22a4aa6"
+    },
+    {
+      "path": "/assets/accountEnvelopePreparation-Cb1VAloa.js",
+      "bytes": 2931,
+      "sha256": "a9842de82746eb909e8798913217ca1eeaa59d5d0977f28981869d2fb9b3d4d1"
+    },
+    {
+      "path": "/assets/accountProgressCustody-BNWtO3FL.js",
+      "bytes": 1698,
+      "sha256": "a119df1bd7dcecb233973bcce6860fd26820d94f5e4cad8926bd9c2daeeea064"
+    },
+    {
+      "path": "/assets/accountRotation-jPoPHGWL.js",
+      "bytes": 8844,
+      "sha256": "9d1a7a5f0946437c732e4bb9c198bf06875247e3af407efab8139422d951f88a"
+    },
+    {
+      "path": "/assets/accountSyncState-CFWUu0n3.js",
+      "bytes": 2853,
+      "sha256": "3cfb3f0871a37f7c35edad6ffd77cab75bdd344ae1abdd4fe212e18e1daaea70"
+    },
+    {
+      "path": "/assets/admissionDocument-DfjpO7hI.js",
+      "bytes": 1572,
+      "sha256": "c746fc6d19aeb721a49970a16eea3e805ebc7cb65bbdee27e0cafa13ef25ad26"
+    },
+    {
+      "path": "/assets/admissionHistory-nO4apN9K.js",
+      "bytes": 103414,
+      "sha256": "04f25bc7e8a3c681ad71ca3702cb030988da16022d756a0e6ffc4beda5822bf9"
+    },
+    {
+      "path": "/assets/ceremonyVault-DOL-kOVQ.js",
+      "bytes": 9206,
+      "sha256": "fe254ebccda73a9b645ce8cd681eea16900d700dcd5d06b1ea34f938d22e406d"
+    },
+    {
+      "path": "/assets/checkpointTimeline-e00B0uh2.js",
+      "bytes": 585,
+      "sha256": "445b3cebe16c03a6cd64447b89cc1f84fda8688bcd57020b5101ac6e8f437e9e"
+    },
+    {
+      "path": "/assets/contentCompaction-Cjn2yKvI.js",
+      "bytes": 102400,
+      "sha256": "b32de68ca2498cb2b367cc3325b2496e18aefda28ab729b34bff82f248f5346e"
+    },
+    {
+      "path": "/assets/cpuBudget-BZY3L4Fm.js",
+      "bytes": 411,
+      "sha256": "bed8ff24cd0fb3e05a06502fd6bef4c9bb3453f4f5aa59ffbcc17fdab56d723d"
+    },
+    {
+      "path": "/assets/custodyCrypto-C44ppXTm.js",
+      "bytes": 4784,
+      "sha256": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280"
+    },
+    {
+      "path": "/assets/days-CHlN9BKR.js",
+      "bytes": 62539,
+      "sha256": "08c0e97ac19814e5eaa78bbb21efc5cde007b8890f6d7ae2e0655d03e503ed08"
+    },
+    {
+      "path": "/assets/deviceDataRemoval-CtPNgyZ9.js",
+      "bytes": 96305,
+      "sha256": "fba173b38d938cc660156c1ced6a319e1cbc36e56af7f8946a1242f0b53cdadb"
+    },
+    {
+      "path": "/assets/deviceRemovalVault-DGRHDFsg.js",
+      "bytes": 26944,
+      "sha256": "b7066bb01e4ebdacafe42ed50c22771b1f3545b2419e61eebfda2b9a314337bd"
+    },
+    {
+      "path": "/assets/enrollmentLogin-C5EtAxqv.js",
+      "bytes": 3081,
+      "sha256": "269f31e74f71789d65adc6997dec72686a5dfff37952b253dd4baf4546e9556c"
+    },
+    {
+      "path": "/assets/enrollmentProgress-am8Gvs1p.js",
+      "bytes": 922,
+      "sha256": "859635ef0ccf78ffb6c6791439e7508b3faf657d2454d2a3d35893442fce2315"
+    },
+    {
+      "path": "/assets/historyCheckpoint-CMstbZ84.js",
+      "bytes": 15804,
+      "sha256": "6b502ffe9ea50963e2dacfcbdcdd1e480ed07b988a43d55aece5b6d70e5b55e1"
+    },
+    {
+      "path": "/assets/historyInstall-zxP3FYiO.js",
+      "bytes": 14275,
+      "sha256": "09fe6900363a64ac4245fa61781494b22a70eea91432d87ddfd583c6d838deaa"
+    },
+    {
+      "path": "/assets/historyMaintenance-N-Olnfe5.js",
+      "bytes": 6922,
+      "sha256": "7ef85136ff036c7731e0810d5c0a7e776195dab79af01a4e06492eb5f59640f7"
+    },
+    {
+      "path": "/assets/historyOwner-CI0lFsYG.js",
+      "bytes": 4049,
+      "sha256": "70da96c5c4c9db733875ab13ef40b9bc5eaa851e74d2734dfbb68d43ae827580"
+    },
+    {
+      "path": "/assets/inboundLedger-C2I4EtPd.js",
+      "bytes": 24096,
+      "sha256": "0011920a374b504de4d28c1bb9dce897b3fada2ab1823c78cb5ce391a89b5717"
+    },
+    {
+      "path": "/assets/joinedAccount-kggnl74z.js",
+      "bytes": 39930,
+      "sha256": "9e50d12c2f8647dfe9a0b8c8c4068af6d95f256cb03eb77efc556b158640d361"
+    },
+    {
+      "path": "/assets/localBaselineAnchor-U3W72xCm.js",
+      "bytes": 2967,
+      "sha256": "a1b0f19748151e47b839f368ba33c466c6a8401baeeb82e91437dcb44110c853"
+    },
+    {
+      "path": "/assets/localBaselineRecord-Mah8Y2UA.js",
+      "bytes": 42808,
+      "sha256": "4ad5523e92ec6f8f3f791ed45e73e432110e868e01c128fba81dbaa068b0f3a5"
+    },
+    {
+      "path": "/assets/localBaselineReplay-BV4gF62p.js",
+      "bytes": 14006,
+      "sha256": "55daef0ed3087e2fe32b5e02e0a6664bacd92fcd64da4a051ed4367b7c84319d"
+    },
+    {
+      "path": "/assets/localBaselineReuse-CIli7SnL.js",
+      "bytes": 3491,
+      "sha256": "738288aa4d70849f2d37a5424756d1f934c93d7f57fa5566e9c482af9c1bfadf"
+    },
+    {
+      "path": "/assets/localBaselineShadow-g3iDkR60.js",
+      "bytes": 4139,
+      "sha256": "8a775f7ea3de65a229b2933a7828bed44785cd761962a97503ca90da7e040734"
+    },
+    {
+      "path": "/assets/localBaselineStorage-BGMQKUTy.js",
+      "bytes": 7740,
+      "sha256": "6876b865418fbb2c06968933cd61f6a3438fc79fb7423a9b8b61e819cdd38ae8"
+    },
+    {
+      "path": "/assets/localGenesis-BJgl0Yb8.js",
+      "bytes": 632934,
+      "sha256": "999e779dd0306d58775b3ebd6e2077e8aebd81456e8334796e2863ae6317750e"
+    },
+    {
+      "path": "/assets/localRetentionPlan-Dzj7nOpm.js",
+      "bytes": 7638,
+      "sha256": "a7c2e2fcc1f140f199e535facf41eb46c8d7ad1fd01b4613338465229d680162"
+    },
+    {
+      "path": "/assets/localRetentionStorage-6mE2ozze.js",
+      "bytes": 4687,
+      "sha256": "0dc257b9bfbbd74cf4fa03a39e9a9e49d8886e608ead9711459ed2c1fd2bb2d8"
+    },
+    {
+      "path": "/assets/main-BQoYMnm6.js",
+      "bytes": 328356,
+      "sha256": "1a5917a4ca5a486d896148ef9196c6dea7c52dfd55bea083bbf6b7674121c312"
+    },
+    {
+      "path": "/assets/main-Dp62mot3.css",
+      "bytes": 35703,
+      "sha256": "0d799c69112cce970898ffcac4f33531a1c5dd654433d6a5ddc7aacd3af44db4"
+    },
+    {
+      "path": "/assets/membershipConnection-CQLkk1_F.js",
+      "bytes": 31856,
+      "sha256": "79d7ecceac57928219529fdf8eb91c5c79ddace01bb46c4d515e48f7f98c4deb"
+    },
+    {
+      "path": "/assets/membershipSource-CI29LvcB.js",
+      "bytes": 15686,
+      "sha256": "e69435c562950118e59703eb82cf8d2fef4d077f748dbce0a6b7369d02334dc5"
+    },
+    {
+      "path": "/assets/promotionRecord-DxCl1fHV.js",
+      "bytes": 19521,
+      "sha256": "18f1dbfba280a24a9c6d385a948009324e3ebea0aa7bc531f9be7fd21dcc12e9"
+    },
+    {
+      "path": "/assets/retentionAttempts-DxiUJAC7.js",
+      "bytes": 1119,
+      "sha256": "f689814d18cb7d0cb6421611b45936b6286a501fc90d73bd36fccb09c4455c7a"
+    },
+    {
+      "path": "/assets/retentionCheckpoint-Wa91oidI.js",
+      "bytes": 771,
+      "sha256": "ffaca48a325dcb2abff8e9ffd6d590e798857ffdf37e72a329f23f3626dd7937"
+    },
+    {
+      "path": "/assets/rolldown-runtime-QTnfLwEv.js",
+      "bytes": 694,
+      "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75"
+    },
+    {
+      "path": "/assets/rotationObservation-D_oVdJz4.js",
+      "bytes": 7865,
+      "sha256": "e28a1fe9742a3822c2f609d5731eb0d1bfa026c7e7d88c2c1a61a99d8a21f101"
+    },
+    {
+      "path": "/assets/spoolRecord-Cb9MFmzK.js",
+      "bytes": 13034,
+      "sha256": "ebd7c737296144866367836163735154e908f558e8927e837954e4a246f50d6c"
+    },
+    {
+      "path": "/assets/storageCompatibility-Ixv843Jw.js",
+      "bytes": 1352,
+      "sha256": "6b29d99d4e67585fc583d3dcbff67c339ff76eb671db8acd87cff12550b4953d"
+    },
+    {
+      "path": "/assets/verificationMemo-BRLtMywc.js",
+      "bytes": 8603,
+      "sha256": "e7433365bb95677c600c9f6a90e9c2fc963a85c21ebf08d7da8518c5cd1ca9b1"
+    },
+    {
+      "path": "/assets/verifiedRecords-BISZfxMW.js",
+      "bytes": 10460,
+      "sha256": "803940594e948d2f0d32790645af65dffd739b34cecffdcecbb04d6f70a6854b"
+    },
+    {
+      "path": "/assets/writeSession-B8egX39j.js",
+      "bytes": 7254,
+      "sha256": "7796dbf097c0c7b6b64e705edabe633e9a41dd6abb0d710c40936f1ef42502a1"
+    },
+    {
+      "path": "/favicon.svg",
+      "bytes": 274,
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": "/icon-192.png",
+      "bytes": 1906,
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": "/icon-512.png",
+      "bytes": 6151,
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": "/icon-maskable-512.png",
+      "bytes": 3197,
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": "/index.html",
+      "bytes": 2663,
+      "sha256": "0b83ceab71813c8269afa5476a6a87c8b7ef15f6cca33efdccfccdeab1e62d8c"
+    },
+    {
+      "path": "/local.html",
+      "bytes": 1722,
+      "sha256": "6b291157a46009877f029dcf7784f59fdff597f19b6c67ad23c38a9197f040e1"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "bytes": 835,
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": "/sw.js",
+      "bytes": 11985,
+      "sha256": "e2d004bd333a498b092c4c3cda1dc16e2487c2520e5d693faa39c3f037e5676f"
+    }
+  ],
+  "deepLinks": 2
+}
