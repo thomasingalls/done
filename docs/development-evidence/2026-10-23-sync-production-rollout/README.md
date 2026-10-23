@@ -55,3 +55,14 @@ empty. The check is scoped to the signed application base before packaging;
 no old whitespace, source or test file is changed. See
 [initial packaging failure](packaging-initial-failure.json). Production
 verification is independent of this documentation packaging step.
+
+## Subsequent operator feedback — 2026-10-23
+
+The operator [reports](operator-device-feedback.json) substantially better
+catch-up and live sync on actual devices, with delay close to real time, and
+includes undo in the positive feedback. Long-backlog catch-up was not exercised
+because a suitable unsynced backlog was unavailable. Individual lock/offline
+reopening outcomes and per-device version labels were not supplied in that
+reply. This is qualitative device feedback; no measured latency or comparison
+with a WebSocket implementation is established. The earlier pending status
+above records the state at server verification.

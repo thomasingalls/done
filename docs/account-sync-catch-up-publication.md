@@ -131,3 +131,14 @@ records exact observations, limits and reproduction sources. Actual-device
 adoption, two-way typing, catch-up, undo, lock/reopen and offline reopening
 remain pending operator confirmation without clearing storage. General
 qualification remains paused and the disappearing-account report unresolved.
+
+
+### Actual-device feedback after rollout
+
+The operator subsequently reports substantially improved catch-up and live sync,
+with inter-device delay close to real time and undo included in positive feedback.
+[Verbatim feedback and limits](development-evidence/2026-10-23-sync-production-rollout/operator-device-feedback.json)
+are retained separately from the server probes. Long-backlog catch-up was not
+exercised on actual devices; individual lock/offline outcomes and per-device
+version labels were not supplied in that reply. No measured latency or WebSocket
+comparison is claimed, and qualification remains paused.
