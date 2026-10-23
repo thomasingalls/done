@@ -1,3 +1,4 @@
+import type { EnrollmentProgressListener } from '../lib/enrollmentProgress';
 /** Route hints choose a coordinator; the native owner and signed chain still choose authority. */
 import { parseMembershipInvitation } from '../../account-protocol/membershipLocator';
 import { createDeviceEnrollment } from './deviceEnrollment';
@@ -21,6 +22,7 @@ export async function createAccountEnrollment(
   login?: NetworkLogin,
   signal: AbortSignal = new AbortController().signal,
   begin?: string,
+  onProgress?: EnrollmentProgressListener,
 ) {
   if (!isConnectionSlot(slotId)) throw Error('Unknown device connection');
   signal.throwIfAborted();
@@ -43,6 +45,16 @@ export async function createAccountEnrollment(
   }
   signal.throwIfAborted();
   return continuation
-    ? createMembershipEnrollment(config, slotId, code, role, workspaceId, invitation, login, begin)
+    ? createMembershipEnrollment(
+        config,
+        slotId,
+        code,
+        role,
+        workspaceId,
+        invitation,
+        login,
+        begin,
+        onProgress,
+      )
     : createDeviceEnrollment(config, slotId, code, role, workspaceId, invitation, login);
 }

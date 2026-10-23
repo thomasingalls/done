@@ -1,0 +1,69 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "restore-early-head-capture",
+      "pattern": "history catalog captures fresh publisher",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667624291,
+      "completedAt": 1792667625119
+    },
+    {
+      "name": "omit-authority-refresh-comparison",
+      "pattern": "catalog's late publisher capture refuses authority-input",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667625477,
+      "completedAt": 1792667626060
+    },
+    {
+      "name": "restore-redundant-proof-work",
+      "pattern": "history catalog reuses|history early-epoch lookup",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667626425,
+      "completedAt": 1792667627444
+    },
+    {
+      "name": "map-old-memberships-to-current",
+      "pattern": "history complete timeline",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667627806,
+      "completedAt": 1792667628930
+    },
+    {
+      "name": "omit-fresh-snapshot-guard",
+      "pattern": "history timeline reuse retains four-attempt refusal",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667629293,
+      "completedAt": 1792667630098
+    },
+    {
+      "name": "omit-session-reauthorization",
+      "pattern": "history timeline reuse retains transaction-time",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667630449,
+      "completedAt": 1792667631240
+    },
+    {
+      "name": "omit-expiry-check",
+      "pattern": "history timeline reuse refuses a request that expires",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667631606,
+      "completedAt": 1792667632341
+    },
+    {
+      "name": "omit-request-verification",
+      "pattern": "history timeline reuse preserves",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792667632698,
+      "completedAt": 1792667634075
+    }
+  ]
+}

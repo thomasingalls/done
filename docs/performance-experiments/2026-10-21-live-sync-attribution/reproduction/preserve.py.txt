@@ -1,0 +1,61 @@
+from pathlib import Path
+import json,gzip,hashlib,shutil
+r=Path('/private/tmp/done-live-sync-attribution-20261021');dest=r/'evidence-build';dest.mkdir(exist_ok=False)
+primary=['primary-foreground-0','primary-foreground-75','primary-catchup-0','primary-catchup-75']
+diag=['diagnostic-foreground-0','diagnostic-catchup-75']
+pilots=['ordinary-foreground-0','ordinary-foreground-75']
+attempts=['seed-attempt-1','seed-attempt-2','seed-backlog-attempt-3','seed-v2-attempt-4','seed-backlog-v3-attempt-5','fix-goals-attempt-6','seed-backlog-v4-attempt-7']
+sha=lambda b:hashlib.sha256(b).hexdigest()
+manifest={};audit={'primary':{},'diagnostic':{},'privateSeedIdentities':{},'secretScan':{}}
+def put(source,target,compress=False):
+ source=Path(source);data=source.read_bytes();name=target+('.gz' if compress else '');path=dest/name;path.parent.mkdir(parents=True,exist_ok=True)
+ path.write_bytes(gzip.compress(data,mtime=0) if compress else data);manifest[name]={'sourceSha256':sha(data),'storedSha256':sha(path.read_bytes())}
+for file in ['source.json','identity.json','production-asset-agreement.json','browser-build.json','protocol.txt','fixture-attempts.txt','fixture-inspection.json','analysis.json','profiles-summary.json','run-primary.log','run-classification.json','evidence-notes.md']:
+ put(r/file,file)
+for file in ['analyze.py','profile-summary.mjs','identity.py','run-primary.py','preserve.py','browser-diagnostics.js']:
+ put(r/file,'reproduction/'+file+'.txt')
+put(r/'diagnostic-instrumentation.patch','reproduction/diagnostic-instrumentation.patch')
+put(Path('/private/tmp/done-live-sync-triage-20261021/public-build.json'),'public-build.json')
+for file in (r/'source/test/live-sync-attribution').iterdir():
+ if file.is_file():put(file,'reproduction/'+file.name+'.txt')
+for name in primary+diag+pilots+attempts:
+ path=r/name
+ if (path/'result.json').exists():put(path/'result.json','runs/'+name+'.json',True)
+ log=r/(name+'.log')
+ if log.exists():put(log,'runs/'+name+'.log',True)
+ for profile in ['receiver.cpuprofile','server.cpuprofile']:
+  if (path/profile).exists():put(path/profile,'profiles/'+name+'-'+profile,True)
+ for snapshot in ['probe','probe-final']:
+  if (path/snapshot).exists():
+   for file in (path/snapshot).iterdir():
+    if file.is_file():put(file,'reproduction/attempts/'+name+'/'+snapshot+'/'+file.name+'.txt',True)
+for name in primary+diag:
+ data=json.loads((r/name/'result.json').read_text());assert data['outcome']=='passed';assert all(data['guards'].values());assert data['fixture']['activeDayCards']==121
+ assert next(x for x in data['initialArchive']['entries'] if x['name']=='master.md')['characters']==13000
+ if data['mode']=='foreground':assert len(data['bursts'])==30 and len(data['continuous']['offers'])==120
+ else:assert len(data['concurrent']['offers'])==120 and data['caughtAt']-data['startedAt']<600000
+ field='diagnostic' if name in diag else 'primary';audit[field][name]={'outcome':data['outcome'],'guards':data['guards'],'finalExport':data['finalExport'],'initialArchive':data['initialArchive']}
+expected=json.loads((r/'primary-probe-sha256.json').read_text())
+for name in primary+diag:
+ for file,value in expected.items():
+  if file=='inspect-fixture.mjs':continue # independently executed validation tool, not the journey
+  assert sha((r/name/'probe'/file).read_bytes())==value,(name,file)
+secrets=[]
+for folder in ['caughtup-seed','caughtup-seed-v2','caughtup-seed-v3','backlog-seed-v2','backlog-seed-v3']:
+ p=r/folder/'fixture.json'
+ if not p.exists():continue
+ data=json.loads(p.read_text());audit['privateSeedIdentities'][folder]={'fixtureSha256':sha(p.read_bytes()),'aPosition':data['a'].get('position'),'bPosition':data['b'].get('position')}
+ for device in ['a','b']:
+  secrets.append(data[device]['code'].encode())
+  for c in data[device]['credentials']:
+   for key in ['privateKey','credentialId','userHandle']:
+    if c.get(key):secrets.append(c[key].encode())
+secrets=list(set(s for s in secrets if len(s)>=12))
+for file in dest.rglob('*'):
+ if not file.is_file():continue
+ content=file.read_bytes();content=gzip.decompress(content) if file.name.endswith('.gz') else content
+ assert not any(s in content for s in secrets),('Private fixture value in evidence',str(file.relative_to(dest)))
+audit['secretScan']={'distinctPrivateFixtureValuesChecked':len(secrets),'matches':0,'scope':'Exact known fixture unlock codes and credential fields. Explicit whitelist excludes state, fixture JSON, storage and keys; this is not a general secret detector.'}
+audit['exactBacklogDelta']=audit['privateSeedIdentities']['backlog-seed-v3']['aPosition']-audit['privateSeedIdentities']['caughtup-seed-v3']['aPosition'];assert audit['exactBacklogDelta']==600
+(dest/'audit.json').write_text(json.dumps(audit,indent=2)+'\n');(dest/'artifact-provenance.json').write_text(json.dumps(manifest,indent=2)+'\n')
+print(json.dumps({'files':sum(p.is_file() for p in dest.rglob('*')),'bytes':sum(p.stat().st_size for p in dest.rglob('*') if p.is_file()),'audit':audit['secretScan'],'primary':list(audit['primary']),'diagnostic':list(audit['diagnostic'])},indent=2))

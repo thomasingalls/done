@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "restore-per-request-proof",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "complete prelude authority is reused for independent discovery"
+    },
+    {
+      "control": "remove-verifier-namespace",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "proof namespaces retain two"
+    },
+    {
+      "control": "leak-early-history",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "complete prelude proof preserves detached authority"
+    },
+    {
+      "control": "omit-future-context",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "complete prelude proof keeps future fields"
+    },
+    {
+      "control": "omit-fresh-custody",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "complete prelude proof keeps future fields"
+    },
+    {
+      "control": "omit-discovery-grant-completion",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "warm complete discovery proof retains fresh request"
+    },
+    {
+      "control": "omit-discovery-final-expiry",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "warm complete discovery proof retains fresh request"
+    },
+    {
+      "control": "omit-catalog-final-expiry",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "warm complete catalog proof retains fresh request"
+    }
+  ]
+}

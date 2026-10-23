@@ -1,0 +1,103 @@
+{
+  "original-96": {
+    "pairs": [
+      {
+        "round": 0,
+        "referenceMs": 5855,
+        "candidateMs": 4871,
+        "improvementPct": 16.806148590947906
+      },
+      {
+        "round": 1,
+        "referenceMs": 5431,
+        "candidateMs": 4841,
+        "improvementPct": 10.863561038482784
+      },
+      {
+        "round": 2,
+        "referenceMs": 5449,
+        "candidateMs": 4863,
+        "improvementPct": 10.754266837951917
+      }
+    ],
+    "referenceMedianMs": 5449,
+    "candidateMedianMs": 4863,
+    "medianPairedImprovementPct": 10.863561038482784,
+    "allExportsWritingReopen": "passed",
+    "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757",
+    "batchCounts": {
+      "reference": [
+        26,
+        26,
+        26
+      ],
+      "candidate": [
+        14,
+        14,
+        14
+      ]
+    }
+  },
+  "joined-96": {
+    "pairs": [
+      {
+        "round": 0,
+        "referenceMs": 5471,
+        "candidateMs": 4887,
+        "improvementPct": 10.674465362822152
+      },
+      {
+        "round": 1,
+        "referenceMs": 5432,
+        "candidateMs": 4850,
+        "improvementPct": 10.714285714285714
+      },
+      {
+        "round": 2,
+        "referenceMs": 5447,
+        "candidateMs": 4854,
+        "improvementPct": 10.886726638516615
+      }
+    ],
+    "referenceMedianMs": 5447,
+    "candidateMedianMs": 4854,
+    "medianPairedImprovementPct": 10.714285714285714,
+    "allExportsWritingReopen": "passed",
+    "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757",
+    "batchCounts": {
+      "reference": [
+        26,
+        26,
+        26
+      ],
+      "candidate": [
+        14,
+        14,
+        14
+      ]
+    }
+  },
+  "original-0": {
+    "pairs": [
+      {
+        "round": 0,
+        "referenceMs": 3846,
+        "candidateMs": 3863,
+        "improvementPct": -0.4420176807072283
+      }
+    ],
+    "referenceMedianMs": 3846,
+    "candidateMedianMs": 3863,
+    "medianPairedImprovementPct": -0.4420176807072283,
+    "allExportsWritingReopen": "passed",
+    "exportSha256": "f4a182efd06d3140a8bf7fd1688a94b3dfa663dd0da0987a438f76727068fb4f",
+    "batchCounts": {
+      "reference": [
+        2
+      ],
+      "candidate": [
+        2
+      ]
+    }
+  }
+}

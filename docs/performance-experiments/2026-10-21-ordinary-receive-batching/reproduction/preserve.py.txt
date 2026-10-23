@@ -1,0 +1,62 @@
+from pathlib import Path
+import gzip, hashlib, json, shutil
+root=Path(__file__).parent
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+out=root/'evidence-build'
+out.mkdir(exist_ok=False)
+sha=lambda b:hashlib.sha256(b).hexdigest()
+provenance={}
+def put(src,name,compress=False):
+ data=Path(src).read_bytes();name+=('.gz' if compress else '')
+ p=out/name;p.parent.mkdir(parents=True,exist_ok=True)
+ p.write_bytes(gzip.compress(data,mtime=0) if compress else data)
+ provenance[name]=dict(sourceSha256=sha(data),storedSha256=sha(p.read_bytes()))
+for name in ['README.md','protocol.md','protocol-v1.md','starting.json','candidate-v1-source.json','identity.json','attempts.md','test-results.json','old-test-preservation.json','planning-preservation.json']:
+ put(root/name,name)
+for p in sorted(root.glob('*.log')):put(p,'checks/'+p.name,True)
+for name in ['transport-before.json','transport-after.json','transport-v2.json','transport-v3.json','units-final.json','units-v4.json']:
+ put(root/name,'checks/'+name,True)
+for name in ['analyze.py','preserve.py','identity.py','independent-acceptance.py','run-matched.py','check-old-tests.mjs','build-records.py']:
+ src=root/'final-comparison'/name if name in ['analyze.py','independent-acceptance.py','run-matched.py'] else root/name
+ put(src,'reproduction/'+name+'.txt')
+for p in (root/'candidate-v4/test/live-sync-attribution').iterdir():
+ if p.is_file():put(p,'reproduction/'+p.name+'.txt')
+for name in ['browser-diagnostics.js']:
+ put(Path('/private/tmp/done-live-sync-attribution-20261021')/name,'reproduction/'+name+'.txt')
+for version in ['candidate-v1','candidate-v2','candidate-v3','candidate-final','candidate-v4']:
+ for file in ['src/crdt/accountReceive.ts','src/crdt/receivePageTransport.ts','src/crdt/receiveSelection.ts','src/account/privateDeliveryHttp.ts']:
+  p=root/version/file
+  if p.exists():put(p,'prototypes/'+version+'/'+file+'.txt',True)
+for p in (root/'candidate-v2-tests').iterdir():
+ if p.is_file():put(p,'prototypes/candidate-v2-tests/'+p.name+'.txt',True)
+for name in ['baseline-75-1','pilot-v1-75','pilot-v2-75','pilot-v3-75','primary-75-01-baseline','primary-75-01-candidate-final','primary-75-02-candidate-final']:
+ put(root/name/'result.json','runs/exploratory/'+name+'.json',True)
+ put(root/(name+'.log'),'runs/exploratory/'+name+'.log',True)
+put(root/'primary-75-02-baseline/STOP.txt','runs/exploratory/STOP.txt')
+for name in ['matched-plan.json','matched-runner.json','matched-console.log']:
+ put(root/name,'runs/exploratory/'+name,True)
+plan=json.loads((root/'final-comparison/matched-plan.json').read_text())
+for run in plan:
+ name=run['name']
+ put(root/'final-comparison'/name/'result.json','runs/primary/'+name+'.json',True)
+ put(root/'final-comparison'/(name+'.log'),'runs/primary/'+name+'.log',True)
+ put(root/'final-comparison'/name/'runner.json','runs/primary/'+name+'-runner.json',True)
+for name in ['matched-plan.json','matched-runner.json','matched-console.log','acceptance.json','analysis.json']:
+ put(root/'final-comparison'/name,name)
+# A whitelist excludes all fixture JSON, browser storage states, API databases and credentials.
+secrets=[]
+for name in ['caughtup-seed-v3','backlog-seed-v3']:
+ p=Path('/private/tmp/done-live-sync-attribution-20261021')/name/'fixture.json';d=json.loads(p.read_text())
+ for device in ['a','b']:
+  secrets.append(d[device]['code'].encode())
+  for c in d[device]['credentials']:
+   for key in ['privateKey','credentialId','userHandle']:
+    if c.get(key):secrets.append(c[key].encode())
+secrets=list(set(s for s in secrets if len(s)>=12))
+for p in out.rglob('*'):
+ if p.is_file():
+  data=p.read_bytes();data=gzip.decompress(data) if p.name.endswith('.gz') else data
+  assert not any(s in data for s in secrets),str(p.relative_to(out))
+(out/'privacy-audit.json').write_text(json.dumps(dict(knownPrivateValuesChecked=len(secrets),matches=0,scope='Exact known synthetic fixture codes and credential fields only; explicit artifact whitelist excludes storage/keys. This is not a general secret detector.'),indent=2)+'\n')
+(out/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+print(json.dumps(dict(files=len(provenance),sourceBytes=sum((out/p).stat().st_size for p in provenance),secretMatches=0)))

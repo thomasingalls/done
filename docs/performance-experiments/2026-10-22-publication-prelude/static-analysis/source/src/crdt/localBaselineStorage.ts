@@ -1,0 +1,508 @@
+/** Private non-deleting carrier primitive; NOT an application installer or a full Account reader.
+ * Caller must own the slot exclusively, authenticate the full census/candidate, and fence admission
+ * and authority changes until native settlement. The explicit Account experiment supplies that fence; ordinary application builds refuse this carrier. */
+import { concat, hex, type Bytes } from './custodyCrypto';
+import { contentTransaction } from './contentDatabase';
+import { equalStoredRecord, type DiskState } from './contentCompaction';
+import {
+  CONTENT_STORES,
+  corrupt,
+  counterPayload,
+  equalCounter,
+  parseCounter,
+  parseStoredRecord,
+  recordStore,
+  reserveCounter,
+  sameSpoolWitness,
+  type ContentCounter,
+  type ContentIdentity,
+  type StoredRecord,
+} from './contentRecord';
+import {
+  baselineAuthenticationPayload,
+  decodeLocalBaseline,
+  type BaselineAnchor,
+} from './localBaselineRecord';
+import {
+  BASELINE_CARRIER,
+  ERA_BASELINE_CARRIER,
+  baselineVersion,
+  BASELINE_CHUNK_BYTES,
+  baselineChunkKey,
+  baselineChunkPrefix,
+  baselineCounterPayload,
+  parseBaselineCounter,
+  type BaselineCounter,
+  type BaselinePointer,
+} from './localBaselineAnchor';
+import { sameBytes, eraseVerified } from './verifiedRecords';
+import type { AuthenticatedLocalBaseline } from './localBaselineReplay';
+import type { ContentCrypto } from './contentStore';
+import type { SessionTask } from './writeSession';
+
+export interface BaselineStorageOwner {
+  allowReduced?: boolean;
+  db: IDBDatabase;
+  identity: ContentIdentity;
+  generation: number;
+  intent: string;
+  crypt: Pick<ContentCrypto, 'open' | 'seal' | 'sign' | 'verify'>;
+  /** Complete fresh authority check, not an old grant. */
+  assertCurrent(): Promise<void>;
+  /** Synchronous lifetime/activity/journal check under an already-held admission fence. */
+  checkCommit(): void;
+}
+const hash = async (task: SessionTask, bytes: Bytes) =>
+  hex(new Uint8Array(await task.wait(() => crypto.subtle.digest('SHA-256', bytes))));
+const scopeEqual = (a: ContentIdentity, b: ContentIdentity) =>
+  a.slotId === b.slotId &&
+  a.principalId === b.principalId &&
+  a.workspaceId === b.workspaceId &&
+  a.storeId === b.storeId &&
+  a.rootId === b.rootId;
+async function authenticateCandidate(
+  task: SessionTask,
+  owner: Pick<BaselineStorageOwner, 'identity' | 'generation' | 'intent'> & {
+    crypt: Pick<BaselineStorageOwner['crypt'], 'verify'>;
+  },
+  baseline: AuthenticatedLocalBaseline,
+  anchor: BaselineAnchor,
+  generation = owner.generation,
+) {
+  const parsed = task.step(() => decodeLocalBaseline(baseline.payload));
+  try {
+    if (
+      !scopeEqual(parsed.identity, owner.identity) ||
+      parsed.generation !== generation ||
+      parsed.cut.intent !== owner.intent ||
+      parsed.revision !== anchor.revision ||
+      anchor.hash !== (await hash(task, baseline.payload)) ||
+      baseline.mac.length !== 32
+    )
+      return corrupt('Baseline scope or anchor differs.');
+    const message = baselineAuthenticationPayload(baseline.payload);
+    try {
+      if (!(await task.wait(() => owner.crypt.verify(task, message, baseline.mac))))
+        return corrupt('Baseline authentication failed.');
+    } finally {
+      message.fill(0);
+    }
+    return parsed;
+  } catch (cause) {
+    eraseVerified(parsed);
+    throw cause;
+  }
+}
+/** Compare every key and sealed byte in the same transaction as the transition.
+ * Replacement removes only superseded encrypted metadata chunks, never history rows. */
+function exchange(
+  task: SessionTask,
+  owner: BaselineStorageOwner,
+  expected: DiskState,
+  next: ContentCounter | BaselineCounter,
+  chunks: readonly StoredRecord[] = [],
+  previous?: { counter: BaselineCounter; chunks: readonly StoredRecord[] },
+): Promise<void> {
+  return task.wait(() =>
+    contentTransaction<void>(
+      owner.db,
+      task,
+      [...CONTENT_STORES],
+      'readwrite',
+      (tx, _result, guard) => {
+        let remaining = CONTENT_STORES.length;
+        const finish = () => {
+          if (--remaining) return;
+          owner.checkCommit();
+          if (chunks.length) {
+            chunks.forEach((row, i) => tx.objectStore('meta').put(row, baselineChunkKey(i)));
+            for (let i = chunks.length; i < (previous?.chunks.length ?? 0); i++)
+              tx.objectStore('meta').delete(baselineChunkKey(i));
+          }
+          tx.objectStore('meta').put(next, 'counter');
+        };
+        for (const name of CONTENT_STORES) {
+          const store = tx.objectStore(name),
+            values = store.getAll(),
+            keys = store.getAllKeys();
+          keys.onsuccess = () =>
+            guard(() => {
+              if (keys.result.length !== values.result.length) return corrupt();
+              if (name === 'meta') {
+                const at = keys.result.indexOf('counter');
+                if (at < 0 || keys.result.length !== 1 + (previous?.chunks.length ?? 0))
+                  return corrupt('Baseline metadata changed.');
+                if (previous) {
+                  const current = parseBaselineCounter(
+                    values.result[at],
+                    owner.identity,
+                    owner.intent,
+                  );
+                  if (
+                    !sameBytes(
+                      baselineCounterPayload(owner.identity, current),
+                      baselineCounterPayload(owner.identity, previous.counter),
+                    ) ||
+                    !sameBytes(current.mac, previous.counter.mac)
+                  )
+                    return corrupt('Baseline counter changed.');
+                  for (let i = 0; i < previous.chunks.length; i++) {
+                    const index = keys.result.findIndex(
+                      (k) => indexedDB.cmp(k, baselineChunkKey(i)) === 0,
+                    );
+                    if (
+                      index < 0 ||
+                      !equalStoredRecord(
+                        previous.chunks[i]!,
+                        parseStoredRecord(values.result[index]),
+                      )
+                    )
+                      return corrupt('Baseline chunks changed.');
+                  }
+                } else {
+                  const current = parseCounter(values.result[at], owner.identity, owner.intent);
+                  if (!expected.counter || !equalCounter(owner.identity, current, expected.counter))
+                    return corrupt('Baseline counter changed.');
+                }
+              } else {
+                const retained = expected.rows
+                  .filter((r) => r.store === name)
+                  .sort((a, b) => Number(a.key) - Number(b.key));
+                if (retained.length !== keys.result.length)
+                  return corrupt('Baseline census changed.');
+                retained.forEach((r, i) => {
+                  if (
+                    r.key !== keys.result[i] ||
+                    !equalStoredRecord(
+                      parseStoredRecord(r.value),
+                      parseStoredRecord(values.result[i]),
+                    )
+                  )
+                    return corrupt('Baseline census changed.');
+                });
+              }
+              finish();
+            });
+        }
+      },
+      'strict',
+    ),
+  );
+}
+
+/** First anchor or exact-predecessor replacement. Complete history stays byte-for-byte intact.
+ * Reservations retain the old representation (v2 or v3); a later failure only burns invocations.
+ * A replacement requires the independently authenticated previous anchor. Lost replies must be
+ * inspected, never retried with a newly invented predecessor. */
+export async function anchorLocalBaseline(
+  task: SessionTask,
+  ownerInput: BaselineStorageOwner,
+  censusInput: DiskState,
+  input: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
+  previousAnchor?: BaselineAnchor,
+): Promise<BaselineAnchor> {
+  const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
+  const census = task.step(() => structuredClone(censusInput));
+  const baseline = task.step(() => ({
+    payload: input.baseline.payload.slice(),
+    mac: input.baseline.mac.slice(),
+  }));
+  const anchor = { ...input.anchor };
+  previousAnchor = previousAnchor && { ...previousAnchor };
+  let packed: Bytes | undefined;
+  let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
+  let previous: Awaited<ReturnType<typeof readEncryptedBaseline>> | undefined;
+  try {
+    const counter = parseCounter(census.counter, owner.identity, owner.intent);
+    if (counter.v !== 2 || counter.active_gen !== owner.generation)
+      return corrupt('Account generation required.');
+    if (previousAnchor) {
+      previous = await readEncryptedBaseline(task, owner);
+      if (previous.counter.v === 5)
+        return corrupt('Reduced baseline requires the retention writer.');
+      const { baseline: _pointer, ...allocation } = previous.counter;
+      if (
+        previous.anchor.revision !== previousAnchor.revision ||
+        previous.anchor.hash !== previousAnchor.hash ||
+        !equalCounter(owner.identity, { ...allocation, v: 2 }, counter)
+      )
+        return corrupt('Replacement predecessor changed.');
+    }
+    if (
+      !previous &&
+      !(await task.wait(() =>
+        owner.crypt.verify(task, counterPayload(owner.identity, counter), counter.mac),
+      ))
+    )
+      return corrupt('Counter authentication failed.');
+    const b = (decoded = await authenticateCandidate(task, owner, baseline, anchor));
+    if (
+      b.revision !== (previous?.anchor.revision ?? 0) + 1 ||
+      b.predecessor !== (previous?.anchor.hash ?? '0'.repeat(64)) ||
+      b.cut.nextSequence !== counter.next_seq ||
+      !sameSpoolWitness(b.cut.witness, counter.spool) ||
+      JSON.stringify(b.cut.reserved) !==
+        JSON.stringify(
+          Object.entries(counter.reserved)
+            .map(([g, n]) => [Number(g), n])
+            .sort((a, b) => a[0]! - b[0]!),
+        )
+    )
+      return corrupt('Baseline is not the verified current cut.');
+    const oldEra = previous?.counter.baseline.journalEra;
+    if (
+      oldEra &&
+      (!b.journalEra ||
+        (b.journalEra.current === oldEra.current
+          ? b.journalEra.previous !== oldEra.previous || b.journalEra.revision !== oldEra.revision
+          : b.journalEra.previous !== oldEra.current || b.journalEra.revision !== b.revision))
+    )
+      return corrupt('Journal era predecessor differs.');
+    if (
+      !oldEra &&
+      b.journalEra &&
+      (b.journalEra.previous !== null || b.journalEra.revision !== b.revision)
+    )
+      return corrupt('First journal era has a predecessor.');
+    // A detached authenticated census is required, including physical placement and exact cut.
+    const seen = new Set<number>();
+    let last = 0;
+    for (const row of census.rows) {
+      const r = parseStoredRecord(row.value);
+      if (
+        row.key !== r.seq ||
+        row.store !== recordStore(r.kind) ||
+        seen.has(r.seq) ||
+        r.seq >= counter.next_seq ||
+        r.gen > counter.active_gen ||
+        !counter.reserved[String(r.gen)]
+      )
+        return corrupt();
+      seen.add(r.seq);
+      last = Math.max(last, r.seq);
+    }
+    if (last !== b.cut.sequence) return corrupt('Baseline census cut differs.');
+    packed = concat(baseline.mac, baseline.payload);
+    const p: BaselinePointer = {
+      format: b.journalEra ? ERA_BASELINE_CARRIER : BASELINE_CARRIER,
+      ...(b.journalEra ? { journalEra: b.journalEra } : {}),
+      history: 'complete',
+      revision: anchor.revision,
+      commitment: hex(baseline.mac),
+      generation: owner.generation,
+      firstSequence: counter.next_seq,
+      chunks: Math.ceil(packed.length / BASELINE_CHUNK_BYTES),
+      bytes: packed.length,
+    };
+    const stored = (c: ContentCounter): ContentCounter | BaselineCounter =>
+      previous
+        ? ({
+            ...c,
+            v: baselineVersion(previous.counter.baseline),
+            baseline: previous.counter.baseline,
+          } as BaselineCounter)
+        : c;
+    const payload = (c: ContentCounter) => {
+      const value = stored(c);
+      return 'baseline' in value
+        ? baselineCounterPayload(owner.identity, value)
+        : counterPayload(owner.identity, value);
+    };
+    let reserved = reserveCounter(counter, p.chunks, owner.generation);
+    reserved = {
+      ...reserved,
+      mac: await task.wait(() => owner.crypt.sign(task, payload(reserved))),
+    };
+    await task.wait(owner.assertCurrent);
+    await exchange(task, owner, census, stored(reserved), [], previous);
+    if (previous) previous.counter = stored(reserved) as BaselineCounter;
+    const chunks: StoredRecord[] = [];
+    for (let i = 0; i < p.chunks; i++) {
+      const plain = concat(
+        baselineChunkPrefix(owner.identity, p, i),
+        packed.subarray(i * BASELINE_CHUNK_BYTES, (i + 1) * BASELINE_CHUNK_BYTES),
+      );
+      try {
+        const header = {
+          v: 1 as const,
+          gen: owner.generation,
+          seq: p.firstSequence + i,
+          kind: 'heads' as const,
+        };
+        const sealed = parseStoredRecord(
+          await task.wait(() => owner.crypt.seal(task, header, plain)),
+        );
+        if (
+          sealed.seq !== header.seq ||
+          sealed.gen !== header.gen ||
+          sealed.kind !== header.kind ||
+          sealed.ct.length !== plain.length + 16
+        )
+          return corrupt('Baseline sealing returned another record.');
+        chunks.push(sealed);
+      } finally {
+        plain.fill(0);
+      }
+    }
+    let next = parseBaselineCounter(
+      { ...reserved, v: baselineVersion(p), baseline: p },
+      owner.identity,
+      owner.intent,
+    );
+    next = {
+      ...next,
+      mac: await task.wait(() =>
+        owner.crypt.sign(task, baselineCounterPayload(owner.identity, next)),
+      ),
+    };
+    await task.wait(owner.assertCurrent);
+    await exchange(task, owner, { ...census, counter: reserved }, next, chunks, previous);
+    return anchor;
+  } finally {
+    baseline.payload.fill(0);
+    baseline.mac.fill(0);
+    packed?.fill(0);
+    eraseVerified(decoded);
+    eraseVerified(previous);
+  }
+}
+
+/** Reads the independent pointer and encrypted chunks from one native snapshot. This authenticates
+ * the carrier only; callers still must replay its protocol/content evidence before using its state. */
+export async function readEncryptedBaseline(
+  task: SessionTask,
+  ownerInput: BaselineStorageOwner,
+): Promise<{
+  baseline: AuthenticatedLocalBaseline;
+  anchor: BaselineAnchor;
+  counter: BaselineCounter;
+  chunks: StoredRecord[];
+}> {
+  const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
+  await task.wait(owner.assertCurrent);
+  const snapshot = await task.wait(() =>
+    contentTransaction<{ counter: BaselineCounter; chunks: StoredRecord[] }>(
+      owner.db,
+      task,
+      ['meta'],
+      'readonly',
+      (tx, result, guard) => {
+        const store = tx.objectStore('meta'),
+          count = store.count(),
+          request = store.get('counter');
+        request.onsuccess = () =>
+          guard(() => {
+            const counter = parseBaselineCounter(
+                request.result,
+                owner.identity,
+                owner.intent,
+                owner.allowReduced,
+              ),
+              p = counter.baseline;
+            if (count.result !== p.chunks + 1)
+              return corrupt('Baseline chunks missing or unknown.');
+            const chunks: StoredRecord[] = [];
+            result({ counter, chunks });
+            for (let i = 0; i < p.chunks; i++) {
+              const request = store.get(baselineChunkKey(i));
+              request.onsuccess = () =>
+                guard(() => {
+                  const prefix = baselineChunkPrefix(owner.identity, p, i),
+                    length = Math.min(BASELINE_CHUNK_BYTES, p.bytes - i * BASELINE_CHUNK_BYTES);
+                  // Bound ciphertext before the closed parser makes its detached copy.
+                  if (
+                    !(request.result?.ct instanceof Uint8Array) ||
+                    request.result.ct.length !== prefix.length + length + 16
+                  )
+                    return corrupt('Baseline chunk size differs.');
+                  chunks[i] = parseStoredRecord(request.result);
+                });
+            }
+          });
+      },
+    ),
+  );
+  return openEncryptedBaselineSnapshot(task, owner, snapshot);
+}
+/** Read-only authentication of detached metadata. Also used by the non-writing retention planner. */
+export async function openEncryptedBaselineSnapshot(
+  task: SessionTask,
+  ownerInput: Omit<BaselineStorageOwner, 'db' | 'crypt'> & {
+    crypt: Pick<BaselineStorageOwner['crypt'], 'open' | 'verify'>;
+  },
+  input: { counter: BaselineCounter; chunks: StoredRecord[] },
+) {
+  const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
+  const snapshot = {
+    counter: parseBaselineCounter(input.counter, owner.identity, owner.intent, owner.allowReduced),
+    chunks: input.chunks.map(parseStoredRecord),
+  };
+  if (snapshot.chunks.length !== snapshot.counter.baseline.chunks)
+    return corrupt('Baseline chunk inventory differs.');
+  const { counter, chunks } = snapshot,
+    p = counter.baseline;
+  if (
+    counter.active_gen !== owner.generation ||
+    !(await task.wait(() =>
+      owner.crypt.verify(task, baselineCounterPayload(owner.identity, counter), counter.mac),
+    ))
+  )
+    return corrupt('Baseline counter authentication failed.');
+  const packed = new Uint8Array(p.bytes);
+  let baseline: AuthenticatedLocalBaseline | undefined,
+    delivered = false;
+  let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
+  try {
+    for (let i = 0; i < chunks.length; i++) {
+      const row = chunks[i]!,
+        prefix = baselineChunkPrefix(owner.identity, p, i),
+        length = Math.min(BASELINE_CHUNK_BYTES, p.bytes - i * BASELINE_CHUNK_BYTES);
+      if (
+        row.seq !== p.firstSequence + i ||
+        row.gen !== p.generation ||
+        row.kind !== 'heads' ||
+        row.ct.length !== prefix.length + length + 16
+      )
+        return corrupt('Baseline chunk allocation differs.');
+      const plain = await task.wait(() => owner.crypt.open(task, row));
+      try {
+        if (
+          plain.length !== prefix.length + length ||
+          !sameBytes(plain.subarray(0, prefix.length), prefix)
+        )
+          return corrupt('Baseline chunk scope differs.');
+        packed.set(plain.subarray(prefix.length), i * BASELINE_CHUNK_BYTES);
+      } finally {
+        plain.fill(0);
+      }
+    }
+    baseline = { mac: packed.slice(0, 32), payload: packed.slice(32) };
+    // The expected commitment comes from the separately authenticated counter, not this blob.
+    // Its keyed MAC pins the exact plaintext without publishing an unkeyed dictionary oracle.
+    if (hex(baseline.mac) !== p.commitment) return corrupt('Baseline commitment differs.');
+    const anchor = { revision: p.revision, hash: await hash(task, baseline.payload) };
+    const b = (decoded = await authenticateCandidate(task, owner, baseline, anchor, p.generation));
+    if (
+      JSON.stringify(b.journalEra ?? null) !== JSON.stringify(p.journalEra ?? null) ||
+      b.cut.nextSequence !== p.firstSequence ||
+      b.cut.witness.events > counter.spool.events ||
+      (b.cut.witness.events === counter.spool.events &&
+        !sameSpoolWitness(b.cut.witness, counter.spool)) ||
+      b.cut.reserved.some(
+        ([g, n]) => (counter.reserved[String(g)] ?? -1) < n + (g === p.generation ? p.chunks : 0),
+      )
+    )
+      return corrupt('Baseline allocation or witness regressed.');
+    await task.wait(owner.assertCurrent);
+    task.step(owner.checkCommit);
+    delivered = true;
+    return { baseline, anchor, counter, chunks };
+  } finally {
+    packed.fill(0);
+    eraseVerified(decoded);
+    if (!delivered) {
+      baseline?.payload.fill(0);
+      baseline?.mac.fill(0);
+    }
+  }
+}

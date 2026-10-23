@@ -1,0 +1,190 @@
+[
+  {
+    "mode": "regular",
+    "databaseSha256": "7df466c14a985a2fb640e27a0b33e4bef8c78aeef85834bb2a33b763ba612542",
+    "expected": "ed7086e064d001b1af033f66a03b948b268f81fac6c6fb7c67220e9025b663d6",
+    "actual": "ed7086e064d001b1af033f66a03b948b268f81fac6c6fb7c67220e9025b663d6",
+    "stores": [
+      {
+        "name": "content",
+        "expected": 48,
+        "actual": 48,
+        "exact": true
+      },
+      {
+        "name": "heads",
+        "expected": 40,
+        "actual": 40,
+        "exact": true
+      },
+      {
+        "name": "meta",
+        "expected": 1,
+        "actual": 1,
+        "exact": true
+      },
+      {
+        "name": "outbound",
+        "expected": 3,
+        "actual": 3,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "regular",
+    "databaseSha256": "587297f2e23a6402f4e948291802ec5ebb1696d998a17fdad327a4f02d63e464",
+    "expected": "74f2189a6dec00052ebe041d55ee1c62622c07f92fe4054ab902eb2b5579a008",
+    "actual": "74f2189a6dec00052ebe041d55ee1c62622c07f92fe4054ab902eb2b5579a008",
+    "stores": [
+      {
+        "name": "outbox",
+        "expected": 0,
+        "actual": 0,
+        "exact": true
+      },
+      {
+        "name": "slots",
+        "expected": 1,
+        "actual": 1,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "regular",
+    "databaseSha256": "835f25c5cc42be1ee837c00aa254c9ecc62525340f652846912cf74067064fc2",
+    "expected": "b59f95b5b14966db9003bb4fc6a267c6baf68c7ed97e4fa4fd70241dacab0ea6",
+    "actual": "b59f95b5b14966db9003bb4fc6a267c6baf68c7ed97e4fa4fd70241dacab0ea6",
+    "stores": [
+      {
+        "name": "entries",
+        "expected": 4,
+        "actual": 4,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "regular",
+    "databaseSha256": "2049f544e861a3aa9765b824db90dd426ef44e82c41397289a3a5041ffa3e3aa",
+    "expected": "f9d8638536715771e836429bd328ead9eadc9acd1c384de542d22e4dedf86846",
+    "actual": "f9d8638536715771e836429bd328ead9eadc9acd1c384de542d22e4dedf86846",
+    "stores": [
+      {
+        "name": "attempt",
+        "expected": 0,
+        "actual": 0,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "regular",
+    "databaseSha256": "9719ca4a5a5ba24cea94c69328d6002b2f93849e86ab22129cef3ae39d8ad092",
+    "expected": "d5e01f8c8f7fb88f938a983b8df5805c756e02c1bdffba7bc678b7fd679ada01",
+    "actual": "d5e01f8c8f7fb88f938a983b8df5805c756e02c1bdffba7bc678b7fd679ada01",
+    "stores": [
+      {
+        "name": "slots",
+        "expected": 1,
+        "actual": 1,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "persistent",
+    "databaseSha256": "7df466c14a985a2fb640e27a0b33e4bef8c78aeef85834bb2a33b763ba612542",
+    "expected": "ed7086e064d001b1af033f66a03b948b268f81fac6c6fb7c67220e9025b663d6",
+    "actual": "ed7086e064d001b1af033f66a03b948b268f81fac6c6fb7c67220e9025b663d6",
+    "stores": [
+      {
+        "name": "content",
+        "expected": 48,
+        "actual": 48,
+        "exact": true
+      },
+      {
+        "name": "heads",
+        "expected": 40,
+        "actual": 40,
+        "exact": true
+      },
+      {
+        "name": "meta",
+        "expected": 1,
+        "actual": 1,
+        "exact": true
+      },
+      {
+        "name": "outbound",
+        "expected": 3,
+        "actual": 3,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "persistent",
+    "databaseSha256": "587297f2e23a6402f4e948291802ec5ebb1696d998a17fdad327a4f02d63e464",
+    "expected": "74f2189a6dec00052ebe041d55ee1c62622c07f92fe4054ab902eb2b5579a008",
+    "actual": "74f2189a6dec00052ebe041d55ee1c62622c07f92fe4054ab902eb2b5579a008",
+    "stores": [
+      {
+        "name": "outbox",
+        "expected": 0,
+        "actual": 0,
+        "exact": true
+      },
+      {
+        "name": "slots",
+        "expected": 1,
+        "actual": 1,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "persistent",
+    "databaseSha256": "835f25c5cc42be1ee837c00aa254c9ecc62525340f652846912cf74067064fc2",
+    "expected": "b59f95b5b14966db9003bb4fc6a267c6baf68c7ed97e4fa4fd70241dacab0ea6",
+    "actual": "30820be175cb84d8a2564ca413421496cbbdc163d23b69d06278348003827f34",
+    "stores": [
+      {
+        "name": "entries",
+        "expected": 4,
+        "actual": 0,
+        "exact": false
+      }
+    ]
+  },
+  {
+    "mode": "persistent",
+    "databaseSha256": "2049f544e861a3aa9765b824db90dd426ef44e82c41397289a3a5041ffa3e3aa",
+    "expected": "f9d8638536715771e836429bd328ead9eadc9acd1c384de542d22e4dedf86846",
+    "actual": "f9d8638536715771e836429bd328ead9eadc9acd1c384de542d22e4dedf86846",
+    "stores": [
+      {
+        "name": "attempt",
+        "expected": 0,
+        "actual": 0,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "mode": "persistent",
+    "databaseSha256": "9719ca4a5a5ba24cea94c69328d6002b2f93849e86ab22129cef3ae39d8ad092",
+    "expected": "d5e01f8c8f7fb88f938a983b8df5805c756e02c1bdffba7bc678b7fd679ada01",
+    "actual": "d5e01f8c8f7fb88f938a983b8df5805c756e02c1bdffba7bc678b7fd679ada01",
+    "stores": [
+      {
+        "name": "slots",
+        "expected": 1,
+        "actual": 1,
+        "exact": true
+      }
+    ]
+  }
+]

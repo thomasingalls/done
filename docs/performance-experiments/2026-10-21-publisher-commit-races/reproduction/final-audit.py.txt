@@ -1,0 +1,59 @@
+from pathlib import Path
+import json,hashlib,gzip,re,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-publisher-commit-races';sha=lambda b:hashlib.sha256(b).hexdigest();load=lambda p:json.loads(p.read_text());start=load(r/'starting.json');base=start['base'];prior=start['priorTree'];pgit=['git','--git-dir=/private/tmp/done-publisher-isolation-20261021/patch05-v2-index.git','--work-tree='+str(repo)]
+def run(args):return subprocess.check_output(args,cwd=repo)
+def old(f):return run(pgit+['show',prior+':'+f])
+assert run(['git','rev-parse','HEAD']).decode().strip()==base and run(['git','diff','--cached','--name-only'])==b''
+for row in start['priorPatches']:assert sha(Path(row['patch']).read_bytes())==row['sha256']
+priorPackets={}
+for name in ['2026-10-21-live-sync-attribution','2026-10-21-ordinary-receive-batching','2026-10-21-sync-capacity','2026-10-21-sync-continuation','2026-10-21-publisher-isolation']:
+ root=repo/'docs/performance-experiments'/name;lines=(root/'SHA256SUMS').read_text().splitlines()
+ for line in lines:
+  h,file=line.split('  ',1);assert sha((root/file).read_bytes())==h,(name,file)
+ priorPackets[name]=len(lines)
+append=['docs/completed.md','docs/decisions.md','docs/performance.md','docs/account-receive-transport.md']
+for f in append:assert (repo/f).read_bytes().startswith(old(f)),f
+for f in ['docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:assert (repo/f).read_bytes()==old(f),f
+allowed=set(append+['account-service/delivery.ts','account-service/publisherTips.ts','test/account-service-delivery/controls.test.mjs','test/account-service-delivery/publisher-isolation.test.mjs','docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json'])
+changed=set(run(pgit+['diff','--name-only',prior,'--']).decode().splitlines());assert changed==allowed,(changed-allowed,allowed-changed)
+priorPaths=set(run(pgit+['ls-tree','-r','--name-only',prior]).decode().splitlines());new=set(run(['git','ls-files','--others','--exclude-standard']).decode().splitlines())-priorPaths
+assert 'test/account-service-delivery/publisher-commit-races.test.mjs' in new
+assert all(f=='test/account-service-delivery/publisher-commit-races.test.mjs' or f.startswith('docs/performance-experiments/2026-10-21-publisher-commit-races/') for f in new)
+assert (repo/'account-service/delivery.ts').read_bytes()==old('account-service/delivery.ts').replace(b"      db.exec('COMMIT');\n      hook('after-commit', 'decide-submission');",b"      db.exec('COMMIT');\n      if (proposed) reuse?.tips?.committed(s);\n      hook('after-commit', 'decide-submission');")
+frozen=load(r/'source-identity.json');assert len(frozen['candidate']['sha256'])==803
+for f,h in frozen['candidate']['sha256'].items():assert sha((repo/f).read_bytes())==h,f
+assert frozen['candidate']['changedProductionFiles']==['account-service/delivery.ts','account-service/publisherTips.ts']
+for f in ['test/account-service-delivery/publisher-commit-races.test.mjs','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-delivery/controls.test.mjs']:assert (r/'source-candidate'/f).read_bytes()==(repo/f).read_bytes()
+assert (r/'publisherTips-before.ts.txt').read_bytes()==old('account-service/publisherTips.ts')
+assert (r/'delivery-before.ts.txt').read_bytes()==old('account-service/delivery.ts')
+assert load(r/'old-test-review.json')['status']=='passed'
+assert sum(x['assertionASTsExact'] for x in load(r/'old-test-review.json')['rows'])==50
+census=load(repo/'docs/account-crypto/census.json');pc=json.loads(old('docs/account-crypto/census.json'));assert {**census,'sources':None}=={**pc,'sources':None}
+assert load(r/'census-review.json')['changedSourcePins']==['account-service/delivery.ts','account-service/publisherTips.ts']
+planning=load(r/'planning-audit.json');assert planning['everyPriorObligationExact'] and planning['constructionContractsAndStatusesExact']==97 and planning['obligations']==880 and planning['unresolved']==336 and planning['aggregateReleaseRemainsBlocked']
+for name,expected in [('affected-tests',127),('planning-tests',109)]:
+ log=(r/(name+'.log')).read_text();counts={k:int(re.search(r'ℹ '+k+r' (\d+)',log)[1]) for k in ['tests','pass','fail','cancelled','skipped','todo']};assert counts['tests']==counts['pass']==expected and all(counts[k]==0 for k in ['fail','cancelled','skipped','todo'])
+assert 'the verified pre-append prefix must survive its losing read' in (r/'regression-before.log').read_text()
+assert 'ℹ pass 31' in (r/'publisher-tests.log').read_text() and 'ℹ fail 2' in (r/'publisher-tests.log').read_text()
+omissions=load(r/'omission-controls.json');assert len(omissions)==11 and all(x['returncode']==1 and x['anchorCount']==1 and x['intendedAssertionFailure'] for x in omissions)
+checks=load(r/'check-receipts.json');assert len(checks)==19 and all(x['exitCode']==0 for x in checks)
+native=load(r/'native-summary.json');assert native['rawRuns']==16 and native['failedRuns']==11 and not native['originalColdAcceptanceCleared']
+assert all(x['outcome']=='failed' for x in native['runs'] if x['folder']=='matched')
+warm=[x for x in native['runs'] if x['folder']=='warm-matched-v2' and x['arm']=='candidate'];assert len(warm)==2 and all(x['outcome']=='passed' and x['verifiedPositions']==1536 and x['predeclaredInteractionGuardPassed'] and x['writes']['first']['offered']==x['writes']['first']['verified'] and x['writes']['other']['offered']==x['writes']['other']['verified'] and x['warmOutsideMeasurement'] for x in warm)
+assert load(r/'final-native-runner.json')[0]['startedAt']>=load(r/'browser-runner.json')[-1]['completedAt']
+trace=load(r/'trace-baseline/0-trace-service/tip-trace.json');assert trace['overflow']==0 and len(trace['rows'])==3413
+cold=0;unack=0
+for folder in ['trace-baseline','matched','warm-matched','own-only','other-peer','warm-matched-v2','own-only-v2']:
+ for row in load(r/folder/'cold-audit.json'):
+  for account in row['accounts']:assert account['seedAndAllStoredWiresExact'];unack+=account['unacknowledgedStored']
+  cold+=1
+assert cold==16
+browser=load(r/'browser-summary.json');assert len(browser['rows'])==3 and browser['allDataGuardsPassed'] and browser['identicalFinalExports'] and browser['explicitRemoteReceiverControlContinued']
+assert all(x['exitCode']==0 and x['cwd']==x['serviceSource']==str(r/'source-candidate') for x in load(r/'browser-runner.json'))
+forced=[x for x in browser['rows'] if x['forced']];assert len(forced)==1 and forced[0]['injectedStateChangeReplies']==2 and forced[0]['continuation']['autonomous'] and not forced[0]['continuation']['manualRetryOrReload'] and forced[0]['continuation']['refusedSubmitBodyUnavailableToCDP']
+provenance=load(packet/'artifact-provenance.json')
+for f,ident in provenance.items():
+ b=(packet/f).read_bytes();assert sha(b)==ident['storedSha256'],f;raw=gzip.decompress(b) if f.endswith('.gz') else b;assert sha(raw)==ident['sourceSha256'],f
+privacy=load(packet/'privacy-audit.json');assert privacy['knownExactValuesChecked']==35 and privacy['matches']==0
+result={'status':'passed','baseCommit':base,'priorTree':prior,'immutablePriorPatchesExact':5,'priorPacketChecksumCounts':priorPackets,'newRuntimeChanges':['account-service/delivery.ts (one post-COMMIT notification)','account-service/publisherTips.ts (private commit markers)'],'sourceFilesPerFrozenArm':803,'exactPriorClientBuildFiles':110,'newRegressionCases':13,'affectedCasesPassed':127,'planningCasesPassed':109,'effectiveOmissionControls':11,'oldAssertionASTsExact':50,'allOldTestRegistrationAndOptionsExact':True,'rawNativeRuns':16,'rawNativeFailuresRetained':11,'potentiallyContaminatedWarmBlockRetained':True,'cleanWarmCandidatesPassed':2,'warmPositionsPerCandidate':1536,'cleanWarmHotWriteP95Ms':[x['writes']['first']['offeredToVerifiedP95Ms'] for x in warm],'originalColdAcceptanceRemainsOpen':True,'coldStoreWireAndProofAudits':cold,'unacknowledgedStoredWrites':unack,'browserJourneysPassed':3,'allFullDataGuardsPassed':True,'knownReadAndIdenticalSubmitContinued':True,'CDPSubmitRefusalBodyMissingnessRetained':True,'naturalBrowserStateChangeExposures':browser['naturalStateChangeExposure'],'priorObligationsExact':879,'obligations':880,'unresolved':336,'constructionContractsAndStatusesExact':97,'aggregateReleaseRemainsBlocked':True,'cryptoDomainSitesAndClassificationsExact':True,'appendOnlyRecordsAndOtherSeatProgressPreserved':True,'deferredFormattingExact':True,'provenanceEntriesVerified':len(provenance),'knownExactPrivateValuesChecked':35,'matches':0,'realIndexEmpty':True,'scope':'Bounded known-append marker repair, warm concurrency and functional continuation. Original cold mixed acceptance remains failed; no cold capacity, safe policy, phone/Firefox/WAN, production adoption or generalized qualification claim. No stage/sign/commit/push/preview restart/merge/deployment.'}
+(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

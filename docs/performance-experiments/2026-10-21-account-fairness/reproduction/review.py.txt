@@ -1,0 +1,31 @@
+from pathlib import Path
+import json,hashlib,collections
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();a=load(r/'analysis.json');plan=load(r/'run-plan.json');receipts=load(r/'run-receipts.json');frozen=load(r/'measurement-identity.json');rows=[]
+assert len(plan)==len(receipts)==len(a['runs'])==6
+for prev,nxt in zip(receipts,receipts[1:]):assert prev['completedAt']<=nxt['startedAt']
+for path,h in frozen['sourceInputs'].items():assert sha(r/'source'/path)==h
+for path,h in frozen['harness'].items():assert sha(r/'source/test/account-fairness-lab'/path)==h
+for i,(c,reported,receipt)in enumerate(zip(plan,a['runs'],receipts)):
+ d=load(r/c['name']/'result.json');assert receipt['name']==reported['name']==c['name'];assert d['condition']==c['condition'];assert(receipt['exitCode']==0)==(d['outcome']=='passed');row={'name':c['name'],'outcome':d['outcome']}
+ if d['outcome']=='passed':
+  assert all(d['guards'].values())and d['all120KeysReachedPeer'];assert d['selected']==([]if c['condition']=='B'else['H1','M1']if c['condition']=='S'else['H1','H2','H3','H4','H5','M1']);assert len(d['actorLabels'])==10 and len(set(x['pid']for x in d['roots']))==4
+  for b in d['roots']:assert sha(Path(b['executable']))==b['sha256']
+  roles={k:d['probes'][d['actorLabels'].index(k)]for k in ['Q0','Q1']};base=[d['before'][j]['lengths'][-1]['length']for j in range(2)];values=[[],[]]
+  for n,offer in enumerate(d['offers'],1):
+   assert offer['scheduledAt']==d['startedAt']+(n-1)*500
+   for j,label in enumerate(['Q0','Q1']):
+    candidates=[x['at']for x in roles[label]['lengths']if x['at']>=offer['at']-5 and x['length']>=base[j]+n];assert candidates;at=min(candidates);values[j].append(at-offer['at']);assert at==reported['keys'][n-1]['localAt'if j==0 else'peerAt']
+  assert len(values[0])==len(values[1])==120
+  for vals,key in zip(values,['localMs','peerMs']):assert sorted(vals)[(95*len(vals)+99)//100-1]==reported['all'][key]['p95']
+  typed=[x for x in roles['Q0']['events']if x['kind']=='beforeinput'and d['startedAt']-2<=x['at']<=d['keysObservedBy']];assert len(typed)==120 and all(x['trusted']and x['focused']and x['visible']=='visible'for x in typed)
+  cgroup=load(r/c['name']/'container-identity.json');h=cgroup['HostConfig'];assert h['NanoCpus']==1000000000 and h['Memory']==h['MemorySwap']==1073741824 and h['PidsLimit']==128 and h['ReadonlyRootfs'];assert cgroup['node']=='v24.18.0';assert all(not m['RW']for m in cgroup['Mounts']if m['Destination'].startswith('/app/'));cg=d['metrics']['cgroupAfter'];assert cg['memory.max']=='1073741824'and cg['memory.swap.max']=='0'and cg['pids.max']=='128';assert all(int(line.split()[1])==0 for line in cg['memory.events'].splitlines()if line.split()[0]in['oom','oom_kill','max']);assert not d.get('resourceStop')
+  row.update({'keysIndependentlyReconstructed':120,'tenProfilesFourRoots':True,'genuineFocusedInput':True,'originalResourceEnvelopeVerified':True})
+ rows.append(row)
+rechecked=[]
+for block,base,indices in [(1,0,[1,2]),(2,5,[4,3])]:
+ b=a['runs'][base]
+ for j in indices:
+  c=a['runs'][j];complete=all(x['outcome']=='passed'and x.get('all',{}).get('peerMs',{}).get('n')==120 for x in [b,c]);checks={}
+  if complete:checks={'localTyping':c['all']['localMs']['p95']<=max(16,b['all']['localMs']['p95']+3),'peerFairness':c['all']['peerMs']['p95']<=max(2500,b['all']['peerMs']['p95']*1.1+20),'replayDeadline':all(x['outcome']=='passed'and x['completedAt']-x['startedAt']<=600000 for x in c['catchups']),'keysDeliveryDeadline':all(x['peerMs']<=30000 for x in c['keys'])}
+  rechecked.append({'block':block,'baseline':b['name'],'loaded':c['name'],'complete':complete,'checks':checks,'passed':complete and all(checks.values())})
+assert rechecked==a['pairs'];allFunctional=all(x['outcome']=='passed'for x in rows);result={'status':'passed','allSixDeclaredRunsPresentAndSerial':True,'allFunctionalJourneys':allFunctional,'rows':rows,'allMetricAndGateReconstructionExact':True,'fairnessAcceptance':a['fairnessAcceptance'],'allFairnessMissesRetained':True,'policy':'unchanged16/64','scope':'Independent read-only reconstruction; a correctly measured fairness failure is not an audit failure.'};(r/'evidence-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

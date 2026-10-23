@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "filesScannedAfterDecompression": 113,
+  "knownPrivateValues": 36,
+  "matches": 0,
+  "excluded": [
+    "raw enrollment fixture",
+    "SQLite databases",
+    "persistent browser profiles",
+    "storageState dumps",
+    "codes and credential keys",
+    "generated error-context snapshots"
+  ],
+  "scope": "Exact known-value scan, not a universal DLP guarantee."
+}

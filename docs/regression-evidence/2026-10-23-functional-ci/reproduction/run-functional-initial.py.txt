@@ -1,0 +1,28 @@
+from pathlib import Path
+import os,subprocess,json,time,shlex
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');pnpm=Path('/Users/thomasingalls/Library/pnpm/store/v11/links/@/pnpm/11.20.0/4b307cd3780af0bd745f9a323a340e5219ddf7c61e4d68ae013e09fd8073aacd/node_modules/pnpm/bin/pnpm.mjs');node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+bin=r/'bin';bin.mkdir(exist_ok=True);p=bin/'pnpm';p.write_text('#!/bin/sh\nexec '+shlex.quote(node)+' '+shlex.quote(str(pnpm))+' "$@"\n');p.chmod(0o755)
+env={**os.environ,'PATH':str(bin)+':'+str(Path(node).parent)+':'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+steps=[];lines=(repo/'.github/workflows/ci.yml').read_text().splitlines();name=None
+for i,line in enumerate(lines):
+ if line=='  quality:':break
+ if line.startswith('      - name: '):name=line.split(': ',1)[1]
+ if line.startswith('        run: '):
+  cmd=line.split('run: ',1)[1]
+  if cmd=='>-':
+   parts=[]
+   for nxt in lines[i+1:]:
+    if not nxt.startswith('          '):break
+    parts.append(nxt.strip())
+   cmd=' '.join(parts)
+  steps.append({'name':name,'command':cmd})
+assert len(steps)==17,len(steps)
+# Run the full unit suite first, then every other routine CI command, preserving command text.
+steps.sort(key=lambda x:x['name']!='Run all unit regression tests')
+(r/'functional-plan.json').write_text(json.dumps({'node':subprocess.check_output([node,'--version'],text=True).strip(),'pnpm':subprocess.check_output([str(p),'--version'],cwd=repo,env=env,text=True).strip(),'platform':os.uname().sysname,'steps':steps,'allOriginalRoutineCommandsExact':True,'manualQualityExcluded':True},indent=2)+'\n')
+receipts=[]
+for i,item in enumerate(steps,1):
+ log=r/('functional-'+str(i).zfill(2)+'.log');t=time.time_ns();print('START',i,item['name'],flush=True)
+ with log.open('w')as out:process=subprocess.run(['/bin/zsh','-c',item['command']],cwd=repo,env=env,stdout=out,stderr=subprocess.STDOUT)
+ row={**item,'log':log.name,'exitCode':process.returncode,'startedAtNs':t,'completedAtNs':time.time_ns()};receipts.append(row);(r/'functional-receipts.json').write_text(json.dumps(receipts,indent=2)+'\n');print('END',i,process.returncode,item['name'],flush=True)
+print('COMPLETE',sum(x['exitCode']!=0 for x in receipts),'failed steps',flush=True)

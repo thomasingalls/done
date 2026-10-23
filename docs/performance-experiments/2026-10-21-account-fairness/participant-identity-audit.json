@@ -1,0 +1,174 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "name": "seed",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    },
+    {
+      "name": "1-B",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    },
+    {
+      "name": "2-S",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    },
+    {
+      "name": "3-U",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    },
+    {
+      "name": "4-U",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    },
+    {
+      "name": "5-S",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    },
+    {
+      "name": "6-B",
+      "participants": [
+        {
+          "label": "H",
+          "accountSha256": "cc16d110982a56605d8bd257296514af063dde89243aa7391083b35791cf0b04",
+          "workspaceSha256": "e00b5a7d022c8ccb27f287612e70a7dac86abc350a57fe31492ed008553a08ab",
+          "principalSha256": "8161bd5c83689f2dd3e5072550dee15e86b161e8ce7c6e17898ef1f56c7c96db"
+        },
+        {
+          "label": "M",
+          "accountSha256": "6bbbe2ad293900c654e7bc16fbfc94709009b2708e5679f9e6a1731f1c64de5a",
+          "workspaceSha256": "2d99552f55af10409b40d907c774bd4268582b7d6b40ff4cb89395a557e4b56e",
+          "principalSha256": "6f3c82b7460a2b035370e6db8d442aa9dd6661bb822e6505bd581eef5f5bfc66"
+        },
+        {
+          "label": "Q",
+          "accountSha256": "436287a143ecc9f2ba00f44f7698b232b60ed8318dd88e808cf8082c1ca4af42",
+          "workspaceSha256": "1e058a6e2687f7d60822cd4a248d02be6055849dea69abd0de41b01e89815097",
+          "principalSha256": "37393f38cefd84b934c4f4657a2bb98ebbdef3503b75de6c453590bd8c50781d"
+        }
+      ],
+      "threeDistinctPrincipalsAccountsAndWorkspaces": true
+    }
+  ],
+  "scope": "Additional read-only account/principal/workspace binding audit; public identities hashed, no new authorization or source change."
+}

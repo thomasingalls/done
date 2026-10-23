@@ -1,0 +1,14 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');base=Path('/private/tmp/done-word-comparison-20261021/source-R');original=json.loads(Path('/private/tmp/done-word-comparison-20261021/source-identity.json').read_text())['R']['sha256'];sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();identity={}
+for arm in ['R','C']:
+ dest=r/('source-'+arm);shutil.copytree(base,dest,symlinks=True);shutil.rmtree(dest/'test/live-sync-attribution');shutil.rmtree(dest/'dist');shutil.copytree(repo/'test',dest/'test',dirs_exist_ok=True)
+ for f in original:shutil.copyfile(repo/f,dest/f)
+ if arm=='R':
+  shutil.copyfile(r/'scoped-http-before.ts.txt',dest/'account-service/scoped-http.ts');shutil.copyfile('/private/tmp/done-word-comparison-20261021/verifiedRecords-before.ts.txt',dest/'src/crdt/verifiedRecords.ts')
+ else:shutil.copyfile(repo/'account-service/batchReadAdmission.ts',dest/'account-service/batchReadAdmission.ts')
+ # Baseline imports no new scheduling module; dynamic-only new helper tests will be added in a separate candidate check.
+ if arm=='R':shutil.copyfile(r/'inbound-batch-budget-before.mjs.txt',dest/'test/account-sessions/inbound-batch-budget.test.mjs')
+ names=list(original)+(['account-service/batchReadAdmission.ts']if arm=='C'else[]);identity[arm]={'sha256':{f:sha(dest/f)for f in names},'workingNumericPolicy':'16/64','testSha256':{str(p.relative_to(dest)):sha(p)for p in(dest/'test').rglob('*')if p.is_file()}}
+ assert 'sessionPerSecond: 16,'in(dest/'account-service/requestBudget.ts').read_text();assert 'processPerSecond: 64,'in(dest/'account-service/requestBudget.ts').read_text()
+(r/'source-identity.json').write_text(json.dumps(identity,indent=2)+'\n');print('Fresh uninstrumented D16/64 R/C sources; baseline old HTTPfixture retained')

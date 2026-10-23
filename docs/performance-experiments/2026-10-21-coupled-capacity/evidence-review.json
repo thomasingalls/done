@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "independentOriginalStoredWireAudits": 4,
+  "distinctPublishersPerRun": 7,
+  "totalPublisherAudits": 28,
+  "allOfferedWritesVerified": true,
+  "noStoredUnacknowledgedWrites": true,
+  "nativeGates": {
+    "complete": true,
+    "absoluteInteraction": true,
+    "relativeFairness": true,
+    "cpu": true,
+    "rss": true,
+    "loop": true,
+    "constraints": true
+  },
+  "eightClientFunctionalJourneys": true,
+  "sixUninstrumentedPlusTwoDiagnostic": true,
+  "rawDOMSecondImplementation": {
+    "ordinary-D": {
+      "localP95": 14.39990234375,
+      "peerP95": 32750.800048828125
+    },
+    "ordinary-B": {
+      "localP95": 10.39990234375,
+      "peerP95": 23453.300048828125
+    },
+    "pressure1-D": {
+      "localP95": 9.5,
+      "peerP95": 139890.7998046875
+    },
+    "pressure1-B": {
+      "localP95": 16.800048828125,
+      "peerP95": 24662.599853515625
+    },
+    "pressure2-B": {
+      "localP95": 9.199951171875,
+      "peerP95": 28467.10009765625
+    },
+    "pressure2-D": {
+      "localP95": 12,
+      "peerP95": 145855.30004882812
+    },
+    "diagnostic-D": {
+      "localP95": 8.199951171875,
+      "peerP95": 139246.5
+    },
+    "diagnostic-B": {
+      "localP95": 7.60009765625,
+      "peerP95": 29385.60009765625
+    }
+  },
+  "typingGatesPassed": false,
+  "diagnosticsExcludedTimingCredit": true,
+  "noRecordedBenchmarkOverlap": true,
+  "runtimeDefaultsUnchanged": "16/64",
+  "generalQualificationPaused": true,
+  "scope": "Evidence integrity; this does not turn missed review gates into passes or confer production capacity/release qualification."
+}

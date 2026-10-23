@@ -1,0 +1,51 @@
+from pathlib import Path
+r=Path(__file__).parent;p=Path('/private/tmp/done-coupled-capacity-20261021');f=r/'source-B/test/live-sync-attribution/live-sync.spec.ts';s=(p/'source-B/test/live-sync-attribution/live-sync.spec.ts').read_text();head=s[:s.index("test('released live sync")];head=head.replace("test, expect, type Page", "test, expect, chromium, type Page");head+="import { installDispatchProbe, browserIdentity, clockBrackets } from './dispatch-probe';\n"
+restore=s[s.index('    const seedFolder='):s.index("    if(mode==='fix-goals')")]
+restore=restore[restore.index("    const seed=JSON.parse"):].replace("join(root,seedFolder,'fixture.json')","join(root,'backlog-seed-v3','fixture.json')")
+restore=restore.replace("const c=await browser.newContext", "const owner=index===1&&isolated?await chromium.launch():browser;if(index===1&&isolated)owned.push(owner);roots.push(await browserIdentity(owner));\n      const c=await owner.newContext").replace("if(result.diagnostic)await c.addInitScript({path:join(root,'browser-diagnostics.js')});", "await c.addInitScript(installDispatchProbe,{fault:false});")
+main="""
+test('dispatch controls with real catch-up and unchanged data guards', async ({browser})=>{
+  const isolated=process.env.DISPATCH_ISOLATED==='1',focused=process.env.DISPATCH_FOCUSED==='1',target=process.env.DISPATCH_TARGET!;
+  const result:any={mode:'catchup',delay:0,diagnostic:false,outcome:'starting',source:process.env.SYNC_REVISION,isolated,focused,target};
+  const network:any[]=[],tasks:Promise<any>[]=[],contexts:BrowserContext[]=[],owned:any[]=[],roots:any[]=[];
+  const state=join(out,'state');
+  try {
+"""+restore+"""
+    result.roots=roots;expect(roots[0].pid===roots[1].pid).toBe(!isolated);
+    const fixtureArchive=await exported(a);expect(fixtureArchive['master.md']!.length).toBeGreaterThanOrEqual(12000);result.initialArchive=archiveIdentity(fixtureArchive);
+    result.fixture={activeDayCards:await a.locator('.day-panel[data-active="true"] .card').count(),visibleGoalsDomCharacters:(await a.locator('.goals .cm-content').innerText()).length};
+    if(focused)await add(b,'Receiver send sentinel');
+    const prepare=async()=>{if(focused)await a.bringToFront();if(target==='plain')await a.evaluate(()=>(window as any).__dispatch.plain());else await focus(a);};
+    if(focused)await prepare();
+    result.clocks=await Promise.all(pages.map(clockBrackets));
+    result.before=await Promise.all(pages.map(p=>p.evaluate(()=>(window as any).__syncProbe.read())));
+    result.hostBefore={load:loadavg(),freeBytes:freemem()};setPhase('catchup');result.startedAt=Date.now();for(const c of contexts)await c.setOffline(false);
+    const writing=(async()=>{
+      if(!focused)await prepare();result.concurrent={startedAt:Date.now(),offers:[]};
+      for(let i=0;i<120;i++){const scheduledAt=result.concurrent.startedAt+i*150;await sleep(Math.max(0,scheduledAt-Date.now()));const at=Date.now();await a.keyboard.press('w');result.concurrent.offers.push({scheduledAt,at,returnedAt:Date.now()});}
+      await a.keyboard.press('Escape');
+    })();
+    if(!focused)await add(b,'Receiver send sentinel');
+    await expect(card(b)).toContainText(seed.expected,{timeout:600000});result.caughtAt=Date.now();console.log('catchup milliseconds',result.caughtAt-result.startedAt);await writing;
+    if(target==='editor')await expect(card(b)).toContainText('w'.repeat(120),{timeout:30000});else expect(await a.locator('#dispatch-control').inputValue()).toBe('w'.repeat(120));
+    await expect(a.locator('.shell')).toContainText('Receiver send sentinel',{timeout:30000});
+    result.completedAt=Date.now();result.hostAfter={load:loadavg(),freeBytes:freemem()};result.browsers=await Promise.all(pages.map(p=>p.evaluate(()=>(window as any).__syncProbe.read())));result.dispatch=await Promise.all(pages.map(p=>p.evaluate(()=>(window as any).__dispatch.read())));
+    const events=result.dispatch[0].events.filter((e:any)=>e.kind==='beforeinput'&&e.target===target.replace('editor','editor')&&e.at>=result.concurrent.startedAt-2&&e.at<=result.completedAt);expect(events.length).toBe(120);if(focused)expect(events.every((e:any)=>e.focused&&e.visible==='visible'&&e.active===target)).toBe(true);
+    if(target==='plain')await a.evaluate(()=>(window as any).__dispatch.remove());
+    setPhase('guardrails');const before=await exported(a);expect(await exported(b)).toEqual(before);result.export=archiveIdentity(before);
+    const peerBefore=await card(b,1).locator('.card-surface').innerText();await focus(b,1);await b.keyboard.insertText(' Guard-B;');await expect(card(a,1)).toContainText('Guard-B;',{timeout:30000});
+    await b.keyboard.press('ControlOrMeta+z');await expect(card(b,1)).not.toContainText('Guard-B;');await expect(card(a,1)).not.toContainText('Guard-B;',{timeout:30000});expect(await card(b,1).locator('.card-surface').innerText()).toBe(peerBefore);
+    await b.keyboard.press('ControlOrMeta+Shift+z');await expect(card(a,1)).toContainText('Guard-B;',{timeout:30000});await b.keyboard.press('Escape');const final=await exported(a);expect(await exported(b)).toEqual(final);result.finalExport=archiveIdentity(final);
+    await lock(b);await b.goto('/');await contexts[1]!.setOffline(true);const reopenedAt=Date.now();await openSaved(b,seed.b.code,true);await day(b,seed.date);result.offlineReopenMs=Date.now()-reopenedAt;expect(await exported(b)).toEqual(final);
+    result.guards={bothWay:true,undoRedo:true,wholeExportEquality:true,lockedOfflineReopen:true};result.all120EditorKeysReachedPeer=target==='editor';result.outcome='passed';
+  }catch(error){result.outcome='failed';result.failedAt=Date.now();result.error=String(error);throw error;}
+  finally{
+    await Promise.allSettled(tasks);if(result.outcome==='failed')result.partialDispatch=await Promise.all(contexts.map(c=>c.pages()[0]?.evaluate(()=>(window as any).__dispatch?.read()).catch(()=>null)));
+    attributeRequests();result.network=network;result.proxy=requests;result.frames=frames;result.pressure=true;result.driver=(globalThis as any).__dispatchNodeSnapshot?.();
+    for(const c of contexts)await c.close().catch(()=>{});for(const b of owned)await b.close().catch(()=>{});await stop();writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2));
+  }
+});
+"""
+f.write_text(head+main)
+config=r/'source-B/test/live-sync-attribution/playwright.config.ts';text=config.read_text().replace("testMatch: 'live-sync.spec.ts'", "testMatch: process.env.DISPATCH_STATIC==='1'?'dispatch-static.spec.ts':'live-sync.spec.ts'");config.write_text(text)
+print('Temporary harness prepared')

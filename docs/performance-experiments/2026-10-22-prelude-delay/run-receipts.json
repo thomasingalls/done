@@ -1,0 +1,30 @@
+[
+  {
+    "name": "2-I",
+    "variant": "I",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792703624326,
+    "completedAt": 1792704092841,
+    "exitCode": 0
+  },
+  {
+    "name": "3-I",
+    "variant": "I",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792704092926,
+    "completedAt": 1792704438321,
+    "exitCode": 0
+  }
+]

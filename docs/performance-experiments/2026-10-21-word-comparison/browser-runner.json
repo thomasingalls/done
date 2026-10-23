@@ -1,0 +1,138 @@
+[
+  {
+    "name": "1-R-catchup",
+    "arm": "R",
+    "mode": "catchup",
+    "pressure": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792610866571,
+    "completedAt": 1792610918945,
+    "exitCode": 0
+  },
+  {
+    "name": "2-C-catchup",
+    "arm": "C",
+    "mode": "catchup",
+    "pressure": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610918947,
+    "completedAt": 1792610990153,
+    "exitCode": 0
+  },
+  {
+    "name": "3-C-catchup",
+    "arm": "C",
+    "mode": "catchup",
+    "pressure": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610990155,
+    "completedAt": 1792611057334,
+    "exitCode": 0
+  },
+  {
+    "name": "4-R-catchup",
+    "arm": "R",
+    "mode": "catchup",
+    "pressure": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792611057336,
+    "completedAt": 1792611106824,
+    "exitCode": 0
+  },
+  {
+    "name": "5-R-catchup",
+    "arm": "R",
+    "mode": "catchup",
+    "pressure": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792611106827,
+    "completedAt": 1792611156599,
+    "exitCode": 0
+  },
+  {
+    "name": "6-C-catchup",
+    "arm": "C",
+    "mode": "catchup",
+    "pressure": true,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792611156602,
+    "completedAt": 1792611224441,
+    "exitCode": 0
+  },
+  {
+    "name": "7-R-foreground",
+    "arm": "R",
+    "mode": "foreground",
+    "pressure": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792611224443,
+    "completedAt": 1792611280183,
+    "exitCode": 0
+  },
+  {
+    "name": "8-C-foreground",
+    "arm": "C",
+    "mode": "foreground",
+    "pressure": false,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792611280186,
+    "completedAt": 1792611337249,
+    "exitCode": 0
+  }
+]

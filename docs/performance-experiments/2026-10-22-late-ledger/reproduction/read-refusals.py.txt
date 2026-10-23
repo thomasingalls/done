@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,collections
+r=Path(__file__).parent;rows=[]
+for run in json.loads((r/'run-plan.json').read_text()):
+ x=json.loads((r/run['name']/'result.json').read_text());native=[e for t in x['traces']for e in t['events']];bylabel={}
+ for label in ['Q0','Q1','M1','H1','H2','H3','H4','H5']:
+  ns=[n for n in x['network']if n['label']==label and n['phase']=='measured'];fails=[]
+  for q in ns:
+   if q.get('status',0)<400:continue
+   candidates=[e for e in native if e.get('bodySha256')==q['bodySha256']and e['path']==q['path']and e.get('status')==q['status']]
+   reasons=[e.get('reason',e.get('refusal','closed-reason-unavailable'))for e in candidates]
+   body=q.get('reason',q.get('refusal','body-unavailable'))
+   if q['path'].startswith('/account/delivery/read-v2')and q.get('status')==409:assert len(candidates)==1 and isinstance(candidates[0].get('reason'),str),'read409 native reason missing'
+   fails.append({'path':q['path'],'status':q['status'],'browserReason':body,'nativeReasons':reasons,'atMs':q['at']-x['startedAt'],'requestMs':q.get('headersAt',q['at'])-q['at'],'bodySha256':q['bodySha256']})
+  bylabel[label]={'requests':len(ns),'failedRequests':fails}
+ rows.append({'name':run['name'],'variant':run['variant'],'labels':bylabel})
+(r/'read-refusals.json').write_text(json.dumps({'status':'passed','scope':'actual HTTP errors during original measured load; native JSON reason joined by exact request hash when available','runs':rows},indent=2)+'\n');print(json.dumps([{'name':x['name'],'Q0':x['labels']['Q0']['failedRequests'],'Q1':x['labels']['Q1']['failedRequests']}for x in rows],indent=2))

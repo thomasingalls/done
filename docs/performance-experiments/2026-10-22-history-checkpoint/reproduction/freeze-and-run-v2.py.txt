@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,hashlib,subprocess,os,time
+r=Path(__file__).parent;s=r/'source';repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();old=json.loads(Path('/private/tmp/done-discovery-dependency-20261022/measurement-identity.json').read_text())
+assert len(json.loads((r/'challenge.json').read_text())['controls'])==8
+assert json.loads((r/'affected-comparison.json').read_text())['newFailures']==0
+assert 'pass 17' in(r/'new-regressions.log').read_text()
+assert (r/'types-final.log').read_bytes()==b''
+ref=old['candidateInputs'];changes=[f for f,h in ref.items()if sha(s/f)!=h];assert changes==['account-service/historyCheckpoint.ts'],changes
+for f in ref:assert sha(s/f)==sha(repo/f),f
+for f,h in old['clientFiles'].items():assert sha(s/'dist'/f)==h
+for p in(r/'reference-account-service').glob('*.ts'):assert sha(p)==ref['account-service/'+p.name]
+# Numeric-only progress improves observability of the original, unchanged deadlines.
+p=s/'test/account-continuation-lab/continuation.spec.ts';text=p.read_text();anchor="  result.probesAtDeadline=await Promise.all"
+assert anchor in text;text=text.replace(anchor,"  console.log('Original quiet delivery deadline',result.originalDeliveryPassed,Date.now());\n"+anchor);p.write_text(text) if "console.log('Original quiet delivery deadline'" not in p.read_text() else None
+plan=[{'name':'fixed-v2/'+str(i+1)+'-'+v,'variant':v}for i,v in enumerate(['R','C','C','R'])];(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'playwright-storage-source.txt',r/'freeze-and-run-v2.py',r/'analyze.py',r/'review-evidence.py',r/'audit-native.mjs',r/'check-mounts.mjs',*list((s/'test/account-continuation-lab').glob('*'))]
+identity={'baseTree16':'c20eb095bc8ae081d750f90f731d172ec99ec167','baseCommit':old['baseCommit'],'referenceInputs':ref,'candidateInputs':{f:sha(s/f)for f in ref},'onlyChangedRuntimeFiles':changes,'clientFiles':old['clientFiles'],'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'newCasesSourceSha256':sha(s/'test/account-ceremony/content-transfer.test.mjs'),'oldCasePrefixSha256':sha(r/'before/content-transfer.test.mjs'),'oldCasePrefixByteExact':(s/'test/account-ceremony/content-transfer.test.mjs').read_bytes().startswith((r/'before/content-transfer.test.mjs').read_bytes()),'privateFixtureSha256':old['priorPrivateFixtureSha256'],'containerImage':json.loads((r/'container-image.json').read_text())['Id'],'runPlan':plan}
+(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for c in plan:
+ for f,h in identity['files'].items():assert sha(r/f)==h
+ for f,h in identity['candidateInputs'].items():assert sha(s/f)==h
+ for f,h in identity['clientFiles'].items():assert sha(s/'dist'/f)==h
+ out=r/c['name'];out.mkdir(mode=0o700);env={**os.environ,'FAIR_OUT':str(out),'FAIR_VARIANT':c['variant'],'FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as f:p=subprocess.run(cmd,cwd=s,env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)

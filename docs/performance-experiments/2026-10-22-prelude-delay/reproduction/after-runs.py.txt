@@ -1,0 +1,14 @@
+from pathlib import Path
+import os,json,time,subprocess
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+while True:
+ if(r/'run-receipts.json').exists():
+  a=json.loads((r/'run-receipts.json').read_text());assert all(v['exitCode']==0 for v in a),'Preserve failed journey; do not replace'
+  if len(a)==2:break
+ assert 'Traceback'not in(r/'run.log').read_text(),'Preserve failed machinery'
+ time.sleep(3)
+for label,cmd in [('analysis',['python3','analyze.py']),('review',['python3','review-evidence.py']),('native-audit',['node','audit-native.mjs']),('header-audit',['node','audit-header.mjs']),('trace-analysis',['python3','analyze-trace.py']),('trace-review',['python3','review-trace.py']),('sensitivity',['python3','sensitivity.py']),('trace-sensitivity',['python3','trace-sensitivity.py']),('cleanup',['python3','cleanup.py'])]:
+ with(r/(label+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(label,p.returncode,flush=True)
+ if p.returncode:raise Exception('Preserve and investigate '+label)
+(r/'audits-complete.json').write_text(json.dumps({'status':'passed','all9Checks':True},indent=2)+'\n')

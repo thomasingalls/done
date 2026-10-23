@@ -1,0 +1,19 @@
+from pathlib import Path
+import subprocess,os,json,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};node=env['PATH'].split(':')[0]+'/node';rows=[]
+def run(name,args,cwd=s):
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(args,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':args,'exitCode':p.returncode});(r/'check-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True);return p.returncode
+# Preserve the failed harness prototypes; none counted as intended baseline counterexamples.
+(r/'harness-prototype-review.json').write_text(json.dumps({'initialEightIntegrationCases':'invalid: new connection lacked explicit enableMembershipStore, so rejected first request before reuse boundary','secondPrototype':'invalid independent oracle result access and oracle crypto counted as native work','expandedPrototype':'continued raw first proof authority is partly immutable; successful catalog read persists empty catalog; direct same-owner SQL bypassed publisher-tip external-change observer','corrections':'enable required connection opt-in; check response.history; measure only native call excluding independent oracle/writer; mutate detached hit; compare preserved warm catalog bytes; inject external storage damage via independent native connection','files':['new-before.log','new-after.log','corrected-new-after.log','corrected2-new-after.log','new-expanded-after.log'],'security':'no product guards or old assertions changed to accommodate prototypes'},indent=2)+'\n')
+for f in ['prelude-regressions.mjs','namespace-regressions.mjs']:
+ assert run('format-'+f,['node',str(s/'node_modules/oxfmt/bin/oxfmt'),'--config','/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json','--write',str(r/f)])==0
+for f,part in [('test/account-ceremony/content-transfer.test.mjs','prelude-regressions.mjs'),('test/account-sessions/inbound-authority-cache.test.mjs','namespace-regressions.mjs')]:
+ (s/f).write_text((r/'before'/f).read_text()+(r/part).read_text())
+# Exact corrected tests run against coherent current source with all four runtime files reverted.
+b=r/'reference-tests';shutil.copytree(s,b,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(b/'node_modules').symlink_to(s/'node_modules',target_is_directory=True)
+for f in ['delivery.ts','inboundAuthorityReuse.ts','membershipLocator.ts','historyCheckpoint.ts']:shutil.copy2(r/'before/account-service'/f,b/'account-service'/f)
+pat='complete prelude authority|proof namespaces retain two|proof namespaces keep a failed'
+assert run('corrected-baseline-counterexamples',['node','--test','--test-reporter=spec','--test-name-pattern='+pat,'test/account-ceremony/content-transfer.test.mjs','test/account-sessions/inbound-authority-cache.test.mjs'],b)!=0
+assert run('new-formatted',['node','--test','--test-reporter=spec','--test-name-pattern=complete prelude|complete discovery|complete catalog|proof namespaces','test/account-ceremony/content-transfer.test.mjs','test/account-sessions/inbound-authority-cache.test.mjs'])==0
+assert run('focused-cache-races',['node','--test','--test-reporter=spec','test/account-sessions/inbound-authority-cache.test.mjs','test/account-sessions/inbound-authority-reuse.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs'])==0

@@ -1,0 +1,21 @@
+{
+  "base": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+  "newUnitCases": 26,
+  "phase1FocusedCasesPassed": 56,
+  "phase2FocusedCasesPassed": 31,
+  "newBrowserExecutionsPassed": 12,
+  "existingBrowserCasesPassed": 13,
+  "adapterRegistryCasesPassed": 44,
+  "baselineBrowserFailures": 2,
+  "build": "passed",
+  "typecheck": "passed",
+  "changedFileLintAndFormat": "passed",
+  "inventory": "passed",
+  "cryptoCensus": "passed; only two reviewed source hashes changed",
+  "planning": "matched; blocked 863 obligations / 320 unresolved",
+  "releaseSelection": "refuses",
+  "productionChanges": false,
+  "previewChanges": false,
+  "generalQualification": "paused",
+  "realProviderInteraction": "not part of this repair"
+}

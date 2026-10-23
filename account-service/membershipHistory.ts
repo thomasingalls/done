@@ -17,14 +17,12 @@ import {
 } from '../account-protocol/membership.ts';
 import { verifyMembershipDelivery } from '../account-protocol/membershipDelivery.ts';
 import {
-  verifyCertificationHistory,
-  verifyEarlyHistory,
   extendMembershipHistory,
   historyMembership,
   historyPublisher,
 } from '../account-protocol/admissionHistory.ts';
 import {
-  verifyWorkspaceAuthority,
+  verifyWorkspaceAuthorityWithHistory,
   type WorkspaceAuthoritySnapshot,
   type DeliveryIssuer,
   type DeliveryAuthority,
@@ -42,7 +40,7 @@ export async function resolveMembershipDeliveryAuthority(
     ? parseCertificationSuccessor(JSON.parse(s.transfer.artifact))
     : null;
   const originalHead = cert?.head ?? (s.successor ? JSON.parse(s.successor.artifact).head : null);
-  const anchor = await verifyWorkspaceAuthority(
+  const { authority: anchor, history: initialHistory } = await verifyWorkspaceAuthorityWithHistory(
     {
       ...s,
       recoveries: [],
@@ -54,10 +52,7 @@ export async function resolveMembershipDeliveryAuthority(
     },
     issuer,
   );
-  const base = { pin: issuer.pin, request: anchor.request, receipt: anchor.receipt };
-  let history = cert
-    ? await verifyCertificationHistory(cert, anchor.successor, base, { epoch: 3, head: cert.head })
-    : await verifyEarlyHistory(base, anchor.successor);
+  let history = initialHistory;
   const cuts = new Map<string, LedgerBoundary[]>();
   cuts.set(anchor.credential, [
     ...(anchor.successor

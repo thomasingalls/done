@@ -1,0 +1,5 @@
+{
+  "status": "corrected-before-work",
+  "reason": "Capture sourceCount before the manifest-row map reuses the local variable name. Original waiter stopped while idle; no planning command or measured run changed.",
+  "ownedPid": 8584
+}

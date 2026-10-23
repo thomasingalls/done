@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const source='/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source';assert.equal(process.cwd(),source);
+const {defineConfig}=createRequire(source+'/package.json')('@playwright/test');
+export default defineConfig({testDir:'/private/tmp/done-enrollment-reuse-2f1d0b0f/probe',testMatch:'attribution.spec.ts',timeout:600000,workers:1,retries:0,reporter:[['list'],['json',{outputFile:'/private/tmp/done-enrollment-reuse-2f1d0b0f/attribution-results.json'}]],outputDir:'/private/tmp/done-enrollment-reuse-2f1d0b0f/attribution-artifacts',use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}}});

@@ -1,0 +1,663 @@
+{
+  "pairs": [
+    {
+      "Rindex": 1,
+      "Cindex": 2,
+      "pairs": [
+        {
+          "kind": "equal",
+          "size": 32,
+          "Rms": 4.69999885559082,
+          "Cms": 4.69999885559082,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 32,
+          "Rms": 0.7000007629394531,
+          "Cms": 0.8000011444091797,
+          "improvementPercent": -14.285753211154173,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 32,
+          "Rms": 2.799999237060547,
+          "Cms": 2.6999988555908203,
+          "improvementPercent": 3.5714431684884085,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 32,
+          "Rms": 4.600000381469727,
+          "Cms": 4.80000114440918,
+          "improvementPercent": -4.347842312038064,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 32,
+          "Rms": 4.600000381469727,
+          "Cms": 4.5,
+          "improvementPercent": 2.173921156019032,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 256,
+          "Rms": 4.200000762939453,
+          "Cms": 2.1999988555908203,
+          "improvementPercent": 47.619084381996444,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 256,
+          "Rms": 0.09999847412109375,
+          "Cms": 0.10000038146972656,
+          "improvementPercent": -0.001907377737087046,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 256,
+          "Rms": 2.1000003814697266,
+          "Cms": 1.6000003814697266,
+          "improvementPercent": 23.80951948447101,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 256,
+          "Rms": 4.30000114440918,
+          "Cms": 2.1000003814697266,
+          "improvementPercent": 51.16279482390076,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 256,
+          "Rms": 4.19999885559082,
+          "Cms": 4.19999885559082,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 4096,
+          "Rms": 4.399999618530273,
+          "Cms": 1.2000007629394531,
+          "improvementPercent": 72.72725302325622,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 4096,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 4096,
+          "Rms": 2.200000762939453,
+          "Cms": 0.6000003814697266,
+          "improvementPercent": 72.72726484566954,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 4096,
+          "Rms": 4.600000381469727,
+          "Cms": 1.2999992370605469,
+          "improvementPercent": 71.73914936404441,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 4096,
+          "Rms": 4.19999885559082,
+          "Cms": 4.200000762939453,
+          "improvementPercent": -4.541307505601111e-05,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 65536,
+          "Rms": 4.600000381469727,
+          "Cms": 1.0999984741210938,
+          "improvementPercent": 76.08699167608248,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 65536,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 65536,
+          "Rms": 2.1000003814697266,
+          "Cms": 0.6000003814697266,
+          "improvementPercent": 71.42855845341302,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 65536,
+          "Rms": 4.399999618530273,
+          "Cms": 1.1000003814697266,
+          "improvementPercent": 74.99998916279091,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 65536,
+          "Rms": 4.5,
+          "Cms": 4.200000762939453,
+          "improvementPercent": 6.666649712456596,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 1048576,
+          "Rms": 4.30000114440918,
+          "Cms": 1.0999984741210938,
+          "improvementPercent": 74.41864694498277,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 1048576,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 1048576,
+          "Rms": 2.1999988555908203,
+          "Cms": 0.6000003814697266,
+          "improvementPercent": 72.72724120083265,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 1048576,
+          "Rms": 4.5,
+          "Cms": 1,
+          "improvementPercent": 77.77777777777779,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 1048576,
+          "Rms": 4.200000762939453,
+          "Cms": 4.399999618530273,
+          "improvementPercent": -4.761876649061536,
+          "controlPassed": true
+        },
+        {
+          "kind": "cooperative",
+          "size": 4194304,
+          "Rms": 7.600000381469727,
+          "Cms": 1.2000007629394531,
+          "improvementPercent": 84.21051706964006,
+          "controlPassed": true
+        }
+      ]
+    },
+    {
+      "Rindex": 4,
+      "Cindex": 3,
+      "pairs": [
+        {
+          "kind": "equal",
+          "size": 32,
+          "Rms": 4.69999885559082,
+          "Cms": 4.69999885559082,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 32,
+          "Rms": 0.8000011444091797,
+          "Cms": 0.8000011444091797,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 32,
+          "Rms": 2.6999988555908203,
+          "Cms": 2.6000003814697266,
+          "improvementPercent": 3.703648759481115,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 32,
+          "Rms": 4.700000762939453,
+          "Cms": 4.799999237060547,
+          "improvementPercent": -2.1276267635870205,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 32,
+          "Rms": 4.5,
+          "Cms": 4.700000762939453,
+          "improvementPercent": -4.444461398654509,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 256,
+          "Rms": 4.19999885559082,
+          "Cms": 2.299999237060547,
+          "improvementPercent": 45.23809848188631,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 256,
+          "Rms": 0.10000038146972656,
+          "Cms": 0.10000038146972656,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 256,
+          "Rms": 2.200000762939453,
+          "Cms": 1.6000003814697266,
+          "improvementPercent": 27.272735154330462,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 256,
+          "Rms": 4.19999885559082,
+          "Cms": 2.1999988555908203,
+          "improvementPercent": 47.61906059421192,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 256,
+          "Rms": 4.200000762939453,
+          "Cms": 4.100000381469727,
+          "improvementPercent": 2.380961031057993,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 4096,
+          "Rms": 4.5,
+          "Cms": 1.2000007629394531,
+          "improvementPercent": 73.33331637912326,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 4096,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 4096,
+          "Rms": 2.200000762939453,
+          "Cms": 0.6999988555908203,
+          "improvementPercent": 68.18188123464368,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 4096,
+          "Rms": 4.5,
+          "Cms": 1.3000011444091797,
+          "improvementPercent": 71.111085679796,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 4096,
+          "Rms": 4.19999885559082,
+          "Cms": 4.19999885559082,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 65536,
+          "Rms": 4.600000381469727,
+          "Cms": 1.1000003814697266,
+          "improvementPercent": 76.0869502119852,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 65536,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 65536,
+          "Rms": 2.3999996185302734,
+          "Cms": 0.5,
+          "improvementPercent": 79.16666335529699,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 65536,
+          "Rms": 4.399999618530273,
+          "Cms": 1.2000007629394531,
+          "improvementPercent": 72.72725302325622,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 65536,
+          "Rms": 4.200000762939453,
+          "Cms": 4.299999237060547,
+          "improvementPercent": -2.380915618003554,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 1048576,
+          "Rms": 4.5,
+          "Cms": 1.1000003814697266,
+          "improvementPercent": 75.55554707845053,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 1048576,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 1048576,
+          "Rms": 2.299999237060547,
+          "Cms": 0.5,
+          "improvementPercent": 78.26086235406706,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 1048576,
+          "Rms": 4.5,
+          "Cms": 1.1000003814697266,
+          "improvementPercent": 75.55554707845053,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 1048576,
+          "Rms": 4.400001525878906,
+          "Cms": 4.19999885559082,
+          "improvementPercent": 4.54551365747845,
+          "controlPassed": true
+        },
+        {
+          "kind": "cooperative",
+          "size": 4194304,
+          "Rms": 4.5,
+          "Cms": 1.3000011444091797,
+          "improvementPercent": 71.111085679796,
+          "controlPassed": true
+        }
+      ]
+    },
+    {
+      "Rindex": 5,
+      "Cindex": 6,
+      "pairs": [
+        {
+          "kind": "equal",
+          "size": 32,
+          "Rms": 4.69999885559082,
+          "Cms": 4.69999885559082,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 32,
+          "Rms": 0.8000011444091797,
+          "Cms": 0.7000007629394531,
+          "improvementPercent": 12.500029802279755,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 32,
+          "Rms": 2.5999984741210938,
+          "Cms": 2.6999988555908203,
+          "improvementPercent": -3.846170775293656,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 32,
+          "Rms": 4.80000114440918,
+          "Cms": 4.80000114440918,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 32,
+          "Rms": 4.69999885559082,
+          "Cms": 4.799999237060547,
+          "improvementPercent": -2.1276682089139687,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 256,
+          "Rms": 4.100000381469727,
+          "Cms": 2,
+          "improvementPercent": 51.219516733726245,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 256,
+          "Rms": 0.20000076293945312,
+          "Cms": 0.20000076293945312,
+          "improvementPercent": 0.0,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 256,
+          "Rms": 2.1999988555908203,
+          "Cms": 1.6000003814697266,
+          "improvementPercent": 27.27267210145713,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 256,
+          "Rms": 4.200000762939453,
+          "Cms": 2.0999984741210938,
+          "improvementPercent": 50.00004541305444,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 256,
+          "Rms": 4.200000762939453,
+          "Cms": 4.400001525878906,
+          "improvementPercent": -4.761922062115986,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 4096,
+          "Rms": 4.299999237060547,
+          "Cms": 1.1999988555908203,
+          "improvementPercent": 72.09304491851184,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 4096,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 4096,
+          "Rms": 2.3999996185302734,
+          "Cms": 0.6000003814697266,
+          "improvementPercent": 74.99998013178192,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 4096,
+          "Rms": 4.30000114440918,
+          "Cms": 1.2000007629394531,
+          "improvementPercent": 72.0930129402481,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 4096,
+          "Rms": 4.299999237060547,
+          "Cms": 4.399999618530273,
+          "improvementPercent": -2.3255906793622216,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 65536,
+          "Rms": 4.299999237060547,
+          "Cms": 1.1000003814697266,
+          "improvementPercent": 74.41859124092124,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 65536,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 65536,
+          "Rms": 2.200000762939453,
+          "Cms": 0.5,
+          "improvementPercent": 77.27273515433046,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 65536,
+          "Rms": 4.399999618530273,
+          "Cms": 1.1999988555908203,
+          "improvementPercent": 72.72729637209254,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 65536,
+          "Rms": 4.30000114440918,
+          "Cms": 4.100000381469727,
+          "improvementPercent": 4.651179295603026,
+          "controlPassed": true
+        },
+        {
+          "kind": "equal",
+          "size": 1048576,
+          "Rms": 4.399999618530273,
+          "Cms": 1.2000007629394531,
+          "improvementPercent": 72.72725302325622,
+          "controlPassed": true
+        },
+        {
+          "kind": "first",
+          "size": 1048576,
+          "Rms": 0,
+          "Cms": 0,
+          "improvementPercent": null,
+          "controlPassed": true
+        },
+        {
+          "kind": "middle",
+          "size": 1048576,
+          "Rms": 2.299999237060547,
+          "Cms": 0.5,
+          "improvementPercent": 78.26086235406706,
+          "controlPassed": true
+        },
+        {
+          "kind": "last",
+          "size": 1048576,
+          "Rms": 4.30000114440918,
+          "Cms": 1.1999988555908203,
+          "improvementPercent": 72.09305729718125,
+          "controlPassed": true
+        },
+        {
+          "kind": "unaligned",
+          "size": 1048576,
+          "Rms": 4.19999885559082,
+          "Cms": 4.200000762939453,
+          "improvementPercent": -4.541307505601111e-05,
+          "controlPassed": true
+        },
+        {
+          "kind": "cooperative",
+          "size": 4194304,
+          "Rms": 4.30000114440918,
+          "Cms": 1.1999988555908203,
+          "improvementPercent": 72.09305729718125,
+          "controlPassed": true
+        }
+      ]
+    }
+  ],
+  "alignedPairedImprovementPercent": [
+    68.55525323752141,
+    67.51411680539127,
+    67.34694876222254
+  ],
+  "cooperativePairedImprovementPercent": [
+    84.21051706964006,
+    71.111085679796,
+    72.09305729718125
+  ],
+  "gates": {
+    "alignedEqualAndLateMismatchAtLeast20Percent": true,
+    "cooperativeAtLeast20Percent": true,
+    "allControlsNonRegression": true
+  },
+  "passed": true,
+  "scope": "Fixed microbenchmark mechanism gate, not physical-device/client/policy qualification."
+}

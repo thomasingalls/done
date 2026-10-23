@@ -1,0 +1,9 @@
+{
+  "status": "preserved-and-stopped-only-owned-comparison",
+  "parent": 7954,
+  "ownedDescendants": [
+    10148,
+    10149
+  ],
+  "reason": "Old native HTTP tests denied listen127.0.0.1 under sandbox. Four measured journeys finished unchanged; repeat R/C with required loopback permission, no old-test edits."
+}

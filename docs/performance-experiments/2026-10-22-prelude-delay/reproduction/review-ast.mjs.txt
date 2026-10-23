@@ -1,0 +1,16 @@
+import{readFileSync,writeFileSync}from'node:fs';import assert from'node:assert/strict';import*as babel from'./source/node_modules/@babel/core/lib/index.js';
+const root=new URL('./',import.meta.url),prior=new URL('../done-phase-isolation-20261022/',root);const excluded=new Set(['start','end','loc','extra','comments','leadingComments','trailingComments','innerComments','tokens','errors']);
+function clean(v,remove){
+ if(v===null||typeof v!=='object')return v;
+ if(Array.isArray(v))return v.map(x=>clean(x,remove)).filter(x=>x!==undefined);
+ if(remove&&v.type==='ImportDeclaration'&&v.source.value==='/experiment/observer.mjs')return undefined;
+ if(remove&&v.type==='ExpressionStatement'&&v.expression.type==='CallExpression'&&v.expression.callee.type==='Identifier'&&v.expression.callee.name==='observe')return undefined;
+ if(remove&&v.type==='AwaitExpression'&&v.argument.type==='CallExpression'&&v.argument.callee.type==='Identifier'&&v.argument.callee.name==='span'){
+  assert.equal(v.argument.arguments.length,2);assert.equal(v.argument.arguments[0].type,'StringLiteral');assert.equal(v.argument.arguments[1].type,'ArrowFunctionExpression');assert.equal(v.argument.arguments[1].params.length,0);assert.notEqual(v.argument.arguments[1].body.type,'BlockStatement');return clean({...v,argument:v.argument.arguments[1].body},remove);
+ }
+ return Object.fromEntries(Object.entries(v).filter(([k])=>!excluded.has(k)).map(([k,x])=>[k,clean(x,remove)]));
+}
+const rows=[];for(const file of['delivery.ts','inboundAuthorityReuse.ts','membershipLocator.ts','historyCheckpoint.ts']){
+ const parse=s=>babel.parseSync(s,{configFile:false,babelrc:false,parserOpts:{sourceType:'module',plugins:['typescript']}});const before=parse(readFileSync(new URL('source/account-service/'+file,root),'utf8'));const after=parse(readFileSync(process.argv[2]&&file==='delivery.ts'?process.argv[2]:new URL('diagnostic-account-service/'+file,root),'utf8'));assert.deepEqual(clean(after,true),clean(before,false),file);rows.push({file,exactUnderlyingAstAfterStrippingOnlyObserverSyntax:true});
+}
+writeFileSync(new URL('ast-review.json',root),JSON.stringify({status:'passed',files:rows,allUnderlyingGuardsExpressionsBranchesAndCallsExact:true},null,2)+'\n');console.log('Independent AST review passes all4 native files');

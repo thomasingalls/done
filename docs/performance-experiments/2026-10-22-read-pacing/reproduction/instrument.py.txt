@@ -1,0 +1,74 @@
+from pathlib import Path
+import json,hashlib,shutil
+r=Path(__file__).parent;s=r/'source';transforms=[];sha=lambda x:hashlib.sha256(x).hexdigest()
+def modify(f, edits, prefix=''):
+ p=s/f;old=p.read_text();text=old
+ for a,b,count in edits:
+  assert text.count(a)==count,(f,a,text.count(a),count)
+  text=text.replace(a,b)
+ text=prefix+text;p.write_text(text);transforms.append({'file':f,'beforeSha256':sha(old.encode()),'afterSha256':sha(text.encode()),'prefix':prefix,'replacements':edits})
+obs="import {observe,sha} from '/experiment/observer.mjs';\n"
+# Instrument only the inbound owner, not similarly shaped outbound loops.
+p=s/'account-service/delivery.ts';text=p.read_text();idx=text.index('export async function readInbound(');head,tail=text[:idx],text[idx:]
+edits=[("  let phase: Diagnostic['phase'] = 'request';","  observe('read-start',{inputSha256:input instanceof Uint8Array?sha(input):null});\n  let phase: Diagnostic['phase'] = 'request';",1),
+("    for (let retry = 0; retry < 4; retry++) {","    for (let retry = 0; retry < 4; retry++) { observe('read-attempt',{retry,after:request.after,publisherSha256:sha(request.publisher),readerSha256:sha(request.reader)});",1),
+("        if (!s) return unknown('unavailable');","        observe('read-captured');\n        if (!s) return unknown('unavailable');",1),
+("        if (\n          request.serviceId","        observe('read-authority');\n        if (\n          request.serviceId",1),
+("        const ledger = await verifiedCensus(s, auth, reuse);","        observe('read-admitted');\n        const ledger = await verifiedCensus(s, auth, reuse);\n        observe('read-census',{through:ledger.through});",1),
+("        phase = 'commit';","        observe('read-served',{entries:page.entries.length,next:page.next,through:page.through});\n        phase = 'commit';",1),
+("        if (!current) {","        observe('read-current',{current});\n        if (!current) {",1),
+("        return { kind: 'decision', bytes: answer };","        observe('read-answer',{next:page.next,through:page.through,entries:page.entries.length});\n        return { kind: 'decision', bytes: answer };",1),
+("        note(cause);","        observe('read-caught',{code:causeCode(cause)});\n        note(cause);",1),
+("    return unknown('state-changed');","    observe('read-exhausted');\n    return unknown('state-changed');",1)]
+for a,b,n in edits:assert tail.count(a)==n,(a,tail.count(a));tail=tail.replace(a,b)
+p.write_text(obs+head+tail);transforms.append({'file':'account-service/delivery.ts','beforeSha256':sha(text.encode()),'afterSha256':sha(p.read_bytes()),'prefix':obs,'scope':'readInbound','replacements':edits})
+modify('account-service/publisherTips.ts',[
+("      if (!c) return false;","      if (!c) { observe('guard-refused',{predicate:'capture-missing'}); return false; }",1),
+("      if (c.purpose !== purpose) return false;","      if (c.purpose !== purpose) { observe('guard-refused',{predicate:'purpose'}); return false; }",1),
+("      )\n        return false;\n      const current = snapshot", "      ) { observe('guard-refused',{predicate:'owner-fence',revisionChanged:c.revision!==revision,versionChanged:c.version!==version,ownerChanged:owners.get(c.key)!==c.owner,commitChanged:c.commit!==c.owner.commit,publisherSha256:sha(s.publisher??'')}); return false; }\n      const current = snapshot",1),
+("      if (!current) return false;","      if (!current) { observe('guard-refused',{predicate:'snapshot-missing'}); return false; }",1),
+("      if (!same) invalidatePublisher(c.key);","      if (!same) { observe('guard-refused',{predicate:'fingerprint',publisherSha256:sha(s.publisher??''),changedFields:Object.keys(s).filter(k=>JSON.stringify(s[k])!==JSON.stringify(current[k])),promotionChangedFields:Object.keys(s.promotion).filter(k=>JSON.stringify(s.promotion[k])!==JSON.stringify(current.promotion[k]))}); invalidatePublisher(c.key); }",1)],obs)
+modify('account-service/inboundAuthorityReuse.ts',[
+("    if (previous?.context.equals(captured) && previous.verify === verify) {","    if (previous?.context.equals(captured) && previous.verify === verify) { observe('authority-hit');",1),
+("    const checks: Check[] = [];","    observe('authority-miss');\n    const checks: Check[] = [];",1),
+("    current();\n    if (captured.byteLength", "    observe('authority-verified');\n    current();\n    if (captured.byteLength",1)],obs)
+pace="const pace=(tag:string,data:Record<string,unknown>={})=>{(globalThis as any).__readPacing?.(tag,data);};\n"
+modify('src/crdt/accountSyncDriver.ts',[
+("        const result =\n          name === 'receive'","        pace('lane-begin',{name,failures:lane.failures,position:lane.position});\n        const result =\n          name === 'receive'",1),
+("        if (stopped) return;\n        const position", "        pace('lane-result',{name,kind:result.kind,position:'acceptedThrough' in result?result.acceptedThrough:result.receivedThrough});\n        if (stopped) return;\n        const position",1),
+("        ready();\n      })", "        pace('lane-scheduled',{name,due:lane.due??null,failures:lane.failures,dirty:lane.dirty});\n        ready();\n      })",1),
+("        if (!stopped) {\n          if (options.gate()", "        pace('lane-threw',{name});\n        if (!stopped) {\n          if (options.gate()",1),
+("        active = undefined;\n        work = undefined;", "        pace('lane-finished',{name});\n        active = undefined;\n        work = undefined;",1),
+("    if (stopped) return;\n    if (options.gate() === 'offline')", "    pace('wake',{cause,target:target??null,active:active??null,sendDue:lanes.send.due??null,receiveDue:lanes.receive.due??null,sendFailures:lanes.send.failures,receiveFailures:lanes.receive.failures});\n    if (stopped) return;\n    if (options.gate() === 'offline')",1),
+("  let status = await ops.deliveryStatus();", "  pace('send-status-start');\n  let status = await ops.deliveryStatus();\n  pace('send-status-end',{accepted:status.acceptedThrough});",1),
+("      const prepared = await ops.prepareNextEnvelope();", "      pace('send-envelope-start',{position});\n      const prepared = await ops.prepareNextEnvelope();\n      pace('send-envelope-end',{position,prepared:!!prepared});",1),
+("    const submission = await ops.prepareSubmission(position);", "    pace('send-submission-start',{position});\n    const submission = await ops.prepareSubmission(position);\n    pace('send-submission-end',{position,kind:submission.kind});",1),
+("  await ops.submitPending(token);", "  pace('send-submit-start',{position});\n  await ops.submitPending(token);\n  pace('send-submit-end',{position});",1)],pace)
+modify('src/crdt/accountReceive.ts',[
+("          const authority = await refreshAuthority(operatorToken ?? '');", "          pace('receive-discovery-start');\n          const authority = await refreshAuthority(operatorToken ?? '');\n          pace('receive-discovery-end',{kind:authority.kind});",1),
+("            if (await receiveHistory()) {", "            pace('receive-history-start');\n            const tracedHistory=await receiveHistory();\n            pace('receive-history-end',{installed:tracedHistory});\n            if (tracedHistory) {",1),
+("            const step = await driveReceiveStep(result, operatorToken ?? '', gate);", "            pace('receive-step-start');\n            const step = await driveReceiveStep(result, operatorToken ?? '', gate);\n            pace('receive-step-end',{kind:step.kind,position:step.receivedThrough});",1),
+("        requests = await prepareGroup();", "        pace('receive-prepare-start');\n        requests = await prepareGroup();\n        pace('receive-prepare-end',{requests:requests.length});",1),
+("          pages = collected.pages;", "          pace('receive-network-end',{pages:collected.pages.length,attempted:collected.attempted});\n          pages = collected.pages;",1)],pace)
+# Runtime always mounts this diagnostic copy. Preserve originals and record transforms independently.
+f=s/'test/account-continuation-lab/runtime.mjs';a=f.read_text().replace('/private/tmp/done-ordinary-receive-20261022',str(r));a=a.replace("(f==='account-service'&&process.env.FAIR_VARIANT==='D'?root+'/diagnostic-account-service':f==='account-service'&&process.env.FAIR_VARIANT==='R'?root+'/reference-account-service':source+'/'+f)","(source+'/'+f)");f.write_text(a)
+# Own local dist, never overwrite frozen reference symlink target.
+(s/'dist').unlink()
+shutil.copy2(r/'diagnostic-container-service.mjs',r/'container-service.mjs')
+p=r/'container-service.mjs';t=p.read_text();t=t.replace("const hashParts=[];","const bodyHash=createHash('sha256');");t="import {createHash} from 'node:crypto';\n"+t;t=t.replace("if(json){req.on('data',b=>{size+=b.length;", "if(json){req.on('data',b=>{bodyHash.update(b);size+=b.length;");t=t.replace("ctx.bodySha256=sha(body);", "ctx.bodySha256=bodyHash.digest('hex');")
+p.write_text(t)
+# Bounded browser collector. Records only closed-labeled numbers/booleans, never content.
+f=s/'test/account-continuation-lab/common.ts';a=f.read_text();a+='''\nexport function installPacing(){const rows:any[]=[];let dropped=0;Object.defineProperty(window,'__readPacing',{value:(tag:string,data:Record<string,unknown>={})=>{if(rows.length<200000)rows.push({at:performance.timeOrigin+performance.now(),tag,...data});else dropped++;}});Object.defineProperty(window,'__pacingRead',{value:()=>({rows:structuredClone(rows),dropped})});}\n''';f.write_text(a)
+f=s/'test/account-continuation-lab/continuation.spec.ts';a=f.read_text().replace("lock,installProbe,sleep,digest","lock,installProbe,installPacing,sleep,digest")
+a=a.replace("await a.context.addInitScript(installProbe,a.account);", "await a.context.addInitScript(installPacing);await a.context.addInitScript(installProbe,a.account);")
+a=a.replace("if(result.originalDeliveryPassed){await Promise.all(catchups);result.backgroundReplayPassed=result.catchups.every((row:any)=>row.outcome==='passed');}else result.backgroundReplayPassed=false;", "await sleep(Math.max(0,result.startedAt+90000-Date.now()));result.backgroundReplayPassed=false;result.diagnosticReplayCensoringMs=90000;result.pacing=await Promise.all(actors.map(async(a:any)=>({label:a.label,...await a.page.evaluate(()=>(window as any).__pacingRead())})));")
+a=a.replace("await reopened.addInitScript(installProbe,'Q');","await reopened.addInitScript(installPacing);await reopened.addInitScript(installProbe,'Q');")
+# Catchup expect rejects after explicit load stop; retained rather than await long browser timeout afterclose.
+f.write_text(a)
+(r/'transforms.json').write_text(json.dumps(transforms,indent=2)+'\n')
+# Reverse every instrumentation transform and require exact base bytes, independently of edited code.
+for row in transforms:
+ t=(s/row['file']).read_text();assert t.startswith(row['prefix']);t=t[len(row['prefix']):]
+ for before,after,n in reversed(row['replacements']):assert t.count(after)==n,(row['file'],after);t=t.replace(after,before)
+ assert sha(t.encode())==row['beforeSha256'],row['file']
+print('Instrumented',len(transforms),'runtime files; reverse transforms recover exact base')

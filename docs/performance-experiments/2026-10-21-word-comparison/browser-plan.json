@@ -1,0 +1,50 @@
+[
+  {
+    "name": "1-R-catchup",
+    "arm": "R",
+    "mode": "catchup",
+    "pressure": true
+  },
+  {
+    "name": "2-C-catchup",
+    "arm": "C",
+    "mode": "catchup",
+    "pressure": true
+  },
+  {
+    "name": "3-C-catchup",
+    "arm": "C",
+    "mode": "catchup",
+    "pressure": true
+  },
+  {
+    "name": "4-R-catchup",
+    "arm": "R",
+    "mode": "catchup",
+    "pressure": true
+  },
+  {
+    "name": "5-R-catchup",
+    "arm": "R",
+    "mode": "catchup",
+    "pressure": true
+  },
+  {
+    "name": "6-C-catchup",
+    "arm": "C",
+    "mode": "catchup",
+    "pressure": true
+  },
+  {
+    "name": "7-R-foreground",
+    "arm": "R",
+    "mode": "foreground",
+    "pressure": false
+  },
+  {
+    "name": "8-C-foreground",
+    "arm": "C",
+    "mode": "foreground",
+    "pressure": false
+  }
+]

@@ -1,0 +1,39 @@
+
+async function continuationHistoryRequest(x, overrides = {}, key = x.keys.new) {
+  const request = {
+    v: 1,
+    kind: 'history-checkpoint-request',
+    workspaceId: x.workspace,
+    lineageId: x.context.lineageId,
+    epoch: 4,
+    head: x.admission.head,
+    credentialId: x.context.candidate.id,
+    nonce: 'b7'.repeat(32),
+    expiresAt: 61000,
+    action: 'read',
+    payload: 'catalog',
+    signature: '00'.repeat(64),
+    ...overrides,
+  };
+  request.signature = signed(key, await historyExchangeMessage(request));
+  return request;
+}
+
+test('history catalog reuses the current branded membership timeline instead of verifying its admission twice', async (t) => {
+  const x = await continuationFixture(t);
+  const request = await continuationHistoryRequest(x);
+  let admissionVerifications = 0;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/device-membership-admission/v2')))
+      admissionVerifications++;
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
+  assert.equal(response.ok, true, JSON.stringify(response));
+  assert.equal(admissionVerifications, 1, 'the current authority already verifies this exact admission');
+  const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+  assert.equal(page.catalog.sequence, 0);
+  assert.equal(page.checkpoint, null);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.candidate.id).position, 0);
+});

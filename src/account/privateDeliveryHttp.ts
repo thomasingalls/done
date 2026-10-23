@@ -15,6 +15,7 @@ import {
   type Diagnostic,
 } from '../../account-protocol/diagnostics';
 const diagnostics = createDiagnostics();
+export const PRIVATE_DELIVERY_TIMEOUT_MS = 10000;
 export const readPrivateTransportDiagnostics = diagnostics.read;
 export const clearPrivateTransportDiagnostics = diagnostics.clear;
 export const recordPrivateTransportDiagnostic = diagnostics.record;
@@ -24,21 +25,29 @@ export const recordPrivateReceiveExpiry = (phase: 'verify' | 'commit'): void =>
 export async function privateDeliveryPost(
   pin: AuthorityPin,
   token: AccountAccess,
-  path: 'submit' | 'read' | 'read-v2',
+  path: 'submit' | 'read' | 'read-v2' | 'read-v2-batch',
   body: Bytes,
   limit: number,
   signal: AbortSignal,
   observe: DiagnosticSink = diagnostics.record,
   /** Retained connection coordinators own rebootstrap/sign-in/backoff; byte-only drivers retain null. */
   propagateAuthorization = false,
+  unsupported?: () => Promise<Bytes | null>,
+  /** Optional aggregation can retry individual reads only after a successful binary reply
+   * exceeds its byte reservation. Error hints and malformed declarations never select this. */
+  aggregateLimit?: () => void,
 ): Promise<Bytes | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
-    reportDiagnostic(observe, { operation: path, phase, code });
+    reportDiagnostic(observe, {
+      operation: path === 'read-v2-batch' ? 'read-v2' : path,
+      phase,
+      code,
+    });
   if (!isAccountAccess(token)) {
     note('request', 'invalid-token');
     return null;
   }
-  const stopped = AbortSignal.any([signal, AbortSignal.timeout(10000)]);
+  const stopped = AbortSignal.any([signal, AbortSignal.timeout(PRIVATE_DELIVERY_TIMEOUT_MS)]);
   const interrupted = () => (signal.aborted ? ('aborted' as const) : ('timeout' as const));
   try {
     stopped.throwIfAborted();
@@ -51,6 +60,13 @@ export async function privateDeliveryPost(
       redirect: 'error',
       signal: stopped,
     });
+    // Only an absent optional route selects the original transport. All other refusals keep
+    // their normal classification; fallback grants no authority and never advances a cursor.
+    if (path === 'read-v2-batch' && response.status === 404 && unsupported) {
+      await response.body?.cancel();
+      stopped.throwIfAborted();
+      return await unsupported();
+    }
     const hint =
       response.status === 409 && response.headers.get('content-type') === 'application/json';
     if (
@@ -76,6 +92,7 @@ export async function privateDeliveryPost(
     if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > responseLimit)) {
       await response.body.cancel();
       note('response', 'response-too-large');
+      if (path === 'read-v2-batch' && !hint && /^\d+$/.test(declared)) aggregateLimit?.();
       return null;
     }
     const reader = response.body.getReader(),
@@ -96,6 +113,7 @@ export async function privateDeliveryPost(
         if (length > responseLimit) {
           cancel();
           note('stream', 'response-too-large');
+          if (path === 'read-v2-batch' && !hint) aggregateLimit?.();
           return null;
         }
         chunks.push(new Uint8Array(value));

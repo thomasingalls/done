@@ -1,0 +1,155 @@
+{
+  "runs": [
+    {
+      "folder": "matched",
+      "name": "1-reference",
+      "outcome": "failed",
+      "elapsedMs": 6039,
+      "replayMs": null,
+      "verifiedReadPositions": 0,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 11,
+          "verified": 0
+        },
+        "other": {
+          "offered": 5,
+          "verified": 5
+        }
+      },
+      "statuses": {
+        "200": 28,
+        "409:state-changed": 7
+      },
+      "cpuMs": 14937.97,
+      "rssPeak": 435109888
+    },
+    {
+      "folder": "matched",
+      "name": "1-candidate",
+      "outcome": "failed",
+      "elapsedMs": 15139,
+      "replayMs": null,
+      "verifiedReadPositions": 545,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 24,
+          "verified": 24
+        },
+        "other": {
+          "offered": 12,
+          "verified": 12
+        }
+      },
+      "statuses": {
+        "200": 238,
+        "409:state-changed": 5
+      },
+      "cpuMs": 34238.235,
+      "rssPeak": 513605632
+    },
+    {
+      "folder": "matched",
+      "name": "2-candidate",
+      "outcome": "failed",
+      "elapsedMs": 15148,
+      "replayMs": null,
+      "verifiedReadPositions": 554,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 27,
+          "verified": 27
+        },
+        "other": {
+          "offered": 13,
+          "verified": 13
+        }
+      },
+      "statuses": {
+        "200": 257,
+        "409:state-changed": 1
+      },
+      "cpuMs": 35418.123,
+      "rssPeak": 491552768
+    },
+    {
+      "folder": "matched",
+      "name": "2-reference",
+      "outcome": "failed",
+      "elapsedMs": 6003,
+      "replayMs": null,
+      "verifiedReadPositions": 0,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 11,
+          "verified": 0
+        },
+        "other": {
+          "offered": 5,
+          "verified": 5
+        }
+      },
+      "statuses": {
+        "200": 28,
+        "409:state-changed": 7
+      },
+      "cpuMs": 14793.569,
+      "rssPeak": 434601984
+    },
+    {
+      "folder": "other-peer",
+      "name": "0-candidate",
+      "outcome": "passed",
+      "elapsedMs": 21003,
+      "replayMs": 20166,
+      "verifiedReadPositions": 1536,
+      "completedStreams": 6,
+      "writes": {
+        "first": {
+          "offered": 0,
+          "verified": 0
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20
+        }
+      },
+      "statuses": {
+        "200": 490,
+        "429": 100
+      },
+      "cpuMs": 10115.932,
+      "rssPeak": 362250240
+    },
+    {
+      "folder": "own-nopeer",
+      "name": "0-candidate",
+      "outcome": "failed",
+      "elapsedMs": 10647,
+      "replayMs": null,
+      "verifiedReadPositions": 505,
+      "completedStreams": 0,
+      "writes": {
+        "first": {
+          "offered": 14,
+          "verified": 14
+        },
+        "other": {
+          "offered": 7,
+          "verified": 7
+        }
+      },
+      "statuses": {
+        "200": 155,
+        "409:state-changed": 6
+      },
+      "cpuMs": 23590.305,
+      "rssPeak": 456966144
+    }
+  ],
+  "scope": "Raw native probes abort on409; no maximum-capacity or production latency estimate. All six predeclared runs, including failures, retained."
+}

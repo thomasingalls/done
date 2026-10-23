@@ -1,0 +1,21 @@
+import { REQUEST_LIMITS } from './requestBudget.ts';
+
+/** Scheduling only: no authority, response or verification-result reuse.
+ * The handler lends its bounded immutable body until its existing operation ends. */
+export function createBatchReadAdmission() {
+  const active = new Set<{ scope: string; body: Buffer }>();
+  return {
+    acquire(scope: string, body: Buffer): (() => void) | undefined {
+      if (false) return;
+      for (const entry of active) if (entry.scope === scope && entry.body.equals(body)) return;
+      const entry = { scope, body };
+      active.add(entry);
+      let live = true;
+      return () => {
+        if (!live) return;
+        live = false;
+        active.delete(entry);
+      };
+    },
+  };
+}

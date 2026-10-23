@@ -1,0 +1,12 @@
+{
+  "status": "interrupted, not replaced or credited",
+  "attempt": "interrupted-attempt-1",
+  "observed": [
+    "Docker CLI unexpected EOF",
+    "Docker socket no longer exists",
+    "cleanup Control deadline stop hid partial result"
+  ],
+  "notEstablished": "cause of local Docker daemon exit, final reference data guards and performance outcome",
+  "repair": "durable partial snapshot at existing trace boundaries, guaranteed final result on cleanup failure, fail closed on dead control child",
+  "measurementPlan": "fresh complete fixed R,C,C,R series; preserve interrupted reference separately; same application/runtime/client/limits/deadlines; common revised harness in both arms"
+}

@@ -1,0 +1,28 @@
+from pathlib import Path
+import shutil,json,subprocess,os,time
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+for name in ['restore-early-capture','omit-authority-comparison','omit-final-guard','omit-final-grant','omit-future-header']:
+ d=r/('mutant-'+name);d.mkdir()
+ for f in ['account-service','test']:
+  if f=='account-service':shutil.copytree(s/f,d/f)
+  else:
+   (d/f/'account-service-inbound').mkdir(parents=True)
+   for p in(s/f).iterdir():
+    if p.name=='account-service-inbound':
+     for item in p.iterdir():shutil.copy2(item,d/f/p.name/item.name)if item.is_file()else shutil.copytree(item,d/f/p.name/item.name,symlinks=True)
+    else:(d/f/p.name).symlink_to(p,target_is_directory=p.is_dir())
+ for f in ['account-protocol','src','scripts','docs','node_modules']:(d/f).symlink_to(s/f,target_is_directory=True)
+ p=d/'account-service/delivery.ts';t=p.read_text();a=t.index('export async function readInbound(');h,b=t[:a],t[a:]
+ if name=='restore-early-capture':t=(r/'before/account-service/delivery.ts').read_text();pattern='v2 late-ledger accepts'
+ elif name=='omit-authority-comparison':
+  anchor='if (!isDeepStrictEqual(inboundAuthorityHeader(before), inboundAuthorityHeader(s))) continue;';assert b.count(anchor)==1;b=b.replace(anchor,'/* deliberately omitted authority comparison */');t=h+b;pattern='v2 late-ledger compares'
+ elif name=='omit-final-guard':assert b.count('if (!current) {')==1;t=h+b.replace('if (!current) {','if (false && !current) {');pattern='v2 late-ledger retains four final owner'
+ elif name=='omit-final-grant':
+  start=b.index('        const completeAuthorization = issuer.authorize?.');stop=b.index('        const answer = issuer.inboundPage(',start);b=b[:start]+'        const completeAuthorization = undefined;\n'+b[stop:];t=h+b;pattern='v2 late-ledger retains current grant'
+ elif name=='omit-future-header':
+  anchor='promotion: { ...s.promotion, delivery_witness: null },';start=t.index('function inboundAuthorityHeader(');head,tail=t[:start],t[start:];assert tail.count(anchor)==1;t=head+tail.replace(anchor,'promotion: { ...s.promotion, delivery_witness: null, future_authority: null },');pattern='v2 late-ledger compares future'
+ p.write_text(t)
+ cmd=['node','--test','--test-name-pattern='+pattern,'test/account-service-inbound/core.test.mjs'];at=int(time.time()*1000)
+ with(r/('control-'+name+'.log')).open('w')as log:result=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=20)
+ log=(r/('control-'+name+'.log')).read_text();assert result.returncode!=0 and 'AssertionError'in log,(name,log[-2500:]);rows.append({'name':name,'detected':True,'exitCode':result.returncode,'pattern':pattern,'startedAt':at,'finishedAt':int(time.time()*1000)});print(name,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')

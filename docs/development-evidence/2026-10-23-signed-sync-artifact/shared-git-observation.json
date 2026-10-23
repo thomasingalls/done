@@ -1,0 +1,9 @@
+{
+  "observationOnly": true,
+  "trackingRef": "origin/codex/improve-task-scheduling-ux",
+  "trackingSha": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "trackingReflog": "51d8550d refs/remotes/origin/codex/improve-task-scheduling-ux@{2026-10-23 07:45:39 +0200}: update by push",
+  "pushInvokedByThisTask": false,
+  "actorNotEstablished": true,
+  "httpsProbe": "Read-only ls-remote produced an authentication-browser notice and no ref output; not treated as remote verification."
+}

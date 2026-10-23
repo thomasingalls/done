@@ -1,0 +1,127 @@
+[
+  {
+    "name": "helpers",
+    "command": [
+      "node",
+      "/private/tmp/done-word-comparison-20261021/build-helpers.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021",
+    "startedAt": 1792610333141,
+    "completedAt": 1792610333521,
+    "exitCode": 0
+  },
+  {
+    "name": "R-patch-check",
+    "command": [
+      "node",
+      "scripts/check-yjs-patch.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792610333521,
+    "completedAt": 1792610333708,
+    "exitCode": 0
+  },
+  {
+    "name": "R-typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792610333708,
+    "completedAt": 1792610334944,
+    "exitCode": 0
+  },
+  {
+    "name": "R-bundle",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792610334945,
+    "completedAt": 1792610337845,
+    "exitCode": 0
+  },
+  {
+    "name": "R-budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792610337845,
+    "completedAt": 1792610337936,
+    "exitCode": 0
+  },
+  {
+    "name": "R-isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-R",
+    "startedAt": 1792610337936,
+    "completedAt": 1792610337997,
+    "exitCode": 0
+  },
+  {
+    "name": "C-patch-check",
+    "command": [
+      "node",
+      "scripts/check-yjs-patch.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610337997,
+    "completedAt": 1792610338152,
+    "exitCode": 0
+  },
+  {
+    "name": "C-typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610338152,
+    "completedAt": 1792610339132,
+    "exitCode": 0
+  },
+  {
+    "name": "C-bundle",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610339133,
+    "completedAt": 1792610341931,
+    "exitCode": 0
+  },
+  {
+    "name": "C-budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610341932,
+    "completedAt": 1792610342012,
+    "exitCode": 0
+  },
+  {
+    "name": "C-isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610342012,
+    "completedAt": 1792610342075,
+    "exitCode": 0
+  }
+]

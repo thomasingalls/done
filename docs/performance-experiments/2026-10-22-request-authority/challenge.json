@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "omit-retained-delivery-match",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "single history producer refuses retained-delivery"
+    },
+    {
+      "control": "omit-native-recovery-eligibility",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "single history producer refuses recovery-"
+    },
+    {
+      "control": "omit-native-successor-row",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "single history producer refuses successor-row"
+    },
+    {
+      "control": "omit-full-certification-verification",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "single request shares one complete certified",
+      "kind": "changed-input-sensitivity"
+    },
+    {
+      "control": "omit-pending-delivery-verification",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "single history producer refuses pending-delivery"
+    }
+  ],
+  "interpretation": "Four genuine omission controls plus one changed-certificate-input sensitivity control; not five independent omission controls."
+}

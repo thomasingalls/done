@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "sourceHashesChanged": [
+    "account-service/delivery.ts",
+    "account-service/deliveryVerification.ts",
+    "account-service/inboundAuthorityReuse.ts"
+  ],
+  "sources": 400,
+  "domainCount": 197,
+  "domainLabelsKindsAndPathsExact": true,
+  "allConstructionBytesExact": true,
+  "all881PreviousObligationRowsRetainedExactly": true,
+  "newBlockedRegressionFile": {
+    "id": "test:test/account-sessions/inbound-authority-cache.test.mjs",
+    "kind": "test",
+    "path": "test/account-sessions/inbound-authority-cache.test.mjs",
+    "invocation": {
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "test/account-sessions/inbound-authority-cache.test.mjs"
+      ]
+    },
+    "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+  },
+  "obligations": 882,
+  "unresolved": 338,
+  "qualificationStatus": "blocked",
+  "planningOnly": true
+}

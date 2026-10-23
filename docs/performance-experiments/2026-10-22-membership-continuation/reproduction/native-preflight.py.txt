@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,subprocess,time,os
+r=Path(__file__).parent;s=r/'source';image=json.loads((r/'container-image.json').read_text())['Id'];rows=[]
+for name in ['exact','observed']:
+ args=['docker','run','--rm','--network=none','--cpus=1','--memory=1g','--memory-swap=1g','--pids-limit=128','--cap-drop=ALL','--security-opt=no-new-privileges','--read-only','--tmpfs','/tmp:rw,nosuid,nodev,size=128m','--user',str(os.getuid())+':'+str(os.getgid()),'--volume',str(r)+':/experiment:ro']
+ for f in ['account-service','account-protocol','src','test','docs']:args+=['--volume',str(r/'observed-account-service'if f=='account-service'and name=='observed'else s/f)+':/app/'+f+':ro']
+ args+=['--entrypoint','node',image,'--test','--test-concurrency=1','test/account-sessions/grants.test.mjs','test/account-membership/locator.test.mjs','test/account-membership/removal.test.mjs'];at=int(time.time()*1000)
+ with(r/('native-'+name+'-tests.log')).open('w')as log:p=subprocess.run(args,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':args,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'native-tests.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)

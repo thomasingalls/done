@@ -1,0 +1,13 @@
+from pathlib import Path
+import hashlib,json,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+prior=json.loads((repo/'docs/performance-experiments/2026-10-21-sync-capacity/identity.json').read_text());production=prior['ordinaryArms']['D']['sourceSha256'];sources={}
+for arm in ['D','trace','batch-control']:
+ actual={file:sha(r/('source-'+arm)/file) for file in production};changed=[file for file,h in actual.items() if h!=production[file]];assert changed==(['account-service/publisherTips.ts'] if arm=='trace' else []);sources[arm]={'sha256':actual,'changedProductionFiles':changed}
+assert all(sha(repo/file)==h for file,h in production.items())
+build={str(p.relative_to(r/'client-dist')):sha(p) for p in sorted((r/'client-dist').rglob('*')) if p.is_file()};assert build==prior['clientBuildSha256']
+for p,h in prior['privateFixtureSha256'].items():assert sha(Path(p))==h
+probes={p.name:sha(p) for p in r.iterdir() if p.is_file() and p.suffix in ['.py','.mjs','.md']}
+closures={str(p.relative_to(r/'source-D')):sha(p) for p in sorted((r/'source-D/test').rglob('*')) if p.is_file() and p.suffix in ['.mjs','.ts']}
+result={'starting':json.loads((r/'starting.json').read_text()),'environment':prior['environment'],'browser':prior['browser'],'sources':sources,'clientBuildSha256':build,'clientBuildExactPriorPatch02':True,'privateFixtureHashesExactPriorPhase':True,'privateFixturesSha256':prior['privateFixtureSha256'],'currentRootProbesSha256':probes,'currentDefaultTestClosureSha256':closures,'unchangedInvariantTestSources':{f:sha(r/'source-trace'/f) for f in ['test/account-service-delivery/publisher-tips.test.mjs', 'test/account-sessions/request-budget.test.mjs', 'test/account-sessions/request-budget-work.test.mjs', 'test/account-sessions/inbound-batch-budget.test.mjs']},'scope':'Current closure identities; chronological earlier versions/initial hashes retained separately. Locked dependencies agree, installed dependency store not comprehensively audited.'}
+(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'productionFiles':len(production),'buildFiles':len(build),'rootProbes':len(probes),'testClosureFiles':len(closures),'sourceChanges':{k:v['changedProductionFiles'] for k,v in sources.items()}}))

@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "runtimeFilesChanged": [
+    "account-service/delivery.ts"
+  ],
+  "newRegressions": 15,
+  "oldTestPrefixesExact": true,
+  "wholeRuntimeAstReviewed": true,
+  "allFrozenSourcesClientAndInputsExact": true,
+  "allPriorPatchAndPacketBytesExact": true,
+  "allPriorSecurityContractsAndReleaseBlocksRetained": true,
+  "qualificationPaused": true,
+  "heavyFairnessAcceptance": false,
+  "quietRead409s": [
+    {
+      "name": "1-R",
+      "read409s": [
+        {
+          "label": "Q1",
+          "path": "/account/delivery/read-v2-batch",
+          "reason": "state-changed"
+        }
+      ]
+    },
+    {
+      "name": "2-C",
+      "read409s": []
+    },
+    {
+      "name": "3-C",
+      "read409s": []
+    },
+    {
+      "name": "4-R",
+      "read409s": [
+        {
+          "label": "Q1",
+          "path": "/account/delivery/read-v2",
+          "reason": "state-changed"
+        }
+      ]
+    }
+  ],
+  "realHeadAndIndexUnchangedAndUnstaged": true,
+  "noPublication": true
+}

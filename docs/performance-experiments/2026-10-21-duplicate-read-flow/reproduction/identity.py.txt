@@ -1,0 +1,30 @@
+from pathlib import Path
+import json,subprocess,hashlib,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};git=['git','--git-dir=/private/tmp/done-capacity-trace-20261021/patch12-index.git'];out=lambda a:subprocess.check_output(a,env=env)
+allowed={'account-service/scoped-http.ts','src/crdt/verifiedRecords.ts','test/account-sessions/inbound-batch-budget.test.mjs','docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/account-receive-transport.md','docs/completed.md','docs/decisions.md','docs/performance.md'};append={'docs/account-receive-transport.md','docs/completed.md','docs/decisions.md','docs/performance.md'};changed=[];tests=0;unchanged=0
+for line in out(git+['ls-tree','-r',start['priorTree']]).decode().splitlines():
+ meta,f=line.split('\t',1);blob=meta.split()[2];b=(repo/f).read_bytes();isSame=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==blob
+ if f.startswith('test/'):tests+=1
+ if isSame:unchanged+=1
+ else:assert f in allowed,f;changed.append(f)
+ if f in append:assert b.startswith(out(git+['show',start['priorTree']+':'+f]))
+source=load(r/'source-identity.json');inputs=source['C']['sha256'];assert len(inputs)==len(source['R']['sha256'])+1
+for arm in ['R','C']:
+ for f,h in source[arm]['sha256'].items():assert sha((r/('source-'+arm)/f).read_bytes())==h,f
+ for f,h in source[arm]['sha256'].items():
+  wanted=load(r/'browser-identity.json')['BpolicySources'][arm]if f=='account-service/requestBudget.ts'else h;assert sha((r/('source-'+arm+'B')/f).read_bytes())==wanted,f
+for f,h in inputs.items():assert sha((repo/f).read_bytes())==h,f
+existing=[f for f,h in source['R']['sha256'].items()if inputs.get(f)!=h];assert existing==['account-service/scoped-http.ts','src/crdt/verifiedRecords.ts'];assert set(inputs)-set(source['R']['sha256'])=={'account-service/batchReadAdmission.ts'}
+browser=load(r/'browser-identity.json');roots=[]
+for arm in ['R','C']:
+ actual={str(p.relative_to(r/('source-'+arm)/'dist')):sha(p.read_bytes())for p in(r/('source-'+arm)/'dist').rglob('*')if p.is_file()};assert actual==browser['dist'][arm]
+ for p in(r/('source-'+arm)/'dist/assets').glob('*.map'):assert not any('account-service/requestBudget.ts'in s for s in load(p)['sources'])
+for arm in ['R','C','RB','CB']:assert{p.name:sha(p.read_bytes())for p in(r/('source-'+arm)/'test/live-sync-attribution').iterdir()if p.is_file()}==browser['browserClosure']
+for run in load(r/'browser-runner.json'):roots+=load(r/run['name']/'result.json')['roots']
+assert len({x['sha256']for x in roots})==1
+for x in roots:assert sha(Path(x['executable']).read_bytes())==x['sha256']
+old= json.loads(out(git+['show',start['priorTree']+':docs/release-validation-manifest.json']));now=load(repo/'docs/release-validation-manifest.json');assert old['rows']==now['rows']and old['unresolved']==now['unresolved'];assert len(now['rows'])==881 and len(now['unresolved'])==337 and sum(x['kind']=='construction'for x in now['rows'])==97
+oldCensus=json.loads(out(git+['show',start['priorTree']+':docs/account-crypto/census.json']));newCensus=load(repo/'docs/account-crypto/census.json');assert oldCensus['domains']==newCensus['domains'];assert len(newCensus['sources'])==len(oldCensus['sources'])+1
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+index=Path(out(['git','-C',str(repo),'rev-parse','--git-path','index']).decode().strip());assert sha(index.read_bytes())==start['realIndexSha256'];assert out(['git','-C',str(repo),'diff','--cached','--name-only'])==b''
+result={'status':'passed','changedPriorPaths':changed,'newRuntimeFile':'account-service/batchReadAdmission.ts','priorBlobsUnchanged':unchanged,'priorTestBlobs':tests,'onlyOneOldTestFileAppendedWithOldSixASTExact':True,'sourceClosureR':len(source['R']['sha256']),'sourceClosureC':len(inputs),'sourceClosureQualification':'Snapshot includes runtime, build tools and40packaged test helpers; not803exclusively executing runtime modules. Crypto TS census399→400.','existingSourceDifferences':existing,'newSourceOnlySchedulingHelper':True,'workingInputsExactTestedC':True,'BServicePolicyOnlyDifferenceAndClientArtifactsReused':True,'actualBrowser':roots[0],'all881ManifestRows337Unresolved97ConstructionStatusesAndContractsExact':True,'allCryptoDomainSitesExact':True,'workingLimits':'16/64','BPolicyAdopted':False,'allPriorPatchHashesExact':True,'realIndexByteUnchangedAndNoStaging':True};(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,0 +1,51 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;old=Path('/private/tmp/done-account-fairness-20261021');s=r/'source'
+shutil.copytree(old/'source',s,symlinks=True,ignore=shutil.ignore_patterns('dist','account-fairness-lab'))
+(s/'dist').symlink_to(old/'source/dist',target_is_directory=True)
+lab=s/'test/account-continuation-lab';shutil.copytree(old/'source/test/account-fairness-lab',lab)
+for f in ['seed.spec.ts','seed.config.ts','fairness.spec.ts']: (lab/f).unlink()
+# Immutable exact server versus diagnostic copies. Client always exact compiled candidate.
+shutil.copytree(s/'account-service',r/'observed-account-service')
+a=r/'observed-account-service'
+p=a/'membershipLocator.ts';v=p.read_text();v="import {observe,observeValue} from '/experiment/observer.mjs';\n"+v
+v=v.replace("if (!unchanged(db, before, reuse)) {\n        db.exec('ROLLBACK');\n        continue;", "if (!unchanged(db, before, reuse)) {\n        observe('membership-unchanged-false', {retry});\n        db.exec('ROLLBACK');\n        continue;")
+# Both locator functions have bounded loops. Labels are tied to server request path.
+v=v.replace("return no('state-changed');", "return observeValue('membership-state-changed', no('state-changed'));")
+v=v.replace("if (!before) return no('unavailable');", "if (!before) return observeValue('membership-missing-snapshot', no('unavailable'));")
+v=v.replace("if (cause instanceof LedgerIntegrityError)", "observe('membership-catch', {name:cause instanceof Error ? cause.name : 'non-error', sites:cause instanceof Error ? cause.stack?.split('\\n').slice(1,5).map(x=>x.match(/([A-Za-z]+\\.ts):(\\d+):(\\d+)/)?.slice(1)??null) : []});\n      if (cause instanceof LedgerIntegrityError)")
+p.write_text(v)
+p=a/'grants.ts';v=p.read_text();v="import {observeValue} from '/experiment/observer.mjs';\n"+v;assert v.count("if (!key) return no('insufficient-scope');")==1
+v=v.replace("if (!key) return no('insufficient-scope');", "if (!key) return observeValue('grant-no-authorized-key', no('insufficient-scope'), {scope:scope.kind});")
+p.write_text(v)
+p=a/'publisherTips.ts';v=p.read_text();v="import {observe} from '/experiment/observer.mjs';\n"+v
+needle='      if (!same) invalidatePublisher(c.key);';assert v.count(needle)==1
+v=v.replace(needle,"      if (!same) observe('publisher-fingerprint-changed', {promotionWitnessChanged:s.promotion.delivery_witness!==current.promotion.delivery_witness,ownWitnessChanged:s.publisherWitness!==current.publisherWitness,contextChanged:publisherContext(s)!==publisherContext(current),rowCountChanged:s.rows.length!==current.rows.length});\n"+needle)
+p.write_text(v)
+(r/'observer.mjs').write_text('''import {AsyncLocalStorage} from 'node:async_hooks';
+import {createHash} from 'node:crypto';
+export const contexts=new AsyncLocalStorage();
+export const sha=b=>createHash('sha256').update(b).digest('hex');
+let events=[];
+export function observe(tag,data={}){const c=contexts.getStore();if(c&&events.length<100000)events.push({at:Date.now(),id:c.id,path:c.path,bodySha256:c.bodySha256,credentialSha256:c.credentialSha256,tag,...data});}
+export function observeValue(tag,value,data={}){observe(tag,data);return value;}
+export function take(){const old=events;events=[];return old;}
+''')
+# Transport-only observer records JSON replies even when the client cancels their bodies.
+v=(old/'container-service.mjs').read_text().replace("import {createServer}","import {contexts,sha,observe,take} from '/experiment/observer.mjs';\nimport {createServer}")
+start=v.index('const server=createServer(');end=v.index('\nawait new Promise',start)
+v=v[:start]+'''let serial=0,active=0;
+const server=createServer((req,res)=>{const ctx={id:++serial,path:(req.url??'').split('?')[0]},parts=[];const json=['/account/membership/v2/discover','/account/grant/v1/begin'].includes(ctx.path);let size=0;const hashParts=[];
+ if(json){req.on('data',b=>{size+=b.length;if(size<=8192)parts.push(Buffer.from(b));});req.on('end',()=>{const body=Buffer.concat(parts);ctx.bodySha256=sha(body);try{const v=JSON.parse(body);ctx.scope=typeof v.kind==='string'?v.kind:undefined;ctx.credentialSha256=typeof v.credentialId==='string'?sha(v.credentialId):undefined;}catch{}body.fill(0);});}
+ active++;let done=false;const finish=()=>{if(!done){active--;done=true;}};res.once('finish',finish);res.once('close',finish);
+ const end=res.end;res.end=function(chunk,...args){if(json&&chunk){try{const value=JSON.parse(Buffer.isBuffer(chunk)?chunk.toString():String(chunk));const safe={status:res.statusCode,scope:ctx.scope};for(const k of ['kind','refusal','reason'])if(typeof value[k]==='string'&&/^[a-z-]{1,64}$/.test(value[k]))safe[k]=value[k];contexts.run(ctx,()=>observe('http-result',safe));}catch{}}return end.call(this,chunk,...args)};
+ if(metrics){metrics.requests++;res.once('finish',()=>{const k=String(res.statusCode);if(metrics)metrics.statuses[k]=(metrics.statuses[k]??0)+1;});}
+ contexts.run(ctx,()=>{void service.handle(req,res,()=>res.writeHead(404,{'Cache-Control':'no-store'}).end());});});''' +v[end:]
+v=v.replace(" if(msg.kind==='start')", " if(msg.kind==='trace'){send({id:msg.id,active,events:take()});}\n else if(msg.kind==='start')")
+(r/'container-service.mjs').write_text(v)
+v=(lab/'runtime.mjs').read_text().replace("root='/private/tmp/done-account-fairness-20261021'","root='/private/tmp/done-membership-continuation-20261022'")
+v=v.replace("source+'/'+f+':/app/'+f+':ro'", "(f==='account-service'&&process.env.FAIR_OBSERVED==='1'?root+'/observed-account-service':source+'/'+f)+':/app/'+f+':ro'")
+(lab/'runtime.mjs').write_text(v)
+shutil.copy2(old/'container-image.json',r/'container-image.json')
+(r/'run-plan.json').write_text(json.dumps([{'name':'1-trace-U','observed':True},{'name':'2-exact-U','observed':False}],indent=2)+'\n')
+print('Prepared exact source/client and isolated server observers')

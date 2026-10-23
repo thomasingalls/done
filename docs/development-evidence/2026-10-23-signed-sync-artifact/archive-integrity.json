@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "savedImageRetainsExactBuiltIndex": true,
+  "indexDigest": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "archiveSha256": "b77f04b200dbb7e5cce275d861a23fe48edd5860590d345f7ea7e3f9542b6947",
+  "candidateAndPredecessorFrontendInventoriesUnchanged": true,
+  "signedSourceClean": true,
+  "consolidation43SourceHashesStillExact": true
+}

@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "allFrozenPrimaryScriptsAndEnrollmentHelperAndProtocolExact": true,
+  "allSixRunContextsAndFailureContextsIndependentlyAudited": true,
+  "rows": [
+    {
+      "name": "1-B",
+      "outcome": "passed",
+      "tenProfilesFourDistinctBrowserRoots": true,
+      "all120InputsTrustedFocusedVisible": true,
+      "cpuMemorySwapPidsReadonlyAndNoOomVerified": true,
+      "recordedRefusals": [],
+      "quietRecorded429s": 0
+    },
+    {
+      "name": "2-S",
+      "outcome": "passed",
+      "tenProfilesFourDistinctBrowserRoots": true,
+      "all120InputsTrustedFocusedVisible": true,
+      "cpuMemorySwapPidsReadonlyAndNoOomVerified": true,
+      "recordedRefusals": [],
+      "quietRecorded429s": 0
+    },
+    {
+      "name": "3-U",
+      "outcome": "failed",
+      "tenProfilesFourDistinctBrowserRoots": true,
+      "all120InputsTrustedFocusedVisible": true,
+      "cpuMemorySwapPidsReadonlyAndNoOomVerified": true,
+      "recordedRefusals": [
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "httpStatus": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope",
+          "count": 6
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "httpStatus": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null,
+          "count": 6
+        }
+      ],
+      "quietRecorded429s": 0
+    },
+    {
+      "name": "4-U",
+      "outcome": "failed",
+      "tenProfilesFourDistinctBrowserRoots": true,
+      "all120InputsTrustedFocusedVisible": true,
+      "cpuMemorySwapPidsReadonlyAndNoOomVerified": true,
+      "recordedRefusals": [
+        {
+          "device": "Q1",
+          "path": "/account/grant/v1/begin",
+          "httpStatus": 403,
+          "kind": "authorization-refused",
+          "reason": null,
+          "refusal": "insufficient-scope",
+          "count": 6
+        },
+        {
+          "device": "Q1",
+          "path": "/account/membership/v2/discover",
+          "httpStatus": 409,
+          "kind": null,
+          "reason": null,
+          "refusal": null,
+          "count": 6
+        }
+      ],
+      "quietRecorded429s": 0
+    },
+    {
+      "name": "5-S",
+      "outcome": "passed",
+      "tenProfilesFourDistinctBrowserRoots": true,
+      "all120InputsTrustedFocusedVisible": true,
+      "cpuMemorySwapPidsReadonlyAndNoOomVerified": true,
+      "recordedRefusals": [],
+      "quietRecorded429s": 0
+    },
+    {
+      "name": "6-B",
+      "outcome": "passed",
+      "tenProfilesFourDistinctBrowserRoots": true,
+      "all120InputsTrustedFocusedVisible": true,
+      "cpuMemorySwapPidsReadonlyAndNoOomVerified": true,
+      "recordedRefusals": [],
+      "quietRecorded429s": 0
+    }
+  ],
+  "scope": "Additional post-outcome fidelity/refusal audit, including failed cases. Closed labels only; a409 without a captured closed reason remains unclassified. No causal attribution from status alone."
+}

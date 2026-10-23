@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;changes=[];sha=lambda b:hashlib.sha256(b).hexdigest();prefix="import { observe, sha, span } from '/experiment/observer.mjs';\n"
+def edit(file,a,b,scope=None):
+ p=r/'diagnostic-account-service'/file;old=p.read_text();t=old
+ if scope:
+  i=t.index(scope[0]);j=t.index(scope[1],i)if scope[1]else len(t);body=t[i:j];assert body.count(a)==1,(file,a,body.count(a));t=t[:i]+body.replace(a,b)+t[j:]
+ else:assert t.count(a)==1,(file,a,t.count(a));t=t.replace(a,b)
+ p.write_text(t);changes.append({'file':file,'old':a,'new':b,'beforeSha256':sha(old.encode()),'afterSha256':sha(t.encode())})
+submit=('export async function decideSubmission(','export interface ReadIssuer');inbound=('export async function readInbound(',None);discovery=('export async function discoverMembership(',None)
+for a,b in [('await publicationAuthority(s, issuer, reuse)',"await span('submit-authority',()=>publicationAuthority(s,issuer,reuse))"),('await verifiedCensus(s, auth, reuse)',"await span('submit-census',()=>verifiedCensus(s,auth,reuse))"),('await verifyWire(bytes, auth)',"await span('submit-wire',()=>verifyWire(bytes,auth))")]:edit('delivery.ts',a,b,submit)
+edit('delivery.ts','        const before = snapshot(',"        observe('read-attempt',{retry,after:request.after,publisherSha:sha(request.publisher)});\n        const before = snapshot(",inbound)
+edit('delivery.ts','await reuseInboundAuthority(',"await span('inbound-authority',()=>reuseInboundAuthority(",inbound)
+edit('delivery.ts','              reuse?.authority,\n            ),','              reuse?.authority,\n            )),',inbound)
+for a,b in [('await verifiedCensus(s, auth, reuse)',"await span('inbound-census',()=>verifiedCensus(s,auth,reuse))"),('await verifyServed(s, auth, request.after, reuse)',"await span('inbound-served',()=>verifyServed(s,auth,request.after,reuse))")]:edit('delivery.ts',a,b,inbound)
+edit('delivery.ts','        if (request.after > ledger.through)',"        observe('read-prefix',{after:request.after,through:ledger.through,publisherSha:sha(request.publisher)});\n        if (request.after > ledger.through)",inbound)
+edit('inboundAuthorityReuse.ts','    const previous = cache ? cached?.entry : state.entry;',"""    const previous = cache ? cached?.entry : state.entry;
+    observe('authority-cache',{hit:Boolean(previous?.context.equals(captured)&&previous.verify===verify),verifier:verify.name,contextSha256:key,contextBytes:captured.byteLength,liveWitnessSha256:sha(String(snapshot.promotion.delivery_witness)),publisherWitnessSha256:sha(String('publisherWitness'in snapshot?snapshot.publisherWitness:null))});""")
+for file,scope,var,arg,tag in [('membershipLocator.ts',discovery,'const { authority, history }','before','discovery-authority-history'),('historyCheckpoint.ts',None,'const { authority: auth, history }','before.original','history-authority-history')]:
+ a=var+' = await verifyCurrentWorkspaceAuthorityWithHistory(\n        '+arg+',\n        issuer,\n      );';b=var+" = await span('"+tag+"',()=>verifyCurrentWorkspaceAuthorityWithHistory(\n        "+arg+',\n        issuer,\n      ));';edit(file,a,b,scope)
+for a,b in [('await verifyMembershipDiscoveryRequest(request, issuer.pin, history, now())',"await span('discovery-request',()=>verifyMembershipDiscoveryRequest(request,issuer.pin,history,now()))"),('await verifiedCensus(before, auth, reuse)',"await span('discovery-census',()=>verifiedCensus(before,auth,reuse))"),('await issuer.discovery(body)',"await span('discovery-sign',()=>issuer.discovery(body))")]:edit('membershipLocator.ts',a,b,discovery)
+a='''await verifySignature(
+        issuer.pin.authRoot,
+        signature,
+        await membershipDiscoveryResponseMessage(response),
+      )''';b="await span('discovery-response-verify',async()=>"+a.removeprefix('await ')+')';edit('membershipLocator.ts',a,b,discovery)
+for a,b in [('await verifyHistoryExchange(r, membership, now())',"await span('history-request',()=>verifyHistoryExchange(r,membership,now()))"),('await verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse)',"await span('history-census',()=>verifiedCensus(s,selectPublisher(auth,head.credentialId),reuse))"),('await issuer.catalog(next)',"await span('history-catalog-sign',()=>issuer.catalog(next))"),('await verifyHistoryCatalog(signedCatalog, issuer.pin, p.workspaceId, p.lineageId)',"await span('history-catalog-verify',()=>verifyHistoryCatalog(signedCatalog,issuer.pin,p.workspaceId,p.lineageId))")]:edit('historyCheckpoint.ts',a,b)
+p=r/'diagnostic-account-service/historyCheckpoint.ts';t=p.read_text();i=t.index('await issuer.historyPage({');j=t.index('\n      });',i);a=t[i:j+len('\n      })')];edit('historyCheckpoint.ts',a,"await span('history-page-sign',async()=>"+a.removeprefix('await ')+')')
+for file in ['delivery.ts','inboundAuthorityReuse.ts','membershipLocator.ts','historyCheckpoint.ts']:
+ p=r/'diagnostic-account-service'/file;old=p.read_text();p.write_text(prefix+old);changes.append({'file':file,'old':'','new':prefix,'beforeSha256':sha(old.encode()),'afterSha256':sha(p.read_bytes()),'prefix':True})
+(r/'transforms.json').write_text(json.dumps(changes,indent=2)+'\n')
+state={f:(r/'diagnostic-account-service'/f).read_text()for f in {v['file']for v in changes}}
+for v in reversed(changes):
+ t=state[v['file']];assert sha(t.encode())==v['afterSha256']
+ if v.get('prefix'):assert t.startswith(v['new']);t=t[len(v['new']):]
+ else:assert t.count(v['new'])==1;t=t.replace(v['new'],v['old'])
+ assert sha(t.encode())==v['beforeSha256'];state[v['file']]=t
+assert all(t==(r/'source/account-service'/f).read_text()for f,t in state.items());(r/'source-review.json').write_text(json.dumps({'status':'passed','transformCount':len(changes),'files':list(state),'allObservationsReverseToExact26':True,'noGuardsBranchesResultsLimitsOrClientChanged':True},indent=2)+'\n');print(len(changes),'reversible observation transforms')

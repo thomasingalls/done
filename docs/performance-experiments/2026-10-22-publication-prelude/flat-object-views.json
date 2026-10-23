@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "originalStores": [
+    "/Users/thomasingalls/Code/done/.git/objects",
+    "/private/tmp/done-late-ledger-20261022/patch20-index.git/objects",
+    "/private/tmp/done-read-pacing-20261022/patch19-v2-index.git/objects",
+    "/private/tmp/done-ordinary-receive-20261022/patch18-v2-index.git/objects",
+    "/private/tmp/done-history-checkpoint-20261022/patch17-index.git/objects",
+    "/private/tmp/done-discovery-dependency-20261022/patch16-index.git/objects",
+    "/private/tmp/done-membership-continuation-20261022/patch15-index.git/objects",
+    "/private/tmp/done-account-fairness-20261021/patch14-v2-index.git/objects"
+  ],
+  "readOnlyNonrecursiveViews": [
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/0/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/1/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/2/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/3/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/4/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/5/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/6/objects",
+    "/private/tmp/done-publication-prelude-20261022/flat-object-views/7/objects"
+  ],
+  "allThreeIndependentTreesUnchanged": "ed0367a19899496a2618c60af262c92e58238aed",
+  "warning": "initial disposable proof logged redundant recursive alternate nesting; no object or apply failure",
+  "onlyDisposableInfoAlternatesChanged": true
+}

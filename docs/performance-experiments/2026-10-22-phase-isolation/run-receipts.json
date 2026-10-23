@@ -1,0 +1,114 @@
+[
+  {
+    "name": "1-A",
+    "variant": "A",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792694862488,
+    "completedAt": 1792694995385,
+    "exitCode": 0
+  },
+  {
+    "name": "2-B",
+    "variant": "B",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792694995476,
+    "completedAt": 1792695125309,
+    "exitCode": 0
+  },
+  {
+    "name": "3-D",
+    "variant": "D",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792695125398,
+    "completedAt": 1792695253542,
+    "exitCode": 0
+  },
+  {
+    "name": "4-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792695253628,
+    "completedAt": 1792695382370,
+    "exitCode": 0
+  },
+  {
+    "name": "5-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792695382453,
+    "completedAt": 1792695510475,
+    "exitCode": 0
+  },
+  {
+    "name": "6-D",
+    "variant": "D",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792695510558,
+    "completedAt": 1792695638625,
+    "exitCode": 0
+  },
+  {
+    "name": "7-B",
+    "variant": "B",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792695638708,
+    "completedAt": 1792695766916,
+    "exitCode": 0
+  },
+  {
+    "name": "8-A",
+    "variant": "A",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792695766996,
+    "completedAt": 1792695895958,
+    "exitCode": 0
+  }
+]

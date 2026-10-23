@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "priorCumulativeBlobsCompared": 25612,
+  "appendOnlyPriorFileChanges": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md"
+  ],
+  "priorPatches01Through09AndPacketChecksumsExact": true,
+  "oldTests875BlobsAndRuntimeDefaultsExact": true,
+  "workingDefault": "16/64",
+  "temporaryPolicySourceExactPhase09": "32/128",
+  "all12JourneysPreserved": true,
+  "three80msSensorFaultsDetected": true,
+  "tenDefinedAppDataGuardJourneys": true,
+  "sixEditorJourneys120PeerKeysEach": true,
+  "fourPlainControlsWithExplicitCoverageLimits": true,
+  "analysisAndIntegrityChecksPassed": 6,
+  "noOldTestsOrSecurityChecksChanged": true,
+  "priorTypingMissesAndQualificationPauseRetained": true,
+  "realIndexSha256Unchanged": "df44841805bae41f991e101d7df8e5695c8042e2bc8e42c00016cb5b54201a3f",
+  "scope": "Measurement validity and exact provenance only; no adoption, production/physical-input-to-paint or generalized qualification claim."
+}

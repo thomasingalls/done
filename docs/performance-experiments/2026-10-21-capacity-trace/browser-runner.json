@@ -1,0 +1,130 @@
+[
+  {
+    "name": "v2-1-R-feedback",
+    "arm": "R",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792613512888,
+    "completedAt": 1792613554799,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-2-C-feedback",
+    "arm": "C",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792613554802,
+    "completedAt": 1792613607851,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-3-C-feedback",
+    "arm": "C",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792613607855,
+    "completedAt": 1792613658203,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-4-R-feedback",
+    "arm": "R",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792613658207,
+    "completedAt": 1792613699998,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-5-R-ordinary",
+    "arm": "R",
+    "pressure": "none",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792613700001,
+    "completedAt": 1792613739540,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-6-C-ordinary",
+    "arm": "C",
+    "pressure": "none",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792613739543,
+    "completedAt": 1792613775722,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-7-R-independent",
+    "arm": "R",
+    "pressure": "independent",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792613775726,
+    "completedAt": 1792613817247,
+    "exitCode": 0
+  },
+  {
+    "name": "v2-8-C-independent",
+    "arm": "C",
+    "pressure": "independent",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792613817251,
+    "completedAt": 1792613856663,
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "unchangedPriorBlobs": 26435,
+  "oldTestBlobsUnchanged": 875,
+  "all804SourceInputsExact": true,
+  "finalCandidate": "c1177575801a8eeab60b63883a3c701625ada215",
+  "allSixDeclaredJourneysPresent": true,
+  "allMetricAndGateReconstructionExact": true,
+  "nativeColdAudits": 6,
+  "observerTamperControlsDetected": 3,
+  "all881Rows337Unresolved97StatusesAndContractsUnchanged": true,
+  "existingPacketsAndPatchesExact": true,
+  "runtimeTestsPolicyAndRealIndexUnchanged": true,
+  "fairnessAcceptance": false,
+  "allFunctionalJourneys": false,
+  "knownPrivateValueMatches": 0,
+  "generalQualificationPaused": true,
+  "publication": "No real staging, commit, push, preview change, merge or deployment.",
+  "scope": "Evidence-only finite multi-account comparison. Measured gate failures are preserved, not reclassified as audit failure or capacity qualification."
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "check": "cold-trace-pilot",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-1-00",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-1-10",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-1-01",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-1-11",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-2-11",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-2-01",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-2-10",
+    "returncode": 0
+  },
+  {
+    "check": "cold-trace-2-00",
+    "returncode": 0
+  },
+  {
+    "check": "cold-full-trace",
+    "returncode": 0
+  },
+  {
+    "check": "cold-full-default",
+    "returncode": 0
+  },
+  {
+    "check": "cold-full-hot-and-peer",
+    "returncode": 0
+  },
+  {
+    "check": "cold-full-writers-no-peer",
+    "returncode": 0
+  },
+  {
+    "check": "cold-full-other-and-peer",
+    "returncode": 0
+  },
+  {
+    "check": "publisher-tip-invariants",
+    "returncode": 0
+  },
+  {
+    "check": "default-budget-invariants",
+    "returncode": 0
+  }
+]

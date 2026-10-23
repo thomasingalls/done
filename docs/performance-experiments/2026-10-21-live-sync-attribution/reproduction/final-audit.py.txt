@@ -1,0 +1,36 @@
+from pathlib import Path
+import subprocess,json,hashlib,gzip,math
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');r=Path('/private/tmp/done-live-sync-attribution-20261021');e=repo/'docs/performance-experiments/2026-10-21-live-sync-attribution'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+verified=0
+for line in (e/'SHA256SUMS').read_text().splitlines():
+ expected,name=line.split('  ',1);assert sha((e/name).read_bytes())==expected,name;verified+=name!='verification.json'
+for name,h in json.loads((r/'append-only-before.json').read_text()).items():
+ base=subprocess.check_output(['git','show','27dc7d78:'+name],cwd=repo);assert sha(base)==h;assert (repo/name).read_bytes().startswith(base)
+allowed={'docs/completed.md','docs/decisions.md','docs/performance.md'}
+changed=subprocess.check_output(['git','diff','--name-only'],cwd=repo,text=True).splitlines();assert set(changed)==allowed
+assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,text=True)==''
+assert sha((repo/'docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch').read_bytes())=='0481ebda379a3259d997d1aa3057638508175eac032f9a7b541832cfb353ebb3'
+assert (repo/'docs/progress.md').read_bytes()==subprocess.check_output(['git','show','27dc7d78:docs/progress.md'],cwd=repo)
+raw={}
+for name in ['primary-foreground-0','primary-foreground-75','primary-catchup-0','primary-catchup-75','diagnostic-foreground-0','diagnostic-catchup-75']:
+ d=json.loads(gzip.decompress((e/'runs'/(name+'.json.gz')).read_bytes()));assert d['outcome']=='passed' and all(d['guards'].values());raw[name]=d
+for prefix in ['primary-foreground','primary-catchup']:
+ assert raw[prefix+'-0']['finalExport']==raw[prefix+'-75']['finalExport']
+for name,expected in [('primary-catchup-0',33691),('primary-catchup-75',57919)]:
+ d=raw[name];assert d['caughtAt']-d['startedAt']==expected;assert len(d['concurrent']['offers'])==120
+# Independently reconstruct each primary foreground percentile directly from raw peer DOM lengths.
+percentiles={}
+for name in ['primary-foreground-0','primary-foreground-75']:
+ d=raw[name];length=len('Sync target A:')+sum(len(' L'+str(i)+';') for i in range(30));values=[]
+ for i,offer in enumerate(d['continuous']['offers']):
+  t=next(x['at'] for x in d['browsers'][1]['rows'] if x['at']>=offer['at']-2 and x['lengths'][0]>=length+i+1);values.append(t-offer['at'])
+ values.sort();p95=values[math.ceil(.95*len(values))-1];percentiles[name]=p95
+ assert round(p95,1)==(2278.2 if name.endswith('-0') else 2457.1)
+# Public asset agreement is checked independently from downloaded files, not just the prior report.
+pub=json.loads((e/'public-build.json').read_text());identity=json.loads((e/'identity.json').read_text())
+for p in pub['scripts']:
+ local=Path('/private/tmp/done-live-sync-triage-20261021')/Path(p['asset']).name
+ assert sha(local.read_bytes())==p['sha256']==identity['builds']['ordinary-dist'][p['asset'].lstrip('/')]
+result={'packetChecksumsVerifiedExcludingReceipt':verified,'appendOnlyFiles':sorted(allowed),'runtimeAndOldTestsChanged':False,'realIndexClean':True,'protectedProgressAndDeferredFormattingUnchanged':True,'sixJourneyGuardsAndMatchedExports':True,'independentContinuousPeerP95Ms':percentiles,'publicAssetsIndependentlyMatched':len(pub['scripts']),'freshConstructor':json.loads((e/'reproduction-seed-check.json').read_text())}
+(r/'final-audit.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

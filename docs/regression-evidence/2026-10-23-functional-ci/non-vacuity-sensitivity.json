@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "onlyFixtureCalendarChanged14To17": true,
+  "allTenCardWritingCasesRefusedAtNewNonemptyCardAssertions": true,
+  "threeOtherCasesPass": true,
+  "noImportTimeoutOrRuntimeFault": true
+}

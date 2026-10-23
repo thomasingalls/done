@@ -1,0 +1,11 @@
+from pathlib import Path
+r=Path(__file__).parent;trace=Path('/private/tmp/done-receiver-backlog-20261022');old=Path('/private/tmp/done-read-authority-20261022')
+for f in ['audit-native.mjs','audit-header.mjs','analyze-trace.py','review-trace.py']:
+ s=(trace/f).read_text().replace(str(trace),str(r));(r/f).write_text(s)
+p=r/'review-trace.py';s=p.read_text().replace("if report['variant']in 'CD':","if report['variant']=='I':");p.write_text(s)
+for f in ['analyze.py','review-evidence.py','sensitivity.py','cleanup.py']:
+ s=(old/f).read_text().replace(str(old),str(r));s=s.replace("native=[e for t in x['traces']for e in t['events']];assert all(e['tag']=='http-result'for e in native)","native=[e for t in x['traces']for e in t['events']if e['tag']=='http-result'];assert all(e['tag']=='http-result'for e in native)").replace("native=[v for part in x['traces']for v in part['events']];assert all(v['tag']=='http-result'for v in native)","native=[v for part in x['traces']for v in part['events']if v['tag']=='http-result'];assert all(v['tag']=='http-result'for v in native)")
+ if f=='analyze.py':s=s.replace("if x['variant']=='R'","if x['variant']=='I'").replace("if x['variant']=='C'","if x['variant']=='I'").replace("'measuredJourneys':4,'fixedOrder':['R','C','C','R'],'heavyFairnessAcceptance':all(x['primaryAcceptance']for x in candidate)","'measuredJourneys':2,'fixedOrder':['I','I'],'heavyFairnessAcceptance':False,'instrumentedMechanismOnly':True")
+ if f=='sensitivity.py':s=s.replace("if v['variant']=='C'","if v['variant']=='I'").replace("if v['variant']=='R'","if v['variant']=='I'")
+ (r/f).write_text(s)
+s=(trace/'trace-sensitivity.py').read_text().replace("if v['variant']=='D'","if v['variant']=='I'").replace("r/'3-D/state/account.sqlite'","r/'1-I/state/account.sqlite'").replace("r/'variants/D/account-service/delivery.ts'","r/'diagnostic-account-service/delivery.ts'");(r/'trace-sensitivity.py').write_text(s)

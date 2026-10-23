@@ -1,0 +1,89 @@
+{
+  "status": "local-artifact-checks-passed",
+  "source": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "tree": "765d4c4acc991a7fe11ea6993736f88ebac7000f",
+  "signedSequentialCommits": 5,
+  "imageIndexDigest": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "imageRuntimeManifestDigest": "sha256:5cd9998cf76f5607809f21cf712053ebfc0c604290cd620d9baf0cdfbc2627ee",
+  "imageConfigDigest": "sha256:d0c501d2723c9de9059a98084bfa4fac2baffa1e8fb134612ef8591514d6683c",
+  "platform": "linux/arm64",
+  "buildBoundaryTests": 31,
+  "containerSmokeChecks": 8,
+  "packagedBrowserCases": 56,
+  "productionFrontendUpgradeCompatibleRollbackCases": 1,
+  "nativeDistinctCasesCovered": 307,
+  "linuxNative": {
+    "total": 136,
+    "passed": 135,
+    "failedHistoryHarness": 1,
+    "reason": "git executable/history intentionally absent from build image"
+  },
+  "historicalFileOnHost": {
+    "passed": 21,
+    "failed": 0
+  },
+  "contentTransferOnHost": {
+    "passed": 171,
+    "failed": 0
+  },
+  "noTestRemovedOrSkipped": true,
+  "fullLoadRuns": [
+    {
+      "name": "1-C",
+      "localP95Ms": 5.7001953125,
+      "peerP95Ms": 812.199951171875,
+      "all120Keys": true,
+      "gates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": true,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      }
+    },
+    {
+      "name": "2-C",
+      "localP95Ms": 5.89990234375,
+      "peerP95Ms": 854.39990234375,
+      "all120Keys": true,
+      "gates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": true,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      }
+    }
+  ],
+  "fullLoadGatesUnchanged": {
+    "typingP95Ms": 16,
+    "completePeerP95Ms": 2500,
+    "backgroundReplaySeconds": 600
+  },
+  "failedLoadLaunch": {
+    "testsRun": 0,
+    "reason": "omitted frozen transitive helper",
+    "preserved": true,
+    "correctedClosureLocalModules": 11
+  },
+  "scopeLimits": [
+    "macOS Chromium functional/load browser fixtures, not Firefox/Bitwarden or Android hardware repetition",
+    "Linux exact-image session-enabled development wrapper; production entrypoints separately smoke tested",
+    "Frontend predecessor upgrade and compatible rollback keep the candidate backend; not a claim of predecessor server rollback",
+    "finite two-journey absolute acceptance, no relative speed claim",
+    "preceding full unit/routine CI evidence is carried by exact product-source identity, not rerun as a broad qualification campaign"
+  ],
+  "optimizationReview": {
+    "groups": 13,
+    "alreadyShared": 3,
+    "narrowCandidates": 2,
+    "intentionallyDistinct": 6,
+    "uncertain": 2,
+    "sourceFiles": 43,
+    "testsOrRefactorRunByReview": false
+  },
+  "qualification": "paused",
+  "pushMergeDeployOrPreviewMutationByThisTask": false,
+  "sharedGitObservationRetained": true,
+  "recordedAt": "2026-10-23T06:07:55.693746+00:00"
+}

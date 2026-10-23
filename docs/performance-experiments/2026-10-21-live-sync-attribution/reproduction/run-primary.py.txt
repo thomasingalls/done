@@ -1,0 +1,22 @@
+from pathlib import Path
+import os,subprocess,json,shutil
+r=Path('/private/tmp/done-live-sync-attribution-20261021');source=r/'source'
+plan=[
+ ('primary-foreground-75','foreground',75,'caughtup-seed-v3',False),
+ ('seed-backlog-v4-attempt-7','seed-backlog-v4',0,'caughtup-seed-v3',False),
+ ('primary-catchup-0','catchup',0,'backlog-seed-v3',False),
+ ('primary-catchup-75','catchup',75,'backlog-seed-v3',False),
+ ('diagnostic-foreground-0','foreground',0,'caughtup-seed-v3',True),
+ ('diagnostic-catchup-75','catchup',75,'backlog-seed-v3',True),
+]
+node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+for name,mode,delay,seed,diagnostic in plan:
+ print('START',name,flush=True);out=r/name;out.mkdir(exist_ok=True,mode=0o700)
+ if (out/'result.json').exists():raise RuntimeError('Refusing result overwrite '+name)
+ shutil.copytree(source/'test/live-sync-attribution',out/'probe',dirs_exist_ok=True)
+ env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'SYNC_ROOT':str(r),'SYNC_SOURCE':str(source),'SYNC_OUT':str(out),'SYNC_MODE':mode,'SYNC_DELAY':str(delay),'SYNC_SEED':seed,'SYNC_DIST':str(r/('diagnostic-dist-final' if diagnostic else 'ordinary-dist'))}
+ if diagnostic:env['SYNC_DIAGNOSTIC']='1'
+ with (r/(name+'.log')).open('wb') as f:
+  p=subprocess.run([node,'node_modules/@playwright/test/cli.js','test','--config','test/live-sync-attribution/playwright.config.ts'],cwd=source,env=env,stdout=f,stderr=subprocess.STDOUT)
+ print('END',name,'exit',p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

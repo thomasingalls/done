@@ -1,0 +1,11 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');prior=Path('/private/tmp/done-dispatch-calibration-20261021/source-B');sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();ident={}
+for arm in ['R','C']:
+ dest=r/('source-'+arm);shutil.copytree(prior,dest,symlinks=True);shutil.rmtree(dest/'test/live-sync-attribution');shutil.copytree(repo/'test',dest/'test',dirs_exist_ok=True);shutil.copyfile(repo/'src/crdt/verifiedRecords.ts',dest/'src/crdt/verifiedRecords.ts')
+ if arm=='R':shutil.copyfile(r/'verifiedRecords-before.ts.txt',dest/'src/crdt/verifiedRecords.ts')
+ original=json.loads(Path('/private/tmp/done-dispatch-calibration-20261021/source-identity.json').read_text())['B']['sha256'];changes=[f for f,h in original.items()if sha(dest/f)!=h];assert changes==([]if arm=='R'else['src/crdt/verifiedRecords.ts']),changes
+ ident[arm]={'sha256':{f:sha(dest/f)for f in original},'changesAgainstPhase10B':changes,'testSha256':{str(f.relative_to(dest)):sha(f)for f in (repo/'test').rglob('*')if False}}
+ # Actual current tests, including only the approved added regression cases.
+ ident[arm]['testSha256']={str(f.relative_to(dest)):sha(f)for f in (dest/'test').rglob('*')if f.is_file()}
+(r/'source-identity.json').write_text(json.dumps(ident,indent=2)+'\n');print('Fresh working-test/source snapshots; only candidate comparison helper differs')

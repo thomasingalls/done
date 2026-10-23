@@ -1,0 +1,32 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;prev=Path('/private/tmp/done-word-comparison-20261021');h=r/'browser-harness';shutil.copytree(prev/'browser-harness',h)
+(h/'capacity-probe.ts').write_text('''export function installCapacityProbe(){let sequence=0,overflow=0;const rows:unknown[]=[];const route=(path:string)=>['/account/delivery/read-v2','/account/delivery/read-v2-batch','/account/delivery/submit','/account/grant/v1/begin','/account/grant/v1/finish','/account/notifications/v1/subscribe'].indexOf(path)+1;const push=(value:unknown)=>{if(rows.length<100000)rows.push(value);else overflow++;};Object.defineProperty(window,'__capacity',{value:{call:(path:string)=>{const id=++sequence;push({at:Date.now(),id,event:'call',route:route(path)});return id;},note:(id:number,event:string,attempt:number,value=0)=>push({at:Date.now(),id,event,attempt,value}),read:()=>({rows:structuredClone(rows),overflow})}});}
+''')
+p=h/'live-sync.spec.ts';s=p.read_text().replace("import { installDispatchProbe, browserIdentity, clockBrackets } from './dispatch-probe';","import { installDispatchProbe, browserIdentity, clockBrackets } from './dispatch-probe';\nimport { installCapacityProbe } from './capacity-probe';")
+s=s.replace('await c.addInitScript(installDispatchProbe,{fault:false});','await c.addInitScript(installDispatchProbe,{fault:false});await c.addInitScript(installCapacityProbe);')
+s=s.replace('    for(const c of contexts)await c.close()',"    result.capacity=await Promise.all(contexts.map(c=>c.pages()[0]?.evaluate(()=>(window as any).__capacity?.read()).catch(()=>null)));\n    for(const c of contexts)await c.close()")
+p.write_text(s)
+p=h/'runtime.mjs';s=p.read_text().replace("import {spawn} from 'node:child_process';","import {spawn} from 'node:child_process';\nimport {createHash} from 'node:crypto';")
+s=s.replace('let injectedRead=false,injectedSubmit=false;','let injectedRead=false,injectedSubmit=false,independentStarted=false,independentTimer;\nexport const pressureOffers=[];')
+s=s.replace('phase,at:Date.now(),role}',"phase,at:Date.now(),role,labCall:Number(req.headers['x-done-lab-call']??0),labAttempt:Number(req.headers['x-done-lab-attempt']??-1)}")
+s=s.replace('  row.forwardAt=Date.now();','  row.forwardAt=Date.now();row.bodySha256=createHash(\'sha256\').update(body).digest(\'hex\');')
+s=s.replace('headers:req.headers,agent:false',"headers:{...req.headers,'x-done-lab-request-id':String(row.id+1)},agent:false")
+s=s.replace("   if(process.env.SYNC_PRESSURE==='1'&&measured&&device==='B'&&read){", "   if(process.env.SYNC_PRESSURE==='feedback'&&measured&&device==='B'&&read){")
+needle="    while(shadows.size<3){const extra=newRow(req,'shadow');extra.parent=row.id;send(req,body,undefined,extra)}\n   }"
+new=needle+"""
+   if(process.env.SYNC_PRESSURE==='independent'&&measured&&device==='B'&&row.path.endsWith('/read-v2-batch')&&!independentStarted){
+    independentStarted=true;const began=Date.now();let index=0;
+    const offer=()=>{const scheduledAt=began+index*250;const item={index,scheduledAt,at:Date.now(),inflight:shadows.size,skipped:shadows.size>=3};pressureOffers.push(item);if(!item.skipped){const extra=newRow(req,'independent');extra.parent=row.id;extra.offer=index;send(req,body,undefined,extra);item.request=extra.id;}index++;if(index<72)independentTimer=setTimeout(offer,Math.max(0,began+index*250-Date.now()));};offer();
+   }
+"""
+assert needle in s;s=s.replace(needle,new).replace('export async function stop(){','export async function stop(){\n clearTimeout(independentTimer);');p.write_text(s)
+p=h/'live-sync.spec.ts';s=p.read_text().replace('requests, frames, labelBearer','requests, frames, pressureOffers, labelBearer').replace('result.proxy=requests;result.frames=frames;','result.proxy=requests;result.frames=frames;result.pressureOffers=pressureOffers;');p.write_text(s)
+for arm in ['R','C']:shutil.copytree(h,r/('source-'+arm)/'test/live-sync-attribution')
+shutil.copyfile(prev/'node-monitor.mjs',r/'node-monitor.mjs')
+plan=[{'name':f'{i+1}-{arm}-feedback','arm':arm,'pressure':'feedback'}for i,arm in enumerate(['R','C','C','R'])]+[{'name':f'{i+5}-{arm}-ordinary','arm':arm,'pressure':'none'}for i,arm in enumerate(['R','C'])]+[{'name':f'{i+7}-{arm}-independent','arm':arm,'pressure':'independent'}for i,arm in enumerate(['R','C'])]
+(r/'browser-plan.json').write_text(json.dumps(plan,indent=2)+'\n');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();ident={'browserClosure':{p.name:sha(p)for p in h.iterdir()if p.is_file()},'dist':{arm:{str(p.relative_to(r/('source-'+arm)/'dist')):sha(p)for p in sorted((r/('source-'+arm)/'dist').rglob('*'))if p.is_file()}for arm in ['R','C']}}
+(r/'browser-identity.json').write_text(json.dumps(ident,indent=2)+'\n')
+s=(prev/'run-browser.py').read_text().replace("'SYNC_PRESSURE':str(int(case['pressure']))", "'SYNC_PRESSURE':case['pressure']").replace("'SYNC_MODE':case['mode']", "'SYNC_MODE':'catchup'")
+(r/'run-browser.py').write_text(s)
+print('Eight fixed journeys frozen; native/client/proxy joins and independent offers enabled')

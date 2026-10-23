@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "onlyTwoNativeFilesChanged": true,
+  "hardOwnerCloseInputConditionsExactAndPrecedeTypedRevision": true,
+  "sameTotalInvalidationPredicateDifferentErrorOnlyForLiveUnchangedClear": true,
+  "genericHelperStillRejectsRetiredEvidence": true,
+  "onlyNativeReadRetriesTypedClearWithinOriginalFourAttempts": true,
+  "allOtherNativeLedgerRequestGrantCustodyExpiryCommitAndFallbackGuardsAstExact": true,
+  "allOtherRuntimeProtocolClientBytesExact29": true,
+  "oldColdTestBytesExactPrefix": true,
+  "oneExplicitNativeLivenessExpectationAlignedWithImmediateTwoProofAndIndependentPageAssertions": true,
+  "allOtherOldTestsAssertionsOptionsDeadlinesExact": true
+}

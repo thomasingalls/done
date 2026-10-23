@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "ownedContainers": [
+    {
+      "name": "startup-failed-observer-export/1-D",
+      "containerNotRunning": true
+    },
+    {
+      "name": "1-D",
+      "containerNotRunning": true
+    },
+    {
+      "name": "2-D",
+      "containerNotRunning": true
+    }
+  ],
+  "ownedBrowserProfileProcesses": 0,
+  "loopback53781Closed": true,
+  "preview8443Untouched": true,
+  "cleanupKind": "Only inspected owned disposable identities after harness graceful stop; no unrelated process changes"
+}

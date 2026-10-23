@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,math,sys
+r=Path(__file__).parent;raw=json.loads((r/(sys.argv[1] if len(sys.argv)>1 else 'matched-final')/'results.json').read_text());rows=[]
+def quantile(v,q):return sorted(v)[math.ceil(len(v)*q)-1] if v else None
+assert [(x['arm'],x['block']) for x in raw]==[('reference',1),('candidate',1),('candidate',2),('reference',2)]
+for x in raw:
+ writes={}
+ for who,offers in x['writes'].items():
+  good=[o for o in offers if 'verifiedAt' in o];values=[o['verifiedAt']-o['offeredAt'] for o in good]
+  writes[who]={'offered':len(offers),'verified':len(good),'initialOfferedToProofMs':values[0] if values else None,'offeredToProofP95Ms':quantile(values,.95),'offeredToProofMaxMs':max(values) if values else None,'queueToStartMaxMs':max([o['startedAt']-o['offeredAt'] for o in good],default=None)}
+ s=x['metrics']['publisherVerification'];row={'arm':x['arm'],'block':x['block'],'outcome':x['outcome'],'replayMs':x.get('replayMs'),'elapsedMs':x['elapsedMs'],'positions':sum(i['positions'] for i in x['streams']),'writes':writes,'capacityRefusals':sum(i['status']==429 for i in x['statuses']),'stateChangeRefusals':sum(i.get('reason')=='state-changed' for i in x['statuses']),'cpuMs':(x['metrics']['cpu']['user']+x['metrics']['cpu']['system'])/1000,'rssPeak':x['metrics']['rssSampledPeak'],'loopDelayMs':x['metrics']['loopDelayMs'],'publisherVerification':s}
+ row['interactionGuardPassed']=writes['first']['offeredToProofP95Ms'] is not None and writes['first']['offeredToProofP95Ms']<=2500
+ if x['arm']=='candidate':
+  assert x['outcome']=='passed' and row['positions']==1536 and row['replayMs']<120000 and row['rssPeak']<=1024**3
+  assert all(w['offered']==w['verified'] for w in writes.values()) and not row['stateChangeRefusals']
+  assert row['interactionGuardPassed'] and s['fullCensuses']==2 and s['coldLanes']==s['coldWaiting']==s['quarantined']==0
+ rows.append(row)
+result={'runs':rows,'primaryColdCandidatesPassed':2,'originalWorkloadUnchanged':True,'independentUnits':4,'pairedPercentageSpeedupUnavailable':any(x['outcome']!='passed' for x in raw),'noWarmup':True,'scope':'Local fixed cold synthetic service workload, two successful candidate processes. Not a population confidence interval, universal capacity claim, production traffic or mobile hardware.'}
+(r/'native-summary-final.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

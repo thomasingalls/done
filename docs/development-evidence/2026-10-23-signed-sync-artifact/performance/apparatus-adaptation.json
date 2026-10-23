@@ -1,0 +1,8 @@
+{
+  "originalClockMeasurementIdentitySha256": "c0328211cc3c2f09d6575edb35cae1f46a06e66c618fd4e03273c3f80c89322b",
+  "allOriginalNativeAndClientSourceHashesMatchSignedSource": true,
+  "allWorkloadObserverAndAcceptanceFilesExactExceptRuntimePathsAndRemovalOfOldSourceMounts": true,
+  "noServiceOrProtocolBindMounts": true,
+  "image": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "candidateFrontendFileIndexSha256": "0119a9b7acfbee1f7bf0d3ddbb71035a8bbe81eeaaecff6e55d4187755ceeecf"
+}

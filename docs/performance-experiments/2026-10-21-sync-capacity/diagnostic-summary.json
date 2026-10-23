@@ -1,0 +1,104 @@
+{
+  "drainMs": 33716,
+  "guards": {
+    "bothWay": true,
+    "undoRedo": true,
+    "wholeExportEquality": true,
+    "lockedOfflineReopen": true
+  },
+  "http429": 5,
+  "budgetRefusals": [
+    {
+      "at": 1792581280334,
+      "session": 1,
+      "stage": "top-up",
+      "reason": "session-rate",
+      "sessionTokens": 2.092069343999946,
+      "processTokens": 479.00566137600015,
+      "sessionActive": 1,
+      "processActive": 1,
+      "total": 4,
+      "started": 0,
+      "nextSameSessionAdmissionGapMs": 1004
+    },
+    {
+      "at": 1792581283251,
+      "session": 1,
+      "stage": "top-up",
+      "reason": "session-rate",
+      "sessionTokens": 1.7673686719999446,
+      "processTokens": 479.0060133120001,
+      "sessionActive": 1,
+      "processActive": 1,
+      "total": 4,
+      "started": 0,
+      "nextSameSessionAdmissionGapMs": 1007
+    },
+    {
+      "at": 1792581286131,
+      "session": 1,
+      "stage": "top-up",
+      "reason": "session-rate",
+      "sessionTokens": 1.8519019999999407,
+      "processTokens": 479.005781312,
+      "sessionActive": 1,
+      "processActive": 1,
+      "total": 4,
+      "started": 0,
+      "nextSameSessionAdmissionGapMs": 1007
+    },
+    {
+      "at": 1792581289389,
+      "session": 1,
+      "stage": "top-up",
+      "reason": "session-rate",
+      "sessionTokens": 2.9892446719999946,
+      "processTokens": 479.0058933120002,
+      "sessionActive": 1,
+      "processActive": 1,
+      "total": 4,
+      "started": 0,
+      "nextSameSessionAdmissionGapMs": 1009
+    },
+    {
+      "at": 1792581292443,
+      "session": 1,
+      "stage": "top-up",
+      "reason": "session-rate",
+      "sessionTokens": 1.8482473439999663,
+      "processTokens": 479.0059386880002,
+      "sessionActive": 1,
+      "processActive": 1,
+      "total": 4,
+      "started": 0,
+      "nextSameSessionAdmissionGapMs": 1011
+    }
+  ],
+  "reasons": {
+    "top-up:session-rate": 5
+  },
+  "serverMetrics": {
+    "elapsedMs": 34545.829416,
+    "cpu": {
+      "user": 10066574,
+      "system": 1064121
+    },
+    "eventLoopUtilization": {
+      "idle": 26075.8216,
+      "active": 8470.358734091187,
+      "utilization": 0.24518944358466133
+    },
+    "rssSampledPeak": 269205504,
+    "rssStart": 107282432,
+    "rssEnd": 251428864,
+    "rssSamples": 1674,
+    "samplingMs": 20,
+    "loopDelayMs": {
+      "p50": 10.354687,
+      "p95": 11.575295,
+      "p99": 13.524991,
+      "max": 32.129023
+    }
+  },
+  "scope": "Separate instrumented run; numeric wait gaps overlap refill/useful work and are not additive causal allocations."
+}

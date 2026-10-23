@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,hashlib,subprocess,shutil,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-word-comparison';sha=lambda b:hashlib.sha256(b).hexdigest();load=lambda p:json.loads(p.read_text());start=load(r/'starting.json')
+subprocess.run(['python3',str(r/'identity.py')],stdout=subprocess.DEVNULL,check=True,env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'})
+assert all(x['exitCode']==0 for x in load(r/'final-checks.json'));assert load(r/'planning-receipt.json')['exitCode']==0;assert load(r/'unit-final.json')['numPassedTests']==112;assert load(r/'unit-final.json')['success'];assert load(r/'evidence-review.json')['status']=='passed';assert not load(r/'summary.json')['appTimingAcceptance'];assert load(r/'micro-summary.json')['passed']
+m=load(r/'mutation-summary.json');assert len(m)==6 and all((x['exitCode']==0)==x['expectedPass']for x in m);assert [len(x['failed'])for x in m[2:]]==[3,2,1,1]
+# Preserve all prior packet identities, including rejected evidence and deferred formatting.
+for old in(repo/'docs/performance-experiments').iterdir():
+ if old==packet or not(old/'SHA256SUMS').exists():continue
+ for line in(old/'SHA256SUMS').read_text().splitlines():
+  h,f=line.split('  ',1);assert sha((old/f).read_bytes())==h,str(old/f)
+if not packet.exists():shutil.copytree(r/'evidence-build',packet)
+for f,v in load(packet/'artifact-provenance.json').items():assert sha((packet/f).read_bytes())==v['storedSha256'],f
+assert load(packet/'privacy-audit.json')['matches']==0
+oldPaths=set(line.split('\t',1)[1]for line in subprocess.check_output(['git','--git-dir=/private/tmp/done-dispatch-calibration-20261021/patch10-index.git','ls-tree','-r',start['priorTree']],text=True).splitlines())
+newPaths=set(subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True,env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}).splitlines())-oldPaths
+assert all(p.startswith('docs/performance-experiments/2026-10-21-word-comparison/')for p in newPaths),newPaths
+result={'status':'passed','workingRuntimeUnchanged':True,'candidateHeldAfterAllThreeCatchupAndPeerGateMisses':True,'microPrototypeV1V2FailuresRetained':True,'allEightJourneysAnd960PeerKeysPreserved':True,'oldVerifiedTestBodiesExactWithExpandedImportAndSeparatorOnly':True,'sixAppendedRegressionCases':True,'fourOmissionControlsDetected':True,'finalAffectedUnitCases':112,'affectedPlanningCases':93,'all881Obligations337Unresolved97ConstructionStatusesPreserved':True,'oldPatchAndPacketBytesUnchanged':True,'runtimeDefaults':'16/64','temporaryMeasuredPolicy':'32/128','noRealStaging':True,'indexMetadataReview':load(r/'index-metadata-review.json'),'generalQualificationPaused':True,'scope':'Bounded comparison trial rejected for app timing; regression/planning/evidence checks only, not generalized release or production-capacity qualification.'};(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');(packet/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+str(p.relative_to(packet))+'\n'for p in sorted(packet.rglob('*'))if p.is_file()and p.name!='SHA256SUMS'));print(json.dumps(result,indent=2))

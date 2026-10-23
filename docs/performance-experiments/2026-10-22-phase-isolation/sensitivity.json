@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "drop-input",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "alter-cold-archive",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "alter-retained-delivery",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "invent-replay-pass",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "alter-complete-peer-timing",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "alter-progress-offset",
+      "exitCode": 1,
+      "assertionDetected": true
+    },
+    {
+      "name": "native-ciphertext-digest",
+      "exitCode": 1,
+      "assertionDetected": true
+    }
+  ]
+}

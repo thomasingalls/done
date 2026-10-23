@@ -1,0 +1,44 @@
+{
+  "base": "2cd181c865ddf49e70abc45b3e2faa58d4444af08f517f1537642313c77deb98",
+  "diagnostic": "f0d1c30664371a8d6ea2da32dd37b6304ad2599a45db20c59e1bdaedfed238eb",
+  "replacements": [
+    [
+      "  let phase: Diagnostic['phase'] = 'request';",
+      "  observe('read-start');\n  let phase: Diagnostic['phase'] = 'request';"
+    ],
+    [
+      "    for (let retry = 0; retry < 4; retry++) {",
+      "    for (let retry = 0; retry < 4; retry++) { observe('read-attempt',{retry,after:request.after,publisherSha256:sha(request.publisher),readerSha256:sha(request.reader)});"
+    ],
+    [
+      "        if (!s) return unknown('unavailable');",
+      "        observe('read-captured');\n        if (!s) return unknown('unavailable');"
+    ],
+    [
+      "        if (\n          request.serviceId",
+      "        observe('read-authority');\n        if (\n          request.serviceId"
+    ],
+    [
+      "        const ledger = await verifiedCensus(s, auth, reuse);",
+      "        observe('read-admitted');\n        const ledger = await verifiedCensus(s, auth, reuse);\n        observe('read-census',{through:ledger.through});"
+    ],
+    [
+      "        phase = 'commit';",
+      "        observe('read-served',{entries:page.entries.length,next:page.next,through:page.through});\n        phase = 'commit';"
+    ],
+    [
+      "        if (!current) {",
+      "        observe('read-current',{current});\n        if (!current) {"
+    ],
+    [
+      "        return { kind: 'decision', bytes: answer };",
+      "        observe('read-answer',{next:page.next,through:page.through,entries:page.entries.length});\n        return { kind: 'decision', bytes: answer };"
+    ],
+    [
+      "        note(cause);",
+      "        observe('read-caught',{code:causeCode(cause)});\n        note(cause);"
+    ]
+  ],
+  "clientDistSource": "/private/tmp/done-account-fairness-20261021/source/dist",
+  "diagnosticOnly": true
+}

@@ -1,0 +1,403 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "workspace": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+  "source_description": "Cumulative31 working tree, per parent; HEAD is moving through cumulative patch signing. Content hashes identify inspected source, not the final release artifact.",
+  "head_observed_at_report_write": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "scope_unit": "One explicitly selected mechanism-comparison group, not a callsite or file and not an exhaustive optimization census.",
+  "comparison_count": 13,
+  "classification_counts": {
+    "already_shared": 3,
+    "intentional_distinct_boundary": 6,
+    "strong_narrow_sharing_candidate": 2,
+    "uncertain_contract_sharing": 1,
+    "uncertain_low_payoff": 1
+  },
+  "groups": [
+    {
+      "id": "G01",
+      "title": "Service stable/complete authority proof consumers",
+      "classification": "already_shared",
+      "sites": [
+        "account-service/delivery.ts:653-678",
+        "account-service/delivery.ts:1073-1093",
+        "account-service/delivery.ts:1494-1500",
+        "account-service/membershipLocator.ts:150-161",
+        "account-service/historyCheckpoint.ts:220-242",
+        "account-service/inboundAuthorityReuse.ts:120-228"
+      ],
+      "conclusion": "One reuseInboundAuthority implementation and one bounded core authority cache. Stable read/publication proof shares producer identity; complete history uses a distinct producer namespace because the result contract differs."
+    },
+    {
+      "id": "G02",
+      "title": "Client ordinary receive and baseline incremental ledger owners",
+      "classification": "already_shared",
+      "sites": [
+        "src/crdt/accountReceive.ts:206-222",
+        "src/crdt/accountReceive.ts:625-648",
+        "src/crdt/localBaselineReuse.ts:75-95",
+        "src/crdt/localBaselineReuse.ts:173-239",
+        "src/crdt/verifiedRecords.ts:89-245",
+        "src/crdt/incrementalAccountLedger.ts:229-462"
+      ],
+      "conclusion": "Both reuse createVerifiedRecords, createVerificationMemo and extendAccountLedger. Baseline-specific source proof and full replay comparison remain adapters."
+    },
+    {
+      "id": "G03",
+      "title": "Publication and local flush batching windows",
+      "classification": "already_shared",
+      "sites": [
+        "src/crdt/batchWindow.ts:6-38",
+        "src/crdt/accountSyncDriver.ts:73-75",
+        "src/crdt/admissionQueue.ts:203-205",
+        "src/crdt/accountBatchPolicy.ts:8-15"
+      ],
+      "conclusion": "A common deadline state machine is already used by both owners. Durability, send authorization and retries remain separate."
+    },
+    {
+      "id": "G04",
+      "title": "Positive crypto memo storage",
+      "classification": "strong_narrow_sharing_candidate",
+      "sites": [
+        "account-service/deliveryVerification.ts:25-96",
+        "src/crdt/verificationMemo.ts:3-51",
+        "account-service/delivery.ts:889-897",
+        "account-service/core.ts:245-258"
+      ],
+      "conclusion": "Same slot/context/exact-input matching, copied inputs and detached positive results. Share storage/equality/copy/erase kernel only; preserve service LRU/byte budget and nonthrowing revision suppression versus client current()/strict revision refusal and retain(). Default service uses tips and bypasses this row memo."
+    },
+    {
+      "id": "G05",
+      "title": "LRU and byte accounting plumbing across caches",
+      "classification": "uncertain_low_payoff",
+      "sites": [
+        "account-service/inboundAuthorityReuse.ts:51-89",
+        "account-service/inboundAuthorityReuse.ts:199-213",
+        "account-service/deliveryVerification.ts:31-37",
+        "account-service/deliveryVerification.ts:79-90",
+        "src/crdt/archiveProjection.ts:8-36",
+        "account-service/publisherTips.ts:520-529"
+      ],
+      "conclusion": "Map promotion/eviction repeats, but key material, charge units and disposal capabilities differ. A policy-injected map utility may reduce maintenance; no demonstrated optimization benefit or safe drop-in cache abstraction."
+    },
+    {
+      "id": "G06",
+      "title": "Service public authority proof versus client custody authentication",
+      "classification": "intentional_distinct_boundary",
+      "sites": [
+        "account-service/inboundAuthorityReuse.ts:137-198",
+        "src/crdt/accountAuthority.ts:43-104",
+        "src/crdt/accountReceive.ts:274-307",
+        "account-protocol/admissionHistory.ts:53-76"
+      ],
+      "conclusion": "Same general positive reuse idea, different authorities: serialized public native snapshot plus replayed custody checks versus fresh complete slot inventory authenticated against a live owner. Do not share authority state, equality contract or capability output."
+    },
+    {
+      "id": "G07",
+      "title": "Service publisher prefix versus exclusive local warm content",
+      "classification": "intentional_distinct_boundary",
+      "sites": [
+        "account-service/publisherTips.ts:369-530",
+        "src/crdt/warmContent.ts:24-165",
+        "src/crdt/contentStore.ts:364-385",
+        "src/crdt/contentStore.ts:480-484"
+      ],
+      "conclusion": "SQL compact witnessed prefix with data_version/commit identities/served row verification/quarantine differs from exclusive IDB row shape plus rotating ciphertext audit. Merging their acceptance predicate would change corruption detection semantics."
+    },
+    {
+      "id": "G08",
+      "title": "Foreground verified prefix versus independent audit worker",
+      "classification": "intentional_distinct_boundary",
+      "sites": [
+        "account-service/publisherTips.ts:197-258",
+        "account-service/publisherAudit.worker.ts:8-26",
+        "account-service/publisherTips.ts:463-478"
+      ],
+      "conclusion": "Worker deliberately reconstructs public authority and full census without foreground proof reuse. Shared algorithm code is already imported, but sharing cached evidence would remove independence."
+    },
+    {
+      "id": "G09",
+      "title": "Cold lanes, duplicate admission and grant single flight",
+      "classification": "intentional_distinct_boundary",
+      "sites": [
+        "account-service/publisherTips.ts:320-364",
+        "account-service/batchReadAdmission.ts:5-18",
+        "account-service/scoped-http.ts:230-241",
+        "account-service/scoped-http.ts:313-323",
+        "src/account/scopedTransport.ts:321-339"
+      ],
+      "conclusion": "Cold FIFO waits and recaptures per request; duplicate exclusion refuses identical scoped bodies before extra work charges; grant single flight shares an expiring grant acquisition per account/session/scope. These are three different observable outcomes, not interchangeable single flight."
+    },
+    {
+      "id": "G10",
+      "title": "Wire batching, local grouping and prefetch/flow accounting",
+      "classification": "intentional_distinct_boundary",
+      "sites": [
+        "account-protocol/inboundBatch.ts:5-79",
+        "account-service/inboundBatch.ts:18-44",
+        "src/crdt/receiveGroup.ts:5-40",
+        "src/crdt/receivePrefetch.ts:22-89",
+        "account-service/requestBudget.ts:82-109"
+      ],
+      "conclusion": "Wire framing is domain-tagged, copies decoded items and preserves signed inner messages; local queue framing borrows subarrays and has pending/record budgets. Service reads run sequentially; client may prefetch two and drains cancellation. Keep policy and ownership distinct even if a tiny integer-frame helper could be extracted."
+    },
+    {
+      "id": "G11",
+      "title": "SQL conflict, transport refusal and sync lane retry",
+      "classification": "intentional_distinct_boundary",
+      "sites": [
+        "account-service/delivery.ts:1485-1617",
+        "src/account/scopedTransport.ts:165-205",
+        "src/account/scopedTransport.ts:352-378",
+        "src/crdt/accountSyncDriver.ts:168-172",
+        "src/crdt/accountSyncDriver.ts:271-299"
+      ],
+      "conclusion": "Four native capture attempts versus exact-byte explicit capacity replay versus semantic driver outcome/backoff. New typing must not reset a failed operation clock; clear-only retry must not become generic mutation/close/authorization retry."
+    },
+    {
+      "id": "G12",
+      "title": "Stable header projections and purpose comparisons",
+      "classification": "uncertain_contract_sharing",
+      "sites": [
+        "account-service/delivery.ts:1445-1453",
+        "account-service/publisherTips.ts:69-79",
+        "account-service/historyCheckpoint.ts:231-241",
+        "account-service/delivery.ts:359-367"
+      ],
+      "conclusion": "Several explicit live-field projections overlap. They serve proof cache, compact prefix and transaction comparison purposes with different serialization/pin/publisher domains. Common projection deserves independent equivalence proof before consolidation; full current guards cannot adopt the weakened cache view."
+    },
+    {
+      "id": "G13",
+      "title": "Paired full-store IndexedDB bulk census",
+      "classification": "strong_narrow_sharing_candidate",
+      "sites": [
+        "src/crdt/contentStore.ts:243-255",
+        "src/crdt/contentStore.ts:272-285",
+        "src/crdt/localBaselineStorage.ts:124-185",
+        "src/crdt/localRetentionStorage.ts:85-98",
+        "src/crdt/contentCompaction.ts:128-147",
+        "src/crdt/contentDatabase.ts:76-141",
+        "src/crdt/startupStorage.ts:136-150"
+      ],
+      "conclusion": "Five concrete full-store sites repeat paired getAll/getAllKeys plus length validation within an existing transaction. A synchronous queue/read-pair helper can share the mechanism; callers keep metadata semantics, completion counts, strict durability, plan comparison and writes/deletes. Startup unequal 33/32 limits are a counterexample to indiscriminate unification."
+    }
+  ],
+  "source_files": [
+    {
+      "path": "account-protocol/admissionHistory.ts",
+      "sha256": "37d2961c41be794a834399a7b5878d5066f952930dcc0e69592a4f8e1bb15d19",
+      "bytes": 23758
+    },
+    {
+      "path": "account-protocol/inboundBatch.ts",
+      "sha256": "32becf116d8c1ace6ccc917024f677fd507a1fd315b43024092b717befe388df",
+      "bytes": 3173
+    },
+    {
+      "path": "account-service/batchReadAdmission.ts",
+      "sha256": "16f2eb20570065de995263b9aeb59829612d75827de401b914e4b84e0431cd1e",
+      "bytes": 760
+    },
+    {
+      "path": "account-service/core.ts",
+      "sha256": "0d75d870b1003560914531a55357b40ba676d8fc7237a3ad48ac6c9383956773",
+      "bytes": 66104
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "a85725d15524fae6c48acd203085a6daf37586cfe03c386fcc94d464f57b7a3c",
+      "bytes": 60099
+    },
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "sha256": "99011fbb1c93b478c52fd58d1d941f055563e4c355aac2cbb72e2a072a35d73c",
+      "bytes": 3278
+    },
+    {
+      "path": "account-service/historyCheckpoint.ts",
+      "sha256": "65e5306bdf57e592b9546b679b08e19f01a3204347d2a3ffbdcd6258e375df89",
+      "bytes": 28450
+    },
+    {
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "sha256": "17dfd977c50abc95942fe658e90511048126a708d1923e7805a18a0447b6077d",
+      "bytes": 8285
+    },
+    {
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23",
+      "bytes": 1852
+    },
+    {
+      "path": "account-service/membershipHistory.ts",
+      "sha256": "97be69ee260fe514b0ad9ebf2effd228734aca5810170fd789a6ae46dbcd2d4e",
+      "bytes": 8444
+    },
+    {
+      "path": "account-service/membershipLocator.ts",
+      "sha256": "61e626136fe2896c25b7939388f689da1dc8682392d7b17e2038f07703fb8a2e",
+      "bytes": 7998
+    },
+    {
+      "path": "account-service/publisherAudit.worker.ts",
+      "sha256": "7ec5a73b1ccc2d5e19ed2da8fcd0fe8e6e11078d5bf2c3597f54586b8ad3820c",
+      "bytes": 1375
+    },
+    {
+      "path": "account-service/publisherTips.ts",
+      "sha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d",
+      "bytes": 18114
+    },
+    {
+      "path": "account-service/requestBudget.ts",
+      "sha256": "c65258f954e49339adacd94a62a4b6c07400f3030674aff718f0761ad07ee41b",
+      "bytes": 4386
+    },
+    {
+      "path": "account-service/scoped-http.ts",
+      "sha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb",
+      "bytes": 15703
+    },
+    {
+      "path": "src/account/scopedTransport.ts",
+      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7",
+      "bytes": 14869
+    },
+    {
+      "path": "src/crdt/accountAuthority.ts",
+      "sha256": "88923c875ea9f6ec38274e9ed85c53170dbb42eac905554879abd4ec5b5ce7a2",
+      "bytes": 3792
+    },
+    {
+      "path": "src/crdt/accountBatchPolicy.ts",
+      "sha256": "32e7a6b7ca0ae995126a329086a36a86e61df3e920768a3f0ba4a63f4259f8ca",
+      "bytes": 661
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc",
+      "bytes": 131413
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed",
+      "bytes": 18134
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "4cac228235b0482e490b0b9f59a831721bd4c02994e7b47f2b14bc143f2d9f72",
+      "bytes": 43514
+    },
+    {
+      "path": "src/crdt/archiveProjection.ts",
+      "sha256": "7bf20a357eac8ae4b8b9479ef130da04d452478e508694411c67059cac435040",
+      "bytes": 1625
+    },
+    {
+      "path": "src/crdt/batchWindow.ts",
+      "sha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535",
+      "bytes": 959
+    },
+    {
+      "path": "src/crdt/contentCompaction.ts",
+      "sha256": "f0ea9f847c4b64b12d3af4b2594cb8eab1d18eba2d3a931a781a2310a959ed9b",
+      "bytes": 8584
+    },
+    {
+      "path": "src/crdt/contentDatabase.ts",
+      "sha256": "d42d487e9b232af4fa980506123f825e5478fbaf3a8c388ebae16823b2da272d",
+      "bytes": 4400
+    },
+    {
+      "path": "src/crdt/contentSelection.ts",
+      "sha256": "4138c2425deb05bb50b745b53f79589b5a86cccc901e9050b259428d99c152f8",
+      "bytes": 1561
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "b947bd73c46a2df1c7172dd7c2f6d4e1ca81846cab1f494d71a6d0b9c15bf0ec",
+      "bytes": 61220
+    },
+    {
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "794d207fc9988cafa666556b1a84d0c44cf905b92473a5bf690d6cba7c92030d",
+      "bytes": 17693
+    },
+    {
+      "path": "src/crdt/localBaselineReuse.ts",
+      "sha256": "96ab0557a54235a8279a5d08658f33d0218aad67b459047c05432398af185707",
+      "bytes": 8985
+    },
+    {
+      "path": "src/crdt/localBaselineStorage.ts",
+      "sha256": "f4a7b4c651ac8a25be95ad63ad7f0290f42ef6b9819ccee442965561e73371ea",
+      "bytes": 19896
+    },
+    {
+      "path": "src/crdt/localRetentionStorage.ts",
+      "sha256": "c31316b0686ee28ce6ad6dabd6e0a34a2a5583f80323fddcee44a3a66c9b78f9",
+      "bytes": 11723
+    },
+    {
+      "path": "src/crdt/receiveGroup.ts",
+      "sha256": "95e6aa774513d5423849093aaab5bf08623ef1947d06403b494736578efb0485",
+      "bytes": 1644
+    },
+    {
+      "path": "src/crdt/receivePrefetch.ts",
+      "sha256": "bb89aa9ae1ad800d52ad896279ad9a95d8fb02269702f18865dd0c461e4b0499",
+      "bytes": 3590
+    },
+    {
+      "path": "src/crdt/startupStorage.ts",
+      "sha256": "856ad79ed81f42d3ac6203771883ff2bf51ba7b610d3548b98dea4218f6ddefb",
+      "bytes": 6911
+    },
+    {
+      "path": "src/crdt/verificationMemo.ts",
+      "sha256": "915c0dfac0b0b4fbcb7093a4be5292ba893d0675f7ba7ebada7a0f07eae02dc1",
+      "bytes": 1768
+    },
+    {
+      "path": "src/crdt/verificationOwnership.ts",
+      "sha256": "2189144ef4ab0f5cbc1ff8605d763a121ba949f91ed13edaecfe14eaea9ee3e4",
+      "bytes": 1214
+    },
+    {
+      "path": "src/crdt/verifiedRecords.ts",
+      "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6",
+      "bytes": 9642
+    },
+    {
+      "path": "src/crdt/warmContent.ts",
+      "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac",
+      "bytes": 6203
+    },
+    {
+      "path": "test/account-service-delivery/cold-verification.test.mjs",
+      "sha256": "0f555d045d2d4a19473b8c81c4bcfd3ee7387951d0d6fb2114da2e76c60c4886",
+      "bytes": 21436
+    },
+    {
+      "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "sha256": "a9ae6849535d6557aa7a8c719c4cee2221381366113e73661f93097a83b8f750",
+      "bytes": 33615
+    },
+    {
+      "path": "test/account-service-delivery/publisher-tips.test.mjs",
+      "sha256": "99889890b56e2fb1870a62ac492aa30e07add8acc9565804ca2e7d36fa6845ab",
+      "bytes": 9225
+    },
+    {
+      "path": "test/account-sessions/inbound-authority-cache.test.mjs",
+      "sha256": "9b7caeb6631aae4bf4428720d42da8e3efff89b13ad3b6cd7674df64cef4b8b2",
+      "bytes": 16658
+    },
+    {
+      "path": "test/verificationMemo.test.ts",
+      "sha256": "ca11aa9ff4f42e81f91ba1261990f4453f1e546264fe89713fb3519a7b9faffb",
+      "bytes": 1331
+    }
+  ],
+  "validation": "Static source and existing test-body inspection only. No tests, benchmarks, source changes, staging, commits or build input changes performed."
+}

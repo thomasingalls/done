@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,collections,math
+r=Path(__file__).parent;rows=[]
+def p95(v):return sorted(v)[math.ceil(.95*len(v))-1] if v else None
+for folder in ['trace-baseline','matched','warm-matched','own-only','other-peer','warm-matched-v2','own-only-v2']:
+ for d in json.loads((r/folder/'results.json').read_text()):
+  writes={}
+  for who,offered in d['writes'].items():
+   verified=[x for x in offered if 'verifiedAt' in x];latencies=[x['verifiedAt']-x['offeredAt'] for x in verified];writes[who]={'offered':len(offered),'verified':len(verified),'offeredToVerifiedP95Ms':p95(latencies),'offeredToVerifiedMaxMs':max(latencies) if latencies else None}
+  row={'folder':folder,'name':str(d['block'])+'-'+d['arm'],'arm':d['arm'],'outcome':d['outcome'],'elapsedMs':d['elapsedMs'],'replayMs':d.get('replayMs'),'verifiedPositions':sum(x['positions'] for x in d['streams']),'completedStreams':sum(x['completed'] for x in d['streams']),'writes':writes,'statuses':dict(collections.Counter(str(x['status'])+(':'+x['reason'] if 'reason' in x else '') for x in d['statuses'])),'cpuMs':(d['metrics']['cpu']['user']+d['metrics']['cpu']['system'])/1000,'rssSampledPeak':d['metrics']['rssSampledPeak'],'warmOutsideMeasurement':bool(d.get('warm')),'warmPreflightMs':d.get('warm',{}).get('elapsedMs'),'timingCredit':folder not in ['trace-baseline','warm-matched','own-only']}
+  if folder=='warm-matched-v2' and d['arm']=='candidate':
+   assert d['outcome']=='passed' and row['verifiedPositions']==1536 and row['completedStreams']==6
+   assert all(x['verified']==x['offered'] for x in writes.values())
+   assert writes['first']['offeredToVerifiedP95Ms']<=2500
+   row['predeclaredInteractionGuardPassed']=True
+  rows.append(row)
+assert len(rows)==16
+result={'runs':rows,'rawRuns':len(rows),'failedRuns':sum(x['outcome']=='failed' for x in rows),'originalColdAcceptanceCleared':False,'cleanWarmCandidateCompletionAndInteractionGuardsPassed':True,'potentiallyContaminatedBlockRetained':['warm-matched','own-only'],'scope':'Every raw outcome retained; failed runs are not completed latency/throughput samples. Warm-only comparison cannot establish cold capacity, population confidence, production/WAN/phone or absence of starvation.'}
+(r/'native-summary.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

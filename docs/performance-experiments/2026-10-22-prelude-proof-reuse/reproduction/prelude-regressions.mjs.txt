@@ -1,0 +1,356 @@
+async function preludeProofFixture(t, later = false) {
+  const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+  const epoch = later ? 4 : 3,
+    head = later ? x.admission.head : x.certification.head;
+  const delivery = await import('../../account-service/delivery.ts');
+  const locator = await import('../../account-service/membershipLocator.ts');
+  const checkpoint = await import('../../account-service/historyCheckpoint.ts');
+  const { createDeliveryVerification } =
+    await import('../../account-service/deliveryVerification.ts');
+  const db = await discoveryDatabase(x),
+    reuse = createDeliveryVerification({ db, path: x.f.path, signal() {} });
+  t.after(() => {
+    reuse.close();
+    db.close();
+  });
+  let sequence = 0;
+  const nonce = () => (++sequence).toString(16).padStart(64, '0');
+  const discoveryRequest = (original = false, changes = {}) =>
+    membershipLocatorRequests(x).discovery(
+      original ? x.context.existing.id : x.context.candidate.id,
+      original ? x.keys.existing : x.keys.new,
+      { epoch, head, nonce: nonce(), ...changes },
+    );
+  const catalogRequest = (changes = {}) =>
+    continuationHistoryRequest(x, { epoch, head, nonce: nonce(), ...changes });
+  const a = await x.authority.owner.discoverMembership(
+    { discoverMembership: (_input, issuer) => issuer },
+    discoveryRequest(),
+  );
+  const b = await x.authority.owner.exchangeHistoryCheckpoint(
+    { exchangeHistoryCheckpoint: (_input, issuer) => issuer },
+    await catalogRequest(),
+  );
+  const issuer = { ...a, ...b },
+    retained = [];
+  const h = {
+    x,
+    epoch,
+    head,
+    delivery,
+    db,
+    reuse,
+    issuer,
+    retained,
+    discoveryRequest,
+    catalogRequest,
+    invoke(
+      operation,
+      request,
+      { owner = reuse, value = issuer, hook = () => {}, now = () => 1000 } = {},
+    ) {
+      return operation === 'discovery'
+        ? locator.discoverMembership(db, request, value, now, hook, owner)
+        : checkpoint.exchangeHistoryCheckpoint(db, request, value, now, hook, owner);
+    },
+    capture() {
+      db.exec('BEGIN');
+      try {
+        return delivery.snapshot(db, x.workspace);
+      } finally {
+        db.exec('ROLLBACK');
+      }
+    },
+    async discovery({
+      original = false,
+      changes = {},
+      owner = reuse,
+      value = issuer,
+      hook = () => {},
+      now = () => 1000,
+    } = {}) {
+      const request = discoveryRequest(original, changes),
+        result = await locator.discoverMembership(db, request, value, now, hook, owner);
+      return { request, result };
+    },
+    async catalog({
+      changes = {},
+      owner = reuse,
+      value = issuer,
+      hook = () => {},
+      now = () => 1000,
+    } = {}) {
+      const request = await catalogRequest(changes),
+        result = await checkpoint.exchangeHistoryCheckpoint(db, request, value, now, hook, owner);
+      return { request, result };
+    },
+    async checkDiscovery(answer) {
+      assert.equal(answer.result.kind, 'membership-discovery', JSON.stringify(answer.result));
+      const verified = await verifyMembershipDiscoveryResponse(
+        answer.result,
+        answer.request,
+        x.base,
+        1000,
+      );
+      assert.equal(verified.history.current.head, head);
+    },
+    async checkCatalog(answer) {
+      assert.equal(answer.result.ok, true, JSON.stringify(answer.result));
+      const verified = await verifyHistoryCheckpointPage(
+        answer.result.page,
+        answer.request,
+        x.authority.pin,
+      );
+      assert(verified);
+    },
+    async read() {
+      const request = query(x, 0, 8, { epoch, head, nonce: nonce() }, x.keys.existing);
+      const result = await delivery.readInbound(db, request, issuer, () => {}, reuse);
+      page(x, result, request, retained);
+      return result;
+    },
+    async append() {
+      const wire = x.make(retained.length + 1, 'independent committed prelude append', { epoch });
+      const result = await x.deliveryCall(wire);
+      let previous = '00'.repeat(32);
+      for (const old of retained) previous = link(old.w.subject, previous);
+      decision(x, result, wire, previous, epoch);
+      retained.push({ w: wire, r: result, epoch });
+    },
+  };
+  return h;
+}
+function preludeProofWork(t) {
+  let count = 0,
+    active = false;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (active && Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) count++;
+    return verify(...args);
+  });
+  const result = () => count;
+  result.run = async (run) => {
+    active = true;
+    try {
+      return await run();
+    } finally {
+      active = false;
+    }
+  };
+  return result;
+}
+for (const later of [false, true])
+  for (const operation of ['discovery', 'catalog'])
+    test(`complete prelude authority is reused for independent ${operation} requests under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+      const h = await preludeProofFixture(t, later),
+        work = preludeProofWork(t);
+      const check = operation === 'discovery' ? h.checkDiscovery : h.checkCatalog;
+      await check(await work.run(() => h[operation]()));
+      const cold = work();
+      assert(cold > 0);
+      for (let i = 0; i < 3; i++) await check(await work.run(() => h[operation]()));
+      assert.equal(
+        work(),
+        cold,
+        'fresh signed requests must not rebuild unchanged complete history',
+      );
+    });
+for (const later of [false, true])
+  test(`complete prelude authority coexists with ordinary read proofs under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      work = preludeProofWork(t);
+    await work.run(() => h.read());
+    const ordinary = work();
+    assert(ordinary > 0);
+    await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+    const complete = work();
+    assert(complete > ordinary);
+    await h.checkCatalog(await work.run(() => h.catalog()));
+    assert.equal(work(), complete, 'same complete purpose may serve both native consumers');
+    for (let i = 0; i < 3; i++) {
+      await work.run(() => h.read());
+      await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+      await h.checkCatalog(await work.run(() => h.catalog()));
+    }
+    assert.equal(work(), complete, 'separate mathematical purposes must not evict one another');
+  });
+for (const later of [false, true])
+  test(`complete prelude authority survives genuine independent appends under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const h = await preludeProofFixture(t, later);
+    await h.checkDiscovery(await h.discovery({ original: true }));
+    await h.checkCatalog(await h.catalog());
+    const work = preludeProofWork(t);
+    for (let i = 0; i < 3; i++) {
+      await h.append();
+      await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+      await h.checkCatalog(await work.run(() => h.catalog()));
+    }
+    // The independent writer's core may verify its own proof once; receiver proof work stays zero.
+    const afterWrites = work();
+    await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+    await h.checkCatalog(await work.run(() => h.catalog()));
+    assert.equal(work(), afterWrites);
+    assert.equal(
+      afterWrites,
+      0,
+      'receiver proof stays warm across an independent committed writer',
+    );
+    await h.read();
+  });
+for (const later of [false, true])
+  test(`complete prelude proof preserves detached authority, private history brands and native ${later ? 'continued' : 'certified'} shape`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      input = h.capture();
+    const { reuseWorkspaceAuthorityHistory, verifyCurrentWorkspaceAuthorityWithHistory } =
+      h.delivery;
+    const expected = await verifyCurrentWorkspaceAuthorityWithHistory(input, h.issuer);
+    const cold = await reuseWorkspaceAuthorityHistory(input, h.issuer, h.reuse);
+    assert.deepEqual(cold, expected);
+    const first = await reuseWorkspaceAuthorityHistory(input, h.issuer, h.reuse);
+    assert.deepEqual(first, expected);
+    assert.equal('history' in first.authority, later);
+    const { historyMembershipAt } = await import('../../account-protocol/admissionHistory.ts');
+    assert.equal(historyMembershipAt(first.history, h.epoch).state.head, h.head);
+    assert.throws(() => historyMembershipAt(structuredClone(first.history), h.epoch), /Unverified/);
+    first.authority.a.head = 'ff'.repeat(32);
+    first.authority.request.candidate.workspaceId = 'ff'.repeat(16);
+    const second = await reuseWorkspaceAuthorityHistory(input, h.issuer, h.reuse);
+    assert.deepEqual(second, expected);
+    assert.strictEqual(second.history, first.history, 'only immutable branded history is shared');
+  });
+for (const later of [false, true])
+  test(`complete prelude proof keeps future fields, native evidence, pin and fresh custody in ${later ? 'continued' : 'certified'} context`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      input = h.capture(),
+      work = preludeProofWork(t);
+    const run = (s = input, issuer = h.issuer) =>
+      work.run(() => h.delivery.reuseWorkspaceAuthorityHistory(s, issuer, h.reuse));
+    await run();
+    const cold = work();
+    assert(cold > 0);
+    const future = { ...input, futureAuthority: new Map([['proof', undefined]]) };
+    await run(future);
+    assert.equal(work(), cold * 2, 'unknown native fields cannot alias old proof');
+    await run(future);
+    assert.equal(work(), cold * 2);
+    const changed = structuredClone(input);
+    changed.promotion.offer = '{}';
+    await assert.rejects(run(changed));
+    await assert.rejects(
+      run(input, { ...h.issuer, pin: { ...h.issuer.pin, authRoot: '00'.repeat(32) } }),
+    );
+    let checked = 0;
+    await assert.rejects(
+      run(input, {
+        ...h.issuer,
+        check() {
+          checked++;
+          throw Error('retired custody');
+        },
+      }),
+      /retired custody/,
+    );
+    assert.equal(checked, 1);
+    await run();
+    assert.equal(
+      work(),
+      cold * 3,
+      'failed custody removes only its proof and requires full re-verification',
+    );
+  });
+for (const later of [false, true])
+  for (const operation of ['discovery', 'catalog'])
+    test(`warm complete ${operation} proof retains fresh request, grant completion and signing expiry under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+      const h = await preludeProofFixture(t, later);
+      const check = operation === 'discovery' ? h.checkDiscovery : h.checkCatalog;
+      await check(await h[operation]());
+      const catalogBefore = h.x.f.rows('history_checkpoint_catalog');
+      const next = async () => (await h[operation]()).request;
+      const refusal = { ok: false, refusal: 'unavailable' };
+      const bad = await next();
+      bad.signature = '00'.repeat(64);
+      assert.deepEqual(await h.invoke(operation, bad), refusal);
+      assert.deepEqual(await h.invoke(operation, await next(), { now: () => 61000 }), refusal);
+      const { AuthorizationRefused } = await import('../../account-service/authorization.ts');
+      let began = 0,
+        completed = 0;
+      await assert.rejects(
+        h.invoke(operation, await next(), {
+          value: {
+            ...h.issuer,
+            authorize(db, target) {
+              assert.equal(db.isTransaction, true);
+              assert.equal(target.workspaceId, h.x.workspace);
+              began++;
+              return () => {
+                assert.equal(db.isTransaction, true);
+                completed++;
+                throw new AuthorizationRefused('sign-in-required');
+              };
+            },
+          },
+        }),
+        AuthorizationRefused,
+      );
+      assert.equal(began, 1);
+      assert.equal(completed, 1);
+      let now = 1000,
+        signs = 0;
+      const name = operation === 'discovery' ? 'discovery' : 'historyPage';
+      assert.deepEqual(
+        await h.invoke(operation, await next(), {
+          now: () => now,
+          value: {
+            ...h.issuer,
+            async [name](body) {
+              const value = await h.issuer[name](body);
+              signs++;
+              now = 61000;
+              return value;
+            },
+          },
+        }),
+        refusal,
+      );
+      assert.equal(signs, 1, 'expiry must be checked after actual response signing');
+      assert.deepEqual(h.x.f.rows('history_checkpoint_catalog'), catalogBefore);
+      await check(await h[operation]());
+    });
+for (const later of [false, true])
+  for (const operation of ['discovery', 'catalog'])
+    test(`warm complete ${operation} proof cannot hide corrupt live writing under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+      const h = await preludeProofFixture(t, later);
+      await h.append();
+      const check = operation === 'discovery' ? h.checkDiscovery : h.checkCatalog;
+      await check(await h[operation]({ original: true }));
+      const catalogBefore = h.x.f.rows('history_checkpoint_catalog');
+      mutate(h.x, (db) =>
+        db.prepare("UPDATE delivery_decisions SET submission=X'00' WHERE position=1").run(),
+      );
+      assert.deepEqual((await h[operation]({ original: true })).result, {
+        ok: false,
+        refusal: 'ledger-integrity',
+      });
+      assert.deepEqual(h.x.f.rows('history_checkpoint_catalog'), catalogBefore);
+    });
+for (const later of [false, true])
+  test(`complete prelude proof retains no-pool fallback and clear/close fences under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      s = h.capture(),
+      work = preludeProofWork(t);
+    const run = (owner) =>
+      work.run(() => h.delivery.reuseWorkspaceAuthorityHistory(s, h.issuer, owner));
+    const one = await run();
+    const cold = work();
+    assert(cold > 0);
+    const two = await run();
+    assert.equal(work(), cold * 2);
+    assert.notStrictEqual(one.history, two.history);
+    await run(h.reuse);
+    assert.equal(work(), cold * 3);
+    h.reuse.clear();
+    await run(h.reuse);
+    assert.equal(work(), cold * 4);
+    h.reuse.close();
+    await assert.rejects(run(h.reuse), /Inactive read authority cache/);
+  });

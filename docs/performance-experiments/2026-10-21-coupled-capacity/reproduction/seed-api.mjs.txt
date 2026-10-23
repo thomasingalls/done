@@ -1,0 +1,35 @@
+import {writeFileSync,copyFileSync,mkdirSync} from 'node:fs';
+import {randomBytes} from 'node:crypto';
+import {DatabaseSync} from 'node:sqlite';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-coupled-capacity-20261021',source=root+'/source-D';
+const {fixture}=await import(source+'/test/account-sessions/grant-fixtures.mjs');
+const {ready}=await import(source+'/test/account-service-delivery/fixtures.mjs');
+const {fresh}=await import(source+'/test/account-core/fixtures.mjs');
+const after=[],t={after:f=>after.push(f)};
+mkdirSync(root+'/private-api',{mode:0o700});
+try{
+ const x=await fixture(t,{clock:()=>Date.now()});
+ const y=await ready(t,{fixture:x.f,authority:x.authority,scope:{principalId:randomBytes(16).toString('hex'),workspaceId:randomBytes(16).toString('hex'),lineageId:randomBytes(32).toString('hex')},signer:randomBytes(16).toString('hex')});
+ const login=async z=>{
+  const retryKey=fresh(),view=x.f.core.sessions.begin({accountId:z.account.result.accountId,retryKey});
+  const session=await x.f.core.sessions.finish({retryKey,attemptId:view.attemptId,response:z.account.key.assert(view)});
+  assert.equal(session.stage,'issued');return session;
+ };
+ const describe=async(z,count,sessionCount)=>{
+  const sessions=[];for(let i=0;i<sessionCount;i++)sessions.push(await login(z));
+  const retained=[];
+  for(let i=1;i<=count;i++){
+   const w=z.make(i,'capacity seed '+i),r=await z.call(w);assert.equal(r.kind,'decision');
+   retained.push({w:{bytes:Buffer.from(w.bytes).toString('hex'),subject:w.subject,parent:w.parent},r:{bytes:Buffer.from(r.bytes).toString('hex')}});
+  }
+  const extras=Array.from({length:300},(_,i)=>{const w=z.make(count+i+1,'capacity offered write '+i);return{bytes:Buffer.from(w.bytes).toString('hex'),subject:w.subject,parent:w.parent};});
+  return{workspace:z.workspace,credential:z.credential,offer:z.offer,s:{privateKey:z.s.privateKey.export({type:'pkcs8',format:'pem'})},sessions,retained,extras};
+ };
+ const first=await describe(x,256,1),other=await describe(y,1,1);const additional={};for(let i=1;i<=5;i++){const z=await ready(t,{fixture:x.f,authority:x.authority,scope:{principalId:randomBytes(16).toString('hex'),workspaceId:randomBytes(16).toString('hex'),lineageId:randomBytes(32).toString('hex')},signer:randomBytes(16).toString('hex')});additional['publisher'+i]=await describe(z,256,1);}
+ const data={pin:x.authority.pin,authorityKey:Buffer.from(x.authority.key).toString('hex'),first,other,...additional};
+ const db=new DatabaseSync(x.f.path);db.exec('PRAGMA wal_checkpoint(TRUNCATE)');db.close();
+ copyFileSync(x.f.path,root+'/private-api/account.sqlite');copyFileSync(x.authority.path,root+'/private-api/authority.sqlite');
+ writeFileSync(root+'/private-api/fixture.json',JSON.stringify(data),{mode:0o600});
+ console.log(JSON.stringify({seedPositions:1537,accounts:7,hotSessions:6,otherSessions:1,writeWiresPerAccount:300}));
+}finally{for(const f of after.reverse())await f();}

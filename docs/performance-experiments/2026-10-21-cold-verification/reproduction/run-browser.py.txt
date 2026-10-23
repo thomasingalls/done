@@ -1,0 +1,14 @@
+from pathlib import Path
+import hashlib,json,os,subprocess,time
+r=Path(__file__).parent;source=r/'source-candidate';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ident=json.loads((r/'probe-identity.json').read_text());receipts=[]
+for case in json.loads((r/'browser-plan.json').read_text()):
+ name=case['name'];out=r/name
+ assert not out.exists();out.mkdir(mode=0o700)
+ assert {p.name:sha(p) for p in sorted((source/'test/live-sync-attribution').iterdir()) if p.is_file()}==ident['browserClosure']
+ env={**os.environ,'SYNC_ROOT':'/private/tmp/done-live-sync-attribution-20261021','SYNC_SOURCE':str(source),'SYNC_SEED':'backlog-seed-v3','SYNC_OUT':str(out),'SYNC_DIST':str(r/'client-dist'),'SYNC_MODE':'catchup','SYNC_DELAY':'0','SYNC_REVISION':name,'SYNC_PRESSURE':str(int(case['pressure'])),'SYNC_INJECT':str(int(case['inject'])),'SYNC_TIP_TRACE':'0'}
+ cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/live-sync-attribution/playwright.config.ts'];before=time.time_ns()//1000000
+ with (out/'invocation.log').open('w') as log: result=subprocess.run(cmd,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+ row={**case,'cwd':str(source),'serviceSource':str(source),'proxySha256':sha(source/'test/live-sync-attribution/runtime.mjs'),'command':cmd,'exitCode':result.returncode,'startedAt':before,'completedAt':time.time_ns()//1000000};receipts.append(row)
+ (r/'browser-runner.json').write_text(json.dumps(receipts,indent=2)+'\n');print(json.dumps(row),flush=True)
+ # Keep failures and remaining predefined runs; never overwrite or claim a successful-only denominator.

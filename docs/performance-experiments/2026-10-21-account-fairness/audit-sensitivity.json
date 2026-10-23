@@ -1,0 +1,23 @@
+[
+  {
+    "name": "accepted-response-signature",
+    "changedColumn": "delivery_decisions.response",
+    "startedAt": 1792619866547,
+    "completedAt": 1792619866610,
+    "exitCode": 1
+  },
+  {
+    "name": "submission-wrapper-signature",
+    "changedColumn": "delivery_decisions.submission",
+    "startedAt": 1792619866614,
+    "completedAt": 1792619866663,
+    "exitCode": 1
+  },
+  {
+    "name": "ciphertext-or-envelope-signature",
+    "changedColumn": "publisher_decisions.submission",
+    "startedAt": 1792619866666,
+    "completedAt": 1792619867101,
+    "exitCode": 1
+  }
+]

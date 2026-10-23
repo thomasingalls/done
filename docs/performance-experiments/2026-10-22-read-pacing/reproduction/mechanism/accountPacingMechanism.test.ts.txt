@@ -1,0 +1,16 @@
+// @vitest-environment node
+import { expect, it } from 'vitest';
+import {fixture,flush} from './account-sync/scheduler-fixture';
+it('a slow receiver holds queued publication; unknown backoff starts at completion and content hints preserve it',async()=>{
+ const f=fixture();f.scheduler.wake('start');await f.tick(0);f.calls[0]!.finish('idle');await flush();await f.tick(0);expect(f.calls[1]!.lane).toBe('receive');
+ f.scheduler.wake('local');await f.tick(3000);expect(f.calls).toHaveLength(2);expect(f.active).toBe(1);
+ f.calls[1]!.finish('unknown');await flush();expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(4000);
+ await f.tick(0);expect(f.calls[2]!.lane).toBe('send');expect(f.calls[2]!.at).toBe(3000);f.calls[2]!.finish('idle');await flush();
+ for(let i=0;i<20;i++)f.scheduler.wake('remote');await f.tick(999);expect(f.calls).toHaveLength(3);await f.tick(1);expect(f.calls[3]!.lane).toBe('receive');expect(f.calls[3]!.at).toBe(4000);
+ f.calls[3]!.finish('progress',1);await flush();expect(f.scheduler.runtime.status.receive.failures).toBe(0);expect(f.maximum).toBe(1);await f.scheduler.dispose();
+});
+it('even a successful slow receive delays a due sender without any failed-operation backoff',async()=>{
+ const f=fixture();f.scheduler.wake('start');await f.tick(0);f.calls[0]!.finish('idle');await flush();await f.tick(0);f.scheduler.wake('local');await f.tick(6000);
+ expect(f.calls).toHaveLength(2);expect(f.scheduler.runtime.status.send.failures).toBe(0);f.calls[1]!.finish('idle');await flush();await f.tick(0);expect(f.calls[2]!.lane).toBe('send');expect(f.calls[2]!.at).toBe(6000);
+ f.calls[2]!.finish('idle');await flush();expect(f.maximum).toBe(1);await f.scheduler.dispose();
+});

@@ -20,6 +20,7 @@ out of date. Everything below is maintained where it belongs:
 | **What the project is doing right now**       | [docs/progress.md](docs/progress.md)       |
 | What has to happen before what, and why       | [docs/sequencing.md](docs/sequencing.md)   |
 | What the product is, normatively              | [docs/PRD.md](docs/PRD.md)                 |
+| Product follow-ups and ideas to revisit       | [docs/product-backlog.md](docs/product-backlog.md) |
 | How it is built, normatively                  | [docs/TRD.md](docs/TRD.md)                 |
 | How to run, build and test it                 | [docs/development.md](docs/development.md) |
 | What the code is and where                    | [docs/codebase.md](docs/codebase.md)       |

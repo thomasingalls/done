@@ -1,0 +1,42 @@
+[
+  {
+    "block": 1,
+    "arm": "00",
+    "output": "trace-1-00"
+  },
+  {
+    "block": 1,
+    "arm": "10",
+    "output": "trace-1-10"
+  },
+  {
+    "block": 1,
+    "arm": "01",
+    "output": "trace-1-01"
+  },
+  {
+    "block": 1,
+    "arm": "11",
+    "output": "trace-1-11"
+  },
+  {
+    "block": 2,
+    "arm": "11",
+    "output": "trace-2-11"
+  },
+  {
+    "block": 2,
+    "arm": "01",
+    "output": "trace-2-01"
+  },
+  {
+    "block": 2,
+    "arm": "10",
+    "output": "trace-2-10"
+  },
+  {
+    "block": 2,
+    "arm": "00",
+    "output": "trace-2-00"
+  }
+]

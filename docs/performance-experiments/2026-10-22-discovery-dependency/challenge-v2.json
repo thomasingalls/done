@@ -1,0 +1,104 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "first-witness-dependency",
+      "file": "account-service/delivery.ts",
+      "testPattern": "discovery completes once while the unrelated first publisher",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655799091,
+      "completedAt": 1792655800698
+    },
+    {
+      "name": "project-first-publisher-own-witness",
+      "file": "account-service/delivery.ts",
+      "testPattern": "discovery projection removes exactly",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655801081,
+      "completedAt": 1792655801848
+    },
+    {
+      "name": "drop-own-witness",
+      "file": "account-service/delivery.ts",
+      "testPattern": "discovery projection removes exactly",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655802231,
+      "completedAt": 1792655803014
+    },
+    {
+      "name": "drop-authority-state",
+      "file": "account-service/delivery.ts",
+      "testPattern": "discovery projection removes exactly",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655803401,
+      "completedAt": 1792655804155
+    },
+    {
+      "name": "drop-row-prefix",
+      "file": "account-service/delivery.ts",
+      "testPattern": "discovery projection removes exactly",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655804569,
+      "completedAt": 1792655805321
+    },
+    {
+      "name": "drop-captured-purpose",
+      "file": "account-service/publisherTips.ts",
+      "testPattern": "discovery snapshot purpose is captured",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655805705,
+      "completedAt": 1792655806456
+    },
+    {
+      "name": "drop-external-version-fence",
+      "file": "account-service/publisherTips.ts",
+      "testPattern": "discovery snapshot purpose is captured",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655998198,
+      "completedAt": 1792655999283
+    },
+    {
+      "name": "drop-current-discovery-snapshot",
+      "file": "account-service/membershipLocator.ts",
+      "testPattern": "discovery retries its own publisher append",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792655999708,
+      "completedAt": 1792656000707
+    },
+    {
+      "name": "drop-complete-history-census",
+      "file": "account-service/membershipLocator.ts",
+      "testPattern": "discovery never hides same-count requesting-publisher",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792656001110,
+      "completedAt": 1792656002176
+    },
+    {
+      "name": "drop-transaction-authorization",
+      "file": "account-service/membershipLocator.ts",
+      "testPattern": "discovery reauthorizes a revoked session",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792656002574,
+      "completedAt": 1792656003601
+    },
+    {
+      "name": "drop-request-expiry",
+      "file": "account-service/membershipLocator.ts",
+      "testPattern": "discovery refuses request expiry reached",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792656004003,
+      "completedAt": 1792656004920
+    }
+  ]
+}

@@ -102,7 +102,7 @@ for (const kind of ['promotion', 'joined'] as const)
       let lost = false;
       const published: string[] = [];
       let staleGrant = false;
-      await source.route('**/account/delivery/read-v2', async (route) => {
+      await source.route('**/account/delivery/read-v2*', async (route) => {
         if (!staleGrant) {
           staleGrant = true;
           await route.fulfill({

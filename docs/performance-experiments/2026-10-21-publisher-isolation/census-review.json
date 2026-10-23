@@ -1,0 +1,13 @@
+{
+  "removed": [],
+  "added": [
+    "src/crdt/receivePageTransport.ts"
+  ],
+  "changed": [
+    "account-service/publisherTips.ts",
+    "src/account/privateDeliveryHttp.ts",
+    "src/crdt/accountReceive.ts"
+  ],
+  "domainsExact": true,
+  "nonSourceMetadataExact": true
+}

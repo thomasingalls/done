@@ -446,7 +446,9 @@ for (const combined of [false, true])
     );
     assert.throws(() => parseEnrollmentChallenge({ ...begun.challenge, v: 1 }));
     assert.throws(() => parseEnrollmentContext({ ...c, v: 1 }));
-    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 2 }));
+    // Version two also supports recovery from epoch two; version two at epoch one is invalid.
+    assert.equal(parseEnrollmentContext({ ...c, epoch: 2 }).epoch, 2);
+    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 1 }));
     assert.equal(
       (await x.enroll('finish', nextProof(x, entry, begun.challenge, 1))).refusal,
       'invalid-proof',
@@ -679,7 +681,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
       name,
     );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1278,7 +1280,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2281,6 +2283,8 @@ test('continuation certification verifies frozen publisher witnesses and refuses
   mutate(x, (db) =>
     db.prepare('UPDATE membership_admissions SET boundaries=?').run(row.boundaries),
   );
+  // Reopen after restoring the first fault so the missing-witness check owns a fresh verifier.
+  x.f.restart();
   const witness = x.f.rows('publisher_witnesses')[0];
   mutate(x, (db) => db.exec('DELETE FROM publisher_witnesses'));
   assert.equal((await d.transfer(install)).ok, false);
@@ -2289,6 +2293,8 @@ test('continuation certification verifies frozen publisher witnesses and refuses
       .prepare('INSERT INTO publisher_witnesses VALUES (?,?,?)')
       .run(witness.account_id, witness.credential_id, witness.witness),
   );
+  assert.equal((await d.transfer(install)).ok, false, 'restored bytes cannot clear quarantine');
+  x.f.restart();
   const result = await d.transfer(install);
   assert.equal(result.ok, true, JSON.stringify(result));
   const stored = x.f.rows('membership_transfers')[0];
@@ -2331,7 +2337,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2451,6 +2457,8 @@ test('three publisher ledgers preserve queued payloads, refused parents and live
   });
   assert.equal((await read(x, damaged)).kind, 'unknown');
   mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run(row.boundaries));
+  assert.equal((await read(x, damaged)).kind, 'unknown', 'byte restoration retains quarantine');
+  x.f.restart();
   page(x, await read(x, damaged), damaged, retained.get(x.context.existing.id));
 });
 
@@ -3544,6 +3552,9 @@ test('later native slot resumes activation after index interruption and rejects 
   await page.exposeFunction('fixtureCheckpoint', (body) =>
     x.authority.owner.readMembershipCheckpoint(x.f.core, body),
   );
+  await page.exposeFunction('fixtureHistory', (body) =>
+    x.authority.owner.exchangeHistoryCheckpoint(x.f.core, body),
+  );
   await page.exposeFunction('fixtureRead', async (bytes) => {
     const result = await x.authority.owner.readInbound(x.f.core, new Uint8Array(bytes));
     assert.equal(result.kind, 'decision');
@@ -3772,6 +3783,30 @@ async function compiledComparison() {
   })();
   return comparisonClient;
 }
+async function comparisonSnapshot(client, parent, producer, candidate, sign) {
+  const doc = new client.Y.Doc({ gc: false });
+  const key = new Uint8Array(32).fill(42);
+  try {
+    doc.getMap('meta').set('schemaVersion', 4);
+    const state = client.membershipState(parent);
+    doc
+      .getMap('meta')
+      .set('actor:' + state.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+    doc.getText('master').insert(0, 'Model source writing retained through comparison.');
+    return await client.createReplacementCheckpoint(
+      doc,
+      doc,
+      key,
+      parent,
+      producer,
+      candidate,
+      sign,
+    );
+  } finally {
+    key.fill(0);
+    doc.destroy();
+  }
+}
 for (const approver of ['existing', 'new'])
   test(`browser comparison by ${approver} composes with the real continuation relay and key handoff after restart`, async (t) => {
     const client = await compiledComparison(),
@@ -3796,12 +3831,23 @@ for (const approver of ['existing', 'new'])
         wrapContent: async () => ({ enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }),
         sealIncoming: async () => ({ sequence: 1, ct: 'ef'.repeat(48) }),
         checkInstalled: async (key) => assert.deepEqual(key, durable[role].content.key),
+        withInstalledKey: async (seal, _hash, work) => {
+          assert.deepEqual(seal, durable[role].content.key);
+          const key = new Uint8Array(32).fill(42);
+          try {
+            return await work(key);
+          } finally {
+            key.fill(0);
+          }
+        },
       };
     }
     const save = async (role) => {
       durable[role] = structuredClone(current[role]);
     };
     const request = async (path, body) => {
+      if (path === '/account/membership/v3/checkpoint')
+        return x.authority.owner.exchangeReplacementCheckpoint(x.f.core, body);
       if (path === '/account/membership/v2/transfer')
         return x.authority.owner.transferMembership(x.f.core, body);
       assert.equal(path, '/account/membership/v2/ceremony');
@@ -3838,7 +3884,19 @@ for (const approver of ['existing', 'new'])
       const result = await client.continueMembershipHandoff(
         current[role],
         owners[role],
-        { base: x.base, membership: parent, certification },
+        {
+          base: x.base,
+          membership: parent,
+          certification,
+          prepareReplacement: () =>
+            comparisonSnapshot(
+              client,
+              parent,
+              e.context.existing.id,
+              e.context.candidate.id,
+              (bytes) => signed(e.keys.existing, bytes),
+            ),
+        },
         () => save(role),
         request,
       );
@@ -4078,6 +4136,25 @@ for (const approver of ['existing', 'new'])
         wrapContent: async () => ({ enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }),
         sealIncoming: async () => ({ sequence: 1, ct: 'ef'.repeat(48) }),
         checkInstalled: async (key) => assert.deepEqual(key, durable[role].comparison.content.key),
+        prepareReplacement: async (authority, candidate) => {
+          const { history } = await client.verifyMembershipChain(authority.proofs, authority.base);
+          return comparisonSnapshot(
+            client,
+            client.historyMembership(history),
+            participants[role].id,
+            candidate,
+            (bytes) => signed(keys[role], bytes),
+          );
+        },
+        withInstalledKey: async (seal, _hash, work) => {
+          assert.deepEqual(seal, durable[role].comparison.content.key);
+          const key = new Uint8Array(32).fill(42);
+          try {
+            return await work(key);
+          } finally {
+            key.fill(0);
+          }
+        },
       };
     }
     const run = (role, input) =>
@@ -4098,6 +4175,8 @@ for (const approver of ['existing', 'new'])
             assert.deepEqual(base, x.base);
             if (path.includes('/enrollment/')) return x.enroll(path.split('/').at(-1), body);
             if (path.endsWith('/admit')) return authority.owner.admitMembership(x.f.core, body);
+            if (path === '/account/membership/v3/checkpoint')
+              return authority.owner.exchangeReplacementCheckpoint(x.f.core, body);
             if (path.endsWith('/ceremony')) {
               const result = await authority.owner.relayMembershipCeremony(x.f.core, body);
               if (body.action === 'decide' && loseDecision) {
@@ -4529,7 +4608,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4839,7 +4918,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
   assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
   db.close();
@@ -5189,7 +5268,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(
     db.prepare('SELECT * FROM removal_preparations').all(),
     x.f.rows('removal_preparations'),
@@ -6113,7 +6192,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
     upgradeFromV20: true,
   }).close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   for (const [table, original] of rows)
     assert.deepEqual(db.prepare('SELECT * FROM ' + table).all(), original, table);
   assert.deepEqual(db.prepare('SELECT * FROM replacement_checkpoints').all(), []);
@@ -6553,3 +6632,1397 @@ test('retained generation-one reader adopts admitted history across interrupted 
   f.restart();
   assert.match(JSON.stringify(await f.run()), /Snapshot-only retained handoff writing/);
 });
+
+async function discoveryDatabase(x) {
+  const db = new DatabaseSync(x.f.path);
+  const { enableMembershipStore } = await import('../../account-service/membershipStore.ts');
+  enableMembershipStore(db);
+  return db;
+}
+
+// Discovery race regressions use the same real signed enrollment/authority owners as the cases above.
+function discoverySigningCut(x, request, cut, authorization) {
+  let calls = 0;
+  const result = x.authority.owner.discoverMembership(
+    {
+      discoverMembership(input, issuer) {
+        return x.f.core.discoverMembership(input, {
+          ...issuer,
+          async discovery(body) {
+            const response = await issuer.discovery(body);
+            await cut(++calls);
+            return response;
+          },
+        });
+      },
+    },
+    request,
+    authorization,
+  );
+  return { result, calls: () => calls };
+}
+
+test('discovery completes once while the unrelated first publisher appends at every signing cut', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const before = x.f.rows('publisher_decisions');
+  let previous = '00'.repeat(32);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    const wire = x.make(n, 'unrelated first-publisher writing', { epoch: 4 });
+    previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+  });
+  const response = await call.result;
+  assert.equal(response.kind, 'membership-discovery', JSON.stringify(response));
+  assert.equal(call.calls(), 1, 'another publisher writing must not restart discovery');
+  assert.deepEqual(x.f.rows('publisher_decisions'), before, 'requesting publisher is unchanged');
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000)).history.current
+      .tip,
+    4,
+  );
+});
+
+test('discovery retries its own publisher append and returns only the freshly covered history', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n !== 1) return;
+    const wire = x.make(1, 'requesting publisher writing', {
+      epoch: 4,
+      credential: x.context.candidate.id,
+      signer: x.keys.new,
+    });
+    decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+  });
+  const response = await call.result;
+  assert.equal(response.kind, 'membership-discovery');
+  assert.equal(call.calls(), 2);
+  assert.equal(x.f.rows('publisher_decisions').filter((r) => r.kind === 'accepted').length, 1);
+  await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000);
+});
+
+test('discovery still refuses continuous changes to its own publisher after four attempts', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  let previous = '00'.repeat(32);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    const wire = x.make(n, 'requesting publisher keeps writing', {
+      epoch: 4,
+      credential: x.context.candidate.id,
+      signer: x.keys.new,
+    });
+    previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'state-changed' });
+  assert.equal(call.calls(), 4);
+});
+
+test('first publisher discovery retains its own witness under continuous signing-time writes', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const request = q.discovery(x.credential, x.keys.existing, { epoch: 1, head: x.offer.head });
+  let previous = '00'.repeat(32);
+  const call = discoverySigningCut(x, request, async (n) => {
+    const wire = x.make(n, 'first publisher discovers its own stream', { epoch: 4 });
+    previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'state-changed' });
+  assert.equal(call.calls(), 4);
+});
+
+test('discovery rebuilds a genuine membership certification committed during signing', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const d = await continuationDelivery(x, x.exchange('new'));
+  await d.approve();
+  await d.transfer(d.request('existing', 'deliver', d.delivery));
+  let installed;
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n === 1) installed = await d.transfer(d.request('new', 'install', d.installation));
+  });
+  const response = await call.result;
+  assert.equal(call.calls(), 2);
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000)).history.current
+      .head,
+    installed.certification.head,
+  );
+});
+
+test('discovery retains exact other authority fields and external-version invalidation', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const call = discoverySigningCut(x, q.discovery(), async () => {
+    mutate(x, (db) => db.exec("UPDATE recovery SET draft=draft || ' '"));
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'state-changed' });
+  assert.equal(call.calls(), 4);
+});
+
+test('discovery never hides a deleted requesting-publisher prefix behind current membership', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const wire = x.make(1, 'prefix that must remain', {
+    epoch: 4,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n === 1)
+      mutate(x, (db) =>
+        db
+          .prepare('DELETE FROM publisher_decisions WHERE credential_id=?')
+          .run(x.context.candidate.id),
+      );
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'ledger-integrity' });
+  assert.equal(
+    call.calls(),
+    1,
+    'the fresh census must refuse the damaged prefix before another reply is signed',
+  );
+});
+
+test('discovery never hides same-count requesting-publisher corruption after verification', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const wire = x.make(1, 'row whose signature must remain valid', {
+    epoch: 4,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+  const call = discoverySigningCut(x, q.discovery(), async (n) => {
+    if (n === 1)
+      mutate(x, (db) =>
+        db
+          .prepare('UPDATE publisher_decisions SET response=? WHERE credential_id=?')
+          .run(Buffer.from('invalid signed head'), x.context.candidate.id),
+      );
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'ledger-integrity' });
+});
+
+test('discovery reauthorizes a revoked session after signing even with discovery capture purpose', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x),
+    g = await continuationGrants(x);
+  const grant = await g.grant(
+    { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.candidate.id },
+    x.keys.new,
+  );
+  const call = discoverySigningCut(
+    x,
+    q.discovery(),
+    async () => g.revoke(),
+    x.f.core.grants.authorize(grant.grantToken),
+  );
+  await assert.rejects(call.result, denial('sign-in-required'));
+  assert.equal(call.calls(), 1);
+});
+
+test('discovery refuses request expiry reached while signing the response', async (t) => {
+  let now = 1000;
+  const x = await continuationFixture(t, { now: () => now }),
+    q = membershipLocatorRequests(x);
+  const call = discoverySigningCut(x, q.discovery(), async () => {
+    now = 61000;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'unavailable' });
+  assert.equal(call.calls(), 1);
+});
+
+test('discovery snapshot purpose is captured and must match both guard directions', async (t) => {
+  const x = await continuationFixture(t);
+  const { read: capture, unchanged } = await import('../../account-service/delivery.ts');
+  const { createDeliveryVerification } =
+    await import('../../account-service/deliveryVerification.ts');
+  const db = await discoveryDatabase(x),
+    reuse = createDeliveryVerification({ db, path: x.f.path, signal() {} });
+  const check = (s, purpose) => {
+    db.exec('BEGIN');
+    try {
+      return unchanged(db, s, reuse, purpose);
+    } finally {
+      db.exec('ROLLBACK');
+    }
+  };
+  try {
+    const full = capture(db, x.workspace, x.context.candidate.id, reuse);
+    const discovery = capture(db, x.workspace, x.context.candidate.id, reuse, {
+      purpose: 'membership-discovery',
+    });
+    assert(check(full));
+    assert(
+      !check(full, 'membership-discovery'),
+      'a full capture cannot be widened after verification',
+    );
+    assert(check(discovery, 'membership-discovery'));
+    assert(!check(discovery), 'discovery capture cannot authorize an ordinary comparison');
+    const external = capture(db, x.workspace, x.context.candidate.id, reuse, {
+      purpose: 'membership-discovery',
+    });
+    mutate(x, (other) => other.exec('CREATE TABLE phase16_external_probe (value INTEGER)'));
+    assert(
+      !check(external, 'membership-discovery'),
+      'unknown external writes retain the data_version fence',
+    );
+    const afterExternal = capture(db, x.workspace, x.context.candidate.id, reuse, {
+      purpose: 'membership-discovery',
+    });
+    reuse.clear();
+    assert(!check(afterExternal, 'membership-discovery'), 'clear/ownership fence still applies');
+    reuse.close();
+    assert.throws(() => check(discovery, 'membership-discovery'));
+  } finally {
+    reuse.close();
+    db.close();
+  }
+});
+
+test('discovery projection removes exactly the unrelated witness and retains every other snapshot field', async (t) => {
+  const x = await continuationFixture(t);
+  const { read: capture, snapshotBytesForPurpose: snapshotBytes } =
+    await import('../../account-service/delivery.ts');
+  const db = await discoveryDatabase(x);
+  try {
+    const joined = capture(db, x.workspace, x.context.candidate.id),
+      first = capture(db, x.workspace, x.credential);
+    const changed = structuredClone(joined);
+    changed.promotion.delivery_witness = 'another first publisher witness';
+    assert.notEqual(
+      snapshotBytes(joined),
+      snapshotBytes(changed),
+      'ordinary comparison stays exact',
+    );
+    assert.equal(
+      snapshotBytes(joined, 'membership-discovery'),
+      snapshotBytes(changed, 'membership-discovery'),
+    );
+    const own = structuredClone(first);
+    own.promotion.delivery_witness = 'first publisher own witness';
+    assert.notEqual(
+      snapshotBytes(first, 'membership-discovery'),
+      snapshotBytes(own, 'membership-discovery'),
+    );
+    for (const [name, edit] of [
+      [
+        'own witness',
+        (s) => {
+          s.publisherWitness = 'changed';
+        },
+      ],
+      [
+        'row prefix',
+        (s) => {
+          s.rows.push({
+            account_id: s.account.id,
+            ordinal: 1,
+            position: 1,
+            kind: 'accepted',
+            submission: new Uint8Array([1]),
+            response: new Uint8Array([2]),
+          });
+        },
+      ],
+      [
+        'account state',
+        (s) => {
+          s.account.state = 'changed';
+        },
+      ],
+      [
+        'credential state',
+        (s) => {
+          s.credential.state = 'changed';
+        },
+      ],
+      [
+        'recovery authority',
+        (s) => {
+          s.recovery.draft += ' ';
+        },
+      ],
+      [
+        'promotion authority',
+        (s) => {
+          s.promotion.acceptance_seal += ' ';
+        },
+      ],
+      [
+        'membership proof',
+        (s) => {
+          s.continuations[0].artifact += ' ';
+        },
+      ],
+      [
+        'removal preparation',
+        (s) => {
+          s.removalPreparation = { parent: 'changed' };
+        },
+      ],
+      [
+        'rotation',
+        (s) => {
+          s.rotations = [{ artifact: 'changed' }];
+        },
+      ],
+    ]) {
+      const next = structuredClone(joined);
+      edit(next);
+      assert.notEqual(
+        snapshotBytes(joined, 'membership-discovery'),
+        snapshotBytes(next, 'membership-discovery'),
+        name,
+      );
+    }
+  } finally {
+    db.close();
+  }
+});
+
+test('uncached discovery also ignores unrelated writing while retaining complete own census', async (t) => {
+  const x = await continuationFixture(t),
+    q = membershipLocatorRequests(x);
+  const { discoverMembership } = await import('../../account-service/membershipLocator.ts');
+  const db = await discoveryDatabase(x);
+  let calls = 0,
+    previous = '00'.repeat(32);
+  try {
+    const response = await x.authority.owner.discoverMembership(
+      {
+        discoverMembership(input, issuer) {
+          return discoverMembership(
+            db,
+            input,
+            {
+              ...issuer,
+              async discovery(body) {
+                const response = await issuer.discovery(body);
+                const wire = x.make(++calls, 'uncached unrelated writing', { epoch: 4 });
+                previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+                return response;
+              },
+            },
+            () => 1000,
+            () => {},
+          );
+        },
+      },
+      q.discovery(),
+    );
+    assert.equal(response.kind, 'membership-discovery');
+    assert.equal(calls, 1);
+    await verifyMembershipDiscoveryResponse(response, q.discovery(), x.base, 1000);
+  } finally {
+    db.close();
+  }
+});
+
+async function continuationHistoryRequest(x, overrides = {}, key = x.keys.new) {
+  const request = {
+    v: 1,
+    kind: 'history-checkpoint-request',
+    workspaceId: x.workspace,
+    lineageId: x.context.lineageId,
+    epoch: 4,
+    head: x.admission.head,
+    credentialId: x.context.candidate.id,
+    nonce: 'b7'.repeat(32),
+    expiresAt: 61000,
+    action: 'read',
+    payload: 'catalog',
+    signature: '00'.repeat(64),
+    ...overrides,
+  };
+  request.signature = signed(key, await historyExchangeMessage(request));
+  return request;
+}
+
+test('history catalog reuses the current branded membership timeline instead of verifying its admission twice', async (t) => {
+  const x = await continuationFixture(t);
+  const request = await continuationHistoryRequest(x);
+  let admissionVerifications = 0;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/device-membership-admission/v2')))
+      admissionVerifications++;
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
+  assert.equal(response.ok, true, JSON.stringify(response));
+  assert.equal(
+    admissionVerifications,
+    1,
+    'the current authority already verifies this exact admission',
+  );
+  const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+  assert.equal(page.catalog.sequence, 0);
+  assert.equal(page.checkpoint, null);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.candidate.id).position, 0);
+});
+
+function historySigningCut(x, request, cut, authorization) {
+  let calls = 0;
+  const result = x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, issuer) {
+        return x.f.core.exchangeHistoryCheckpoint(input, {
+          ...issuer,
+          async historyPage(body) {
+            const response = await issuer.historyPage(body);
+            await cut(++calls);
+            return response;
+          },
+        });
+      },
+    },
+    request,
+    authorization,
+  );
+  return { result, calls: () => calls };
+}
+
+for (const continuous of [false, true])
+  test(`history timeline reuse retains ${continuous ? 'four-attempt refusal' : 'fresh-head retry'} during writing`, async (t) => {
+    const x = await continuationFixture(t);
+    const request = await continuationHistoryRequest(x);
+    let previous = '00'.repeat(32);
+    const call = historySigningCut(x, request, async (n) => {
+      if (!continuous && n > 1) return;
+      const wire = x.make(n, 'writing while history is signed', { epoch: 4 });
+      previous = decision(x, await x.deliveryCall(wire), wire, previous, 4).head.link;
+    });
+    const response = await call.result;
+    if (continuous) {
+      assert.deepEqual(response, { ok: false, refusal: 'state-changed' });
+      assert.equal(call.calls(), 4);
+      assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+    } else {
+      assert.equal(response.ok, true, JSON.stringify(response));
+      assert.equal(call.calls(), 2);
+      const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+      assert.deepEqual(
+        page.heads.find((h) => h.credentialId === x.context.existing.id),
+        {
+          credentialId: x.context.existing.id,
+          position: 1,
+          link: previous,
+        },
+      );
+    }
+  });
+
+for (const fault of ['authority', 'old-row', 'membership-proof'])
+  test(`history timeline reuse refuses ${fault} damage without returning a catalog`, async (t) => {
+    const x = await continuationFixture(t);
+    const request = await continuationHistoryRequest(x);
+    if (fault === 'old-row') {
+      const wire = x.make(1, 'retained writing before damage', { epoch: 4 });
+      decision(x, await x.deliveryCall(wire), wire, undefined, 4);
+    }
+    const call = historySigningCut(x, request, async (n) => {
+      if (n > 1) return;
+      mutate(x, (db) =>
+        db.exec(
+          fault === 'authority'
+            ? "UPDATE accounts SET state='pending'"
+            : fault === 'old-row'
+              ? "UPDATE delivery_decisions SET submission=X'00' WHERE position=1"
+              : "UPDATE membership_ceremonies SET artifact='{}'",
+        ),
+      );
+    });
+    assert.deepEqual(await call.result, {
+      ok: false,
+      refusal: fault === 'old-row' ? 'ledger-integrity' : 'unavailable',
+    });
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });
+
+test('history timeline reuse retains transaction-time session revocation', async (t) => {
+  const x = await continuationFixture(t),
+    request = await continuationHistoryRequest(x),
+    g = await continuationGrants(x);
+  const grant = await g.grant(
+    { kind: 'workspace', workspaceId: x.workspace, credentialId: x.context.candidate.id },
+    x.keys.new,
+  );
+  const call = historySigningCut(
+    x,
+    request,
+    async () => g.revoke(),
+    x.f.core.grants.authorize(grant.grantToken),
+  );
+  await assert.rejects(call.result, denial('sign-in-required'));
+  assert.equal(call.calls(), 1);
+  assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+});
+
+test('history timeline reuse refuses a request that expires during signing', async (t) => {
+  let now = 1000;
+  const x = await continuationFixture(t, { now: () => now });
+  const call = historySigningCut(x, await continuationHistoryRequest(x), async () => {
+    now = 61000;
+  });
+  assert.deepEqual(await call.result, { ok: false, refusal: 'unavailable' });
+  assert.equal(call.calls(), 1);
+  assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+});
+
+test('history early-epoch lookup verifies only the latest complete timeline and reuses its earlier memberships', async (t) => {
+  const { x, r } = await openingHistoryFixture(t);
+  let count = 0,
+    issuer;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/admission-successor/v1'))) count++;
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, value) {
+        issuer = value;
+        return x.f.core.exchangeHistoryCheckpoint(input, value);
+      },
+    },
+    r,
+  );
+  assert.equal(response.ok, true, JSON.stringify(response));
+  const exchangeCount = count;
+  const { snapshot, verifyCurrentWorkspaceAuthority } =
+    await import('../../account-service/delivery.ts');
+  const db = await discoveryDatabase(x);
+  try {
+    count = 0;
+    db.exec('BEGIN');
+    const captured = snapshot(db, x.workspace);
+    db.exec('ROLLBACK');
+    const auth = await verifyCurrentWorkspaceAuthority(captured, issuer);
+    const authorityCount = count;
+    count = 0;
+    await verifyCertificationHistory(
+      auth.certificationSuccessor,
+      auth.successor,
+      { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
+      { epoch: 3, head: auth.a.head },
+    );
+    assert.equal(
+      exchangeCount,
+      count,
+      'one complete history supplies native authority and its earlier memberships',
+    );
+    assert(authorityCount > 0, 'the standalone authority denominator still verifies its successor');
+  } finally {
+    db.close();
+  }
+  await verifyHistoryCheckpointPage(response.page, r, x.authority.pin);
+});
+
+test('history complete timeline still resolves a retained checkpoint under its earlier membership', async (t) => {
+  const { setup: historySetup } = await import('../account-history/service-fixture.mjs');
+  const f = await historySetup(t);
+  const head = await f.upload(1, 'writing under the earlier membership');
+  const checkpoint = await f.create(null, [head]);
+  const publish = await f.makeRequest('publish', checkpoint);
+  await f.check(publish, await f.exchange(publish));
+  const admit = await f.makeRequest('admit', await f.admit(checkpoint));
+  await f.check(admit, await f.exchange(admit));
+  await f.advance();
+  const request = await f.makeRequest('read', 'latest');
+  assert.equal(request.epoch, 2);
+  const page = await f.check(request, await f.exchange(request));
+  assert.equal(page.checkpoint.manifest.epoch, 1);
+  assert.deepEqual(page.checkpoint, checkpoint);
+  assert.equal(page.heads.length, 2);
+  assert.deepEqual(
+    page.heads.find((h) => h.credentialId === head.credentialId),
+    head,
+  );
+  assert.equal(page.heads.find((h) => h.credentialId !== head.credentialId).position, 0);
+  assert.equal(page.catalog.sequence, 1);
+});
+
+for (const fault of ['head', 'epoch', 'signature'])
+  test(`history timeline reuse preserves ${fault} request validation`, async (t) => {
+    const x = await continuationFixture(t);
+    const request = await continuationHistoryRequest(
+      x,
+      fault === 'head' ? { head: 'fa'.repeat(32) } : fault === 'epoch' ? { epoch: 3 } : {},
+    );
+    if (fault === 'signature') request.signature = '00'.repeat(64);
+    assert.deepEqual(await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request), {
+      ok: false,
+      refusal: 'unavailable',
+    });
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });
+
+test('history complete timeline includes epochs after the original publisher was finalized', async (t) => {
+  const x = await removalFixture(t);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  const prep = await removalRequest(x, x.context.existing.id, 'new');
+  const { request } = await rotationRequest(x, prep);
+  const rotation = await x.authority.owner.commitRotation(x.f.core, request);
+  assert.equal(rotation.ok, true, JSON.stringify(rotation));
+  const y = await admitNext(x, rotation.rotation);
+  assert.equal(y.admission.epoch.epoch, 5);
+  const query = await continuationHistoryRequest(y, { epoch: 5 });
+  const response = await y.authority.owner.exchangeHistoryCheckpoint(y.f.core, query);
+  assert.equal(response.ok, true, JSON.stringify(response));
+  const page = await verifyHistoryCheckpointPage(response.page, query, y.authority.pin);
+  assert.equal(page.catalog.sequence, 0);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.existing.id).position, 0);
+  assert.equal(
+    page.heads.find((h) => h.credentialId === y.entry.input.candidate.credentialId).position,
+    0,
+  );
+});
+
+test('history catalog captures fresh publisher heads after authority verification despite continuous signed writing', async (t) => {
+  const { x } = await openingHistoryFixture(t);
+  const request = await continuationHistoryRequest(x, { epoch: 3, head: x.certification.head });
+  let armed = false,
+    appends = 0,
+    previous = '00'.repeat(32);
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (armed) {
+      armed = false;
+      const wire = x.make(++appends, 'writing during authority verification', { epoch: 3 });
+      previous = decision(x, await x.deliveryCall(wire), wire, previous, 3).head.link;
+    }
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, issuer) {
+        return x.f.core.exchangeHistoryCheckpoint(input, {
+          ...issuer,
+          check(...args) {
+            issuer.check(...args);
+            armed = true;
+          },
+        });
+      },
+    },
+    request,
+  );
+  armed = false; // Response verification below is outside the service interleaving.
+  assert.equal(response.ok, true, JSON.stringify(response));
+  assert.equal(appends, 1, 'a catalog read captures heads after the one authority pass');
+  const page = await verifyHistoryCheckpointPage(response.page, request, x.authority.pin);
+  assert.deepEqual(
+    page.heads.find((h) => h.credentialId === x.context.existing.id),
+    { credentialId: x.context.existing.id, position: 1, link: previous },
+  );
+});
+
+for (const fault of ['authority-input', 'old-row'])
+  test(`catalog's late publisher capture refuses ${fault} changed during authority verification`, async (t) => {
+    const { x } = await openingHistoryFixture(t);
+    if (fault === 'old-row') {
+      const wire = x.make(1, 'retained writing before authority cut', { epoch: 3 });
+      decision(x, await x.deliveryCall(wire), wire, undefined, 3);
+    }
+    const request = await continuationHistoryRequest(x, { epoch: 3, head: x.certification.head });
+    let changed = false;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (!changed) {
+        changed = true;
+        mutate(x, (db) =>
+          db.exec(
+            fault === 'old-row'
+              ? "UPDATE delivery_decisions SET submission=X'00' WHERE position=1"
+              : "UPDATE promotions SET offer='{}'",
+          ),
+        );
+      }
+      return verify(...args);
+    });
+    assert.deepEqual(await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request), {
+      ok: false,
+      refusal: fault === 'old-row' ? 'ledger-integrity' : 'unavailable',
+    });
+    assert.equal(changed, true);
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });
+
+test('independent continuation reads reuse branded history evidence without repeating its admission', async (t) => {
+  const x = await continuationFixture(t),
+    verify = crypto.subtle.verify.bind(crypto.subtle);
+  let admissions = 0;
+  t.mock.method(crypto.subtle, 'verify', (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/device-membership-admission/v2')))
+      admissions++;
+    return verify(...args);
+  });
+  const { query, pageProof } = await import('../account-service-inbound/oracle.mjs');
+  const overrides = {
+    reader: x.context.candidate.id,
+    publisher: x.credential,
+    epoch: 4,
+    head: x.admission.head,
+  };
+  for (let i = 0; i < 2; i++) {
+    const q = query(x, 0, 1, overrides, x.keys.new);
+    pageProof(await x.authority.owner.readInbound(x.f.core, q), q, x, []);
+  }
+  assert.equal(admissions, 1);
+});
+
+for (const stream of ['first-publisher', 'reader-own'])
+  test(`v2 late-ledger continuation ${stream} capture survives writing during authenticated request verification`, async (t) => {
+    const x = await continuationFixture(t),
+      publisher = stream === 'first-publisher' ? x.credential : x.context.candidate.id;
+    const q = query(
+      x,
+      0,
+      8,
+      { epoch: 4, head: x.admission.head, reader: x.context.candidate.id, publisher },
+      x.keys.new,
+    );
+    const unsigned = Buffer.from(
+        JSON.stringify(JSON.parse(Buffer.from(q).toString()).slice(0, -1)),
+      ),
+      verify = crypto.subtle.verify.bind(crypto.subtle);
+    const retained = [];
+    let calls = 0,
+      previous = '00'.repeat(32);
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (Buffer.from(args[3]).equals(unsigned)) {
+        calls++;
+        const w = x.make(calls, 'first publisher writes during verified request', { epoch: 4 }),
+          r = await x.deliveryCall(w);
+        previous = decision(x, r, w, previous, 4).head.link;
+        retained.push({ w, r, epoch: 4 });
+      }
+      return verify(...args);
+    });
+    page(x, await read(x, q), q, stream === 'first-publisher' ? retained : []);
+    assert.equal(calls, 1, 'same and unrelated live witnesses are captured after verification');
+    assert.equal(x.f.rows('publisher_decisions').length, 0, 'reader own stream remains empty');
+  });
+
+test('v2 late-ledger refuses a membership-removal transition across the authority-to-ledger boundary', async (t) => {
+  const x = await continuationFixture(t),
+    q = query(
+      x,
+      0,
+      8,
+      { epoch: 4, head: x.admission.head, reader: x.context.candidate.id, publisher: x.credential },
+      x.keys.new,
+    );
+  const unsigned = Buffer.from(JSON.stringify(JSON.parse(Buffer.from(q).toString()).slice(0, -1))),
+    verify = crypto.subtle.verify.bind(crypto.subtle);
+  let changed = false;
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (!changed && Buffer.from(args[3]).equals(unsigned)) {
+      changed = true;
+      const preparation = await removalRequest(x, x.context.candidate.id);
+      const { request } = await rotationRequest(x, preparation);
+      const removed = await x.authority.owner.commitRotation(x.f.core, request);
+      assert.equal(removed.ok, true, JSON.stringify(removed));
+    }
+    return verify(...args);
+  });
+  const answer = await read(x, q);
+  assert.equal(changed, true);
+  assert.equal(answer.kind, 'unknown');
+  assert.equal('bytes' in answer, false);
+});
+
+// Phase22: independent normal protocol verification is the work denominator, never a server cache.
+async function completeAuthorityWork(t, run) {
+  const domains = [
+    'done/admission-successor/v1',
+    'done/device-certification-epoch/v1',
+    'done/device-membership-admission/v2',
+  ];
+  const counts = Object.fromEntries(domains.map((domain) => [domain, 0]));
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  const mocked = t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    for (const domain of domains)
+      if (Buffer.from(args[3]).includes(Buffer.from(domain))) counts[domain]++;
+    return verify(...args);
+  });
+  try {
+    return { result: await run(), counts };
+  } finally {
+    mocked.mock.restore();
+  }
+}
+
+for (const later of [false, true])
+  for (const operation of ['bootstrap', 'discovery', 'catalog'])
+    test(`single request shares one complete ${later ? 'continued' : 'certified'} authority timeline for ${operation}`, async (t) => {
+      const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+      const { snapshot } = await import('../../account-service/delivery.ts');
+      const { membershipProofChain } = await import('../../account-service/membershipLocator.ts');
+      const db = await discoveryDatabase(x);
+      let s;
+      try {
+        db.exec('BEGIN');
+        s = snapshot(db, x.workspace);
+        db.exec('ROLLBACK');
+      } finally {
+        db.close();
+      }
+      const base = {
+        pin: x.authority.pin,
+        request: JSON.parse(s.promotion.request),
+        receipt: JSON.parse(s.promotion.result),
+      };
+      const expected = await completeAuthorityWork(t, () =>
+        verifyMembershipChain(membershipProofChain(s), base),
+      );
+      const q = membershipLocatorRequests(x);
+      const request =
+        operation === 'bootstrap'
+          ? q.bootstrap()
+          : operation === 'discovery'
+            ? q.discovery()
+            : await continuationHistoryRequest(x, {
+                epoch: later ? 4 : 3,
+                head: later ? x.admission.head : x.certification.head,
+              });
+      const actual = await completeAuthorityWork(t, () =>
+        operation === 'bootstrap'
+          ? x.authority.owner.membershipBootstrap(x.f.core, request)
+          : operation === 'discovery'
+            ? x.authority.owner.discoverMembership(x.f.core, request)
+            : x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request),
+      );
+      assert.equal(
+        operation === 'catalog' ? actual.result.ok : actual.result.kind,
+        operation === 'catalog' ? true : `membership-${operation}`,
+        JSON.stringify(actual.result),
+      );
+      assert.deepEqual(
+        actual.counts,
+        expected.counts,
+        'native eligibility and one complete independently verified history suffice for this request',
+      );
+      const checked =
+        operation === 'bootstrap'
+          ? await verifyMembershipBootstrapResponse(actual.result, request, x.authority.pin)
+          : operation === 'discovery'
+            ? await verifyMembershipDiscoveryResponse(actual.result, request, base, 1000)
+            : await verifyHistoryCheckpointPage(actual.result.page, request, x.authority.pin);
+      assert(checked);
+      if (operation !== 'catalog') assert.deepEqual(actual.result.proofs, expected.result.proofs);
+    });
+
+async function nativeHistoryEvidenceFixture(t) {
+  const { x } = await openingHistoryFixture(t);
+  const request = membershipLocatorRequests(x).bootstrap();
+  let issuer;
+  const answer = await x.authority.owner.membershipBootstrap({
+    membershipBootstrap(input, value) {
+      issuer = value;
+      return x.f.core.membershipBootstrap(input, value);
+    },
+  }, request);
+  assert.equal(answer.kind, 'membership-bootstrap');
+  const { snapshot, verifyWorkspaceAuthorityWithHistory } =
+    await import('../../account-service/delivery.ts');
+  const db = await discoveryDatabase(x);
+  let s;
+  try {
+    db.exec('BEGIN');
+    s = snapshot(db, x.workspace);
+    db.exec('ROLLBACK');
+  } finally {
+    db.close();
+  }
+  return { x, s, issuer, verify: verifyWorkspaceAuthorityWithHistory };
+}
+
+for (const fault of [
+  'recovery-draft', 'recovery-confirmation', 'activation', 'native-credential',
+  'workspace', 'request-digest', 'offer', 'successor-row', 'transfer-row',
+  'retained-delivery', 'successor-signature', 'certification-signature', 'pending-delivery',
+])
+  test(`single history producer refuses ${fault} damage before exposing verified evidence`, async (t) => {
+    const f = await nativeHistoryEvidenceFixture(t), s = structuredClone(f.s);
+    const alter = (row, key, mutate) => { const value = JSON.parse(row[key]); mutate(value); row[key] = JSON.stringify(value); };
+    if (fault === 'recovery-draft') alter(s.recovery, 'draft', v => { v.principalId = 'ee'.repeat(16); });
+    if (fault === 'recovery-confirmation') alter(s.recovery, 'result', v => { v.recoveryStateDigest = 'ee'.repeat(32); });
+    if (fault === 'activation') alter(s.promotion, 'activation', v => { v.challenge.context.credentialId = 'ee'.repeat(16); });
+    if (fault === 'native-credential') s.credential.id = 'ee'.repeat(16);
+    if (fault === 'workspace') s.promotion.workspace_id = 'ee'.repeat(16);
+    if (fault === 'request-digest') s.promotion.request_digest = 'ee'.repeat(32);
+    if (fault === 'offer') alter(s.promotion, 'offer', v => { v.head = 'ee'.repeat(32); });
+    if (fault === 'successor-row') s.successor.preparation_id = 'ee'.repeat(16);
+    if (fault === 'transfer-row') s.transfer.workspace_id = 'ee'.repeat(16);
+    if (fault === 'retained-delivery' || fault === 'pending-delivery')
+      alter(s.transfer, 'delivery', v => { v.certificate.signature = '00'.repeat(64); });
+    if (fault === 'successor-signature') alter(s.successor, 'artifact', v => { v.signature = '00'.repeat(64); });
+    if (fault === 'certification-signature') alter(s.transfer, 'artifact', v => { v.signature = '00'.repeat(64); });
+    if (fault === 'pending-delivery') {
+      s.transfer.artifact = null;
+      s.transfer.boundary_witness = null;
+      s.promotion.successor_head = JSON.parse(s.successor.artifact).head;
+    }
+    await assert.rejects(f.verify(s, f.issuer));
+  });
+
+test('single history producer retains protocol brands and the original standalone delivery-authority shape', async (t) => {
+  const f = await nativeHistoryEvidenceFixture(t);
+  const { verifyWorkspaceAuthority } = await import('../../account-service/delivery.ts');
+  const { historyMembershipAt } = await import('../../account-protocol/admissionHistory.ts');
+  const result = await f.verify(f.s, f.issuer);
+  assert.deepEqual(result.authority, await verifyWorkspaceAuthority(f.s, f.issuer));
+  assert.equal('history' in result.authority, false, 'early delivery dispatch stays unchanged');
+  assert.equal(historyMembershipAt(result.history, 1).state.epoch, 1);
+  assert.equal(historyMembershipAt(result.history, 2).state.epoch, 2);
+  assert.equal(historyMembershipAt(result.history, 3).state.epoch, 3);
+  assert.throws(() => historyMembershipAt(structuredClone(result.history), 1), /Unverified/);
+  const again = await f.verify(f.s, f.issuer);
+  assert.notStrictEqual(again.history, result.history, 'this phase never retains cross-request evidence');
+});
+for (const later of [false, true])
+  test(`publication authority reuse keeps independent joined and original streams under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+    const epoch = later ? 4 : 3;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    let offers = 0;
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) offers++;
+      return verify(...args);
+    });
+    let original = '00'.repeat(32),
+      joined = '00'.repeat(32),
+      warmed;
+    for (let n = 1; n <= 3; n++) {
+      const first = x.make(n, 'original stream', { epoch });
+      original = decision(x, await x.deliveryCall(first), first, original, epoch).head.link;
+      const second = x.make(n, 'joined stream', {
+        epoch,
+        credential: x.context.candidate.id,
+        signer: x.keys.new,
+      });
+      joined = decision(x, await x.deliveryCall(second), second, joined, epoch).head.link;
+      if (n === 1) {
+        warmed = offers;
+        assert(warmed > 0);
+      } else
+        assert.equal(
+          offers,
+          warmed,
+          'both real live witnesses change without changing their respective authority contexts',
+        );
+    }
+    assert.equal(x.f.rows('delivery_decisions').length, 3);
+    assert.equal(x.f.rows('publisher_decisions').length, 3);
+  });
+
+for (const later of [false, true])
+  test(`stable read authority reuses branded ${later ? 'continued' : 'certified'} history across independent publisher ledgers`, async (t) => {
+    const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+    const epoch = later ? 4 : 3,
+      head = later ? x.admission.head : x.certification.head;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    let offers = 0,
+      warmed;
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) offers++;
+      return verify(...args);
+    });
+    const streams = [[], []];
+    for (let n = 1; n <= 3; n++) {
+      for (const [i, credential, signer] of [
+        [0, x.context.existing.id, x.keys.existing],
+        [1, x.context.candidate.id, x.keys.new],
+      ]) {
+        const w = x.make(n, 'readable stream ' + i, { epoch, credential, signer }),
+          r = await x.deliveryCall(w);
+        let previous = '00'.repeat(32);
+        for (const old of streams[i]) previous = link(old.w.subject, previous);
+        assert.equal(decision(x, r, w, previous, epoch).kind, 'accepted');
+        streams[i].push({ w, r, epoch });
+      }
+      if (n === 1) {
+        warmed = offers;
+        assert(warmed > 0);
+      }
+      for (const [i, publisher] of [
+        [0, x.context.existing.id],
+        [1, x.context.candidate.id],
+      ]) {
+        const q = query(
+          x,
+          n - 1,
+          1,
+          { reader: x.context.candidate.id, publisher, head, epoch },
+          x.keys.new,
+        );
+        page(x, await read(x, q), q, streams[i]);
+      }
+      assert.equal(
+        offers,
+        warmed,
+        'neither selected live witness nor the unrelated publisher invalidates stable history',
+      );
+    }
+    assert.equal(x.f.rows('delivery_decisions').length, 3);
+    assert.equal(x.f.rows('publisher_decisions').length, 3);
+  });
+async function preludeProofFixture(t, later = false) {
+  const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+  const epoch = later ? 4 : 3,
+    head = later ? x.admission.head : x.certification.head;
+  const delivery = await import('../../account-service/delivery.ts');
+  const locator = await import('../../account-service/membershipLocator.ts');
+  const checkpoint = await import('../../account-service/historyCheckpoint.ts');
+  const { createDeliveryVerification } =
+    await import('../../account-service/deliveryVerification.ts');
+  const db = await discoveryDatabase(x),
+    reuse = createDeliveryVerification({ db, path: x.f.path, signal() {} });
+  t.after(() => {
+    reuse.close();
+    db.close();
+  });
+  let sequence = 0;
+  const nonce = () => (++sequence).toString(16).padStart(64, '0');
+  const discoveryRequest = (original = false, changes = {}) =>
+    membershipLocatorRequests(x).discovery(
+      original ? x.context.existing.id : x.context.candidate.id,
+      original ? x.keys.existing : x.keys.new,
+      { epoch, head, nonce: nonce(), ...changes },
+    );
+  const catalogRequest = (changes = {}) =>
+    continuationHistoryRequest(x, { epoch, head, nonce: nonce(), ...changes });
+  const a = await x.authority.owner.discoverMembership(
+    { discoverMembership: (_input, issuer) => issuer },
+    discoveryRequest(),
+  );
+  const b = await x.authority.owner.exchangeHistoryCheckpoint(
+    { exchangeHistoryCheckpoint: (_input, issuer) => issuer },
+    await catalogRequest(),
+  );
+  const issuer = { ...a, ...b },
+    retained = [];
+  const h = {
+    x,
+    epoch,
+    head,
+    delivery,
+    db,
+    reuse,
+    issuer,
+    retained,
+    discoveryRequest,
+    catalogRequest,
+    invoke(
+      operation,
+      request,
+      { owner = reuse, value = issuer, hook = () => {}, now = () => 1000 } = {},
+    ) {
+      return operation === 'discovery'
+        ? locator.discoverMembership(db, request, value, now, hook, owner)
+        : checkpoint.exchangeHistoryCheckpoint(db, request, value, now, hook, owner);
+    },
+    capture() {
+      db.exec('BEGIN');
+      try {
+        return delivery.snapshot(db, x.workspace);
+      } finally {
+        db.exec('ROLLBACK');
+      }
+    },
+    async discovery({
+      original = false,
+      changes = {},
+      owner = reuse,
+      value = issuer,
+      hook = () => {},
+      now = () => 1000,
+    } = {}) {
+      const request = discoveryRequest(original, changes),
+        result = await locator.discoverMembership(db, request, value, now, hook, owner);
+      return { request, result };
+    },
+    async catalog({
+      changes = {},
+      owner = reuse,
+      value = issuer,
+      hook = () => {},
+      now = () => 1000,
+    } = {}) {
+      const request = await catalogRequest(changes),
+        result = await checkpoint.exchangeHistoryCheckpoint(db, request, value, now, hook, owner);
+      return { request, result };
+    },
+    async checkDiscovery(answer) {
+      assert.equal(answer.result.kind, 'membership-discovery', JSON.stringify(answer.result));
+      const verified = await verifyMembershipDiscoveryResponse(
+        answer.result,
+        answer.request,
+        x.base,
+        1000,
+      );
+      assert.equal(verified.history.current.head, head);
+    },
+    async checkCatalog(answer) {
+      assert.equal(answer.result.ok, true, JSON.stringify(answer.result));
+      const verified = await verifyHistoryCheckpointPage(
+        answer.result.page,
+        answer.request,
+        x.authority.pin,
+      );
+      assert(verified);
+    },
+    async read() {
+      const request = query(x, 0, 8, { epoch, head, nonce: nonce() }, x.keys.existing);
+      const result = await delivery.readInbound(db, request, issuer, () => {}, reuse);
+      page(x, result, request, retained);
+      return result;
+    },
+    async append() {
+      const wire = x.make(retained.length + 1, 'independent committed prelude append', { epoch });
+      const result = await x.deliveryCall(wire);
+      let previous = '00'.repeat(32);
+      for (const old of retained) previous = link(old.w.subject, previous);
+      decision(x, result, wire, previous, epoch);
+      retained.push({ w: wire, r: result, epoch });
+    },
+  };
+  return h;
+}
+function preludeProofWork(t) {
+  let count = 0,
+    active = false;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (active && Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) count++;
+    return verify(...args);
+  });
+  const result = () => count;
+  result.run = async (run) => {
+    active = true;
+    try {
+      return await run();
+    } finally {
+      active = false;
+    }
+  };
+  return result;
+}
+for (const later of [false, true])
+  for (const operation of ['discovery', 'catalog'])
+    test(`complete prelude authority is reused for independent ${operation} requests under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+      const h = await preludeProofFixture(t, later),
+        work = preludeProofWork(t);
+      const check = operation === 'discovery' ? h.checkDiscovery : h.checkCatalog;
+      await check(await work.run(() => h[operation]()));
+      const cold = work();
+      assert(cold > 0);
+      for (let i = 0; i < 3; i++) await check(await work.run(() => h[operation]()));
+      assert.equal(
+        work(),
+        cold,
+        'fresh signed requests must not rebuild unchanged complete history',
+      );
+    });
+for (const later of [false, true])
+  test(`complete prelude authority coexists with ordinary read proofs under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      work = preludeProofWork(t);
+    await work.run(() => h.read());
+    const ordinary = work();
+    assert(ordinary > 0);
+    await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+    const complete = work();
+    assert(complete > ordinary);
+    await h.checkCatalog(await work.run(() => h.catalog()));
+    assert.equal(work(), complete, 'same complete purpose may serve both native consumers');
+    for (let i = 0; i < 3; i++) {
+      await work.run(() => h.read());
+      await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+      await h.checkCatalog(await work.run(() => h.catalog()));
+    }
+    assert.equal(work(), complete, 'separate mathematical purposes must not evict one another');
+  });
+for (const later of [false, true])
+  test(`complete prelude authority survives genuine independent appends under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const h = await preludeProofFixture(t, later);
+    await h.checkDiscovery(await h.discovery({ original: true }));
+    await h.checkCatalog(await h.catalog());
+    const work = preludeProofWork(t);
+    for (let i = 0; i < 3; i++) {
+      await h.append();
+      await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+      await h.checkCatalog(await work.run(() => h.catalog()));
+    }
+    // The independent writer's core may verify its own proof once; receiver proof work stays zero.
+    const afterWrites = work();
+    await h.checkDiscovery(await work.run(() => h.discovery({ original: true })));
+    await h.checkCatalog(await work.run(() => h.catalog()));
+    assert.equal(work(), afterWrites);
+    assert.equal(
+      afterWrites,
+      0,
+      'receiver proof stays warm across an independent committed writer',
+    );
+    await h.read();
+  });
+for (const later of [false, true])
+  test(`complete prelude proof preserves detached authority, private history brands and native ${later ? 'continued' : 'certified'} shape`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      input = h.capture();
+    const { reuseWorkspaceAuthorityHistory, verifyCurrentWorkspaceAuthorityWithHistory } =
+      h.delivery;
+    const expected = await verifyCurrentWorkspaceAuthorityWithHistory(input, h.issuer);
+    const cold = await reuseWorkspaceAuthorityHistory(input, h.issuer, h.reuse);
+    assert.deepEqual(cold, expected);
+    const first = await reuseWorkspaceAuthorityHistory(input, h.issuer, h.reuse);
+    assert.deepEqual(first, expected);
+    assert.equal('history' in first.authority, later);
+    const { historyMembershipAt } = await import('../../account-protocol/admissionHistory.ts');
+    assert.equal(historyMembershipAt(first.history, h.epoch).state.head, h.head);
+    assert.throws(() => historyMembershipAt(structuredClone(first.history), h.epoch), /Unverified/);
+    first.authority.a.head = 'ff'.repeat(32);
+    first.authority.request.candidate.workspaceId = 'ff'.repeat(16);
+    const second = await reuseWorkspaceAuthorityHistory(input, h.issuer, h.reuse);
+    assert.deepEqual(second, expected);
+    assert.strictEqual(second.history, first.history, 'only immutable branded history is shared');
+  });
+for (const later of [false, true])
+  test(`complete prelude proof keeps future fields, native evidence, pin and fresh custody in ${later ? 'continued' : 'certified'} context`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      input = h.capture(),
+      work = preludeProofWork(t);
+    const run = (s = input, issuer = h.issuer) =>
+      work.run(() => h.delivery.reuseWorkspaceAuthorityHistory(s, issuer, h.reuse));
+    await run();
+    const cold = work();
+    assert(cold > 0);
+    const future = { ...input, futureAuthority: new Map([['proof', undefined]]) };
+    await run(future);
+    assert.equal(work(), cold * 2, 'unknown native fields cannot alias old proof');
+    await run(future);
+    assert.equal(work(), cold * 2);
+    const changed = structuredClone(input);
+    changed.promotion.offer = '{}';
+    await assert.rejects(run(changed));
+    await assert.rejects(
+      run(input, { ...h.issuer, pin: { ...h.issuer.pin, authRoot: '00'.repeat(32) } }),
+    );
+    let checked = 0;
+    await assert.rejects(
+      run(input, {
+        ...h.issuer,
+        check() {
+          checked++;
+          throw Error('retired custody');
+        },
+      }),
+      /retired custody/,
+    );
+    assert.equal(checked, 1);
+    await run();
+    assert.equal(
+      work(),
+      cold * 3,
+      'failed custody removes only its proof and requires full re-verification',
+    );
+  });
+for (const later of [false, true])
+  for (const operation of ['discovery', 'catalog'])
+    test(`warm complete ${operation} proof retains fresh request, grant completion and signing expiry under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+      const h = await preludeProofFixture(t, later);
+      const check = operation === 'discovery' ? h.checkDiscovery : h.checkCatalog;
+      await check(await h[operation]());
+      const catalogBefore = h.x.f.rows('history_checkpoint_catalog');
+      const next = async () => (await h[operation]()).request;
+      const refusal = { ok: false, refusal: 'unavailable' };
+      const bad = await next();
+      bad.signature = '00'.repeat(64);
+      assert.deepEqual(await h.invoke(operation, bad), refusal);
+      assert.deepEqual(await h.invoke(operation, await next(), { now: () => 61000 }), refusal);
+      const { AuthorizationRefused } = await import('../../account-service/authorization.ts');
+      let began = 0,
+        completed = 0;
+      await assert.rejects(
+        h.invoke(operation, await next(), {
+          value: {
+            ...h.issuer,
+            authorize(db, target) {
+              assert.equal(db.isTransaction, true);
+              assert.equal(target.workspaceId, h.x.workspace);
+              began++;
+              return () => {
+                assert.equal(db.isTransaction, true);
+                completed++;
+                throw new AuthorizationRefused('sign-in-required');
+              };
+            },
+          },
+        }),
+        AuthorizationRefused,
+      );
+      assert.equal(began, 1);
+      assert.equal(completed, 1);
+      let now = 1000,
+        signs = 0;
+      const name = operation === 'discovery' ? 'discovery' : 'historyPage';
+      assert.deepEqual(
+        await h.invoke(operation, await next(), {
+          now: () => now,
+          value: {
+            ...h.issuer,
+            async [name](body) {
+              const value = await h.issuer[name](body);
+              signs++;
+              now = 61000;
+              return value;
+            },
+          },
+        }),
+        refusal,
+      );
+      assert.equal(signs, 1, 'expiry must be checked after actual response signing');
+      assert.deepEqual(h.x.f.rows('history_checkpoint_catalog'), catalogBefore);
+      await check(await h[operation]());
+    });
+for (const later of [false, true])
+  for (const operation of ['discovery', 'catalog'])
+    test(`warm complete ${operation} proof cannot hide corrupt live writing under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+      const h = await preludeProofFixture(t, later);
+      await h.append();
+      const check = operation === 'discovery' ? h.checkDiscovery : h.checkCatalog;
+      await check(await h[operation]({ original: true }));
+      const catalogBefore = h.x.f.rows('history_checkpoint_catalog');
+      mutate(h.x, (db) =>
+        db.prepare("UPDATE delivery_decisions SET submission=X'00' WHERE position=1").run(),
+      );
+      assert.deepEqual((await h[operation]({ original: true })).result, {
+        ok: false,
+        refusal: 'ledger-integrity',
+      });
+      assert.deepEqual(h.x.f.rows('history_checkpoint_catalog'), catalogBefore);
+    });
+for (const later of [false, true])
+  test(`complete prelude proof retains no-pool fallback and clear/close fences under ${later ? 'continued' : 'certified'} membership`, async (t) => {
+    const h = await preludeProofFixture(t, later),
+      s = h.capture(),
+      work = preludeProofWork(t);
+    const run = (owner) =>
+      work.run(() => h.delivery.reuseWorkspaceAuthorityHistory(s, h.issuer, owner));
+    const one = await run();
+    const cold = work();
+    assert(cold > 0);
+    const two = await run();
+    assert.equal(work(), cold * 2);
+    assert.notStrictEqual(one.history, two.history);
+    await run(h.reuse);
+    assert.equal(work(), cold * 3);
+    h.reuse.clear();
+    await run(h.reuse);
+    assert.equal(work(), cold * 4);
+    h.reuse.close();
+    await assert.rejects(run(h.reuse), /Inactive read authority cache/);
+  });

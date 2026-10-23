@@ -1,0 +1,21 @@
+from pathlib import Path
+import hashlib,json,subprocess,os,time
+r=Path(__file__).parent;s=r/'source';repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();old=json.loads(Path('/private/tmp/done-history-checkpoint-20261022/measurement-identity.json').read_text())
+assert json.loads((r/'source-review.json').read_text())['status']=='passed'
+assert 'Final preflight complete'in(r/'final-preflight.log').read_text();assert len(json.loads((r/'challenge-v2.json').read_text())['controls'])==10
+base=old['candidateInputs'];changes=sorted(f for f,h in base.items()if sha(s/f)!=h);assert changes==['account-service/delivery.ts','account-service/deliveryVerification.ts','account-service/inboundAuthorityReuse.ts'],changes
+for f in base:assert sha(s/f)==sha(repo/f),f
+for f,h in old['clientFiles'].items():assert sha(s/'dist'/f)==h
+for p in(r/'reference-account-service').glob('*.ts'):assert sha(p)==base['account-service/'+p.name]
+plan=[{'name':'fixed-v2/'+str(i+1)+'-'+v,'variant':v}for i,v in enumerate(['R','C','C','R'])];(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'playwright-storage-source.txt',r/'freeze-and-run.py',r/'analyze.py',r/'review-evidence.py',r/'audit-native.mjs',r/'check-mounts.mjs',*list((s/'test/account-continuation-lab').glob('*'))]
+identity={'baseTree17':'66df2f5b3d575eb8efa0928761dfd2cd28975e4d','baseCommit':old['baseCommit'],'referenceInputs':base,'candidateInputs':{f:sha(s/f)for f in base},'onlyChangedRuntimeFiles':changes,'clientFiles':old['clientFiles'],'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'newTestFiles':{'test/account-sessions/inbound-authority-cache.test.mjs':sha(s/'test/account-sessions/inbound-authority-cache.test.mjs')},'appendOnlyCeremonyTestSha256':sha(s/'test/account-ceremony/content-transfer.test.mjs'),'oldCasePrefixByteExact':(s/'test/account-ceremony/content-transfer.test.mjs').read_bytes().startswith((r/'before/content-transfer.test.mjs').read_bytes()),'privateFixtureSha256':old['privateFixtureSha256'],'containerImage':json.loads((r/'container-image.json').read_text())['Id'],'runPlan':plan}
+(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for c in plan:
+ for f,h in identity['files'].items():assert sha(r/f)==h,f
+ for f,h in identity['candidateInputs'].items():assert sha(s/f)==h,f
+ for f,h in identity['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+ out=r/c['name'];out.mkdir(parents=True,mode=0o700);env={**os.environ,'FAIR_OUT':str(out),'FAIR_VARIANT':c['variant'],'FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+ if p.returncode:raise Exception('Journey failed; preserve outputs and do not replace: '+c['name'])

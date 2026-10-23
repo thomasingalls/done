@@ -1,0 +1,13 @@
+from pathlib import Path
+import os,json,subprocess,hashlib
+r=Path(__file__).parent;root=r/'clock-counterfactual';env={**os.environ,'PATH':str(r/'bin')+':/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'};original=(root/'original-onboardingStorage.test.ts.txt').read_text();fixed=(root/'fixed-onboardingStorage.test.ts.txt').read_text();rows=[]
+for name,source,pattern,expected in [('calendar14',fixed,None,0),('calendar17',fixed.replace("today: () => '2026-10-14'","today: () => '2026-10-17'"),'resumes protection after refused source deletion',1)]:
+ (root/'test/onboardingStorage.test.ts').write_text(source);cmd=['node','node_modules/vitest/vitest.mjs','run','test/onboardingStorage.test.ts','--maxWorkers=1']+(['-t',pattern]if pattern else[])
+ with(r/('clock-'+name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+ text=(r/('clock-'+name+'.log')).read_text();assert p.returncode==expected,(name,p.returncode)
+ if expected:assert 'AssertionError: expected undefined to be defined'in text and ".days.find((d) => d.date === '2026-10-14')"in text
+ else:assert '13 passed'in text and 'failed'not in text.lower()
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode,'expected':expected});print(name,p.returncode,flush=True)
+for f,h in json.loads((r/'clock-counterfactual-identity.json').read_text())['runtimeFiles'].items():assert hashlib.sha256((root/f).read_bytes()).hexdigest()==h
+(root/'test/onboardingStorage.test.ts').write_text(original)
+(r/'clock-discriminator.json').write_text(json.dumps({'status':'passed','sameCurrentProductionAndOriginalTestBodyAtBothCalendarDates':True,'onlyExistingTodayInjectionDiffers':True,'calendar14All13Pass':True,'calendar17OriginalSourceDeletionCaseFailsSameFinalAssertion':True,'allRuntimeBytesUnchanged':True,'wallTimeBoundaryRatherThanUpgradeDataLossEstablishedForThisFixture':True,'runs':rows},indent=2)+'\n')

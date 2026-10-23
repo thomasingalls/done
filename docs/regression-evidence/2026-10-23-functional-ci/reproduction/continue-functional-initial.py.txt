@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,time,subprocess,os,shutil
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':str(r/'bin')+':/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+while not(r/'functional-receipts.json').exists()or len(json.loads((r/'functional-receipts.json').read_text()))<18:time.sleep(1)
+print('Initial18 commands completed; baseline failures retained',flush=True);rows=[]
+def run(label,cmd,cwd=repo,expected=0):
+ t=time.time_ns()
+ with(r/(label+'.log')).open('w')as out:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'label':label,'command':cmd,'cwd':str(cwd),'exitCode':p.returncode,'expectedExit':expected,'startedAtNs':t,'completedAtNs':time.time_ns()});(r/'repair-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(label,p.returncode,flush=True);assert p.returncode==expected,'Preserve unexpected failure '+label
+run('apply-fixtures',['python3',str(r/'apply-fixtures.py')]);run('fixture-source-review',['node',str(r/'review-fixtures.mjs')]);run('census-final-review',['node',str(r/'inspect-census.mjs')])
+root=r/'clock-counterfactual';source=(repo/'test/onboardingStorage.test.ts').read_text();test=root/'test/onboardingStorage.test.ts';test.write_text(source.replace("today: () => '2026-10-14'","today: () => '2026-10-17'"));run('new-guards-expired-calendar',['node','node_modules/vitest/vitest.mjs','run','test/onboardingStorage.test.ts','--maxWorkers=1'],root,1);text=(r/'new-guards-expired-calendar.log').read_text();assert '10 failed | 3 passed (13)'in text and text.count('AssertionError: expected [] to include')==10
+(r/'non-vacuity-sensitivity.json').write_text(json.dumps({'status':'passed','onlyFixtureCalendarChanged14To17':True,'allTenCardWritingCasesRefusedAtNewNonemptyCardAssertions':True,'threeOtherCasesPass':True,'noImportTimeoutOrRuntimeFault':True},indent=2)+'\n');test.write_text(source);run('fixed-onboarding13',['node','node_modules/vitest/vitest.mjs','run','test/onboardingStorage.test.ts','--maxWorkers=1'],root)
+for label,cmd in [('inventory-record',['node','scripts/release-validation/check.mjs','--record']),('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),('planning-tests',['node','--test','--test-concurrency=1','test/account-crypto-prep/census.test.mjs','test/account-crypto-prep/contracts.test.mjs','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs'])]:run(label,cmd)
+# Repeat failed/source-affected commands and the expanded CI step; the remaining original commands already passed on identical inputs.
+plan=json.loads((r/'functional-plan.json').read_text())['steps'];selected=[0,2,3,4,5,9,17]
+for i in selected:
+ item=plan[i];cmd=item['command']
+ if i==9:
+  step=(r/'workflow-added-step.txt').read_text().splitlines();cmd=' '.join(s.strip()for s in step[2:]if s.strip());assert cmd.startswith('node --test ')
+ run('final-functional-'+str(i+1).zfill(2),['/bin/zsh','-c',cmd])
+print('Corrected functional surface passed; final documentation/package and fresh tree-bound checks remain',flush=True)

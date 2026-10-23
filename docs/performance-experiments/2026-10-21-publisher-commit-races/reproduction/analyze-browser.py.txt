@@ -1,0 +1,35 @@
+from pathlib import Path
+import collections,json
+r=Path(__file__).parent
+plan=json.loads((r/'browser-plan.json').read_text());rows=[]
+for run in plan:
+ name=run['name'];d=json.loads((r/name/'result.json').read_text());clients=[x for x in d['proxy'] if x['role']=='client'];shadows=[x for x in d['proxy'] if x['role']=='shadow']
+ counts=lambda items:dict(collections.Counter(str(x.get('status','unavailable'))+(':'+x['reason'] if 'reason' in x else '') for x in items))
+ injected=[x for x in clients if x.get('injected')];natural=[x for x in clients if x.get('status')==409 and x.get('reason')=='state-changed' and not x.get('injected')]
+ row={'name':name,'outcome':d['outcome'],'pressure':d['pressure'],'forced':d['injected'],'trace':d['tipTrace'],'guards':d.get('guards',{}),'drainMs':d.get('caughtAt',d.get('failedAt',0))-d['startedAt'],'clientStatuses':counts(clients),'shadowStatuses':counts(shadows),'naturalClientStateChangeReplies':len(natural),'injectedStateChangeReplies':len(injected),'finalExport':d.get('finalExport'),'scope':'Local functional continuation evidence on an exact production client build; duplicate reads share one device session, not six independent installations or a capacity measurement.'}
+ assert row['outcome']=='passed' and len(row['guards'])==4 and all(row['guards'].values()),name
+ if d['injected']:
+  assert d['forcedRefusalExposure'] and len(injected)==2
+  receive=[x for x in d['network'] if x['device']=='B' and x['path'].endswith(('/read-v2-batch',) if name=='browser-remote-refusals' else ('/read-v2','/read-v2-batch'))]
+  send=[x for x in d['network'] if x['device']=='A' and x['path'].endswith('/submit')]
+  def injectedMatch(candidates,device):
+   faults=[x for x in injected if x['device']==device];assert len(faults)==1
+   fault=faults[0];matches=[x for x in candidates if x.get('status')==409 and x['path']==fault['path'] and x['at']<=fault['at']<=x['headersAt']+10];assert len(matches)==1
+   match=matches[0];assert match.get('reason')=='state-changed' or match.get('bodyUnavailable'), 'CDP hint agrees or is explicitly unavailable'
+   return matches
+  badRead=injectedMatch(receive,'B');badSend=injectedMatch(send,'A')
+  laterSend=[x for x in send if x['at']>badSend[0]['at'] and x.get('status')==200 and x.get('decisionKind')=='accepted' and x['bodySha256']==badSend[0]['bodySha256']];assert laterSend,'pending submit must eventually receive acceptance for identical original bytes'
+  if name=='browser-remote-refusals':assert all(not q['self'] for q in badRead[0]['batch']),'explicit remote receiver exposure'
+  laterAttempts=[x for x in receive if x['at']>badRead[0]['headersAt']]
+  laterRead=[x for x in receive if x['at']>badRead[0]['headersAt'] and x.get('status')==200];assert laterRead,'receive lane must autonomously continue'
+  entryCount=lambda x:sum(p['entries'] for p in x.get('pages',[])) if 'pages' in x else x.get('entries',0)
+  progressRead=[x for x in laterRead if entryCount(x)>0];assert progressRead,'future verified application progress and data guards required'
+  row['continuation']={'readRefusalAt':badRead[0]['at'],'readPath':badRead[0]['path'],'singleReadSelf':badRead[0].get('self'),'refusalClassificationSource':'unique time/path/device-matched known proxy injection; any available CDP hint must agree','refusedSubmitBodyUnavailableToCDP':bool(badSend[0].get('bodyUnavailable')),'remoteReceiverControl':name=='browser-remote-refusals','nextAttemptGapMs':laterAttempts[0]['at']-badRead[0]['headersAt'],'nextReadAt':laterRead[0]['at'],'nextSuccessfulReadGapMs':laterRead[0]['at']-badRead[0]['headersAt'],'firstLaterNonemptyReadAt':progressRead[0]['at'],'submitRefusalAt':badSend[0]['at'],'identicalAcceptedSubmitAt':laterSend[0]['at'],'identicalSubmitGapMs':laterSend[0]['at']-badSend[0]['headersAt'],'identicalPendingSubmitSha256':badSend[0]['bodySha256'],'autonomous':True,'manualRetryOrReload':False,'scope':'Known pre-forward injected refusals; no unknown write was committed by the proxy. End-to-end client continuation, not natural state-change frequency.'}
+ if d['tipTrace']:
+  trace=json.loads((r/name/'tip-trace.json').read_text());assert trace['overflow']==0
+  row['tipTraceKinds']=dict(collections.Counter(x['kind'] for x in trace['rows']));row['tipInvalidationReasons']=dict(collections.Counter(x['reason'] for x in trace['rows'] if x['kind']=='invalidate'));row['traceOverflow']=trace['overflow']
+ rows.append(row)
+assert len(rows)==3
+assert len({x['finalExport']['sha256'] for x in rows})==1,'complete final plaintext exports agree across all restored runs'
+result={'rows':rows,'allDataGuardsPassed':True,'identicalFinalExports':True,'knownRefusalControlAutonomouslyContinued':True,'explicitRemoteReceiverControlContinued':any(x.get('continuation',{}).get('remoteReceiverControl') for x in rows),'naturalStateChangeExposure':sum(x['naturalClientStateChangeReplies'] for x in rows),'finding':'Separate natural-load observations from injected refusal continuation. No maximum capacity, production frequency or absence-of-starvation inference.','scope':'Real packaged client/scheduler/transport/IndexedDB/editor/service-worker in two disposable Chromium contexts, synthetic writing and exact prior build.'}
+(r/'browser-summary.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

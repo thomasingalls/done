@@ -1,0 +1,5 @@
+{
+  "status": "stopped before any run",
+  "reason": "submission body has two phase=commit anchors; no guard changed",
+  "repair": "attach event to unique after-verify hook; reset all disposable variants to24 first"
+}

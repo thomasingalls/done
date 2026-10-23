@@ -33,8 +33,8 @@ async function buildMutant(t, control) {
         if (control === 'publisher')
           code = replace(
             code,
-            'const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher),\n        { reader, publisher } = resolveInboundRoles(auth, request);',
-            'const auth = await verifyCurrentWorkspaceAuthority(s, issuer),\n        { reader, publisher } = resolveInboundRoles(auth, request);',
+            'const auth = selectPublisher(\n            await reuseInboundAuthority(authorityReuse, s, issuer, verifyCurrentWorkspaceAuthority),\n            s.publisher,\n          ),\n          { reader, publisher } = resolveInboundRoles(auth, request);',
+            'const auth = await reuseInboundAuthority(authorityReuse, s, issuer, verifyCurrentWorkspaceAuthority),\n          { reader, publisher } = resolveInboundRoles(auth, request);',
           );
         if (control === 'signature') {
           const re =

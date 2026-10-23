@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,os,json
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_DIR':'/Users/thomasingalls/Code/done/.git','GIT_OPTIONAL_LOCKS':'0'};rows=[]
+for label,source in [('C',r/'variants/C'),('D',r/'source')]:
+ cmd=['node','--test','--test-concurrency=1','--test-name-pattern=publication','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-ceremony/content-transfer.test.mjs']
+ with(r/('publication-functional-'+label+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+ assert p.returncode==0 and 'pass 24'in(r/('publication-functional-'+label+'.log')).read_text();rows.append({'variant':label,'command':cmd,'exitCode':p.returncode,'passed':24});print(label,'24 selected cases pass',flush=True)
+(r/'functional-receipts.json').write_text(json.dumps(rows,indent=2)+'\n')

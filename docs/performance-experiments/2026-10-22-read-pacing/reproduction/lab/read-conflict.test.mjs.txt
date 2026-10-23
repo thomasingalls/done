@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import {ready,proof,link,ZERO} from '../account-service-delivery/fixtures.mjs';
+import {query,pageProof} from '../account-service-inbound/oracle.mjs';
+import {readInbound,decideSubmission} from '../../account-service/delivery.ts';
+import {createDeliveryVerification} from '../../account-service/deliveryVerification.ts';
+
+for (const writes of [1,4]) test(`real committed appends at ${writes} read-signature boundaries retain bounded refusal and exact continuation`,{timeout:15000},async t=>{
+ const x=await ready(t),db=new DatabaseSync(x.f.path),reuse=createDeliveryVerification({db,path:x.f.path,signal:()=>{}});
+ t.after(()=>{reuse.close();db.close();});
+ const issuer=x.authority.owner.decideSubmission({decideSubmission:(_input,issuer)=>issuer},{}),retained=[];
+ const append=async()=>{const w=x.make(retained.length+1),r=await decideSubmission(db,{workspaceId:x.workspace,bytes:w.bytes},issuer,()=>{},reuse);let previous=ZERO;for(const item of retained)previous=link(item.w.subject,previous);assert.equal(proof(r,x.offer.epoch.acceptancePublicKey,w.subject,previous,w.parent).kind,'accepted');retained.push({w,r});};
+ await append();const q=query(x,0,8),warm=await readInbound(db,q,issuer,()=>{},reuse);pageProof(warm,q,x,retained);
+ const unsigned=Buffer.from(JSON.stringify(JSON.parse(Buffer.from(q).toString()).slice(0,-1))),original=crypto.subtle.verify;let attempts=0,commits=0;
+ crypto.subtle.verify=async function(...args){if(Buffer.from(args[3]).equals(unsigned)){attempts++;if(commits<writes){await append();commits++;}}return original.apply(this,args);};
+ let answer;try{answer=await readInbound(db,q,issuer,()=>{},reuse);}finally{crypto.subtle.verify=original;}
+ assert.equal(commits,writes);
+ if(writes===4){assert.equal(attempts,4);assert.deepEqual(answer,{kind:'unknown',reason:'state-changed'});assert.equal('bytes'in answer,false);}else{assert.equal(attempts,2);pageProof(answer,q,x,retained);}
+ const rows=db.prepare("SELECT response FROM delivery_decisions WHERE kind='accepted' ORDER BY position").all();assert.equal(rows.length,retained.length);for(let i=0;i<rows.length;i++)assert.deepEqual(Buffer.from(rows[i].response),Buffer.from(retained[i].r.bytes));
+ pageProof(await readInbound(db,q,issuer,()=>{},reuse),q,x,retained);
+});

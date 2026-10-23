@@ -1,0 +1,24 @@
+from pathlib import Path
+import shutil,subprocess,json
+r=Path(__file__).parent;source=r/'source-candidate';out=r/'omissions';out.mkdir();results=[]
+plans=[
+ ('no-inbound-admission','account-service/delivery.ts','if (!releaseCold && reuse?.tips) {','if (false) {','concurrent first reads',3,True),
+ ('no-waiter-recapture','account-service/delivery.ts','if (waited) {','if (false) {','concurrent first reads',3,True),
+ ('no-final-release','account-service/delivery.ts','releaseCold?.();','void releaseCold;','a warmed publisher returns',3,True),
+ ('lane-bound','account-service/publisherTips.ts',"if (coldLanes.size >= MAX_PUBLISHERS) throw Error('Cold publisher capacity');",'void coldLanes.size;','active lanes and total waiting',1,False),
+ ('waiter-bound','account-service/publisherTips.ts',"if (coldWaiting >= MAX_PUBLISHERS) throw Error('Cold publisher capacity');",'void coldWaiting;','active lanes and total waiting',1,False),
+ ('cold-close','account-service/publisherTips.ts','closed = true;','closed = false;','active lanes and total waiting',1,False),
+ ('release-idempotence','account-service/publisherTips.ts','if (released || coldLanes.get(key) !== lane) return;','if (coldLanes.get(key) !== lane) return;','cold lane handoff is FIFO',1,False),
+ ('lane-priority','account-service/publisherTips.ts','let lane = coldLanes.get(key);',"if (tips.get(key)?.extendable) return () => {};\n      let lane = coldLanes.get(key);",'a newly warm prefix',1,False),
+ ('membership-transaction','account-service/publisherTips.ts',"      db.exec('BEGIN');\n      try {\n        header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);\n        db.exec('COMMIT');\n      } finally {\n        if (db.isTransaction) db.exec('ROLLBACK');\n      }",'      header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);','membership-enabled',1,False),
+ ('queue-duration','account-service/publisherTips.ts','}, 10000),','}, 1),','a waiting entry times out',1,False),
+]
+for name,file,anchor,replacement,pattern,count,onlylast in plans:
+ work=out/name;shutil.copytree(source,work,symlinks=True,ignore=shutil.ignore_patterns('test-results','playwright-report'))
+ p=work/file;s=p.read_text();assert s.count(anchor)==count,(name,s.count(anchor));s=s[::-1].replace(anchor[::-1],replacement[::-1],1)[::-1] if onlylast else s.replace(anchor,replacement);p.write_text(s)
+ cmd=['node','--test','--test-concurrency=1','--test-timeout=15000','--test-name-pattern='+pattern,'test/account-service-delivery/cold-verification.test.mjs']
+ with (out/(name+'.log')).open('w') as log:q=subprocess.run(cmd,cwd=work,stdout=log,stderr=subprocess.STDOUT,timeout=25)
+ log=(out/(name+'.log')).read_text();ok=q.returncode!=0 and 'AssertionError' in log and 'ℹ fail 1' in log
+ row={'name':name,'source':file,'originalAnchorCount':count,'mutatedOccurrences':1,'testPattern':pattern,'exitCode':q.returncode,'intendedAssertionFailure':ok};results.append(row);(r/'omissions.json').write_text(json.dumps(results,indent=2)+'\n');print(json.dumps(row),flush=True)
+ if not ok:raise SystemExit(1)
+ shutil.rmtree(work)

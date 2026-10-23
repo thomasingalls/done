@@ -1,0 +1,28 @@
+from pathlib import Path
+import json,math,statistics,collections
+r=Path(__file__).parent;med=statistics.median
+
+def dist(v):
+ v=sorted(v);return {'n':len(v),'p50':v[math.ceil(.5*len(v))-1],'p95':v[math.ceil(.95*len(v))-1],'max':v[-1]} if v else None
+
+def kv(s):return {k:int(v) for k,v in (line.split() for line in s.splitlines())}
+rows=[]
+for x in json.loads((r/'native/results.json').read_text()):
+ writes={who:{'offered':len(v),'verified':sum('verifiedAt'in a for a in v),'latency':dist([a['verifiedAt']-a['offeredAt'] for a in v if 'verifiedAt'in a]),'queue':dist([a['startedAt']-a['offeredAt'] for a in v if 'startedAt'in a])}for who,v in x['writes'].items()};p=x['peer'];peer={'offered':len(p),'verified':sum('verifiedAt'in a for a in p),'latency':dist([a['verifiedAt']-a['offeredAt'] for a in p if 'verifiedAt'in a])};m=x.get('metrics');positions=sum(y['positions'] for y in x['streams']);useful=positions+sum(a['verified']for a in writes.values())+peer['verified'];cpu=(m['cpu']['user']+m['cpu']['system'])/1000 if m else None
+ a={'arm':x['arm'],'block':x['block'],'outcome':x['outcome'],'replayMs':x.get('replayMs'),'positions':positions,'writes':writes,'peer':peer,'useful':useful,'cpuMs':cpu,'cpuPerUnit':cpu/useful if cpu else None,'rss':m['rssSampledPeak'] if m else None,'loop':m['loopDelayMs'] if m else None,'tip':m['publisherVerification'] if m else None,'statuses':dict(collections.Counter(str(y['status']) for y in x['statuses'])),'errors':x.get('errors',[])}
+ a['complete']=x['outcome']=='passed' and positions==1536 and all(y['completed']for y in x['streams']) and all(y['offered']==y['verified'] for y in writes.values()) and peer['offered']==peer['verified'];a['absoluteInteraction']=all(y and y['p95']<=2500 for y in [writes['first']['latency'],writes['other']['latency'],peer['latency']])
+ if m:
+  c=m['cgroupAfter'];b=m['cgroupBefore'];a['cgroup']={'cpuMax':c['cpu.max'],'memoryMax':int(c['memory.max']),'swapMax':int(c['memory.swap.max']),'pidsMax':int(c['pids.max']),'peakBytes':int(c['memory.peak']),'eventsBefore':kv(b['memory.events']),'eventsAfter':kv(c['memory.events']),'cpuDelta':{k:v-kv(b['cpu.stat'])[k]for k,v in kv(c['cpu.stat']).items()}};a['constraintsVerified']=c['cpu.max']=='100000 100000' and a['cgroup']['memoryMax']==1024**3 and a['cgroup']['swapMax']==0 and a['cgroup']['pidsMax']==128
+  a['zeroOom']=all(a['cgroup']['eventsAfter'][k]==0 for k in ['oom','oom_kill','max'])
+ rows.append(a)
+by={a:[x for x in rows if x['arm']==a]for a in ['D','B']};assert all(len(v)==2 for v in by.values());fairness={}
+for name,fn in [('hot',lambda x:x['writes']['first']['latency']['p95']),('other',lambda x:x['writes']['other']['latency']['p95']),('peer',lambda x:x['peer']['latency']['p95'])]:
+ d,b=[med(fn(x) for x in by[a])for a in ['D','B']];fairness[name]={'D':d,'B':b,'pass':not(b>1.1*d and b>d+20)}
+def v(arm,k):return med(x[k] for x in by[arm])
+gates={'complete':all(x['complete']for x in rows),'absoluteInteraction':all(x['absoluteInteraction']for x in by['B']),'relativeFairness':all(x['pass']for x in fairness.values()),'cpu':v('B','cpuPerUnit')<=1.2*v('D','cpuPerUnit'),'rss':v('B','rss')<=max(1.25*v('D','rss'),v('D','rss')+64*1024**2),'loop':med(x['loop']['p99']for x in by['B'])<=max(1.25*med(x['loop']['p99']for x in by['D']),50) and all(x['loop']['max']<=250 for x in by['B']),'constraints':all(x.get('constraintsVerified') and x.get('zeroOom')for x in rows)}
+native={'rows':rows,'fairness':fairness,'gates':gates,'gatePassed':all(gates.values()),'driftPercent':100*abs(by['D'][1]['replayMs']/by['D'][0]['replayMs']-1) if all(x['complete']for x in by['D'])else None};(r/'native-summary.json').write_text(json.dumps(native,indent=2)+'\n')
+if not (r/'analysis.json').exists():print(json.dumps({'nativeGates':gates,'fairness':fairness},indent=2));raise SystemExit()
+browsers=json.loads((r/'analysis.json').read_text());byname={x['directory']:x for x in browsers};pairs=[]
+for d,b in [('ordinary-D','ordinary-B'),('pressure1-D','pressure1-B'),('pressure2-D','pressure2-B')]:
+ a,c=byname[d],byname[b];dt,bt=a['concurrent'],c['concurrent'];pairs.append({'D':d,'B':b,'Dms':a['backlogDrainMs'],'Bms':c['backlogDrainMs'],'improvementPercent':100*(1-c['backlogDrainMs']/a['backlogDrainMs']),'localD':dt['localDomMs']['p95'],'localB':bt['localDomMs']['p95'],'localLimit':max(16,dt['localDomMs']['p95']+3),'localPass':bt['localDomMs']['p95']<=max(16,dt['localDomMs']['p95']+3),'peerD':dt['peerDomMs']['p95'],'peerB':bt['peerDomMs']['p95'],'peerPass':bt['peerDomMs']['p95']<=1.1*dt['peerDomMs']['p95']})
+result={'pairs':pairs,'allEightFunctionalGuardsPass':all(x['outcome']=='passed' and all(x['guards'].values())for x in browsers),'allSixUninstrumentedTypingGuardsPass':all(x['localPass']and x['peerPass']for x in pairs),'medianPressureImprovementPercent':med(x['improvementPercent']for x in pairs[1:]),'pressureReferenceDriftPercent':100*abs(byname['pressure2-D']['backlogDrainMs']/byname['pressure1-D']['backlogDrainMs']-1),'diagnosticsExcludedTimingCredit':True,'defaultsUnchanged':'16/64','noAdoptionClaim':True};(r/'browser-summary.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "phase": 21,
+  "base20Held": true,
+  "scope": "bounded trace and static opportunity map; no runtime/test repair",
+  "runtimeChanges": 0,
+  "oldTestChanges": 0,
+  "staticSources": 296,
+  "authorityCalls": 98,
+  "findings": 22,
+  "selectedPreludeRegressionsPassed": 31,
+  "pairedNativeCases": 56,
+  "pairedNativePass": 55,
+  "pairedNativeSameFailure": 1,
+  "qualificationObligations": 882,
+  "unresolved": 338,
+  "completedAppendedFirst": true,
+  "noPublication": true
+}

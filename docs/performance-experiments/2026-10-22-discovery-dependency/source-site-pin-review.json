@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "construction": "transport-service-chain",
+  "path": "account-service/delivery.ts",
+  "oldLine": 674,
+  "currentLine": 685,
+  "actualSourceLineContainsExactDomain": true,
+  "onlySourceSiteCoordinateChanged": true,
+  "allContractsAndStatusesExact": true
+}

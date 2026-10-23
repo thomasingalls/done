@@ -1,0 +1,43 @@
+from pathlib import Path
+import json,math,statistics
+r=Path(__file__).parent;median=statistics.median
+load=lambda f:json.loads(f.read_text())
+def dist(v):
+ v=sorted(v);return {'n':len(v),'p50':v[math.ceil(.5*len(v))-1],'p95':v[math.ceil(.95*len(v))-1],'max':v[-1],'min':v[0]} if v else None
+
+def overlap(rows,begin,end,fn):
+ return max((fn(x)for x in rows if x['previous']<=end and x['at']>=begin),default=None)
+
+cases=[{'name':'control-normal','static':True,'fault':False},{'name':'control-fault','static':True,'fault':True}]+load(r/'plan.json');results=[]
+for case in cases:
+ d=load(r/case['name']/'result.json');assert d['outcome']=='passed';static=case.get('static',False);o=d['concurrent']['offers'];target=d['target'];a=d['dispatch'][0];events=[e for e in a['events']if e['kind']=='beforeinput'and e['target']==target and o[0]['at']-2<=e['at']<=o[-1]['returnedAt']+10];assert len(events)==120,len(events);monitors=[load(f)for f in sorted((r/case['name']/'node-monitors').glob('node-*.json'))];driver=d['driver'];parents=[m for m in monitors if m['role']=='cli.js'];assert len(parents)==1
+ rows=[]
+ for i,(offer,event)in enumerate(zip(o,events)):
+  kd=max((e for e in a['events']if e['kind']=='keydown'and e['target']==target and e['at']<=event['at']),key=lambda e:e['at']);base=len('Sync target A:')+600
+  if target=='plain':dom=next(x['at']for x in a['plainRows']if x['at']>=offer['at']-2 and x['length']>=i+1)
+  else:dom=next(x['at']for x in d['browsers'][0]['rows']if x['at']>=offer['at']-2 and x['lengths'][0]>=base+i+1)
+  row={'index':i+1,'offerAt':offer['at'],'beforeinputAt':event['at'],'domAt':dom,'offerToKeydown':kd['at']-offer['at'],'keydownStampToHandler':kd['at']-kd['stampEpoch'],'offerToBeforeinput':event['at']-offer['at'],'keydownToBeforeinput':event['at']-kd['at'],'beforeinputToDOM':dom-event['at'],'offerToDOM':dom-offer['at'],'beforeinputToRAF':event['rafAt']-event['at'],'keyboardRoundtrip':offer['returnedAt']-offer['at'],'offerLateness':offer['at']-offer['scheduledAt'],'focused':event['focused'],'visible':event['visible'],'active':event['active'],'trusted':event['trusted'],'rendererGap':overlap(a['beats'],offer['at'],event['at'],lambda x:x['at']-x['previous']),'rendererLate':overlap(a['beats'],offer['at'],event['at'],lambda x:x['lateMs']),'workerLate':overlap(driver['beats'],offer['at'],event['at'],lambda x:x['lateMs']),'parentLate':overlap(parents[0]['beats'],offer['at'],event['at'],lambda x:x['lateMs'])};rows.append(row)
+ keys=['offerToKeydown','keydownStampToHandler','offerToBeforeinput','keydownToBeforeinput','beforeinputToDOM','offerToDOM','beforeinputToRAF','keyboardRoundtrip','offerLateness','rendererGap','rendererLate','workerLate','parentLate'];metrics={k:dist([x[k]for x in rows if x[k]is not None])for k in keys};window=(o[0]['at'],o[-1]['returnedAt']);slow=sorted(rows,key=lambda x:x['offerToDOM'],reverse=True)[:10]
+ x={**case,'outcome':d['outcome'],'metrics':metrics,'rows':rows,'slowestTen':slow,'beforeinputFocused':sum(x['focused']for x in rows),'beforeinputVisible':sum(x['visible']=='visible'for x in rows),'allTrusted':all(x['trusted']for x in rows),'rendererLongtasksDuringTyping':[x for x in a['longtasks']if window[0]<=x['at']<=window[1]],'eventTimingCountDuringTyping':sum(window[0]<=x['at']<=window[1]for x in a['timings']),'clockBrackets':d['clocks'],'nodeRoles':[{'pid':m['pid'],'role':m['role'],'loop':m['loop'],'overflow':m['overflow']}for m in monitors],'rendererOverflow':a['overflow']}
+ if static:
+  x['root']=d['root']
+  if case['fault']:
+   sensitivity=[]
+   for fault in a['faults']:
+    v=rows[fault['index']-1];gap=overlap(a['beats'],fault['at'],fault['end'],lambda x:x['at']-x['previous']);checks={'actualBusyMs':fault['end']-fault['at']>=80,'beforeinputToDOM':v['beforeinputToDOM']>=70,'offerToDOM':v['offerToDOM']>=70,'beforeinputToRAF':v['beforeinputToRAF']>=70,'heartbeatGap':gap is not None and gap>=70,'longtask':any(t['at']<=fault['at']+2 and t['at']+t['ms']>=fault['end']-2 and t['ms']>=70 for t in a['longtasks'])};sensitivity.append({'index':fault['index'],'actualMs':fault['end']-fault['at'],'heartbeatGap':gap,'checks':checks,'passed':all(checks.values())})
+   assert len(sensitivity)==3 and all(x['passed']for x in sensitivity);x['faultSensitivity']=sensitivity
+ else:
+  x['roots']=d['roots'];x['catchupMs']=d['caughtAt']-d['startedAt'];x['guards']=d['guards'];x['all120EditorKeysReachedPeer']=d['all120EditorKeysReachedPeer'];assert all(d['guards'].values());assert (d['roots'][0]['pid']!=d['roots'][1]['pid'])==case['isolated'];assert target=='plain'or d['all120EditorKeysReachedPeer']
+  if case['focused']:assert x['beforeinputFocused']==x['beforeinputVisible']==120 and all(y['active']==target for y in rows)
+ assert x['rendererOverflow']==0 and all(m['overflow']==0 for m in monitors)
+ results.append(x)
+# Fixed engineering rule; no changing the16ms product criterion or successful-only contrasts.
+by={(x.get('block'),x.get('condition')):x for x in results if not x.get('static')};contrasts=[]
+for left,right,label in [('OE','FE','focus+sentinel-order bundle'),('FE','IE','independent browser root, equal editor workload'),('FP','IP','independent browser root, plain input control')]:
+ pairs=[]
+ for block in [1,2]:
+  a,b=by[block,left],by[block,right];aa,bb=a['metrics']['offerToDOM']['p95'],b['metrics']['offerToDOM']['p95'];pairs.append({'block':block,'leftMs':aa,'rightMs':bb,'reductionMs':aa-bb,'reductionPercent':100*(1-bb/aa),'discriminatingReduction':aa-bb>=3 and bb<=.8*aa})
+ contrasts.append({'left':left,'right':right,'meaning':label,'pairs':pairs,'consistentDeclaredReduction':all(p['discriminatingReduction']for p in pairs)})
+reference=[by[i,'OE']['catchupMs']for i in [1,2]];drift=100*abs(reference[1]/reference[0]-1)
+summary={'rows':results,'contrasts':contrasts,'referenceCatchupDriftPercent':drift,'referenceDriftWithin15Percent':drift<=15,'allTenFullDataGuards':True,'allSixEditorJourneys120KeysReachedPeer':True,'nativeStaticFaultSensorSensitive':True,'workingDefaults':'16/64','policyBTemporaryUnchanged':'32/128','priorTypingGateMissesRemain':True,'noAdoptionOrPhysicalInputToPaintClaim':True};(r/'analysis.json').write_text(json.dumps(summary,indent=2)+'\n')
+print(json.dumps({'perRun':[{k:x[k]for k in ['name','beforeinputFocused','beforeinputVisible','catchupMs']if k in x}|{'localP95':x['metrics']['offerToDOM']['p95'],'preInputP95':x['metrics']['offerToBeforeinput']['p95'],'mutationP95':x['metrics']['beforeinputToDOM']['p95']}for x in results],'contrasts':contrasts,'referenceDrift':drift},indent=2))

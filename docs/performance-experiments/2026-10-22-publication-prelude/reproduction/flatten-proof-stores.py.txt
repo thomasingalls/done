@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,subprocess,os,hashlib
+r=Path(__file__).parent;env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+# Read-only object-directory views omit each store's recursive info/alternates.
+original=(r/'patch21-index.git/objects/info/alternates').read_text().splitlines();pool=r/'flat-object-views';pool.mkdir();views=[]
+for i,source in enumerate(original):
+ s=Path(source);view=pool/str(i)/'objects';view.mkdir(parents=True);(view/'info').mkdir()
+ for p in s.iterdir():
+  if p.is_dir()and(p.name=='pack'or(len(p.name)==2 and all(c in '0123456789abcdef'for c in p.name))):(view/p.name).symlink_to(p,target_is_directory=True)
+ views.append(str(view))
+for name in ['patch21-index.git','verify21-index.git','verify01-21-index.git']:(r/name/'objects/info/alternates').write_text('\n'.join(views)+'\n')
+m=json.loads((r/'patches/manifest.json').read_text());repo='/Users/thomasingalls/.codex/worktrees/7fda/done';args=['git','-C',repo,'--git-dir='+str(r/'patch21-index.git'),'--work-tree='+repo];p=subprocess.run(args+['write-tree'],check=True,env=env,capture_output=True,text=True);assert not p.stderr;assert p.stdout.strip()==m['expectedCumulativeTree21']
+for name,work in [('verify21-index.git',r/'clean-apply21'),('verify01-21-index.git',r/'clean-apply01-21')]:
+ p=subprocess.run(['git','-C',str(work),'--git-dir='+str(r/name),'--work-tree='+str(work),'write-tree'],check=True,env=env,capture_output=True,text=True);assert not p.stderr;assert p.stdout.strip()==m['expectedCumulativeTree21']
+(r/'flat-object-views.json').write_text(json.dumps({'status':'passed','originalStores':original,'readOnlyNonrecursiveViews':views,'allThreeIndependentTreesUnchanged':m['expectedCumulativeTree21'],'warning':'initial disposable proof logged redundant recursive alternate nesting; no object or apply failure','onlyDisposableInfoAlternatesChanged':True},indent=2)+'\n');print('All three proof trees unchanged through read-only nonrecursive object views')

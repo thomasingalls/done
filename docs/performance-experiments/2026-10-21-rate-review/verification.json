@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "baseCommit": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "priorTree": "aadfbab35081da1daea12c72438a834db429c405",
+  "priorImmutablePatchesExact": 7,
+  "priorPacketChecksumCounts": {
+    "live-sync-attribution": 139,
+    "ordinary-receive-batching": 207,
+    "sync-capacity": 145,
+    "sync-continuation": 241,
+    "publisher-isolation": 139,
+    "publisher-commit-races": 186,
+    "cold-verification": 154
+  },
+  "workingRuntimeAndAllExistingTestsUnchanged": true,
+  "temporaryPolicies": {
+    "D": [
+      16,
+      64
+    ],
+    "S": [
+      32,
+      64
+    ],
+    "P": [
+      16,
+      128
+    ],
+    "B": [
+      32,
+      128
+    ]
+  },
+  "productionFilesPerFrozenArm": 803,
+  "allFourUnchangedTestClosuresExact": true,
+  "sameClientAssets": 110,
+  "budgetTestsPerPolicy": 17,
+  "nativeIndependentProofAndColdAuditRuns": 10,
+  "storedUnacknowledgedWrites": 0,
+  "actualClientJourneys": 10,
+  "allFullDataEditOfflineGuardsPassed": true,
+  "independentRawDOMMetricReconstruction": true,
+  "primaryMedianImprovementPercent": 31.45701250222196,
+  "primaryReferenceDrift": 0.0007110268412633403,
+  "sessionOnlyNativeFairnessAndPressureTypingMissesRetained": true,
+  "sessionOnlyPolicyNotEligibleForAdoption": true,
+  "global128VariantsDiagnosticOnly": true,
+  "configuredDefaultRemains16_64": true,
+  "planningTestsPassed": 109,
+  "cryptoCensusAndPlanningFilesByteExact": true,
+  "obligations": 881,
+  "unresolved": 337,
+  "constructionContractsAndStatusesExact": 97,
+  "aggregateQualificationPausedAndBlocked": true,
+  "otherSeatProgressAndDeferredFormattingExact": true,
+  "nativeStdoutCollisionQualified": true,
+  "knownExactPrivateValuesChecked": 35,
+  "privateMatches": 0,
+  "realIndexEmpty": true,
+  "scope": "Evidence-only local rate/capacity review. No adopted policy, measured production/container/platform capacity, universal fairness claim, real staging, commit, push, preview change, merge or deployment."
+}

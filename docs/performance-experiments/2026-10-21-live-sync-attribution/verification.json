@@ -1,0 +1,27 @@
+{
+  "packetChecksumsVerifiedExcludingReceipt": 138,
+  "appendOnlyFiles": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md"
+  ],
+  "runtimeAndOldTestsChanged": false,
+  "realIndexClean": true,
+  "protectedProgressAndDeferredFormattingUnchanged": true,
+  "sixJourneyGuardsAndMatchedExports": true,
+  "independentContinuousPeerP95Ms": {
+    "primary-foreground-0": 2278.199951171875,
+    "primary-foreground-75": 2457.10009765625
+  },
+  "publicAssetsIndependentlyMatched": 14,
+  "freshConstructor": {
+    "outcome": "passed",
+    "cards": 121,
+    "goalsBytes": 13000,
+    "positions": [
+      10,
+      2
+    ],
+    "dayBytes": 51440
+  }
+}

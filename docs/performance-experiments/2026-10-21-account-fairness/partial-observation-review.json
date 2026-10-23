@@ -1,0 +1,173 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "name": "1-B",
+      "outcome": "passed",
+      "keyOffers": 120,
+      "localObservedByOutcome": 120,
+      "peerObservedByOutcome": 120,
+      "localObservedAtSnapshot": 120,
+      "peerObservedAtSnapshot": 120,
+      "localMissingAtSnapshot": 0,
+      "peerMissingAtSnapshot": 0,
+      "observationsAfterOutcomeCutoff": {
+        "local": 0,
+        "peer": 0
+      },
+      "failedReplayObservations": [],
+      "allPresentAndMissingKeyMetricsIndependentlyReconstructed": true
+    },
+    {
+      "name": "2-S",
+      "outcome": "passed",
+      "keyOffers": 120,
+      "localObservedByOutcome": 120,
+      "peerObservedByOutcome": 120,
+      "localObservedAtSnapshot": 120,
+      "peerObservedAtSnapshot": 120,
+      "localMissingAtSnapshot": 0,
+      "peerMissingAtSnapshot": 0,
+      "observationsAfterOutcomeCutoff": {
+        "local": 0,
+        "peer": 0
+      },
+      "failedReplayObservations": [],
+      "allPresentAndMissingKeyMetricsIndependentlyReconstructed": true
+    },
+    {
+      "name": "3-U",
+      "outcome": "failed",
+      "keyOffers": 120,
+      "localObservedByOutcome": 120,
+      "peerObservedByOutcome": 110,
+      "localObservedAtSnapshot": 120,
+      "peerObservedAtSnapshot": 110,
+      "localMissingAtSnapshot": 0,
+      "peerMissingAtSnapshot": 10,
+      "observationsAfterOutcomeCutoff": {
+        "local": 0,
+        "peer": 0
+      },
+      "failedReplayObservations": [
+        {
+          "label": "H1",
+          "elapsedMs": 89578,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H2",
+          "elapsedMs": 89591,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H3",
+          "elapsedMs": 89608,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H4",
+          "elapsedMs": 89617,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H5",
+          "elapsedMs": 89625,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        }
+      ],
+      "allPresentAndMissingKeyMetricsIndependentlyReconstructed": true
+    },
+    {
+      "name": "4-U",
+      "outcome": "failed",
+      "keyOffers": 120,
+      "localObservedByOutcome": 120,
+      "peerObservedByOutcome": 79,
+      "localObservedAtSnapshot": 120,
+      "peerObservedAtSnapshot": 79,
+      "localMissingAtSnapshot": 0,
+      "peerMissingAtSnapshot": 41,
+      "observationsAfterOutcomeCutoff": {
+        "local": 0,
+        "peer": 0
+      },
+      "failedReplayObservations": [
+        {
+          "label": "H1",
+          "elapsedMs": 89576,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H2",
+          "elapsedMs": 89590,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H3",
+          "elapsedMs": 89606,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H4",
+          "elapsedMs": 89617,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        },
+        {
+          "label": "H5",
+          "elapsedMs": 89629,
+          "censoredBeforeReplayCeiling": true,
+          "sourceErrorMentionsClose": true
+        }
+      ],
+      "allPresentAndMissingKeyMetricsIndependentlyReconstructed": true
+    },
+    {
+      "name": "5-S",
+      "outcome": "passed",
+      "keyOffers": 120,
+      "localObservedByOutcome": 120,
+      "peerObservedByOutcome": 120,
+      "localObservedAtSnapshot": 120,
+      "peerObservedAtSnapshot": 120,
+      "localMissingAtSnapshot": 0,
+      "peerMissingAtSnapshot": 0,
+      "observationsAfterOutcomeCutoff": {
+        "local": 0,
+        "peer": 0
+      },
+      "failedReplayObservations": [],
+      "allPresentAndMissingKeyMetricsIndependentlyReconstructed": true
+    },
+    {
+      "name": "6-B",
+      "outcome": "passed",
+      "keyOffers": 120,
+      "localObservedByOutcome": 120,
+      "peerObservedByOutcome": 120,
+      "localObservedAtSnapshot": 120,
+      "peerObservedAtSnapshot": 120,
+      "localMissingAtSnapshot": 0,
+      "peerMissingAtSnapshot": 0,
+      "observationsAfterOutcomeCutoff": {
+        "local": 0,
+        "peer": 0
+      },
+      "failedReplayObservations": [],
+      "allPresentAndMissingKeyMetricsIndependentlyReconstructed": true
+    }
+  ],
+  "allObservedAndMissingMetricsExact": true,
+  "failedTypingGuardsRemainFailures": true,
+  "incompleteReplayObservationsExplicitlyCensored": true,
+  "scope": "Additional post-outcome read-only audit of missing/censored observations; frozen primary analysis, workload, source, deadlines and gates unchanged."
+}

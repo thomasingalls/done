@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "checkpointBlockerCleared": true,
+  "heavyFairnessAcceptance": false,
+  "candidateStatus": "held; checkpoint retry mechanism repaired, peer latency and deep replay guards still fail",
+  "completedBeforeDecisionAndPerformance": true,
+  "originalJournalPrefixesRetained": true,
+  "candidateStatusBeforeClarification": "accepted for the scoped checkpoint repair; heavy fairness remains held",
+  "peerP95Ms": [
+    8993.5,
+    5090.800048828125
+  ],
+  "peerGuardMs": 2500
+}

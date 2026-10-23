@@ -1,0 +1,86 @@
+[
+  {
+    "name": "reference-affected",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-history-checkpoint-20261022/reference-source",
+    "startedAt": 1792667127549,
+    "completedAt": 1792667229646,
+    "exitCode": 1
+  },
+  {
+    "name": "candidate-affected",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-history-checkpoint-20261022/source",
+    "startedAt": 1792667229647,
+    "completedAt": 1792667333066,
+    "exitCode": 1
+  },
+  {
+    "name": "new-regressions",
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=history timeline reuse|history catalog reuses|history early-epoch lookup|history complete timeline",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-history-checkpoint-20261022/source",
+    "startedAt": 1792667333067,
+    "completedAt": 1792667338459,
+    "exitCode": 1
+  },
+  {
+    "name": "types-final",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--ignoreConfig",
+      "--target",
+      "es2024",
+      "--module",
+      "nodenext",
+      "--moduleResolution",
+      "nodenext",
+      "--allowImportingTsExtensions",
+      "--skipLibCheck",
+      "--types",
+      "node",
+      "account-service/historyCheckpoint.ts"
+    ],
+    "cwd": "/private/tmp/done-history-checkpoint-20261022/source",
+    "startedAt": 1792667338460,
+    "completedAt": 1792667338614,
+    "exitCode": 0
+  },
+  {
+    "name": "lint-final",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/historyCheckpoint.ts",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-history-checkpoint-20261022/source",
+    "startedAt": 1792667338614,
+    "completedAt": 1792667338697,
+    "exitCode": 0
+  }
+]

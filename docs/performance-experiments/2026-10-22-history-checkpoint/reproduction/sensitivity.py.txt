@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,subprocess,copy,sqlite3,shutil
+r=Path(__file__).parent;a=json.loads((r/'analysis.json').read_text());ref=next(v['name']for v in a['runs']if v['variant']=='R'and not v['peerSampleComplete']);candidate=next(v['name']for v in a['runs']if v['variant']=='C');rows=[];node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+for name in ['invent-original-pass','drop-input','alter-cold-archive','erase-history-refusal','alter-native-refusal']:
+ target=ref if name in ['invent-original-pass','erase-history-refusal','alter-native-refusal']else candidate;x=json.loads((r/target/'result.json').read_text())
+ if name=='invent-original-pass':x['originalDeliveryPassed']=True
+ elif name=='drop-input':x['probesAtDeadline'][0]['events'].pop(next(i for i,e in enumerate(x['probesAtDeadline'][0]['events'])if e['kind']=='beforeinput'and e['at']>=x['startedAt']))
+ elif name=='alter-cold-archive':x['offlineColdWriterReopen']['archive']['sha256']='00'*32
+ elif name=='erase-history-refusal':x['network'].pop(next(i for i,n in enumerate(x['network'])if n['label']=='Q1'and n['phase']=='measured'and n['path']=='/account/history/v1/checkpoint'and n.get('status')==409))
+ else:
+  q=next(n for n in x['network']if n['label']=='Q1'and n['phase']=='measured'and n['path']=='/account/history/v1/checkpoint'and n.get('status')==409)
+  next(e for t in x['traces']for e in t['events']if e.get('bodySha256')==q['bodySha256']and e['path']==q['path']and e.get('status')==409)['refusal']='unavailable'
+ p=r/('control-'+name+'.json');p.write_text(json.dumps(x))
+ with(r/('evidence-control-'+name+'.log')).open('w')as f:done=subprocess.run(['python3',str(r/'review-evidence.py'),target,str(p)],stdout=f,stderr=subprocess.STDOUT)
+ assert done.returncode!=0 and 'AssertionError'in(r/('evidence-control-'+name+'.log')).read_text();rows.append({'name':name,'exitCode':done.returncode,'assertionDetected':True});p.unlink()
+path=r/'private-native-ciphertext-control.sqlite';shutil.copy2(r/candidate/'state/account.sqlite',path);db=sqlite3.connect(path);row=db.execute("SELECT rowid,submission FROM delivery_decisions WHERE kind='accepted' LIMIT 1").fetchone();b=bytearray(row[1]);at=0
+for _ in range(3):at+=2+int.from_bytes(b[at:at+2],'big')
+env=at+4;at=env
+for _ in range(7):at+=2+int.from_bytes(b[at:at+2],'big')
+assert at+48<len(b);b[at+48]^=1;db.execute('UPDATE delivery_decisions SET submission=? WHERE rowid=?',(b,row[0]));db.commit();db.close()
+with(r/'evidence-control-native-ciphertext.log').open('w')as f:done=subprocess.run([node,str(r/'audit-native.mjs'),'--inspect',str(path)],stdout=f,stderr=subprocess.STDOUT)
+assert done.returncode!=0 and 'independent ciphertext digest'in(r/'evidence-control-native-ciphertext.log').read_text();rows.append({'name':'native-ciphertext-digest','exitCode':done.returncode,'assertionDetected':True});path.unlink();(r/'sensitivity.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(json.dumps(rows))

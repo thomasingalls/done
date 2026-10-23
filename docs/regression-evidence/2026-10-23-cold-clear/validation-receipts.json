@@ -1,0 +1,73 @@
+[
+  {
+    "label": "format-new-tests-final",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--config",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json",
+      "--write",
+      "/private/tmp/done-cold-clear-retry-20261023/cold-regressions.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "format-delivery",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--config",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json",
+      "--write",
+      "/private/tmp/done-cold-clear-retry-20261023/source/account-service/delivery.ts"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "format-inboundAuthorityReuse",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--config",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json",
+      "--write",
+      "/private/tmp/done-cold-clear-retry-20261023/source/account-service/inboundAuthorityReuse.ts"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "new-before-final",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=spec",
+      "--test-name-pattern=cache-clear native retry|^clear during a cold wait",
+      "test/account-service-delivery/cold-verification.test.mjs"
+    ],
+    "exitCode": 1
+  },
+  {
+    "label": "new-after-final",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=spec",
+      "--test-name-pattern=cache-clear native retry|^clear during a cold wait",
+      "test/account-service-delivery/cold-verification.test.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "label": "focused-cache-cold-races",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=spec",
+      "test/account-service-delivery/cold-verification.test.mjs",
+      "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "test/account-sessions/inbound-authority-cache.test.mjs",
+      "test/account-sessions/inbound-authority-reuse.test.mjs"
+    ],
+    "exitCode": 1
+  }
+]

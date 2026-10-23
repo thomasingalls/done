@@ -1,0 +1,16 @@
+from pathlib import Path
+import subprocess,os,json,tarfile,io,time,hashlib,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p28=Path('/private/tmp/done-prelude-proof-reuse-20261022')
+# Explicitly never contend with the frozen performance series.
+assert json.loads((p28/'process-cleanup.json').read_text())['status']=='passed'
+env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'};rows=[]
+for c in json.loads((r/'static-leads.json').read_text()):
+ for arm,rev in [('before',c['parent']),('after',c['revision'])]:
+  d=r/(c['candidateBoundary']+'-'+arm);d.mkdir();archive=subprocess.check_output(['git','archive',rev],cwd=repo,env=env)
+  with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(d,filter='data')
+  (d/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
+  file='test/account-service-delivery/cold-verification.test.mjs'if c['candidateBoundary']=='cold-clear-lifecycle'else'test/account-ceremony/content-transfer.test.mjs'
+  identity={'revision':rev,'tree':subprocess.check_output(['git','rev-parse',rev+'^{tree}'],cwd=repo,env=env,text=True).strip(),'archiveSha256':hashlib.sha256(archive).hexdigest(),'testFileSha256':hashlib.sha256((d/file).read_bytes()).hexdigest(),'productionClosure':'all tracked source files from one complete immutable revision; no current modules substituted','dependencies':'fixed current installed node_modules+Node24.18.0, same for both arms; conclusions conditional on these dependencies'};(d/'historical-source-identity.json').write_text(json.dumps(identity,indent=2)+'\n')
+  cmd=['node','--test','--test-reporter=spec','--test-name-pattern='+c['casePattern'],file];at=time.time()
+  with(r/(c['candidateBoundary']+'-'+arm+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+  text=(r/(c['candidateBoundary']+'-'+arm+'.log')).read_text();counts={k:int(m.group(1))if(m:=re.search('ℹ '+k+r' (\d+)',text))else None for k in ['tests','pass','fail','skipped','cancelled']};fails=sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',text,re.M)));rows.append({'boundary':c['candidateBoundary'],'arm':arm,'revision':rev,'command':cmd,'exitCode':v.returncode,'elapsedSeconds':time.time()-at,'counts':counts,'failNames':fails,'identity':identity});(r/'historical-run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps({k:v for k,v in rows[-1].items()if k not in ['command','identity']}),flush=True)

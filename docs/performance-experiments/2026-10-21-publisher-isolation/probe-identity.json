@@ -1,0 +1,22 @@
+{
+  "probes": {
+    "run-omissions.py": "9d5287812019839097aa271b1686c115c12583bea865837d0494b8ffc78d2be7",
+    "audit-api.mjs": "2c604cf3894ec70e38fc7b65b715813026c59abaac9ce84bde80300bf27c7788",
+    "api-load.mjs": "65921d6bd2fdfa9059c676702effaadb9490db8633c528217578de390a867e1a",
+    "api-server.mjs": "f66866ace7d4f6ca365efc6009f81cfbc2c5375ef4ae71f1ccdade991eef2a9f"
+  },
+  "browserClosure": {
+    "devices.ts": "9a6992af600a27d7b58e32d557782289ac67350c148cf25a062670208de56226",
+    "inspect-fixture.mjs": "1371c1bd15f0c97b0d0647e282ad63b5063424a37b8af3b78269850a08b05732",
+    "live-sync.spec.ts": "ff4481acc49cc11a9b8ca76a1513b76fb75156166cde19ef61b77459b971c090",
+    "playwright.config.ts": "ba5b49483886cc79ce9110f487355f3b177098a736285ffe3d829b0b3e23a4c9",
+    "runtime.mjs": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "seed-initial.config.ts": "fe3a2546a7e6b656336ce3d69ba0cdf1a843855d339eb82d46d1ff6537dd911f",
+    "seed-initial.spec.ts": "6cd7055e89710516da1c7bd21ec3259d6c94861cfd70962f7c36e45883df4b47"
+  },
+  "runtimeControl": {
+    "path": "/private/tmp/done-publisher-isolation-20261021/source-candidate/test/live-sync-attribution/runtime.mjs",
+    "remoteBatchInjection": true,
+    "source": "/private/tmp/done-publisher-isolation-20261021/source-candidate"
+  }
+}

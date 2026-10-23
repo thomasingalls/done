@@ -1,0 +1,28 @@
+/** Unverified diagnostic projections. Never consumed by a protocol or storage owner. */
+import {createHash}from'node:crypto';
+import{decodeSubmit}from'./source/account-protocol/deliveryTransport.ts';
+import{decodeSubmission}from'./source/account-protocol/submission.ts';
+import{decodeNetworkEnvelope}from'./source/account-protocol/envelope.ts';
+import{decodePositionResponse}from'./source/account-protocol/positionDecision.ts';
+import{decodeInboundRequest,decodeInboundPage}from'./source/account-protocol/inboundTransport.ts';
+import{decodeInboundBatch,decodeInboundBatchPages}from'./source/account-protocol/inboundBatch.ts';
+const paths=new Set(['/account/delivery/submit','/account/delivery/read-v2','/account/delivery/read-v2-batch']);
+const sha=x=>createHash('sha256').update(x).digest('hex');
+const envelope=bytes=>{const v=decodeNetworkEnvelope(bytes);return{publisherSha256:sha(v.credential_id),workspaceSha256:sha(v.workspace_id),position:v.seq,envelopeSha256:sha(bytes)}};
+const request=bytes=>{const v=decodeInboundRequest(bytes);return{requestSha256:sha(bytes),publisherSha256:sha(v.publisher),readerSha256:sha(v.reader),workspaceSha256:sha(v.workspace),after:v.after,limit:v.limit,expiresAt:v.expires}};
+const decision=bytes=>{const v=decodePositionResponse(bytes),p=v.kind==='accepted'?v.head:v.refusal;return{kind:v.kind,publisherSha256:sha(p.credential),workspaceSha256:sha(p.workspace),position:p.position,responseSha256:sha(bytes)}};
+const page=bytes=>{const v=decodeInboundPage(bytes);return{requestSha256:v.request,through:v.through,next:v.next,entries:v.entries.map(e=>({envelope:envelope(e.envelope),decision:decision(e.proof)})),responseSha256:sha(bytes)}};
+export function projectRequest(path,bytes){
+ if(!paths.has(path))return undefined;
+ if(!bytes)return{unverified:true,missing:true};
+ if(path==='/account/delivery/submit')return{unverified:true,kind:'submit',...envelope(decodeSubmission(decodeSubmit(bytes).bytes).envelope),requestSha256:sha(bytes)};
+ if(path==='/account/delivery/read-v2'||path==='/account/delivery/read-v2-batch')return{unverified:true,kind:'read',requests:(path.endsWith('batch')?decodeInboundBatch(bytes):[bytes]).map(request)};
+ return undefined;
+}
+export function projectResponse(path,bytes){
+ if(!paths.has(path))return undefined;
+ if(!bytes)return{unverified:true,missing:true};
+ if(path==='/account/delivery/submit')return{unverified:true,...decision(bytes)};
+ if(path==='/account/delivery/read-v2'||path==='/account/delivery/read-v2-batch')return{unverified:true,kind:'pages',pages:(path.endsWith('batch')?decodeInboundBatchPages(bytes):[bytes]).map(page)};
+ return undefined;
+}

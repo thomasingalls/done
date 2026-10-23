@@ -1,0 +1,10 @@
+{
+  "status": "recorded",
+  "completedWrittenBeforeDecisions": true,
+  "completedAtNs": 1792708901604277000,
+  "recordedAtNs": 1792708901605624000,
+  "staleFixturesFixed": 16,
+  "remainingRuntimeRegression": "cold-clear-lifecycle at51c17a93",
+  "noRuntimeChanges": true,
+  "noNewQualificationOrPublication": true
+}

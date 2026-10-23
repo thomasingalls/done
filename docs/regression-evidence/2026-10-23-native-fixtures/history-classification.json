@@ -1,0 +1,381 @@
+{
+  "status": "passed",
+  "cases": [
+    {
+      "case": "clear during a cold wait requires fresh verification after handoff",
+      "classification": "runtime regression",
+      "reason": "Core evidence-cache revision invalidation turns a native in-flight read into unknown instead of fresh bounded continuation.",
+      "introducedAt": "51c17a932c96612f771718303114cfdf6281b7eb",
+      "adjacentPassingParent": "716d0db74ab9c977a612c5fc877aaa678aa6f3fa",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "cold-clear-lifecycle-before.log",
+      "evidenceAfter": "cold-clear-lifecycle-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "next-device preparation binds the certified parent and survives a lost reply",
+      "classification": "stale fixture/expectation",
+      "reason": "Epoch2 became valid for v2 recovery enrollment; retain an invalid v2 epoch1 refusal and assert valid2 parsing.",
+      "introducedAt": "a52ef52bf4ca963975aa18306a85e45f9711b277",
+      "adjacentPassingParent": "72eee3e936211bac325502590c5d001151899ea4",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "enrollment-epoch-two-before.log",
+      "evidenceAfter": "enrollment-epoch-two-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "next-device preparation binds the certified parent and survives a lost reply with one login",
+      "classification": "stale fixture/expectation",
+      "reason": "Epoch2 became valid for v2 recovery enrollment; retain an invalid v2 epoch1 refusal and assert valid2 parsing.",
+      "introducedAt": "a52ef52bf4ca963975aa18306a85e45f9711b277",
+      "adjacentPassingParent": "72eee3e936211bac325502590c5d001151899ea4",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "enrollment-epoch-two-before.log",
+      "evidenceAfter": "enrollment-epoch-two-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "browser comparison by existing composes with the real continuation relay and key handoff after restart",
+      "classification": "stale fixture/expectation",
+      "reason": "Fresh gen1 handoffs require a retained replacement snapshot and source/key/binding owners; model fixtures omit the new interface.",
+      "introducedAt": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "adjacentPassingParent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "generation-one-fresh-snapshot-before.log",
+      "evidenceAfter": "generation-one-fresh-snapshot-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "browser comparison by new composes with the real continuation relay and key handoff after restart",
+      "classification": "stale fixture/expectation",
+      "reason": "Fresh gen1 handoffs require a retained replacement snapshot and source/key/binding owners; model fixtures omit the new interface.",
+      "introducedAt": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "adjacentPassingParent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "generation-one-fresh-snapshot-before.log",
+      "evidenceAfter": "generation-one-fresh-snapshot-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "retained connection coordinates invitation through third-device certification with existing approving",
+      "classification": "stale fixture/expectation",
+      "reason": "Fresh gen1 handoffs require a retained replacement snapshot and source/key/binding owners; model fixtures omit the new interface.",
+      "introducedAt": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "adjacentPassingParent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "generation-one-fresh-snapshot-before.log",
+      "evidenceAfter": "generation-one-fresh-snapshot-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "retained connection coordinates invitation through third-device certification with new approving",
+      "classification": "stale fixture/expectation",
+      "reason": "Fresh gen1 handoffs require a retained replacement snapshot and source/key/binding owners; model fixtures omit the new interface.",
+      "introducedAt": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "adjacentPassingParent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "generation-one-fresh-snapshot-before.log",
+      "evidenceAfter": "generation-one-fresh-snapshot-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "later native slot resumes activation after index interruption and rejects changed retained reading",
+      "classification": "stale fixture/expectation",
+      "reason": "The real reader now asks for admitted history; fixture callback ignores route and returns membership-checkpoint shape.",
+      "introducedAt": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "adjacentPassingParent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "new-history-request-before.log",
+      "evidenceAfter": "new-history-request-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage",
+      "classification": "stale fixture/expectation",
+      "reason": "After detected corruption, byte restoration does not retire quarantine; explicit reopen must run a complete census.",
+      "introducedAt": "c609d8c7c77f8e2e006a7d80704b5d6e907a376b",
+      "adjacentPassingParent": "39914c6948b1f78f8eab6952609125f094639c57",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "publisher-integrity-quarantine-before.log",
+      "evidenceAfter": "publisher-integrity-quarantine-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart",
+      "classification": "stale fixture/expectation",
+      "reason": "After detected corruption, byte restoration does not retire quarantine; explicit reopen must run a complete census.",
+      "introducedAt": "c609d8c7c77f8e2e006a7d80704b5d6e907a376b",
+      "adjacentPassingParent": "39914c6948b1f78f8eab6952609125f094639c57",
+      "sameWholeTestFileBeforeAfter": false,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": true,
+      "evidenceBefore": "publisher-integrity-quarantine-before.log",
+      "evidenceAfter": "publisher-integrity-quarantine-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "continuation schema requires explicit offline opt-in and preserves retained session/account rows",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "removal schema upgrades only offline from 18 and refuses an older host",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "schema-16 pending comparison upgrades explicitly without replacing its messages",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    },
+    {
+      "case": "schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt",
+      "classification": "stale fixture/expectation",
+      "reason": "Schema26 pruning reader version landed; exact offline upgrades/old host refusals remain.",
+      "introducedAt": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "adjacentPassingParent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "sameWholeTestFileBeforeAfter": true,
+      "sameSelectedCaseAstBeforeAfter": true,
+      "fixedPostCommitBridgeAlsoPassesParent": null,
+      "evidenceBefore": "schema26-before.log",
+      "evidenceAfter": "schema26-after.log",
+      "scope": "Adjacent historical source pair under fixed current Node24.18.0 and installed dependencies, not a claim about archived CI/deployed observations."
+    }
+  ],
+  "pairs": [
+    {
+      "boundary": "cold-clear-lifecycle",
+      "beforeCommit": "716d0db74ab9c977a612c5fc877aaa678aa6f3fa",
+      "afterCommit": "51c17a932c96612f771718303114cfdf6281b7eb",
+      "beforeCounts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": true,
+      "candidateBoundaryRuledOut": false
+    },
+    {
+      "boundary": "enrollment-epoch-two",
+      "beforeCommit": "72eee3e936211bac325502590c5d001151899ea4",
+      "afterCommit": "a52ef52bf4ca963975aa18306a85e45f9711b277",
+      "beforeCounts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": true,
+      "candidateBoundaryRuledOut": false
+    },
+    {
+      "boundary": "generation-one-fresh-snapshot",
+      "beforeCommit": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "afterCommit": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "beforeCounts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 4,
+        "pass": 0,
+        "fail": 4,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": false,
+      "candidateBoundaryRuledOut": false
+    },
+    {
+      "boundary": "new-history-request",
+      "beforeCommit": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "afterCommit": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "beforeCounts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": false,
+      "candidateBoundaryRuledOut": false
+    },
+    {
+      "boundary": "publisher-integrity-quarantine",
+      "beforeCommit": "39914c6948b1f78f8eab6952609125f094639c57",
+      "afterCommit": "c609d8c7c77f8e2e006a7d80704b5d6e907a376b",
+      "beforeCounts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": false,
+      "candidateBoundaryRuledOut": false
+    },
+    {
+      "boundary": "replacement-owner-interface",
+      "beforeCommit": "1db2a9182218410abcd86692b5eb5c2a7ccf0dd5",
+      "afterCommit": "cf520fba22143aa9d6ac1eab68a13a50163e8334",
+      "beforeCounts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": true,
+      "candidateBoundaryRuledOut": true
+    },
+    {
+      "boundary": "schema26",
+      "beforeCommit": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "afterCommit": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "beforeCounts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "afterCounts": {
+        "tests": 10,
+        "pass": 3,
+        "fail": 7,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "exactSameWholeTestFileBothArms": true,
+      "candidateBoundaryRuledOut": false
+    }
+  ],
+  "attributionMethod": "Complete immutable production+test source for adjacent parent/commit; selected case AST/options/signatures identical; differing main test bridges independently fixed across both production arms with passing parent still passing; names individually observed pass\u2192fail; fixed dependencies; no mixed native modules.",
+  "fixedCurrentLockfileSha256": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8",
+  "noArchivedOriginalCIClaim": true,
+  "all17FailuresAccounted": true,
+  "runtimeDefects": 1,
+  "staleFixtureCases": 16
+}

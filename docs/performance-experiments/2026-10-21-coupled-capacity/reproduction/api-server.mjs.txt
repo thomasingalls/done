@@ -1,0 +1,12 @@
+import {spawn,execFileSync} from 'node:child_process';
+import {createInterface} from 'node:readline';
+import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+const root='/private/tmp/done-coupled-capacity-20261021',source=process.argv[2],state=process.argv[3];mkdirSync(state,{mode:0o700});
+const image=JSON.parse(readFileSync(root+'/container-image.json')).Id;
+const args=['run','--rm','--interactive','--cpus=1','--memory=1g','--memory-swap=1g','--pids-limit=128','--cap-drop=ALL','--security-opt=no-new-privileges','--read-only','--tmpfs','/tmp:rw,nosuid,nodev,size=64m','--user',String(process.getuid())+':'+String(process.getgid()),'--cidfile',state+'/container.cid','--publish','127.0.0.1::53110','--volume',root+':/experiment:ro','--volume',state+':/state:rw','--volume',source+'/account-service:/app/account-service:ro','--volume',source+'/account-protocol:/app/account-protocol:ro','--entrypoint','node',image,'/experiment/container-server.mjs'];
+writeFileSync(state+'/docker-command.json',JSON.stringify(args,null,2)+'\n');
+const child=spawn('docker',args,{stdio:['pipe','pipe','inherit']});
+createInterface({input:child.stdout}).on('line',line=>{const msg=JSON.parse(line);if(msg.ready){const id=readFileSync(state+'/container.cid','utf8').trim();const inspected=JSON.parse(execFileSync('docker',['inspect',id]));const x=inspected[0],h=x.HostConfig;writeFileSync(state+'/container-inspect.json',JSON.stringify({Id:x.Id,Image:x.Image,Config:{User:x.Config.User,Entrypoint:x.Config.Entrypoint,Cmd:x.Config.Cmd},HostConfig:{NanoCpus:h.NanoCpus,Memory:h.Memory,MemorySwap:h.MemorySwap,PidsLimit:h.PidsLimit,ReadonlyRootfs:h.ReadonlyRootfs,CapDrop:h.CapDrop,SecurityOpt:h.SecurityOpt},NetworkSettings:{Ports:x.NetworkSettings.Ports},Mounts:x.Mounts},null,2)+'\n');msg.port=Number(x.NetworkSettings.Ports['53110/tcp'][0].HostPort);}process.send?.(msg)});
+process.on('message',msg=>child.stdin.write(JSON.stringify(msg)+'\n'));
+child.on('exit',(code,signal)=>{process.exitCode=code??1;process.disconnect();});
+process.on('SIGTERM',()=>{try{const id=readFileSync(state+'/container.cid','utf8').trim();execFileSync('docker',['stop','--time','10',id],{stdio:'ignore'});}catch{}child.kill('SIGTERM');});

@@ -1,0 +1,29 @@
+from pathlib import Path
+import json,sys,math,collections,hashlib
+r=Path(__file__).parent;analysis=json.loads((r/'analysis.json').read_text());rows=[]
+for report in analysis['runs']:
+ name=report['name'];x=json.loads(Path(sys.argv[2]).read_text())if len(sys.argv)>2 and name==sys.argv[1]else json.loads((r/name/'result.json').read_text());start=x['startedAt'];assert len(x['offers'])==120;assert [v['index']for v in x['offers']]==list(range(120));probes=x['probesAtDeadline'];actual=[]
+ for d,p in enumerate(probes):
+  samples=sorted([(v['at'],v['length'])for v in p['lengths']]);baseline=[n for t,n in samples if t<=start][-1];values=[]
+  for i,o in enumerate(x['offers']):
+   hits=[t-o['at']for t,n in samples if t>=o['at']-5 and n>=baseline+i+1];values.append(hits[0]if hits else None)
+  actual.append(values)
+  expected=[v['localMs'if d==0 else'peerMs']for v in report['keys']];assert values==expected,(name,d)
+ events=[e for e in probes[0]['events']if e['kind']=='beforeinput'and start<=e['at']<=x['typingFinishedAt']];assert len(events)==120 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in events)
+ complete=all(v is not None for v in actual[1]);assert report['peerSampleComplete']==complete;assert report['peerKeysObserved']==sum(v is not None for v in actual[1]);assert not x['originalDeliveryPassed'] or complete
+ quantile=lambda vals:sorted(v for v in vals if v is not None)[math.ceil(.95*sum(v is not None for v in vals))-1]
+ assert report['localMs']['p95']==quantile(actual[0]);assert report['peerObservedSubsetMs']['p95']==quantile(actual[1]);assert report['gates']['peerP95']==(complete and quantile(actual[1])<=2500);assert report['gates']['localTypingP95']==(all(v is not None for v in actual[0])and quantile(actual[0])<=16)
+ assert report['gates']['all120KeysAtOriginalDeadline']==(x['originalDeliveryPassed']and complete);assert report['gates']['allBackgroundReplay600s']==x['backgroundReplayPassed'];assert x['backgroundReplayPassed']==all(v['outcome']=='passed'and v.get('exportEquality')for v in x['catchups']);assert len(x['catchups'])==6
+ if not x['originalDeliveryPassed']:assert not x['backgroundReplayPassed']
+ assert x['pendingBeforeClose']['archive']==x['offlineColdWriterReopen']['archive'];assert x['offlineColdWriterReopen']['sameProfile']and x['offlineColdWriterReopen']['noStorageStateReinjection'];assert all(x['guards'].values());assert report['primaryAcceptance']==all(report['gates'].values())
+ assert x['automaticOriginalWritingRecovered']and x['originalWholeExportEquality']and x['automaticPendingConverged'];assert 0<=x['originalRecoveredAt']-x['loadStoppedAt']<=120000;assert 0<=x['pendingConvergedAt']-x['pendingReconnectAt']<=120000
+ native=[v for part in x['traces']for v in part['events']];assert all(v['tag']=='http-result'for v in native)
+ history=[q for q in x['network']if q['label']=='Q1'and q['phase']=='measured'and q['path']=='/account/history/v1/checkpoint'and q.get('status')==409];assert len(history)==report['historyCheckpoint409s']
+ for q in history:
+  proof=[v for v in native if v.get('bodySha256')==q['bodySha256']and v['path']==q['path']and v.get('status')==409];assert len(proof)==1,'native closed refusal missing or ambiguous';assert isinstance(proof[0].get('refusal'),str);assert q.get('refusal') in [None,proof[0]['refusal']]
+ assert collections.Counter(q.get('refusal','body-unavailable')for q in history)==report['historyCheckpointObservedReasons']
+ assert collections.Counter(v['refusal']for q in history for v in native if v.get('bodySha256')==q['bodySha256']and v['path']==q['path']and v.get('status')==409)==report['historyCheckpointNativeReasons']
+ identity=json.loads((r/name/'container-identity.json').read_text());h=identity['HostConfig'];assert(h['NanoCpus'],h['Memory'],h['MemorySwap'],h['PidsLimit'],h['ReadonlyRootfs'])==(1000000000,1073741824,1073741824,128,True);assert x.get('resourceStop')is None;assert x['metrics']['rssSampledPeak']<1073741824
+ rows.append({'name':name,'all120IndependentTimingObservationsReconstructed':True,'peerObservationsComplete':complete,'history409s':len(history),'nativeRefusalBodiesComplete':True,'coldPendingArchiveExact':True,'sameProfileNoReinjection':True,'resourceEnvelopeExact':True})
+if len(sys.argv)==1:
+ (r/'evidence-review.json').write_text(json.dumps({'status':'passed','runs':rows,'scope':'Independent raw-time/event/refusal/identity/cold-archive reconstruction; no full-peer quantile inferred for incomplete references.'},indent=2)+'\n');print(json.dumps(rows))

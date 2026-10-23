@@ -1,0 +1,58 @@
+[
+  {
+    "candidateBoundary": "enrollment-epoch-two",
+    "revision": "a52ef52bf4ca963975aa18306a85e45f9711b277",
+    "parent": "72eee3e936211bac325502590c5d001151899ea4",
+    "path": "account-protocol/enrollment.ts",
+    "casePattern": "next-device preparation binds the certified parent",
+    "status": "static lead only; coherent before/after reproduction still required; not asserted first introduction"
+  },
+  {
+    "candidateBoundary": "schema26",
+    "revision": "5e47a043aa2343bb133934a9a54705d25528b522",
+    "parent": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+    "path": "account-service/core.ts",
+    "casePattern": "schema",
+    "status": "static lead only; coherent before/after reproduction still required; not asserted first introduction"
+  },
+  {
+    "candidateBoundary": "new-history-request",
+    "revision": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+    "parent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+    "path": "src/account/membershipReader.ts",
+    "casePattern": "later native slot resumes activation",
+    "status": "static lead only; coherent before/after reproduction still required; not asserted first introduction"
+  },
+  {
+    "candidateBoundary": "replacement-owner-interface",
+    "revision": "cf520fba22143aa9d6ac1eab68a13a50163e8334",
+    "parent": "1db2a9182218410abcd86692b5eb5c2a7ccf0dd5",
+    "path": "src/account/membershipConnection.ts",
+    "casePattern": "retained connection coordinates invitation",
+    "status": "static lead only; coherent before/after reproduction still required; not asserted first introduction"
+  },
+  {
+    "candidateBoundary": "publisher-integrity-quarantine",
+    "revision": "c609d8c7c77f8e2e006a7d80704b5d6e907a376b",
+    "parent": "39914c6948b1f78f8eab6952609125f094639c57",
+    "path": "account-service/publisherTips.ts",
+    "casePattern": "continuation certification verifies frozen publisher witnesses|three publisher ledgers",
+    "status": "static lead only; coherent before/after reproduction still required; not asserted first introduction"
+  },
+  {
+    "candidateBoundary": "cold-clear-lifecycle",
+    "revision": "51c17a932c96612f771718303114cfdf6281b7eb",
+    "parent": "716d0db74ab9c977a612c5fc877aaa678aa6f3fa",
+    "path": "account-service/inboundAuthorityReuse.ts",
+    "casePattern": "clear during a cold wait",
+    "status": "static lead only; coherent before/after reproduction still required; not asserted first introduction"
+  },
+  {
+    "candidateBoundary": "generation-one-fresh-snapshot",
+    "revision": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+    "parent": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+    "path": "src/account/membershipHandoff.ts",
+    "casePattern": "browser comparison by|retained connection coordinates invitation",
+    "status": "refined static lead: default fresh deliveries now require snapshot at generation1; cf520 interface alone may not change these original gen1 cases; no first-introduction claim before controlled reproduction"
+  }
+]

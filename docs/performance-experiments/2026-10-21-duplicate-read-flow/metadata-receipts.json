@@ -1,0 +1,95 @@
+[
+  {
+    "name": "census-before",
+    "args": [
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792616171995,
+    "completedAt": 1792616172629,
+    "exitCode": 1,
+    "expectedExit": 1
+  },
+  {
+    "name": "census-record",
+    "args": [
+      "scripts/account-crypto-prep/run.mjs",
+      "--record"
+    ],
+    "startedAt": 1792616172630,
+    "completedAt": 1792616173274,
+    "exitCode": 0,
+    "expectedExit": 0
+  },
+  {
+    "name": "census-check",
+    "args": [
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792616173274,
+    "completedAt": 1792616173899,
+    "exitCode": 0,
+    "expectedExit": 0
+  },
+  {
+    "name": "inventory-before",
+    "args": [
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792616173899,
+    "completedAt": 1792616175289,
+    "exitCode": 1,
+    "expectedExit": 1
+  },
+  {
+    "name": "inventory-record",
+    "args": [
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "startedAt": 1792616175290,
+    "completedAt": 1792616176390,
+    "exitCode": 0,
+    "expectedExit": 0
+  },
+  {
+    "name": "inventory-check",
+    "args": [
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792616176390,
+    "completedAt": 1792616177471,
+    "exitCode": 0,
+    "expectedExit": 0
+  },
+  {
+    "name": "manifest-before",
+    "args": [
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792616177471,
+    "completedAt": 1792616179850,
+    "exitCode": 1,
+    "expectedExit": 1
+  },
+  {
+    "name": "manifest-record",
+    "args": [
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "startedAt": 1792616179850,
+    "completedAt": 1792616182139,
+    "exitCode": 0,
+    "expectedExit": 0
+  },
+  {
+    "name": "manifest-check",
+    "args": [
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792616182139,
+    "completedAt": 1792616184471,
+    "exitCode": 0,
+    "expectedExit": 0
+  }
+]

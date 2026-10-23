@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "allFourJourneysUseExactFrozenReferenceAndCandidateInputs": true,
+  "clientFiles": 110,
+  "onlyNativeChangeIsReviewedReadAdapterAndVerifierIdentity": true,
+  "allProtocolAndClientBytesExact25": true,
+  "originalFull600sLabAndAllLimitsExact23": true,
+  "privateFixtureExact": true,
+  "realHeadAndIndexUnchangedUnstaged": true
+}

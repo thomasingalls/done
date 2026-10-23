@@ -1,0 +1,204 @@
+file	line	callee	owner	lexical_loop_lines
+account-service/contentTransfer.ts	112	verifiedCensus	transferContent	56
+account-service/delivery.ts	864	census	verifiedCensus	
+account-service/delivery.ts	1034	verifiedCensus	decideSubmission	1005
+account-service/delivery.ts	1247	verifiedCensus	readAccepted	1214
+account-service/delivery.ts	1256	verifyServed	readAccepted	1214,1256
+account-service/delivery.ts	1422	verifiedCensus	readInbound	1367
+account-service/delivery.ts	1431	verifyServed	readInbound	1367,1431
+account-service/discovery.ts	74	verifiedCensus	discoverAuthority	62
+account-service/historyCheckpoint.ts	421	verifiedCensus	exchangeHistoryCheckpoint	230,388
+account-service/historyCheckpoint.ts	446	verifyServed	verifyCuts	230,430
+account-service/lostDeviceRecovery.ts	319	verifiedCensus	commit	317
+account-service/lostDeviceRecovery.ts	584	verifiedCensus	read	571
+account-service/membership.ts	193	verifiedCensus	admitMembership	129,184
+account-service/membershipCancellation.ts	125	verifiedCensus	cancelMembership	72,117
+account-service/membershipCheckpoint.ts	79	verifiedCensus	readMembershipCheckpoint	55
+account-service/membershipLocator.ts	161	verifiedCensus	discoverMembership	145
+account-service/membershipTransfer.ts	170	verifiedCensus	transferMembership	87,162
+account-service/publisherAudit.worker.ts	22	census	<module>	
+account-service/removalDiscovery.ts	67	verifiedCensus	discoverRemoval	46
+account-service/removalPreparation.ts	72	verifiedCensus	prepareRemoval	45,65
+account-service/rotation.ts	99	verifiedCensus	commitRotation	58,90
+account-service/successor.ts	100	verifiedCensus	admitPrepared	84
+src/account/ceremonyVault.ts	123	readPromotion	<callback:withPromotionSlot>	
+src/account/ceremonyVault.ts	234	readPromotion	prepareCheckpoint	
+src/account/firstDeviceSetup.ts	298	readPromotion	<callback:withPromotionSlot>	
+src/account/membershipVault.ts	95	readJoinedAccount	<callback:withJoinedSlot>	
+src/account/recoveryOwner.ts	293	readPromotion	<callback:withPromotionSlot>	
+src/crdt/accountCapture.ts	123	extension.sourceRecords	sourceRecords	
+src/crdt/accountCapture.ts	129	capturedRecovery	recovery	
+src/crdt/accountCapture.ts	132	sourceRecords	recovery	
+src/crdt/accountCapture.ts	149	verifyJoinedAccount	initialize	
+src/crdt/accountCapture.ts	175	verifyAccountUnderPermit	initialize	
+src/crdt/accountCapture.ts	220	captureCatalog	<callback:prepareAccountCustody>	
+src/crdt/accountCapture.ts	220	sourceRecords	<callback:prepareAccountCustody>	
+src/crdt/accountCapture.ts	463	captureCatalog	persist	
+src/crdt/accountCapture.ts	463	sourceRecords	persist	
+src/crdt/accountCapture.ts	560	captureCatalog	<callback:run>	
+src/crdt/accountCapture.ts	560	sourceRecords	<callback:run>	
+src/crdt/accountCapture.ts	736	captureCatalog	<callback:withSnapshot>	
+src/crdt/accountCapture.ts	736	sourceRecords	<callback:withSnapshot>	
+src/crdt/accountCatchup.ts	53	inspectInbound	<callback:prepareAccountCustody>	
+src/crdt/accountCatchup.ts	63	readPromotion	<anonymous>	
+src/crdt/accountCatchup.ts	93	inspectInbound	<callback:withPromotionRoot>	
+src/crdt/accountCatchup.ts	94	capturedRecovery	<callback:withPromotionRoot>	
+src/crdt/accountCatchup.ts	117	verifyInstalledSuccessor	<callback:withPromotionRoot>	
+src/crdt/accountCatchup.ts	152	verifyAccountUnderPermit	prepareAccountCatchup	
+src/crdt/accountDelivery.ts	132	verifyDelivery	validated	
+src/crdt/accountDelivery.ts	216	verifyDelivery	<callback:task.wait>	
+src/crdt/accountJournal.ts	23	verifyAccountUnderPermit	initialize	
+src/crdt/accountProgressCustody.ts	39	readPromotion	withAccountProgressCustody	
+src/crdt/accountProgressCustody.ts	40	readJoinedAccount	withAccountProgressCustody	
+src/crdt/accountReceive.ts	233	inspectInbound	inspectCensus	
+src/crdt/accountReceive.ts	236	inspectInbound	inspectCensus	
+src/crdt/accountReceive.ts	312	readJoinedAccount	assertCurrent	
+src/crdt/accountReceive.ts	321	readPromotion	assertCurrent	
+src/crdt/accountReceive.ts	378	inspectCensus	sourceRecords	
+src/crdt/accountReceive.ts	386	inspectCensus	sourcePresence	
+src/crdt/accountReceive.ts	534	inspectInboundCooperatively	checkFull	
+src/crdt/accountReceive.ts	535	inspectInbound	checkFull	
+src/crdt/accountReceive.ts	542	verifyInstalledSuccessor	checkFull	
+src/crdt/accountReceive.ts	551	verifyInstalledMembership	checkFull	
+src/crdt/accountReceive.ts	560	verifySpool	checkFull	
+src/crdt/accountReceive.ts	572	verifyDelivery	checkFull	
+src/crdt/accountReceive.ts	581	verifyInboundLedger	checkFull	
+src/crdt/accountReceive.ts	614	indexVerifiedLedger	checkFull	
+src/crdt/accountReceive.ts	634	extendAccountLedger	<anonymous>	
+src/crdt/accountReceive.ts	648	verifyInboundLedger	<anonymous>	
+src/crdt/accountReceive.ts	1013	readState	state	
+src/crdt/accountReceive.ts	1041	readState	prepareRead	
+src/crdt/accountReceive.ts	1221	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1354	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1384	inspectCensus	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1424	state	beforeCommit	
+src/crdt/accountReceive.ts	1431	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1449	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1464	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1512	inspectCensus	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1569	state	beforeCommit	
+src/crdt/accountReceive.ts	1576	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1656	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1754	state	beforeCommit	
+src/crdt/accountReceive.ts	1760	state	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1786	readPromotion	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1827	inspectInbound	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1830	verifyInstalledSuccessor	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1831	verifySpool	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1841	verifyDelivery	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1848	verifyInboundLedger	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1934	readJoinedAccount	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1935	readPromotion	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1983	readJoinedAccount	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	1984	readPromotion	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2015	inspectInbound	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2016	verifyInstalledMembership	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2023	verifySpool	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2033	verifyDelivery	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2040	verifyInboundLedger	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2200	readJoinedAccount	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2202	readPromotion	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2283	readPromotion	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2369	inspectCensus	inspect	
+src/crdt/accountReceive.ts	2377	readState	checkPublication	
+src/crdt/accountReceive.ts	2441	inspectInbound	verifyProposed	
+src/crdt/accountReceive.ts	2446	verifyDelivery	verifyProposed	
+src/crdt/accountReceive.ts	2478	extendAccountLedger	verifyProposed	
+src/crdt/accountReceive.ts	2520	inspectCensus	inspect	
+src/crdt/accountReceive.ts	2546	inspectCensus	<callback:runCaptureTask>	
+src/crdt/accountReceive.ts	2584	readJoinedAccount	refreshCustody	
+src/crdt/accountReceive.ts	2585	readPromotion	refreshCustody	
+src/crdt/accountRotation.ts	68	readPromotion	activateAccountRotation	
+src/crdt/accountRotation.ts	69	readJoinedAccount	activateAccountRotation	
+src/crdt/accountRotation.ts	345	readPromotion	fresh	
+src/crdt/accountRotation.ts	346	readJoinedAccount	fresh	
+src/crdt/accountRotation.ts	392	inspectInbound	validate	
+src/crdt/accountRotation.ts	394	verifySpool	validate	
+src/crdt/accountRotation.ts	401	verifyDelivery	validate	
+src/crdt/accountRotation.ts	408	verifyInboundLedger	validate	
+src/crdt/accountRotation.ts	452	inspectInbound	<callback:persistRotationJournal>	
+src/crdt/accountRotation.ts	476	verifyInstalledMembership	<callback:vault.withInstalledKey>	
+src/crdt/accountRotation.ts	477	inspectInbound	<callback:vault.withInstalledKey>	
+src/crdt/accountSpool.ts	48	readPromotion	assertCurrent	
+src/crdt/accountSpool.ts	58	inspectDelivery	inspect	
+src/crdt/accountSpool.ts	59	inspectSpool	inspect	
+src/crdt/accountSpool.ts	70	verifyDelivery	<callback:task.wait>	
+src/crdt/accountSpool.ts	71	inspectDelivery	<callback:task.wait>	
+src/crdt/accountSpool.ts	136	verifySpool	validate	
+src/crdt/accountSpool.ts	138	verifyDelivery	validate	
+src/crdt/accountSpool.ts	139	inspectDelivery	validate	
+src/crdt/accountStartup.ts	58	readPromotion	verifyAccountUnderPermit	
+src/crdt/accountStartup.ts	110	readPromotion	verifyAccountUnderPermit	
+src/crdt/accountStartup.ts	194	inspectInbound	<callback:withRecoveryUnderPermit>	
+src/crdt/accountStartup.ts	196	inspectDelivery	<callback:withRecoveryUnderPermit>	
+src/crdt/accountStartup.ts	198	inspectSpool	<callback:withRecoveryUnderPermit>	
+src/crdt/accountStartup.ts	202	capturedRecovery	<callback:withRecoveryUnderPermit>	
+src/crdt/accountStartup.ts	256	readPromotion	baseline	
+src/crdt/accountStartup.ts	287	inspectInbound	validate	
+src/crdt/accountStartup.ts	290	inspectDelivery	validate	
+src/crdt/accountStartup.ts	291	inspectSpool	validate	
+src/crdt/accountStartup.ts	297	verifyInstalledSuccessor	validate	
+src/crdt/accountStartup.ts	306	verifyInboundLedger	validate	
+src/crdt/accountStartup.ts	309	verifySpool	validate	
+src/crdt/accountStartup.ts	319	verifyDelivery	validate	
+src/crdt/accountStartup.ts	349	verifyAccountUnderPermit	<callback:withPromotionSlot>	
+src/crdt/accountSuccessor.ts	148	verifyInstalledMembership	verifyInstalledSuccessor	
+src/crdt/accountUploadActivation.ts	76	captureCatalog	activateAccountUpload	
+src/crdt/inboundLedger.ts	266	inspectDelivery	applyHistoryReceiveCuts	253
+src/crdt/incrementalAccountLedger.ts	439	verifySpool	extendAccountLedger	
+src/crdt/incrementalAccountLedger.ts	453	verifyDelivery	extendAccountLedger	
+src/crdt/joinedAccount.ts	765	readJoinedAccount	installCertifiedAccount	
+src/crdt/joinedAccount.ts	811	readJoinedAccount	verifyJoinedAccount	
+src/crdt/joinedAccount.ts	919	readJoinedAccount	<callback:joinedKeys>	
+src/crdt/joinedAccount.ts	931	inspectInbound	<callback:prepareAccountCustody>	
+src/crdt/joinedAccount.ts	933	verifyInboundLedger	<callback:prepareAccountCustody>	
+src/crdt/joinedAccount.ts	993	readJoinedAccount	beforeCommit	975
+src/crdt/joinedAccount.ts	1025	inspectInbound	<callback:withRecoveryUnderPermit>	
+src/crdt/joinedAccount.ts	1026	capturedRecovery	<callback:withRecoveryUnderPermit>	
+src/crdt/joinedAccount.ts	1049	readJoinedAccount	baseline	
+src/crdt/joinedAccount.ts	1076	inspectInbound	validate	
+src/crdt/joinedAccount.ts	1078	verifySpool	validate	
+src/crdt/joinedAccount.ts	1092	verifyInstalledMembership	validate	
+src/crdt/joinedAccount.ts	1103	verifyDelivery	validate	
+src/crdt/joinedAccount.ts	1110	verifyInboundLedger	validate	
+src/crdt/joinedAccount.ts	1143	readJoinedAccount	<callback:withJoinedSlot>	
+src/crdt/localBaselineReplay.ts	210	inspectInboundCooperatively	full	
+src/crdt/localBaselineReplay.ts	213	verifyInstalledSuccessor	full	
+src/crdt/localBaselineReplay.ts	223	verifyInstalledMembership	full	
+src/crdt/localBaselineReplay.ts	238	verifySpool	full	
+src/crdt/localBaselineReplay.ts	239	verifyDelivery	full	
+src/crdt/localBaselineReplay.ts	240	verifyInboundLedger	full	
+src/crdt/localBaselineReplay.ts	617	inspectInbound	replayLocalBaseline	
+src/crdt/localBaselineReplay.ts	618	verifyBaselineAuthority	replayLocalBaseline	
+src/crdt/localBaselineReplay.ts	674	verifySpool	replayLocalBaseline	
+src/crdt/localBaselineReplay.ts	681	verifyDelivery	replayLocalBaseline	
+src/crdt/localBaselineReplay.ts	695	verifyInboundLedger	replayLocalBaseline	
+src/crdt/localBaselineReuse.ts	113	indexVerifiedLedger	<callback:verified.verify>	
+src/crdt/localBaselineReuse.ts	183	extendAccountLedger	<callback:verified.verify>	
+src/crdt/localBaselineReuse.ts	214	verifyInboundLedger	<callback:verified.verify>	
+src/crdt/localGenesisStorage.ts	104	AwaitExpression.readPromotion	localCensus	
+src/crdt/localRecovery.ts	163	census	<callback:readRecoveryCustody>	
+src/crdt/membershipSource.ts	78	readPromotion	withNativeHistorySource	
+src/crdt/membershipSource.ts	79	readJoinedAccount	withNativeHistorySource	
+src/crdt/membershipSource.ts	222	inspectInbound	<callback:withRecoveryUnderPermit>	
+src/crdt/membershipSource.ts	223	capturedRecovery	<callback:withRecoveryUnderPermit>	
+src/crdt/membershipSource.ts	249	readPromotion	baseline	
+src/crdt/membershipSource.ts	250	readJoinedAccount	baseline	
+src/crdt/membershipSource.ts	279	inspectInbound	validate	
+src/crdt/membershipSource.ts	281	verifySpool	validate	
+src/crdt/membershipSource.ts	283	verifyInstalledSuccessor	validate	
+src/crdt/membershipSource.ts	292	verifyInstalledMembership	validate	
+src/crdt/membershipSource.ts	299	verifyDelivery	validate	
+src/crdt/membershipSource.ts	306	verifyInboundLedger	validate	
+src/crdt/promotionGenesis.ts	123	readPromotion	withVerifiedGenesis	
+src/crdt/promotionHandoff.ts	135	readPromotion	<callback:withVerifiedGenesis>	
+src/crdt/promotionOwner.ts	87	readPromotion	<callback:withPromotionSlot>	
+src/crdt/promotionOwner.ts	198	readPromotion	<callback:withPromotionSlot>	
+src/crdt/promotionRecord.ts	502	readPromotion	checkPromotionCompatibility	
+src/crdt/rotationCapture.ts	25	captureCatalog	persistRotationJournal	
+src/crdt/rotationCapture.ts	28	sourceRecords	persistRotationJournal	
+src/crdt/rotationObservation.ts	217	readPromotion	resumeAccountRotation	214
+src/crdt/rotationObservation.ts	218	readJoinedAccount	resumeAccountRotation	214
+src/crdt/sourceCapture.ts	264	captureCatalog	capturedRecovery	
+src/crdt/writeSession.ts	382	readPromotion	<callback:acquire>	
+src/crdt/writeSession.ts	405	readJoinedAccount	<callback:acquire>	

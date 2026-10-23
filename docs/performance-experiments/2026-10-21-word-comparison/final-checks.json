@@ -1,0 +1,135 @@
+[
+  {
+    "name": "format-new",
+    "command": [
+      "node",
+      "/private/tmp/done-word-comparison-20261021/format-new.mjs"
+    ],
+    "startedAt": 1792611360135,
+    "completedAt": 1792611360199,
+    "exitCode": 0
+  },
+  {
+    "name": "mutations",
+    "command": [
+      "python3",
+      "/private/tmp/done-word-comparison-20261021/mutations.py"
+    ],
+    "startedAt": 1792611360200,
+    "completedAt": 1792611363515,
+    "exitCode": 0
+  },
+  {
+    "name": "unit-final",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/verifiedRecords.test.ts",
+      "test/verificationOwnership.test.ts",
+      "test/verificationMemo.test.ts",
+      "test/warmContent.test.ts",
+      "test/cpuBudget.test.ts",
+      "test/custodyRecord.test.ts",
+      "test/custodyCrypto.test.ts",
+      "test/contentRecord.test.ts",
+      "test/accountAuthority.test.ts",
+      "test/contentInterruptedReuse.test.ts",
+      "test/incrementalLedger.test.ts",
+      "test/accountReceiveLedger.test.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/unit-final.json"
+    ],
+    "startedAt": 1792611363516,
+    "completedAt": 1792611366190,
+    "exitCode": 0
+  },
+  {
+    "name": "types-final",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1792611366190,
+    "completedAt": 1792611366491,
+    "exitCode": 0
+  },
+  {
+    "name": "lint-final",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "src/crdt/verifiedRecords.ts",
+      "test/verifiedRecords.test.ts"
+    ],
+    "startedAt": 1792611366491,
+    "completedAt": 1792611366573,
+    "exitCode": 0
+  },
+  {
+    "name": "format-final",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "src/crdt/verifiedRecords.ts",
+      "test/verifiedRecords.test.ts"
+    ],
+    "startedAt": 1792611366573,
+    "completedAt": 1792611366711,
+    "exitCode": 0
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792611366711,
+    "completedAt": 1792611367366,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "startedAt": 1792611462911,
+    "completedAt": 1792611464447,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792611464447,
+    "completedAt": 1792611465676,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "startedAt": 1792611465677,
+    "completedAt": 1792611468091,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792611468092,
+    "completedAt": 1792611470410,
+    "exitCode": 0
+  }
+]

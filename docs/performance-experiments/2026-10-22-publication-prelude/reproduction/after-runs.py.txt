@@ -1,0 +1,25 @@
+from pathlib import Path
+import os,time,json,subprocess,shutil
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+while True:
+ try:
+  x=json.loads((r/'run-receipts.json').read_text())
+  if len(x)==2:
+   assert all(y['exitCode']==0 for y in x);break
+ except FileNotFoundError:pass
+ time.sleep(2)
+commands=[['python3','analyze.py'],['node','observer-controls.mjs']]
+p=r/'audit-native.mjs';p.write_text(Path('/private/tmp/done-read-pacing-20261022/audit-native.mjs').read_text().replace('/private/tmp/done-read-pacing-20261022',str(r)));commands.append(['node','audit-native.mjs'])
+for i,c in enumerate(commands):
+ with (r/('after-'+str(i)+'.log')).open('w')as log:v=subprocess.run(c,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(c,v.returncode,flush=True)
+ if v.returncode:raise Exception('preserve and investigate '+str(c))
+# Executable source copy changes only observer import location so unchanged native tests run without /experiment mount.
+s=r/'mechanism-source';shutil.copytree(r/'source',s,symlinks=True,ignore=shutil.ignore_patterns('dist','node_modules'));(s/'node_modules').symlink_to(r/'source/node_modules',target_is_directory=True)
+for p in(s/'account-service').glob('*.ts'):
+ t=p.read_text();p.write_text(t.replace("'/experiment/observer.mjs'",repr(str(r/'observer.mjs'))))
+files=['test/account-service-delivery/publisher-commit-races.test.mjs','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-delivery/cold-verification.test.mjs','test/account-service-inbound/core.test.mjs','test/account-service-history-checkpoint/core.test.mjs']
+files=[f for f in files if(s/f).is_file()];c=['node','--test','--test-concurrency=1',*files]
+(r/'existing-native-command.json').write_text(json.dumps(c,indent=2)+'\n')
+with(r/'existing-native.log').open('w')as log:v=subprocess.run(c,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+print('native regressions',v.returncode,flush=True)

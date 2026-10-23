@@ -1,0 +1,34 @@
+from pathlib import Path
+import hashlib,io,json,subprocess,tarfile,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());base=start['base'];prior=start['priorTree'];sha=lambda b:hashlib.sha256(b).hexdigest();env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+def run(args,**kwargs):return subprocess.check_output(args,env=env,**kwargs)
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+assert run(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==base
+index=Path(run(['git','rev-parse','--git-path','index'],cwd=repo,text=True).strip());before=sha(index.read_bytes());assert before==json.loads((r/'index-metadata-review.json').read_text())['currentSha256']
+packetPath='docs/performance-experiments/2026-10-21-word-comparison';allowed=['test/verifiedRecords.test.ts','test/release-validation/general-tests.test.mjs','test/release-validation/generated-tests.test.mjs','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/completed.md','docs/decisions.md','docs/performance.md',packetPath]
+# Flatten the new store's inherited alternatives bottom-first, leaving prior stores immutable.
+seen=set();alternates=[]
+def visit(path):
+ path=path.resolve()
+ if path in seen:return
+ seen.add(path);file=path/'info/alternates'
+ if file.exists():
+  for s in file.read_text().splitlines():visit(Path(s)if s.startswith('/')else path/s)
+ alternates.append(str(path))
+visit(Path('/private/tmp/done-dispatch-calibration-20261021/patch10-index.git/objects'))
+def isolated(name,work):
+ bare=r/name;assert not bare.exists();subprocess.run(['git','init','--bare','--quiet',str(bare)],check=True,env=env);(bare/'objects/info/alternates').write_text('\n'.join(alternates)+'\n');return ['git','-C',str(work),'--git-dir='+str(bare),'--work-tree='+str(work)]
+git=isolated('patch11-index.git',repo);subprocess.run(git+['read-tree',prior],check=True,env=env)
+for f in ['docs/completed.md','docs/decisions.md','docs/performance.md']:assert(repo/f).read_bytes().startswith(run(git+['show',prior+':'+f]))
+packet=repo/packetPath
+for line in(packet/'SHA256SUMS').read_text().splitlines():
+ h,f=line.split('  ',1);assert sha((packet/f).read_bytes())==h
+subprocess.run(git+['add','--',*allowed],check=True,env=env);tree=run(git+['write-tree'],text=True).strip();changed=run(git+['diff','--cached','--name-only',prior],text=True).splitlines();assert all(f in allowed or f.startswith(packetPath+'/')for f in changed)
+patch=run(git+['diff','--cached','--binary','--full-index','--no-ext-diff',prior]);folder=r/'patches';folder.mkdir();file=folder/'11-comparison-regressions-and-held-prototype.patch';file.write_bytes(patch)
+clean=r/'clean-sequential-apply';clean.mkdir();combined=run(git+['diff','--cached','--name-only',base],text=True).splitlines();tracked=set(run(['git','ls-tree','-r','--name-only',base],cwd=repo,text=True).splitlines());original=sorted(tracked.intersection(combined));archive=run(['git','archive',base,'--',*original],cwd=repo)
+with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(clean,filter='data')
+verify=isolated('verify11-index.git',clean);subprocess.run(verify+['read-tree',base],check=True,env=env);subprocess.run(verify+['add','--',*original],check=True,env=env);assert run(verify+['write-tree'],text=True).strip()==run(['git','rev-parse',base+'^{tree}'],cwd=repo,text=True).strip();steps=[]
+for p,expected in [(Path(p['patch']),p['expectedTree'])for p in start['priorPatches']]+[(file,tree)]:
+ subprocess.run(verify+['apply','--index','--whitespace=nowarn','--check',str(p)],check=True,env=env);subprocess.run(verify+['apply','--index','--whitespace=nowarn',str(p)],check=True,env=env);actual=run(verify+['write-tree'],text=True).strip();assert actual==expected;steps.append({'patch':str(p),'sha256':sha(p.read_bytes()),'expectedTree':expected,'independentCleanApplyTree':actual})
+assert run(git+['diff',tree,'--'])==b'';assert sha(index.read_bytes())==before;assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+manifest={'baseCommit':base,'priorTree':prior,'expectedCumulativeTree':tree,'independentSequentialApply':steps,'changedFilesInPatch11':len(changed),'patch11Bytes':len(patch),'indexSha256BeforeAndAfterPackaging':before,'noRealStaging':True,'earlierIndexMetadataReview':json.loads((r/'index-metadata-review.json').read_text()),'byteExactApplyFlag':'--whitespace=nowarn','scope':'Six correctness regressions, two exact census fixtures, complete rejected word-comparison trial. Working runtime/helper/defaults unchanged; no candidate adoption, preview, merge, deployment or generalized qualification.'};(folder/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');(folder/'11-commit-message.txt').write_text('test(perf): retain comparison guards and rejected speedup evidence\n\nAdd exact byte/span/checkpoint and ownership regressions with\nindependent Buffer checks and four omission controls. Preserve the\nfull fixed app trial: local typing improves but catchup regresses.\nHold the candidate, keep runtime16/64and all security guarantees,\nand update only exact2481-to2487case census fixtures.\n');(folder/'README.md').write_text('# Sequential patch11\n\nThis cumulative checkout already contains01–11. Do not reapply here. The manifest independently verifies every exact01→11tree from the signed base. In a separate checkout use git apply --index --whitespace=nowarn in manifest order and sign each bounded commit when available. Patch11adds tests/evidence; its runtime prototype is held after failed catchup guards. No source staging/signing/push/preview/deploy was performed. An earlier index metadata-only discrepancy is recorded separately; staged entries still match HEAD.\n');print(json.dumps(manifest,indent=2))

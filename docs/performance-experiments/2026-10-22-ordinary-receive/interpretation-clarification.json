@@ -1,0 +1,12 @@
+{
+  "status": "clarified",
+  "claim": "Earlier passing cold-status assertions agreed because retention reset the pre-close display.",
+  "evidence": "Fresh scheduler positions initialize at zero and cannot advance while gated offline; current diagnostic records149 to0 and final logs preserve actual displayed pairs. Earlier passing histories did not retain their pre-close values.",
+  "conclusion": "The earlier retention explanation is unconfirmed; withdraw that causal attribution. The measured latency, replay, raw-record retention and native/durability outcomes are unchanged.",
+  "preservedHistoricalSources": [
+    "frozen protocol.md",
+    "aborted first schedule protocol",
+    "initial generated patch"
+  ],
+  "candidateStatus": "HELD because live latency regressed; no runtime/test/measurement change"
+}

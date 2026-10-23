@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "changedRuntimeFile": "account-service/historyCheckpoint.ts",
+  "unchangedHistoryDeclarations": [
+    "HISTORY_CHECKPOINT_SCHEMA",
+    "HistoryCheckpointIssuer",
+    "RecordRow",
+    "no",
+    "zero",
+    "HistorySnapshotChanged",
+    "record"
+  ],
+  "allOldHistoryExchangeLogicPreservedApartFromReviewedCatalogCaptureOrderAndBrandedMembershipValueProjection": true,
+  "consumerProjectionConversions": 4,
+  "initialCatalogCaptureOwnsNoPublisherCacheEvidence": true,
+  "catalogAuthorityComparisonOmitsOnlyLiveWitnessAndRows": true,
+  "newLedgerCapturesStillUseOriginalFullGuards": true,
+  "originalTestPrefixByteExact": true,
+  "originalTestPrefixSha256": "6cc3fcc3d7096e503f9af7862815f1a6c7840164f12f9a6ec1f5b05ac3188c81",
+  "newTestsSha256": "72d0e46becf6a9fd27b8ad6726121fbf79fb2adccde0d2e6b44820259ecdaff8",
+  "reviewOmissionControls": 2
+}

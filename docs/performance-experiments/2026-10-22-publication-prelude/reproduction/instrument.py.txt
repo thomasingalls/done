@@ -1,0 +1,87 @@
+from pathlib import Path
+import hashlib,json,shutil
+r=Path(__file__).parent;s=r/'source';transforms=[];sha=lambda x:hashlib.sha256(x).hexdigest()
+obs="import {observe,sha,span,syncSpan} from '/experiment/observer.mjs';\n"
+def modify(f,edits,prefix='',scope=None):
+ p=s/f;original=p.read_text();t=original
+ if scope:
+  i=t.index(scope[0]);j=t.index(scope[1],i);head,body,tail=t[:i],t[i:j],t[j:]
+ else:head,body,tail='',t,''
+ for a,b,n in edits:
+  assert body.count(a)==n,(f,a,body.count(a),n);body=body.replace(a,b)
+ t=prefix+head+body+tail;p.write_text(t);transforms.append({'file':f,'beforeSha256':sha(original.encode()),'afterSha256':sha(t.encode()),'prefix':prefix,'scope':scope,'replacements':edits})
+# Existing diagnostic scheduler/receive outer instrumentation, unchanged from phase19.
+a=Path('/private/tmp/done-read-pacing-20261022/instrument.py').read_text();exec(a[a.index("modify('account-service/publisherTips.ts'"):a.index('# Runtime always')])
+# Current20 read remains unchanged except observational spans.
+modify('account-service/delivery.ts',[
+ ('await verifyCurrentWorkspaceAuthority(s, issuer)',"await span('submit-authority',()=>verifyCurrentWorkspaceAuthority(s, issuer))",1),
+ ('s = read(db, workspace, publisher, reuse, {',"observe('submit-attempt',{retry});\n        s = syncSpan('submit-capture',()=>read(db, workspace, publisher, reuse, {",1),
+ ('position: decodeNetworkEnvelope(decodeSubmission(bytes).envelope).seq,\n        });','position: decodeNetworkEnvelope(decodeSubmission(bytes).envelope).seq,\n        }));',1),
+ ('releaseCold = await pending;',"releaseCold = await span('submit-cold-wait',()=>pending);",1),
+ ('await verifiedCensus(s, auth, reuse)',"await span('submit-census',()=>verifiedCensus(s, auth, reuse))",1),
+ ('await verifyWire(bytes, auth)',"await span('submit-wire',()=>verifyWire(bytes, auth))",1),
+ ("        phase = 'commit';\n        hook('after-verify'","        observe('submit-verified');\n        phase = 'commit';\n        observe('submit-commit-start');\n        hook('after-verify'",1),
+ ("        return result;","        observe('submit-commit-end',{kind:result.kind});\n        return result;",1),
+ ],scope=('export async function decideSubmission(','export interface ReadIssuer'))
+modify('account-service/delivery.ts',[
+ ('await verifyCurrentWorkspaceAuthority(s, issuer)',"await span('readback-authority',()=>verifyCurrentWorkspaceAuthority(s, issuer))",1),
+ ('await verifiedCensus(s, auth, reuse)',"await span('readback-census',()=>verifiedCensus(s, auth, reuse))",1),
+ ('await verifyServed(s, auth, request.after, reuse)',"await span('readback-served',()=>verifyServed(s, auth, request.after, reuse))",1),
+ ],scope=('export async function readAccepted(','export async function readInbound('))
+# delivery.ts has prefix from earlier? publisherTips/inbound imports only; add once now.
+p=s/'account-service/delivery.ts';t=p.read_text();p.write_text(obs+t);transforms.append({'file':'account-service/delivery.ts','beforeSha256':sha(t.encode()),'afterSha256':sha(p.read_bytes()),'prefix':obs,'replacements':[],'scope':None})
+modify('account-service/membershipLocator.ts',[
+ ('await verifyCurrentWorkspaceAuthority(before, issuer)',"await span('discovery-authority',()=>verifyCurrentWorkspaceAuthority(before, issuer))",1),
+ ('await verifyMembershipChain(membershipProofChain(before), base)',"await span('discovery-second-chain',()=>verifyMembershipChain(membershipProofChain(before), base))",1),
+ ('await verifyMembershipDiscoveryRequest(request, issuer.pin, history, now())',"await span('discovery-request',()=>verifyMembershipDiscoveryRequest(request, issuer.pin, history, now()))",1),
+ ('await verifiedCensus(before, auth, reuse)',"await span('discovery-census',()=>verifiedCensus(before, auth, reuse))",1),
+ ('await issuer.discovery(body)',"await span('discovery-sign',()=>issuer.discovery(body))",1),
+ ("      db.exec('BEGIN');","      observe('discovery-response-verified');\n      db.exec('BEGIN');",1),
+ ],obs,scope=('export async function discoverMembership(', '\n}',))
+# The final close is the first column-0 close after declaration.
+modify('account-service/historyCheckpoint.ts',[
+ ('await verifyCurrentWorkspaceAuthority(before.original, issuer)',"await span('history-authority',()=>verifyCurrentWorkspaceAuthority(before.original, issuer))",1),
+ ('await memberships(before.original, auth, issuer.pin)',"await span('history-timeline',()=>memberships(before.original, auth, issuer.pin))",1),
+ ('await verifyHistoryExchange(r, membership, now())',"await span('history-request',()=>verifyHistoryExchange(r, membership, now()))",1),
+ ('await verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse)',"await span('history-census',()=>verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse))",1),
+ ('      const signedCatalog = changed ?',"      observe('history-cuts-complete');\n      const signedCatalog = changed ?",1),
+ ("      hook('after-verify', 'history-checkpoint');","      observe('history-response-signed');\n      hook('after-verify', 'history-checkpoint');",1),
+ ("      return { ok: true as const, page };","      observe('history-commit-complete');\n      return { ok: true as const, page };",1),
+ ],obs)
+# Entire authority owner timing already at call sites; nested stage isolates genuine membership reconstruction.
+modify('account-service/membershipHistory.ts',[
+ ('const anchor = await verifyWorkspaceAuthority(',"const anchor = await span('authority-anchor',()=>verifyWorkspaceAuthority(",1),
+ ('    issuer,\n  );','    issuer,\n  ));',1),
+ ],obs)
+# Fine receiver attribution, keeping outer scheduler stages from phase19.
+modify('src/crdt/accountReceive.ts',[
+ ('        const prepared = await runCaptureTask(async (task) => {',"        pace('discovery-prepare-start');\n        const prepared = await runCaptureTask(async (task) => {",1),
+ ("        if (!canReceive()) return { kind: 'paused' as const };\n        const response", "        pace('discovery-prepare-end');\n        if (!canReceive()) return { kind: 'paused' as const };\n        pace('discovery-http-start');\n        const response",1),
+ ('        if (!response) {',"        pace('discovery-http-end',{response:!!response});\n        if (!response) {",1),
+ ('          const answer = await network.wait(() =>',"          pace('discovery-proof-start');\n          const answer = await network.wait(() =>",1),
+ ('          const result = await installMembership(',"          pace('discovery-proof-end');\n          pace('discovery-install-start');\n          const result = await installMembership(",1),
+ ('          discoveryDue = revision === discoveryRevision',"          pace('discovery-install-end');\n          discoveryDue = revision === discoveryRevision",1),
+ ],scope=('  const refreshAuthority = (token:', '      const prepared = await runCaptureTask(async (task) => {\n        await assertCurrent(task);\n        const { marker }'))
+modify('src/crdt/accountReceive.ts',[
+ ('      const prepared = await runCaptureTask(async (task, owner, route) => {',"      pace('history-prepare-start');\n      const prepared = await runCaptureTask(async (task, owner, route) => {",1),
+ ('      if (!prepared) return null;',"      pace('history-prepare-end',{prepared:!!prepared});\n      if (!prepared) return null;",1),
+ ('      const catalog = (',"      pace('history-catalog-start');\n      const catalog = (",1),
+ ('      stamp.check();\n      historyDue',"      pace('history-catalog-end');\n      stamp.check();\n      historyDue",1),
+ ],scope=('  const fetchHistory = () =>', '  const installHistory = ('))
+# Local transport includes its own request self-verification and bounded full-body response proof verification.
+modify('src/account/historyHttp.ts',[
+ ('    await verifyHistoryExchange(request, authority, Date.now());',"    pace('history-transport-request-start');\n    await verifyHistoryExchange(request, authority, Date.now());\n    pace('history-transport-request-end');",1),
+ ("    const response = await send('/account/history/v1/checkpoint'", "    pace('history-http-start');\n    const response = await send('/account/history/v1/checkpoint'",1),
+ ('    const limit = HISTORY_PAGE_LIMIT + 64;',"    pace('history-http-headers',{status:response.status});\n    const limit = HISTORY_PAGE_LIMIT + 64;",1),
+ ('      const page = await verifyHistoryCheckpointPage(',"      pace('history-body-end',{bytes:length});\n      pace('history-response-proof-start');\n      const page = await verifyHistoryCheckpointPage(",1),
+ ('      live();\n      return page;',"      pace('history-response-proof-end');\n      live();\n      return page;",1),
+ ],pace)
+(r/'transforms.json').write_text(json.dumps(transforms,indent=2)+'\n')
+# Reverse in reverse chronological order: a file can have several independently scoped transforms.
+state={f:(s/f).read_text()for f in {x['file']for x in transforms}}
+for x in reversed(transforms):
+ t=state[x['file']];assert sha(t.encode())==x['afterSha256'];assert t.startswith(x['prefix']);t=t[len(x['prefix']):]
+ for a,b,n in reversed(x['replacements']):assert t.count(b)==n,(x['file'],b,t.count(b));t=t.replace(b,a)
+ assert sha(t.encode())==x['beforeSha256'];state[x['file']]=t
+base=json.loads((r/'starting.json').read_text())['runtimeFiles'];assert all(sha(v.encode())==base[k]for k,v in state.items())
+print('Reverse transforms recover exact20 bytes for',len(state),'runtime files')

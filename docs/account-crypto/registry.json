@@ -202,9 +202,11 @@
         "done/private-read/v1",
         "done/private-read/v2",
         "done/private-read-page/v1",
-        "done/private-read-page/v2"
+      "done/private-read-page/v2",
+      "done/private-read-batch/v1\u0000",
+      "done/private-read-pages/v1\u0000"
       ],
-      "note": ""
+    "note": "The v1 batch tags frame unsigned transport groups only; each unchanged v2 inner request/page supplies all signing and verification authority. See the optional batching amendment in docs/account-receive-transport.md. Qualification remains open."
     },
     {
       "id": "submit-carrier",

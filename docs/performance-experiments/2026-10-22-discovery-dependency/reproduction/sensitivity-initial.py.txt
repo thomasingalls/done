@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,subprocess,copy,sqlite3,shutil
+r=Path(__file__).parent;original=json.loads((r/'2-C/result.json').read_text());rows=[];node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+for name in ['invent-original-pass','drop-input','alter-cold-archive','erase-history-refusal','invent-uncaptured-reason']:
+ x=copy.deepcopy(original)
+ if name=='invent-original-pass':x['originalDeliveryPassed']=True
+ elif name=='drop-input':x['probesAtDeadline'][0]['events'].pop(next(i for i,e in enumerate(x['probesAtDeadline'][0]['events'])if e['kind']=='beforeinput'and e['at']>=x['startedAt']))
+ elif name=='alter-cold-archive':x['offlineColdWriterReopen']['archive']['sha256']='00'*32
+ elif name=='erase-history-refusal':x['network'].pop(next(i for i,n in enumerate(x['network'])if n['label']=='Q1'and n['phase']=='measured'and n['path']=='/account/history/v1/checkpoint'and n.get('status')==409))
+ else:next(n for n in x['network']if n['label']=='Q1'and n['phase']=='measured'and n['path']=='/account/history/v1/checkpoint'and n.get('status')==409 and not n.get('refusal'))['refusal']='state-changed'
+ p=r/('control-'+name+'.json');p.write_text(json.dumps(x))
+ with(r/('control-'+name+'.log')).open('w')as f:done=subprocess.run(['python3',str(r/'review-evidence.py'),'2-C',str(p)],stdout=f,stderr=subprocess.STDOUT)
+ assert done.returncode!=0 and 'AssertionError'in(r/('control-'+name+'.log')).read_text();rows.append({'name':name,'exitCode':done.returncode,'assertionDetected':True});p.unlink()
+path=r/'private-native-corruption.sqlite';shutil.copy2(r/'2-C/state/account.sqlite',path);db=sqlite3.connect(path);row=db.execute("SELECT rowid,submission FROM delivery_decisions WHERE kind='accepted' LIMIT 1").fetchone();b=bytearray(row[1]);b[-65]^=1;db.execute('UPDATE delivery_decisions SET submission=? WHERE rowid=?',(b,row[0]));db.commit();db.close()
+with(r/'control-native-ciphertext.log').open('w')as f:done=subprocess.run([node,str(r/'audit-native.mjs'),'--inspect',str(path)],stdout=f,stderr=subprocess.STDOUT)
+assert done.returncode!=0 and 'AssertionError'in(r/'control-native-ciphertext.log').read_text();rows.append({'name':'native-ciphertext-or-envelope-signature','exitCode':done.returncode,'assertionDetected':True});path.unlink();(r/'sensitivity.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(json.dumps(rows))

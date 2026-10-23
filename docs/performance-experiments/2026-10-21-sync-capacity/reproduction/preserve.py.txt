@@ -1,0 +1,52 @@
+from pathlib import Path
+import hashlib,gzip,json
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir(exist_ok=False)
+sha=lambda b:hashlib.sha256(b).hexdigest()
+provenance={}
+def put(src,name,compress=False):
+ b=Path(src).read_bytes();name+=('.gz' if compress else '');p=dest/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0) if compress else b);provenance[name]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+for name in ['README.md','protocol.md','starting.json','identity.json','browser-plan.json','browser-runner.json','browser-summary.json','api-summary.json','diagnostic-summary.json']:
+ put(r/name,name)
+put(r/'analysis.json','browser-analysis-details.json',True)
+for p in sorted(r.glob('*.log')):put(p,'checks/'+p.name,True)
+for name in ['run-browser.py','seed-api.mjs','api-server.mjs','api-load.mjs','api-load-pilot-v1.mjs','api-load-pilot-v2.mjs','audit-api.mjs','analyze.py','analyze-capacity.py','identity.py','instrument-budget.py','service-monitor.mjs','preserve.py']:
+ put(r/name,'reproduction/'+name+'.txt')
+for p in (r/'source-D/test/live-sync-attribution').iterdir():
+ if p.is_file():put(p,'reproduction/browser/'+p.name+'.txt')
+for arm in ['D','S','P','B','D-diag']:
+ put(r/('source-'+arm)/'account-service/requestBudget.ts','reproduction/budget-'+arm+'.ts.txt')
+for name in ['runtime.mjs','live-sync.spec.ts']:
+ put(r/'source-D-diag/test/live-sync-attribution'/name,'reproduction/diagnostic/'+name+'.txt')
+for run in json.loads((r/'browser-plan.json').read_text()):
+ name=run['name']
+ for file in ['result.json','runner.json']:put(r/name/file,'runs/browser/'+name+'-'+file,True)
+for file in ['result.json','runner.json','service-diagnostic.json']:
+ put(r/'diagnostic-default'/file,'runs/diagnostic/'+file,True)
+for folder in ['api-primary','api-control-single','api-control-readers','api-pilot','api-pilot-v2']:
+ for p in (r/folder).iterdir():
+  if p.is_file() and p.suffix in ['.json','.log','.txt']:put(p,'runs/'+folder+'/'+p.name,True)
+# Only the explicit above artifact whitelist is eligible. No fixture/state/key subtree.
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for device in ['a','b']:
+  secrets.append(d[device]['code'])
+  for c in d[device]['credentials']:
+   for key in ['privateKey','credentialId','userHandle']:
+    if c.get(key):secrets.append(c[key])
+d=json.loads((r/'private-api/fixture.json').read_text());secrets.append(d['authorityKey'])
+for who in ['first','other']:
+ secrets.append(d[who]['s']['privateKey'])
+ for session in d[who]['sessions']:
+  for key,value in session.items():
+   if isinstance(value,str) and len(value)>=12:secrets.append(value)
+values=set()
+for s in secrets:
+ values.add(s.encode());values.add(json.dumps(s)[1:-1].encode())
+for p in dest.rglob('*'):
+ if p.is_file():
+  b=p.read_bytes();b=gzip.decompress(b) if p.name.endswith('.gz') else b
+  assert not any(s in b for s in values),str(p.relative_to(dest))
+(dest/'privacy-audit.json').write_text(json.dumps({'knownExactValuesChecked':len(values),'matches':0,'scope':'Known browser codes/credential fields plus fresh API authority/private keys and session fields, raw and JSON-escaped. Explicit whitelist excludes state/fixtures/databases. Not a general secret detector.'},indent=2)+'\n')
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+print(json.dumps({'files':len(provenance),'storedBytes':sum((dest/p).stat().st_size for p in provenance),'knownSecretValuesChecked':len(values),'matches':0}))

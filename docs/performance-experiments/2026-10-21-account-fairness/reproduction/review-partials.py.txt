@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,hashlib,math
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());a=load(r/'analysis.json');plan=load(r/'run-plan.json');rows=[]
+for case,reported in zip(plan,a['runs']):
+ d=load(r/case['name']/'result.json');probes=d.get('probes',d.get('partialProbes',[]));labels=d.get('actorLabels',[]);row={'name':case['name'],'outcome':d['outcome']}
+ if not probes or not all(k in labels for k in ['Q0','Q1'])or not d.get('offers'):
+  assert not reported.get('keys');row['noKeyMeasurementsAvailable']=True;rows.append(row);continue
+ used=[probes[labels.index(k)]for k in ['Q0','Q1']];base=[d['before'][j]['lengths'][-1]['length']for j in range(2)];values=[[],[]];byCutoff=[0,0];late=[0,0];missing=[0,0];cutoff=d.get('failedAt',d.get('completedAt'))
+ for index,offer in enumerate(d['offers'],1):
+  for side,p in enumerate(used):
+   stamps=sorted(v['at']for v in p['lengths']if v['at']>=offer['at']-5 and v['length']>=base[side]+index);stamp=stamps[0]if stamps else None;assert stamp==reported['keys'][index-1]['localAt'if side==0 else'peerAt']
+   if stamp is None:missing[side]+=1
+   else:
+    values[side].append(stamp-offer['at']);byCutoff[side]+=stamp<=cutoff;late[side]+=stamp>cutoff
+ for side,key in enumerate(['localMs','peerMs']):
+  assert reported['all'][key]['n']==len(values[side]);assert reported['all']['missingLocal'if side==0 else'missingPeer']==missing[side]
+  if values[side]:assert reported['all'][key]['p95']==sorted(values[side])[math.ceil(.95*len(values[side]))-1]
+ if d['outcome']=='passed':assert byCutoff==[120,120]and missing==[0,0]
+ cancellations=[]
+ for actor in d.get('catchups',[]):
+  if actor['outcome']=='failed'and not actor.get('completedAt'):
+   # The quiet writing guard ends failed arms before the replay ceiling. Context closure is not a600s replay observation.
+   elapsed=actor['failedAt']-actor['startedAt'];cancellations.append({'label':actor['label'],'elapsedMs':elapsed,'censoredBeforeReplayCeiling':elapsed<600000,'sourceErrorMentionsClose':'closed'in actor.get('error','').lower()})
+ row.update({'keyOffers':len(d['offers']),'localObservedByOutcome':byCutoff[0],'peerObservedByOutcome':byCutoff[1],'localObservedAtSnapshot':len(values[0]),'peerObservedAtSnapshot':len(values[1]),'localMissingAtSnapshot':missing[0],'peerMissingAtSnapshot':missing[1],'observationsAfterOutcomeCutoff':{'local':late[0],'peer':late[1]},'failedReplayObservations':cancellations,'allPresentAndMissingKeyMetricsIndependentlyReconstructed':True});rows.append(row)
+result={'status':'passed','rows':rows,'allObservedAndMissingMetricsExact':True,'failedTypingGuardsRemainFailures':True,'incompleteReplayObservationsExplicitlyCensored':True,'scope':'Additional post-outcome read-only audit of missing/censored observations; frozen primary analysis, workload, source, deadlines and gates unchanged.'};(r/'partial-observation-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,json,time,os,hashlib
+r=Path(__file__).parent;s=r/'source';image=json.loads((r/'container-image.json').read_text())['Id'];actual=subprocess.check_output(['docker','image','inspect','--format','{{.Id}}',image],text=True).strip();assert actual==image
+args=['docker','run','--rm','--network=none','--cpus=1','--memory=1g','--memory-swap=1g','--pids-limit=128','--cap-drop=ALL','--security-opt=no-new-privileges','--read-only','--tmpfs','/tmp:rw,nosuid,nodev,size=128m','--user',str(os.getuid())+':'+str(os.getgid())]
+for f in ['account-service','account-protocol','src','test','docs']:args+=['--volume',str(s/f)+':/app/'+f+':ro']
+args+=['--entrypoint','node',image,'--test','--test-concurrency=1','test/account-sessions/inbound-batch-budget.test.mjs','test/account-sessions/request-budget.test.mjs','test/account-sessions/request-budget-work.test.mjs','test/account-sessions/inbound-batch.test.mjs','test/account-sessions/scoped-http.test.mjs'];at=time.time_ns()//1000000
+with(r/'linux-native.log').open('w')as f:p=subprocess.run(args,stdout=f,stderr=subprocess.STDOUT)
+(r/'linux-preflight.json').write_text(json.dumps({'image':image,'command':args,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode},indent=2)+'\n');print('Linux native preflight',p.returncode);assert p.returncode==0

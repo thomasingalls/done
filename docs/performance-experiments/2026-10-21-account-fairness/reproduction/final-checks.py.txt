@@ -1,0 +1,10 @@
+from pathlib import Path
+import json,subprocess,time,os,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();rows=[]
+for name,cmd in [('analysis',['python3',str(r/'analyze.py')]),('evidence-review',['python3',str(r/'review.py')]),('partial-observation-review',['python3',str(r/'review-partials.py')]),('participant-identity-audit',['node',str(r/'audit-participants.mjs')]),('native-audit',['node',str(r/'audit-native.mjs')]),('census',['node','scripts/account-crypto-prep/run.mjs']),('inventory',['node','scripts/release-validation/check.mjs']),('manifest',['node','scripts/release-validation/plan.mjs'])]:
+ at=time.time_ns()//1000000
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=repo,env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'final-checks.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ assert p.returncode==0,name
+for f,h in start['sourceInputs'].items():assert sha(repo/f)==h
+index=Path(subprocess.check_output(['git','rev-parse','--git-path','index'],cwd=repo,env=env,text=True).strip());assert sha(index)==start['realIndexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b'';print('All804source inputs and realindex exact.')

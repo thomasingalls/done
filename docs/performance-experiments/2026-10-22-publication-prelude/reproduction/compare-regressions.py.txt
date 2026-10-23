@@ -1,0 +1,10 @@
+from pathlib import Path
+import subprocess,shutil,os,json
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+p=r/'mechanism-observer.mjs';p.write_text((r/'observer.mjs').read_text().replace('configurable:true,value:async','configurable:true,writable:true,value:async'))
+for p in(r/'mechanism-source/account-service').glob('*.ts'):p.write_text(p.read_text().replace(str(r/'observer.mjs'),str(r/'mechanism-observer.mjs')))
+c=json.loads((r/'existing-native-command.json').read_text());rows=[]
+for label,s in [('base20',Path('/private/tmp/done-late-ledger-20261022/source')),('diagnostic-writable-observer',r/'mechanism-source')]:
+ with(r/(label+'-native.log')).open('w')as log:v=subprocess.run(c,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'label':label,'command':c,'exitCode':v.returncode});print(rows[-1],flush=True)
+(r/'native-regression-receipts.json').write_text(json.dumps(rows,indent=2)+'\n')

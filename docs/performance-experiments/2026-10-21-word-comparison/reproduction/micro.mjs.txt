@@ -1,0 +1,19 @@
+import {createServer} from 'node:http';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+const root='/private/tmp/done-word-comparison-20261021',require=createRequire('/Users/thomasingalls/.codex/worktrees/7fda/done/package.json'),{chromium}=require('@playwright/test');
+const server=createServer((req,res)=>{if(req.url==='/R.js'||req.url==='/C.js'){res.setHeader('Content-Type','text/javascript');res.end(readFileSync(root+'/helper-'+req.url[1]+'/helper.js'));}else{res.setHeader('Content-Type','text/html');res.end('<title>Disposable exact comparison benchmark</title>')}});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const browser=await chromium.launch();
+try{
+ const c=await browser.newContext(),page=await c.newPage();await page.goto('http://127.0.0.1:'+server.address().port);const cdp=await browser.newBrowserCDPSession();const processes=await cdp.send('SystemInfo.getProcessInfo'),pid=processes.processInfo.find(x=>x.type==='browser').id,executable=execFileSync('ps',['-p',String(pid),'-o','comm='],{encoding:'utf8'}).trim();const identity={version:await cdp.send('Browser.getVersion'),executable,sha256:createHash('sha256').update(readFileSync(executable)).digest('hex')};await cdp.detach();
+ const result=await page.evaluate(async()=>{
+  const modules={R:await import('/R.js'),C:await import('/C.js')},budget=4*1024*1024,sizes=[32,256,4096,65536,1048576];
+  const fixture=sizes.map(n=>{const make=offset=>{const a=new Uint8Array(n+offset+8).subarray(offset,offset+n);for(let i=0;i<n;i++)a[i]=(i*131+197)%256;return a};return{n,a:make(0),b:make(0),unaligned:make(1)}});
+  const rows=Array.from({length:64},(_,i)=>({kind:'update',gen:1,seq:i+1,bytes:new Uint8Array(65536).fill((i*13)%256)})),other=rows.map(x=>({...x,bytes:x.bytes.slice()}));
+  async function trial(arm,warmup){const m=modules[arm],results=[];for(const f of fixture)for(const kind of ['equal','first','middle','last','unaligned']){const right=kind==='unaligned'?f.unaligned:f.b,pos=kind==='first'?0:kind==='middle'?Math.floor(f.n/2):kind==='last'?f.n-1:null;if(pos!==null)right[pos]^=1;const count=Math.ceil(budget/f.n),at=performance.now();let matches=0;for(let i=0;i<count;i++)if(m.sameBytes(f.a,right))matches++;const ms=performance.now()-at;if(matches!==(pos===null?count:0))throw Error('Independent equality oracle failed '+arm+' '+kind+' '+f.n);if(pos!==null)right[pos]^=1;results.push({kind,size:f.n,calls:count,potentialBytes:count*f.n,ms,matches});}
+   const at=performance.now();let checkpoints=0;const equal=await m.sameRecordsCooperatively(rows,other,()=>{checkpoints++});const ms=performance.now()-at;if(!equal||checkpoints!==128)throw Error('Cooperative oracle/checkpoint mismatch');results.push({kind:'cooperative',size:budget,calls:1,potentialBytes:budget,ms,checkpoints});return{arm,warmup,results}}
+  const warmups=[await trial('R',true),await trial('C',true)],plan=['R','C','C','R','R','C'],runs=[];for(let i=0;i<plan.length;i++)runs.push({index:i+1,...await trial(plan[i],false)});return{warmups,plan,runs,fixture:{budgetBytes:budget,sizes,records:64,recordBytes:65536},scope:'Actual built helper modules; fixed per-trial dependent calls, no user data or application timing credit.'};
+ });writeFileSync(root+'/micro.json',JSON.stringify({identity,...result},null,2)+'\n');console.log(JSON.stringify(result.runs.map(x=>({index:x.index,arm:x.arm,equalAlignedMs:x.results.filter(y=>y.kind==='equal'&&y.size>=256).reduce((s,y)=>s+y.ms,0),cooperativeMs:x.results.find(y=>y.kind==='cooperative').ms}))));
+}finally{await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}

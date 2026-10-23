@@ -1,0 +1,18 @@
+import { readFileSync,writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+import * as babel from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@babel/core/lib/index.js';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const {accountFixtureFiles,accountFixtureNodeStage}=await import(root+'/scripts/release-validation/account-fixture-tests.mjs');
+const cases=accountFixtureFiles.node.map(f=>({path:f,cases:accountFixtureNodeStage(root,f).expect.cases}));
+const src=readFileSync(root+'/test/release-validation/account-fixtures.test.mjs','utf8');
+const match=src.match(/stages\.map\(\(s\) => s\.expect\.cases\.length\),\s*\[([^\]]+)\]/);
+assert(match);const expected=match[1].split(',').map(x=>x.trim()).filter(Boolean).map(Number);
+assert.equal(expected.length,cases.length);const differences=cases.flatMap((x,i)=>x.cases.length===expected[i]?[]:[{index:i,path:x.path,before:expected[i],after:x.cases.length}]);
+assert.deepEqual(differences.map(({path,before,after})=>({path,before,after})),[{path:'test/account-service-inbound/core.test.mjs',before:9,after:21}]);
+const direct=source=>babel.parseSync(source,{configFile:false,babelrc:false}).program.body.flatMap(s=>s.type==='ExpressionStatement'&&s.expression.type==='CallExpression'&&s.expression.callee.name==='test'?[s.expression.arguments[0].value]:[]);
+const before=direct(readFileSync(new URL('./inbound-core-parent.mjs.txt',import.meta.url),'utf8'));
+const after=direct(readFileSync(root+'/test/account-service-inbound/core.test.mjs','utf8'));
+assert.equal(before.length,9);assert.equal(after.length,21);assert.deepEqual(after.slice(0,9),before);
+const selected=cases.find(x=>x.path==='test/account-service-inbound/core.test.mjs');assert.deepEqual(selected.cases.map(x=>x.name??x),after);
+const out={status:'passed',onlyCensusChange:differences,oldCount:expected.reduce((a,b)=>a+b,0),newCount:cases.reduce((a,b)=>a+b.cases.length,0),independentAstAndSelectedCaseNamesExact:true,allNineOldNamesPrefixExact:true,twelveAddedNames:after.slice(9)};
+assert.equal(out.oldCount,687);assert.equal(out.newCount,699);writeFileSync(new URL('./census-review.json',import.meta.url),JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify(out));

@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');original=json.loads((r/'functional-receipts.json').read_text());repairs=json.loads((r/'repair-receipts.json').read_text());latest={x['label']:x for x in repairs};assert len(original)==18
+assert [i+1 for i,x in enumerate(original)if x['exitCode']!=0]==[1,4,6,18]
+steps=[]
+for i,x in enumerate(original,1):
+ repair=latest.get('final-functional-'+str(i).zfill(2));row=repair or x;assert row['exitCode']==0,(i,row);steps.append({'index':i,'name':x['name']if i!=10 else'Check native sync authority and evidence regressions','receipt':row,'basis':'rerun after fixtures'if repair else'passed original command; all its runtime/browser/harness inputs unchanged'})
+unit=(r/'final-functional-01.log').read_text();assert '158 passed (158)'in unit and'1879 passed | 1 skipped (1880)'in unit and 'failed'not in unit.lower();assert '54 passed'in(r/'functional-16.log').read_text();assert '20 passed'in(r/'functional-17.log').read_text()
+for i in [6,10]:
+ text=(r/('final-functional-'+str(i).zfill(2)+'.log')).read_text();assert'ℹ fail 0'in text and'ℹ skipped 0'in text
+assert 'ℹ tests 86'in(r/'planning-tests.log').read_text()and'ℹ fail 0'in(r/'planning-tests.log').read_text()
+for f in ['fixture-source-review.json','metadata-review.json','workflow-review.json','non-vacuity-sensitivity.json','census-review.json','clock-discriminator.json']:assert json.loads((r/f).read_text())['status']=='passed'
+start=json.loads((r/'starting.json').read_text())
+for f,h in start['runtimeFiles'].items():assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+out={'status':'passed','localPlatform':'macOS Darwin; not a GitHub Ubuntu CI result','node':'v24.18.0','pnpm':'11.20.0','all18RoutineShellCommandsPassOnReviewedInputs':True,'unit':{'filesPassed':158,'testsPassed':1879,'existingSkipped':1,'total':1880,'skip':'workspaceAdmission/account-text: private prepared histories remain unpublished under pressure and are disposed on discard and drained close'},'packagedBrowser':54,'developmentBrowser':20,'allOtherNativeBrowserSourceHarnessAndVectorContractCommandsPassed':True,'allNativeProtocolClientBytesExactAccepted30':True,'originalFourFailedStepsRetained':True,'onlyOneNewSerialCiStepWithSevenFiles':True,'all883Rows339UnresolvedPreservedExceptThreeReviewedCaseTitles':True,'manualQualityQualificationNotResumed':True,'finalTreeBoundReceiptRefreshAfterDocumentationAndPacketStillRequired':True,'steps':steps};(r/'local-functional-review.json').write_text(json.dumps(out,indent=2)+'\n');print('All local routine functional commands passed; original failures retained; final tree-bound refresh remains')

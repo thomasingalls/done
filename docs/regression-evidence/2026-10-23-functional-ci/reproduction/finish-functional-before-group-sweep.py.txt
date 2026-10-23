@@ -1,0 +1,14 @@
+from pathlib import Path
+import json,time,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':str(r/'bin')+':/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'};rows=json.loads((r/'repair-receipts.json').read_text())
+def run(label,cmd):
+ t=time.time_ns()
+ with(r/(label+'.log')).open('w')as out:p=subprocess.run(cmd,cwd=repo,env=env,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'label':label,'command':cmd,'cwd':str(repo),'exitCode':p.returncode,'expectedExit':0,'startedAtNs':t,'completedAtNs':time.time_ns()});(r/'repair-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(label,p.returncode,flush=True);assert p.returncode==0,'Retain disagreement '+label
+for label,cmd in [('fixture-source-review',['node',str(r/'review-fixtures.mjs')]),('census-final-review',['node',str(r/'inspect-census.mjs')]),('inventory-record',['node','scripts/release-validation/check.mjs','--record']),('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),('metadata-review',['python3',str(r/'review-metadata.py')])]:run(label,cmd)
+plan=json.loads((r/'functional-plan.json').read_text())['steps']
+for i in [4,5,9,3,17]:
+ cmd=plan[i]['command']
+ if i==9:cmd=' '.join(s.strip()for s in(r/'workflow-added-step.txt').read_text().splitlines()[2:]if s.strip());assert cmd.startswith('node --test ')
+ run('final-functional-'+str(i+1).zfill(2),['/bin/zsh','-c',cmd])
+run('local-functional-review',['python3',str(r/'review-functional.py')]);print('All local functional commands pass; packaging and final tree-bound refresh next',flush=True)

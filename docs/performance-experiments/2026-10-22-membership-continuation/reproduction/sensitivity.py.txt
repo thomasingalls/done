@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,subprocess,copy,sqlite3,shutil,hashlib,os
+r=Path(__file__).parent;original=json.loads((r/'5-trace-U/result.json').read_text());controls=[];node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+for name in ['missing-snapshot-refusal','false-original-pass','false-cold-archive','missing-input']:
+ x=copy.deepcopy(original)
+ if name=='missing-snapshot-refusal':
+  for t in x['traces']:
+   e=next((e for e in t['events']if e['tag']=='membership-unchanged-false'),None)
+   if e is not None:t['events'].remove(e);break
+ elif name=='false-original-pass':x['originalDeliveryPassed']=True
+ elif name=='false-cold-archive':x['offlineColdWriterReopen']['archive']['sha256']='00'*32
+ else:x['probesAtDeadline'][0]['events'].pop(next(i for i,e in enumerate(x['probesAtDeadline'][0]['events'])if e['kind']=='beforeinput'and e['at']>=x['startedAt']))
+ p=r/('control-'+name+'.json');p.write_text(json.dumps(x));cmd=['python3',str(r/'review-evidence.py'),'5-trace-U',str(p)]
+ with(r/('control-'+name+'.log')).open('w')as log:done=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT)
+ assert done.returncode!=0,name;controls.append({'name':name,'exitCode':done.returncode,'detected':True});p.unlink()
+# Independent native corruption counterexample, never mutate the actual run databases.
+path=r/'private-native-corruption.sqlite';shutil.copy2(r/'6-exact-U/state/account.sqlite',path);db=sqlite3.connect(path);row=db.execute("SELECT rowid,submission FROM delivery_decisions WHERE kind='accepted' LIMIT 1").fetchone();b=bytearray(row[1]);b[-65]^=1;db.execute('UPDATE delivery_decisions SET submission=? WHERE rowid=?',(b,row[0]));db.commit();db.close()
+with(r/'control-native-ciphertext.log').open('w')as log:done=subprocess.run([node,str(r/'audit-native.mjs'),'--inspect',str(path)],stdout=log,stderr=subprocess.STDOUT)
+assert done.returncode!=0;controls.append({'name':'native-ciphertext-or-envelope-signature','exitCode':done.returncode,'detected':True});path.unlink();(r/'sensitivity.json').write_text(json.dumps({'status':'passed','controls':controls},indent=2)+'\n');print(json.dumps(controls))

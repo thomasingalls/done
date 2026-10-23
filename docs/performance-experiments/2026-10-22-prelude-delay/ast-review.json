@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "files": [
+    {
+      "file": "delivery.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverSyntax": true
+    },
+    {
+      "file": "inboundAuthorityReuse.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverSyntax": true
+    },
+    {
+      "file": "membershipLocator.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverSyntax": true
+    },
+    {
+      "file": "historyCheckpoint.ts",
+      "exactUnderlyingAstAfterStrippingOnlyObserverSyntax": true
+    }
+  ],
+  "allUnderlyingGuardsExpressionsBranchesAndCallsExact": true
+}

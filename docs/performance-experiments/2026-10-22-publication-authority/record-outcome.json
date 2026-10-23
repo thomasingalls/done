@@ -1,0 +1,14 @@
+{
+  "status": "completed bounded structural phase, performance held",
+  "heavyFairnessAcceptance": false,
+  "appendOrder": [
+    "completed.md",
+    "decisions.md",
+    "performance.md"
+  ],
+  "newCases": 18,
+  "sameOldFailures": 17,
+  "originalPeerGateMs": 2500,
+  "noQualificationCredit": true,
+  "noPublication": true
+}

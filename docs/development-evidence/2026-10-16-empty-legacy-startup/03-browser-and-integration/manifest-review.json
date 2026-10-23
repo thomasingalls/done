@@ -1,0 +1,16 @@
+{
+  "addedObligations": [
+    "test:test/devicePreparation.test.ts",
+    "test:test/emptyLegacyDatabase.test.ts",
+    "test:test/packaged-account/empty-legacy-startup.spec.ts"
+  ],
+  "oldObligationsRetained": 860,
+  "oldRowsUnchangedExceptCensusTitle": [
+    "test:test/release-validation/general-tests.test.mjs"
+  ],
+  "oldDeadlinesAndBlocksRetained": true,
+  "obligations": 863,
+  "unresolved": 320,
+  "newBrowserAggregateCredit": "blocked pending adapter review",
+  "status": "blocked"
+}

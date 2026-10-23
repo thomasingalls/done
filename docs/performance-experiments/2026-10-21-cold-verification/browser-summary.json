@@ -1,0 +1,92 @@
+{
+  "rows": [
+    {
+      "name": "browser-natural-final",
+      "outcome": "passed",
+      "pressure": false,
+      "forced": false,
+      "trace": false,
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 34246,
+      "clientStatuses": {
+        "200": 226,
+        "429": 10,
+        "unavailable": 1
+      },
+      "shadowStatuses": {},
+      "naturalClientStateChangeReplies": 0,
+      "injectedStateChangeReplies": 0,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "scope": "Local functional continuation evidence on an exact production client build; duplicate reads share one device session, not six independent installations or a capacity measurement."
+    },
+    {
+      "name": "browser-pressure-final",
+      "outcome": "passed",
+      "pressure": true,
+      "forced": false,
+      "trace": false,
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "drainMs": 139577,
+      "clientStatuses": {
+        "200": 292,
+        "429": 102,
+        "unavailable": 1
+      },
+      "shadowStatuses": {
+        "200": 423,
+        "429": 432
+      },
+      "naturalClientStateChangeReplies": 0,
+      "injectedStateChangeReplies": 0,
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "scope": "Local functional continuation evidence on an exact production client build; duplicate reads share one device session, not six independent installations or a capacity measurement."
+    }
+  ],
+  "allDataGuardsPassed": true,
+  "identicalFinalExports": true,
+  "naturalStateChangeExposure": 0,
+  "finding": "Separate natural-load observations from injected refusal continuation. No maximum capacity, production frequency or absence-of-starvation inference.",
+  "scope": "Real packaged client/scheduler/transport/IndexedDB/editor/service-worker in two disposable Chromium contexts, synthetic writing and exact prior build."
+}

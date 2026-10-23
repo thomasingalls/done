@@ -1,0 +1,5 @@
+{
+  "knownPrivateRawAndEscapedValues": 5,
+  "matches": 0,
+  "scope": "Numeric/closed-label/source/hash whitelist; no fixture credential, code, token, DB, profile, browser storage or environment file. Known-value scan is not universal DLP."
+}

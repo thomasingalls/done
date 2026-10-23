@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "sourceFiles": 296,
+  "allFrozenSourcesMatchBase20": true,
+  "allInventoriedCallsAtGenuineAstNodes": 4543,
+  "independentlyEnumeratedAuthorityCalls": 98,
+  "authorityCallsAndDispositionsCheckedBothDirections": true,
+  "allFindingNeedlesAndHashesVerified": true,
+  "finiteSyntaxCoverageOnly": true
+}

@@ -1,0 +1,10 @@
+{
+  "originalCase": "stable read authority fails closed when clear races the initial proof",
+  "originalAssertion": "whole native request returns unknown after one clear",
+  "newCase": "stable read authority rejects a retired initial proof and verifies afresh after clear",
+  "newBoundary": "generic helper rejects cleared proof; native read may succeed only after fresh second full math verification and native page proof",
+  "preserved": "same interruption, two follow-up reads and final exact2 verification assertion; every other old case/assertion/deadline",
+  "strengthened": "check exact2 BEFORE any page is accepted; independent actual returned-page proof",
+  "failureEvidence": "focused-cache-cold-races.log retains103/104 and former whole-request expectation",
+  "security": "close/input/custody remain hard refusal; repeated invalidation bounded4; original request/ledger/grant/completion/expiry/native commit checks unchanged"
+}

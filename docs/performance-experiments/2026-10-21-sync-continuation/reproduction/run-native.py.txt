@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,os,subprocess,datetime
+r=Path(__file__).parent;plan=[];receipts=[]
+for block,arms in [(1,['00','10','01','11']),(2,['11','01','10','00'])]:
+ for arm in arms:plan.append({'block':block,'arm':arm,'output':f'trace-{block}-{arm}'})
+(r/'native-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+for run in plan:
+ env=dict(os.environ,PATH='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],LOAD_OUTPUT=run['output'],LOAD_BLOCK=str(run['block']),LOAD_FIRST_WRITER=run['arm'][0],LOAD_OTHER_WRITER=run['arm'][1],LOAD_WRITERS='0' if run['arm']=='00' else '1',LOAD_PEER='0',LOAD_POSITIONS='64')
+ print('Starting '+run['output'],flush=True);receipt={**run,'startedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+ with (r/(run['output']+'.log')).open('w') as log:result=subprocess.run(['node',str(r/'api-load.mjs')],env=env,stdout=log,stderr=subprocess.STDOUT)
+ receipt.update(returncode=result.returncode,endedAt=datetime.datetime.now(datetime.timezone.utc).isoformat());receipts.append(receipt);(r/'native-runner.json').write_text(json.dumps(receipts,indent=2)+'\n');print('Finished '+run['output']+' code '+str(result.returncode),flush=True)

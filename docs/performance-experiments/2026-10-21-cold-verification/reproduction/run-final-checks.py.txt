@@ -1,0 +1,30 @@
+from pathlib import Path
+import subprocess,time,json
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');rows=[]
+files=['account-service/delivery.ts','account-service/publisherTips.ts','test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/controls.test.mjs','test/account-service-inbound/controls.test.mjs']
+tests=sorted(str(p.relative_to(repo)) for folder in ['test/account-service-delivery','test/account-service-inbound'] for p in (repo/folder).glob('*.test.mjs'))+['test/account-sessions/'+f+'.test.mjs' for f in ['inbound-batch','inbound-authority-reuse','inbound-batch-budget','request-budget','request-budget-work']]
+checks=[
+ ('affected-tests-release',['node','--test','--test-concurrency=1','--test-timeout=15000',*tests]),
+ ('typecheck-final',['node','node_modules/typescript/bin/tsc','-b','--noEmit']),
+ ('format-final',['node','node_modules/oxfmt/bin/oxfmt','--check',*files]),
+ ('lint-final',['node','node_modules/oxlint/bin/oxlint',*files]),
+ ('preservation-review',['node',str(r/'review-preservation.mjs')]),
+ ('omission-checks',['python3',str(r/'omissions.py')]),
+ ('cold-final',['node',str(r/'audit-api.mjs'),'matched-final']),
+ ('cold-initial',['node',str(r/'audit-api.mjs'),'matched']),
+ ('native-final-analysis',['python3',str(r/'analyze-native.py'),'matched-final']),
+ ('browser-final-analysis',['python3',str(r/'analyze-browser.py')]),
+ ('census-review',['node',str(r/'review-census.mjs')]),
+ ('census-record',['node','scripts/account-crypto-prep/run.mjs','--record']),
+ ('census-check',['node','scripts/account-crypto-prep/run.mjs']),
+ ('inventory-record',['node','scripts/release-validation/check.mjs','--record']),
+ ('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),
+ ('inventory-check',['node','scripts/release-validation/check.mjs']),
+ ('manifest-check',['node','scripts/release-validation/plan.mjs']),
+ ('planning-audit',['python3',str(r/'audit-planning.py')]),
+ ('planning-tests',['node','--test','--test-concurrency=1','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs','test/release-validation/general-tests.test.mjs','test/release-validation/generated-tests.test.mjs','test/account-first-authority/registry.test.mjs'])]
+for name,cmd in checks:
+ at=time.time_ns()//1000000
+ with (r/(name+'.log')).open('w') as out:p=subprocess.run(cmd,cwd=repo,stdout=out,stderr=subprocess.STDOUT)
+ row={'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode};rows.append(row);(r/'final-checks.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

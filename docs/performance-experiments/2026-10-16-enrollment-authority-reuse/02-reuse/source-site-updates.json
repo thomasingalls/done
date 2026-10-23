@@ -1,0 +1,14 @@
+[
+  {
+    "id": "service-root-custody",
+    "path": "account-service/authority.ts",
+    "before": 108,
+    "after": 109
+  },
+  {
+    "id": "transport-service-chain",
+    "path": "account-service/delivery.ts",
+    "before": 673,
+    "after": 674
+  }
+]

@@ -1,0 +1,1722 @@
+[
+  {
+    "directory": "diagnostic-foreground-0",
+    "profile": "receiver.cpuprofile",
+    "scope": "measured browser phase",
+    "durationMs": 43274.623,
+    "sampledMs": 43272.552,
+    "samples": 29206,
+    "topSelf": [
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "ms": 37185.467
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "ms": 1539.026
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/startupStorage.ts",
+        "line": 102,
+        "column": 10,
+        "name": "",
+        "ms": 1047.378
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verifiedRecords.ts",
+        "line": 7,
+        "column": 13,
+        "name": "K",
+        "ms": 921.266
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verifiedRecords.ts",
+        "line": 35,
+        "column": 22,
+        "name": "Y",
+        "ms": 414.501
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "ms": 259.036
+      },
+      {
+        "source": "(native)",
+        "line": 1924,
+        "column": 28,
+        "name": "normalizeWhiteSpace",
+        "ms": 198.496
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountAuthority.ts",
+        "line": 8,
+        "column": 6,
+        "name": "yr",
+        "ms": 128.047
+      },
+      {
+        "source": "(native)",
+        "line": 5091,
+        "column": 20,
+        "name": "elementText",
+        "ms": 117.633
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/contentCompaction.ts",
+        "line": 49,
+        "column": 13,
+        "name": "$s",
+        "ms": 87.617
+      },
+      {
+        "source": "(native)",
+        "line": 5598,
+        "column": 20,
+        "name": "query",
+        "ms": 72.076
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verifiedRecords.ts",
+        "line": 98,
+        "column": 4,
+        "name": "select",
+        "ms": 66.931
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "verify",
+        "ms": 61.447
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 23,
+        "column": 13,
+        "name": "r",
+        "ms": 41.812
+      },
+      {
+        "source": "(native)",
+        "line": 5087,
+        "column": 34,
+        "name": "shouldSkipForTextMatching",
+        "ms": 37.21
+      },
+      {
+        "source": "(native)",
+        "line": 8194,
+        "column": 33,
+        "name": "matcher",
+        "ms": 34.534
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "continue",
+        "ms": 27.628
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountAuthority.ts",
+        "line": 36,
+        "column": 6,
+        "name": "br",
+        "ms": 21.186
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "contains",
+        "ms": 19.675
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "transaction",
+        "ms": 19.651
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "encode",
+        "ms": 18.909
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "get",
+        "ms": 18.489
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "fetch",
+        "ms": 16.369
+      },
+      {
+        "source": "../../diagnostic-source/src/ui/Card.tsx",
+        "line": 77,
+        "column": 13,
+        "name": "MS",
+        "ms": 14.99
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 37,
+        "column": 28,
+        "name": "",
+        "ms": 14.811
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "get result",
+        "ms": 14.506
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "openKeyCursor",
+        "ms": 14.461
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountAuthority.ts",
+        "line": 30,
+        "column": 7,
+        "name": "",
+        "ms": 13.713
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/warmContent.ts",
+        "line": 144,
+        "column": 16,
+        "name": "",
+        "ms": 13.392
+      },
+      {
+        "source": "browser-diagnostics.js",
+        "line": 29,
+        "column": 44,
+        "name": "SubtleCrypto.<computed>",
+        "ms": 11.988
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "open",
+        "ms": 11.545
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/contentRecord.ts",
+        "line": 102,
+        "column": 34,
+        "name": "g",
+        "ms": 11.363
+      },
+      {
+        "source": "../../diagnostic-source/src/account/privateDeliveryHttp.ts",
+        "line": 24,
+        "column": 22,
+        "name": "ur",
+        "ms": 10.683
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 16,
+        "column": 20,
+        "name": "n",
+        "ms": 10.617
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/warmContent.ts",
+        "line": 76,
+        "column": 14,
+        "name": "",
+        "ms": 10.603
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/yjs.ts",
+        "line": 182,
+        "column": 6,
+        "name": "$",
+        "ms": 10.516
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/startupStorage.ts",
+        "line": 101,
+        "column": 12,
+        "name": "o.onsuccess",
+        "ms": 10.394
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/contentRecord.ts",
+        "line": 79,
+        "column": 6,
+        "name": "f",
+        "ms": 10.192
+      },
+      {
+        "source": "(native)",
+        "line": 6911,
+        "column": 18,
+        "name": "querySelectorAll",
+        "ms": 9.098
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/startupStorage.ts",
+        "line": 57,
+        "column": 13,
+        "name": "X",
+        "ms": 8.923
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "getComputedStyle",
+        "ms": 8.837
+      },
+      {
+        "source": "(native)",
+        "line": 7010,
+        "column": 16,
+        "name": "queryAll",
+        "ms": 8.635
+      },
+      {
+        "source": "(native)",
+        "line": 7694,
+        "column": 13,
+        "name": "previewNode",
+        "ms": 8.38
+      },
+      {
+        "source": "browser-diagnostics.js",
+        "line": 13,
+        "column": 11,
+        "name": "",
+        "ms": 7.773
+      },
+      {
+        "source": "../../diagnostic-source/src/account/scopedTransport.ts",
+        "line": 157,
+        "column": 8,
+        "name": "#s",
+        "ms": 7.76
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "count",
+        "ms": 7.669
+      },
+      {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js",
+        "line": 8725,
+        "column": 9,
+        "name": "Yc",
+        "ms": 7.617
+      },
+      {
+        "source": "(native)",
+        "line": 5379,
+        "column": 9,
+        "name": "_cached",
+        "ms": 7.609
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "sign",
+        "ms": 7.58
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "URL",
+        "ms": 7.556
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "decode",
+        "ms": 7.552
+      },
+      {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 214,
+        "column": 39,
+        "name": "Rr",
+        "ms": 7.53
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verificationOwnership.ts",
+        "line": 2,
+        "column": 9,
+        "name": "V",
+        "ms": 7.511
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/startupStorage.ts",
+        "line": 38,
+        "column": 14,
+        "name": "o.onsuccess",
+        "ms": 7.406
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "",
+        "ms": 7.166
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "openCursor",
+        "ms": 7.1
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/writeSession.ts",
+        "line": 156,
+        "column": 25,
+        "name": "",
+        "ms": 7.023
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 36,
+        "column": 13,
+        "name": "i",
+        "ms": 6.123
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "encodeInto",
+        "ms": 6.075
+      },
+      {
+        "source": "browser-diagnostics.js",
+        "line": 40,
+        "column": 47,
+        "name": "IDBDatabase.transaction",
+        "ms": 6.055
+      }
+    ]
+  },
+  {
+    "directory": "diagnostic-foreground-0",
+    "profile": "server.cpuprofile",
+    "scope": "whole process including setup and guardrails",
+    "durationMs": 55303.292,
+    "sampledMs": 55303.25,
+    "samples": 37320,
+    "topSelf": [
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "ms": 51925.607
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "ms": 213.169
+      },
+      {
+        "source": "file://source/account-protocol/preparation.ts",
+        "line": 33,
+        "column": 22,
+        "name": "closed",
+        "ms": 195.501
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 23,
+        "column": 21,
+        "name": "unhex",
+        "ms": 186.077
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "RegExp: ^[0-9a-f]+$",
+        "ms": 133.038
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 204,
+        "column": 42,
+        "name": "snapshotWorkspaceAuthority",
+        "ms": 120.996
+      },
+      {
+        "source": "node:internal/crypto/util",
+        "line": 545,
+        "column": 27,
+        "name": "normalizeAlgorithm",
+        "ms": 93.749
+      },
+      {
+        "source": "node:internal/encoding",
+        "line": 355,
+        "column": 8,
+        "name": "encode",
+        "ms": 89.5
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "ms": 89.294
+      },
+      {
+        "source": "node:internal/crypto/util",
+        "line": 666,
+        "column": 19,
+        "name": "jobPromise",
+        "ms": 60.876
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 108,
+        "column": 20,
+        "name": "json",
+        "ms": 60.292
+      },
+      {
+        "source": "file://source/account-service/protocol.ts",
+        "line": 98,
+        "column": 25,
+        "name": "canonical",
+        "ms": 58.705
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 16,
+        "column": 19,
+        "name": "hex",
+        "ms": 58.583
+      },
+      {
+        "source": "node:internal/crypto/webcrypto_util",
+        "line": 109,
+        "column": 21,
+        "name": "importRawKey",
+        "ms": 55.83
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 36,
+        "column": 18,
+        "name": "lp",
+        "ms": 55.747
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 37,
+        "column": 27,
+        "name": "",
+        "ms": 54.956
+      },
+      {
+        "source": "node:internal/crypto/hash",
+        "line": 226,
+        "column": 24,
+        "name": "",
+        "ms": 45.709
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 221,
+        "column": 22,
+        "name": "fingerprint",
+        "ms": 44.041
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 334,
+        "column": 29,
+        "name": "snapshotBytes",
+        "ms": 41.581
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "read",
+        "ms": 35.25
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "parse",
+        "ms": 33.794
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 781,
+        "column": 25,
+        "name": "createPrivateKey",
+        "ms": 33.709
+      },
+      {
+        "source": "file://source/account-service/sessions.ts",
+        "line": 927,
+        "column": 18,
+        "name": "checkGrantParent",
+        "ms": 28.542
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 376,
+        "column": 10,
+        "name": "export",
+        "ms": 28.04
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "encodeUtf8String",
+        "ms": 27.959
+      },
+      {
+        "source": "file://source/account-service/membershipStore.ts",
+        "line": 29,
+        "column": 30,
+        "name": "membershipRows",
+        "ms": 27.164
+      },
+      {
+        "source": "node:internal/crypto/cfrg",
+        "line": 242,
+        "column": 24,
+        "name": "eddsaSignVerify",
+        "ms": 27.124
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 294,
+        "column": 24,
+        "name": "snapshot",
+        "ms": 26.833
+      },
+      {
+        "source": "file://source/account-service/recoveryStore.ts",
+        "line": 22,
+        "column": 28,
+        "name": "recoveryRows",
+        "ms": 26.168
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 959,
+        "column": 38,
+        "name": "decideSubmission",
+        "ms": 26.003
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "readFileUtf8",
+        "ms": 25.498
+      },
+      {
+        "source": "node:internal/crypto/hash",
+        "line": 205,
+        "column": 20,
+        "name": "asyncDigest",
+        "ms": 24.875
+      },
+      {
+        "source": "file://source/account-service/membershipStore.ts",
+        "line": 83,
+        "column": 42,
+        "name": "membershipCancellationRows",
+        "ms": 24.749
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 169,
+        "column": 29,
+        "name": "requestDigest",
+        "ms": 24.335
+      },
+      {
+        "source": "file://source/account-protocol/successor.ts",
+        "line": 141,
+        "column": 35,
+        "name": "parseSuccessorEpoch",
+        "ms": 22.25
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 363,
+        "column": 46,
+        "name": "verifyWorkspaceAuthority",
+        "ms": 21.959
+      },
+      {
+        "source": "file://source/account-protocol/authority.ts",
+        "line": 16,
+        "column": 33,
+        "name": "parseAuthorityPin",
+        "ms": 20.665
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 109,
+        "column": 20,
+        "name": "same",
+        "ms": 20.627
+      },
+      {
+        "source": "file://source/account-service/membershipStore.ts",
+        "line": 102,
+        "column": 38,
+        "name": "membershipTransferRows",
+        "ms": 19.124
+      },
+      {
+        "source": "node:internal/modules/esm/utils",
+        "line": 316,
+        "column": 32,
+        "name": "compileSourceTextModule",
+        "ms": 18.833
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 54,
+        "column": 32,
+        "name": "publisherContext",
+        "ms": 17.96
+      },
+      {
+        "source": "file://source/account-service/removalStore.ts",
+        "line": 47,
+        "column": 28,
+        "name": "rotationRows",
+        "ms": 17.789
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 1044,
+        "column": 17,
+        "name": "getSlots",
+        "ms": 17.75
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "internalModuleStat",
+        "ms": 16.833
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 116,
+        "column": 23,
+        "name": "checkVersion",
+        "ms": 16.75
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 80,
+        "column": 26,
+        "name": "parseDraft",
+        "ms": 16.456
+      },
+      {
+        "source": "node:internal/crypto/hash",
+        "line": 136,
+        "column": 39,
+        "name": "update",
+        "ms": 16.166
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 77,
+        "column": 19,
+        "name": "servedRows",
+        "ms": 14.997
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "readPackageJSON",
+        "ms": 13.873
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 171,
+        "column": 42,
+        "name": "certificationMessage",
+        "ms": 13.583
+      },
+      {
+        "source": "file://source/account-protocol/ceremony.ts",
+        "line": 111,
+        "column": 43,
+        "name": "deriveCeremonyOpening",
+        "ms": 13.417
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 338,
+        "column": 29,
+        "name": "domainMessage",
+        "ms": 13.374
+      },
+      {
+        "source": "file://source/account-protocol/ceremonyExchange.ts",
+        "line": 109,
+        "column": 36,
+        "name": "parseCeremonyContext",
+        "ms": 13.042
+      },
+      {
+        "source": "file://source/account-protocol/enrollment.ts",
+        "line": 94,
+        "column": 12,
+        "name": "b64",
+        "ms": 12.125
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 51,
+        "column": 22,
+        "name": "digest",
+        "ms": 12.043
+      },
+      {
+        "source": "node:internal/url",
+        "line": 824,
+        "column": 13,
+        "name": "URL",
+        "ms": 12.04
+      },
+      {
+        "source": "file://source/account-protocol/contentDelivery.ts",
+        "line": 121,
+        "column": 36,
+        "name": "parseContentDelivery",
+        "ms": 10.873
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 966,
+        "column": 31,
+        "name": "cloneInternalAlgorithm",
+        "ms": 10.708
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 738,
+        "column": 25,
+        "name": "prepareSecretKey",
+        "ms": 10.624
+      },
+      {
+        "source": "node:internal/deps/amaro/dist/index",
+        "line": 8,
+        "column": 48,
+        "name": "__require",
+        "ms": 10.584
+      }
+    ]
+  },
+  {
+    "directory": "diagnostic-catchup-75",
+    "profile": "receiver.cpuprofile",
+    "scope": "measured browser phase",
+    "durationMs": 58849.229,
+    "sampledMs": 58848.213,
+    "samples": 40367,
+    "topSelf": [
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "ms": 44571.903
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "ms": 2968.795
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verifiedRecords.ts",
+        "line": 35,
+        "column": 22,
+        "name": "Y",
+        "ms": 2226.926
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/startupStorage.ts",
+        "line": 102,
+        "column": 10,
+        "name": "",
+        "ms": 2027.964
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verifiedRecords.ts",
+        "line": 7,
+        "column": 13,
+        "name": "K",
+        "ms": 1879.98
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verifiedRecords.ts",
+        "line": 98,
+        "column": 4,
+        "name": "select",
+        "ms": 567.161
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "ms": 530.692
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "verify",
+        "ms": 293.58
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 23,
+        "column": 13,
+        "name": "r",
+        "ms": 229.883
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 16,
+        "column": 20,
+        "name": "n",
+        "ms": 191.1
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountAuthority.ts",
+        "line": 8,
+        "column": 6,
+        "name": "yr",
+        "ms": 159.469
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/cpuBudget.ts",
+        "line": 7,
+        "column": 2,
+        "name": "t",
+        "ms": 110.211
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "encode",
+        "ms": 97.445
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/verificationOwnership.ts",
+        "line": 2,
+        "column": 9,
+        "name": "V",
+        "ms": 96.417
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "fetch",
+        "ms": 81.294
+      },
+      {
+        "source": "(native)",
+        "line": 1924,
+        "column": 28,
+        "name": "normalizeWhiteSpace",
+        "ms": 80.403
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 37,
+        "column": 28,
+        "name": "",
+        "ms": 65.689
+      },
+      {
+        "source": "(native)",
+        "line": 5091,
+        "column": 20,
+        "name": "elementText",
+        "ms": 60.125
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "transaction",
+        "ms": 56.808
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountAuthority.ts",
+        "line": 36,
+        "column": 6,
+        "name": "br",
+        "ms": 52.155
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "encodeInto",
+        "ms": 47.993
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "get",
+        "ms": 46.847
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/inboundTransport.ts",
+        "line": 38,
+        "column": 13,
+        "name": "U",
+        "ms": 45.017
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/custodyCrypto.ts",
+        "line": 23,
+        "column": 20,
+        "name": "n",
+        "ms": 41.351
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/warmContent.ts",
+        "line": 144,
+        "column": 16,
+        "name": "",
+        "ms": 40.472
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "open",
+        "ms": 39.422
+      },
+      {
+        "source": "browser-diagnostics.js",
+        "line": 29,
+        "column": 44,
+        "name": "SubtleCrypto.<computed>",
+        "ms": 36.091
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "now",
+        "ms": 35.88
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "continue",
+        "ms": 35.658
+      },
+      {
+        "source": "../../diagnostic-source/src/ui/Card.tsx",
+        "line": 77,
+        "column": 13,
+        "name": "MS",
+        "ms": 35.064
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountAuthority.ts",
+        "line": 30,
+        "column": 7,
+        "name": "",
+        "ms": 34.426
+      },
+      {
+        "source": "../../diagnostic-source/src/account/privateDeliveryHttp.ts",
+        "line": 24,
+        "column": 22,
+        "name": "ur",
+        "ms": 33.335
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "importKey",
+        "ms": 33.121
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "digest",
+        "ms": 29.637
+      },
+      {
+        "source": "(native)",
+        "line": 5087,
+        "column": 34,
+        "name": "shouldSkipForTextMatching",
+        "ms": 29.06
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "read",
+        "ms": 27.97
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/inboundTransport.ts",
+        "line": 43,
+        "column": 16,
+        "name": "W",
+        "ms": 27.484
+      },
+      {
+        "source": "../../diagnostic-source/src/account/scopedTransport.ts",
+        "line": 157,
+        "column": 8,
+        "name": "#s",
+        "ms": 26.627
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/contentRecord.ts",
+        "line": 240,
+        "column": 13,
+        "name": "C",
+        "ms": 26.45
+      },
+      {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js",
+        "line": 13577,
+        "column": 9,
+        "name": "Fd",
+        "ms": 25.105
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "decode",
+        "ms": 24.333
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/yjs.ts",
+        "line": 182,
+        "column": 6,
+        "name": "$",
+        "ms": 24.233
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "structuredClone",
+        "ms": 23.418
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "get result",
+        "ms": 22.653
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/accountReceive.ts",
+        "line": 477,
+        "column": 10,
+        "name": "validate",
+        "ms": 22.612
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "openKeyCursor",
+        "ms": 22.298
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "sign",
+        "ms": 21.107
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/contentRecord.ts",
+        "line": 79,
+        "column": 6,
+        "name": "f",
+        "ms": 21.025
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "TextEncoder",
+        "ms": 20.579
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/recovery.ts",
+        "line": 36,
+        "column": 13,
+        "name": "i",
+        "ms": 19.649
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/contentRecord.ts",
+        "line": 89,
+        "column": 6,
+        "name": "p",
+        "ms": 18.043
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "URL",
+        "ms": 17.705
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "addEventListener",
+        "ms": 17.37
+      },
+      {
+        "source": "(native)",
+        "line": 5598,
+        "column": 20,
+        "name": "query",
+        "ms": 17.065
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/incrementalAccountLedger.ts",
+        "line": 229,
+        "column": 22,
+        "name": "F",
+        "ms": 16.595
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "openCursor",
+        "ms": 16.528
+      },
+      {
+        "source": "../../diagnostic-source/account-protocol/inboundTransport.ts",
+        "line": 50,
+        "column": 23,
+        "name": "Ut",
+        "ms": 16.262
+      },
+      {
+        "source": "browser-diagnostics.js",
+        "line": 13,
+        "column": 11,
+        "name": "",
+        "ms": 16.142
+      },
+      {
+        "source": "../../diagnostic-source/src/crdt/inboundLedger.ts",
+        "line": 521,
+        "column": 22,
+        "name": "Ge",
+        "ms": 15.963
+      },
+      {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js",
+        "line": 2452,
+        "column": 9,
+        "name": "hi",
+        "ms": 15.678
+      }
+    ]
+  },
+  {
+    "directory": "diagnostic-catchup-75",
+    "profile": "server.cpuprofile",
+    "scope": "whole process including setup and guardrails",
+    "durationMs": 72912.666,
+    "sampledMs": 72912.083,
+    "samples": 49579,
+    "topSelf": [
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "ms": 61664.837
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "ms": 756.755
+      },
+      {
+        "source": "file://source/account-protocol/preparation.ts",
+        "line": 33,
+        "column": 22,
+        "name": "closed",
+        "ms": 535.584
+      },
+      {
+        "source": "node:internal/encoding",
+        "line": 355,
+        "column": 8,
+        "name": "encode",
+        "ms": 500.668
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 23,
+        "column": 21,
+        "name": "unhex",
+        "ms": 490.921
+      },
+      {
+        "source": "node:internal/crypto/util",
+        "line": 545,
+        "column": 27,
+        "name": "normalizeAlgorithm",
+        "ms": 420.62
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 204,
+        "column": 42,
+        "name": "snapshotWorkspaceAuthority",
+        "ms": 413.166
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "RegExp: ^[0-9a-f]+$",
+        "ms": 408.054
+      },
+      {
+        "source": "node:internal/crypto/util",
+        "line": 666,
+        "column": 19,
+        "name": "jobPromise",
+        "ms": 364.837
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 16,
+        "column": 19,
+        "name": "hex",
+        "ms": 296.412
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "ms": 271.079
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 36,
+        "column": 18,
+        "name": "lp",
+        "ms": 256.04
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 221,
+        "column": 22,
+        "name": "fingerprint",
+        "ms": 252.549
+      },
+      {
+        "source": "file://source/account-protocol/submission.ts",
+        "line": 64,
+        "column": 32,
+        "name": "decodeSubmission",
+        "ms": 204.666
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 108,
+        "column": 20,
+        "name": "json",
+        "ms": 197.456
+      },
+      {
+        "source": "node:internal/crypto/webcrypto_util",
+        "line": 109,
+        "column": 21,
+        "name": "importRawKey",
+        "ms": 182.414
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 37,
+        "column": 27,
+        "name": "",
+        "ms": 179.669
+      },
+      {
+        "source": "file://source/account-service/protocol.ts",
+        "line": 98,
+        "column": 25,
+        "name": "canonical",
+        "ms": 173.744
+      },
+      {
+        "source": "node:internal/crypto/hash",
+        "line": 226,
+        "column": 24,
+        "name": "",
+        "ms": 139.955
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "encodeUtf8String",
+        "ms": 139.589
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 781,
+        "column": 25,
+        "name": "createPrivateKey",
+        "ms": 130.203
+      },
+      {
+        "source": "(native)",
+        "line": 0,
+        "column": -1,
+        "name": "parse",
+        "ms": 95.917
+      },
+      {
+        "source": "file://source/account-service/recoveryStore.ts",
+        "line": 22,
+        "column": 28,
+        "name": "recoveryRows",
+        "ms": 95.794
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 376,
+        "column": 10,
+        "name": "export",
+        "ms": 93.586
+      },
+      {
+        "source": "file://source/account-protocol/successor.ts",
+        "line": 141,
+        "column": 35,
+        "name": "parseSuccessorEpoch",
+        "ms": 91.541
+      },
+      {
+        "source": "file://source/account-service/membershipStore.ts",
+        "line": 29,
+        "column": 30,
+        "name": "membershipRows",
+        "ms": 90.585
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 1044,
+        "column": 17,
+        "name": "getSlots",
+        "ms": 88.208
+      },
+      {
+        "source": "file://source/account-protocol/authority.ts",
+        "line": 16,
+        "column": 33,
+        "name": "parseAuthorityPin",
+        "ms": 82.959
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 109,
+        "column": 20,
+        "name": "same",
+        "ms": 82.249
+      },
+      {
+        "source": "node:internal/crypto/webidl",
+        "line": 133,
+        "column": 26,
+        "name": "converters.BufferSource",
+        "ms": 80.667
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 334,
+        "column": 29,
+        "name": "snapshotBytes",
+        "ms": 78.794
+      },
+      {
+        "source": "file://source/account-service/membershipStore.ts",
+        "line": 83,
+        "column": 42,
+        "name": "membershipCancellationRows",
+        "ms": 77.996
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 54,
+        "column": 32,
+        "name": "publisherContext",
+        "ms": 71.211
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 363,
+        "column": 46,
+        "name": "verifyWorkspaceAuthority",
+        "ms": 70.629
+      },
+      {
+        "source": "file://source/account-service/membershipStore.ts",
+        "line": 102,
+        "column": 38,
+        "name": "membershipTransferRows",
+        "ms": 68.962
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 110,
+        "column": 10,
+        "name": "h",
+        "ms": 66.206
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 317,
+        "column": 9,
+        "name": "guard",
+        "ms": 66.166
+      },
+      {
+        "source": "file://source/account-protocol/recovery.ts",
+        "line": 80,
+        "column": 26,
+        "name": "parseDraft",
+        "ms": 65.375
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 294,
+        "column": 24,
+        "name": "snapshot",
+        "ms": 64.96
+      },
+      {
+        "source": "file://source/account-service/sessions.ts",
+        "line": 263,
+        "column": 7,
+        "name": "#live",
+        "ms": 64.877
+      },
+      {
+        "source": "file://source/account-service/sessions.ts",
+        "line": 927,
+        "column": 18,
+        "name": "checkGrantParent",
+        "ms": 64.418
+      },
+      {
+        "source": "node:internal/crypto/hash",
+        "line": 136,
+        "column": 39,
+        "name": "update",
+        "ms": 64.205
+      },
+      {
+        "source": "file://source/account-service/removalStore.ts",
+        "line": 47,
+        "column": 28,
+        "name": "rotationRows",
+        "ms": 63.706
+      },
+      {
+        "source": "file://source/account-service/delivery.ts",
+        "line": 338,
+        "column": 21,
+        "name": "",
+        "ms": 62.583
+      },
+      {
+        "source": "node:internal/crypto/cfrg",
+        "line": 249,
+        "column": 20,
+        "name": "",
+        "ms": 62.498
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 171,
+        "column": 42,
+        "name": "certificationMessage",
+        "ms": 61.043
+      },
+      {
+        "source": "node:internal/crypto/webcrypto",
+        "line": 94,
+        "column": 31,
+        "name": "callSubtleCryptoMethod",
+        "ms": 58.917
+      },
+      {
+        "source": "node:internal/webidl",
+        "line": 690,
+        "column": 17,
+        "name": "",
+        "ms": 53.754
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 966,
+        "column": 31,
+        "name": "cloneInternalAlgorithm",
+        "ms": 53.043
+      },
+      {
+        "source": "file://source/account-protocol/genesis.ts",
+        "line": 30,
+        "column": 14,
+        "name": "fixed",
+        "ms": 50.748
+      },
+      {
+        "source": "node:internal/crypto/hash",
+        "line": 205,
+        "column": 20,
+        "name": "asyncDigest",
+        "ms": 50.041
+      },
+      {
+        "source": "node:internal/crypto/keys",
+        "line": 738,
+        "column": 25,
+        "name": "prepareSecretKey",
+        "ms": 49.458
+      },
+      {
+        "source": "file://source/account-protocol/positionDecision.ts",
+        "line": 161,
+        "column": 38,
+        "name": "decodePositionResponse",
+        "ms": 49.336
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 189,
+        "column": 37,
+        "name": "verifySignature",
+        "ms": 46.46
+      },
+      {
+        "source": "file://source/account-protocol/admission.ts",
+        "line": 169,
+        "column": 29,
+        "name": "requestDigest",
+        "ms": 45.503
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 77,
+        "column": 19,
+        "name": "servedRows",
+        "ms": 44.624
+      },
+      {
+        "source": "file://source/account-protocol/contentDelivery.ts",
+        "line": 121,
+        "column": 36,
+        "name": "parseContentDelivery",
+        "ms": 41.918
+      },
+      {
+        "source": "node:internal/webidl",
+        "line": 835,
+        "column": 29,
+        "name": "getViewedArrayBuffer",
+        "ms": 40.378
+      },
+      {
+        "source": "file://source/account-service/publisherTips.ts",
+        "line": 65,
+        "column": 18,
+        "name": "countRows",
+        "ms": 37.961
+      },
+      {
+        "source": "file://source/account-service/removalStore.ts",
+        "line": 14,
+        "column": 26,
+        "name": "removalRow",
+        "ms": 36.584
+      }
+    ]
+  }
+]

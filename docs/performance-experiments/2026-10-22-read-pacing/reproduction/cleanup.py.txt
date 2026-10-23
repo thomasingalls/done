@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,subprocess
+r=Path(__file__).parent;rows=[]
+for name in ['1-D','2-D']:
+ cid=(r/name/'container.cid').read_text().strip();p=subprocess.run(['docker','inspect','--format','{{.State.Running}}',cid],text=True,capture_output=True)
+ if p.returncode:
+  assert 'no such object'in p.stderr.lower()or 'no such container'in p.stderr.lower(),p.stderr
+ else:assert p.stdout.strip()=='false'
+ rows.append({'name':name,'containerNotRunning':True})
+ps=subprocess.check_output(['ps','ax','-o','pid=,command='],text=True);profiles=[line.split(None,1)[0]for line in ps.splitlines()if str(r)+'/1-D/private-profile-'in line or str(r)+'/2-D/private-profile-'in line];assert not profiles,profiles
+p=subprocess.run(['lsof','-nP','-iTCP:53781','-sTCP:LISTEN'],capture_output=True,text=True);assert p.returncode==1 and not p.stdout,p.stdout+p.stderr
+out={'status':'passed','ownedContainers':rows,'ownedBrowserProfileProcesses':0,'loopback53781Closed':True,'preview8443Untouched':True,'cleanupKind':'Only inspected owned disposable identities after harness graceful stop; no unrelated process changes'};(r/'process-cleanup.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

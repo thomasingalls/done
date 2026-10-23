@@ -4759,3 +4759,405 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 **Decision.** Run the ordinary hosted unit population with one file worker and preserve every case workload, the five-second default and the 20-minute job limit. Serialization alone is insufficient in the retained Linux control. Replace only five large binary comparison sites in the two timed-out cases with Node's strict deep equality, retaining all bytes/types, state copies, mutation/isolation checks, generated histories and seed/run parameters. No production code or crypto contract changes. Changed-byte controls must still fail; the projection reporter's wrapped/shrunk error is its actual evidence, not an inferred inner stack.
 
 **Bounds.** Full local functional passes do not erase the hosted failures or establish a successful AMD64 rerun. All obligation rows and release blocks remain. Hosted CI must pass on the signed phase before publication; qualification stays paused.
+
+
+## 2026-10-16 — An empty legacy placeholder is not retained legacy writing
+
+**Against:** storage contract SC-03/06/08 and the existing verified fresh-genesis owner.
+
+**Decision.** Fresh genesis may proceed beside the known `done` database only when its version is exactly 1 and it has zero object stores. Leave that database untouched. A store with zero rows is deliberately not this exception; recognized, unfamiliar and unsupported layouts still require migration, as do all legacy journals and read failures. Repeat the observation under the existing creation lifetime before the first custody claim. This neither migrates/removes source material nor supplies old-writer exclusion; legacy import/cleanup and factor/binding verification are unchanged. An observed late schema upgrade or journal refuses creation and retains its data. Presentation alone remains no authority to create.
+
+
+## 2026-10-16 — Connection preparation reports its actual startup refusal
+
+**Decision.** Keep the startup kind/reason when device preparation refuses and describe that state. Only a factor-bearing or resumable creation reports a saved device setup. A migration or unreadable store is not evidence of a saved attempt; cancellation, removal and compatibility also retain their actual requirements. The error authorizes no code generation, route replacement, repair, erasure or bypass. Fresh preparation and verified enrollment authority remain unchanged.
+
+
+## 2026-10-16 — Preserve qualification blocks while integrating the empty-placeholder repairs
+
+**Decision.** Normal CI executes the two new unit files and packaged browser regression. Review their independent case census, retain the old tests/deadlines, and refresh only the affected source identities and exact fixture counts. Preserve every preceding obligation; the new browser file stays required but blocked from aggregate credit until its execution adapter is reviewed. Firefox/Chromium disposable checks are evidence for the bounded startup behavior, not a new platform/provider or release-qualification claim. Publication remains separately authorized and is not performed here.
+
+
+## 2026-10-16 — A preserved Chromium upgrade is not a resolution of Firefox account disappearance
+
+**Decision.** Investigate the recorded testing actions separately from application upgrade behavior. Audit original call/response identities and origins without opening production browser storage. Reproduce the actual previous and deployed release sources/frontends with a full backend/gateway restart, retained service identity and independent persistent browser profiles. Establish old-worker control before the baseline and await the new document when comparing refresh-boundary storage. Use the existing virtual-authenticator convention without changing application cryptography or storage owners. Archive the operational probe as evidence text, outside ordinary discovery and aggregate qualification credit.
+
+**Bounds.** Passing fresh-account and promoted-Local Chromium histories narrows the disappearance hypothesis; it does not disprove the reported normal-Firefox failure or earlier account histories. Retain incomplete attempts and the unresolved early-bootstrap offline-unlock failure alongside the passing result. Distinguish online navigation followed by offline unlocking from entirely offline launch, and descriptor digests from exported CryptoKey material. The prior repair series stays immutable; no production change follows from this investigation.
+
+
+## 2026-10-16 — Reduce device-approval round trips while preserving independent replay
+
+**Decision.** Attribute the original-device busy interval before choosing a repair. The additional-device path constructs a replacement snapshot by independently replaying accepted prefixes; simply trusting the already-open document would lose that evidence. Test a transport-only group of up to four unchanged signed one-position requests/pages. The server must execute them in order through existing transaction-time authorization, and the client must retain the existing sequential per-page verifier, prefix/cut/byte/event bounds and expiry. Framing provides no authority. Preserve old-server fallback and existing work budgets. Establish the gain with restored, alternating matched fixtures and complete Markdown-content agreement, not different fresh-account timings.
+
+**Bounds.** This is a measured desktop experiment and bounded implementation sequence. Phone/WAN behavior, progress presentation, interrupted long-replay resumption and the earlier Firefox account disappearance remain separate. No production change or generalized release qualification follows from the result.
+
+
+## 2026-10-16 — A read group preserves each request's authorization and the existing work ceiling
+
+**Decision.** Use a bounded unsigned transport carrier around the exact signed v2 requests/pages. Execute inner reads sequentially through the original domain owner and transaction-time grant checks; a failed subread returns no partial group. Reserve four existing work/inflight units conservatively and preserve the ten-second HTTP deadline. Return a nonempty prefix on aggregate-size pressure or after 250 ms of completed work, without preempting an ongoing cryptographic read; the client must issue fresh requests for the remainder. This avoids multiplying slow completed reads within one deadline. Do not introduce parallel login owners, unordered through observations, persistent verification caches or a private-bearer fallback.
+
+**Qualification.** The new carrier remains an open construction, with independent literal framing and actual scoped-HTTP controls. Updating exact open-count/list fixtures retains every old security assertion and the aggregate block; it grants no full qualification credit. The transport contract lives in account-receive-transport.md and all earlier construction statuses remain.
+
+
+## 2026-10-16 — Group additional-device reads without relaxing the existing replay owner
+
+**Decision.** Activate grouping only through an optional history-source transport callback for additional-device snapshot preparation. Preserve the same native source permit, one login-owner callback per group, exact captured request-to-page pairing and original verifier sequence. A nonempty returned prefix advances only through individually verified positions; its remainder receives fresh nonces/expiries. Only a 404 selects the original first request on the original route, with a coordinator-local unsupported hint. Other refusals retain normal failure/retry ownership. Grouping grants no ability to skip accepted writing, change authority, keep a factor longer, install a key early or mint another comparison.
+
+**Evidence and limits.** Retain all raw matched observations and compare complete ZIP entry contents rather than container timestamps. Expired saved comparisons must be replaced with fresh real test fixtures, preserving the ten-minute deadline. The final workload median improves 25.4%, with mixed pairwise attainment of the prospective 20% target and no population/phone claim. Directed regressions and normal-CI integration leave every preceding qualification block in place; new test files remain blocked from aggregate execution credit pending their adapter review. Prepare separate attribution/server/client patches, preserve failed attempts and independently replay/stage the sequence before signing.
+
+
+## 2026-10-16 — Show verified enrollment work without turning progress into authority
+
+**Decision.** Following signed transport commits `e31b5eaf`, `1f2d9cd2` and `465c5e07`, expose transient stage/count observations from the actual additional-device replay and handoff owner. Count sources and accepted changes only after their existing verification/application; distinguish those substeps from journal-inclusive local replay, snapshot construction/publication, key delivery, installation and certification. Unknown work uses an indeterminate bar. Callback failures cannot interrupt protocol work, and retirement/completion clears observations. Do not persist progress, add polling, show invented time/overall percentages, or promise work through phone screen lock. Keep exact saved-approval resumption and every existing check.
+
+**Performance boundary.** Existing owner-local exact-byte reuse, shared census, cooperative preparation and bounded receive prefetch provide concrete follow-up patterns. The local source already uses baseline census reuse. An editor document or a memo from another owner cannot replace independently authenticated accepted-prefix/source completeness; parallel ceremony login calls remain forbidden. Attribute deeper original/joined replay costs before selecting a new reuse or pipelining mechanism. This phase establishes truthful presentation and fault/lifecycle behavior, not another speedup. The [contract](./account-enrollment-progress.md) and [bounded evidence](./account-enrollment-progress-evidence/2026-10-16/README.md) retain this distinction and all prior qualification blocks.
+
+
+## 2026-10-16 — Attribute repeated authority work before reusing it
+
+**Decision.** After signing the requested progress indicator as `2f1d0b0f`, update only the port-8443 frontend from its clean signed tree. Preserve the existing API identity/state, route and public configuration. Attribute original and joined additional-device approval using disposable fixtures before choosing another optimization. The local recovery path already reuses its baseline census; an editor document cannot replace authenticated source completeness. The new diagnostic evidence selects repeated service historical-authority verification within an existing sequential read batch.
+
+**Fixture boundary.** A stale-authority injection must cover the optional batch route as well as the original route. Independently reproduce both old failures on signed source and repair only the route glob; retain every assertion and deadline. Keep diagnostic results distinct from ordinary timing, preserve failed attempts and leave generalized qualification paused. [Evidence](./performance-experiments/2026-10-16-enrollment-authority-reuse/01-attribution/README.md).
+
+
+## 2026-10-16 — Reuse exact historical authority only inside one sequential read group
+
+**Decision.** Adapt the existing exact-input/short-lived-owner reuse pattern at the repeated service authority verifier identified by attribution. Each inner read still captures its own native snapshot. Reuse only for the same verifier and serialized pin/header bytes, excluding independently checked decision rows; repeat every native issuer check and retain subsequent authorization, signature, expiry, ledger, SQL-commit and far-side checks. Retire the private lease in the batch finally, detach mutable output and fall back to full verification on changed, oversized or unsupported context. Retain one entry, no persistent cache or private signing/login capability. The 2 MiB bound describes retained context bytes rather than the whole derived graph.
+
+**Challenge and evidence.** Preserve the failed JSON/Map counterexample; use process-local V8 bytes with no persisted format. Thirteen new Node controls, a real capacity/exact-retry browser case and final-source rotation journeys exercise the boundaries. Fourteen ordinary matched connections meet the prospective owner-specific target and retain exports/two-way writing/reopen. Small local-desktop samples do not establish phone/WAN performance. The later API optimization remains an unsigned sequential patch and is not on the preview. Keep all prior qualification obligations/statuses/deadlines/blocks and the new tests blocked from aggregate credit. [Evidence and limits](./performance-experiments/2026-10-16-enrollment-authority-reuse/02-reuse/README.md).
+
+## 2026-10-16 — Account for actual sequential read work without spending phantom concurrency
+
+**Decision.** After the immutable authority-reuse series, retain numeric rate/burst ceilings while separating a live HTTP request from the sequential reads inside it. Charge admission before bounded-body input; atomically top up to the exact validated batch count before execution. A refused top-up charges admission only, never a partial extra tail. Refund only reads never started; failed/refused/discarded started work remains charged. A batch uses one live-request slot, with one inner read active at a time and the unchanged global/session live-request and byte bounds. Account/session identity stays service-held, and all native cryptographic/transaction authorization remains independent.
+
+**Evidence and staging.** New counterexamples demonstrate small-batch overcharging, same-session slot starvation and unused-tail charging. Fourteen new cases and preceding budget/batch/reuse/authentication/retry cases pass (58 total). Correct only the old single-page exact-budget loop, preserving all assertions and adding an explicit full-four-read companion. Keep initial sandbox/Host-header fixture failures and pre-fix defects separate. Freeze this phase before the sustained-load comparison; do not infer a safe numeric rate from policy algebra. New test obligations remain blocked from aggregate credit; general qualification remains paused. See the throughput phase evidence and prospective protocol.
+
+
+## 2026-10-16 — Keep numeric admission rates while testing page density
+
+**Decision.** Six restored native API runs demonstrate that explicit replay backoff accounts for 56–63 seconds of a 67–70-second, 1,024-position limit-one replay. Exact accounting reduces same-session writer worst waits from about three seconds to about one, while the second account sees no 429s. It also increases observed process CPU and sampled RSS, so preserve those costs. A first-epoch content-blind fixture cannot establish deeper-membership/global production capacity. Retain numeric rate/burst limits and test up to eight independently verified entries per page next, avoiding fixed strides over short pages.
+
+**Evidence boundary.** Live replay/peer pages are independently checked. Every interactive write completes after bounded retries; its authored bytes and stored acceptance proof are independently verified by a cold SQL audit, while live write reply bytes were not retained. Keep failed pilot/shutdown/grant captures and all completed observations. This phase adds evidence only, grants no qualification credit and changes no publication state. [Evidence](./performance-experiments/2026-10-16-enrollment-throughput/04-sustained-load/README.md).
+
+
+## 2026-10-16 — Verify denser history pages without changing durable receipts
+
+**Decision.** Use the existing eight-entry transport width only for transient accepted-history reconstruction, sharing scope, signature, envelope/proof/decryption and actor validation with ordinary single-entry receiving. Keep the durable codec and every original guard-removal assertion. Verify a whole page before progress/application, preserve exact cut and total event/byte limits, and use its actual cursor for the next request. One adaptive page per carrier retains old-server fallback without guessing a short-page stride. Numeric admission values remain.
+
+**Evidence and boundary.** Nineteen unit/seven source cases, preceding codec/controls/history cases and nine unique packaged journeys pass after three narrow fixture corrections. Fourteen restored browser connections preserve exports/writing/reopen and meet the >=10% owner-specific target. The 1,024-position API follow-up has no 429s, but exposes same-publisher cache-invalidation contention; keep that guardrail issue and require a separately falsified reuse repair before final acceptance. Two native harness failures reproduce on phase-A source and need fixture repair, not suppressed assertions. [Evidence](./performance-experiments/2026-10-16-enrollment-throughput/05-dense-pages/README.md).
+
+
+## 2026-10-16 — Defer append-prefix reuse after the concurrent-write falsifier
+
+**Decision.** Retain the measured accounting and transient page-density changes as reviewable development patches, but defer the extra append-prefix cache implementation. Its bounded corruption controls pass and censuses fall, yet all six fixed-offer concurrent-writing replay arms still refuse with unknown/state-changed. Phase C's final writer acceptance condition remains unmet. Do not treat reduced repeated work, passing narrow tests, or a failed run's lower duration/CPU as reliable completion or release readiness.
+
+**Next boundary.** Reproduce the actual client's state-change/retry handling, then establish replay completion and bounded offered-input write latency without changing authority, exact cuts, expiry, byte/work or corruption guarantees. All six runs have zero 429s; raising rates is not supported as a remedy. Preserve the failed attempt, prospective amendment, prototype identities and six outcomes. [Evidence](./performance-experiments/2026-10-16-enrollment-throughput/06-concurrent-writing/README.md).
+
+
+## 2026-10-16 — Exercise a complete pre-group reader and count actual fresh counter reads
+
+**Decision.** Replace the mixed three-file historical graph with the full pinned `534252e1` production archive through the existing source-identity helper, preserving its real reference mode. Replace the obsolete warm-content getAll probe with actual content-counter reads, retaining the half-count and exact transaction assertions. A new independently pinned closure/definition regression replaces the insufficient transform-hit count. Preserve every native compatibility, receipt, crash, refusal, bound and deadline assertion.
+
+**Evidence.** Both defects reproduce on the frozen earlier runtime. All 14 affected native cases and nine complete source-owner/unsigned-successor checks pass; individual/group counter reads are 36/9 and readonly/readwrite transactions remain 92/23 and 8/2. The helper's new closed/captured mode tests fail against its predecessor. [Final functional evidence and limits](./performance-experiments/2026-10-16-enrollment-throughput/07-native-fixtures/README.md). The phase-D concurrent-writing failure remains an open acceptance blocker, and no rate or release-guarantee change is justified.
+
+
+## 2026-10-16 — Retry exact history reads after bounded state-change refusal
+
+**Decision.** Preserve the service's safe raced-snapshot refusal and retry scheduling at the additional-device history owner. Four extra read attempts are shared across one load, with 200 ms abortable delay and one existing ten-second deadline per logical request. Capture independent exact request bytes before awaiting; fallback uses the same captured inner request, budget and signal. A closed unsigned state-change hint schedules bounded work only and grants no content, progress, key, membership or cut. Do not retry writes, other faults/refusals or changed authority; preserve every verifier, native guard, corruption check and rate/format contract.
+
+**Evidence/boundary.** The actual frozen coordinator stops after one refused read. Fourteen directed unit controls, all 74 preceding transport/codec/guard-removal controls, 50 existing native/scoped/history checks, 37 adapters and six final packaged journeys pass after repair. A retained negative caught aliasing Buffer.slice copies in the prototype; detached Uint8Array construction repairs it. [Evidence](./performance-experiments/2026-10-16-enrollment-throughput/08-history-read-retry/README.md). The finite concurrent-writing workload remains a separate acceptance test before claiming its blocker cleared.
+
+
+## 2026-10-16 — Accept bounded continuation for the identified history-read race
+
+**Decision.** Accept patch 08's exact read retry for the named failure boundary and finite workload, preserving safe native refusal, the four-extra-attempt/load cap and original ten-second logical deadline. Do not claim arbitrary writer liveness or revive the failed prefix-cache implementation. Persistent contention still stops with saved setup.
+
+**Evidence and qualification.** All three repaired 1,024-position runs finish, including one genuine state-change exhaustion followed by an exact-body retry and independently verified success. All nine offered writes per arm and peer proofs succeed within the chosen 2.5 s input-write ceiling. The three old-client arms also finish; changed parser/native schedules make this unsuitable as a failure-rate or speedup estimate. Preserve the earlier six raw-probe failures. One paired input maximum rises 23.49%; inspection shows its queue existed before the first refusal/retry, and its native request remains within the unchanged census range. All 15 functional browser journeys and four restored export/writing/reopen comparisons pass. [Evidence, raw schedules and limits](./performance-experiments/2026-10-16-enrollment-throughput/09-concurrent-continuation/README.md).
+
+**Release boundary.** This closes the identified bounded client-continuation blocker, not generalized qualification, physical-phone/WAN or global capacity obligations. Every construction status and old gate remains; new tests stay blocked from aggregate credit. No commit, preview update, push, merge or deployment is authorized by this evidence phase.
+
+
+## 2026-10-21 — Attribute ordinary synchronization before borrowing enrollment optimizations
+
+**Decision.** Prioritize ordinary catch-up as the next bounded repair, using the branch's bounded read-batch/short-lived authority pattern as a hypothesis while retaining original single-entry signed requests/replies and durable receipts. Measure against a current-branch baseline before accepting an implementation. Transient dense enrollment pages are a different consumer and cannot be presumed compatible with durable receiving. Keep every authorization, exact-prefix/request, expiry, actor, cancellation, fairness and durability guard; preserve old-server/short-reply fallback. Retain numeric limits pending measured capacity evidence.
+
+**Evidence and limits.** On release `faf465f7`, a restored 121-card/13,000-character Goals pair missing exactly 600 accepted updates takes 33.691 seconds locally and 57.919 seconds with 75 ms added request delay. The receiver makes 620/622 signed limit-one reads; the slower arm has zero 429s. Its transport-interval increase closely tracks the backlog increase. Four primary and two separate diagnostic journeys retain complete exports, both-way writing, Undo/Redo and locked offline document reopening. Preserve failed constructors, the two smaller-Goals pilots and the corrected diagnostic clock analysis. These are descriptive local Chromium journeys, not phone/WAN/population or release qualification evidence.
+
+**Separate follow-up.** Foreground publication eligibility accounts for roughly 300 ms before send preparation and continuous typing retains two-second tails. Content hints arrive promptly in the diagnostic, so changing SSE is not the first repair. Later compare publication timing independently of local disk flush, verifying actual durability/typing behavior rather than assuming they can be decoupled. [Protocol, raw results, source identities and next boundary](./performance-experiments/2026-10-21-live-sync-attribution/README.md). This phase changes no runtime, old test, guard, rate, format or gate and authorizes no publication.
+
+
+## 2026-10-21 — Batch ordinary catch-up without changing durable receipts
+
+**Decision.** Use the existing optional four-read transport and its request-local native authority lease for the ordinary receiver's already-owned limit-one request set. Retain original signed request/page bytes, per-entry verification, current native/custody checks, unchanged group commit, cold compatibility and publisher turn. Reserve a 4 MiB aggregate ceiling; drain a successful-binary overflow or absent-route response before using the existing individual collector under the same ten-second logical deadline. A downgrade lasts only for this owner. Error hints and invalid evidence cannot select fallback. Preserve individual retry/refusal classification after discarding the superseded aggregate-size observation. No service source, persistent cache/format, rate, scheduling or security-guarantee change.
+
+**Evidence and rejected alternatives.** All fourteen final restored journeys pass. Three +75 ms pairs improve 32.3–33.9% (median paired improvement 33.7%; arm medians 59.389/39.233 s); loopback arm medians are 33.727/33.675 s. Every local/peer typing guard and full export/two-way/Undo/offline-reopen check passes. Preserve V1's 70.691 s regression, V2's insufficient 48.788 s result, V3's two classification falsifiers and interrupted comparison. The final scheduling source is byte-identical to the signed base. All 34 new regressions pass, including production prepared receiving, alongside affected native/crash/authority/historical-reader, service-budget, omission-control and planning checks. Narrow old-fixture repairs retain every assertion and deadline. [Protocol, identities, raw results and limits](./performance-experiments/2026-10-21-ordinary-receive-batching/README.md).
+
+**Next boundary.** Loopback candidate runs see 6–8 HTTP 429s versus 1–4 for reference, while +75 ms runs see none. This motivates a separate capacity/rate intervention and does not establish a safe policy increase or complete causal attribution. Foreground publication timing remains a separate follow-up. These are local Chromium observations, not handset/Firefox/WAN, production adoption or generalized qualification. Two new test files remain blocked: 878 obligations / 334 unresolved, with every old obligation and construction status exact. Prepare sequential patch 02 after immutable patch 01; no signing, preview restart, push, merge, deployment or qualification resumption.
+
+
+## 2026-10-21 — Separate scoped rate cost from capacity and contention
+
+**Decision.** Keep shipped 16/session and 64/process work-unit refill rates while investigating their measured cost. Temporary service-only literal interventions use the identical patch 02 client, retaining bursts, concurrency, work/byte/deadline and all authorization/verification guards. Raising only the session refill to 64 shortens two loopback 600-update journeys 33.243/33.743→22.575/23.088s (31.6–32.1%); raising only process refill to 256 does not help this fixture. Three predeclared combined-rate pairs improve 30.5% at the paired median. A +75ms pair improves only 2.54%. All 14 ordinary browser journeys preserve complete exports, two-way writing, Undo/Redo, offline reopen and every predeclared typing guard.
+
+**Capacity boundary.** All six separate first-epoch contention arms stop on 409 state-changed before 429, including defaults. The hot writer completes none of its offered writes; an unrelated account completes 6–7. Reader-only controls pass 64 positions/single reader and 384/six readers. The raw probe stops on a state-change reply and does not establish whether the app's outer continuation would recover. Thus neither safe production rates nor maximum capacity is qualified. Every stored seed/interactive wire and proof passes cold independent SQL verification.
+
+**Next investigation.** Test actual continuation and isolate shared publisher-tip invalidation under competing commits before altering that mechanism. Source guard revision is shared and detected fingerprint races invalidate all captures, but the exact initiating race is not yet isolated. The browser diagnostic independently attributes five 429s to session work top-up, with roughly 1s retry gaps and no process/concurrency refusal. Do not remove those guards or add a blanket 409 retry. After contention review, test a smaller session step as an unqualified candidate; the process-only result does not justify a blanket global increase. [Protocol, raw failures, source/resource evidence and limitations](./performance-experiments/2026-10-21-sync-capacity/README.md). This phase is evidence-only; every runtime byte/test/qualification block and prior patch remains.
+
+
+## 2026-10-21 — Distinguish client continuation from shared invalidation
+
+**Decision.** Keep shipped guards/rates unchanged. The real packaged client continues automatically across targeted remote-read and submit state-change refusals under bounded duplicate-read pressure, retaining identical pending-submit bytes and all full data guards. Those refusals are injected; natural browser loads do not expose state-changed and the exact native contention workload is not thereby qualified as an actual-client population.
+
+**Mechanism and limits.** A native trace and a separate deterministic whole-snapshot comparison confirm that a stale fingerprint on one publisher can invalidate unchanged captures for another account through the shared revision. Original traced/default failures agree. Eight shorter controls pass, while the full-size own-writer discriminators retain later failures despite useful progress; cross-publisher invalidation is not the sole contention surface. Raw adapters still abort on409, so no indefinite-starvation, production-frequency or safe-rate claim follows. Retain the initial single-read controls, wrong self-read label, corrected batch-source invocation and observer-flush limitation. [Raw source, proof, browser and failure evidence](./performance-experiments/2026-10-21-sync-continuation/README.md).
+
+**Next bounded candidate.** Review per-publisher invalidation for detected fingerprint races while preserving global external/unknown-state invalidation, changed-publisher rejection, every fresh transaction/authority/signature check, exact receipts, bounds and effective quarantine/corruption controls. Demonstrate a failing desired-behavior regression before changing the mechanism, then repeat full contention and actual-client controls. Own-publisher append races remain separate. This is evidence for that repair review, not its implementation, a numeric rate promotion or resumption of generalized qualification.
+
+
+## 2026-10-21 — Isolate publisher fingerprint races with bounded capture ownership
+
+**Decision.** A failed fresh snapshot fingerprint discards only that account/publisher's preliminary owner, tip and queued audit. Other captures remain subject to their own complete transaction-time comparison. Retain the global revision/data_version fence for external changes, explicit clears, close and applicable audit failures, and retain quarantine. Bound the owner map to128 LRU keys; unique object identities prevent old captures, delayed remember and active audit results from becoming current after eviction or key recreation. Keep all authority/signature/custody/grant/expiry checks, exact original receipts, numeric rates, work/byte/concurrency/retry/deadline bounds and stored/wire formats unchanged.
+
+**Evidence.** The new independent unchanged-capture assertion fails against the old source. All114 affected native/protocol/budget cases pass after repair, including six new cases, and six omission controls fail at the intended assertions. The full unrelated-writer+reader discriminator now completes all1536 positions and20 other writes. Both matched reference arms stop before any hot write; repaired arms verify545/554 read positions and24/27 hot writes, but still fail with409. A separate same-publisher-writing arm also fails. These are censored raw runs, not speed or capacity passes. All six stopped stores pass independent wire/proof verification. Three actual packaged-client journeys pass complete exports, both-way writing, Undo/Redo and locked offline reopen; known refused remote batch and pending submit continue autonomously after1136/1038ms, with identical submitted bytes. [Evidence, failures, source identities and limits](./performance-experiments/2026-10-21-publisher-isolation/README.md).
+
+**Boundary.** Same-publisher contention remains the next acceptance investigation before rate/capacity promotion. Keep all five raw failures, the new SQLite no-op fixture correction, sandbox listener refusals, stale exact mutation anchor, initial planning-audit assumption and stale crypto census. Retarget only the omission anchor around current authority reuse, and refresh only reviewed source pins; domains/classifications remain exact. All109 planning regressions pass. Every old obligation and97 construction contracts/statuses remain exact; the new test stays blocked:879 obligations /335 unresolved. General qualification remains paused. Prepare unsigned sequential patch05 after01→04; no stage/sign/commit/push/preview restart/merge/deployment.
+
+
+## 2026-10-21 — Preserve authenticated prefixes after known native appends
+
+**Decision.** After a newly proposed verified native decision actually commits, replace a private publisher commit marker. Reject older captures and late memo installation without deleting their authenticated pre-append prefix. The marker advances no ledger count, witness, accepted cut or link; fresh requests still authenticate appended rows/current witness and pass the original full transaction-time authority/fingerprint/signature/custody/grant/expiry checks. Unknown changes, global/version/close/eviction fences and quarantine remain. Keep audit ownership distinct so continuous writes cannot suppress a real audit's corruption result. No queue, persisted/wire format, extra retry or numeric policy change.
+
+**Evidence.** The old source fails the new prefix-survival assertion;13 new regressions and all127 affected cases pass. Eleven intended omissions fail. Two narrow old-fixture changes distinguish unannounced mutation from the new known-commit boundary; all50 assertion ASTs and registration/options remain exact. All109 planning tests pass. In two clean warm pairs, candidate replay completes1536 positions at20.179/20.002s with40/39 hot writes, hot offered-to-proof p95 576/563ms under2500ms; references fail at the120s replay ceiling or409. No completed paired percentage improvement follows from censored references. All three unchanged packaged-client journeys preserve exports/writing/Undo/offline reopening and known-refusal continuation. [Protocol, raw outcomes, identities and limits](./performance-experiments/2026-10-21-publisher-commit-races/README.md).
+
+**Open acceptance boundary.** Both original COLD mixed arms still fail: initial verification delays the first hot write about2.5s, then five queued writes drain in84/92ms and exhaust the unchanged four read attempts. One stopped arm also misses the additional2500ms input-write p95. The original cold completion condition remains open. Preserve all16 raw runs/11 failures, the initial potentially overlapping warm block, fixture distinction and missing CDP refusal body. All16 stopped stores pass independent original-wire/proof audits. Next isolate/coalesce concurrent first verification with its own bounded owner/lifetime/authority/interruption contract; do not silently add that mechanism here. Keep shipped16/64 and all97 construction contracts/statuses. New regression stays blocked:880 obligations/336 unresolved. General qualification stays paused; prepare unsigned sequential patch06 only, with no publication or preview change.
+
+
+## 2026-10-21 — Admit bounded cold publisher groups without sharing authority
+
+**Decision.** After independent authority/request checks, serialize only a cold publisher's admitted group until its queued burst drains. A waiter then recaptures and authenticates afresh before its first native guard attempt. Keep original four competing-commit attempts and every proof, custody/grant, freshness, signing, expiry, quarantine/audit and bound. Cap128 lanes/128 waiting entries,10s scheduling wait, owned idempotent release and close cleanup. Capture the scheduling header in a short synchronous native transaction and end it before waiting. Warm concurrency resumes when the group is empty; no full census maps, request authority, signing results or progress are shared.
+
+**Evidence and corrections.** Original first reads repeat verification; the first candidate blocks an unchanged paused-authority/concurrent-append case. Narrow admission rather than changing that regression. The next candidate passes first-epoch load but fails real membership-enabled browser capture outside a transaction; retain600s failure and interrupted repeat, keep store guards, add full-schema regression and repair the scheduling capture. Final original cold candidates complete1536 positions/41+40 hot writes/20+20 other writes, replay20.574/20.068s, p95 hot offered-to-proof1014/574ms (guard2500ms). References fail at450/474 positions. Two final browser journeys preserve all data/edit/offline guards.
+
+**Limits.** This clears the named local cold acceptance condition, not a rate policy, universal starvation guarantee, population latency estimate or generalized qualification. Preserve all initial/final failures, native proofs, source identities and fixture corrections. Existing16/session64/process refill and every original limit remain. [Protocol, raw evidence and reproduction](./performance-experiments/2026-10-21-cold-verification/README.md). No publication or preview change; prepare sequential patch07 after immutable01→06.
+
+
+## 2026-10-21 — Revisit refill policy after cold admission, retain current defaults
+
+**Decision.** Keep16/session64/process in the application. Temporary D16/64,S32/64,P16/128,B32/128 variants change only refill literals, with all burst/concurrency/work/byte/deadline/auth/verification/queue guards fixed. All17 unchanged budget/accounting cases pass per variant. The original eight cold contention runs now all finish; session-only S stays near20–21s, while P is near11s and B near10s. All10 native stores, including the asymmetric D/S1024-position pair68.654→31.686s, pass independent original-wire/proof audit.
+
+**Blocker.** S misses the prospective local native fairness gate: median per-run hot-write p95 182→315.5ms and unrelated peer p95 607→1133.5ms; all absolute2.5s and resource bounds still pass. Preserve the miss and small-quantile/1s retry caveat. Three actual-client catch-up pairs improve 31.46% at median; all10 client data/edit/offline journeys pass. Full primary/foreground/pressure typing-gate result: False. Pressure local input-to-DOM p95 also misses its16ms gate (12.0→17.8ms), despite faster134.359→29.156s pressure catch-up. Browser speed cannot override either miss. P/B native results are diagnostic, not automatic global policy selection.
+
+**Next boundary.** Isolate the pressure typing cost, then test coupled32/128 with actual client and distinct cold publishers under identified container CPU/memory bounds before adoption. Higher global allowance alone is not a demonstrated typing fix. No safe global capacity, universal fairness or hardware/platform claim is established. [Protocol, all results, source identities and artifact limitation](./performance-experiments/2026-10-21-rate-review/README.md). Evidence-only patch08; runtime/old tests/881 obligations/97 construction statuses remain exact, qualification paused and no publication/preview change.
+
+
+## 2026-10-21 — Retain default policy after coupled capacity/typing investigation
+
+Temporary32/session128/process passes the prospectively constrained six-distinct-publisher gate with exact original security/work/expiry/native guards; it roughly halves this cold workload. [Phase09](./performance-experiments/2026-10-21-coupled-capacity/README.md) also retains a16.8ms local composite typing miss against16ms in the first pressure pair, despite a later9.2ms arm and all eight data journeys passing. Keep 16/64. Neither constrained synthetic capacity nor a favorable later sample overrides the declared guard or establishes deployment sizing.
+
+Decompose host keyboard-offer→beforeinput separately from beforeinput→DOM. The candidate pressure miss has16.3ms offer→event p95 and0.7ms event→DOM p95; quantiles are not additive and CDP offer is not a physical key timestamp. Use explicit browser-process/focus ownership, a plain-input control and scheduling traces as the next discriminator. Avoid speculative crypto/editor changes. Retain both-renderer sampled profiles and their perturbation/native-process limits; policy adoption still needs foreground/platform/history evidence. All existing contracts/statuses and qualification pause remain.
+
+
+## 2026-10-21 — Target renderer-side sender verification work after dispatch controls
+
+[Phase10](./performance-experiments/2026-10-21-dispatch-calibration/README.md) finds all inputs focused/visible even under original ordering, and no consistent>=3ms+20% gain from independent browser roots in two reversed blocks. Keep the prior typing misses; neither focus nor a later favorable sample clears them.
+
+The larger editor delay lies between browser keydown timestamp and renderer capture; driver timer gaps are smaller and beforeinput→DOM is 1.4–1.8 ms. Native controls omit local editor admissions, so the evidence supports a sender-background-work hypothesis and does not isolate editor parsing or one verifier. Together with phase09's sampled record comparisons/projections/cleanup, select a bounded owner-local verification/comparison reuse investigation and repair. Preserve exact-byte change detection, fresh authority/inventory, owner invalidation, buffer cleanup and detached projections; use the established authenticated carrier/view selection patterns only where justified. Establish a discriminating regression before implementation.
+
+Keep 16/64 and every qualification obligation. This phase changes measurement evidence only.80ms sensor faults at 2.5% of inputs show why per-event maxima/known-fault sensitivity accompany p95. No hardware input-to-paint, production capacity, runtime repair or adoption claim.
+
+
+## 2026-10-21 — Hold the faster comparison candidate until catchup non-regression
+
+[Phase11](./performance-experiments/2026-10-21-word-comparison/README.md) confirms that exact word comparisons can reduce comparison time and sender input queuing in this fixture without weakening byte/metadata/ownership checks. It also demonstrates a repeatable53–56s versus34–37s pressure catchup regression. Passing correctness and lower local input latency do not erase failed peer/catchup guards. Restore the original helper and retain the candidate as reproduction material, six regression cases and every failed result. No numeric-rate adoption.
+
+Candidate capacity refusals increase28–31versus10–12. Existing explicit-capacity waits are1s/2s; the next bounded investigation should identify rate/concurrency refusal causes and request/retry timing before choosing pacing/admission changes. This is a hypothesis, not proof that removing a limit is safe. Preserve byte-identical retry, captured authority, current/freshness checks, queue ownership, deadlines and fairness. All general qualification remains paused; runtime/defaults16/64and old assertions stay intact.
+
+
+## 2026-10-21 — Target concurrent duplicate admission without changing authority or rates
+
+[Phase12](./performance-experiments/2026-10-21-capacity-trace/README.md) joins all corrected refusals to the session budget and all29client failures to extra batch-work reservation; actual retry waits explain large measured portions of receiver delay. The faster candidate changes feedback traffic and spends more work on overlapping exact duplicates. Ordinary and fixed3-read controls do not reproduce the large regression. This selects a bounded scheduling candidate rather than numeric-rate adoption: scoped concurrent identical read exclusion before extra work reservation, with the original>=1admission unit retained and no response/verification-result reuse. Pair it with the held typing helper, preserve native/auth/current/expiry checks and bound/retire all scheduling state.
+
+No repair is accepted yet. Retain all phase11misses, observer failures and actual3-versus-intended4control limitation; explicitly require a true4-read independent control in the repair. Working runtime/default16/64and all security/qualification state remain unchanged; no publication.
+
+
+## 2026-10-21 — Pair exact comparison with duplicate read admission at existing policy
+
+Accept [phase13](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) as a bounded local candidate at unchanged16/64 after all prospective actual-D timing and data guards pass. Match only full exact immutable batch bytes and the server-held budget identity; overlapping duplicates get the existing generic capacity refusal before extra native reservation. Spend original admission, release the owned entry in existing finally, and retain every original authority/proof/freshness/native check. Share neither result nor verification permission. Bound the transient collection by the existing active limit and retain the original handler lifetime; no queue, persisted state or deadline/rate/retry change.
+
+This permits the exact-word helper previously held in phase11 to be tested as a new combined candidate. Pressure catch-up falls about52–53% and pressure typing improves, while ordinary catch-up and foreground typing remain roughly unchanged. Keep the old word-only failures and all current small slowdowns. Temporary B32/128 remains diagnostic and unadopted even though its pair passes. A local fixed headless workload is not physical-device or generalized capacity proof. Keep all881 obligation rows/337 unresolved/97 construction statuses and crypto contracts/sites; appended native regressions receive no aggregate credit. General qualification and publication remain separate and paused.
+
+
+## 2026-10-22 — Retain the multi-account fairness blocker at the final candidate
+
+Use genuine independent device enrollment and distinct account/principal/workspace identities, rather than multiplying sessions of one credential. Prospectively amend H4→H6 before seeding so five H catch-up devices plus M1 can challenge the shared allowance. Keep exact c1177575 source/client/policy, ten profiles, four roots and fixed reversed B,S,U,U,S,B at1CPU/1GiB.
+
+[Phase14](./performance-experiments/2026-10-21-account-fairness/README.md) does not clear fairness: both heavy runs miss the original quiet writing guard with10/41 peer keys unobserved, while both baselines and lighter controls pass. The baseline drift check passes. Preserve incomplete peer samples and censored replay; do not substitute observed-only p95 or a successful later run. Native accepted-state/signature checks pass, but the test does not establish pending local durability or eventual recovery.
+
+Keep16/64 and the security/source contracts. Quiet failures show membership409 and grant403 insufficient-scope, with no quiet429; trace those boundaries before selecting a scheduling/rate repair. Lighter-load large replay330–354s is also a separate observed responsiveness concern. No causal server-only, production-user capacity, physical-device or generalized qualification claim. No runtime/test changes or publication; evidence-only patch14 and qualification remains paused.
+
+
+## 2026-10-22 — Trace transient discovery separately from removal authorization
+
+[Phase15](./performance-experiments/2026-10-22-membership-continuation/README.md) identifies four failed snapshot comparisons per quiet discovery, with only the first publisher's promotion witness observed changing. The resulting removal-scope403 is a correct fallback refusal for this active member. Keep that authorization boundary; select a separate bounded discovery/continuation repair rather than loosening scope checks or adopting larger rates. Re-establish all membership/current-authority/complete-history checks independently before narrowing the capture's dependency.
+
+Treat post-load recovery and durability as separate outcomes from the original responsiveness failure. The exact-source and observer-only runs retain the failure while full original writing and a separately guaranteed-offline pending edit pass automatic continuation and genuine same-profile cold-reopen checks. Preserve the four pre-workload harness failures, importer round-trip observations and unavailable-Vite loader results. This finite graceful-reopen test does not close crash durability, large-history responsiveness, physical-device or generalized qualification obligations. Evidence-only patch15; no runtime adoption or publication.
+
+
+## 2026-10-22 — Isolate discovery's irrelevant witness, hold acceptance at the next refusal boundary
+
+Use an explicit purpose captured privately and checked again at discovery commit. Omit only promotion.delivery_witness for an actual joined publisher; retain its own complete ledger and all current-authority/ownership fences. Keep full ordinary comparisons and the original serializer interface. [Phase16](./performance-experiments/2026-10-22-discovery-dependency/README.md) demonstrates the defect on original code, passes13new regressions and detects12deliberate implementation omissions without modifying old case bodies or security contracts.
+
+Do not infer performance acceptance from removal of one refusal chain. Both candidate heavy journeys eliminate membership409/removal403 but miss the original delivery guard with smaller visible peer prefixes than either reference; history-checkpoint409s now block the next receive stage. Retain the implementation as a held local development candidate and preserve the original failures. A separate checkpoint trace must establish coherent-head/history/current-authority behavior before choosing its repair; do not copy discovery's projection into that response or raise rates. Automatic post-load and offline-cold-profile durability guards pass, which does not clear responsiveness,16existing broad-case failures or generalized qualification. No publication.
+
+
+## 2026-10-22 — Phase17 history checkpoint and receive gating
+
+Keep receiving behind its authenticated history gate. Remove redundant membership verification and, for catalog reads, move live publisher capture after expensive immutable authority verification. Require exact current header agreement except the live witness/rows which the fresh complete census verifies. Reuse proof identity only, never session or commit authority. Other history actions and full final fences remain. [Evidence](./performance-experiments/2026-10-22-history-checkpoint/README.md) records accepted for the scoped checkpoint repair; heavy fairness remains held; heavy acceptance False. Do not raise rates, extend deadlines, skip403s or turn failed/censored histories into success. The mount regression is now checked independently before startup.
+
+
+### Phase17 acceptance clarification
+
+The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.
+
+
+## 2026-10-22 — Phase18 ordinary receive progress under contention
+
+[Decision and evidence](./performance-experiments/2026-10-22-ordinary-receive/README.md): reuse full verified authority proof only inside one bounded core, keyed by exact serialized pin+all native header fields except rows, with verifier identity and fresh custody checks. Retain all live witnesses and current transaction/session/expiry/ledger/snapshot checks. Do not widen rates or deadlines or coalesce first verifications in this slice. Private cache reset/close/eviction never supplies commit authority. Replace the cold scheduler-display proxy with exact retained encrypted delivery-record equality plus authenticated export; preserve the UI observation separately. Current status **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**.
+
+
+### Read conflict repair targets stale capture exposure before changing retry policy
+
+**Date:**2026-10-22 · **Status:** next bounded repair proposed; phase19 evidence only.
+
+The returned conflict consumed four native verification attempts because actual committed writing invalidated snapshots; its subsequent one-second client backoff matched the established schedule. The other diagnostic journey had no Q409 yet remained slow. Keep rates, the four-attempt cap and failure pacing unchanged while separating verified authority from fresh live ledger capture, as the earlier history-catalog path does. Any such repair must compare all current authority inputs before using fresh ledger evidence and retain exact final ordinary snapshot, owner/version/commit, custody/grant/session, history/served-proof and expiry checks. No cache projection widening or concurrent-lane authority change is approved by this evidence. Submission round-trip cost is also material but still needs native stage attribution. [Evidence](./performance-experiments/2026-10-22-read-pacing/README.md).
+
+
+### Capture live inbound ledger only after current authority/request verification
+
+**Date:**2026-10-22 · **Status:** implemented bounded development candidate, performance status in phase20 packet.
+
+Take immutable native authority evidence first, verify it and the signed reader, and then capture the selected live ledger. Compare every non-live native authority field, including future fields, before consuming that fresh ledger. Only the two ordinary live witnesses and rows differ across this stage boundary; fresh witness/census/served proof checks and the final complete ordinary snapshot, owner/version/commit, custody/grant/session/completion and expiry checks still govern issuance. Keep the exact existing cache context and limits; do not broaden reuse or retry policy here. Real post-capture races and real removal rotation remain refusals. [Evidence and original gates](./performance-experiments/2026-10-22-late-ledger/README.md); publication/receiver-prelude optimization remains separate. No qualification or publication authorization.
+
+
+### Reuse authority/history evidence by explicit ownership and input contract, not a generic cache
+
+**Date:**2026-10-22 · **Status:** next bounded repair informed by phase21; no implementation here.
+
+The [trace and static map](./performance-experiments/2026-10-22-publication-prelude/README.md) support repeated proof reconstruction in publication and receiver preludes. Target one service-owned verified authority/history result and eliminate duplicate same-operation reconstruction before attempting broader publication reuse. Existing inbound cache contexts include live witnesses, so using that cache unchanged may miss after each write; phase20's stage projection alone does not prove cache equivalence. Enumerate exact authority inputs, brands, size/lifetime/clear/close/inflight fences, canonical proof correspondence and independent corruption checks. Keep fresh request/signature/scope/expiry, live ledger/served proofs, custody/grant/session, native owner/version/commit and transaction checks. Retain independent auditors and cold lifecycle boundaries. Static call counts are a finite census, not measured cost or proof every opportunity has been found. No rate/clock/limit change or qualification/promotion is inferred.
+
+
+### Keep request-local verified history separate from early publisher dispatch
+
+**Date:**2026-10-22 · **Status:** implemented in sequential22; cross-publication reuse separate.
+
+Use normal complete-history verifiers as the proof owner for locator/catalog requests, retaining independent native recovery eligibility and exact native delivery/artifact correspondence. Keep the history as a separate result from early delivery authority so existing generation/ledger dispatch does not change. Later membership resolution consumes that same complete early anchor and retains all native row/boundary stitching. No public accepted-proof flag or unbranded result can bypass verification. Protocol verifier internals, cold lifecycle, independent audits and final native authorization/transaction guards remain. The precise old operation-count test is strengthened to require one complete history; no security assertions are removed. [Contract/evidence](./performance-experiments/2026-10-22-request-authority/README.md). Broader publication reuse requires its own exact-input/volatility/lifetime/invalidation contract and coupled final measurement.
+
+
+### Keep publication proof reuse bounded, and hold failed end-to-end acceptance
+
+**Date:**2026-10-22 · **Status:** sequential23 development candidate held; qualification/publication separate.
+
+Reuse successful mathematical native authority evidence through the existing128-entry/16MiB visible-projection pool,2MiB context limit, exact v8 context, verifier identity, private proof brands, detached mutable projections and clear/close/inflight fences. The shared projection body is unchanged: it omits only rows and promotion.delivery_witness/publisherWitness. Those live fields are absent from the authority proof dependency closure; fresh witness/full-ledger verification still consumes the original unmodified snapshot. Publisher, service pin, all remaining current/future native inputs and immutable boundary witnesses stay in context. Existing inbound policy stays strict; missing publication cache uses the old full-verification path. No shared request/grant/session/transaction authorization, new cache budget, rate/retry/deadline change or delayed corruption check.
+
+The combined22+23 heavy comparison fails the original peer-latency gate. Preserve the structural implementation and evidence as held development patches, not a promoted speedup. Faster writer requests coexist with120 rather than72–77 submissions and worse peer latency; that is a lead, not an established cause. A next bounded investigation should isolate the22/23 contribution and trace publication/receiver work under the changed submission cadence before tuning flow control. Do not extend gates or infer deployed behavior. [Full evidence](./performance-experiments/2026-10-22-publication-authority/README.md); all old tests,882 obligations/338 unresolved remain.
+
+
+### Isolate component effects before treating faster publication as faster sync
+
+**Date:** 2026-10-22 · **Status:** phase24 diagnostic complete; phase23 remains held.
+
+Keep request-local history sharing and publication reuse as separate factors. The fixed mirrored eight-journey study shows increased distinct submissions and displayed receiver backlog whenever publication reuse is enabled, with request-local sharing also failing to improve live peer latency under this load. This does not establish a population effect or the mediating mechanism. Preserve all outcomes rather than promote cryptographic work counts or request p95. [Evidence](./performance-experiments/2026-10-22-phase-isolation/README.md).
+
+Next trace all four native conditions with identical original client bytes and closed observational metadata. Follow submission acceptance, requested/returned publisher prefixes, existing displayed progress and authority-cache/proof/census work. The UI progress probe is not native-commit or durable-receive authority. Treat live-witness invalidation of the existing strict receive cache as a hypothesis to test, not permission to broaden reuse. Retain every current authority/history, witness/served, custody/session/grant/expiry, snapshot/owner/version/commit and retry fence; no quota, retry or timeout tuning. Ninety-second replay censoring is diagnostic only; the original heavy acceptance and general qualification remain held/paused.
+
+
+### Target stable read-authority proof reuse before changing quotas
+
+**Date:** 2026-10-22 · **Status:** phase25 trace complete; proposed next bounded repair, not implemented.
+
+The [trace](./performance-experiments/2026-10-22-receiver-backlog/README.md) identifies repeated immutable authority verification as substantial receive-path wall wait under the fixed contention workload. Faster publication produces116–120 rather than61–78 distinct submissions in the uninstrumented isolation, while receiving still repeatedly checks authority and periodically rebuilds discovery/catalog history. Do not describe this as increased absolute cache misses or exclusive CPU attribution. Read-context identities vary with live witnesses while non-live inputs remain exact at the recorded native endpoints; fresh ledger/served verification is a separate, much smaller measured stage. This supports a next read-purpose contract separating stable mathematical authority evidence from live ledger witnesses, retaining every fresh request/role/signature/grant/session/custody/expiry, full census/served-byte and native owner/version/commit/retry guard.
+
+Retain one bounded private proof owner and existing limits rather than adding an unbounded cache. Review verifier-identity policy too: equal serialized contexts with distinct callback identities can replace each other's entries in the existing pool, so common evidence ownership or explicit separation must be proven, not assumed. Cover changed authority/native/future fields, live append races, cache lifecycle/clear/close, exact retries, corruption and all original fences before running original coupled acceptance. Discovery/catalog reuse and flow control are separate follow-ups after this bounded repair. No rate or retry-clock increase is selected by this evidence; request-local sharing still has no demonstrated end-to-end win.
+
+Body projections are unverified diagnostic metadata, never protocol authority. Browser body retrieval is incomplete; independently match accepted envelopes and retained proofs from native state and leave missing body timings missing. Do not turn the observed-body subset or90s replay censor into whole-population/600s acceptance. All current application/old-test/security-contract bytes stay unchanged in25.
+
+
+### Share stable read proof evidence without sharing live authority
+
+**Date:** 2026-10-22 · **Status:** phase26 HELD: original heavy-case gate still fails; qualification/publication separate.
+
+Use one private mathematical verifier identity for normalized publication and v2-read headers in the existing core-owned pool. The pool key is exact serialized context, while verifier identity is checked after lookup; separate callbacks over equal normalized inputs would replace each other's entries. The pure projection is unchanged and drops only decision rows and promotion.delivery_witness/publisherWitness. Its proof producers/resolvers do not consume those live fields. Retain all other native/future fields, pin, publisher and immutable history boundaries. Missing pool keeps original strict verification, not an implicit global or group cache. Retain private brands, detached mutable projections, fresh custody replay, bounds/LRU/revision/input/clear/close fences.
+
+A hit provides mathematical evidence only. Resolve reader/publisher roles and verify each request/signature/extent/expiry afresh, recapture live ledger after authority, compare stable headers, verify original live witnesses/full census/served bytes and perform all final native transaction/authorization/custody/completion checks. No quota, retry clock, corruption-detection window or four-attempt increase. [Evidence](./performance-experiments/2026-10-22-read-authority/README.md). Existing old tests retain their assertions; publication fixtures now explicitly own their cold authority state rather than depend on read-purpose separation.
+
+The four fixed whole journeys are the original acceptance comparison, including600s background replay, not the90s diagnostic from24/25. Preserve every outcome and all prior17 affected failures; keep general883/339 qualification paused. Discovery/catalog reuse and flow control remain separate follow-ups. The candidate remains held despite verified proof reuse; investigate the remaining measured bottleneck without promoting operation counts or extending the gate.
+
+
+### Reuse complete prelude proof evidence only through an explicit owner
+
+**Date:** 2026-10-22 · **Status:** phase27 mechanism evidence; no runtime repair in this patch.
+
+The [trace](./performance-experiments/2026-10-22-prelude-delay/README.md) separates the remaining receiver's discovery/catalog authority/history work from ordinary read-proof reuse and fresh live ledger/served work. Native verification counts are method-specific (complete history costs differ from ordinary authority); do not substitute one count or overlapped process CPU for another. Current26 HTTP read p95102/119ms versus discovery2150/2603ms and catalog2145/1448ms motivated this trace, but do not by themselves establish exclusive authority cost. All future repair candidates retain the2.5s original gate and fixed uninstrumented comparison.
+
+A complete `{authority, history}` proof has different early-epoch output semantics from standalone delivery authority. Never attach a complete history to early public delivery authority and accidentally switch ledger dispatch. Equal native contexts with distinct verifier purposes must coexist within one existing bounded core pool rather than evict each other or allocate another full budget. Keep all native/future fields, publisher, pin and immutable boundaries in the stable context; omit only proven non-authority rows/live witnesses. Continue fresh request/role/signature/scope/time, live witness/full census/served/cut, grant/session/custody/completion and final native ownership/version/commit/four-attempt checks. Bootstrap and checkpoint mutations/source paths need separate scope decisions; no automatic broadening.
+
+Preserve the initial Docker EOF failure as incomplete, including unrun cold/pending checks and unknown cause; a new predeclared pair is additional evidence, not an erased failure. Host-only child-exit logging improves observability without changing native/resource/timing policy. General883/339 qualification remains paused, and prior17 failures remain named; local full functional tests precede any future push.14–26 signed locally is distinct from published or deployed.
+
+
+### Reuse complete history evidence through the existing bounded authority pool
+
+**Date:** 2026-10-23 · **Status:** phase28 passes the original finite measured heavy-case gates; publication and general qualification remain separate.
+
+Extend reuse to discovery and catalog-read only. Complete protocol history and ordinary delivery authority have different mathematical proof purposes, so retain distinct weak code identities in a single original bounded pool rather than replace equal-context entries or add a new budget. The private complete carrier uses the existing detached projection copier and preserves immutable protocol brands. Compute canonical needsMembershipHistory on the captured stable native header before awaiting; retain early authority.history absence and later history-bearing dispatch. No-pool consumers use the original complete producer over the original snapshot. Bootstrap/source/other reads and checkpoint mutations are unchanged.
+
+A hit is mathematical evidence only. Every native/pin/publisher/future-field and immutable boundary input still participates in exact serialized context; only rows and two live witnesses remain outside that proof. Keep fresh actual-snapshot ledger/census/witness/served coverage, independent request/signature/role/scope/expiry, current grant/session/custody/completion and final native owner/version/commit/four-attempt checks. Clear/close/revision/input/failure/custody/LRU and all shared bounds remain. Whole-module AST reversal independently checks all original guards after only the reviewed adapter/call sites/weak namespace are reversed. [Evidence](./performance-experiments/2026-10-22-prelude-proof-reuse/README.md).
+
+Retain the original2500ms complete-peer gate and full600s replay, all120 focused trusted inputs and finite whole-journey unit. No timing-based security window, quota increase, deadline/retry extension, native/client instrumentation or aggregate credit. Keep every prototype and broad-environment failure qualified; only corrected frozen tests establish the before/after counterexamples. Next investigate and resolve17 existing failures with coherent historical source and separate bounded repairs, then local functional full-suite checks before any push. General883/339 qualification remains paused; no new signature or publication here.
+
+
+### Restore historical regression fixtures without relaxing native security contracts
+
+**Date:** 2026-10-23 · **Status:** phase29 closes16 fixture cases; cold-clear native repair remains separate.
+
+Treat the historical case as evidence, then identify its contract change through adjacent coherent source and exact case AST/options/signatures. Preserve the distinction between complete historical snapshots and explicit fixed test-bridge counterfactuals; fix current dependencies for both arms and claim no archived-CI result. All17 cases now have a passing parent/failing boundary. Four earlier contract changes explain16 fixture cases; core cache51c17a93 introduces the remaining liveness regression after released sourcefaf465f7. [Evidence](./regression-evidence/2026-10-23-native-fixtures/README.md).
+
+Keep current valid epoch2 recovery enrollment and schema26 offline fences. Extend the test-only current history/snapshot owners rather than fabricate successful replies, omit binding verification or force a retained legacy delivery onto a fresh flow. The same-realm browser factory performs real snapshot encryption/signatures, and the native service issues binding/history responses. These coordinator fixtures model custody and source writing; they do not replace the separate real native-custody/coverage tests. Detected publisher corruption stays quarantined even when bytes are restored; require explicit reopen/full verification in those restoration fixtures and keep independent publisher isolation. Preserve all old cases, assertions, deadlines, wrong-code, lost-reply, replay and retained-byte checks; update only the precise obsolete literals/interfaces.
+
+Keep runtime and all883/339 qualification facts unchanged; ordinary CI/functional checks are separate from the paused general campaign. Complete the native cold-clear repair and local functional CI surface before push, then separately prepare signing/publication. Do not use a passing fixture rerun to erase failed source/bridge attempts. Sidecar identity facts must be checked directly against immutable Git objects: patch28's corrected origin fact has its own retained post-v2 audit and does not rewrite the canonical patch or measurements.
+
+
+### Retry cache retirement only after distinguishing it from hard authority invalidation
+
+**Date:** 2026-10-23 · **Status:** phase30 bounded native repair and final finite acceptance.
+
+A generic evidence owner must refuse retired work; its native read caller may retry only a typed revision clear with live/exact input. Partition the existing invalidation predicate with hard close/input conditions first, keep the four-attempt loop and original request clock, then perform full fresh capture/verification. Never classify close, custody, signature, authorization or expiry as transient, or waive the generic proof fence. One old native whole-request-unknown expectation is explicitly aligned with fresh continuation using immediate two-proof and independent page checks; preserve its cut and all other old assertions/deadlines. [Evidence](./regression-evidence/2026-10-23-cold-clear/README.md).
+
+Clock-invalid primary measurements stay held even when a different clock suggests fast typing. A separate predeclared pair on exact native/client bytes, original gates/anchors and extra clock-validity observations establishes the final finite result; preserve both series separately, do not replace or pool runs or relax16ms/2.5s. Host-only observations reverse to the original harness AST and do not change runtime. Detect deliberate clock/evidence/native faults independently. Source/metadata agreement does not award qualification credit: all883/339 stay exact; routine functional CI is separate from paused aggregate qualification. Complete local tests before pushing, then request later signing/publication separately.
+
+
+### Keep new sync regressions in routine CI and repair fixture clocks without weakening the freeze
+
+**Date:** 2026-10-23 · **Status:** phase31 local functional surface passes; qualification remains paused.
+
+Use Git's changed-test population as an independent coverage check, not just the cases recalled from the current phase. One new serial routine step runs all five changed sync files since signed13 plus the cold/isolation guards. Preserve every existing workflow byte outside that block and keep manual qualification manual. Compare native/client/lock bytes directly with the accepted candidate before carrying its performance evidence. [Evidence](./regression-evidence/2026-10-23-functional-ci/README.md).
+
+A fixed calendar fixture must supply the existing today seam. Keep the three-day product freeze and original protection/refusal assertions; assert every intended fixture card exists before copying/removal so empty state cannot satisfy a retention test. Use unchanged-body calendar counterfactuals and per-case failed assertion evidence. Source-site metadata is a precise location fact, not authority: re-pin only its line after independently locating the unchanged native literal. Keep count assertions exact through independent old-prefix/AST/runtime evidence; preserve all883 obligations,339 unresolved and security contracts rather than waiving registration checks.
+
+Record all failed runs, zero-test closure errors and corrected auditors. Local routine checks establish exactly their executable surface, including the one existing named skip, not general qualification, Linux CI or production/device behavior. Finish documentation before refreshing tree-bound receipts; keep final closing evidence beside the immutable patch to avoid self-referential receipt packaging. Later signing, exact-artifact testing, pushing, merging and rollout are distinct operations.
+
+
+### Use local acceptance evidence for the sync catch-up publication
+
+**Date:**2026-10-23 · **Authority:**operator instruction in this conversation.
+
+The operator directs committing the release evidence and preparing production,
+and explicitly permits hosted GitHub Actions results to be non-blocking if local
+tests passed, because hosted runs time out. Select the recorded passing local
+routine/unit and exact-image functional/load evidence for this release. Preserve
+the original hosted results, Linux no-Git harness failure, host completion, named
+unit skip, finite-platform limits and all qualification obligations. No test,
+workflow, branch protection, cryptographic check or product security contract
+changes. This is an operator publication decision, not a claim that local tests
+prove universal safety or that failed hosted runs passed. Source/image identity,
+rollback, private registry, offline infrastructure checks and rollout verification
+remain required. Operator retains both merge buttons; generalized qualification
+remains paused. See [handoff](./account-sync-catch-up-publication.md).

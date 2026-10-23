@@ -1,0 +1,10 @@
+import {monitorEventLoopDelay,performance} from 'node:perf_hooks';
+import {basename,join} from 'node:path';
+import {writeFileSync,mkdirSync} from 'node:fs';
+const out=process.env.DISPATCH_MONITOR_DIR;
+if(out){
+ mkdirSync(out,{recursive:true,mode:0o700});const beats=[],resources=[];let last=Date.now(),overflow=0,saved=false;const startedAt=last,initial=process.cpuUsage(),h=monitorEventLoopDelay({resolution:10});h.enable();
+ const timer=setInterval(()=>{const at=Date.now();if(beats.length<100000)beats.push({at,previous:last,lateMs:at-last-20});else overflow++;last=at;if(!resources.length||at-resources.at(-1).at>=500)resources.push({at,cpu:process.cpuUsage(initial),rss:process.memoryUsage().rss})},20);timer.unref();
+ const snapshot=()=>({pid:process.pid,role:basename(process.argv[1]??'node'),startedAt,completedAt:Date.now(),beats,resources,overflow,loop:{p95:h.percentile(95)/1e6,p99:h.percentile(99)/1e6,max:h.max/1e6}});
+ Object.defineProperty(globalThis,'__dispatchNodeSnapshot',{value:snapshot});process.on('exit',()=>{if(saved)return;saved=true;try{writeFileSync(join(out,'node-'+process.pid+'.json'),JSON.stringify(snapshot()))}catch{}});
+}

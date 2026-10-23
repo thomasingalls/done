@@ -1,0 +1,254 @@
+{
+  "status": "passed",
+  "scope": "mechanism and post-load durability; original contention acceptance remains failed",
+  "primaryFairnessAcceptance": false,
+  "retainedPreWorkloadStartupFailures": 4,
+  "measuredJourneys": 2,
+  "runs": [
+    {
+      "name": "5-trace-U",
+      "serverObservers": true,
+      "originalDeliveryPassed": false,
+      "originalPeerKeysObserved": 82,
+      "originalPeerKeysMissing": 38,
+      "trustedFocusedInputOffers": 120,
+      "localKeysObserved": 120,
+      "originalDeadlineMsAfterTyping": 30010,
+      "automaticOriginalRecoveryMsAfterLoadStop": 1988,
+      "originalWholeExportEquality": true,
+      "offlinePendingColdProfileArchiveExact": true,
+      "automaticPendingConvergenceMs": 1328,
+      "guards": {
+        "offlineWriterColdProfile": true,
+        "all120Keys": true,
+        "pendingMarkerDurable": true,
+        "automaticPendingWholeExportConvergence": true,
+        "reverseWriting": true,
+        "undoRedo": true,
+        "offlinePeerColdProfile": true,
+        "noCrossAccountMarkers": true
+      },
+      "membership409s": 5,
+      "removalGrant403s": 5,
+      "quiet429s": 0,
+      "predicateTrace": [
+        {
+          "id": 115,
+          "failedSnapshotComparisons": 4,
+          "onlyObservedWitnessChange": "first-publisher-promotion-witness",
+          "requestCredentialSha256": "3c4776968d9baa40997f7f995cb74e65729c11fdbb38e23114d516ab1b1612df"
+        },
+        {
+          "id": 156,
+          "failedSnapshotComparisons": 4,
+          "onlyObservedWitnessChange": "first-publisher-promotion-witness",
+          "requestCredentialSha256": "3c4776968d9baa40997f7f995cb74e65729c11fdbb38e23114d516ab1b1612df"
+        },
+        {
+          "id": 226,
+          "failedSnapshotComparisons": 4,
+          "onlyObservedWitnessChange": "first-publisher-promotion-witness",
+          "requestCredentialSha256": "3c4776968d9baa40997f7f995cb74e65729c11fdbb38e23114d516ab1b1612df"
+        },
+        {
+          "id": 344,
+          "failedSnapshotComparisons": 4,
+          "onlyObservedWitnessChange": "first-publisher-promotion-witness",
+          "requestCredentialSha256": "3c4776968d9baa40997f7f995cb74e65729c11fdbb38e23114d516ab1b1612df"
+        },
+        {
+          "id": 537,
+          "failedSnapshotComparisons": 4,
+          "onlyObservedWitnessChange": "first-publisher-promotion-witness",
+          "requestCredentialSha256": "3c4776968d9baa40997f7f995cb74e65729c11fdbb38e23114d516ab1b1612df"
+        }
+      ],
+      "pacing": [
+        {
+          "discoverBodySha256": "164d5412756eb4eb83ca2c151085392205e31545c7820c3e5b70cc57c90f2055",
+          "discoverDurationMs": 2887,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 680,
+          "nextDiscoveryAfterFallbackMs": 2012
+        },
+        {
+          "discoverBodySha256": "2f741182eb27e7c9dee449546b5214ec595dfa4a62c9262f481ebe07ff32506c",
+          "discoverDurationMs": 2373,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 340,
+          "nextDiscoveryAfterFallbackMs": 4011
+        },
+        {
+          "discoverBodySha256": "2318cc3340a3b01eb52a0fd1be74d7af58ac5ba4b4b9719387c69eb0c2ac065d",
+          "discoverDurationMs": 2571,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 263,
+          "nextDiscoveryAfterFallbackMs": 8014
+        },
+        {
+          "discoverBodySha256": "b8d8de44a12ffbad7ae15ccf4bec7b03f12750ebfd61bdd5902aeb1daef05bd6",
+          "discoverDurationMs": 2432,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 265,
+          "nextDiscoveryAfterFallbackMs": 16017
+        },
+        {
+          "discoverBodySha256": "9100db7608eda30785a10a5afd4b4e86100ccc133a873f452ff5905f5f89196b",
+          "discoverDurationMs": 2482,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 283,
+          "nextDiscoveryAfterFallbackMs": 30017
+        }
+      ],
+      "nativeActiveAtLoadStop": 3,
+      "backgroundReplay": [
+        {
+          "label": "H1",
+          "startedAt": 1792653358862,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653448576
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792653358862,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653448602
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792653358862,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653448626
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792653358862,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653448642
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792653358862,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653448652
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792653358862,
+          "completedAt": 1792653411155,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "containerImageIsDependencyRuntimeOnly": true
+    },
+    {
+      "name": "6-exact-U",
+      "serverObservers": false,
+      "originalDeliveryPassed": false,
+      "originalPeerKeysObserved": 81,
+      "originalPeerKeysMissing": 39,
+      "trustedFocusedInputOffers": 120,
+      "localKeysObserved": 120,
+      "originalDeadlineMsAfterTyping": 30005,
+      "automaticOriginalRecoveryMsAfterLoadStop": 1934,
+      "originalWholeExportEquality": true,
+      "offlinePendingColdProfileArchiveExact": true,
+      "automaticPendingConvergenceMs": 1316,
+      "guards": {
+        "offlineWriterColdProfile": true,
+        "all120Keys": true,
+        "pendingMarkerDurable": true,
+        "automaticPendingWholeExportConvergence": true,
+        "reverseWriting": true,
+        "undoRedo": true,
+        "offlinePeerColdProfile": true,
+        "noCrossAccountMarkers": true
+      },
+      "membership409s": 5,
+      "removalGrant403s": 5,
+      "quiet429s": 0,
+      "predicateTrace": [],
+      "pacing": [
+        {
+          "discoverBodySha256": "78a118ae3a47b41dc7122a106abb5d5ac1394274a0d830939d6a5654969795f2",
+          "discoverDurationMs": 2414,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 251,
+          "nextDiscoveryAfterFallbackMs": 2012
+        },
+        {
+          "discoverBodySha256": "f4d13f28faf0eb42e9284f6aaa588a1b9b530c83e6593de8a429dc052a74e44d",
+          "discoverDurationMs": 2511,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 213,
+          "nextDiscoveryAfterFallbackMs": 4014
+        },
+        {
+          "discoverBodySha256": "c839d05e1b10c0dd0b00bb1f86cd9d2f33358dd0ec3a3c075a20e5e04cc96ff1",
+          "discoverDurationMs": 2356,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 214,
+          "nextDiscoveryAfterFallbackMs": 8011
+        },
+        {
+          "discoverBodySha256": "6b90c80db80f28a82b78cd30c96357f2d99ff408e83bd315a81e946d2b9f6adb",
+          "discoverDurationMs": 2593,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 318,
+          "nextDiscoveryAfterFallbackMs": 16020
+        },
+        {
+          "discoverBodySha256": "731279bae69c353a266ce93f6ee0aacef31afd2f46dcea6720b3ce0aa3cad8d9",
+          "discoverDurationMs": 2238,
+          "fallbackScope": "removal",
+          "fallbackDurationMs": 203,
+          "nextDiscoveryAfterFallbackMs": 30021
+        }
+      ],
+      "nativeActiveAtLoadStop": 6,
+      "backgroundReplay": [
+        {
+          "label": "H1",
+          "startedAt": 1792653490466,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653580120
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792653490466,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653580133
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792653490466,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653580145
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792653490466,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653580155
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792653490466,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792653580165
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792653490466,
+          "completedAt": 1792653538680,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "containerImageIsDependencyRuntimeOnly": true
+    }
+  ],
+  "noRateOrRuntimeRepair": true,
+  "automaticRecoveryDoesNotReclassifyOriginalFailure": true
+}

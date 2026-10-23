@@ -1,0 +1,48 @@
+from pathlib import Path
+import gzip, hashlib, json, subprocess
+root=Path(__file__).parent
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+e=repo/'docs/performance-experiments/2026-10-21-ordinary-receive-batching'
+old=repo/'docs/performance-experiments/2026-10-21-live-sync-attribution'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+verified=0
+for line in (old/'SHA256SUMS').read_text().splitlines():
+ h,name=line.split('  ',1);assert sha((old/name).read_bytes())==h,name;verified+=1
+assert sha(Path('/private/tmp/done-live-sync-attribution-20261021/patches/01-live-sync-attribution.patch').read_bytes())=='178284be7c132af165fca0fa05973157c97ea387204ad1b27c02ecb3b756fdaf'
+for f in ['docs/completed.md','docs/decisions.md','docs/performance.md']:
+ before=subprocess.check_output(['git','--git-dir=/private/tmp/done-live-sync-attribution-20261021/patch-index.git','show','37fa6fc1:'+f])
+ assert (repo/f).read_bytes().startswith(before),f
+identity=json.loads((e/'identity.json').read_text())
+for f in identity['sources']['candidate-v4']['changes']:
+ assert sha((repo/f).read_bytes())==identity['sources']['candidate-v4']['sourceSha256'][f],f
+for f,h in identity['regressionSha256'].items():assert sha((repo/f).read_bytes())==h,f
+for f,item in json.loads((e/'artifact-provenance.json').read_text()).items():
+ b=(e/f).read_bytes();assert sha(b)==item['storedSha256'],f
+ if f.endswith('.gz'):b=gzip.decompress(b)
+ assert sha(b)==item['sourceSha256'],f
+assert (repo/'docs/progress.md').read_bytes()==subprocess.check_output(['git','show','27dc7d78:docs/progress.md'],cwd=repo)
+assert sha((repo/'docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch').read_bytes())=='0481ebda379a3259d997d1aa3057638508175eac032f9a7b541832cfb353ebb3'
+assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo)==b''
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for device in ['a','b']:
+  secrets.append(d[device]['code'].encode())
+  for credential in d[device]['credentials']:
+   for key in ['privateKey','credentialId','userHandle']:
+    if credential.get(key):secrets.append(credential[key].encode())
+secrets=set(v for v in secrets if len(v)>=12)
+for p in e.rglob('*'):
+ if p.is_file():
+  b=p.read_bytes();b=gzip.decompress(b) if p.name.endswith('.gz') else b
+  assert not any(v in b for v in secrets),str(p.relative_to(e))
+accept=json.loads((e/'acceptance.json').read_text());assert accept['journeys']==14 and accept['guardsPassed'] and accept['matchedCompleteExports']
+assert max(accept['referenceDrift'].values())<.15
+rows=[]
+for p in (e/'runs/primary').glob('*.json.gz'):
+ if p.name.endswith('-runner.json.gz'):continue
+ d=json.loads(gzip.decompress(p.read_bytes()));assert d['outcome']=='passed' and all(d['guards'].values()),p.name;rows.append(p.name)
+assert len(rows)==14
+result=dict(previousPacketChecksumsVerified=verified,precedingPatchUnchanged=True,appendOnlyPrefixesExact=True,measuredSourceAndRegressionHashesExact=True,preservedArtifactSourceAndStoredHashesExact=True,finalJourneys=14,allDataAndTypingGuardsPass=True,referenceDriftBelowPredeclaredThreshold=True,privateFixtureExactMatches=0,protectedProgressAndDeferredFormatUnchanged=True,realIndexClean=True,scope='Bounded local Chromium functional/performance evidence. No aggregate qualification, release or capacity credit.')
+(e/'verification.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result,indent=2))

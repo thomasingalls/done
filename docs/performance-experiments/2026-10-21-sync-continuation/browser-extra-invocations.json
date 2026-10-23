@@ -1,0 +1,50 @@
+[
+  {
+    "name": "browser-pressure-pilot",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-sync-continuation-20261021/source-D",
+    "serviceSource": "/private/tmp/done-sync-continuation-20261021/source-D",
+    "sourceSelection": "initial pressure pilot",
+    "result": "passed",
+    "measurementStartedAt": 1792584500183,
+    "measurementCompletedAt": 1792584640591
+  },
+  {
+    "name": "browser-forced-remote-batch",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-sync-continuation-20261021/source-D",
+    "serviceSource": "/private/tmp/done-sync-continuation-20261021/source-batch-control",
+    "sourceSelection": "retained wrong CLI directory; remote single read",
+    "result": "passed",
+    "measurementStartedAt": 1792585774503,
+    "measurementCompletedAt": 1792585929000
+  },
+  {
+    "name": "browser-forced-remote-batch-v2",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-sync-continuation-20261021/source-batch-control",
+    "serviceSource": "/private/tmp/done-sync-continuation-20261021/source-batch-control",
+    "sourceSelection": "verified explicit remote batch control",
+    "result": "passed",
+    "measurementStartedAt": 1792586188374,
+    "measurementCompletedAt": 1792586328889
+  }
+]

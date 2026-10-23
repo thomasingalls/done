@@ -1,0 +1,1536 @@
+{
+  "rows": [
+    {
+      "folder": "native",
+      "arm": "D",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 20141,
+      "elapsedMs": 21004,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20135,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20121,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20098,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20092,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20116,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20106,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 40,
+          "verified": 40,
+          "offeredToVerifiedMs": {
+            "n": 40,
+            "p50": 19,
+            "p95": 49,
+            "max": 351
+          },
+          "queueToStartMs": {
+            "n": 40,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 351
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedMs": {
+            "n": 20,
+            "p50": 18,
+            "p95": 50,
+            "max": 52
+          },
+          "queueToStartMs": {
+            "n": 20,
+            "p50": 0,
+            "p95": 0,
+            "max": 1
+          },
+          "initialWriteMs": 40
+        }
+      },
+      "peer": {
+        "offered": 80,
+        "verified": 80,
+        "offeredToResponseMs": {
+          "n": 80,
+          "p50": 35,
+          "p95": 1036,
+          "max": 1204
+        },
+        "offeredToVerifiedMs": {
+          "n": 80,
+          "p50": 36,
+          "p95": 1037,
+          "max": 1205
+        }
+      },
+      "completedUsefulUnits": 1676,
+      "cpuMs": 8524.579,
+      "cpuMsPerUsefulUnit": 5.086264319809069,
+      "rssPeak": 387891200,
+      "loopDelayMs": {
+        "p50": 10.452991,
+        "p95": 11.476991,
+        "p99": 13.377535,
+        "max": 132.710399
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1147,
+        "servedChecks": 3259,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 530,
+        "429:capacity": 96
+      },
+      "capacityRefusals": 96,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 96071.169919,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "S",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 20881,
+      "elapsedMs": 21002,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 19737,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 19786,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20877,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 19830,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20872,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20856,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 41,
+          "verified": 41,
+          "offeredToVerifiedMs": {
+            "n": 41,
+            "p50": 24,
+            "p95": 568,
+            "max": 1046
+          },
+          "queueToStartMs": {
+            "n": 41,
+            "p50": 0,
+            "p95": 68,
+            "max": 544
+          },
+          "initialWriteMs": 289
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedMs": {
+            "n": 20,
+            "p50": 22,
+            "p95": 69,
+            "max": 1046
+          },
+          "queueToStartMs": {
+            "n": 20,
+            "p50": 0,
+            "p95": 1,
+            "max": 46
+          },
+          "initialWriteMs": 38
+        }
+      },
+      "peer": {
+        "offered": 83,
+        "verified": 83,
+        "offeredToResponseMs": {
+          "n": 83,
+          "p50": 22,
+          "p95": 818,
+          "max": 1094
+        },
+        "offeredToVerifiedMs": {
+          "n": 83,
+          "p50": 22,
+          "p95": 818,
+          "max": 1095
+        }
+      },
+      "completedUsefulUnits": 1680,
+      "cpuMs": 8540.226,
+      "cpuMsPerUsefulUnit": 5.083467857142858,
+      "rssPeak": 387268608,
+      "loopDelayMs": {
+        "p50": 10.477567,
+        "p95": 11.517951,
+        "p99": 14.049279,
+        "max": 25.673727
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1150,
+        "servedChecks": 3282,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 534,
+        "429:capacity": 99
+      },
+      "capacityRefusals": 99,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 99112.99629299999,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "P",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 11408,
+      "elapsedMs": 12005,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 11406,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9600,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9742,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9764,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9767,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9779,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 22,
+          "verified": 22,
+          "offeredToVerifiedMs": {
+            "n": 22,
+            "p50": 27,
+            "p95": 51,
+            "max": 283
+          },
+          "queueToStartMs": {
+            "n": 22,
+            "p50": 0,
+            "p95": 0,
+            "max": 1
+          },
+          "initialWriteMs": 283
+        },
+        "other": {
+          "offered": 11,
+          "verified": 11,
+          "offeredToVerifiedMs": {
+            "n": 11,
+            "p50": 22,
+            "p95": 45,
+            "max": 45
+          },
+          "queueToStartMs": {
+            "n": 11,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 22
+        }
+      },
+      "peer": {
+        "offered": 45,
+        "verified": 45,
+        "offeredToResponseMs": {
+          "n": 45,
+          "p50": 19,
+          "p95": 44,
+          "max": 64
+        },
+        "offeredToVerifiedMs": {
+          "n": 45,
+          "p50": 20,
+          "p95": 45,
+          "max": 65
+        }
+      },
+      "completedUsefulUnits": 1614,
+      "cpuMs": 8275.25,
+      "cpuMsPerUsefulUnit": 5.127168525402726,
+      "rssPeak": 405274624,
+      "loopDelayMs": {
+        "p50": 10.436607,
+        "p95": 12.107775,
+        "p99": 16.023551,
+        "max": 27.066367
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1071,
+        "servedChecks": 3152,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 468,
+        "429:capacity": 26
+      },
+      "capacityRefusals": 26,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 26026.892543999988,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "B",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 9845,
+      "elapsedMs": 10001,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9808,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9834,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9827,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9821,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9840,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 9813,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 19,
+          "verified": 19,
+          "offeredToVerifiedMs": {
+            "n": 19,
+            "p50": 37,
+            "p95": 294,
+            "max": 294
+          },
+          "queueToStartMs": {
+            "n": 19,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 294
+        },
+        "other": {
+          "offered": 9,
+          "verified": 9,
+          "offeredToVerifiedMs": {
+            "n": 9,
+            "p50": 21,
+            "p95": 45,
+            "max": 45
+          },
+          "queueToStartMs": {
+            "n": 9,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 21
+        }
+      },
+      "peer": {
+        "offered": 39,
+        "verified": 39,
+        "offeredToResponseMs": {
+          "n": 39,
+          "p50": 21,
+          "p95": 46,
+          "max": 67
+        },
+        "offeredToVerifiedMs": {
+          "n": 39,
+          "p50": 22,
+          "p95": 46,
+          "max": 68
+        }
+      },
+      "completedUsefulUnits": 1603,
+      "cpuMs": 8049.366,
+      "cpuMsPerUsefulUnit": 5.021438552713662,
+      "rssPeak": 402391040,
+      "loopDelayMs": {
+        "p50": 10.403839,
+        "p95": 12.148735,
+        "p99": 18.481151,
+        "max": 29.540351
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1068,
+        "servedChecks": 3145,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 457,
+        "429:capacity": 24
+      },
+      "capacityRefusals": 24,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 24032.413125999992,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "B",
+      "block": 2,
+      "outcome": "passed",
+      "replayMs": 10142,
+      "elapsedMs": 11001,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10116,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10138,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10092,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10123,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10081,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10135,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedMs": {
+            "n": 20,
+            "p50": 29,
+            "p95": 58,
+            "max": 305
+          },
+          "queueToStartMs": {
+            "n": 20,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 305
+        },
+        "other": {
+          "offered": 10,
+          "verified": 10,
+          "offeredToVerifiedMs": {
+            "n": 10,
+            "p50": 23,
+            "p95": 48,
+            "max": 48
+          },
+          "queueToStartMs": {
+            "n": 10,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 48
+        }
+      },
+      "peer": {
+        "offered": 40,
+        "verified": 40,
+        "offeredToResponseMs": {
+          "n": 40,
+          "p50": 27,
+          "p95": 67,
+          "max": 75
+        },
+        "offeredToVerifiedMs": {
+          "n": 40,
+          "p50": 27,
+          "p95": 67,
+          "max": 75
+        }
+      },
+      "completedUsefulUnits": 1606,
+      "cpuMs": 7515.886,
+      "cpuMsPerUsefulUnit": 4.679879202988793,
+      "rssPeak": 372162560,
+      "loopDelayMs": {
+        "p50": 10.526719,
+        "p95": 12.394495,
+        "p99": 16.908287,
+        "max": 25.100287
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1104,
+        "servedChecks": 3222,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 460,
+        "429:capacity": 30
+      },
+      "capacityRefusals": 30,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 30042.61570700002,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "P",
+      "block": 2,
+      "outcome": "passed",
+      "replayMs": 11093,
+      "elapsedMs": 12005,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 11091,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10345,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10247,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10389,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10359,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 10376,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 22,
+          "verified": 22,
+          "offeredToVerifiedMs": {
+            "n": 22,
+            "p50": 22,
+            "p95": 57,
+            "max": 370
+          },
+          "queueToStartMs": {
+            "n": 22,
+            "p50": 0,
+            "p95": 0,
+            "max": 1
+          },
+          "initialWriteMs": 370
+        },
+        "other": {
+          "offered": 11,
+          "verified": 11,
+          "offeredToVerifiedMs": {
+            "n": 11,
+            "p50": 30,
+            "p95": 56,
+            "max": 56
+          },
+          "queueToStartMs": {
+            "n": 11,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 51
+        }
+      },
+      "peer": {
+        "offered": 44,
+        "verified": 44,
+        "offeredToResponseMs": {
+          "n": 44,
+          "p50": 23,
+          "p95": 75,
+          "max": 76
+        },
+        "offeredToVerifiedMs": {
+          "n": 44,
+          "p50": 24,
+          "p95": 75,
+          "max": 77
+        }
+      },
+      "completedUsefulUnits": 1613,
+      "cpuMs": 8017.195,
+      "cpuMsPerUsefulUnit": 4.970362678239305,
+      "rssPeak": 357122048,
+      "loopDelayMs": {
+        "p50": 10.551295,
+        "p95": 12.230655,
+        "p99": 15.441919,
+        "max": 26.312703
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1103,
+        "servedChecks": 3221,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 467,
+        "429:capacity": 31
+      },
+      "capacityRefusals": 31,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 31046.947914999982,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "S",
+      "block": 2,
+      "outcome": "passed",
+      "replayMs": 20416,
+      "elapsedMs": 21005,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20414,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 19225,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20314,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20348,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20374,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20401,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 40,
+          "verified": 40,
+          "offeredToVerifiedMs": {
+            "n": 40,
+            "p50": 17,
+            "p95": 63,
+            "max": 274
+          },
+          "queueToStartMs": {
+            "n": 40,
+            "p50": 0,
+            "p95": 0,
+            "max": 1
+          },
+          "initialWriteMs": 274
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedMs": {
+            "n": 20,
+            "p50": 19,
+            "p95": 45,
+            "max": 45
+          },
+          "queueToStartMs": {
+            "n": 20,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 45
+        }
+      },
+      "peer": {
+        "offered": 81,
+        "verified": 81,
+        "offeredToResponseMs": {
+          "n": 81,
+          "p50": 394,
+          "p95": 1448,
+          "max": 1708
+        },
+        "offeredToVerifiedMs": {
+          "n": 81,
+          "p50": 394,
+          "p95": 1449,
+          "max": 1709
+        }
+      },
+      "completedUsefulUnits": 1677,
+      "cpuMs": 8379.901,
+      "cpuMsPerUsefulUnit": 4.996959451401311,
+      "rssPeak": 358350848,
+      "loopDelayMs": {
+        "p50": 10.788863,
+        "p95": 12.337151,
+        "p99": 17.874943,
+        "max": 29.458431
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1143,
+        "servedChecks": 3248,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 531,
+        "429:capacity": 98
+      },
+      "capacityRefusals": 98,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 98130.75487800002,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "native",
+      "arm": "D",
+      "block": 2,
+      "outcome": "passed",
+      "replayMs": 20745,
+      "elapsedMs": 21001,
+      "verifiedPositions": 1536,
+      "streams": [
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20733,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20712,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20678,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 19679,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20702,
+          "completed": true
+        },
+        {
+          "positions": 256,
+          "batches": 65,
+          "elapsedMs": 20742,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 41,
+          "verified": 41,
+          "offeredToVerifiedMs": {
+            "n": 41,
+            "p50": 21,
+            "p95": 315,
+            "max": 1017
+          },
+          "queueToStartMs": {
+            "n": 41,
+            "p50": 0,
+            "p95": 0,
+            "max": 519
+          },
+          "initialWriteMs": 315
+        },
+        "other": {
+          "offered": 20,
+          "verified": 20,
+          "offeredToVerifiedMs": {
+            "n": 20,
+            "p50": 17,
+            "p95": 47,
+            "max": 51
+          },
+          "queueToStartMs": {
+            "n": 20,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 25
+        }
+      },
+      "peer": {
+        "offered": 82,
+        "verified": 82,
+        "offeredToResponseMs": {
+          "n": 82,
+          "p50": 17,
+          "p95": 176,
+          "max": 1026
+        },
+        "offeredToVerifiedMs": {
+          "n": 82,
+          "p50": 18,
+          "p95": 177,
+          "max": 1026
+        }
+      },
+      "completedUsefulUnits": 1679,
+      "cpuMs": 9081.443,
+      "cpuMsPerUsefulUnit": 5.408840381179273,
+      "rssPeak": 350289920,
+      "loopDelayMs": {
+        "p50": 10.780671,
+        "p95": 12.238847,
+        "p99": 15.499263,
+        "max": 29.802495
+      },
+      "readConcurrency": 7,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1125,
+        "servedChecks": 3201,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 533,
+        "429:capacity": 91
+      },
+      "capacityRefusals": 91,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 91113.09199899995,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "asymmetric",
+      "arm": "D",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 68654,
+      "elapsedMs": 69007,
+      "verifiedPositions": 1024,
+      "streams": [
+        {
+          "positions": 1024,
+          "batches": 257,
+          "elapsedMs": 68648,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 137,
+          "verified": 137,
+          "offeredToVerifiedMs": {
+            "n": 137,
+            "p50": 18,
+            "p95": 210,
+            "max": 1035
+          },
+          "queueToStartMs": {
+            "n": 137,
+            "p50": 0,
+            "p95": 1,
+            "max": 536
+          },
+          "initialWriteMs": 210
+        },
+        "other": {
+          "offered": 68,
+          "verified": 68,
+          "offeredToVerifiedMs": {
+            "n": 68,
+            "p50": 19,
+            "p95": 26,
+            "max": 27
+          },
+          "queueToStartMs": {
+            "n": 68,
+            "p50": 0,
+            "p95": 0,
+            "max": 1
+          },
+          "initialWriteMs": 13
+        }
+      },
+      "peer": {
+        "offered": 274,
+        "verified": 274,
+        "offeredToResponseMs": {
+          "n": 274,
+          "p50": 13,
+          "p95": 34,
+          "max": 40
+        },
+        "offeredToVerifiedMs": {
+          "n": 274,
+          "p50": 13,
+          "p95": 35,
+          "max": 41
+        }
+      },
+      "completedUsefulUnits": 1503,
+      "cpuMs": 11192.428,
+      "cpuMsPerUsefulUnit": 7.446725216234198,
+      "rssPeak": 274939904,
+      "loopDelayMs": {
+        "p50": 10.936319,
+        "p95": 12.140543,
+        "p99": 13.213695,
+        "max": 36.012031
+      },
+      "readConcurrency": 2,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1238,
+        "servedChecks": 2425,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 736,
+        "429:capacity": 64
+      },
+      "capacityRefusals": 64,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 64093.77553999997,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    },
+    {
+      "folder": "asymmetric",
+      "arm": "S",
+      "block": 1,
+      "outcome": "passed",
+      "replayMs": 31686,
+      "elapsedMs": 32003,
+      "verifiedPositions": 1024,
+      "streams": [
+        {
+          "positions": 1024,
+          "batches": 257,
+          "elapsedMs": 31683,
+          "completed": true
+        }
+      ],
+      "writes": {
+        "first": {
+          "offered": 63,
+          "verified": 63,
+          "offeredToVerifiedMs": {
+            "n": 63,
+            "p50": 18,
+            "p95": 28,
+            "max": 192
+          },
+          "queueToStartMs": {
+            "n": 63,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 192
+        },
+        "other": {
+          "offered": 31,
+          "verified": 31,
+          "offeredToVerifiedMs": {
+            "n": 31,
+            "p50": 18,
+            "p95": 25,
+            "max": 27
+          },
+          "queueToStartMs": {
+            "n": 31,
+            "p50": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "initialWriteMs": 17
+        }
+      },
+      "peer": {
+        "offered": 126,
+        "verified": 126,
+        "offeredToResponseMs": {
+          "n": 126,
+          "p50": 14,
+          "p95": 34,
+          "max": 37
+        },
+        "offeredToVerifiedMs": {
+          "n": 126,
+          "p50": 15,
+          "p95": 34,
+          "max": 38
+        }
+      },
+      "completedUsefulUnits": 1244,
+      "cpuMs": 7675.098,
+      "cpuMsPerUsefulUnit": 6.169692926045016,
+      "rssPeak": 274759680,
+      "loopDelayMs": {
+        "p50": 10.878975,
+        "p95": 12.115967,
+        "p99": 13.320191,
+        "max": 29.409279
+      },
+      "readConcurrency": 2,
+      "publisherVerification": {
+        "publishers": 2,
+        "coldLanes": 0,
+        "coldWaiting": 0,
+        "captureOwners": 2,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 3330,
+        "verifiedRows": 1120,
+        "servedChecks": 2214,
+        "fullCensuses": 2,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      },
+      "httpStatuses": {
+        "200": 477,
+        "429:capacity": 25
+      },
+      "capacityRefusals": 25,
+      "stateChangeRefusals": 0,
+      "explicitBackoffMs": 25035.69850399997,
+      "errors": [],
+      "completeAndVerified": true,
+      "absoluteInteractionGuards": true
+    }
+  ],
+  "comparisons": [
+    {
+      "arm": "S",
+      "pairs": [
+        {
+          "block": 1,
+          "referenceMs": 20141,
+          "candidateMs": 20881,
+          "improvementPercent": -3.6740976118365465
+        },
+        {
+          "block": 2,
+          "referenceMs": 20745,
+          "candidateMs": 20416,
+          "improvementPercent": 1.5859243191130412
+        }
+      ],
+      "fairness": {
+        "hot": {
+          "referenceMedianRunP95Ms": 182.0,
+          "candidateMedianRunP95Ms": 315.5,
+          "guardPassed": false
+        },
+        "other": {
+          "referenceMedianRunP95Ms": 48.5,
+          "candidateMedianRunP95Ms": 57.0,
+          "guardPassed": true
+        },
+        "peer": {
+          "referenceMedianRunP95Ms": 607.0,
+          "candidateMedianRunP95Ms": 1133.5,
+          "guardPassed": false
+        }
+      },
+      "cpuPerUsefulUnitGuard": true,
+      "rssGuard": true,
+      "eventLoopGuard": true,
+      "nativeReviewGatePassed": false
+    },
+    {
+      "arm": "P",
+      "pairs": [
+        {
+          "block": 1,
+          "referenceMs": 20141,
+          "candidateMs": 11408,
+          "improvementPercent": 43.35931681644407
+        },
+        {
+          "block": 2,
+          "referenceMs": 20745,
+          "candidateMs": 11093,
+          "improvementPercent": 46.52687394552905
+        }
+      ],
+      "fairness": {
+        "hot": {
+          "referenceMedianRunP95Ms": 182.0,
+          "candidateMedianRunP95Ms": 54.0,
+          "guardPassed": true
+        },
+        "other": {
+          "referenceMedianRunP95Ms": 48.5,
+          "candidateMedianRunP95Ms": 50.5,
+          "guardPassed": true
+        },
+        "peer": {
+          "referenceMedianRunP95Ms": 607.0,
+          "candidateMedianRunP95Ms": 60.0,
+          "guardPassed": true
+        }
+      },
+      "cpuPerUsefulUnitGuard": true,
+      "rssGuard": true,
+      "eventLoopGuard": true,
+      "nativeReviewGatePassed": true
+    },
+    {
+      "arm": "B",
+      "pairs": [
+        {
+          "block": 1,
+          "referenceMs": 20141,
+          "candidateMs": 9845,
+          "improvementPercent": 51.1196067722556
+        },
+        {
+          "block": 2,
+          "referenceMs": 20745,
+          "candidateMs": 10142,
+          "improvementPercent": 51.11111111111111
+        }
+      ],
+      "fairness": {
+        "hot": {
+          "referenceMedianRunP95Ms": 182.0,
+          "candidateMedianRunP95Ms": 176.0,
+          "guardPassed": true
+        },
+        "other": {
+          "referenceMedianRunP95Ms": 48.5,
+          "candidateMedianRunP95Ms": 46.5,
+          "guardPassed": true
+        },
+        "peer": {
+          "referenceMedianRunP95Ms": 607.0,
+          "candidateMedianRunP95Ms": 56.5,
+          "guardPassed": true
+        }
+      },
+      "cpuPerUsefulUnitGuard": true,
+      "rssGuard": true,
+      "eventLoopGuard": true,
+      "nativeReviewGatePassed": true
+    }
+  ],
+  "asymmetric": {
+    "runs": [
+      {
+        "arm": "D",
+        "replayMs": 68654,
+        "writes": {
+          "first": {
+            "offered": 137,
+            "verified": 137,
+            "offeredToVerifiedMs": {
+              "n": 137,
+              "p50": 18,
+              "p95": 210,
+              "max": 1035
+            },
+            "queueToStartMs": {
+              "n": 137,
+              "p50": 0,
+              "p95": 1,
+              "max": 536
+            },
+            "initialWriteMs": 210
+          },
+          "other": {
+            "offered": 68,
+            "verified": 68,
+            "offeredToVerifiedMs": {
+              "n": 68,
+              "p50": 19,
+              "p95": 26,
+              "max": 27
+            },
+            "queueToStartMs": {
+              "n": 68,
+              "p50": 0,
+              "p95": 0,
+              "max": 1
+            },
+            "initialWriteMs": 13
+          }
+        },
+        "peer": {
+          "offered": 274,
+          "verified": 274,
+          "offeredToResponseMs": {
+            "n": 274,
+            "p50": 13,
+            "p95": 34,
+            "max": 40
+          },
+          "offeredToVerifiedMs": {
+            "n": 274,
+            "p50": 13,
+            "p95": 35,
+            "max": 41
+          }
+        },
+        "completeAndVerified": true,
+        "absoluteInteractionGuards": true
+      },
+      {
+        "arm": "S",
+        "replayMs": 31686,
+        "writes": {
+          "first": {
+            "offered": 63,
+            "verified": 63,
+            "offeredToVerifiedMs": {
+              "n": 63,
+              "p50": 18,
+              "p95": 28,
+              "max": 192
+            },
+            "queueToStartMs": {
+              "n": 63,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "initialWriteMs": 192
+          },
+          "other": {
+            "offered": 31,
+            "verified": 31,
+            "offeredToVerifiedMs": {
+              "n": 31,
+              "p50": 18,
+              "p95": 25,
+              "max": 27
+            },
+            "queueToStartMs": {
+              "n": 31,
+              "p50": 0,
+              "p95": 0,
+              "max": 0
+            },
+            "initialWriteMs": 17
+          }
+        },
+        "peer": {
+          "offered": 126,
+          "verified": 126,
+          "offeredToResponseMs": {
+            "n": 126,
+            "p50": 14,
+            "p95": 34,
+            "max": 37
+          },
+          "offeredToVerifiedMs": {
+            "n": 126,
+            "p50": 15,
+            "p95": 34,
+            "max": 38
+          }
+        },
+        "completeAndVerified": true,
+        "absoluteInteractionGuards": true
+      }
+    ],
+    "improvementPercent": 53.84682611355493,
+    "singlePairDescriptiveOnly": true
+  },
+  "allOriginalRunsComplete": true,
+  "allAbsoluteInteractionGuards": true,
+  "sourcePolicyUnchanged": true,
+  "scope": "Fixed local workload, two factorial blocks and one asymmetric pair; normalized CPU is descriptive, not production/container capacity, universal fairness or a global policy selection."
+}

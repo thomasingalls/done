@@ -33,6 +33,8 @@ import {
   inboundInteger,
   inboundPageMessage,
   inboundRequestMessage,
+  type InboundReadRequest,
+  type InboundReadPage,
 } from '../../account-protocol/inboundTransport';
 import {
   encodeInboundRecord,
@@ -226,6 +228,137 @@ function validateBody(body: EnvelopeBody, publisher: InboundContext['publisher']
   for (const update of body.updates) Y.decodeUpdate(update);
   return size;
 }
+function assertInboundScope(c: InboundContext, r: InboundReadRequest) {
+  const a = c.authority;
+  if (
+    r.serviceId !== c.service.id ||
+    r.origin !== c.service.origin ||
+    r.workspace !== a.workspace ||
+    r.reader !== c.reader.id ||
+    r.publisher !== c.publisher.id ||
+    r.lineage !== a.lineage ||
+    r.head !== a.head ||
+    r.epoch !== a.tip
+  )
+    fail('scope');
+}
+async function authenticateInboundWire(
+  c: InboundContext,
+  r: InboundReadRequest,
+  p: InboundReadPage,
+  request: Bytes,
+  subtle: SubtleCrypto,
+) {
+  const a = c.authority;
+  if (p.request !== hex(new Uint8Array(await subtle.digest('SHA-256', request)))) fail('request');
+  const readerKey = await subtle.importKey('raw', unhex(c.reader.publicKey, 32), 'Ed25519', false, [
+    'verify',
+  ]);
+  const readerVerified = await subtle.verify(
+    'Ed25519',
+    readerKey,
+    unhex(r.signature, 64),
+    inboundRequestMessage(r),
+  );
+  if (!readerVerified) fail('unverified');
+  const acceptanceKey = await subtle.importKey(
+    'raw',
+    unhex(a.acceptanceKey, 32),
+    'Ed25519',
+    false,
+    ['verify'],
+  );
+  const pageVerified = await subtle.verify(
+    'Ed25519',
+    acceptanceKey,
+    unhex(p.signature, 64),
+    inboundPageMessage(p),
+  );
+  if (!pageVerified) fail('unverified');
+  if (p.through < c.prefix.observedThrough || r.after > c.prefix.position) fail('prefix');
+  if (c.history) {
+    // A stored page is bounded by its own authenticated epoch. Later membership cuts cannot
+    // retroactively require an old reply to have observed writing accepted after that reply.
+    const at = c.history.authorities.findIndex((authority) => authority.tip === a.tip);
+    const entering = at > 0 ? c.history.boundaries[at - 1]!.position : 0;
+    const genesisCut = c.history.boundaries[0]?.position;
+    if (p.through < entering || (a.tip === 1 && genesisCut !== undefined && p.through > genesisCut))
+      fail('prefix');
+  }
+}
+async function openInboundEntry(
+  c: InboundContext,
+  entry: { envelope: Bytes; proof: Bytes },
+  position: number,
+  previous: string,
+  subtle: SubtleCrypto,
+  guard: () => void,
+  retained = false,
+) {
+  const a = c.authority;
+  if (entry.envelope.length > INBOUND_ENVELOPE_LIMIT) fail('size');
+  const envelope = decodeNetworkEnvelope(entry.envelope),
+    currentRoute = {
+      v: 2 as const,
+      workspace_id: a.workspace,
+      credential_id: c.publisher.id,
+      epoch: a.tip,
+      gen: c.history ? historyGeneration(c.history, a.tip) : c.generation,
+    };
+  if (envelope.v !== 2 || (!c.history && envelope.epoch !== 1)) fail('unsupported');
+  const route = c.history
+    ? historyEnvelopeRoute(c.history, currentRoute, envelope.epoch)
+    : currentRoute;
+  if (
+    envelope.gen !== route.gen ||
+    envelope.workspace_id !== a.workspace ||
+    envelope.credential_id !== c.publisher.id ||
+    envelope.seq !== position
+  )
+    fail('scope');
+  const subject = (wire: Bytes) => {
+    const v = decodeNetworkEnvelope(wire);
+    return {
+      workspace: a.workspace,
+      credential: c.publisher.id,
+      position,
+      epoch: v.epoch,
+      digest: hex(v.digest),
+      parent: ZERO_REFUSAL,
+      previous,
+    };
+  };
+  const decision = (wire: Bytes, expected: ReturnType<typeof subject>) =>
+    c.history
+      ? verifyHistoryDecision(wire, expected, a, c.history, subtle)
+      : verifyPositionResponse(wire, expected, a, subtle);
+  const proof = await decision(entry.proof, subject(entry.envelope));
+  guard();
+  if (proof.kind !== 'accepted') fail(retained ? 'prefix' : 'unverified');
+  if (proof.head.final) fail(retained ? 'prefix' : 'unsupported');
+  const publicKey = await subtle.importKey(
+      'raw',
+      unhex(c.publisher.publicKey, 32),
+      'Ed25519',
+      false,
+      ['verify'],
+    ),
+    keys = new Map(c.retainedGenerationKeys);
+  keys.set(c.generation, c.generationKey);
+  const body = await openNetworkEnvelope(
+    entry.envelope,
+    route,
+    publicKey,
+    generationKey(keys, route.gen),
+    subtle,
+  );
+  try {
+    return { body, proof, envelope, updateBytes: validateBody(body, c.publisher) };
+  } catch (cause) {
+    for (const update of body.updates) update.fill(0);
+    throw cause;
+  }
+}
 async function verify(
   input: InboundContext,
   requestInput: Bytes,
@@ -251,17 +384,7 @@ async function verify(
     const r = decodeInboundRequest(request),
       p = decodeInboundPage(pageBytes),
       a = c.authority;
-    if (
-      r.serviceId !== c.service.id ||
-      r.origin !== c.service.origin ||
-      r.workspace !== a.workspace ||
-      r.reader !== c.reader.id ||
-      r.publisher !== c.publisher.id ||
-      r.lineage !== a.lineage ||
-      r.head !== a.head ||
-      r.epoch !== a.tip
-    )
-      fail('scope');
+    assertInboundScope(c, r);
     if (r.limit !== 1) fail('unsupported');
     checkInboundExtent(p, r);
     const current = () => {
@@ -273,48 +396,7 @@ async function verify(
       }
     };
     current();
-    if (p.request !== hex(new Uint8Array(await subtle.digest('SHA-256', request)))) fail('request');
-    const readerKey = await subtle.importKey(
-      'raw',
-      unhex(c.reader.publicKey, 32),
-      'Ed25519',
-      false,
-      ['verify'],
-    );
-    const readerVerified = await subtle.verify(
-      'Ed25519',
-      readerKey,
-      unhex(r.signature, 64),
-      inboundRequestMessage(r),
-    );
-    if (!readerVerified) fail('unverified');
-    const acceptanceKey = await subtle.importKey(
-      'raw',
-      unhex(a.acceptanceKey, 32),
-      'Ed25519',
-      false,
-      ['verify'],
-    );
-    const pageVerified = await subtle.verify(
-      'Ed25519',
-      acceptanceKey,
-      unhex(p.signature, 64),
-      inboundPageMessage(p),
-    );
-    if (!pageVerified) fail('unverified');
-    if (p.through < c.prefix.observedThrough || r.after > c.prefix.position) fail('prefix');
-    if (c.history) {
-      // A stored page is bounded by its own authenticated epoch. Later membership cuts cannot
-      // retroactively require an old reply to have observed writing accepted after that reply.
-      const at = c.history.authorities.findIndex((authority) => authority.tip === a.tip);
-      const entering = at > 0 ? c.history.boundaries[at - 1]!.position : 0;
-      const genesisCut = c.history.boundaries[0]?.position;
-      if (
-        p.through < entering ||
-        (a.tip === 1 && genesisCut !== undefined && p.through > genesisCut)
-      )
-        fail('prefix');
-    }
+    await authenticateInboundWire(c, r, p, request, subtle);
     if (!p.entries.length) {
       if (r.after !== c.prefix.position || expectedRecord) fail('record');
       current();
@@ -322,83 +404,23 @@ async function verify(
     }
     const entry = p.entries[0]!,
       position = r.after + 1,
-      old = position <= c.prefix.position;
-    if (entry.envelope.length > INBOUND_ENVELOPE_LIMIT) fail('size');
-    const e = decodeNetworkEnvelope(entry.envelope),
-      currentRoute = {
-        v: 2 as const,
-        workspace_id: a.workspace,
-        credential_id: c.publisher.id,
-        epoch: a.tip,
-        gen: c.history ? historyGeneration(c.history, a.tip) : c.generation,
-      };
-    const routeFor = (epoch: number) =>
-      c.history ? historyEnvelopeRoute(c.history, currentRoute, epoch) : currentRoute;
-    if (e.v !== 2 || (!c.history && e.epoch !== 1)) fail('unsupported');
-    const route = routeFor(e.epoch);
-    if (e.gen !== route.gen) fail('scope');
-    const keys = new Map(c.retainedGenerationKeys);
-    keys.set(c.generation, c.generationKey);
-    const opener = (generation: number) => generationKey(keys, generation);
-    if (e.workspace_id !== a.workspace || e.credential_id !== c.publisher.id || e.seq !== position)
-      fail('scope');
-    const previous = old ? c.retained?.previous : c.prefix.link;
+      old = position <= c.prefix.position,
+      previous = old ? c.retained?.previous : c.prefix.link;
     if (!previous || (position === 1 && previous !== ZERO_REFUSAL)) fail('prefix');
-    const publicKey = await subtle.importKey(
-      'raw',
-      unhex(c.publisher.publicKey, 32),
-      'Ed25519',
-      false,
-      ['verify'],
-    );
-    const subject = (wire: Bytes) => {
-      const v = decodeNetworkEnvelope(wire);
-      return {
-        workspace: a.workspace,
-        credential: c.publisher.id,
-        position,
-        epoch: v.epoch,
-        digest: hex(v.digest),
-        parent: ZERO_REFUSAL,
-        previous,
-      };
-    };
-    const decision = (wire: Bytes, expected: ReturnType<typeof subject>) =>
-      c.history
-        ? verifyHistoryDecision(wire, expected, a, c.history, subtle)
-        : verifyPositionResponse(wire, expected, a, subtle);
-    // A stale duplicate/conflict requires its independently retained ORIGINAL acceptance, too.
     if (old) {
       if (!c.retained) fail('prefix');
-      const original = decodeNetworkEnvelope(c.retained.envelope);
-      if (original.seq !== position) fail('prefix');
-      const evidence = await decision(c.retained.proof, subject(c.retained.envelope));
-      guard();
-      if (
-        evidence.kind !== 'accepted' ||
-        evidence.head.final ||
-        (position === c.prefix.position && evidence.head.link !== c.prefix.link)
-      )
-        fail('prefix');
-      const held = await openNetworkEnvelope(
-        c.retained.envelope,
-        routeFor(original.epoch),
-        publicKey,
-        opener(routeFor(decodeNetworkEnvelope(c.retained!.envelope).epoch).gen),
-        subtle,
-      );
+      if (decodeNetworkEnvelope(c.retained.envelope).seq !== position) fail('prefix');
+      const held = await openInboundEntry(c, c.retained, position, previous, subtle, guard, true);
       try {
-        validateBody(held, c.publisher);
+        if (position === c.prefix.position && held.proof.head.link !== c.prefix.link)
+          fail('prefix');
       } finally {
-        for (const update of held.updates) update.fill(0);
+        for (const update of held.body.updates) update.fill(0);
       }
     }
-    const proof = await decision(entry.proof, subject(entry.envelope));
-    guard();
-    if (proof.kind !== 'accepted') fail('unverified');
-    if (proof.head.final) fail('unsupported');
-    body = await openNetworkEnvelope(entry.envelope, route, publicKey, opener(route.gen), subtle);
-    const updateBytes = validateBody(body, c.publisher);
+    const checked = await openInboundEntry(c, entry, position, previous, subtle, guard),
+      { proof, envelope: e, updateBytes } = checked;
+    body = checked.body;
     if (old && hex(c.retained!.envelope) === hex(entry.envelope)) {
       if (expectedRecord) fail('record');
       current();
@@ -459,4 +481,82 @@ export async function verifyStoredInbound(
   const captured = captureBytes(bytes, INBOUND_RECORD_LIMIT),
     event = decodeInboundRecord(captured);
   return verify(context, event.request, event.page, lifetime, captured);
+}
+
+/** Transient history reconstruction only. No durable inbound record or authority is produced.
+ * The cut must come from the caller's independently authenticated source inventory. */
+export async function verifyHistoryPage(
+  input: InboundContext,
+  requestInput: Bytes,
+  pageInput: Bytes,
+  cutInput: { position: number; link: string },
+  lifetime: InboundLifetime,
+): Promise<{
+  readonly updates: readonly Bytes[];
+  readonly count: number;
+  readonly position: number;
+  readonly link: string;
+  readonly through: number;
+}> {
+  const assertCurrent = lifetime.assertCurrent.bind(lifetime),
+    now = lifetime.now ? lifetime.now.bind(lifetime) : Date.now;
+  const guard = () => {
+    if (assertCurrent() !== undefined) fail('authority');
+  };
+  guard();
+  const request = captureBytes(requestInput, READ_REQUEST_LIMIT),
+    pageBytes = captureBytes(pageInput, READ_PAGE_LIMIT),
+    cut = { position: inboundInteger(cutInput.position), link: inboundHex(cutInput.link, 32) },
+    c = captureContext(input),
+    updates: Bytes[] = [];
+  let transferred = false;
+  try {
+    const r = decodeInboundRequest(request),
+      p = decodeInboundPage(pageBytes);
+    assertInboundScope(c, r);
+    checkInboundExtent(p, r);
+    if (
+      r.after !== c.prefix.position ||
+      r.limit > cut.position - r.after ||
+      p.next > cut.position ||
+      !p.entries.length ||
+      c.retained
+    )
+      fail('prefix');
+    const current = () => {
+      guard();
+      const time = now();
+      if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
+      if (r.expires <= time) fail('expired');
+    };
+    const subtle = guardedSubtle(current);
+    current();
+    await authenticateInboundWire(c, r, p, request, subtle);
+    let position = r.after,
+      link = c.prefix.link,
+      bytes = 0;
+    for (const entry of p.entries) {
+      const checked = await openInboundEntry(c, entry, ++position, link, subtle, current);
+      updates.push(...checked.body.updates);
+      bytes += checked.updateBytes;
+      if (bytes > MAX_BATCH_BYTES) fail('size');
+      link = checked.proof.head.link;
+    }
+    if (position === cut.position && link !== cut.link) fail('prefix');
+    current();
+    transferred = true;
+    return Object.freeze({
+      updates: Object.freeze(updates),
+      count: p.entries.length,
+      position,
+      link,
+      through: p.through,
+    });
+  } finally {
+    c.generationKey.fill(0);
+    for (const key of c.retainedGenerationKeys?.values() ?? []) key.fill(0);
+    request.fill(0);
+    pageBytes.fill(0);
+    if (!transferred) for (const update of updates) update.fill(0);
+  }
 }

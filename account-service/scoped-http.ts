@@ -24,6 +24,12 @@ import type { AccountNotifications } from './notifications.ts';
 import { AuthorizationRefused } from './authorization.ts';
 import { createSessionHandler } from './session-http.ts';
 import { ScopedRequestBudget } from './requestBudget.ts';
+import { createBatchReadAdmission } from './batchReadAdmission.ts';
+import {
+  decodeInboundBatch,
+  INBOUND_BATCH_REQUEST_LIMIT,
+} from '../account-protocol/inboundBatch.ts';
+import { readInboundBatch } from './inboundBatch.ts';
 
 export function createScopedAccountHandler(
   core: AccountCore,
@@ -35,6 +41,7 @@ export function createScopedAccountHandler(
   const pin = parseAuthorityPin(inputPin),
     host = new URL(pin.origin).host;
   const session = createSessionHandler(core.sessions, pin);
+  const batchReads = createBatchReadAdmission();
   const jsonRoutes = new Map<
     string,
     {
@@ -158,6 +165,22 @@ export function createScopedAccountHandler(
           authority.readInbound(core, v, authorization),
       },
     ],
+    [
+      '/account/delivery/read-v2-batch',
+      {
+        limit: INBOUND_BATCH_REQUEST_LIMIT,
+        run: (
+          v: Uint8Array<ArrayBuffer>,
+          _token: string,
+          authorization: OperationAuthorization,
+          started: () => void = () => {},
+        ) =>
+          readInboundBatch(v, (request, reuse) => {
+            started();
+            return authority.readInbound(core, request, authorization, reuse);
+          }),
+      },
+    ],
   ]);
   return async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     if (request.url?.startsWith('/account/session/v1/')) {
@@ -213,8 +236,12 @@ export function createScopedAccountHandler(
       return void authFailure(
         budget.invalid() ? (isGrant ? 'access-required' : 'grant-required') : 'capacity',
       );
-    const release = budget.acquire(sessionKey);
-    if (!release) return void authFailure('capacity');
+    // One bounded HTTP body/response, at most one sequential inner read at a time.
+    const reservation = budget.acquire(sessionKey);
+    if (!reservation) return void authFailure('capacity');
+    const batch = path === '/account/delivery/read-v2-batch';
+    let started = 0;
+    let releaseBatch: (() => void) | undefined;
     const timer = setTimeout(() => {
       response.destroy();
       request.destroy();
@@ -282,7 +309,25 @@ export function createScopedAccountHandler(
       };
       const bytes = Buffer.concat(chunks);
       if (binary) {
-        const result = await binary.run(new Uint8Array(bytes), token, authorization);
+        if (batch) {
+          // Framing supplies a work count, never authority. Reserve the entire actual
+          // count before any native read; failed top-up retains only admission cost.
+          const requests = decodeInboundBatch(new Uint8Array(bytes));
+          try {
+            releaseBatch = batchReads.acquire(sessionKey, bytes);
+            if (!releaseBatch) throw new AuthorizationRefused('capacity');
+            if (!reservation.reserveWork(requests.length))
+              throw new AuthorizationRefused('capacity');
+          } finally {
+            for (const request of requests) request.fill(0);
+          }
+        } else started = 1;
+        const result = await binary.run(
+          new Uint8Array(bytes),
+          token,
+          authorization,
+          () => started++,
+        );
         if (result.kind === 'decision') {
           if (target && path === '/account/delivery/submit')
             notifications?.committed(target, false, true);
@@ -322,7 +367,15 @@ export function createScopedAccountHandler(
       else send(400, { ok: false, refusal: 'malformed' });
     } finally {
       clearTimeout(timer);
-      release();
+      try {
+        reservation.settleWork(started);
+      } finally {
+        try {
+          releaseBatch?.();
+        } finally {
+          reservation();
+        }
+      }
       notifications?.reconcile();
     }
   };

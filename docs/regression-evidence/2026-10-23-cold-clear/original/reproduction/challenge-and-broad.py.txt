@@ -1,0 +1,25 @@
+from pathlib import Path
+import subprocess,os,shutil,json,re
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'};rows=[]
+cases=[('waive-retired-proof','account-service/inboundAuthorityReuse.ts','cache-clear native retry recaptures|retired initial proof'),('retry-closed-cache','account-service/inboundAuthorityReuse.ts','cache-clear native retry never resumes'),('revision-before-input','account-service/inboundAuthorityReuse.ts','cache-clear native retry keeps input mutation'),('exempt-clear-attempt-budget','account-service/delivery.ts','cache-clear native retry stops after four'),('skip-authorization-completion','account-service/delivery.ts','cache-clear native retry rechecks complete'),('skip-all-request-expiry','account-service/delivery.ts','cache-clear native retry preserves the original signed'),('retry-all-failures','account-service/delivery.ts','cache-clear native retry does not retry failed fresh custody|cache-clear native retry rechecks begin')]
+for label,file,pattern in cases:
+ d=r/('control-'+label);shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);p=d/file;t=p.read_text()
+ if file.endswith('delivery.ts'):
+  i=t.index('export async function readInbound(');prefix=t[:i];body=t[i:]
+  if label=='exempt-clear-attempt-budget':a="          continue;\n        }\n        note(cause);";b="          retry--;\n          continue;\n        }\n        note(cause);";assert body.count(a)==1;body=body.replace(a,b)
+  elif label=='skip-authorization-completion':a='        completeAuthorization?.();';assert body.count(a)==1;body=body.replace(a,'        /* omitted authorization completion */')
+  elif label=='skip-all-request-expiry':
+   a='          !live() ||\n';assert body.count(a)==1;body=body.replace(a,'');a="        if (!live()) {\n          db.exec('ROLLBACK');\n          return unknown('invalid-request');\n        }";assert body.count(a)==2;body=body.replace(a,'        /* omitted expiry check */')
+  else:a='if (cause instanceof AuthorityCacheClearedError)';assert body.count(a)==1;body=body.replace(a,'if (cause instanceof Error)')
+  t=prefix+body
+ elif label=='waive-retired-proof':a='if (cache && cache.revision !== revision) throw new AuthorityCacheClearedError();';assert t.count(a)==1;t=t.replace(a,'/* omitted retirement check */')
+ elif label=='retry-closed-cache':a='(cache && !cache.live) || ';assert t.count(a)==1;t=t.replace(a,'')
+ else:
+  a="      if (!state.live || (cache && !cache.live) || !next || !next.equals(captured!))\n        throw Error('Read authority owner or input changed');\n      // Closure or input mutation above is never a retryable cache event.\n      if (cache && cache.revision !== revision) throw new AuthorityCacheClearedError();";b="      if (cache && cache.revision !== revision) throw new AuthorityCacheClearedError();\n      if (!state.live || (cache && !cache.live) || !next || !next.equals(captured!))\n        throw Error('Read authority owner or input changed');";assert t.count(a)==1;t=t.replace(a,b)
+ p.write_text(t);cmd=['node','--test','--test-reporter=spec','--test-name-pattern='+pattern,'test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs']
+ with(r/('control-'+label+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ text=(r/('control-'+label+'.log')).read_text();assert v.returncode and ('AssertionError'in text or'ERR_ASSERTION'in text),(label,text[-1000:]);rows.append({'control':label,'detected':True,'exitCode':v.returncode,'pattern':pattern,'scope':'deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification'});(r/'challenge.json').write_text(json.dumps({'status':'running','controls':rows},indent=2)+'\n');print(label,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')
+cmd=json.loads(Path('/private/tmp/done-failure-history-20261022/affected-receipt.json').read_text())['command']
+with(r/'affected-final.log').open('w')as log:v=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+text=(r/'affected-final.log').read_text();counts={k:int(re.search('ℹ '+k+r' (\d+)',text).group(1))for k in ['tests','pass','fail','skipped','cancelled']};out={'command':cmd,'exitCode':v.returncode,**counts};(r/'affected-receipt.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out),flush=True);assert v.returncode==0 and counts=={'tests':494,'pass':494,'fail':0,'skipped':0,'cancelled':0}

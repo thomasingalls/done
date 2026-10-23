@@ -1,0 +1,44 @@
+--- /private/tmp/done-enrollment-reuse-2f1d0b0f/reference-source/account-service/delivery.ts	2026-10-16 16:13:19
++++ /private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/account-service/delivery.ts	2026-10-16 16:25:31
+@@ -1,3 +1,5 @@
++import { appendFileSync as perfAppend } from 'node:fs';
++const serverPerf = async <T>(phase: string, work: () => Promise<T>): Promise<T> => { const start=performance.now(),wall=Date.now(); let failed=true; try { const result=await work(); failed=false; return result; } finally { if(process.env['DONE_ENROLLMENT_SERVER_PROFILE']) perfAppend(process.env['DONE_ENROLLMENT_SERVER_PROFILE']!, JSON.stringify({phase,wall,durationMs:performance.now()-start,failed})+'\n'); } };
+ import { isPrunedDecision, verifyPrunedDecision } from './prunedDecision.ts';
+ import { recoveryRows, type RecoveryRow } from './recoveryStore.ts';
+ import type {
+@@ -545,7 +547,7 @@
+ export const verifyCurrentWorkspaceAuthority = async (
+   s: WorkspaceAuthoritySnapshot,
+   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+-): Promise<Authority> => {
++): Promise<Authority> => serverPerf("authority", async () => {
+   const auth: Authority =
+     s.recoveries?.length ||
+     s.rotations?.length ||
+@@ -569,7 +571,7 @@
+   )
+     throw Error('Retained removal scope changed');
+   return { ...auth, removal };
+-};
++});
+ /** A publisher starts at its own verified certification; it has no earlier ledger. */
+ export function selectPublisher(auth: Authority, publisher?: string): Authority {
+   const id = publisher ?? auth.credential;
+@@ -848,7 +850,7 @@
+ }
+ export async function verifiedCensus(s: Snapshot, auth: Authority, reuse?: DeliveryVerification) {
+   try {
+-    return await census(s, auth, reuse);
++    return await serverPerf("census", () => census(s, auth, reuse));
+   } catch (cause) {
+     if (reuse?.tips && !(cause instanceof LedgerIntegrityError)) reuse.tips.failure(s);
+     throw cause;
+@@ -1331,7 +1333,7 @@
+         entries: [],
+         signature: '00'.repeat(64),
+       };
+-      for (const row of await verifyServed(s, auth, request.after, reuse)) {
++      for (const row of await serverPerf("served", () => verifyServed(s, auth, request.after, reuse))) {
+         if (row.kind !== 'accepted' || row.position <= request.after) continue;
+         if (isPrunedDecision(row.submission)) return unknown('unavailable');
+         page.entries.push({

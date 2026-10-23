@@ -1,0 +1,30 @@
+
+for (const later of [false, true])
+  test(`stable read authority reuses branded ${later ? 'continued' : 'certified'} history across independent publisher ledgers`, async (t) => {
+    const x = later ? await continuationFixture(t) : (await openingHistoryFixture(t)).x;
+    const epoch = later ? 4 : 3, head = later ? x.admission.head : x.certification.head;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    let offers = 0, warmed;
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) offers++;
+      return verify(...args);
+    });
+    const streams = [[], []];
+    for (let n = 1; n <= 3; n++) {
+      for (const [i, credential, signer] of [[0, x.context.existing.id, x.keys.existing], [1, x.context.candidate.id, x.keys.new]]) {
+        const w = x.make(n, 'readable stream ' + i, { epoch, credential, signer }), r = await x.deliveryCall(w);
+        let previous = '00'.repeat(32);
+        for (const old of streams[i]) previous = link(old.w.subject, previous);
+        assert.equal(decision(x, r, w, previous, epoch).kind, 'accepted');
+        streams[i].push({ w, r, epoch });
+      }
+      if (n === 1) { warmed = offers; assert(warmed > 0); }
+      for (const [i, publisher] of [[0, x.context.existing.id], [1, x.context.candidate.id]]) {
+        const q = query(x, n - 1, 1, { reader: x.context.candidate.id, publisher, head, epoch }, x.keys.new);
+        page(x, await read(x, q), q, streams[i]);
+      }
+      assert.equal(offers, warmed, 'neither selected live witness nor the unrelated publisher invalidates stable history');
+    }
+    assert.equal(x.f.rows('delivery_decisions').length, 3);
+    assert.equal(x.f.rows('publisher_decisions').length, 3);
+  });

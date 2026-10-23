@@ -1,0 +1,60 @@
+[
+  {
+    "name": "source-review",
+    "command": [
+      "node",
+      "/private/tmp/done-ordinary-receive-20261022/source-review.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "new-regressions-final",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-sessions/inbound-authority-cache.test.mjs",
+      "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "test/account-sessions/inbound-batch.test.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "types-final-v2",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--ignoreConfig",
+      "--target",
+      "ES2022",
+      "--lib",
+      "ES2022,DOM",
+      "--module",
+      "ESNext",
+      "--moduleResolution",
+      "bundler",
+      "--types",
+      "node",
+      "--strict",
+      "--skipLibCheck",
+      "--allowImportingTsExtensions",
+      "--noEmit",
+      "account-service/inboundAuthorityReuse.ts",
+      "account-service/deliveryVerification.ts",
+      "account-service/delivery.ts"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "lint-final",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/inboundAuthorityReuse.ts",
+      "account-service/deliveryVerification.ts",
+      "account-service/delivery.ts",
+      "test/account-sessions/inbound-authority-cache.test.mjs"
+    ],
+    "exitCode": 0
+  }
+]

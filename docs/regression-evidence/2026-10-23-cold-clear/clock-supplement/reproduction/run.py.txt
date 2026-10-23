@@ -1,0 +1,6 @@
+from pathlib import Path
+import os,json,subprocess
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+for name,cmd in [('run',['python3','freeze-and-run.py']),('analysis',['python3','analyze.py']),('review',['python3','review-evidence.py']),('native-audit',['node','audit-native.mjs']),('sensitivity',['python3','sensitivity.py']),('clock-review',['python3','review-clock.py']),('cleanup',['python3','cleanup.py'])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(r/'execution-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True);assert p.returncode==0,'Preserve/investigate; no further automatic series '+name

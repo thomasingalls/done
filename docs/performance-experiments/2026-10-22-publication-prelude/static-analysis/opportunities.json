@@ -1,0 +1,3275 @@
+{
+  "schema": 1,
+  "sourceIdentity": "source-identity.json",
+  "census": "census.json",
+  "findings": [
+    {
+      "id": "S01",
+      "title": "Publication and v1 read-back rebuild native authority on each request",
+      "confidence": "static_hypothesis",
+      "priority": "next_measurement",
+      "sites": [
+        {
+          "file": "account-service/delivery.ts",
+          "line": 1022,
+          "needle": "auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1022,
+            1223
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "decideSubmission"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+        },
+        {
+          "file": "account-service/delivery.ts",
+          "line": 1223,
+          "needle": "const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1223
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "readAccepted"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+        },
+        {
+          "file": "account-service/membershipHistory.ts",
+          "line": 45,
+          "needle": "const anchor = await verifyWorkspaceAuthority(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            45
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyWorkspaceAuthority",
+              "owner": "resolveMembershipDeliveryAuthority"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "41b8158d6269cc0bace7ac921f3dd7bfcc088c5f40693f76ebd5521925bee5be"
+        }
+      ],
+      "runtimeTrigger": "Every submission or v1 self read-back, and each of at most four competing-commit retries.",
+      "repeatsOrGrowth": "Retained authority chain verification grows with membership/rotation history; reconstructs keys, histories and cuts before prefix verification. Exact retries also redo this work.",
+      "existingAnalogue": [
+        "inboundAuthorityReuse: exact native-context verified evidence with fresh issuer.check",
+        "accountAuthority: positive authentication evidence, never transaction authority",
+        "historyCheckpoint.memberships: reuse branded timeline"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Fresh custody and native commit/authorization fences remain independent.",
+        "Existing inbound cache includes live witnesses: blindly wiring it here will miss across writes. Any normalized immutable context needs an explicit proof of which inputs are independent of ledger evidence.",
+        "Preserve branded AdmissionHistory and all rotation/certification/boundary inputs; bounded bytes/entries, verifier identity, asynchronous revision and close/clear checks, mutation/corruption controls.",
+        "Do not cache member signatures, grants, responses, expiry checks or accepted-position decisions."
+      ],
+      "falsifierOrMeasurement": "On runtime20, attribute submit/read-back time to header capture, full authority reconstruction, wire verification, prefix census, guard retries and transport. Compare unchanged-history and append-heavy requests across 1/2/10 devices. Reject as first repair if reconstruction is minor or every safe context changes; measure end-to-end peer latency and typing, not cache microseconds.",
+      "limitations": "Prior read authority attribution is evidence that the pattern can matter, not a measured publication saving."
+    },
+    {
+      "id": "S02",
+      "title": "Discovery verifies the membership chain twice within one native snapshot",
+      "confidence": "static_hypothesis",
+      "priority": "after_S01",
+      "sites": [
+        {
+          "file": "account-service/membershipLocator.ts",
+          "line": 95,
+          "needle": "const auth = await verifyCurrentWorkspaceAuthority(before, issuer),",
+          "occurrence": 1,
+          "allMatchingLines": [
+            95
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "membershipBootstrap"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361"
+        },
+        {
+          "file": "account-service/membershipLocator.ts",
+          "line": 97,
+          "needle": "{ history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            97,
+            156
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "membershipBootstrap"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361"
+        },
+        {
+          "file": "account-service/membershipLocator.ts",
+          "line": 152,
+          "needle": "await verifyCurrentWorkspaceAuthority(before, issuer),",
+          "occurrence": 2,
+          "allMatchingLines": [
+            95,
+            152
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "discoverMembership"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361"
+        },
+        {
+          "file": "account-service/membershipLocator.ts",
+          "line": 156,
+          "needle": "{ history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);",
+          "occurrence": 2,
+          "allMatchingLines": [
+            97,
+            156
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "discoverMembership"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361"
+        },
+        {
+          "file": "account-service/membershipAuthority.ts",
+          "line": 23,
+          "needle": "const anchor = await resolveMembershipDeliveryAuthority(snapshot, issuer);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            23
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "resolveMembershipDeliveryAuthority",
+              "owner": "verifyPendingMembership"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "daa8259845b52af0f8b3abb463380ccfee093223d9a24ebf4f44ac31c76336bd"
+        },
+        {
+          "file": "account-service/membershipAuthority.ts",
+          "line": 29,
+          "needle": "const prefix = await verifyMembershipChain(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            29
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "verifyPendingMembership"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "daa8259845b52af0f8b3abb463380ccfee093223d9a24ebf4f44ac31c76336bd"
+        }
+      ],
+      "runtimeTrigger": "Membership bootstrap/discovery; pending membership ceremony checking.",
+      "repeatsOrGrowth": "The authority resolver already builds a verified chain; locator then runs full verifyMembershipChain to obtain a canonical proof bundle. Pending ceremony requires an earlier prefix, not simply the final membership.",
+      "existingAnalogue": [
+        "phase17 branded timeline reuse",
+        "accountReceive DiscoveryHandoff transfers answer.history into installMembership without another chain verification"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Need exact correspondence of native row metadata/boundaries and canonical proof bundle, not only matching head.",
+        "Retain requesting publisher complete-history interlock, signed request/response and final unchanged/authorization guards.",
+        "Pending ceremony must select its exact admission prefix and independently verify transfer/cancellation, not substitute current or later membership.",
+        "Expose proof construction from the same verified owner or carry an explicit immutable result; a new generic shape-only cache is unsafe."
+      ],
+      "falsifierOrMeasurement": "Instrument signature/hash/chain-extension counts within one discovery. Demonstrate duplicate full proof walks and compare a same-snapshot branded transfer against the existing independent verifier under corruption, cancellations, rotations and pending connections.",
+      "limitations": "Explicit structural repetition is present; no measured CPU saving in this census."
+    },
+    {
+      "id": "S03",
+      "title": "History catalog prelude still reconstructs current authority",
+      "confidence": "static_hypothesis",
+      "priority": "after_S01",
+      "sites": [
+        {
+          "file": "account-service/historyCheckpoint.ts",
+          "line": 236,
+          "needle": "const auth = await verifyCurrentWorkspaceAuthority(before.original, issuer),",
+          "occurrence": 1,
+          "allMatchingLines": [
+            236
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "exchangeHistoryCheckpoint"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "23d6c5d55f6405d6ff2508b1da04f5919cc5188965418d8356dc51d78020b668"
+        },
+        {
+          "file": "account-service/historyCheckpoint.ts",
+          "line": 388,
+          "needle": "for (const head of eligible) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            388
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "23d6c5d55f6405d6ff2508b1da04f5919cc5188965418d8356dc51d78020b668"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 1281,
+          "needle": "historyDue = Date.now() + 5000;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1281
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        }
+      ],
+      "runtimeTrigger": "Required-history clients poll the authenticated catalog before content reception, at five-second eligibility intervals.",
+      "repeatsOrGrowth": "Each catalog reconstructs current authority then examines eligible publisher heads and retained checkpoints; membership timeline reuse and late live-head capture are already present.",
+      "existingAnalogue": [
+        "phase17 late catalog capture and complete timeline reuse",
+        "phase18 inbound immutable proof reuse",
+        "publisherTips incremental full-ledger proof"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Do not remove authenticated catalog anti-regression/fork checks or verifyCuts completeness.",
+        "Any reuse must bind exact retained checkpoint/admission/authority bytes; live heads, fresh request, expiry and final full snapshot comparison remain fresh.",
+        "Cross-publisher catalog proof is wider than a single read prefix; do not omit other eligible publishers."
+      ],
+      "falsifierOrMeasurement": "Measure catalog count/time and percentage of receive-lane blocking on runtime20 with 1/2/10 publishers and differing checkpoint history. Counterfactual skip only in a diagnostic build must leave no adoption or progress authority; if prelude time is negligible, keep current checks.",
+      "limitations": ""
+    },
+    {
+      "id": "S04",
+      "title": "Repeated header capture and serialization survive successful crypto cache hits",
+      "confidence": "static_hypothesis",
+      "priority": "after_S01",
+      "sites": [
+        {
+          "file": "account-service/delivery.ts",
+          "line": 206,
+          "needle": "export function snapshotWorkspaceAuthority(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            206
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+        },
+        {
+          "file": "account-service/publisherTips.ts",
+          "line": 375,
+          "needle": "const header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            375
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "snapshot",
+              "owner": "capture"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d"
+        },
+        {
+          "file": "account-service/publisherTips.ts",
+          "line": 411,
+          "needle": "const s = snapshot(db, workspace, publisher, prefix?.count ?? 0)!;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            411
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "snapshot",
+              "owner": "capture"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d"
+        },
+        {
+          "file": "account-service/inboundAuthorityReuse.ts",
+          "line": 124,
+          "needle": "return serialize([issuer.pin, { ...snapshot, rows: undefined }]);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            124
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "serialize",
+              "owner": "context"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe"
+        },
+        {
+          "file": "account-service/membershipStore.ts",
+          "line": 43,
+          "needle": ".prepare('SELECT * FROM membership_admissions WHERE workspace_id=? ORDER BY epoch')",
+          "occurrence": 1,
+          "allMatchingLines": [
+            43
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "f431b1f107160bbf3eabd9a0647d75c7b3827ab18f70e8849293856efa3b400b"
+        }
+      ],
+      "runtimeTrigger": "Every hot read/write: before authentication, cold-lane check, publisher capture and final guard may each reconstruct native headers.",
+      "repeatsOrGrowth": "Full native membership/rotation/transfer rows are loaded, sometimes twice inside one coherent read, then serialized/hashed. Cache lookup still scales with header bytes; SQL history arrays are bounded by protocol limits, not constant size.",
+      "existingAnalogue": [
+        "prepare one coverage baseline per owner call",
+        "selectVerified/ContentSelection: detach small answers",
+        "purpose-specific capture as in phase20"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "First try factoring duplicated synchronous capture inside the same native transaction, not caching database rows across requests.",
+        "Any reuse across awaits must re-establish full native context/version/custody and guards; cannot use only account ID/head/version or omit unknown future fields.",
+        "Storage size/layout/corruption/unknown-record checks must remain; native views must not alias caller buffers."
+      ],
+      "falsifierOrMeasurement": "Count exact SQLite statements and serialized bytes per request on cache hit vs miss; attribute allocations/CPU under realistic membership depth. Test native mutation between each capture and cross-connection data_version. If most time is crypto or waiting, defer this repair.",
+      "limitations": ""
+    },
+    {
+      "id": "S05",
+      "title": "Envelope allocation rescans all prior positions and sources",
+      "confidence": "static_hypothesis",
+      "priority": "first_client_candidate",
+      "sites": [
+        {
+          "file": "src/crdt/accountEnvelopePreparation.ts",
+          "line": 50,
+          "needle": "export async function selectEnvelopeSources(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            50
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "d81819cb32c7967ee9c2892fbf1a9d917b0bb382952c7b82217a6fda0bfe44c0"
+        },
+        {
+          "file": "src/crdt/accountEnvelopePreparation.ts",
+          "line": 60,
+          "needle": "for (const position of state.positions) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            60
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "d81819cb32c7967ee9c2892fbf1a9d917b0bb382952c7b82217a6fda0bfe44c0"
+        },
+        {
+          "file": "src/crdt/accountEnvelopePreparation.ts",
+          "line": 70,
+          "needle": "for (const [id, bytes] of state.sources) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            70
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "d81819cb32c7967ee9c2892fbf1a9d917b0bb382952c7b82217a6fda0bfe44c0"
+        },
+        {
+          "file": "src/crdt/incrementalAccountLedger.ts",
+          "line": 58,
+          "needle": "used: Set<string>;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            58
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "794d207fc9988cafa666556b1a84d0c44cf905b92473a5bf690d6cba7c92030d"
+        },
+        {
+          "file": "src/crdt/incrementalAccountLedger.ts",
+          "line": 56,
+          "needle": "sources: Map<string, SourceIndex>;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            56
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "794d207fc9988cafa666556b1a84d0c44cf905b92473a5bf690d6cba7c92030d"
+        }
+      ],
+      "runtimeTrigger": "Every new publication envelope when durable local source capsules await allocation.",
+      "repeatsOrGrowth": "Rebuild used references from all positions, then decode sources including consumed ones to select a bounded run. Selected capsules can then be decoded again to form original update frames.",
+      "existingAnalogue": [
+        "incrementalAccountLedger bounded source metadata and used index",
+        "parse-once cold census",
+        "owner-private verified selections and scalar metadata"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Use only exact same verified ledger/route/epoch/generation and original-byte source identity; a counter/high-water mark alone is insufficient.",
+        "Keep order, same actor/kind/epoch grouping, batch/source/byte bounds, exact whole-capsule digest, retry/refusal/reservation and journal-before-exposure behavior.",
+        "Owned index must invalidate on adoption, source replacement/retirement, error/close and reference fallback; selected update bytes remain detached and erased.",
+        "A custom verified-selection hook must not lend raw history or claim committed allocation before native append."
+      ],
+      "falsifierOrMeasurement": "Hold pending source size fixed and grow consumed positions/capsules; count source decodes, visited positions, bytes and prepare-envelope wall/CPU. If slope remains negligible beside server delay, defer. Validate complete ordered original bytes and refused/retried positions against full reference, including index-bound fallback.",
+      "limitations": ""
+    },
+    {
+      "id": "S06",
+      "title": "Receive request preparation copies complete inbound state to select one publisher",
+      "confidence": "static_hypothesis",
+      "priority": "after_S05",
+      "sites": [
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 1041,
+          "needle": "const { inbound: all, pendingSelf } = await readState(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1041
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "readState",
+              "owner": "prepareRead"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 1045,
+          "needle": "const publishers = base.history?.readers.map((r) => r.id)",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1045
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "base.history.readers.map",
+              "owner": "prepareRead"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        },
+        {
+          "file": "src/crdt/verifiedRecords.ts",
+          "line": 118,
+          "needle": "const result = structuredClone(project(value!));",
+          "occurrence": 1,
+          "allMatchingLines": [
+            118
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "structuredClone",
+              "owner": "select"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
+        }
+      ],
+      "runtimeTrigger": "Each receive group, even a one-page request for one publisher.",
+      "repeatsOrGrowth": "readState projects v.inbound as a whole, then structured-clones all peer states/retained receipts before publisher selection. Growth follows retained inbound proof maps and device count, not only requested page.",
+      "existingAnalogue": [
+        "ContentSelection/selectVerified already copies only selected results",
+        "accountDelivery withSelection for small pending/status queries"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Scheduling can pick a publisher from immutable owner roster, but prefix/pending-self/conflict/observed-through must come from one current verified selection.",
+        "Do not return borrowed peer state, alter four-page fairness or skip self reconciliation with an unresolved submission.",
+        "Selection lease, fresh custody check and request expiry ownership must remain."
+      ],
+      "falsifierOrMeasurement": "Instrument cloned byte/object counts and prelude time by publisher count/history; compare selector returning only chosen peer plus pending-self. Mutation/erasure tests must prove no retained-view alias and all cursor/routing/fairness guards remain.",
+      "limitations": "Whole inbound copy is a concrete shape-level observation; runtime clone cost is unmeasured here."
+    },
+    {
+      "id": "S07",
+      "title": "Verified history checks still perform repeated complete byte comparisons",
+      "confidence": "static_hypothesis",
+      "priority": "after_client_profile",
+      "sites": [
+        {
+          "file": "src/crdt/verifiedRecords.ts",
+          "line": 45,
+          "needle": "export const sameRecords =",
+          "occurrence": 1,
+          "allMatchingLines": [
+            45
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
+        },
+        {
+          "file": "src/crdt/verifiedRecords.ts",
+          "line": 185,
+          "needle": "while (prefix < Math.min(before.length, records.length)) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            185
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
+        },
+        {
+          "file": "src/crdt/incrementalAccountLedger.ts",
+          "line": 87,
+          "needle": "export function appendedRecords(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            87
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "794d207fc9988cafa666556b1a84d0c44cf905b92473a5bf690d6cba7c92030d"
+        },
+        {
+          "file": "src/crdt/inboundLedger.ts",
+          "line": 457,
+          "needle": "if (rows && sameRecords(rows, content)) return",
+          "occurrence": 1,
+          "allMatchingLines": [
+            457
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "4f93283731a100b07c3130c14f935b3ca03d55f64185c5604aa3abb47787001c"
+        }
+      ],
+      "runtimeTrigger": "Warm storage validation, own-append continuation, coverage preparation and full-record readers.",
+      "repeatsOrGrowth": "Semantic/crypto append reuse is present, but independently checking exact old records remains O(total retained bytes), potentially more than once per task. Word comparison and CPU cooperation already improve the primitive.",
+      "existingAnalogue": [
+        "verifiedRecords identity-bound ContentSelection",
+        "warm owner local append reservation evidence",
+        "createInboundCoverage.bind binds one exact candidate within a call"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "This equality is the proof joining prior authenticated memory to current detached input; deleting it globally is unsafe.",
+        "Elide only inside a single authenticated carrier lease/known owner append or already established exact comparison, with opaque owner identity and current revision.",
+        "Do not enlarge the accepted warm corruption window, replace full byte equality with digest/count/head, or suppress audits/resume/cold full reads."
+      ],
+      "falsifierOrMeasurement": "Count full-span compare bytes per single carrier task and link each to the proof it establishes. Establish duplicate comparisons of the same immutable candidate; mutate one interior/tail byte at every reuse boundary. Rerun combined client/server flow-control workload because faster comparison previously increased request pressure.",
+      "limitations": ""
+    },
+    {
+      "id": "S08",
+      "title": "Full cold/reference reducers retain repeated linear position lookups",
+      "confidence": "static_hypothesis",
+      "priority": "cold_path_profile_first",
+      "sites": [
+        {
+          "file": "src/crdt/spoolRecord.ts",
+          "line": 333,
+          "needle": "const p = positions.find((p) => p.position === e.position);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            333
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "positions.find",
+              "owner": "inspectSpoolSteps"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "a32238b0e8795bf18e8085bd84937261ea2a37bba46226e0056b1b9ee995a3b1"
+        },
+        {
+          "file": "src/crdt/deliveryRecord.ts",
+          "line": 306,
+          "needle": "p = active.positions.find((p) => p.position === event.position)!;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            306
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "active.positions.find",
+              "owner": "verifyDelivery"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "0c2f94c1449390b7ea124da60751fb351c04eaf504408324805a2615c56adfdc"
+        },
+        {
+          "file": "src/crdt/deliveryRecord.ts",
+          "line": 336,
+          "needle": "const p = active.positions.find((p) => p.position === entry.position)!;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            336
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "active.positions.find",
+              "owner": "verifyDelivery"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "0c2f94c1449390b7ea124da60751fb351c04eaf504408324805a2615c56adfdc"
+        }
+      ],
+      "runtimeTrigger": "Cold/reopen/full reference ledger rebuild, independent audit or incremental fallback, not every optimized warm edit.",
+      "repeatsOrGrowth": "One linear position search per event/response can be O(events \u00d7 positions). Existing prefix-hash repair made another portion linear but does not make these searches indexed.",
+      "existingAnalogue": [
+        "incrementalAccountLedger expected/envelopes Maps",
+        "source parse-once and lookup-table cold repairs"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Maintain transition order, duplicate/missing-position/refusal/retry behavior; constructing a lookup must not overwrite duplicate identities silently.",
+        "Reference oracle must remain independent enough to detect new map mistakes; bounds/fallback/error behavior stay.",
+        "No live-owner state transfer across startup or audit trust boundaries."
+      ],
+      "falsifierOrMeasurement": "Generate signed histories of increasing position count with fixed response count per position; count comparisons and profile cold/audit CPU. Use differential corrupted/reordered/duplicate events. If crypto dominates or reachable bounds are tiny, do not optimize solely for theoretical complexity.",
+      "limitations": ""
+    },
+    {
+      "id": "S09",
+      "title": "Canonical and exact-byte comparisons still convert to hexadecimal strings",
+      "confidence": "static_hypothesis",
+      "priority": "small_bounded_followup",
+      "sites": [
+        {
+          "file": "src/crdt/deliveryRecord.ts",
+          "line": 148,
+          "needle": "if (hex(encodeDeliveryEntry(e, historical, issuance)) !== hex(b))",
+          "occurrence": 1,
+          "allMatchingLines": [
+            148
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "encodeDeliveryEntry",
+              "owner": "decodeDeliveryEntry"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "0c2f94c1449390b7ea124da60751fb351c04eaf504408324805a2615c56adfdc"
+        },
+        {
+          "file": "src/crdt/spoolRecord.ts",
+          "line": 230,
+          "needle": "if (hex(canonical) !== hex(bytes))",
+          "occurrence": 1,
+          "allMatchingLines": [
+            230
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "a32238b0e8795bf18e8085bd84937261ea2a37bba46226e0056b1b9ee995a3b1"
+        },
+        {
+          "file": "src/crdt/accountDelivery.ts",
+          "line": 253,
+          "needle": "if (s.responses.get(position)?.some((b) => hex(b) === hex(bytes)))",
+          "occurrence": 1,
+          "allMatchingLines": [
+            253
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "s.responses.get().some",
+              "owner": "record"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "fa001fe376df9fd2d27c6bce327bf441af205dcd230c94fc4f08f746ea9c687e"
+        },
+        {
+          "file": "src/crdt/accountDelivery.ts",
+          "line": 315,
+          "needle": "hex(retained) !== hex(prepared.bytes)",
+          "occurrence": 1,
+          "allMatchingLines": [
+            315
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "fa001fe376df9fd2d27c6bce327bf441af205dcd230c94fc4f08f746ea9c687e"
+        }
+      ],
+      "runtimeTrigger": "Full carrier decoding and publication response/retry checks.",
+      "repeatsOrGrowth": "Temporary strings double binary representation and are allocated for equality; work repeats with retained records or responses. Other source/custody paths already compare canonical bytes directly.",
+      "existingAnalogue": [
+        "sameBytes exact bounded span comparison",
+        "phase cold-census direct byte comparison",
+        "Buffer.equals in service exact duplicate admission"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Preserve exact canonical framing, length/offset/tail/detached-buffer semantics and route checks.",
+        "Decoded bytes and canonical temporary copies retain existing erase/lifetime rules.",
+        "Use measured hot sites first; short strings/low-frequency paths may be negligible."
+      ],
+      "falsifierOrMeasurement": "Count conversion bytes/allocations and profile decoder/submit prelude; compare exact equality across offset/alignment/length/tail faults, canonical negatives and native detached views. A lower micro cost without end-to-end gain does not justify broad churn.",
+      "limitations": ""
+    },
+    {
+      "id": "S10",
+      "title": "Per-page served proof work and key import repeats intentionally",
+      "confidence": "static_hypothesis",
+      "priority": "measure_before_reuse",
+      "sites": [
+        {
+          "file": "account-service/delivery.ts",
+          "line": 882,
+          "needle": "export async function verifyServed(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            882
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+        },
+        {
+          "file": "account-service/delivery.ts",
+          "line": 924,
+          "needle": "const key = await crypto.subtle.importKey(",
+          "occurrence": 3,
+          "allMatchingLines": [
+            430,
+            697,
+            924
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "crypto.subtle.importKey",
+              "owner": "verifyServed"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+        },
+        {
+          "file": "account-service/deliveryVerification.ts",
+          "line": 53,
+          "needle": "async check<T>(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            53
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "99011fbb1c93b478c52fd58d1d941f055563e4c355aac2cbb72e2a072a35d73c"
+        }
+      ],
+      "runtimeTrigger": "Every signed read page, including on a verified-prefix cache hit.",
+      "repeatsOrGrowth": "The predecessor signature and actually served rows are freshly authenticated. Public key import and exact immutable signature verification may repeat across overlapping pages; small page bound limits count.",
+      "existingAnalogue": [
+        "deliveryVerification exact context plus byte-input evidence",
+        "verified publisher prefix with independent worker audit"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Freshly served bytes must be checked against the exact context, including acceptance epoch, scope, generation/refusal and predecessor link.",
+        "A prefix cache does not itself authenticate current served payload bytes; no skip based only on count or position.",
+        "If reusing pure signature evidence, exact bytes/key inputs and verifier identity remain bound; semantic reducer/final guard always rerun."
+      ],
+      "falsifierOrMeasurement": "Profile importKey vs signature verify vs decoding per served page with disjoint and overlapping requests; count cache hits and invalidation. If bounded crypto is minor, leave fresh verification. Mutate served and predecessor bytes independently of retained prefix.",
+      "limitations": "The selected importKey location is derived by occurrence and must be reviewed in source-identity.json; this candidate is not an instruction to skip row verification."
+    },
+    {
+      "id": "S11",
+      "title": "Authority cache hits still invalidate on live witness changes",
+      "confidence": "already_optimized",
+      "priority": "context_design_only",
+      "sites": [
+        {
+          "file": "account-service/inboundAuthorityReuse.ts",
+          "line": 119,
+          "needle": "// Only decision rows are outside WorkspaceAuthoritySnapshot verification.",
+          "occurrence": 1,
+          "allMatchingLines": [
+            119
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe"
+        },
+        {
+          "file": "account-service/inboundAuthorityReuse.ts",
+          "line": 158,
+          "needle": "if (previous?.context.equals(captured) && previous.verify === verify) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            158
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "previous.context.equals",
+              "owner": "reuseInboundAuthority"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe"
+        },
+        {
+          "file": "account-service/delivery.ts",
+          "line": 1327,
+          "needle": "function inboundAuthorityHeader(s: Snapshot) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1327
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "d9cb07b97b7189161988c5d36b25cc01d68d1363d8cd88e97d85f2256f09c54d"
+        }
+      ],
+      "runtimeTrigger": "Any inbound read while either represented live delivery witness changes.",
+      "repeatsOrGrowth": "The reusable authority cache excludes only decision rows. Header stage comparison excludes live witnesses too, but that does not broaden the cache key. Concurrent old witness contexts can consume bounded cache slots.",
+      "existingAnalogue": [
+        "phase18 exact verified evidence",
+        "phase20 late capture with separate immutable comparison"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Two projections protect different promises: a permissive stage comparison cannot automatically become cache equivalence.",
+        "Need prove witness-dependent branches of verifyWorkspaceAuthority/membership resolver and retain late fresh census before effect.",
+        "Maintain future-field inclusion, native shape distinctions, mutation checks and fresh issuer.check."
+      ],
+      "falsifierOrMeasurement": "Trace cache misses by exact changed field and prove which fields verifier actually consumes. Compare with/without appends. Fault the witnesses/rows and require the fresh census to refuse. If safe normalized contexts cannot be defined without weakening the contract, accept misses and optimize construction instead.",
+      "limitations": ""
+    },
+    {
+      "id": "S12",
+      "title": "Grant issuance and rare service lifecycle paths reverify full chains",
+      "confidence": "static_hypothesis",
+      "priority": "defer_until_frequency_measured",
+      "sites": [
+        {
+          "file": "account-service/grants.ts",
+          "line": 153,
+          "needle": "const auth = await verifyCurrentWorkspaceAuthority(captured.authority, issuer);",
+          "occurrence": 1,
+          "allMatchingLines": [
+            153
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "begin"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "b13965acf05fa2b4f85bb26147316a6ef484ba891793d93d495af4b5e9d7ac36"
+        },
+        {
+          "file": "account-service/rotation.ts",
+          "line": 64,
+          "needle": "await verifyCurrentWorkspaceAuthority(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            64
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "commitRotation"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "148c74cb7d155829c0ab72ecb67a7d0a75649f1d6af2d458738eafd0ec5f39ed"
+        },
+        {
+          "file": "account-service/lostDeviceRecovery.ts",
+          "line": 243,
+          "needle": "await verifyCurrentWorkspaceAuthority(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            243,
+            313,
+            530,
+            575,
+            817
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "commit"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "e0df1bd7af6e02fe350b2517db143e813d64d570fa67dffc48903b477b4661fd"
+        },
+        {
+          "file": "account-service/membershipCheckpoint.ts",
+          "line": 63,
+          "needle": "await verifyCurrentWorkspaceAuthority(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            63
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "readMembershipCheckpoint"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "50285b60fac49054690cb6c3d009e6f196d73cf1a3109e3fd7598fe167ea5064"
+        }
+      ],
+      "runtimeTrigger": "Scoped grant acquisition/renewal, membership transitions, rotation/removal/recovery and setup ceremonies.",
+      "repeatsOrGrowth": "Some full chains repeat across staged operations/retries, but these generally happen at lifecycle boundaries rather than per content page. Grant expiry/change frequency was not measured.",
+      "existingAnalogue": [
+        "verified immutable evidence owners; caller-specific fresh authorization",
+        "prefix verifiers inside accountMembership/accountSuccessor"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Never cache fresh login/passkey/grant proof or infer unchanged revocation from retained chain.",
+        "Lifecycle transitions must establish new authority and revalidate their exact before/after native state.",
+        "Do not optimize rare destructive/recovery operations on the basis of static call density."
+      ],
+      "falsifierOrMeasurement": "Measure calls per normal edit/reconnect/onboarding and per grant renewal; only pursue a visible prelude or measured heavy case. Retain wrong authority, expired/revoked grants, rotation and interruption coverage.",
+      "limitations": ""
+    },
+    {
+      "id": "S13",
+      "title": "Repeated client membership proofs across connection/recovery stages",
+      "confidence": "static_hypothesis",
+      "priority": "defer_lifecycle",
+      "sites": [
+        {
+          "file": "src/account/membershipConnection.ts",
+          "line": 139,
+          "needle": "verifyMembershipChain(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            139,
+            249,
+            288,
+            317,
+            341,
+            450
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "completedConnection"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "fd9d3be97da9ee543946dda37c28937a87a97b9f5c50dc085d2404dda2b680a1"
+        },
+        {
+          "file": "src/account/deviceRemovalVault.ts",
+          "line": 147,
+          "needle": "verifyMembershipChain(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            147,
+            172,
+            213
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "openDeviceRemovalVault"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "bb20e65c5cdeac878c49f7b76aeedd8519972575f0d017b00a16625b69bd7cae"
+        },
+        {
+          "file": "src/crdt/rotationObservation.ts",
+          "line": 57,
+          "needle": "verifyMembershipChain(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            57,
+            59,
+            116,
+            138,
+            167,
+            230,
+            310
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "<callback:withRotationCustody>"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "014e8d654f34dcf93c30458a2b13209ba2eb9d17009dd42f2b759539f6e2ff53"
+        },
+        {
+          "file": "src/crdt/membershipSource.ts",
+          "line": 340,
+          "needle": "verifyMembershipChain(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            340
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyMembershipChain",
+              "owner": "<callback:withNativeHistorySource>"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "9341811cef65e87c01b8d4a45501235e3ffe4d85ea66202a4d296422360e84b8"
+        }
+      ],
+      "runtimeTrigger": "User-driven connect, removal, recovery, retention and key rotation stage boundaries and cold restart.",
+      "repeatsOrGrowth": "Same base/prefix may be rebuilt in multiple stages; call count alone does not establish redundant authority because stages can reopen storage, realm or session.",
+      "existingAnalogue": [
+        "createAdmissionPrefixVerifier in membership/successor/localBaselineAuthority",
+        "DiscoveryHandoff within a single current owner"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Only transfer branded proofs through an explicit live owner with exact base, scope, prefix and context; cold reopens still verify from durable source.",
+        "Do not carry storage permits, keys or capabilities through a generic proof cache or past lock/recovery/rotation.",
+        "Public persisted JSON cannot recreate private brand authority."
+      ],
+      "falsifierOrMeasurement": "Trace one complete user-visible flow with per-stage exact proof identities, crypto counts and custody reacquisitions. Establish no intervening authority boundary before sharing. If wait is dominated by transfer/typing/provider prompts, leave repeated verification.",
+      "limitations": ""
+    },
+    {
+      "id": "S14",
+      "title": "Receiver control-plane preludes can monopolize a shared send/receive pass",
+      "confidence": "static_hypothesis",
+      "priority": "measure_after_S01",
+      "sites": [
+        {
+          "file": "src/crdt/accountSyncDriver.ts",
+          "line": 3,
+          "needle": "/** Two lanes, one pass.",
+          "occurrence": 1,
+          "allMatchingLines": [
+            3
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+        },
+        {
+          "file": "src/crdt/accountSyncDriver.ts",
+          "line": 211,
+          "needle": "name === 'receive'\n            ? await options.receive()",
+          "occurrence": 1,
+          "allMatchingLines": [
+            211
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 3164,
+          "needle": "const authority = await refreshAuthority(operatorToken ?? '');",
+          "occurrence": 1,
+          "allMatchingLines": [
+            3164
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 3171,
+          "needle": "if (await receiveHistory()) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            3171
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        }
+      ],
+      "runtimeTrigger": "A due receive turn runs discovery then optional history before content; the scheduler waits for that whole turn before selecting sending.",
+      "repeatsOrGrowth": "A slow control-plane round-trip/proof delays due publishing despite local typing being responsive. Five-second prelude eligibility and fresh failure retry clock exist.",
+      "existingAnalogue": [
+        "local journal-copy work separated from editor FIFO",
+        "prepared remote handoff: preserve commit dependencies while moving discretionary waits",
+        "late volatile capture reduces repeated work before retry"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Do not parallelize owner storage or permit send under stale/removing authority; authority transitions must stop sending synchronously.",
+        "A scheduler split needs explicit per-lane current context, bounded work, cancellation and immediate authority invalidation.",
+        "Preserve durable retry byte identity, request deadlines, fairness and no unbounded preparation queue."
+      ],
+      "falsifierOrMeasurement": "Trace send-due\u2192start wait with cause-labelled receive subspans, network wait vs CPU vs native queue. Demonstrate delay after server prelude repair before adding concurrency. Validate simultaneous authority change, removal, offline, lifecycle close and pending retries.",
+      "limitations": ""
+    },
+    {
+      "id": "S15",
+      "title": "Empty-publisher sweeps may repeatedly consume a four-page turn",
+      "confidence": "static_hypothesis",
+      "priority": "measure_with_device_count",
+      "sites": [
+        {
+          "file": "src/crdt/receiveSelection.ts",
+          "line": 29,
+          "needle": "next(publishers: readonly string[]",
+          "occurrence": 1,
+          "allMatchingLines": [
+            29
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "790ed622af0d109c5f1cbe144d73c256c2b65fae4c7025bb0b44043c47477f85"
+        },
+        {
+          "file": "src/crdt/receiveSelection.ts",
+          "line": 34,
+          "needle": "const skipOwn =",
+          "occurrence": 1,
+          "allMatchingLines": [
+            34
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "790ed622af0d109c5f1cbe144d73c256c2b65fae4c7025bb0b44043c47477f85"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 3199,
+          "needle": "for (let remaining = publisherCount(); ; remaining--) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            3199
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        }
+      ],
+      "runtimeTrigger": "Workspace notification or catch-up with many eligible readers/publishers but writing concentrated on a subset.",
+      "repeatsOrGrowth": "Round-robin sweep still probes quiet peer publishers. Own-stream skip is already bounded to five seconds and disabled by unresolved own submit. Peer hints do not identify the publisher.",
+      "existingAnalogue": [
+        "existing own-stream scheduling suppression",
+        "four productive pages per publisher then rotate",
+        "SSE workspace hints never grant authority"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Scheduling-only negative hints need bounded repair polling and invalidation on authority/visibility/reconnect.",
+        "Do not skip unknown prefixes on an unsigned through hint or let a hot publisher starve quiet peers.",
+        "Preserve genuine multi-account fairness; per-account D-device fanout grows differently from tenant count."
+      ],
+      "falsifierOrMeasurement": "Offer one hot publisher among 2/10/limit devices and count empty pages, bytes, p95 live peer lag and convergence after quiet peer resumes. A per-peer recent-empty hint is useful only if it reduces overhead without delayed new writing or starvation.",
+      "limitations": ""
+    },
+    {
+      "id": "S16",
+      "title": "Existing receive batching remains bounded and sequential",
+      "confidence": "already_optimized",
+      "priority": "do_not_tune_blindly",
+      "sites": [
+        {
+          "file": "account-service/inboundBatch.ts",
+          "line": 24,
+          "needle": "for (const request of requests) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            24
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23"
+        },
+        {
+          "file": "account-service/inboundBatch.ts",
+          "line": 39,
+          "needle": "if (now() - started >= INBOUND_BATCH_WORK_MS) break;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            39
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 1072,
+          "needle": "limit: 1,",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1072
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 1087,
+          "needle": "for (let i = 0; i < count; i++) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1087
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        }
+      ],
+      "runtimeTrigger": "Ordinary backlog receive fetches up to four limit-one signed replies in one bounded route.",
+      "repeatsOrGrowth": "Wire permits larger pages, but product owner deliberately consumes original signed limit-one receipts; every subrequest retains transaction authority. 250ms service budget may return fewer replies.",
+      "existingAnalogue": [
+        "ordinary receive grouping/prefetch with exact request receipt ownership",
+        "concurrent exact duplicate batch exclusion"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Larger page/parallel reads require separate proof, memory, work-charge, deadlines, atomic receipt, prefix ordering and cancellation design.",
+        "Do not simply raise group size/time: it can occupy shared scheduler, increase queueing and hide peer fairness regressions."
+      ],
+      "falsifierOrMeasurement": "Attribute group truncation, subrequest service CPU and transport RTT before proposing a format/owner change. Compare peer latency, typing, total CPU, 429s and exact full data guards, not replay time alone.",
+      "limitations": ""
+    },
+    {
+      "id": "S17",
+      "title": "Retry delay can dominate after otherwise cheap transient refusals",
+      "confidence": "already_optimized",
+      "priority": "diagnostic_not_rate_change",
+      "sites": [
+        {
+          "file": "src/crdt/accountSyncDriver.ts",
+          "line": 283,
+          "needle": "Math.min(1000 * 2 ** (lane.failures - 1), 30000)",
+          "occurrence": 1,
+          "allMatchingLines": [
+            283,
+            330
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+        },
+        {
+          "file": "account-service/requestBudget.ts",
+          "line": 6,
+          "needle": "sessionPerSecond: 16,",
+          "occurrence": 1,
+          "allMatchingLines": [
+            6
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "c65258f954e49339adacd94a62a4b6c07400f3030674aff718f0761ad07ee41b"
+        },
+        {
+          "file": "account-service/scoped-http.ts",
+          "line": 319,
+          "needle": "if (!reservation.reserveWork(requests.length))",
+          "occurrence": 1,
+          "allMatchingLines": [
+            319
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb"
+        }
+      ],
+      "runtimeTrigger": "Unknown/expired/network responses, including native snapshot races; admission top-up refusals under pressure.",
+      "repeatsOrGrowth": "Retries wait 1/2/4/8/16/30 seconds. Same-byte duplicate groups already excluded from concurrent work; current quotas unchanged. A faster local path can generate more traffic.",
+      "existingAnalogue": [
+        "phase12 refuse attribution, phase13 scoped duplicate exclusion",
+        "late ledger capture removes native false-race cause before retry tuning"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Distinguish authenticated business refusal, unknown transport, capacity and integrity; unsigned feedback may schedule only, never settle/delete durable writing.",
+        "Do not retry storms, spend one tenant budget on another, drop exact persisted retry or let typing bypass failure clock.",
+        "Numeric policy change needs multi-account fairness evidence, not internet bandwidth assumptions."
+      ],
+      "falsifierOrMeasurement": "For every pause record original refusal predicate, started/charged work, byte-identity, actual eligibility/start times and post-load recovery. Re-evaluate rates only after avoidable proof work/races are removed; zero429 current heavy runs falsify rate-limit causation for those runs.",
+      "limitations": ""
+    },
+    {
+      "id": "S18",
+      "title": "Independent publisher audit is intentionally a separate full authority boundary",
+      "confidence": "unsupported",
+      "priority": "retain",
+      "sites": [
+        {
+          "file": "account-service/publisherAudit.worker.ts",
+          "line": 19,
+          "needle": "await verifyCurrentWorkspaceAuthority(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            19
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyCurrentWorkspaceAuthority",
+              "owner": "<module>"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "7ec5a73b1ccc2d5e19ed2da8fcd0fe8e6e11078d5bf2c3597f54586b8ad3820c"
+        },
+        {
+          "file": "account-service/publisherTips.ts",
+          "line": 209,
+          "needle": "// The worker re-establishes branded public authority in its own JavaScript realm.",
+          "occurrence": 1,
+          "allMatchingLines": [
+            209
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d"
+        }
+      ],
+      "runtimeTrigger": "Rolling background audit after publisher prefix reuse or explicit audit request.",
+      "repeatsOrGrowth": "It reopens real native storage in another worker/realm and fully reconstructs authority/ledger to challenge foreground reuse.",
+      "existingAnalogue": [
+        "reference audits of incrementalAccountLedger and separate full cold startup"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Reusing foreground proof/cached rows here would destroy the independent corruption detector and private brand identity.",
+        "Only scheduling/IO mechanics that preserve independent full input acquisition and verification could be considered."
+      ],
+      "falsifierOrMeasurement": "No speedup candidate established. If audit scheduling delays input, measure cadence/resource contention while keeping the complete oracle; do not make audit share the proof it challenges.",
+      "limitations": ""
+    },
+    {
+      "id": "S19",
+      "title": "Client authority and prepared-membership reuse already avoid tempting duplicate work",
+      "confidence": "already_optimized",
+      "priority": "retain",
+      "sites": [
+        {
+          "file": "src/crdt/accountAuthority.ts",
+          "line": 77,
+          "needle": "inventory = await task.wait(() => options.read(task));",
+          "occurrence": 1,
+          "allMatchingLines": [
+            77
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "options.read",
+              "owner": "<callback:task.wait>"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "88923c875ea9f6ec38274e9ed85c53170dbb42eac905554879abd4ec5b5ce7a2"
+        },
+        {
+          "file": "src/crdt/accountAuthority.ts",
+          "line": 79,
+          "needle": "if (retained !== undefined && equal(retained, inventory)) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            79
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "equal",
+              "owner": "check"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "88923c875ea9f6ec38274e9ed85c53170dbb42eac905554879abd4ec5b5ce7a2"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 1930,
+          "needle": "checkedHistory = prepared.history;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1930
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        },
+        {
+          "file": "src/crdt/accountReceive.ts",
+          "line": 2261,
+          "needle": "history: answer.history,",
+          "occurrence": 1,
+          "allMatchingLines": [
+            2261
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
+        }
+      ],
+      "runtimeTrigger": "Ordinary assertCurrent calls and discovery-response installation in default membership-work mode.",
+      "repeatsOrGrowth": "Complete fresh custody inventory still read and compared, but authentication is memoized; response verified history is explicitly transferred to installation. Full fallback remains for forced/reference or public input.",
+      "existingAnalogue": [
+        "existing owner-local exact positive memo",
+        "private branded timeline transfer"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Do not count both branch call sites as simultaneous duplicate proof on the default path.",
+        "Fresh custody read and expected owner state are still authority; removing them changes guarantees.",
+        "Foreign/plain shape copies or stale payload/context cannot install membership."
+      ],
+      "falsifierOrMeasurement": "Use existing authorityAuthentications/authorityReuses/membershipProofTransfers counters on actual default build. If authentication remains one per unchanged owner and proof transfer counts increase, the static duplicate suspicion is falsified.",
+      "limitations": ""
+    },
+    {
+      "id": "S20",
+      "title": "Editor text path already has a bounded ordinary-text fast path",
+      "confidence": "already_optimized",
+      "priority": "separate_typing_phase",
+      "sites": [
+        {
+          "file": "src/crdt/admittedWorkspace.ts",
+          "line": 471,
+          "needle": "const prepareText:",
+          "occurrence": 1,
+          "allMatchingLines": [
+            471
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "53ec64ceec0415e2ccfd0fc100f01fea390845c8846af3286aee0c43f5decad8"
+        },
+        {
+          "file": "src/crdt/admittedWorkspace.ts",
+          "line": 491,
+          "needle": "const plan = planWorkspaceText(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            491
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "53ec64ceec0415e2ccfd0fc100f01fea390845c8846af3286aee0c43f5decad8"
+        },
+        {
+          "file": "src/crdt/admittedWorkspace.ts",
+          "line": 784,
+          "needle": "if (!direct && (!localHandoff || event.source === 'remote')) verifyProjection();",
+          "occurrence": 1,
+          "allMatchingLines": [
+            784
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "verifyProjection",
+              "owner": "<callback:session.subscribe>"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "53ec64ceec0415e2ccfd0fc100f01fea390845c8846af3286aee0c43f5decad8"
+        }
+      ],
+      "runtimeTrigger": "Ordinary supported text editing versus structural/selection/remote changes.",
+      "repeatsOrGrowth": "Text planning, transaction-revision tracking and direct admitted updates already avoid full workspace/history forks for eligible ordinary input. Remote complete page still verifies canonical projection.",
+      "existingAnalogue": [
+        "admitted-text bounded eligibility",
+        "selection-snapshot private tokens and shared UI card lookup",
+        "prepared remote pages publish once"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Do not infer server sync delay comes from editor forks without measuring; local echo and peer arrival are different outcomes.",
+        "Structural/remote/normalization/undo/pending-dependency paths retain their full fallbacks.",
+        "Snapshot/publication optimization prototypes historically regressed; parked experiments are not runtime defaults."
+      ],
+      "falsifierOrMeasurement": "Profile local offered\u2192handler\u2192admitted\u2192frame separately from publish/peer arrival, with long Goals, backspace, Unicode, undo and concurrent receipts. Preserve full projection equivalence and history; avoid a broad editor refactor in this server phase.",
+      "limitations": ""
+    },
+    {
+      "id": "S21",
+      "title": "History retirement can reduce growth but installation/retirement are separate gated features",
+      "confidence": "unsupported",
+      "priority": "separate_product_protocol_phase",
+      "sites": [
+        {
+          "file": "src/crdt/localBaselineMode.ts",
+          "line": 3,
+          "needle": "export const hasBaselineReader",
+          "occurrence": 1,
+          "allMatchingLines": [
+            3
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "54231bb0c402acdbe4e01c7a9eaed382ac016f236590ff6c549cf59dad32ff03"
+        },
+        {
+          "file": "src/crdt/localBaselineMode.ts",
+          "line": 7,
+          "needle": "export const hasRetentionWriter",
+          "occurrence": 1,
+          "allMatchingLines": [
+            7
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "54231bb0c402acdbe4e01c7a9eaed382ac016f236590ff6c549cf59dad32ff03"
+        },
+        {
+          "file": "src/crdt/localBaselineReplay.ts",
+          "line": 291,
+          "needle": "export async function prepareLocalBaseline(",
+          "occurrence": 1,
+          "allMatchingLines": [
+            291
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "93a7817448ad2ee33b438629f06a6cbd3035a64bfdd4c25aadab8cf61826bd2a"
+        },
+        {
+          "file": "src/crdt/localBaselineReuse.ts",
+          "line": 1,
+          "needle": "/** Private reduced-owner continuation.",
+          "occurrence": 1,
+          "allMatchingLines": [
+            1
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "96ab0557a54235a8279a5d08658f33d0218aad67b459047c05432398af185707"
+        }
+      ],
+      "runtimeTrigger": "Accounts with authenticated retired-history baselines, and explicitly enabled maintenance writers.",
+      "repeatsOrGrowth": "Reducing physical retained history can remove recurring scan/copy cost rather than optimize its constant factor, but writers are gated and baseline/recovery/rollback contracts are wider.",
+      "existingAnalogue": [
+        "authenticated baseline plus suffix verification",
+        "bounded incremental reduced-owner continuation"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Do not infer build flags/deployed activation from source comments alone.",
+        "Existing reader must preserve pending/unallocated source coverage, counters, keys, epoch cuts and cold recovery.",
+        "Automatic retirement/writer activation requires separate product/protocol approval and durable rollback/qualification work."
+      ],
+      "falsifierOrMeasurement": "Read exact build flags and measure reachable baseline-plus-suffix vs full history before claiming this removes current delay. Treat changing retention lifecycle as a separately bounded task, not a quick cache repair.",
+      "limitations": ""
+    },
+    {
+      "id": "S22",
+      "title": "Per-session budget cleanup is a bounded static loop, not demonstrated bottleneck",
+      "confidence": "unsupported",
+      "priority": "low_priority",
+      "sites": [
+        {
+          "file": "account-service/requestBudget.ts",
+          "line": 48,
+          "needle": "for (const [id, item] of this.#sessions) {",
+          "occurrence": 1,
+          "allMatchingLines": [
+            48
+          ],
+          "astCallsAtLine": [],
+          "siteKind": "definition_comment_or_algorithm_anchor",
+          "sha256": "c65258f954e49339adacd94a62a4b6c07400f3030674aff718f0761ad07ee41b"
+        },
+        {
+          "file": "account-service/batchReadAdmission.ts",
+          "line": 10,
+          "needle": "for (const entry of active) if (entry.scope === scope && entry.body.equals(body)) return;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            10
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "entry.body.equals",
+              "owner": "acquire"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "16f2eb20570065de995263b9aeb59829612d75827de401b914e4b84e0431cd1e"
+        },
+        {
+          "file": "src/crdt/accountSyncDriver.ts",
+          "line": 132,
+          "needle": "if (JSON.stringify(next) === JSON.stringify(value)) return;",
+          "occurrence": 1,
+          "allMatchingLines": [
+            132
+          ],
+          "astCallsAtLine": [
+            {
+              "callee": "JSON.stringify",
+              "owner": "publish"
+            },
+            {
+              "callee": "JSON.stringify",
+              "owner": "publish"
+            }
+          ],
+          "siteKind": "call_expression",
+          "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+        }
+      ],
+      "runtimeTrigger": "New admitted session key, concurrent batch admission, status notification.",
+      "repeatsOrGrowth": "Budget map cleanup bounded to1024sessions; active duplicate comparisons bounded16; status snapshots small fixed shape. Loops/JSON here do not imply meaningful slowdowns.",
+      "existingAnalogue": [
+        "bounded bookkeeping instead of general unbounded cache"
+      ],
+      "authorityLifetimeInvalidationCorruptionPrerequisites": [
+        "Quota churn must not reset spent tokens; exact body equality prevents duplicate admitted work.",
+        "Keep status equality/error isolation; optimize only if actual profile supports it."
+      ],
+      "falsifierOrMeasurement": "Profile under session churn/high active count before changing. If below1% CPU and no correlated tail, leave it; an indexed body digest must still compare exact bytes and bind scope.",
+      "limitations": ""
+    }
+  ],
+  "authorityCallDispositions": [
+    {
+      "file": "account-service/ceremony.ts",
+      "line": 93,
+      "column": 24,
+      "owner": "ceremonyBootstrap",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        83
+      ],
+      "text": "verifyWorkspaceAuthority(snapshot, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/ceremony.ts",
+      "line": 169,
+      "column": 46,
+      "owner": "relayCeremony",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        161
+      ],
+      "text": "verifyWorkspaceAuthority(before.authority, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/contentCheckpoint.ts",
+      "line": 48,
+      "column": 22,
+      "owner": "exchangeCheckpoint",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        41
+      ],
+      "text": "verifyWorkspaceAuthority(s, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/contentTransfer.ts",
+      "line": 63,
+      "column": 22,
+      "owner": "transferContent",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        56
+      ],
+      "text": "verifyWorkspaceAuthority(s, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/delivery.ts",
+      "line": 569,
+      "column": 15,
+      "owner": "verifyCurrentWorkspaceAuthority",
+      "callee": "resolveMembershipDeliveryAuthority",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "resolveMembershipDeliveryAuthority(s, issuer)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/delivery.ts",
+      "line": 570,
+      "column": 15,
+      "owner": "verifyCurrentWorkspaceAuthority",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyWorkspaceAuthority(s, issuer)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/delivery.ts",
+      "line": 1022,
+      "column": 38,
+      "owner": "decideSubmission",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        1005
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(s, issuer)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/delivery.ts",
+      "line": 1223,
+      "column": 44,
+      "owner": "readAccepted",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        1214
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(s, issuer)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/delivery.ts",
+      "line": 1376,
+      "column": 19,
+      "owner": "readInbound",
+      "callee": "reuseInboundAuthority",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        1367
+      ],
+      "text": "reuseInboundAuthority( authorityReuse, before, issuer, verifyCurrentWorkspaceAuthority, reuse?.authority, )",
+      "finding": "S11",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/discovery.ts",
+      "line": 68,
+      "column": 26,
+      "owner": "discoverAuthority",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        62
+      ],
+      "text": "verifyWorkspaceAuthority(before, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/discovery.ts",
+      "line": 85,
+      "column": 13,
+      "owner": "discoverAuthority",
+      "callee": "verifyDiscoveryResponse",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        62
+      ],
+      "text": "verifyDiscoveryResponse(result, request, base, now())",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/enrollment.ts",
+      "line": 280,
+      "column": 17,
+      "owner": "run",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(snapshot.base, this.issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/grants.ts",
+      "line": 153,
+      "column": 26,
+      "owner": "begin",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(captured.authority, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/historyCheckpoint.ts",
+      "line": 98,
+      "column": 15,
+      "owner": "memberships",
+      "callee": "verifyCertificationHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCertificationHistory(c, auth.successor, base, { epoch: 3, head: c.head })",
+      "finding": "S03",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/historyCheckpoint.ts",
+      "line": 99,
+      "column": 15,
+      "owner": "memberships",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory(base, auth.successor)",
+      "finding": "S03",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/historyCheckpoint.ts",
+      "line": 102,
+      "column": 25,
+      "owner": "memberships",
+      "callee": "extendMembershipHistory",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        101
+      ],
+      "text": "extendMembershipHistory(proof, history)",
+      "finding": "S03",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/historyCheckpoint.ts",
+      "line": 236,
+      "column": 26,
+      "owner": "exchangeHistoryCheckpoint",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        230
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(before.original, issuer)",
+      "finding": "S03",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/historyCheckpoint.ts",
+      "line": 240,
+      "column": 13,
+      "owner": "exchangeHistoryCheckpoint",
+      "callee": "verifyHistoryExchange",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        230
+      ],
+      "text": "verifyHistoryExchange(r, membership, now())",
+      "finding": "S03",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/historyCheckpoint.ts",
+      "line": 273,
+      "column": 15,
+      "owner": "exchangeHistoryCheckpoint",
+      "callee": "verifyHistoryExchange",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        230
+      ],
+      "text": "verifyHistoryExchange(old, at, old.expiresAt - 1)",
+      "finding": "S03",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 243,
+      "column": 15,
+      "owner": "commit",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(root, this.issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 286,
+      "column": 19,
+      "owner": "commit",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory( checked.prepared.base, checked.prepared.proofs?.successor ?? null, )",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 313,
+      "column": 26,
+      "owner": "commit",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(root, this.issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 370,
+      "column": 13,
+      "owner": "commit",
+      "callee": "extendMembershipHistory",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "extendMembershipHistory(successor, history)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 530,
+      "column": 28,
+      "owner": "read",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(before, this.issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 575,
+      "column": 17,
+      "owner": "read",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        571
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(before, this.issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/lostDeviceRecovery.ts",
+      "line": 817,
+      "column": 26,
+      "owner": "run",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(before.base, this.issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membership.ts",
+      "line": 145,
+      "column": 26,
+      "owner": "admitMembership",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        129
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(root, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipAuthority.ts",
+      "line": 23,
+      "column": 24,
+      "owner": "verifyPendingMembership",
+      "callee": "resolveMembershipDeliveryAuthority",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "resolveMembershipDeliveryAuthority(snapshot, issuer)",
+      "finding": "S02",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipAuthority.ts",
+      "line": 29,
+      "column": 24,
+      "owner": "verifyPendingMembership",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( { ...proofs, continuations: proofs.continuations.slice(0, index + 1) }, base, )",
+      "finding": "S02",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipCancellation.ts",
+      "line": 114,
+      "column": 30,
+      "owner": "cancelMembership",
+      "callee": "resolveMembershipDeliveryAuthority",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        72
+      ],
+      "text": "resolveMembershipDeliveryAuthority(s, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipCheckpoint.ts",
+      "line": 63,
+      "column": 17,
+      "owner": "readMembershipCheckpoint",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        55
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(s, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 45,
+      "column": 24,
+      "owner": "resolveMembershipDeliveryAuthority",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyWorkspaceAuthority( { ...s, recoveries: [], rotations: [], continuations: [], membershipTransfers: [], membershipCancellations: [], promotion: { ...s.promotion, successor_head: originalHea",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 59,
+      "column": 13,
+      "owner": "resolveMembershipDeliveryAuthority",
+      "callee": "verifyCertificationHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCertificationHistory(cert, anchor.successor, base, { epoch: 3, head: cert.head })",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 60,
+      "column": 13,
+      "owner": "resolveMembershipDeliveryAuthority",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory(base, anchor.successor)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 114,
+      "column": 23,
+      "owner": "applyRotationsBefore",
+      "callee": "extendMembershipHistory",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        99
+      ],
+      "text": "extendMembershipHistory(proof, prior)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 141,
+      "column": 21,
+      "owner": "resolveMembershipDeliveryAuthority",
+      "callee": "extendMembershipHistory",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        120
+      ],
+      "text": "extendMembershipHistory(proof, history)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 156,
+      "column": 23,
+      "owner": "resolveMembershipDeliveryAuthority",
+      "callee": "extendMembershipHistory",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        120
+      ],
+      "text": "extendMembershipHistory(cancellation, history)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipHistory.ts",
+      "line": 176,
+      "column": 23,
+      "owner": "resolveMembershipDeliveryAuthority",
+      "callee": "extendMembershipHistory",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        120
+      ],
+      "text": "extendMembershipHistory(certification, history)",
+      "finding": "S01",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipLocator.ts",
+      "line": 95,
+      "column": 26,
+      "owner": "membershipBootstrap",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        85
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(before, issuer)",
+      "finding": "S02",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipLocator.ts",
+      "line": 97,
+      "column": 37,
+      "owner": "membershipBootstrap",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        85
+      ],
+      "text": "verifyMembershipChain(membershipProofChain(before), base)",
+      "finding": "S02",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipLocator.ts",
+      "line": 152,
+      "column": 17,
+      "owner": "discoverMembership",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        145
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(before, issuer)",
+      "finding": "S02",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipLocator.ts",
+      "line": 156,
+      "column": 37,
+      "owner": "discoverMembership",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        145
+      ],
+      "text": "verifyMembershipChain(membershipProofChain(before), base)",
+      "finding": "S02",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/membershipTransfer.ts",
+      "line": 156,
+      "column": 30,
+      "owner": "transferMembership",
+      "callee": "resolveMembershipDeliveryAuthority",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        87
+      ],
+      "text": "resolveMembershipDeliveryAuthority(s, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/publisherAudit.worker.ts",
+      "line": 19,
+      "column": 15,
+      "owner": "<module>",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCurrentWorkspaceAuthority(s, { pin, check() {} })",
+      "finding": "S18",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/removalDiscovery.ts",
+      "line": 50,
+      "column": 26,
+      "owner": "discoverRemoval",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        46
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(before, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/removalPreparation.ts",
+      "line": 51,
+      "column": 26,
+      "owner": "prepareRemoval",
+      "callee": "resolveMembershipDeliveryAuthority",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        45
+      ],
+      "text": "resolveMembershipDeliveryAuthority(root, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/rotation.ts",
+      "line": 64,
+      "column": 26,
+      "owner": "commitRotation",
+      "callee": "verifyCurrentWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        58
+      ],
+      "text": "verifyCurrentWorkspaceAuthority(root, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "account-service/successor.ts",
+      "line": 99,
+      "column": 26,
+      "owner": "admitPrepared",
+      "callee": "verifyWorkspaceAuthority",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        84
+      ],
+      "text": "verifyWorkspaceAuthority(delivery, issuer)",
+      "finding": "S12",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/contentReader.ts",
+      "line": 101,
+      "column": 25,
+      "owner": "openApprovedWriting",
+      "callee": "verifyCertificationHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCertificationHistory(a.certification, a.successor, a.base, { epoch: 3, head: a.certification.head, })",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/deviceRemovalVault.ts",
+      "line": 147,
+      "column": 25,
+      "owner": "openDeviceRemovalVault",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(source.proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/deviceRemovalVault.ts",
+      "line": 172,
+      "column": 31,
+      "owner": "openDeviceRemovalVault",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( { ...retained.parent, continuations: [...retained.parent.continuations, retained.successor!], }, base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/deviceRemovalVault.ts",
+      "line": 213,
+      "column": 22,
+      "owner": "openDeviceRemovalVault",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(retained!.parent, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/historyHttp.ts",
+      "line": 45,
+      "column": 11,
+      "owner": "<anonymous>",
+      "callee": "verifyHistoryExchange",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyHistoryExchange(request, authority, Date.now())",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/lostRecoveryProgress.ts",
+      "line": 74,
+      "column": 15,
+      "owner": "verifyLostRecoveryProgress",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory(p.prepared.base, p.prepared.proofs?.successor ?? null)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/lostRecoveryProgress.ts",
+      "line": 91,
+      "column": 28,
+      "owner": "verifyLostRecoveryProgress",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(proofs, p.prepared.base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipConnection.ts",
+      "line": 139,
+      "column": 23,
+      "owner": "completedConnection",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(p.latest, held.base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipConnection.ts",
+      "line": 249,
+      "column": 24,
+      "owner": "advanceMembershipConnection",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(p.latest, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipConnection.ts",
+      "line": 288,
+      "column": 14,
+      "owner": "advanceMembershipConnection",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(preparation.parent, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipConnection.ts",
+      "line": 317,
+      "column": 22,
+      "owner": "advanceMembershipConnection",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipConnection.ts",
+      "line": 341,
+      "column": 40,
+      "owner": "advanceMembershipConnection",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(pendingProofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipConnection.ts",
+      "line": 450,
+      "column": 9,
+      "owner": "advanceMembershipConnection",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(certifiedProofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipInvitation.ts",
+      "line": 26,
+      "column": 20,
+      "owner": "heldMembershipSource",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(source.proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/membershipReader.ts",
+      "line": 61,
+      "column": 37,
+      "owner": "loadMembershipWriting",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( capturedAuthority.proofs, capturedAuthority.base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/recoveryDetachment.ts",
+      "line": 36,
+      "column": 29,
+      "owner": "verifyRecoveryDetachment",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(value.proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/account/recoveryTransition.ts",
+      "line": 84,
+      "column": 17,
+      "owner": "prepareRecoveryCommit",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory( checked.prepared.base, checked.prepared.proofs?.successor ?? null, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountMembership.ts",
+      "line": 67,
+      "column": 22,
+      "owner": "installedMembershipHistory",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(installed.proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountMembership.ts",
+      "line": 139,
+      "column": 20,
+      "owner": "check",
+      "callee": "createAdmissionPrefixVerifier",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "createAdmissionPrefixVerifier(history, subtle)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountReceive.ts",
+      "line": 1798,
+      "column": 11,
+      "owner": "<callback:task.wait>",
+      "callee": "verifyAdmissionHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "verifyAdmissionHistory( artifact, { pin: marker.pin, request: marker.admission!.request, receipt: marker.admission!.receipt!, }, { epoch: 1, head: bas",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountReceive.ts",
+      "line": 1946,
+      "column": 33,
+      "owner": "<callback:task.wait>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(proofs, anchor, membershipWork(task))",
+      "finding": "S19",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountReceive.ts",
+      "line": 2243,
+      "column": 13,
+      "owner": "<callback:network.wait>",
+      "callee": "verifyMembershipDiscoveryResponse",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "verifyMembershipDiscoveryResponse( response, prepared.request, prepared.anchor, Date.now(), membershipWork(network, prepared.context, prepared.payload), )",
+      "finding": "S19",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountReceive.ts",
+      "line": 2321,
+      "column": 11,
+      "owner": "<callback:network.wait>",
+      "callee": "verifyDiscoveryResponse",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "verifyDiscoveryResponse(response, prepared.request, prepared.first, Date.now())",
+      "finding": "S19",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountRotation.ts",
+      "line": 119,
+      "column": 26,
+      "owner": "<callback:withPromotionRoot>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(progress.parent, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountRotation.ts",
+      "line": 122,
+      "column": 28,
+      "owner": "<callback:withPromotionRoot>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountRotation.ts",
+      "line": 155,
+      "column": 26,
+      "owner": "<callback:withPromotionRoot>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(existingMembership.proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountSuccessor.ts",
+      "line": 83,
+      "column": 25,
+      "owner": "heldCaptureRoute",
+      "callee": "verifyCertificationHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyCertificationHistory( marker.successor.certification, marker.successor.artifact, { pin: marker.pin, request: marker.admission!.request, receipt: marker.admission!.receipt! }, { epoch: 3, head: marker.successor.",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountSuccessor.ts",
+      "line": 107,
+      "column": 25,
+      "owner": "heldCaptureRoute",
+      "callee": "verifyAdmissionHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyAdmissionHistory( marker.successor.artifact, { pin: marker.pin, request: marker.admission!.request, receipt: marker.admission!.receipt!, }, { epoch: 2, head: marker.successor.artifact.head }, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/accountSuccessor.ts",
+      "line": 217,
+      "column": 20,
+      "owner": "check",
+      "callee": "createAdmissionPrefixVerifier",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "createAdmissionPrefixVerifier(history!, subtle)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/historyCustody.ts",
+      "line": 31,
+      "column": 16,
+      "owner": "<callback:withAccountProgressCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(source.proofs, source.base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/historyCustody.ts",
+      "line": 32,
+      "column": 15,
+      "owner": "<callback:withAccountProgressCustody>",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory( source.base, 'successor' in source.state.marker! ? source.state.marker.successor?.artifact : null, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/joinedAccount.ts",
+      "line": 527,
+      "column": 9,
+      "owner": "<callback:task.wait>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( { successor: a.successor, certification: a.certification, continuations: marker.authority.continuations, }, a.base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/joinedAccount.ts",
+      "line": 535,
+      "column": 9,
+      "owner": "<callback:task.wait>",
+      "callee": "verifyCertificationHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "verifyCertificationHistory(a.certification, a.successor, a.base, { epoch: 3, head: marker.authority.certification.head, })",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/localBaselineAuthority.ts",
+      "line": 143,
+      "column": 22,
+      "owner": "verifyBaselineAuthority",
+      "callee": "createAdmissionPrefixVerifier",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "createAdmissionPrefixVerifier(history, subtle, { position: b.own.position, link: b.own.link, verifiedThroughEpoch: origin.epoch, })",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/membershipReading.ts",
+      "line": 188,
+      "column": 26,
+      "owner": "verifyReplacementReading",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( { successor: a.successor, certification: a.certification, continuations: a.continuations }, a.base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/membershipReading.ts",
+      "line": 206,
+      "column": 24,
+      "owner": "verifyReplacementReading",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( { ...verified.proofs, continuations: verified.proofs.continuations.slice(0, -1) }, a.base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/membershipSource.ts",
+      "line": 140,
+      "column": 19,
+      "owner": "<callback:withPromotionRoot>",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory(base, marker!.successor?.artifact ?? null)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/membershipSource.ts",
+      "line": 340,
+      "column": 28,
+      "owner": "<callback:withNativeHistorySource>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(captured.proofs, source.base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/recoverySource.ts",
+      "line": 225,
+      "column": 30,
+      "owner": "readRecoverySource",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        190
+      ],
+      "text": "verifyMembershipChain( { ...proofs!, continuations: proofs!.continuations.slice(0, index + 1) }, base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 57,
+      "column": 30,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 59,
+      "column": 19,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(installed, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 61,
+      "column": 30,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyEarlyHistory( base, 'admission' in (state.marker ?? {}) ? ( state.marker as NonNullable< Awaited<ReturnType<typeof readPromotion>>['marker",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 116,
+      "column": 28,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(parent, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 138,
+      "column": 35,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain( { ...old.parent, continuations: [...old.parent.continuations, old.successor!] }, base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 167,
+      "column": 32,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [],
+      "text": "verifyMembershipChain(value.observed, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 230,
+      "column": 20,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        214
+      ],
+      "text": "verifyMembershipChain(proofs, base)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 231,
+      "column": 19,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyEarlyHistory",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        214
+      ],
+      "text": "verifyEarlyHistory( base, kind === 'promotion' ? (state as Awaited<ReturnType<typeof readPromotion>>).marker!.successor?.artifact : null, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 310,
+      "column": 32,
+      "owner": "<callback:withRotationCustody>",
+      "callee": "verifyMembershipChain",
+      "categories": [
+        "authority_evidence",
+        "broad_structural_inventory"
+      ],
+      "awaited": true,
+      "loopAncestors": [
+        214
+      ],
+      "text": "verifyMembershipChain( { ...pending.parent, continuations: [...pending.parent.continuations, pending.successor!], }, base, )",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 334,
+      "column": 20,
+      "owner": "verifyDetachedPrefix",
+      "callee": "AwaitExpression.createAdmissionPrefixVerifier",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "( await import('../../account-protocol/admissionHistory') ).createAdmissionPrefixVerifier(history, subtle)",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    },
+    {
+      "file": "src/crdt/rotationObservation.ts",
+      "line": 362,
+      "column": 20,
+      "owner": "verifyRetainedDetachedPrefix",
+      "callee": "AwaitExpression.createAdmissionPrefixVerifier",
+      "categories": [
+        "authority_evidence"
+      ],
+      "awaited": false,
+      "loopAncestors": [],
+      "text": "( await import('../../account-protocol/admissionHistory') ).createAdmissionPrefixVerifier(history, subtle, { position: origin.position, link: origin.link, verifiedThroughEpoch: baseline.authorityEpoch, })",
+      "finding": "S13",
+      "disposition": "reviewed as member of named contract/runtime group; no per-call measured cost claim"
+    }
+  ],
+  "classificationLegend": {
+    "static_hypothesis": "Structure verified; savings/cost at this site not established by this analysis.",
+    "already_optimized": "Mechanism already implemented; remaining adjustment needs distinct evidence.",
+    "unsupported": "No justified speedup or unsafe-to-remove boundary; preserve unless new evidence."
+  }
+}

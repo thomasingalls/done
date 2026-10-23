@@ -62,6 +62,7 @@ async function create(slot: string, automatic = false) {
 async function open(slot: string, code: string) {
   const route = (await listLocalWorkspaces(slot, code))[0]!;
   const result = await openLocalWorkspace(slot, code, {
+    today: () => '2026-10-14',
     identity: {
       id: route.principal,
       actor: { kind: 'human', name: 'Alex', color: '#e0662f' },
@@ -102,6 +103,7 @@ it('copies the complete list, preferences, card identities, and attribution into
     to: { date: '2026-10-14', section: 'done' },
     text: 'Unexpected useful work',
   }).accepted;
+  expect(workspace.read().cards.map((card) => card.text)).toContain('Unexpected useful work');
   await workspace.command({ kind: 'settings', rolloverHour: 4 }).accepted;
   await workspace.whenDurable();
   const before = workspace.read(),
@@ -161,6 +163,7 @@ it('removes a locked slot without a credential, preserving other slots and refus
     to: { date: '2026-10-14', section: 'done' },
     text: 'Private work',
   }).accepted;
+  expect(workspace.read().cards.map((card) => card.text)).toContain('Private work');
   await workspace.whenDurable();
   await workspace.close();
   await removeDeviceData('local');
@@ -183,6 +186,7 @@ it('resumes protection after refused source deletion and keeps ordinary opening 
     to: { date: '2026-10-14', section: 'done' },
     text: 'Keep this',
   }).accepted;
+  expect(workspace.read().cards.map((card) => card.text)).toContain('Keep this');
   await workspace.whenDurable();
   await workspace.close();
   const protectedCode = generateDeviceCode(),
@@ -224,6 +228,7 @@ it.each([
       to: { date: '2026-10-14', section: 'scheduled' },
       text: 'Keep through interruption',
     }).accepted;
+    expect(workspace.read().cards.map((card) => card.text)).toContain('Keep through interruption');
     await workspace.whenDurable();
     const before = workspace.read();
     await workspace.close();
@@ -255,6 +260,7 @@ it('preserves the source if a previously verified protected copy is damaged befo
     to: { date: '2026-10-14', section: 'done' },
     text: 'Last readable copy',
   }).accepted;
+  expect(workspace.read().cards.map((card) => card.text)).toContain('Last readable copy');
   await workspace.whenDurable();
   await workspace.close();
   const protectedCode = generateDeviceCode();

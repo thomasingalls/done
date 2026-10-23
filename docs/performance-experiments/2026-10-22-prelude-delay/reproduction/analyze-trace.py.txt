@@ -1,0 +1,46 @@
+from pathlib import Path
+import json,collections,math
+r=Path(__file__).parent;rows=[]
+def stats(v):
+ v=sorted(v);return{'n':len(v),'p50':v[math.ceil(.5*len(v))-1],'p95':v[math.ceil(.95*len(v))-1],'min':v[0],'max':v[-1]}if v else{'n':0}
+for item in json.loads((r/'run-plan.json').read_text()):
+ x=json.loads((r/item['name']/'result.json').read_text());events=[e for t in x['traces']for e in t['events']];assert all(e['dropped']==0 for e in events if e['tag']=='observer-counts');native=collections.defaultdict(list)
+ for e in events:
+  if 'id'in e:native[(e['id'],e['path'])].append(e)
+ summaries=[e for e in events if e['tag']=='crypto-summary'];net=[q for q in x['network']if q['label']in ['Q0','Q1']and q['phase']=='measured'and q['path']in ['/account/delivery/submit','/account/delivery/read-v2','/account/delivery/read-v2-batch','/account/membership/v2/discover','/account/history/v1/checkpoint']];matched=[];unmatched=[];operations={}
+ for q in net:
+  match=[s for s in summaries if s.get('bodySha256')==q['bodySha256']and s['path']==q['path']and s['status']==q.get('status')]
+  if len(match)!=1:unmatched.append({'networkId':q['id'],'path':q['path'],'status':q.get('status'),'failed':bool(q.get('failedAt')),'nativeMatches':len(match)});continue
+  summary=match[0];es=native[(summary['id'],summary['path'])];spans=[e for e in es if e['tag']=='span-end'];cache=[e for e in es if e['tag']=='authority-cache'];matched.append({'networkId':q['id'],'nativeId':summary['id'],'label':q['label'],'path':q['path'],'bodySha256':q['bodySha256'],'status':q['status'],'nativeElapsedMs':summary['elapsedMs'],'httpHeadersMs':q['headersAt']-q['at'],'spans':spans,'cache':cache,'crypto':summary['rows']})
+ for path in sorted({q['path']for q in net}):
+  selected=[q for q in matched if q['path']==path];spans=collections.defaultdict(list);crypt=collections.defaultdict(list)
+  for q in selected:
+   for e in q['spans']:spans[e['name']].append(e['elapsedMs'])
+   for e in q['crypto']:crypt[e['stage']+':'+e['op']].append(e['count'])
+  cache=[c for q in selected for c in q['cache']];operations[path]={'matchedHttp':len(selected),'nativeElapsedMs':stats([q['nativeElapsedMs']for q in selected]),'spans':{k:stats(v)for k,v in spans.items()},'cryptoCountPerHttpRow':{k:stats(v)for k,v in crypt.items()},'authorityCacheHits':sum(c['hit']for c in cache),'authorityCacheMisses':sum(not c['hit']for c in cache),'distinctContexts':len({c['contextSha256']for c in cache}),'distinctLiveWitnesses':len({c['liveWitnessSha256']for c in cache})}
+ # Keep sender/receiver distinct: the sender can generate expensive empty checks too.
+ perLabel={}
+ for label in ['Q0','Q1']:
+  chosen=[q for q in matched if q['label']==label];cache=[e for q in chosen for e in q['cache']];spans=collections.defaultdict(list)
+  for q in chosen:
+   for e in q['spans']:spans[e['name']].append(e['elapsedMs'])
+  prefixes=[]
+  for q in chosen:
+   prefixes.extend(e for e in native[(q['nativeId'],q['path'])]if e['tag']=='read-prefix')
+  perLabel[label]={'httpCount':len(chosen),'summedHttpHeadersWaitMs':sum(q['httpHeadersMs']for q in chosen),'pathHttpWaitMs':{path:sum(q['httpHeadersMs']for q in chosen if q['path']==path)for path in sorted({q['path']for q in chosen})},'spans':{k:{**stats(v),'sumMs':sum(v)}for k,v in spans.items()},'readCacheHits':sum(e['hit']for q in chosen if q['path'].startswith('/account/delivery/read-v2')for e in q['cache']),'readCacheMisses':sum(not e['hit']for q in chosen if q['path'].startswith('/account/delivery/read-v2')for e in q['cache']),'readPrefixObservations':len(prefixes),'emptyAtCapturedTip':sum(e['after']==e['through']for e in prefixes),'publisherGroups':{pub:{'readAttempts':len([e for e in prefixes if e['publisherSha']==pub]),'emptyAtTip':sum(e['after']==e['through']for e in prefixes if e['publisherSha']==pub)}for pub in {e['publisherSha']for e in prefixes}}}
+ # Wire projection is unverified observation; actual native signatures/prefixes have a separate audit.
+ requests=[q for q in x['network']if q['label']=='Q0'and q['phase']=='measured'and q['path']=='/account/delivery/submit'];nativeAccepted=next(v for v in json.loads((r/'native-audit.json').read_text())if v['name']==item['name'])['identities'];pubs=[q for q in requests if nativeAccepted.get('Q:'+q.get('frameRequest',{}).get('publisherSha256','')+':'+str(q.get('frameRequest',{}).get('position','')),{}).get('envelopeSha256')==q.get('frameRequest',{}).get('envelopeSha256')];assert len(pubs)==len(requests);reads=[q for q in x['network']if q['label']=='Q1'and q['phase']=='measured'and q['path']in ['/account/delivery/read-v2','/account/delivery/read-v2-batch']];parseFailures=[]
+ for q in requests+reads:
+  if q.get('frameRequest',{}).get('parseFailed')or q.get('frameResponse',{}).get('parseFailed'):parseFailures.append({'networkId':q['id'],'path':q['path'],'status':q.get('status'),'failed':bool(q.get('failedAt'))})
+ for q in reads:
+  requestsByHash={v['requestSha256']:v for v in q.get('frameRequest',{}).get('requests',[])}
+  for page in q.get('frameResponse',{}).get('pages',[]):
+   req=requestsByHash[page['requestSha256']];assert page['next']==req['after']+len(page['entries'])and page['through']>=page['next']
+   for entry in page['entries']:assert entry['envelope']['publisherSha256']==req['publisherSha256']==entry['decision']['publisherSha256'];assert entry['envelope']['position']==entry['decision']['position']
+ assert not any(q['label']=='Q1'and q['phase']=='measured'and q['path']=='/account/delivery/submit'for q in x['network']),'displayed aggregate cannot isolate Q0 with concurrent Q1 writing'
+ start=x['startedAt'];sender=x['probesAtDeadline'][0]['progress'];peer=x['probesAtDeadline'][1]['progress'];baseS=next(v['accepted']for v in reversed(sender)if v['at']<=start);baseP=next(v['received']for v in reversed(peer)if v['at']<=start);positions=[]
+ for q in pubs:
+  req=q['frameRequest'];res=q.get('frameResponse',{});assert res.get('parseFailed')or(req['publisherSha256']==res['publisherSha256']and req['position']==res['position']);pos=req['position'];publisher=req['publisherSha256'];offered=[v for v in reads if any(w['publisherSha256']==publisher and w['after']+1==pos for w in v.get('frameRequest',{}).get('requests',[]))];returned=[v for v in reads if any(e['envelope']['publisherSha256']==publisher and e['envelope']['position']==pos for p in v.get('frameResponse',{}).get('pages',[])for e in p['entries'])];at=next((v['at']for v in peer if v['at']>=start and v['received']-baseP>=pos-baseS),None);first=min((v['at']for v in offered),default=None);body=min((v['bodyObservedAt']for v in returned),default=None)
+  positions.append({'position':pos,'publisherSha256':publisher,'submitHeadersAt':q['headersAt'],'firstReadRequestAt':first,'firstReturnedBodyAt':body,'firstDisplayedProgressAt':at,'waitForRequestMs':first-q['headersAt']if first is not None else None,'requestToBodyMs':body-first if body is not None and first is not None else None,'bodyToDisplayMs':at-body if at is not None and body is not None else None,'acceptedReplyToDisplayMs':at-q['headersAt']if at is not None else None})
+ slices={k:stats([p[k]for p in positions if p[k]is not None])for k in ['waitForRequestMs','requestToBodyMs','bodyToDisplayMs','acceptedReplyToDisplayMs']};rows.append({**item,'matchedRequests':matched,'unmatchedRequests':unmatched,'operations':operations,'perLabel':perLabel,'positionTimeline':positions,'positionSlicesMs':slices,'parseFailures':parseFailures,'nativeAcceptedSubmissionsIndependentlyMatched':len(pubs),'acceptedReplyBodiesObserved':sum(q.get('frameResponse',{}).get('kind')=='accepted'for q in pubs),'limits':'Instrumented finite journey; UI progress is a proxy, headers bound reply observation not exact commit; stages overlap and are not exclusive CPU.'})
+(r/'trace-analysis.json').write_text(json.dumps({'status':'passed','runs':rows},indent=2)+'\n');print(json.dumps([{k:v for k,v in row.items()if k in ['name','operations','positionSlicesMs','parseFailures','nativeAcceptedSubmissionsIndependentlyMatched','acceptedReplyBodiesObserved','unmatchedRequests']}for row in rows],indent=2))

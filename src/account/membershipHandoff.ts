@@ -1,3 +1,4 @@
+import { reportEnrollmentProgress, type EnrollmentProgress } from '../lib/enrollmentProgress';
 /** Durable continuation of an approved additional-device comparison. No new user ceremony. */
 import { same } from '../../account-protocol/admission';
 import { closed } from '../../account-protocol/preparation';
@@ -67,12 +68,14 @@ export async function continueMembershipHandoff(
     base: SuccessorBase;
     membership: VerifiedMembership;
     certification: MembershipCertification | null;
+    progress?: (progress: EnrollmentProgress) => void;
     /** The native source owner proves accepted coverage and captures journal-inclusive writing. */
     prepareReplacement?: () => Promise<ReplacementCheckpoint>;
   },
   save: () => Promise<void>,
   request: (path: string, body: unknown) => Promise<unknown>,
 ) {
+  const report = (value: EnrollmentProgress) => reportEnrollmentProgress(boot.progress, value);
   const p = progress,
     parent = boot.membership,
     state = membershipState(parent);
@@ -257,6 +260,7 @@ export async function continueMembershipHandoff(
         await save();
       }
       await durableContent();
+      report({ stage: 'publishing' });
       const remote = await exchangeCheckpoint('publish');
       if (!same(remote.checkpoint, p.replacement))
         throw Error('Retained replacement snapshot changed');
@@ -267,6 +271,7 @@ export async function continueMembershipHandoff(
       }
       proposal.checkpointHash = await replacementCheckpointHash(p.replacement);
     }
+    report({ stage: 'delivery' });
     proposal.wrap = await owner.wrapContent(
       context.candidate.wPub,
       ceremonyWrapInfo(transcriptHash),
@@ -278,6 +283,7 @@ export async function continueMembershipHandoff(
     await save();
   }
   if (p.role === 'existing') await durableContent();
+  report({ stage: p.role === 'existing' ? 'delivery' : 'installation' });
   let remote = await transfer(
     p.role === 'existing' ? 'deliver' : 'read',
     p.role === 'existing' ? p.content!.delivery : null,
@@ -357,6 +363,7 @@ export async function continueMembershipHandoff(
     remote = await transfer('install', content.installation);
   }
   if (remote['certification']) {
+    report({ stage: 'certification' });
     const result = parseMembershipCertification(remote['certification']);
     await verifyMembershipCertification(result, parent);
     if (

@@ -74,6 +74,17 @@
 .setup-panel .local-generated-code {
   overflow-wrap: anywhere;
 }
+.enrollment-progress {
+  margin-block: 1rem;
+}
+.enrollment-progress progress {
+  display: block;
+  width: 100%;
+  accent-color: var(--color-accent);
+}
+.enrollment-progress .setup-note {
+  font-size: 0.85rem;
+}
 .account-identity {
   display: block;
   margin: 0.75rem 0 1.5rem;

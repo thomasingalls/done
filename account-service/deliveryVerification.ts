@@ -1,5 +1,6 @@
 import type { DatabaseSync } from 'node:sqlite';
 import { createPublisherTips } from './publisherTips.ts';
+import { createInboundAuthorityCache } from './inboundAuthorityReuse.ts';
 /** Bounded, core-owned reuse of cryptographic evidence only. No keys or commit authority. */
 const MAX_ENTRIES = 512,
   MAX_BYTES = 16 * 1024 * 1024;
@@ -20,6 +21,7 @@ export function createDeliveryVerification(options?: {
   signal: () => void;
 }) {
   const tips = options && createPublisherTips(options.db, options.path, options.signal);
+  const authority = createInboundAuthorityCache();
   const entries = new Map<
     string,
     { context: string; inputs: Uint8Array[]; value: unknown; size: number }
@@ -36,11 +38,14 @@ export function createDeliveryVerification(options?: {
   };
   return {
     tips,
+    authority,
     close() {
+      authority.close();
       tips?.close();
       this.clear();
     },
     clear() {
+      authority.clear();
       revision++;
       tips?.invalidate();
       for (const slot of entries.keys()) remove(slot);

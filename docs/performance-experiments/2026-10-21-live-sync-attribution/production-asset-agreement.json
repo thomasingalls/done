@@ -1,0 +1,19 @@
+{
+  "release": "faf465f7",
+  "entryAssetsMatched": [
+    "/assets/rolldown-runtime-QTnfLwEv.js",
+    "/assets/admissionHistory-nO4apN9K.js",
+    "/assets/storageCompatibility-Ixv843Jw.js",
+    "/assets/writeSession-BnNxyJtv.js",
+    "/assets/custodyCrypto-C44ppXTm.js",
+    "/assets/deviceRemovalVault-BE8LR06F.js",
+    "/assets/verifiedRecords-kWNjZRWl.js",
+    "/assets/contentCompaction-BBeA_Srv.js",
+    "/assets/historyCheckpoint-CMstbZ84.js",
+    "/assets/localBaselineRecord-BvMBjegu.js",
+    "/assets/localBaselineAnchor-BucZNMNU.js",
+    "/assets/deviceDataRemoval-CsBZG77P.js",
+    "/assets/DeviceDataRemoval-DtTFigKJ.js",
+    "/assets/main-CfNx996q.js"
+  ]
+}

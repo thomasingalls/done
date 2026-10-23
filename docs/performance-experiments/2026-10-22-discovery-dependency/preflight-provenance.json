@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "file": "account-service/delivery.ts",
+      "preflightSha256": "2cd181c865ddf49e70abc45b3e2faa58d4444af08f517f1537642313c77deb98",
+      "finalSha256": "2cd181c865ddf49e70abc45b3e2faa58d4444af08f517f1537642313c77deb98",
+      "difference": "none"
+    },
+    {
+      "file": "account-service/publisherTips.ts",
+      "preflightSha256": "0086d2cf5e5a257eb5d8725b22f552e5141a4d0387bf69ac28224c6d19f10312",
+      "finalSha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d",
+      "difference": "unused import only"
+    },
+    {
+      "file": "account-service/membershipLocator.ts",
+      "preflightSha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361",
+      "finalSha256": "c704582c8c2039fbad7db17f3a40ee9e2d1c2be239a5ede25f475f966350d361",
+      "difference": "none"
+    },
+    {
+      "file": "test/account-ceremony/content-transfer.test.mjs",
+      "preflightSha256": "1f229dd1e15f9b128c5bcd9b60aec3cc5e080d62a6c4b7894d2c988ca1c03184",
+      "finalSha256": "6cc3fcc3d7096e503f9af7862815f1a6c7840164f12f9a6ec1f5b05ac3188c81",
+      "difference": "new clear assertion uses fresh capture"
+    }
+  ],
+  "originalCasesByteExact": true,
+  "preflightRuntimeBusinessASTExactToFinal": true,
+  "final13CasesRerunAfterStrongerClearAssertion": true
+}

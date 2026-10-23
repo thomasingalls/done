@@ -1,0 +1,10 @@
+{
+  "command": [
+    "pnpm",
+    "test",
+    "--maxWorkers=1"
+  ],
+  "exitCode": -15,
+  "startedAtNs": 1792712847009752000,
+  "completedAtNs": 1792712921220528000
+}

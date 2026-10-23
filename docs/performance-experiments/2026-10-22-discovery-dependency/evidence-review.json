@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "name": "1-R",
+      "keysAtDeadline": [
+        120,
+        78
+      ],
+      "localP95Ms": 3,
+      "discoveryRefusals": 12,
+      "history409s": 0,
+      "originalDeadlineFailed": true,
+      "postLoadAndColdDurabilityPassed": true
+    },
+    {
+      "name": "2-C",
+      "keysAtDeadline": [
+        120,
+        38
+      ],
+      "localP95Ms": 3,
+      "discoveryRefusals": 0,
+      "history409s": 6,
+      "originalDeadlineFailed": true,
+      "postLoadAndColdDurabilityPassed": true
+    },
+    {
+      "name": "3-C",
+      "keysAtDeadline": [
+        120,
+        45
+      ],
+      "localP95Ms": 3.099853515625,
+      "discoveryRefusals": 0,
+      "history409s": 6,
+      "originalDeadlineFailed": true,
+      "postLoadAndColdDurabilityPassed": true
+    },
+    {
+      "name": "4-R",
+      "keysAtDeadline": [
+        120,
+        65
+      ],
+      "localP95Ms": 4.699951171875,
+      "discoveryRefusals": 12,
+      "history409s": 0,
+      "originalDeadlineFailed": true,
+      "postLoadAndColdDurabilityPassed": true
+    }
+  ],
+  "candidateStillHeld": true,
+  "allFourOriginalDeliveryFailuresRetained": true
+}

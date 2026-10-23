@@ -1,0 +1,152 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "actor": "Q0",
+      "initialExact": true,
+      "wholeBrowserReopenExact": true,
+      "originSha256": "969e7be9ff3052ea48a72ecfc3615314a02bfd5f55172f94bea9f8b6b6002485",
+      "databases": [
+        {
+          "nameSha256": "587297f2e23a6402f4e948291802ec5ebb1696d998a17fdad327a4f02d63e464",
+          "stores": [
+            {
+              "name": "outbox",
+              "records": 0
+            },
+            {
+              "name": "slots",
+              "records": 1
+            }
+          ]
+        },
+        {
+          "nameSha256": "b6d95ccc6c745cc42c105463dcb398491630c527e493ba3839ae1cc44b2fa9c9",
+          "stores": [
+            {
+              "name": "progress",
+              "records": 1
+            }
+          ]
+        },
+        {
+          "nameSha256": "835f25c5cc42be1ee837c00aa254c9ecc62525340f652846912cf74067064fc2",
+          "stores": [
+            {
+              "name": "entries",
+              "records": 4
+            }
+          ]
+        },
+        {
+          "nameSha256": "471ed9d1d4ecc0ddabe4cd04a39ab6ae68ba39a524ff413ee3f6917d3928c707",
+          "stores": [
+            {
+              "name": "content",
+              "records": 48
+            },
+            {
+              "name": "heads",
+              "records": 112
+            },
+            {
+              "name": "meta",
+              "records": 1
+            },
+            {
+              "name": "outbound",
+              "records": 119
+            }
+          ]
+        },
+        {
+          "nameSha256": "2049f544e861a3aa9765b824db90dd426ef44e82c41397289a3a5041ffa3e3aa",
+          "stores": [
+            {
+              "name": "attempt",
+              "records": 1
+            }
+          ]
+        },
+        {
+          "nameSha256": "9719ca4a5a5ba24cea94c69328d6002b2f93849e86ab22129cef3ae39d8ad092",
+          "stores": [
+            {
+              "name": "slots",
+              "records": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "actor": "Q1",
+      "initialExact": true,
+      "wholeBrowserReopenExact": true,
+      "originSha256": "9f6ab15bbe64ad81abbf108ef372b15a125a7c591d7ace0c35de8dc59376cabd",
+      "databases": [
+        {
+          "nameSha256": "7df466c14a985a2fb640e27a0b33e4bef8c78aeef85834bb2a33b763ba612542",
+          "stores": [
+            {
+              "name": "content",
+              "records": 48
+            },
+            {
+              "name": "heads",
+              "records": 40
+            },
+            {
+              "name": "meta",
+              "records": 1
+            },
+            {
+              "name": "outbound",
+              "records": 3
+            }
+          ]
+        },
+        {
+          "nameSha256": "587297f2e23a6402f4e948291802ec5ebb1696d998a17fdad327a4f02d63e464",
+          "stores": [
+            {
+              "name": "outbox",
+              "records": 0
+            },
+            {
+              "name": "slots",
+              "records": 1
+            }
+          ]
+        },
+        {
+          "nameSha256": "835f25c5cc42be1ee837c00aa254c9ecc62525340f652846912cf74067064fc2",
+          "stores": [
+            {
+              "name": "entries",
+              "records": 4
+            }
+          ]
+        },
+        {
+          "nameSha256": "2049f544e861a3aa9765b824db90dd426ef44e82c41397289a3a5041ffa3e3aa",
+          "stores": [
+            {
+              "name": "attempt",
+              "records": 0
+            }
+          ]
+        },
+        {
+          "nameSha256": "9719ca4a5a5ba24cea94c69328d6002b2f93849e86ab22129cef3ae39d8ad092",
+          "stores": [
+            {
+              "name": "slots",
+              "records": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

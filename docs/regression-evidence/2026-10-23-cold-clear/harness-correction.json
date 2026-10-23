@@ -1,0 +1,6 @@
+{
+  "prototype": "input-mutation snapshot counter matched SQL without its existing cancelled-state suffix; saw0 instead of1",
+  "fix": "count the same authority-snapshot SELECT prefix including its existing state filter",
+  "originalBeforeLog": "new-before.log",
+  "counterexampleCredit": "only the corrected before run; original negative counter failure is not a product defect"
+}

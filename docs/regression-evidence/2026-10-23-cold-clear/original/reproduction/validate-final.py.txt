@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,shutil,json
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+def run(label,cmd,cwd=s,expected=0):
+ with(r/(label+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'label':label,'command':cmd,'exitCode':p.returncode});(r/'final-validation-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(label,p.returncode,flush=True);assert p.returncode==expected,label
+run('format-new-tests-complete',['node','node_modules/oxfmt/bin/oxfmt','--config','/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json','--write',str(r/'cold-regressions.mjs')]);f='test/account-service-delivery/cold-verification.test.mjs';(s/f).write_text((r/'before'/f).read_text()+(r/'cold-regressions.mjs').read_text());shutil.copy2(s/f,r/'reference-tests'/f);shutil.copy2(s/'test/account-service-delivery/publisher-commit-races.test.mjs',r/'reference-tests/test/account-service-delivery/publisher-commit-races.test.mjs')
+cmd=['node','--test','--test-reporter=spec','--test-name-pattern=cache-clear native retry|^clear during a cold wait','test/account-service-delivery/cold-verification.test.mjs'];run('new-before-complete',cmd,r/'reference-tests',expected=1);run('new-after-complete',cmd)
+run('focused-complete',['node','--test','--test-reporter=spec','test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-sessions/inbound-authority-cache.test.mjs','test/account-sessions/inbound-authority-reuse.test.mjs'])
+run('types-affected',['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--module','ESNext','--moduleResolution','bundler','--lib','ES2022,DOM,DOM.Iterable','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit','account-service/delivery.ts','account-service/inboundAuthorityReuse.ts'])
+run('lint',['node','node_modules/oxlint/bin/oxlint','account-service/delivery.ts','account-service/inboundAuthorityReuse.ts','test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs'])

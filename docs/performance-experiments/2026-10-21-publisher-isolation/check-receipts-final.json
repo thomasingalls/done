@@ -1,0 +1,59 @@
+[
+  {
+    "name": "planning-audit-corrected",
+    "command": [
+      "python3",
+      "/private/tmp/done-publisher-isolation-20261021/audit-planning.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792588934338,
+    "completedAt": 1792588934422
+  },
+  {
+    "name": "format-final",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "account-service/publisherTips.ts",
+      "test/account-service-delivery/publisher-isolation.test.mjs",
+      "test/account-service-inbound/controls.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792588934423,
+    "completedAt": 1792588934552
+  },
+  {
+    "name": "lint-final",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/publisherTips.ts",
+      "test/account-service-delivery/publisher-isolation.test.mjs",
+      "test/account-service-inbound/controls.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792588934553,
+    "completedAt": 1792588934622
+  },
+  {
+    "name": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-first-authority/registry.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 1,
+    "startedAt": 1792588934622,
+    "completedAt": 1792588976998
+  }
+]

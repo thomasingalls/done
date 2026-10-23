@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,hashlib,subprocess,os,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());i=json.loads((r/'measurement-identity.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+for k,h in i['files'].items():assert sha(r/k)==h,k
+for k,h in i['candidateInputs'].items():assert sha(r/'source'/k)==h and sha(repo/k)==h,k
+for k,h in i['clientFiles'].items():assert sha(r/'source/dist'/k)==h,k
+for k,h in i['appendOnlyTestFiles'].items():assert sha(repo/k)==h and (repo/k).read_bytes().startswith((r/'before'/k).read_bytes()),k
+for f in ['source-review','mount-review','challenge','affected-comparison','evidence-review','sensitivity','metadata-review','process-cleanup','read-refusals']:assert json.loads((r/(f+'.json')).read_text())['status']=='passed',f
+assert json.loads((r/'metadata-review.json').read_text())['sources']==len(json.loads((repo/'docs/account-crypto/census.json').read_text())['sources'])
+# Native inspector's entire body stays byte-for-byte the earlier independent OpenSSL checker.
+prior=Path('/private/tmp/done-ordinary-receive-20261022');assert(r/'audit-native.mjs').read_text().replace(str(r),str(prior))==(prior/'audit-native.mjs').read_text()
+for row in start['priorPatchManifest']['independentSequentialApply01Through19']:assert sha(Path(row['patch']))==row['sha256']
+for folder in ['2026-10-21-account-fairness','2026-10-22-membership-continuation','2026-10-22-discovery-dependency','2026-10-22-history-checkpoint','2026-10-22-ordinary-receive','2026-10-22-read-pacing']:
+ p=repo/'docs/performance-experiments'/folder
+ for line in(p/'SHA256SUMS').read_text().splitlines():h,f=line.split('  ',1);assert sha(p/f)==h,(folder,f)
+assert (repo/'docs/progress.md').read_bytes()==(r/'before/docs/progress.md').read_bytes()
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index'))==start['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+analysis=json.loads((r/'analysis.json').read_text());refusals=json.loads((r/'read-refusals.json').read_text());quiet=[]
+for rep in analysis['runs']:
+ x=json.loads((r/rep['name']/'result.json').read_text());native=[v for t in x['traces']for v in t['events']];q=[]
+ for request in x['network']:
+  if request['phase']!='measured' or not request['label'].startswith('Q') or request.get('status')!=409 or not request['path'].startswith('/account/delivery/read-v2'):continue
+  matches=[v for v in native if v.get('bodySha256')==request['bodySha256'] and v['path']==request['path']and v.get('status')==409];assert len(matches)==1 and isinstance(matches[0].get('reason'),str);q.append({'label':request['label'],'path':request['path'],'reason':matches[0]['reason']})
+ expected=next(v for v in refusals['runs']if v['name']==rep['name'])['labels'];assert len(q)==sum(1 for label in ['Q0','Q1']for v in expected[label]['failedRequests']if v['status']==409 and v['path'].startswith('/account/delivery/read-v2'))
+ quiet.append({'name':rep['name'],'read409s':q})
+old=json.loads((r/'before/docs/release-validation-manifest.json').read_text());new=json.loads((repo/'docs/release-validation-manifest.json').read_text());assert len(new['rows'])==len(old['rows'])==882;assert sum('blocked'in v for v in new['rows'])==sum('blocked'in v for v in old['rows'])
+out={'status':'passed','runtimeFilesChanged':['account-service/delivery.ts'],'newRegressions':15,'oldTestPrefixesExact':True,'wholeRuntimeAstReviewed':True,'allFrozenSourcesClientAndInputsExact':True,'allPriorPatchAndPacketBytesExact':True,'allPriorSecurityContractsAndReleaseBlocksRetained':True,'qualificationPaused':True,'heavyFairnessAcceptance':analysis['heavyFairnessAcceptance'],'quietRead409s':quiet,'realHeadAndIndexUnchangedAndUnstaged':True,'noPublication':True};(r/'final-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

@@ -1,0 +1,9 @@
+from pathlib import Path
+r=Path(__file__).parent
+for a in ['D','B']:
+ f=r/('source-'+a)/'test/live-sync-attribution/live-sync.spec.ts';s=f.read_text().replace("await session.send('Profiler.start');profiles.push({session,name:index?'receiver':'sender'});","const startedBefore=Date.now();await session.send('Profiler.start');const startedAfter=Date.now();const name=index?'receiver':'sender';(result.profileClocks??={})[name]={startedBefore,startedAfter};profiles.push({session,name});")
+ s=s.replace("const {profile:p}=await session.send('Profiler.stop');writeFileSync", "result.profileClocks[name].stoppedBefore=Date.now();const {profile:p}=await session.send('Profiler.stop');result.profileClocks[name].stoppedAfter=Date.now();writeFileSync")
+ f.write_text(s)
+# Update observer hash before any browser measurement; unchanged production/client source.
+import json,hashlib
+x=json.loads((r/'preflight.json').read_text());x['browserClosure']={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in (r/'source-D/test/live-sync-attribution').iterdir() if f.is_file()};(r/'preflight.json').write_text(json.dumps(x,indent=2)+'\n')

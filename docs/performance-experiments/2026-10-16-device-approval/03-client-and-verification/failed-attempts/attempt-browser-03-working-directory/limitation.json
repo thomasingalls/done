@@ -1,0 +1,4 @@
+{
+  "result": "Stopped during setup after noticing runner cwd was the primary checkout instead of the frozen candidate checkout. No candidate result credited.",
+  "correction": "Assert the expected frozen cwd in the operational config and launch from it explicitly."
+}

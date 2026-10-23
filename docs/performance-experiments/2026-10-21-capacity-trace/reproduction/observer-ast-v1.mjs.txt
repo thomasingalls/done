@@ -1,0 +1,14 @@
+import {readFileSync,writeFileSync} from 'node:fs';import {createRequire}from'node:module';import assert from'node:assert/strict';import{createHash}from'node:crypto';
+const root='/private/tmp/done-capacity-trace-20261021',require=createRequire('/Users/thomasingalls/.codex/worktrees/7fda/done/package.json'),{parse}=require('@babel/parser');
+const ignored=new Set(['start','end','loc','extra','comments','leadingComments','trailingComments','innerComments','tokens','errors']);
+function clean(v){if(Array.isArray(v))return v.map(clean).filter(x=>x!==undefined);if(!v||typeof v!=='object')return v;
+ if(v.type==='ImportDeclaration'&&/\/labCapacity(?:Trace|Probe)(?:\.ts)?$/.test(v.source.value))return undefined;
+ if(v.type==='ExpressionStatement'&&v.expression.type==='CallExpression'&&v.expression.callee.type==='Identifier'&&v.expression.callee.name.startsWith('__lab_'))return undefined;
+ if(v.type==='VariableDeclaration'&&v.declarations.every(d=>d.id.type==='Identifier'&&d.id.name.startsWith('__lab_')))return undefined;
+ if(v.type==='ObjectProperty'&&v.key.type==='StringLiteral'&&v.key.value.startsWith('X-Done-Lab-'))return undefined;
+ if(v.type==='CallExpression'&&v.callee.type==='Identifier'&&v.callee.name==='__lab_run'){assert.equal(v.arguments.length,3);return clean(v.arguments[2].body);}
+ const out={};for(const[k,x]of Object.entries(v))if(!ignored.has(k)){const a=clean(x);if(a!==undefined)out[k]=a;}
+ if(out.type==='IfStatement'&&out.consequent?.type==='BlockStatement'&&out.consequent.body.length===1)out.consequent=out.consequent.body[0];return out;}
+const rows=[];for(const arm of['R','C'])for(const path of['account-service/requestBudget.ts','account-service/scoped-http.ts','src/account/scopedTransport.ts']){
+ const before=readFileSync(root+'/'+arm+'-'+path.split('/').at(-1)+'.original.txt','utf8'),after=readFileSync(root+'/source-'+arm+'/'+path,'utf8'),p=s=>clean(parse(s,{sourceType:'module',plugins:['typescript']}));assert.deepEqual(p(after),p(before),arm+' '+path);rows.push({arm,path,originalSha256:createHash('sha256').update(before).digest('hex'),instrumentedSha256:createHash('sha256').update(after).digest('hex'),originalBusinessASTExact:true});}
+writeFileSync(root+'/observer-ast.json',JSON.stringify({status:'passed',rows,scope:'Independent AST normalization removes only declared observer nodes/headers/wrapper and normalizes single-statement refusal blocks; all original business AST nodes match.'},null,2)+'\n');console.log('All six observer-stripped business ASTs match');

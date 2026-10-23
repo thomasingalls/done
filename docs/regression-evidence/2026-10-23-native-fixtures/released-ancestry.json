@@ -1,0 +1,27 @@
+[
+  {
+    "commit": "a52ef52b",
+    "ancestorOfReleasedSourceFaf465f7": true,
+    "exitCode": 0
+  },
+  {
+    "commit": "5e47a043",
+    "ancestorOfReleasedSourceFaf465f7": true,
+    "exitCode": 0
+  },
+  {
+    "commit": "673c9fa8",
+    "ancestorOfReleasedSourceFaf465f7": true,
+    "exitCode": 0
+  },
+  {
+    "commit": "c609d8c7",
+    "ancestorOfReleasedSourceFaf465f7": true,
+    "exitCode": 0
+  },
+  {
+    "commit": "51c17a93",
+    "ancestorOfReleasedSourceFaf465f7": false,
+    "exitCode": 1
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-capacity-trace-20261021/analyze.py"
+    ],
+    "startedAt": 1792614374349,
+    "completedAt": 1792614374850,
+    "exitCode": 0
+  },
+  {
+    "name": "independent-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-capacity-trace-20261021/review.py"
+    ],
+    "startedAt": 1792614374850,
+    "completedAt": 1792614375064,
+    "exitCode": 0
+  },
+  {
+    "name": "observer-ast-final",
+    "command": [
+      "node",
+      "/private/tmp/done-capacity-trace-20261021/observer-ast.mjs"
+    ],
+    "startedAt": 1792614375064,
+    "completedAt": 1792614375439,
+    "exitCode": 0
+  },
+  {
+    "name": "identity",
+    "command": [
+      "python3",
+      "/private/tmp/done-capacity-trace-20261021/identity.py"
+    ],
+    "startedAt": 1792614375440,
+    "completedAt": 1792614382333,
+    "exitCode": 0
+  },
+  {
+    "name": "census",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792614382333,
+    "completedAt": 1792614383015,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792614383016,
+    "completedAt": 1792614384136,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792614384136,
+    "completedAt": 1792614386511,
+    "exitCode": 0
+  }
+]

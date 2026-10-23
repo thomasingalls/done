@@ -131,3 +131,27 @@ isolated periodic audit remain fork/apply/full-state oracles independently of th
 still checks native record authentication, completeness, original signed receipts, authority and
 lifetime. Request/page/receipt decoders omit redundant re-serialization only after validating their
 unchanged canonical input, field, extent and size rules; no stored bytes or format fences change.
+
+## 2026-10-16 — Transient multi-entry accepted-history pages
+
+`verifyHistoryPage` authenticates the existing v2 request/page framing for up to eight entries when
+reconstructing an independently authenticated history source. It returns transient updates, count,
+position, link and observed tip only; it produces no durable receipt. The ordinary `verifyInboundPage`,
+`verifyStoredInbound` and encrypted inbound-record codec retain their single-entry contract and exact
+stored format. Shared scope, wire authentication and accepted-entry checks serve both readers.
+
+The caller supplies the exact outstanding signed request, held custody/history and exact cut. Each
+entry independently verifies publisher/position/generation routing, accepted-link/previous proof,
+envelope signature, authenticated decryption, actor, update count/size and Yjs bytes. Request binding,
+reader/page signatures, monotone observations, history boundaries, captured opener keys, expiry and
+synchronous lifetime checks remain. A wrong first/middle/last entry or a wrong final cut refuses the
+entire page. No updates or progress transfer until the whole page verifies. Failed pages erase all
+already opened updates and copied keys; successful update ownership transfers to the source reader.
+
+`readHistorySource` requests at most eight entries through the independently signed cut and remaining
+event allowance, one adaptive page at a time. A valid short page advances only to its verified actual
+position; the next request starts there, never at a guessed stride. The optional batch carrier contains
+one request and retains its older-server fallback. Replay event/byte bounds, unresolved-dependency and
+actor checks, local/journal reconstruction, snapshot/key delivery, saved retry and installation/
+certification ownership remain. Progress counts verified entries rather than wire pages. No storage,
+service route, cryptographic domain, primitive, factor or numeric rate-limit change follows.

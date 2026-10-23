@@ -1,0 +1,37 @@
+from pathlib import Path
+import json,subprocess,hashlib,os,tarfile,io
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());prior=start['priorPatchManifest'];env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};sha=lambda b:hashlib.sha256(b).hexdigest();run=lambda args,**kw:subprocess.check_output(args,env=env,**kw);base=start['baseTree26'];existing=['docs/completed.md','docs/decisions.md','docs/performance.md'];added=[];folder='docs/performance-experiments/2026-10-22-prelude-delay';packet=repo/folder;idx=Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index')
+assert run(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==start['head'];assert sha(idx.read_bytes())==start['indexSha256'];assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+chain=prior['independentSequentialApply01Through26'];assert len(chain)==26 and chain[-1]['expectedTree']==base
+for x in chain:assert sha(Path(x['patch']).read_bytes())==x['sha256']
+views=r/'object-views-v2';views.mkdir();origins=[Path('/Users/thomasingalls/Code/done/.git/objects')];paths=[]
+for i,origin in enumerate(origins):
+ d=views/str(i)/'objects';d.mkdir(parents=True)
+ for item in origin.iterdir():
+  if item.name!='info':(d/item.name).symlink_to(item.resolve(),target_is_directory=item.is_dir())
+ paths.append(str(d))
+alternates='\n'.join(paths)+'\n'
+def isolated(name,work):
+ bare=r/name;assert not bare.exists();subprocess.run(['git','init','--bare','--quiet',str(bare)],check=True,env=env);(bare/'objects/info/alternates').write_text(alternates);return['git','-C',str(work),'--git-dir='+str(bare),'--work-tree='+str(work)]
+git=isolated('patch27-v2-index.git',repo);subprocess.run(git+['read-tree',base],check=True,env=env)
+for line in(packet/'SHA256SUMS').read_text().splitlines():h,f=line.split('  ',1);assert sha((packet/f).read_bytes())==h
+for f in existing:assert run(git+['show',base+':'+f])==(r/'before'/f).read_bytes(),f
+for f in added:assert subprocess.run(git+['cat-file','-e',base+':'+f],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode!=0,f
+subprocess.run(git+['add','--',*existing,*added,folder],check=True,env=env);tree=run(git+['write-tree'],text=True).strip();changed=run(git+['diff','--cached','--name-only',base],text=True).splitlines();assert all(f in existing+added or f.startswith(folder+'/')for f in changed)
+tracked=run(git+['ls-tree','-r','-z',base]).split(b'\0')
+for entry in tracked:
+ if not entry:continue
+ info,path=entry.split(b'\t',1);mode,kind,oid=info.decode().split();f=path.decode()
+ if f in existing:continue
+ assert kind=='blob',(f,kind);at=repo/f;data=os.readlink(at).encode()if mode=='120000'else at.read_bytes();assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==oid,f
+print('Every other base26 file is blob-exact',len(tracked)-1,flush=True)
+p=r/'patches';p.mkdir();file=p/'27-discovery-catalog-delay-evidence.patch';file.write_bytes(run(git+['diff','--cached','--binary','--full-index','--no-ext-diff',base]));clean=r/'clean-apply27-v2';clean.mkdir();archive=run(git+['archive',base,'--',*existing])
+with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(clean,filter='data')
+v=isolated('verify27-v2-index.git',clean);subprocess.run(v+['read-tree',base],check=True,env=env);subprocess.run(v+['add','--',*existing],check=True,env=env);assert run(v+['write-tree'],text=True).strip()==base;subprocess.run(v+['apply','--index','--whitespace=nowarn','--check',str(file)],check=True,env=env);subprocess.run(v+['apply','--index','--whitespace=nowarn',str(file)],check=True,env=env);assert run(v+['write-tree'],text=True).strip()==tree
+origin=json.loads(Path('/private/tmp/done-duplicate-read-flow-20261021/patches/manifest.json').read_text())['baseCommit'];clean=r/'clean-apply01-27-v2';clean.mkdir();tracked=set(run(['git','ls-tree','-r','--name-only',origin],cwd=repo,text=True).splitlines());paths=sorted(tracked.intersection(run(git+['diff','--cached','--name-only',origin],text=True).splitlines()));archive=run(['git','archive',origin,'--',*paths],cwd=repo)
+with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(clean,filter='data')
+v=isolated('verify01-27-v2-index.git',clean);subprocess.run(v+['read-tree',origin],check=True,env=env);subprocess.run(v+['add','--',*paths],check=True,env=env);assert run(v+['write-tree'],text=True).strip()==run(['git','rev-parse',origin+'^{tree}'],cwd=repo,text=True).strip();receipts=[]
+for patch,expected in[(Path(x['patch']),x['expectedTree'])for x in chain]+[(file,tree)]:
+ subprocess.run(v+['apply','--index','--whitespace=nowarn','--check',str(patch)],check=True,env=env);subprocess.run(v+['apply','--index','--whitespace=nowarn',str(patch)],check=True,env=env);actual=run(v+['write-tree'],text=True).strip();assert actual==expected;receipts.append({'patch':str(patch),'sha256':sha(patch.read_bytes()),'expectedTree':expected,'independentCleanApplyTree':actual})
+assert run(git+['diff',tree,'--'])==b'';assert sha(idx.read_bytes())==start['indexSha256'];assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+m={'baseCommit':start['head'],'baseTree':prior['baseTree'],'previousCumulativeTree26':base,'expectedCumulativeTree27':tree,'patch27':str(file),'patch27Sha256':sha(file.read_bytes()),'patch27Bytes':file.stat().st_size,'changedFiles':len(changed),'runtimeFilesChanged':[],'oldTestChange':'all old files byte-exact26','qualification':'paused; all883 obligations339unresolved and metadata exact26; no credit','independentApply27After26':True,'independentSequentialApply01Through27':receipts,'realIndexUnchangedAndUnstaged':True,'realIndexSha256':start['indexSha256'],'performance':'Mechanism trace only; original26 held. Initial failed attempt preserved separately.','publication':'No new stage/sign/commit/push/preview/merge/deploy.'};(p/'manifest.json').write_text(json.dumps(m,indent=2)+'\n');(p/'27-commit-message.txt').write_text('test(sync): trace remaining discovery and catalog proof delay\n\nPreserve exact26 clients, native proof stages, signed input identities,\nindependent data and trace controls and the failed Docker EOF attempt.\nKeep the2.5s acceptance gate and all security/resource bounds unchanged.\n');(p/'README.md').write_text('# Sequential patch27\n\nAlready reflected in the cumulative checkout, unstaged and uncommitted. Do not reapply here. Apply after canonical26 in a clean checkout. Direct27-after26 and full01-through27 independently reproduce the recorded tree.14–26 are signed locally; this new diagnostic patch remains unsigned. No runtime/old-test changes or promotion; general qualification paused.\n');print(json.dumps({k:v for k,v in m.items()if k!='independentSequentialApply01Through27'},indent=2))

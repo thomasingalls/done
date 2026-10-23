@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "nativeIndependentLiveAndColdProofRuns": 10,
+  "storedUnacknowledgedWrites": 0,
+  "fullClientJourneysPassed": 10,
+  "rawDOMMetricsIndependentlyReconstructed": true,
+  "unchangedBudgetCasesPerPolicy": 17,
+  "policies": 4,
+  "noBenchmarkValidatorOverlapInRecordedPlan": true,
+  "primary32_64NativeFairnessMissRetained": true,
+  "configuredRuntimeDefaultsAndAllOldTestsUnchanged": true,
+  "cryptoCensusAndPlanningSnapshotsExact": true,
+  "obligations": 881,
+  "unresolved": 337,
+  "constructionContractsAndStatusesExact": 97,
+  "generalQualificationPaused": true,
+  "stdoutCollisionQualified": "native-stdio-note.md",
+  "scope": "Evidence validity and unchanged-source/planning integrity, not a claim that policy adoption gates or release qualification passed."
+}

@@ -11,12 +11,12 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 499,
-    "requiredTestFiles": 493,
+    "testFiles": 521,
+    "requiredTestFiles": 515,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
-    "constructions": 96,
+    "constructions": 97,
     "vectorChainConsumers": 18
   },
   "packageDispositions": {
@@ -6050,7 +6050,7 @@
           "test/account-ceremony/content-transfer.test.mjs"
         ]
       },
-      "declarations": 84,
+      "declarations": 124,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -6865,6 +6865,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-history/multi-page-source.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-history/multi-page-source.test.mjs"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-history/pruning.test.mjs",
       "status": "required",
       "invocation": {
@@ -6890,7 +6905,7 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/account-history/source.test.mjs"]
       },
-      "declarations": 5,
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -7834,6 +7849,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-receive/batch-transport.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-receive/batch-transport.test.mjs"
+        ]
+      },
+      "declarations": 15,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-receive/groups-transport.test.mjs",
       "status": "required",
       "invocation": {
@@ -7886,6 +7916,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-receive/pre-group-closure.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-receive/pre-group-closure.test.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -8373,6 +8418,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-service-delivery/cold-verification.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-delivery/cold-verification.test.mjs"
+        ]
+      },
+      "declarations": 24,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-service-delivery/controls.test.mjs",
       "status": "required",
       "invocation": {
@@ -8439,6 +8499,36 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-delivery/publisher-commit-races.test.mjs"
+        ]
+      },
+      "declarations": 43,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-service-delivery/publisher-isolation.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-delivery/publisher-isolation.test.mjs"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-service-delivery/publisher-tips.test.mjs",
       "status": "required",
       "invocation": {
@@ -8494,7 +8584,7 @@
           "test/account-service-inbound/core.test.mjs"
         ]
       },
-      "declarations": 9,
+      "declarations": 18,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -8659,6 +8749,66 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-sessions/inbound-authority-cache.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-authority-cache.test.mjs"
+        ]
+      },
+      "declarations": 21,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-authority-reuse.test.mjs"
+        ]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-sessions/inbound-batch-budget.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-batch-budget.test.mjs"
+        ]
+      },
+      "declarations": 11,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-sessions/inbound-batch.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-batch.test.mjs"
+        ]
+      },
+      "declarations": 9,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-sessions/notifications.test.mjs",
       "status": "required",
       "invocation": {
@@ -8685,6 +8835,21 @@
         ]
       },
       "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-sessions/request-budget-work.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/request-budget-work.test.mjs"
+        ]
+      },
+      "declarations": 8,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -9900,6 +10065,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/devicePreparation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/devicePreparation.test.ts"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/diagnostics.test.ts",
       "status": "required",
       "invocation": {
@@ -9912,6 +10087,21 @@
           "form": "fc.property"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/emptyLegacyDatabase.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/emptyLegacyDatabase.test.ts"
+        ]
+      },
+      "declarations": 9,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -10194,6 +10384,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/historyReadRetry.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/historyReadRetry.test.ts"]
+      },
+      "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/historyReceiveFence.test.ts",
       "status": "required",
       "invocation": {
@@ -10221,6 +10421,16 @@
           "form": "fc.property"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/historyReplayPage.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/historyReplayPage.test.ts"]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -11014,7 +11224,51 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/empty-legacy-startup.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/enrollment-batch.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/enrollment-capacity.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/enrollment-open.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/enrollment-progress.spec.ts",
       "status": "required",
       "invocation": {
         "config": "playwright.packaged-account.config.ts",
@@ -11032,6 +11286,17 @@
         "packages": ["test:packaged-account"]
       },
       "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/enrollment-state-retry.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -11608,6 +11873,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/receiveGroup.test.ts"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/receivePageTransport.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/receivePageTransport.test.ts"
+        ]
+      },
+      "declarations": 14,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -12761,6 +13041,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/sync-cadence-analysis.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/sync-cadence-analysis.test.mjs"]
+      },
+      "declarations": 17,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/sync.test.ts",
       "status": "required",
       "invocation": {
@@ -12929,11 +13219,15 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/verifiedRecords.test.ts"]
       },
-      "declarations": 5,
+      "declarations": 12,
       "propertyFamilies": [
         {
-          "line": 89,
+          "line": 96,
           "form": "fc.asyncProperty"
+        },
+        {
+          "line": 213,
+          "form": "fc.property"
         }
       ],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
@@ -14784,7 +15078,11 @@
       "tests": [
         "test/account-history/checkpoint.test.mjs",
         "test/account-history/install.test.mjs",
-        "test/account-history/pruning.test.mjs"
+        "test/account-history/pruning.test.mjs",
+        "test/historyReplayPage.test.ts",
+        "test/account-history/multi-page-source.test.mjs",
+        "test/historyReadRetry.test.ts",
+        "test/packaged-account/enrollment-state-retry.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -14820,6 +15118,28 @@
       ],
       "vectorFile": null,
       "vectorCases": []
+    },
+    {
+      "id": "transport-read-batching",
+      "status": "open",
+      "tests": [
+        "test/account-sessions/inbound-batch.test.mjs",
+        "test/account-sessions/inbound-authority-reuse.test.mjs",
+        "test/packaged-account/enrollment-batch.spec.ts",
+        "test/packaged-account/enrollment-capacity.spec.ts",
+        "test/historyReplayPage.test.ts",
+        "test/account-history/multi-page-source.test.mjs",
+        "test/historyReadRetry.test.ts",
+        "test/packaged-account/enrollment-state-retry.spec.ts"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "vectorFile": null,
+      "vectorCases": []
     }
   ],
   "inputs": [
@@ -14829,7 +15149,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "2d6916aad4bfb29a25c641b0d5e1891f2ae906745cc5aab79e797179176e002d"
+      "sha256": "d29685267e529d10dc5283e8916b651bd3d0aa6f2d94e4c88e7316da4db013dd"
     },
     {
       "path": "package.json",
@@ -15593,7 +15913,7 @@
     },
     {
       "path": "scripts/lib/historical-bundle.mjs",
-      "sha256": "535835fbda8251357746e3405c1c56da843d4b4726ab94a626f086daf99fbc7d"
+      "sha256": "e0d2b5eb99aeffb143b5bde7e5de733c9910bc4bb411e8433c256f47489787dc"
     },
     {
       "path": "scripts/lib/packaged-application.mjs",
@@ -15602,6 +15922,10 @@
     {
       "path": "scripts/lib/receipts.mjs",
       "sha256": "98162e80898939a0d436be1160c37b2a9bbaecc57e96a4697104722b573e663c"
+    },
+    {
+      "path": "scripts/lib/sync-cadence-analysis.mjs",
+      "sha256": "1ed24e7a2faad9d90ad1981a6825f4231dfb64c3ff5a6070d784bb29c058f1b9"
     },
     {
       "path": "scripts/lib/traceability.mjs",
@@ -15849,7 +16173,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "9f1452ff32bbe3cdf2680117efbc71af425f8a0bb316d589042cbf239b163494"
+      "sha256": "fceca6a52ed328e9e9501460a93c5fcccdd27b0f7e46a3a30d3a5629b2cc0758"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -16277,7 +16601,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "07a5250c87d7a8e718a3d4ad82d3eec9ae8f97a9509d40ee18efd0eee961e21a"
+      "sha256": "5dd9806cd0fddbe6d19192e56e33e75c64f954bf07810ddc51d454b3e836daa3"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",
@@ -16617,7 +16941,7 @@
     },
     {
       "path": "test/account-first-authority/registry.test.mjs",
-      "sha256": "ba0b40e564a15211f29fb49ae24852c7bb9edeb24dcde309445e1231f32a26e1"
+      "sha256": "0a61099cc1ccea3ae17aa16a88874200e7fac818cfb29c586150eb88dc94518a"
     },
     {
       "path": "test/account-genesis/browser.ts",
@@ -16684,6 +17008,10 @@
       "sha256": "6c3a64a15be6f77870043f02d537ed5d1d0957f2902d35d81b14228577b00d2e"
     },
     {
+      "path": "test/account-history/multi-page-source.test.mjs",
+      "sha256": "b5bcad21fd65ec833963e97405c97a87e61491a576c7b366b67a9f5b4e2e7cce"
+    },
+    {
       "path": "test/account-history/pruning.test.mjs",
       "sha256": "e3ce556e9fe199d064d855d779c0842e56e5c72dd36c5be58f17be8d5f74a70b"
     },
@@ -16697,7 +17025,7 @@
     },
     {
       "path": "test/account-history/source.test.mjs",
-      "sha256": "92f850879c59167c4f8ed159b02fcb511080c60e5f831006f4eef8d34ca13c0e"
+      "sha256": "4b8d7d01d843dcd947648d32d766ffb88ed7b1d0f9c4f4cf46d48a9d92250ba6"
     },
     {
       "path": "test/account-inbound-codecs/oracle.ts",
@@ -16873,7 +17201,7 @@
     },
     {
       "path": "test/account-membership/activation-entry.ts",
-      "sha256": "160927ce487d30736802cc016c0c9b552c1613d591329202caeb4c9410c53fda"
+      "sha256": "b9b7667b494f0fbf615064cb9ece92298490b3fb1c252625d7e8ae0628dc09f3"
     },
     {
       "path": "test/account-membership/admission.test.mjs",
@@ -16897,7 +17225,7 @@
     },
     {
       "path": "test/account-membership/comparison-entry.ts",
-      "sha256": "8ab4a49307c43303a5595cca01c9430c5adf1adfc35db8721257fdfc598dd4c8"
+      "sha256": "ac6ce72148172ffb933fcdd1ffba208ba9cc1188cd16a70e0512349c3e07f34f"
     },
     {
       "path": "test/account-membership/comparison.test.mjs",
@@ -17141,11 +17469,11 @@
     },
     {
       "path": "test/account-receive-transport/controls.test.mjs",
-      "sha256": "04bb53f7e105a46879f482715ccbaa91190ad1fa7814184b8dab4c020c291cdc"
+      "sha256": "24047aaa35237e9e359161dec8e920e1efd37ac23b1478242b8866ec405ff3fb"
     },
     {
       "path": "test/account-receive-transport/fixtures.mjs",
-      "sha256": "c83361aa5f1eea3c6a8c631d9a55d8c3e49bee19b66687c01a76e07e298145a5"
+      "sha256": "0cba4f8f0d2a25c40ecb795a8cf16b39ce838e638ac0f6e283f5c7ddb4bd41fe"
     },
     {
       "path": "test/account-receive-transport/generated.test.mjs",
@@ -17154,6 +17482,10 @@
     {
       "path": "test/account-receive-transport/native.test.mjs",
       "sha256": "6527d607c249c330a7d2ac68f04472c008dd741fb51a0edcf97ea7f517da409a"
+    },
+    {
+      "path": "test/account-receive/batch-transport.test.mjs",
+      "sha256": "b94db249a92e7dbe6c522edc57df00bb14761df817c7a43d3b58c715e594e29c"
     },
     {
       "path": "test/account-receive/browser.ts",
@@ -17165,11 +17497,11 @@
     },
     {
       "path": "test/account-receive/groups-transport.test.mjs",
-      "sha256": "eceb70c8511958b81624bd9f9e672633ccaaf9fb93e3229afd0385bc6eb86c1f"
+      "sha256": "0b6c1ab2b72ace31b018f702a28341742741957389f989f13a291bdb686bbf0c"
     },
     {
       "path": "test/account-receive/groups.test.mjs",
-      "sha256": "5804423da6d409d2ed0049e9c008e6a10f91fc9613b0848ea54f0a70b7af8735"
+      "sha256": "1d1389a5d73ef7c2ce172d837fb8526bbdf219dd15845fda908bec6c08ea46d2"
     },
     {
       "path": "test/account-receive/historical-owner.test.mjs",
@@ -17178,6 +17510,10 @@
     {
       "path": "test/account-receive/native.test.mjs",
       "sha256": "1a7782513d6f71ec3eb71afc15df4feddf2b1b49c7d110385cc82978a410e3d4"
+    },
+    {
+      "path": "test/account-receive/pre-group-closure.test.mjs",
+      "sha256": "f5cba0c35c9c5179036bcc83f6fc0d13fae75c761cb62b844ca84631c14bb7f8"
     },
     {
       "path": "test/account-recovery-contract/controls.test.mjs",
@@ -17428,8 +17764,12 @@
       "sha256": "def194f3503d542fb44997ce76e75847e4a43b8ee5937b02bec9f9b725123f40"
     },
     {
+      "path": "test/account-service-delivery/cold-verification.test.mjs",
+      "sha256": "0f555d045d2d4a19473b8c81c4bcfd3ee7387951d0d6fb2114da2e76c60c4886"
+    },
+    {
       "path": "test/account-service-delivery/controls.test.mjs",
-      "sha256": "cef22e65d83617824d356ebd25bddb4912798aa77f98e4630a7f6ad898814b0d"
+      "sha256": "599f7e5a3d221859a7f1a4dedce812b517c7be16fbed8aa49cd9e7da8bdae6ee"
     },
     {
       "path": "test/account-service-delivery/core.test.mjs",
@@ -17448,6 +17788,14 @@
       "sha256": "4d7c2be2f4aaf5fab8ee7af23a2716fb90b2608cacdb4bc4d948afdaa10ad585"
     },
     {
+      "path": "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "sha256": "a9ae6849535d6557aa7a8c719c4cee2221381366113e73661f93097a83b8f750"
+    },
+    {
+      "path": "test/account-service-delivery/publisher-isolation.test.mjs",
+      "sha256": "d2c4e969e2367caaadc203fb923b53526bb7e645032491827d745710a2fb8c70"
+    },
+    {
       "path": "test/account-service-delivery/publisher-tips.test.mjs",
       "sha256": "99889890b56e2fb1870a62ac492aa30e07add8acc9565804ca2e7d36fa6845ab"
     },
@@ -17461,11 +17809,11 @@
     },
     {
       "path": "test/account-service-inbound/controls.test.mjs",
-      "sha256": "004a25caccd0eb31432285a4d42c5d704e8919c34e94637f8a7494d55ac82f4e"
+      "sha256": "0e8c83e22b7f5124819042680a92136797c95a19626a8206a78013bbce7e6ecd"
     },
     {
       "path": "test/account-service-inbound/core.test.mjs",
-      "sha256": "9758fa6d031c9ebe63281d4e0c77249f6704c3c076982c4a22ad563541b33ed4"
+      "sha256": "eb54a48ff1825a35aac193cfa20caa123df32ad65ac29465bfee67f403aaabdd"
     },
     {
       "path": "test/account-service-inbound/generated.test.mjs",
@@ -17548,12 +17896,32 @@
       "sha256": "7eaf931326a2383acbbfc9d2ef19e4df68dd7db6f07e80e7c0afa6db42df0cc1"
     },
     {
+      "path": "test/account-sessions/inbound-authority-cache.test.mjs",
+      "sha256": "9b7caeb6631aae4bf4428720d42da8e3efff89b13ad3b6cd7674df64cef4b8b2"
+    },
+    {
+      "path": "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "sha256": "06eee28d38e47f8baa0965fe07b886f2847c30ffce0a58f4417db1c46a7700ae"
+    },
+    {
+      "path": "test/account-sessions/inbound-batch-budget.test.mjs",
+      "sha256": "b66fd4a2dc6857c81411771500b80d969e2983e2f837b8704721a3ccef4cf4dd"
+    },
+    {
+      "path": "test/account-sessions/inbound-batch.test.mjs",
+      "sha256": "ce2f872bcf86d523bc139e3bb8055c47c0223f22106e5e96dc170b045ec08b33"
+    },
+    {
       "path": "test/account-sessions/notifications.test.mjs",
       "sha256": "9be2f4627ad04c06e0454abbf0acac45600f2a06a4765b93a35a61f8c5cd2b29"
     },
     {
       "path": "test/account-sessions/renewal-window.test.mjs",
       "sha256": "bb1c503dce0aff8bf4c6e0c1b135a8760aef900444c67b1c833c0fb8ac20ba6b"
+    },
+    {
+      "path": "test/account-sessions/request-budget-work.test.mjs",
+      "sha256": "437b4f3c51a242039f0368002fe5c1a0e757def38a0bfe1359521c44ad947870"
     },
     {
       "path": "test/account-sessions/request-budget.test.mjs",
@@ -18024,12 +18392,20 @@
       "sha256": "9a96a3c36d5b3d3d06c04b59fffce9caef0cb551d40e2a9c8725702d5c177899"
     },
     {
+      "path": "test/devicePreparation.test.ts",
+      "sha256": "c2e8499ab1d936860b1878a2ae0ba72b72d39dbee374a29448e3339bd1796b4d"
+    },
+    {
       "path": "test/diagnostics.test.ts",
       "sha256": "164ff0bfda6c7e0e50234d479c0e175bb97df689323de8f0d75d107ab710f487"
     },
     {
       "path": "test/editor-admission/browser.mjs",
       "sha256": "28240b448b695bb33bc4d0d0c2c1428a11b192e41d182c51a2e03f7f39ba18c7"
+    },
+    {
+      "path": "test/emptyLegacyDatabase.test.ts",
+      "sha256": "c56bffa00961fb92a5e1159322c83ae884af36004e6b97a8c88e4eb213e79d24"
     },
     {
       "path": "test/enrollmentStates.test.ts",
@@ -18144,12 +18520,20 @@
       "sha256": "5024cc2fe9ba689c52069821fafa3f040de2b93ee748292624585caa38a7ba81"
     },
     {
+      "path": "test/historyReadRetry.test.ts",
+      "sha256": "9e0f3eae776a493c0c7e6ced4598e14c710ca9a46801bb92d34b1087082c6c71"
+    },
+    {
       "path": "test/historyReceiveFence.test.ts",
       "sha256": "b2992437f3e816b568394a03bbcdcb15d2ced44b27da8ad4d9c87f6e4cbd2adb"
     },
     {
       "path": "test/historyReplay.test.ts",
       "sha256": "5a8bac3b35165f0a3fa78e0cc45e56f49f21be6ec7e6a6aaf04f0dfa243f5c4a"
+    },
+    {
+      "path": "test/historyReplayPage.test.ts",
+      "sha256": "6c3ac8eba6c2dae46716578aaf3e69cf06dbeb3bb90b7e37282e78da86328552"
     },
     {
       "path": "test/historyRetirement.test.ts",
@@ -18577,7 +18961,7 @@
     },
     {
       "path": "test/onboardingStorage.test.ts",
-      "sha256": "c1596b1343d47a0e136566d99201b050951e85b145acb45924111b685ac14aea"
+      "sha256": "1c25802a3be421aa2d15c64d38fbc4717fb3a412ac8c23062206c4b12c3e0d97"
     },
     {
       "path": "test/operations.ts",
@@ -18624,12 +19008,32 @@
       "sha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77"
     },
     {
+      "path": "test/packaged-account/empty-legacy-startup.spec.ts",
+      "sha256": "d568f231b7c69b0d04031d57a1de9ab9caf0d05371575886751dac0253ac78b0"
+    },
+    {
+      "path": "test/packaged-account/enrollment-batch.spec.ts",
+      "sha256": "6af38d3575132d23e738fab60fc258c370491bf29a93e71b8df89980beb4b98d"
+    },
+    {
+      "path": "test/packaged-account/enrollment-capacity.spec.ts",
+      "sha256": "cedb0fd4416185b3176c9c1269cb835544a7e6d820abf6acc25bb84147518bd6"
+    },
+    {
       "path": "test/packaged-account/enrollment-open.spec.ts",
       "sha256": "fb67a85386eb7bc0fa5cdae6ba618344bb3634725c8816beadc737edb657423c"
     },
     {
+      "path": "test/packaged-account/enrollment-progress.spec.ts",
+      "sha256": "d26bac9d9f0ce91226ff2717b1ee202ba0289b6d9cda13f9fa939807da976647"
+    },
+    {
       "path": "test/packaged-account/enrollment-retry.spec.ts",
       "sha256": "67b56d7634b7a26b344e44282dfaa79e1ba8e21702aa75bb97a91831bd39f85e"
+    },
+    {
+      "path": "test/packaged-account/enrollment-state-retry.spec.ts",
+      "sha256": "00c8f64410013cd4f5ae5a8742a11afec9bb092112039e7c4aebf8781caf26e7"
     },
     {
       "path": "test/packaged-account/generation-retry.spec.ts",
@@ -18697,7 +19101,7 @@
     },
     {
       "path": "test/packaged-account/replacement-handoff.spec.ts",
-      "sha256": "e11c26c82d3be57c7110b9861ef9b0eab0dce9112b1165d190fe581929fa9241"
+      "sha256": "f99cfcb04704b2c88b68c256e9e822632eb2c534b13b9efec5d6973033eb25f6"
     },
     {
       "path": "test/packaged-account/server.ts",
@@ -18836,6 +19240,10 @@
       "sha256": "b0581644a21d14748b31f451bc75a4f9cf6ae5c7243deddfac0fc3b05bd224e2"
     },
     {
+      "path": "test/receivePageTransport.test.ts",
+      "sha256": "86d626aaf2b1e096ca56c721772a5cef5e6cd1f25f80d9c31845d31f50a9d97b"
+    },
+    {
       "path": "test/receivePrefetch.test.ts",
       "sha256": "df77170a47cfa3fd524caf5d3ab1b4a92edbc39f695b208e429250b404486941"
     },
@@ -18853,7 +19261,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "b3e0103519df9bbbb9883a675446579e48ec8637969e0baecba711ed37beead8"
+      "sha256": "370db9930691dd802040bfbdca00cfcb0113b3a956359114a232610f25efdd9b"
     },
     {
       "path": "test/release-validation/admission.test.mjs",
@@ -18865,7 +19273,7 @@
     },
     {
       "path": "test/release-validation/campaign-wrappers.test.mjs",
-      "sha256": "9e5ea0d312a41734290e82008cc59259f1b9d58506fbaafa56b28c3554bc6f2b"
+      "sha256": "e350fba875932a466e85d76a1b9f221ebfa3b249b92453ecff6a7cbcf0730542"
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",
@@ -18901,11 +19309,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "fdbe27af1b3633002435aba20c5d496f395727ac574ba93f6aecc1c23a3b9684"
+      "sha256": "3c30bdd0cacf7291e0081d45830ac922f4c6efce9a8fcdc5034ae4b030d61bfc"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "bd67324a28a83d7bbe8bc77d520e8dcc2ebe5a865f84adbad5f55d520da964b1"
+      "sha256": "d11cc83c6898c1d83ed2366a15a9da2c20861f9a573233af74359d265e13f44b"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -18933,7 +19341,7 @@
     },
     {
       "path": "test/release-validation/onboarding-gates.test.mjs",
-      "sha256": "783489694e9d8eefa3149bdb79234769dc8f2cb6112be622c54c1d37164b5f14"
+      "sha256": "9ccaf2e2a42a461ac33af8b1093e1c65b4bcfc6b6b50a63e62b50a02145874c4"
     },
     {
       "path": "test/release-validation/owned-startup.test.mjs",
@@ -19152,6 +19560,10 @@
       "sha256": "7d3de761e6e601f359b9511f2f90312e0ee4267f6634496064f194e6d83a5207"
     },
     {
+      "path": "test/sync-cadence-analysis.test.mjs",
+      "sha256": "ad4456bbe5c6f3785d347273d18b00b581187d9980fc73eab8c0f5adc02b68c0"
+    },
+    {
       "path": "test/sync.test.ts",
       "sha256": "3928f19f83829892359600ff2c12ff709984aa3eb12f994f5a2a754047b6d1a1"
     },
@@ -19321,7 +19733,7 @@
     },
     {
       "path": "test/verifiedRecords.test.ts",
-      "sha256": "680aa0c134680ae91533be2795a5ff212d385ad91a0c35289528679d372e258d"
+      "sha256": "608d3bc13c328db106bcdb2d2d672c2f1f3edc70ec6f54758f0473ac9b87e210"
     },
     {
       "path": "test/warmContent.test.ts",

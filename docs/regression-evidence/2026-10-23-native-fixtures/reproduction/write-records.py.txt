@@ -1,0 +1,66 @@
+from pathlib import Path
+import json,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');h=json.loads((r/'history-classification.json').read_text());assert h['status']=='passed';assert h['runtimeDefects']==1 and h['staleFixtureCases']==16
+for f in ['metadata-review.json','source-review.json','challenge.json','fixed-bridge-review.json','historical-case-ast-review.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+assert all(v['exitCode']==0 for v in json.loads((r/'planning-receipts.json').read_text()));assert 'ℹ tests 86'in(r/'planning-tests.log').read_text()and'ℹ fail 0'in(r/'planning-tests.log').read_text();assert not(r/'record-outcome.json').exists();p=repo/'docs/regression-evidence/2026-10-23-native-fixtures';p.mkdir(parents=True,exist_ok=False);link='./regression-evidence/2026-10-23-native-fixtures/README.md'
+completed=f'''
+
+### Phase29 — attribute all17 native failures and repair16 stale fixture cases
+
+**Date:** 2026-10-23 · **Commit:** sequential patch29 after28, unsigned/uncommitted · **Status:**16 restored cases pass; one separate cold-clear runtime regression remains; general qualification paused.
+
+Adjacent complete historical production/test snapshots under fixed current Node24.18.0/dependencies reproduce every original case passing before its boundary and failing afterward. The selected case ASTs/options/signatures are independently unchanged. Where a main test file gained an unrelated case/audit or shared history-route support, the same post-commit main test bridge also passes on the complete parent production graph; no native module is mixed with current code. This establishes a code/test boundary under the recorded dependencies, not archived original CI or device behavior. A negative lead (cf520fba owner-interface addition) passes both arms and is retained. [Evidence]({link}).
+
+The16 fixture cases drifted at a52ef52b (two formerly invalid epoch2 parser expectations),5e47a043 (seven schema25 expectations after26),673c9fa8 (one missing history route/four fresh generation1 snapshot model owners), andc609d8c7 (two byte-restoration assumptions after quarantine). All four changes precede released sourcefaf465f7 by Git ancestry. Repair only three test/entry files: use invalid v2 epoch1 while explicitly checking valid2, expect26 while retaining offline upgrade/old-host and byte-preservation checks, route the actual history request to its native owner, and give the modeled coordinator real same-realm snapshot crypto/key owners and native signed snapshot bindings. Quarantine is still checked after restoration; explicit owner restart then runs a complete verification. The independent third-publisher assertion remains unchanged.
+
+All16 selected cases pass. The complete affected suite484/467pass/17fail→484/483/1, zero skips/cancellations; every old declaration/name/options/deadline and original assertion remains except seven schema literals and one supported-to-invalid epoch literal, with five added assertions. Three deliberate faults (quarantine bypass, offline-schema bypass, tampered native snapshot binding) are detected. Entry TypeScript/lint and86 planning checks pass. Runtime/protocol/client, crypto census/constructions, all883 obligation rows/339 unresolved and case counts remain exact. No new aggregate credit or performance measurement. Phase28's native runtime is unchanged.
+
+The remaining runtime failure first appears at51c17a93 (core authority evidence cache), with adjacent716d0db7 passing the same whole test file. It is absent from releasedfaf465f7 ancestry. A clear during asynchronous verification refuses instead of recapturing and continuing; no authority bypass or data-loss outcome is established. Repair it separately with fresh bounded verification and hard close/input/custody/grant/expiry fences, then run local routine/full functional checks before any push. These records do not call the full suite clean or authorize merging/deploying.
+
+Preserved review/machinery corrections: initial source export exceeded argv limits before extraction; subtree export fixes only the driver. An initial whole-test-file equality requirement failed on unrelated appended/audit/helper changes; independent selected-case AST review and fixed-bridge counterchecks replace that unsupported equality claim. Its first selector also missed a clear/external template and was corrected to the shared suffix. Original scripts and all historical attempts remain. Patch28's sidecar had mislabeled tree13 d8a4d2ea as the27dc7d78 sequence-origin tree; direct Git independently givesbb1cd37e. Corrected sidecar/post-v2 review retains the original metadata and caveat: archived old preparation/checker source preserves that metadata mistake. Canonical28 bytes/SHA1522d116/tree056b5d96, all measured/native inputs and direct/full-chain application results are unchanged. No real staging/signing/commit/push/preview8443/merge/deploy.
+'''
+f=repo/'docs/completed.md';assert f.read_bytes()==(r/'before/docs/completed.md').read_bytes();f.write_text(f.read_text()+completed);at=time.time_ns()
+decision=f'''
+
+### Restore historical regression fixtures without relaxing native security contracts
+
+**Date:** 2026-10-23 · **Status:** phase29 closes16 fixture cases; cold-clear native repair remains separate.
+
+Treat the historical case as evidence, then identify its contract change through adjacent coherent source and exact case AST/options/signatures. Preserve the distinction between complete historical snapshots and explicit fixed test-bridge counterfactuals; fix current dependencies for both arms and claim no archived-CI result. All17 cases now have a passing parent/failing boundary. Four earlier contract changes explain16 fixture cases; core cache51c17a93 introduces the remaining liveness regression after released sourcefaf465f7. [Evidence]({link}).
+
+Keep current valid epoch2 recovery enrollment and schema26 offline fences. Extend the test-only current history/snapshot owners rather than fabricate successful replies, omit binding verification or force a retained legacy delivery onto a fresh flow. The same-realm browser factory performs real snapshot encryption/signatures, and the native service issues binding/history responses. These coordinator fixtures model custody and source writing; they do not replace the separate real native-custody/coverage tests. Detected publisher corruption stays quarantined even when bytes are restored; require explicit reopen/full verification in those restoration fixtures and keep independent publisher isolation. Preserve all old cases, assertions, deadlines, wrong-code, lost-reply, replay and retained-byte checks; update only the precise obsolete literals/interfaces.
+
+Keep runtime and all883/339 qualification facts unchanged; ordinary CI/functional checks are separate from the paused general campaign. Complete the native cold-clear repair and local functional CI surface before push, then separately prepare signing/publication. Do not use a passing fixture rerun to erase failed source/bridge attempts. Sidecar identity facts must be checked directly against immutable Git objects: patch28's corrected origin fact has its own retained post-v2 audit and does not rewrite the canonical patch or measurements.
+'''
+f=repo/'docs/decisions.md';assert f.read_bytes()==(r/'before/docs/decisions.md').read_bytes();f.write_text(f.read_text()+decision)
+rows=[]
+for v in h['cases']:rows.append('|'+v['case']+'|'+v['classification']+'|'+v['adjacentPassingParent'][:8]+' → '+v['introducedAt'][:8]+'|')
+(p/'README.md').write_text('''# Phase29 — historical failure attribution and precise fixture repair
+
+All17 previously observed native failures are accounted for:16 stale fixture/expectation cases fixed, one cold-clear runtime regression retained for its own bounded repair. Production/protocol/client code is byte-exact28. This is functional development evidence, not general release qualification or a performance measurement.
+
+## Source and method
+
+Seven candidate adjacent boundaries,14 complete historical snapshots, fixed Node24.18.0 and current installed dependencies. Every selected case was observed passing on its parent and failing at the attributed change. All selected case bodies/options/signatures are AST-exact. Main test files are not claimed wholly equal where they add another test/audit or shared history route; three explicit same-post-commit-test-bridge counterchecks also pass against each complete parent production graph. No native module is mixed with a current one. The owner-interface-only candidatecf520fba is ruled out by both passing arms. No archived original CI, dependency environment, production execution or disappearance-cause claim.
+
+|Case|Classification|Passing parent → failing boundary|
+|---|---|---|
+'''+ '\n'.join(rows)+'''
+
+All four16-case fixture changes precede releasedfaf465f7. The core-cache51c17a93 cold-clear regression does not. See history-classification.json, complete source/bridge identities, independent case ASTs, raw logs and Git ancestry. No existing failure is merely labeled stale to pass.
+
+## Repair and validation
+
+Three test/entry files change. Seven schema values now expect26, retaining explicit offline flags/old-host refusals and stored-byte comparisons. Version2 epoch2 is valid and checked; an unsupported epoch1 preserves the rejection. The activation entry dispatches history and membership requests to their genuine native owners. Model comparison/connection owners use real same-bundle snapshot crypto, exact durable key ownership and native signed checkpoint/binding responses. This is model custody/source writing; separate actual-custody/coverage integration remains in the original tests. Never force a retained legacy delivery onto a new connection to avoid required snapshots.
+
+Quarantine persists after byte restoration; new assertions confirm that, then explicit core reopen re-verifies. The old third-publisher independence assertion stays unchanged. Every original case/name/options/deadline and assertion remains except the eight obsolete literals; five assertions added.16 selected cases pass; affected484/467/17→484/483/1, zero skip/cancel. The remaining original cold-clear failure is retained. Quarantine/schema bypasses and tampered native signed binding are detected. Entry TypeScript/lint and86 planning checks pass; all runtime/protocol/client bytes, crypto census/constructions,883 obligation rows/339 unresolved and test counts stay exact. No aggregate credit; generalized qualification paused. Next is the separate native cold-clear repair, then local functional CI/full tests before push.
+
+## Preserved limitations and corrections
+
+Initial preparation hit argv limits before extraction; complete subtree export fixes the driver. The initial whole-main-file review was too broad for unrelated additions; its source and failed assertion remain, followed by exact selected-case AST and same-bridge counterchecks. The initial AST selector missed a dynamic clear/external title; corrected to its shared static suffix. Raw historical attempts are never substituted.
+
+A separate patch28 sidecar fact was corrected:27dc7d78 has treebb1cd37e; d8a4d2ea is cumulative13. Direct Git now independently verifies it. Canonical28 SHA1522d116/tree056b5d96, all native/measurement inputs and independent applications are unchanged. Original sidecar and archived original checker source are retained; post-v2 and the correction script are the authoritative sidecar audit. No assertion that the old field comparison was independent.
+
+Artifacts contain source identities, logs and reproduction scripts, not browser profiles/native databases/test private keys or codes. Known-value scan is bounded and not universal DLP. Sequential29 already exists in the cumulative checkout after28; do not reapply here. No actual stage/sign/commit/push/preview/merge/deploy.
+''')
+(r/'record-outcome.json').write_text(json.dumps({'status':'recorded','completedWrittenBeforeDecisions':True,'completedAtNs':at,'recordedAtNs':time.time_ns(),'staleFixturesFixed':16,'remainingRuntimeRegression':'cold-clear-lifecycle at51c17a93','noRuntimeChanges':True,'noNewQualificationOrPublication':True},indent=2)+'\n');print('29 durable outcome recorded before advancing decisions')

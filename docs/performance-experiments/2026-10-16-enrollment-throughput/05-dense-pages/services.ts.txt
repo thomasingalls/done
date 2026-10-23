@@ -1,0 +1,15 @@
+import {spawn} from 'node:child_process';
+import {stopService} from '/private/tmp/done-enrollment-throughput-2f1d0b0f/series-source/test/packaged-account/server';
+export {stopService};
+const root='/private/tmp/done-enrollment-throughput-2f1d0b0f';
+export const frontend='/Users/thomasingalls/.codex/worktrees/7fda/done/.dev/preview-builds/2f1d0b0f';
+async function child(source:string,script:string,ready:string,state:string,dist:string){
+ const p=spawn(process.execPath,[source+'/'+script],{cwd:source,env:{...process.env,ACCOUNT_SETUP_PORT:'53221',ACCOUNT_SERVICE_PORT:'53222',ACCOUNT_SETUP_ORIGIN:'http://localhost:53221',ACCOUNT_NETWORK_SESSIONS:'1',ACCOUNT_MEMBERSHIP_CONTINUATION:'1',ACCOUNT_SETUP_STATE:state,ACCOUNT_SETUP_DIST:dist},stdio:['ignore','pipe','pipe']});
+ await new Promise<void>((accept,reject)=>{let output='';const timeout=setTimeout(()=>{p.kill('SIGTERM');reject(Error('Startup deadline: '+output));},15000);p.once('error',reject);p.once('exit',code=>{clearTimeout(timeout);reject(Error('Startup exited '+code+': '+output));});const data=(b:Buffer)=>{output=(output+b.toString()).slice(-8000);if(output.includes(ready)){clearTimeout(timeout);accept();}};p.stdout!.on('data',data);p.stderr!.on('data',data);});return p;
+}
+export async function startService(state:string,arm:'reference'|'candidate'){
+ // Both arms use exactly the phase-A API. Only the frontend history-page path changes.
+ const source=root+'/series-source',dist=arm==='reference'?frontend:root+'/candidate-source/dist';
+ const backend=await child(source,'scripts/serve-account-service.mjs','Account API development:',state,dist);
+ try{return{backend,app:await child(source,'scripts/serve-account.mjs','Account packaged development:',state,dist)};}catch(e){backend.kill('SIGTERM');throw e;}
+}

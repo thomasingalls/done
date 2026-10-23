@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "priorCumulativeFilesCompared": 25462,
+  "onlyPriorFilesChanged": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md"
+  ],
+  "appendOnlyDocs": true,
+  "priorPatches01Through08Exact": true,
+  "priorPacketsAllChecksumsValid": true,
+  "realIndexSha256Unchanged": "df44841805bae41f991e101d7df8e5695c8042e2bc8e42c00016cb5b54201a3f",
+  "finalChecksPassed": 12,
+  "unchangedBudgetCasesAcrossMacAndLinux": 68,
+  "planningCasesPassed": 109,
+  "nativeColdProcessRuns": 4,
+  "nativeColdPublisherAudits": 28,
+  "fullClientJourneys": 8,
+  "typingGateMissRetained": true,
+  "nativeConstrainedGatesPassed": true,
+  "defaults": "16/64",
+  "workingRuntimeTestsPlanningAndSecurityContractsUnchanged": true,
+  "generalQualificationPaused": true,
+  "scope": "Final evidence and unchanged-tree audit; no source adoption, commit, preview, push, merge or deployment."
+}

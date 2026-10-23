@@ -1,0 +1,1 @@
+Reserved stop marker: pause serial plan after current V3 journey for aggregate-fallback diagnostic counterexample. No benchmark ran in this directory.

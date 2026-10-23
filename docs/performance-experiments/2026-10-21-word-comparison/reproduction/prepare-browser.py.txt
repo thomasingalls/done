@@ -1,0 +1,31 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;previous=Path('/private/tmp/done-dispatch-calibration-20261021')
+h=r/'browser-harness';shutil.copytree(previous/'source-B/test/live-sync-attribution',h)
+p=h/'live-sync.spec.ts';s=p.read_text();s=s.replace("const result:any={mode:'catchup'","const result:any={mode",1).replace("join(root,'backlog-seed-v3','fixture.json')","join(root,mode==='foreground'?'caughtup-seed-v3':'backlog-seed-v3','fixture.json')",1)
+s=s.replace("    const fixtureArchive=await exported(a);", "    if(mode==='foreground'){for(const c of contexts)await c.setOffline(false);for(const [index,p]of pages.entries())await expect.poll(()=>acceptedPosition(p),{timeout:30000}).toBe(index?seed.b.position:seed.a.position);await sleep(3000);}\n    const fixtureArchive=await exported(a);",1)
+s=s.replace("    if(focused)await add(b,'Receiver send sentinel');", "    if(focused&&mode==='catchup')await add(b,'Receiver send sentinel');",1)
+s=s.replace("setPhase('catchup');", "setPhase(mode);",1)
+a=s.index('    const writing=(async()=>{');b=s.index('    result.completedAt=',a)
+old=s[a:b]
+new="""    if(mode==='foreground') {
+      await expect(card(b)).toContainText(seed.expected);await prepare();result.bursts=[];
+      for(let i=0;i<30;i++){const text=` L${i};`,offeredAt=Date.now();await a.keyboard.insertText(text);await expect(card(b)).toContainText(text,{timeout:30000});result.bursts.push({index:i,offeredAt,observedBy:Date.now()});}
+      result.concurrent={startedAt:Date.now(),offers:[]};
+      for(let i=0;i<120;i++){const scheduledAt=result.concurrent.startedAt+i*150;await sleep(Math.max(0,scheduledAt-Date.now()));const at=Date.now();await a.keyboard.press('q');result.concurrent.offers.push({scheduledAt,at,returnedAt:Date.now()});}
+      await a.keyboard.press('Escape');await expect(card(b)).toContainText('q'.repeat(120),{timeout:30000});
+    } else {
+"""+old+"    }\n"
+s=s[:a]+new+s[b:];s=s.replace('result.pressure=true;',"result.pressure=process.env.SYNC_PRESSURE==='1';")
+p.write_text(s)
+# Discard static-control entry only: its already retained calibration is unchanged, not a planned app run.
+(h/'dispatch-static.spec.ts').unlink()
+config=(h/'playwright.config.ts').read_text().replace("process.env.DISPATCH_STATIC==='1'?'dispatch-static.spec.ts':'live-sync.spec.ts'","'live-sync.spec.ts'")
+(h/'playwright.config.ts').write_text(config)
+shutil.copyfile(previous/'node-monitor.mjs',r/'node-monitor.mjs')
+for arm in ['R','C']:shutil.copytree(h,r/('source-'+arm)/'test/live-sync-attribution')
+plan=[{'name':str(i+1)+'-'+arm+'-catchup','arm':arm,'mode':'catchup','pressure':True}for i,arm in enumerate(['R','C','C','R','R','C'])]+[{'name':'7-R-foreground','arm':'R','mode':'foreground','pressure':False},{'name':'8-C-foreground','arm':'C','mode':'foreground','pressure':False}]
+(r/'browser-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ident={'browserClosure':{p.name:sha(p)for p in h.iterdir()if p.is_file()},'monitorSha256':sha(r/'node-monitor.mjs'),'dist':{arm:{str(p.relative_to(r/('source-'+arm)/'dist')):sha(p)for p in sorted((r/('source-'+arm)/'dist').rglob('*'))if p.is_file()}for arm in ['R','C']}}
+(r/'browser-identity.json').write_text(json.dumps(ident,indent=2)+'\n')

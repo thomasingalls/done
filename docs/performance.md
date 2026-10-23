@@ -1926,3 +1926,395 @@ synthetic Markdown, fixed delay and omitted browser pre-dispatch time limit gene
 16 ms p95 budget remains unmet. Next recommendation is verified-view/reservation reuse on the
 online path, then unchanged-authority authentication reuse, then Goals planning/projection.
 No runtime changes or publication. Release validation remains paused.
+
+
+## 2026-10-21 — Ordinary live sync and catch-up on the released application
+
+Release `faf465f7`, rebuilt with fourteen public entry-asset matches, is measured on a synthetic
+121-card/13,000-character Goals pair in local headless Chromium. Four primary restored journeys
+separate foreground input from a receiver missing exactly 600 accepted updates. At 0/75 ms added
+request latency, isolated input-to-peer DOM p50 is 535.6/680.8 ms, continuous p95 is
+2,278.2/2,457.1 ms, and backlog completion is observed by 33.691/57.919 seconds. The receiver makes
+620/622 signed limit-one reads; there are three/zero HTTP 429s. New input during catch-up has peer
+p95 32.663/56.825 seconds, while local DOM p95 remains 13.9/8.0 ms.
+
+Two separate diagnostics identify the publication wait and repeated transport/authority/storage
+work; content hints arrive promptly. All six journeys preserve full exports, both-way writing,
+Undo/Redo and locked-document offline reopening. A fresh checked fixture recipe passes. Keep the
+failed constructors, smaller-Goals pilots and diagnostic clock correction. These are per-journey
+descriptive timings; DOM is not physical paint or proof of local durable acceptance. No phone,
+Firefox, WAN, capacity, whole-process cold reopen, runtime speedup or qualification claim follows.
+Next compare ordinary bounded read batching with original receipts and every existing guard, then
+publication timing independently of disk flush. [Protocol, raw evidence and exact limits](./performance-experiments/2026-10-21-live-sync-attribution/README.md).
+
+
+## Ordinary catch-up batching — 2026-10-21
+
+The [bounded comparison packet](./performance-experiments/2026-10-21-ordinary-receive-batching/README.md) compares signed branch `27dc7d78` with a receiver using the existing optional batch route and request-local authority reuse. It preserves original signed limit-one replies/receipts, every verifier, four-page turn, cancellation/deadline/bounds and numeric rates.
+
+| Restored 600-update backlog, three pairs each | Reference median | Candidate median | Median paired improvement |
+| --- | ---: | ---: | ---: |
+| +75 ms per account request | 59.389 s | 39.233 s | 33.7% |
+| Loopback | 33.727 s | 33.675 s | 0.15% |
+
+Receiver HTTP reads fall from 620–622 to 161–166 in the latency-added arms. Original inner requests remain individually signed and verified. All fourteen journeys pass complete exports, two-way writing, Undo/Redo, locked offline document reopen and predeclared local/peer typing guards. Isolated foreground peer p95 changes 702.7→753.9 ms (within the 10% guard); continuous peer p95 is 2,296.6→2,288.7 ms. This does not replace TRD latency budgets.
+
+Loopback candidate runs record 6–8 HTTP 429s versus 1–4 for reference, and show almost no catch-up improvement. This supports a separate bounded capacity/rate experiment; it does not establish a safe increase or isolate every cause. The +75 ms arms have zero 429s. Retain the slow V1 prototype, V2's missed target, V3 classification counterexamples/interrupted plan and the complete final paired denominator. Source/build hashes, per-pair guard values and independently reconstructed raw DOM observations remain in the packet.
+
+These are descriptive local Chromium journeys on matching encrypted synthetic fixtures (121 cards, 13,000-byte Goals, exactly 600 missing accepted positions), with new typing independently offered during draining. No physical Android/Firefox/WAN, production adoption, capacity, full-suite or generalized qualification claim. Foreground publication timing is still separate. New test obligations stay blocked; no preview or deployment changes.
+
+
+## Scoped sync rate and capacity investigation — 2026-10-21
+
+The [controlled investigation](./performance-experiments/2026-10-21-sync-capacity/README.md) keeps the patch 02 client exact and changes only temporary service refill literals, with burst/concurrency/verification bounds fixed. Fourteen restored browser journeys pass complete export/writing/Undo/offline-reopen and all predeclared typing guards.
+
+| Loopback 600-position workload, two factorial blocks | Block 1 | Reversed block 2 |
+| --- | ---: | ---: |
+| Default 16/session,64/process | 33.243s | 33.743s |
+| Session 64,process 64 | 22.575s | 23.088s |
+| Session 16,process 256 | 34.281s | 33.798s |
+| Session 64,process 256 | 23.115s | 23.085s |
+
+A third default/combined pair 33.764→23.586s gives 30.5% median paired improvement across the three primary contrasts. Session-only improvement is 31.6–32.1%; process-only has no benefit in this fixture. At +75ms, the one pair changes 38.721→37.737s (2.54%). The instrumented default run sees five session-top-up refusals and no process/concurrency refusal; next admissions follow by 1004–1011ms. This identifies policy-plus-retry cost, not an additive allocation of each wait to elapsed time.
+
+The separate six-session/competing-writer probe fails all six fixed arms with 409 state-changed before 429, so it supplies no qualified sustained-capacity or safe-policy estimate. Reader-only controls pass; all actual stored seed/interactive wires and proofs pass cold independent verification. The probe stops on 409 and does not test the app's full continuation policy. Source shared-revision invalidation is a hypothesis for the next discriminating experiment. Keep shipped 16/64, preserve raw failures/resources/pilots and investigate contention/continuation before any numeric promotion. No production/WAN/phone/Firefox, maximum-capacity, full-suite or generalized qualification claim.
+
+
+## Client continuation and publisher-tip invalidation — 2026-10-21
+
+The [bounded mechanism packet](./performance-experiments/2026-10-21-sync-continuation/README.md) keeps the exact patch 02 client/default policy and uses a separate observer-only service copy. Nine actual packaged-browser journeys pass complete export/writing/Undo/offline guards. A targeted injected remote-batch refusal is followed by an automatic remote attempt after 1172ms; an injected refused submit is later accepted with identical pending bytes. Natural browser pressure produces no client-facing state-changed reply. These functional controls do not establish production frequency or behavior under unlimited repeated refusals.
+
+Original full native contention fails with and without observation at 7.015/7.004s. Six unrelated fingerprint invalidations precede 28 hot stale-revision guards. A deterministic same-connection comparison confirms that the hot snapshot bytes remain identical while a valid unrelated commit and stale guard advance the shared revision. Smaller controls pass; own-writer discriminators retain later failures with 492/586 verified positions. Keep failed runs, different workload sizes and instrumented timing separate. Fourteen cold SQL wire/proof audits and all unchanged targeted invariants pass. No maximum-capacity/rate promotion, phone/Firefox/WAN, release/security qualification or production adoption claim; candidate publisher-scoped invalidation needs its own bounded repair/regression phase.
+
+
+## Publisher-scoped snapshot-race invalidation — 2026-10-21
+
+The [bounded repair packet](./performance-experiments/2026-10-21-publisher-isolation/README.md) changes only publisherTips runtime ownership. A fingerprint race now discards its publisher's preliminary evidence without advancing the global revision for byte-identical unrelated captures. Bounded unique owners fence captures, stale remember and active audits; global external/clear/close/audit safety fences remain. No rate, retry, format or verification change.
+
+In two fixed matched pairs of the original six-session256-position mixed workload, reference arms fail at6.039/6.003s with zero hot writes/read positions; candidates still fail at15.139/15.148s but verify24/27 hot writes and545/554 positions. These are failures with different stopping times, not completed throughput estimates. The full unrelated-writer+reader/no-hot-writer discriminator passes1536 positions,20 other writes and all independent proofs (20.166s replay;100429 responses including repeats). Both-writer/no-peer still fails after505 positions and14/7 verified writes. All six cold stores retain exact original wires and valid accepted proofs. Same-publisher contention and maximum capacity remain open; shipped16/64 refill stays.
+
+Three restored actual-client journeys pass full export/writing/Undo/offline-reopen guards: natural catch-up33.768s, duplicate pressure152.792s, and pressure plus known refused remote batch/submit158.162s. The injected remote read autonomously succeeds after1136ms and identical pending submit after1038ms. Natural browser state-change exposure is zero. These are local Chromium functional checks with duplicate reads sharing a session, not a matched browser speed, phone/Firefox/WAN, production adoption or generalized qualification claim. All114 affected cases, six effective omission controls and109 planning cases pass; failures/corrections remain preserved. New test obligation stays blocked, every prior gate remains, and no publication or preview change occurs.
+
+
+## Known append markers and remaining cold bursts — 2026-10-21
+
+The [bounded marker repair](./performance-experiments/2026-10-21-publisher-commit-races/README.md) prevents known valid same-publisher commits from destroying authenticated prefixes when old reads lose the strict native guard. Captures/memo results become obsolete; audits retain ownership and corruption quarantine. No queue, stored/wire change, authority check waiver, retry/rate/deadline increase. The old implementation fails the new regression;127 affected cases,11 effective omission controls and109 planning cases pass.
+
+The original COLD six-session256-position mixed workload remains failed. First hot writes offered at500ms verify at2955/3036ms; the following five queued writes drain in84/92ms and race out four read attempts. Retain both failed pairs and the stopped interaction-guard miss. This is not a cold-capacity pass. A separate real signed preflight read defines a WARM discriminator; all warm-read cost/status remains separate. In two clean warm pairs, repaired replay completes1536 positions at20.179/20.002s with all40/39 hot and20/19 other writes verified, hot offered-to-proof p95 576/563ms against2500ms. References fail at120s replay or409. Failed references are censored, so no completed paired speedup percentage is reported.
+
+All16 native stores pass independent exact-wire/proof audits, including11 failed runs. Keep the first potentially overlapping warm block and repeat it completely after other probes finish. Three actual-client journeys pass complete exports, writing, Undo/Redo and locked offline reopening (34.251/156.031/139.580s catch-up); known remote read and identical pending submit continue after1164/1038ms. No natural state-changed browser exposure; submit refusal body missing to CDP remains explicit. These are local Chromium functional controls, not browser speed, physical-phone/Firefox/WAN, maximum capacity, production adoption, population confidence or generalized qualification. Cold first-verification fan-out/queued bursts are the next bounded target; shipped16/64 remains. No preview or publication changes.
+
+
+## Cold publisher verification and queued write burst — 2026-10-21
+
+[Phase07 protocol and preserved evidence](./performance-experiments/2026-10-21-cold-verification/README.md). Counterbalanced fresh-service reference/candidate/candidate/reference, no warmup, same1024-row publisher, six scoped sessions×256 positions, hot500ms writer, unrelated1000ms writer and250ms reader. All original rate/work/concurrency/HTTP/120s replay/1GiB RSS limits and independent original proofs remain. Admission shares order only; each waited request recaptures and authenticates.
+
+| Final cold run | Reference1 | Candidate1 | Candidate2 | Reference2 |
+|---|---:|---:|---:|---:|
+| Verified positions |450 (failed409)|1536|1536|474 (failed409)|
+| Replay |not completed|20.574s|20.068s|not completed|
+| Verified hot/other writes |6/3|41/20|40/20|6/3|
+| First hot offered-to-proof |2452ms|286ms|289ms|2522ms|
+| Hot offered-to-proof p95 |2452ms|1014ms|574ms|2522ms|
+| Capacity refusals |0|93|94|0|
+
+Both candidates meet the added2500ms interaction guard, retain exactly two whole censuses (one/account), and finish without state-change replies, quarantine or remaining waiters. CPU8.73/9.16s, sampledRSS346/396MB. All8 original/final stores pass read-only original-wire/link/signature audits. Failed references preclude a completed paired percentage-speedup estimate. These are two correlated-workload process replications on one machine, not a confidence interval, rate-policy approval, general no-starvation claim or maximum-capacity measurement.
+
+Exact patch02 packaged-client normal/duplicate-reader functional journeys pass34.246/139.577s catch-up, full exports, two-way writes, Undo/Redo and locked offline reopening. No paired browser speedup or physical Android/Firefox/WAN/production claim. Retain the initial candidate's unchanged-regression failure, membership-enabled600s browser failure/interrupted repeat, initial first-epoch success and all fixture corrections; only final-source runs receive final-source acceptance credit. General qualification remains paused.
+
+
+## Revisit rate/capacity after cold verification — 2026-10-21
+
+[Prospective phase08 and full evidence](./performance-experiments/2026-10-21-rate-review/README.md). Working runtime remains16/session64/process. Only disposable service refill literals differ; all limits, checks, fixtures and exact patch02 client stay. Eight counterbalanced cold processes (D,S,P,B then B,P,S,D), plus one asymmetric1024-position D/S pair, all complete independently verified reads/offered writes. All10 stores pass cold original-wire/proof audits.
+
+| Session/process | Six-session replay in two runs |
+|---|---:|
+|16/64|20.141s /20.745s|
+|32/64|20.881s /20.416s|
+|16/128|11.408s /11.093s|
+|32/128|9.845s /10.142s|
+
+The single-session D/S pair is68.654/31.686s. The32/64 primary fails the relative native fairness gate: median per-run hot offered-to-proof p95 182→315.5ms; separate-account peer607→1133.5ms. Every absolute2.5s/resource guard passes; small quantile samples and1s retry steps remain qualified. Process128 variants pass local native gates but are diagnostic, with no production-capacity or adoption claim.
+
+Three restored actual-client600-update D/S pairs improve 31.46% at median. All10 normal/foreground/duplicate-pressure client journeys pass full data/edit/offline guards; all predeclared typing gates: False. Repeated-reference drift 0.07%. No physical Firefox/Android/WAN, container sizing, maximum sustained capacity or deployed-version claim. Pressure local typing also misses16ms (12.0→17.8ms). Keep16/64 pending a bounded typing/coupled-policy/container/multiple-publisher investigation. Preserve complete raw denominator, gate misses and the native stdout collision note; no new aggregate qualification credit.
+
+
+## Coupled rate capacity, distinct cold publishers and typing — 2026-10-21
+
+[Prospective phase09 and evidence](./performance-experiments/2026-10-21-coupled-capacity/README.md). Four D,B,B,D cold runs enforce Linux cgroup: 1 CPU, 1 GiB, zero swap and pids 128; driver/oracle outside. Six genuinely distinct 256-row publishers each replay256signed positions, plus separate account writes/reads and first-publisher500ms writer. Current service modules mounted read-only; cached image supplies dependencies, not a new release artifact.
+
+| Run | Replay ms | Offered/verified first/other writes |429s| CPU ms | RSS MB |
+|---|---:|---|---:|---:|---:|
+|1 D|21357|42/21|82|10440.7|189.4|
+|2 B|10501|20/10|12|8926.0|184.2|
+|3 B|10565|21/10|12|8929.1|184.3|
+|4 D|21080|42/21|77|10639.5|186.0|
+
+All 1,536 positions and original live/cold wire/link/proof checks pass in every run. Seven censuses/run, no OOM/quarantine/pending lanes; all declared fairness/resource guards pass. Actual CPU throttling occurred. No maximum/production/long-history/platform-capacity claim.
+
+Six uninstrumented exact-client journeys plus two both-renderer profile journeys preserve full exports, two-way writing, Undo/Redo and locked offline reopen.
+
+| Pair | D/B catchup ms | Improvement % | Local p95 D/B ms | Local/peer guards |
+|---|---|---:|---|---|
+|ordinary-D / ordinary-B|33760 / 24646|27.0|14.4 / 10.4|True / True|
+|pressure1-D / pressure1-B|139896 / 25653|81.66|9.5 / 16.8|False / True|
+|pressure2-D / pressure2-B|145821 / 29694|79.64|12 / 9.2|True / True|
+
+Typing acceptance remains failed. Preserve16.8ms pressure1-B against16ms; later9.2ms does not erase it. Decomposition puts the missed arm's offer→beforeinput p95 at16.3ms and event→DOM at0.7ms. Quantiles are not additive, host/CDP offer includes dispatch/scheduling, and mutation is not paint. Both mapped renderer profiles are mechanism-only; native crypto/IDB durations are asynchronous wall time. Keep 16/64 pending dispatch/control/foreground/device discrimination.68 original budget cases across Mac/Linux and 109 planning cases pass; all 881 obligations, 337 unresolved obligations and 97 construction statuses stay exact. No runtime/test/default change, preview/publication or general qualification.
+
+
+## Typing dispatch calibration and browser ownership — 2026-10-21
+
+[Prospective phase10 and raw evidence](./performance-experiments/2026-10-21-dispatch-calibration/README.md). Exact temporary B32/128 source/client/fixtures;10 restored duplicate-pressure app journeys and two static native-input controls. Whole journeys are units;120dependent keys are not independent replications. All data guards pass with native-control coverage explicitly limited; six editor journeys deliver all 120 new keys to the peer. Actual root process/binary/focus checks pass in every journey.
+
+| Run | Offer→DOM p95 ms | Browser keydown→handler p95 ms | Beforeinput→DOM p95 ms | Renderer late p95 ms | Driver worker/parent late p95 ms |
+|---|---:|---:|---:|---:|---|
+|control-normal|4.9|0.6|0.6|2|3/3|
+|control-fault|6.2|0.6|0.6|1.9|3/2|
+|1-OE|9.8|8.5|1.6|18.8|2/2|
+|1-FE|14.4|12.4|1.4|18|2/2|
+|1-IE|16.4|14.5|1.5|19.3|2/2|
+|1-FP|4.2|0.6|0.5|1.9|2/2|
+|1-IP|4|0.6|0.6|1.6|2/2|
+|2-IP|3.8|0.6|0.5|1.9|3/2|
+|2-FP|6.8|1.1|0.7|1.6|3/2|
+|2-IE|11.5|9.6|1.8|19.2|2/2|
+|2-FE|14.6|12.8|1.5|21.2|2/2|
+|2-OE|8.4|6.9|1.8|17.2|2/3|
+
+Three 80 ms beforeinput faults at indices30/60/90 all trigger independent DOM/RAF/heartbeat/longtask sensors; overall p95 alone hides these2.5% stalls. None of the focus/order or independent-root comparisons consistently meets>=3ms and>=20% reduction in both blocks. Native-input controls omit new editor writes and induced background work, so do not identify a pure editor effect. Renderer queuing is supported by the input timestamp/handler gap and larger renderer timer lateness, while driver lateness remains2–3ms. Together with prior profile hotspots, this selects owner-local verification/comparison reuse as the next bounded target, preserving all trust/byte/invalidation/cleanup fences.
+
+Reference catchup drift7.33%; instrumented32.1–38.7 s catchups cannot be compared with prior different-sensor/workload timings. Keep prior 16 ms misses,16/64 defaults, all 875 old-test blobs/803 runtime files and 881/337/97 planning state exact. Six affected integrity/planning checks pass; no full-suite/general qualification, physical keyboard-to-paint, preview/publication or runtime adoption.
+
+
+## Exact comparison prototype — held after app catchup regression — 2026-10-21
+
+[Phase11 prospective contract and complete evidence](./performance-experiments/2026-10-21-word-comparison/README.md). V3 actual built helper passes all unchanged micro guards: aligned equal/late67.3–68.6%, cooperative71.1–84.2% faster; V1/V2failed early/short controls remain. No timing assertion substitutes for exact semantic tests.
+
+| Run | Catchup ms | Local offer→DOM p95 ms | Keydown stamp→handler p95 ms | HTTP429s |
+|---|---:|---:|---:|---:|
+|1-R-catchup|37223|13.9|12.4|12|
+|2-C-catchup|56038|7.2|2.1|31|
+|3-C-catchup|53435|8.1|1.5|28|
+|4-R-catchup|34133|9.8|7.8|10|
+|5-R-catchup|35172|14.8|13.4|10|
+|6-C-catchup|53909|6.5|1.9|28|
+|7-R-foreground|—|7.2|1.3|0|
+|8-C-foreground|—|5.4|0.9|0|
+
+All8full data journeys pass;960keys/60foreground markers reach peers. Fixed pressure R,C;C,R;R,C pairs all pass local C<=max(16,R+3), all fail catchup and peer<=1.10R. Foreground pair passes. Reference drift9.05%within15%; no favorable reruns. Equal temporary32/128service,121cards/13kGoals/600positions, two browser roots, explicit focus and identical low-overhead sensors. No physical/mobile/Firefox/WAN or maximum capacity claim.
+
+Runtime candidate held and exact original helper restored. More capacity refusals and existing1s/2s explicit-refusal waits suggest a next pacing/admission study; no causal throttle-cost attribution or safe numeric change established. Six new regressions preserve every byte/tail/chunk/checkpoint and owner boundary; both helpers pass14cases, four omissions fail.112affected final units,93planning cases and relevant build/type/census/inventory checks pass. Overall case census2481→2487only;881/337/97planning state and16/64defaults retained. Sequential patch11contains tests/evidence, no runtime adoption, preview/publication or general qualification.
+
+
+## Capacity refusals and exact client retry waits — 2026-10-21
+
+[Phase12prospective design and raw homes](./performance-experiments/2026-10-21-capacity-trace/README.md). Same R/Ctyping candidate and temporary32/128policy, two browser roots, original121cards/13kGoals/600positions and full data guards. Corrected eight-case trace follows retained eight observer-incomplete runs; no favorable arm selection.
+
+| Run | Catchup ms | Local offer→DOM p95 ms | Client429s | B actual wait union ms | Duplicate charged work |
+|---|---:|---:|---:|---:|---:|
+|v2-1-R-feedback|26554|10.3|1|1009|310|
+|v2-2-C-feedback|37644|9.1|13|13033|655|
+|v2-3-C-feedback|35627|7.1|11|11049|588|
+|v2-4-R-feedback|26015|13.2|1|1001|304|
+|v2-5-R-ordinary|24055|20.3|0|0|0|
+|v2-6-C-ordinary|21510|6.9|0|0|0|
+|v2-7-R-independent|25513|13.9|1|1003|216|
+|v2-8-C-independent|24517|8.6|2|2002|206|
+
+All1586corrected refusals are session-rate predicates,29client refusals are work top-up failures,1610scoped dispatches joined and29same-byte retries exercise1s waits (no observed2s waits). Every full data guard/1920peer keys passes across16runs. Feedback traffic is endogenous to client demand. Independent pressure has72offers/0skips but actual3-read template rather than intended4; no exact4-read-control claim. Cshadow work655/588vsR310/304supports scoped concurrent duplicate-work admission as the next candidate, without proof/authority reuse or rate changes. Keep ordinary/fixed3diagnostic and observer/host/platform limitations.22budget cases,20000decision-parity operations,8business-ASTproofs and relevant builds/planning pass. Runtime803files/tests875blobs/default16/64and881/337/97state unchanged; evidence-only patch12, no adoption/publication/general qualification.
+
+
+## 2026-10-21 — Combined duplicate-read flow control and comparison
+
+[Phase13 packet](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) uses a fixed12-journey matched R/C design with actual16/64 primary policy, repeated reversed feedback pressure, ordinary catch-up, independently offered exact four-read contention, foreground typing and a separately labeled temporary32/128 diagnostic. Runtime differences are bounded exact concurrent batch exclusion plus the held V3 exact-word comparator. No tracing hooks, numeric rate/refill, burst/active/session/work limit, wire/storage, authority, verification lease or retry policy change. Source closure803→804 includes build tools/test helpers; crypto TS inventory399→400.
+
+All primary pair guards pass: pressure143.423/140.523→67.082/67.091s (53.23%/52.26%), local p95 13.8/11.8→7.4/9.6ms. Ordinary33.602→34.156s and independent51.363→51.475s are slightly slower; foreground8.9→9.2ms is roughly unchanged. The Bdiagnostic28.077→29.084s also passes its guard but grants no policy adoption. Reference drift2.06% is within15%. Every journey retains full export/two-way/Undo/locked-offline guards and120new peer keys; foreground adds30 markers per arm. Independent wire hash joins prove4-read template,72offers and0skips in both fixed-load arms. Keep phase11 and phase12 failures/limitations, dependent per-key observations and lack of supported mobile/Firefox/WAN/general capacity evidence. No universally faster typing/sync claim; ordinary catch-up still~34s.
+
+Original HTTP duplicate counterexample, five appended regressions, six omission controls, exact source/old-test AST review,50native/112word/105planning cases and matched type/build/budget/isolation checks are preserved. All881rows/337unresolved/97statuses/contracts stay exact; new cases stay blocked from aggregate qualification credit. Local unsigned sequential patch13, no staging/publication or generalized qualification.
+
+
+## 2026-10-22 — Unequal-account catch-up versus editing on c1177575
+
+[Phase14 packet](./performance-experiments/2026-10-21-account-fairness/README.md) freezes three genuine accounts with6/2/2 enrolled workspace credentials and1024/256/32 new accepted source positions. Four roots/ten native profiles, actual packaged client and current production overlays at1CPU/1GiB/no swap;120 genuine keys independently offered500ms. Fresh serial B,S,U,U,S,B, no retries or source/rate changes.
+
+| Run | Outcome | Local p95 ms | Peer p95 ms | Large replay seconds |
+|---|---|---:|---|---|
+|1-B|passed|2.6|738|—|
+|2-S|passed|4.1|1219.2|354.39|
+|3-U|failed|2.5|incomplete (110/120)|censored at writing failure|
+|4-U|failed|2.2|incomplete (79/120)|censored at writing failure|
+|5-S|passed|3.5|1151.9|330.252|
+|6-B|passed|2.9|743.8|—|
+
+
+The fixed fairness decision fails. Baseline peer drift0.786% passes; lighter-load guards pass despite higher peer latency. Both heavy arms miss the original30s writing guard with10/41 keys unobserved. Their observed-only peer p95 values are not full120-key estimates; all partial timestamps/counts remain. Local p95 stays2.2–4.1ms, so fast local echo does not establish timely sync. Heavy catch-up cancellation is censored at the quiet failure, not a600s observation. Membership-discovery409 and grant403 insufficient-scope occur six times each on the heavy quiet receiver; no quiet429 is recorded. Do not infer cause from statuses alone.
+
+Independent OpenSSL/native-prefix/seed-row audits of all six stores, three corruption controls, participant/resource/source checks and full/partial metric reconstruction pass. H/M accepted writing and all seed rows are exact. Failed profiles close without final storageState, limiting pending-durability/recovery claims. Preserve setup failures and all six outcomes. All existing obligations/old tests/source804 bytes remain; no rate adoption, aggregate qualification credit, staging or publication.
+
+
+## 2026-10-22 — Membership409 and removal-grant403 mechanism
+
+[Phase15](./performance-experiments/2026-10-22-membership-continuation/README.md) retains two heavy final-candidate journeys plus four pre-workload harness failures. Both original quiet delivery guards still fail. Server-side closed labels expose state-changed membership discovery after four snapshot losses; every traced loss observes the unrelated first publisher's promotion witness changing. The client tries terminal-removal discovery, correctly gets insufficient-scope for an active member, and eventually waits30s between discovery attempts. Neither quiet account sees429. No rate or auth repair is adopted.
+
+Stopping competing catch-up allows complete original writing to arrive automatically; a separate guaranteed-offline edit survives actual writer-browser close/reopen from the same profile, retains the complete archive and syncs on reconnect. Reverse writing, Undo/Redo and peer offline cold reopen pass. The canonical report preserves all times, exact refusal joins, missing-key denominators, native signature/prefix audits, observer parity, sensitivity controls, unchanged-case checks and setup failures. Subsequent recovery does not clear the original fairness blocker. Next bound discovery's relevant authority/publisher dependency and test safety falsifiers before changing production behavior. Source/client16/64, prior evidence and qualification pause remain; sequential patch15 only, no publication.
+
+
+## 2026-10-22 — Discovery false races removed; heavy catch-up remains blocked
+
+[Phase16](./performance-experiments/2026-10-22-discovery-dependency/README.md) retains fixed R,C,C,R at identical client/source envelope16/64. Candidate discovery compares the relevant publisher history without the unrelated first publisher's changing witness. Six membership409s and six removal-grant403s per reference disappear in both candidates. However, all original delivery guards fail: peer prefixes78/65reference versus38/45candidate out of120. Each candidate instead encounters six history-checkpoint409s, four explicitly state-changed and two uncaptured. The candidate is held; no speedup or complete-peer percentile/drift claim follows.
+
+Local offer-to-DOM p95 remains below16ms; complete writing and a separate guaranteed-offline edit pass automatic recovery, genuine same-profile cold reopen, whole exports and Undo/Redo after load-stop. Large H replays are censored at the quiet failure, not observed600s failures. Full reports preserve native signatures/prefixes, original failures, clocks/resources,13new regressions, mutation/source controls and16common broad-preflight failures. Next inspect checkpoint capture/guard and receive continuation without weakening current heads/history/authority. Sequential patch16 only; no deployment or qualification credit.
+
+
+## 2026-10-22 — Phase17 history checkpoint and receive gating
+
+[Phase17](./performance-experiments/2026-10-22-history-checkpoint/README.md) retains fixed-v2 R,C,C,R, identical client and1CPU/1GiB/zero-swap16/64 envelope. Quiet history409s reference [6, 6], candidate [0, 0]; full heavy acceptance **False**.
+
+| Run | Q1 history409 | Local p95 ms | Complete peer p95 ms | Original delivery | Replay600s |
+|---|---:|---:|---:|---|---|
+| 1-R | 6 | 3.8 | incomplete (46/120) | False | False |
+| 2-C | 0 | 2.6 | 8993.5 | True | False |
+| 3-C | 0 | 2.7 | 5090.8 | True | False |
+| 4-R | 6 | 2.8 | incomplete (76/120) | False | False |
+
+Incomplete references have no full peer p95/drift ratio. All four post-load automatic recovery/pending/save/cold-profile/full-export/reverse/Undo/Redo/isolation guards and native accepted-prefix audits pass.17 new regressions,8 implementation and6 evidence/native controls; same16 old affected failures remain. Candidate status: accepted for the scoped checkpoint repair; heavy fairness remains held. Preserve reuse-only pilot7history409s/H600 failures and the startup-invalid first comparison, without substitution. No deployed-device or generalized qualification claim.
+
+
+### Phase17 acceptance clarification
+
+The scoped checkpoint retry mechanism is repaired, but the **candidate remains held**: complete peer p95 is8,993.5ms and5,090.8ms against the unchanged2,500ms guard, and all five H receivers miss600s. Both candidates deliver120/120 within the original writing deadline with zero history409s; this does not satisfy the full performance decision. “Accepted for the scoped repair” above must not be read as runtime promotion, merge, deployment or qualification acceptance.
+
+
+## 2026-10-22 — Phase18 ordinary receive progress under contention
+
+[Phase18 packet](./performance-experiments/2026-10-22-ordinary-receive/README.md), fixed R,C,C,R with unchanged client and1CPU/1GiB/zero-swap16/64 policy. Repeated authority proof dominates17 diagnostic reads755/769ms median; diagnostic timing is not acceptance. Original final heavy acceptance **False**.
+
+| Run | Local p95 ms | Complete peer p95 ms | Q429, whole journey | All five H replay | Original guards |
+|---|---:|---:|---:|---|---|
+| fixed-v2/1-R | 2.8 | 10531.1 | 0 | not complete at original deadline | False |
+| fixed-v2/2-C | 3.1 | 20968.1 | 0 | 256.0s | False |
+| fixed-v2/3-C | 2.8 | 19989.7 | 0 | 254.0s | False |
+| fixed-v2/4-R | 2.6 | 11939.6 | 0 | not complete at original deadline | False |
+
+Full original pending/save/cold-profile/raw encrypted delivery/whole-export/reverse/Undo/Redo/isolation/native prefix guards pass.18 new regressions/10 implementation and6 evidence/native controls; same16 old affected failures. Status **HELD: backlog replay improves, but live peer latency regresses to20–21s p95 versus10.5–11.9s reference (target2.5s)**. No deployed-device, release qualification or maximum-capacity claim.
+
+
+### 2026-10-22 — diagnostic read/publication/retry trace, no candidate promotion
+
+Two fixed cumulative18 instrumented journeys,H6/M2/Q2,1CPU/1GiB,120 trusted keys at500ms,90s diagnostic load boundary. Q0/Q1 rate refusals0/0; Q409 counts0/1. The returned batch state-changed409 spends4614ms in four same-publisher commit races, including4399ms captured→authority verification, then999.1ms client backoff and3ms scheduler lateness. Native rejected-snapshot counts40/41;23/28 same-owner commit changes and17/13 unrelated original-publisher live-witness fingerprint changes. Writer submit HTTP p95=1333/1424ms; envelope preparation54.3/60.3ms and submission preparation36.1/32.4ms. Instrumented peer p95=9021/16234.3ms, all120 complete. These are mechanism observations, not matched performance acceptance; phase18's uninstrumented regression remains held. All data guards/native proof audit pass;61+21 unchanged existing regressions, four controlled cases and six fault controls pass. No runtime/rate/deadline/security/old-test changes, no qualification or publication. [Packet](./performance-experiments/2026-10-22-read-pacing/README.md).
+
+
+### 2026-10-22 — late-ledger capture, fixed heavy comparison
+
+HELD: scoped capture repair passes; original heavy performance acceptance remains unmet. Same frozen110 client assets, H6/M2/Q2,1CPU/1GiB,120 trusted500ms inputs; original16ms/2500ms/30s/600s/120s gates.
+
+|Run|Local p95 ms|Peer p95 ms|Quiet read409|Slowest H s|
+|---|---:|---:|---:|---:|
+|1-R|6.7|26277.2|1|310.8|
+|2-C|7.2|12403.3|0|322.4|
+|3-C|6.2|7108.2|0|295.6|
+|4-R|5.6|17304.3|1|265.2|
+
+Every outcome is retained; finite dependent observations, no general tenant-capacity inference. Independent native signature/seed/prefix and offline persistent-profile/export/retained-record guards pass.15 added regressions,5 omissions,6 evidence/native controls and unchanged affected-suite failure comparison. [Packet](./performance-experiments/2026-10-22-late-ledger/README.md). No rate, retry/deadline, cache-context or security relaxation, no publication or general qualification.
+
+
+### 2026-10-22 — publication authority/prelude attribution, phase21 evidence only
+
+Two fixed instrumented cumulative20 H6/M2/Q2 journeys,1CPU/1GiB,120 trusted inputs at500ms,90s diagnostic replay censor. Quiet submits72/76; HTTP p951873/1589ms; authority p951749.7/1572.6ms and93.0%/92.4% of same-request summed HTTP wall. Each authority pass77 signature verifications/205 digests. Peer discovery HTTP median603/688ms, catalog610/611ms; local discovery proof median22.1/21.1ms and catalog0.3/0.3ms. Discovery and catalog repeat a114-signature/309-digest timeline after initial authority verification. Quiet429zero; independent data/native proofs and continuation guards pass. Instrumented local/peer p953.2/10467ms and2.9/5979ms are diagnostic only, with observed timer/event bookkeeping spread31.3/19.5ms; no matched speedup or acceptance claim. Static296-file/98-authority-call map independently checked.31 existing prelude cases pass; paired56 native cases55pass/1same known cold-wait failure. No runtime, old-test, limits, retry-clock, security or qualification changes. Candidate20 remains held. [Packet](./performance-experiments/2026-10-22-publication-prelude/README.md).
+
+
+### 2026-10-22 — phase22 single-request authority/history work reduction
+
+Six real signed native cases on certified/continued bootstrap/discovery/catalog match one independent full-history operation after failing the old duplicate-work comparison. Certified successor-domain verifies13→8 and certification-domain3→2; these are structural counts, not latency estimates.20 new+31 old focused cases pass; paired402/422 affected cases retain17 identical failures. No protocol/client/rate/retry/security changes; no measured latency promotion. Final fixed coupled benchmark is assigned prospectively to publication-reuse phase23, with original gates unchanged. [Packet](./performance-experiments/2026-10-22-request-authority/README.md).
+
+
+### 2026-10-22 — phase23 publication reuse, combined22+23 heavy comparison
+
+**HELD:** all complete-peer p95s miss the unchanged2500ms gate, and both candidates regress relative to both references. Fixed R21,C23,C23,R21, original110 client files, H6/M2/Q2 with1024/256/32 histories,120 trusted focused inputs at500ms,1CPU/1GiB/zero swap, unchanged16/64 rates and original16ms/30s/600s/120s guards. [Evidence](./performance-experiments/2026-10-22-publication-authority/README.md).
+
+|Run|Local p95 ms|Complete peer p95 ms|Writer submit p95 ms|Writer submits|Slowest H replay s|
+|---|---:|---:|---:|---:|---:|
+|1-R|3.5|5557.4|1580|72|323.7|
+|2-C|4.7|36213.2|140|120|298.3|
+|3-C|2.3|32867.4|127|120|262.5|
+|4-R|1.8|5470.1|1733|77|320.3|
+
+All120 keys are observed; original delivery/local/replay/data/continuation/native/cold-pending/full-export guards pass in all4. Quiet429s0/0/0/0, history409s0/0/0/0; one reference membership409, no candidate membership409 or grant403. Whole journeys are the unit; these dependent finite observations establish no population/WAN/device capacity or separate23 causal effect. Publication p95 improves while submission count rises, so request-local wins do not establish end-to-end responsiveness. Paired affected422/440 cases retain the same17 failures;18 new regressions and6+6 controls pass. Preserve interrupted/no-image infrastructure attempts and common durable-result harness repair,3 harness checks, timer/observer limitations and all original gates. No qualification or publication.
+
+
+### 2026-10-22 — phase24 four-condition cadence/backlog isolation
+
+Fixed prospective A,B,D,C,C,D,B,A; two whole journeys per condition, original110 client files, trusted120 inputs at500ms, same H6/M2/Q2 and1CPU/1GiB/zero swap/16session64process policy. All observations retained. [Packet](./performance-experiments/2026-10-22-phase-isolation/README.md).
+
+|Condition|Peer p95, seconds (both runs)|Writer submissions|Displayed max backlog|
+|---|---:|---:|---:|
+|Neither (21)|5.49/9.68|78/78|5/11|
+|Request-local only (22)|15.26/9.72|61/64|12/9|
+|Publication reuse only (21 + adapter23)|26.28/27.78|120/120|52/54|
+|Both (23)|36.63/31.30|116/120|66/63|
+
+All complete-peer p95s miss2500ms; local p95 remains below16ms. Publication request p95 is122–207ms with reuse versus1409–1989ms without it. Repeated exact-body submission attempts are zero; the added requests are distinct bodies. Background replay is censored at fixed90s and cannot establish600s acceptance. All original foreground delivery/continuation/native/data/cold-pending/whole-export/reverse/UndoRedo/isolation checks pass. The displayed backlog is baseline-normalized status-notification evidence, not a certified ledger. Eight finite dependent journeys, no p-values or population/capacity/WAN inference. Source/runtime/client/security/rate/retry bytes unchanged; diagnostic analyzer adds17 regression cases and one blocked obligation (883/339). Candidate23 stays held.
+
+
+### 2026-10-22 — phase25 proof reuse, cadence and receive backlog trace
+
+Four fixed instrumented A,B,D,C journeys, original110 client files and same diagnostic90s competition. Native spans are overlapping wall wait, not exclusive CPU. [Full packet](./performance-experiments/2026-10-22-receiver-backlog/README.md).
+
+|Condition|Q1 read cache misses|Repeated read-authority signatures|Read authority wait, s|Discovery/history authority wait, s|Distinct submissions|Wait before request p95, s|
+|---|---:|---:|---:|---:|---:|---:|
+|A|79|6083|41.17|10.84|77|2.26|
+|B|70|5390|36.87|18.42|71|5.25|
+|D|68|5236|36.16|20.24|120|30.42|
+|C|74|5698|38.16|13.90|120|29.56|
+
+For combined-D, complete native-matched120-position reply-to-display p95 is31.07s and reply-to-first-request p95 is30.42s. Returned-body-to-display p95 is38.9ms on87/120 observed position bodies only; C is44.3ms on98/120. All raw missingness, negative clock differences and byte-level proof matches remain. Writer-D authority has119hits/1miss, only77 authority signatures total; ordinary receiving still repeats77 per miss. Receiver-D read-census+served sums3.48s plus history/discovery census0.27s, compared56.40s read+prelude authority wall. This is finite diagnostic attribution, not a speedup acceptance or causal mediation proof. Publication does not raise absolute miss count; the same costly receive path falls behind the faster submission cadence.
+
+All foreground/local/continuation/native/cold/export/reverse/UndoRedo/isolation guards pass; background replay is censored, all peer p95s still miss2500ms.13 independent evidence/native/guard controls and10 frame cases pass. Browser body omissions coincide with requestfailed observations; exact retrieval cause is unrecorded, and no timing was invented. One intended90000ms diagnostic load duration is89999ms; raw1ms resolution and original strict-check failure are preserved without changing request/performance/continuation/600s limits. No runtime, old-test, qualification883/339 or publication changes.
+
+
+### 2026-10-22 — phase26 stable read authority reuse, original heavy comparison
+
+Fixed prospective R25,C26,C26,R25, original110 client files, H6/M2/Q2 with1024/256/32 histories,1CPU/1GiB/zero swap,16session64process, trusted120 keys at500ms. Only the read proof adapter/common verifier identity changes runtime. [Packet](./performance-experiments/2026-10-22-read-authority/README.md).
+
+|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|
+|---|---:|---:|---:|---|---|
+|1-R|5.9|35.111|120/120|pass|held|
+|2-C|3.8|2.688|120/120|pass|held|
+|3-C|5.5|2.774|120/120|pass|held|
+|4-R|4.2|31.372|120/120|pass|held|
+
+Status: **HELD: original heavy-case gate still fails**. Original16ms local/2500ms complete-peer p95,30s delivery,600s replay and120s continuation limits unchanged. Every exercised pending/cold same-profile/no-reinjection/retained-record/whole-export/native proof/prefix/reverse/UndoRedo/isolation guard passes. All timings, failures and finite within-journey dependence remain explicit. The uninstrumented comparison isolates26 against held23 runtime (unchanged through25); it does not measure per-call cache hits, exclusive CPU or population effects. Eighteen regressions,62 focused cases, seven implementation and six independent evidence/native fault controls support the boundary. Paired affected suites retain the same17 failures; general qualification paused, no publication.
+
+
+### 2026-10-22 — phase27 remaining prelude proof trace
+
+Two fixed instrumented26 journeys after one preserved failed Docker EOF attempt; original110 clients/full600s workload/resource/rate/timing/data guards, no native repair. [Packet](./performance-experiments/2026-10-22-prelude-delay/README.md). Spans are overlapping await wall, not exclusive CPU.
+
+|Journey|Q1 read proof hits/misses|Q1 discovery+catalog authority wall,s|Q1 read authority wall,s|Q1 fresh ledger/served wall,s|
+|---|---:|---:|---:|---:|
+|2-I|272/0|37.67|0.21|6.54|
+|3-I|276/0|28.37|0.17|5.44|
+
+All stage counts, native request matches, available response-frame proof matches, missing bodies and independent native record/signature/prefix checks remain in the packet. Body-subset quantiles never stand in for complete peer latency or native commit authority. The first failed attempt has no completed cold/pending/replay acceptance credit; no journey or threshold was silently replaced. Actual runtime/old tests/metadata remain exact26, qualification883/339 paused. New uninstrumented repair acceptance is separate.
+
+
+### 2026-10-23 — phase28 complete discovery/catalog proof reuse, original heavy comparison
+
+Fixed prospective R26,C28,C28,R26, original110 client files and H6/M2/Q2 histories1024/256/32,1CPU/1GiB/zero swap/16session64process. Only4 reviewed native modules change. Original120 focused trusted500ms input,16mslocal/2500mscomplete-peer/30sdelivery/600sreplay/120scontinuation gates remain. [Packet](./performance-experiments/2026-10-22-prelude-proof-reuse/README.md).
+
+|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|
+|---|---:|---:|---:|---|---|
+|1-R|3.5|3.237|120/120|pass|held|
+|2-C|4.2|0.720|120/120|pass|pass|
+|3-C|4.8|0.749|120/120|pass|pass|
+|4-R|3.5|2.894|120/120|pass|held|
+
+**passes the original finite measured heavy-case gates.** All exercised data/pending/cold/no-reinjection/retained-record/export/native prefix/UndoRedo/reverse/isolation checks pass. Four whole journeys, dependent keystroke positions; fixed order brackets drift but establishes no population or physical-mobile/WAN claim. HTTP timings are descriptive; no observed subset or proof count replaces complete-peer acceptance. All26 new cases and79 focused cases pass;10 corrected baseline counterexamples and8 real omission controls are sensitive. Corrected paired affected suites retain exactly17 failures and add26 passing cases; no clean-full-suite claim. General883/339 qualification paused; no publication.
+
+
+### 2026-10-23 — phase30 final native continuation candidate, clock-valid absolute acceptance
+
+[Packet](./regression-evidence/2026-10-23-cold-clear/README.md). Same phase28 native/client workload with the bounded cold-clear repair: H6/M2/Q2,1024/256/32 histories,1CPU/1GiB,16/64 capacity,120 trusted keys every500ms, original16ms local/2.5s complete peer/30s original/600s replay/120s recovery gates. Original C,C remains timing-invalid/held: first119local,p95323.9ms after observed178–180ms clock discontinuity; all120 actual events and increments present; OS cause unknown. Original second2.9/714.1ms stays separate. Diagnostic same-renderer p950.5ms does not replace the primary anchor.
+
+Separately prospective exact-source C,C with host-only clock observations and additional4ms stability/causality gate passes both journeys: local p954.3/4.8ms; peer689.5/709.7ms, all120 samples, full replay/data/resource/offline/pending-durability/continuation guards. Host wall/monotonic spread1.222/1.220ms; five-point pre/post renderer brackets and120 input ordering pass. Three clock and six original evidence/native controls detect faults; frozen source/observer AST/native seed audits/cleanup pass. Finite absolute result only, no relative speedup or production/real-device guarantee. No client/native instrumentation; retain both series and failed reviewers. No publication or aggregate qualification.

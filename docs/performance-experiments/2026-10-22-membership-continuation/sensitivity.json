@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "missing-snapshot-refusal",
+      "exitCode": 1,
+      "detected": true
+    },
+    {
+      "name": "false-original-pass",
+      "exitCode": 1,
+      "detected": true
+    },
+    {
+      "name": "false-cold-archive",
+      "exitCode": 1,
+      "detected": true
+    },
+    {
+      "name": "missing-input",
+      "exitCode": 1,
+      "detected": true
+    },
+    {
+      "name": "native-ciphertext-or-envelope-signature",
+      "exitCode": 1,
+      "detected": true
+    }
+  ]
+}

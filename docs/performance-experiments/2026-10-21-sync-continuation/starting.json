@@ -1,0 +1,24 @@
+{
+  "base": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "priorTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f",
+  "priorPatches": [
+    {
+      "patch": "/private/tmp/done-live-sync-attribution-20261021/patches/01-live-sync-attribution.patch",
+      "sha256": "178284be7c132af165fca0fa05973157c97ea387204ad1b27c02ecb3b756fdaf",
+      "expectedTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49",
+      "independentCleanApplyTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49"
+    },
+    {
+      "patch": "/private/tmp/done-ordinary-receive-batch-20261021/patches/02-ordinary-catchup-batching.patch",
+      "sha256": "dbeae2d82777b8920a8ae0b36e079d8ae755a756600500bc9ded7fcd1e1f3bcb",
+      "expectedTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a",
+      "independentCleanApplyTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a"
+    },
+    {
+      "patch": "/private/tmp/done-sync-capacity-20261021/patches/03-sync-capacity-investigation.patch",
+      "sha256": "7ee3447f1daa52e87ebf4e1fe39f28299824c6d1988631a7595115fdfbad41e5",
+      "expectedTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f",
+      "independentCleanApplyTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f"
+    }
+  ]
+}

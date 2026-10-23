@@ -1,0 +1,14 @@
+{
+  "base": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "priorTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a",
+  "priorPatches": [
+    {
+      "path": "/private/tmp/done-live-sync-attribution-20261021/patches/01-live-sync-attribution.patch",
+      "sha256": "178284be7c132af165fca0fa05973157c97ea387204ad1b27c02ecb3b756fdaf"
+    },
+    {
+      "path": "/private/tmp/done-ordinary-receive-batch-20261021/patches/02-ordinary-catchup-batching.patch",
+      "sha256": "dbeae2d82777b8920a8ae0b36e079d8ae755a756600500bc9ded7fcd1e1f3bcb"
+    }
+  ]
+}

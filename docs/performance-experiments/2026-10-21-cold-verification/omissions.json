@@ -1,0 +1,92 @@
+[
+  {
+    "name": "no-inbound-admission",
+    "source": "account-service/delivery.ts",
+    "originalAnchorCount": 3,
+    "mutatedOccurrences": 1,
+    "testPattern": "concurrent first reads",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "no-waiter-recapture",
+    "source": "account-service/delivery.ts",
+    "originalAnchorCount": 3,
+    "mutatedOccurrences": 1,
+    "testPattern": "concurrent first reads",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "no-final-release",
+    "source": "account-service/delivery.ts",
+    "originalAnchorCount": 3,
+    "mutatedOccurrences": 1,
+    "testPattern": "a warmed publisher returns",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "lane-bound",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "active lanes and total waiting",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "waiter-bound",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "active lanes and total waiting",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "cold-close",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "active lanes and total waiting",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "release-idempotence",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "cold lane handoff is FIFO",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "lane-priority",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "a newly warm prefix",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "membership-transaction",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "membership-enabled",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  },
+  {
+    "name": "queue-duration",
+    "source": "account-service/publisherTips.ts",
+    "originalAnchorCount": 1,
+    "mutatedOccurrences": 1,
+    "testPattern": "a waiting entry times out",
+    "exitCode": 1,
+    "intendedAssertionFailure": true
+  }
+]

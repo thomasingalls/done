@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "2-I",
+      "bidirectionalHttpNativeMatches": 426,
+      "receiverMisses": 0,
+      "receiverAuthoritySignatures": 0,
+      "signatureCountExactly77PerObservedMiss": true,
+      "observedPublisherAndLiveWitnessTupleAndContextOneToOne": true,
+      "nativeAcceptedEnvelopesMatched": 117,
+      "availableReturnedEnvelopeAndProofBytesMatchNativeLedger": true,
+      "allPositionTimelineStampsAndMissingnessIndependentlyReconstructed": true,
+      "bodyProjectionUnavailable": 82,
+      "unavailableAlsoHasRequestFailed": 82,
+      "allNativeHeadersStable": true
+    },
+    {
+      "name": "3-I",
+      "bidirectionalHttpNativeMatches": 426,
+      "receiverMisses": 0,
+      "receiverAuthoritySignatures": 0,
+      "signatureCountExactly77PerObservedMiss": true,
+      "observedPublisherAndLiveWitnessTupleAndContextOneToOne": true,
+      "nativeAcceptedEnvelopesMatched": 118,
+      "availableReturnedEnvelopeAndProofBytesMatchNativeLedger": true,
+      "allPositionTimelineStampsAndMissingnessIndependentlyReconstructed": true,
+      "bodyProjectionUnavailable": 72,
+      "unavailableAlsoHasRequestFailed": 72,
+      "allNativeHeadersStable": true
+    }
+  ],
+  "limitations": "Body retrieval/projection unavailable for some requestfailed events; raw failures retained, no whole-body timing quantile inferred from incomplete observations. All publications are independently matched to verified native accepted envelopes. UI progress/timing is not protocol authority."
+}

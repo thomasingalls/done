@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,hashlib,copy
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');a=json.loads((r/'before/docs/release-validation-manifest.json').read_text());b=json.loads((repo/'docs/release-validation-manifest.json').read_text());assert len(b['rows'])==883 and len(b['unresolved'])==339
+for k in ['selections','exclusions','unresolved','status','claim','schema']:assert a[k]==b[k],k
+assert [x['id']for x in a['rows']]==[x['id']for x in b['rows']]
+allowed={'test:test/release-validation/account-fixtures.test.mjs':('exactly 699 Node cases','exactly 687 Node cases'),'test:test/release-validation/campaign-wrappers.test.mjs':('all three commands, 33 cases','all three commands, 21 cases'),'test:test/release-validation/general-tests.test.mjs':('the 2499-case file denominator','the 2487-case file denominator')};changed=[]
+for old,new in zip(a['rows'],b['rows']):
+ if old==new:continue
+ changed.append(old['id']);assert old['id']in allowed;new=copy.deepcopy(new);after,before=allowed[old['id']];count=0
+ for case in new['stage']['expect']['cases']:
+  if after in case['id']:case['id']=case['id'].replace(after,before);count+=1
+ assert count==1 and old==new
+assert set(changed)==set(allowed)
+start=json.loads((r/'starting.json').read_text())
+for f,h in start['runtimeFiles'].items():assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+# Use the accepted30 checkout index blob rather than a private source snapshot's pre-record census.
+import subprocess,os
+git=['git','--git-dir=/private/tmp/done-cold-clear-retry-20261023/patch30-index.git'];blob=subprocess.check_output(git+['show',start['baseTree30']+':docs/account-crypto/census.json'],env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'});assert(repo/'docs/account-crypto/census.json').read_bytes()==blob
+out={'status':'passed','allNativeProtocolClientBytesExactAccepted30':True,'cryptoCensusBytesExact30':True,'constructionRegistryOnlyReviewedSourceLineCorrection':True,'all883ObligationRowIdentitiesAnd339UnresolvedExact':True,'onlyThreeManifestCaseTitlesMatchExplicitCountUpdates':changed,'allOtherStageCasesOutcomesDeadlinesProcessPolicyAndEveryBlockExact':True,'allSelectionsExclusionsStatusClaimExact':True,'noNewAggregateCredit':True,'generalQualificationPaused':True};(r/'metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

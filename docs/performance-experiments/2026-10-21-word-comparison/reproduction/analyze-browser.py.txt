@@ -1,0 +1,31 @@
+from pathlib import Path
+import json,math,statistics,collections
+r=Path(__file__).parent;load=lambda f:json.loads(f.read_text())
+def dist(v):
+ v=sorted(v);assert v
+ return {'n':len(v),'p50':v[math.ceil(.5*len(v))-1],'p95':v[math.ceil(.95*len(v))-1],'min':v[0],'max':v[-1]}
+rows=[]
+for case in load(r/'browser-plan.json'):
+ d=load(r/case['name']/'result.json');assert d['outcome']=='passed';o=d['concurrent']['offers'];dispatch=d['dispatch'][0]
+ events=[e for e in dispatch['events']if e['kind']=='beforeinput'and e['target']=='editor'and o[0]['at']-2<=e['at']<=o[-1]['returnedAt']+10];assert len(events)==len(o)==120
+ base=len('Sync target A:')+(600 if case['mode']=='catchup'else sum(len(f' L{i};')for i in range(30)));values=[]
+ for i,(offer,event)in enumerate(zip(o,events)):
+  kd=max((e for e in dispatch['events']if e['kind']=='keydown'and e['target']=='editor'and e['at']<=event['at']),key=lambda e:e['at']);dom=[next(x['at']for x in p['rows']if x['at']>=offer['at']-2 and x['lengths'][0]>=base+i+1)for p in d['browsers']]
+  values.append({'index':i+1,'offerAt':offer['at'],'beforeinputAt':event['at'],'localAt':dom[0],'peerAt':dom[1],'offerToDOM':dom[0]-offer['at'],'peerDOM':dom[1]-offer['at'],'keydownStampToHandler':kd['at']-kd['stampEpoch'],'beforeinputToDOM':dom[0]-event['at'],'offerLateness':offer['at']-offer['scheduledAt']})
+ x={**case,'outcome':d['outcome'],'metrics':{k:dist([v[k]for v in values])for k in ['offerToDOM','peerDOM','keydownStampToHandler','beforeinputToDOM','offerLateness']},'rows':values,'guards':d['guards'],'all120EditorKeysReachedPeer':d['all120EditorKeysReachedPeer'],'roots':d['roots'],'export':d['export'],'finalExport':d['finalExport'],'offlineReopenMs':d['offlineReopenMs'],'allInputsFocusedVisibleTrusted':all(e['trusted']and e['focused']and e['visible']=='visible'and e['active']=='editor'for e in events),'rendererOverflow':dispatch['overflow']}
+ assert all(x['guards'].values())and x['all120EditorKeysReachedPeer']and x['allInputsFocusedVisibleTrusted']and not x['rendererOverflow'];assert d['roots'][0]['pid']!=d['roots'][1]['pid']
+ window=[n for n in d['network']if d['startedAt']<=n['at']<=d['completedAt']]
+ x['networkStatuses']=dict(collections.Counter(str(n.get('status'))for n in window))
+ x['capacityRefusalsByDevicePath']=dict(collections.Counter(n['device']+':'+n['path']for n in window if n.get('status')==429))
+ if case['mode']=='catchup':x['catchupMs']=d['caughtAt']-d['startedAt']
+ else:x['isolatedPeerAssertions']=dist([b['observedBy']-b['offeredAt']for b in d['bursts']]);assert len(d['bursts'])==30
+ rows.append(x)
+pairs=[]
+for ai,bi in [(0,1),(3,2),(4,5),(6,7)]:
+ a,b=rows[ai],rows[bi];assert a['arm']=='R'and b['arm']=='C';localA,localB=[x['metrics']['offerToDOM']['p95']for x in[a,b]];peerA,peerB=[x['metrics']['peerDOM']['p95']for x in[a,b]]
+ checks={'localTyping':localB<=max(16,localA+3),'peerTyping':peerB<=1.1*peerA}
+ x={'R':a['name'],'C':b['name'],'localP95R':localA,'localP95C':localB,'peerP95R':peerA,'peerP95C':peerB,'keydownHandlerP95R':a['metrics']['keydownStampToHandler']['p95'],'keydownHandlerP95C':b['metrics']['keydownStampToHandler']['p95'],'checks':checks}
+ if a['mode']=='catchup':checks['catchup']=b['catchupMs']<=1.1*a['catchupMs'];x.update({'catchupR':a['catchupMs'],'catchupC':b['catchupMs']})
+ x['passed']=all(checks.values());pairs.append(x)
+ref=[x['catchupMs']for x in rows if x['arm']=='R'and x['mode']=='catchup'];drift=100*(max(ref)/min(ref)-1)
+result={'rows':rows,'pairs':pairs,'referenceDriftPercent':drift,'referenceDriftWithin15Percent':drift<=15,'allDataGuards':True,'allPairGates':all(x['passed']for x in pairs),'timingAcceptance':drift<=15 and all(x['passed']for x in pairs),'currentPolicy':'16/64','experimentalPolicy':'32/128','scope':'Local Chromium synthetic workload. No device/WAN/general qualification or physical input-to-paint claim.'};(r/'browser-analysis.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items()if k!='rows'},indent=2))

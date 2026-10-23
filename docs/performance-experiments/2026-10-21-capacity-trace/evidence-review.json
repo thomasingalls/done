@@ -1,0 +1,122 @@
+{
+  "status": "passed",
+  "correctedJourneys": [
+    {
+      "name": "v2-1-R-feedback",
+      "429sIndependentlyAttributed": 411,
+      "client429s": 1,
+      "allDataGuards": true,
+      "localP95": 10.300048828125,
+      "peerP95": 25569.10009765625,
+      "independentTemplateActualReads": null
+    },
+    {
+      "name": "v2-2-C-feedback",
+      "429sIndependentlyAttributed": 373,
+      "client429s": 13,
+      "allDataGuards": true,
+      "localP95": 9.10009765625,
+      "peerP95": 36741.199951171875,
+      "independentTemplateActualReads": null
+    },
+    {
+      "name": "v2-3-C-feedback",
+      "429sIndependentlyAttributed": 378,
+      "client429s": 11,
+      "allDataGuards": true,
+      "localP95": 7.099853515625,
+      "peerP95": 34615.699951171875,
+      "independentTemplateActualReads": null
+    },
+    {
+      "name": "v2-4-R-feedback",
+      "429sIndependentlyAttributed": 417,
+      "client429s": 1,
+      "allDataGuards": true,
+      "localP95": 13.199951171875,
+      "peerP95": 25146.699951171875,
+      "independentTemplateActualReads": null
+    },
+    {
+      "name": "v2-5-R-ordinary",
+      "429sIndependentlyAttributed": 0,
+      "client429s": 0,
+      "allDataGuards": true,
+      "localP95": 20.300048828125,
+      "peerP95": 23125.39990234375,
+      "independentTemplateActualReads": null
+    },
+    {
+      "name": "v2-6-C-ordinary",
+      "429sIndependentlyAttributed": 0,
+      "client429s": 0,
+      "allDataGuards": true,
+      "localP95": 6.900146484375,
+      "peerP95": 20398.60009765625,
+      "independentTemplateActualReads": null
+    },
+    {
+      "name": "v2-7-R-independent",
+      "429sIndependentlyAttributed": 1,
+      "client429s": 1,
+      "allDataGuards": true,
+      "localP95": 13.900146484375,
+      "peerP95": 24691.60009765625,
+      "independentTemplateActualReads": 3
+    },
+    {
+      "name": "v2-8-C-independent",
+      "429sIndependentlyAttributed": 6,
+      "client429s": 2,
+      "allDataGuards": true,
+      "localP95": 8.599853515625,
+      "peerP95": 23446.800048828125,
+      "independentTemplateActualReads": 3
+    }
+  ],
+  "duplicateOverlap": [
+    {
+      "name": "v2-1-R-feedback",
+      "startedReadsArrivingDuringParent": 214,
+      "allStartedShadowReads": 214,
+      "startedReadsReservedDuringParent": 193
+    },
+    {
+      "name": "v2-2-C-feedback",
+      "startedReadsArrivingDuringParent": 570,
+      "allStartedShadowReads": 570,
+      "startedReadsReservedDuringParent": 537
+    },
+    {
+      "name": "v2-3-C-feedback",
+      "startedReadsArrivingDuringParent": 515,
+      "allStartedShadowReads": 515,
+      "startedReadsReservedDuringParent": 485
+    },
+    {
+      "name": "v2-4-R-feedback",
+      "startedReadsArrivingDuringParent": 196,
+      "allStartedShadowReads": 196,
+      "startedReadsReservedDuringParent": 169
+    },
+    {
+      "name": "v2-5-R-ordinary"
+    },
+    {
+      "name": "v2-6-C-ordinary"
+    },
+    {
+      "name": "v2-7-R-independent"
+    },
+    {
+      "name": "v2-8-C-independent"
+    }
+  ],
+  "originalEightObserverIncompleteRunsRetained": true,
+  "allSixteenFullDataJourneys": true,
+  "verifiedEditorKeys": 1920,
+  "capacityAttributionCompleteForCorrectedEight": true,
+  "all29CapacityRetriesUseSameBody": true,
+  "zeroIncompleteMeasuredWaits": true,
+  "independentPressureLimitation": "The capture predicate selected first aggregate, not specifically4reads. All72offers used a3-read template in each arm (216planned read units rather than intended288). Preserve this as fixed3-read diagnostic, not an exact4-read control; require explicit count filtering in the next repair phase."
+}

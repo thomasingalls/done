@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "drop-failed-guard",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "shift-retry-clock",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "change-native-409",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "drop-trusted-input",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "observer-overflow",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "omit-native-read-guard",
+      "detected": true,
+      "exitCode": 1,
+      "bothRealWriteCasesFail": true
+    }
+  ]
+}

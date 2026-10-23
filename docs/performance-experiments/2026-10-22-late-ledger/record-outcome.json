@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "candidateStatus": "HELD: scoped capture repair passes; original heavy performance acceptance remains unmet",
+  "scopedLateCaptureRepairVerified": true,
+  "heavyFairnessAcceptance": false,
+  "runs": [
+    {
+      "name": "1-R",
+      "variant": "R",
+      "localP95": 6.7001953125,
+      "peerP95": 26277.2001953125,
+      "peerComplete": true,
+      "read409s": 1,
+      "quiet429s": 0,
+      "deepReplay600s": true,
+      "slowestHSeconds": 310.805,
+      "gates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      }
+    },
+    {
+      "name": "2-C",
+      "variant": "C",
+      "localP95": 7.199951171875,
+      "peerP95": 12403.300048828125,
+      "peerComplete": true,
+      "read409s": 0,
+      "quiet429s": 0,
+      "deepReplay600s": true,
+      "slowestHSeconds": 322.352,
+      "gates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      }
+    },
+    {
+      "name": "3-C",
+      "variant": "C",
+      "localP95": 6.199951171875,
+      "peerP95": 7108.199951171875,
+      "peerComplete": true,
+      "read409s": 0,
+      "quiet429s": 0,
+      "deepReplay600s": true,
+      "slowestHSeconds": 295.558,
+      "gates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      }
+    },
+    {
+      "name": "4-R",
+      "variant": "R",
+      "localP95": 5.60009765625,
+      "peerP95": 17304.300048828125,
+      "peerComplete": true,
+      "read409s": 1,
+      "quiet429s": 0,
+      "deepReplay600s": true,
+      "slowestHSeconds": 265.153,
+      "gates": {
+        "all120KeysAtOriginalDeadline": true,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": true,
+        "dataGuards": true
+      }
+    }
+  ],
+  "newRegressions": 15,
+  "oldTestPrefixesRetained": true,
+  "runtimeFilesChanged": [
+    "account-service/delivery.ts"
+  ],
+  "noPublication": true
+}

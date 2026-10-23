@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "invent-complete-peer",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "count-retries-as-new",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore-phase",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "ignore-input-denominator",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "discard-starting-offset",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "name": "clamp-negative-clock",
+      "detected": true,
+      "exitCode": 1
+    }
+  ]
+}

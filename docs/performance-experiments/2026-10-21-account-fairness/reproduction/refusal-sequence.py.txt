@@ -1,0 +1,9 @@
+from pathlib import Path
+import json
+r=Path(__file__).parent;rows=[]
+for case in json.loads((r/'run-plan.json').read_text()):
+ d=json.loads((r/case['name']/'result.json').read_text());q=[]
+ for x in d['network']:
+  if x.get('phase')=='measured'and x['label'].startswith('Q')and x.get('status',0)>=400:q.append({'device':x['label'],'path':x['path'],'offeredMs':x['at']-d['startedAt'],'headersMs':x['headersAt']-d['startedAt'],'elapsedMs':x['headersAt']-x['at'],'status':x['status'],'kind':x.get('kind'),'reason':x.get('reason'),'refusal':x.get('refusal')})
+ rows.append({'name':case['name'],'quietRefusals':q})
+(r/'quiet-refusal-sequence.json').write_text(json.dumps({'rows':rows,'scope':'Post-outcome closed-label observer sequence; no cause inferred from status/timing. Uncaptured409 reason remains unknown.'},indent=2)+'\n');print(json.dumps([{'name':x['name'],'quietRefusals':x['quietRefusals'][:4]}for x in rows if x['quietRefusals']],indent=2))

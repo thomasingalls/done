@@ -1,0 +1,34 @@
+{
+  "base": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "realIndexEmpty": true,
+  "progressUnchanged": true,
+  "priorPatchesAndDeferredFormattingUnchanged": true,
+  "runtimeMatchesAllMeasuredPhaseCProductionSources": true,
+  "measuredFrontendAssets": 55,
+  "runtimeIdentityChecked": [
+    "src/crdt/accountInbound.ts",
+    "src/crdt/historySource.ts",
+    "account-service/requestBudget.ts",
+    "account-service/scoped-http.ts"
+  ],
+  "deferredRuntimeAbsent": true,
+  "durableInboundRecordUnchanged": true,
+  "oldManifestRowsPreserved": 867,
+  "newBlockedTestFiles": [
+    "test:test/account-history/multi-page-source.test.mjs",
+    "test:test/account-receive/pre-group-closure.test.mjs",
+    "test:test/account-sessions/inbound-authority-reuse.test.mjs",
+    "test:test/account-sessions/inbound-batch-budget.test.mjs",
+    "test:test/account-sessions/request-budget-work.test.mjs",
+    "test:test/historyReplayPage.test.ts",
+    "test:test/packaged-account/enrollment-capacity.spec.ts"
+  ],
+  "obligations": 874,
+  "unresolved": 330,
+  "stageAssignmentsExpectationsDeadlinesAndOldBlocksUnchanged": true,
+  "onlyAddedConstructionRequirements": [
+    "construction:history-maintenance",
+    "construction:transport-read-batching"
+  ],
+  "allConstructionStatusesUnchanged": true
+}

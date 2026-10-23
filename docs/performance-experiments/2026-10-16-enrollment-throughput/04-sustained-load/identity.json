@@ -1,0 +1,24 @@
+{
+  "accountingTree": "0e9f74e99b5c709b7d4b5ff3dc7d9c5c4e59cc93",
+  "referenceTree": "7e020ea496ff3fef3c1a822ea24a2f25fb1ed805",
+  "privateSeedFiles": {
+    "private-api-seed.json": {
+      "sha256": "ee687a48d7ccbff22bc243e734df9a0c207c4746e294b6f4585a1adcde1acefd",
+      "bytes": 2820050,
+      "contentsExcluded": true
+    },
+    "private-api-seed.sqlite": {
+      "sha256": "2df886271ce5d2e031d0bb468ed132e60b5d04e5a31492b8a786e79fb0b029df",
+      "bytes": 1929216,
+      "contentsExcluded": true
+    },
+    "private-api-authority.sqlite": {
+      "sha256": "4ac06ec777d4e8a9ae7185e7c9210ac1483c8f9d04938bf97236254caf07b929",
+      "bytes": 8192,
+      "contentsExcluded": true
+    }
+  },
+  "node": "24.18.0",
+  "schema": "first-epoch session-enabled native API fixture",
+  "concurrentValidators": false
+}

@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,hashlib,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=r/'source';start=json.loads((r/'starting.json').read_text());identity=json.loads((r/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+for f,h in identity['files'].items():assert sha(r/f)==h,f
+for f,h in identity['instrumentedInputs'].items():assert sha(r/'diagnostic-account-service'/f)==h,f
+for f,h in identity['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+for f,h in start['runtimeFiles'].items():assert sha(repo/f)==sha(s/f)==h,f
+for f in ['docs/account-crypto/census.json','docs/account-crypto/constructions.json','docs/release-validation-graph.json','docs/release-validation-manifest.json']:assert(repo/f).read_bytes()==(r/'before'/f).read_bytes()
+for entry in json.loads((r/'failed-series1/preserved-inputs.json').read_text()):assert sha(Path(entry['preserved']))==entry['sha256']
+assert sha(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json'))==start['privateFixtureSha256'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index'))==start['indexSha256'];assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];assert subprocess.check_output(['git','status','--porcelain'],cwd=repo,env=env)==b''
+out={'status':'passed','bothNewJourneysUseExactFrozenObserved26Inputs':True,'all110ClientFilesExact':True,'allProductionRuntimeAndOldTestsUnchanged26':True,'all883Obligations339UnresolvedAndMetadataByteExact26':True,'initialFailedAttemptInputsPreserved':True,'signedHeadAndIndexUnchangedClean':True};(r/'frozen-input-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

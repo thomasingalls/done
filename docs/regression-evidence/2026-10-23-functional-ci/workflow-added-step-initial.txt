@@ -1,0 +1,9 @@
+      - name: Check native authority-cache, publisher-race and cold-read regressions
+        run: >-
+          node --test --test-concurrency=1
+          test/account-sessions/inbound-authority-cache.test.mjs
+          test/account-service-delivery/publisher-commit-races.test.mjs
+          test/account-service-delivery/publisher-isolation.test.mjs
+          test/account-service-delivery/cold-verification.test.mjs
+          test/account-ceremony/content-transfer.test.mjs
+

@@ -1,0 +1,70 @@
+from pathlib import Path
+import json,math,collections,sys
+r=Path(sys.argv[1]) if len(sys.argv)>1 else Path(__file__).parent
+
+def stats(v):
+ v=sorted(v);return {'n':len(v),'p50':v[math.ceil(len(v)*.5)-1],'p95':v[math.ceil(len(v)*.95)-1],'max':v[-1]} if v else {'n':0}
+def interval_pairs(rows):
+ pending={};out=[]
+ for e in rows:
+  if e['tag'].endswith('-start'):pending[e['tag'][:-6]]=e
+  if e['tag'].endswith('-end') and e['tag'][:-4]in pending:
+   b=pending.pop(e['tag'][:-4]);out.append({'stage':e['tag'][:-4],'start':b['at'],'end':e['at'],'ms':e['at']-b['at'],**{k:v for k,v in e.items()if k not in ['tag','at']}})
+ return out
+runs=[]
+for name in ['1-D','2-D']:
+ x=json.loads((r/name/'result.json').read_text());assert x['outcome']=='passed' and not x.get('resourceStop');assert len(x['offers'])==120 and all(x['guards'].values());assert x['diagnosticReplayCensoringMs']==90000
+ assert all(t['dropped']==0 for t in x['traces']);assert all(a['dropped']==0 for a in x['pacing']);start=x['startedAt'];end=x['loadStoppedAt'];ev=[e for t in x['traces']for e in t['events']];network=[q for q in x['network']if q['phase']=='measured'];bybody=collections.defaultdict(list)
+ for e in ev:bybody[e['bodySha256']].append(e)
+ conflicts=[];refusals=[]
+ for q in network:
+  if q.get('status',0)>=400:
+   matches=[e for e in bybody[q['bodySha256']]if e['tag']=='http-result'and e['path']==q['path']and e.get('status')==q['status']];refusals.append({'label':q['label'],'path':q['path'],'status':q['status'],'atMs':q['at']-start,'nativeReplies':matches})
+  if not q['path'].startswith('/account/delivery/read-v2'):continue
+  events=bybody[q['bodySha256']];reads=[];cur=None
+  for e in events:
+   if e['tag']=='read-start':
+    cur={'start':e['at'],'inputSha256':e['inputSha256'],'attempts':[],'guards':[]};reads.append(cur)
+   if cur:
+    if e['tag']=='read-attempt':cur['attempts'].append({k:v for k,v in e.items()if k in ['retry','after','publisherSha256','readerSha256','at']})
+    if e['tag']=='guard-refused':cur['guards'].append(e)
+    if e['tag']=='read-exhausted':cur['exhausted']=True
+    if e['tag']=='read-answer':cur['answer']={k:v for k,v in e.items()if k in ['at','entries','next','through']}
+  for rd in reads:
+   for g in rd['guards']:
+    assert g['predicate']in ['owner-fence','fingerprint'],g
+    if g['predicate']=='owner-fence':assert g['commitChanged'] and not g['revisionChanged'] and not g['versionChanged'] and not g['ownerChanged'],g
+    else:assert g['changedFields']==['promotion'] and g['promotionChangedFields']==['delivery_witness'],g
+   if rd.get('exhausted'):assert [a['retry']for a in rd['attempts']]==[0,1,2,3] and len(rd['guards'])==4 and 'answer'not in rd,rd
+  if any(rd['guards'] for rd in reads):conflicts.append({'label':q['label'],'path':q['path'],'status':q.get('status'),'atMs':q['at']-start,'durationMs':q.get('headersAt',q['at'])-q['at'],'bodySha256':q['bodySha256'],'reads':reads})
+  if q.get('status')==409:
+   assert any(rd.get('exhausted') for rd in reads),'409 cause not identified'
+   assert any(e.get('status')==409 and e.get('reason')=='state-changed' for e in events),'409 native result missing'
+ pacing=[]
+ for actor in x['pacing']:
+  if actor['label']not in ['Q0','Q1']:continue
+  rows=[e for e in actor['rows']if start<=e['at']<=end];pairs=interval_pairs(rows);passes=[];cur=None;retry=[]
+  for e in rows:
+   if e['tag']=='lane-begin':
+    if e['name']=='receive' and retry and 'nextBegin' not in retry[-1]:retry[-1]['nextBegin']=e['at'];retry[-1]['lateMs']=e['at']-retry[-1]['due'];assert retry[-1]['lateMs']>=-3
+    assert cur is None,'overlapping scheduler passes';cur=e
+   if e['tag']=='lane-result':
+    assert cur is not None and cur['name']==e['name'];passes.append({'lane':e['name'],'kind':e['kind'],'start':cur['at'],'end':e['at'],'ms':e['at']-cur['at'],'position':e['position']});cur=None
+   if e['tag']=='lane-scheduled' and e['name']=='receive' and e['failures']:
+    expected=min(1000*2**(e['failures']-1),30000);assert abs(e['due']-e['at']-expected)<=3,(e,expected);retry.append({'at':e['at'],'due':e['due'],'failures':e['failures'],'waitMs':e['due']-e['at']})
+  submits=[]
+  for p in pairs:
+   if p['stage']!='send-submit':continue
+   qs=[q for q in network if q['label']==actor['label']and q['path']=='/account/delivery/submit'and p['start']-5<=q['at']<=p['end']+5]
+   assert len(qs)==1,(actor['label'],p,qs)
+   q=qs[0];assert q['status']==200;submits.append({**p,'httpStart':q['at'],'httpHeaders':q['headersAt'],'httpMs':q['headersAt']-q['at'],'preHttpMs':q['at']-p['start'],'afterHeadersMs':p['end']-q['headersAt']})
+  pacing.append({'label':actor['label'],'stageMs':{k:stats([p['ms']for p in pairs if p['stage']==k])for k in sorted({p['stage']for p in pairs})},'lanePassMs':{k:stats([p['ms']for p in passes if p['lane']==k])for k in ['send','receive']},'outcomes':dict(collections.Counter((p['lane']+'/'+p['kind'])for p in passes)),'passes':passes,'stages':pairs,'submitBreakdown':submits,'submitHttpMs':stats([p['httpMs']for p in submits]),'submitAfterHeadersMs':stats([p['afterHeadersMs']for p in submits]),'receiveRetryClocks':retry})
+ probes=x['probesAtDeadline'];base=[next(v['length']for v in reversed(p['lengths'])if v['at']<=start)for p in probes];keys=[]
+ for i,o in enumerate(x['offers'],1):
+  found=[next((v['at']for v in p['lengths']if v['at']>=o['at']-5 and v['length']>=b+i),None)for p,b in zip(probes,base)];keys.append({'index':i,'localMs':found[0]-o['at']if found[0]is not None else None,'peerMs':found[1]-o['at']if found[1]is not None else None})
+ trusted=[e for e in probes[0]['events']if e['kind']=='beforeinput'and start<=e['at']<=x['typingFinishedAt']];assert len(trusted)==120 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in trusted)
+ assert all(k['peerMs']is not None for k in keys);assert x['originalDeliveryPassed']
+ quiet409=[q for q in network if q['label'].startswith('Q')and q.get('status')==409];quiet429=[q for q in network if q['label'].startswith('Q')and q.get('status')==429]
+ runs.append({'name':name,'diagnosticOnly':True,'startedAt':start,'loadStoppedAt':end,'dataGuards':x['guards'],'localMs':stats([k['localMs']for k in keys]),'peerMs':stats([k['peerMs']for k in keys]),'all120OriginalKeys':True,'quiet409s':len(quiet409),'quiet429s':len(quiet429),'httpRefusals':refusals,'readConflictCount':sum(len(rd['guards'])for c in conflicts for rd in c['reads']),'readConflicts':conflicts,'pacing':pacing,'nativeEvents':len(ev),'serverObserverDropped':0,'clientObserverDropped':0,'metrics':x['metrics']})
+result={'status':'passed','scope':'Two diagnostic journeys, not performance acceptance or a causal estimate of a proposed optimization','runs':runs}
+(r/'analysis.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps([{'name':v['name'],'peerMs':v['peerMs'],'quiet409s':v['quiet409s'],'quiet429s':v['quiet429s'],'readConflictCount':v['readConflictCount']}for v in runs],indent=2))

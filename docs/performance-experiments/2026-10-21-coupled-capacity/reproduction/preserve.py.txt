@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,gzip,hashlib,shutil
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir(exist_ok=False);sha=lambda b:hashlib.sha256(b).hexdigest();provenance={}
+def put(f,name,gz=False):
+ b=f.read_bytes();p=dest/(name+('.gz'if gz else''));p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0)if gz else b);provenance[str(p.relative_to(dest))]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+for name in ['README.md','protocol.md','starting.json','source-identity.json','preflight.json','identity.json','docker-runtime.txt','linux-runtime.json','container-validation.json','container-validation-initial.json','container-validation-src-only.json','final-checks-src-only.json','final-checks-initial.json','final-checks-before-identity.json','native-plan.json','browser-plan.json','native-runner.json','browser-runner.json','native-summary.json','browser-summary.json','profile-summary.json','mapped-profiles.json','prior-typing-decomposition.json','typing-decomposition.json','analysis.json','evidence-review.json','final-checks.json','operational-notes.md']:
+ put(r/name,name)
+for f in sorted(r.glob('*.log')):put(f,'checks/'+f.name,True)
+for f in sorted(r.iterdir()):
+ if f.is_file()and f.suffix in ['.py','.mjs']:put(f,'reproduction/'+f.name+'.txt')
+for arm in ['D','B']:put(r/('source-'+arm)/'account-service/requestBudget.ts','reproduction/requestBudget-'+arm+'.ts.txt')
+for f in sorted((r/'source-D/test/live-sync-attribution').iterdir()):
+ if f.is_file():put(f,'reproduction/browser/'+f.name+'.txt')
+for f in sorted((r/'native').iterdir()):
+ if f.is_file()and f.suffix in ['.json','.log','.txt']:put(f,'runs/native/'+f.name,True)
+ if f.is_dir():
+  for n in ['container-inspect.json','docker-command.json']:put(f/n,'runs/native/'+f.name+'/'+n,True)
+for case in json.loads((r/'browser-plan.json').read_text()):
+ for n in ['result.json','runner.json','services.log','invocation.log']+(['sender.cpuprofile','receiver.cpuprofile']if case['diagnostic']else[]):put(r/case['name']/n,'runs/browser/'+case['name']+'/'+n,True)
+# Known exact secret scan over whitelist, compressed files decoded before comparison; not general DLP.
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for who in ['a','b']:
+  secrets.append(d[who]['code'])
+  for c in d[who]['credentials']:
+   secrets.extend(c[k]for k in ['privateKey','credentialId','userHandle']if c.get(k))
+d=json.loads((r/'private-api/fixture.json').read_text());secrets.append(d['authorityKey'])
+for who in ['first','other','publisher1','publisher2','publisher3','publisher4','publisher5']:
+ secrets.append(d[who]['s']['privateKey'])
+ for session in d[who]['sessions']:
+  secrets.extend(s for s in session.values()if isinstance(s,str)and len(s)>=12)
+values=set()
+for s in secrets:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for f in dest.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.name.endswith('.gz')else b;assert not any(v in b for v in values),str(f.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownRawAndEscapedExactValues':len(values),'matches':0,'scope':'Explicit whitelist; fixture keys/codes/sessions/DBs/browser storage excluded. CPU profiles retain synthetic function/source metadata. This is not a general secret detector.'},indent=2)+'\n');print(len(provenance),'provenance files',len(values),'private values checked')

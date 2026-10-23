@@ -5,10 +5,11 @@ import type { DatabaseSync } from 'node:sqlite';
 import { Worker } from 'node:worker_threads';
 import {
   snapshot,
-  snapshotBytes,
+  snapshotBytesForPurpose,
   type Snapshot,
   type DeliveryAuthority,
   type DecisionRow,
+  type SnapshotPurpose,
 } from './delivery.ts';
 import { parseWitness } from './deliveryWitness.ts';
 
@@ -33,8 +34,21 @@ interface Tip extends VerifiedPrefix {
   audited: number;
   extendable: boolean;
 }
+interface PublisherOwner {
+  commit: object;
+}
+interface ColdWaiter {
+  resolve: (release: () => void) => void;
+  reject: (cause: Error) => void;
+  timer: ReturnType<typeof setTimeout>;
+}
+interface ColdLane {
+  waiters: Set<ColdWaiter>;
+}
 interface Capture {
   key: string;
+  owner: PublisherOwner;
+  commit: object;
   context: string;
   revision: number;
   version: number;
@@ -44,6 +58,7 @@ interface Capture {
   limit?: number;
   served: DecisionRow[];
   fingerprint: string;
+  purpose?: SnapshotPurpose;
   terminal: boolean;
 }
 const MAX_PUBLISHERS = 128,
@@ -97,6 +112,27 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
   const tips = new Map<string, Tip>(),
     poisoned = new Set<string>();
   const captures = new WeakMap<Snapshot, Capture>();
+  // Scheduling only: no snapshot, rows, authority or verification result is shared.
+  const coldLanes = new Map<string, ColdLane>();
+  let coldWaiting = 0;
+  const releaseCold = (key: string, lane: ColdLane) => {
+    let released = false;
+    return () => {
+      if (released || coldLanes.get(key) !== lane) return;
+      released = true;
+      const next = lane.waiters.values().next().value;
+      if (!next) coldLanes.delete(key);
+      else {
+        lane.waiters.delete(next);
+        coldWaiting--;
+        clearTimeout(next.timer);
+        next.resolve(releaseCold(key, lane));
+      }
+    };
+  };
+  // Bounded identities, not reusable numeric generations: recreating an evicted key
+  // must never revive a capture or audit owned by its previous incarnation.
+  const owners = new Map<string, PublisherOwner>();
   let version = Number(db.prepare('PRAGMA data_version').get()!.data_version),
     revision = 0,
     closed = false;
@@ -107,11 +143,27 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     auditsCompleted = 0;
   let worker: Worker | undefined;
   const queued = new Map<string, Tip>();
-  let active: { key: string; tip: Tip; revision: number } | undefined;
+  let active: { key: string; tip: Tip; revision: number; owner: PublisherOwner } | undefined;
   const invalidate = () => {
     revision++;
+    owners.clear();
     tips.clear();
     queued.clear();
+  };
+  const invalidatePublisher = (key: string) => {
+    owners.delete(key);
+    tips.delete(key);
+    queued.delete(key);
+  };
+  const captureOwner = (key: string) => {
+    let owner = owners.get(key);
+    if (owner) owners.delete(key);
+    else {
+      if (owners.size >= MAX_PUBLISHERS) invalidatePublisher(owners.keys().next().value!);
+      owner = { commit: {} };
+    }
+    owners.set(key, owner);
+    return owner;
   };
   const checkVersion = () => {
     const current = Number(db.prepare('PRAGMA data_version').get()!.data_version);
@@ -146,11 +198,12 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     if (closed || active || !queued.size) return;
     const [key, tip] = queued.entries().next().value!;
     queued.delete(key);
-    if (poisoned.has(key)) {
+    const owner = owners.get(key);
+    if (poisoned.has(key) || !owner) {
       pump();
       return;
     }
-    active = { key, tip, revision };
+    active = { key, tip, revision, owner };
     auditsStarted++;
     // Only the service pin and expected snapshot digest cross this boundary.
     // The worker re-establishes branded public authority in its own JavaScript realm.
@@ -168,7 +221,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const job = active;
       worker = undefined;
       active = undefined;
-      if (!closed && job && job.revision === revision) {
+      if (!closed && job && job.revision === revision && owners.get(job.key) === job.owner) {
         const ownsRead = !db.isTransaction;
         try {
           if (ownsRead) db.exec('BEGIN');
@@ -218,12 +271,28 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     if (active?.key !== key) queued.set(key, tip);
     pump();
   };
-  const fingerprint = (s: Snapshot, count: number, served: DecisionRow[]) =>
-    JSON.stringify([snapshotBytes(s), count, snapshotBytes({ ...s, rows: served })]);
+  const fingerprint = (
+    s: Snapshot,
+    count: number,
+    served: DecisionRow[],
+    purpose?: SnapshotPurpose,
+  ) =>
+    JSON.stringify([
+      snapshotBytesForPurpose(s, purpose),
+      count,
+      snapshotBytesForPurpose({ ...s, rows: served }, purpose),
+    ]);
   return {
     invalidate,
     close() {
       closed = true;
+      for (const lane of coldLanes.values())
+        for (const waiter of lane.waiters) {
+          clearTimeout(waiter.timer);
+          waiter.reject(Error('Closed publisher verifier'));
+        }
+      coldLanes.clear();
+      coldWaiting = 0;
       invalidate();
       void worker?.terminate();
     },
@@ -232,6 +301,9 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     },
     status: () => ({
       publishers: tips.size,
+      coldLanes: coldLanes.size,
+      coldWaiting,
+      captureOwners: owners.size,
       quarantined: poisoned.size,
       auditActive: !!active,
       auditsQueued: queued.size,
@@ -245,13 +317,59 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       auditsStarted,
       auditsCompleted,
     }),
+    /** Cold requests take fresh captures in FIFO order. A warmed group drains before
+     * returning to ordinary concurrency, so queued writes cannot starve its reads.
+     * Each caller still owns every authorization, expiry, guard and SQL operation. */
+    enter(workspace: string, publisher?: string): (() => void) | Promise<() => void> {
+      if (closed) throw Error('Closed publisher verifier');
+      checkVersion();
+      let header: Snapshot | null;
+      db.exec('BEGIN');
+      try {
+        header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);
+        db.exec('COMMIT');
+      } finally {
+        if (db.isTransaction) db.exec('ROLLBACK');
+      }
+      if (!header) return () => {};
+      const id = publisher ?? JSON.parse(header.promotion.request).candidate.signer;
+      const key = header.account.id + ':' + id;
+      check(key);
+      let lane = coldLanes.get(key);
+      if (!lane) {
+        const tip = tips.get(key);
+        if (tip?.extendable && tip.context === publisherContext(header)) return () => {};
+        if (coldLanes.size >= MAX_PUBLISHERS) throw Error('Cold publisher capacity');
+        lane = { waiters: new Set() };
+        coldLanes.set(key, lane);
+        return releaseCold(key, lane);
+      }
+      if (coldWaiting >= MAX_PUBLISHERS) throw Error('Cold publisher capacity');
+      const owned = lane;
+      return new Promise((resolve, reject) => {
+        const waiter: ColdWaiter = {
+          resolve,
+          reject,
+          // This never extends the enclosing HTTP deadline or the signed request lifetime.
+          timer: setTimeout(() => {
+            if (owned.waiters.delete(waiter)) {
+              coldWaiting--;
+              reject(Error('Cold publisher wait expired'));
+            }
+          }, 10000),
+        };
+        waiter.timer.unref();
+        owned.waiters.add(waiter);
+        coldWaiting++;
+      });
+    },
     checkedServed() {
       servedChecks++;
     },
     capture(
       workspace: string,
       publisher?: string,
-      options?: { after?: number; limit?: number; position?: number },
+      options?: { after?: number; limit?: number; position?: number; purpose?: SnapshotPurpose },
     ) {
       checkVersion();
       const header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);
@@ -259,6 +377,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const id = publisher ?? JSON.parse(header.promotion.request).candidate.signer;
       const key = header.account.id + ':' + id;
       check(key);
+      const owner = captureOwner(key);
       const context = publisherContext(header),
         count = countRows(db, header);
       let tip = tips.get(key);
@@ -294,6 +413,8 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
         options?.after === undefined ? [] : servedRows(db, s, options.after, options.limit!);
       captures.set(s, {
         key,
+        owner,
+        commit: owner.commit,
         context,
         revision,
         version,
@@ -303,7 +424,8 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
         limit: options?.limit,
         served,
         terminal: s.rows.at(-1)?.kind === 'accepted' || !s.rows.length,
-        fingerprint: fingerprint(s, count, served),
+        fingerprint: fingerprint(s, count, served, options?.purpose),
+        ...(options?.purpose ? { purpose: options.purpose } : {}),
       });
       return s;
     },
@@ -314,21 +436,58 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     served(s: Snapshot) {
       return captures.get(s)?.served;
     },
-    guard(s: Snapshot) {
+    guard(s: Snapshot, purpose?: SnapshotPurpose) {
       const c = captures.get(s);
       if (!c) return false;
+      // A caller cannot broaden a full capture after verification, or use a discovery
+      // capture for an ordinary read/write comparison.
+      if (c.purpose !== purpose) return false;
       check(c.key);
-      if (c.revision !== revision || c.version !== checkVersion()) return false;
+      if (
+        c.revision !== revision ||
+        c.version !== checkVersion() ||
+        owners.get(c.key) !== c.owner ||
+        c.commit !== c.owner.commit
+      )
+        return false;
       const current = snapshot(db, s.promotion.workspace_id, s.publisher, c.prefix?.count ?? 0);
       if (!current) return false;
       const selected = c.after === undefined ? [] : servedRows(db, current, c.after, c.limit!);
-      const same = fingerprint(current, countRows(db, current), selected) === c.fingerprint;
-      if (!same) invalidate(); // A detected race must not leave its preliminary tip installed.
+      const same =
+        fingerprint(current, countRows(db, current), selected, purpose) === c.fingerprint;
+      // Reject the changed snapshot and discard only its publisher's preliminary evidence.
+      // Other publishers still have to pass their own fresh transaction-time comparison.
+      if (!same) invalidatePublisher(c.key);
       return same;
+    },
+    /** Called only after this owner commits a verified proposed decision, never before COMMIT.
+     * Reject older captures without discarding their still-authenticated prefix. Audits keep
+     * their owner: continuous appends must not suppress an independently detected corruption. */
+    committed(s: Snapshot) {
+      const c = captures.get(s);
+      if (
+        !c ||
+        closed ||
+        db.isTransaction ||
+        c.revision !== revision ||
+        c.version !== checkVersion() ||
+        owners.get(c.key) !== c.owner ||
+        c.commit !== c.owner.commit
+      )
+        return;
+      c.owner.commit = {};
     },
     remember(s: Snapshot, auth: DeliveryAuthority, result: VerifiedPrefix) {
       const c = captures.get(s);
-      if (!c || closed || c.revision !== revision || c.version !== checkVersion()) return;
+      if (
+        !c ||
+        closed ||
+        c.revision !== revision ||
+        c.version !== checkVersion() ||
+        owners.get(c.key) !== c.owner ||
+        c.commit !== c.owner.commit
+      )
+        return;
       if (result.count !== c.count) return fail(c.key);
       verifiedRows += s.rows.length;
       if (!c.prefix) fullCensuses++;

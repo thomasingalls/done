@@ -1,3 +1,7 @@
+import {
+  reportEnrollmentProgress,
+  type EnrollmentProgressListener,
+} from '../lib/enrollmentProgress';
 import { authenticationResponse } from './passkeyResponse';
 import { defaultDeviceName } from '../lib/browser';
 /** Browser/session composition for the retained additional-device coordinator. */
@@ -8,11 +12,19 @@ import { enrollmentOptions } from '../../account-protocol/enrollment';
 import { MEMBERSHIP_BOOTSTRAP_LIMIT } from '../../account-protocol/membershipLocator';
 import { HISTORY_PAGE_LIMIT } from '../../account-protocol/historyExchange';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
+import {
+  encodeInboundBatch,
+  encodeInboundBatchPages,
+  decodeInboundBatchPages,
+  decodeInboundBatch,
+  INBOUND_BATCH_PAGE_LIMIT,
+} from '../../account-protocol/inboundBatch';
 import { withMembershipVault, type MembershipVault } from './membershipVault';
 import { advanceMembershipConnection, type MembershipConnection } from './membershipConnection';
 import { membershipInvitationUrl } from './membershipInvitation';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import { privateDeliveryPost } from './privateDeliveryHttp';
+import { createHistoryReadRetry } from './historyReadRetry';
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import {
   ScopedTransport,
@@ -86,6 +98,7 @@ export function createMembershipEnrollment(
   invitation?: unknown,
   networkLogin?: NetworkLogin,
   begin?: string,
+  onProgress?: EnrollmentProgressListener,
 ) {
   if (!config.networkSessions) throw Error('Additional devices require account sessions');
   const pin = parseAuthorityPin(config.pin),
@@ -95,6 +108,10 @@ export function createMembershipEnrollment(
     role === 'existing' && /^enrollment-[a-f0-9]{32}$/.test(slotId) ? 'joined' : 'promotion';
   const ceremonyLogin = new NetworkLogin(pin, slotId),
     grants = new ScopedTransport(pin, lifetime.signal);
+  const progress: EnrollmentProgressListener = (value) => {
+    if (!lifetime.signal.aborted) reportEnrollmentProgress(onProgress, value);
+  };
+  let batchingAvailable = true;
   if (role === 'new' && (!networkLogin || networkLogin.retired)) {
     networkLogin = new NetworkLogin(pin, slotId);
     void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
@@ -135,6 +152,7 @@ export function createMembershipEnrollment(
   };
   const runOperation = (input: Parameters<typeof advanceMembershipConnection>[3] = {}) =>
     withMembershipVault(ownerKind, slotId, code, lifetime.signal, async (owner) => {
+      const historyRead = createHistoryReadRetry(lifetime.signal);
       const result = await advanceMembershipConnection(
         owner,
         role,
@@ -195,23 +213,82 @@ export function createMembershipEnrollment(
               ),
             );
           },
+          progress,
           read: async (bytes, base) => {
             const scoped = access(owner, base);
             const page = await owner.withLogin(ceremonyLogin, identity(base), () =>
-              privateDeliveryPost(
-                pin,
-                scoped,
-                'read-v2',
-                bytes,
-                READ_PAGE_LIMIT,
-                lifetime.signal,
-                undefined,
-                true,
+              historyRead(bytes, (body, signal, observe) =>
+                privateDeliveryPost(
+                  pin,
+                  scoped,
+                  'read-v2',
+                  body,
+                  READ_PAGE_LIMIT,
+                  signal,
+                  observe,
+                  true,
+                ),
               ),
             );
             guard();
             if (!page) throw Error('Writing could not be fetched. Retry the saved load.');
             return page;
+          },
+          readBatch: async (requests, base) => {
+            const scoped = access(owner, base);
+            return owner.withLogin(ceremonyLogin, identity(base), async () => {
+              const body = encodeInboundBatch(requests);
+              let reply: Uint8Array<ArrayBuffer> | null = null;
+              try {
+                reply = await historyRead(body, async (captured, signal, observe) => {
+                  const fallback = async () => {
+                    batchingAvailable = false;
+                    const inner = decodeInboundBatch(captured);
+                    let page: Uint8Array<ArrayBuffer> | null = null;
+                    try {
+                      page = await privateDeliveryPost(
+                        pin,
+                        scoped,
+                        'read-v2',
+                        inner[0]!,
+                        READ_PAGE_LIMIT,
+                        signal,
+                        observe,
+                        true,
+                      );
+                      return page ? encodeInboundBatchPages([page]) : null;
+                    } finally {
+                      for (const bytes of inner) bytes.fill(0);
+                      page?.fill(0);
+                    }
+                  };
+                  return batchingAvailable
+                    ? privateDeliveryPost(
+                        pin,
+                        scoped,
+                        'read-v2-batch',
+                        captured,
+                        INBOUND_BATCH_PAGE_LIMIT,
+                        signal,
+                        observe,
+                        true,
+                        fallback,
+                      )
+                    : fallback();
+                });
+                guard();
+                if (!reply) throw Error('Writing could not be fetched. Retry the saved load.');
+                const pages = decodeInboundBatchPages(reply);
+                if (pages.length > requests.length) {
+                  for (const page of pages) page.fill(0);
+                  throw Error('Unexpected history read pages');
+                }
+                return pages;
+              } finally {
+                body.fill(0);
+                reply?.fill(0);
+              }
+            });
           },
           assert: async (context) => {
             const credential = (await navigator.credentials.get({
@@ -258,6 +335,10 @@ export function createMembershipEnrollment(
         return view('certified', {
           message:
             'Waiting for the remaining writing. Open writing again to resume the saved load.',
+        });
+      if (result.kind === 'approved' && role === 'existing')
+        return view('approved', {
+          message: 'Waiting for the new device to save and confirm access. Keep it open to finish.',
         });
       if (result.kind === 'installed')
         return view('certified', { message: 'Opening your writing…' });
@@ -324,6 +405,7 @@ export function createMembershipEnrollment(
     guard();
     if (operation) return operation;
     operation = (async () => {
+      progress({ stage: 'checking' });
       if (open) {
         const editor = await openEditor();
         if (editor) return editor;
@@ -348,6 +430,7 @@ export function createMembershipEnrollment(
       }
     })().finally(() => {
       operation = undefined;
+      progress(null);
     });
     return operation;
   };
@@ -389,6 +472,7 @@ export function createMembershipEnrollment(
     },
     close: async () => {
       lifetime.abort();
+      reportEnrollmentProgress(onProgress, null);
       networkLogin?.close();
       ceremonyLogin.close();
       grants.close();

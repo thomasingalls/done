@@ -1,0 +1,9 @@
+{
+  "priorObligationsPreserved": 866,
+  "added": [
+    "test:test/packaged-account/enrollment-progress.spec.ts"
+  ],
+  "status": "blocked",
+  "unresolved": 323,
+  "oldStagesAssertionsDeadlinesAndBlocksUnchanged": true
+}

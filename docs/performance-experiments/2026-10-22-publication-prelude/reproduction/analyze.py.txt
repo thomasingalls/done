@@ -1,0 +1,62 @@
+from pathlib import Path
+import json,collections,math
+r=Path(__file__).parent
+def stat(v):
+ v=sorted(v);return {'n':len(v),'p50':v[math.ceil(len(v)*.5)-1] if v else None,'p95':v[math.ceil(len(v)*.95)-1] if v else None,'max':max(v) if v else None,'sum':sum(v)}
+def pairs(rows,start,end):
+ out=[];pending=None
+ for x in rows:
+  if x['tag']==start:
+   assert pending is None,(start,'overlapping starts');pending=x
+  if x['tag']==end:
+   assert pending is not None,(end,'missing start');out.append({'begin':pending['at'],'end':x['at'],'ms':x['at']-pending['at']});pending=None
+ return out
+runs=[]
+for name in ['1-D','2-D']:
+ x=json.loads((r/name/'result.json').read_text());ev=[e for t in x['traces']for e in t['events']];by=collections.defaultdict(list)
+ for e in ev:
+  if 'id'in e:by[(e['id'],e['path'])].append(e)
+ drops=[e for e in ev if e['tag']=='observer-counts'];assert all(e['dropped']==0 for e in drops);assert all(a['dropped']==0 for a in x['pacing'])
+ groups=collections.defaultdict(list)
+ for key,es in by.items():
+  ended=[e for e in es if e['tag']=='crypto-summary']
+  assert len(ended)<=1,key
+  if ended:
+   z=ended[0];groups[(z.get('bodySha256'),z['path'])].append((z,es))
+ for arr in groups.values():arr.sort(key=lambda z:z[0]['at'])
+ used=set();joins=[];joinerrors=[]
+ for q in x['network']:
+  if q['phase']!='measured' or not q.get('headersAt') or q['path']not in ['/account/delivery/submit','/account/delivery/read','/account/delivery/read-v2','/account/delivery/read-v2-batch','/account/membership/v2/discover','/account/history/v1/checkpoint','/account/grant/v1/begin']:continue
+  choices=[(z,es) for z,es in groups.get((q['bodySha256'],q['path']),[])if z['id']not in used and z['status']==q['status'] and abs(z['at']-q['headersAt'])<100]
+  if len(choices)!=1:
+   joinerrors.append({'networkId':q['id'],'path':q['path'],'label':q['label'],'choices':len(choices)});continue
+  z,es=choices[0];used.add(z['id']);assert z['status']==q['status'];spans=[{'name':e['name'],'ms':e['elapsedMs'],'ok':e['ok'],'span':e['span']}for e in es if e['tag']=='span-end'];joins.append({'label':q['label'],'networkId':q['id'],'nativeId':z['id'],'path':q['path'],'sha256':q['bodySha256'],'status':q['status'],'httpMs':q['headersAt']-q['at'],'nativeMs':z['elapsedMs'],'at':q['at'],'end':q['headersAt'],'spans':spans,'crypto':z['rows'],'guards':[e for e in es if e['tag']=='guard-refused']})
+ globalNative={}
+ for path in sorted({k[1]for k in by}):
+  qs=[es[-1] for k,es in by.items() if k[1]==path and es[-1]['tag']=='crypto-summary' and es[-1]['at']-es[-1]['elapsedMs']>=x['startedAt'] and es[-1]['at']<=x['loadStoppedAt']]
+  ops=collections.Counter()
+  for q in qs:
+   for c in q['rows']:ops[c['op']]+=c['count']
+  globalNative[path]={'requests':len(qs),'wallMs':stat([q['elapsedMs']for q in qs]),'cryptoOperations':dict(ops)}
+ stats={}
+ for label in ['Q0','Q1']:
+  paths=sorted({q['path']for q in joins if q['label']==label})
+  for path in paths:
+   qs=[q for q in joins if q['label']==label and q['path']==path];names=sorted({sp['name']for q in qs for sp in q['spans']});crypto=collections.defaultdict(lambda:{'count':0,'sumMs':0,'maxMs':0})
+   for q in qs:
+    for z in q['crypto']:
+     a=crypto[z['stage']+':'+z['op']];a['count']+=z['count'];a['sumMs']+=z['sumMs'];a['maxMs']=max(a['maxMs'],z['maxMs'])
+   stats[label+':'+path]={'httpMs':stat([q['httpMs']for q in qs]),'nativeMs':stat([q['nativeMs']for q in qs]),'statuses':dict(collections.Counter(q['status']for q in qs)),'stages':{n:stat([sp['ms']for q in qs for sp in q['spans']if sp['name']==n])for n in names},'crypto':dict(crypto)}
+ clients={};pairnames=[('receive-discovery-start','receive-discovery-end'),('receive-history-start','receive-history-end'),('discovery-prepare-start','discovery-prepare-end'),('discovery-http-start','discovery-http-end'),('discovery-proof-start','discovery-proof-end'),('discovery-install-start','discovery-install-end'),('history-prepare-start','history-prepare-end'),('history-catalog-start','history-catalog-end'),('history-transport-request-start','history-transport-request-end'),('history-http-start','history-http-headers'),('history-response-proof-start','history-response-proof-end'),('send-status-start','send-status-end'),('send-envelope-start','send-envelope-end'),('send-submission-start','send-submission-end'),('send-submit-start','send-submit-end')]
+ for label in ['Q0','Q1']:
+  rows=next(a['rows']for a in x['pacing']if a['label']==label);c={}
+  for a,b in pairnames:
+   ps=pairs(rows,a,b);ps=[p for p in ps if p['begin']>=x['startedAt'] and p['end']<=x['loadStoppedAt']];c[a.removesuffix('-start')]=stat([p['ms']for p in ps])
+  clients[label]=c
+ out={'name':name,'outcome':x['outcome'],'originalDeliveryPassed':x.get('originalDeliveryPassed'),'guards':x['guards'],'nativeObserverDrops':sum(e['dropped']for e in drops),'clientObserverDrops':sum(a['dropped']for a in x['pacing']),'joins':joins,'unjoinedObservedRequests':joinerrors,'serverByQuietRoleAndPath':stats,'globalNative':globalNative,'clientStageMs':clients,'requestCounts':dict(collections.Counter((q['label']+':'+str(q.get('status')))for q in x['network']if q['phase']=='measured')),'resources':x['metrics']};runs.append(out)
+(r/'analysis.json').write_text(json.dumps(runs,indent=2)+'\n')
+for v in runs:
+ print(v['name'],'joins',len(v['joins']),'unjoined',len(v['unjoinedObservedRequests']),'original',v['originalDeliveryPassed'])
+ for k,z in v['serverByQuietRoleAndPath'].items():
+  if any(p in k for p in ['/submit','/discover','/checkpoint','/delivery/read']):print(k,'HTTP',z['httpMs'],'stages',z['stages'])
+ print('client',json.dumps(v['clientStageMs']))

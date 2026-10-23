@@ -1,0 +1,82 @@
+[
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-account-fairness-20261021/analyze.py"
+    ],
+    "startedAt": 1792621128321,
+    "completedAt": 1792621128412,
+    "exitCode": 0
+  },
+  {
+    "name": "evidence-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-account-fairness-20261021/review.py"
+    ],
+    "startedAt": 1792621128413,
+    "completedAt": 1792621130195,
+    "exitCode": 0
+  },
+  {
+    "name": "partial-observation-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-account-fairness-20261021/review-partials.py"
+    ],
+    "startedAt": 1792621130196,
+    "completedAt": 1792621130286,
+    "exitCode": 0
+  },
+  {
+    "name": "participant-identity-audit",
+    "command": [
+      "node",
+      "/private/tmp/done-account-fairness-20261021/audit-participants.mjs"
+    ],
+    "startedAt": 1792621130287,
+    "completedAt": 1792621130383,
+    "exitCode": 0
+  },
+  {
+    "name": "native-audit",
+    "command": [
+      "node",
+      "/private/tmp/done-account-fairness-20261021/audit-native.mjs"
+    ],
+    "startedAt": 1792621130384,
+    "completedAt": 1792621134267,
+    "exitCode": 0
+  },
+  {
+    "name": "census",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792621134268,
+    "completedAt": 1792621135072,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792621135072,
+    "completedAt": 1792621136412,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792621136412,
+    "completedAt": 1792621138817,
+    "exitCode": 0
+  }
+]

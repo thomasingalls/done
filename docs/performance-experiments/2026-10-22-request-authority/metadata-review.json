@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "sourceCount": 400,
+  "onlyFourRuntimeSourceHashesChanged": [
+    "account-service/delivery.ts",
+    "account-service/historyCheckpoint.ts",
+    "account-service/membershipHistory.ts",
+    "account-service/membershipLocator.ts"
+  ],
+  "domainLabelKindAndPathSetsExact": true,
+  "constructionBytesExact": true,
+  "all882ObligationRowsExact": true,
+  "all338UnresolvedExact": true,
+  "noNewAggregateCredit": true,
+  "nativeFinalGuardsAndBoundaryStitchingByteExact": true,
+  "protocolAndClientBytesExact": true
+}

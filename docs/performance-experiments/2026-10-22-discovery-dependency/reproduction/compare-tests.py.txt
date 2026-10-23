@@ -1,0 +1,12 @@
+from pathlib import Path
+import subprocess,os,json,time,shutil
+r=Path(__file__).parent;s=r/'source';rows=[]
+# Separate minimal reference worktree sharing only immutable dependency symlinks.
+ref=r/'reference-source';shutil.copytree(s,ref,symlinks=True)
+for f in ['delivery.ts','publisherTips.ts','membershipLocator.ts']:shutil.copy2(r/'reference-account-service'/f,ref/'account-service'/f)
+shutil.copy2(r/'before/test/account-ceremony/content-transfer.test.mjs',ref/'test/account-ceremony/content-transfer.test.mjs')
+files=['test/account-ceremony/content-transfer.test.mjs','test/account-sessions/grants.test.mjs','test/account-membership/locator.test.mjs','test/account-membership/removal.test.mjs','test/account-membership/rotation.test.mjs','test/account-membership/rotation-history.test.mjs','test/account-membership/replacement-reading.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-service-delivery/cold-verification.test.mjs']
+for name,cwd in [('reference',ref),('candidate',s)]:
+ cmd=['node','--test','--test-concurrency=1',*files];at=int(time.time()*1000)
+ with(r/(name+'-affected-tests.log')).open('w')as log:p=subprocess.run(cmd,cwd=cwd,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(cwd),'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'affected-test-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)

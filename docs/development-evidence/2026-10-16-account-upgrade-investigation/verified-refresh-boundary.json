@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "profiles": [
+    {
+      "accountKind": "fresh-account",
+      "browser": "original",
+      "newDocumentAcrossHardRefresh": true,
+      "allDatabaseNamesVersionsStoresCountsKeysAndSerializedValueDigestsUnchanged": true,
+      "localStorageKeysAndValueDigestsUnchanged": true,
+      "slotCountBeforeAndAfter": 1,
+      "beforeFirstModuleScript": "/assets/admissionHistory-CmN8dEdO.js",
+      "afterFirstModuleScript": "/assets/rolldown-runtime-QTnfLwEv.js",
+      "currentAppEditableAfterUnlock": true,
+      "editableAfterWholeProcessRestartAndOfflineUnlock": true,
+      "currentWorkerControlsReopenedDocument": true,
+      "databaseDeleteOrStoreClearOrStorageClearEventsAfterServerStop": 0
+    },
+    {
+      "accountKind": "fresh-account",
+      "browser": "joined",
+      "newDocumentAcrossHardRefresh": true,
+      "allDatabaseNamesVersionsStoresCountsKeysAndSerializedValueDigestsUnchanged": true,
+      "localStorageKeysAndValueDigestsUnchanged": true,
+      "slotCountBeforeAndAfter": 1,
+      "beforeFirstModuleScript": "/assets/admissionHistory-CmN8dEdO.js",
+      "afterFirstModuleScript": "/assets/rolldown-runtime-QTnfLwEv.js",
+      "currentAppEditableAfterUnlock": true,
+      "editableAfterWholeProcessRestartAndOfflineUnlock": true,
+      "currentWorkerControlsReopenedDocument": true,
+      "databaseDeleteOrStoreClearOrStorageClearEventsAfterServerStop": 0
+    },
+    {
+      "accountKind": "promoted-local",
+      "browser": "original",
+      "newDocumentAcrossHardRefresh": true,
+      "allDatabaseNamesVersionsStoresCountsKeysAndSerializedValueDigestsUnchanged": true,
+      "localStorageKeysAndValueDigestsUnchanged": true,
+      "slotCountBeforeAndAfter": 1,
+      "beforeFirstModuleScript": "/assets/admissionHistory-CmN8dEdO.js",
+      "afterFirstModuleScript": "/assets/rolldown-runtime-QTnfLwEv.js",
+      "currentAppEditableAfterUnlock": true,
+      "editableAfterWholeProcessRestartAndOfflineUnlock": true,
+      "currentWorkerControlsReopenedDocument": true,
+      "databaseDeleteOrStoreClearOrStorageClearEventsAfterServerStop": 0
+    },
+    {
+      "accountKind": "promoted-local",
+      "browser": "joined",
+      "newDocumentAcrossHardRefresh": true,
+      "allDatabaseNamesVersionsStoresCountsKeysAndSerializedValueDigestsUnchanged": true,
+      "localStorageKeysAndValueDigestsUnchanged": true,
+      "slotCountBeforeAndAfter": 1,
+      "beforeFirstModuleScript": "/assets/admissionHistory-CmN8dEdO.js",
+      "afterFirstModuleScript": "/assets/rolldown-runtime-QTnfLwEv.js",
+      "currentAppEditableAfterUnlock": true,
+      "editableAfterWholeProcessRestartAndOfflineUnlock": true,
+      "currentWorkerControlsReopenedDocument": true,
+      "databaseDeleteOrStoreClearOrStorageClearEventsAfterServerStop": 0
+    }
+  ],
+  "serializationLimit": "CryptoKey values are represented by descriptors, not exported key material; original-factor unlock separately tests their usability.",
+  "offlineLimit": "The restarted browser loaded the document online, then networking was disabled before factor unlock. Entirely offline navigation was not tested.",
+  "instrumentationLimit": "Document instrumentation records API calls and transaction results, not an external browser storage trace."
+}

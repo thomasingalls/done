@@ -1,0 +1,85 @@
+[
+  {
+    "name": "helper-v3",
+    "command": [
+      "node",
+      "/private/tmp/done-word-comparison-20261021/build-helper-v3.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021",
+    "startedAt": 1792610784265,
+    "completedAt": 1792610784405,
+    "exitCode": 0
+  },
+  {
+    "name": "C-typecheck-v3",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610784405,
+    "completedAt": 1792610784694,
+    "exitCode": 0
+  },
+  {
+    "name": "C-bundle-v3",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610784694,
+    "completedAt": 1792610787753,
+    "exitCode": 0
+  },
+  {
+    "name": "C-budget-v3",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610787753,
+    "completedAt": 1792610787838,
+    "exitCode": 0
+  },
+  {
+    "name": "C-isolation-v3",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-word-comparison-20261021/source-C",
+    "startedAt": 1792610787839,
+    "completedAt": 1792610787901,
+    "exitCode": 0
+  },
+  {
+    "name": "unit-v3",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/verifiedRecords.test.ts",
+      "test/verificationOwnership.test.ts",
+      "test/verificationMemo.test.ts",
+      "test/warmContent.test.ts",
+      "test/cpuBudget.test.ts",
+      "test/custodyRecord.test.ts",
+      "test/custodyCrypto.test.ts",
+      "test/contentRecord.test.ts",
+      "test/accountAuthority.test.ts",
+      "test/contentInterruptedReuse.test.ts",
+      "test/incrementalLedger.test.ts",
+      "test/accountReceiveLedger.test.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/unit-v3.json"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792610787902,
+    "completedAt": 1792610790431,
+    "exitCode": 0
+  }
+]

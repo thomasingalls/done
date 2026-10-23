@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());analysis=load(r/'browser-analysis.json');runs=load(r/'browser-runner.json');assert len(runs)==12 and all(x['exitCode']==0 for x in runs);assert all(a['completedAt']<=b['startedAt']for a,b in zip(runs,runs[1:]));review=[]
+for run,estimate in zip(runs,analysis['rows']):
+ d=load(r/run['name']/'result.json');base=614 if run['mode']=='catchup'else 154;local=[];peer=[];assert len(d['concurrent']['offers'])==120
+ for i,o in enumerate(d['concurrent']['offers']):
+  for which,values in [(0,local),(1,peer)]:values.append(min(x['at']for x in d['browsers'][which]['rows']if x['at']>=o['at']-2 and x['lengths'][0]>=base+i+1)-o['at'])
+ assert local==[x['localDOM']for x in estimate['rows']]and peer==[x['peerDOM']for x in estimate['rows']];assert sorted(local)[113]==estimate['metrics']['localDOM']['p95']and sorted(peer)[113]==estimate['metrics']['peerDOM']['p95'];assert all(d['guards'].values())and d['all120EditorKeysReachedPeer'];assert d['roots'][0]['pid']!=d['roots'][1]['pid']
+ if run['pressure']=='independent':
+  assert len(d['pressureOffers'])==72 and not any(x['skipped']for x in d['pressureOffers']);assert d['independentTemplate']['count']==4;wire=[x for x in d['network']if x['device']=='B'and x.get('bodySha256')==d['independentTemplate']['bodySha256']];assert wire and all(len(x.get('batch',[]))==4 for x in wire);assert all(x['count']==4 for x in d['pressureOffers']);assert len({x['scheduledAt']-i*250 for i,x in enumerate(d['pressureOffers'])})==1;assert len({x['parent']for x in d['proxy']if x['role']=='independent'})==1
+ if run['mode']=='foreground':assert len(d['bursts'])==30
+ review.append({'name':run['name'],'localP95':sorted(local)[113],'peerP95':sorted(peer)[113],'fourReadOffersVerified':72 if run['pressure']=='independent'else 0,'dataGuards':True})
+result={'status':'passed','allTwelveFullDataJourneys':True,'peerVerifiedNewKeys':1440,'foregroundIsolatedMarkers':60,'twoTrueFourReadIndependentControlsWith72OffersAndZeroSkips':True,'rawPerKeyValuesIndependentlyReconstructed':review,'allRunsSerialAndFixedPlanComplete':True,'primaryDDefaultPolicyAcceptance':analysis['primaryDAcceptance'],'BPolicyAdopted':False,'scope':'Independent measurement/data/source review, not general qualification or physical-device proof.'};(r/'evidence-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

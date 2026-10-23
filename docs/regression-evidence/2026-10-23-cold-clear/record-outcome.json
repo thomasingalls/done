@@ -1,0 +1,10 @@
+{
+  "status": "recorded",
+  "completedWrittenBeforeDecisionsAndPerformance": true,
+  "completedAtNs": 1792712819251511000,
+  "recordedAtNs": 1792712819253762000,
+  "tests": 494,
+  "finalPerformance": "separate clock-valid C,C passes all original gates; original held pair retained",
+  "qualification": "paused;883/339 exact",
+  "publication": "none"
+}

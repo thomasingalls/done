@@ -1,0 +1,159 @@
+[
+  {
+    "name": "native-affected",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs",
+      "test/account-sessions/request-budget.test.mjs",
+      "test/account-sessions/request-budget-work.test.mjs",
+      "test/account-sessions/inbound-batch.test.mjs",
+      "test/account-sessions/scoped-http.test.mjs",
+      "test/account-sessions/scoped-client.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792614931153,
+    "completedAt": 1792614937126,
+    "exitCode": 0
+  },
+  {
+    "name": "word-units",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/verifiedRecords.test.ts",
+      "test/verificationOwnership.test.ts",
+      "test/verificationMemo.test.ts",
+      "test/warmContent.test.ts",
+      "test/cpuBudget.test.ts",
+      "test/custodyRecord.test.ts",
+      "test/custodyCrypto.test.ts",
+      "test/contentRecord.test.ts",
+      "test/accountAuthority.test.ts",
+      "test/contentInterruptedReuse.test.ts",
+      "test/incrementalLedger.test.ts",
+      "test/accountReceiveLedger.test.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-duplicate-read-flow-20261021/word-units.json"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792614937127,
+    "completedAt": 1792614939861,
+    "exitCode": 0
+  },
+  {
+    "name": "R-patch-check",
+    "command": [
+      "node",
+      "scripts/check-yjs-patch.mjs"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792614939861,
+    "completedAt": 1792614940044,
+    "exitCode": 0
+  },
+  {
+    "name": "R-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792614940044,
+    "completedAt": 1792614940439,
+    "exitCode": 0
+  },
+  {
+    "name": "R-bundle",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792614940440,
+    "completedAt": 1792614943640,
+    "exitCode": 0
+  },
+  {
+    "name": "R-budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792614943641,
+    "completedAt": 1792614943730,
+    "exitCode": 0
+  },
+  {
+    "name": "R-isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792614943731,
+    "completedAt": 1792614943799,
+    "exitCode": 0
+  },
+  {
+    "name": "C-patch-check",
+    "command": [
+      "node",
+      "scripts/check-yjs-patch.mjs"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792614943800,
+    "completedAt": 1792614943973,
+    "exitCode": 0
+  },
+  {
+    "name": "C-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792614943973,
+    "completedAt": 1792614945062,
+    "exitCode": 0
+  },
+  {
+    "name": "C-bundle",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792614945063,
+    "completedAt": 1792614947986,
+    "exitCode": 0
+  },
+  {
+    "name": "C-budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792614947986,
+    "completedAt": 1792614948081,
+    "exitCode": 0
+  },
+  {
+    "name": "C-isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792614948082,
+    "completedAt": 1792614948154,
+    "exitCode": 0
+  }
+]

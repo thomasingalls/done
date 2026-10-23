@@ -1,0 +1,4 @@
+{
+  "cause": "The packaged server helper overrides ACCOUNT_SETUP_DIST with its build argument. Tests therefore served the old root dist; the new batch-count assertion failed with zero batches. The run was stopped: one failed, one interrupted, nine not run. No candidate result credited.",
+  "correction": "Run from a frozen disposable source checkout with its own candidate dist, keeping root preview dist unchanged."
+}

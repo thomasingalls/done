@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,subprocess,os,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda b:hashlib.sha256(b).hexdigest();env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};start=json.loads((r/'starting.json').read_text());identity=json.loads((r/'measurement-identity.json').read_text());git=lambda args:subprocess.check_output(['git',*args],cwd=repo,env=env)
+assert git(['rev-parse','HEAD']).decode().strip()==start['baseCommit'];assert sha(Path(git(['rev-parse','--git-path','index']).decode().strip()).read_bytes())==start['realIndexSha256'];assert git(['diff','--cached','--name-only'])==b''
+prior_git=['git','--git-dir=/private/tmp/done-account-fairness-20261021/patch14-v2-index.git'];priorDocs=['docs/completed.md','docs/decisions.md','docs/performance.md']
+for f,h in start['workingFilesBefore'].items():
+ if f in priorDocs:
+  b=subprocess.check_output(prior_git+['show',start['priorTree']+':'+f],env=env);assert sha(b)==h and(repo/f).read_bytes().startswith(b)
+ else:assert sha((repo/f).read_bytes())==h,f
+for f,h in identity['sourceInputs'].items():assert sha((repo/f).read_bytes())==h and sha((r/'source'/f).read_bytes())==h,f
+for f,h in identity['files'].items():assert sha((r/f).read_bytes())==h,f
+for f,h in identity['clientIdentity'].items():assert sha((r/'source/dist'/f).read_bytes())==h,f
+assert git(['diff','--name-only','--','test','src','account-service','account-protocol','scripts','docs/progress.md'])==b''
+for name in ['exact','observed']:
+ log=(r/('native-'+name+'-tests-v2.log')).read_text();assert re.search(r'tests 25\b',log)and re.search(r'pass 25\b',log)and re.search(r'fail 0\b',log)
+log=(r/'host-removal-tests.log').read_text();assert re.search(r'tests 8\b',log)and re.search(r'pass 8\b',log)and re.search(r'fail 0\b',log)
+for f in ['analysis.json','evidence-review.json','observer-parity.json','sensitivity.json','profile-seed-probe.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+assert(r/'lab-explicit-types-final.log').read_bytes()==b''
+for x in json.loads((r/'native-audit.json').read_text()):assert sha((r/x['name']/'state/account.sqlite').read_bytes())==x['databaseSha256']
+old=Path('/private/tmp/done-account-fairness-20261021/audit-native.mjs').read_text();new=(r/'audit-native.mjs').read_text();assert old[old.index('function inspect'):old.index("if(process.argv.includes('--inspect'))")]==new[new.index('function inspect'):new.index("if(process.argv.includes('--inspect'))")]
+for c in json.loads((r/'run-plan.json').read_text()):
+ x=json.loads((r/c['name']/'result.json').read_text());assert not x.get('resourceStop');assert all(int(line.split()[1])==0 for line in x['metrics']['cgroupAfter']['memory.events'].splitlines());assert x['metrics']['rssSampledPeak']<=1073741824
+out={'status':'passed','baseCommit':start['baseCommit'],'priorEvidencePacketByteExact':True,'priorJournalsRetainedAsExactPrefixes':True,'sourceInputsExact':len(identity['sourceInputs']),'oldTestsAndRuntimeWorkingDiffEmpty':True,'clientFilesExact':len(identity['clientIdentity']),'observedServerBusinessASTExact':True,'nativeInspectorFunctionByteExactToIndependentPhase14Auditor':True,'nativeAcceptedStateUnchangedAfterCorruptionControl':True,'unchangedGrantDiscoveryExecutions':50,'unchangedHostRemovalCases':8,'corruptionControlsDetected':5,'observerOmissionControlsDetected':2,'wholeProfileSeedRoundtripAndColdReopen':True,'retainedPreWorkloadFailures':4,'originalFairnessAcceptance':False,'postLoadAndPendingDurabilityGuards':True,'realIndexUnchangedAndUnstaged':True,'realIndexSha256':start['realIndexSha256'],'otherSeatProgressUnchanged':True,'noQualificationCreditOrPublication':True};(r/'final-checks.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

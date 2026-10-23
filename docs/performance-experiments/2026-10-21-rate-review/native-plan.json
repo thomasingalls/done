@@ -1,0 +1,34 @@
+[
+  {
+    "arm": "D",
+    "block": 1
+  },
+  {
+    "arm": "S",
+    "block": 1
+  },
+  {
+    "arm": "P",
+    "block": 1
+  },
+  {
+    "arm": "B",
+    "block": 1
+  },
+  {
+    "arm": "B",
+    "block": 2
+  },
+  {
+    "arm": "P",
+    "block": 2
+  },
+  {
+    "arm": "S",
+    "block": 2
+  },
+  {
+    "arm": "D",
+    "block": 2
+  }
+]

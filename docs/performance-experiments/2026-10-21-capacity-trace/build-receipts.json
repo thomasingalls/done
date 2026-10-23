@@ -1,0 +1,164 @@
+[
+  {
+    "name": "observer-ast",
+    "command": [
+      "node",
+      "/private/tmp/done-capacity-trace-20261021/observer-ast.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792612965350,
+    "completedAt": 1792612965730,
+    "exitCode": 0
+  },
+  {
+    "name": "calibration-parity",
+    "command": [
+      "node",
+      "/private/tmp/done-capacity-trace-20261021/calibrate-budget.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "startedAt": 1792612965731,
+    "completedAt": 1792612965841,
+    "exitCode": 0
+  },
+  {
+    "name": "R-budget-cases",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/request-budget.test.mjs",
+      "test/account-sessions/request-budget-work.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792612965841,
+    "completedAt": 1792612966011,
+    "exitCode": 0
+  },
+  {
+    "name": "R-patch-check",
+    "command": [
+      "node",
+      "scripts/check-yjs-patch.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792612966011,
+    "completedAt": 1792612966225,
+    "exitCode": 0
+  },
+  {
+    "name": "R-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792612966225,
+    "completedAt": 1792612967457,
+    "exitCode": 0
+  },
+  {
+    "name": "R-bundle",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792612967458,
+    "completedAt": 1792612970573,
+    "exitCode": 0
+  },
+  {
+    "name": "R-budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792612970574,
+    "completedAt": 1792612970671,
+    "exitCode": 0
+  },
+  {
+    "name": "R-isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-R",
+    "startedAt": 1792612970672,
+    "completedAt": 1792612970743,
+    "exitCode": 0
+  },
+  {
+    "name": "C-budget-cases",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/request-budget.test.mjs",
+      "test/account-sessions/request-budget-work.test.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792612970743,
+    "completedAt": 1792612970900,
+    "exitCode": 0
+  },
+  {
+    "name": "C-patch-check",
+    "command": [
+      "node",
+      "scripts/check-yjs-patch.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792612970901,
+    "completedAt": 1792612971074,
+    "exitCode": 0
+  },
+  {
+    "name": "C-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792612971074,
+    "completedAt": 1792612972202,
+    "exitCode": 0
+  },
+  {
+    "name": "C-bundle",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792612972203,
+    "completedAt": 1792612975573,
+    "exitCode": 0
+  },
+  {
+    "name": "C-budget",
+    "command": [
+      "node",
+      "scripts/check-budget.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792612975573,
+    "completedAt": 1792612975665,
+    "exitCode": 0
+  },
+  {
+    "name": "C-isolation",
+    "command": [
+      "node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "cwd": "/private/tmp/done-capacity-trace-20261021/source-C",
+    "startedAt": 1792612975665,
+    "completedAt": 1792612975732,
+    "exitCode": 0
+  }
+]

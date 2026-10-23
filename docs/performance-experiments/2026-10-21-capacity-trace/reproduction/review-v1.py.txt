@@ -1,0 +1,43 @@
+from pathlib import Path
+import json,collections,math
+r=Path(__file__).parent;analysis=json.loads((r/'analysis.json').read_text());audit=[];overlap=[]
+for case in json.loads((r/'browser-plan.json').read_text()):
+ d=json.loads((r/case['name']/'result.json').read_text());s=next(x for x in analysis['rows']if x['name']==case['name']);native=collections.defaultdict(list)
+ for line in(r/case['name']/'native-capacity.jsonl').read_text().splitlines():
+  x=json.loads(line)
+  if x.get('id'):native[x['id']].append(x)
+ ps={p['id']:p for p in d['proxy']};measured=[p for p in ps.values()if d['startedAt']<=p['at']<=d['completedAt']];bad=[p for p in measured if p.get('status')==429];assert len(bad)==len(s['refusals'])
+ for p in bad:
+  reasons=[x for x in native[p['id']+1]if x['event']in['acquire-refused','work-refused']];assert len(reasons)==1;n=reasons[0];assert n.get('sessionRate')==1 and not any(n.get(k)for k in ['processRate','processActive','sessionActive'])
+  if n['event']=='acquire-refused':assert n['sessionTokens']<1
+  else:assert n['sessionTokens']<n['extra']and n['processTokens']>=n['extra']
+ for who,idx in [('A',0),('B',1)]:
+  probe=d['capacityBeforeReopen'][idx];assert probe['overflow']==0;assert probe['capturedAt']>=d['completedAt'];events=probe['rows'];waits=[]
+  for e in events:
+   if e['event']!='wait-start':continue
+   ends=[x for x in events if x['id']==e['id']and x.get('attempt')==e['attempt']and x['event']=='wait-end'];assert len(ends)==1
+   if e['at']<=d['completedAt']and ends[0]['at']>=d['startedAt']:waits.append((e['at'],ends[0]['at'],e['value']))
+  expected=[x for x in s['waits']if x['device']==who];assert sorted(waits)==sorted((x['startAt'],x['endAt'],x['nominalMs'])for x in expected)
+  for wait in expected:
+   p=[p for p in ps.values()if p['role']=='client'and p.get('device')==who and p['labCall']==wait['call']and p['labAttempt']==wait['attempt']];q=[p for p in ps.values()if p['role']=='client'and p.get('device')==who and p['labCall']==wait['call']and p['labAttempt']==wait['attempt']+1];assert len(p)==len(q)==1;assert p[0]['status']==429 and p[0]['bodySha256']==q[0]['bodySha256']
+ # Independent DOM quantiles use the literal14+600 baseline; not the producer's helper.
+ local=[];peer=[]
+ for i,o in enumerate(d['concurrent']['offers']):
+  for index,v in [(0,local),(1,peer)]:v.append(min(x['at']for x in d['browsers'][index]['rows']if x['at']>=o['at']-2 and x['lengths'][0]>=615+i)-o['at'])
+ assert sorted(local)[113]==s['localDOM']['p95']and sorted(peer)[113]==s['peerDOM']['p95'];assert all(d['guards'].values())and d['all120EditorKeysReachedPeer'];assert len(d['concurrent']['offers'])==120
+ charges=collections.Counter();avoid=collections.Counter();template=[]
+ for p in measured:
+  ns=native[p['id']+1];settled=[x for x in ns if x['event']=='settled']
+  if settled:
+   assert len(settled)==1;charges[p['role']]+=max(1,settled[0]['started'])
+  if p['role']=='shadow'and settled:
+   parent=ps[p['parent']];assert p['bodySha256']==parent['bodySha256'];pn=native[parent['id']+1];arr=[x['mono']for x in ns if x['event']=='request'];fin=[x['mono']for x in pn if x['event']=='released'];reserved=[x['mono']for x in ns if x['event']=='work-reserved'];
+   if arr and fin and arr[0]<fin[0]:avoid['startedReadsArrivingDuringParent']+=settled[0]['started']
+   if reserved and fin and reserved[0]<fin[0]:avoid['startedReadsReservedDuringParent']+=settled[0]['started']
+   avoid['allStartedShadowReads']+=settled[0]['started']
+  if p['role']=='independent'and settled:template.append(settled[0]['reserved'])
+ for role,v in s['roleSummary'].items():assert charges[role]==v['chargedWork']
+ if template:assert set(template)=={3};assert s['pressureOffers']=={'offered':72,'skipped':0}
+ audit.append({'name':case['name'],'429sIndependentlyAttributed':len(bad),'client429s':sum(p['role']=='client'for p in bad),'allDataGuards':True,'localP95':sorted(local)[113],'peerP95':sorted(peer)[113],'independentTemplateActualReads':3 if template else None});overlap.append({'name':case['name'],**dict(avoid)})
+original=json.loads((r/'observer-v1/browser-runner.json').read_text());current=json.loads((r/'browser-runner.json').read_text());assert len(original)==len(current)==8 and all(x['exitCode']==0 for x in original+current);assert all(x['completedAt']<=y['startedAt']for x,y in zip(original+current,(original+current)[1:]));
+result={'status':'passed','correctedJourneys':audit,'duplicateOverlap':overlap,'originalEightObserverIncompleteRunsRetained':True,'allSixteenFullDataJourneys':True,'verifiedEditorKeys':1920,'capacityAttributionCompleteForCorrectedEight':True,'all29CapacityRetriesUseSameBody':True,'zeroIncompleteMeasuredWaits':True,'independentPressureLimitation':'The capture predicate selected first aggregate, not specifically4reads. All72offers used a3-read template in each arm (216planned read units rather than intended288). Preserve this as fixed3-read diagnostic, not an exact4-read control; require explicit count filtering in the next repair phase.'};(r/'evidence-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

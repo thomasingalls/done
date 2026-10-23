@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "sourcesBefore": 399,
+  "sourcesAfter": 400,
+  "added": [
+    "account-service/batchReadAdmission.ts"
+  ],
+  "changed": [
+    "account-service/scoped-http.ts",
+    "src/crdt/verifiedRecords.ts"
+  ],
+  "allCryptoDomainsAndSitesExact": true,
+  "registryGroups": 35,
+  "noContractOrStatusChange": true
+}

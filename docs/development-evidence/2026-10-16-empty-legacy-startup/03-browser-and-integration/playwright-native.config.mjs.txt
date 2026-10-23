@@ -1,0 +1,11 @@
+import { createRequire } from 'node:module';
+const root = process.cwd();
+const { defineConfig } = createRequire(root + '/package.json')('@playwright/test');
+export default defineConfig({
+ testDir: root + '/test/packaged-account', testMatch:'empty-legacy-startup.spec.ts',
+ outputDir: process.env.EMPTY_LEGACY_OUTPUT + '/artifacts',
+ timeout:60000, workers:1, retries:0,
+ reporter:[['list'],['json',{outputFile: process.env.EMPTY_LEGACY_OUTPUT + '/results.json'}]],
+ use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}},
+ projects:[{name:'chromium',use:{browserName:'chromium'}},{name:'firefox',use:{browserName:'firefox'}}]
+});

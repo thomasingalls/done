@@ -1,0 +1,16 @@
+from pathlib import Path
+import os,json,time,subprocess,shutil
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+while not(r/'native-audit.json').exists():
+ if'Traceback'in(r/'after-runs.log').read_text()or'Traceback'in(r/'run.log').read_text():raise Exception('Preserve failed measured/evidence phase before application')
+ time.sleep(3)
+assert len(json.loads((r/'native-audit.json').read_text()))==8;assert json.loads((r/'evidence-review.json').read_text())['status']=='passed'
+files=['scripts/lib/sync-cadence-analysis.mjs','test/sync-cadence-analysis.test.mjs']
+for f in files:assert not(repo/f).exists(),f
+for f in files:shutil.copy2(r/'source'/f,repo/f)
+print('Only new diagnostic analyzer and17 regressions applied; no product runtime changes',flush=True);rows=[]
+for name,cmd in [('census-record',['node','scripts/account-crypto-prep/run.mjs','--record']),('census-check',['node','scripts/account-crypto-prep/run.mjs']),('inventory-record',['node','scripts/release-validation/check.mjs','--record']),('inventory-check',['node','scripts/release-validation/check.mjs']),('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),('manifest-check',['node','scripts/release-validation/plan.mjs']),('planning-tests',['node','--test','--test-concurrency=1','test/account-crypto-prep/census.test.mjs','test/account-crypto-prep/contracts.test.mjs','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs'])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(r/'planning-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception('Planning disagreement must be investigated before updating fixtures '+name)
+a=json.loads((r/'before/docs/release-validation-manifest.json').read_text());b=json.loads((repo/'docs/release-validation-manifest.json').read_text());old={v['id']:v for v in a['rows']};new={v['id']:v for v in b['rows']};changes=[{'id':k,'before':v,'after':new.get(k)}for k,v in old.items()if new.get(k)!=v];added=[v for k,v in new.items()if k not in old];(r/'manifest-row-changes.json').write_text(json.dumps({'changed':changes,'added':added},indent=2)+'\n');print('Await independent metadata review',len(changes),len(added),flush=True)

@@ -1,0 +1,36 @@
+[
+  {
+    "name": "reference",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs"
+    ],
+    "startedAt": 1792667716373,
+    "completedAt": 1792667825908,
+    "exitCode": 1,
+    "localListeningPermitted": true
+  },
+  {
+    "name": "candidate",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-ceremony/content-transfer.test.mjs",
+      "test/account-history/service.test.mjs",
+      "test/account-history/pruning.test.mjs",
+      "test/account-history/checkpoint.test.mjs",
+      "test/account-membership/rotation-history.test.mjs"
+    ],
+    "startedAt": 1792667825909,
+    "completedAt": 1792667938577,
+    "exitCode": 1,
+    "localListeningPermitted": true
+  }
+]

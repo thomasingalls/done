@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "scope": "same unrelated B2 RequestInit.duplex error in ad-hoc broad command, not a passing project typecheck",
+  "initialReviewerMistake": "expected legacy tsc exit2, actual1; original script/log retained",
+  "runs": [
+    {
+      "variant": "reference",
+      "exitCode": 1,
+      "sameErrorAsOriginalBroadInvocation": true
+    },
+    {
+      "variant": "candidate",
+      "exitCode": 1,
+      "sameErrorAsOriginalBroadInvocation": true
+    }
+  ],
+  "affectedGraphTypecheckPassed": true
+}

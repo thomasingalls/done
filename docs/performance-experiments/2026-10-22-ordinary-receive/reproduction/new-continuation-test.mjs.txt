@@ -1,0 +1,22 @@
+test('independent continuation reads reuse branded history evidence without repeating its admission', async (t) => {
+  const x = await continuationFixture(t),
+    verify = crypto.subtle.verify.bind(crypto.subtle);
+  let admissions = 0;
+  t.mock.method(crypto.subtle, 'verify', (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/device-membership-admission/v2')))
+      admissions++;
+    return verify(...args);
+  });
+  const { query, pageProof } = await import('../account-service-inbound/oracle.mjs');
+  const overrides = {
+    reader: x.context.candidate.id,
+    publisher: x.credential,
+    epoch: 4,
+    head: x.admission.head,
+  };
+  for (let i = 0; i < 2; i++) {
+    const q = query(x, 0, 1, overrides, x.keys.new);
+    pageProof(await x.authority.owner.readInbound(x.f.core, q), q, x, []);
+  }
+  assert.equal(admissions, 1);
+});

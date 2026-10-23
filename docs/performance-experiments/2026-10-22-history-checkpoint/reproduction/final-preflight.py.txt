@@ -1,0 +1,21 @@
+from pathlib import Path
+import time,json,subprocess,os,shutil,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while not(r/'preflight-receipts.json').exists()or len(json.loads((r/'preflight-receipts.json').read_text()))<5:time.sleep(5)
+rows=[]
+def run(name,cmd):
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=s,env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(r/'final-preflight-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True);return p.returncode
+p=repo/'test/account-ceremony/content-transfer.test.mjs';base=(r/'before/content-transfer.test.mjs').read_bytes();assert p.read_bytes().startswith(base);add=r/'new-tests-only.mjs';add.write_bytes(p.read_bytes()[len(base):]);subprocess.run(['node',str(repo/'node_modules/oxfmt/bin/oxfmt'),str(add)],env=env,check=True,stdout=(r/'format-new-lines-v2.log').open('w'));p.write_bytes(base+b'\n'+add.read_bytes());shutil.copy2(p,s/'test/account-ceremony/content-transfer.test.mjs')
+files=['test/account-ceremony/content-transfer.test.mjs','test/account-history/service.test.mjs','test/account-history/pruning.test.mjs','test/account-history/checkpoint.test.mjs','test/account-membership/rotation-history.test.mjs']
+run('candidate-affected-final',['node','--test','--test-concurrency=1',*files])
+pattern="history timeline reuse|history catalog|history early-epoch lookup|history complete timeline|catalog's late"
+assert run('new-regressions',['node','--test','--test-name-pattern='+pattern,'test/account-ceremony/content-transfer.test.mjs'])==0
+assert run('types-final',['node','node_modules/typescript/bin/tsc','--noEmit','--ignoreConfig','--target','es2024','--module','nodenext','--moduleResolution','nodenext','--allowImportingTsExtensions','--skipLibCheck','--types','node','account-service/historyCheckpoint.ts'])==0
+run('lint-final',['node','node_modules/oxlint/bin/oxlint','account-service/historyCheckpoint.ts','test/account-ceremony/content-transfer.test.mjs'])
+def failures(log):return sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',log,re.M)))
+a=(r/'reference-affected.log').read_text();b=(r/'candidate-affected-final.log').read_text();before=failures(a);after=failures(b);new=set(after)-set(before);missing=set(before)-set(after);assert not new,(new,missing)
+summary=lambda x:{k:int(re.search(r'ℹ '+k+r' (\d+)',x).group(1))for k in ['tests','pass','fail','cancelled','skipped']}
+out={'status':'passed','reference':summary(a),'candidate':summary(b),'unchangedFailureNames':before,'newFailures':len(new),'resolvedFailures':sorted(missing),'scope':'Same existing failures remain, not automatically classified as stale. Initial candidate fixture issue and all earlier failures retained separately.'};(r/'affected-comparison.json').write_text(json.dumps(out,indent=2)+'\n');print(out,flush=True)
+assert subprocess.run(['python3',str(r/'challenge.py')],env=env,stdout=(r/'challenge.log').open('w'),stderr=subprocess.STDOUT).returncode==0
+print('Final source and controls ready for freeze',flush=True)

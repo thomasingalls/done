@@ -1,0 +1,275 @@
+import { test, expect, type Page, type BrowserContext } from '@playwright/test';
+import { mkdirSync, writeFileSync, readFileSync, cpSync } from 'node:fs';
+import { join } from 'node:path';
+import { createHash } from 'node:crypto';
+import { loadavg, freemem } from 'node:os';
+import { pairedEditors, credentials, restoreAuthenticator, openSaved, add } from './devices';
+import { decodeInboundBatch, decodeInboundBatchPages } from '../../account-protocol/inboundBatch';
+import { decodeInboundRequest, decodeInboundPage } from '../../account-protocol/inboundTransport';
+import { decodePositionResponse } from '../../account-protocol/positionDecision';
+import { start, stop, setPhase, requests, frames, labelBearer, attributeRequests } from './runtime.mjs';
+
+const root = process.env.SYNC_ROOT!, out = process.env.SYNC_OUT!, dist = process.env.SYNC_DIST!;
+const mode = process.env.SYNC_MODE!, delay = Number(process.env.SYNC_DELAY ?? '0');
+mkdirSync(out, {recursive: true, mode: 0o700});
+const prefixes = ['Sync target A:', 'Sync target B:'];
+const card = (p: Page, who = 0) => p.locator('.day-panel[data-active="true"] .card').filter({hasText: prefixes[who]}).first();
+const content = (p: Page) => p.locator('.card[data-editing="true"] .cm-content');
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const digest = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
+async function focus(p: Page, who = 0) { await card(p, who).locator('.card-surface').press('Enter'); await content(p).waitFor(); await p.keyboard.press('ControlOrMeta+End'); }
+async function day(p: Page, value: string) { await p.getByLabel('Go to date', {exact: true}).fill(value); await expect(card(p)).toBeVisible(); }
+async function lock(p: Page) { await p.getByRole('button', {name: 'Lock workspace', exact: true}).click(); await expect(p.locator('.shell')).toHaveCount(0); }
+async function acceptedPosition(p: Page) { return Number((await p.getByText(/^Accepted position:/).innerText()).split(':').at(-1)!.trim()); }
+async function exported(p: Page) {
+  const waiting = p.waitForEvent('download'); await p.getByRole('button', {name: 'Export markdown', exact: true}).click();
+  const d = await waiting, bytes = readFileSync((await d.path())!); let offset = 0; const files: Record<string,string> = {};
+  while (bytes.readUInt32LE(offset) === 0x04034b50) {
+    expect(bytes.readUInt16LE(offset + 8)).toBe(0);
+    const size = bytes.readUInt32LE(offset + 18), n = bytes.readUInt16LE(offset + 26), extra = bytes.readUInt16LE(offset + 28);
+    const name = bytes.toString('utf8', offset + 30, offset + 30 + n), begin = offset + 30 + n + extra;
+    files[name] = bytes.toString('utf8', begin, begin + size); offset = begin + size;
+  }
+  return files;
+}
+function archiveIdentity(files: Record<string,string>) { return {entries:Object.entries(files).map(([name,text])=>({name,bytes:Buffer.byteLength(text),characters:text.length})),files: Object.keys(files).length, bytes: Object.values(files).reduce((n,s)=>n+Buffer.byteLength(s),0), sha256: digest(JSON.stringify(Object.entries(files).sort(([a],[b])=>a.localeCompare(b))))}; }
+
+function installProbe() {
+  const rows: any[] = [], inputs: any[] = [], trace: any[] = [], longtasks: any[] = [], progress: any[] = [];
+  let targets: Element[] = [], last = [-1,-1];
+  let lastProgress = '';
+  const now = () => performance.timeOrigin + performance.now();
+  const read = () => {
+    const status = document.querySelector('[aria-label="Sync status"]')?.textContent ?? '';
+    const accepted = Number(/Accepted position:\s*(\d+)/.exec(status)?.[1] ?? -1);
+    const received = Number(/Received positions:\s*(\d+)/.exec(status)?.[1] ?? -1);
+    const stamp = accepted + ':' + received;
+    if (stamp !== lastProgress) { lastProgress = stamp; if(progress.length<20000)progress.push({at:now(),accepted,received}); }
+    if (targets.length !== 2 || targets.some(e => !e.isConnected)) {
+      const all = [...document.querySelectorAll('.day-panel[data-active="true"] .card')];
+      targets = ['Sync target A:', 'Sync target B:'].map(prefix => all.find(c => c.textContent?.includes(prefix))!).filter(Boolean);
+    }
+    if (targets.length !== 2) return;
+    const lengths = targets.map(c => (c.querySelector('.cm-content') ?? c.querySelector('.card-surface'))?.textContent?.length ?? -1);
+    if (lengths.some((n,i)=>n!==last[i])) { last = lengths; if (rows.length < 20000) rows.push({at: now(), lengths}); }
+  };
+  new MutationObserver(read).observe(document, {subtree:true, childList:true, characterData:true});
+  addEventListener('beforeinput', (e: Event) => {
+    const event = e as InputEvent;
+    if (!(event.target instanceof Element) || !event.target.closest('.card')) return;
+    const row = {at: now(), dataLength: event.data?.length ?? 0, type: event.inputType, rafAt: 0}; inputs.push(row);
+    requestAnimationFrame(()=>{row.rafAt=now();});
+  }, true);
+  if (PerformanceObserver.supportedEntryTypes.includes('longtask')) new PerformanceObserver(l => {for (const e of l.getEntries()) longtasks.push({at: performance.timeOrigin+e.startTime, ms:e.duration});}).observe({type:'longtask'});
+  Object.defineProperty(window, '__syncTrace', {value: (...args: any[])=>{if(trace.length<30000)trace.push({at:now(),args});}});
+  Object.defineProperty(window, '__syncProbe', {value: {read:()=>({rows:structuredClone(rows), inputs:structuredClone(inputs), trace:structuredClone(trace), longtasks:structuredClone(longtasks), progress:structuredClone(progress), ledger:(window as any).__doneLedgerMetrics?.(), native:(window as any).__attribution?.read()}), sample:read}});
+}
+function watch(p: Page, label: string, log: any[], tasks: Promise<any>[]) {
+  const pending = new Map();
+  p.on('request', req => {
+    const path = new URL(req.url()).pathname;
+    if (!path.startsWith('/account/')) return;
+    const row: any = {id:log.length,device:label,path,at:Date.now(),bodySha256:req.postDataBuffer()?digest(req.postDataBuffer()!):null};
+    labelBearer(req.headers()['authorization'],label);
+    if (path.endsWith('/read-v2')) {const q=decodeInboundRequest(new Uint8Array(req.postDataBuffer()!));Object.assign(row,{after:q.after,limit:q.limit,self:q.reader===q.publisher});}
+    if (path.endsWith('/read-v2-batch')) {row.batch=decodeInboundBatch(new Uint8Array(req.postDataBuffer()!)).map(bytes=>{const q=decodeInboundRequest(bytes);bytes.fill(0);return {after:q.after,limit:q.limit,self:q.reader===q.publisher};});}
+    log.push(row);pending.set(req,row);
+  });
+  p.on('response', response => {
+    const row=pending.get(response.request()); if(!row)return;
+    row.headersAt=Date.now();row.status=response.status();
+    if (row.path.endsWith('/submit') || row.path.endsWith('/read-v2') || row.path.endsWith('/read-v2-batch')) tasks.push((async()=>{
+      try {
+        const bytes=new Uint8Array(await response.body());row.bodyAt=Date.now();
+        if(response.status()===409){try{const hint=JSON.parse(Buffer.from(bytes).toString('utf8'));for(const k of ['kind','reason','refusal'])if(typeof hint[k]==='string'&&/^[a-z-]{1,64}$/.test(hint[k]))row[k]=hint[k]}catch{row.unclassified=true}}
+        if(response.status()===200) {
+          if(row.path.endsWith('/submit')) {const decoded=decodePositionResponse(bytes);row.decisionKind=decoded.kind;if(decoded.kind==='accepted')row.position=decoded.head.position;}
+          else if(row.path.endsWith('/read-v2-batch')) {row.pages=decodeInboundBatchPages(bytes).map(b=>{const q=decodeInboundPage(b);b.fill(0);return {entries:q.entries.length,next:q.next,through:q.through};});}
+          else {const decoded=decodeInboundPage(bytes);Object.assign(row,{entries:decoded.entries.length,next:decoded.next,through:decoded.through});}
+        }
+        bytes.fill(0);
+      }catch {row.bodyUnavailable=true;}
+    })());
+  });
+  p.on('requestfailed',req=>{const row=pending.get(req);if(row)row.failedAt=Date.now();});
+}
+async function saveFixture(state: string, dest: string, a: any, b: any, expected: string, date: string) {
+  mkdirSync(dest,{recursive:true,mode:0o700});cpSync(state,join(dest,'state'),{recursive:true,errorOnExist:true});
+  writeFileSync(join(dest,'fixture.json'),JSON.stringify({a,b,expected,date,state:join(dest,'state')}),{mode:0o600});
+}
+
+test('released live sync and reopen attribution', async ({page,browser})=>{
+  const result: any={mode,delay,diagnostic:process.env.SYNC_DIAGNOSTIC==='1',outcome:'starting',source:process.env.SYNC_REVISION??'27dc7d78'};
+  const network:any[]=[],tasks:Promise<any>[]=[],contexts:BrowserContext[]=[];
+  let pair:any, profile:any;
+  const state=join(out,'state');
+  try {
+    if(mode==='seed') {
+      await start(state,dist,0);watch(page,'A',network,tasks);
+      pair=await pairedEditors(page,browser,true,{beforeInvite:async()=>{
+        for(let i=0;i<118;i++){await add(page,`Project ${i}: `+'Review notes, decisions and next actions. '.repeat(10));if(i%30===0)console.log('seed cards',i);}
+        await add(page,prefixes[0]);await add(page,prefixes[1]);
+        const goals=page.locator('.goals .cm-content');await goals.click();await page.keyboard.insertText('# Plans\n\n- Follow up with the team and review the project notes.\n'.repeat(200));await page.keyboard.press('Escape');
+      }});
+      watch(pair.second,'B',network,tasks);
+      for(const p of [page,pair.second])await expect(card(p)).toBeVisible();
+      const initialArchive=await exported(page);
+      await expect.poll(async()=>archiveIdentity(await exported(pair.second)).sha256,{timeout:60000}).toBe(archiveIdentity(initialArchive).sha256);
+      const date=await page.getByLabel('Go to date',{exact:true}).inputValue();
+      for(const p of [page,pair.second])await lock(p);
+      const a={code:pair.first.code,storage:await page.context().storageState({indexedDB:true}),credentials:await credentials(pair.first.auth)};
+      const b={code:pair.next.code,storage:await pair.other.storageState({indexedDB:true}),credentials:await credentials(pair.next.auth)};
+      await stop();await saveFixture(state,join(root,'caughtup-seed'),a,b,prefixes[0],date);
+      console.log('caught-up fixture saved; creating 600-position backlog');
+      await pair.other.setOffline(true);await start(state,dist,0);await page.goto('/');await openSaved(page,a.code);await day(page,date);await focus(page);
+      let expected=prefixes[0];
+      for(let i=0;i<600;i++) {
+        const before=await acceptedPosition(page);const text=String(i%10);await page.keyboard.insertText(text);expected+=text;
+        await expect.poll(()=>acceptedPosition(page),{timeout:30000,intervals:[25,50,100]}).toBeGreaterThan(before);
+        if((i+1)%50===0)console.log('seed accepted updates',i+1);
+      }
+      await page.keyboard.press('Escape');await expect(card(page)).toContainText(expected);await lock(page);
+      const aa={code:a.code,storage:await page.context().storageState({indexedDB:true}),credentials:await credentials(pair.first.auth)};
+      await stop();await saveFixture(state,join(root,'backlog-seed'),aa,b,expected,date);
+      result.outcome='passed';result.backlogPositions=600;result.caughtupArchive=archiveIdentity(initialArchive);
+      return;
+    }
+    const seedFolder=process.env.SYNC_SEED??(mode==='seed-v2'||mode==='seed-backlog'?'caughtup-seed':mode==='foreground'||mode==='seed-backlog-v3'?'caughtup-seed-v2':'backlog-seed-v3');
+    const seed=JSON.parse(readFileSync(join(root,seedFolder,'fixture.json'),'utf8'));
+    cpSync(seed.state,state,{recursive:true,errorOnExist:true});await start(state,dist,delay);
+    const pages:Page[]=[], auths:any[]=[];
+    for(const [index,saved] of [seed.a,seed.b].entries()) {
+      const c=await browser.newContext({storageState:saved.storage,viewport:{width:1440,height:1000}});contexts.push(c);
+      if(result.diagnostic)await c.addInitScript({path:join(root,'browser-diagnostics.js')});
+      await c.addInitScript(installProbe);const p=await c.newPage();pages.push(p);watch(p,index?'B':'A',network,tasks);
+      auths.push(await restoreAuthenticator(p,saved.credentials));await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await p.waitForFunction(()=>!!navigator.serviceWorker.controller);await c.setOffline(true);await openSaved(p,saved.code,index===1);await day(p,seed.date);
+    }
+    const [a,b]=pages;
+    if(mode==='fix-goals') {
+      for(const c of contexts)await c.setOffline(false);
+      for(const [index,p] of pages.entries())await expect.poll(()=>acceptedPosition(p),{timeout:30000}).toBe(index?seed.b.position:seed.a.position);
+      const text='# Plans\n\n- Follow up with the team and review the project notes.\n'.repeat(200);
+      await a.locator('.goals .cm-content').click();await a.keyboard.press('ControlOrMeta+a');await a.keyboard.insertText(text);
+      await expect.poll(async()=>(await exported(a))['master.md'],{timeout:30000}).toBe(text);
+      await expect.poll(async()=>(await exported(b))['master.md'],{timeout:30000}).toBe(text);
+      await a.keyboard.press('Escape');const archive=await exported(a);expect(await exported(b)).toEqual(archive);
+      const positions=await Promise.all(pages.map(acceptedPosition));
+      for(const p of pages)await lock(p);
+      const aa={code:seed.a.code,position:positions[0],storage:await contexts[0]!.storageState({indexedDB:true}),credentials:await credentials(auths[0])};
+      const bb={code:seed.b.code,position:positions[1],storage:await contexts[1]!.storageState({indexedDB:true}),credentials:await credentials(auths[1])};
+      await stop();await saveFixture(state,join(root,'caughtup-seed-v3'),aa,bb,seed.expected,seed.date);
+      result.caughtupArchive=archiveIdentity(archive);result.positions=positions;result.outcome='passed';return;
+    }
+    if(mode==='seed-v2') {
+      for(const c of contexts)await c.setOffline(false);
+      for(let i=0;i<2;i++) {
+        const p=pages[i]!,other=pages[1-i]!,marker=`Seed boundary ${i};`;
+        await p.locator('.goals .cm-content').click();await p.keyboard.press('ControlOrMeta+End');await p.keyboard.insertText('\n'+marker+'\n');await p.keyboard.press('Escape');
+        await expect(other.locator('.goals .cm-content')).toContainText(marker,{timeout:60000});
+      }
+      const archive=await exported(a);expect(await exported(b)).toEqual(archive);
+      const positions=await Promise.all(pages.map(acceptedPosition));
+      expect(positions[0]).toBeGreaterThan(0);
+      for(const p of pages)await lock(p);
+      const aa={code:seed.a.code,position:positions[0],storage:await contexts[0]!.storageState({indexedDB:true}),credentials:await credentials(auths[0])};
+      const bb={code:seed.b.code,position:positions[1],storage:await contexts[1]!.storageState({indexedDB:true}),credentials:await credentials(auths[1])};
+      await stop();await saveFixture(state,join(root,'caughtup-seed-v2'),aa,bb,seed.expected,seed.date);
+      console.log('two-way sentinel boundary saved',positions);
+      await contexts[1]!.setOffline(true);await start(state,dist,0);await a.goto('/');await openSaved(a,aa.code);await day(a,seed.date);
+      await expect.poll(()=>acceptedPosition(a),{timeout:30000}).toBe(aa.position);
+      await focus(a);let expected=await content(a).innerText();const first=await acceptedPosition(a);
+      for(let i=0;i<600;i++) {
+        const before=await acceptedPosition(a);const text=String(i%10);await a.keyboard.insertText(text);expected+=text;
+        // Fixture construction only: request the app's existing lifecycle flush instead of waiting
+        // through each publication batch. Every source still uses native admission/verification.
+        await a.evaluate(()=>dispatchEvent(new PageTransitionEvent('pagehide')));
+        await expect.poll(()=>acceptedPosition(a),{timeout:30000,intervals:[25,50,100]}).toBe(before+1);
+        if((i+1)%100===0)console.log('seed verified missing positions',i+1);
+      }
+      result.seedAcceptedPositions=(await acceptedPosition(a))-first;expect(result.seedAcceptedPositions).toBe(600);
+      await a.keyboard.press('Escape');await expect(card(a)).toContainText(expected);await lock(a);
+      const saved={code:aa.code,position:first+600,storage:await contexts[0]!.storageState({indexedDB:true}),credentials:await credentials(auths[0])};
+      await stop();await saveFixture(state,join(root,'backlog-seed-v2'),saved,bb,expected,seed.date);
+      result.caughtupArchive=archiveIdentity(archive);result.outcome='passed';return;
+    }
+    if(mode==='seed-backlog-v3'||mode==='seed-backlog-v4') {
+      await contexts[0]!.setOffline(false);
+      await expect.poll(()=>acceptedPosition(a),{timeout:30000}).toBe(seed.a.position);
+      await focus(a);let expected=await content(a).innerText();const first=await acceptedPosition(a);
+      for(let i=0;i<600;i++) {
+        const before=await acceptedPosition(a);const text=String(i%10);await a.keyboard.insertText(text);expected+=text;
+        await expect.poll(()=>acceptedPosition(a),{timeout:30000,intervals:[25,50,100]}).toBe(before+1);
+        if((i+1)%50===0)console.log('seed verified missing positions',i+1);
+      }
+      result.seedAcceptedPositions=(await acceptedPosition(a))-first;expect(result.seedAcceptedPositions).toBe(600);
+      await a.keyboard.press('Escape');await expect(card(a)).toContainText(expected);await lock(a);
+      const saved={code:seed.a.code,position:first+600,storage:await contexts[0]!.storageState({indexedDB:true}),credentials:await credentials(auths[0])};
+      await stop();await saveFixture(state,join(root,mode==='seed-backlog-v4'?'backlog-seed-v3':'backlog-seed-v2'),saved,seed.b,expected,seed.date);
+      result.outcome='passed';return;
+    }
+    if(mode==='seed-backlog') {
+      await contexts[0]!.setOffline(false);await focus(a);let expected=await content(a).innerText();
+      const startPosition=await acceptedPosition(a);
+      for(let i=0;i<600;i++) {
+        const before=await acceptedPosition(a);const text=String(i%10);await a.keyboard.insertText(text);expected+=text;
+        await expect.poll(()=>acceptedPosition(a),{timeout:30000,intervals:[25,50,100]}).toBeGreaterThan(before);
+        if((i+1)%50===0)console.log('seed accepted updates',i+1);
+      }
+      result.seedAcceptedPositions=(await acceptedPosition(a))-startPosition;
+      expect(result.seedAcceptedPositions).toBe(600);
+      await a.keyboard.press('Escape');await expect(card(a)).toContainText(expected);await lock(a);
+      const saved={code:seed.a.code,storage:await contexts[0]!.storageState({indexedDB:true}),credentials:await credentials(auths[0])};
+      await stop();await saveFixture(state,join(root,'backlog-seed'),saved,seed.b,expected,seed.date);
+      result.outcome='passed';return;
+    }
+    if(mode==='foreground') {
+      for(const c of contexts)await c.setOffline(false);
+      for(const [index,p] of pages.entries())await expect.poll(()=>acceptedPosition(p),{timeout:30000}).toBe(index?seed.b.position:seed.a.position);
+      await sleep(3000); // Fixed foreground warm-up, outside the measurement. Catch-up is not warmed.
+    }
+    const fixtureArchive=await exported(a);
+    expect(fixtureArchive['master.md']!.length).toBeGreaterThanOrEqual(12000);
+    result.initialArchive=archiveIdentity(fixtureArchive);
+    result.localOpenedAt=Date.now();
+    result.fixture={activeDayCards:await a.locator('.day-panel[data-active="true"] .card').count(),visibleGoalsDomCharacters:(await a.locator('.goals .cm-content').innerText()).length};
+    result.before=await Promise.all(pages.map(p=>p.evaluate(()=>(window as any).__syncProbe.read())));
+    if(result.diagnostic){profile=await b.context().newCDPSession(b);await profile.send('Profiler.enable');await profile.send('Profiler.setSamplingInterval',{interval:1000});await profile.send('Profiler.start');}
+    setPhase(mode);result.hostBefore={load:loadavg(),freeBytes:freemem()};result.startedAt=Date.now();for(const c of contexts)await c.setOffline(false);
+    if(mode==='foreground') {
+      await expect(card(b)).toContainText(seed.expected);await focus(a);
+      result.bursts=[];
+      for(let i=0;i<30;i++) {const text=` L${i};`,offeredAt=Date.now();await a.keyboard.insertText(text);await expect(card(b)).toContainText(text,{timeout:30000});result.bursts.push({index:i,offeredAt,observedBy:Date.now()});}
+      result.continuous={startedAt:Date.now(),offers:[]};
+      for(let i=0;i<120;i++){const scheduledAt=result.continuous.startedAt+i*150;await sleep(Math.max(0,scheduledAt-Date.now()));const at=Date.now();await a.keyboard.press('q');result.continuous.offers.push({scheduledAt,at,returnedAt:Date.now()});}
+      await a.keyboard.press('Escape');await expect(card(b)).toContainText('q'.repeat(120),{timeout:30000});result.continuous.finishedBy=Date.now();
+    } else {
+      const writing=(async()=>{await focus(a);result.concurrent={startedAt:Date.now(),offers:[]};for(let i=0;i<120;i++){const scheduledAt=result.concurrent.startedAt+i*150;await sleep(Math.max(0,scheduledAt-Date.now()));const at=Date.now();await a.keyboard.press('w');result.concurrent.offers.push({scheduledAt,at,returnedAt:Date.now()});}await a.keyboard.press('Escape');})();
+      await add(b,'Receiver send sentinel');
+      await expect(card(b)).toContainText(seed.expected,{timeout:600000});result.caughtAt=Date.now();console.log('catch-up milliseconds',result.caughtAt-result.startedAt);
+      await writing;await expect(card(b)).toContainText('w'.repeat(120),{timeout:30000});await expect(a.locator('.shell')).toContainText('Receiver send sentinel',{timeout:30000});
+    }
+    result.completedAt=Date.now();result.hostAfter={load:loadavg(),freeBytes:freemem()};result.browsers=await Promise.all(pages.map(p=>p.evaluate(()=>(window as any).__syncProbe.read())));
+    if(profile){const {profile:p}=await profile.send('Profiler.stop');writeFileSync(join(out,'receiver.cpuprofile'),JSON.stringify(p));profile=undefined;}
+    setPhase('guardrails');
+    const before=await exported(a);expect(await exported(b)).toEqual(before);
+    result.export=archiveIdentity(before);
+    // An ordinary edit from B must reach A and support local Undo/Redo while retaining peer writing.
+    const peerBefore=await card(b).locator('.card-surface').innerText();
+    await focus(b,1);await b.keyboard.insertText(' Guard-B;');await expect(card(a,1)).toContainText('Guard-B;',{timeout:30000});
+    await b.keyboard.press('ControlOrMeta+z');await expect(card(b,1)).not.toContainText('Guard-B;');await expect(card(a,1)).not.toContainText('Guard-B;',{timeout:30000});
+    expect(await card(b).locator('.card-surface').innerText()).toBe(peerBefore);
+    await b.keyboard.press('ControlOrMeta+Shift+z');await expect(card(a,1)).toContainText('Guard-B;',{timeout:30000});await b.keyboard.press('Escape');
+    const final=await exported(a);expect(await exported(b)).toEqual(final);result.finalExport=archiveIdentity(final);
+    await lock(b);await b.goto('/');await contexts[1]!.setOffline(true);const reopenedAt=Date.now();await openSaved(b,seed.b.code,true);await day(b,seed.date);result.offlineReopenMs=Date.now()-reopenedAt;expect(await exported(b)).toEqual(final);
+    if(process.env.SYNC_INJECT==='1'){const injected=requests.filter((r:any)=>r.injected);expect(injected.filter((r:any)=>r.path.endsWith('/submit'))).toHaveLength(1);expect(injected.filter((r:any)=>r.path.includes('/read-v2'))).toHaveLength(1);result.forcedRefusalExposure=true;}
+    result.guards={bothWay:true,undoRedo:true,wholeExportEquality:true,lockedOfflineReopen:true};result.outcome='passed';
+  }catch(error){result.outcome='failed';result.failedAt=Date.now();result.error=String(error);throw error;}
+  finally {
+    await Promise.allSettled(tasks);
+    if(result.outcome==='failed')result.partialBrowsers=await Promise.all(contexts.map(c=>c.pages()[0]?.evaluate(()=>(window as any).__syncProbe?.read()).catch(()=>null)));
+    attributeRequests();result.network=network;result.proxy=requests;result.frames=frames;result.pressure=process.env.SYNC_PRESSURE==='1';result.injected=process.env.SYNC_INJECT==='1';result.tipTrace=process.env.SYNC_TIP_TRACE==='1';
+    if(profile){const r=await profile.send('Profiler.stop').catch(()=>({profile:null}));if(r.profile)writeFileSync(join(out,'incomplete-receiver.cpuprofile'),JSON.stringify(r.profile));}
+    for(const c of contexts)await c.close().catch(()=>{});await pair?.other.close().catch(()=>{});await stop();
+    writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2));
+  }
+});

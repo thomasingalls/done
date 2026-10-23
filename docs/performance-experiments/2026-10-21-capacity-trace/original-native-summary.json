@@ -1,0 +1,284 @@
+[
+  {
+    "name": "1-R-feedback",
+    "arm": "R",
+    "pressure": "feedback",
+    "outcome": "passed",
+    "catchupMs": 26543,
+    "roleSummary": {
+      "client": {
+        "offered": 201,
+        "statuses": {
+          "200": 200,
+          "429": 1
+        },
+        "chargedWork": 650,
+        "startedBinaryReadsOrSubmissions": 630,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 1
+      },
+      "shadow": {
+        "offered": 480,
+        "statuses": {
+          "200": 64,
+          "429": 416
+        },
+        "chargedWork": 303,
+        "startedBinaryReadsOrSubmissions": 190,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 113
+      }
+    },
+    "refusalPredicates": {
+      "sessionRate": 417
+    },
+    "refusalStages": {
+      "work-refused": 114,
+      "acquire-refused": 303
+    },
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "2-C-feedback",
+    "arm": "C",
+    "pressure": "feedback",
+    "outcome": "passed",
+    "catchupMs": 40671,
+    "roleSummary": {
+      "client": {
+        "offered": 224,
+        "statuses": {
+          "200": 209,
+          "429": 15
+        },
+        "chargedWork": 673,
+        "startedBinaryReadsOrSubmissions": 634,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 15
+      },
+      "shadow": {
+        "offered": 534,
+        "statuses": {
+          "200": 186,
+          "429": 348
+        },
+        "chargedWork": 741,
+        "startedBinaryReadsOrSubmissions": 642,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 99
+      }
+    },
+    "refusalPredicates": {
+      "sessionRate": 363
+    },
+    "refusalStages": {
+      "work-refused": 114,
+      "acquire-refused": 249
+    },
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "3-C-feedback",
+    "arm": "C",
+    "pressure": "feedback",
+    "outcome": "passed",
+    "catchupMs": 33605,
+    "roleSummary": {
+      "client": {
+        "offered": 213,
+        "statuses": {
+          "200": 204,
+          "429": 9
+        },
+        "chargedWork": 662,
+        "startedBinaryReadsOrSubmissions": 631,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 9
+      },
+      "shadow": {
+        "offered": 507,
+        "statuses": {
+          "200": 129,
+          "429": 378
+        },
+        "chargedWork": 526,
+        "startedBinaryReadsOrSubmissions": 441,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 85
+      }
+    },
+    "refusalPredicates": {
+      "sessionRate": 387
+    },
+    "refusalStages": {
+      "work-refused": 94,
+      "acquire-refused": 293
+    },
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "4-R-feedback",
+    "arm": "R",
+    "pressure": "feedback",
+    "outcome": "passed",
+    "catchupMs": 25053,
+    "roleSummary": {
+      "client": {
+        "offered": 201,
+        "statuses": {
+          "200": 201
+        },
+        "chargedWork": 650,
+        "startedBinaryReadsOrSubmissions": 632,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 0
+      },
+      "shadow": {
+        "offered": 483,
+        "statuses": {
+          "200": 62,
+          "429": 421
+        },
+        "chargedWork": 274,
+        "startedBinaryReadsOrSubmissions": 164,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 110
+      }
+    },
+    "refusalPredicates": {
+      "sessionRate": 421
+    },
+    "refusalStages": {
+      "work-refused": 110,
+      "acquire-refused": 311
+    },
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "5-R-ordinary",
+    "arm": "R",
+    "pressure": "none",
+    "outcome": "passed",
+    "catchupMs": 24546,
+    "roleSummary": {
+      "client": {
+        "offered": 200,
+        "statuses": {
+          "200": 200
+        },
+        "chargedWork": 649,
+        "startedBinaryReadsOrSubmissions": 631,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 0
+      }
+    },
+    "refusalPredicates": {},
+    "refusalStages": {},
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "6-C-ordinary",
+    "arm": "C",
+    "pressure": "none",
+    "outcome": "passed",
+    "catchupMs": 23002,
+    "roleSummary": {
+      "client": {
+        "offered": 199,
+        "statuses": {
+          "200": 199
+        },
+        "chargedWork": 648,
+        "startedBinaryReadsOrSubmissions": 630,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 0
+      }
+    },
+    "refusalPredicates": {},
+    "refusalStages": {},
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "7-R-independent",
+    "arm": "R",
+    "pressure": "independent",
+    "outcome": "passed",
+    "catchupMs": 26044,
+    "roleSummary": {
+      "client": {
+        "offered": 200,
+        "statuses": {
+          "200": 199,
+          "429": 1
+        },
+        "chargedWork": 649,
+        "startedBinaryReadsOrSubmissions": 630,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 1
+      },
+      "independent": {
+        "offered": 72,
+        "statuses": {
+          "200": 71,
+          "429": 1
+        },
+        "chargedWork": 214,
+        "startedBinaryReadsOrSubmissions": 213,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 1
+      }
+    },
+    "refusalPredicates": {
+      "sessionRate": 2
+    },
+    "refusalStages": {
+      "work-refused": 2
+    },
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  },
+  {
+    "name": "8-C-independent",
+    "arm": "C",
+    "pressure": "independent",
+    "outcome": "passed",
+    "catchupMs": 25022,
+    "roleSummary": {
+      "client": {
+        "offered": 203,
+        "statuses": {
+          "200": 200,
+          "429": 3
+        },
+        "chargedWork": 652,
+        "startedBinaryReadsOrSubmissions": 631,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 3
+      },
+      "independent": {
+        "offered": 72,
+        "statuses": {
+          "200": 72
+        },
+        "chargedWork": 216,
+        "startedBinaryReadsOrSubmissions": 216,
+        "refundedWork": 0,
+        "failedTopupAdmissions": 0
+      }
+    },
+    "refusalPredicates": {
+      "sessionRate": 3
+    },
+    "refusalStages": {
+      "work-refused": 3
+    },
+    "clientRetryJoinComplete": false,
+    "limitation": "Gateway stripped client headers; receiver trace reset by offline navigation. Native/proxy attribution retained; no complete client wait claim."
+  }
+]

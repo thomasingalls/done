@@ -1,0 +1,6 @@
+{
+  "parentPid": 2526,
+  "childPid": 3439,
+  "signal": "SIGINT",
+  "reason": "First normal walkthrough failed: new queue scheduling header capture lacks required membership transaction. Stop duplicate-pressure repeat of the same known-bad source; retain it without functional/timing credit."
+}

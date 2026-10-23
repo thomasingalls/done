@@ -1,0 +1,13 @@
+[
+  {
+    "name": "types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1792618240587,
+    "completedAt": 1792618241237,
+    "exitCode": 1
+  }
+]

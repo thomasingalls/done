@@ -1,0 +1,12 @@
+START primary-foreground-75
+END primary-foreground-75 exit 0
+START seed-backlog-v4-attempt-7
+END seed-backlog-v4-attempt-7 exit 0
+START primary-catchup-0
+END primary-catchup-0 exit 0
+START primary-catchup-75
+END primary-catchup-75 exit 0
+START diagnostic-foreground-0
+END diagnostic-foreground-0 exit 0
+START diagnostic-catchup-75
+END diagnostic-catchup-75 exit 0

@@ -1,0 +1,26 @@
+from pathlib import Path
+import shutil,subprocess,os,json,re,time
+r=Path(__file__).parent;s=r/'source';p='account-service/historyCheckpoint.ts';good=(s/p).read_text();env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+def old_helper(text):
+ old=(r/'reference-account-service/historyCheckpoint.ts').read_text();a=old.index('async function memberships(');b=old.index('\nfunction record',a);x=text.index('async function memberships(');y=text.index('\nfunction record',x)
+ # The old helper produces AdmissionHistory values; restore all matching old consumer calls.
+ text=text[:x]+old[a:b]+text[y:]
+ text=text.replace('  historyMembershipAt,','  historyMembershipAt,\n  historyMembership,\n  type AdmissionHistory,')
+ text=text.replace('const membership = authorities.get(auth.a.tip)!,','const membership = historyMembership(authorities.get(auth.a.tip)!),').replace('verifyHistoryExchange(old, at, old.expiresAt - 1)','verifyHistoryExchange(old, historyMembership(at), old.expiresAt - 1)').replace('verifyHistoryCheckpointAdmission(receipt.admission, cp, at)','verifyHistoryCheckpointAdmission(receipt.admission, cp, historyMembership(at))').replace('const at = history,','const at = historyMembership(history),')
+ return text
+controls=[
+ ('restore-early-head-capture','history catalog captures fresh publisher',lambda x:x.replace("const catalogRead = r.action === 'read' && r.payload === 'catalog';","const catalogRead = false;")),
+ ('omit-authority-refresh-comparison',"catalog's late publisher capture refuses authority-input",lambda x:x.replace('!current || authorityBytes(current.original) !== authorityBytes(before.original)','!current')),
+
+ ('restore-redundant-proof-work','history catalog reuses|history early-epoch lookup',old_helper),
+ ('map-old-memberships-to-current','history complete timeline',lambda x:x.replace('historyMembershipAt(history, a.tip)','historyMembershipAt(history, history.current.tip)')),
+ ('omit-fresh-snapshot-guard','history timeline reuse retains four-attempt refusal',lambda x:x.replace('(fast?.tips &&\n          [...publisherSnapshots.values(), ...cutSnapshots].some((s) => !unchanged(db, s, fast))) ||\n        captureBytes(capture()) !== captureBytes(before)','false')),
+ ('omit-session-reauthorization','history timeline reuse retains transaction-time',lambda x:re.sub(r'const complete = issuer.authorize\?\.\(db, \{.*?\n      \}\);','const complete: (() => void) | undefined = undefined;',x,flags=re.S)),
+ ('omit-expiry-check','history timeline reuse refuses a request that expires',lambda x:x.replace('checkHistoryExchangeLifetime(r.expiresAt, now());','void r;')),
+ ('omit-request-verification','history timeline reuse preserves',lambda x:x.replace('await verifyHistoryExchange(r, membership, now());','void membership;')),
+]
+for name,pattern,mutate in controls:
+ d=r/('mutant-'+name);shutil.copytree(s,d,symlinks=True);bad=mutate(good);assert bad!=good,name;(d/p).write_text(bad)
+ cmd=['node','--test','--test-name-pattern='+pattern,'test/account-ceremony/content-transfer.test.mjs'];at=int(time.time()*1000)
+ with(r/('control-'+name+'.log')).open('w')as f:run=subprocess.run(cmd,cwd=d,env=env,stdout=f,stderr=subprocess.STDOUT)
+ log=(r/('control-'+name+'.log')).read_text();assert run.returncode!=0 and 'AssertionError'in log and ('fail 1'in log or 'fail 2'in log or 'fail 3'in log),(name,log[-1500:]);rows.append({'name':name,'pattern':pattern,'exitCode':run.returncode,'assertionDetected':True,'startedAt':at,'completedAt':int(time.time()*1000)});(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(name,'detected',flush=True)

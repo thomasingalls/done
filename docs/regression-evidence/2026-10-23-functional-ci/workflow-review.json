@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "onlyOneNewSerialStepAfterChromium": true,
+  "removingNewStepRestoresAllOldWorkflowBytes": true,
+  "allExistingCommandsPermissionsTimeoutsQualitySwitchUnchanged": true,
+  "sevenFilesIncludesAllFiveTestFilesChangedSinceSigned13AndColdPublisherIsolationGuards": true,
+  "initialFiveFileStepPassedButHistoryReviewAddedCoreAndCadenceFiles": true
+}

@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,subprocess,hashlib,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');git=['git','--git-dir=/private/tmp/done-word-comparison-20261021/patch11-index.git'];out=lambda args:subprocess.check_output(args,env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'});allowed={'docs/completed.md','docs/decisions.md','docs/performance.md'};old=tests=0
+for line in out(git+['ls-tree','-r',start['priorTree']]).decode().splitlines():
+ meta,f=line.split('\t',1);b=(repo/f).read_bytes();before=meta.split()[2]
+ if f in allowed:assert b.startswith(out(git+['show',start['priorTree']+':'+f]))
+ else:assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==before,f
+ old+=1;tests+=f.startswith('test/')
+source=load(r/'source-identity.json');diffs={}
+for arm in ['R','C']:
+ for f,h in source[arm]['instrumentedHashes'].items():assert sha((r/('source-'+arm)/f).read_bytes())==h,f
+ for f,h in source[arm]['observerFiles'].items():assert sha((r/('source-'+arm)/f).read_bytes())==h,f
+ diffs[arm]=[f for f,h in source[arm]['originalHashes'].items()if source[arm]['instrumentedHashes'][f]!=h];assert set(diffs[arm])=={'account-service/requestBudget.ts','account-service/scoped-http.ts','src/account/scopedTransport.ts','scripts/lib/account-gateway.mjs'}
+assert[f for f,h in source['R']['instrumentedHashes'].items()if source['C']['instrumentedHashes'][f]!=h]==['src/crdt/verifiedRecords.ts']
+browser=load(r/'browser-identity.json');roots=[]
+for arm in ['R','C']:
+ assert{p.name:sha(p.read_bytes())for p in(r/('source-'+arm)/'test/live-sync-attribution').iterdir()if p.is_file()}==browser['browserClosure']
+ assert{str(p.relative_to(r/('source-'+arm)/'dist')):sha(p.read_bytes())for p in(r/('source-'+arm)/'dist').rglob('*')if p.is_file()}==browser['dist'][arm]
+for case in load(r/'observer-v1/browser-runner.json')+load(r/'browser-runner.json'):
+ d=load(r/case['name']/'result.json');assert d['outcome']=='passed'and all(d['guards'].values());roots+=d['roots']
+assert len({x['sha256']for x in roots})==1
+for x in roots:assert sha(Path(x['executable']).read_bytes())==x['sha256']
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+index=Path(out(['git','-C',str(repo),'rev-parse','--git-path','index']).decode().strip());assert sha(index.read_bytes())==start['realIndexSha256'];assert out(['git','-C',str(repo),'diff','--cached','--name-only'])==b''
+result={'status':'passed','priorCumulativeBlobs':old,'allWorkingRuntime803FilesAndTestBlobsUnchanged':tests,'onlyPriorFileChangesAppendDocs':sorted(allowed),'isolatedSourceChanges':diffs,'observerOnlyASTProof':load(r/'observer-ast.json')['status'],'allSixteenFullDataJourneys':True,'actualBrowser':roots[0],'workingDefaults':'16/64','temporaryMeasuredPolicy':'32/128','all881Obligations337Unresolved97StatusesExact':True,'priorPatch01Through11HashesExact':True,'realIndexByteUnchanged':True,'noStaging':True};(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

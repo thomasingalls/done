@@ -1,0 +1,9 @@
+{
+  "changedSourcePins": [
+    "account-service/delivery.ts",
+    "account-service/publisherTips.ts"
+  ],
+  "domainSitesAndNonSourceMetadataExact": true,
+  "addedSources": [],
+  "removedSources": []
+}

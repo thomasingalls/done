@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,subprocess,time,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');rows=[];env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+checks=[('final-identity',['python3',str(r/'identity.py')]),('final-source-challenge',['node',str(r/'source-challenge.mjs')]),('final-census',['node','scripts/account-crypto-prep/run.mjs']),('final-inventory',['node','scripts/release-validation/check.mjs']),('final-manifest',['node','scripts/release-validation/plan.mjs'])]
+for name,cmd in checks:
+ at=time.time_ns()//1000000
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=repo,stdout=f,stderr=subprocess.STDOUT,env=env)
+ rows.append({'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'final-checks.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

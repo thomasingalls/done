@@ -1,0 +1,20 @@
+from pathlib import Path
+import json,subprocess,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-dispatch-calibration';load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');git=['git','--git-dir=/private/tmp/done-coupled-capacity-20261021/patch09-index.git'];allowed={'docs/completed.md','docs/decisions.md','docs/performance.md'}
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+index=Path(subprocess.check_output(['git','rev-parse','--git-path','index'],cwd=repo,text=True).strip());assert sha(index.read_bytes())==start['realIndexSha256'];assert not subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo);assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==start['base'];count=0
+for line in subprocess.check_output(git+['ls-tree','-r',start['priorTree']],text=True).splitlines():
+ meta,f=line.split('\t',1);blob=meta.split()[2];b=(repo/f).read_bytes()
+ if f in allowed:assert b.startswith(subprocess.check_output(git+['show',start['priorTree']+':'+f])),f
+ else:assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==blob,f
+ count+=1
+for old in (repo/'docs/performance-experiments').iterdir():
+ if old==packet or not(old/'SHA256SUMS').exists():continue
+ for line in (old/'SHA256SUMS').read_text().splitlines():
+  h,f=line.split('  ',1);assert sha((old/f).read_bytes())==h,str(old/f)
+identity=load(r/'identity.json')
+for f,h in identity['harnessSha256'].items():assert sha((r/f).read_bytes())==h,f
+checks=load(r/'final-checks.json');assert len(checks)==6 and all(x['exitCode']==0 for x in checks);review=load(r/'evidence-review.json');assert review['status']=='passed'and review['fixedDenominator']==12
+assert load(packet/'privacy-audit.json')['matches']==0
+for f,v in load(packet/'artifact-provenance.json').items():assert sha((packet/f).read_bytes())==v['storedSha256'],f
+result={'status':'passed','priorCumulativeBlobsCompared':count,'appendOnlyPriorFileChanges':sorted(allowed),'priorPatches01Through09AndPacketChecksumsExact':True,'oldTests875BlobsAndRuntimeDefaultsExact':True,'workingDefault':'16/64','temporaryPolicySourceExactPhase09':'32/128','all12JourneysPreserved':True,'three80msSensorFaultsDetected':True,'tenDefinedAppDataGuardJourneys':True,'sixEditorJourneys120PeerKeysEach':True,'fourPlainControlsWithExplicitCoverageLimits':True,'analysisAndIntegrityChecksPassed':6,'noOldTestsOrSecurityChecksChanged':True,'priorTypingMissesAndQualificationPauseRetained':True,'realIndexSha256Unchanged':start['realIndexSha256'],'scope':'Measurement validity and exact provenance only; no adoption, production/physical-input-to-paint or generalized qualification claim.'};(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');(packet/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+str(p.relative_to(packet))+'\n'for p in sorted(packet.rglob('*'))if p.is_file()and p.name!='SHA256SUMS'));print(json.dumps(result,indent=2))

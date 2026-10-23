@@ -1,0 +1,62 @@
+from pathlib import Path
+import collections, hashlib, json, math, statistics, subprocess
+root=Path(__file__).parent
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+plan=json.loads((root/'matched-plan.json').read_text())
+raw={r['name']:json.loads((root/r['name']/'result.json').read_text()) for r in plan}
+def p95(values):
+ values=sorted(values);return values[math.ceil(len(values)*.95)-1]
+def dom(data,which,name):
+ offers=data[name]['offers'];rows=data['browsers'][which]['rows']
+ base=len('Sync target A:')+(600 if name=='concurrent' else sum(len(' L'+str(i)+';') for i in range(30)))
+ result=[]
+ for i,offer in enumerate(offers):
+  at=next(r['at'] for r in rows if r['at']>=offer['at']-2 and r['lengths'][0]>=base+i+1)
+  result.append(at-offer['at'])
+ return p95(result)
+for name,d in raw.items():
+ assert d['outcome']=='passed' and all(d['guards'].values()),name
+ assert d['fixture']['activeDayCards']==121
+ assert next(x for x in d['initialArchive']['entries'] if x['name']=='master.md')['characters']==13000
+ assert len(d['concurrent' if d['mode']=='catchup' else 'continuous']['offers'])==120
+pairs=[]
+for delay in [75,0]:
+ for pair in [1,2,3]:
+  b=raw[f'primary-{delay}-{pair:02}-baseline'];c=raw[f'primary-{delay}-{pair:02}-candidate-final']
+  assert b['initialArchive']==c['initialArchive'] and b['finalExport']==c['finalExport']
+  bt=b['caughtAt']-b['startedAt'];ct=c['caughtAt']-c['startedAt']
+  assert ct<600000 and bt<600000
+  bp,cp=dom(b,0,'concurrent'),dom(c,0,'concurrent')
+  pp,pq=dom(b,1,'concurrent'),dom(c,1,'concurrent')
+  pairs.append(dict(delay=delay,pair=pair,referenceMs=bt,candidateMs=ct,ratio=ct/bt,improvementPercent=100*(1-ct/bt),referenceLocalP95Ms=bp,candidateLocalP95Ms=cp,referencePeerP95Ms=pp,candidatePeerP95Ms=pq,localGuard=cp<=max(16,bp+3),peerGuard=pq<=1.1*pp))
+for p in pairs: assert p['localGuard'] and p['peerGuard'],p
+latency=[p for p in pairs if p['delay']==75];local=[p for p in pairs if p['delay']==0]
+assert statistics.median(p['improvementPercent'] for p in latency)>=20
+assert all(p['ratio']<=1 for p in latency)
+assert statistics.median(p['ratio'] for p in local)<=1.1
+fb=raw['foreground-0-baseline'];fc=raw['foreground-0-candidate-final']
+assert fb['initialArchive']==fc['initialArchive'] and fb['finalExport']==fc['finalExport']
+def burstP95(data,which):
+ rows=data['browsers'][which]['rows'];length=len('Sync target A:');values=[]
+ for i,offer in enumerate(data['bursts']):
+  length+=len(' L'+str(i)+';')
+  at=next(r['at'] for r in rows if r['at']>=offer['offeredAt']-2 and r['lengths'][0]>=length)
+  values.append(at-offer['offeredAt'])
+ return p95(values)
+fg={}
+for name in ['isolated','continuous']:
+ metric=(lambda d,w: burstP95(d,w)) if name=='isolated' else (lambda d,w: dom(d,w,'continuous'))
+ item=dict(referenceLocalP95Ms=metric(fb,0),candidateLocalP95Ms=metric(fc,0),referencePeerP95Ms=metric(fb,1),candidatePeerP95Ms=metric(fc,1))
+ assert item['candidateLocalP95Ms']<=max(16,item['referenceLocalP95Ms']+3),item
+ assert item['candidatePeerP95Ms']<=item['referencePeerP95Ms']*1.1,item
+ fg[name]=item
+for f in ['src/crdt/accountReceive.ts','src/crdt/receivePageTransport.ts','src/account/privateDeliveryHttp.ts']:
+ assert (repo/f).read_bytes()==(root/'candidate-final'/f).read_bytes(),f
+assert (repo/'src/crdt/receiveSelection.ts').read_bytes()==subprocess.check_output(['git','show','27dc7d78:src/crdt/receiveSelection.ts'],cwd=repo)
+assert (repo/'docs/progress.md').read_bytes()==subprocess.check_output(['git','show','27dc7d78:docs/progress.md'],cwd=repo)
+assert sha((repo/'docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch').read_bytes())=='0481ebda379a3259d997d1aa3057638508175eac032f9a7b541832cfb353ebb3'
+assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo)==b''
+result=dict(pairs=pairs,foreground=fg,medianImprovement75Percent=statistics.median(p['improvementPercent'] for p in latency),medianRatio0=statistics.median(p['ratio'] for p in local),referenceDrift={str(d):max(p['referenceMs'] for p in pairs if p['delay']==d)/min(p['referenceMs'] for p in pairs if p['delay']==d)-1 for d in [75,0]},journeys=len(raw),guardsPassed=True,matchedCompleteExports=True,measuredProductionExact=True,protectedProgressAndDeferredFormatUnchanged=True,realIndexClean=True)
+(root/'acceptance.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result,indent=2))

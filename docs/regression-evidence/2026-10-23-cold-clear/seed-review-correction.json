@@ -1,0 +1,8 @@
+{
+  "initialAssertion": "allQpositions<=32were treated as original seed",
+  "reasonWrong": "the second quiet publisher starts empty; its experiment positions1\u201332 are new, not original seed",
+  "correction": "independent native seed inspector returns exact genuine seed identity keys; compare those keys against prior28 and everycurrent30result",
+  "scope": "review-only correction; no measured results or original gate verdict changed",
+  "originalFailedReview": "frozen-review.log",
+  "originalReviewer": "review-frozen-initial.py"
+}

@@ -1,0 +1,35 @@
+from pathlib import Path
+import json,subprocess,os,shutil,copy,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};receipts=[]
+base={n:json.loads((r/n/'result.json').read_text())for n in ['1-D','2-D']}
+for name in ['drop-failed-guard','shift-retry-clock','change-native-409','drop-trusted-input','observer-overflow']:
+ d=r/('control-'+name);d.mkdir();states=copy.deepcopy(base)
+ x=states['2-D'];native=[e for t in x['traces']for e in t['events']];bad=next(e for e in native if e['tag']=='read-exhausted');rid=bad['id']
+ if name=='drop-failed-guard':
+  for t in x['traces']:
+   hit=next((e for e in t['events']if e['id']==rid and e['tag']=='guard-refused'),None)
+   if hit:t['events'].remove(hit);break
+ elif name=='shift-retry-clock':next(e for a in x['pacing']for e in a['rows']if e['tag']=='lane-scheduled'and e['name']=='receive'and e['failures'])['due']+=1000
+ elif name=='change-native-409':next(e for e in native if e['id']==rid and e['tag']=='http-result'and e.get('status')==409)['reason']='capacity'
+ elif name=='drop-trusted-input':next(e for e in x['probesAtDeadline'][0]['events']if e['kind']=='beforeinput'and e['at']>=x['startedAt'])['trusted']=False
+ elif name=='observer-overflow':x['traces'][0]['dropped']=1
+ for n,v in states.items():(d/n).mkdir();(d/n/'result.json').write_text(json.dumps(v))
+ with(r/('control-'+name+'.log')).open('w')as log:p=subprocess.run(['python3',str(r/'analyze.py'),str(d)],stdout=log,stderr=subprocess.STDOUT,env=env,timeout=15)
+ assert p.returncode!=0,name;receipts.append({'name':name,'detected':True,'exitCode':p.returncode})
+ shutil.rmtree(d)
+# Omit the actual guard in an independent copy: the real-write reproduction must detect stale pages.
+s=r/'mechanism-source';d=r/'mutant-omit-read-guard';d.mkdir()
+for f in ['src','account-service','account-protocol','test','docs','scripts','node_modules']:
+ if f=='account-service':shutil.copytree(s/f,d/f)
+ else:(d/f).symlink_to(s/f,target_is_directory=True)
+p=d/'account-service/delivery.ts';t=p.read_text();a=t.index('export async function readInbound(');before,part=t[:a],t[a:];assert part.count('if (!current) {')==1;part=part.replace('if (!current) {','if (false && !current) {');p.write_text(before+part)
+# Resolve the test through a real directory so imports select the mutant, not the source symlink.
+(d/'test').unlink();(d/'test/account-continuation-lab').mkdir(parents=True)
+shutil.copy2(s/'test/account-continuation-lab/read-conflict.test.mjs',d/'test/account-continuation-lab/read-conflict.test.mjs')
+for f in (s/'test').iterdir():
+ if f.name!='account-continuation-lab':(d/'test'/f.name).symlink_to(f,target_is_directory=f.is_dir())
+# Fixture imports select original service internals, but explicit reads/decisions and reuse select mutant.
+with(r/'control-omit-native-guard.log').open('w')as log:p=subprocess.run(['node','--test',str(d/'test/account-continuation-lab/read-conflict.test.mjs')],env=env,stdout=log,stderr=subprocess.STDOUT,timeout=20)
+assert p.returncode!=0;log=(r/'control-omit-native-guard.log').read_text();assert 'tests 2'in log and 'fail 2'in log,log[-2500:]
+receipts.append({'name':'omit-native-read-guard','detected':True,'exitCode':p.returncode,'bothRealWriteCasesFail':True})
+(r/'sensitivity.json').write_text(json.dumps({'status':'passed','controls':receipts},indent=2)+'\n');print(json.dumps(receipts,indent=2))

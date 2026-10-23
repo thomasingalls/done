@@ -1,0 +1,49 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;s=r/'source';edits=[];sha=lambda b:hashlib.sha256(b).hexdigest()
+def change(f,ops):
+ p=s/f;before=p.read_text();t=before
+ for a,b,n in ops:assert t.count(a)==n,(f,a,t.count(a),n);t=t.replace(a,b)
+ p.write_text(t);edits.append({'file':f,'beforeSha256':sha(before.encode()),'afterSha256':sha(t.encode()),'replacements':ops})
+change('account-service/delivery.ts',[
+("import { reuseInboundAuthority, type InboundAuthorityReuse }", "import { verifyCertificationHistory, verifyEarlyHistory } from '../account-protocol/admissionHistory.ts';\nimport { reuseInboundAuthority, type InboundAuthorityReuse }",1),
+("  verifyCertificationSuccessor,\n", "  verifyCertificationSuccessor,\n  parseCertificationSuccessor,\n  parseContentDelivery,\n",1),
+("  parseReceipt,\n", "  parseReceipt,\n  same,\n",1),
+("  verifySuccessor,\n", "  verifySuccessor,\n  parseSuccessor,\n",1),
+("export async function verifyWorkspaceAuthority(\n", "async function verifyNativeWorkspaceAuthority(\n",1),
+("  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,\n) {", "  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,\n  completeHistory = false,\n) {",1),
+("  await verifyReceipt(receipt, request, issuer.pin);", "  if (!completeHistory) await verifyReceipt(receipt, request, issuer.pin);",1),
+("    successor = await verifySuccessor(\n      JSON.parse(s.successor.artifact),\n      { pin: issuer.pin, request, receipt },\n      { epoch: 1, head: firstA.head },\n    );", "    successor = completeHistory\n      ? parseSuccessor(JSON.parse(s.successor.artifact))\n      : await verifySuccessor(\n          JSON.parse(s.successor.artifact),\n          { pin: issuer.pin, request, receipt },\n          { epoch: 1, head: firstA.head },\n        );",1),
+("    const { delivery } = await verifyContentDelivery(JSON.parse(row.delivery), base, successor);", "    // A completed history verifies the embedded delivery. Its retained native copy must\n    // still match exactly; a pending transfer has no such proof and is verified normally.\n    const delivery = completeHistory && row.artifact\n      ? parseContentDelivery(JSON.parse(row.delivery))\n      : (await verifyContentDelivery(JSON.parse(row.delivery), base, successor)).delivery;",1),
+("      certificationSuccessor = await verifyCertificationSuccessor(\n        JSON.parse(row.artifact),\n        base,\n        successor,\n        delivery,\n      );", "      certificationSuccessor = completeHistory\n        ? parseCertificationSuccessor(JSON.parse(row.artifact))\n        : await verifyCertificationSuccessor(\n            JSON.parse(row.artifact),\n            base,\n            successor,\n            delivery,\n          );\n      if (completeHistory && !same(certificationSuccessor.epoch.delivery, delivery))\n        throw Error('Retained certification delivery changed');",1),
+("  const certification = certificationSuccessor?.epoch.delivery.certificate ?? request.certification;", "  const history = completeHistory\n    ? certificationSuccessor\n      ? await verifyCertificationHistory(\n          certificationSuccessor, successor, { pin: issuer.pin, request, receipt },\n          { epoch: 3, head: certificationSuccessor.head },\n        )\n      : await verifyEarlyHistory({ pin: issuer.pin, request, receipt }, successor)\n    : undefined;\n  if (history && !isDeepStrictEqual(history.current, a))\n    throw Error('Native authority and verified history disagree');\n  const certification = certificationSuccessor?.epoch.delivery.certificate ?? request.certification;",1),
+("  return {\n    pin: { ...issuer.pin },", "  return { history, authority: {\n    pin: { ...issuer.pin },",1),
+("    receipt,\n  };\n}\nexport interface LedgerBoundary", "    receipt,\n  } };\n}\n/** Standalone authority callers retain their original evidence shape and ledger path. */\nexport async function verifyWorkspaceAuthority(\n  s: WorkspaceAuthoritySnapshot, issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,\n) {\n  return (await verifyNativeWorkspaceAuthority(s, issuer)).authority;\n}\n/** Produce a complete private-branded timeline once; no caller can supply a verified shape. */\nexport async function verifyWorkspaceAuthorityWithHistory(\n  s: WorkspaceAuthoritySnapshot, issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,\n) {\n  const captured = structuredClone({ ...s, rows: undefined });\n  const result = await verifyNativeWorkspaceAuthority(captured, issuer, true);\n  if (!result.history) throw Error('Missing verified workspace history');\n  return { authority: result.authority, history: result.history };\n}\nexport interface LedgerBoundary",1),
+("type Authority = DeliveryAuthority;\n", "type Authority = DeliveryAuthority;\nconst needsMembershipHistory = (s: WorkspaceAuthoritySnapshot) => Boolean(\n  s.recoveries?.length || s.rotations?.length || s.continuations?.length ||\n  s.membershipTransfers?.length || s.membershipCancellations?.length || s.removalPreparation,\n);\n",1),
+("    s.recoveries?.length ||\n    s.rotations?.length ||\n    s.continuations?.length ||\n    s.membershipTransfers?.length ||\n    s.membershipCancellations?.length ||\n    s.removalPreparation\n      ?", "    needsMembershipHistory(s)\n      ?",1),
+("/** A publisher starts at its own verified certification; it has no earlier ledger. */", "/** Complete history is separate from publisher-selected delivery authority. Ledger dispatch\n * and native guards keep their existing early/later paths. This result is request-local. */\nexport async function verifyCurrentWorkspaceAuthorityWithHistory(\n  s: WorkspaceAuthoritySnapshot, issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,\n): Promise<{ authority: DeliveryAuthority; history: AdmissionHistory }> {\n  if (!needsMembershipHistory(s)) return verifyWorkspaceAuthorityWithHistory(s, issuer);\n  const authority = await verifyCurrentWorkspaceAuthority(s, issuer);\n  if (!authority.history) throw Error('Missing current membership history');\n  return { authority, history: authority.history };\n}\n/** A publisher starts at its own verified certification; it has no earlier ledger. */",1),
+])
+change('account-service/membershipHistory.ts',[
+("  verifyCertificationHistory,\n  verifyEarlyHistory,\n",'',1),
+("  verifyWorkspaceAuthority,", "  verifyWorkspaceAuthorityWithHistory,",1),
+("  const anchor = await verifyWorkspaceAuthority(","  const { authority: anchor, history: initialHistory } = await verifyWorkspaceAuthorityWithHistory(",1),
+("  const base = { pin: issuer.pin, request: anchor.request, receipt: anchor.receipt };\n  let history = cert\n    ? await verifyCertificationHistory(cert, anchor.successor, base, { epoch: 3, head: cert.head })\n    : await verifyEarlyHistory(base, anchor.successor);", "  let history = initialHistory;",1),
+])
+change('account-service/membershipLocator.ts',[
+("  verifyMembershipChain,\n",'',1),
+("  verifyCurrentWorkspaceAuthority,", "  verifyCurrentWorkspaceAuthorityWithHistory,",1),
+("      const auth = await verifyCurrentWorkspaceAuthority(before, issuer),\n        base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },\n        { history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);", "      const { authority: auth, history } = await verifyCurrentWorkspaceAuthorityWithHistory(before, issuer);\n      const base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },\n        proofs = membershipProofChain(before);",1),
+("      const auth = selectPublisher(\n          await verifyCurrentWorkspaceAuthority(before, issuer),\n          request.credentialId,\n        ),\n        base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },\n        { history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);", "      const { authority, history } = await verifyCurrentWorkspaceAuthorityWithHistory(before, issuer);\n      const auth = selectPublisher(authority, request.credentialId),\n        proofs = membershipProofChain(before);",1),
+])
+p=s/'account-service/historyCheckpoint.ts';text=p.read_text();a=text.index('async function memberships(');b=text.index('\nfunction record(',a);old=text[a:b];new="""function memberships(auth: DeliveryAuthority, history: AdmissionHistory) {
+  if (history.current.tip !== auth.a.tip || history.current.head !== auth.a.head)
+    throw Error('History checkpoint membership changed');
+  // Lookup accepts only the protocol's private verified identity; no request or commit authority.
+  return new Map(history.authorities.map((a) => [a.tip, historyMembershipAt(history, a.tip)]));
+}"""
+change('account-service/historyCheckpoint.ts',[
+(old,new,1),
+("  verifyCurrentWorkspaceAuthority,", "  verifyCurrentWorkspaceAuthorityWithHistory,",1),
+("      const auth = await verifyCurrentWorkspaceAuthority(before.original, issuer),\n        authorities = await memberships(before.original, auth, issuer.pin);", "      const { authority: auth, history } = await verifyCurrentWorkspaceAuthorityWithHistory(before.original, issuer);\n      const authorities = memberships(auth, history);",1),
+])
+(r/'implementation-edits.json').write_text(json.dumps(edits,indent=2)+'\n');print('Implemented four native source files in disposable candidate only')

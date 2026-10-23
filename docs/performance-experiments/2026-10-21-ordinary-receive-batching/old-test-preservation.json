@@ -1,0 +1,20 @@
+[
+  {
+    "path": "test/account-receive/groups-transport.test.mjs",
+    "assertions": 37,
+    "cases": 6,
+    "preserved": true
+  },
+  {
+    "path": "test/account-receive-transport/fixtures.mjs",
+    "assertions": 0,
+    "cases": 0,
+    "preserved": true
+  },
+  {
+    "path": "test/account-receive-transport/controls.test.mjs",
+    "assertions": 9,
+    "cases": 2,
+    "preserved": true
+  }
+]

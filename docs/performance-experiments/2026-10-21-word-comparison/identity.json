@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "oldTestBlobs": 875,
+  "priorBlobsUnchanged": 25740,
+  "changedPathsFromPhase10": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md",
+    "docs/release-validation-graph.json",
+    "docs/release-validation-manifest.json",
+    "test/release-validation/general-tests.test.mjs",
+    "test/release-validation/generated-tests.test.mjs",
+    "test/verifiedRecords.test.ts"
+  ],
+  "allPriorVerifiedRecordTestBodiesByteExact": true,
+  "newCases": 6,
+  "allOther879ManifestRowsExact": true,
+  "manifestCaseChanges": [
+    "test:test/release-validation/general-tests.test.mjs",
+    "test:test/verifiedRecords.test.ts"
+  ],
+  "allEightOldVerifiedCasesExact": true,
+  "generalCaseTitleUpdatesOnlyItsExactDenominator": true,
+  "obligations": 881,
+  "unresolved": 337,
+  "runtimeCandidateDifferences": [
+    "src/crdt/verifiedRecords.ts"
+  ],
+  "workingRuntimeAllUnchanged": true,
+  "workingDefaults": "16/64",
+  "temporaryComparisonPolicy": "32/128",
+  "priorPatches01Through10Unchanged": true,
+  "actualBrowserBinary": {
+    "pid": 77009,
+    "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    "sha256": "7687bff7cb2db075f250e6d5848bbc8838cac3802ac3952a899c574f8eccab45",
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "HeadlessChrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    }
+  },
+  "finalTestSha256": "608d3bc13c328db106bcdb2d2d672c2f1f3edc70ec6f54758f0473ac9b87e210",
+  "finalGeneralCensusTestSha256": "79be79bd97c8ac7154ad50a152eea4dbb783aef60f99afd1d580c79de71f1a4c",
+  "realIndexMetadataReview": {
+    "status": "passed",
+    "entriesExactHEAD": 24100,
+    "stagedChanges": 0,
+    "priorRecordedSha256": "df44841805bae41f991e101d7df8e5695c8042e2bc8e42c00016cb5b54201a3f",
+    "currentSha256": "84a8b44d849e78973269831cd12b27273b6759ccca284fc51ab3b7ed41134b8a",
+    "explanation": "The index byte hash changed during status/verification; its complete24100mode/object/path/stage entries still independently match HEAD and no changes are staged. Initial git status can refresh stat/cache metadata, but the exact writer was not logged. Record metadata-only discrepancy; do not claim byte-unchanged index."
+  },
+  "noRealStaging": true
+}

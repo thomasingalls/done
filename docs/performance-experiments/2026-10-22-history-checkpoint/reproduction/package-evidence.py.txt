@@ -1,0 +1,42 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-history-checkpoint';sha=lambda b:hashlib.sha256(b).hexdigest();provenance=[]
+assert json.loads((r/'record-outcome.json').read_text())['status']=='passed'
+def copy(src,dst,compressed=False):
+ src=Path(src);target=p/(dst+'.gz'if compressed else dst);target.parent.mkdir(parents=True,exist_ok=True);b=src.read_bytes();target.write_bytes(gzip.compress(b,mtime=0)if compressed else b);provenance.append({'source':str(src.relative_to(r)),'artifact':str(target.relative_to(p)),'sourceSha256':sha(b),'artifactSha256':sha(target.read_bytes())})
+files=['protocol.md','starting.json','measurement-identity.json','run-plan.json','run-receipts.json','analysis.json','affected-comparison.json','permitted-affected-receipts.json','preflight-receipts.json','final-preflight-v2-receipts.json','source-review.json','challenge.json','metadata-review.json','mount-review.json','evidence-review.json','sensitivity.json','record-outcome.json','post-check-receipts.json','final-checks.json','process-cleanup.json']
+for f in files:copy(r/f,f)
+copy(r/'native-audit.json','native-audit.json',True)
+for c in json.loads((r/'run-plan.json').read_text()):
+ for f in ['result.json','invocation.log','services.log','container-identity.json','docker-command.json']:copy(r/c['name']/f,'runs/'+c['name']+'/'+f,True)
+for d in ['diagnostic','pilot-reuse','1-R','2-C']:
+ for f in ['result.json','invocation.log','services.log','container-identity.json','docker-command.json']:
+  if(r/d/f).exists():copy(r/d/f,'exploration/'+d+'/'+f,True)
+for f in sorted((r/'aborted-schedule').glob('*')):
+ if f.is_file():copy(f,'aborted-schedule/'+f.name,True)
+for f in sorted(r.glob('*.log')):copy(f,'checks/'+f.name,True)
+for f in sorted(r.glob('*.py')):copy(f,'reproduction/'+f.name+'.txt')
+for f in sorted(r.glob('*.mjs')):copy(f,'reproduction/'+f.name+'.txt')
+for f in(r/'source/test/account-continuation-lab').iterdir():
+ if f.is_file():copy(f,'reproduction/lab/'+f.name+'.txt')
+copy(r/'reference-account-service/historyCheckpoint.ts','reproduction/before/account-service/historyCheckpoint.ts.txt',True);copy(r/'source/account-service/historyCheckpoint.ts','reproduction/candidate/account-service/historyCheckpoint.ts.txt',True)
+copy(r/'before/content-transfer.test.mjs','reproduction/before/test/account-ceremony/content-transfer.test.mjs.txt',True);copy(r/'source/test/account-ceremony/content-transfer.test.mjs','reproduction/candidate/test/account-ceremony/content-transfer.test.mjs.txt',True)
+copy(r/'diagnostic-transform.json','diagnostic-transform.json');copy(r/'diagnostic-analysis.json','diagnostic-analysis.json')
+(p/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes());scanned=0
+for f in p.rglob('*'):
+ if not f.is_file():continue
+ b=f.read_bytes();b=gzip.decompress(b)if f.suffix=='.gz'else b
+ for value in secrets:assert value not in b,'private material in '+str(f)
+ scanned+=1
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownPrivateValues':len(secrets),'filesScannedAfterDecompression':scanned,'matches':0,'excluded':['private fixture','native DBs','browser profiles/storage','codes/private credentials/tokens/operator key','generated UI error snapshots','full dependency-image inspection'],'scope':'Exact known-value coverage only; not a universal DLP guarantee.'},indent=2)+'\n')
+(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'))
+print(json.dumps({'packet':str(p),'files':sum(f.is_file()for f in p.rglob('*')),'knownPrivateValues':len(secrets),'matches':0}))

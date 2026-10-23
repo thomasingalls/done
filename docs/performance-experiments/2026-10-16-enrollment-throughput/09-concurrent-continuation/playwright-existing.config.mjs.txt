@@ -1,0 +1,4 @@
+import {createRequire} from 'node:module';
+const root='/private/tmp/done-enrollment-retry-2f1d0b0f/candidate-source';
+const {defineConfig}=createRequire(root+'/package.json')('@playwright/test');
+export default defineConfig({testDir:root+'/test/packaged-account',testMatch:['enrollment-batch.spec.ts','enrollment-progress.spec.ts','replacement-handoff.spec.ts','enrollment-capacity.spec.ts'],workers:1,retries:0,timeout:120000,reporter:[['list'],['json',{outputFile:'/private/tmp/done-enrollment-retry-2f1d0b0f/browser-existing-results.json'}]],outputDir:'/private/tmp/done-enrollment-retry-2f1d0b0f/browser-existing-artifacts',use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}}});

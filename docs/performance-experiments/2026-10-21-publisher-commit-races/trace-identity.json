@@ -1,0 +1,6 @@
+{
+  "changedFile": "account-service/publisherTips.ts",
+  "before": "d1e3f6ed433350af265160835342b6c582eb62101e0063de393d7a8e3ee9ff0f",
+  "after": "783379ded5ec100ec9bc0b74262dc0e1455053abbaf1ef7530bf9c478225c107",
+  "scope": "Observer-only metadata, no ordinary timing inference."
+}

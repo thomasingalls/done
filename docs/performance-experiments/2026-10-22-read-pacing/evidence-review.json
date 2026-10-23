@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "prior18PatchIdentitiesExact": true,
+  "instrumentationReversedToExactRuntimeBase": true,
+  "allFrozenExecutingInputsExact": true,
+  "fourMechanismCasesPass": true,
+  "existingRegressions": {
+    "native": 61,
+    "scheduler": 21,
+    "failures": 0
+  },
+  "rawEvidenceReconstruction": [
+    {
+      "name": "1-D",
+      "returned409s": [],
+      "allDataGuards": true,
+      "physicalOldEncryptedRecordsRetained": true,
+      "serverEventDrops": 0,
+      "clientEventDrops": 0
+    },
+    {
+      "name": "2-D",
+      "returned409s": [
+        {
+          "label": "Q1",
+          "path": "/account/delivery/read-v2-batch",
+          "bodySha256": "9d9477ba3b5386de9f436161290fc9f43b6507beb93a32ec9141d46802d97335",
+          "fourCommitFences": true,
+          "nativeWorkMs": 4614,
+          "httpMs": 4628,
+          "retryDelayMs": 999.10009765625,
+          "retryBeginLatenessMs": 3
+        }
+      ],
+      "allDataGuards": true,
+      "physicalOldEncryptedRecordsRetained": true,
+      "serverEventDrops": 0,
+      "clientEventDrops": 0
+    }
+  ],
+  "runtimeProductionChanges": 0,
+  "oldTestChanges": 0,
+  "scope": "Independent closed-outcome and clock reconstruction, exact cold exports/old ciphertext records; not global release qualification."
+}

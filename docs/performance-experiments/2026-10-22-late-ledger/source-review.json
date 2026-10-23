@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "wholeDeliveryAstEqualAfterExactlyReviewedLateCaptureEdits": true,
+  "ordinarySnapshotAndPublisherOwnershipAndFinalTransactionChecksUnchanged": true,
+  "cacheContextAndLimitsUnchanged": true,
+  "headerProjectionOnlyOmitsRowsAndTwoLiveWitnesses": true,
+  "allOtherNativeAndFutureInputsRetainedIncludingMaps": true,
+  "oldTestPrefixesExact": true
+}

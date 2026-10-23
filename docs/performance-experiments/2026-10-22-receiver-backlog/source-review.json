@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "transformCount": 86,
+  "nativeVariantFiles": 16,
+  "allTransformsReverseToExact24NativeVariants": true,
+  "noClientOrProtocolChanges": true,
+  "noGuardsBranchesClocksCacheContextsOrResultsChanged": true,
+  "spansAreOverlappingObservationalWallTimeOnly": true
+}

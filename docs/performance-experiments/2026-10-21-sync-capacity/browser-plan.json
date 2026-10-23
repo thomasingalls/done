@@ -1,0 +1,100 @@
+[
+  {
+    "name": "factorial-0-1-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1
+  },
+  {
+    "name": "factorial-0-1-S",
+    "arm": "S",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1
+  },
+  {
+    "name": "factorial-0-1-P",
+    "arm": "P",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1
+  },
+  {
+    "name": "factorial-0-1-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 1
+  },
+  {
+    "name": "factorial-0-2-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2
+  },
+  {
+    "name": "factorial-0-2-P",
+    "arm": "P",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2
+  },
+  {
+    "name": "factorial-0-2-S",
+    "arm": "S",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2
+  },
+  {
+    "name": "factorial-0-2-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 2
+  },
+  {
+    "name": "confirm-0-3-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 3
+  },
+  {
+    "name": "confirm-0-3-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 0,
+    "block": 3
+  },
+  {
+    "name": "boundary-75-D",
+    "arm": "D",
+    "mode": "catchup",
+    "delay": 75,
+    "block": 1
+  },
+  {
+    "name": "boundary-75-B",
+    "arm": "B",
+    "mode": "catchup",
+    "delay": 75,
+    "block": 1
+  },
+  {
+    "name": "foreground-0-D",
+    "arm": "D",
+    "mode": "foreground",
+    "delay": 0,
+    "block": 1
+  },
+  {
+    "name": "foreground-0-B",
+    "arm": "B",
+    "mode": "foreground",
+    "delay": 0,
+    "block": 1
+  }
+]

@@ -1,0 +1,14 @@
+from pathlib import Path
+import hashlib,json
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+prior=json.loads((repo/'docs/performance-experiments/2026-10-21-sync-continuation/identity.json').read_text());frozen=json.loads((r/'source-identity.json').read_text());production=prior['sources']['D']['sha256'];assert len(production)==803
+for arm in ['reference','candidate']:
+ actual={f:sha(r/('source-'+arm)/f) for f in production};assert actual==frozen[arm]['sha256']
+ changed=[f for f,h in actual.items() if h!=production[f]];assert changed==(['account-service/publisherTips.ts'] if arm=='candidate' else [])
+assert all(sha(repo/f)==h for f,h in frozen['candidate']['sha256'].items())
+build={str(p.relative_to(r/'client-dist')):sha(p) for p in sorted((r/'client-dist').rglob('*')) if p.is_file()};assert build==prior['clientBuildSha256'] and len(build)==110
+for f,h in prior['privateFixturesSha256'].items():assert sha(Path(f))==h,f
+probes={p.name:sha(p) for p in r.iterdir() if p.is_file() and p.suffix in ['.mjs','.py']}
+closure={str(p.relative_to(r/'source-candidate')):sha(p) for p in sorted((r/'source-candidate/test').rglob('*')) if p.is_file() and p.suffix in ['.mjs','.ts']}
+result={'environment':prior['environment'],'browser':prior['browser'],'productionFileCount':803,'sourceMaps':'source-identity.json','candidateProductionChanges':['account-service/publisherTips.ts'],'clientBuildSha256':build,'clientBuildExactPriorPatch02':True,'privateFixtureHashesExactPriorPhase':True,'privateFixtureSha256':prior['privateFixturesSha256'],'rootProbesSha256':probes,'candidateFrozenTestClosureSha256':closure,'repositoryAffectedTestSha256':{str(p):sha(p) for p in [repo/'test/account-service-delivery/publisher-isolation.test.mjs',repo/'test/account-service-inbound/controls.test.mjs']},'scope':'Installed dependency store not comprehensively audited. Frozen benchmark source differs only in publisherTips; the separate existing mutation-anchor repair is tested against the working repository.'}
+(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'production':803,'build':110,'probes':len(probes),'frozenTestFiles':len(closure),'sourceChanges':result['candidateProductionChanges']}))

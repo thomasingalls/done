@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "oldTestRows": [
+    {
+      "file": "test/account-service-delivery/controls.test.mjs",
+      "assertionASTsExact": 12,
+      "registrationsExact": 2
+    },
+    {
+      "file": "test/account-service-inbound/controls.test.mjs",
+      "assertionASTsExact": 11,
+      "registrationsExact": 1
+    }
+  ],
+  "originalDeliveryASTExactAfterRemovingOnlyScheduling": true,
+  "originalFourAttemptLoopAndAllGuardAuthSignCommitStatementsExact": true,
+  "originalPublisherVerifierASTExactAfterRemovingOnlyScheduling": true,
+  "scope": "Checks deletion/alteration independently of candidate-generated output. New scheduling logic needs its own regressions and omissions."
+}

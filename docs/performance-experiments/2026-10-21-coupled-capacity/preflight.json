@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "receipts": [
+    {
+      "arm": "D",
+      "exitCode": 0,
+      "cases": 17,
+      "startedAt": 1792601805812,
+      "completedAt": 1792601809057
+    },
+    {
+      "arm": "B",
+      "exitCode": 0,
+      "cases": 17,
+      "startedAt": 1792601809154,
+      "completedAt": 1792601812418
+    }
+  ],
+  "browserClosure": {
+    "devices.ts": "9a6992af600a27d7b58e32d557782289ac67350c148cf25a062670208de56226",
+    "seed-initial.config.ts": "fe3a2546a7e6b656336ce3d69ba0cdf1a843855d339eb82d46d1ff6537dd911f",
+    "seed-initial.spec.ts": "6cd7055e89710516da1c7bd21ec3259d6c94861cfd70962f7c36e45883df4b47",
+    "runtime.mjs": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "inspect-fixture.mjs": "1371c1bd15f0c97b0d0647e282ad63b5063424a37b8af3b78269850a08b05732",
+    "playwright.config.ts": "ba5b49483886cc79ce9110f487355f3b177098a736285ffe3d829b0b3e23a4c9",
+    "live-sync.spec.ts": "daedd0857ebb5bbebf3589d64cddfdbd09317aa047e6ba4f19108d67673ee9fb"
+  },
+  "sourceFilesPerArm": 803,
+  "clientAssets": 110,
+  "clientBuildExactPatch02": true,
+  "profilesOnlyHarnessDifference": true
+}

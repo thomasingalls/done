@@ -1,0 +1,90 @@
+{
+  "frontends": [
+    {
+      "label": "current",
+      "files": 108,
+      "manifestSha256": "4be966d3826c2c9bf57beb34a9de23a6f40bb83dcce0daa3451549ba8c03681c",
+      "status": "all exact bytes match"
+    },
+    {
+      "label": "previous",
+      "files": 109,
+      "manifestSha256": "0e93177816c5c40e7fdaa398c148343b7a6ea0bca3e6db19377ac6720c9ab749",
+      "status": "all exact bytes match"
+    }
+  ],
+  "sourceModules": [
+    {
+      "release": "previous",
+      "revision": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+      "path": "scripts/serve-account-service.mjs",
+      "sha256": "60c4802ce8deca06e30c60025d4b8ea8ab7bc3def64ffd97d0d0e54a1a90ea67"
+    },
+    {
+      "release": "previous",
+      "revision": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+      "path": "scripts/serve-account.mjs",
+      "sha256": "315c2a7bb2a58870f52e48a1f483b5cbfe934decc4d5601b7f86853be4fb6b8b"
+    },
+    {
+      "release": "previous",
+      "revision": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+      "path": "test/device-enrollment/helpers.ts",
+      "sha256": "ceff2dafb9f426ca9e5c79841352be4136522a2cd2ea0128294a74503ca8c26d"
+    },
+    {
+      "release": "current",
+      "revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+      "path": "scripts/serve-account-service.mjs",
+      "sha256": "60c4802ce8deca06e30c60025d4b8ea8ab7bc3def64ffd97d0d0e54a1a90ea67"
+    },
+    {
+      "release": "current",
+      "revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+      "path": "scripts/serve-account.mjs",
+      "sha256": "315c2a7bb2a58870f52e48a1f483b5cbfe934decc4d5601b7f86853be4fb6b8b"
+    },
+    {
+      "release": "current",
+      "revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+      "path": "test/device-enrollment/helpers.ts",
+      "sha256": "38f94e1f9cbc987418f72c24a4f0849bd19c510c2f375b2f9714b16ed5833942"
+    },
+    {
+      "release": "current",
+      "revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77"
+    }
+  ],
+  "previousHelperCopyMatchesPinnedSource": true,
+  "priorThreePatchArtifactsUnchanged": true,
+  "deferredFormattingPatchUnchanged": true,
+  "runtimeInventories": [
+    {
+      "release": "previous",
+      "revision": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+      "files": 582,
+      "allExactTrackedBytesMatch": true,
+      "inventory": "previous-runtime-source-files.json",
+      "inventorySha256": "43ed7edc60bfefe7bea6998066e87d967242bc8041ce64b0522ebeaef1864199"
+    },
+    {
+      "release": "current",
+      "revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+      "files": 600,
+      "allExactTrackedBytesMatch": true,
+      "inventory": "current-runtime-source-files.json",
+      "inventorySha256": "3055188b85c9bbab2bfe45219ededc32881e64a43fbd5bcc6febacab9f236663"
+    }
+  ],
+  "nodeVersion": "v24.18.0",
+  "browserManifest": {
+    "name": "chromium",
+    "revision": "1234",
+    "installByDefault": true,
+    "browserVersion": "151.0.7922.34",
+    "title": "Chrome for Testing"
+  },
+  "verificationLimitation": "Initial inventory-report assembly looked for a nonexistent top-level playwright-core package; all tracked runtime bytes had already compared successfully. Resolved the installed pnpm package manifest and completed the report. No browser rerun was needed."
+}

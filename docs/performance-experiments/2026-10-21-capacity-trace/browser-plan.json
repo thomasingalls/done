@@ -1,0 +1,42 @@
+[
+  {
+    "name": "v2-1-R-feedback",
+    "arm": "R",
+    "pressure": "feedback"
+  },
+  {
+    "name": "v2-2-C-feedback",
+    "arm": "C",
+    "pressure": "feedback"
+  },
+  {
+    "name": "v2-3-C-feedback",
+    "arm": "C",
+    "pressure": "feedback"
+  },
+  {
+    "name": "v2-4-R-feedback",
+    "arm": "R",
+    "pressure": "feedback"
+  },
+  {
+    "name": "v2-5-R-ordinary",
+    "arm": "R",
+    "pressure": "none"
+  },
+  {
+    "name": "v2-6-C-ordinary",
+    "arm": "C",
+    "pressure": "none"
+  },
+  {
+    "name": "v2-7-R-independent",
+    "arm": "R",
+    "pressure": "independent"
+  },
+  {
+    "name": "v2-8-C-independent",
+    "arm": "C",
+    "pressure": "independent"
+  }
+]

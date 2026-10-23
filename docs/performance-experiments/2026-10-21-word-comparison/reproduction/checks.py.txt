@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json,time,sys
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');checks=[('format-new',['node',str(r/'format-new.mjs')]),('mutations',['python3',str(r/'mutations.py')]),('unit-final',['node','node_modules/vitest/vitest.mjs','run','test/verifiedRecords.test.ts','test/verificationOwnership.test.ts','test/verificationMemo.test.ts','test/warmContent.test.ts','test/cpuBudget.test.ts','test/custodyRecord.test.ts','test/custodyCrypto.test.ts','test/contentRecord.test.ts','test/accountAuthority.test.ts','test/contentInterruptedReuse.test.ts','test/incrementalLedger.test.ts','test/accountReceiveLedger.test.ts','--reporter=json','--outputFile='+str(r/'unit-final.json')]),('types-final',['node','node_modules/typescript/bin/tsc','-b']),('lint-final',['node','node_modules/oxlint/bin/oxlint','src/crdt/verifiedRecords.ts','test/verifiedRecords.test.ts']),('format-final',['node','node_modules/oxfmt/bin/oxfmt','--check','src/crdt/verifiedRecords.ts','test/verifiedRecords.test.ts']),('census-check',['node','scripts/account-crypto-prep/run.mjs']),('inventory-record',['node','scripts/release-validation/check.mjs','--record']),('inventory-check',['node','scripts/release-validation/check.mjs']),('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),('manifest-check',['node','scripts/release-validation/plan.mjs'])]
+rows=[]
+if len(sys.argv)>1:
+ start=next(i for i,x in enumerate(checks)if x[0]==sys.argv[1]);rows=[x for x in json.loads((r/'final-checks.json').read_text())if x['name']in[n for n,c in checks[:start]]];assert len(rows)==start;checks=checks[start:]
+for name,cmd in checks:
+ at=time.time_ns()//1000000
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=repo,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'final-checks.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

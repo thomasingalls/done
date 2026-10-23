@@ -1,0 +1,8 @@
+{
+  "signedBase": "a18d5d1c",
+  "node": "v24.18.0",
+  "runtime": "Original service and client runtime before batching implementation; frontend is the preserved phase-3 startup-repair build, whose performance-relevant source matches signed base.",
+  "origin": "http://localhost:53221",
+  "privateFixturesExcluded": true,
+  "productionTouched": false
+}

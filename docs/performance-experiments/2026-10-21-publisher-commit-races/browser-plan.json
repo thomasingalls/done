@@ -1,0 +1,17 @@
+[
+  {
+    "name": "browser-natural",
+    "pressure": false,
+    "inject": false
+  },
+  {
+    "name": "browser-pressure",
+    "pressure": true,
+    "inject": false
+  },
+  {
+    "name": "browser-remote-refusals",
+    "pressure": true,
+    "inject": true
+  }
+]

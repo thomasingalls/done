@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "invent-cache-hit",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "erase-authority-span",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "forge-request-time",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "drop-native-match",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "protected-header-byte-change",
+      "detected": true,
+      "exitCode": 1
+    },
+    {
+      "control": "relaxed-native-four-attempt-fence",
+      "detected": true,
+      "exitCode": 1
+    }
+  ]
+}

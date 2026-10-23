@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "outcomes": [
+    {
+      "seed": 12,
+      "operations": 4000,
+      "decisions": 4000
+    },
+    {
+      "seed": 1201,
+      "operations": 4000,
+      "decisions": 4000
+    },
+    {
+      "seed": 1202,
+      "operations": 4000,
+      "decisions": 4000
+    },
+    {
+      "seed": 1203,
+      "operations": 4000,
+      "decisions": 4000
+    },
+    {
+      "seed": 1204,
+      "operations": 4000,
+      "decisions": 4000
+    }
+  ],
+  "scope": "20000fixed fake-clock operations compare original/instrumented admission/reserve/settle/release/invalid decisions. Branch semantic tests run separately."
+}

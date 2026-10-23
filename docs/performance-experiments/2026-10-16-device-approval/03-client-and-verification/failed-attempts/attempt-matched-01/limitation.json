@@ -1,0 +1,1 @@
+{"result":"Both baseline runs reached exports but failed a whole-ZIP equality assertion because ZIP timestamps differ. All Markdown entry CRCs/lengths agree; corrected comparison checks sorted entry names and complete bytes. Teardown also failed to drain a route callback. No latency comparison credited. Private seed snapshots retained and reused after quiescent closure."}

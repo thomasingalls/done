@@ -1,0 +1,22 @@
+from pathlib import Path
+import hashlib,json,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+prior=json.loads((repo/'docs/performance-experiments/2026-10-21-ordinary-receive-batching/identity.json').read_text())
+base=prior['sources']['candidate-v4']['sourceSha256'];versions={}
+for arm,session,process in [('D',16,64),('S',64,64),('P',16,256),('B',64,256)]:
+ actual={file:sha((r/('source-'+arm)/file).read_bytes()) for file in base}
+ changes=[file for file in base if base[file]!=actual[file]]
+ assert set(changes)==({'account-service/requestBudget.ts'} if arm!='D' else set()),(arm,changes)
+ text=(r/'source-D/account-service/requestBudget.ts').read_text().replace('sessionPerSecond: 16,',f'sessionPerSecond: {session},').replace('processPerSecond: 64,',f'processPerSecond: {process},')
+ assert text==(r/('source-'+arm)/'account-service/requestBudget.ts').read_text()
+ versions[arm]={'sessionPerSecond':session,'processPerSecond':process,'sourceSha256':actual,'changedFiles':changes}
+for file,h in base.items():assert sha((repo/file).read_bytes())==h,file
+probes={p.name:sha(p.read_bytes()) for p in (r/'source-D/test/live-sync-attribution').iterdir() if p.is_file()}
+for arm in ['S','P','B']:
+ for f,h in probes.items():assert sha((r/('source-'+arm)/'test/live-sync-attribution'/f).read_bytes())==h,(arm,f)
+build={str(p.relative_to(r/'client-dist')):sha(p.read_bytes()) for p in sorted((r/'client-dist').rglob('*')) if p.is_file()};assert build==prior['builds']['candidate-v4-dist']
+fixtures={str(p):sha(p.read_bytes()) for p in [r/'private-api/fixture.json',r/'private-api/account.sqlite',r/'private-api/authority.sqlite',Path('/private/tmp/done-live-sync-attribution-20261021/caughtup-seed-v3/fixture.json'),Path('/private/tmp/done-live-sync-attribution-20261021/backlog-seed-v3/fixture.json')]}
+result={'starting':json.loads((r/'starting.json').read_text()),'environment':prior['environment'],'browser':prior['browser'],'clientExactPatch02Build':True,'clientBuildSha256':build,'ordinaryArms':versions,'ordinaryProbeSha256':probes,'privateFixtureSha256':fixtures,'defaultSourceMatchesCheckout':True,'rateChangesOnlyInTemporaryCopies':True,'scope':'No audit of the entire installed dependency store; locked bytes agree with prior phase.'}
+(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({'ordinarySourceFiles':len(base),'clientBuildFiles':len(build),'variantChanges':{k:v['changedFiles'] for k,v in versions.items()}}))

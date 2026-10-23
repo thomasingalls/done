@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "file": "test/account-service-delivery/publisher-isolation.test.mjs",
+      "assertionASTsExact": 38,
+      "testRegistrationAndOptionsASTsExact": 5
+    },
+    {
+      "file": "test/account-service-delivery/controls.test.mjs",
+      "assertionASTsExact": 12,
+      "testRegistrationAndOptionsASTsExact": 2
+    }
+  ],
+  "scope": "Independent AST comparison of every assertion call, registration and timeout/options; only narrow commit-classification fixture/omission-anchor wiring changed."
+}

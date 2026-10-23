@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json,os,time
+r=Path(__file__).parent;env={**os.environ,'APP_BUILD_REVISION':'27dc7d78d973f2741a813d8d217f28e0c2f033a4','APP_BUILD_DATE':'2026-10-17','VITE_ACCOUNT_BATCH':'coordinated-2000'};rows=[]
+# Rebuild helper artifacts in a new folder so every V1 compiled artifact stays recoverable.
+s=(r/'build-helpers.mjs').read_text().replace("for(const arm of ['R','C'])", "for(const arm of ['C'])");(r/'build-helper-v2.mjs').write_text(s)
+checks=[('helper-v2',r,['node',str(r/'build-helper-v2.mjs')]),('C-typecheck-v2',r/'source-C',['node','node_modules/typescript/bin/tsc','-b']),('C-bundle-v2',r/'source-C',['node','node_modules/vite/bin/vite.js','build']),('C-budget-v2',r/'source-C',['node','scripts/check-budget.mjs']),('C-isolation-v2',r/'source-C',['node','scripts/check-origin-isolation.mjs']),('unit-v2',Path('/Users/thomasingalls/.codex/worktrees/7fda/done'),['node','node_modules/vitest/vitest.mjs','run','test/verifiedRecords.test.ts','test/verificationOwnership.test.ts','test/verificationMemo.test.ts','test/warmContent.test.ts','test/cpuBudget.test.ts','test/custodyRecord.test.ts','test/custodyCrypto.test.ts','test/contentRecord.test.ts','test/accountAuthority.test.ts','test/contentInterruptedReuse.test.ts','test/incrementalLedger.test.ts','test/accountReceiveLedger.test.ts','--reporter=json','--outputFile='+str(r/'unit-v2.json')])]
+for name,cwd,cmd in checks:
+ at=time.time_ns()//1000000
+ with(r/(name+'.log')).open('w')as out:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(cwd),'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'v2-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

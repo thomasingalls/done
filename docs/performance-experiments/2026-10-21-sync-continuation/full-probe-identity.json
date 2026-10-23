@@ -1,0 +1,6 @@
+{
+  "apiLoadSha256": "42242931cedf381183c44df8993ee0b41a77a60cc8e913ec39853dc9d806f710",
+  "traceMonitorSha256": "85988ec4907ff1d8ded67bb336bb24968bea1a0b706a98f9128c71d96c209f29",
+  "unchangedSinceFullRunInvocation": true,
+  "controlAdapterReconstructionMatchesFrozenHash": true
+}

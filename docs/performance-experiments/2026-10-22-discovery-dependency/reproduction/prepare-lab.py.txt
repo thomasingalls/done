@@ -1,0 +1,15 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;old=Path('/private/tmp/done-membership-continuation-20261022');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=r/'source';shutil.copytree(old/'source',s,symlinks=True,ignore=shutil.ignore_patterns('tsconfig.app.tsbuildinfo','tsconfig.node.tsbuildinfo'))
+for f in ['account-service/delivery.ts','account-service/publisherTips.ts','account-service/membershipLocator.ts','test/account-ceremony/content-transfer.test.mjs']:shutil.copy2(repo/f,s/f)
+shutil.copytree(old/'source/account-service',r/'reference-account-service')
+for f in ['container-service.mjs','observer.mjs','container-image.json']:shutil.copy2(old/f,r/f)
+lab=s/'test/account-continuation-lab'
+v=(lab/'runtime.mjs').read_text().replace("root='/private/tmp/done-membership-continuation-20261022'","root='/private/tmp/done-discovery-dependency-20261022'").replace("f==='account-service'&&process.env.FAIR_OBSERVED==='1'?root+'/observed-account-service'","f==='account-service'&&process.env.FAIR_VARIANT==='R'?root+'/reference-account-service'");(lab/'runtime.mjs').write_text(v)
+v=(lab/'seed-profile.ts').read_text().replace('/private/tmp/done-membership-continuation-20261022/playwright-storage-source.txt','/private/tmp/done-discovery-dependency-20261022/playwright-storage-source.txt');(lab/'seed-profile.ts').write_text(v);shutil.copy2(old/'playwright-storage-source.txt',r/'playwright-storage-source.txt');shutil.copy2(old/'storage-importer-identity.json',r/'storage-importer-identity.json')
+v=(lab/'continuation.spec.ts').read_text().replace("import{browserIdentity}from'./dispatch-probe';","import{browserIdentity,clockBrackets}from'./dispatch-probe';").replace("observed:process.env['FAIR_OBSERVED']==='1'","variant:process.env['FAIR_VARIANT']")
+v=v.replace("await q.page.bringToFront();await focus(q.page,'Q');phase='measured'", "await q.page.bringToFront();await focus(q.page,'Q');result.clocks=await Promise.all([q.page,peer.page].map(clockBrackets));phase='measured'")
+needle="  phase='load-cleared';result.loadStoppedAt=Date.now();";assert needle in v;v=v.replace(needle,"  if(result.originalDeliveryPassed){await Promise.all(catchups);result.backgroundReplayPassed=result.catchups.every((row:any)=>row.outcome==='passed');}else result.backgroundReplayPassed=false;\n"+needle)
+(lab/'continuation.spec.ts').write_text(v)
+(r/'run-plan.json').write_text(json.dumps([{'name':'1-R','variant':'R'},{'name':'2-C','variant':'C'},{'name':'3-C','variant':'C'},{'name':'4-R','variant':'R'}],indent=2)+'\n')
+print('Prepared exact reference, scoped candidate and unchanged packaged client')

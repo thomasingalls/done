@@ -1,0 +1,42 @@
+{
+  "scope": "All 317 direct computer-use calls and their recorded responses in this chat; no production browser inspected",
+  "calls": 317,
+  "productionReferences": [],
+  "hostsInAllArguments": [
+    "localhost:53241",
+    "mbp.tail0e0d4.ts.net:8443",
+    "mbp.tail0e0d4.ts.net:8444",
+    "mbp.tail0e0d4.ts.net:8445"
+  ],
+  "hostsInAllResponses": [
+    "localhost:5173",
+    "localhost:53241",
+    "mbp.tail0e0d4.ts.net",
+    "mbp.tail0e0d4.ts.net:8443",
+    "mbp.tail0e0d4.ts.net:8444",
+    "mbp.tail0e0d4.ts.net:8445"
+  ],
+  "possibleDestructiveControlMatches": [
+    {
+      "id": "call_64cad8b58a70408cb70d264ff1173329",
+      "timestamp": "2026-10-15T12:45:03.635Z",
+      "title": "Remove the first disposable copy to reproduce historical leftover recovery metadata",
+      "matchedPriorControl": "button (disabled) Remove local data",
+      "hostsInOutput": []
+    }
+  ],
+  "recordedOriginScopedRemoval": {
+    "navigationCall": "call_f1dc3445e6dd42518c0a6402cb7cac32",
+    "confirmationCall": "call_64cad8b58a70408cb70d264ff1173329",
+    "date": "2026-10-15",
+    "origin": "https://mbp.tail0e0d4.ts.net:8445",
+    "path": "/remove/local",
+    "browserWindow": "Firefox Developer Edition \u2014 Private Browsing",
+    "result": "Removed from this device"
+  },
+  "limitations": [
+    "A record audit cannot prove absence of unrecorded browser/user behavior or storage failures.",
+    "Numeric-control matches are investigation candidates based on prior recorded snapshots, not a reconstructed UI."
+  ],
+  "auditCorrection": "Initial raw-session parser looked at tool name without its namespace and found zero calls; rejected against the independent 317-call app-history census. Corrected parser matches all 317."
+}

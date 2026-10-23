@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+for n in range(240):
+ if(r/'affected-receipt.json').exists():break
+ time.sleep(3)
+else:raise Exception('Affected evidence incomplete; no measurement')
+x=json.loads((r/'affected-receipt.json').read_text());assert(x['pass'],x['fail'])==(494,0)
+for name,cmd in [('run',['python3','freeze-and-run.py']),('analysis',['python3','analyze.py']),('review',['python3','review-evidence.py']),('native-audit',['node','audit-native.mjs']),('sensitivity',['python3','sensitivity.py']),('cleanup',['python3','cleanup.py'])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True);assert p.returncode==0,'Preserve and investigate '+name

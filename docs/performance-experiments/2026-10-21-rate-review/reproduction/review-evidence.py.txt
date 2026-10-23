@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,hashlib,subprocess,math
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');prior=start['priorTree'];git=['git','--git-dir=/private/tmp/done-cold-verification-20261021/patch07-index.git']
+for f in ['docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:
+ assert (repo/f).read_bytes()==subprocess.check_output(git+['show',prior+':'+f])
+pre=load(r/'preflight.json');assert len(pre['receipts'])==4 and all(x['exitCode']==0 and x['cases']==17 for x in pre['receipts'])
+for arm in ['D','S','P','B']:
+ t=(r/('budget-'+arm+'.log')).read_text();assert 'ℹ tests 17' in t and 'ℹ pass 17' in t and 'ℹ fail 0' in t and 'ℹ skipped 0' in t
+native=load(r/'native-summary.json');assert len(native['rows'])==10 and native['allOriginalRunsComplete'] and native['allAbsoluteInteractionGuards'];assert all(x['completeAndVerified'] and x['publisherVerification']['fullCensuses']==2 and x['publisherVerification']['quarantined']==0 for x in native['rows'])
+audits=[]
+for folder,count in [('native',8),('asymmetric',2)]:
+ a=load(r/folder/'cold-audit.json');assert len(a)==count;audits+=a
+for a in audits:
+ assert a['outcome']=='passed'
+ for x in a['accounts']:assert x['seedAndAllStoredWiresExact'] and x['unacknowledgedStored']==0 and x['offeredWrites']==x['liveVerifiedWrites']==x['storedNewAccepted']
+browser=load(r/'browser-summary.json');dom={x['directory']:x for x in load(r/'analysis.json')};assert len(dom)==10 and len(browser['rows'])==10 and browser['allTenFullDataGuardsPassed']
+for name,x in browser['rows'].items():
+ y=dom[name];metric='concurrent' if x['mode']=='catchup' else 'continuous';assert y['outcome']=='passed' and len(x['guards'])==4 and all(x['guards'].values());assert x['localP95Ms']==y[metric]['localDomMs']['p95'] and x['peerP95Ms']==y[metric]['peerDomMs']['p95']
+ if x['mode']=='foreground':assert x['isolatedLocalP95Ms']==y['burstMetrics']['localDomMs']['p95'] and x['isolatedPeerP95Ms']==y['burstMetrics']['peerDomMs']['p95']
+assert browser['referenceDriftGuardPassed'],'Prospective>15% drift rule requires a retained reversed follow-up'
+decision=load(r/'decision.json');assert not decision['checks']['nativeSReviewGate'] and not decision['allAdoptionReviewGatesPassed'];assert not next(x for x in native['comparisons'] if x['arm']=='S')['fairness']['hot']['guardPassed'];assert not next(x for x in native['comparisons'] if x['arm']=='S')['fairness']['peer']['guardPassed'];assert decision['configuredApplicationPolicyRemains']=={'sessionPerSecond':16,'processPerSecond':64}
+br=load(r/'browser-runner.json');nr=load(r/'native-runner.json');assert len(nr)==2 and all(x['exitCode']==0 for x in nr) and len(br)==10 and all(x['exitCode']==0 for x in br)
+assert max(x['completedAt'] for x in pre['receipts'])<=nr[0]['startedAt'] and nr[0]['completedAt']<=nr[1]['startedAt'] and nr[-1]['completedAt']<=br[0]['startedAt'];assert all(br[i]['completedAt']<=br[i+1]['startedAt'] for i in range(9))
+manifest=load(repo/'docs/release-validation-manifest.json');graph=load(repo/'docs/release-validation-graph.json');assert len(manifest['rows'])==881 and len(manifest['unresolved'])==337 and manifest['status']=='blocked' and len(graph['constructions'])==97
+result={'status':'passed','nativeIndependentLiveAndColdProofRuns':10,'storedUnacknowledgedWrites':0,'fullClientJourneysPassed':10,'rawDOMMetricsIndependentlyReconstructed':True,'unchangedBudgetCasesPerPolicy':17,'policies':4,'noBenchmarkValidatorOverlapInRecordedPlan':True,'primary32_64NativeFairnessMissRetained':True,'configuredRuntimeDefaultsAndAllOldTestsUnchanged':True,'cryptoCensusAndPlanningSnapshotsExact':True,'obligations':881,'unresolved':337,'constructionContractsAndStatusesExact':97,'generalQualificationPaused':True,'stdoutCollisionQualified':'native-stdio-note.md','scope':'Evidence validity and unchanged-source/planning integrity, not a claim that policy adoption gates or release qualification passed.'}
+(r/'evidence-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,0 +1,227 @@
+[
+  {
+    "name": "native-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-publisher-races-20261021/analyze-native.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591853639,
+    "completedAt": 1792591853694
+  },
+  {
+    "name": "browser-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-publisher-races-20261021/analyze-browser.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591853694,
+    "completedAt": 1792591853740
+  },
+  {
+    "name": "cold-trace-baseline",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "trace-baseline"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591853740,
+    "completedAt": 1792591854424
+  },
+  {
+    "name": "cold-matched",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "matched"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591854425,
+    "completedAt": 1792591855279
+  },
+  {
+    "name": "cold-warm-matched",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "warm-matched"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591855279,
+    "completedAt": 1792591856133
+  },
+  {
+    "name": "cold-own-only",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "own-only"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591856133,
+    "completedAt": 1792591856536
+  },
+  {
+    "name": "cold-other-peer",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "other-peer"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591856536,
+    "completedAt": 1792591856934
+  },
+  {
+    "name": "cold-warm-matched-v2",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "warm-matched-v2"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591856934,
+    "completedAt": 1792591857813
+  },
+  {
+    "name": "cold-own-only-v2",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/audit-api.mjs",
+      "own-only-v2"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591857814,
+    "completedAt": 1792591858205
+  },
+  {
+    "name": "old-test-assertions",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/review-old-tests.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591858205,
+    "completedAt": 1792591858454
+  },
+  {
+    "name": "census-review",
+    "command": [
+      "node",
+      "/private/tmp/done-publisher-races-20261021/review-census.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591858455,
+    "completedAt": 1792591859182
+  },
+  {
+    "name": "census-record",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591859183,
+    "completedAt": 1792591859819
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591859820,
+    "completedAt": 1792591860450
+  },
+  {
+    "name": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591860451,
+    "completedAt": 1792591861857
+  },
+  {
+    "name": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591861858,
+    "completedAt": 1792591864412
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591864412,
+    "completedAt": 1792591865503
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591865503,
+    "completedAt": 1792591867885
+  },
+  {
+    "name": "planning-audit",
+    "command": [
+      "python3",
+      "/private/tmp/done-publisher-races-20261021/audit-planning.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591867885,
+    "completedAt": 1792591867980
+  },
+  {
+    "name": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-first-authority/registry.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792591867980,
+    "completedAt": 1792591914404
+  }
+]

@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-22-late-ledger';sha=lambda b:hashlib.sha256(b).hexdigest();provenance=[]
+assert json.loads((r/'record-outcome.json').read_text())['status']=='passed'
+def cp(src,dst,z=False):
+ src=Path(src);to=p/(dst+'.gz'if z else dst);to.parent.mkdir(parents=True,exist_ok=True);b=src.read_bytes();to.write_bytes(gzip.compress(b,mtime=0)if z else b);provenance.append({'source':str(src.relative_to(r)),'artifact':str(to.relative_to(p)),'sourceSha256':sha(b),'artifactSha256':sha(to.read_bytes())})
+for f in ['protocol.md','starting.json','measurement-identity.json','run-plan.json','run-receipts.json','analysis.json','read-refusals.json','affected-comparison.json','affected-receipts.json','source-review.json','mount-review.json','evidence-review.json','sensitivity.json','challenge.json','metadata-review.json','planning-receipts.json','final-review.json','record-outcome.json','process-cleanup.json','recursive-fixture-stop.json','metadata-waiter-correction.json','sandbox-comparison-stop.json']:cp(r/f,f)
+cp(r/'native-audit.json','native-audit.json',True)
+for n in ['1-R','2-C','3-C','4-R']:
+ for f in ['result.json','invocation.log','services.log','container-identity.json','docker-command.json']:cp(r/n/f,'runs/'+n+'/'+f,True)
+for f in sorted((r/'sandbox-affected').iterdir()):
+ if f.is_file():cp(f,'sandbox-affected/'+f.name,True)
+for f in sorted(r.glob('*.log')):
+ if not f.name.startswith('package')and f.name!='finish.log':cp(f,'checks/'+f.name,True)
+for f in sorted(r.glob('*.py')):cp(f,'reproduction/'+f.name+'.txt')
+for f in sorted(r.glob('*.mjs')):cp(f,('exploration/'if f.name.startswith('new-')else'reproduction/')+f.name+'.txt')
+for f in(r/'source/test/account-continuation-lab').iterdir():
+ if f.is_file():cp(f,'reproduction/lab/'+f.name+'.txt')
+for file in ['account-service/delivery.ts','test/account-service-inbound/core.test.mjs','test/account-ceremony/content-transfer.test.mjs']:
+ cp(r/'before'/file,'reproduction/before/'+file+'.txt',True);cp(r/'source'/file,'reproduction/candidate/'+file+'.txt',True)
+(p/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes());scanned=0
+for f in p.rglob('*'):
+ if not f.is_file():continue
+ b=f.read_bytes();b=gzip.decompress(b)if f.suffix=='.gz'else b
+ for v in secrets:assert v not in b,'private value in '+str(f)
+ scanned+=1
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownPrivateValues':len(secrets),'filesScannedAfterDecompression':scanned,'matches':0,'scope':'Exact known-value check plus closed-label/raw-file selection review; not universal DLP','excluded':['private fixture/native DBs','browser profiles/storage','unlock codes/credentials/keys/tokens','full carrier-image inspection','generated UI error snapshots']},indent=2)+'\n')
+(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'))
+print(json.dumps({'packet':str(p),'files':sum(f.is_file()for f in p.rglob('*')),'knownPrivateValues':len(secrets),'matches':0}))

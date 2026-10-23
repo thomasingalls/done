@@ -8,7 +8,6 @@ import { same, json, verifySignature } from '../account-protocol/admission.ts';
 import { digest } from '../account-protocol/recovery.ts';
 import {
   parseMembershipChain,
-  verifyMembershipChain,
   parseMembershipBootstrapRequest,
   parseMembershipBootstrapResponse,
   membershipBootstrapMessage,
@@ -29,7 +28,8 @@ import { membershipEnabled } from './membershipStore.ts';
 import { rethrowAuthorization } from './authorization.ts';
 import {
   snapshotWorkspaceAuthority,
-  verifyCurrentWorkspaceAuthority,
+  verifyCurrentWorkspaceAuthorityWithHistory,
+  reuseWorkspaceAuthorityHistory,
   read,
   selectPublisher,
   type WorkspaceAuthoritySnapshot,
@@ -92,9 +92,12 @@ export async function membershipBootstrap(
         db.exec('ROLLBACK');
       }
       if (!before) return no('unavailable');
-      const auth = await verifyCurrentWorkspaceAuthority(before, issuer),
-        base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
-        { history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);
+      const { authority: auth, history } = await verifyCurrentWorkspaceAuthorityWithHistory(
+        before,
+        issuer,
+      );
+      const base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
+        proofs = membershipProofChain(before);
       if (history.current.head !== auth.a.head) throw Error('Bootstrap current head changed');
       await verifyMembershipInvitation(request.invitation, history);
       const body = {
@@ -144,14 +147,13 @@ export async function discoverMembership(
   }
   for (let retry = 0; retry < 4; retry++) {
     try {
-      const before = read(db, request.workspaceId, request.credentialId, reuse);
+      const before = read(db, request.workspaceId, request.credentialId, reuse, {
+        purpose: 'membership-discovery',
+      });
       if (!before) return no('unavailable');
-      const auth = selectPublisher(
-          await verifyCurrentWorkspaceAuthority(before, issuer),
-          request.credentialId,
-        ),
-        base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
-        { history, proofs } = await verifyMembershipChain(membershipProofChain(before), base);
+      const { authority, history } = await reuseWorkspaceAuthorityHistory(before, issuer, reuse);
+      const auth = selectPublisher(authority, request.credentialId),
+        proofs = membershipProofChain(before);
       if (history.current.head !== auth.a.head) throw Error('Discovery current head changed');
       await verifyMembershipDiscoveryRequest(request, issuer.pin, history, now());
       // Keep the requesting publisher's complete-history interlock. Discovery must not hide a
@@ -173,7 +175,7 @@ export async function discoverMembership(
         await membershipDiscoveryResponseMessage(response),
       );
       db.exec('BEGIN');
-      if (!unchanged(db, before, reuse)) {
+      if (!unchanged(db, before, reuse, 'membership-discovery')) {
         db.exec('ROLLBACK');
         continue;
       }

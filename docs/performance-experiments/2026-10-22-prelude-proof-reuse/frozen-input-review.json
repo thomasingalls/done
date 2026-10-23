@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "allFourFrozenJourneysExact": true,
+  "onlyFourReviewedNativeFilesChanged": true,
+  "original110ClientFilesAndFull600sLabUnchanged": true,
+  "noNativeOrClientInstrumentation": true,
+  "exactNativeVariantMounts": true,
+  "privateFixtureExact": true,
+  "realRuntimeHeadAndIndexUnchangedUnstaged": true
+}

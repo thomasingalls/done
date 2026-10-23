@@ -1,0 +1,239 @@
+[
+  {
+    "name": "affected-tests-release",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=15000",
+      "test/account-service-delivery/cold-verification.test.mjs",
+      "test/account-service-delivery/controls.test.mjs",
+      "test/account-service-delivery/core.test.mjs",
+      "test/account-service-delivery/generated.test.mjs",
+      "test/account-service-delivery/native.test.mjs",
+      "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "test/account-service-delivery/publisher-isolation.test.mjs",
+      "test/account-service-delivery/publisher-tips.test.mjs",
+      "test/account-service-delivery/restart.test.mjs",
+      "test/account-service-inbound/controls.test.mjs",
+      "test/account-service-inbound/core.test.mjs",
+      "test/account-service-inbound/generated.test.mjs",
+      "test/account-service-inbound/native.test.mjs",
+      "test/account-service-inbound/quarantine.test.mjs",
+      "test/account-service-inbound/restart.test.mjs",
+      "test/account-sessions/inbound-batch.test.mjs",
+      "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "test/account-sessions/inbound-batch-budget.test.mjs",
+      "test/account-sessions/request-budget.test.mjs",
+      "test/account-sessions/request-budget-work.test.mjs"
+    ],
+    "startedAt": 1792595653372,
+    "completedAt": 1792595730786,
+    "exitCode": 0
+  },
+  {
+    "name": "typecheck-final",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "startedAt": 1792595730787,
+    "completedAt": 1792595731018,
+    "exitCode": 0
+  },
+  {
+    "name": "format-final",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "account-service/delivery.ts",
+      "account-service/publisherTips.ts",
+      "test/account-service-delivery/cold-verification.test.mjs",
+      "test/account-service-delivery/controls.test.mjs",
+      "test/account-service-inbound/controls.test.mjs"
+    ],
+    "startedAt": 1792595731018,
+    "completedAt": 1792595731161,
+    "exitCode": 0
+  },
+  {
+    "name": "lint-final",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/delivery.ts",
+      "account-service/publisherTips.ts",
+      "test/account-service-delivery/cold-verification.test.mjs",
+      "test/account-service-delivery/controls.test.mjs",
+      "test/account-service-inbound/controls.test.mjs"
+    ],
+    "startedAt": 1792595731161,
+    "completedAt": 1792595731231,
+    "exitCode": 0
+  },
+  {
+    "name": "preservation-review",
+    "command": [
+      "node",
+      "/private/tmp/done-cold-verification-20261021/review-preservation.mjs"
+    ],
+    "startedAt": 1792595731232,
+    "completedAt": 1792595731463,
+    "exitCode": 0
+  },
+  {
+    "name": "omission-checks",
+    "command": [
+      "python3",
+      "/private/tmp/done-cold-verification-20261021/omissions.py"
+    ],
+    "startedAt": 1792595731463,
+    "completedAt": 1792595740586,
+    "exitCode": 0
+  },
+  {
+    "name": "cold-final",
+    "command": [
+      "node",
+      "/private/tmp/done-cold-verification-20261021/audit-api.mjs",
+      "matched-final"
+    ],
+    "startedAt": 1792595740586,
+    "completedAt": 1792595741436,
+    "exitCode": 0
+  },
+  {
+    "name": "cold-initial",
+    "command": [
+      "node",
+      "/private/tmp/done-cold-verification-20261021/audit-api.mjs",
+      "matched"
+    ],
+    "startedAt": 1792595741436,
+    "completedAt": 1792595742257,
+    "exitCode": 0
+  },
+  {
+    "name": "native-final-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-cold-verification-20261021/analyze-native.py",
+      "matched-final"
+    ],
+    "startedAt": 1792595742258,
+    "completedAt": 1792595742291,
+    "exitCode": 0
+  },
+  {
+    "name": "browser-final-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-cold-verification-20261021/analyze-browser.py"
+    ],
+    "startedAt": 1792595742291,
+    "completedAt": 1792595742331,
+    "exitCode": 0
+  },
+  {
+    "name": "census-review",
+    "command": [
+      "node",
+      "/private/tmp/done-cold-verification-20261021/review-census.mjs"
+    ],
+    "startedAt": 1792595742331,
+    "completedAt": 1792595742990,
+    "exitCode": 0
+  },
+  {
+    "name": "census-record",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs",
+      "--record"
+    ],
+    "startedAt": 1792595742990,
+    "completedAt": 1792595743620,
+    "exitCode": 0
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792595743620,
+    "completedAt": 1792595744233,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "startedAt": 1792595744234,
+    "completedAt": 1792595745672,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "startedAt": 1792595745672,
+    "completedAt": 1792595748085,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792595748085,
+    "completedAt": 1792595749151,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792595749151,
+    "completedAt": 1792595751482,
+    "exitCode": 0
+  },
+  {
+    "name": "planning-audit",
+    "command": [
+      "python3",
+      "/private/tmp/done-cold-verification-20261021/audit-planning.py"
+    ],
+    "startedAt": 1792595751482,
+    "completedAt": 1792595751578,
+    "exitCode": 0
+  },
+  {
+    "name": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-first-authority/registry.test.mjs"
+    ],
+    "startedAt": 1792595751579,
+    "completedAt": 1792595798087,
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,subprocess,os,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+cases=[
+ ('omit-retained-delivery-match',"if (completeHistory && !same(certificationSuccessor.epoch.delivery, delivery))","if (false && !same(certificationSuccessor.epoch.delivery, delivery))",'single history producer refuses retained-delivery'),
+ ('omit-native-recovery-eligibility','await verifyAdmissionRequest(request, state);','void state;', 'single history producer refuses recovery-'),
+ ('omit-native-successor-row',"successor.epoch.preparation.context.attemptId !== s.successor.preparation_id",'false','single history producer refuses successor-row'),
+ ('omit-full-certification-verification',"          certificationSuccessor,\n          successor,", "          { ...certificationSuccessor, signature: '00'.repeat(64) },\n          successor,",'single request shares one complete certified'),
+ ('omit-pending-delivery-verification',"(await verifyContentDelivery(JSON.parse(row.delivery), base, successor)).delivery", "parseContentDelivery(JSON.parse(row.delivery))",'single history producer refuses pending-delivery'),
+]
+rows=[]
+for name,a,b,pattern in cases:
+ d=r/('mutant-'+name);shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);p=d/'account-service/delivery.ts';t=p.read_text();assert t.count(a)==1,(name,t.count(a));p.write_text(t.replace(a,b));cmd=['node','--test','--test-name-pattern='+pattern,'test/account-ceremony/content-transfer.test.mjs']
+ with(r/('control-'+name+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ assert v.returncode!=0,name;log=(r/('control-'+name+'.log')).read_text();assert 'AssertionError'in log or 'ERR_ASSERTION'in log,name;rows.append({'control':name,'detected':True,'exitCode':v.returncode,'pattern':pattern});print(name,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')

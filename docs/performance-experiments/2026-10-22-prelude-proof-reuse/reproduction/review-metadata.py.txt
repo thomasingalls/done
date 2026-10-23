@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,hashlib,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');old=json.loads((r/'before/docs/account-crypto/census.json').read_text());new=json.loads((repo/'docs/account-crypto/census.json').read_text());a={v['path']:v['sha256']for v in old['sources']};b={v['path']:v['sha256']for v in new['sources']};assert a.keys()==b.keys();changed=sorted(k for k in a if a[k]!=b[k]);assert changed==['account-service/delivery.ts','account-service/historyCheckpoint.ts','account-service/inboundAuthorityReuse.ts','account-service/membershipLocator.ts'];labels=lambda v:sorted((d['label'],d['kind'],tuple(sorted(s['path']for s in d['sites'])))for d in v['domains']);assert labels(old)==labels(new);assert(repo/'docs/account-crypto/constructions.json').read_bytes()==(r/'before/docs/account-crypto/constructions.json').read_bytes()
+a=json.loads((r/'before/docs/release-validation-manifest.json').read_text());b=json.loads((repo/'docs/release-validation-manifest.json').read_text());assert a['rows']==b['rows'];assert a['unresolved']==b['unresolved'];assert a['exclusions']==b['exclusions']and a['selections']==b['selections'];assert len(a['rows'])==len(b['rows'])==883 and len(b['unresolved'])==339
+for f in ['test/account-ceremony/content-transfer.test.mjs','test/account-sessions/inbound-authority-cache.test.mjs']:
+ assert(repo/f).read_bytes().startswith((r/'before'/f).read_bytes());assert(repo/f).read_bytes()==(r/'source'/f).read_bytes();assert(r/'reference-tests'/f).read_bytes()==(r/'source'/f).read_bytes();row=next(x for x in b['rows']if x['id']=='test:'+f);assert 'blocked'in row and'stage'not in row
+names=re.findall(r'^✔ (.*?) \([\d.]+ms\)',(r/'new-formatted.log').read_text(),re.M);assert len(names)==len(set(names))==26
+log=(r/'candidate28-affected-corrected.log').read_text()
+for n in names:assert log.count('✔ '+n+' (')==1,n
+for n in names:assert not any(n in json.dumps(row.get('stage',row.get('stages',{})))for row in b['rows'])
+for f,h in json.loads((r/'starting.json').read_text())['runtimeFiles'].items():
+ if f not in changed:assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+out={'status':'passed','onlyFourReviewedRuntimeSourceHashesChanged':changed,'domainLabelsKindsAndPathSetsExact':True,'constructionBytesExact':True,'all883ObligationRowsAnd339UnresolvedExact':True,'noNewAggregateCredit':True,'allOldTestBytesExactPrefix':True,'all26NewCasesObservedExactlyOnceAndRemainUncredited':True,'sameCorrectedCounterexampleTestBytesBothArms':True,'allOtherProtocolAndClientBytesExact':True};(r/'metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

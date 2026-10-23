@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,hashlib,os,subprocess,time
+r=Path(__file__).parent;s=r/'source';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());client=json.loads(Path('/private/tmp/done-read-authority-20261022/measurement-identity.json').read_text())['clientFiles'];assert json.loads((r/'native-import.json').read_text())['status']=='passed';assert json.loads((r/'ast-review.json').read_text())['status']=='passed';assert 'pass 10'in(r/'frame-probe-tests.log').read_text()
+for f,h in start['runtimeFiles'].items():assert sha(s/f)==h,f
+for f,h in client.items():assert sha(s/'dist'/f)==h,f
+instrumented={str(p.relative_to(r/'diagnostic-account-service')):sha(p)for p in(r/'diagnostic-account-service').rglob('*')if p.is_file()};files=[r/f for f in ['protocol.md','container-service.mjs','observer.mjs','frame-probe.mjs','frame-probe.test.mjs','instrument.py','transforms.json','freeze-and-run.py']]+list((s/'test/account-continuation-lab').glob('*'));plan=[{'name':str(i)+'-I','variant':'I'}for i in [2,3]];(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n');identity={'baseTree26':start['baseTree26'],'baselineInputs':start['runtimeFiles'],'instrumentedInputs':instrumented,'clientFiles':client,'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'privateFixtureSha256':start['privateFixtureSha256'],'image':json.loads((r/'container-image.json').read_text())['Id'],'plan':plan,'scope':'instrumented mechanism trace only; original600s lab and allguardsgates unchanged; no promotion'};(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for item in plan:
+ for f,h in identity['files'].items():assert sha(r/f)==h,f
+ for f,h in start['runtimeFiles'].items():assert sha(s/f)==h,f
+ for f,h in instrumented.items():assert sha(r/'diagnostic-account-service'/f)==h,f
+ for f,h in client.items():assert sha(s/'dist'/f)==h,f
+ out=r/item['name'];out.mkdir(mode=0o700);env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'FAIR_OUT':str(out),'FAIR_VARIANT':'I','FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**item,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+ if p.returncode:raise Exception('Trace failure; preserve without replacement '+item['name'])

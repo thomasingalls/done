@@ -68,8 +68,22 @@ jobs:
       - name: Check packaged application routing and gateway boundaries
         run: node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs
 
+      - name: Check authenticated enrollment read batching and existing transport boundaries
+        run: node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/inbound-authority-reuse.test.mjs test/account-sessions/request-budget-work.test.mjs test/account-sessions/inbound-batch-budget.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-history/multi-page-source.test.mjs test/account-membership/handoff.test.mjs
+
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
+
+      - name: Check native sync authority and evidence regressions
+        run: >-
+          node --test --test-concurrency=1
+          test/account-sessions/inbound-authority-cache.test.mjs
+          test/account-service-delivery/publisher-commit-races.test.mjs
+          test/account-service-delivery/publisher-isolation.test.mjs
+          test/account-service-delivery/cold-verification.test.mjs
+          test/account-service-inbound/core.test.mjs
+          test/sync-cadence-analysis.test.mjs
+          test/account-ceremony/content-transfer.test.mjs
 
       - name: Check development compiler loading with fresh and retained caches
         run: pnpm exec playwright test --config playwright.compiler-loading.config.ts
@@ -81,6 +95,7 @@ jobs:
           test/account-successor/stage-authentication.test.mjs
           test/account-admission-bounds/historical-closure.test.mjs
           test/account-receive/historical-owner.test.mjs
+          test/account-receive/pre-group-closure.test.mjs
 
       - name: Check service quarantine and restart histories
         run: node --test --test-concurrency=1 test/account-service-inbound/generated.test.mjs test/account-service-inbound/quarantine.test.mjs
@@ -97,6 +112,11 @@ jobs:
           test/packaged-account/removal-regressions.spec.ts
           test/packaged-account/local-removal-flow.spec.ts
           test/packaged-account/account-creation-entry.spec.ts
+          test/packaged-account/empty-legacy-startup.spec.ts
+          test/packaged-account/enrollment-batch.spec.ts
+          test/packaged-account/enrollment-progress.spec.ts
+          test/packaged-account/enrollment-capacity.spec.ts
+          test/packaged-account/enrollment-state-retry.spec.ts
           test/packaged-account/welcome.spec.ts
           test/packaged-account/passkey-local-access.spec.ts
           test/packaged-account/multi-tab-protection.spec.ts

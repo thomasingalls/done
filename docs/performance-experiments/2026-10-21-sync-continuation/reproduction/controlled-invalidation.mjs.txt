@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync,mkdirSync,copyFileSync} from 'node:fs';
+import {createPrivateKey,createHash} from 'node:crypto';
+import {DatabaseSync} from 'node:sqlite';
+const root='/private/tmp/done-sync-continuation-20261021',source=root+'/source-trace';
+const {PrivateAuthority}=await import(source+'/account-service/authority.ts');
+const {createDeliveryVerification}=await import(source+'/account-service/deliveryVerification.ts');
+const {read,readInbound,decideSubmission,snapshot,snapshotBytes}=await import(source+'/account-service/delivery.ts');
+const {query,pageProof}=await import(source+'/test/account-service-inbound/oracle.mjs');
+const {proof,link,ZERO}=await import(source+'/test/account-service-delivery/fixtures.mjs');
+const summary=[],trace=[];Object.defineProperty(globalThis,'__publisherTipObserve',{value:row=>trace.push({schedule:summary.length,...row})});
+for(const change of [false,true]){
+ const output=root+'/controlled-'+(change?'unrelated-commit':'no-change');mkdirSync(output,{mode:0o700});
+ const data=JSON.parse(readFileSync(root+'/private-api/fixture.json'));const key=Buffer.from(data.authorityKey,'hex');
+ for(const who of ['first','other']){data[who].authority={pin:data.pin};data[who].s.privateKey=createPrivateKey(data[who].s.privateKey);data[who].retained=data[who].retained.map(({w,r})=>({w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:Buffer.from(r.bytes,'hex')}}));}
+ copyFileSync(root+'/private-api/account.sqlite',output+'/account.sqlite');copyFileSync(root+'/private-api/authority.sqlite',output+'/authority.sqlite');
+ const db=new DatabaseSync(output+'/account.sqlite'),owner=PrivateAuthority.open(output+'/authority.sqlite',data.pin,key),reuse=createDeliveryVerification({db,path:output+'/account.sqlite',signal:()=>{throw Error('Unexpected ledger quarantine')}});
+ // Existing native-test convention: obtain the real fixed-purpose issuer, without exposing keys.
+ const issuer=owner.decideSubmission({decideSubmission:(_input,issuer)=>issuer},{});
+ const guard=s=>{db.exec('BEGIN IMMEDIATE');try{return reuse.tips.guard(s)}finally{db.exec('ROLLBACK')}};
+ const hash=s=>createHash('sha256').update(s).digest('hex');
+ try{
+  for(const who of ['first','other']){const q=query(data[who]);pageProof(await readInbound(db,q,issuer,()=>{},reuse),q,data[who],data[who].retained)}
+  const first=read(db,data.first.workspace,data.first.credential,reuse,{after:0,limit:1}),other=read(db,data.other.workspace,data.other.credential,reuse,{after:0,limit:1});
+  assert(first&&other);const before=snapshotBytes(snapshot(db,data.first.workspace)),otherBefore=snapshotBytes(snapshot(db,data.other.workspace));
+  let committedProofVerified=false;
+  if(change){
+   const w=data.other.extras[0],answer=await decideSubmission(db,{workspaceId:data.other.workspace,bytes:new Uint8Array(Buffer.from(w.bytes,'hex'))},issuer,()=>{},reuse);
+   let previous=ZERO;for(const item of data.other.retained)previous=link(item.w.subject,previous);
+   const verified=proof(answer,data.other.offer.epoch.acceptancePublicKey,w.subject,previous,w.parent);assert.equal(verified.kind,'accepted');committedProofVerified=true;
+  }
+  const after=snapshotBytes(snapshot(db,data.first.workspace));assert.equal(after,before,'unchanged publisher whole snapshot bytes');
+  assert.equal(snapshotBytes(snapshot(db,data.other.workspace))===otherBefore,!change);
+  const otherGuard=guard(other),firstGuard=guard(first);assert.equal(otherGuard,!change);assert.equal(firstGuard,!change);
+  // A new capture still has to pass the existing guard and full independent page verifier.
+  const fresh=read(db,data.first.workspace,data.first.credential,reuse,{after:0,limit:1});assert(guard(fresh));
+  const q=query(data.first);pageProof(await readInbound(db,q,issuer,()=>{},reuse),q,data.first,data.first.retained);
+  summary.push({condition:change?'unrelated-commit':'no-change',outcome:'passed',unchangedWholeSnapshot:true,snapshotSha256:hash(before),unrelatedSnapshotChanged:change,committedProofVerified,staleChangedGuard:otherGuard,unchangedCapturedGuard:firstGuard,freshCaptureGuard:true,freshIndependentlyVerifiedRead:true,scope:'Direct same-connection native owner schedule; scoped HTTP authorization is covered separately, not inferred from this diagnostic.'});
+ }finally{reuse.close();db.close();owner.close();key.fill(0)}
+}
+writeFileSync(root+'/controlled-invalidation.json',JSON.stringify({summary,trace},null,2)+'\n');console.log(JSON.stringify(summary,null,2));

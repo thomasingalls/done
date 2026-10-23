@@ -1,0 +1,28 @@
+from pathlib import Path
+import json,math
+r=Path('/private/tmp/done-enrollment-retry-2f1d0b0f');rows=json.loads((r/'api-comparison/results.json').read_text());assert len(rows)==6
+summary=[]
+for v in rows:
+ assert v['outcome']=='passed',v
+ assert v['completedCut']==1024 and v['batches']==128 and v['acceptedWrites']==9
+ assert len(v['writes'])==len(v['inputLatencies'])==9
+ assert max(v['inputLatencies'])<=2500
+ assert all(s['status']==200 for s in v['statuses'] if s['label']!='replay')
+ replay=[s for s in v['statuses'] if s['label']=='replay'];assert all(s['status'] in [200,409] for s in replay)
+ groups=[]
+ for s in replay:
+  if not groups or groups[-1][0]['bodySha256']!=s['bodySha256']:groups.append([])
+  groups[-1].append(s)
+ assert len(groups)==128 and all(g[-1]['status']==200 and all(s['status']==409 for s in g[:-1]) for g in groups)
+ extras=len(replay)-128
+ assert extras==v['extraReplayAttempts'] and extras<=4
+ previous=0;upper=[]
+ for g in groups:
+  upper.append(g[-1]['at']-previous);previous=g[-1]['at']
+ assert max(upper)<=10000
+ summary.append({'round':v['round'],'arm':v['arm'],'outcome':v['outcome'],'fixedCut':v['completedCut'],'replayMs':v['replayMs'],'httpReads':len(replay),'stateChangeRefusals':sum(s['status']==409 for s in replay),'extraAttempts':extras,'capacityRefusals':sum(s['status']==429 for s in v['statuses']),'acceptedWrites':v['acceptedWrites'],'writeInputMaximumMs':max(v['inputLatencies']),'writeRequestMaximumMs':max(v['writes']),'logicalReadDurationUpperBoundMs':max(upper),'peerRequests':sum(s['label']=='peer' for s in v['statuses']),'peerMaximumMs':max(v['peerLatencies']),'allLiveProofsAndCapturedReadBodiesPassed':True,'apiCpuSeconds':sum(v['metrics']['cpu'].values())/1e6,'sampledApiRssPeakBytes':v['metrics']['rssSampledPeak']})
+last=next(v for v in rows if v['round']==2 and v['arm']=='candidate');changes=[s for s in last['statuses'] if s['status']==409];assert len(changes)==1
+write5=[s for s in last['statuses'] if s['label']=='write'][4];duration=last['writes'][4];started=write5['at']-duration;scheduled=2500
+assert started<changes[0]['at']
+inspection={'round':2,'pairedInputMaximumMs':{'reference':max(next(v for v in rows if v['round']==2 and v['arm']=='reference')['inputLatencies']),'candidate':max(last['inputLatencies'])},'relativeRise':max(last['inputLatencies'])/max(next(v for v in rows if v['round']==2 and v['arm']=='reference')['inputLatencies'])-1,'chosenHardCeilingMs':2500,'writeIndex':5,'scheduledInputMs':scheduled,'estimatedRequestStartMs':started,'queuedBeforeRequestMs':started-scheduled,'requestDurationMs':duration,'completionMs':write5['at'],'firstStateChangeResponseMs':changes[0]['at'],'earliestRetryDispatchMs':changes[0]['at']+200,'interpretation':'The slowest input had already queued about 1.03 s and begun native work before the first refusal/retry. Its ~689 ms request duration is within the unchanged native full-census write range. The pair shows different native scheduling; do not infer a population latency guarantee or a causal speedup from six dependent runs.'}
+(r/'api-summary.json').write_text(json.dumps({'observations':summary,'writerGuardrailInspection':inspection,'scope':'finite first-epoch native workload; fresh native grants supplied, actual privateDeliveryPost and retry owner; no grant-renewal, browser, phone/WAN or population claim'},indent=2)+'\n');print(json.dumps(summary,indent=2))

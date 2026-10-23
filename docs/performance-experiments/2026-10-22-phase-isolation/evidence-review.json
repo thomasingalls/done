@@ -1,0 +1,69 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "1-A",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "2-B",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "3-D",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "4-C",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "5-C",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "6-D",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "7-B",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    },
+    {
+      "name": "8-A",
+      "timingsAndMissingnessIndependentlyReconstructed": true,
+      "displayedProgressGridAndIntegralIndependentlyChecked": true,
+      "exactSubmissionIdentityCensus": true,
+      "coldDurabilityAndNativeResourceGuards": true,
+      "no600sAcceptanceClaim": true
+    }
+  ]
+}

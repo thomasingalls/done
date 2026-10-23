@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,hashlib,subprocess,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');prior=Path('/private/tmp/done-cold-verification-20261021');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();identity=json.loads((r/'source-identity.json').read_text());base=(r/'budget-before.ts.txt').read_text();rows=[]
+policies={}
+for arm,s,p in [('D',16,64),('S',32,64),('P',16,128),('B',32,128)]:
+ source=r/('source-'+arm);expected=base.replace('sessionPerSecond: 16,',f'sessionPerSecond: {s},').replace('processPerSecond: 64,',f'processPerSecond: {p},');assert (source/'account-service/requestBudget.ts').read_text()==expected
+ for f,h in identity[arm]['sha256'].items():assert sha(source/f)==h
+ policy=json.loads(subprocess.check_output(['node','--input-type=module','-e',"import {REQUEST_LIMITS} from './account-service/requestBudget.ts';console.log(JSON.stringify(REQUEST_LIMITS))"],cwd=source,text=True));assert policy=={'sessionBurst':120,'sessionPerSecond':s,'processBurst':480,'processPerSecond':p,'active':16,'sessionActive':4,'sessions':1024};policies[arm]=policy
+ cmd=['node','--test','--test-concurrency=1','test/account-sessions/request-budget.test.mjs','test/account-sessions/request-budget-work.test.mjs','test/account-sessions/inbound-batch-budget.test.mjs'];at=time.time_ns()//1000000
+ with (r/('budget-'+arm+'.log')).open('w') as out:q=subprocess.run(cmd,cwd=source,stdout=out,stderr=subprocess.STDOUT)
+ log=(r/('budget-'+arm+'.log')).read_text();assert q.returncode==0 and 'ℹ pass 17' in log and 'ℹ fail 0' in log
+ rows.append({'arm':arm,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':q.returncode,'cases':17})
+assert all(sha(repo/f)==h for f,h in identity['D']['sha256'].items())
+build={str(p.relative_to(r/'client-dist')):sha(p) for p in (r/'client-dist').rglob('*') if p.is_file()};assert build==json.loads((prior/'identity.json').read_text())['clientBuildSha256']
+closure={p.name:sha(p) for p in (r/'source-D/test/live-sync-attribution').iterdir() if p.is_file()};assert all({p.name:sha(p) for p in (r/('source-'+a)/'test/live-sync-attribution').iterdir() if p.is_file()}==closure for a in ['S','P','B'])
+(r/'preflight.json').write_text(json.dumps({'status':'passed','policies':policies,'budgetCasesPerVariant':17,'receipts':rows,'productionFilesPerArm':803,'onlyTemporaryRefillLiteralChanges':True,'clientAssets':110,'clientBuildExactPatch02':True,'browserClosure':closure,'workingApplicationRuntimeUnchanged':True},indent=2)+'\n');print('All4 variants:17 original budget/accounting cases pass each, only planned temporary refill literals differ')

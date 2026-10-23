@@ -44,8 +44,8 @@ export async function controlBundle(control) {
   const targets = {
     queue: [
       '/src/crdt/accountReceive.ts',
-      'return await receivePage(page, request);',
-      'return await api.receivePage(page, () => {}, request);',
+      'const received = await receivePage(page, request);',
+      'const received = await api.receivePage(page, () => {}, request);',
     ],
     flight: [
       '/src/crdt/accountReceive.ts',

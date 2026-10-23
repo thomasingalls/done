@@ -1,0 +1,4329 @@
+{
+  "status": "passed",
+  "measuredJourneys": 4,
+  "fixedOrder": [
+    "R",
+    "C",
+    "C",
+    "R"
+  ],
+  "discoveryMechanismRegressionCleared": true,
+  "heavyFairnessAcceptance": false,
+  "candidateObservedPeerPrefixSmallerThanBothReferences": true,
+  "candidateStatus": "held: history-checkpoint refusals and original heavy delivery guard remain",
+  "incompleteReferenceDriftOrLatencyRatioNotComputed": true,
+  "runs": [
+    {
+      "name": "1-R",
+      "variant": "R",
+      "runnerOutcome": "passed",
+      "primaryAcceptance": false,
+      "gates": {
+        "all120KeysAtOriginalDeadline": false,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": false,
+        "dataGuards": true
+      },
+      "localMs": {
+        "n": 120,
+        "p50": 2.300048828125,
+        "p95": 3,
+        "min": 1.400146484375,
+        "max": 7.5
+      },
+      "peerObservedSubsetMs": {
+        "n": 78,
+        "p50": 64840.60009765625,
+        "p95": 79552.30004882812,
+        "min": 1438.39990234375,
+        "max": 80578.5
+      },
+      "peerSampleComplete": false,
+      "peerKeysObserved": 78,
+      "peerKeysMissing": 42,
+      "keys": [
+        {
+          "index": 1,
+          "offerAt": 1792656335410,
+          "localMs": 4.7001953125,
+          "peerMs": 1438.39990234375,
+          "offerLatenessMs": 122
+        },
+        {
+          "index": 2,
+          "offerAt": 1792656335789,
+          "localMs": 1.800048828125,
+          "peerMs": 1782.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 3,
+          "offerAt": 1792656336288,
+          "localMs": 2.2001953125,
+          "peerMs": 1864.39990234375,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 4,
+          "offerAt": 1792656336790,
+          "localMs": 2.7001953125,
+          "peerMs": 80578.5,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 5,
+          "offerAt": 1792656337289,
+          "localMs": 2.300048828125,
+          "peerMs": 80552.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 6,
+          "offerAt": 1792656337789,
+          "localMs": 2.5,
+          "peerMs": 80052.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 7,
+          "offerAt": 1792656338289,
+          "localMs": 3,
+          "peerMs": 79552.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 8,
+          "offerAt": 1792656338789,
+          "localMs": 2,
+          "peerMs": 79052.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 9,
+          "offerAt": 1792656339288,
+          "localMs": 2,
+          "peerMs": 78553.30004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 10,
+          "offerAt": 1792656339788,
+          "localMs": 2.7001953125,
+          "peerMs": 78300.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 11,
+          "offerAt": 1792656340288,
+          "localMs": 2.300048828125,
+          "peerMs": 77800.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 12,
+          "offerAt": 1792656340789,
+          "localMs": 2.2001953125,
+          "peerMs": 77299.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 13,
+          "offerAt": 1792656341289,
+          "localMs": 2,
+          "peerMs": 76799.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 14,
+          "offerAt": 1792656341789,
+          "localMs": 2.400146484375,
+          "peerMs": 76608.80004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 15,
+          "offerAt": 1792656342288,
+          "localMs": 2,
+          "peerMs": 76109.80004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 16,
+          "offerAt": 1792656342788,
+          "localMs": 2.5,
+          "peerMs": 75871.69995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 17,
+          "offerAt": 1792656343289,
+          "localMs": 2.300048828125,
+          "peerMs": 75370.69995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 18,
+          "offerAt": 1792656343789,
+          "localMs": 2.60009765625,
+          "peerMs": 75177.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 19,
+          "offerAt": 1792656344287,
+          "localMs": 2.800048828125,
+          "peerMs": 74679.19995117188,
+          "offerLatenessMs": -1
+        },
+        {
+          "index": 20,
+          "offerAt": 1792656344789,
+          "localMs": 2.2001953125,
+          "peerMs": 74177.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 21,
+          "offerAt": 1792656345289,
+          "localMs": 2.900146484375,
+          "peerMs": 73677.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 22,
+          "offerAt": 1792656345789,
+          "localMs": 2.10009765625,
+          "peerMs": 73177.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 23,
+          "offerAt": 1792656346288,
+          "localMs": 2.300048828125,
+          "peerMs": 72903.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 24,
+          "offerAt": 1792656346789,
+          "localMs": 2.300048828125,
+          "peerMs": 72402.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 25,
+          "offerAt": 1792656347288,
+          "localMs": 2.400146484375,
+          "peerMs": 71903.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 26,
+          "offerAt": 1792656347789,
+          "localMs": 1.7001953125,
+          "peerMs": 71402.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 27,
+          "offerAt": 1792656348288,
+          "localMs": 2,
+          "peerMs": 71143.80004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 28,
+          "offerAt": 1792656348789,
+          "localMs": 1.7001953125,
+          "peerMs": 70642.80004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 29,
+          "offerAt": 1792656349292,
+          "localMs": 1.800048828125,
+          "peerMs": 70139.80004882812,
+          "offerLatenessMs": 4
+        },
+        {
+          "index": 30,
+          "offerAt": 1792656349789,
+          "localMs": 1.60009765625,
+          "peerMs": 69642.80004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 31,
+          "offerAt": 1792656350289,
+          "localMs": 2.10009765625,
+          "peerMs": 69474.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 32,
+          "offerAt": 1792656350789,
+          "localMs": 2.300048828125,
+          "peerMs": 68974.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 33,
+          "offerAt": 1792656351289,
+          "localMs": 1.60009765625,
+          "peerMs": 68474.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 34,
+          "offerAt": 1792656351788,
+          "localMs": 2.300048828125,
+          "peerMs": 68253.39990234375,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 35,
+          "offerAt": 1792656352288,
+          "localMs": 2.400146484375,
+          "peerMs": 68052.69995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 36,
+          "offerAt": 1792656352789,
+          "localMs": 2.60009765625,
+          "peerMs": 67551.69995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 37,
+          "offerAt": 1792656353289,
+          "localMs": 2.10009765625,
+          "peerMs": 67051.69995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 38,
+          "offerAt": 1792656353789,
+          "localMs": 2.10009765625,
+          "peerMs": 66845,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 39,
+          "offerAt": 1792656354289,
+          "localMs": 3,
+          "peerMs": 66587.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 40,
+          "offerAt": 1792656354789,
+          "localMs": 2,
+          "peerMs": 66087.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 41,
+          "offerAt": 1792656355289,
+          "localMs": 2.300048828125,
+          "peerMs": 65587.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 42,
+          "offerAt": 1792656355788,
+          "localMs": 1.7001953125,
+          "peerMs": 65088.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 43,
+          "offerAt": 1792656356289,
+          "localMs": 7.5,
+          "peerMs": 64840.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 44,
+          "offerAt": 1792656356789,
+          "localMs": 2.7001953125,
+          "peerMs": 64340.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 45,
+          "offerAt": 1792656357288,
+          "localMs": 2.5,
+          "peerMs": 63841.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 46,
+          "offerAt": 1792656357789,
+          "localMs": 2.10009765625,
+          "peerMs": 63340.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 47,
+          "offerAt": 1792656358289,
+          "localMs": 1.900146484375,
+          "peerMs": 63113.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 48,
+          "offerAt": 1792656358789,
+          "localMs": 2.10009765625,
+          "peerMs": 62613.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 49,
+          "offerAt": 1792656359289,
+          "localMs": 1.900146484375,
+          "peerMs": 62113.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 50,
+          "offerAt": 1792656359788,
+          "localMs": 2.60009765625,
+          "peerMs": 61614.800048828125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 51,
+          "offerAt": 1792656360288,
+          "localMs": 2.7001953125,
+          "peerMs": 61403.10009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 52,
+          "offerAt": 1792656360789,
+          "localMs": 2.10009765625,
+          "peerMs": 60902.10009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 53,
+          "offerAt": 1792656361289,
+          "localMs": 2.400146484375,
+          "peerMs": 60402.10009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 54,
+          "offerAt": 1792656361789,
+          "localMs": 1.900146484375,
+          "peerMs": 59902.10009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 55,
+          "offerAt": 1792656362288,
+          "localMs": 2.2001953125,
+          "peerMs": 60964.699951171875,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 56,
+          "offerAt": 1792656362789,
+          "localMs": 4.60009765625,
+          "peerMs": 60463.699951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 57,
+          "offerAt": 1792656363288,
+          "localMs": 2.300048828125,
+          "peerMs": 59964.699951171875,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 58,
+          "offerAt": 1792656363789,
+          "localMs": 1.400146484375,
+          "peerMs": 59463.699951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 59,
+          "offerAt": 1792656364288,
+          "localMs": 1.900146484375,
+          "peerMs": 59249,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 60,
+          "offerAt": 1792656364789,
+          "localMs": 2.2001953125,
+          "peerMs": 58748,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 61,
+          "offerAt": 1792656365289,
+          "localMs": 2.5,
+          "peerMs": 58248,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 62,
+          "offerAt": 1792656365789,
+          "localMs": 2.7001953125,
+          "peerMs": 57748,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 63,
+          "offerAt": 1792656366289,
+          "localMs": 1.900146484375,
+          "peerMs": 57543.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 64,
+          "offerAt": 1792656366788,
+          "localMs": 1.800048828125,
+          "peerMs": 57044.800048828125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 65,
+          "offerAt": 1792656367290,
+          "localMs": 2.300048828125,
+          "peerMs": 56542.800048828125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 66,
+          "offerAt": 1792656367790,
+          "localMs": 2,
+          "peerMs": 56042.800048828125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 67,
+          "offerAt": 1792656368289,
+          "localMs": 2.2001953125,
+          "peerMs": 55854.89990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 68,
+          "offerAt": 1792656368789,
+          "localMs": 2.60009765625,
+          "peerMs": 55354.89990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 69,
+          "offerAt": 1792656369289,
+          "localMs": 2.10009765625,
+          "peerMs": 54854.89990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 70,
+          "offerAt": 1792656369789,
+          "localMs": 2.60009765625,
+          "peerMs": 54354.89990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 71,
+          "offerAt": 1792656370289,
+          "localMs": 2.400146484375,
+          "peerMs": 54149.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 72,
+          "offerAt": 1792656370789,
+          "localMs": 2.300048828125,
+          "peerMs": 53649.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 73,
+          "offerAt": 1792656371289,
+          "localMs": 2.300048828125,
+          "peerMs": 53149.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 74,
+          "offerAt": 1792656371789,
+          "localMs": 2.300048828125,
+          "peerMs": 52649.39990234375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 75,
+          "offerAt": 1792656372290,
+          "localMs": 2.400146484375,
+          "peerMs": 52410.60009765625,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 76,
+          "offerAt": 1792656372790,
+          "localMs": 2.10009765625,
+          "peerMs": 51910.60009765625,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 77,
+          "offerAt": 1792656373290,
+          "localMs": 2.400146484375,
+          "peerMs": 51410.60009765625,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 78,
+          "offerAt": 1792656373790,
+          "localMs": 2.60009765625,
+          "peerMs": 50910.60009765625,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 79,
+          "offerAt": 1792656374291,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 80,
+          "offerAt": 1792656374790,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 81,
+          "offerAt": 1792656375290,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 82,
+          "offerAt": 1792656375789,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 83,
+          "offerAt": 1792656376290,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 84,
+          "offerAt": 1792656376789,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 85,
+          "offerAt": 1792656377290,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 86,
+          "offerAt": 1792656377790,
+          "localMs": 1.7001953125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 87,
+          "offerAt": 1792656378290,
+          "localMs": 2.7001953125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 88,
+          "offerAt": 1792656378789,
+          "localMs": 3.2001953125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 89,
+          "offerAt": 1792656379290,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 90,
+          "offerAt": 1792656379790,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 91,
+          "offerAt": 1792656380290,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 92,
+          "offerAt": 1792656380791,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 93,
+          "offerAt": 1792656381289,
+          "localMs": 3.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 94,
+          "offerAt": 1792656381790,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 95,
+          "offerAt": 1792656382290,
+          "localMs": 2.2001953125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 96,
+          "offerAt": 1792656382789,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 97,
+          "offerAt": 1792656383291,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 98,
+          "offerAt": 1792656383790,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 99,
+          "offerAt": 1792656384290,
+          "localMs": 2.2001953125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 100,
+          "offerAt": 1792656384790,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 101,
+          "offerAt": 1792656385290,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 102,
+          "offerAt": 1792656385788,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 103,
+          "offerAt": 1792656386289,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 104,
+          "offerAt": 1792656386790,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 105,
+          "offerAt": 1792656387290,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 106,
+          "offerAt": 1792656387790,
+          "localMs": 2.2001953125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 107,
+          "offerAt": 1792656388289,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 108,
+          "offerAt": 1792656388788,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 109,
+          "offerAt": 1792656389290,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 110,
+          "offerAt": 1792656389788,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 111,
+          "offerAt": 1792656390288,
+          "localMs": 2.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 112,
+          "offerAt": 1792656390787,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": -1
+        },
+        {
+          "index": 113,
+          "offerAt": 1792656391289,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 114,
+          "offerAt": 1792656391790,
+          "localMs": 3,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 115,
+          "offerAt": 1792656392288,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 116,
+          "offerAt": 1792656392787,
+          "localMs": 2.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": -1
+        },
+        {
+          "index": 117,
+          "offerAt": 1792656393291,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 118,
+          "offerAt": 1792656393788,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 119,
+          "offerAt": 1792656394290,
+          "localMs": 2.2001953125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 120,
+          "offerAt": 1792656394790,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        }
+      ],
+      "trustedFocusedInputs": 120,
+      "membershipStateChanged409s": 6,
+      "removalInsufficientScope403s": 6,
+      "historyCheckpoint409s": 0,
+      "historyCheckpointObservedReasons": {},
+      "quiet429s": 0,
+      "quietRequests": {
+        "/account/delivery/read-v2": {
+          "count": 9,
+          "latencyMs": {
+            "n": 9,
+            "p50": 259,
+            "p95": 669,
+            "min": 156,
+            "max": 669
+          }
+        },
+        "/account/delivery/read-v2-batch": {
+          "count": 20,
+          "latencyMs": {
+            "n": 20,
+            "p50": 237,
+            "p95": 279,
+            "min": 176,
+            "max": 312
+          }
+        },
+        "/account/grant/v1/begin": {
+          "count": 6,
+          "latencyMs": {
+            "n": 6,
+            "p50": 245,
+            "p95": 650,
+            "min": 231,
+            "max": 650
+          }
+        },
+        "/account/history/v1/checkpoint": {
+          "count": 2,
+          "latencyMs": {
+            "n": 2,
+            "p50": 512,
+            "p95": 572,
+            "min": 512,
+            "max": 572
+          }
+        },
+        "/account/membership/v2/discover": {
+          "count": 8,
+          "latencyMs": {
+            "n": 8,
+            "p50": 2353,
+            "p95": 2785,
+            "min": 425,
+            "max": 2785
+          }
+        }
+      },
+      "automaticOriginalRecoveryMsAfterLoadStop": 1458,
+      "automaticPendingConvergenceMs": 1321,
+      "coldWriterArchiveExact": true,
+      "guards": {
+        "offlineWriterColdProfile": true,
+        "all120Keys": true,
+        "pendingMarkerDurable": true,
+        "automaticPendingWholeExportConvergence": true,
+        "reverseWriting": true,
+        "undoRedo": true,
+        "offlinePeerColdProfile": true,
+        "noCrossAccountMarkers": true
+      },
+      "backgroundReplay": [
+        {
+          "label": "H1",
+          "startedAt": 1792656335288,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656424986
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792656335288,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656425008
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792656335288,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656425024
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792656335288,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656425038
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792656335288,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656425050
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792656335288,
+          "completedAt": 1792656383566,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "clockBrackets": [
+        {
+          "maxRoundTripMs": 1,
+          "rendererMinusHostOffsetBounds": [
+            [
+              0.60009765625,
+              1.60009765625
+            ],
+            [
+              0.400146484375,
+              1.400146484375
+            ],
+            [
+              0.2001953125,
+              1.2001953125
+            ],
+            [
+              0.10009765625,
+              1.10009765625
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "maxRoundTripMs": 1,
+          "rendererMinusHostOffsetBounds": [
+            [
+              0.10009765625,
+              1.10009765625
+            ],
+            [
+              -0.10009765625,
+              0.89990234375
+            ],
+            [
+              -0.39990234375,
+              0.60009765625
+            ],
+            [
+              -0.300048828125,
+              0.699951171875
+            ],
+            [
+              0.60009765625,
+              0.60009765625
+            ]
+          ]
+        }
+      ],
+      "metrics": {
+        "requests": 904,
+        "statuses": {
+          "200": 881,
+          "403": 6,
+          "409": 6
+        },
+        "cpu": {
+          "user": 83943548,
+          "system": 8023437
+        },
+        "elapsedMs": 104895.237672,
+        "eventLoopUtilization": {
+          "idle": 18646.390574999998,
+          "active": 86248.99526299999,
+          "utilization": 0.8222382192883354
+        },
+        "loopDelayMs": {
+          "p50": 10.239999,
+          "p95": 32.800767,
+          "p99": 44.826623,
+          "max": 140.115967
+        },
+        "rssStart": 147812352,
+        "rssEnd": 203075584,
+        "rssSampledPeak": 234516480,
+        "rssSamples": 4245,
+        "cgroupBefore": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 1792130\nuser_usec 1525238\nsystem_usec 266891\nnice_usec 0\nnr_periods 56\nnr_throttled 11\nthrottled_usec 333493\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "103698432",
+          "memory.peak": "103698432",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        },
+        "cgroupAfter": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 93759390\nuser_usec 85469157\nsystem_usec 8290233\nnice_usec 0\nnr_periods 1105\nnr_throttled 909\nthrottled_usec 23895712\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "166346752",
+          "memory.peak": "200617984",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        }
+      }
+    },
+    {
+      "name": "2-C",
+      "variant": "C",
+      "runnerOutcome": "passed",
+      "primaryAcceptance": false,
+      "gates": {
+        "all120KeysAtOriginalDeadline": false,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": false,
+        "dataGuards": true
+      },
+      "localMs": {
+        "n": 120,
+        "p50": 2.199951171875,
+        "p95": 3,
+        "min": 1.400146484375,
+        "max": 26.699951171875
+      },
+      "peerObservedSubsetMs": {
+        "n": 38,
+        "p50": 77902.80004882812,
+        "p95": 85592.90014648438,
+        "min": 1817.10009765625,
+        "max": 86071.40014648438
+      },
+      "peerSampleComplete": false,
+      "peerKeysObserved": 38,
+      "peerKeysMissing": 82,
+      "keys": [
+        {
+          "index": 1,
+          "offerAt": 1792656466202,
+          "localMs": 26.699951171875,
+          "peerMs": 1817.10009765625,
+          "offerLatenessMs": 86
+        },
+        {
+          "index": 2,
+          "offerAt": 1792656466616,
+          "localMs": 2.300048828125,
+          "peerMs": 2361.800048828125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 3,
+          "offerAt": 1792656467117,
+          "localMs": 2,
+          "peerMs": 86071.40014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 4,
+          "offerAt": 1792656467618,
+          "localMs": 2.10009765625,
+          "peerMs": 85570.40014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 5,
+          "offerAt": 1792656468118,
+          "localMs": 1.699951171875,
+          "peerMs": 85592.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 6,
+          "offerAt": 1792656468618,
+          "localMs": 2.400146484375,
+          "peerMs": 85092.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 7,
+          "offerAt": 1792656469117,
+          "localMs": 2.60009765625,
+          "peerMs": 84593.90014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 8,
+          "offerAt": 1792656469616,
+          "localMs": 2,
+          "peerMs": 84094.90014648438,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 9,
+          "offerAt": 1792656470118,
+          "localMs": 2.300048828125,
+          "peerMs": 83592.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 10,
+          "offerAt": 1792656470617,
+          "localMs": 2.300048828125,
+          "peerMs": 83366.40014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 11,
+          "offerAt": 1792656471117,
+          "localMs": 1.900146484375,
+          "peerMs": 82866.40014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 12,
+          "offerAt": 1792656471615,
+          "localMs": 2.5,
+          "peerMs": 82368.40014648438,
+          "offerLatenessMs": -1
+        },
+        {
+          "index": 13,
+          "offerAt": 1792656472117,
+          "localMs": 2.10009765625,
+          "peerMs": 81866.40014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 14,
+          "offerAt": 1792656472618,
+          "localMs": 1.800048828125,
+          "peerMs": 81631.5,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 15,
+          "offerAt": 1792656473117,
+          "localMs": 1.800048828125,
+          "peerMs": 81132.5,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 16,
+          "offerAt": 1792656473618,
+          "localMs": 2.199951171875,
+          "peerMs": 80631.5,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 17,
+          "offerAt": 1792656474117,
+          "localMs": 1.60009765625,
+          "peerMs": 80132.5,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 18,
+          "offerAt": 1792656474617,
+          "localMs": 2.5,
+          "peerMs": 79904.80004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 19,
+          "offerAt": 1792656475116,
+          "localMs": 1.699951171875,
+          "peerMs": 79405.80004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 20,
+          "offerAt": 1792656475617,
+          "localMs": 2.10009765625,
+          "peerMs": 78904.80004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 21,
+          "offerAt": 1792656476116,
+          "localMs": 2.400146484375,
+          "peerMs": 78405.80004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 22,
+          "offerAt": 1792656476619,
+          "localMs": 2.5,
+          "peerMs": 77902.80004882812,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 23,
+          "offerAt": 1792656477116,
+          "localMs": 1.900146484375,
+          "peerMs": 77670,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 24,
+          "offerAt": 1792656477616,
+          "localMs": 2.5,
+          "peerMs": 77170,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 25,
+          "offerAt": 1792656478117,
+          "localMs": 3.699951171875,
+          "peerMs": 76669,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 26,
+          "offerAt": 1792656478616,
+          "localMs": 2.400146484375,
+          "peerMs": 76170,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 27,
+          "offerAt": 1792656479116,
+          "localMs": 2.199951171875,
+          "peerMs": 75909.40014648438,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 28,
+          "offerAt": 1792656479619,
+          "localMs": 1.699951171875,
+          "peerMs": 75406.40014648438,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 29,
+          "offerAt": 1792656480117,
+          "localMs": 2.60009765625,
+          "peerMs": 74908.40014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 30,
+          "offerAt": 1792656480617,
+          "localMs": 1.900146484375,
+          "peerMs": 74408.40014648438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 31,
+          "offerAt": 1792656481119,
+          "localMs": 1.699951171875,
+          "peerMs": 74177.30004882812,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 32,
+          "offerAt": 1792656481618,
+          "localMs": 2.10009765625,
+          "peerMs": 73678.30004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 33,
+          "offerAt": 1792656482119,
+          "localMs": 1.60009765625,
+          "peerMs": 73177.30004882812,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 34,
+          "offerAt": 1792656482617,
+          "localMs": 2.699951171875,
+          "peerMs": 72679.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 35,
+          "offerAt": 1792656483116,
+          "localMs": 2.60009765625,
+          "peerMs": 72466.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 36,
+          "offerAt": 1792656483618,
+          "localMs": 2.10009765625,
+          "peerMs": 71964.19995117188,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 37,
+          "offerAt": 1792656484116,
+          "localMs": 2.199951171875,
+          "peerMs": 71466.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 38,
+          "offerAt": 1792656484618,
+          "localMs": 1.699951171875,
+          "peerMs": 70964.19995117188,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 39,
+          "offerAt": 1792656485118,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 40,
+          "offerAt": 1792656485616,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 41,
+          "offerAt": 1792656486117,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 42,
+          "offerAt": 1792656486617,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 43,
+          "offerAt": 1792656487117,
+          "localMs": 3.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 44,
+          "offerAt": 1792656487617,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 45,
+          "offerAt": 1792656488118,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 46,
+          "offerAt": 1792656488616,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 47,
+          "offerAt": 1792656489117,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 48,
+          "offerAt": 1792656489617,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 49,
+          "offerAt": 1792656490116,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 50,
+          "offerAt": 1792656490617,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 51,
+          "offerAt": 1792656491117,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 52,
+          "offerAt": 1792656491619,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 53,
+          "offerAt": 1792656492119,
+          "localMs": 1.5,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 54,
+          "offerAt": 1792656492619,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 55,
+          "offerAt": 1792656493117,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 56,
+          "offerAt": 1792656493617,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 57,
+          "offerAt": 1792656494116,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 58,
+          "offerAt": 1792656494618,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 59,
+          "offerAt": 1792656495119,
+          "localMs": 1.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 60,
+          "offerAt": 1792656495617,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 61,
+          "offerAt": 1792656496116,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 62,
+          "offerAt": 1792656496618,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 63,
+          "offerAt": 1792656497118,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 64,
+          "offerAt": 1792656497617,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 65,
+          "offerAt": 1792656498117,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 66,
+          "offerAt": 1792656498618,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 67,
+          "offerAt": 1792656499117,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 68,
+          "offerAt": 1792656499616,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 69,
+          "offerAt": 1792656500117,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 70,
+          "offerAt": 1792656500618,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 71,
+          "offerAt": 1792656501117,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 72,
+          "offerAt": 1792656501617,
+          "localMs": 3,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 73,
+          "offerAt": 1792656502117,
+          "localMs": 13.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 74,
+          "offerAt": 1792656502617,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 75,
+          "offerAt": 1792656503117,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 76,
+          "offerAt": 1792656503617,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 77,
+          "offerAt": 1792656504118,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 78,
+          "offerAt": 1792656504617,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 79,
+          "offerAt": 1792656505116,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 80,
+          "offerAt": 1792656505618,
+          "localMs": 1.5,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 81,
+          "offerAt": 1792656506117,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 82,
+          "offerAt": 1792656506616,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 83,
+          "offerAt": 1792656507118,
+          "localMs": 1.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 84,
+          "offerAt": 1792656507617,
+          "localMs": 3,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 85,
+          "offerAt": 1792656508117,
+          "localMs": 1.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 86,
+          "offerAt": 1792656508618,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 87,
+          "offerAt": 1792656509118,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 88,
+          "offerAt": 1792656509616,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 89,
+          "offerAt": 1792656510117,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 90,
+          "offerAt": 1792656510618,
+          "localMs": 1.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 91,
+          "offerAt": 1792656511117,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 92,
+          "offerAt": 1792656511617,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 93,
+          "offerAt": 1792656512117,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 94,
+          "offerAt": 1792656512617,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 95,
+          "offerAt": 1792656513116,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 96,
+          "offerAt": 1792656513617,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 97,
+          "offerAt": 1792656514116,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 98,
+          "offerAt": 1792656514617,
+          "localMs": 1.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 99,
+          "offerAt": 1792656515118,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 100,
+          "offerAt": 1792656515616,
+          "localMs": 2.10009765625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 101,
+          "offerAt": 1792656516117,
+          "localMs": 1.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 102,
+          "offerAt": 1792656516618,
+          "localMs": 1.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 103,
+          "offerAt": 1792656517118,
+          "localMs": 2.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 104,
+          "offerAt": 1792656517619,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 105,
+          "offerAt": 1792656518117,
+          "localMs": 5.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 106,
+          "offerAt": 1792656518617,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 107,
+          "offerAt": 1792656519117,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 108,
+          "offerAt": 1792656519619,
+          "localMs": 1.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 109,
+          "offerAt": 1792656520118,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 110,
+          "offerAt": 1792656520618,
+          "localMs": 2.400146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 111,
+          "offerAt": 1792656521116,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 112,
+          "offerAt": 1792656521617,
+          "localMs": 1.60009765625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 113,
+          "offerAt": 1792656522119,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 114,
+          "offerAt": 1792656522617,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 115,
+          "offerAt": 1792656523117,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 116,
+          "offerAt": 1792656523616,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 117,
+          "offerAt": 1792656524118,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 118,
+          "offerAt": 1792656524618,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 119,
+          "offerAt": 1792656525116,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 120,
+          "offerAt": 1792656525618,
+          "localMs": 1.900146484375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        }
+      ],
+      "trustedFocusedInputs": 120,
+      "membershipStateChanged409s": 0,
+      "removalInsufficientScope403s": 0,
+      "historyCheckpoint409s": 6,
+      "historyCheckpointObservedReasons": {
+        "state-changed": 4,
+        "body-unavailable": 2
+      },
+      "quiet429s": 0,
+      "quietRequests": {
+        "/account/delivery/read-v2": {
+          "count": 3,
+          "latencyMs": {
+            "n": 3,
+            "p50": 262,
+            "p95": 692,
+            "min": 251,
+            "max": 692
+          }
+        },
+        "/account/delivery/read-v2-batch": {
+          "count": 11,
+          "latencyMs": {
+            "n": 11,
+            "p50": 221,
+            "p95": 908,
+            "min": 197,
+            "max": 908
+          }
+        },
+        "/account/history/v1/checkpoint": {
+          "count": 7,
+          "latencyMs": {
+            "n": 7,
+            "p50": 3068,
+            "p95": 3488,
+            "min": 532,
+            "max": 3488
+          }
+        },
+        "/account/membership/v2/discover": {
+          "count": 6,
+          "latencyMs": {
+            "n": 6,
+            "p50": 592,
+            "p95": 706,
+            "min": 477,
+            "max": 706
+          }
+        }
+      },
+      "automaticOriginalRecoveryMsAfterLoadStop": 2945,
+      "automaticPendingConvergenceMs": 1319,
+      "coldWriterArchiveExact": true,
+      "guards": {
+        "offlineWriterColdProfile": true,
+        "all120Keys": true,
+        "pendingMarkerDurable": true,
+        "automaticPendingWholeExportConvergence": true,
+        "reverseWriting": true,
+        "undoRedo": true,
+        "offlinePeerColdProfile": true,
+        "noCrossAccountMarkers": true
+      },
+      "backgroundReplay": [
+        {
+          "label": "H1",
+          "startedAt": 1792656466116,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656555808
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792656466116,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656555825
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792656466116,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656555839
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792656466116,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656555859
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792656466116,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656555871
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792656466116,
+          "completedAt": 1792656513369,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "clockBrackets": [
+        {
+          "maxRoundTripMs": 2,
+          "rendererMinusHostOffsetBounds": [
+            [
+              0.300048828125,
+              1.300048828125
+            ],
+            [
+              -0.300048828125,
+              1.699951171875
+            ],
+            [
+              -0.199951171875,
+              0.800048828125
+            ],
+            [
+              0.10009765625,
+              1.10009765625
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "maxRoundTripMs": 2,
+          "rendererMinusHostOffsetBounds": [
+            [
+              -0.199951171875,
+              1.800048828125
+            ],
+            [
+              0.199951171875,
+              1.199951171875
+            ],
+            [
+              -0.5,
+              1.5
+            ],
+            [
+              -0.300048828125,
+              0.699951171875
+            ],
+            [
+              0.800048828125,
+              0.800048828125
+            ]
+          ]
+        }
+      ],
+      "metrics": {
+        "requests": 901,
+        "statuses": {
+          "200": 883,
+          "409": 6
+        },
+        "cpu": {
+          "user": 84872764,
+          "system": 7905395
+        },
+        "elapsedMs": 106856.15563299999,
+        "eventLoopUtilization": {
+          "idle": 20860.774582000002,
+          "active": 85995.54288399998,
+          "utilization": 0.8047773395462784
+        },
+        "loopDelayMs": {
+          "p50": 10.207231,
+          "p95": 32.571391,
+          "p99": 44.400639,
+          "max": 164.233215
+        },
+        "rssStart": 160944128,
+        "rssEnd": 221224960,
+        "rssSampledPeak": 251916288,
+        "rssSamples": 4381,
+        "cgroupBefore": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 1918359\nuser_usec 1722442\nsystem_usec 195917\nnice_usec 0\nnr_periods 63\nnr_throttled 13\nthrottled_usec 330002\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "110010368",
+          "memory.peak": "110014464",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        },
+        "cgroupAfter": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 94696843\nuser_usec 86595792\nsystem_usec 8101050\nnice_usec 0\nnr_periods 1132\nnr_throttled 908\nthrottled_usec 24074660\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "177750016",
+          "memory.peak": "210681856",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        }
+      }
+    },
+    {
+      "name": "3-C",
+      "variant": "C",
+      "runnerOutcome": "passed",
+      "primaryAcceptance": false,
+      "gates": {
+        "all120KeysAtOriginalDeadline": false,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": false,
+        "dataGuards": true
+      },
+      "localMs": {
+        "n": 120,
+        "p50": 2.199951171875,
+        "p95": 3.099853515625,
+        "min": 1.5,
+        "max": 4
+      },
+      "peerObservedSubsetMs": {
+        "n": 45,
+        "p50": 75582.30004882812,
+        "p95": 83604.7001953125,
+        "min": 1401,
+        "max": 84101.7001953125
+      },
+      "peerSampleComplete": false,
+      "peerKeysObserved": 45,
+      "peerKeysMissing": 75,
+      "keys": [
+        {
+          "index": 1,
+          "offerAt": 1792656597952,
+          "localMs": 3.699951171875,
+          "peerMs": 1401,
+          "offerLatenessMs": 104
+        },
+        {
+          "index": 2,
+          "offerAt": 1792656598350,
+          "localMs": 2.39990234375,
+          "peerMs": 1515.5,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 3,
+          "offerAt": 1792656598850,
+          "localMs": 1.800048828125,
+          "peerMs": 1823.900146484375,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 4,
+          "offerAt": 1792656599350,
+          "localMs": 1.89990234375,
+          "peerMs": 84093.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 5,
+          "offerAt": 1792656599850,
+          "localMs": 4,
+          "peerMs": 84101.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 6,
+          "offerAt": 1792656600347,
+          "localMs": 2.199951171875,
+          "peerMs": 83604.7001953125,
+          "offerLatenessMs": -1
+        },
+        {
+          "index": 7,
+          "offerAt": 1792656600851,
+          "localMs": 1.699951171875,
+          "peerMs": 83100.7001953125,
+          "offerLatenessMs": 3
+        },
+        {
+          "index": 8,
+          "offerAt": 1792656601348,
+          "localMs": 2.099853515625,
+          "peerMs": 82603.7001953125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 9,
+          "offerAt": 1792656601850,
+          "localMs": 1.89990234375,
+          "peerMs": 82101.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 10,
+          "offerAt": 1792656602350,
+          "localMs": 2.099853515625,
+          "peerMs": 81880.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 11,
+          "offerAt": 1792656602850,
+          "localMs": 2.5,
+          "peerMs": 81380.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 12,
+          "offerAt": 1792656603350,
+          "localMs": 2.300048828125,
+          "peerMs": 80880.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 13,
+          "offerAt": 1792656603850,
+          "localMs": 2,
+          "peerMs": 80380.90014648438,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 14,
+          "offerAt": 1792656604350,
+          "localMs": 2.5,
+          "peerMs": 80190.80004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 15,
+          "offerAt": 1792656604850,
+          "localMs": 2.300048828125,
+          "peerMs": 79690.80004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 16,
+          "offerAt": 1792656605350,
+          "localMs": 1.89990234375,
+          "peerMs": 79190.80004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 17,
+          "offerAt": 1792656605849,
+          "localMs": 1.5,
+          "peerMs": 78916.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 18,
+          "offerAt": 1792656606350,
+          "localMs": 2.39990234375,
+          "peerMs": 78692.30004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 19,
+          "offerAt": 1792656606849,
+          "localMs": 2.5,
+          "peerMs": 78193.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 20,
+          "offerAt": 1792656607349,
+          "localMs": 2.5,
+          "peerMs": 77693.30004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 21,
+          "offerAt": 1792656607848,
+          "localMs": 2.199951171875,
+          "peerMs": 77194.30004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 22,
+          "offerAt": 1792656608349,
+          "localMs": 2.199951171875,
+          "peerMs": 77024.7001953125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 23,
+          "offerAt": 1792656608848,
+          "localMs": 3.099853515625,
+          "peerMs": 76779.2001953125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 24,
+          "offerAt": 1792656609350,
+          "localMs": 2.89990234375,
+          "peerMs": 76277.2001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 25,
+          "offerAt": 1792656609848,
+          "localMs": 1.800048828125,
+          "peerMs": 75779.2001953125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 26,
+          "offerAt": 1792656610348,
+          "localMs": 2.099853515625,
+          "peerMs": 75582.30004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 27,
+          "offerAt": 1792656610848,
+          "localMs": 1.89990234375,
+          "peerMs": 75082.30004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 28,
+          "offerAt": 1792656611352,
+          "localMs": 1.800048828125,
+          "peerMs": 74578.30004882812,
+          "offerLatenessMs": 4
+        },
+        {
+          "index": 29,
+          "offerAt": 1792656611850,
+          "localMs": 2.599853515625,
+          "peerMs": 74080.30004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 30,
+          "offerAt": 1792656612350,
+          "localMs": 2.199951171875,
+          "peerMs": 73889.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 31,
+          "offerAt": 1792656612850,
+          "localMs": 2.699951171875,
+          "peerMs": 73389.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 32,
+          "offerAt": 1792656613350,
+          "localMs": 2.599853515625,
+          "peerMs": 72889.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 33,
+          "offerAt": 1792656613850,
+          "localMs": 2.099853515625,
+          "peerMs": 72389.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 34,
+          "offerAt": 1792656614348,
+          "localMs": 2.5,
+          "peerMs": 72189.80004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 35,
+          "offerAt": 1792656614848,
+          "localMs": 2.699951171875,
+          "peerMs": 71689.80004882812,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 36,
+          "offerAt": 1792656615349,
+          "localMs": 1.699951171875,
+          "peerMs": 71188.80004882812,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 37,
+          "offerAt": 1792656615850,
+          "localMs": 2.199951171875,
+          "peerMs": 70687.80004882812,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 38,
+          "offerAt": 1792656616350,
+          "localMs": 2,
+          "peerMs": 70497.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 39,
+          "offerAt": 1792656616850,
+          "localMs": 2,
+          "peerMs": 69997.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 40,
+          "offerAt": 1792656617350,
+          "localMs": 2.599853515625,
+          "peerMs": 69497.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 41,
+          "offerAt": 1792656617850,
+          "localMs": 2.599853515625,
+          "peerMs": 69207,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 42,
+          "offerAt": 1792656618350,
+          "localMs": 2.699951171875,
+          "peerMs": 68976.7001953125,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 43,
+          "offerAt": 1792656618849,
+          "localMs": 2.300048828125,
+          "peerMs": 68477.7001953125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 44,
+          "offerAt": 1792656619348,
+          "localMs": 2.39990234375,
+          "peerMs": 67978.7001953125,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 45,
+          "offerAt": 1792656619849,
+          "localMs": 2.099853515625,
+          "peerMs": 67477.7001953125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 46,
+          "offerAt": 1792656620350,
+          "localMs": 2.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 47,
+          "offerAt": 1792656620850,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 48,
+          "offerAt": 1792656621349,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 49,
+          "offerAt": 1792656621848,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 50,
+          "offerAt": 1792656622348,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 51,
+          "offerAt": 1792656622848,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 52,
+          "offerAt": 1792656623348,
+          "localMs": 2.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 53,
+          "offerAt": 1792656623848,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 54,
+          "offerAt": 1792656624349,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 55,
+          "offerAt": 1792656624849,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 56,
+          "offerAt": 1792656625349,
+          "localMs": 3.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 57,
+          "offerAt": 1792656625849,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 58,
+          "offerAt": 1792656626349,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 59,
+          "offerAt": 1792656626849,
+          "localMs": 1.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 60,
+          "offerAt": 1792656627349,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 61,
+          "offerAt": 1792656627848,
+          "localMs": 3.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 62,
+          "offerAt": 1792656628349,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 63,
+          "offerAt": 1792656628849,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 64,
+          "offerAt": 1792656629348,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 65,
+          "offerAt": 1792656629849,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 66,
+          "offerAt": 1792656630348,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 67,
+          "offerAt": 1792656630848,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 68,
+          "offerAt": 1792656631350,
+          "localMs": 1.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 69,
+          "offerAt": 1792656631849,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 70,
+          "offerAt": 1792656632349,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 71,
+          "offerAt": 1792656632849,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 72,
+          "offerAt": 1792656633349,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 73,
+          "offerAt": 1792656633848,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 74,
+          "offerAt": 1792656634349,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 75,
+          "offerAt": 1792656634849,
+          "localMs": 1.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 76,
+          "offerAt": 1792656635348,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 77,
+          "offerAt": 1792656635849,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 78,
+          "offerAt": 1792656636349,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 79,
+          "offerAt": 1792656636848,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 80,
+          "offerAt": 1792656637348,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 81,
+          "offerAt": 1792656637849,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 82,
+          "offerAt": 1792656638348,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 83,
+          "offerAt": 1792656638850,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 84,
+          "offerAt": 1792656639349,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 85,
+          "offerAt": 1792656639849,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 86,
+          "offerAt": 1792656640348,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 87,
+          "offerAt": 1792656640849,
+          "localMs": 1.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 88,
+          "offerAt": 1792656641348,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 89,
+          "offerAt": 1792656641849,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 90,
+          "offerAt": 1792656642349,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 91,
+          "offerAt": 1792656642849,
+          "localMs": 2.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 92,
+          "offerAt": 1792656643349,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 93,
+          "offerAt": 1792656643849,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 94,
+          "offerAt": 1792656644350,
+          "localMs": 1.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 95,
+          "offerAt": 1792656644848,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 96,
+          "offerAt": 1792656645349,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 97,
+          "offerAt": 1792656645848,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 98,
+          "offerAt": 1792656646348,
+          "localMs": 1.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 99,
+          "offerAt": 1792656646848,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 100,
+          "offerAt": 1792656647348,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 101,
+          "offerAt": 1792656647849,
+          "localMs": 1.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 102,
+          "offerAt": 1792656648349,
+          "localMs": 1.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 103,
+          "offerAt": 1792656648848,
+          "localMs": 3.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 104,
+          "offerAt": 1792656649349,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 105,
+          "offerAt": 1792656649849,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 106,
+          "offerAt": 1792656650348,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 107,
+          "offerAt": 1792656650848,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 108,
+          "offerAt": 1792656651348,
+          "localMs": 3.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 109,
+          "offerAt": 1792656651849,
+          "localMs": 1.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 110,
+          "offerAt": 1792656652350,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 111,
+          "offerAt": 1792656652849,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 112,
+          "offerAt": 1792656653349,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 113,
+          "offerAt": 1792656653849,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 114,
+          "offerAt": 1792656654349,
+          "localMs": 1.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 115,
+          "offerAt": 1792656654848,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 116,
+          "offerAt": 1792656655349,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 117,
+          "offerAt": 1792656655847,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": -1
+        },
+        {
+          "index": 118,
+          "offerAt": 1792656656349,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 119,
+          "offerAt": 1792656656849,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 120,
+          "offerAt": 1792656657349,
+          "localMs": 1.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        }
+      ],
+      "trustedFocusedInputs": 120,
+      "membershipStateChanged409s": 0,
+      "removalInsufficientScope403s": 0,
+      "historyCheckpoint409s": 6,
+      "historyCheckpointObservedReasons": {
+        "body-unavailable": 2,
+        "state-changed": 4
+      },
+      "quiet429s": 0,
+      "quietRequests": {
+        "/account/delivery/read-v2": {
+          "count": 8,
+          "latencyMs": {
+            "n": 8,
+            "p50": 200,
+            "p95": 764,
+            "min": 164,
+            "max": 764
+          }
+        },
+        "/account/delivery/read-v2-batch": {
+          "count": 12,
+          "latencyMs": {
+            "n": 12,
+            "p50": 245,
+            "p95": 353,
+            "min": 210,
+            "max": 353
+          }
+        },
+        "/account/history/v1/checkpoint": {
+          "count": 7,
+          "latencyMs": {
+            "n": 7,
+            "p50": 2837,
+            "p95": 3139,
+            "min": 631,
+            "max": 3139
+          }
+        },
+        "/account/membership/v2/discover": {
+          "count": 6,
+          "latencyMs": {
+            "n": 6,
+            "p50": 574,
+            "p95": 607,
+            "min": 532,
+            "max": 607
+          }
+        }
+      },
+      "automaticOriginalRecoveryMsAfterLoadStop": 2992,
+      "automaticPendingConvergenceMs": 1318,
+      "coldWriterArchiveExact": true,
+      "guards": {
+        "offlineWriterColdProfile": true,
+        "all120Keys": true,
+        "pendingMarkerDurable": true,
+        "automaticPendingWholeExportConvergence": true,
+        "reverseWriting": true,
+        "undoRedo": true,
+        "offlinePeerColdProfile": true,
+        "noCrossAccountMarkers": true
+      },
+      "backgroundReplay": [
+        {
+          "label": "H1",
+          "startedAt": 1792656597848,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656687578
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792656597848,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656687595
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792656597848,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656687631
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792656597848,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656687650
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792656597848,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656687660
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792656597848,
+          "completedAt": 1792656645098,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "clockBrackets": [
+        {
+          "maxRoundTripMs": 2,
+          "rendererMinusHostOffsetBounds": [
+            [
+              0.599853515625,
+              1.599853515625
+            ],
+            [
+              -0.699951171875,
+              1.300048828125
+            ],
+            [
+              -0.10009765625,
+              0.89990234375
+            ],
+            [
+              -0.199951171875,
+              1.800048828125
+            ],
+            [
+              0.39990234375,
+              1.39990234375
+            ]
+          ]
+        },
+        {
+          "maxRoundTripMs": 3,
+          "rendererMinusHostOffsetBounds": [
+            [
+              -0.099853515625,
+              0.900146484375
+            ],
+            [
+              -1.89990234375,
+              1.10009765625
+            ],
+            [
+              -0.2998046875,
+              1.7001953125
+            ],
+            [
+              -0.099853515625,
+              0.900146484375
+            ],
+            [
+              -0.099853515625,
+              0.900146484375
+            ]
+          ]
+        }
+      ],
+      "metrics": {
+        "requests": 902,
+        "statuses": {
+          "200": 884,
+          "409": 6
+        },
+        "cpu": {
+          "user": 84626475,
+          "system": 8127586
+        },
+        "elapsedMs": 106417.524423,
+        "eventLoopUtilization": {
+          "idle": 19933.437944,
+          "active": 86484.25464600004,
+          "utilization": 0.8126868055596882
+        },
+        "loopDelayMs": {
+          "p50": 10.264575,
+          "p95": 31.719423,
+          "p99": 43.876351,
+          "max": 131.923967
+        },
+        "rssStart": 151801856,
+        "rssEnd": 208433152,
+        "rssSampledPeak": 245452800,
+        "rssSamples": 4368,
+        "cgroupBefore": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 1684745\nuser_usec 1511689\nsystem_usec 173055\nnice_usec 0\nnr_periods 56\nnr_throttled 12\nthrottled_usec 267067\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "100749312",
+          "memory.peak": "100749312",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        },
+        "cgroupAfter": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 94439832\nuser_usec 86138285\nsystem_usec 8301547\nnice_usec 0\nnr_periods 1120\nnr_throttled 911\nthrottled_usec 24180045\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "164917248",
+          "memory.peak": "198934528",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        }
+      }
+    },
+    {
+      "name": "4-R",
+      "variant": "R",
+      "runnerOutcome": "passed",
+      "primaryAcceptance": false,
+      "gates": {
+        "all120KeysAtOriginalDeadline": false,
+        "localTypingP95": true,
+        "peerP95": false,
+        "allBackgroundReplay600s": false,
+        "dataGuards": true
+      },
+      "localMs": {
+        "n": 120,
+        "p50": 2.39990234375,
+        "p95": 4.699951171875,
+        "min": 1.599853515625,
+        "max": 6.699951171875
+      },
+      "peerObservedSubsetMs": {
+        "n": 65,
+        "p50": 68555.19995117188,
+        "p95": 80886,
+        "min": 1402.10009765625,
+        "max": 81885
+      },
+      "peerSampleComplete": false,
+      "peerKeysObserved": 65,
+      "peerKeysMissing": 55,
+      "keys": [
+        {
+          "index": 1,
+          "offerAt": 1792656729888,
+          "localMs": 3.599853515625,
+          "peerMs": 1516.900146484375,
+          "offerLatenessMs": 104
+        },
+        {
+          "index": 2,
+          "offerAt": 1792656730285,
+          "localMs": 2.39990234375,
+          "peerMs": 1402.10009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 3,
+          "offerAt": 1792656730785,
+          "localMs": 2.599853515625,
+          "peerMs": 2009.199951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 4,
+          "offerAt": 1792656731285,
+          "localMs": 2.5,
+          "peerMs": 81868.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 5,
+          "offerAt": 1792656731785,
+          "localMs": 2.300048828125,
+          "peerMs": 81885,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 6,
+          "offerAt": 1792656732285,
+          "localMs": 2,
+          "peerMs": 81385,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 7,
+          "offerAt": 1792656732784,
+          "localMs": 2.300048828125,
+          "peerMs": 80886,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 8,
+          "offerAt": 1792656733285,
+          "localMs": 2.199951171875,
+          "peerMs": 80385,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 9,
+          "offerAt": 1792656733784,
+          "localMs": 2.199951171875,
+          "peerMs": 80162.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 10,
+          "offerAt": 1792656734285,
+          "localMs": 2.099853515625,
+          "peerMs": 79661.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 11,
+          "offerAt": 1792656734785,
+          "localMs": 1.599853515625,
+          "peerMs": 79161.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 12,
+          "offerAt": 1792656735284,
+          "localMs": 2.099853515625,
+          "peerMs": 78662.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 13,
+          "offerAt": 1792656735784,
+          "localMs": 2.39990234375,
+          "peerMs": 78439,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 14,
+          "offerAt": 1792656736284,
+          "localMs": 2.099853515625,
+          "peerMs": 77939,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 15,
+          "offerAt": 1792656736785,
+          "localMs": 2.800048828125,
+          "peerMs": 77438,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 16,
+          "offerAt": 1792656737285,
+          "localMs": 2.300048828125,
+          "peerMs": 76938,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 17,
+          "offerAt": 1792656737784,
+          "localMs": 4,
+          "peerMs": 76730.10009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 18,
+          "offerAt": 1792656738284,
+          "localMs": 2.199951171875,
+          "peerMs": 76230.10009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 19,
+          "offerAt": 1792656738785,
+          "localMs": 2.599853515625,
+          "peerMs": 75729.10009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 20,
+          "offerAt": 1792656739284,
+          "localMs": 2.5,
+          "peerMs": 75230.10009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 21,
+          "offerAt": 1792656739785,
+          "localMs": 1.800048828125,
+          "peerMs": 74729.10009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 22,
+          "offerAt": 1792656740285,
+          "localMs": 2.099853515625,
+          "peerMs": 74477.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 23,
+          "offerAt": 1792656740784,
+          "localMs": 2.099853515625,
+          "peerMs": 73978.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 24,
+          "offerAt": 1792656741285,
+          "localMs": 1.599853515625,
+          "peerMs": 73477.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 25,
+          "offerAt": 1792656741784,
+          "localMs": 2,
+          "peerMs": 72978.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 26,
+          "offerAt": 1792656742285,
+          "localMs": 2.199951171875,
+          "peerMs": 72766.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 27,
+          "offerAt": 1792656742785,
+          "localMs": 2.099853515625,
+          "peerMs": 72266.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 28,
+          "offerAt": 1792656743284,
+          "localMs": 2.099853515625,
+          "peerMs": 71767.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 29,
+          "offerAt": 1792656743784,
+          "localMs": 2.099853515625,
+          "peerMs": 71267.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 30,
+          "offerAt": 1792656744284,
+          "localMs": 2.39990234375,
+          "peerMs": 71023.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 31,
+          "offerAt": 1792656744784,
+          "localMs": 1.800048828125,
+          "peerMs": 70523.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 32,
+          "offerAt": 1792656745284,
+          "localMs": 2.39990234375,
+          "peerMs": 70023.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 33,
+          "offerAt": 1792656745786,
+          "localMs": 3,
+          "peerMs": 69521.19995117188,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 34,
+          "offerAt": 1792656746285,
+          "localMs": 1.89990234375,
+          "peerMs": 69324.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 35,
+          "offerAt": 1792656746785,
+          "localMs": 1.800048828125,
+          "peerMs": 68824.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 36,
+          "offerAt": 1792656747285,
+          "localMs": 2.199951171875,
+          "peerMs": 68555.19995117188,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 37,
+          "offerAt": 1792656747784,
+          "localMs": 3.099853515625,
+          "peerMs": 68056.19995117188,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 38,
+          "offerAt": 1792656748284,
+          "localMs": 2.300048828125,
+          "peerMs": 67773.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 39,
+          "offerAt": 1792656748785,
+          "localMs": 2.300048828125,
+          "peerMs": 67272.60009765625,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 40,
+          "offerAt": 1792656749284,
+          "localMs": 6.099853515625,
+          "peerMs": 66773.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 41,
+          "offerAt": 1792656749784,
+          "localMs": 2.39990234375,
+          "peerMs": 66273.60009765625,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 42,
+          "offerAt": 1792656750285,
+          "localMs": 2.300048828125,
+          "peerMs": 66077.5,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 43,
+          "offerAt": 1792656750785,
+          "localMs": 2.300048828125,
+          "peerMs": 65577.5,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 44,
+          "offerAt": 1792656751284,
+          "localMs": 2.199951171875,
+          "peerMs": 65078.5,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 45,
+          "offerAt": 1792656751785,
+          "localMs": 2.39990234375,
+          "peerMs": 64577.5,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 46,
+          "offerAt": 1792656752285,
+          "localMs": 2.099853515625,
+          "peerMs": 64344.5,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 47,
+          "offerAt": 1792656752784,
+          "localMs": 2.199951171875,
+          "peerMs": 63845.5,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 48,
+          "offerAt": 1792656753284,
+          "localMs": 2.89990234375,
+          "peerMs": 63345.5,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 49,
+          "offerAt": 1792656753784,
+          "localMs": 2.699951171875,
+          "peerMs": 62845.5,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 50,
+          "offerAt": 1792656754284,
+          "localMs": 5.199951171875,
+          "peerMs": 62580.199951171875,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 51,
+          "offerAt": 1792656754784,
+          "localMs": 2.5,
+          "peerMs": 62080.199951171875,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 52,
+          "offerAt": 1792656755285,
+          "localMs": 2.599853515625,
+          "peerMs": 61579.199951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 53,
+          "offerAt": 1792656755785,
+          "localMs": 2.199951171875,
+          "peerMs": 61079.199951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 54,
+          "offerAt": 1792656756284,
+          "localMs": 2.39990234375,
+          "peerMs": 60913.400146484375,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 55,
+          "offerAt": 1792656756785,
+          "localMs": 3.5,
+          "peerMs": 60412.400146484375,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 56,
+          "offerAt": 1792656757284,
+          "localMs": 4.099853515625,
+          "peerMs": 59913.400146484375,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 57,
+          "offerAt": 1792656757785,
+          "localMs": 3.699951171875,
+          "peerMs": 59653.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 58,
+          "offerAt": 1792656758285,
+          "localMs": 2.39990234375,
+          "peerMs": 60746.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 59,
+          "offerAt": 1792656758785,
+          "localMs": 2.199951171875,
+          "peerMs": 60246.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 60,
+          "offerAt": 1792656759285,
+          "localMs": 2.599853515625,
+          "peerMs": 59746.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 61,
+          "offerAt": 1792656759785,
+          "localMs": 2.300048828125,
+          "peerMs": 59246.800048828125,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 62,
+          "offerAt": 1792656760285,
+          "localMs": 2.800048828125,
+          "peerMs": 58964.199951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 63,
+          "offerAt": 1792656760784,
+          "localMs": 3.199951171875,
+          "peerMs": 58465.199951171875,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 64,
+          "offerAt": 1792656761285,
+          "localMs": 6.699951171875,
+          "peerMs": 57964.199951171875,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 65,
+          "offerAt": 1792656761784,
+          "localMs": 2.699951171875,
+          "peerMs": 57465.199951171875,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 66,
+          "offerAt": 1792656762284,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 67,
+          "offerAt": 1792656762784,
+          "localMs": 5.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 68,
+          "offerAt": 1792656763284,
+          "localMs": 4.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 69,
+          "offerAt": 1792656763784,
+          "localMs": 3.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 70,
+          "offerAt": 1792656764285,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 71,
+          "offerAt": 1792656764785,
+          "localMs": 3.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 72,
+          "offerAt": 1792656765285,
+          "localMs": 4.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 73,
+          "offerAt": 1792656765785,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 74,
+          "offerAt": 1792656766285,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 75,
+          "offerAt": 1792656766784,
+          "localMs": 4.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 76,
+          "offerAt": 1792656767285,
+          "localMs": 3.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 77,
+          "offerAt": 1792656767784,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 78,
+          "offerAt": 1792656768285,
+          "localMs": 2.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 79,
+          "offerAt": 1792656768784,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 80,
+          "offerAt": 1792656769285,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 81,
+          "offerAt": 1792656769785,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 82,
+          "offerAt": 1792656770285,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 83,
+          "offerAt": 1792656770784,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 84,
+          "offerAt": 1792656771285,
+          "localMs": 2.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 85,
+          "offerAt": 1792656771785,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 86,
+          "offerAt": 1792656772284,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 87,
+          "offerAt": 1792656772784,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 88,
+          "offerAt": 1792656773285,
+          "localMs": 2.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 89,
+          "offerAt": 1792656773785,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 90,
+          "offerAt": 1792656774285,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 91,
+          "offerAt": 1792656774785,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 92,
+          "offerAt": 1792656775284,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 93,
+          "offerAt": 1792656775784,
+          "localMs": 3.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 94,
+          "offerAt": 1792656776285,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 95,
+          "offerAt": 1792656776784,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 96,
+          "offerAt": 1792656777285,
+          "localMs": 1.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 97,
+          "offerAt": 1792656777786,
+          "localMs": 2.599853515625,
+          "peerMs": null,
+          "offerLatenessMs": 2
+        },
+        {
+          "index": 98,
+          "offerAt": 1792656778285,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 99,
+          "offerAt": 1792656778785,
+          "localMs": 2.099853515625,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 100,
+          "offerAt": 1792656779284,
+          "localMs": 2.39990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 101,
+          "offerAt": 1792656779784,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 102,
+          "offerAt": 1792656780284,
+          "localMs": 2.800048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 103,
+          "offerAt": 1792656780785,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 104,
+          "offerAt": 1792656781284,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 105,
+          "offerAt": 1792656781785,
+          "localMs": 4.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 106,
+          "offerAt": 1792656782284,
+          "localMs": 3.5,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 107,
+          "offerAt": 1792656782784,
+          "localMs": 3,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 108,
+          "offerAt": 1792656783284,
+          "localMs": 1.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 109,
+          "offerAt": 1792656783784,
+          "localMs": 2.89990234375,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 110,
+          "offerAt": 1792656784285,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 111,
+          "offerAt": 1792656784785,
+          "localMs": 2.5,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 112,
+          "offerAt": 1792656785285,
+          "localMs": 2.699951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 113,
+          "offerAt": 1792656785785,
+          "localMs": 2,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 114,
+          "offerAt": 1792656786285,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 115,
+          "offerAt": 1792656786784,
+          "localMs": 3.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 116,
+          "offerAt": 1792656787284,
+          "localMs": 4.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 0
+        },
+        {
+          "index": 117,
+          "offerAt": 1792656787785,
+          "localMs": 6.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 118,
+          "offerAt": 1792656788285,
+          "localMs": 4,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 119,
+          "offerAt": 1792656788785,
+          "localMs": 2.300048828125,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        },
+        {
+          "index": 120,
+          "offerAt": 1792656789285,
+          "localMs": 2.199951171875,
+          "peerMs": null,
+          "offerLatenessMs": 1
+        }
+      ],
+      "trustedFocusedInputs": 120,
+      "membershipStateChanged409s": 6,
+      "removalInsufficientScope403s": 6,
+      "historyCheckpoint409s": 0,
+      "historyCheckpointObservedReasons": {},
+      "quiet429s": 0,
+      "quietRequests": {
+        "/account/delivery/read-v2": {
+          "count": 8,
+          "latencyMs": {
+            "n": 8,
+            "p50": 201,
+            "p95": 1067,
+            "min": 181,
+            "max": 1067
+          }
+        },
+        "/account/delivery/read-v2-batch": {
+          "count": 17,
+          "latencyMs": {
+            "n": 17,
+            "p50": 228,
+            "p95": 360,
+            "min": 174,
+            "max": 360
+          }
+        },
+        "/account/grant/v1/begin": {
+          "count": 6,
+          "latencyMs": {
+            "n": 6,
+            "p50": 285,
+            "p95": 377,
+            "min": 230,
+            "max": 377
+          }
+        },
+        "/account/history/v1/checkpoint": {
+          "count": 2,
+          "latencyMs": {
+            "n": 2,
+            "p50": 531,
+            "p95": 676,
+            "min": 531,
+            "max": 676
+          }
+        },
+        "/account/membership/v2/discover": {
+          "count": 8,
+          "latencyMs": {
+            "n": 8,
+            "p50": 2525,
+            "p95": 2848,
+            "min": 515,
+            "max": 2848
+          }
+        }
+      },
+      "automaticOriginalRecoveryMsAfterLoadStop": 1933,
+      "automaticPendingConvergenceMs": 1316,
+      "coldWriterArchiveExact": true,
+      "guards": {
+        "offlineWriterColdProfile": true,
+        "all120Keys": true,
+        "pendingMarkerDurable": true,
+        "automaticPendingWholeExportConvergence": true,
+        "reverseWriting": true,
+        "undoRedo": true,
+        "offlinePeerColdProfile": true,
+        "noCrossAccountMarkers": true
+      },
+      "backgroundReplay": [
+        {
+          "label": "H1",
+          "startedAt": 1792656729784,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656819509
+        },
+        {
+          "label": "H2",
+          "startedAt": 1792656729784,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656819522
+        },
+        {
+          "label": "H3",
+          "startedAt": 1792656729784,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656819534
+        },
+        {
+          "label": "H4",
+          "startedAt": 1792656729784,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656819546
+        },
+        {
+          "label": "H5",
+          "startedAt": 1792656729784,
+          "outcome": "censored-at-load-stop",
+          "finishedAt": 1792656819557
+        },
+        {
+          "label": "M1",
+          "startedAt": 1792656729784,
+          "completedAt": 1792656782565,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "clockBrackets": [
+        {
+          "maxRoundTripMs": 2,
+          "rendererMinusHostOffsetBounds": [
+            [
+              -0.10009765625,
+              1.89990234375
+            ],
+            [
+              -0.300048828125,
+              0.699951171875
+            ],
+            [
+              -0.300048828125,
+              0.699951171875
+            ],
+            [
+              -0.10009765625,
+              0.89990234375
+            ],
+            [
+              -0.10009765625,
+              0.89990234375
+            ]
+          ]
+        },
+        {
+          "maxRoundTripMs": 1,
+          "rendererMinusHostOffsetBounds": [
+            [
+              0,
+              1
+            ],
+            [
+              0.199951171875,
+              1.199951171875
+            ],
+            [
+              0.300048828125,
+              1.300048828125
+            ],
+            [
+              0.300048828125,
+              1.300048828125
+            ],
+            [
+              0.300048828125,
+              1.300048828125
+            ]
+          ]
+        }
+      ],
+      "metrics": {
+        "requests": 868,
+        "statuses": {
+          "200": 844,
+          "403": 6,
+          "409": 6
+        },
+        "cpu": {
+          "user": 83948288,
+          "system": 8556544
+        },
+        "elapsedMs": 105361.037506,
+        "eventLoopUtilization": {
+          "idle": 18521.208669000003,
+          "active": 86839.89896199998,
+          "utilization": 0.8242120922469253
+        },
+        "loopDelayMs": {
+          "p50": 10.239999,
+          "p95": 31.850495,
+          "p99": 44.040191,
+          "max": 153.223167
+        },
+        "rssStart": 150568960,
+        "rssEnd": 207462400,
+        "rssSampledPeak": 240984064,
+        "rssSamples": 4281,
+        "cgroupBefore": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 1665129\nuser_usec 1452474\nsystem_usec 212655\nnice_usec 0\nnr_periods 55\nnr_throttled 11\nthrottled_usec 281483\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "99106816",
+          "memory.peak": "99106816",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        },
+        "cgroupAfter": {
+          "cpu.max": "100000 100000",
+          "cpu.stat": "usage_usec 94169100\nuser_usec 85400896\nsystem_usec 8768204\nnice_usec 0\nnr_periods 1108\nnr_throttled 910\nthrottled_usec 24188223\nnr_bursts 0\nburst_usec 0",
+          "memory.max": "1073741824",
+          "memory.swap.max": "0",
+          "memory.current": "162869248",
+          "memory.peak": "197410816",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+          "pids.max": "128"
+        }
+      }
+    }
+  ]
+}

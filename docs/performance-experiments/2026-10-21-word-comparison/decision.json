@@ -1,0 +1,14 @@
+{
+  "boundedExperimentComplete": true,
+  "candidateAccepted": false,
+  "workingRuntimeChanged": false,
+  "reason": "All three duplicate-pressure catchup/peer-latency pairs miss the predeclared<=1.10R guard despite faster local typing and passing data checks.",
+  "candidatePreservedForFurtherRepair": true,
+  "testsAdded": 6,
+  "oldTestsRemoved": 0,
+  "narrowFixtureChange": "Two exact overall case counts2481\u21922487; title updated where it contains that count.",
+  "nextBoundedTarget": "Discriminate the client pacing / scoped request-admission interaction. Candidate has28\u201331HTTP429s vs10\u201312in matched references. Existing scoped transport retries explicit capacity refusals after1s/2s. This is a hypothesis, not causal attribution; trace rate vs concurrency refusal and exact retry timelines before repair. Preserve same-byte retry, authority capture, deadlines, admission bounds and fairness. Do not adopt numeric rate changes from these data.",
+  "workingDefaults": "16/session64/process",
+  "temporaryMeasuredPolicy": "32/session128/process",
+  "generalQualificationPaused": true
+}

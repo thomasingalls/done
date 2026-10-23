@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "underlyingWholeLabAstExactAfterOnlyHostObservationsReversed": true,
+  "originalInputsSchedulingBranchesAwaitsGatesAndWorkloadExact": true,
+  "originalDomObserverAnd110ClientFilesExact": true,
+  "allNativeProtocolAndAppSourceBytesExactOriginal30": true,
+  "removedHostObservations": {
+    "clockFunction": 1,
+    "beforeKey": 1,
+    "afterKey": 1,
+    "beforeWindow": 1,
+    "afterWindow": 1,
+    "postBrackets": 1,
+    "extraOfferFields": 2
+  }
+}

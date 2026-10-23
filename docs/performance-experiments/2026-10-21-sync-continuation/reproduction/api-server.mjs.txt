@@ -1,0 +1,31 @@
+import {readFileSync,copyFileSync,mkdirSync} from 'node:fs';
+import {createServer} from 'node:http';
+import {performance,monitorEventLoopDelay} from 'node:perf_hooks';
+const root='/private/tmp/done-sync-continuation-20261021',source=process.argv[2],state=process.argv[3];mkdirSync(state,{recursive:false,mode:0o700});
+const data=JSON.parse(readFileSync(root+'/private-api/fixture.json')),key=Buffer.from(data.authorityKey,'hex');
+copyFileSync(root+'/private-api/account.sqlite',state+'/account.sqlite');copyFileSync(root+'/private-api/authority.sqlite',state+'/authority.sqlite');
+const {AccountCore}=await import(source+'/account-service/core.ts'),{PrivateAuthority}=await import(source+'/account-service/authority.ts'),{createScopedAccountHandler}=await import(source+'/account-service/scoped-http.ts');
+const authority=PrivateAuthority.open(state+'/authority.sqlite',data.pin,key),core=new AccountCore(state+'/account.sqlite',{origin:data.pin.origin,rpId:data.pin.rpId},{sessions:{pin:data.pin,operatorKey:key}});
+let metrics,interval,delayHistogram;
+const owner=new Proxy(authority,{get(target,name){const value=Reflect.get(target,name);if(typeof value!=='function')return value;if(name==='readInbound')return async(...args)=>{const m=metrics,at=performance.now();if(m){m.startedReads++;m.readActive++;m.peakReadActive=Math.max(m.peakReadActive,m.readActive)}try{return await value.apply(target,args)}finally{if(m){m.readActive--;m.readMs.push(performance.now()-at)}}};return value.bind(target)}});
+const handler=createScopedAccountHandler(core,owner,data.pin),server=createServer((req,res)=>void handler(req,res));await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const report=(id,body)=>process.send?.({id,...body});
+process.on('message',async msg=>{
+ try{
+  if(msg.kind==='grant'){
+   const s=data[msg.who].sessions[msg.index??0],access=core.sessions.renew({sessionId:s.sessionId,renewalToken:s.renewalToken});
+   if(access.stage!=='access')throw Error('Fresh session renewal refused');
+   const scope={kind:'workspace',workspaceId:data[msg.who].workspace,credentialId:data[msg.who].credential},view=await authority.beginGrant(core,access.accessToken,scope);
+   report(msg.id,{view,access});
+  }else if(msg.kind==='finishGrant')report(msg.id,{result:await core.grants.finish(msg.access,msg.proof)});
+  else if(msg.kind==='start'){
+   delayHistogram=monitorEventLoopDelay({resolution:10});delayHistogram.enable();
+   metrics={startedReads:0,readActive:0,peakReadActive:0,readMs:[],cpu:process.cpuUsage(),start:performance.now(),elu:performance.eventLoopUtilization(),rss:[process.memoryUsage().rss]};
+   interval=setInterval(()=>{const rss=process.memoryUsage().rss;metrics.rss.push(rss);if(rss>1024*1024*1024){process.send?.({resourceStop:'RSS exceeded 1 GiB'});server.closeAllConnections()}},20);report(msg.id,{ok:true});
+  }else if(msg.kind==='end'){
+   clearInterval(interval);delayHistogram.disable();const m=metrics;metrics=undefined;
+   report(msg.id,{metrics:{startedReads:m.startedReads,peakReadActive:m.peakReadActive,readMs:m.readMs,elapsedMs:performance.now()-m.start,cpu:process.cpuUsage(m.cpu),eventLoopUtilization:performance.eventLoopUtilization(m.elu),loopDelayMs:{p50:delayHistogram.percentile(50)/1e6,p95:delayHistogram.percentile(95)/1e6,p99:delayHistogram.percentile(99)/1e6,max:delayHistogram.max/1e6},rssStart:m.rss[0],rssEnd:process.memoryUsage().rss,rssSampledPeak:Math.max(...m.rss),rssSamples:m.rss.length,samplingMs:20}});
+  }else if(msg.kind==='stop'){clearInterval(interval);delayHistogram?.disable();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));core.close();authority.close();key.fill(0);process.emit('publisher-tip-flush');process.send?.({id:msg.id,ok:true},()=>process.disconnect());}
+ }catch(e){report(msg.id,{error:e.stack});}
+});
+process.send?.({ready:true,port:server.address().port});

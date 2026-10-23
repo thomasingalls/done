@@ -1,0 +1,181 @@
+
+// The native ledger remains live even when its immutable authority proof is warm.
+async function stableRead(h, { after = 0, issuer = publicationIssuer(h), owner = h.reuse, hook = () => {}, changes = {}, group } = {}) {
+  const q = query(h.x, after, 1, changes);
+  const result = await readInbound(h.db, q, issuer, hook, owner, undefined, group);
+  return { q, result };
+}
+
+test('stable read authority shares a single proof with interleaved real publications', async (t) => {
+  const h = await harness(t), offers = publicationWork(t);
+  await h.fetch();
+  assert.equal(offers(), 1);
+  for (let n = 5; n <= 7; n++) {
+    await h.append(n);
+    await h.fetch(n - 1);
+    assert.equal(offers(), 1, 'read and publication must neither rebuild nor evict the same proof');
+  }
+});
+
+test('stable read authority survives live appends by an independent native core', async (t) => {
+  const h = await harness(t), offers = publicationWork(t);
+  await h.fetch();
+  for (let n = 5; n <= 7; n++) {
+    const w = h.x.make(n), r = await h.x.call(w);
+    h.retained.push({ w, r });
+    await h.fetch(n - 1);
+  }
+  assert.equal(offers(), 1);
+});
+
+test('stable read authority retains fresh custody replay and both signing-side checks', async (t) => {
+  const h = await harness(t), native = publicationIssuer(h), offers = publicationWork(t);
+  let checks = 0;
+  const issuer = { ...native, check(...args) { checks++; native.check(...args); } };
+  for (let i = 0; i < 3; i++) {
+    const { q, result } = await stableRead(h, { issuer });
+    pageProof(result, q, h.x, h.retained);
+    assert.equal(checks, (i + 1) * 3);
+  }
+  assert.equal(offers(), 1);
+});
+
+test('stable read authority keeps each caller signature, identity, expiry and extent fresh', async (t) => {
+  const h = await harness(t);
+  await h.fetch();
+  const { generateKeyPairSync } = await import('node:crypto');
+  const issuer = publicationIssuer(h);
+  const bad = [query(h.x, 0, 1, {}, generateKeyPairSync('ed25519').privateKey),
+    ...[{ reader: 'aa'.repeat(16) }, { epoch: 2 }, { expires: Date.now() - 1 },
+      { origin: 'https://elsewhere.test' }, { after: 5 }].map(v => query(h.x, 0, 1, v))];
+  for (const q of bad) assert.equal((await readInbound(h.db, q, issuer, () => {}, h.reuse)).kind, 'unknown');
+  await h.fetch();
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 4);
+});
+
+test('stable read authority refuses a freshly corrupt signed ledger witness after a real append', async (t) => {
+  const h = await harness(t);
+  await h.fetch();
+  assert.equal((await h.x.call(h.x.make(5))).kind, 'decision');
+  const witness = JSON.parse(h.db.prepare('SELECT delivery_witness FROM promotions').get().delivery_witness);
+  witness.signature = '00'.repeat(64);
+  h.db.prepare('UPDATE promotions SET delivery_witness=?').run(JSON.stringify(witness));
+  assert.deepEqual((await stableRead(h)).result, { kind: 'unknown', reason: 'ledger-integrity' });
+});
+
+test('stable read authority never serves substituted bytes from a warm witnessed prefix', async (t) => {
+  const h = await harness(t);
+  await h.fetch();
+  const row = h.db.prepare('SELECT submission FROM delivery_decisions WHERE position=1').get();
+  const bytes = new Uint8Array(row.submission); bytes[bytes.length - 1] ^= 1;
+  h.db.prepare('UPDATE delivery_decisions SET submission=? WHERE position=1').run(bytes);
+  assert.equal((await stableRead(h)).result.kind, 'unknown');
+});
+
+test('stable read authority still performs current transaction authorization and completion', async (t) => {
+  const h = await harness(t), native = publicationIssuer(h);
+  await h.fetch();
+  const { AuthorizationRefused } = await import('../../account-service/authorization.ts');
+  for (const completion of [false, true]) {
+    let calls = 0;
+    const issuer = { ...native, authorize() { calls++; if (!completion) throw new AuthorizationRefused('sign-in-required'); return () => { calls++; throw new AuthorizationRefused('sign-in-required'); }; } };
+    await assert.rejects(stableRead(h, { issuer }), AuthorizationRefused);
+    assert.equal(calls, completion ? 2 : 1);
+    assert.equal(h.db.isTransaction, false);
+    await h.fetch();
+  }
+});
+
+test('stable read authority rejects expired requests after synchronous signing', async (t) => {
+  const h = await harness(t), native = publicationIssuer(h);
+  await h.fetch();
+  const now = Date.now(), issuer = { ...native, inboundPage(...args) { const answer = native.inboundPage(...args); t.mock.method(Date, 'now', () => now + 61000); return answer; } };
+  assert.deepEqual((await stableRead(h, { issuer })).result, { kind: 'unknown', reason: 'invalid-request' });
+  assert.equal(h.db.isTransaction, false);
+});
+
+test('stable read authority retains every future native promotion field in its proof context', async (t) => {
+  const h = await harness(t), offers = publicationWork(t);
+  h.db.exec("ALTER TABLE promotions ADD COLUMN future_read TEXT; UPDATE promotions SET future_read='one'");
+  await h.fetch();
+  h.db.exec("UPDATE promotions SET future_read='two'");
+  await h.fetch(); await h.fetch();
+  assert.equal(offers(), 2);
+});
+
+test('stable read authority oversize contexts always reverify rather than retain evidence', async (t) => {
+  const h = await harness(t), offers = publicationWork(t);
+  h.db.exec('ALTER TABLE promotions ADD COLUMN future_read TEXT');
+  h.db.prepare('UPDATE promotions SET future_read=?').run('x'.repeat(2 * 1024 * 1024));
+  await h.fetch(); await h.fetch();
+  assert.equal(offers(), 2);
+});
+
+test('stable read authority clear and close cannot revive a retained proof', async (t) => {
+  const h = await harness(t), offers = publicationWork(t);
+  await h.fetch(); h.reuse.clear(); await h.fetch(); await h.fetch();
+  assert.equal(offers(), 2);
+  h.reuse.close();
+  assert.equal((await stableRead(h)).result.kind, 'unknown');
+});
+
+test('stable read authority fails closed when clear races the initial proof', async (t) => {
+  const h = await harness(t), verify = crypto.subtle.verify.bind(crypto.subtle);
+  let offers = 0;
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1')) && ++offers === 1) h.reuse.clear();
+    return verify(...args);
+  });
+  assert.equal((await stableRead(h)).result.kind, 'unknown');
+  await h.fetch(); await h.fetch();
+  assert.equal(offers, 2);
+});
+
+test('stable read authority failures cannot hide repaired or changed native authority and pin', async (t) => {
+  const h = await harness(t), native = publicationIssuer(h), offers = publicationWork(t);
+  await h.fetch();
+  const old = h.db.prepare('SELECT result FROM promotions').get().result, receipt = JSON.parse(old);
+  receipt.signature = '00'.repeat(64); h.db.prepare('UPDATE promotions SET result=?').run(JSON.stringify(receipt));
+  for (let i = 0; i < 2; i++) assert.equal((await stableRead(h)).result.kind, 'unknown');
+  h.db.prepare('UPDATE promotions SET result=?').run(old);
+  await h.fetch(); await h.fetch();
+  assert.equal(offers(), 4);
+  assert.equal((await stableRead(h, { issuer: { ...native, pin: { ...native.pin, authRoot: 'ff'.repeat(32) } } })).result.kind, 'unknown');
+  await h.fetch();
+});
+
+test('stable read authority without a core pool keeps strict independent group verification', async (t) => {
+  const h = await harness(t), offers = publicationWork(t), owner = { ...h.reuse, authority: undefined };
+  const { createInboundAuthorityReuse } = await import('../../account-service/inboundAuthorityReuse.ts');
+  const group = createInboundAuthorityReuse(); t.after(() => group.close());
+  for (let n = 4; n <= 6; n++) {
+    if (n > 4) { const w = h.x.make(n), r = await h.x.call(w); h.retained.push({ w, r }); }
+    const { q, result } = await stableRead(h, { owner, group });
+    pageProof(result, q, h.x, h.retained);
+  }
+  assert.equal(offers(), 3, 'without core ownership each live witness change retains strict context');
+});
+
+test('stable read authority separates accounts sharing the same bounded proof pool', async (t) => {
+  const a = await harness(t), b = await harness(t), offers = publicationWork(t);
+  const owner = { ...b.reuse, authority: a.reuse.authority };
+  await a.fetch();
+  let r = await stableRead(b, { owner }); pageProof(r.result, r.q, b.x, b.retained);
+  await a.append(); await a.fetch(4);
+  const w = b.x.make(5), result = await b.x.call(w); b.retained.push({ w, r: result });
+  r = await stableRead(b, { owner, after: 4 }); pageProof(r.result, r.q, b.x, b.retained);
+  assert.equal(offers(), 2);
+  assert.notEqual(a.x.workspace, b.x.workspace);
+});
+
+test('stable read authority retains fresh final native checks and the four-attempt fence', async (t) => {
+  const h = await harness(t); await h.fetch();
+  let hits = 0;
+  const hook = (phase, op) => { if (phase === 'after-verify' && op === 'read-inbound') {
+    hits++; const row = h.db.prepare("SELECT result FROM attempts WHERE mode='register'").get(), value = JSON.parse(row.result);
+    value.receiptId = 'race-' + hits; h.db.prepare("UPDATE attempts SET result=? WHERE mode='register'").run(JSON.stringify(value));
+  } };
+  assert.deepEqual((await stableRead(h, { hook })).result, { kind: 'unknown', reason: 'state-changed' });
+  assert.equal(hits, 4);
+  await h.fetch();
+});

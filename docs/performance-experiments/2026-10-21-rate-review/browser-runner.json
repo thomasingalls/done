@@ -1,0 +1,182 @@
+[
+  {
+    "name": "catchup-1-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": false,
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-D",
+    "startedAt": 1792600149341,
+    "completedAt": 1792600199397,
+    "exitCode": 0
+  },
+  {
+    "name": "catchup-1-S",
+    "arm": "S",
+    "mode": "catchup",
+    "pressure": false,
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-S",
+    "startedAt": 1792600199400,
+    "completedAt": 1792600236913,
+    "exitCode": 0
+  },
+  {
+    "name": "catchup-2-S",
+    "arm": "S",
+    "mode": "catchup",
+    "pressure": false,
+    "block": 2,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-S",
+    "startedAt": 1792600236916,
+    "completedAt": 1792600274033,
+    "exitCode": 0
+  },
+  {
+    "name": "catchup-2-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": false,
+    "block": 2,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-D",
+    "startedAt": 1792600274035,
+    "completedAt": 1792600321901,
+    "exitCode": 0
+  },
+  {
+    "name": "catchup-3-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": false,
+    "block": 3,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-D",
+    "startedAt": 1792600321903,
+    "completedAt": 1792600370852,
+    "exitCode": 0
+  },
+  {
+    "name": "catchup-3-S",
+    "arm": "S",
+    "mode": "catchup",
+    "pressure": false,
+    "block": 3,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-S",
+    "startedAt": 1792600370855,
+    "completedAt": 1792600408004,
+    "exitCode": 0
+  },
+  {
+    "name": "foreground-D",
+    "arm": "D",
+    "mode": "foreground",
+    "pressure": false,
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-D",
+    "startedAt": 1792600408006,
+    "completedAt": 1792600463031,
+    "exitCode": 0
+  },
+  {
+    "name": "foreground-S",
+    "arm": "S",
+    "mode": "foreground",
+    "pressure": false,
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-S",
+    "startedAt": 1792600463034,
+    "completedAt": 1792600518750,
+    "exitCode": 0
+  },
+  {
+    "name": "pressure-D",
+    "arm": "D",
+    "mode": "catchup",
+    "pressure": true,
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-D",
+    "startedAt": 1792600518753,
+    "completedAt": 1792600668634,
+    "exitCode": 0
+  },
+  {
+    "name": "pressure-S",
+    "arm": "S",
+    "mode": "catchup",
+    "pressure": true,
+    "block": 1,
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-rate-review-20261021/source-S",
+    "startedAt": 1792600668637,
+    "completedAt": 1792600712390,
+    "exitCode": 0
+  }
+]

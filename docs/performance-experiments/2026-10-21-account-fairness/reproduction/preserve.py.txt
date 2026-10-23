@@ -1,0 +1,35 @@
+from pathlib import Path
+import json,hashlib,gzip
+r=Path(__file__).parent;dest=r/'evidence-build-v2';dest.mkdir();sha=lambda b:hashlib.sha256(b).hexdigest();provenance={}
+def put(f,name,compress=False):
+ b=f.read_bytes();p=dest/(name+('.gz'if compress else''));p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0)if compress else b);provenance[str(p.relative_to(dest))]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+for f in sorted(r.iterdir()):
+ if not f.is_file():continue
+ if f.suffix=='.md':put(f,f.name)
+ elif f.suffix=='.json':put(f,f.name,f.stat().st_size>25000)
+ elif f.suffix=='.log':put(f,'checks/'+f.name,True)
+ elif f.suffix in ['.py','.mjs']or f.name.endswith('.txt'):put(f,'reproduction/'+f.name+(''if f.name.endswith('.txt')else'.txt'))
+for f in sorted((r/'source/test/account-fairness-lab').iterdir()):
+ if f.is_file():put(f,'reproduction/browser/'+f.name+'.txt')
+put(r/'source/test/device-enrollment/helpers.ts','reproduction/existing-device-enrollment-helpers.ts.txt')
+for f in sorted((r/'new-lab-before-type-fixes').iterdir()):
+ if f.is_file():put(f,'reproduction/initial-seed-harness/'+f.name)
+for folder in sorted(r.glob('seed-attempt-*')):
+ for name in ['seed-check.json','runner.json','invocation.log','services.log','docker-command.json','container-identity.json']:
+  if(folder/name).exists():put(folder/name,'seed-attempts/'+folder.name+'/'+name,True)
+for case in json.loads((r/'run-plan.json').read_text()):
+ folder=r/case['name']
+ for name in ['result.json','runner.json','invocation.log','services.log','docker-command.json','container-identity.json']:
+  if(folder/name).exists():put(folder/name,'runs/'+case['name']+'/'+name,True)
+for f in sorted((r/'packaging-attempt-1').iterdir()):
+ if f.is_file():put(f,'packaging-history/'+f.name,True)
+fixture=json.loads((r/'private-fixture/fixture.json').read_text());values=set()
+for account in fixture['accounts']:
+ for actor in account['actors']:
+  strings=[actor['code']]+[c[k]for c in actor['credentials']for k in ['privateKey','credentialId','userHandle']if c.get(k)]
+  for s in strings:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+key=(Path(fixture['state'])/'operator.key').read_bytes();values.update([key,key.hex().encode()]);
+for f in dest.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.name.endswith('.gz')else b;assert not any(v in b for v in values),str(f.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownPrivateRawEscapedAndOperatorValues':len(values),'matches':0,'scope':'Explicit numeric/closed-label/source/hash whitelist; no private fixture/DB/profile/browser storage/key/code/token/environment. Known-value scan is not universal DLP.'},indent=2)+'\n');print(len(provenance),'artifacts preserved;',len(values),'known private values,0matches')

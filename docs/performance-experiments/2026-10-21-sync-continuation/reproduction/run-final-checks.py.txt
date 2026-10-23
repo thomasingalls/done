@@ -1,0 +1,12 @@
+from pathlib import Path
+import os,subprocess,json
+r=Path(__file__).parent;env=dict(os.environ,PATH='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']);receipts=[]
+native=['trace-pilot']+[x['output'] for x in json.loads((r/'native-plan.json').read_text())]+['full-trace','full-default']+[x['name'] for x in json.loads((r/'discriminator-plan.json').read_text())]
+for folder in native:
+ with (r/(folder+'-cold-audit.log')).open('w') as log:rc=subprocess.run(['node',str(r/'audit-api.mjs'),folder],env=env,stdout=log,stderr=subprocess.STDOUT).returncode
+ receipts.append({'check':'cold-'+folder,'returncode':rc});assert rc==0,folder
+checks=[('publisher-tip-invariants',['node','--import',str(r/'throwing-observer.mjs'),'--test','--test-concurrency=1','test/account-service-delivery/publisher-tips.test.mjs'],r/'source-trace'),('default-budget-invariants',['node','--test','--test-concurrency=1','test/account-sessions/request-budget.test.mjs','test/account-sessions/request-budget-work.test.mjs','test/account-sessions/inbound-batch-budget.test.mjs'],r/'source-D')]
+for name,command,cwd in checks:
+ with (r/(name+'.log')).open('w') as log:rc=subprocess.run(command,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT).returncode
+ receipts.append({'check':name,'returncode':rc});assert rc==0,name
+(r/'check-receipts.json').write_text(json.dumps(receipts,indent=2)+'\n');print(json.dumps(receipts,indent=2))

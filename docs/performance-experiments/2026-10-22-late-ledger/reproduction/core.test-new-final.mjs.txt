@@ -1,0 +1,203 @@
+// Late-capture cases use genuine same-connection commits and independent Node/OpenSSL page proofs.
+async function lateLedgerFixture(t) {
+  const { DatabaseSync } = await import('node:sqlite');
+  const { createDeliveryVerification } =
+    await import('../../account-service/deliveryVerification.ts');
+  const { readInbound, decideSubmission } = await import('../../account-service/delivery.ts');
+  const x = await ready(t),
+    db = new DatabaseSync(x.f.path);
+  const reuse = createDeliveryVerification({ db, path: x.f.path, signal: () => {} });
+  t.after(() => {
+    reuse.close();
+    db.close();
+  });
+  const issuer = x.authority.owner.decideSubmission(
+    { decideSubmission: (_input, issuer) => issuer },
+    {},
+  );
+  const retained = [];
+  const append = async () => {
+    const w = x.make(retained.length + 1),
+      r = await decideSubmission(
+        db,
+        { workspaceId: x.workspace, bytes: w.bytes },
+        issuer,
+        () => {},
+        reuse,
+      );
+    const { proof, link, ZERO } = await import('../account-service-delivery/fixtures.mjs');
+    let previous = ZERO;
+    for (const item of retained) previous = link(item.w.subject, previous);
+    assert.equal(
+      proof(r, x.offer.epoch.acceptancePublicKey, w.subject, previous, w.parent).kind,
+      'accepted',
+    );
+    retained.push({ w, r });
+  };
+  return {
+    x,
+    db,
+    reuse,
+    issuer,
+    retained,
+    append,
+    run: (q, hook = () => {}, i = issuer) => readInbound(db, q, i, hook, reuse),
+  };
+}
+function lateLedgerRequestCut(t, q, cut) {
+  const unsigned = Buffer.from(JSON.stringify(JSON.parse(Buffer.from(q).toString()).slice(0, -1))),
+    verify = crypto.subtle.verify.bind(crypto.subtle);
+  let calls = 0;
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (Buffer.from(args[3]).equals(unsigned)) await cut(++calls);
+    return verify(...args);
+  });
+  return () => calls;
+}
+
+test('v2 late-ledger accepts a genuine append on every request-verification cut in one attempt', async (t) => {
+  const h = await lateLedgerFixture(t);
+  await h.append();
+  const q = query(h.x, 0, 8);
+  pageProof(await h.run(q), q, h.x, h.retained);
+  const calls = lateLedgerRequestCut(t, q, async () => {
+    assert.equal(h.db.isTransaction, false, 'no native transaction spans async verification');
+    await h.append();
+  });
+  pageProof(await h.run(q), q, h.x, h.retained);
+  assert.equal(
+    calls(),
+    1,
+    'ordinary appends during authority/request verification cannot spend ledger retries',
+  );
+  assert.equal(h.retained.length, 2);
+});
+
+test('v2 late-ledger does not capture publisher-prefix evidence before authenticating the request', async (t) => {
+  const h = await lateLedgerFixture(t),
+    capture = h.reuse.tips.capture.bind(h.reuse.tips),
+    q = query(h.x);
+  let captures = 0;
+  t.mock.method(h.reuse.tips, 'capture', (...args) => {
+    captures++;
+    return capture(...args);
+  });
+  lateLedgerRequestCut(t, q, async () => assert.equal(captures, 0));
+  pageProof(await h.run(q), q, h.x, []);
+  assert.equal(captures, 1);
+});
+
+for (const fault of ['account', 'credential', 'recovery', 'promotion'])
+  test(`v2 late-ledger withholds bytes when ${fault} authority changes during request verification`, async (t) => {
+    const h = await lateLedgerFixture(t),
+      q = query(h.x);
+    const sql = {
+      account: "UPDATE accounts SET state='pending'",
+      credential: "UPDATE credentials SET state='revoked'",
+      recovery: "UPDATE recovery SET draft='{}'",
+      promotion: "UPDATE promotions SET offer='{}'",
+    }[fault];
+    lateLedgerRequestCut(t, q, async () => h.db.exec(sql));
+    const answer = await h.run(q);
+    assert.equal(answer.kind, 'unknown');
+    assert.equal('bytes' in answer, false);
+    assert.equal(h.db.isTransaction, false);
+  });
+
+test('v2 late-ledger compares future native header fields and retains the four-authority-change bound', async (t) => {
+  const h = await lateLedgerFixture(t);
+  h.db.exec("ALTER TABLE promotions ADD COLUMN future_authority TEXT NOT NULL DEFAULT 'initial'");
+  const q = query(h.x),
+    calls = lateLedgerRequestCut(t, q, async (n) =>
+      h.db.prepare('UPDATE promotions SET future_authority=?').run('changed-' + n),
+    );
+  assert.deepEqual(await h.run(q), { kind: 'unknown', reason: 'state-changed' });
+  assert.equal(calls(), 4);
+});
+
+test('v2 late-ledger compares harmless byte changes to retained recovery authority before reusing it', async (t) => {
+  const h = await lateLedgerFixture(t),
+    q = query(h.x);
+  const calls = lateLedgerRequestCut(t, q, async () =>
+    h.db.exec("UPDATE recovery SET draft=draft||' '"),
+  );
+  assert.deepEqual(await h.run(q), { kind: 'unknown', reason: 'state-changed' });
+  assert.equal(calls(), 4);
+});
+
+test('v2 late-ledger authenticates the fresh served row instead of retaining old row bytes', async (t) => {
+  const h = await lateLedgerFixture(t);
+  await h.append();
+  const q = query(h.x);
+  lateLedgerRequestCut(t, q, async () =>
+    h.db.exec("UPDATE delivery_decisions SET submission=X'00' WHERE position=1"),
+  );
+  assert.deepEqual(await h.run(q), { kind: 'unknown', reason: 'ledger-integrity' });
+});
+
+test('v2 late-ledger retains four final owner fences for real appends after the fresh capture', async (t) => {
+  const h = await lateLedgerFixture(t);
+  await h.append();
+  const warm = query(h.x, 0, 8);
+  pageProof(await h.run(warm), warm, h.x, h.retained);
+  const capture = h.reuse.tips.capture.bind(h.reuse.tips),
+    verify = crypto.subtle.verify.bind(crypto.subtle);
+  let armed = false,
+    appending = false,
+    cuts = 0;
+  t.mock.method(h.reuse.tips, 'capture', (...args) => {
+    const s = capture(...args);
+    if (!appending) armed = true;
+    return s;
+  });
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (armed && !appending) {
+      armed = false;
+      cuts++;
+      appending = true;
+      try {
+        await h.append();
+      } finally {
+        appending = false;
+      }
+    }
+    return verify(...args);
+  });
+  const q = query(h.x, 0, 8);
+  assert.deepEqual(await h.run(q), { kind: 'unknown', reason: 'state-changed' });
+  assert.equal(cuts, 4);
+  t.mock.restoreAll();
+  pageProof(await h.run(q), q, h.x, h.retained);
+});
+
+test('v2 late-ledger cannot outlive closed verifier ownership at the recapture boundary', async (t) => {
+  const h = await lateLedgerFixture(t),
+    q = query(h.x);
+  lateLedgerRequestCut(t, q, async () => h.reuse.close());
+  const answer = await h.run(q);
+  assert.equal(answer.kind, 'unknown');
+  assert.equal('bytes' in answer, false);
+});
+
+test('v2 late-ledger retains current grant authorization after request verification', async (t) => {
+  const h = await lateLedgerFixture(t),
+    q = query(h.x);
+  const { AuthorizationRefused } = await import('../../account-service/authorization.ts');
+  let active = true,
+    authorizations = 0;
+  lateLedgerRequestCut(t, q, async () => {
+    active = false;
+  });
+  await assert.rejects(
+    h.run(q, () => {}, {
+      ...h.issuer,
+      authorize() {
+        authorizations++;
+        if (!active) throw new AuthorizationRefused('expired');
+      },
+    }),
+    AuthorizationRefused,
+  );
+  assert.equal(authorizations, 1);
+  assert.equal(h.db.isTransaction, false);
+});

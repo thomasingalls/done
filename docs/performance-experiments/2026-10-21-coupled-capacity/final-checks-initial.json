@@ -1,0 +1,12 @@
+[
+  {
+    "name": "linux-budget",
+    "command": [
+      "python3",
+      "/private/tmp/done-coupled-capacity-20261021/container-validation.py"
+    ],
+    "startedAt": 1792602627098,
+    "completedAt": 1792602630333,
+    "exitCode": 1
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "pairs": [
+    {
+      "boundary": "new-history-request",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "--test-name-pattern=later native slot resumes activation",
+        "test/account-ceremony/content-transfer.test.mjs"
+      ],
+      "exitCode": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "productionCommit": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "samePostCommitTestBridgeSha256": "376c7c7eb2d52426955ca16a386e582d7feb90161f56eedd46db81c8003dc76d",
+      "comparison": "Same whole post-commit main test bridge used in the prior failing after arm; complete production/protocol/src graph stays at passing parent; no mixed native modules. This is an explicit controlled test-driver counterfactual, not a full historical source-tree claim."
+    },
+    {
+      "boundary": "generation-one-fresh-snapshot",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "--test-name-pattern=browser comparison by|retained connection coordinates invitation",
+        "test/account-ceremony/content-transfer.test.mjs"
+      ],
+      "exitCode": 0,
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "productionCommit": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "samePostCommitTestBridgeSha256": "376c7c7eb2d52426955ca16a386e582d7feb90161f56eedd46db81c8003dc76d",
+      "comparison": "Same whole post-commit main test bridge used in the prior failing after arm; complete production/protocol/src graph stays at passing parent; no mixed native modules. This is an explicit controlled test-driver counterfactual, not a full historical source-tree claim."
+    },
+    {
+      "boundary": "publisher-integrity-quarantine",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "--test-name-pattern=continuation certification verifies frozen publisher witnesses|three publisher ledgers",
+        "test/account-ceremony/content-transfer.test.mjs"
+      ],
+      "exitCode": 0,
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "productionCommit": "39914c6948b1f78f8eab6952609125f094639c57",
+      "samePostCommitTestBridgeSha256": "d74af5bc2326e88f0e7b36024518ce90925373e494b221f6c14c5d7bf77c52b6",
+      "comparison": "Same whole post-commit main test bridge used in the prior failing after arm; complete production/protocol/src graph stays at passing parent; no mixed native modules. This is an explicit controlled test-driver counterfactual, not a full historical source-tree claim."
+    }
+  ]
+}

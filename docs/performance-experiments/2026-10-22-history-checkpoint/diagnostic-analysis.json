@@ -1,0 +1,1071 @@
+[
+  {
+    "status": 409,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2
+      },
+      {
+        "tag": "history-authority",
+        "ms": 693
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 700
+      },
+      {
+        "tag": "history-signed",
+        "ms": 701
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 705,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 705,
+        "retry": 1
+      },
+      {
+        "tag": "history-captured",
+        "ms": 707
+      },
+      {
+        "tag": "history-authority",
+        "ms": 1402
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 1414
+      },
+      {
+        "tag": "history-signed",
+        "ms": 1416
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 1419,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 1419,
+        "retry": 2
+      },
+      {
+        "tag": "history-captured",
+        "ms": 1421
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2151
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2163
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2165
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2169,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 2169,
+        "retry": 3
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2171
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2858
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2867
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2868
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2872,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 2873,
+        "refusal": "state-changed"
+      }
+    ]
+  },
+  {
+    "status": 409,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 3
+      },
+      {
+        "tag": "history-authority",
+        "ms": 685
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 691
+      },
+      {
+        "tag": "history-signed",
+        "ms": 693
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 697,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 697,
+        "retry": 1
+      },
+      {
+        "tag": "history-captured",
+        "ms": 699
+      },
+      {
+        "tag": "history-authority",
+        "ms": 1410
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 1420
+      },
+      {
+        "tag": "history-signed",
+        "ms": 1423
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 1465,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 1465,
+        "retry": 2
+      },
+      {
+        "tag": "history-captured",
+        "ms": 1467
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2561
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2569
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2572
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2576,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 2576,
+        "retry": 3
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2578
+      },
+      {
+        "tag": "history-authority",
+        "ms": 3277
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 3286
+      },
+      {
+        "tag": "history-signed",
+        "ms": 3289
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 3293,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 3294,
+        "refusal": "state-changed"
+      }
+    ]
+  },
+  {
+    "status": 409,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 3
+      },
+      {
+        "tag": "history-authority",
+        "ms": 639
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 654
+      },
+      {
+        "tag": "history-signed",
+        "ms": 660
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 663,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 663,
+        "retry": 1
+      },
+      {
+        "tag": "history-captured",
+        "ms": 665
+      },
+      {
+        "tag": "history-authority",
+        "ms": 1441
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 1449
+      },
+      {
+        "tag": "history-signed",
+        "ms": 1451
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 1455,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 1455,
+        "retry": 2
+      },
+      {
+        "tag": "history-captured",
+        "ms": 1456
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2447
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2511
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2518
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2523,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 2523,
+        "retry": 3
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2526
+      },
+      {
+        "tag": "history-authority",
+        "ms": 3459
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 3511
+      },
+      {
+        "tag": "history-signed",
+        "ms": 3513
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 3518,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 3518,
+        "refusal": "state-changed"
+      }
+    ]
+  },
+  {
+    "status": 409,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 3
+      },
+      {
+        "tag": "history-authority",
+        "ms": 904
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 921
+      },
+      {
+        "tag": "history-signed",
+        "ms": 923
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 928,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 928,
+        "retry": 1
+      },
+      {
+        "tag": "history-captured",
+        "ms": 932
+      },
+      {
+        "tag": "history-authority",
+        "ms": 1811
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 1822
+      },
+      {
+        "tag": "history-signed",
+        "ms": 1824
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 1827,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 1827,
+        "retry": 2
+      },
+      {
+        "tag": "history-captured",
+        "ms": 1829
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2555
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2587
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2590
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2594,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 2594,
+        "retry": 3
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2595
+      },
+      {
+        "tag": "history-authority",
+        "ms": 3334
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 3396
+      },
+      {
+        "tag": "history-signed",
+        "ms": 3399
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 3403,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 3403,
+        "refusal": "state-changed"
+      }
+    ]
+  },
+  {
+    "status": 409,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2
+      },
+      {
+        "tag": "history-authority",
+        "ms": 764
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 772
+      },
+      {
+        "tag": "history-signed",
+        "ms": 774
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 778,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 778,
+        "retry": 1
+      },
+      {
+        "tag": "history-captured",
+        "ms": 780
+      },
+      {
+        "tag": "history-authority",
+        "ms": 1581
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 1591
+      },
+      {
+        "tag": "history-signed",
+        "ms": 1593
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 1597,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 1597,
+        "retry": 2
+      },
+      {
+        "tag": "history-captured",
+        "ms": 1599
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2298
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2346
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2353
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2357,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 2357,
+        "retry": 3
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2359
+      },
+      {
+        "tag": "history-authority",
+        "ms": 3073
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 3084
+      },
+      {
+        "tag": "history-signed",
+        "ms": 3086
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 3090,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 3090,
+        "refusal": "state-changed"
+      }
+    ]
+  },
+  {
+    "status": 409,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2
+      },
+      {
+        "tag": "history-authority",
+        "ms": 754
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 760
+      },
+      {
+        "tag": "history-signed",
+        "ms": 762
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 766,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 766,
+        "retry": 1
+      },
+      {
+        "tag": "history-captured",
+        "ms": 768
+      },
+      {
+        "tag": "history-authority",
+        "ms": 1536
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 1552
+      },
+      {
+        "tag": "history-signed",
+        "ms": 1556
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 1560,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 1561,
+        "retry": 2
+      },
+      {
+        "tag": "history-captured",
+        "ms": 1562
+      },
+      {
+        "tag": "history-authority",
+        "ms": 2335
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 2366
+      },
+      {
+        "tag": "history-signed",
+        "ms": 2368
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 2373,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "history-attempt",
+        "ms": 2374,
+        "retry": 3
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2378
+      },
+      {
+        "tag": "history-authority",
+        "ms": 3117
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 3127
+      },
+      {
+        "tag": "history-signed",
+        "ms": 3134
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 3139,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          },
+          {
+            "publisher": "first",
+            "unchanged": false,
+            "nativeSnapshotEqual": false
+          }
+        ],
+        "captureEqual": false,
+        "originalWitnessEqual": false,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 3139,
+        "refusal": "state-changed"
+      }
+    ]
+  },
+  {
+    "status": 200,
+    "events": [
+      {
+        "tag": "history-attempt",
+        "ms": 0,
+        "retry": 0
+      },
+      {
+        "tag": "history-captured",
+        "ms": 2
+      },
+      {
+        "tag": "history-authority",
+        "ms": 537
+      },
+      {
+        "tag": "history-ledgers",
+        "ms": 539
+      },
+      {
+        "tag": "history-signed",
+        "ms": 540
+      },
+      {
+        "tag": "history-commit-check",
+        "ms": 544,
+        "guards": [
+          {
+            "publisher": "joined",
+            "unchanged": true,
+            "nativeSnapshotEqual": true
+          },
+          {
+            "publisher": "first",
+            "unchanged": true,
+            "nativeSnapshotEqual": true
+          }
+        ],
+        "captureEqual": true,
+        "originalWitnessEqual": true,
+        "catalogEqual": true
+      },
+      {
+        "tag": "http-result",
+        "ms": 545
+      }
+    ]
+  }
+]

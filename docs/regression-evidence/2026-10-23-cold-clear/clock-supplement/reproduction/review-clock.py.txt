@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,sys
+r=Path(__file__).parent;rows=[]
+def check(x):
+ offers=x['offers'];assert len(offers)==120
+ samples=[x['hostClockBefore'],x['hostClockAfter']]+[s for o in offers for s in [o['clockBefore'],o['clockAfter']]]
+ bounds=[(s['wall']-s['monoAfter'],s['wall']-s['monoBefore'])for s in samples];assert all(a<=b for a,b in bounds);spread=max(b for a,b in bounds)-min(a for a,b in bounds);assert spread<=4,('host-wall-monotonic-discontinuity',spread)
+ renderers=[]
+ for before,after in zip(x['clocks'],x['clocksAfter']):
+  def intersection(group):
+   assert len(group)==5
+   lo=max(s['renderer']-s['after']-1 for s in group);hi=min(s['renderer']-s['before']+1 for s in group);assert lo<=hi and hi-lo<=4,('uncertain-calibration',lo,hi);assert -4<=lo<=4 and -4<=hi<=4,('initial-or-post-clock-offset',lo,hi);return lo,hi
+  a,b=intersection(before),intersection(after);drift=max(abs(a[0]-b[1]),abs(b[0]-a[1]));assert drift<=4,('renderer-host-clock-discontinuity',drift);renderers.append({'initialOffsetBoundsMs':a,'postOffsetBoundsMs':b,'maximumConsistentDriftMs':drift})
+ events=[e for e in x['probesAtDeadline'][0]['events']if e['kind']=='beforeinput'and x['startedAt']<=e['at']<=x['typingFinishedAt']];assert len(events)==120;assert all(e['at']>=o['at']-4 for e,o in zip(events,offers)),'impossible-input-before-dispatch'
+ return {'hostSamples':len(samples),'hostWallMinusMonotonicSpreadMs':spread,'rendererCalibrations':renderers,'all120InputEventsCausallyCompatible':True}
+for p in json.loads((r/'run-plan.json').read_text()):
+ x=json.loads(Path(sys.argv[2]).read_text())if len(sys.argv)>2 and sys.argv[1]==p['name']else json.loads((r/p['name']/'result.json').read_text());rows.append({'name':p['name'],**check(x)})
+if len(sys.argv)==1:
+ a=json.loads((r/'analysis.json').read_text());assert a['heavyFairnessAcceptance'],'Original performance gate failed; do not override with clock review';out={'status':'passed','bothNewJourneysClockValidAndAllOriginalGatesPass':True,'originalSeriesStillHeldAndRetained':True,'noAnchorOrThresholdRelaxation':True,'clockPrecisionAllowanceMs':1,'maximumClockSpreadOrDriftMs':4,'runs':rows};(r/'clock-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

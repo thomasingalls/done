@@ -1,0 +1,5 @@
+from pathlib import Path
+import subprocess,os,json,re
+r=Path(__file__).parent;s=r/'source';cases=json.loads(Path('/private/tmp/done-existing-failures-20261022/baseline-inventory.json').read_text())['cases'];names=[v['name']for v in cases if v['path'].endswith('content-transfer.test.mjs')];assert len(names)==16;pattern='^(?:'+'|'.join(re.escape(n)for n in names)+')$';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'};cmd=['node','--test','--test-reporter=spec','--test-name-pattern='+pattern,'test/account-ceremony/content-transfer.test.mjs']
+with(r/'fixtures-after.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+(r/'fixture-check-receipt.json').write_text(json.dumps({'command':cmd,'exitCode':p.returncode,'expectedCases':names},indent=2)+'\n');print('16 fixture cases exit',p.returncode)

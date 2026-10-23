@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,subprocess,os,shutil,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+for f in ['source-review.json','challenge.json','evidence-review.json','sensitivity.json','process-cleanup.json','frozen-input-review.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+supplement=Path('/private/tmp/done-cold-clear-clock-20261023')
+for name in ['analysis.json','clock-review.json','clock-sensitivity.json','frozen-input-review.json','observer-review.json','process-cleanup.json']:
+ assert json.loads((supplement/name).read_text())['status']=='passed',name
+assert json.loads((supplement/'analysis.json').read_text())['heavyFairnessAcceptance'],'Additional clock-valid pair must clear all original gates'
+assert not json.loads((r/'analysis.json').read_text())['heavyFairnessAcceptance'],'Preserve original held pair'
+assert json.loads((r/'affected-receipt.json').read_text())['pass']==494
+files=['account-service/delivery.ts','account-service/inboundAuthorityReuse.ts','test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs']
+for f in files:assert(repo/f).read_bytes()==(r/'before'/f).read_bytes(),f
+for f in files:shutil.copy2(r/'source'/f,repo/f)
+(r/'applied-candidate.json').write_text(json.dumps({f:hashlib.sha256((repo/f).read_bytes()).hexdigest()for f in files},indent=2)+'\n');print('Reviewed30 candidate applied; no real stage/sign/publication',flush=True);rows=[]
+for label,cmd in [('census-record',['node','scripts/account-crypto-prep/run.mjs','--record']),('census-check',['node','scripts/account-crypto-prep/run.mjs']),('inventory-record',['node','scripts/release-validation/check.mjs','--record']),('inventory-check',['node','scripts/release-validation/check.mjs']),('manifest-record',['node','scripts/release-validation/plan.mjs','--record']),('manifest-check',['node','scripts/release-validation/plan.mjs']),('planning-tests',['node','--test','--test-concurrency=1','test/account-crypto-prep/census.test.mjs','test/account-crypto-prep/contracts.test.mjs','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs'])]:
+ with(r/(label+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'label':label,'command':cmd,'exitCode':p.returncode});(r/'planning-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(label,p.returncode,flush=True);assert p.returncode==0,'Preserve planning disagreement '+label

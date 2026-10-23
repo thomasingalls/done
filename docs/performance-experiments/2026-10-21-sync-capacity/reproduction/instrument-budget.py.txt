@@ -1,0 +1,35 @@
+from pathlib import Path
+import shutil
+root=Path(__file__).parent
+shutil.copytree(root/'source-D',root/'source-D-diag',symlinks=True,ignore=shutil.ignore_patterns('dist','.receipts'))
+p=root/'source-D-diag/account-service/requestBudget.ts';s=p.read_text()
+# Anonymous diagnostic only; preserve every original condition and mutation.
+header='''const diagnosticIdentities = new Map<string, number>();
+const budgetObservation = (key: string, stage: string, reason: string, session: Bucket | undefined, process: Bucket, total = 1, started = 0) => {
+  if (!(globalThis as any).__capacityObserve) return;
+  if (!diagnosticIdentities.has(key)) diagnosticIdentities.set(key, diagnosticIdentities.size);
+  (globalThis as any).__capacityObserve({session: diagnosticIdentities.get(key), stage, reason, sessionTokens: session?.tokens, processTokens: process.tokens, sessionActive: session?.active, processActive: process.active, total, started});
+};
+'''
+anchor='type Bucket = { tokens: number; last: number; active: number };'
+assert s.count(anchor)==1;s=s.replace(anchor,anchor+'\n'+header)
+replacements=[
+('if (this.#sessions.size >= l.sessions) return;', "if (this.#sessions.size >= l.sessions) { budgetObservation(key, 'admit', 'session-map', undefined, this.#process); return; }"),
+('if (b.tokens < 1 || b.active >= l.sessionActive) return;', "if (b.tokens < 1 || b.active >= l.sessionActive) { budgetObservation(key, 'admit', b.tokens < 1 ? 'session-rate' : 'session-active', b, this.#process); return; }"),
+('if (this.#process.tokens < 1 || this.#process.active >= l.active) return;', "if (this.#process.tokens < 1 || this.#process.active >= l.active) { budgetObservation(key, 'admit', this.#process.tokens < 1 ? 'process-rate' : 'process-active', b, this.#process); return; }"),
+('    const session = b;', "    budgetObservation(key, 'admit', 'accepted', b, this.#process);\n    const session = b;"),
+('      this.#process.active--;', "      this.#process.active--;\n      budgetObservation(key, 'release', 'complete', session, this.#process, reserved);"),
+('if (session.tokens < extra || this.#process.tokens < extra) return false;', "if (session.tokens < extra || this.#process.tokens < extra) { budgetObservation(key, 'top-up', session.tokens < extra ? 'session-rate' : 'process-rate', session, this.#process, total); return false; }"),
+('          toppedUp = true;', "          toppedUp = true;\n          budgetObservation(key, 'top-up', 'accepted', session, this.#process, total);"),
+('          const unused = reserved - Math.max(1, started);', "          budgetObservation(key, 'settle', 'complete', session, this.#process, reserved, started);\n          const unused = reserved - Math.max(1, started);"),
+]
+for a,b in replacements:
+ assert s.count(a)==1,a;s=s.replace(a,b)
+p.write_text(s)
+p=root/'source-D-diag/test/live-sync-attribution/runtime.mjs';s=p.read_text()
+s=s.replace("export const setPhase = (value) => { phase = value; };", "export const setPhase = (value) => { phase = value; for (const child of children) if (child.capacityAPI && child.connected) child.send({phase:value,at:Date.now()}); };")
+s=s.replace("const args = process.env.SYNC_DIAGNOSTIC === '1'", "const observed = script.endsWith('serve-account-service.mjs');\n    const args = observed ? ['--import','/private/tmp/done-sync-capacity-20261021/service-monitor.mjs',script] : process.env.SYNC_DIAGNOSTIC === '1'")
+s=s.replace("stdio: ['ignore', 'pipe', 'pipe']", "stdio: observed ? ['ignore','pipe','pipe','ipc'] : ['ignore','pipe','pipe']")
+s=s.replace("    children.add(child);", "    child.capacityAPI=observed;\n    children.add(child);")
+p.write_text(s)
+p=root/'source-D-diag/test/live-sync-attribution/live-sync.spec.ts';s=p.read_text().replace("outcome:'starting',source:","outcome:'starting',capacityDiagnostic:true,source:");p.write_text(s)

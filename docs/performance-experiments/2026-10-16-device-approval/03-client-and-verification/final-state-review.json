@@ -1,0 +1,13 @@
+{
+  "runtimeMatchesMeasuredFiles": true,
+  "previewDistExactlyUnchanged": true,
+  "previewFileCount": 108,
+  "deferredFormattingPatchUnchanged": true,
+  "realIndexEmpty": true,
+  "signedCommits": [
+    "a18d5d1c G Preserve account disappearance audit and upgrade reproduction evidence",
+    "ed7a77e8 G Exercise empty legacy startup in packaged browsers and CI",
+    "8a8243c3 G Report actual device preparation startup refusals",
+    "294c3cd5 G Allow fresh startup beside an empty legacy placeholder"
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "baseCommit": "82bf63e29472d58ac2ca4346770e44280e976c83",
+  "manifestSha256": "a9dd48b7a6b24d515e797d9ca772f0a86d5417a4014b1e319f882eff3cb6c937",
+  "branch": "codex/improve-task-scheduling-ux",
+  "commits": [
+    {
+      "phase": 27,
+      "commit": "a5cf210bfb78e671521d034276e043a4348b15e8",
+      "parent": "82bf63e29472d58ac2ca4346770e44280e976c83",
+      "tree": "e1bf5885a69606db3a04fcd4e835c73312456ed1",
+      "patch": "/private/tmp/done-prelude-delay-20261022/patches/27-discovery-catalog-delay-evidence.patch",
+      "patchSha256": "b40ee39056b6f057f9141497a0424e9be410a3fa76c946e9a978d93f92325f4c",
+      "messageSha256": "c16a9b20240bf46a571db28435cb4b800b066be6313887ab112ff9db310a52ea",
+      "signatureVerified": true,
+      "signatureLog": "/private/tmp/done-phases27-31-commits-20261023/27-verify-signature.log",
+      "subject": "test(sync): trace remaining discovery and catalog proof delay"
+    },
+    {
+      "phase": 28,
+      "commit": "810d330c74a4d407714e60c8d97e0da784ace9a8",
+      "parent": "a5cf210bfb78e671521d034276e043a4348b15e8",
+      "tree": "056b5d967abc457a957b3959da3664fe1e942e7b",
+      "patch": "/private/tmp/done-prelude-proof-reuse-20261022/patches/28-complete-prelude-proof-reuse.patch",
+      "patchSha256": "1522d116b8ed2c7a1eac5f1c39c7d5dc8fcff0c9f9ba8193ff1c571323a01c41",
+      "messageSha256": "249adff4b96f6642a421ae3ff5874c256a922c614f466ce93352d13ac068ffdc",
+      "signatureVerified": true,
+      "signatureLog": "/private/tmp/done-phases27-31-commits-20261023/28-verify-signature.log",
+      "subject": "perf(account): reuse complete authority history for discovery and catalog reads"
+    },
+    {
+      "phase": 29,
+      "commit": "2679e8890d4f341594262bf1da495ae1314f1438",
+      "parent": "810d330c74a4d407714e60c8d97e0da784ace9a8",
+      "tree": "9353f6cde1feb3fb4651530939bfc3bb8edcf506",
+      "patch": "/private/tmp/done-failure-history-20261022/patches/29-native-fixture-history-repairs.patch",
+      "patchSha256": "76c25b49cf993965d46e4d80aa7082572c3c587c0537b46df5a17c6764cc2c40",
+      "messageSha256": "76ab6c2903057bef175579a8bcc3b8a3e49e87d98069da9944fa7c0c98f0953d",
+      "signatureVerified": true,
+      "signatureLog": "/private/tmp/done-phases27-31-commits-20261023/29-verify-signature.log",
+      "subject": "test(account): repair native lifecycle fixtures and attribute existing failures"
+    },
+    {
+      "phase": 30,
+      "commit": "5934ea7a31dc84314f5c442c276a64312ed50ed9",
+      "parent": "2679e8890d4f341594262bf1da495ae1314f1438",
+      "tree": "5bce21f040dc2ba5839dcdf779692f82e8a4da44",
+      "patch": "/private/tmp/done-cold-clear-retry-20261023/patches/30-bounded-cold-clear-continuation.patch",
+      "patchSha256": "46e340bfea7c9ee412b16bbcf6789e50ae1f3a56a381023b678ac2b296cdc6aa",
+      "messageSha256": "bf32f38182cbf9f624dd2f622e3358e7b0a196f7298231a1c058299941f357d8",
+      "signatureVerified": true,
+      "signatureLog": "/private/tmp/done-phases27-31-commits-20261023/30-verify-signature.log",
+      "subject": "fix(sync): retry retired cold authority proofs within the original read bound"
+    },
+    {
+      "phase": 31,
+      "commit": "51d8550d30585c93e623af0f2b3adf610781eebb",
+      "parent": "5934ea7a31dc84314f5c442c276a64312ed50ed9",
+      "tree": "765d4c4acc991a7fe11ea6993736f88ebac7000f",
+      "patch": "/private/tmp/done-functional-ci-20261023/patches/31-routine-sync-regressions-and-fixtures.patch",
+      "patchSha256": "739a6b59bc5bccad39da5c434b821358213313a59dac53f7fac6999127f9cda4",
+      "messageSha256": "a9b39e65fb26f3dd2dc5177c5155b0e6bce6b4c73074ea6b2fc86463b4c788ae",
+      "signatureVerified": true,
+      "signatureLog": "/private/tmp/done-phases27-31-commits-20261023/31-verify-signature.log",
+      "subject": "ci(sync): run native regressions and repair dated and census fixtures"
+    }
+  ],
+  "attempts": [
+    {
+      "phase": 27,
+      "parent": "82bf63e29472d58ac2ca4346770e44280e976c83",
+      "expectedTree": "e1bf5885a69606db3a04fcd4e835c73312456ed1",
+      "patch": "/private/tmp/done-prelude-delay-20261022/patches/27-discovery-catalog-delay-evidence.patch",
+      "patchSha256": "b40ee39056b6f057f9141497a0424e9be410a3fa76c946e9a978d93f92325f4c",
+      "message": "/private/tmp/done-prelude-delay-20261022/patches/27-commit-message.txt",
+      "messageSha256": "c16a9b20240bf46a571db28435cb4b800b066be6313887ab112ff9db310a52ea",
+      "startedAtMs": 1792733932416,
+      "completedAtMs": 1792733937467,
+      "exitCode": 0,
+      "log": "/private/tmp/done-phases27-31-commits-20261023/27-signing-attempt-01.log"
+    },
+    {
+      "phase": 28,
+      "parent": "a5cf210bfb78e671521d034276e043a4348b15e8",
+      "expectedTree": "056b5d967abc457a957b3959da3664fe1e942e7b",
+      "patch": "/private/tmp/done-prelude-proof-reuse-20261022/patches/28-complete-prelude-proof-reuse.patch",
+      "patchSha256": "1522d116b8ed2c7a1eac5f1c39c7d5dc8fcff0c9f9ba8193ff1c571323a01c41",
+      "message": "/private/tmp/done-prelude-proof-reuse-20261022/patches/28-commit-message.txt",
+      "messageSha256": "249adff4b96f6642a421ae3ff5874c256a922c614f466ce93352d13ac068ffdc",
+      "startedAtMs": 1792733938146,
+      "completedAtMs": 1792733940370,
+      "exitCode": 0,
+      "log": "/private/tmp/done-phases27-31-commits-20261023/28-signing-attempt-02.log"
+    },
+    {
+      "phase": 29,
+      "parent": "810d330c74a4d407714e60c8d97e0da784ace9a8",
+      "expectedTree": "9353f6cde1feb3fb4651530939bfc3bb8edcf506",
+      "patch": "/private/tmp/done-failure-history-20261022/patches/29-native-fixture-history-repairs.patch",
+      "patchSha256": "76c25b49cf993965d46e4d80aa7082572c3c587c0537b46df5a17c6764cc2c40",
+      "message": "/private/tmp/done-failure-history-20261022/patches/29-commit-message.txt",
+      "messageSha256": "76ab6c2903057bef175579a8bcc3b8a3e49e87d98069da9944fa7c0c98f0953d",
+      "startedAtMs": 1792733940819,
+      "completedAtMs": 1792733943301,
+      "exitCode": 0,
+      "log": "/private/tmp/done-phases27-31-commits-20261023/29-signing-attempt-03.log"
+    },
+    {
+      "phase": 30,
+      "parent": "2679e8890d4f341594262bf1da495ae1314f1438",
+      "expectedTree": "5bce21f040dc2ba5839dcdf779692f82e8a4da44",
+      "patch": "/private/tmp/done-cold-clear-retry-20261023/patches/30-bounded-cold-clear-continuation.patch",
+      "patchSha256": "46e340bfea7c9ee412b16bbcf6789e50ae1f3a56a381023b678ac2b296cdc6aa",
+      "message": "/private/tmp/done-cold-clear-retry-20261023/patches/30-commit-message.txt",
+      "messageSha256": "bf32f38182cbf9f624dd2f622e3358e7b0a196f7298231a1c058299941f357d8",
+      "startedAtMs": 1792733943695,
+      "completedAtMs": 1792733945457,
+      "exitCode": 0,
+      "log": "/private/tmp/done-phases27-31-commits-20261023/30-signing-attempt-04.log"
+    },
+    {
+      "phase": 31,
+      "parent": "5934ea7a31dc84314f5c442c276a64312ed50ed9",
+      "expectedTree": "765d4c4acc991a7fe11ea6993736f88ebac7000f",
+      "patch": "/private/tmp/done-functional-ci-20261023/patches/31-routine-sync-regressions-and-fixtures.patch",
+      "patchSha256": "739a6b59bc5bccad39da5c434b821358213313a59dac53f7fac6999127f9cda4",
+      "message": "/private/tmp/done-functional-ci-20261023/patches/31-commit-message.txt",
+      "messageSha256": "a9b39e65fb26f3dd2dc5177c5155b0e6bce6b4c73074ea6b2fc86463b4c788ae",
+      "startedAtMs": 1792733945735,
+      "completedAtMs": 1792733947390,
+      "exitCode": 0,
+      "log": "/private/tmp/done-phases27-31-commits-20261023/31-signing-attempt-05.log"
+    }
+  ],
+  "publication": "Local signed commits only; no push, preview, merge or deployment.",
+  "status": "complete",
+  "head": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "expectedCumulativeTree": "765d4c4acc991a7fe11ea6993736f88ebac7000f",
+  "allFiveTreesAndSignaturesVerified": true,
+  "cleanCheckout": true,
+  "completedAtMs": 1792733947680
+}

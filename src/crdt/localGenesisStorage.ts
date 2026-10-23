@@ -47,7 +47,17 @@ export const requireFreshLocalSlot = async (task: SessionTask, slotId: string): 
     stopStartup('unlock-required', 'local-creation-already-won');
   if (count || (await slotCustodyRows(task, slotId))?.length)
     stopStartup('repair-required', 'local-slot-already-retains-material');
-  if ((await probeDatabase(task, 'done', async () => true)) || legacyJournalCount(task))
+  // A v1 database with no object stores cannot retain legacy records. Leave it
+  // untouched; any store or unknown version still requires the legacy path.
+  // This observation neither deletes source material nor establishes old-writer exclusion.
+  if (
+    (await probeDatabase(
+      task,
+      'done',
+      async (db) => db.version !== 1 || db.objectStoreNames.length !== 0,
+    )) ||
+    legacyJournalCount(task)
+  )
     stopStartup('migration-required', 'unassigned-legacy-carrier');
 };
 export const localRoute = async (task: SessionTask, claim: LocalClaim): Promise<Slot> => {

@@ -1,0 +1,6 @@
+{
+  "initialAttempt": "OSError errno7 argument list too long, before archive/extract or any product edit",
+  "cause": "individual tracked-file list exceeded OS argv limit",
+  "correction": "same immutable tree exported using complete top-level subtrees, excluding only docs/performance-experiments",
+  "preservedSource": "prepare-arglist-attempt.py"
+}

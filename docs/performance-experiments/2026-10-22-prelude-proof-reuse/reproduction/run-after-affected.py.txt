@@ -1,0 +1,13 @@
+from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+for n in range(240):
+ if(r/'affected-comparison.json').exists():break
+ time.sleep(3)
+else:raise Exception('Affected comparison did not close; no performance run started')
+assert json.loads((r/'affected-comparison.json').read_text())['status']=='passed'
+with(r/'run.log').open('w')as log:p=subprocess.run(['python3',str(r/'freeze-and-run.py')],cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+print('measurement',p.returncode,flush=True);assert p.returncode==0,'Preserve failed attempt; no replacement'
+for label,cmd in [('analysis',['python3','analyze.py']),('review',['python3','review-evidence.py']),('native-audit',['node','audit-native.mjs']),('sensitivity',['python3','sensitivity.py']),('cleanup',['python3','cleanup.py'])]:
+ with(r/(label+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(label,p.returncode,flush=True);assert p.returncode==0,'Preserve and investigate '+label

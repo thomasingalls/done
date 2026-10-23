@@ -1,0 +1,43 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir();provenance={};sha=lambda b:hashlib.sha256(b).hexdigest()
+def put(f,name,compress=False):
+ b=f.read_bytes();p=dest/(name+('.gz'if compress else''));p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0)if compress else b);provenance[str(p.relative_to(dest))]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+for f in sorted(r.iterdir()):
+ if not f.is_file():continue
+ if f.suffix=='.md':put(f,f.name)
+ elif f.suffix=='.json':put(f,f.name,compress=f.stat().st_size>25000)
+ elif f.suffix=='.log':put(f,'checks/'+f.name,True)
+ elif f.suffix in ['.py','.mjs']or f.name.endswith('.txt'):put(f,'reproduction/'+f.name+(''if f.name.endswith('.txt')else'.txt'))
+for version in ['v1','v2']:
+ for f in sorted((r/version).iterdir()):
+  if f.is_file():put(f,'prototypes/'+version+'/'+f.name,compress=f.suffix in ['.json','.log'])
+ for f in sorted((r/version/'helper-C').glob('helper*')):
+  if f.is_file():put(f,'prototypes/'+version+'/helper-C/'+f.name,True)
+ # Compiled client hashes preserve the archived rejected artifacts without retaining large unrelated assets.
+ hashes={str(f.relative_to(r/version/'client-dist-C')):sha(f.read_bytes())for f in sorted((r/version/'client-dist-C').rglob('*'))if f.is_file()}
+ p=dest/'prototypes'/version/'client-dist-sha256.json';p.write_text(json.dumps(hashes,indent=2)+'\n')
+for arm in ['R','C']:
+ for f in sorted((r/('helper-'+arm)).glob('helper*')):
+  if f.is_file():put(f,'compiled/helper-'+arm+'/'+f.name,True)
+ put(r/('source-'+arm)/'account-service/requestBudget.ts','reproduction/requestBudget-'+arm+'.ts.txt')
+put(r/'source-C/test/verifiedRecords.test.ts','reproduction/unit-before-checkpoint-count.test.ts.txt')
+for f in sorted((r/'browser-harness').iterdir()):
+ if f.is_file():put(f,'reproduction/browser/'+f.name+'.txt')
+for case in json.loads((r/'browser-runner.json').read_text()):
+ folder=r/case['name']
+ for n in ['result.json','invocation.log','runner.json','services.log']:put(folder/n,'runs/'+case['name']+'/'+n,True)
+ for f in sorted((folder/'node-monitors').glob('*.json')):put(f,'runs/'+case['name']+'/node-monitors/'+f.name,True)
+# Known raw and JSON-escaped disposable browser values only; no credentials/DBs/storage enter whitelist.
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for who in ['a','b']:
+  secrets.append(d[who]['code'])
+  for c in d[who]['credentials']:secrets.extend(c[k]for k in ['privateKey','credentialId','userHandle']if c.get(k))
+values=set()
+for s in secrets:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for f in dest.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.name.endswith('.gz')else b;assert not any(v in b for v in values),str(f.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownPrivateRawAndEscapedValues':len(values),'matches':0,'scope':'Numeric/source whitelist excludes fixture codes, credentials, keys, storage, DBs and real-index binary. Known-value scan is not universal DLP.'},indent=2)+'\n');print(len(provenance),'preserved files;',len(values),'known values checked')

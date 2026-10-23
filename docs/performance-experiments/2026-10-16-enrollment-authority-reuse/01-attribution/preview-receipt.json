@@ -1,0 +1,238 @@
+{
+  "stage": "after",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "configSha256": "dface6756553bf846a4d9de34ce05877a06a28f96b5381e4e3c7b3f44d7864e0",
+  "backendPid": 52585,
+  "backendRestarted": false,
+  "observedAt": "2026-10-16T14:16:52.745Z",
+  "tlsVerified": true,
+  "configAgreement": true,
+  "files": [
+    {
+      "path": "index.html",
+      "sha256": "2d2f4f7a6e1e0ef950b5c4643bcb779df4db60aa0141cf7295de61a072a6737d"
+    },
+    {
+      "path": "sw.js",
+      "sha256": "616308655009a6920f3de76b3e8c5955a2d55651caa7ab3902cad86ca84109c8"
+    },
+    {
+      "path": "assets/AccountDevices-elaJNhdF.js",
+      "sha256": "8ed226b9a896caeac02affbf1babba7fb694cb4a48cb6d0405f438e0a4d52243"
+    },
+    {
+      "path": "assets/AccountEnrollmentApp-B-ecAVGE.js",
+      "sha256": "b229561c33119c0f92748d37b058349b4fb8c199981cebb1bae1b2a8cc574288"
+    },
+    {
+      "path": "assets/AccountRecoveryApp-DmCnG06Z.js",
+      "sha256": "41f63ca6a3aa3089973f1c954c0c684fc6f207f15092742cbd5ad255a71374e9"
+    },
+    {
+      "path": "assets/AccountSetupApp-GO0Itvx4.js",
+      "sha256": "f65353646b55f5ebb6af48e3c80815ff564ded3c66976035f34fbde16fc0fc84"
+    },
+    {
+      "path": "assets/DeviceDataRemoval-EiOAfdCq.js",
+      "sha256": "794f3e1a2b4bfea9d79af8d1a2674dff3be0e001e9aa05dbe312235fee98b843"
+    },
+    {
+      "path": "assets/LocalApp-ChteyA-e.js",
+      "sha256": "8ed6fb4095adbebff9252595292ebafa060e5fc0a93ce557ebb77dadbcadf737"
+    },
+    {
+      "path": "assets/LocalEntry-Bq7iQqSP.js",
+      "sha256": "9040813f0691c65f130d3ab24fa9005918c875090a7925dbbca602cecfe07b95"
+    },
+    {
+      "path": "assets/accountEnvelopePreparation-w5SgfYQI.js",
+      "sha256": "77bf832a0791b6eaf53fe8ee9c95d058a7f8ef668a70da27297c76c9bb6caea7"
+    },
+    {
+      "path": "assets/accountProgressCustody-DC0G9MGs.js",
+      "sha256": "50281997e5560e21f56a05775d69d2f9bffc27e585eb7bb2a7c0ab2e840e2afc"
+    },
+    {
+      "path": "assets/accountRotation-BFcXJiMw.js",
+      "sha256": "a0945780584c2b2387b4e08d7619858440f23db3ffe09d2955be87fbdb378334"
+    },
+    {
+      "path": "assets/accountSyncState-CDO1Kiwd.js",
+      "sha256": "31c4bf47fbdcdeac689ef0548aa5926a08eec34b50e39f1eafd0530ace0c532b"
+    },
+    {
+      "path": "assets/admissionDocument-CipaAn7m.js",
+      "sha256": "89c255da9921739684a0e362a0ec3bbc19d82c00f98035caeb8db16b97776758"
+    },
+    {
+      "path": "assets/admissionHistory-nO4apN9K.js",
+      "sha256": "04f25bc7e8a3c681ad71ca3702cb030988da16022d756a0e6ffc4beda5822bf9"
+    },
+    {
+      "path": "assets/ceremonyVault--Mz9YVmc.js",
+      "sha256": "83559cdf0269a9f5cbb8710af045a7da8e5506de59984dac8bc8caebeabc57dd"
+    },
+    {
+      "path": "assets/checkpointTimeline-e00B0uh2.js",
+      "sha256": "445b3cebe16c03a6cd64447b89cc1f84fda8688bcd57020b5101ac6e8f437e9e"
+    },
+    {
+      "path": "assets/contentCompaction-C6eQkk3n.js",
+      "sha256": "b005bd649dbcef39c9d8bb2cfc93057f55a24c339d11dec21acccff2c265af48"
+    },
+    {
+      "path": "assets/cpuBudget-BZY3L4Fm.js",
+      "sha256": "bed8ff24cd0fb3e05a06502fd6bef4c9bb3453f4f5aa59ffbcc17fdab56d723d"
+    },
+    {
+      "path": "assets/custodyCrypto-C44ppXTm.js",
+      "sha256": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280"
+    },
+    {
+      "path": "assets/days-6rIIWXmn.js",
+      "sha256": "cee794ba4a0a84cfaffbbd5a5443f1c9b3994f59044415cb9d32ee1bc8f665c0"
+    },
+    {
+      "path": "assets/deviceDataRemoval-Bb0aEQDr.js",
+      "sha256": "a177212d47e05634fcae1886a6e0b92f032e078278cc4a1b377ac9121f03f65c"
+    },
+    {
+      "path": "assets/deviceRemovalVault-DGRHDFsg.js",
+      "sha256": "b7066bb01e4ebdacafe42ed50c22771b1f3545b2419e61eebfda2b9a314337bd"
+    },
+    {
+      "path": "assets/enrollmentLogin-C5EtAxqv.js",
+      "sha256": "269f31e74f71789d65adc6997dec72686a5dfff37952b253dd4baf4546e9556c"
+    },
+    {
+      "path": "assets/enrollmentProgress-am8Gvs1p.js",
+      "sha256": "859635ef0ccf78ffb6c6791439e7508b3faf657d2454d2a3d35893442fce2315"
+    },
+    {
+      "path": "assets/historyCheckpoint-CMstbZ84.js",
+      "sha256": "6b502ffe9ea50963e2dacfcbdcdd1e480ed07b988a43d55aece5b6d70e5b55e1"
+    },
+    {
+      "path": "assets/historyInstall-o3SU9xZg.js",
+      "sha256": "7ea728f49baae526cfa12a72674777b9a183e910a4624b215b451c48240e96e4"
+    },
+    {
+      "path": "assets/historyMaintenance-C50YH_ss.js",
+      "sha256": "9e73aa8763fe0cbbde71986093b3292f6523e4be99db2d29631c7b3d8687b4d9"
+    },
+    {
+      "path": "assets/historyOwner-D0ZWqk-D.js",
+      "sha256": "737cbcd9418e490212c8b731b909bc8f697daf023161a17365d4ed3b43c928ec"
+    },
+    {
+      "path": "assets/inboundBatch-Dp1F7HBX.js",
+      "sha256": "5cd6e54d3e3341eb8915bed4326a2a67fbaabf3c3572bbe782d94397f601fcdd"
+    },
+    {
+      "path": "assets/inboundLedger-AwdrsPZq.js",
+      "sha256": "5b85d0f5167f23e942564072737bcec18ac0c40df3e8d67fdca6ad23cb9d3906"
+    },
+    {
+      "path": "assets/joinedAccount-UdQpOMq2.js",
+      "sha256": "b58e7e7c71d3efe8799e0e126127e893e24f5bff8b555d666d23285ca8806d6c"
+    },
+    {
+      "path": "assets/localBaselineAnchor-D8Mk08ZF.js",
+      "sha256": "9d9b029b9f234ad7ffed93793cb8e7a3d31b5bc9f68e471694c384721a91d8bb"
+    },
+    {
+      "path": "assets/localBaselineRecord-CF6zQCCn.js",
+      "sha256": "676aa964132f911c9b80da34b1ed97cfcf3be59bb9f289dad9969baccd606ef2"
+    },
+    {
+      "path": "assets/localBaselineReplay-PQvCdPEq.js",
+      "sha256": "4734f2c316d86a0570b8ff6e595883ba57f4d0192f8485909c156ffe89722a08"
+    },
+    {
+      "path": "assets/localBaselineReuse-C4hgFfhU.js",
+      "sha256": "3775bac12b58bdfde6aa4b081b8a26c36cceaf287c961240d2a1f4b7b87127ee"
+    },
+    {
+      "path": "assets/localBaselineShadow-qbk4mi4G.js",
+      "sha256": "fe87b58efd8c149f084912e0b67f7c3f558b16a1bab99e8f2f9d6f2d9d0da482"
+    },
+    {
+      "path": "assets/localBaselineStorage-CnzWDdcy.js",
+      "sha256": "38148c16eb76fcb325aa70b2da460bfbef99fceb310f4e5f47ffc97185b75e8c"
+    },
+    {
+      "path": "assets/localGenesis-B-g-ofTO.js",
+      "sha256": "9e6a06325f2d892bd9a2ee78af32dd0ca07e2d21349360184381946ffb26fb57"
+    },
+    {
+      "path": "assets/localRetentionPlan-DG6lhJOV.js",
+      "sha256": "79bd41f80d8bbd5595ac140bf506a2c7a4ec7a2fcfb67fdc857e2479a80a35c1"
+    },
+    {
+      "path": "assets/localRetentionStorage-4DUWkqfv.js",
+      "sha256": "b0735c024f0016a9113553cd468e1f6533bf0900d105a78f737dcb2e92d4db76"
+    },
+    {
+      "path": "assets/main-BruQkjYS.js",
+      "sha256": "0eb6afd81232fd6b67f266f9c7c09f570516387ef9785b1c03233f451ae7cd36"
+    },
+    {
+      "path": "assets/main-CiyeiPR6.css",
+      "sha256": "a18a3b75311b6c97140a4375efc8f83d72b5254cd7e5efa64070e80268dcca1a"
+    },
+    {
+      "path": "assets/membershipConnection-DoVio_Fw.js",
+      "sha256": "d61511d627d1723863f5b7db0964566d600985691ae30d938bf15e30d4991d43"
+    },
+    {
+      "path": "assets/membershipSource-xk9K1PAI.js",
+      "sha256": "9d6ba9fbe1f8a7ae89690debf549f25278298d2c03ee6fc38327f8ec2ee28173"
+    },
+    {
+      "path": "assets/promotionRecord-2ciZ-eLt.js",
+      "sha256": "f6861c255a750d64879c46fee2405386e2113455128ef10c800547e84fefe4af"
+    },
+    {
+      "path": "assets/retentionAttempts-Z3xLx3AX.js",
+      "sha256": "01b8a53710a3c82d5eef5aa0407bfa68f6a31e60233e90a76a72798bb59c22c8"
+    },
+    {
+      "path": "assets/retentionCheckpoint-DosK-IZz.js",
+      "sha256": "53f671b7b13bd2bcda1650f42f10351e5fdcb58b268e1c2888b93e6e119fa531"
+    },
+    {
+      "path": "assets/rolldown-runtime-QTnfLwEv.js",
+      "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75"
+    },
+    {
+      "path": "assets/rotationObservation-D5htNCsq.js",
+      "sha256": "a34091c8539455e66b96f2fc7dd0eaf692b0cd474927894bcf392784e91de762"
+    },
+    {
+      "path": "assets/spoolRecord-W7CLEGq5.js",
+      "sha256": "8aa2b4931073d857c7aa8454d4f8cf30a48cebb06de7978a8a7ce5d04af49bee"
+    },
+    {
+      "path": "assets/storageCompatibility-Ixv843Jw.js",
+      "sha256": "6b29d99d4e67585fc583d3dcbff67c339ff76eb671db8acd87cff12550b4953d"
+    },
+    {
+      "path": "assets/verificationMemo-YSWNXLu9.js",
+      "sha256": "2ce1f4eb437def9117e33324386973f7a8cf21d11245798718bc8a6860b2132c"
+    },
+    {
+      "path": "assets/verifiedRecords-BHbR27CH.js",
+      "sha256": "f5879c97f96a816c0bb4d701d63ebcce4811404bc62f918d0a8afa87f402dbf2"
+    },
+    {
+      "path": "assets/writeSession-fmRIkFAC.js",
+      "sha256": "80fd33f8b563c636d764c072f4683f3e89e979ecf533623098ef6a1398d008d9"
+    }
+  ],
+  "version": "2f1d0b0f",
+  "publicConfigurationUnchanged": true,
+  "routesUnchanged": true,
+  "source": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "signedTree": "cb68a1edbc7f72bfed5f81092e4b5abdb5ad90cd",
+  "apiUsesOlderServerFallback": true
+}

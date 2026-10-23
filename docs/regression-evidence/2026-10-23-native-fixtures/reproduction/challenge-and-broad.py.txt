@@ -1,0 +1,15 @@
+from pathlib import Path
+import subprocess,os,json,shutil,re
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'};rows=[]
+for label,f,a,b,pattern in [
+ ('remove-quarantine-fence','account-service/publisherTips.ts','if (poisoned.has(key) || poisoned.size >= MAX_PUBLISHERS)','if (poisoned.size >= MAX_PUBLISHERS)','three publisher ledgers preserve queued'),
+ ('remove-offline-schema-fence','account-service/core.ts',"throw Error('Unsupported account schema; older versions require explicit offline upgrade');",';','continuation schema requires explicit offline opt-in'),
+ ('tamper-native-checkpoint-binding','test/account-ceremony/content-transfer.test.mjs',"      if (path === '/account/membership/v3/checkpoint')\n        return x.authority.owner.exchangeReplacementCheckpoint(x.f.core, body);", "      if (path === '/account/membership/v3/checkpoint') {\n        const result = await x.authority.owner.exchangeReplacementCheckpoint(x.f.core, body);\n        result.binding.stored.bindingSignature = '00'.repeat(64);\n        return result;\n      }",'browser comparison by'),
+]:
+ d=r/('control-'+label);shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);p=d/f;t=p.read_text();assert t.count(a)==1,(label,t.count(a));p.write_text(t.replace(a,b));cmd=['node','--test','--test-reporter=spec','--test-name-pattern='+pattern,'test/account-ceremony/content-transfer.test.mjs']
+ with(r/('control-'+label+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ text=(r/('control-'+label+'.log')).read_text();assert v.returncode!=0;assert ('AssertionError'in text or'Invalid signature'in text or'Invalid Ed25519'in text or'Signature'in text),text[-2000:];rows.append({'control':label,'detected':True,'exitCode':v.returncode,'pattern':pattern,'scope':'focused fixture/security-boundary sensitivity, no release qualification credit'});print(label,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')
+cmd=json.loads(Path('/private/tmp/done-prelude-proof-reuse-20261022/affected-corrected-receipts.json').read_text())[1]['command']
+with(r/'candidate29-affected.log').open('w')as log:v=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+text=(r/'candidate29-affected.log').read_text();counts={k:int(re.search('ℹ '+k+r' (\d+)',text).group(1))for k in ['tests','pass','fail','skipped','cancelled']};fails=sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',text,re.M)));out={'command':cmd,'exitCode':v.returncode,**counts,'failureNames':fails};(r/'affected-receipt.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out),flush=True);assert counts=={'tests':484,'pass':483,'fail':1,'skipped':0,'cancelled':0};assert fails==['clear during a cold wait requires fresh verification after handoff']

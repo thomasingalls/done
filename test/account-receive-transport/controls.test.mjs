@@ -167,6 +167,8 @@ for (const mutation of ['bound', 'drain'])
                         });
                       },
                     },
+                // Signal only when the HTTP reader is waiting, not on eager stream prefill.
+                { highWaterMark: 0 },
               ),
               { headers: { 'Content-Type': 'application/octet-stream' } },
             );

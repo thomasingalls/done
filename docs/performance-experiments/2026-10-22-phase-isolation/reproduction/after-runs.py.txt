@@ -1,0 +1,14 @@
+from pathlib import Path
+import json,os,subprocess,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while True:
+ if(r/'run-receipts.json').exists():
+  x=json.loads((r/'run-receipts.json').read_text())
+  if any(v['exitCode']for v in x):raise Exception('Hard journey failure, preserve all before continuing')
+  if len(x)==8:break
+ if'Traceback'in(r/'run.log').read_text():raise Exception('Measured process failed; no selective substitute')
+ time.sleep(3)
+for name,cmd in [('analysis',['node','analyze.mjs']),('review',['python3','review-evidence.py']),('native-audit',['node','audit-native.mjs'])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception('Preserve and investigate '+name)

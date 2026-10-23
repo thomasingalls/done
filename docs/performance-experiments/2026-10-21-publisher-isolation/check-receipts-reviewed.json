@@ -1,0 +1,116 @@
+[
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589108978,
+    "completedAt": 1792589109558
+  },
+  {
+    "name": "inventory-record-final",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589109558,
+    "completedAt": 1792589110575
+  },
+  {
+    "name": "manifest-record-final",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589110575,
+    "completedAt": 1792589112792
+  },
+  {
+    "name": "inventory-check-final",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589112793,
+    "completedAt": 1792589113786
+  },
+  {
+    "name": "manifest-check-final",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589113786,
+    "completedAt": 1792589115971
+  },
+  {
+    "name": "planning-audit-final",
+    "command": [
+      "python3",
+      "/private/tmp/done-publisher-isolation-20261021/audit-planning.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589115971,
+    "completedAt": 1792589116054
+  },
+  {
+    "name": "format-reviewed",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "account-service/publisherTips.ts",
+      "test/account-service-delivery/publisher-isolation.test.mjs",
+      "test/account-service-inbound/controls.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589116054,
+    "completedAt": 1792589116172
+  },
+  {
+    "name": "lint-reviewed",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/publisherTips.ts",
+      "test/account-service-delivery/publisher-isolation.test.mjs",
+      "test/account-service-inbound/controls.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589116172,
+    "completedAt": 1792589116217
+  },
+  {
+    "name": "planning-tests-census-refreshed",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-first-authority/registry.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "startedAt": 1792589116218,
+    "completedAt": 1792589158515
+  }
+]

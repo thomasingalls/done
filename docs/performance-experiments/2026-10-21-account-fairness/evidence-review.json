@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "allSixDeclaredRunsPresentAndSerial": true,
+  "allFunctionalJourneys": false,
+  "rows": [
+    {
+      "name": "1-B",
+      "outcome": "passed",
+      "keysIndependentlyReconstructed": 120,
+      "tenProfilesFourRoots": true,
+      "genuineFocusedInput": true,
+      "originalResourceEnvelopeVerified": true
+    },
+    {
+      "name": "2-S",
+      "outcome": "passed",
+      "keysIndependentlyReconstructed": 120,
+      "tenProfilesFourRoots": true,
+      "genuineFocusedInput": true,
+      "originalResourceEnvelopeVerified": true
+    },
+    {
+      "name": "3-U",
+      "outcome": "failed"
+    },
+    {
+      "name": "4-U",
+      "outcome": "failed"
+    },
+    {
+      "name": "5-S",
+      "outcome": "passed",
+      "keysIndependentlyReconstructed": 120,
+      "tenProfilesFourRoots": true,
+      "genuineFocusedInput": true,
+      "originalResourceEnvelopeVerified": true
+    },
+    {
+      "name": "6-B",
+      "outcome": "passed",
+      "keysIndependentlyReconstructed": 120,
+      "tenProfilesFourRoots": true,
+      "genuineFocusedInput": true,
+      "originalResourceEnvelopeVerified": true
+    }
+  ],
+  "allMetricAndGateReconstructionExact": true,
+  "fairnessAcceptance": false,
+  "allFairnessMissesRetained": true,
+  "policy": "unchanged16/64",
+  "scope": "Independent read-only reconstruction; a correctly measured fairness failure is not an audit failure."
+}

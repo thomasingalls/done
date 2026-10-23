@@ -1,0 +1,6 @@
+{
+  "account-service/delivery.ts": "a85725d15524fae6c48acd203085a6daf37586cfe03c386fcc94d464f57b7a3c",
+  "account-service/inboundAuthorityReuse.ts": "17dfd977c50abc95942fe658e90511048126a708d1923e7805a18a0447b6077d",
+  "test/account-service-delivery/cold-verification.test.mjs": "0f555d045d2d4a19473b8c81c4bcfd3ee7387951d0d6fb2114da2e76c60c4886",
+  "test/account-service-delivery/publisher-commit-races.test.mjs": "a9ae6849535d6557aa7a8c719c4cee2221381366113e73661f93097a83b8f750"
+}

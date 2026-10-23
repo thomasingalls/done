@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,subprocess,hashlib,time
+r=Path(__file__).parent;p=Path('/private/tmp/done-rate-review-20261021');sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();sources=json.loads((r/'source-identity.json').read_text());rows=[]
+for arm in ['D','B']:
+ source=r/('source-'+arm)
+ for f,h in sources[arm]['sha256'].items():assert sha(source/f)==h
+ assert sources[arm]==json.loads((p/'source-identity.json').read_text())[arm]
+ cmd=['node','--test','--test-concurrency=1','test/account-sessions/request-budget.test.mjs','test/account-sessions/request-budget-work.test.mjs','test/account-sessions/inbound-batch-budget.test.mjs'];at=time.time_ns()//1000000
+ with (r/('budget-'+arm+'.log')).open('w') as log:q=subprocess.run(cmd,cwd=source,stdout=log,stderr=subprocess.STDOUT)
+ assert q.returncode==0 and 'ℹ pass 17' in (r/('budget-'+arm+'.log')).read_text();rows.append({'arm':arm,'exitCode':q.returncode,'cases':17,'startedAt':at,'completedAt':time.time_ns()//1000000})
+closure={f.name:sha(f) for f in (r/'source-D/test/live-sync-attribution').iterdir() if f.is_file()};assert closure=={f.name:sha(f) for f in (r/'source-B/test/live-sync-attribution').iterdir() if f.is_file()}
+build={str(f.relative_to(r/'client-dist')):sha(f) for f in (r/'client-dist').rglob('*') if f.is_file()};assert build==json.loads((p/'identity.json').read_text())['clientBuildSha256']
+(r/'preflight.json').write_text(json.dumps({'status':'passed','receipts':rows,'browserClosure':closure,'sourceFilesPerArm':803,'clientAssets':110,'clientBuildExactPatch02':True,'profilesOnlyHarnessDifference':True},indent=2)+'\n');print('34 original budget cases passed; source and client frozen')

@@ -1,0 +1,30 @@
+[
+  {
+    "folder": "native",
+    "plan": "native-plan.json",
+    "readers": 6,
+    "positionsPerStream": 256,
+    "command": [
+      "node",
+      "/private/tmp/done-rate-review-20261021/api-load.mjs"
+    ],
+    "startedAt": 1792599807069,
+    "completedAt": 1792599940110,
+    "exitCode": 0,
+    "allChildrenExitAwaited": true
+  },
+  {
+    "folder": "asymmetric",
+    "plan": "asymmetric-plan.json",
+    "readers": 1,
+    "positionsPerStream": 1024,
+    "command": [
+      "node",
+      "/private/tmp/done-rate-review-20261021/api-load.mjs"
+    ],
+    "startedAt": 1792599940112,
+    "completedAt": 1792600042363,
+    "exitCode": 0,
+    "allChildrenExitAwaited": true
+  }
+]

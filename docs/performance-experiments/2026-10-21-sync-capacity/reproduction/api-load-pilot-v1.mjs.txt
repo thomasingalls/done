@@ -1,0 +1,96 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {fork} from 'node:child_process';
+import {request} from 'node:http';
+import {createPrivateKey,sign} from 'node:crypto';
+import {setTimeout as delay} from 'node:timers/promises';
+const root='/private/tmp/done-sync-capacity-20261021',source=root+'/source-D';
+const {query,pageProof}=await import(source+'/test/account-service-inbound/oracle.mjs');
+const {message}=await import(source+'/test/account-sessions/grant-fixtures.mjs');
+const {proof,link,ZERO}=await import(source+'/test/account-service-delivery/fixtures.mjs');
+const {encodeInboundBatch,decodeInboundBatchPages}=await import(source+'/account-protocol/inboundBatch.ts');
+const {encodeSubmit}=await import(source+'/account-protocol/deliveryTransport.ts');
+const positions=Number(process.env.LOAD_POSITIONS??256),output=root+'/'+(process.env.LOAD_OUTPUT??'api-primary');
+mkdirSync(output,{recursive:false,mode:0o700});
+const plan=process.env.LOAD_PILOT?[{arm:'D',block:0}]:[...['D','S','B'].map(arm=>({arm,block:1})),...['B','S','D'].map(arm=>({arm,block:2}))];
+writeFileSync(output+'/plan.json',JSON.stringify(plan,null,2)+'\n');
+const results=[];
+for(const run of plan){
+ const name=`${run.block}-${run.arm}`,state=output+'/'+name+'-service',data=JSON.parse(readFileSync(root+'/private-api/fixture.json'));
+ for(const who of ['first','other']){data[who].authority={pin:data.pin};data[who].s.privateKey=createPrivateKey(data[who].s.privateKey);data[who].retained=data[who].retained.map(({w,r})=>({w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:Buffer.from(r.bytes,'hex')}}));}
+ const child=fork(root+'/api-server.mjs',[root+'/source-'+run.arm,state],{stdio:['ignore','pipe','pipe','ipc']});
+ let logs='',serial=0,stop=false,resourceStop,port,started,statuses=[],retries=[],writes={first:[],other:[]},peer=[],streams=[],metrics,errors=[],ready;
+ const flights=new Map(),tails={first:Promise.resolve(),other:Promise.resolve()},background=[];
+ child.stdout.on('data',b=>logs+=b);child.stderr.on('data',b=>logs+=b);
+ child.on('exit',code=>{for(const f of flights.values())f.reject(Error('Server exited '+code));flights.clear()});
+ child.on('message',msg=>{if(msg.ready)ready?.(msg.port);if(msg.resourceStop)resourceStop=msg.resourceStop;if(msg.id&&flights.has(msg.id)){const f=flights.get(msg.id);flights.delete(msg.id);clearTimeout(f.timer);msg.error?f.reject(Error(msg.error)):f.resolve(msg)}});
+ const send=body=>new Promise((resolve,reject)=>{const id=++serial;if(!child.connected)return reject(Error('API child disconnected'));const timer=setTimeout(()=>{flights.delete(id);reject(Error('IPC deadline'))},15000);flights.set(id,{resolve,reject,timer});child.send({...body,id})});
+ const pStart=Date.now();
+ try{
+  port=await new Promise((resolve,reject)=>{ready=resolve;child.once('exit',()=>reject(Error('Server startup failure: '+logs)));setTimeout(()=>reject(Error('Server startup deadline')),15000).unref()});
+  const grants={first:[],other:[]};
+  for(const who of ['first','other'])for(let index=0;index<data[who].sessions.length;index++){
+   const g=await send({kind:'grant',who,index});assert.equal(g.view.stage,'challenge');
+   const f=await send({kind:'finishGrant',access:g.access.accessToken,proof:{challengeId:g.view.challenge.challengeId,signature:sign(null,message(g.view.challenge),data[who].s.privateKey).toString('hex')}});assert.equal(f.result.stage,'granted');grants[who].push(f.result.grantToken);
+  }
+  const post=async(path,body,who,index,label)=>{
+   const captured=Buffer.from(body);
+   for(let attempt=0;;attempt++){
+    assert(Buffer.from(body).equals(captured));if(resourceStop)throw Error(resourceStop);
+    const at=Date.now(),r=await new Promise((resolve,reject)=>{
+     const req=request({host:'127.0.0.1',port,path,method:'POST',headers:{Host:new URL(data.pin.origin).host,Origin:data.pin.origin,'Content-Type':'application/octet-stream',Authorization:'Bearer '+grants[who][index]}},res=>{const chunks=[];res.on('data',b=>chunks.push(b));res.on('end',()=>resolve({status:res.statusCode,bytes:new Uint8Array(Buffer.concat(chunks))}));res.on('error',reject)});
+     req.on('error',reject);req.setTimeout(10000,()=>req.destroy(Error('HTTP deadline')));req.end(captured);
+    });
+    statuses.push({label,attempt,at:at-started,completedAt:Date.now()-started,status:r.status});
+    if(r.status!==429||attempt>=2)return r;
+    assert.equal(JSON.parse(Buffer.from(r.bytes)).refusal,'capacity');const began=performance.now();await delay(1000*(attempt+1));retries.push({label,attempt,at:at-started,waitMs:performance.now()-began});
+   }
+  };
+  await send({kind:'start'});started=Date.now();
+  const fail=e=>{errors.push(String(e.stack??e));stop=true};
+  const offer=async(who,period)=>{
+   let i=0,previous=data[who].retained.reduce((p,x)=>link(x.w.subject,p),ZERO);
+   while(!stop){
+    const scheduledAt=started+(i+1)*period;await delay(Math.max(0,scheduledAt-Date.now()));if(stop)break;
+    const index=i++,w=data[who].extras[index];assert(w,'bounded prepared write supply');
+    const row={index,scheduledAt:scheduledAt-started,offeredAt:Date.now()-started};writes[who].push(row);
+    tails[who]=tails[who].then(async()=>{
+     row.startedAt=Date.now()-started;
+     const answer=await post('/account/delivery/submit',encodeSubmit(data[who].workspace,Buffer.from(w.bytes,'hex')),who,0,'write-'+who);
+     assert.equal(answer.status,200,'offered write accepted');
+     const checked=proof({kind:'decision',bytes:answer.bytes},data[who].offer.epoch.acceptancePublicKey,w.subject,previous,w.parent);assert.equal(checked.kind,'accepted');previous=checked.head.link;
+     data[who].retained.push({w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:answer.bytes}});
+     row.verifiedAt=Date.now()-started;
+    });
+    // Observe rejection immediately while retaining it for the final drain.
+    void tails[who].catch(fail);
+   }
+  };
+  background.push(offer('first',500).catch(fail),offer('other',1000).catch(fail));
+  background.push((async()=>{while(!stop){await delay(250);if(stop)break;const at=Date.now(),q=query(data.other),r=await post('/account/delivery/read-v2',q,'other',0,'peer');assert.equal(r.status,200,'unrelated read accepted');const responseAt=Date.now(),through=JSON.parse(Buffer.from(r.bytes))[3];await tails.other;pageProof({kind:'decision',bytes:r.bytes},q,data.other,data.other.retained.slice(0,through));peer.push({at:at-started,responseMs:responseAt-at,verifiedMs:Date.now()-at})}})().catch(fail));
+  let deadline;
+  const replay=Promise.all(Array.from({length:6},async(_,index)=>{
+   let after=0,batches=0;const at=Date.now();
+   while(after<positions){
+    if(errors.length||resourceStop)throw Error(resourceStop??'Background operation failed');
+    const requests=Array.from({length:Math.min(4,positions-after)},(_,i)=>query(data.first,after+i));
+    const r=await post('/account/delivery/read-v2-batch',encodeInboundBatch(requests),'first',index,'replay-'+index);assert.equal(r.status,200,'replay accepted');
+    const pages=decodeInboundBatchPages(r.bytes);assert(pages.length);await tails.first;
+    for(let i=0;i<pages.length;i++){const through=JSON.parse(Buffer.from(pages[i]))[3],p=pageProof({kind:'decision',bytes:pages[i]},requests[i],data.first,data.first.retained.slice(0,through));assert.equal(p.count,1);after=p.next;}
+    batches++;
+   }
+   streams[index]={positions:after,batches,elapsedMs:Date.now()-at};
+  }));
+  try{await Promise.race([replay,new Promise((_,reject)=>{deadline=setTimeout(()=>reject(Error('120s replay ceiling')),120000)})])}finally{clearTimeout(deadline)}
+  const replayMs=Date.now()-started;stop=true;await Promise.all(background);await Promise.all(Object.values(tails));if(errors.length)throw Error(errors.join('\n'));assert(!resourceStop);
+  metrics=(await send({kind:'end'})).metrics;
+  const row={...run,positionsPerStream:positions,streams,replayMs,elapsedMs:Date.now()-started,statuses,retries,writes,peer,metrics,outcome:'passed',independentLiveReadAndWriteProofs:true,scope:'Six sessions of one first-epoch workspace plus an unrelated account; not six different authority histories or production capacity.'};
+  results.push(row);writeFileSync(output+'/'+name+'.json',JSON.stringify(row,null,2)+'\n');console.log(JSON.stringify({name,outcome:row.outcome,replayMs,refusals:statuses.filter(x=>x.status===429).length,writes:Object.fromEntries(Object.entries(writes).map(([k,v])=>[k,v.length])),cpuMs:(metrics.cpu.user+metrics.cpu.system)/1000,rssPeak:metrics.rssSampledPeak}));
+ }catch(e){
+  stop=true;errors.push(e.stack);await Promise.allSettled([...background,...Object.values(tails)]);try{metrics=(await send({kind:'end'})).metrics}catch{}
+  const row={...run,outcome:'failed',positionsPerStream:positions,streams,statuses,retries,writes,peer,metrics,errors,elapsedMs:Date.now()-(started??pStart),resourceStop};results.push(row);writeFileSync(output+'/'+name+'.json',JSON.stringify(row,null,2)+'\n');console.log(JSON.stringify({name,outcome:'failed',errors}));
+ }finally{
+  stop=true;try{await send({kind:'stop'})}catch(e){writeFileSync(output+'/'+name+'-cleanup-failure.txt',String(e.stack))}finally{child.kill('SIGTERM');writeFileSync(output+'/'+name+'.log',logs);writeFileSync(output+'/results.json',JSON.stringify(results,null,2)+'\n')}
+ }
+}
+if(results.some(r=>r.outcome!=='passed'))process.exitCode=1;

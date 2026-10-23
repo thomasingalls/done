@@ -1,0 +1,307 @@
+{
+  "primary": {
+    "primary-foreground-0": {
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51709,
+            "characters": 51709
+          }
+        ],
+        "files": 2,
+        "bytes": 64709,
+        "sha256": "09f55ac91ce4180d83db2b264595beeeba75e725feb0be168e1d5753d2410638"
+      },
+      "initialArchive": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51440,
+            "characters": 51440
+          }
+        ],
+        "files": 2,
+        "bytes": 64440,
+        "sha256": "7f660d2aaf0991d6b93a9464a1e6c64e8180f691cf8fbe5b3c3b84c052b9e0e7"
+      }
+    },
+    "primary-foreground-75": {
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51709,
+            "characters": 51709
+          }
+        ],
+        "files": 2,
+        "bytes": 64709,
+        "sha256": "09f55ac91ce4180d83db2b264595beeeba75e725feb0be168e1d5753d2410638"
+      },
+      "initialArchive": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51440,
+            "characters": 51440
+          }
+        ],
+        "files": 2,
+        "bytes": 64440,
+        "sha256": "7f660d2aaf0991d6b93a9464a1e6c64e8180f691cf8fbe5b3c3b84c052b9e0e7"
+      }
+    },
+    "primary-catchup-0": {
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "initialArchive": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52040,
+            "characters": 52040
+          }
+        ],
+        "files": 2,
+        "bytes": 65040,
+        "sha256": "9c438fcbb4ac8b136d0712e05571da27f6fde6c78a606681259393df201effbf"
+      }
+    },
+    "primary-catchup-75": {
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "initialArchive": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52040,
+            "characters": 52040
+          }
+        ],
+        "files": 2,
+        "bytes": 65040,
+        "sha256": "9c438fcbb4ac8b136d0712e05571da27f6fde6c78a606681259393df201effbf"
+      }
+    }
+  },
+  "diagnostic": {
+    "diagnostic-foreground-0": {
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51709,
+            "characters": 51709
+          }
+        ],
+        "files": 2,
+        "bytes": 64709,
+        "sha256": "09f55ac91ce4180d83db2b264595beeeba75e725feb0be168e1d5753d2410638"
+      },
+      "initialArchive": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 51440,
+            "characters": 51440
+          }
+        ],
+        "files": 2,
+        "bytes": 64440,
+        "sha256": "7f660d2aaf0991d6b93a9464a1e6c64e8180f691cf8fbe5b3c3b84c052b9e0e7"
+      }
+    },
+    "diagnostic-catchup-75": {
+      "outcome": "passed",
+      "guards": {
+        "bothWay": true,
+        "undoRedo": true,
+        "wholeExportEquality": true,
+        "lockedOfflineReopen": true
+      },
+      "finalExport": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52195,
+            "characters": 52195
+          }
+        ],
+        "files": 2,
+        "bytes": 65195,
+        "sha256": "02e44bbae09d4fd1b7c0768bb299654adb0b294a00cca9796b1da6de238cdf90"
+      },
+      "initialArchive": {
+        "entries": [
+          {
+            "name": "master.md",
+            "bytes": 13000,
+            "characters": 13000
+          },
+          {
+            "name": "days/2026-10-21.md",
+            "bytes": 52040,
+            "characters": 52040
+          }
+        ],
+        "files": 2,
+        "bytes": 65040,
+        "sha256": "9c438fcbb4ac8b136d0712e05571da27f6fde6c78a606681259393df201effbf"
+      }
+    }
+  },
+  "privateSeedIdentities": {
+    "caughtup-seed": {
+      "fixtureSha256": "950b7798a0ffd6b7ea5652a32d7dfa8bfb37cc3332c4dc535632e4783323675c",
+      "aPosition": null,
+      "bPosition": null
+    },
+    "caughtup-seed-v2": {
+      "fixtureSha256": "16ed397c474dc2591271410e8719969dcf9b4cf4e4e829902583d069019fe071",
+      "aPosition": 8,
+      "bPosition": 2
+    },
+    "caughtup-seed-v3": {
+      "fixtureSha256": "7c4b1001514485730f9c0b9bd99de0e4062829cb9731c605315a01c2dd95bae7",
+      "aPosition": 9,
+      "bPosition": 2
+    },
+    "backlog-seed-v2": {
+      "fixtureSha256": "b3c73605e96e608432f624e5f6600bff45d745fd97e01dfeaf405d3836eb5023",
+      "aPosition": 608,
+      "bPosition": 2
+    },
+    "backlog-seed-v3": {
+      "fixtureSha256": "7c75a658cc6deb5df55df47560813eb55e580f9b55916d9ad3173e70e67b4e24",
+      "aPosition": 609,
+      "bPosition": 2
+    }
+  },
+  "secretScan": {
+    "distinctPrivateFixtureValuesChecked": 10,
+    "matches": 0,
+    "scope": "Exact known fixture unlock codes and credential fields. Explicit whitelist excludes state, fixture JSON, storage and keys; this is not a general secret detector."
+  },
+  "exactBacklogDelta": 600,
+  "freshReproductionConstructor": {
+    "outcome": "passed",
+    "cards": 121,
+    "goalsBytes": 13000,
+    "positions": [
+      10,
+      2
+    ],
+    "dayBytes": 51440
+  }
+}

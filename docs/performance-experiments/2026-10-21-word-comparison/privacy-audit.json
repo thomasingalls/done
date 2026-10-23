@@ -1,0 +1,5 @@
+{
+  "knownPrivateRawAndEscapedValues": 5,
+  "matches": 0,
+  "scope": "Numeric/source whitelist excludes fixture codes, credentials, keys, storage, DBs and real-index binary. Known-value scan is not universal DLP."
+}

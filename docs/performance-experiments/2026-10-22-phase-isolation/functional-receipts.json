@@ -1,0 +1,28 @@
+[
+  {
+    "variant": "C",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--test-name-pattern=publication",
+      "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "exitCode": 0,
+    "passed": 24
+  },
+  {
+    "variant": "D",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--test-name-pattern=publication",
+      "test/account-service-delivery/publisher-commit-races.test.mjs",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "exitCode": 0,
+    "passed": 24
+  }
+]

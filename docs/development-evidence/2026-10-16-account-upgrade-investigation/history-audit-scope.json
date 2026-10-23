@@ -1,0 +1,20 @@
+{
+  "scope": "Parent conversation history plus all five linked delegated threads",
+  "parent": {
+    "turns": 42,
+    "commandEntries": 3177,
+    "computerUseCalls": 317
+  },
+  "delegated": {
+    "threads": 5,
+    "commandEntries": 138,
+    "computerUseCalls": 0
+  },
+  "source": "Codex read_thread history; direct computer-use calls/responses independently matched against the local raw session by call ID",
+  "conclusion": "No recorded computer-use action targets the production origin. One completed Remove local data action was confined to the disposable Firefox Private Browsing workspace on port 8445.",
+  "limits": [
+    "The command review searched for production/profile/browser-attachment access and inspected candidates; it is not a formal proof of every possible shell side effect.",
+    "History cannot establish absence of unrecorded activity, browser storage failure/eviction, or another profile/container.",
+    "The production profile was not opened or modified for this audit."
+  ]
+}

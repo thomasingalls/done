@@ -1,3 +1,4 @@
+import type { InboundAuthorityReuse } from './inboundAuthorityReuse.ts';
 import {
   historyCatalogMessage,
   historyCheckpointPageMessage,
@@ -691,8 +692,13 @@ export class PrivateAuthority {
       bind: this.#issuer().bind,
     });
   }
-  readInbound(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
-    return core.readInbound(input, this.#deliveryIssuer(authorize));
+  readInbound(
+    core: AccountCore,
+    input: unknown,
+    authorize?: OperationAuthorization,
+    reuse?: InboundAuthorityReuse,
+  ) {
+    return core.readInbound(input, this.#deliveryIssuer(authorize), reuse);
   }
   close(): void {
     this.#key = null;

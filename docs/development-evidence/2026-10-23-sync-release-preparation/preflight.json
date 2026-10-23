@@ -1,0 +1,42 @@
+{
+  "observedAt": "2026-10-23T06:17:14.815732+00:00",
+  "origin": "https://done.oxidationlabs.com",
+  "deployment": {
+    "name": "done",
+    "replicas": 1,
+    "readyReplicas": 1,
+    "strategy": "Recreate",
+    "images": [
+      "ghcr.io/thomasingalls/done@sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b",
+      "ghcr.io/thomasingalls/done@sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b"
+    ]
+  },
+  "deployedFrontendMatchesRetainedFaf465f7": true,
+  "backup": {
+    "enabled": true,
+    "busy": false,
+    "stage": "idle",
+    "failures": 15,
+    "lastFailureStage": null,
+    "lastSnapshotAt": 1792705078137,
+    "lastUploadedAt": 1792705079547,
+    "dirtySince": null,
+    "unprotectedChangeAgeMs": 0,
+    "healthy": true
+  },
+  "registry": {
+    "name": "done",
+    "visibility": "private",
+    "owner": "thomasingalls",
+    "credentialSource": "existing GHCR OS keychain credential; secret never logged"
+  },
+  "candidateImageIndex": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+  "candidateSource": "51d8550d30585c93e623af0f2b3adf610781eebb",
+  "signedEvidenceCommit": "fa3af694e96731908baf920338e531d07de81697",
+  "allImageInputsUnchangedSinceTestedSource": true,
+  "hostedActionsRequiredForThisRelease": false,
+  "acceptanceAuthority": "Operator instruction2026-10-23: passing local tests suffice; hosted workflow timeouts are not a release gate",
+  "qualification": "paused",
+  "clusterMutated": false,
+  "registryPublishedByThisPreparation": false
+}

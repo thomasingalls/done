@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "removingExactlyOneNewStepRestoresAllOriginalBytes": true,
+  "newStepAfterChromiumBeforeCompiler": true,
+  "allFivePathsExist": true,
+  "allExistingCommandsPermissionsTimeoutsQualitySwitchUnchanged": true
+}

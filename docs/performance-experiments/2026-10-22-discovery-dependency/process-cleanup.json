@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "ownedContainersStoppedOrRemoved": [
+    {
+      "run": "1-R",
+      "running": false
+    },
+    {
+      "run": "2-C",
+      "running": false
+    },
+    {
+      "run": "3-C",
+      "running": false
+    },
+    {
+      "run": "4-R",
+      "running": false
+    }
+  ],
+  "ownedPersistentBrowsersStillRunning": 0
+}

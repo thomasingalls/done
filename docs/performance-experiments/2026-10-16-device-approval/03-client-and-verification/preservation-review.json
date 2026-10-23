@@ -1,0 +1,12 @@
+{
+  "priorObligationsPreserved": 863,
+  "priorStageAssignmentsUnchanged": true,
+  "newObligations": 3,
+  "manifestStillBlocked": true,
+  "allPriorConstructionStatusesUnchanged": true,
+  "newOpenConstruction": [
+    "transport-read-batching"
+  ],
+  "specifiedConstructionsPreserved": 78,
+  "oldTestChanges": "Only exact open count/list/blocked assertion in two registry census tests; no old test removed or security assertion weakened."
+}

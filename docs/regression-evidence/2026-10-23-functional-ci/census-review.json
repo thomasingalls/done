@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "onlyCensusChange": [
+    {
+      "index": 26,
+      "path": "test/account-service-inbound/core.test.mjs",
+      "before": 9,
+      "after": 21
+    }
+  ],
+  "oldCount": 687,
+  "newCount": 699,
+  "independentAstAndSelectedCaseNamesExact": true,
+  "allNineOldNamesPrefixExact": true,
+  "twelveAddedNames": [
+    "v2 late-ledger accepts a genuine append on every request-verification cut in one attempt",
+    "v2 late-ledger does not capture publisher-prefix evidence before authenticating the request",
+    "v2 late-ledger withholds bytes when account authority changes during request verification",
+    "v2 late-ledger withholds bytes when credential authority changes during request verification",
+    "v2 late-ledger withholds bytes when recovery authority changes during request verification",
+    "v2 late-ledger withholds bytes when promotion authority changes during request verification",
+    "v2 late-ledger compares future native header fields and retains the four-authority-change bound",
+    "v2 late-ledger compares harmless byte changes to retained recovery authority before reusing it",
+    "v2 late-ledger authenticates the fresh served row instead of retaining old row bytes",
+    "v2 late-ledger retains four final owner fences for real appends after the fresh capture",
+    "v2 late-ledger cannot outlive closed verifier ownership at the recapture boundary",
+    "v2 late-ledger retains current grant authorization after request verification"
+  ],
+  "allSelectedGroupsContainingChangedSource": [
+    {
+      "name": "account-fixtures",
+      "count": 711
+    },
+    {
+      "name": "delivery-fixtures",
+      "count": 64
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "name": "1-D-R-feedback",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback"
+  },
+  {
+    "name": "2-D-C-feedback",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback"
+  },
+  {
+    "name": "3-D-C-feedback",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback"
+  },
+  {
+    "name": "4-D-R-feedback",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback"
+  },
+  {
+    "name": "5-D-R-ordinary",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "none"
+  },
+  {
+    "name": "6-D-C-ordinary",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "none"
+  },
+  {
+    "name": "7-D-R-independent",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "independent"
+  },
+  {
+    "name": "8-D-C-independent",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "independent"
+  },
+  {
+    "name": "9-D-R-foreground",
+    "arm": "R",
+    "policy": "D",
+    "mode": "foreground",
+    "pressure": "none"
+  },
+  {
+    "name": "10-D-C-foreground",
+    "arm": "C",
+    "policy": "D",
+    "mode": "foreground",
+    "pressure": "none"
+  },
+  {
+    "name": "11-B-R-feedback",
+    "arm": "R",
+    "policy": "B",
+    "mode": "catchup",
+    "pressure": "feedback"
+  },
+  {
+    "name": "12-B-C-feedback",
+    "arm": "C",
+    "policy": "B",
+    "mode": "catchup",
+    "pressure": "feedback"
+  }
+]

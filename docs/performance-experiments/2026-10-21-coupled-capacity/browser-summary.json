@@ -1,0 +1,53 @@
+{
+  "pairs": [
+    {
+      "D": "ordinary-D",
+      "B": "ordinary-B",
+      "Dms": 33760,
+      "Bms": 24646,
+      "improvementPercent": 26.99644549763033,
+      "localD": 14.39990234375,
+      "localB": 10.39990234375,
+      "localLimit": 17.39990234375,
+      "localPass": true,
+      "peerD": 32750.800048828125,
+      "peerB": 23453.300048828125,
+      "peerPass": true
+    },
+    {
+      "D": "pressure1-D",
+      "B": "pressure1-B",
+      "Dms": 139896,
+      "Bms": 25653,
+      "improvementPercent": 81.6628066563733,
+      "localD": 9.5,
+      "localB": 16.800048828125,
+      "localLimit": 16,
+      "localPass": false,
+      "peerD": 139890.7998046875,
+      "peerB": 24662.599853515625,
+      "peerPass": true
+    },
+    {
+      "D": "pressure2-D",
+      "B": "pressure2-B",
+      "Dms": 145821,
+      "Bms": 29694,
+      "improvementPercent": 79.63667784475487,
+      "localD": 12,
+      "localB": 9.199951171875,
+      "localLimit": 16,
+      "localPass": true,
+      "peerD": 145855.30004882812,
+      "peerB": 28467.10009765625,
+      "peerPass": true
+    }
+  ],
+  "allEightFunctionalGuardsPass": true,
+  "allSixUninstrumentedTypingGuardsPass": false,
+  "medianPressureImprovementPercent": 80.64974225056409,
+  "pressureReferenceDriftPercent": 4.235289071881976,
+  "diagnosticsExcludedTimingCredit": true,
+  "defaultsUnchanged": "16/64",
+  "noAdoptionClaim": true
+}

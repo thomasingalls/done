@@ -1,0 +1,30 @@
+from pathlib import Path
+import json,subprocess,shutil,os,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};controls=[]
+f='account-service/inboundAuthorityReuse.ts';base=(repo/f).read_text()
+changes=[
+('omit-core-reuse','account-service/delivery.ts','reuse?.authority,','undefined,','independent native reads reuse'),
+('omit-fresh-custody',f,'issuer.check(structuredClone(check.seal), check.id, check.publicKey);','void check;','core proof hits'),
+('omit-clear-fence',f,'(!cache.live || cache.revision !== revision)','!cache.live','clear and close during'),
+('omit-input-check',f,'!next.equals(captured!)','false','mutated native input during'),
+('return-shared-projection',f,'return copyAuthority(previous.authority);','return previous.authority;','core evidence survives'),
+('omit-entry-bound',f,'cache.entries.size >= INBOUND_AUTHORITY_CACHE_ENTRIES','false','core cache bounds identities'),
+('omit-byte-bound',f,'cache.bytes + size > INBOUND_AUTHORITY_CACHE_BYTES','false','aggregate cache accounting'),
+('retain-oversized-evidence',f,'size <= INBOUND_AUTHORITY_CACHE_BYTES','true','oversized verified projections'),
+('omit-verifier-identity',f,'previous.verify === verify','true','core cache is private'),
+('omit-transaction-authorization','account-service/delivery.ts','const completeAuthorization = issuer.authorize?.(db, {','const completeAuthorization = undefined as (()=>void)|undefined; void ({','warm authority retains transaction-time'),
+]
+# The last omission is local to readInbound, leaving submit and v1 readers untouched.
+for name,path,old,new,pattern in changes:
+ target=r/('mutant-'+name);shutil.copytree(r/'source',target,symlinks=True)
+ for source in ['account-service/inboundAuthorityReuse.ts','account-service/deliveryVerification.ts','account-service/delivery.ts','test/account-sessions/inbound-authority-cache.test.mjs']:(target/source).write_bytes((repo/source).read_bytes())
+ p=target/path;text=p.read_text()
+ if name=='omit-transaction-authorization':
+  at=text.index('export async function readInbound(');head,text=text[:at],text[at:];assert text.count(old)==1;text=head+text.replace(old,new)
+ else:
+  assert text.count(old)==1,(name,text.count(old));text=text.replace(old,new)
+ p.write_text(text);cmd=['node','--test','--test-name-pattern='+pattern,'test/account-sessions/inbound-authority-cache.test.mjs'];at=int(time.time()*1000)
+ with(r/('control-'+name+'.log')).open('w')as log:run=subprocess.run(cmd,cwd=target,env=env,stdout=log,stderr=subprocess.STDOUT)
+ output=(r/('control-'+name+'.log')).read_text();assert run.returncode!=0 and 'AssertionError' in output,(name,output[-1500:])
+ controls.append({'name':name,'path':path,'old':old,'new':new,'testPattern':pattern,'exitCode':run.returncode,'assertionDetected':True,'startedAt':at,'completedAt':int(time.time()*1000)});print(name,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':controls},indent=2)+'\n')

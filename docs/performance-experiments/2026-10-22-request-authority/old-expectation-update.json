@@ -1,0 +1,1 @@
+{"file":"test/account-ceremony/content-transfer.test.mjs","case":"history early-epoch lookup verifies only the latest complete timeline and reuses its earlier memberships","change":"expected standalone authority work plus full history becomes one full history; adds positive standalone denominator assertion","securityAssertionsRemoved":0}

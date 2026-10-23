@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,os,subprocess,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+def run(name,cmd,cwd=s,expected=0):
+ with(r/(name+'.log')).open('w')as f:v=subprocess.run(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ print(name,v.returncode,flush=True);assert v.returncode==expected,name
+run('focused-cache-races',['node','--test','--test-concurrency=1','test/account-sessions/inbound-authority-cache.test.mjs','test/account-service-delivery/publisher-commit-races.test.mjs'])
+run('types',['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--module','ESNext','--moduleResolution','bundler','--lib','ES2022,DOM,DOM.Iterable','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit',*map(str,sorted((s/'account-service').glob('*.ts')))])
+run('lint',['node','node_modules/oxlint/bin/oxlint','account-service/delivery.ts',*files])

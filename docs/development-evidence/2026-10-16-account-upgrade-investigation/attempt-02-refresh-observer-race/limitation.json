@@ -1,0 +1,6 @@
+{
+  "serverRestartReached": true,
+  "previousAccountsAndSync": "passed",
+  "refreshObservation": "Interrupted by navigation because the initial observer did not explicitly await the new document. No app data-loss result.",
+  "correction": "Await Page navigation before snapshots; record unique per-document identities; verify writing offline after refresh to exclude server redelivery."
+}

@@ -1,0 +1,21 @@
+from pathlib import Path
+import hashlib,json,subprocess,os,time
+r=Path(__file__).parent;s=r/'source';repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());base=start['referenceInputs'];assert json.loads((r/'source-review.json').read_text())['status']=='passed';assert json.loads((r/'challenge.json').read_text())['status']=='passed'
+assert 'tests 15'in(r/'new-cases-final.log').read_text()and 'fail 0'in(r/'new-cases-final.log').read_text()
+assert (r/'types.log').read_text()=='';assert (r/'lint.log').read_text()=='' or 'Found 0 warnings and 0 errors'in(r/'lint.log').read_text()
+changes=sorted(f for f,h in base.items()if sha(s/f)!=h);assert changes==['account-service/delivery.ts'],changes
+for f in base:assert sha(s/f)==sha(repo/f),f
+for f,h in start['clientFiles'].items():assert sha(s/'dist'/f)==h
+for p in(r/'reference-account-service').glob('*.ts'):assert sha(p)==base['account-service/'+p.name]
+plan=[{'name':str(i+1)+'-'+v,'variant':v}for i,v in enumerate(['R','C','C','R'])];(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'playwright-storage-source.txt',r/'freeze-and-run.py',*list((s/'test/account-continuation-lab').glob('*'))]
+identity={'baseTree19':start['baseTree19'],'baseCommit':start['head'],'referenceInputs':base,'candidateInputs':{f:sha(s/f)for f in base},'onlyChangedRuntimeFiles':changes,'clientFiles':start['clientFiles'],'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'appendOnlyTestFiles':{f:sha(s/f)for f in ['test/account-service-inbound/core.test.mjs','test/account-ceremony/content-transfer.test.mjs']},'privateFixtureSha256':start['privateFixtureSha256'],'containerImage':json.loads((r/'container-image.json').read_text())['Id'],'runPlan':plan,'observerNote':'Same closed HTTP wrapper in all arms, additionally hashes read request bodies and logs only error JSON replies for read-v2/batch; no successful binary decoding or native/client instrumentation.'}
+(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for c in plan:
+ for f,h in identity['files'].items():assert sha(r/f)==h,f
+ for f,h in identity['candidateInputs'].items():assert sha(s/f)==h,f
+ for f,h in identity['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+ out=r/c['name'];out.mkdir(parents=True,mode=0o700);env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'FAIR_OUT':str(out),'FAIR_VARIANT':c['variant'],'FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:p=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+ if p.returncode:raise Exception('Journey failed; preserve outputs and do not replace: '+c['name'])

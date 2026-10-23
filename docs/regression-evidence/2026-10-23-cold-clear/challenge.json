@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "waive-retired-proof",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry recaptures|retired initial proof",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    },
+    {
+      "control": "retry-closed-cache",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry never resumes",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    },
+    {
+      "control": "revision-before-input",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry keeps input mutation",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    },
+    {
+      "control": "exempt-clear-attempt-budget",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry stops after four",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    },
+    {
+      "control": "skip-authorization-completion",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry rechecks complete",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    },
+    {
+      "control": "skip-all-request-expiry",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry preserves the original signed",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    },
+    {
+      "control": "retry-all-failures",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "cache-clear native retry does not retry failed fresh custody|cache-clear native retry rechecks begin",
+      "scope": "deliberate implementation omission detected by actual assertions; no timeout/import/skip credit; no general qualification"
+    }
+  ]
+}

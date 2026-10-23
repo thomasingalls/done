@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,subprocess,os,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']}
+while not(r/'affected-comparison.json').exists():
+ if 'Traceback' in (r/'preflight.log').read_text():raise Exception('preflight failed')
+ time.sleep(3)
+assert len(json.loads((r/'challenge-v2.json').read_text())['controls'])==10
+for f in ['account-service/inboundAuthorityReuse.ts','account-service/deliveryVerification.ts','account-service/delivery.ts','test/account-sessions/inbound-authority-cache.test.mjs','test/account-ceremony/content-transfer.test.mjs']:(r/'source'/f).write_bytes((repo/f).read_bytes())
+rows=[]
+commands=[('source-review',['node',str(r/'source-review.mjs')]),('new-regressions-final',['node','--test','--test-concurrency=1','test/account-sessions/inbound-authority-cache.test.mjs','test/account-sessions/inbound-authority-reuse.test.mjs','test/account-sessions/inbound-batch.test.mjs']),('types-final-v2',['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--lib','ES2022,DOM','--module','ESNext','--moduleResolution','bundler','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit','account-service/inboundAuthorityReuse.ts','account-service/deliveryVerification.ts','account-service/delivery.ts']),('lint-final',['node','node_modules/oxlint/bin/oxlint','account-service/inboundAuthorityReuse.ts','account-service/deliveryVerification.ts','account-service/delivery.ts','test/account-sessions/inbound-authority-cache.test.mjs'])]
+for name,cmd in commands:
+ with(r/(name+'.log')).open('w')as log:ret=subprocess.run(cmd,cwd=repo,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':ret.returncode});assert ret.returncode==0,(name,ret.returncode);print(name,'passed',flush=True)
+(r/'final-preflight-receipts.json').write_text(json.dumps(rows,indent=2)+'\n')
+print('Final preflight complete',flush=True)

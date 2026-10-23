@@ -1,0 +1,5 @@
+{
+  "v1Sha256": "85988ec4907ff1d8ded67bb336bb24968bea1a0b706a98f9128c71d96c209f29",
+  "v2Sha256": "7878344a158d5d15bc0d9808f4020eb019d13d5ab6c6f4c9c48ae9922afc92e9",
+  "change": "Atomic evidence-file replacement before pending browser trace; no source/HTTP/authority change."
+}

@@ -4,6 +4,20 @@ import { eraseUnretained } from './verificationOwnership';
 import { selectionIdentity, type ContentSelection } from './contentSelection';
 /** Owner-local verification reuse. Identity includes every opened record, never only ledger events. */
 import type { OpenedRecord } from './contentRecord';
+/** Exact bounded span comparison; no retained views or skipped tail bytes. */
+const sameByteSpan = (a: Uint8Array, b: Uint8Array, start: number, end: number): boolean => {
+  if (a[start] !== b[start]) return false;
+  let at = start;
+  if (end - start >= 256 && (a.byteOffset + start) % 4 === 0 && (b.byteOffset + start) % 4 === 0) {
+    const count = Math.floor((end - start) / 4),
+      left = new Uint32Array(a.buffer, a.byteOffset + start, count),
+      right = new Uint32Array(b.buffer, b.byteOffset + start, count);
+    for (let i = 0; i < count; i++) if (left[i] !== right[i]) return false;
+    at += count * 4;
+  }
+  for (; at < end; at++) if (a[at] !== b[at]) return false;
+  return true;
+};
 export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => {
   if (a.length !== b.length) return false;
   if (!a.length) {
@@ -12,6 +26,9 @@ export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => {
     return true;
   }
   if (a === b) return true;
+  if (a[0] !== b[0]) return false;
+  if (a.length >= 256 && a.byteOffset % 4 === 0 && b.byteOffset % 4 === 0)
+    return sameByteSpan(a, b, 0, a.length);
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
   return true;
 };
@@ -52,7 +69,7 @@ export async function sameRecordsCooperatively(
     if (left.bytes !== right.bytes) {
       for (let at = 0; at < left.bytes.length; at += 65536) {
         const end = Math.min(at + 65536, left.bytes.length);
-        for (let j = at; j < end; j++) if (left.bytes[j] !== right.bytes[j]) return false;
+        if (!sameByteSpan(left.bytes, right.bytes, at, end)) return false;
         const pause = checkpoint();
         if (pause) await pause;
       }

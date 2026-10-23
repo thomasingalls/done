@@ -1,0 +1,12 @@
+from pathlib import Path
+import datetime,json,os,subprocess
+r=Path(__file__).parent;receipts=[]
+plan=[{'name':'browser-1-baseline','pressure':False},{'name':'browser-1-pressure','pressure':True},{'name':'browser-2-pressure','pressure':True},{'name':'browser-2-baseline','pressure':False},{'name':'browser-forced-refusals','pressure':True,'inject':True},{'name':'browser-pressure-trace','pressure':True,'trace':True}]
+(r/'browser-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+for run in plan:
+ source=r/('source-trace' if run.get('trace') else 'source-D');out=r/run['name'];assert not out.exists(),str(out)
+ env=dict(os.environ,PATH='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],SYNC_ROOT='/private/tmp/done-live-sync-attribution-20261021',SYNC_SOURCE=str(source),SYNC_SEED='backlog-seed-v3',SYNC_OUT=str(out),SYNC_DIST=str(r/'client-dist'),SYNC_MODE='catchup',SYNC_DELAY='0',SYNC_REVISION='continuation-'+('trace' if run.get('trace') else 'default'),SYNC_PRESSURE='1' if run['pressure'] else '0',SYNC_INJECT='1' if run.get('inject') else '0',SYNC_TIP_TRACE='1' if run.get('trace') else '0')
+ receipt={**run,'startedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()};print('Starting '+run['name'],flush=True)
+ with (r/(run['name']+'.log')).open('w') as log:result=subprocess.run(['node','node_modules/@playwright/test/cli.js','test','--config','test/live-sync-attribution/playwright.config.ts'],cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+ receipt.update(returncode=result.returncode,completedAt=datetime.datetime.now(datetime.timezone.utc).isoformat());receipts.append(receipt);(r/'browser-runner.json').write_text(json.dumps(receipts,indent=2)+'\n');print('Finished '+run['name']+' code '+str(result.returncode),flush=True)
+ # Correctness failure stops the corresponding journey. Preserve it; independent arms remain useful.

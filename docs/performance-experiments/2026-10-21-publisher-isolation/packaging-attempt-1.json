@@ -1,0 +1,9 @@
+{
+  "expectedTree": "2c3446639fdcb866282f14cd07bec096db12daad",
+  "defaultApplyTree": "3951e2008be42955a884eabbad377816345ea251",
+  "globalApplyWhitespace": "fix",
+  "differingFilesStat": " .../reproduction/run-final-checks.py.txt               | 18 +++++++++---------\n .../reproduction/run-reviewed-checks.py.txt            | 18 +++++++++---------\n 2 files changed, 18 insertions(+), 18 deletions(-)\n",
+  "retainedPatch": "/private/tmp/done-publisher-isolation-20261021/patches/05-publisher-scoped-invalidation.patch",
+  "retainedPatchSha256": "023d3b88920fdbdeb46e60707d3e77872213cbdcd4455ca2591d0a4720fae152",
+  "result": "Exact tree assertion correctly refused whitespace-transformed archived reproduction source. Preserve artifact bytes; repeat independent clean application with --whitespace=nowarn. No runtime/test bytes changed."
+}

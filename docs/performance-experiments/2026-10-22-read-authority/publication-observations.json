@@ -1,0 +1,42 @@
+{
+  "status": "descriptive only",
+  "runs": [
+    {
+      "name": "1-R",
+      "measuredWriterSubmissions": 120,
+      "distinctBodies": 120,
+      "statuses": {
+        "200": 120
+      },
+      "writerSubmitP95Ms": 144
+    },
+    {
+      "name": "2-C",
+      "measuredWriterSubmissions": 118,
+      "distinctBodies": 118,
+      "statuses": {
+        "200": 118
+      },
+      "writerSubmitP95Ms": 92
+    },
+    {
+      "name": "3-C",
+      "measuredWriterSubmissions": 120,
+      "distinctBodies": 120,
+      "statuses": {
+        "200": 120
+      },
+      "writerSubmitP95Ms": 109
+    },
+    {
+      "name": "4-R",
+      "measuredWriterSubmissions": 117,
+      "distinctBodies": 117,
+      "statuses": {
+        "200": 117
+      },
+      "writerSubmitP95Ms": 140
+    }
+  ],
+  "scope": "No post-hoc acceptance gate; complete first120 trusted positions remain primary. Distinct request-body counts are observed publication cadence, not independent units."
+}

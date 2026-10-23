@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "omit-core-reuse",
+      "path": "account-service/delivery.ts",
+      "old": "reuse?.authority,",
+      "new": "undefined,",
+      "testPattern": "independent native reads reuse",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675045071,
+      "completedAt": 1792675045503
+    },
+    {
+      "name": "omit-fresh-custody",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "issuer.check(structuredClone(check.seal), check.id, check.publicKey);",
+      "new": "void check;",
+      "testPattern": "core proof hits",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675045920,
+      "completedAt": 1792675046300
+    },
+    {
+      "name": "omit-clear-fence",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "(!cache.live || cache.revision !== revision)",
+      "new": "!cache.live",
+      "testPattern": "clear and close during",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675046700,
+      "completedAt": 1792675047076
+    },
+    {
+      "name": "omit-input-check",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "!next.equals(captured!)",
+      "new": "false",
+      "testPattern": "mutated native input during",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675047483,
+      "completedAt": 1792675047849
+    },
+    {
+      "name": "return-shared-projection",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "return copyAuthority(previous.authority);",
+      "new": "return previous.authority;",
+      "testPattern": "core evidence survives",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675048258,
+      "completedAt": 1792675048647
+    },
+    {
+      "name": "omit-entry-bound",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "cache.entries.size >= INBOUND_AUTHORITY_CACHE_ENTRIES",
+      "new": "false",
+      "testPattern": "core cache bounds identities",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675049025,
+      "completedAt": 1792675049398
+    },
+    {
+      "name": "omit-byte-bound",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "cache.bytes + size > INBOUND_AUTHORITY_CACHE_BYTES",
+      "new": "false",
+      "testPattern": "aggregate cache accounting",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675049805,
+      "completedAt": 1792675050195
+    },
+    {
+      "name": "omit-projection-byte-charge",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "const size = charge(entry);",
+      "new": "const size = charge(captured);",
+      "testPattern": "oversized verified projections",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675050619,
+      "completedAt": 1792675051021
+    },
+    {
+      "name": "omit-verifier-identity",
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "old": "previous.verify === verify",
+      "new": "true",
+      "testPattern": "core cache is private",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675051420,
+      "completedAt": 1792675051787
+    },
+    {
+      "name": "omit-transaction-authorization",
+      "path": "account-service/delivery.ts",
+      "old": "const completeAuthorization = issuer.authorize?.(db, {",
+      "new": "const completeAuthorization = undefined as (()=>void)|undefined; void ({",
+      "testPattern": "warm authority retains transaction-time",
+      "exitCode": 1,
+      "assertionDetected": true,
+      "startedAt": 1792675052167,
+      "completedAt": 1792675052542
+    }
+  ]
+}

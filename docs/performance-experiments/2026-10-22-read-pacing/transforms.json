@@ -1,0 +1,208 @@
+[
+  {
+    "file": "account-service/delivery.ts",
+    "beforeSha256": "8858a9e53cdf8534aa7924cc5bae5ba234fcdfe0540c2ff9b88681d436aa983c",
+    "afterSha256": "9f4600afd9592214b4f0a9a9a28442f4692868202910d472a3e315a97979e9eb",
+    "prefix": "import {observe,sha} from '/experiment/observer.mjs';\n",
+    "scope": "readInbound",
+    "replacements": [
+      [
+        "  let phase: Diagnostic['phase'] = 'request';",
+        "  observe('read-start',{inputSha256:input instanceof Uint8Array?sha(input):null});\n  let phase: Diagnostic['phase'] = 'request';",
+        1
+      ],
+      [
+        "    for (let retry = 0; retry < 4; retry++) {",
+        "    for (let retry = 0; retry < 4; retry++) { observe('read-attempt',{retry,after:request.after,publisherSha256:sha(request.publisher),readerSha256:sha(request.reader)});",
+        1
+      ],
+      [
+        "        if (!s) return unknown('unavailable');",
+        "        observe('read-captured');\n        if (!s) return unknown('unavailable');",
+        1
+      ],
+      [
+        "        if (\n          request.serviceId",
+        "        observe('read-authority');\n        if (\n          request.serviceId",
+        1
+      ],
+      [
+        "        const ledger = await verifiedCensus(s, auth, reuse);",
+        "        observe('read-admitted');\n        const ledger = await verifiedCensus(s, auth, reuse);\n        observe('read-census',{through:ledger.through});",
+        1
+      ],
+      [
+        "        phase = 'commit';",
+        "        observe('read-served',{entries:page.entries.length,next:page.next,through:page.through});\n        phase = 'commit';",
+        1
+      ],
+      [
+        "        if (!current) {",
+        "        observe('read-current',{current});\n        if (!current) {",
+        1
+      ],
+      [
+        "        return { kind: 'decision', bytes: answer };",
+        "        observe('read-answer',{next:page.next,through:page.through,entries:page.entries.length});\n        return { kind: 'decision', bytes: answer };",
+        1
+      ],
+      [
+        "        note(cause);",
+        "        observe('read-caught',{code:causeCode(cause)});\n        note(cause);",
+        1
+      ],
+      [
+        "    return unknown('state-changed');",
+        "    observe('read-exhausted');\n    return unknown('state-changed');",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/publisherTips.ts",
+    "beforeSha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d",
+    "afterSha256": "43c8f396d28a451740651ccf4a3a9af0d8dbc05ef9a2cc635afa9fbe9f23042f",
+    "prefix": "import {observe,sha} from '/experiment/observer.mjs';\n",
+    "replacements": [
+      [
+        "      if (!c) return false;",
+        "      if (!c) { observe('guard-refused',{predicate:'capture-missing'}); return false; }",
+        1
+      ],
+      [
+        "      if (c.purpose !== purpose) return false;",
+        "      if (c.purpose !== purpose) { observe('guard-refused',{predicate:'purpose'}); return false; }",
+        1
+      ],
+      [
+        "      )\n        return false;\n      const current = snapshot",
+        "      ) { observe('guard-refused',{predicate:'owner-fence',revisionChanged:c.revision!==revision,versionChanged:c.version!==version,ownerChanged:owners.get(c.key)!==c.owner,commitChanged:c.commit!==c.owner.commit,publisherSha256:sha(s.publisher??'')}); return false; }\n      const current = snapshot",
+        1
+      ],
+      [
+        "      if (!current) return false;",
+        "      if (!current) { observe('guard-refused',{predicate:'snapshot-missing'}); return false; }",
+        1
+      ],
+      [
+        "      if (!same) invalidatePublisher(c.key);",
+        "      if (!same) { observe('guard-refused',{predicate:'fingerprint',publisherSha256:sha(s.publisher??''),changedFields:Object.keys(s).filter(k=>JSON.stringify(s[k])!==JSON.stringify(current[k])),promotionChangedFields:Object.keys(s.promotion).filter(k=>JSON.stringify(s.promotion[k])!==JSON.stringify(current.promotion[k]))}); invalidatePublisher(c.key); }",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "account-service/inboundAuthorityReuse.ts",
+    "beforeSha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe",
+    "afterSha256": "faa0c4b267b7cb4483545b53daa4cf73a71dcb68b78b4cf83841a0475f8c5e17",
+    "prefix": "import {observe,sha} from '/experiment/observer.mjs';\n",
+    "replacements": [
+      [
+        "    if (previous?.context.equals(captured) && previous.verify === verify) {",
+        "    if (previous?.context.equals(captured) && previous.verify === verify) { observe('authority-hit');",
+        1
+      ],
+      [
+        "    const checks: Check[] = [];",
+        "    observe('authority-miss');\n    const checks: Check[] = [];",
+        1
+      ],
+      [
+        "    current();\n    if (captured.byteLength",
+        "    observe('authority-verified');\n    current();\n    if (captured.byteLength",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/crdt/accountSyncDriver.ts",
+    "beforeSha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed",
+    "afterSha256": "57df2121541e97a5bc341a6c7069e889d06032e4ec1f18b2d3bb6a32a91d6146",
+    "prefix": "const pace=(tag:string,data:Record<string,unknown>={})=>{(globalThis as any).__readPacing?.(tag,data);};\n",
+    "replacements": [
+      [
+        "        const result =\n          name === 'receive'",
+        "        pace('lane-begin',{name,failures:lane.failures,position:lane.position});\n        const result =\n          name === 'receive'",
+        1
+      ],
+      [
+        "        if (stopped) return;\n        const position",
+        "        pace('lane-result',{name,kind:result.kind,position:'acceptedThrough' in result?result.acceptedThrough:result.receivedThrough});\n        if (stopped) return;\n        const position",
+        1
+      ],
+      [
+        "        ready();\n      })",
+        "        pace('lane-scheduled',{name,due:lane.due??null,failures:lane.failures,dirty:lane.dirty});\n        ready();\n      })",
+        1
+      ],
+      [
+        "        if (!stopped) {\n          if (options.gate()",
+        "        pace('lane-threw',{name});\n        if (!stopped) {\n          if (options.gate()",
+        1
+      ],
+      [
+        "        active = undefined;\n        work = undefined;",
+        "        pace('lane-finished',{name});\n        active = undefined;\n        work = undefined;",
+        1
+      ],
+      [
+        "    if (stopped) return;\n    if (options.gate() === 'offline')",
+        "    pace('wake',{cause,target:target??null,active:active??null,sendDue:lanes.send.due??null,receiveDue:lanes.receive.due??null,sendFailures:lanes.send.failures,receiveFailures:lanes.receive.failures});\n    if (stopped) return;\n    if (options.gate() === 'offline')",
+        1
+      ],
+      [
+        "  let status = await ops.deliveryStatus();",
+        "  pace('send-status-start');\n  let status = await ops.deliveryStatus();\n  pace('send-status-end',{accepted:status.acceptedThrough});",
+        1
+      ],
+      [
+        "      const prepared = await ops.prepareNextEnvelope();",
+        "      pace('send-envelope-start',{position});\n      const prepared = await ops.prepareNextEnvelope();\n      pace('send-envelope-end',{position,prepared:!!prepared});",
+        1
+      ],
+      [
+        "    const submission = await ops.prepareSubmission(position);",
+        "    pace('send-submission-start',{position});\n    const submission = await ops.prepareSubmission(position);\n    pace('send-submission-end',{position,kind:submission.kind});",
+        1
+      ],
+      [
+        "  await ops.submitPending(token);",
+        "  pace('send-submit-start',{position});\n  await ops.submitPending(token);\n  pace('send-submit-end',{position});",
+        1
+      ]
+    ]
+  },
+  {
+    "file": "src/crdt/accountReceive.ts",
+    "beforeSha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc",
+    "afterSha256": "367ef44bdc0eb23bd4052365248c29beef96b4bc64371b5c79282e87e04efe18",
+    "prefix": "const pace=(tag:string,data:Record<string,unknown>={})=>{(globalThis as any).__readPacing?.(tag,data);};\n",
+    "replacements": [
+      [
+        "          const authority = await refreshAuthority(operatorToken ?? '');",
+        "          pace('receive-discovery-start');\n          const authority = await refreshAuthority(operatorToken ?? '');\n          pace('receive-discovery-end',{kind:authority.kind});",
+        1
+      ],
+      [
+        "            if (await receiveHistory()) {",
+        "            pace('receive-history-start');\n            const tracedHistory=await receiveHistory();\n            pace('receive-history-end',{installed:tracedHistory});\n            if (tracedHistory) {",
+        1
+      ],
+      [
+        "            const step = await driveReceiveStep(result, operatorToken ?? '', gate);",
+        "            pace('receive-step-start');\n            const step = await driveReceiveStep(result, operatorToken ?? '', gate);\n            pace('receive-step-end',{kind:step.kind,position:step.receivedThrough});",
+        1
+      ],
+      [
+        "        requests = await prepareGroup();",
+        "        pace('receive-prepare-start');\n        requests = await prepareGroup();\n        pace('receive-prepare-end',{requests:requests.length});",
+        1
+      ],
+      [
+        "          pages = collected.pages;",
+        "          pace('receive-network-end',{pages:collected.pages.length,attempted:collected.attempted});\n          pages = collected.pages;",
+        1
+      ]
+    ]
+  }
+]

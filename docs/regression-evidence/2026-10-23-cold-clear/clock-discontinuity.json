@@ -1,0 +1,1990 @@
+{
+  "status": "diagnosed",
+  "facts": "First journey clocks cease being comparable: from input71 the recorded trusted input precedes host dispatch by about178\u2013180ms; raw120 DOM increments remain and same-renderer input-to-visibility does not show the inferred320ms lag. Original host-filter excludes own observation and chooses next-key observation, censoring last key.",
+  "causeAttribution": "relative host wall/renderer monotonic clock alignment discontinuity; NTP/suspend/exact OS cause not recorded, not asserted",
+  "primaryAcceptance": "OriginalC,C series remains held/invalid timing for1-C; no gate override or substituted original result",
+  "diagnosticNotPromotion": "Same-renderer recomputation is diagnosis only; do not use it to pass original gates post hoc",
+  "runs": [
+    {
+      "name": "1-C",
+      "trustedInputs": 120,
+      "rawVisibleThresholds": 120,
+      "allRawLocalCharactersObserved": true,
+      "impossiblePreDispatchEventCount": 50,
+      "firstImpossibleEvent": {
+        "index": 71,
+        "hostOfferAt": 1792710559124,
+        "rendererBeforeInputAt": 1792710558945.9001,
+        "rendererVisibleAt": 1792710558946.2,
+        "rendererEventMinusHostOfferMs": -178.099853515625,
+        "sameRendererEventToVisibleMs": 0.2998046875
+      },
+      "initialOffsetsMs": [
+        3.300048828125,
+        1.800048828125,
+        1.300048828125
+      ],
+      "lastOffsetsMs": [
+        -179.300048828125,
+        -179.39990234375,
+        -179.300048828125
+      ],
+      "sameRendererDiagnosticOnlyMs": {
+        "n": 120,
+        "p50": 0.39990234375,
+        "p95": 0.5,
+        "min": 0.199951171875,
+        "max": 0.60009765625
+      },
+      "keys": [
+        {
+          "index": 1,
+          "hostOfferAt": 1792710524021,
+          "rendererBeforeInputAt": 1792710524024.3,
+          "rendererVisibleAt": 1792710524024.9001,
+          "rendererEventMinusHostOfferMs": 3.300048828125,
+          "sameRendererEventToVisibleMs": 0.60009765625
+        },
+        {
+          "index": 2,
+          "hostOfferAt": 1792710524444,
+          "rendererBeforeInputAt": 1792710524445.8,
+          "rendererVisibleAt": 1792710524446,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.199951171875
+        },
+        {
+          "index": 3,
+          "hostOfferAt": 1792710524945,
+          "rendererBeforeInputAt": 1792710524946.3,
+          "rendererVisibleAt": 1792710524946.7,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 4,
+          "hostOfferAt": 1792710525443,
+          "rendererBeforeInputAt": 1792710525445,
+          "rendererVisibleAt": 1792710525445.5,
+          "rendererEventMinusHostOfferMs": 2,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 5,
+          "hostOfferAt": 1792710525944,
+          "rendererBeforeInputAt": 1792710525945.8,
+          "rendererVisibleAt": 1792710525946.1,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 6,
+          "hostOfferAt": 1792710526442,
+          "rendererBeforeInputAt": 1792710526443.8,
+          "rendererVisibleAt": 1792710526444.2,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 7,
+          "hostOfferAt": 1792710526943,
+          "rendererBeforeInputAt": 1792710526945,
+          "rendererVisibleAt": 1792710526945.3,
+          "rendererEventMinusHostOfferMs": 2,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 8,
+          "hostOfferAt": 1792710527443,
+          "rendererBeforeInputAt": 1792710527447.7,
+          "rendererVisibleAt": 1792710527448,
+          "rendererEventMinusHostOfferMs": 4.699951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 9,
+          "hostOfferAt": 1792710527943,
+          "rendererBeforeInputAt": 1792710527945,
+          "rendererVisibleAt": 1792710527945.4001,
+          "rendererEventMinusHostOfferMs": 2,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 10,
+          "hostOfferAt": 1792710528442,
+          "rendererBeforeInputAt": 1792710528444.1,
+          "rendererVisibleAt": 1792710528444.4001,
+          "rendererEventMinusHostOfferMs": 2.10009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 11,
+          "hostOfferAt": 1792710528943,
+          "rendererBeforeInputAt": 1792710528944.4001,
+          "rendererVisibleAt": 1792710528944.7,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 12,
+          "hostOfferAt": 1792710529441,
+          "rendererBeforeInputAt": 1792710529443,
+          "rendererVisibleAt": 1792710529443.3,
+          "rendererEventMinusHostOfferMs": 2,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 13,
+          "hostOfferAt": 1792710529942,
+          "rendererBeforeInputAt": 1792710529943.9001,
+          "rendererVisibleAt": 1792710529944.3,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 14,
+          "hostOfferAt": 1792710530444,
+          "rendererBeforeInputAt": 1792710530446.1,
+          "rendererVisibleAt": 1792710530446.5,
+          "rendererEventMinusHostOfferMs": 2.10009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 15,
+          "hostOfferAt": 1792710530942,
+          "rendererBeforeInputAt": 1792710530943.9001,
+          "rendererVisibleAt": 1792710530944.3,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 16,
+          "hostOfferAt": 1792710531442,
+          "rendererBeforeInputAt": 1792710531443.9001,
+          "rendererVisibleAt": 1792710531444.3,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 17,
+          "hostOfferAt": 1792710531942,
+          "rendererBeforeInputAt": 1792710531943.8,
+          "rendererVisibleAt": 1792710531944.1,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 18,
+          "hostOfferAt": 1792710532442,
+          "rendererBeforeInputAt": 1792710532444.4001,
+          "rendererVisibleAt": 1792710532444.7,
+          "rendererEventMinusHostOfferMs": 2.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 19,
+          "hostOfferAt": 1792710532941,
+          "rendererBeforeInputAt": 1792710532942.9001,
+          "rendererVisibleAt": 1792710532943.2,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 20,
+          "hostOfferAt": 1792710533441,
+          "rendererBeforeInputAt": 1792710533443,
+          "rendererVisibleAt": 1792710533443.3,
+          "rendererEventMinusHostOfferMs": 2,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 21,
+          "hostOfferAt": 1792710533943,
+          "rendererBeforeInputAt": 1792710533945.2,
+          "rendererVisibleAt": 1792710533945.6,
+          "rendererEventMinusHostOfferMs": 2.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 22,
+          "hostOfferAt": 1792710534441,
+          "rendererBeforeInputAt": 1792710534446.2,
+          "rendererVisibleAt": 1792710534446.6,
+          "rendererEventMinusHostOfferMs": 5.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 23,
+          "hostOfferAt": 1792710534944,
+          "rendererBeforeInputAt": 1792710534945.1,
+          "rendererVisibleAt": 1792710534945.5,
+          "rendererEventMinusHostOfferMs": 1.10009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 24,
+          "hostOfferAt": 1792710535443,
+          "rendererBeforeInputAt": 1792710535444.6,
+          "rendererVisibleAt": 1792710535444.9001,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 25,
+          "hostOfferAt": 1792710535943,
+          "rendererBeforeInputAt": 1792710535946.7,
+          "rendererVisibleAt": 1792710535947.1,
+          "rendererEventMinusHostOfferMs": 3.699951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 26,
+          "hostOfferAt": 1792710536442,
+          "rendererBeforeInputAt": 1792710536443.6,
+          "rendererVisibleAt": 1792710536443.9001,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 27,
+          "hostOfferAt": 1792710536942,
+          "rendererBeforeInputAt": 1792710536944.5,
+          "rendererVisibleAt": 1792710536944.9001,
+          "rendererEventMinusHostOfferMs": 2.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 28,
+          "hostOfferAt": 1792710537443,
+          "rendererBeforeInputAt": 1792710537444.4001,
+          "rendererVisibleAt": 1792710537444.8,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 29,
+          "hostOfferAt": 1792710537944,
+          "rendererBeforeInputAt": 1792710537945.4001,
+          "rendererVisibleAt": 1792710537945.8,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 30,
+          "hostOfferAt": 1792710538443,
+          "rendererBeforeInputAt": 1792710538444.5,
+          "rendererVisibleAt": 1792710538444.9001,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 31,
+          "hostOfferAt": 1792710538943,
+          "rendererBeforeInputAt": 1792710538944.4001,
+          "rendererVisibleAt": 1792710538944.7,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 32,
+          "hostOfferAt": 1792710539441,
+          "rendererBeforeInputAt": 1792710539442.8,
+          "rendererVisibleAt": 1792710539443.1,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 33,
+          "hostOfferAt": 1792710539942,
+          "rendererBeforeInputAt": 1792710539943.9001,
+          "rendererVisibleAt": 1792710539944.3,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 34,
+          "hostOfferAt": 1792710540444,
+          "rendererBeforeInputAt": 1792710540445.8,
+          "rendererVisibleAt": 1792710540446.1,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 35,
+          "hostOfferAt": 1792710540941,
+          "rendererBeforeInputAt": 1792710540942.7,
+          "rendererVisibleAt": 1792710540943.1,
+          "rendererEventMinusHostOfferMs": 1.699951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 36,
+          "hostOfferAt": 1792710541443,
+          "rendererBeforeInputAt": 1792710541444.3,
+          "rendererVisibleAt": 1792710541444.7,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 37,
+          "hostOfferAt": 1792710541942,
+          "rendererBeforeInputAt": 1792710541944.2,
+          "rendererVisibleAt": 1792710541944.6,
+          "rendererEventMinusHostOfferMs": 2.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 38,
+          "hostOfferAt": 1792710542444,
+          "rendererBeforeInputAt": 1792710542445.6,
+          "rendererVisibleAt": 1792710542445.9001,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 39,
+          "hostOfferAt": 1792710542943,
+          "rendererBeforeInputAt": 1792710542944.4001,
+          "rendererVisibleAt": 1792710542944.7,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 40,
+          "hostOfferAt": 1792710543442,
+          "rendererBeforeInputAt": 1792710543443.8,
+          "rendererVisibleAt": 1792710543444.2,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 41,
+          "hostOfferAt": 1792710543943,
+          "rendererBeforeInputAt": 1792710543944.8,
+          "rendererVisibleAt": 1792710543945.1,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 42,
+          "hostOfferAt": 1792710544444,
+          "rendererBeforeInputAt": 1792710544445.3,
+          "rendererVisibleAt": 1792710544445.7,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 43,
+          "hostOfferAt": 1792710544944,
+          "rendererBeforeInputAt": 1792710544945.9001,
+          "rendererVisibleAt": 1792710544946.2,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 44,
+          "hostOfferAt": 1792710545444,
+          "rendererBeforeInputAt": 1792710545445.6,
+          "rendererVisibleAt": 1792710545446.1,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 45,
+          "hostOfferAt": 1792710545944,
+          "rendererBeforeInputAt": 1792710545948.6,
+          "rendererVisibleAt": 1792710545948.8,
+          "rendererEventMinusHostOfferMs": 4.60009765625,
+          "sameRendererEventToVisibleMs": 0.199951171875
+        },
+        {
+          "index": 46,
+          "hostOfferAt": 1792710546444,
+          "rendererBeforeInputAt": 1792710546445.5,
+          "rendererVisibleAt": 1792710546445.9001,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 47,
+          "hostOfferAt": 1792710546943,
+          "rendererBeforeInputAt": 1792710546944.4001,
+          "rendererVisibleAt": 1792710546944.9001,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 48,
+          "hostOfferAt": 1792710547444,
+          "rendererBeforeInputAt": 1792710547445.5,
+          "rendererVisibleAt": 1792710547445.9001,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 49,
+          "hostOfferAt": 1792710547943,
+          "rendererBeforeInputAt": 1792710547944.5,
+          "rendererVisibleAt": 1792710547944.8,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 50,
+          "hostOfferAt": 1792710548445,
+          "rendererBeforeInputAt": 1792710548446.3,
+          "rendererVisibleAt": 1792710548446.6,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 51,
+          "hostOfferAt": 1792710548943,
+          "rendererBeforeInputAt": 1792710548945.2,
+          "rendererVisibleAt": 1792710548945.5,
+          "rendererEventMinusHostOfferMs": 2.199951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 52,
+          "hostOfferAt": 1792710549443,
+          "rendererBeforeInputAt": 1792710549444.7,
+          "rendererVisibleAt": 1792710549445.1,
+          "rendererEventMinusHostOfferMs": 1.699951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 53,
+          "hostOfferAt": 1792710549943,
+          "rendererBeforeInputAt": 1792710549946,
+          "rendererVisibleAt": 1792710549946.4001,
+          "rendererEventMinusHostOfferMs": 3,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 54,
+          "hostOfferAt": 1792710550444,
+          "rendererBeforeInputAt": 1792710550451.5,
+          "rendererVisibleAt": 1792710550451.8,
+          "rendererEventMinusHostOfferMs": 7.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 55,
+          "hostOfferAt": 1792710550942,
+          "rendererBeforeInputAt": 1792710550943.5,
+          "rendererVisibleAt": 1792710550943.9001,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 56,
+          "hostOfferAt": 1792710551445,
+          "rendererBeforeInputAt": 1792710551446.4001,
+          "rendererVisibleAt": 1792710551446.7,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 57,
+          "hostOfferAt": 1792710551943,
+          "rendererBeforeInputAt": 1792710551944.4001,
+          "rendererVisibleAt": 1792710551944.7,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 58,
+          "hostOfferAt": 1792710552443,
+          "rendererBeforeInputAt": 1792710552444.8,
+          "rendererVisibleAt": 1792710552445.2,
+          "rendererEventMinusHostOfferMs": 1.800048828125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 59,
+          "hostOfferAt": 1792710552941,
+          "rendererBeforeInputAt": 1792710552942.9001,
+          "rendererVisibleAt": 1792710552943.3,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 60,
+          "hostOfferAt": 1792710553442,
+          "rendererBeforeInputAt": 1792710553444,
+          "rendererVisibleAt": 1792710553444.5,
+          "rendererEventMinusHostOfferMs": 2,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 61,
+          "hostOfferAt": 1792710553944,
+          "rendererBeforeInputAt": 1792710553945.9001,
+          "rendererVisibleAt": 1792710553946.3,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 62,
+          "hostOfferAt": 1792710554442,
+          "rendererBeforeInputAt": 1792710554443.5,
+          "rendererVisibleAt": 1792710554443.9001,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 63,
+          "hostOfferAt": 1792710554943,
+          "rendererBeforeInputAt": 1792710554944.1,
+          "rendererVisibleAt": 1792710554944.4001,
+          "rendererEventMinusHostOfferMs": 1.10009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 64,
+          "hostOfferAt": 1792710555444,
+          "rendererBeforeInputAt": 1792710555445.4001,
+          "rendererVisibleAt": 1792710555445.7,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 65,
+          "hostOfferAt": 1792710555943,
+          "rendererBeforeInputAt": 1792710555948.9001,
+          "rendererVisibleAt": 1792710555949.3,
+          "rendererEventMinusHostOfferMs": 5.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 66,
+          "hostOfferAt": 1792710556444,
+          "rendererBeforeInputAt": 1792710556445.6,
+          "rendererVisibleAt": 1792710556446,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 67,
+          "hostOfferAt": 1792710556944,
+          "rendererBeforeInputAt": 1792710556945.6,
+          "rendererVisibleAt": 1792710556945.9001,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 68,
+          "hostOfferAt": 1792710557442,
+          "rendererBeforeInputAt": 1792710557443.9001,
+          "rendererVisibleAt": 1792710557444.4001,
+          "rendererEventMinusHostOfferMs": 1.900146484375,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 69,
+          "hostOfferAt": 1792710557944,
+          "rendererBeforeInputAt": 1792710557945.6,
+          "rendererVisibleAt": 1792710557946,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 70,
+          "hostOfferAt": 1792710558442,
+          "rendererBeforeInputAt": 1792710558443.1,
+          "rendererVisibleAt": 1792710558443.4001,
+          "rendererEventMinusHostOfferMs": 1.10009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 71,
+          "hostOfferAt": 1792710559124,
+          "rendererBeforeInputAt": 1792710558945.9001,
+          "rendererVisibleAt": 1792710558946.2,
+          "rendererEventMinusHostOfferMs": -178.099853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 72,
+          "hostOfferAt": 1792710559442,
+          "rendererBeforeInputAt": 1792710559264.1,
+          "rendererVisibleAt": 1792710559264.4001,
+          "rendererEventMinusHostOfferMs": -177.89990234375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 73,
+          "hostOfferAt": 1792710559942,
+          "rendererBeforeInputAt": 1792710559763.5,
+          "rendererVisibleAt": 1792710559763.9001,
+          "rendererEventMinusHostOfferMs": -178.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 74,
+          "hostOfferAt": 1792710560444,
+          "rendererBeforeInputAt": 1792710560265.4001,
+          "rendererVisibleAt": 1792710560265.7,
+          "rendererEventMinusHostOfferMs": -178.599853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 75,
+          "hostOfferAt": 1792710560944,
+          "rendererBeforeInputAt": 1792710560765.5,
+          "rendererVisibleAt": 1792710560765.8,
+          "rendererEventMinusHostOfferMs": -178.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 76,
+          "hostOfferAt": 1792710561443,
+          "rendererBeforeInputAt": 1792710561265.2,
+          "rendererVisibleAt": 1792710561265.7,
+          "rendererEventMinusHostOfferMs": -177.800048828125,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 77,
+          "hostOfferAt": 1792710561944,
+          "rendererBeforeInputAt": 1792710561765,
+          "rendererVisibleAt": 1792710561765.3,
+          "rendererEventMinusHostOfferMs": -179,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 78,
+          "hostOfferAt": 1792710562445,
+          "rendererBeforeInputAt": 1792710562267.8,
+          "rendererVisibleAt": 1792710562268.2,
+          "rendererEventMinusHostOfferMs": -177.199951171875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 79,
+          "hostOfferAt": 1792710562944,
+          "rendererBeforeInputAt": 1792710562765.8,
+          "rendererVisibleAt": 1792710562766.1,
+          "rendererEventMinusHostOfferMs": -178.199951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 80,
+          "hostOfferAt": 1792710563442,
+          "rendererBeforeInputAt": 1792710563263.6,
+          "rendererVisibleAt": 1792710563263.9001,
+          "rendererEventMinusHostOfferMs": -178.39990234375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 81,
+          "hostOfferAt": 1792710563944,
+          "rendererBeforeInputAt": 1792710563764.4001,
+          "rendererVisibleAt": 1792710563764.7,
+          "rendererEventMinusHostOfferMs": -179.599853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 82,
+          "hostOfferAt": 1792710564443,
+          "rendererBeforeInputAt": 1792710564264.3,
+          "rendererVisibleAt": 1792710564264.6,
+          "rendererEventMinusHostOfferMs": -178.699951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 83,
+          "hostOfferAt": 1792710564943,
+          "rendererBeforeInputAt": 1792710564764,
+          "rendererVisibleAt": 1792710564764.3,
+          "rendererEventMinusHostOfferMs": -179,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 84,
+          "hostOfferAt": 1792710565443,
+          "rendererBeforeInputAt": 1792710565263.6,
+          "rendererVisibleAt": 1792710565264,
+          "rendererEventMinusHostOfferMs": -179.39990234375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 85,
+          "hostOfferAt": 1792710565943,
+          "rendererBeforeInputAt": 1792710565763.9001,
+          "rendererVisibleAt": 1792710565764.2,
+          "rendererEventMinusHostOfferMs": -179.099853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 86,
+          "hostOfferAt": 1792710566441,
+          "rendererBeforeInputAt": 1792710566261.8,
+          "rendererVisibleAt": 1792710566262.1,
+          "rendererEventMinusHostOfferMs": -179.199951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 87,
+          "hostOfferAt": 1792710566944,
+          "rendererBeforeInputAt": 1792710566764.6,
+          "rendererVisibleAt": 1792710566765.1,
+          "rendererEventMinusHostOfferMs": -179.39990234375,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 88,
+          "hostOfferAt": 1792710567441,
+          "rendererBeforeInputAt": 1792710567262.3,
+          "rendererVisibleAt": 1792710567262.6,
+          "rendererEventMinusHostOfferMs": -178.699951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 89,
+          "hostOfferAt": 1792710567944,
+          "rendererBeforeInputAt": 1792710567764.9001,
+          "rendererVisibleAt": 1792710567765.2,
+          "rendererEventMinusHostOfferMs": -179.099853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 90,
+          "hostOfferAt": 1792710568443,
+          "rendererBeforeInputAt": 1792710568263.8,
+          "rendererVisibleAt": 1792710568264.2,
+          "rendererEventMinusHostOfferMs": -179.199951171875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 91,
+          "hostOfferAt": 1792710568941,
+          "rendererBeforeInputAt": 1792710568763.3,
+          "rendererVisibleAt": 1792710568763.6,
+          "rendererEventMinusHostOfferMs": -177.699951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 92,
+          "hostOfferAt": 1792710569443,
+          "rendererBeforeInputAt": 1792710569264.5,
+          "rendererVisibleAt": 1792710569264.9001,
+          "rendererEventMinusHostOfferMs": -178.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 93,
+          "hostOfferAt": 1792710569943,
+          "rendererBeforeInputAt": 1792710569769,
+          "rendererVisibleAt": 1792710569769.4001,
+          "rendererEventMinusHostOfferMs": -174,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 94,
+          "hostOfferAt": 1792710570443,
+          "rendererBeforeInputAt": 1792710570264,
+          "rendererVisibleAt": 1792710570264.4001,
+          "rendererEventMinusHostOfferMs": -179,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 95,
+          "hostOfferAt": 1792710570942,
+          "rendererBeforeInputAt": 1792710570762.3,
+          "rendererVisibleAt": 1792710570762.7,
+          "rendererEventMinusHostOfferMs": -179.699951171875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 96,
+          "hostOfferAt": 1792710571443,
+          "rendererBeforeInputAt": 1792710571264.2,
+          "rendererVisibleAt": 1792710571264.6,
+          "rendererEventMinusHostOfferMs": -178.800048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 97,
+          "hostOfferAt": 1792710571943,
+          "rendererBeforeInputAt": 1792710571764.1,
+          "rendererVisibleAt": 1792710571764.5,
+          "rendererEventMinusHostOfferMs": -178.89990234375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 98,
+          "hostOfferAt": 1792710572443,
+          "rendererBeforeInputAt": 1792710572264,
+          "rendererVisibleAt": 1792710572264.5,
+          "rendererEventMinusHostOfferMs": -179,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 99,
+          "hostOfferAt": 1792710572941,
+          "rendererBeforeInputAt": 1792710572761.8,
+          "rendererVisibleAt": 1792710572762.1,
+          "rendererEventMinusHostOfferMs": -179.199951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 100,
+          "hostOfferAt": 1792710573442,
+          "rendererBeforeInputAt": 1792710573263.3,
+          "rendererVisibleAt": 1792710573263.7,
+          "rendererEventMinusHostOfferMs": -178.699951171875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 101,
+          "hostOfferAt": 1792710573943,
+          "rendererBeforeInputAt": 1792710573764.1,
+          "rendererVisibleAt": 1792710573764.5,
+          "rendererEventMinusHostOfferMs": -178.89990234375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 102,
+          "hostOfferAt": 1792710574445,
+          "rendererBeforeInputAt": 1792710574265.9001,
+          "rendererVisibleAt": 1792710574266.2,
+          "rendererEventMinusHostOfferMs": -179.099853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 103,
+          "hostOfferAt": 1792710574942,
+          "rendererBeforeInputAt": 1792710574763.2,
+          "rendererVisibleAt": 1792710574763.6,
+          "rendererEventMinusHostOfferMs": -178.800048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 104,
+          "hostOfferAt": 1792710575444,
+          "rendererBeforeInputAt": 1792710575265.4001,
+          "rendererVisibleAt": 1792710575265.8,
+          "rendererEventMinusHostOfferMs": -178.599853515625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 105,
+          "hostOfferAt": 1792710575941,
+          "rendererBeforeInputAt": 1792710575761.9001,
+          "rendererVisibleAt": 1792710575762.3,
+          "rendererEventMinusHostOfferMs": -179.099853515625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 106,
+          "hostOfferAt": 1792710576443,
+          "rendererBeforeInputAt": 1792710576264.3,
+          "rendererVisibleAt": 1792710576264.6,
+          "rendererEventMinusHostOfferMs": -178.699951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 107,
+          "hostOfferAt": 1792710576945,
+          "rendererBeforeInputAt": 1792710576765.3,
+          "rendererVisibleAt": 1792710576765.7,
+          "rendererEventMinusHostOfferMs": -179.699951171875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 108,
+          "hostOfferAt": 1792710577442,
+          "rendererBeforeInputAt": 1792710577262.2,
+          "rendererVisibleAt": 1792710577262.5,
+          "rendererEventMinusHostOfferMs": -179.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 109,
+          "hostOfferAt": 1792710577942,
+          "rendererBeforeInputAt": 1792710577762.8,
+          "rendererVisibleAt": 1792710577763.2,
+          "rendererEventMinusHostOfferMs": -179.199951171875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 110,
+          "hostOfferAt": 1792710578443,
+          "rendererBeforeInputAt": 1792710578263.5,
+          "rendererVisibleAt": 1792710578263.9001,
+          "rendererEventMinusHostOfferMs": -179.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 111,
+          "hostOfferAt": 1792710578943,
+          "rendererBeforeInputAt": 1792710578763.3,
+          "rendererVisibleAt": 1792710578763.6,
+          "rendererEventMinusHostOfferMs": -179.699951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 112,
+          "hostOfferAt": 1792710579442,
+          "rendererBeforeInputAt": 1792710579262.9001,
+          "rendererVisibleAt": 1792710579263.3,
+          "rendererEventMinusHostOfferMs": -179.099853515625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 113,
+          "hostOfferAt": 1792710579942,
+          "rendererBeforeInputAt": 1792710579762.2,
+          "rendererVisibleAt": 1792710579762.6,
+          "rendererEventMinusHostOfferMs": -179.800048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 114,
+          "hostOfferAt": 1792710580442,
+          "rendererBeforeInputAt": 1792710580265.6,
+          "rendererVisibleAt": 1792710580265.9001,
+          "rendererEventMinusHostOfferMs": -176.39990234375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 115,
+          "hostOfferAt": 1792710580941,
+          "rendererBeforeInputAt": 1792710580763.4001,
+          "rendererVisibleAt": 1792710580763.7,
+          "rendererEventMinusHostOfferMs": -177.599853515625,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 116,
+          "hostOfferAt": 1792710581441,
+          "rendererBeforeInputAt": 1792710581262.2,
+          "rendererVisibleAt": 1792710581262.5,
+          "rendererEventMinusHostOfferMs": -178.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 117,
+          "hostOfferAt": 1792710581944,
+          "rendererBeforeInputAt": 1792710581764.1,
+          "rendererVisibleAt": 1792710581764.5,
+          "rendererEventMinusHostOfferMs": -179.89990234375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 118,
+          "hostOfferAt": 1792710582443,
+          "rendererBeforeInputAt": 1792710582263.7,
+          "rendererVisibleAt": 1792710582264.1,
+          "rendererEventMinusHostOfferMs": -179.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 119,
+          "hostOfferAt": 1792710582944,
+          "rendererBeforeInputAt": 1792710582764.6,
+          "rendererVisibleAt": 1792710582765,
+          "rendererEventMinusHostOfferMs": -179.39990234375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 120,
+          "hostOfferAt": 1792710583442,
+          "rendererBeforeInputAt": 1792710583262.7,
+          "rendererVisibleAt": 1792710583263.1,
+          "rendererEventMinusHostOfferMs": -179.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        }
+      ]
+    },
+    {
+      "name": "2-C",
+      "trustedInputs": 120,
+      "rawVisibleThresholds": 120,
+      "allRawLocalCharactersObserved": true,
+      "impossiblePreDispatchEventCount": 0,
+      "firstImpossibleEvent": null,
+      "initialOffsetsMs": [
+        2.2001953125,
+        1.300048828125,
+        0.60009765625
+      ],
+      "lastOffsetsMs": [
+        1.7001953125,
+        2.60009765625,
+        0.300048828125
+      ],
+      "sameRendererDiagnosticOnlyMs": {
+        "n": 120,
+        "p50": 0.39990234375,
+        "p95": 0.5,
+        "min": 0.199951171875,
+        "max": 0.699951171875
+      },
+      "keys": [
+        {
+          "index": 1,
+          "hostOfferAt": 1792710780347,
+          "rendererBeforeInputAt": 1792710780349.2002,
+          "rendererVisibleAt": 1792710780349.9001,
+          "rendererEventMinusHostOfferMs": 2.2001953125,
+          "sameRendererEventToVisibleMs": 0.699951171875
+        },
+        {
+          "index": 2,
+          "hostOfferAt": 1792710780742,
+          "rendererBeforeInputAt": 1792710780743.3,
+          "rendererVisibleAt": 1792710780743.6,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 3,
+          "hostOfferAt": 1792710781243,
+          "rendererBeforeInputAt": 1792710781243.6,
+          "rendererVisibleAt": 1792710781244,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 4,
+          "hostOfferAt": 1792710781742,
+          "rendererBeforeInputAt": 1792710781742.8,
+          "rendererVisibleAt": 1792710781743.2002,
+          "rendererEventMinusHostOfferMs": 0.800048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 5,
+          "hostOfferAt": 1792710782242,
+          "rendererBeforeInputAt": 1792710782243.2002,
+          "rendererVisibleAt": 1792710782243.6,
+          "rendererEventMinusHostOfferMs": 1.2001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 6,
+          "hostOfferAt": 1792710782743,
+          "rendererBeforeInputAt": 1792710782743.8,
+          "rendererVisibleAt": 1792710782744.2002,
+          "rendererEventMinusHostOfferMs": 0.800048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 7,
+          "hostOfferAt": 1792710783241,
+          "rendererBeforeInputAt": 1792710783241.8,
+          "rendererVisibleAt": 1792710783242.1,
+          "rendererEventMinusHostOfferMs": 0.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 8,
+          "hostOfferAt": 1792710783741,
+          "rendererBeforeInputAt": 1792710783742.5,
+          "rendererVisibleAt": 1792710783742.9001,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 9,
+          "hostOfferAt": 1792710784243,
+          "rendererBeforeInputAt": 1792710784244.3,
+          "rendererVisibleAt": 1792710784244.7002,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 10,
+          "hostOfferAt": 1792710784742,
+          "rendererBeforeInputAt": 1792710784742.9001,
+          "rendererVisibleAt": 1792710784743.2002,
+          "rendererEventMinusHostOfferMs": 0.900146484375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 11,
+          "hostOfferAt": 1792710785243,
+          "rendererBeforeInputAt": 1792710785244.4001,
+          "rendererVisibleAt": 1792710785244.8,
+          "rendererEventMinusHostOfferMs": 1.400146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 12,
+          "hostOfferAt": 1792710785742,
+          "rendererBeforeInputAt": 1792710785743.2002,
+          "rendererVisibleAt": 1792710785743.5,
+          "rendererEventMinusHostOfferMs": 1.2001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 13,
+          "hostOfferAt": 1792710786242,
+          "rendererBeforeInputAt": 1792710786242.4001,
+          "rendererVisibleAt": 1792710786242.8,
+          "rendererEventMinusHostOfferMs": 0.400146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 14,
+          "hostOfferAt": 1792710786742,
+          "rendererBeforeInputAt": 1792710786743.1,
+          "rendererVisibleAt": 1792710786743.4001,
+          "rendererEventMinusHostOfferMs": 1.10009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 15,
+          "hostOfferAt": 1792710787242,
+          "rendererBeforeInputAt": 1792710787242.7002,
+          "rendererVisibleAt": 1792710787243,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 16,
+          "hostOfferAt": 1792710787742,
+          "rendererBeforeInputAt": 1792710787742.7002,
+          "rendererVisibleAt": 1792710787743.1,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 17,
+          "hostOfferAt": 1792710788243,
+          "rendererBeforeInputAt": 1792710788243.6,
+          "rendererVisibleAt": 1792710788244,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 18,
+          "hostOfferAt": 1792710788741,
+          "rendererBeforeInputAt": 1792710788741.4001,
+          "rendererVisibleAt": 1792710788741.7002,
+          "rendererEventMinusHostOfferMs": 0.400146484375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 19,
+          "hostOfferAt": 1792710789243,
+          "rendererBeforeInputAt": 1792710789243.8,
+          "rendererVisibleAt": 1792710789244.1,
+          "rendererEventMinusHostOfferMs": 0.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 20,
+          "hostOfferAt": 1792710789742,
+          "rendererBeforeInputAt": 1792710789742.6,
+          "rendererVisibleAt": 1792710789742.9001,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 21,
+          "hostOfferAt": 1792710790244,
+          "rendererBeforeInputAt": 1792710790244.5,
+          "rendererVisibleAt": 1792710790244.9001,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 22,
+          "hostOfferAt": 1792710790742,
+          "rendererBeforeInputAt": 1792710790742.5,
+          "rendererVisibleAt": 1792710790742.8,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 23,
+          "hostOfferAt": 1792710791241,
+          "rendererBeforeInputAt": 1792710791241.5,
+          "rendererVisibleAt": 1792710791241.9001,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 24,
+          "hostOfferAt": 1792710791743,
+          "rendererBeforeInputAt": 1792710791743.5,
+          "rendererVisibleAt": 1792710791743.8,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 25,
+          "hostOfferAt": 1792710792241,
+          "rendererBeforeInputAt": 1792710792241.8,
+          "rendererVisibleAt": 1792710792242.1,
+          "rendererEventMinusHostOfferMs": 0.800048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 26,
+          "hostOfferAt": 1792710792741,
+          "rendererBeforeInputAt": 1792710792742.3,
+          "rendererVisibleAt": 1792710792742.7002,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 27,
+          "hostOfferAt": 1792710793243,
+          "rendererBeforeInputAt": 1792710793243.3,
+          "rendererVisibleAt": 1792710793243.6,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 28,
+          "hostOfferAt": 1792710793742,
+          "rendererBeforeInputAt": 1792710793745.2002,
+          "rendererVisibleAt": 1792710793745.5,
+          "rendererEventMinusHostOfferMs": 3.2001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 29,
+          "hostOfferAt": 1792710794242,
+          "rendererBeforeInputAt": 1792710794244.3,
+          "rendererVisibleAt": 1792710794244.6,
+          "rendererEventMinusHostOfferMs": 2.300048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 30,
+          "hostOfferAt": 1792710794743,
+          "rendererBeforeInputAt": 1792710794743.6,
+          "rendererVisibleAt": 1792710794743.9001,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 31,
+          "hostOfferAt": 1792710795242,
+          "rendererBeforeInputAt": 1792710795242.6,
+          "rendererVisibleAt": 1792710795243,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 32,
+          "hostOfferAt": 1792710795741,
+          "rendererBeforeInputAt": 1792710795741.6,
+          "rendererVisibleAt": 1792710795741.9001,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 33,
+          "hostOfferAt": 1792710796242,
+          "rendererBeforeInputAt": 1792710796242.7002,
+          "rendererVisibleAt": 1792710796243,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 34,
+          "hostOfferAt": 1792710796743,
+          "rendererBeforeInputAt": 1792710796743.7002,
+          "rendererVisibleAt": 1792710796744.1,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 35,
+          "hostOfferAt": 1792710797243,
+          "rendererBeforeInputAt": 1792710797243.5,
+          "rendererVisibleAt": 1792710797243.9001,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 36,
+          "hostOfferAt": 1792710797743,
+          "rendererBeforeInputAt": 1792710797743.9001,
+          "rendererVisibleAt": 1792710797744.3,
+          "rendererEventMinusHostOfferMs": 0.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 37,
+          "hostOfferAt": 1792710798242,
+          "rendererBeforeInputAt": 1792710798243,
+          "rendererVisibleAt": 1792710798243.3,
+          "rendererEventMinusHostOfferMs": 1,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 38,
+          "hostOfferAt": 1792710798742,
+          "rendererBeforeInputAt": 1792710798741.9001,
+          "rendererVisibleAt": 1792710798742.2002,
+          "rendererEventMinusHostOfferMs": -0.099853515625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 39,
+          "hostOfferAt": 1792710799243,
+          "rendererBeforeInputAt": 1792710799243.7002,
+          "rendererVisibleAt": 1792710799244.1,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 40,
+          "hostOfferAt": 1792710799743,
+          "rendererBeforeInputAt": 1792710799744.1,
+          "rendererVisibleAt": 1792710799744.4001,
+          "rendererEventMinusHostOfferMs": 1.10009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 41,
+          "hostOfferAt": 1792710800242,
+          "rendererBeforeInputAt": 1792710800243,
+          "rendererVisibleAt": 1792710800243.3,
+          "rendererEventMinusHostOfferMs": 1,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 42,
+          "hostOfferAt": 1792710800742,
+          "rendererBeforeInputAt": 1792710800742.2002,
+          "rendererVisibleAt": 1792710800742.5,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 43,
+          "hostOfferAt": 1792710801241,
+          "rendererBeforeInputAt": 1792710801242.1,
+          "rendererVisibleAt": 1792710801242.5,
+          "rendererEventMinusHostOfferMs": 1.10009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 44,
+          "hostOfferAt": 1792710801741,
+          "rendererBeforeInputAt": 1792710801741.4001,
+          "rendererVisibleAt": 1792710801741.7002,
+          "rendererEventMinusHostOfferMs": 0.400146484375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 45,
+          "hostOfferAt": 1792710802243,
+          "rendererBeforeInputAt": 1792710802246.9001,
+          "rendererVisibleAt": 1792710802247.3,
+          "rendererEventMinusHostOfferMs": 3.900146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 46,
+          "hostOfferAt": 1792710802743,
+          "rendererBeforeInputAt": 1792710802743.5,
+          "rendererVisibleAt": 1792710802743.8,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 47,
+          "hostOfferAt": 1792710803242,
+          "rendererBeforeInputAt": 1792710803242.6,
+          "rendererVisibleAt": 1792710803242.9001,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 48,
+          "hostOfferAt": 1792710803741,
+          "rendererBeforeInputAt": 1792710803741.4001,
+          "rendererVisibleAt": 1792710803741.8,
+          "rendererEventMinusHostOfferMs": 0.400146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 49,
+          "hostOfferAt": 1792710804244,
+          "rendererBeforeInputAt": 1792710804243.8,
+          "rendererVisibleAt": 1792710804244.2002,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 50,
+          "hostOfferAt": 1792710804742,
+          "rendererBeforeInputAt": 1792710804745.5,
+          "rendererVisibleAt": 1792710804745.8,
+          "rendererEventMinusHostOfferMs": 3.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 51,
+          "hostOfferAt": 1792710805241,
+          "rendererBeforeInputAt": 1792710805241.6,
+          "rendererVisibleAt": 1792710805242,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 52,
+          "hostOfferAt": 1792710805742,
+          "rendererBeforeInputAt": 1792710805742.6,
+          "rendererVisibleAt": 1792710805743.1,
+          "rendererEventMinusHostOfferMs": 0.60009765625,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 53,
+          "hostOfferAt": 1792710806241,
+          "rendererBeforeInputAt": 1792710806241.5,
+          "rendererVisibleAt": 1792710806241.9001,
+          "rendererEventMinusHostOfferMs": 0.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 54,
+          "hostOfferAt": 1792710806741,
+          "rendererBeforeInputAt": 1792710806741,
+          "rendererVisibleAt": 1792710806741.3,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 55,
+          "hostOfferAt": 1792710807241,
+          "rendererBeforeInputAt": 1792710807241.7002,
+          "rendererVisibleAt": 1792710807242,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 56,
+          "hostOfferAt": 1792710807741,
+          "rendererBeforeInputAt": 1792710807743.2002,
+          "rendererVisibleAt": 1792710807743.7002,
+          "rendererEventMinusHostOfferMs": 2.2001953125,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 57,
+          "hostOfferAt": 1792710808241,
+          "rendererBeforeInputAt": 1792710808241.4001,
+          "rendererVisibleAt": 1792710808241.8,
+          "rendererEventMinusHostOfferMs": 0.400146484375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 58,
+          "hostOfferAt": 1792710808743,
+          "rendererBeforeInputAt": 1792710808742.7002,
+          "rendererVisibleAt": 1792710808743.1,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 59,
+          "hostOfferAt": 1792710809241,
+          "rendererBeforeInputAt": 1792710809241.3,
+          "rendererVisibleAt": 1792710809241.6,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 60,
+          "hostOfferAt": 1792710809742,
+          "rendererBeforeInputAt": 1792710809742.3,
+          "rendererVisibleAt": 1792710809742.6,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 61,
+          "hostOfferAt": 1792710810242,
+          "rendererBeforeInputAt": 1792710810241.6,
+          "rendererVisibleAt": 1792710810241.9001,
+          "rendererEventMinusHostOfferMs": -0.39990234375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 62,
+          "hostOfferAt": 1792710810742,
+          "rendererBeforeInputAt": 1792710810741.9001,
+          "rendererVisibleAt": 1792710810742.2002,
+          "rendererEventMinusHostOfferMs": -0.099853515625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 63,
+          "hostOfferAt": 1792710811243,
+          "rendererBeforeInputAt": 1792710811243,
+          "rendererVisibleAt": 1792710811243.3,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 64,
+          "hostOfferAt": 1792710811741,
+          "rendererBeforeInputAt": 1792710811741.7002,
+          "rendererVisibleAt": 1792710811742,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 65,
+          "hostOfferAt": 1792710812240,
+          "rendererBeforeInputAt": 1792710812240.2002,
+          "rendererVisibleAt": 1792710812240.6,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 66,
+          "hostOfferAt": 1792710812742,
+          "rendererBeforeInputAt": 1792710812742.2002,
+          "rendererVisibleAt": 1792710812742.6,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 67,
+          "hostOfferAt": 1792710813243,
+          "rendererBeforeInputAt": 1792710813242.8,
+          "rendererVisibleAt": 1792710813243.2002,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 68,
+          "hostOfferAt": 1792710813740,
+          "rendererBeforeInputAt": 1792710813740.3,
+          "rendererVisibleAt": 1792710813740.7002,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 69,
+          "hostOfferAt": 1792710814243,
+          "rendererBeforeInputAt": 1792710814243.3,
+          "rendererVisibleAt": 1792710814243.7002,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 70,
+          "hostOfferAt": 1792710814742,
+          "rendererBeforeInputAt": 1792710814741.5,
+          "rendererVisibleAt": 1792710814741.9001,
+          "rendererEventMinusHostOfferMs": -0.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 71,
+          "hostOfferAt": 1792710815240,
+          "rendererBeforeInputAt": 1792710815240.3,
+          "rendererVisibleAt": 1792710815240.8,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.5
+        },
+        {
+          "index": 72,
+          "hostOfferAt": 1792710815742,
+          "rendererBeforeInputAt": 1792710815742,
+          "rendererVisibleAt": 1792710815742.4001,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 73,
+          "hostOfferAt": 1792710816242,
+          "rendererBeforeInputAt": 1792710816242.2002,
+          "rendererVisibleAt": 1792710816242.6,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 74,
+          "hostOfferAt": 1792710816743,
+          "rendererBeforeInputAt": 1792710816742.6,
+          "rendererVisibleAt": 1792710816743,
+          "rendererEventMinusHostOfferMs": -0.39990234375,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 75,
+          "hostOfferAt": 1792710817243,
+          "rendererBeforeInputAt": 1792710817243.2002,
+          "rendererVisibleAt": 1792710817243.5,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 76,
+          "hostOfferAt": 1792710817741,
+          "rendererBeforeInputAt": 1792710817740.7002,
+          "rendererVisibleAt": 1792710817741,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 77,
+          "hostOfferAt": 1792710818242,
+          "rendererBeforeInputAt": 1792710818242,
+          "rendererVisibleAt": 1792710818242.4001,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 78,
+          "hostOfferAt": 1792710818741,
+          "rendererBeforeInputAt": 1792710818742.3,
+          "rendererVisibleAt": 1792710818742.7002,
+          "rendererEventMinusHostOfferMs": 1.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 79,
+          "hostOfferAt": 1792710819241,
+          "rendererBeforeInputAt": 1792710819242.7002,
+          "rendererVisibleAt": 1792710819243.1,
+          "rendererEventMinusHostOfferMs": 1.7001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 80,
+          "hostOfferAt": 1792710819742,
+          "rendererBeforeInputAt": 1792710819742,
+          "rendererVisibleAt": 1792710819742.6,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.60009765625
+        },
+        {
+          "index": 81,
+          "hostOfferAt": 1792710820242,
+          "rendererBeforeInputAt": 1792710820242.7002,
+          "rendererVisibleAt": 1792710820243.1,
+          "rendererEventMinusHostOfferMs": 0.7001953125,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 82,
+          "hostOfferAt": 1792710820742,
+          "rendererBeforeInputAt": 1792710820741.9001,
+          "rendererVisibleAt": 1792710820742.3,
+          "rendererEventMinusHostOfferMs": -0.099853515625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 83,
+          "hostOfferAt": 1792710821243,
+          "rendererBeforeInputAt": 1792710821242.8,
+          "rendererVisibleAt": 1792710821243.2002,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 84,
+          "hostOfferAt": 1792710821741,
+          "rendererBeforeInputAt": 1792710821743.5,
+          "rendererVisibleAt": 1792710821743.9001,
+          "rendererEventMinusHostOfferMs": 2.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 85,
+          "hostOfferAt": 1792710822243,
+          "rendererBeforeInputAt": 1792710822242.7002,
+          "rendererVisibleAt": 1792710822243.1,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 86,
+          "hostOfferAt": 1792710822743,
+          "rendererBeforeInputAt": 1792710822742.4001,
+          "rendererVisibleAt": 1792710822742.8,
+          "rendererEventMinusHostOfferMs": -0.599853515625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 87,
+          "hostOfferAt": 1792710823243,
+          "rendererBeforeInputAt": 1792710823244.6,
+          "rendererVisibleAt": 1792710823245,
+          "rendererEventMinusHostOfferMs": 1.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 88,
+          "hostOfferAt": 1792710823741,
+          "rendererBeforeInputAt": 1792710823741,
+          "rendererVisibleAt": 1792710823741.4001,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 89,
+          "hostOfferAt": 1792710824242,
+          "rendererBeforeInputAt": 1792710824241.7002,
+          "rendererVisibleAt": 1792710824242,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 90,
+          "hostOfferAt": 1792710824742,
+          "rendererBeforeInputAt": 1792710824741.8,
+          "rendererVisibleAt": 1792710824742.4001,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.60009765625
+        },
+        {
+          "index": 91,
+          "hostOfferAt": 1792710825242,
+          "rendererBeforeInputAt": 1792710825241.9001,
+          "rendererVisibleAt": 1792710825242.2002,
+          "rendererEventMinusHostOfferMs": -0.099853515625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 92,
+          "hostOfferAt": 1792710825742,
+          "rendererBeforeInputAt": 1792710825742.3,
+          "rendererVisibleAt": 1792710825742.7002,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 93,
+          "hostOfferAt": 1792710826242,
+          "rendererBeforeInputAt": 1792710826242.2002,
+          "rendererVisibleAt": 1792710826242.5,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 94,
+          "hostOfferAt": 1792710826742,
+          "rendererBeforeInputAt": 1792710826742.3,
+          "rendererVisibleAt": 1792710826742.7002,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 95,
+          "hostOfferAt": 1792710827243,
+          "rendererBeforeInputAt": 1792710827243.1,
+          "rendererVisibleAt": 1792710827243.4001,
+          "rendererEventMinusHostOfferMs": 0.10009765625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 96,
+          "hostOfferAt": 1792710827742,
+          "rendererBeforeInputAt": 1792710827742.2002,
+          "rendererVisibleAt": 1792710827742.5,
+          "rendererEventMinusHostOfferMs": 0.2001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 97,
+          "hostOfferAt": 1792710828243,
+          "rendererBeforeInputAt": 1792710828242.8,
+          "rendererVisibleAt": 1792710828243.1,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 98,
+          "hostOfferAt": 1792710828742,
+          "rendererBeforeInputAt": 1792710828741.9001,
+          "rendererVisibleAt": 1792710828742.1,
+          "rendererEventMinusHostOfferMs": -0.099853515625,
+          "sameRendererEventToVisibleMs": 0.199951171875
+        },
+        {
+          "index": 99,
+          "hostOfferAt": 1792710829243,
+          "rendererBeforeInputAt": 1792710829242.3,
+          "rendererVisibleAt": 1792710829242.7002,
+          "rendererEventMinusHostOfferMs": -0.699951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 100,
+          "hostOfferAt": 1792710829741,
+          "rendererBeforeInputAt": 1792710829746.4001,
+          "rendererVisibleAt": 1792710829747,
+          "rendererEventMinusHostOfferMs": 5.400146484375,
+          "sameRendererEventToVisibleMs": 0.599853515625
+        },
+        {
+          "index": 101,
+          "hostOfferAt": 1792710830242,
+          "rendererBeforeInputAt": 1792710830241.7002,
+          "rendererVisibleAt": 1792710830242.1,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 102,
+          "hostOfferAt": 1792710830742,
+          "rendererBeforeInputAt": 1792710830743.5,
+          "rendererVisibleAt": 1792710830743.8,
+          "rendererEventMinusHostOfferMs": 1.5,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 103,
+          "hostOfferAt": 1792710831242,
+          "rendererBeforeInputAt": 1792710831241.2002,
+          "rendererVisibleAt": 1792710831241.4001,
+          "rendererEventMinusHostOfferMs": -0.7998046875,
+          "sameRendererEventToVisibleMs": 0.199951171875
+        },
+        {
+          "index": 104,
+          "hostOfferAt": 1792710831743,
+          "rendererBeforeInputAt": 1792710831742.2002,
+          "rendererVisibleAt": 1792710831742.6,
+          "rendererEventMinusHostOfferMs": -0.7998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 105,
+          "hostOfferAt": 1792710832240,
+          "rendererBeforeInputAt": 1792710832239.2002,
+          "rendererVisibleAt": 1792710832239.6,
+          "rendererEventMinusHostOfferMs": -0.7998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 106,
+          "hostOfferAt": 1792710832742,
+          "rendererBeforeInputAt": 1792710832741.7002,
+          "rendererVisibleAt": 1792710832742.1,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 107,
+          "hostOfferAt": 1792710833241,
+          "rendererBeforeInputAt": 1792710833241,
+          "rendererVisibleAt": 1792710833241.3,
+          "rendererEventMinusHostOfferMs": 0,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 108,
+          "hostOfferAt": 1792710833741,
+          "rendererBeforeInputAt": 1792710833740.8,
+          "rendererVisibleAt": 1792710833741.2002,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 109,
+          "hostOfferAt": 1792710834241,
+          "rendererBeforeInputAt": 1792710834240.6,
+          "rendererVisibleAt": 1792710834240.9001,
+          "rendererEventMinusHostOfferMs": -0.39990234375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 110,
+          "hostOfferAt": 1792710834742,
+          "rendererBeforeInputAt": 1792710834741.2002,
+          "rendererVisibleAt": 1792710834741.6,
+          "rendererEventMinusHostOfferMs": -0.7998046875,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 111,
+          "hostOfferAt": 1792710835241,
+          "rendererBeforeInputAt": 1792710835240.6,
+          "rendererVisibleAt": 1792710835240.9001,
+          "rendererEventMinusHostOfferMs": -0.39990234375,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 112,
+          "hostOfferAt": 1792710835740,
+          "rendererBeforeInputAt": 1792710835739.8,
+          "rendererVisibleAt": 1792710835740.2002,
+          "rendererEventMinusHostOfferMs": -0.199951171875,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 113,
+          "hostOfferAt": 1792710836242,
+          "rendererBeforeInputAt": 1792710836241.5,
+          "rendererVisibleAt": 1792710836241.9001,
+          "rendererEventMinusHostOfferMs": -0.5,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 114,
+          "hostOfferAt": 1792710836741,
+          "rendererBeforeInputAt": 1792710836740.9001,
+          "rendererVisibleAt": 1792710836741.2002,
+          "rendererEventMinusHostOfferMs": -0.099853515625,
+          "sameRendererEventToVisibleMs": 0.300048828125
+        },
+        {
+          "index": 115,
+          "hostOfferAt": 1792710837244,
+          "rendererBeforeInputAt": 1792710837243,
+          "rendererVisibleAt": 1792710837243.4001,
+          "rendererEventMinusHostOfferMs": -1,
+          "sameRendererEventToVisibleMs": 0.400146484375
+        },
+        {
+          "index": 116,
+          "hostOfferAt": 1792710837741,
+          "rendererBeforeInputAt": 1792710837740.7002,
+          "rendererVisibleAt": 1792710837741,
+          "rendererEventMinusHostOfferMs": -0.2998046875,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 117,
+          "hostOfferAt": 1792710838244,
+          "rendererBeforeInputAt": 1792710838243.2002,
+          "rendererVisibleAt": 1792710838243.5,
+          "rendererEventMinusHostOfferMs": -0.7998046875,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 118,
+          "hostOfferAt": 1792710838742,
+          "rendererBeforeInputAt": 1792710838743.7002,
+          "rendererVisibleAt": 1792710838744,
+          "rendererEventMinusHostOfferMs": 1.7001953125,
+          "sameRendererEventToVisibleMs": 0.2998046875
+        },
+        {
+          "index": 119,
+          "hostOfferAt": 1792710839242,
+          "rendererBeforeInputAt": 1792710839244.6,
+          "rendererVisibleAt": 1792710839245,
+          "rendererEventMinusHostOfferMs": 2.60009765625,
+          "sameRendererEventToVisibleMs": 0.39990234375
+        },
+        {
+          "index": 120,
+          "hostOfferAt": 1792710839741,
+          "rendererBeforeInputAt": 1792710839741.3,
+          "rendererVisibleAt": 1792710839741.8,
+          "rendererEventMinusHostOfferMs": 0.300048828125,
+          "sameRendererEventToVisibleMs": 0.5
+        }
+      ]
+    }
+  ]
+}

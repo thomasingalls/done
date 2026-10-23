@@ -1,0 +1,23 @@
+from pathlib import Path
+import shutil,subprocess,json,os,hashlib,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=(r/'candidate-v3.ts.txt').read_text();out=r/'mutation-source';out.mkdir();(out/'src/crdt').mkdir(parents=True);(out/'test').mkdir();(out/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
+# A Vitest alias redirects only this production module; all dependencies resolve from the real repository.
+config="import {defineConfig} from 'vitest/config';export default defineConfig({test:{include:['test/verifiedRecords.test.ts']},resolve:{alias:{'../src/crdt/verifiedRecords':"+json.dumps(str(out/'src/crdt/verifiedRecords.ts'))+"}}});"
+(out/'vitest.config.ts').write_text(config)
+# Use the repository test through a real copy; redirect helper's relative imports to actual repository modules.
+shutil.copyfile(repo/'test/verifiedRecords.test.ts',out/'test/verifiedRecords.test.ts')
+for p in (repo/'src/crdt').iterdir():
+ if p.name!='verifiedRecords.ts' and p.is_file():(out/'src/crdt'/p.name).symlink_to(p)
+# Other test imports are resolved by links to the production tree.
+for p in(repo/'src').iterdir():
+ if p.name!='crdt':(out/'src'/p.name).symlink_to(p,target_is_directory=p.is_dir())
+variants=[('reference',(r/'verifiedRecords-before.ts.txt').read_text(),True),('candidate',s,True),('omit-tail',s.replace('for (; at < end; at++)','for (; at < end - 3; at++)',1),False),('omit-final-word',s.replace('i < count; i++','i < count - 1; i++',1),False),('omit-span-checkpoint',s.replace('        const pause = checkpoint();\n        if (pause) await pause;','',1),False),('omit-record-checkpoint',s.replace('    const pause = checkpoint();\n    if (pause) await pause;','',1),False)]
+rows=[]
+for name,source,want in variants:
+ assert name in ['reference','candidate']or source!=s
+ p=out/'src/crdt/verifiedRecords.ts';p.write_text(source);(r/(name+'-source.ts.txt')).write_text(source)
+ cmd=['node',str(repo/'node_modules/vitest/vitest.mjs'),'run','--config',str(out/'vitest.config.ts'),'--reporter=json','--outputFile='+str(r/(name+'-mutation.json'))];at=time.time_ns()//1000000
+ with(r/(name+'-mutation.log')).open('w')as log:process=subprocess.run(cmd,cwd=out,stdout=log,stderr=subprocess.STDOUT)
+ d=json.loads((r/(name+'-mutation.json')).read_text());failed=[a['fullName']for f in d['testResults']for a in f['assertionResults']if a['status']=='failed'];rows.append({'name':name,'sourceSha256':hashlib.sha256(source.encode()).hexdigest(),'command':cmd,'exitCode':process.returncode,'expectedPass':want,'cases':d['numTotalTests'],'failed':failed,'startedAt':at,'completedAt':time.time_ns()//1000000});(r/'mutation-summary.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,process.returncode,len(failed),flush=True)
+ assert (process.returncode==0)==want
+ assert want or any('exact comparison span boundaries' in f for f in failed)

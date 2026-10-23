@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+const root='/private/tmp/done-enrollment-reuse-2f1d0b0f/reference-source';assert.equal(process.cwd(),root);
+const {defineConfig}=createRequire(root+'/package.json')('@playwright/test');
+export default defineConfig({testDir:root+'/test/packaged-account',testMatch:['replacement-handoff.spec.ts'],timeout:120000,workers:1,retries:0,reporter:[['list'],['json',{outputFile:'/private/tmp/done-enrollment-reuse-2f1d0b0f/baseline-replacement-patched-results.json'}]],outputDir:'/private/tmp/done-enrollment-reuse-2f1d0b0f/baseline-replacement-patched-artifacts',use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}}});

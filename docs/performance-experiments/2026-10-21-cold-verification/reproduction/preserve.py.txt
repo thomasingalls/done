@@ -1,0 +1,46 @@
+from pathlib import Path
+import hashlib,gzip,json
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir(exist_ok=False);sha=lambda b:hashlib.sha256(b).hexdigest();provenance={}
+def put(src,name,compress=False):
+ b=Path(src).read_bytes();name+=('.gz' if compress else '');p=dest/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0) if compress else b);provenance[name]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+roots=['README.md','protocol.md','protocol-addendum.md','protocol-membership-addendum.md','starting.json','identity.json','source-identity.json','source-identity-first-attempt.json','source-identity-before-membership-fix.json','probe-identity.json','probe-identity-first-attempt.json','probe-identity-before-membership-fix.json','native-summary.json','native-summary-final.json','native-final-runner.json','browser-plan.json','browser-plan-initial.json','browser-runner.json','browser-runner-initial.json','browser-summary.json','browser-interruption.json','final-checks.json','omissions.json','preservation-review.json','census-review.json','planning-audit.json']
+for name in roots:put(r/name,name)
+for p in sorted(r.glob('*.log')):put(p,'checks/'+p.name,True)
+for p in sorted(r.iterdir()):
+ if p.is_file() and p.suffix in ['.mjs','.py']:put(p,'reproduction/'+p.name+'.txt')
+for name in ['delivery.ts-before.txt','publisherTips.ts-before.txt','delivery-first-attempt.txt','publisherTips-before-membership-fix.txt']:put(r/name,'reproduction/'+name)
+for arm in ['candidate','candidate-first-attempt','candidate-before-membership-fix']:
+ for name in ['publisherTips.ts','delivery.ts']:put(r/('source-'+arm)/'account-service'/name,'reproduction/'+arm+'-'+name+'.txt')
+for f in ['test/account-service-delivery/cold-verification.test.mjs','test/account-service-delivery/controls.test.mjs','test/account-service-inbound/controls.test.mjs']:put(r/'source-candidate'/f,'reproduction/current/'+f+'.txt')
+for p in sorted((r/'source-candidate/test/live-sync-attribution').iterdir()):
+ if p.is_file():put(p,'reproduction/browser/'+p.name+'.txt')
+for p in sorted((r/'omissions').glob('*.log')):put(p,'checks/omissions/'+p.name,True)
+for folder in ['matched','matched-final']:
+ for p in sorted((r/folder).iterdir()):
+  if p.is_file() and p.suffix in ['.json','.log','.txt']:put(p,'runs/native/'+folder+'/'+p.name,True)
+for folder in ['browser-natural','browser-pressure','browser-natural-final','browser-pressure-final']:
+ for name in ['result.json','runner.json','services.log','invocation.log']:
+  p=r/folder/name
+  if p.is_file():put(p,'runs/browser/'+folder+'/'+name,True)
+# Explicit whitelist only; exclude DBs, fixture JSON, browser storage, vault values, downloads and dependency trees.
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for device in ['a','b']:
+  secrets.append(d[device]['code'])
+  for c in d[device]['credentials']:
+   for key in ['privateKey','credentialId','userHandle']:
+    if c.get(key):secrets.append(c[key])
+d=json.loads((r/'private-api/fixture.json').read_text());secrets.append(d['authorityKey'])
+for who in ['first','other']:
+ secrets.append(d[who]['s']['privateKey'])
+ for session in d[who]['sessions']:
+  for value in session.values():
+   if isinstance(value,str) and len(value)>=12:secrets.append(value)
+values=set()
+for s in secrets:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for p in dest.rglob('*'):
+ if p.is_file():
+  b=p.read_bytes();b=gzip.decompress(b) if p.name.endswith('.gz') else b;assert not any(s in b for s in values),str(p.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownExactValuesChecked':len(values),'matches':0,'scope':'Explicit whitelist, known browser codes/credential fields and native authority/private keys/session fields, raw/escaped. Not a general secret detector.'},indent=2)+'\n')
+print(json.dumps({'provenanceFiles':len(provenance),'storedBytes':sum((dest/p).stat().st_size for p in provenance),'knownPrivateValuesChecked':len(values),'matches':0}))

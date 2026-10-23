@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "allOriginalTestDeclarationsAndNamesExact": true,
+  "allOriginalAssertionsRetainedExceptSevenSchemaAndOneInvalidEpochLiteralCorrections": true,
+  "additionalAssertionCalls": 5,
+  "allRuntimeProtocolAndClientBytesExact28": true,
+  "noCasesSkipsDeadlinesRemoved": true,
+  "modelOwnersUseRealSameRealmSnapshotCryptoAndNativeSignedBindingHistoryRoutes": true,
+  "quarantineSemanticsUnchangedAndExplicitlyCheckedBeforeRestart": true
+}

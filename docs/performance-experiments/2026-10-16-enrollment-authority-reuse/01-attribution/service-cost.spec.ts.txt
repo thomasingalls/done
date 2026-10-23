@@ -1,0 +1,39 @@
+import { test, expect } from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/index.mjs';
+import { pairedEditors, credentials, restoreAuthenticator, openSaved } from '/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/packaged-account/devices';
+import { pending, compared, unlock } from '/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/device-enrollment/helpers';
+import { startService, stopService } from '/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/packaged-account/server';
+import { mkdirSync, writeFileSync, cpSync, readFileSync } from 'node:fs';
+const root='/private/tmp/done-enrollment-reuse-2f1d0b0f';
+test('attribute server authority and census work on joined approval',async({page,browser})=>{
+ test.setTimeout(600000);
+ const {saved,expected}=JSON.parse(readFileSync(root+'/private-stable-seed.json','utf8')); let service:any;
+ for(const role of ['joined']){
+  const output=root+'/service-profile-'+role;mkdirSync(output);cpSync(root+'/seed-service',output+'/service',{recursive:true});
+  process.env['DONE_ENROLLMENT_SERVER_PROFILE']=output+'/server-costs.ndjson';
+  service=await startService(output+'/service',root+'/diagnostic-source/dist',true,true);
+  const d=saved[role==='original'?0:1],ctx=await browser.newContext({storageState:d.storage}),other=await browser.newContext(),a=await ctx.newPage(),b=await other.newPage();
+  try{
+   const auth=await restoreAuthenticator(a,d.credentials);await a.goto('/');await openSaved(a,d.code,d.joining);
+   await a.getByRole('button',{name:'Devices',exact:true}).click();await a.getByRole('button',{name:'Connect another device',exact:true}).click();await unlock(a,d.code);
+   const link=await a.getByLabel('Device invitation link').inputValue();await pending(b,link,auth);const comparison=await compared(a,b);
+   await a.evaluate(()=>{
+    const g=globalThis as any;g.__doneApprovalPerf={phase:'button',rows:[],crypto:{}};
+    for(const name of ['importKey','deriveKey','deriveBits','verify','sign','digest','decrypt','encrypt'] as const){
+     const native=SubtleCrypto.prototype[name] as any;
+     (SubtleCrypto.prototype as any)[name]=function(...args:any[]){const phase=g.__doneApprovalPerf?.phase??'outside',at=performance.now();const algorithm=typeof args[0]==='object'?args[0]?.name:args[0];const family=['PBKDF2','HKDF','Ed25519','AES-GCM','HMAC','SHA-256'].includes(algorithm)?algorithm:'other';return native.apply(this,args).finally(()=>{const key=phase+'/'+name+'/'+family,row=g.__doneApprovalPerf.crypto[key]??={calls:0,totalMs:0};row.calls++;row.totalMs+=performance.now()-at;});};
+    }
+   });
+   const inspect=await (await fetch('http://127.0.0.1:53332/json/list')).json(); const socket=new WebSocket(inspect[0].webSocketDebuggerUrl); await new Promise<void>(r=>socket.addEventListener('open',()=>r(),{once:true})); let requestId=0;const replies=new Map<number,any>();socket.addEventListener('message',e=>{const m=JSON.parse(String(e.data));if(m.id){const next=replies.get(m.id);replies.delete(m.id);m.error?next.reject(m.error):next.accept(m.result);}});const rpc=(method:string)=>new Promise<any>((accept,reject)=>{const id=++requestId;replies.set(id,{accept,reject});socket.send(JSON.stringify({id,method}));});await rpc('Profiler.enable');await rpc('Profiler.start');
+   const cdp=await a.context().newCDPSession(a);await cdp.send('Profiler.enable');await cdp.send('Profiler.start');
+   const requests:any[]=[];a.on('request',r=>{const path=new URL(r.url()).pathname;if(path.startsWith('/account/'))requests.push({path,at:Date.now()});});
+   await a.getByLabel('Code on the new device').fill(comparison);const start=Date.now();await a.getByRole('button',{name:'Compare and approve',exact:true}).click();
+   await expect.poll(()=>a.evaluate(()=>(globalThis as any).__doneApprovalPerf.rows.some((r:any)=>r.phase==='checkpoint-end')),{timeout:120000}).toBe(true);
+   await expect(a.getByRole('progressbar',{name:'Current connection step'})).toHaveCount(0,{timeout:120000});const foregroundMs=Date.now()-start; const end=Date.now(); const api=await rpc('Profiler.stop');writeFileSync(output+'/api.cpuprofile',JSON.stringify(api.profile));socket.close();
+   const profile=await cdp.send('Profiler.stop');writeFileSync(output+'/cpu.cpuprofile',JSON.stringify(profile.profile));
+   const diagnostics=await a.evaluate(()=>({perf:(globalThis as any).__doneApprovalPerf,ledger:(globalThis as any).__doneLedgerMetrics?.()}));
+   await expect(a.getByText('The device is connected.',{exact:false})).toBeVisible({timeout:30000});await expect(b.getByRole('button',{name:'Open your writing',exact:true})).toBeVisible({timeout:30000});
+   await b.getByRole('button',{name:'Open your writing',exact:true}).click();await expect(b.locator('.goals .cm-content')).toHaveText(expected);
+   writeFileSync(output+'/result.json',JSON.stringify({role,bursts:96,start,end,foregroundMs,diagnostics,requests,writing:'passed'},null,2));console.log(JSON.stringify({role,foregroundMs,start,end,marks:diagnostics.perf.rows}));
+  }finally{await ctx.close();await other.close();await stopService(service);service=undefined;}
+ }
+});

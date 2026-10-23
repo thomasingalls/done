@@ -1,0 +1,37 @@
+from pathlib import Path
+import json,subprocess,hashlib,os,tarfile,io
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());prior=start['priorPatchManifest'];env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};sha=lambda b:hashlib.sha256(b).hexdigest();run=lambda args,**kw:subprocess.check_output(args,env=env,**kw);base=start['baseTree25'];existing=['account-service/delivery.ts','test/account-service-delivery/publisher-commit-races.test.mjs','test/account-ceremony/content-transfer.test.mjs','docs/account-crypto/census.json','docs/account-crypto/constructions.json','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/completed.md','docs/decisions.md','docs/performance.md'];added=[];folder='docs/performance-experiments/2026-10-22-read-authority';packet=repo/folder;idx=Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index')
+assert run(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==start['head'];assert sha(idx.read_bytes())==start['indexSha256'];assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+chain=prior['independentSequentialApply01Through25'];assert len(chain)==25 and chain[-1]['expectedTree']==base
+for x in chain:assert sha(Path(x['patch']).read_bytes())==x['sha256']
+views=r/'object-views';views.mkdir();origin=Path('/private/tmp/done-receiver-backlog-20261022');origins=[origin/'patch25-index.git/objects',*sorted((origin/'object-views').glob('*/objects'))];paths=[]
+for i,origin in enumerate(origins):
+ d=views/str(i)/'objects';d.mkdir(parents=True)
+ for item in origin.iterdir():
+  if item.name!='info':(d/item.name).symlink_to(item.resolve(),target_is_directory=item.is_dir())
+ paths.append(str(d))
+alternates='\n'.join(paths)+'\n'
+def isolated(name,work):
+ bare=r/name;assert not bare.exists();subprocess.run(['git','init','--bare','--quiet',str(bare)],check=True,env=env);(bare/'objects/info/alternates').write_text(alternates);return['git','-C',str(work),'--git-dir='+str(bare),'--work-tree='+str(work)]
+git=isolated('patch26-index.git',repo);subprocess.run(git+['read-tree',base],check=True,env=env)
+for line in(packet/'SHA256SUMS').read_text().splitlines():h,f=line.split('  ',1);assert sha((packet/f).read_bytes())==h
+for f in existing:assert run(git+['show',base+':'+f])==(r/'before'/f).read_bytes(),f
+for f in added:assert subprocess.run(git+['cat-file','-e',base+':'+f],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode!=0,f
+subprocess.run(git+['add','--',*existing,*added,folder],check=True,env=env);tree=run(git+['write-tree'],text=True).strip();changed=run(git+['diff','--cached','--name-only',base],text=True).splitlines();assert all(f in existing+added or f.startswith(folder+'/')for f in changed)
+tracked=run(git+['ls-tree','-r','-z',base]).split(b'\0')
+for entry in tracked:
+ if not entry:continue
+ info,path=entry.split(b'\t',1);mode,kind,oid=info.decode().split();f=path.decode()
+ if f in existing:continue
+ assert kind=='blob',(f,kind);at=repo/f;data=os.readlink(at).encode()if mode=='120000'else at.read_bytes();assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==oid,f
+print('Every other base25 file is blob-exact',len(tracked)-1,flush=True)
+p=r/'patches';p.mkdir();file=p/'26-stable-read-authority-reuse.patch';file.write_bytes(run(git+['diff','--cached','--binary','--full-index','--no-ext-diff',base]));clean=r/'clean-apply26';clean.mkdir();archive=run(git+['archive',base,'--',*existing])
+with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(clean,filter='data')
+v=isolated('verify26-index.git',clean);subprocess.run(v+['read-tree',base],check=True,env=env);subprocess.run(v+['add','--',*existing],check=True,env=env);assert run(v+['write-tree'],text=True).strip()==base;subprocess.run(v+['apply','--index','--whitespace=nowarn','--check',str(file)],check=True,env=env);subprocess.run(v+['apply','--index','--whitespace=nowarn',str(file)],check=True,env=env);assert run(v+['write-tree'],text=True).strip()==tree
+origin=json.loads(Path('/private/tmp/done-duplicate-read-flow-20261021/patches/manifest.json').read_text())['baseCommit'];clean=r/'clean-apply01-26';clean.mkdir();tracked=set(run(['git','ls-tree','-r','--name-only',origin],cwd=repo,text=True).splitlines());paths=sorted(tracked.intersection(run(git+['diff','--cached','--name-only',origin],text=True).splitlines()));archive=run(['git','archive',origin,'--',*paths],cwd=repo)
+with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(clean,filter='data')
+v=isolated('verify01-26-index.git',clean);subprocess.run(v+['read-tree',origin],check=True,env=env);subprocess.run(v+['add','--',*paths],check=True,env=env);assert run(v+['write-tree'],text=True).strip()==run(['git','rev-parse',origin+'^{tree}'],cwd=repo,text=True).strip();receipts=[]
+for patch,expected in[(Path(x['patch']),x['expectedTree'])for x in chain]+[(file,tree)]:
+ subprocess.run(v+['apply','--index','--whitespace=nowarn','--check',str(patch)],check=True,env=env);subprocess.run(v+['apply','--index','--whitespace=nowarn',str(patch)],check=True,env=env);actual=run(v+['write-tree'],text=True).strip();assert actual==expected;receipts.append({'patch':str(patch),'sha256':sha(patch.read_bytes()),'expectedTree':expected,'independentCleanApplyTree':actual})
+assert run(git+['diff',tree,'--'])==b'';assert sha(idx.read_bytes())==start['indexSha256'];assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+m={'baseCommit':start['head'],'baseTree':prior['baseTree'],'previousCumulativeTree25':base,'expectedCumulativeTree26':tree,'patch26':str(file),'patch26Sha256':sha(file.read_bytes()),'patch26Bytes':file.stat().st_size,'changedFiles':len(changed),'runtimeFilesChanged':['account-service/delivery.ts'],'newRegressionCases':18,'oldTests':'all assertions and cases retained; shared fixture explicitly clears only authority pool after warming ledger','qualification':'paused; all883 obligations/339 unresolved exact25, no new aggregate credit','independentApply26After25':True,'independentSequentialApply01Through26':receipts,'realIndexUnchangedAndUnstaged':True,'realIndexSha256':start['indexSha256'],'performance':json.loads((r/'analysis.json').read_text())['heavyFairnessAcceptance'],'publication':'No actual stage/sign/commit/push/preview/merge/deploy.'};(p/'manifest.json').write_text(json.dumps(m,indent=2)+'\n');(p/'26-commit-message.txt').write_text('perf(sync): reuse stable read authority proof evidence\n\nShare the existing bounded mathematical authority proof with publication,\nretaining fresh live witnesses, served bytes, request authorization, custody,\nexpiry and all native commit fences. Add18 regression cases and preserve the\nfixed four-journey original600s heavy comparison and independent data checks.\n');(p/'README.md').write_text('# Sequential patch26\n\nAlready reflected in the cumulative checkout, unstaged and uncommitted. Do not reapply here. Apply only after canonical25 in a clean checkout. Direct26-after25 and full01-through26 independently reproduce the recorded tree using disposable indices. See the evidence packet for actual acceptance results and limitations. General qualification remains paused; no publication.\n');print(json.dumps({k:v for k,v in m.items()if k!='independentSequentialApply01Through26'},indent=2))

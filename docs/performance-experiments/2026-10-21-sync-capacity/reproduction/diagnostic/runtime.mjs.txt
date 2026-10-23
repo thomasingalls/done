@@ -1,0 +1,79 @@
+import { spawn } from 'node:child_process';
+import { createServer, request } from 'node:http';
+import { appendFileSync } from 'node:fs';
+
+const children = new Set();
+let proxy;
+export const requests = [];
+export const frames = [];
+const labels = new Map();
+export const labelBearer = (bearer, device) => { if (bearer) labels.set(bearer, device); };
+export function attributeRequests() {
+  for (const row of requests) row.device = labels.get(row._bearer) ?? 'unattributed';
+}
+export let phase = 'setup';
+export const setPhase = (value) => { phase = value; for (const child of children) if (child.capacityAPI && child.connected) child.send({phase:value,at:Date.now()}); };
+export async function start(state, dist, delay = 0) {
+  if (![0, 75].includes(delay)) throw Error('Unspecified request delay');
+  const environment = {
+    ...process.env, ACCOUNT_NETWORK_SESSIONS: '1', ACCOUNT_MEMBERSHIP_CONTINUATION: '1',
+    ACCOUNT_SETUP_PORT: '53781', ACCOUNT_SETUP_ORIGIN: 'http://localhost:53781',
+    ACCOUNT_SERVICE_PORT: '53782', ACCOUNT_SETUP_STATE: state, ACCOUNT_SETUP_DIST: dist,
+  };
+  const launch = (script, ready, extra = {}) => new Promise((resolve, reject) => {
+    const observed = script.endsWith('serve-account-service.mjs');
+    const args = observed ? ['--import','/private/tmp/done-sync-capacity-20261021/service-monitor.mjs',script] : process.env.SYNC_DIAGNOSTIC === '1' && script.endsWith('serve-account-service.mjs')
+      ? ['--cpu-prof', '--cpu-prof-dir='+process.env.SYNC_OUT, '--cpu-prof-name=server.cpuprofile', script]
+      : [script];
+    const child = spawn(process.execPath, args, { cwd: process.env.SYNC_SOURCE, env: {...environment, ...extra}, stdio: observed ? ['ignore','pipe','pipe','ipc'] : ['ignore','pipe','pipe'] });
+    child.capacityAPI=observed;
+    children.add(child);
+    let tail = '';
+    const timer = setTimeout(() => { child.kill('SIGTERM'); reject(Error('Disposable server startup deadline: ' + tail)); }, 20000);
+    child.once('exit', (code) => { children.delete(child); clearTimeout(timer); reject(Error('Disposable server exited: ' + code + ' ' + tail)); });
+    const data = (b) => { tail = (tail + b.toString()).slice(-5000); appendFileSync(process.env.SYNC_OUT + '/services.log', b); if (tail.includes(ready)) { clearTimeout(timer); resolve(child); } };
+    child.stdout.on('data', data); child.stderr.on('data', data);
+  });
+  await launch('scripts/serve-account-service.mjs', 'Account API development:');
+  proxy = createServer((req, res) => {
+    const row = { id: requests.length, path: new URL(req.url, 'http://localhost').pathname, phase, at: Date.now(), delay };
+    Object.defineProperty(row, '_bearer', {value: req.headers.authorization});
+    requests.push(row);
+    const forward = () => {
+      if (res.destroyed) { row.cancelledBeforeForward = Date.now(); return; }
+      row.forwardAt = Date.now();
+      const up = request({hostname: '127.0.0.1', port: 53782, path: req.url, method: req.method, headers: req.headers, agent: false}, (reply) => {
+        row.headersAt = Date.now(); row.status = reply.statusCode;
+        res.writeHead(reply.statusCode, reply.headers);
+        if (reply.headers['content-type']?.startsWith('text/event-stream')) {
+          let partial = '';
+          reply.on('data', (b) => {
+            partial += b.toString('ascii');
+            if (partial.length > 8192) partial = partial.slice(-8192);
+            let end;
+            while ((end = partial.indexOf('\n\n')) >= 0) {
+              const frame = partial.slice(0, end); partial = partial.slice(end + 2);
+              const event = /^event: (ready|hint|content)\ndata: \{\}$/.exec(frame)?.[1];
+              if (event) frames.push({request: row.id, device: labels.get(req.headers.authorization) ?? 'unattributed', phase, event, at: Date.now()});
+            }
+          });
+        }
+        reply.pipe(res); reply.once('end', () => { row.end = Date.now(); });
+      });
+      up.once('error', () => { row.errorAt = Date.now(); if (!res.headersSent) res.writeHead(502); res.end(); });
+      res.once('close', () => { row.closeAt = Date.now(); up.destroy(); });
+      req.pipe(up);
+    };
+    if (delay) setTimeout(forward, delay); else forward();
+  });
+  await new Promise((resolve, reject) => { proxy.once('error', reject); proxy.listen(53784, '127.0.0.1', resolve); });
+  await launch('scripts/serve-account.mjs', 'Account packaged development:', {ACCOUNT_SERVICE_PORT: '53784'});
+}
+export async function stop() {
+  for (const child of [...children]) {
+    if (child.exitCode !== null || child.signalCode !== null) continue;
+    await new Promise((resolve) => { const timer = setTimeout(() => child.kill('SIGKILL'), 10000); child.once('exit', () => { clearTimeout(timer); resolve(); }); child.kill('SIGTERM'); });
+  }
+  if (proxy) { const old = proxy; proxy = undefined; await new Promise((resolve) => { old.close(resolve); old.closeAllConnections(); }); }
+}
+process.on('exit', () => { for (const child of children) child.kill('SIGKILL'); });

@@ -1,0 +1,5 @@
+{
+  "knownRawAndEscapedExactValues": 55,
+  "matches": 0,
+  "scope": "Explicit whitelist; fixture keys/codes/sessions/DBs/browser storage excluded. CPU profiles retain synthetic function/source metadata. This is not a general secret detector."
+}

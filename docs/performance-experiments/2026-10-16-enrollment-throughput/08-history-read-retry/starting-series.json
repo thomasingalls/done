@@ -1,0 +1,65 @@
+{
+  "base": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "branch": "codex/improve-task-scheduling-ux",
+  "releaseStatus": "blocked: sustained concurrent-writing replay refuses with unknown/state-changed",
+  "patches": [
+    {
+      "file": "01-attribute-enrollment-authority-work-and-repair-fault-route.patch",
+      "sha256": "45f893f15ecda94f25b83aad480dbf73c2afbd9ca0e7133c052b78e05b76c979",
+      "bytes": 293744,
+      "expectedTree": "cb4533e59b1280725fd8e87e3bc1088191f40393",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    },
+    {
+      "file": "02-reuse-authority-evidence-within-one-read-batch.patch",
+      "sha256": "147b665f311ad1f30a4c67cbd6447eac862d5c1b51d3d90189563787f5ad1589",
+      "bytes": 322231,
+      "expectedTree": "7e020ea496ff3fef3c1a822ea24a2f25fb1ed805",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    },
+    {
+      "file": "03-account-for-actual-sequential-read-work.patch",
+      "sha256": "f8266077ccafe12dff85a729f4b51d925d7298bc710a5403205d99f59bd775f5",
+      "bytes": 251568,
+      "expectedTree": "0e9f74e99b5c709b7d4b5ff3dc7d9c5c4e59cc93",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    },
+    {
+      "file": "04-record-sustained-replay-and-policy-boundary.patch",
+      "sha256": "97a758e5e71f7d8c04717a44282c5affbe6eb802d3648f237d3dd1d1b341d99a",
+      "bytes": 113605,
+      "expectedTree": "dd299c4eaad08b3c62ac0cc0ec27367eabec119a",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    },
+    {
+      "file": "05-verify-dense-transient-history-pages.patch",
+      "sha256": "320ce6c1d0493792b4874add19d3d0b5e100a192018800bc122d676ef67edfb1",
+      "bytes": 385491,
+      "expectedTree": "6b2ec8dd17c75bee6595074eeb51b83b96456a0b",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    },
+    {
+      "file": "06-preserve-the-concurrent-write-falsifier.patch",
+      "sha256": "4c2e620caf5f1c16cb161dd499e8c7cc12ed5fbc09407f507f654a0d5939b69c",
+      "bytes": 86253,
+      "expectedTree": "535cf3f8e608ebae1c61d5b3ac12300fb7f1c02d",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    },
+    {
+      "file": "07-repair-native-history-fixtures-and-record-final-checks.patch",
+      "sha256": "fde6194608a5035a5b86e78d23a04c1311c0d8af1514e09a8766ef73b41638f9",
+      "bytes": 251400,
+      "expectedTree": "5b48412859e1ef072f63efb5094e6ae8478a9053",
+      "cleanVerified": true,
+      "cumulative-indexVerified": true
+    }
+  ],
+  "realHeadUnchanged": true,
+  "realIndexEmpty": true
+}

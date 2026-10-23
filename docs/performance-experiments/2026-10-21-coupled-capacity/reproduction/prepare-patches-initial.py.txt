@@ -1,0 +1,41 @@
+from pathlib import Path
+import hashlib,io,json,subprocess,tarfile
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());base=start['base'];prior=start['priorTree'];firstTree='37fa6fc1eb0d0572c7c69d1301908b4bfc358b49'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+def run(args,**kwargs):return subprocess.check_output(args,**kwargs)
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+assert run(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==base
+realIndex=Path(run(['git','rev-parse','--git-path','index'],cwd=repo,text=True).strip());indexBefore=sha(realIndex.read_bytes())
+allowed=['docs/completed.md','docs/decisions.md','docs/performance.md','docs/performance-experiments/2026-10-21-coupled-capacity']
+def isolated(name,worktree):
+ bare=r/name;assert not bare.exists(),str(bare)
+ subprocess.run(['git','init','--bare','--quiet',str(bare)],check=True)
+ (bare/'objects/info/alternates').write_text('/private/tmp/done-rate-review-20261021/patch09-index.git/objects\n')
+ return ['git','-C',str(worktree),'--git-dir='+str(bare),'--work-tree='+str(worktree)]
+git=isolated('patch09-index.git',repo);subprocess.run(git+['read-tree',prior],check=True)
+for f in allowed[:3]:assert (repo/f).read_bytes().startswith(run(git+['show',prior+':'+f])),f
+packet=repo/allowed[3]
+for line in (packet/'SHA256SUMS').read_text().splitlines():
+ h,f=line.split('  ',1);assert sha((packet/f).read_bytes())==h,f
+subprocess.run(git+['add','--',*allowed],check=True);tree=run(git+['write-tree'],text=True).strip()
+changed=run(git+['diff','--cached','--name-only',prior],text=True).splitlines();assert all(p in allowed or p.startswith(allowed[3]+'/') for p in changed),changed
+patch=run(git+['diff','--cached','--binary','--full-index','--no-ext-diff',prior]);patchdir=r/'patches';patchdir.mkdir(exist_ok=False);third=patchdir/'09-coupled-capacity-and-typing.patch';third.write_bytes(patch)
+clean=r/'clean-sequential-apply';clean.mkdir()
+combined=run(git+['diff','--cached','--name-only',base],text=True).splitlines();tracked=set(run(['git','ls-tree','-r','--name-only',base],cwd=repo,text=True).splitlines());originalPaths=sorted(tracked.intersection(combined))
+archive=run(['git','archive',base,'--',*originalPaths],cwd=repo)
+with tarfile.open(fileobj=io.BytesIO(archive)) as t:t.extractall(clean,filter='data')
+verify=isolated('verify09-index.git',clean);subprocess.run(verify+['read-tree',base],check=True);subprocess.run(verify+['add','--',*originalPaths],check=True)
+assert run(verify+['write-tree'],text=True).strip()==run(['git','rev-parse',base+'^{tree}'],cwd=repo,text=True).strip()
+steps=[]
+for file,expected in [(Path(p['patch']),p['expectedTree']) for p in start['priorPatches']]+[(third,tree)]:
+ subprocess.run(verify+['apply','--index','--whitespace=nowarn','--check',str(file)],check=True);subprocess.run(verify+['apply','--index','--whitespace=nowarn',str(file)],check=True)
+ actual=run(verify+['write-tree'],text=True).strip();assert actual==expected
+ steps.append({'patch':str(file),'sha256':sha(file.read_bytes()),'expectedTree':expected,'independentCleanApplyTree':actual})
+assert run(git+['diff',tree,'--']).decode()==''
+assert sha(realIndex.read_bytes())==indexBefore
+assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+manifest={'baseCommit':base,'priorTree':prior,'expectedCumulativeTree':tree,'independentSequentialApply':steps,'changedFilesInPatch09':len(changed),'patch09Bytes':len(patch),'realIndexSha256BeforeAndAfter':indexBefore,'realIndexUntouched':True,'byteExactApplyFlag':'--whitespace=nowarn','knownGlobalWhitespacePolicy':'Override apply.whitespace=fix to preserve archived evidence bytes' ,'publication':'No real staging, signing, commit, push, preview change, merge or deployment.','scope':'Evidence-only coupled-policy investigation: four enforced one-CPU/1GiB distinct-publisher native runs, six ordinary/pressure browser journeys and two both-renderer profiles. Unchanged budget cases; pressure typing miss retained. Working runtime/tests/classifications/obligations unchanged;16/64 retained and qualification paused.'}
+(patchdir/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+(patchdir/'09-commit-message.txt').write_text('docs(perf): investigate coupled capacity and typing dispatch\n\nPreserve four resource-limited distinct-publisher cold comparisons,\nsix uninstrumented full client journeys and two dual-renderer profiles.\nRetain the pressure typing gate miss and separate automation dispatch\nfrom DOM update timing. Keep16/64 and all qualification obligations.\nNo runtime policy adoption or production-capacity claim.\n')
+(patchdir/'README.md').write_text('# Sequential patch application\n\nBase: `'+base+'`. Current cumulative checkout already includes01→09. Do not reapply over it. Apply/sign immutable patches01 through09 separately when signing is available, using the exact hashes/trees in manifest.json and `git apply --index --whitespace=nowarn` to preserve frozen evidence. Independent clean application reproduces all nine cumulative trees; the real index stays untouched. Patch09 is evidence-only and retains16/64 defaults. Native fairness and pressure-typing misses remain; no adoption or release qualification is claimed. No real staging, commit, push, preview change, merge or deployment occurred.\n')
+print(json.dumps(manifest,indent=2))

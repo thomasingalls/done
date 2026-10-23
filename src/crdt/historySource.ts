@@ -38,7 +38,9 @@ import {
 } from '../../account-protocol/replacementCheckpoint';
 import { openRecoveryReading, type RecoveryReading } from './recoveryReading';
 import { openHistoryCheckpoint } from './historyCheckpoint';
-import { verifyInboundPage, type InboundContext, type InboundLifetime } from './accountInbound';
+import { verifyHistoryPage, type InboundContext, type InboundLifetime } from './accountInbound';
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+import { reportEnrollmentProgress, type HistoryReplayProgress } from '../lib/enrollmentProgress';
 import { fields, hkdf, hex, random, type Bytes } from './custodyCrypto';
 import { unhex } from '../../account-protocol/recovery';
 import { Y, genesisCoverage, genesisCoverageParts, hasPendingUpdates, type YDoc } from './yjs';
@@ -60,7 +62,10 @@ export interface HistorySourceInput {
   lifetime: InboundLifetime;
   sign(message: Bytes): Promise<string>;
   read(request: Bytes): Promise<Bytes>;
+  /** Optional carrier; one bounded page at a time avoids skipping byte-limited tails. */
+  readBatch?(requests: readonly Bytes[]): Promise<readonly Bytes[]>;
   exchange(request: HistoryExchange): Promise<unknown>;
+  progress?: (progress: HistoryReplayProgress) => void;
 }
 /** Returns a caller-owned doc only after every source and cut verifies. All failures erase key/plain buffers.
  * A recovery baseline substitutes for unavailable old openers only with signed exact coverage. */
@@ -77,6 +82,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
     producer = input.producer,
     sign = input.sign.bind(input),
     read = input.read.bind(input),
+    readBatch = input.readBatch?.bind(input),
     exchange = input.exchange.bind(input),
     lifetime: InboundLifetime = {
       assertCurrent: input.lifetime.assertCurrent.bind(input.lifetime),
@@ -84,6 +90,11 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
     },
     guard = () => lifetime.assertCurrent();
   guard();
+  const progress = (value: HistoryReplayProgress) => {
+    guard();
+    reportEnrollmentProgress(input.progress, value);
+  };
+  progress({ stage: 'baseline' });
   const keys = new Map<number, Bytes>();
   let doc: YDoc | undefined;
   let consumedBytes = 0;
@@ -278,6 +289,8 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       });
     }
     guard();
+    let checkedSources = 0;
+    progress({ stage: 'sources', completed: 0, total: sources.length });
     for (const ref of sources) {
       at(ref.epoch, ref.head);
       const proof = timeline.proofs?.continuations.find((p) => p.head === ref.head);
@@ -289,7 +302,10 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
             : proof?.kind !== 'recovery-successor'
       )
         throw Error('History source kind differs from its membership');
-      if (coveredSources.some((s) => same(s, ref))) continue;
+      if (coveredSources.some((s) => same(s, ref))) {
+        progress({ stage: 'sources', completed: ++checkedSources, total: sources.length });
+        continue;
+      }
       const request = parseHistoryExchange({
         v: 1,
         kind: 'history-checkpoint-request',
@@ -360,6 +376,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       } finally {
         source.destroy();
       }
+      progress({ stage: 'sources', completed: ++checkedSources, total: sources.length });
     }
     for (const before of baselineHeads) {
       const cut = cuts.find((c) => c.credentialId === before.credentialId);
@@ -370,7 +387,18 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       )
         throw Error('History baseline exceeds the accepted cuts');
     }
-    let events = 0;
+    const remaining = cuts.reduce(
+      (sum, cut) =>
+        sum +
+        (cut.position -
+          (baselineHeads.find((h) => h.credentialId === cut.credentialId)?.position ?? 0)),
+      0,
+    );
+    // A display count must not round a sum of individually safe authenticated positions.
+    const total = Number.isSafeInteger(remaining) ? remaining : null;
+    let events = 0,
+      checkedEvents = 0;
+    progress({ stage: 'history', completed: 0, total });
     for (const cut of cuts) {
       const before = baselineHeads.find((h) => h.credentialId === cut.credentialId) ?? {
         position: 0,
@@ -399,7 +427,12 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       };
       while (context.prefix.position < cut.position) {
         guard();
-        if (++events > HISTORY_REPLAY_EVENTS) throw Error('History replay exceeds its event bound');
+        if (events >= HISTORY_REPLAY_EVENTS) throw Error('History replay exceeds its event bound');
+        const limit = Math.min(
+          READ_COUNT_LIMIT,
+          cut.position - context.prefix.position,
+          HISTORY_REPLAY_EVENTS - events,
+        );
         const body = {
           serviceId: p.pin.serviceId,
           origin: p.pin.origin,
@@ -410,43 +443,37 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
           head: p.head,
           epoch: p.epoch,
           after: context.prefix.position,
-          limit: 1,
+          limit,
           nonce: hex(random(32)),
           expires: (lifetime.now?.() ?? Date.now()) + 30000,
           signature: '00'.repeat(64),
         };
         body.signature = await sign(inboundRequestMessage(body));
         const request = encodeInboundRequest(body);
-        let page: Bytes | undefined;
+        let pages: readonly Bytes[] = [],
+          result: Awaited<ReturnType<typeof verifyHistoryPage>> | undefined;
         try {
           guard();
-          page = await read(request);
+          // A byte-limited page can be shorter than its requested entry count. Its verified
+          // next position determines the next request; never speculate a fixed stride.
+          pages = readBatch ? await readBatch([request]) : [await read(request)];
           guard();
-          const result = await verifyInboundPage(context, request, page, lifetime);
-          try {
-            if (
-              result.kind !== 'received' ||
-              result.position !== context.prefix.position + 1 ||
-              result.position > cut.position ||
-              (result.position === cut.position && result.link !== cut.link)
-            )
-              throw Error('History replay does not reach its authenticated cut');
-            for (const bytes of result.updates) {
-              addBytes(bytes.length);
-              Y.applyUpdate(doc, bytes);
-            }
-            context.prefix = {
-              position: result.position,
-              link: result.link,
-              observedThrough: result.through,
-            };
-          } finally {
-            if (result.kind === 'received' || result.kind === 'conflict') result.record.fill(0);
-            if (result.kind === 'received') for (const bytes of result.updates) bytes.fill(0);
+          if (pages.length !== 1) throw Error('Unexpected history read pages');
+          result = await verifyHistoryPage(context, request, pages[0]!, cut, lifetime);
+          events += result.count;
+          for (const bytes of result.updates) {
+            addBytes(bytes.length);
+            Y.applyUpdate(doc, bytes);
           }
+          context.prefix = {
+            position: result.position,
+            link: result.link,
+            observedThrough: result.through,
+          };
+          checkedEvents += result.count;
+          progress({ stage: 'history', completed: checkedEvents, total });
         } finally {
-          request.fill(0);
-          page?.fill(0);
+          for (const bytes of [request, ...pages, ...(result?.updates ?? [])]) bytes.fill(0);
         }
       }
     }

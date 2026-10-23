@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "all9ChecksCompleted": true,
+  "nativeRowsIndependentlyVerified": true,
+  "traceAndEvidenceControls": 12,
+  "originalReviewerFailurePreserved": "trace-sensitivity.log and trace-sensitivity-initial.py",
+  "reviewerCorrection": "all measured native proof events are hits; flip an observed outcome instead of assuming a miss exists",
+  "finalReviewerEvidence": "trace-sensitivity-final.log",
+  "ownedProcessesCheckedAcrossAll3Attempts": true
+}

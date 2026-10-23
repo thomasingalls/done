@@ -1,0 +1,8 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text())
+for f in ['docs/account-crypto/census.json','docs/account-crypto/constructions.json']:assert(repo/f).read_bytes()==(r/'before'/f).read_bytes(),f
+for f,h in start['runtimeFiles'].items():assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+old=json.loads((r/'before/docs/release-validation-manifest.json').read_text());new=json.loads((repo/'docs/release-validation-manifest.json').read_text());assert old['rows']==new['rows'];assert old['unresolved']==new['unresolved'];assert old['exclusions']==new['exclusions']and old['selections']==new['selections'];assert len(new['rows'])==883 and len(new['unresolved'])==339
+for f,h in json.loads((r/'applied-fixtures.json').read_text()).items():assert hashlib.sha256((repo/f).read_bytes()).hexdigest()==h,f
+out={'status':'passed','allRuntimeProtocolClientBytesExact28':True,'cryptoCensusAndConstructionBytesExact':True,'all883ObligationRows339UnresolvedExact':True,'noCaseCountsOrAggregateCreditsChanged':True,'onlyInventoryAndManifestSourceIdentitiesRefreshed':True,'generalQualificationPaused':True};(r/'metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

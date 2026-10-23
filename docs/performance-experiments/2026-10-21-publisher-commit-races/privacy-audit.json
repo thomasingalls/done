@@ -1,0 +1,5 @@
+{
+  "knownExactValuesChecked": 35,
+  "matches": 0,
+  "scope": "Explicit whitelist; known browser codes/credential fields and native API authority/private keys/session fields, raw/JSON-escaped. Not a general secret detector."
+}

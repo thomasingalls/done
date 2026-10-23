@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "fixed-v2/1-R",
+      "all120IndependentTimingObservationsReconstructed": true,
+      "peerObservationsComplete": false,
+      "history409s": 6,
+      "nativeRefusalBodiesComplete": true,
+      "coldPendingArchiveExact": true,
+      "sameProfileNoReinjection": true,
+      "resourceEnvelopeExact": true
+    },
+    {
+      "name": "fixed-v2/2-C",
+      "all120IndependentTimingObservationsReconstructed": true,
+      "peerObservationsComplete": true,
+      "history409s": 0,
+      "nativeRefusalBodiesComplete": true,
+      "coldPendingArchiveExact": true,
+      "sameProfileNoReinjection": true,
+      "resourceEnvelopeExact": true
+    },
+    {
+      "name": "fixed-v2/3-C",
+      "all120IndependentTimingObservationsReconstructed": true,
+      "peerObservationsComplete": true,
+      "history409s": 0,
+      "nativeRefusalBodiesComplete": true,
+      "coldPendingArchiveExact": true,
+      "sameProfileNoReinjection": true,
+      "resourceEnvelopeExact": true
+    },
+    {
+      "name": "fixed-v2/4-R",
+      "all120IndependentTimingObservationsReconstructed": true,
+      "peerObservationsComplete": false,
+      "history409s": 6,
+      "nativeRefusalBodiesComplete": true,
+      "coldPendingArchiveExact": true,
+      "sameProfileNoReinjection": true,
+      "resourceEnvelopeExact": true
+    }
+  ],
+  "scope": "Independent raw-time/event/refusal/identity/cold-archive reconstruction; no full-peer quantile inferred for incomplete references."
+}

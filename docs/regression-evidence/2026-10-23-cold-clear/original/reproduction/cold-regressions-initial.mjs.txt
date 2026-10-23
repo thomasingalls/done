@@ -1,0 +1,122 @@
+
+function interruptAuthorityProof(t, cut) {
+  let offers = 0;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    const valid = await verify(...args);
+    if (Buffer.from(args[3]).includes(Buffer.from('done/promotion-offer/v1'))) {
+      offers++;
+      // Bound a broken retry loop by making its unexpected fifth verification fail closed.
+      if (offers > 4) throw Error('Native proof retry exceeded four attempts');
+      await cut(offers);
+    }
+    return valid;
+  });
+  return () => offers;
+}
+function countReadSigning(t, owner) {
+  let calls = 0;
+  const original = owner.inboundPage;
+  t.mock.method(owner, 'inboundPage', (...args) => {
+    calls++;
+    return original(...args);
+  });
+  return () => calls;
+}
+
+test('cache-clear native retry recaptures and verifies exact writing before returning its page', async (t) => {
+  const h = await harness(t), before = h.x.f.rows('delivery_decisions');
+  const work = interruptAuthorityProof(t, n => { if (n === 1) h.reuse.clear(); });
+  const request = query(h.x, 0, 8);
+  pageProof(await h.fetch(request), request, h.x, h.retained);
+  assert.equal(work(), 2, 'retired evidence is never returned or installed as a retry result');
+  assert.deepEqual(h.x.f.rows('delivery_decisions'), before);
+  assert.equal(h.reuse.tips.status().fullCensuses, 1);
+});
+
+test('cache-clear native retry stops after four fresh attempts without bytes or storage changes', async (t) => {
+  const h = await harness(t), before = h.x.f.rows('delivery_decisions');
+  const signs = countReadSigning(t, h.issuer);
+  const work = interruptAuthorityProof(t, () => h.reuse.clear());
+  const result = await h.fetch(query(h.x, 0, 8));
+  assert.deepEqual(result, { kind: 'unknown', reason: 'state-changed' });
+  assert.equal(work(), 4);
+  assert.equal(signs(), 0);
+  assert.deepEqual(h.x.f.rows('delivery_decisions'), before);
+  assert.equal(h.reuse.tips.status().coldLanes, 0);
+});
+
+test('cache-clear native retry never resumes a closed verification owner', async (t) => {
+  const h = await harness(t), signs = countReadSigning(t, h.issuer);
+  const work = interruptAuthorityProof(t, () => { h.reuse.clear(); h.reuse.close(); });
+  assert.deepEqual(await h.fetch(), { kind: 'unknown', reason: 'unavailable' });
+  assert.equal(work(), 1);
+  assert.equal(signs(), 0);
+});
+
+test('cache-clear native retry keeps input mutation a hard refusal even when revision also changes', async (t) => {
+  const h = await harness(t), owner = { ...h.issuer, pin: { ...h.issuer.pin } };
+  let snapshots = 0;
+  const prepare = h.db.prepare.bind(h.db);
+  t.mock.method(h.db, 'prepare', (sql, ...args) => {
+    if (sql === 'SELECT * FROM promotions WHERE workspace_id=?') snapshots++;
+    return prepare(sql, ...args);
+  });
+  const signs = countReadSigning(t, owner);
+  const work = interruptAuthorityProof(t, () => {
+    owner.pin.serviceId = '00'.repeat(16);
+    h.reuse.clear();
+  });
+  assert.deepEqual(await h.fetch(query(h.x), owner), { kind: 'unknown', reason: 'unavailable' });
+  assert.equal(snapshots, 1, 'input mutation cannot be disguised as a transient clear');
+  assert.equal(work(), 1);
+  assert.equal(signs(), 0);
+});
+
+test('cache-clear native retry does not retry failed fresh custody', async (t) => {
+  const h = await harness(t);
+  let revoked = false, failedChecks = 0;
+  const owner = { ...h.issuer, check(...args) {
+    if (revoked) { failedChecks++; throw Error('Retired acceptance custody'); }
+    return h.issuer.check(...args);
+  } };
+  const signs = countReadSigning(t, owner);
+  const work = interruptAuthorityProof(t, () => { revoked = true; h.reuse.clear(); });
+  assert.deepEqual(await h.fetch(query(h.x), owner), { kind: 'unknown', reason: 'unavailable' });
+  assert.equal(work(), 1);
+  assert.equal(failedChecks, 1);
+  assert.equal(signs(), 0);
+});
+
+for (const stage of ['begin', 'complete'])
+  test(`cache-clear native retry rechecks ${stage} authorization in the actual commit transaction`, async (t) => {
+    const h = await harness(t), before = h.x.f.rows('delivery_decisions');
+    const { AuthorizationRefused } = await import('../../account-service/authorization.ts');
+    let began = 0, completed = 0;
+    const owner = { ...h.issuer, authorize(db, target) {
+      assert.equal(db.isTransaction, true);
+      assert.equal(target.action, 'read');
+      assert.equal(target.workspaceId, h.x.workspace);
+      began++;
+      if (stage === 'begin') throw new AuthorizationRefused('sign-in-required');
+      return () => { assert.equal(db.isTransaction, true); completed++; throw new AuthorizationRefused('sign-in-required'); };
+    } };
+    const work = interruptAuthorityProof(t, n => { if (n === 1) h.reuse.clear(); });
+    await assert.rejects(h.fetch(query(h.x), owner), AuthorizationRefused);
+    assert.equal(work(), 2);
+    assert.equal(began, 1);
+    assert.equal(completed, stage === 'complete' ? 1 : 0);
+    assert.deepEqual(h.x.f.rows('delivery_decisions'), before);
+  });
+
+test('cache-clear native retry preserves the original signed request expiry', async (t) => {
+  const h = await harness(t), initial = Date.now();
+  let now = initial;
+  t.mock.method(Date, 'now', () => now);
+  const signs = countReadSigning(t, h.issuer);
+  const request = query(h.x, 0, 8, { expires: initial + 5000 });
+  const work = interruptAuthorityProof(t, n => { if (n === 1) { h.reuse.clear(); now = initial + 5000; } });
+  assert.deepEqual(await h.fetch(request), { kind: 'unknown', reason: 'invalid-request' });
+  assert.equal(work(), 2);
+  assert.equal(signs(), 0);
+});

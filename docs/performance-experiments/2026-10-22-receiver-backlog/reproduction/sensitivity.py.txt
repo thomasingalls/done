@@ -1,0 +1,24 @@
+from pathlib import Path
+import json,subprocess,sqlite3,shutil,hashlib
+r=Path(__file__).parent;a=json.loads((r/'analysis.json').read_text());candidate=next(v['name']for v in a['runs']if v['variant']=='D');reference=next(v['name']for v in a['runs']if v['variant']=='A');rows=[];node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+for name in ['drop-input','alter-cold-archive','alter-retained-delivery','invent-replay-pass','alter-complete-peer-timing','alter-progress-offset']:
+ target=candidate if name!='invent-replay-pass'else reference;x=json.loads((r/target/'result.json').read_text())
+ if name=='drop-input':x['probesAtDeadline'][0]['events'].pop(next(i for i,e in enumerate(x['probesAtDeadline'][0]['events'])if e['kind']=='beforeinput'and e['at']>=x['startedAt']))
+ elif name=='alter-cold-archive':x['offlineColdWriterReopen']['archive']['sha256']='00'*32
+ elif name=='alter-retained-delivery':x['offlineColdWriterReopen']['retainedDelivery'][0]['entries'][0]='00'*32
+ elif name=='invent-replay-pass':x['backgroundReplayPassed']=True
+ elif name=='alter-progress-offset':next(v for v in reversed(x['probesAtDeadline'][0]['progress'])if v['at']<=x['startedAt'])['accepted']-=1
+ else:
+  obs=x['probesAtDeadline'][1]['lengths'];baseline=next(v['length']for v in reversed(obs)if v['at']<=x['startedAt']);next(v for v in obs if v['at']>=x['startedAt']and v['length']>baseline)['at']+=10000
+ p=r/('private-control-'+name+'.json');p.write_text(json.dumps(x))
+ with(r/('evidence-control-'+name+'.log')).open('w')as f:done=subprocess.run(['python3',str(r/'review-evidence.py'),target,str(p)],stdout=f,stderr=subprocess.STDOUT)
+ assert done.returncode!=0 and 'AssertionError'in(r/('evidence-control-'+name+'.log')).read_text(),name
+ rows.append({'name':name,'exitCode':done.returncode,'assertionDetected':True});p.unlink()
+path=r/'private-native-ciphertext-control.sqlite';shutil.copy2(r/candidate/'state/account.sqlite',path);db=sqlite3.connect(path);row=db.execute("SELECT rowid,submission FROM delivery_decisions WHERE kind='accepted' LIMIT 1").fetchone();b=bytearray(row[1]);at=0
+for _ in range(3):at+=2+int.from_bytes(b[at:at+2],'big')
+env=at+4;at=env
+for _ in range(7):at+=2+int.from_bytes(b[at:at+2],'big')
+b[at+48]^=1;db.execute('UPDATE delivery_decisions SET submission=? WHERE rowid=?',(b,row[0]));db.commit();db.close()
+with(r/'evidence-control-native-ciphertext.log').open('w')as f:done=subprocess.run([node,str(r/'audit-native.mjs'),'--inspect',str(path)],stdout=f,stderr=subprocess.STDOUT)
+assert done.returncode!=0 and 'independent ciphertext digest'in(r/'evidence-control-native-ciphertext.log').read_text();rows.append({'name':'native-ciphertext-digest','exitCode':done.returncode,'assertionDetected':True});path.unlink()
+(r/'sensitivity.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n');print(json.dumps(rows))

@@ -1,0 +1,183 @@
+{
+  "origin": "https://done.oxidationlabs.com",
+  "indexSha256": "81e2961d0c406f9c51a5ec8ba1d1e417ba97990364151ed17a5d66566dd31a93",
+  "scripts": [
+    {
+      "asset": "/assets/rolldown-runtime-QTnfLwEv.js",
+      "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75",
+      "bytes": 694,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/admissionHistory-nO4apN9K.js",
+      "sha256": "04f25bc7e8a3c681ad71ca3702cb030988da16022d756a0e6ffc4beda5822bf9",
+      "bytes": 103414,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/storageCompatibility-Ixv843Jw.js",
+      "sha256": "6b29d99d4e67585fc583d3dcbff67c339ff76eb671db8acd87cff12550b4953d",
+      "bytes": 1352,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/writeSession-BnNxyJtv.js",
+      "sha256": "b1b5d05d3dc96da64529354746f06acf5c1095949d17ad78e849bf515610cb99",
+      "bytes": 7254,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/custodyCrypto-C44ppXTm.js",
+      "sha256": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280",
+      "bytes": 4784,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/deviceRemovalVault-BE8LR06F.js",
+      "sha256": "ad8cee159aa3fae5c9904da2224942dc8b45e55e328d8635d49c0b5d4af5903b",
+      "bytes": 26898,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/verifiedRecords-kWNjZRWl.js",
+      "sha256": "770e70bea1786bf2560e94eb454b635ad604767ad0e43b615f3e560685644d11",
+      "bytes": 10045,
+      "knownRevisionOccurrences": {
+        "faf465f7": 2,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": [
+        "ENTION:`0`,VITE_ACCOUNT_TEXT_ADMISSION:`direct`,VITE_APP_COMMIT_DATE:`2026-10-16`,VITE_APP_VERSION:`faf465f7`}.VITE_ACCOUNT_LEDGER_PROFILE===`1`,O=Object.fromEntries(`startupValidations.joinedStartupValidations.deliveryVerifications.inbou",
+        "ENTION:`0`,VITE_ACCOUNT_TEXT_ADMISSION:`direct`,VITE_APP_COMMIT_DATE:`2026-10-16`,VITE_APP_VERSION:`faf465f7`}).VITE_ACCOUNT_LEDGER_PROFILE===`1`&&Object.defineProperty(globalThis,\"__doneLedgerMetrics\",{value:R,configurable:!0});var z={},"
+      ]
+    },
+    {
+      "asset": "/assets/contentCompaction-BBeA_Srv.js",
+      "sha256": "d8b62730c13de110188b2db4be381526e2fa961c9f970136ca8463787137eef8",
+      "bytes": 102400,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/historyCheckpoint-CMstbZ84.js",
+      "sha256": "6b502ffe9ea50963e2dacfcbdcdd1e480ed07b988a43d55aece5b6d70e5b55e1",
+      "bytes": 15804,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/localBaselineRecord-BvMBjegu.js",
+      "sha256": "28f21f25c137c9e38b1cf8f68ee0cf4e00208985fa0360a5114475f3f204f203",
+      "bytes": 42808,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/localBaselineAnchor-BucZNMNU.js",
+      "sha256": "78edda23490941a26256041baac288e9adb84184a78843806cd39cfc28206963",
+      "bytes": 2967,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/deviceDataRemoval-CsBZG77P.js",
+      "sha256": "ce3840bef8c42b67ff83052fa6d0a1bfbdf9344d22838265167b213b8ba6953f",
+      "bytes": 96239,
+      "knownRevisionOccurrences": {
+        "faf465f7": 4,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": [
+        "ENTION:`0`,VITE_ACCOUNT_TEXT_ADMISSION:`direct`,VITE_APP_COMMIT_DATE:`2026-10-16`,VITE_APP_VERSION:`faf465f7`}).VITE_ACCOUNT_BASELINE_READ===`1`,rn=()=>({BASE_URL:`/`,DEV:!1,MODE:`production`,PROD:!0,SSR:!1,VITE_ACCOUNT_BASELINE_INSTALL:`",
+        "ENTION:`0`,VITE_ACCOUNT_TEXT_ADMISSION:`direct`,VITE_APP_COMMIT_DATE:`2026-10-16`,VITE_APP_VERSION:`faf465f7`}).VITE_ACCOUNT_BASELINE_INSTALL===`1`,an=()=>nn()||rn(),on=()=>nn()&&rn()&&{BASE_URL:`/`,DEV:!1,MODE:`production`,PROD:!0,SSR:!1",
+        "ENTION:`0`,VITE_ACCOUNT_TEXT_ADMISSION:`direct`,VITE_APP_COMMIT_DATE:`2026-10-16`,VITE_APP_VERSION:`faf465f7`}.VITE_ACCOUNT_RETENTION===`1`;function sn(e,t=!1){let n,r=e=>n?e.v===2?{...e,v:We(n),baseline:structuredClone(n)}:P(`Baseline re",
+        "ENTION:`0`,VITE_ACCOUNT_TEXT_ADMISSION:`direct`,VITE_APP_COMMIT_DATE:`2026-10-16`,VITE_APP_VERSION:`faf465f7`}.VITE_ACCOUNT_BULK_CUSTODY===`1`?mt(e,n,K,[t]):pt(e,n,K,[t]))),fr=async(e,t)=>{await kt(e,t),await jt(e,t),await Yn(e,t);let n=("
+      ]
+    },
+    {
+      "asset": "/assets/DeviceDataRemoval-DtTFigKJ.js",
+      "sha256": "441ab49977af77f3e8a054c7dd65d21f2bedfff6b18a29f4455f634baa4bcdf6",
+      "bytes": 15228,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    },
+    {
+      "asset": "/assets/main-CfNx996q.js",
+      "sha256": "fbc46cce4cd9b42a762ccb2f1975043cf12b2d4a842dac8a30c1b232f1e28844",
+      "bytes": 328313,
+      "knownRevisionOccurrences": {
+        "faf465f7": 0,
+        "2f1d0b0f": 0,
+        "27dc7d78": 0,
+        "890fc677": 0
+      },
+      "revisionContexts": []
+    }
+  ],
+  "method": "Read-only unauthenticated public index and its entry scripts; does not identify cached clients."
+}

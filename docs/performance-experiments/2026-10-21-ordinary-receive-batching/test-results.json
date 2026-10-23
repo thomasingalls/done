@@ -1,0 +1,72 @@
+{
+  "finalChecks": {
+    "final-v4-native": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "individual-size-v4": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "core-groups-v4": {
+      "tests": 28,
+      "pass": 28,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "prepared-v4": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "transport-native-v4": {
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "batch-prepared-v4": {
+      "tests": 17,
+      "pass": 17,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "service-final-loopback": {
+      "tests": 28,
+      "pass": 28,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "planning-tests-last": {
+      "tests": 85,
+      "pass": 85,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "units-v4": {
+      "tests": 114,
+      "pass": 114,
+      "fail": 0,
+      "newCases": 17
+    }
+  },
+  "newRegressionCases": 34,
+  "newUnitCases": 17,
+  "newNativeCases": 17,
+  "newNativeModeCoverage": "All 17 also pass with ACCOUNT_PREPARED_RECEIVE=1; 16 ordered cases plus the added size-refusal case pass in final-v4-native/individual-size-v4.",
+  "qualification": "Functional and planning checks only; aggregate/security qualification paused, new files blocked.",
+  "earlierAttempts": "See attempts.md and all retained check logs; failed invocations and stale fixture failures are not credited as passes."
+}

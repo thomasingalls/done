@@ -92,6 +92,10 @@
       "sha256": "4796129211591f7aa03afd5509b48073243b70de648743ba36388d4cb4d81bba"
     },
     {
+      "path": "account-protocol/inboundBatch.ts",
+      "sha256": "32becf116d8c1ace6ccc917024f677fd507a1fd315b43024092b717befe388df"
+    },
+    {
       "path": "account-protocol/inboundTransport.ts",
       "sha256": "60e67b703bd788444b574e739ee115b5428b7e96c5b0f8a9dc9c3dded8ed2969"
     },
@@ -197,7 +201,7 @@
     },
     {
       "path": "account-service/authority.ts",
-      "sha256": "7c1d07fa3ffed8c857351c072b8db9fe56bc0983fbcebeb57df5b9c2009359e8"
+      "sha256": "704910dcd6755bcfaa1324be682038989edc05ea4eba8a5f866b1af728dbc47b"
     },
     {
       "path": "account-service/authorization.ts",
@@ -240,6 +244,10 @@
       "sha256": "b04dc55a439ee5516b052a692d68059e63666e5d73ec579fdd437a576d3fc2b5"
     },
     {
+      "path": "account-service/batchReadAdmission.ts",
+      "sha256": "16f2eb20570065de995263b9aeb59829612d75827de401b914e4b84e0431cd1e"
+    },
+    {
       "path": "account-service/ceremony.ts",
       "sha256": "356adbf65884ea8fedc8e1b214c50ed44737c993ff50bf72f0fa6eadbf63ffaa"
     },
@@ -253,15 +261,15 @@
     },
     {
       "path": "account-service/core.ts",
-      "sha256": "a7d3c6fa206ca5710f6f94225f3d905ce92298054bf31ebff8179cf543b90e9c"
+      "sha256": "0d75d870b1003560914531a55357b40ba676d8fc7237a3ad48ac6c9383956773"
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "550a7149a0e76c9f3ec57ec7264b8d5292fa5f797e70c0793f383d19fae5c206"
+      "sha256": "a85725d15524fae6c48acd203085a6daf37586cfe03c386fcc94d464f57b7a3c"
     },
     {
       "path": "account-service/deliveryVerification.ts",
-      "sha256": "c273ebe4887f7dddcd104fd820aa564d80cc8be7388712f5d4cd526c5062456e"
+      "sha256": "99011fbb1c93b478c52fd58d1d941f055563e4c355aac2cbb72e2a072a35d73c"
     },
     {
       "path": "account-service/deliveryWitness.ts",
@@ -297,11 +305,19 @@
     },
     {
       "path": "account-service/historyCheckpoint.ts",
-      "sha256": "503946fb7655065a2366a1e400b0877c32efab7d2653b7588edb5aada8be70ba"
+      "sha256": "65e5306bdf57e592b9546b679b08e19f01a3204347d2a3ffbdcd6258e375df89"
     },
     {
       "path": "account-service/historySources.ts",
       "sha256": "2f7b8f42fffd0615459b8f2016e075fe63db3e666b10c36e924b489faaccd3e4"
+    },
+    {
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "sha256": "17dfd977c50abc95942fe658e90511048126a708d1923e7805a18a0447b6077d"
+    },
+    {
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23"
     },
     {
       "path": "account-service/keyEncoding.ts",
@@ -329,11 +345,11 @@
     },
     {
       "path": "account-service/membershipHistory.ts",
-      "sha256": "41b8158d6269cc0bace7ac921f3dd7bfcc088c5f40693f76ebd5521925bee5be"
+      "sha256": "97be69ee260fe514b0ad9ebf2effd228734aca5810170fd789a6ae46dbcd2d4e"
     },
     {
       "path": "account-service/membershipLocator.ts",
-      "sha256": "6d58d703d71dbce07132bc96f06bb9cf9805fa2eceaf6f6a0fbac483ef78af82"
+      "sha256": "61e626136fe2896c25b7939388f689da1dc8682392d7b17e2038f07703fb8a2e"
     },
     {
       "path": "account-service/membershipStore.ts",
@@ -397,7 +413,7 @@
     },
     {
       "path": "account-service/publisherTips.ts",
-      "sha256": "b1fb4841dd5f7b24286753b7f638353972e96bea5f3c3363abaed24abb815a3a"
+      "sha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d"
     },
     {
       "path": "account-service/recovery.ts",
@@ -433,7 +449,7 @@
     },
     {
       "path": "account-service/requestBudget.ts",
-      "sha256": "7a17f6719b1f843600bfa2616313cfe345ae3032f8bc8a25bd615081049964df"
+      "sha256": "c65258f954e49339adacd94a62a4b6c07400f3030674aff718f0761ad07ee41b"
     },
     {
       "path": "account-service/rotation.ts",
@@ -441,7 +457,7 @@
     },
     {
       "path": "account-service/scoped-http.ts",
-      "sha256": "f6b606eed422a6c136693bb482e8e5e7880139a4bef5c6356931340204ce6a33"
+      "sha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb"
     },
     {
       "path": "account-service/service-lifetime.ts",
@@ -473,7 +489,7 @@
     },
     {
       "path": "src/account/accountEnrollment.ts",
-      "sha256": "2e8554e358163e8dec3ef5a3cc5facca9abd24a8621009fc99b070bee290fab6"
+      "sha256": "04e1a4f3f5f6684208ca7e67df683a35bc6f35c74f8fa77aad8f25fd5d1e0b37"
     },
     {
       "path": "src/account/accountHttp.ts",
@@ -509,7 +525,7 @@
     },
     {
       "path": "src/account/ceremonyVault.ts",
-      "sha256": "6879967c4fb7b277db0401c11a1b5745a1547867c236f3068d334ef437f76628"
+      "sha256": "56f31b5a9213c23741b081729f7af7bbeabc6f73fd4278fa764a7208a8e6bac1"
     },
     {
       "path": "src/account/connectionNavigation.ts",
@@ -529,7 +545,7 @@
     },
     {
       "path": "src/account/deviceEnrollment.ts",
-      "sha256": "c64032acb75978f1722127fa0d13a2c00164357fdb4de245c8748b964bbf96fc"
+      "sha256": "512b8199766374f93518e8669a3b95def86dab8db6731d0aba97362c0bba90f6"
     },
     {
       "path": "src/account/deviceRemoval.ts",
@@ -576,6 +592,10 @@
       "sha256": "9ff10bef78498eb8175bc5a4aa239e118e0e38f0b1314e767b36054742623333"
     },
     {
+      "path": "src/account/historyReadRetry.ts",
+      "sha256": "79b2878c1d1e8fe086f9e63427b4b16040e4a4082b3f3cdccc20c630b1fa846d"
+    },
+    {
       "path": "src/account/lostDeviceRecovery.ts",
       "sha256": "691fe605dd50cbd93b4950df281b1d0dc3327859c116b68b6463401690df5566"
     },
@@ -593,15 +613,15 @@
     },
     {
       "path": "src/account/membershipConnection.ts",
-      "sha256": "e71958280047768ba137821785a03be887434e3aeb54b5a70bbd12af608c463e"
+      "sha256": "fd9d3be97da9ee543946dda37c28937a87a97b9f5c50dc085d2404dda2b680a1"
     },
     {
       "path": "src/account/membershipEnrollment.ts",
-      "sha256": "f329d1f58eb54b4e57f08ce0e94f6ef1e11b88c0bcb3d12691b7afc35b82006d"
+      "sha256": "2dcfd293ab211ca4b2ff278311f0e674182c48620b70e8b361bc8cf1adb5c359"
     },
     {
       "path": "src/account/membershipHandoff.ts",
-      "sha256": "5932f0eea4cbac1eedcbe7fd9c10dce6efe9dbd4c3ecee9a1900b0240bb9418a"
+      "sha256": "e6e27a53b92ae584731e5bc51edfd710f50b1204c715da93af32fc385120f2cc"
     },
     {
       "path": "src/account/membershipInvitation.ts",
@@ -617,7 +637,7 @@
     },
     {
       "path": "src/account/membershipVault.ts",
-      "sha256": "20b9ab38de4881af8c01f6fb15aa5fa32c6440f0a7ff0050770678653346c195"
+      "sha256": "a81b3fab9b25a8e3ec71e17a79ead55592d495f2837081b07bf70d872aa8e2be"
     },
     {
       "path": "src/account/networkLogin.ts",
@@ -641,7 +661,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "c32d1722767350119db45656c458fbf1420bad9067ea97d5eaa378ae31f35f9f"
+      "sha256": "a9d3e25464123357a3af42d8ca552ba78eab50ffedbf4b34278a850c405d9e21"
     },
     {
       "path": "src/account/privateDiscoveryHttp.ts",
@@ -677,7 +697,7 @@
     },
     {
       "path": "src/account/scopedTransport.ts",
-      "sha256": "109c6952ba66f37081b6a2b339f905c9c727bd318ed4a7c2aa0f24a20b0030e9"
+      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7"
     },
     {
       "path": "src/account/sessionVault.ts",
@@ -741,7 +761,7 @@
     },
     {
       "path": "src/crdt/accountInbound.ts",
-      "sha256": "36a72a38986a3be2bceb0e733c7d3a84fd178e6596404304f067f624b11a49a4"
+      "sha256": "5e31847620e83cc21b031018b35ad379eea5407ae9522f8026576dae55d7c9e4"
     },
     {
       "path": "src/crdt/accountJournal.ts",
@@ -765,7 +785,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "338e16006869d9b5bc2cba641f8f2ed8c4883311fe76cc3d7b4fcead9ae1cf48"
+      "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -961,7 +981,7 @@
     },
     {
       "path": "src/crdt/historySource.ts",
-      "sha256": "cb656e2f563ce69e6f210f4b176d6fd892606c0e55aefd8753af6e403a4798ac"
+      "sha256": "c701b4714adf48eb2013d349274a8b1cccc2470e650ae7cee910fcdcb572b8cb"
     },
     {
       "path": "src/crdt/inboundLedger.ts",
@@ -1109,7 +1129,7 @@
     },
     {
       "path": "src/crdt/localGenesisStorage.ts",
-      "sha256": "964dedafff546ea3e38f68c5d308d25e721cd90b058b0a4e1527563e444a3eb4"
+      "sha256": "2e2d76497283adc16a42f24e851d795c35bcdf9bfce930a6be33749d115da402"
     },
     {
       "path": "src/crdt/localProtection.ts",
@@ -1133,7 +1153,7 @@
     },
     {
       "path": "src/crdt/membershipSource.ts",
-      "sha256": "f5db6a7172fa010fb75185f91acaa51e979feb7cda35883cce721a13edb8eb38"
+      "sha256": "9341811cef65e87c01b8d4a45501235e3ffe4d85ea66202a4d296422360e84b8"
     },
     {
       "path": "src/crdt/moves.ts",
@@ -1174,6 +1194,10 @@
     {
       "path": "src/crdt/receiveGroup.ts",
       "sha256": "95e6aa774513d5423849093aaab5bf08623ef1947d06403b494736578efb0485"
+    },
+    {
+      "path": "src/crdt/receivePageTransport.ts",
+      "sha256": "ced09b540e505f08b973e9f30565073ef124dfde34957d198e8288bd2c162dbb"
     },
     {
       "path": "src/crdt/receivePrefetch.ts",
@@ -1281,7 +1305,7 @@
     },
     {
       "path": "src/crdt/verifiedRecords.ts",
-      "sha256": "198de17eb6611b4ddb0c8abf5bc1df5c502273f059cbb903b9964da0c3edc907"
+      "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
     },
     {
       "path": "src/crdt/warmContent.ts",
@@ -1376,6 +1400,10 @@
       "sha256": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35"
     },
     {
+      "path": "src/lib/enrollmentProgress.ts",
+      "sha256": "036765f8b91576714df6c4f3c4e0ee8dab4e22b25775b31d6cccb675597c3bd3"
+    },
+    {
       "path": "src/lib/id.ts",
       "sha256": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f"
     },
@@ -1421,7 +1449,7 @@
     },
     {
       "path": "src/ui/AccountEnrollmentApp.tsx",
-      "sha256": "f91cb600ba26e0d7a0d7466fc18520130578d181b78c22247b241cd9c1bb4beb"
+      "sha256": "5828e14bbbb8a48e2fd8112c184ad78f818fe3834e7c7429ea8eac708882335e"
     },
     {
       "path": "src/ui/AccountHistory.tsx",
@@ -2051,7 +2079,7 @@
         },
         {
           "path": "src/crdt/historySource.ts",
-          "line": 255
+          "line": 266
         },
         {
           "path": "src/crdt/promotionGenesis.ts",
@@ -3196,6 +3224,16 @@
       ]
     },
     {
+      "label": "done/private-read-batch/v1\u0000",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/inboundBatch.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
       "label": "done/private-read-page/v1",
       "kind": "literal",
       "sites": [
@@ -3220,6 +3258,16 @@
         {
           "path": "account-protocol/inboundTransport.ts",
           "line": 136
+        }
+      ]
+    },
+    {
+      "label": "done/private-read-pages/v1\u0000",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/inboundBatch.ts",
+          "line": 7
         }
       ]
     },
@@ -3559,7 +3607,7 @@
       "sites": [
         {
           "path": "account-service/authority.ts",
-          "line": 108
+          "line": 109
         }
       ]
     },
@@ -3569,7 +3617,7 @@
       "sites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 673
+          "line": 781
         }
       ]
     },

@@ -1,0 +1,35 @@
+from pathlib import Path
+import collections,json,math,statistics
+r=Path(__file__).parent;plan=json.loads((r/'browser-plan.json').read_text());quantile=lambda xs:sorted(xs)[math.ceil(len(xs)*.95)-1]
+def charP95(d,who,name):
+ base=len('Sync target A:')+(600 if name=='concurrent' else sum(len(' L'+str(i)+';') for i in range(30)));xs=[]
+ for i,offer in enumerate(d[name]['offers']):
+  at=next(x['at'] for x in d['browsers'][who]['rows'] if x['at']>=offer['at']-2 and x['lengths'][0]>=base+i+1);xs.append(at-offer['at'])
+ return quantile(xs)
+def burstP95(d,who):
+ base=len('Sync target A:');xs=[]
+ for i,offer in enumerate(d['bursts']):
+  base+=len(' L'+str(i)+';');at=next(x['at'] for x in d['browsers'][who]['rows'] if x['at']>=offer['offeredAt']-2 and x['lengths'][0]>=base);xs.append(at-offer['offeredAt'])
+ return quantile(xs)
+rows={};raw={}
+for run in plan:
+ d=json.loads((r/run['name']/'result.json').read_text());raw[run['name']]=d
+ assert d['outcome']=='passed' and len(d['guards'])==4 and all(d['guards'].values()),run['name']
+ assert d['fixture']['activeDayCards']==121 and next(x for x in d['initialArchive']['entries'] if x['name']=='master.md')['characters']==13000
+ n=[x for x in d['network'] if d['startedAt']<=x['at']<=d['completedAt']];reads=[x for x in n if x['device']=='B' and x['path'].endswith(('/read-v2','/read-v2-batch'))];metric='concurrent' if run['mode']=='catchup' else 'continuous'
+ row={**run,'outcome':d['outcome'],'guards':d['guards'],'drainMs':d['caughtAt']-d['startedAt'] if 'caughtAt' in d else None,'localP95Ms':charP95(d,0,metric),'peerP95Ms':charP95(d,1,metric),'httpStatuses':dict(collections.Counter(str(x.get('status')) for x in n)),'receiverHttpReads':len(reads),'requestedInnerBodies':sum(len(x.get('batch',[x])) for x in reads),'finalExport':d['finalExport']}
+ if run['mode']=='foreground':row.update(isolatedLocalP95Ms=burstP95(d,0),isolatedPeerP95Ms=burstP95(d,1))
+ rows[run['name']]=row
+comparisons=[]
+for block in [1,2,3]:
+ d,c=rows[f'catchup-{block}-D'],rows[f'catchup-{block}-S'];assert d['finalExport']==c['finalExport'] and raw[d['name']]['initialArchive']==raw[c['name']]['initialArchive']
+ comparisons.append({'block':block,'referenceMs':d['drainMs'],'candidateMs':c['drainMs'],'improvementPercent':100*(1-c['drainMs']/d['drainMs']),'localGuard':c['localP95Ms']<=max(16,d['localP95Ms']+3),'peerGuard':c['peerP95Ms']<=1.1*d['peerP95Ms']})
+extras={}
+for prefix in ['foreground','pressure']:
+ d,c=rows[prefix+'-D'],rows[prefix+'-S'];assert d['finalExport']==c['finalExport'];v={'localGuard':c['localP95Ms']<=max(16,d['localP95Ms']+3),'peerGuard':c['peerP95Ms']<=1.1*d['peerP95Ms']}
+ if prefix=='foreground':v.update(isolatedLocalGuard=c['isolatedLocalP95Ms']<=max(16,d['isolatedLocalP95Ms']+3),isolatedPeerGuard=c['isolatedPeerP95Ms']<=1.1*d['isolatedPeerP95Ms'])
+ if prefix=='pressure':v.update(referenceMs=d['drainMs'],candidateMs=c['drainMs'])
+ extras[prefix]=v
+improvement=statistics.median(x['improvementPercent'] for x in comparisons);drift=max(x['referenceMs'] for x in comparisons)/min(x['referenceMs'] for x in comparisons)-1
+result={'rows':rows,'comparisons':comparisons,**extras,'medianPrimaryImprovementPercent':improvement,'meaningfulSignal':improvement>=15 and all(x['improvementPercent']>0 for x in comparisons),'allTypingGuards':all(x['localGuard'] and x['peerGuard'] for x in comparisons) and all(v for k,v in extras['foreground'].items() if k.endswith('Guard')) and all(v for k,v in extras['pressure'].items() if k.endswith('Guard')),'referenceDrift':drift,'referenceDriftGuardPassed':drift<=.15,'allTenFullDataGuardsPassed':True,'scope':'Ten fixed local Chromium journeys with independent raw DOM reconstruction; no universal capacity/rate adoption, physical Firefox/Android/WAN or production claim.'}
+(r/'browser-summary.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items() if k!='rows'},indent=2))

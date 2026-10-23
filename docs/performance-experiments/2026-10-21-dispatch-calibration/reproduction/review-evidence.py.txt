@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,math
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());analysis=load(r/'analysis.json');runs=load(r/'runner.json');assert len(runs)==12 and all(x['exitCode']==0 for x in runs);assert all(a['completedAt']<=b['startedAt']for a,b in zip(runs,runs[1:]));assert len(analysis['rows'])==12
+by={x['name']:x for x in analysis['rows']};reconstructed={}
+for run in runs:
+ d=load(r/run['name']/'result.json');events=d['dispatch'][0]['events'];offers=d['concurrent']['offers'];before=[e for e in events if e['kind']=='beforeinput'and e['target']==d['target'] and offers[0]['at']-2<=e['at']<=offers[-1]['returnedAt']+10];assert len(before)==len(offers)==120;total=[];handling=[]
+ for i,(o,e)in enumerate(zip(offers,before)):
+  rows=d['dispatch'][0]['plainRows']if d['target']=='plain'else d['browsers'][0]['rows'];candidate=[x['at']for x in rows if x['at']>=o['at']-2 and (x['length']>=i+1 if d['target']=='plain'else x['lengths'][0]>=len('Sync target A:')+600+i+1)];assert candidate;dom=min(candidate);total.append(dom-o['at']);handling.append(dom-e['at'])
+ a=by[run['name']];assert sorted(total)[113]==a['metrics']['offerToDOM']['p95']and sorted(handling)[113]==a['metrics']['beforeinputToDOM']['p95'];reconstructed[run['name']]={'offerToDOMp95':sorted(total)[113],'beforeinputToDOMp95':sorted(handling)[113]}
+ assert all(e['trusted']for e in before)
+ if run.get('static'):
+  assert len(d['dispatch'][0]['plainRows'])==120
+  if run['fault']:
+   assert [f['index']for f in d['dispatch'][0]['faults']]==[30,60,90]
+   for f in d['dispatch'][0]['faults']:
+    i=f['index']-1;assert f['end']-f['at']>=80 and handling[i]>=70 and total[i]>=70 and before[i]['rafAt']-before[i]['at']>=70
+   assert all(x['passed']for x in a['faultSensitivity'])
+ else:
+  assert len(d['guards'])==4 and all(d['guards'].values());assert (d['roots'][0]['pid']!=d['roots'][1]['pid'])==run['isolated'];assert d['target']=='plain'or d['all120EditorKeysReachedPeer']
+  if run['focused']:assert all(e['focused']and e['visible']=='visible'and e['active']==d['target']for e in before)
+assert analysis['nativeStaticFaultSensorSensitive']and analysis['allTenFullDataGuards'];assert len([x for x in analysis['rows']if not x.get('static')and x['target']=='editor'])==6
+result={'status':'passed','fixedDenominator':12,'fullAppJourneys':10,'editorJourneysWith120PeerVerifiedKeys':6,'plainInputAppControls':4,'staticSensorControls':2,'three80msFaultsDetectedByDOMRAFHeartbeatAndLongtask':True,'rawDOMPercentilesIndependentlyReconstructed':reconstructed,'focusedVisibilityAndBrowserRootAssignmentsVerified':True,'noBenchmarkOverlapInRecordedPlan':True,'prior16msMissesUnchanged':True,'generalQualificationPaused':True,'scope':'Measurement integrity only; no changed acceptance criterion, policy adoption or physical keyboard-to-paint claim.'};(r/'evidence-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,time,os
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+while 'Fixed-v2 journeys and independent review complete' not in (r/'run-fixed-v2.log').read_text():
+ if 'Traceback'in(r/'run-fixed-v2.log').read_text():raise Exception('Final journey/review failure; preserve before post checks')
+ time.sleep(5)
+for name in ['post-checks','sensitivity','write-records']:
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(['python3',str(r/(name+'.py'))],env=env,stdout=f,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise Exception(name+' failed; preserve all logs')
+print('Post-run checks, controls and append-only records complete',flush=True)

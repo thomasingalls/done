@@ -1,0 +1,10 @@
+from pathlib import Path
+import hashlib,json,subprocess
+r=Path(__file__).parent;p=Path('/private/tmp/done-coupled-capacity-20261021');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();source=json.loads((r/'source-identity.json').read_text())
+for f,h in source['B']['sha256'].items():assert sha(r/'source-B'/f)==h
+for f,h in source['D']['sha256'].items():assert sha(repo/f)==h
+b=json.loads((p/'identity.json').read_text());build={str(f.relative_to(r/'client-dist')):sha(f)for f in (r/'client-dist').rglob('*')if f.is_file()};assert build==b['exactPatch02Client110Assets']
+for f,h in b['priorPrivateFixtureSha256'].items():assert sha(Path(f))==h
+start=json.loads((r/'starting.json').read_text())
+for q in start['priorPatches']:assert sha(Path(q['patch']))==q['sha256']
+closure={f.name:sha(f)for f in (r/'source-B/test/live-sync-attribution').iterdir()if f.is_file()};(r/'preflight.json').write_text(json.dumps({'status':'passed','sourceBExactPhase09':True,'client110AssetsExact':True,'privateFixtureHashesExact':True,'priorPatches01Through09Exact':True,'browserClosure':closure,'newInputObserverInTemporaryHarnessOnly':True,'scope':'Original budget cases already cover exact same B source in phase09; no runtime/default/test changes.'},indent=2)+'\n');print('Source/client/fixtures/patches exact; temporary instrumentation frozen')

@@ -1,0 +1,21 @@
+{
+  "signaturesVerified": true,
+  "eachTreeMatchesImmutablePatchVerification": true,
+  "commits": [
+    {
+      "commit": "e31b5eaf526d59a690d9e582bade7c9bad6d205f",
+      "signature": "G",
+      "tree": "21685ad94dad56d08f2fb1bafcab1199a9be203d"
+    },
+    {
+      "commit": "1f2d9cd2d810b53a6b2cf1ae46c1e3366ffa576e",
+      "signature": "G",
+      "tree": "a6ff1d41c488417f076024c88f329a38ae1409a5"
+    },
+    {
+      "commit": "465c5e07cbfd9480666df269e4a1be223546a198",
+      "signature": "G",
+      "tree": "6ac0e2cf19a34a194d9c99f612c96f8dc44b77d2"
+    }
+  ]
+}

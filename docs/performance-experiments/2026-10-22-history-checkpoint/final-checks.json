@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "baseCommit": "c1177575801a8eeab60b63883a3c701625ada215",
+  "priorCumulativeTree16": "c20eb095bc8ae081d750f90f731d172ec99ec167",
+  "candidateStatus": "held; checkpoint retry mechanism repaired, peer latency and deep replay guards still fail",
+  "checkpointBlockerCleared": true,
+  "heavyFairnessAcceptance": false,
+  "runtimeFilesChanged": [
+    "account-service/historyCheckpoint.ts"
+  ],
+  "newRegressions": 17,
+  "planningOnlyChecksPassed": 98,
+  "runtimeAndAddedTestBlocksFormatPassed": true,
+  "oldTestPrefixByteExact": true,
+  "implementationOmissionsDetected": 8,
+  "sourceReviewOmissionsDetected": 2,
+  "evidenceNativeOmissionsDetected": 6,
+  "allSourceAndClientFilesMatchFrozenIdentities": true,
+  "nativeInspectorBodyByteExactToPhase16": true,
+  "nativeOriginalDatabasesUnchangedAfterControl": true,
+  "prior14Through16PacketsAndAllPatchBytesExact": true,
+  "allConstructionBytesAnd881ObligationRowsExact": true,
+  "same16OldAffectedFailuresRemain": true,
+  "otherSeatProgressUnchanged": true,
+  "realIndexUnchangedAndUnstaged": true,
+  "realIndexSha256": "b62efd08544eced15eca95d8666fc325b716671f62bf80e0dff61cea5730d5c6",
+  "publication": "No actual stage/commit/push/preview/merge/deploy or general qualification."
+}

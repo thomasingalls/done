@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,hashlib,subprocess,os
+r=Path(__file__).parent;s=r/'source';old=Path('/private/tmp/done-cold-clear-clock-20261023');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');m=json.loads((r/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for f,h in m['files'].items():assert sha(r/f)==h,f
+for f,h in m['sourceInputs'].items():assert sha(s/f)==h and sha(repo/f)==h,f
+for f,h in m['clientFiles'].items():assert sha(s/'dist'/f)==h and sha(r.parent/'source/dist'/f)==h,f
+assert json.loads((r.parent/'candidate-frontend-files.json').read_text())==m['clientFiles']
+for f,h in m['runtimeImageSourceHashes'].items():assert sha(s/f)==h,f
+assert sha(old/'measurement-identity.json')==m['originalClockMeasurementIdentitySha256']
+for f in (s/'test/account-continuation-lab').iterdir():
+ if f.name!='runtime.mjs':assert f.read_bytes()==(old/'source/test/account-continuation-lab'/f.name).read_bytes(),f
+assert (r/'container-service.mjs').read_bytes()==(old/'container-service.mjs').read_bytes();assert (r/'observer.mjs').read_bytes()==(old/'observer.mjs').read_bytes()
+assert (s/'test/device-enrollment/helpers.ts').read_bytes()==(old/'source/test/device-enrollment/helpers.ts').read_bytes()
+for c in m['plan']:
+ i=json.loads((r/c['name']/'container-identity.json').read_text());assert i['Image']==m['image'];assert not any(x['Destination'].startswith('/app')for x in i['Mounts']);assert all(not x['RW']for x in i['Mounts']if x['Destination']=='/experiment');assert i['Config']['Cmd']==['/experiment/container-service.mjs'];assert i['node']=='v24.18.0'
+assert json.loads((r/'analysis.json').read_text())['heavyFairnessAcceptance']
+for f in ['evidence-review.json','sensitivity.json','clock-review.json','clock-sensitivity.json','process-cleanup.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+seed=json.loads((r/'seed-native-audit.json').read_text())['identities']
+for x in json.loads((r/'native-audit.json').read_text()):
+ for k,h in seed.items():assert x['identities'][k]==h
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==m['source'];assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+out={'status':'passed','signedSourceAndRuntimeBytesExact':True,'imageHasNoApplicationSourceOverlays':True,'frontendExactExtractedReleaseArtifact':True,'workloadAndAcceptanceUnchanged':True,'allOriginalGatesAndClockValidityPassBothJourneys':True,'priorAcceptedRowsRemainByteExact':True,'allApparatusAndSourceHashesUnchanged':True,'sameSourceCleanAfterMeasurement':True,'productionEntrypointSeparatelySmokeTested':True};(r/'frozen-input-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

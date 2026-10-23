@@ -1,0 +1,56 @@
+[
+  {
+    "name": "browser-natural",
+    "pressure": false,
+    "inject": false,
+    "cwd": "/private/tmp/done-publisher-races-20261021/source-candidate",
+    "serviceSource": "/private/tmp/done-publisher-races-20261021/source-candidate",
+    "proxySha256": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "exitCode": 0,
+    "startedAt": 1792591059043,
+    "completedAt": 1792591109712
+  },
+  {
+    "name": "browser-pressure",
+    "pressure": true,
+    "inject": false,
+    "cwd": "/private/tmp/done-publisher-races-20261021/source-candidate",
+    "serviceSource": "/private/tmp/done-publisher-races-20261021/source-candidate",
+    "proxySha256": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "exitCode": 0,
+    "startedAt": 1792591109714,
+    "completedAt": 1792591282825
+  },
+  {
+    "name": "browser-remote-refusals",
+    "pressure": true,
+    "inject": true,
+    "cwd": "/private/tmp/done-publisher-races-20261021/source-candidate",
+    "serviceSource": "/private/tmp/done-publisher-races-20261021/source-candidate",
+    "proxySha256": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "exitCode": 0,
+    "startedAt": 1792591282828,
+    "completedAt": 1792591437845
+  }
+]

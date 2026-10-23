@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "knownPrivateValues": 36,
+  "matches": 0,
+  "filesAfterDecompression": 64,
+  "scope": "known-value and source/file selection audit, not universal DLP; no profiles/DBs/keys/codes included"
+}

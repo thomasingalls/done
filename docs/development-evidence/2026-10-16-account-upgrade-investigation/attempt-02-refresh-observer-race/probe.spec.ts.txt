@@ -1,0 +1,257 @@
+import { test, expect, chromium, type Page, type BrowserContext } from '@playwright/test';
+import { spawn, type ChildProcess } from 'node:child_process';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import { account, pending, compared, unlock } from './incident-previous-helpers';
+import { openSaved, credentials, restoreAuthenticator } from './devices';
+
+const output = '/private/tmp/done-disappearing-account-upgrade-2026-10-16';
+const previous = output + '/previous-source';
+const candidate = '/private/tmp/done-onboarding-publish-faf465f7/source';
+const previousDist = '/private/tmp/done-onboarding-publish-58b1a12e/rollback-dist';
+const candidateDist = candidate + '/dist';
+const origin = 'http://localhost:53221';
+const observations: unknown[] = [], events: unknown[] = [];
+const persist = () => {
+  writeFileSync(output + '/observations.json', JSON.stringify(observations, null, 2) + '\n');
+  writeFileSync(output + '/browser-events.json', JSON.stringify(events, null, 2) + '\n');
+};
+async function processStart(source: string, script: string, ready: string, dist: string, phase: string) {
+  const child = spawn(process.execPath, [resolve(source, script)], {
+    cwd: source, stdio: ['ignore', 'pipe', 'pipe'], env: {
+      ...process.env, ACCOUNT_SETUP_PORT: '53221', ACCOUNT_SERVICE_PORT: '53222',
+      ACCOUNT_SETUP_ORIGIN: origin, ACCOUNT_SETUP_STATE: output + '/service',
+      ACCOUNT_SETUP_DIST: dist, ACCOUNT_NETWORK_SESSIONS: '1', ACCOUNT_MEMBERSHIP_CONTINUATION: '1',
+    },
+  });
+  let log = '';
+  child.stdout!.on('data', data => { log += String(data); writeFileSync(output + '/' + phase + '-' + script.split('/').at(-1) + '.log', log); });
+  child.stderr!.on('data', data => { log += String(data); writeFileSync(output + '/' + phase + '-' + script.split('/').at(-1) + '.log', log); });
+  await new Promise<void>((yes, no) => {
+    const timeout = setTimeout(() => { child.kill('SIGTERM'); no(Error('Test service startup timeout: ' + log.slice(-1500))); }, 15000);
+    const check = () => { if (log.includes(ready)) { clearTimeout(timeout); yes(); } };
+    child.stdout!.on('data', check); child.stderr!.on('data', check);
+    child.once('error', error => { clearTimeout(timeout); no(error); });
+    child.once('exit', code => { clearTimeout(timeout); no(Error('Test service exited ' + code + ': ' + log.slice(-1500))); });
+  });
+  return child;
+}
+async function stop(child: ChildProcess | undefined) {
+  if (!child || child.exitCode !== null || child.signalCode !== null) return;
+  await new Promise<void>((yes, no) => {
+    const timeout = setTimeout(() => { child.kill('SIGKILL'); no(Error('Test service did not drain')); }, 10000);
+    child.once('exit', () => { clearTimeout(timeout); yes(); }); child.kill('SIGTERM');
+  });
+}
+async function service(source: string, dist: string, phase: string) {
+  const api = await processStart(source, 'scripts/serve-account-service.mjs', 'Account API development:', dist, phase);
+  try {
+    const app = await processStart(source, 'scripts/serve-account.mjs', 'Account packaged development:', dist, phase);
+    return { api, app };
+  } catch (error) { await stop(api); throw error; }
+}
+async function instrument(context: BrowserContext, browser: string) {
+  await context.exposeBinding('__incidentEvent', (_source, detail) => { events.push({ browser, ...detail }); });
+  await context.addInitScript(() => {
+    const emit = (detail: Record<string, unknown>) => {
+      const binding = (window as unknown as {__incidentEvent?: (detail: unknown) => Promise<void>}).__incidentEvent;
+      void binding?.({ at: Date.now(), path: location.pathname, ...detail }).catch(() => {});
+    };
+    const open = IDBFactory.prototype.open;
+    IDBFactory.prototype.open = function(name, version) {
+      const request = version === undefined ? open.call(this, name) : open.call(this, name, version);
+      if (name === 'done' || name.startsWith('done.')) request.addEventListener('upgradeneeded', event => emit({ kind: 'idb-upgrade', database: name, oldVersion: event.oldVersion, newVersion: event.newVersion }));
+      return request;
+    };
+    const deleteDatabase = IDBFactory.prototype.deleteDatabase;
+    IDBFactory.prototype.deleteDatabase = function(name) {
+      if (name === 'done' || name.startsWith('done.')) emit({ kind: 'idb-delete-database', database: name });
+      return deleteDatabase.call(this, name);
+    };
+    for (const method of ['setItem', 'removeItem', 'clear'] as const) {
+      const original = Storage.prototype[method];
+      Object.defineProperty(Storage.prototype, method, { configurable: true, writable: true, value: function(this: Storage, ...args: string[]) {
+        const key = args[0];
+        const result = Reflect.apply(original, this, args);
+        if (method === 'clear' || key?.startsWith('done.')) emit({ kind: 'storage-' + method, storage: this === localStorage ? 'local' : 'session', key: method === 'clear' ? null : key });
+        return result;
+      } });
+    }
+    for (const method of ['put', 'add', 'delete', 'clear'] as const) {
+      const original = IDBObjectStore.prototype[method];
+      Object.defineProperty(IDBObjectStore.prototype, method, { configurable: true, writable: true, value: function(this: IDBObjectStore, ...args: unknown[]) {
+        const database = this.transaction.db.name, store = this.name;
+        const result = Reflect.apply(original, this, args);
+        if (['done.slots', 'done.custody', 'done.first-device-setup.v1', 'done.account-login.v1'].includes(database)) {
+          emit({ kind: 'idb-' + method, database, store, phase: 'requested' });
+          this.transaction.addEventListener('complete', () => emit({ kind: 'idb-' + method, database, store, phase: 'committed' }), { once: true });
+          this.transaction.addEventListener('abort', () => emit({ kind: 'idb-' + method, database, store, phase: 'aborted' }), { once: true });
+        }
+        return result;
+      } });
+    }
+    navigator.serviceWorker?.addEventListener('controllerchange', () => emit({kind: 'sw-controllerchange', controller: navigator.serviceWorker.controller?.scriptURL}));
+    window.addEventListener('pageshow', event => emit({kind: 'pageshow', persisted: event.persisted}));
+    window.addEventListener('pagehide', event => emit({kind: 'pagehide', persisted: event.persisted}));
+    emit({kind: 'document-start'});
+  });
+}
+async function snapshot(page: Page, browser: string, stage: string) {
+  const state = await page.evaluate(async () => {
+    const stable = (value: unknown): unknown => {
+      if (value instanceof CryptoKey) return {kind:'CryptoKey',algorithm:value.algorithm,type:value.type,extractable:value.extractable,usages:value.usages};
+      if (value instanceof ArrayBuffer) return {kind:'bytes',value:Array.from(new Uint8Array(value))};
+      if (ArrayBuffer.isView(value)) return {kind:'bytes',value:Array.from(new Uint8Array(value.buffer,value.byteOffset,value.byteLength))};
+      if (Array.isArray(value)) return value.map(stable);
+      if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>[k,stable(v)]));
+      return value === undefined ? {kind:'undefined'} : value;
+    };
+    const digest = async (value: unknown) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(stable(value))))), b=>b.toString(16).padStart(2,'0')).join('');
+    const databases: {name: string;version: number;stores: Record<string,{count:number;keysDigest:string;rowsDigest:string}>}[] = [];
+    for (const info of (await indexedDB.databases()).filter(d=>d.name==='done'||d.name?.startsWith('done.'))) {
+      const db = await new Promise<IDBDatabase>((yes,no)=>{
+        const r=indexedDB.open(info.name!); r.onupgradeneeded=()=>r.transaction!.abort();
+        r.onsuccess=()=>yes(r.result);r.onerror=()=>no(r.error);r.onblocked=()=>no(Error('Snapshot blocked'));
+      });
+      try {
+        const stores: Record<string,{count:number;keysDigest:string;rowsDigest:string}> = {};
+        for(const name of db.objectStoreNames) {
+          const raw=await new Promise<{keys:IDBValidKey[];values:unknown[]}>((yes,no)=>{
+            const tx=db.transaction(name,'readonly'),store=tx.objectStore(name),keys=store.getAllKeys(),values=store.getAll();
+            tx.oncomplete=()=>yes({keys:keys.result,values:values.result});tx.onabort=()=>no(tx.error);
+          });
+          stores[name]={count:raw.keys.length,keysDigest:await digest(raw.keys),rowsDigest:await digest(raw)};
+        }
+        databases.push({name:db.name,version:db.version,stores});
+      } finally { db.close(); }
+    }
+    const local: Record<string,string>={};
+    for(const key of Object.keys(localStorage).filter(k=>k.startsWith('done.')).sort()) local[key]=await digest(localStorage.getItem(key));
+    const registrations=await navigator.serviceWorker.getRegistrations();
+    return {
+      origin:location.origin,path:location.pathname,mainScript:document.querySelector<HTMLScriptElement>('script[type=module][src]')?.getAttribute('src'),
+      databases:databases.sort((a,b)=>a.name.localeCompare(b.name)),local,
+      serviceWorkers:registrations.map(r=>({scope:r.scope,active:r.active?.state,waiting:r.waiting?.state,installing:r.installing?.state})),
+      controlled:!!navigator.serviceWorker.controller,cacheNames:await caches.keys(),
+      headings:Array.from(document.querySelectorAll('h1,h2')).map(e=>e.textContent),
+      buttons:Array.from(document.querySelectorAll('button')).map(e=>e.textContent?.trim()).filter(Boolean),
+      editableApp:!!document.querySelector('.shell'),
+    };
+  });
+  const record={browser,stage,at:Date.now(),...state}; observations.push(record);persist();return record;
+}
+const goals=(page:Page)=>page.locator('.goals .cm-content');
+async function append(page:Page,text:string){await goals(page).click();await page.keyboard.press('ControlOrMeta+End');await page.keyboard.insertText('\n'+text);await expect(goals(page)).toContainText(text);}
+const entry=(dist:string)=>/<script[^>]*type="module"[^>]*src="([^"]+)"/.exec(readFileSync(dist+'/index.html','utf8'))![1];
+const version=(page:Page)=>page.locator('.menu-row').filter({hasText:'Version'}).locator('.menu-value');
+
+test('previous server and two persistent browser installations retain identity and writing through full server restart and app-adopting refresh',async()=>{
+  mkdirSync(output+'/profiles',{recursive:true});
+  let runtime:Awaited<ReturnType<typeof service>>|undefined;
+  const contexts:BrowserContext[]=[];
+  try {
+    runtime=await service(previous,previousDist,'previous');
+    for(const name of ['original','joined']) {
+      const context=await chromium.launchPersistentContext(output+'/profiles/'+name,{headless:true,baseURL:origin,viewport:{width:1280,height:900}});
+      contexts.push(context);await instrument(context,name);
+    }
+    const firstPage=contexts[0]!.pages()[0]!,secondPage=contexts[1]!.pages()[0]!;
+    const first=await account(firstPage),next=await pending(secondPage,first.link,first.auth);
+    const comparison=await compared(firstPage,secondPage);
+    await firstPage.getByLabel('Code on the new device').fill(comparison);
+    await firstPage.getByRole('button',{name:'Compare and approve'}).click();
+    for(const p of [firstPage,secondPage])await expect(p.getByText('Content access is installed and certified.',{exact:false})).toBeVisible({timeout:30000});
+    await firstPage.getByRole('button',{name:'Make writing available',exact:true}).click();
+    await expect(firstPage.getByText('Your writing is available to the approved device.',{exact:false})).toBeVisible();
+    await firstPage.getByRole('link',{name:'Close and return to accounts'}).click();
+    await firstPage.getByRole('button',{name:/^Unlock Device owner/}).click();
+    await firstPage.getByLabel('Device-lock code',{exact:true}).fill(first.code);
+    await firstPage.getByRole('button',{name:'Confirm code and unlock with passkey'}).click();
+    await secondPage.getByRole('button',{name:'Open your writing',exact:true}).click();
+    const devices=[{name:'original',page:firstPage,context:contexts[0]!,auth:first.auth,code:first.code,joined:false},{name:'joined',page:secondPage,context:contexts[1]!,auth:next.auth,code:next.code,joined:true}];
+    for(const d of devices){await expect(d.page.locator('.shell')).toBeVisible();await expect(version(d.page)).toHaveText('890fc677');}
+    await append(firstPage,'original browser before upgrade');
+    await expect(goals(secondPage)).toContainText('original browser before upgrade',{timeout:20000});
+    await append(secondPage,'joined browser before upgrade');
+    for(const d of devices){
+      await expect(goals(d.page)).toContainText('joined browser before upgrade',{timeout:20000});
+      await expect.poll(()=>d.page.evaluate(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state)).toBe('activated');
+      await d.page.getByRole('button',{name:'Lock workspace',exact:true}).click();
+      await d.page.goto('/');
+      await d.page.getByRole('button',{name:'I already have a workspace',exact:true}).click();
+      await d.page.getByRole('button',{name:d.joined?/Resume device connection/:/^Unlock Device owner/}).click();
+      if(d.joined)await unlock(d.page,d.code);
+      else{
+        await d.page.getByLabel('Device-lock code',{exact:true}).fill(d.code);
+        await d.page.getByRole('button',{name:'Confirm code and unlock with passkey'}).click();
+      }
+      await expect(d.page.locator('.shell')).toBeVisible();
+      await expect(goals(d.page)).toContainText('original browser before upgrade');
+      await expect(goals(d.page)).toContainText('joined browser before upgrade');
+      const s=await snapshot(d.page,d.name,'previous-synced-before-server-stop');
+      expect(s.mainScript).toBe(entry(previousDist));expect(s.controlled).toBe(true);
+      expect(s.databases.find(x=>x.name==='done.slots')?.stores['slots']?.count).toBe(1);
+    }
+    const pinBefore=readFileSync(output+'/service/pin.json');
+    events.push({kind:'server-stop',at:Date.now()});persist();
+    await stop(runtime.app);await stop(runtime.api);runtime=undefined;
+    for(const d of devices)await snapshot(d.page,d.name,'server-stopped-old-document');
+    runtime=await service(candidate,candidateDist,'current');
+    expect(readFileSync(output+'/service/pin.json')).toEqual(pinBefore);
+    events.push({kind:'server-restarted-current',at:Date.now()});persist();
+    for(const d of devices){
+      await expect(goals(d.page)).toContainText('original browser before upgrade');
+      await expect(goals(d.page)).toContainText('joined browser before upgrade');
+      await snapshot(d.page,d.name,'current-server-old-document');
+      await d.page.evaluate(async()=>{await(await navigator.serviceWorker.getRegistration())!.update();});
+      await expect.poll(()=>d.page.evaluate(async()=>(await navigator.serviceWorker.getRegistration())?.waiting?.state)).toBe('installed');
+      await snapshot(d.page,d.name,'waiting-update-immediately-before-hard-refresh');
+      events.push({browser:d.name,kind:'hard-refresh-requested',at:Date.now()});
+      await d.auth.cdp.send('Page.reload',{ignoreCache:true});
+      await d.page.waitForLoadState('domcontentloaded');
+      await snapshot(d.page,d.name,'immediately-after-hard-refresh');
+      const adopted=await d.page.locator('script[type=module][src]').first().getAttribute('src');
+      if(adopted!==entry(candidateDist)){
+        events.push({browser:d.name,kind:'hard-refresh-retained-old-shell',at:Date.now()});persist();
+        await d.page.evaluate(async()=>{
+          const worker=(await navigator.serviceWorker.getRegistration())?.waiting;
+          if(!worker)throw Error('No waiting update for explicit adoption');
+          worker.postMessage({type:'ACTIVATE_UPDATE'});
+        });
+        await expect.poll(()=>d.page.evaluate(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state)).toBe('activated');
+        await snapshot(d.page,d.name,'immediately-before-refresh-adopting-current-app');
+        await d.auth.cdp.send('Page.reload',{ignoreCache:true});
+        await d.page.waitForLoadState('domcontentloaded');
+        await snapshot(d.page,d.name,'immediately-after-refresh-adopting-current-app');
+      }
+      await expect(d.page.locator('script[type=module][src]').first()).toHaveAttribute('src',entry(candidateDist));
+      await expect(d.page.locator('.shell')).toHaveCount(0);
+      await openSaved(d.page,d.code,d.joined);
+      await expect(version(d.page)).toHaveText('faf465f7');
+      await expect(goals(d.page)).toContainText('original browser before upgrade');
+      await expect(goals(d.page)).toContainText('joined browser before upgrade');
+      await snapshot(d.page,d.name,'current-app-unlocked-after-refresh');
+    }
+    await append(firstPage,'original browser after upgrade');
+    await expect(goals(secondPage)).toContainText('original browser after upgrade',{timeout:20000});
+    await append(secondPage,'joined browser after upgrade');
+    await expect(goals(firstPage)).toContainText('joined browser after upgrade',{timeout:20000});
+    const saved=await Promise.all(devices.map(d=>credentials(d.auth)));
+    for(const d of devices){await snapshot(d.page,d.name,'before-whole-browser-restart');await d.context.close();}
+    contexts.length=0;
+    for(const [i,d] of devices.entries()){
+      const context=await chromium.launchPersistentContext(output+'/profiles/'+d.name,{headless:true,baseURL:origin,viewport:{width:1280,height:900}});
+      contexts.push(context);await instrument(context,d.name);
+      const p=context.pages()[0]!;await restoreAuthenticator(p,saved[i]!);await p.goto('/');
+      await snapshot(p,d.name,'whole-browser-restarted-before-unlock');
+      await openSaved(p,d.code,d.joined);
+      for(const value of ['original browser before upgrade','joined browser before upgrade','original browser after upgrade','joined browser after upgrade'])await expect(goals(p)).toContainText(value);
+      await snapshot(p,d.name,'whole-browser-restarted-writing-retained');
+    }
+    const upgradeStart=(events.find((e:any)=>e.kind==='server-stop') as {at:number}).at;
+    expect(events.filter((e:any)=>e.at>=upgradeStart&&(e.kind==='idb-delete-database'||e.kind==='storage-clear'))).toEqual([]);
+    const report={status:'passed',previous:'890fc6770cfdfff164dbda43c2f8040a1998a8dc',current:'faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2',fullBackendAndGatewayRestart:true,retainedServiceIdentity:true,browsers:'Two independent Chromium processes with distinct persistent profile directories and established CDP virtual passkeys',scopes:'Original and invitation-joined accounts; both-way writing before/after; service-worker app adoption and whole-process reopening',snapshotCount:observations.length,eventCount:events.length,productionTouched:false};
+    writeFileSync(output+'/result.json',JSON.stringify(report,null,2)+'\n');
+  } finally {persist();await Promise.all(contexts.map(c=>c.close()));await stop(runtime?.app);await stop(runtime?.api);}
+});

@@ -1,0 +1,33 @@
+from pathlib import Path
+import collections, hashlib, json, re, statistics
+r=Path(__file__).parent
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+a=json.loads((r/'final-comparison/analysis.json').read_text());accepted=json.loads((r/'final-comparison/acceptance.json').read_text())
+checks={}
+for name in ['final-v4-native','individual-size-v4','core-groups-v4','prepared-v4','transport-native-v4','batch-prepared-v4','service-final-loopback','planning-tests-last']:
+ text=(r/(name+'.log')).read_text();values={k:int(re.findall('ℹ '+k+r' (\d+)',text)[-1]) for k in ['tests','pass','fail','cancelled','skipped']}
+ assert values['tests']==values['pass'] and all(values[k]==0 for k in ['fail','cancelled','skipped']),(name,values)
+ checks[name]=values
+j=json.loads((r/'units-v4.json').read_text());assert j['success'] and j['numTotalTests']==j['numPassedTests']==114
+checks['units-v4']={'tests':114,'pass':114,'fail':0,'newCases':17}
+for name in ['typecheck-v4','lint-last']:
+ assert not (r/(name+'.log')).read_text().strip(),name
+assert 'All matched files use the correct format.' in (r/'format-last.log').read_text()
+result={'finalChecks':checks,'newRegressionCases':34,'newUnitCases':17,'newNativeCases':17,'newNativeModeCoverage':'All 17 also pass with ACCOUNT_PREPARED_RECEIVE=1; 16 ordered cases plus the added size-refusal case pass in final-v4-native/individual-size-v4.','qualification':'Functional and planning checks only; aggregate/security qualification paused, new files blocked.','earlierAttempts':'See attempts.md and all retained check logs; failed invocations and stale fixture failures are not credited as passes.'}
+(r/'test-results.json').write_text(json.dumps(result,indent=2)+'\n')
+values={'improvement':f"{accepted['medianImprovement75Percent']:.1f}"}
+rangeText=lambda xs: str(min(xs)) if min(xs)==max(xs) else str(min(xs))+'–'+str(max(xs))
+for delay in [75,0]:
+ for role,key in [('baseline','ref'),('candidate-final','candidate')]:
+  rows=[x for x in a if x['mode']=='catchup' and x['delay']==delay and x['directory'].endswith(role)]
+  values[('reference' if key=='ref' else 'candidate')+str(delay)]=f"{statistics.median(x['backlogDrainMs'] for x in rows)/1000:.3f}"
+  values[f'reads{delay}{key}']=rangeText([x['readSummary']['B']['requests'] for x in rows])
+  values[f'inner{delay}{key}']=rangeText([x['readSummary']['B']['innerRequests'] for x in rows])
+  values[f'rates{delay}{key}']=rangeText([x['httpStatuses'].get('429',0) for x in rows])
+values['interpretation']='The +75 ms gain repeats in every pair (32.3–33.9%); reference duration drift is 4.45%, below the predeclared 15% investigation threshold. Loopback median paired change is only 0.15% faster, including one 25 ms regression. Candidate loopback runs record 6–8 HTTP 429s versus 1–4 for reference. This supports investigating the unchanged work budget as a remaining constraint; it does not establish safe capacity or the full causal contribution of rate limiting. Requested inner bodies include refused/retried predictions, not counts of actual native executions. No +75 ms arm records a 429.'
+values['checks']='All 34 new regressions pass (17 unit and 17 actual encrypted receiver cases), including the production prepared-receive variant. Final checks also pass 114 focused unit cases in total, 28 existing receipt/group native cases (including twelve generated histories), six original prefetch cases, four effective omission controls, seven prepared-editor cases, nine HTTP lifetime cases, 28 service batch/authority-reuse/work-budget cases and 85 planning tests. TypeScript, targeted normal lint/format, frozen 232.5 kB initial-JS budget and origin scan pass. No full-suite or aggregate qualification credit follows.'
+text=(r/'README-template.md').read_text()
+for key,value in values.items():text=text.replace('{{'+key+'}}',value)
+assert '{{' not in text
+(r/'README.md').write_text(text)
+print(json.dumps({'newRegressions':34,'checks':checks,'values':values},indent=2))

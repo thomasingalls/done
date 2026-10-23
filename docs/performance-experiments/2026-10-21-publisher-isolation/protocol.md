@@ -1,0 +1,29 @@
+# Publisher-scoped fingerprint invalidation — bounded repair
+
+2026-10-21. Base signed HEAD 27dc7d78; immutable patches01→04, cumulative tree9422214ba22e307767866c99cbf93398c2f5e57a. Preserve prior patches/packets, append-only records, the other seat's progress.md, deferred formatting, old assertions/deadlines and all qualification blocks. Prepare sequential patch05; no staging/signing/commit/push/preview restart/merge/deploy. General qualification remains paused.
+
+## Contract and change
+
+A detected publisher fingerprint race must reject its changed capture and erase that publisher's preliminary tip. It need not invalidate byte-identical verified captures for unrelated publishers. Keep fresh transaction-time snapshot/fingerprint comparison, current authority/signature/custody/expiry/grant checks, exact original receipts, durable-before-visible, four native retries, rate/concurrency/body/work/deadline bounds and same-publisher rejection. Keep global invalidation for data_version, explicit verifier clears, closure and audit failure/unknown state. No numeric rate increase or stored/wire-format change.
+
+Use per-publisher owner object identities, at most128 with bounded LRU eviction, alongside existing128/16MiB compact prefix limits. Capture and active audit ownership must match the current object; deleting/recreating a key must never revive old captures/results. A local race removes only that owner, its tip and queued audit. Global invalidation keeps the existing global revision and clears every owner/tip/queued audit. Existing same-connection mutation/quarantine and worker-audit safeguards remain.
+
+## Evidence before repair
+
+Add a new native regression file without modifying old tests initially. Demonstrate the old implementation fails desired unrelated-capture survival after an independently verified same-connection unrelated commit, including stale remember attempts. Include explicit global clear, external data_version, key eviction/recreation, and a synchronous schedule invalidating a publisher while its audit is active with another publisher queued. Require original wire/page proofs, no-change controls and unchanged snapshot bytes. No synthetic publisher capture used in a bound test may be credited as authorized membership or progress.
+
+Run the new tests against old source; retain every result. Then implement the bounded owner mechanism. Run the new and existing publisher-tip, service-inbound/delivery/receipt, batch authority-reuse/budget and targeted mutation controls. Challenge omission of capture/remember/audit owner checks and local-only behavior with independent desired-behavior assertions; failed source mutation anchors remain failures. Build/type/lint/format checks appropriate to the single service source and tests. Cautious existing fixture updates may reflect additive cases/source snapshots only, retaining every assertion/deadline/block.
+
+## Matched contention and client checks
+
+Freeze reference patch04 source and candidate source independently; use exactly the existing signed private native fixture. Repeat original six-reader256-position/hot+unrelated-writer+peer workload in two fixed pairs [reference,candidate],[candidate,reference], default16/64 rates, exact scoped grants, original HTTP10s/replay120s/RSS1GiB ceilings and independent proof/cold SQL checks. No synthetic retry on409 and no failed outcome credited as fast completion. Also retain the full other-writer+peer/no-hot-writer discriminator and the own-writer/no-peer surface separately. No maximum capacity, optimal rate or population confidence inference. Whole restored runs are units; requests/keystrokes are dependent. No overlapping benchmarks/builds/validators.
+
+Run actual unchanged patch02 client build against the candidate backend with the existing encrypted two-browser600-position/121-card fixture. Retain full exports, both-way writes, Undo/Redo and locked offline reopening. Use one natural catch-up, one bounded duplicate-read pressure, and the directory/hash-checked remote-batch+submit refusal control. Do not manufacture recovery with manual Retry/reload/wakes. Injected and natural refusals remain distinct. Original600s catch-up/30s live-writing guards stay. A candidate failure is investigated or preserved as unresolved, not hidden by a successful-only rerun. These local Chromium observations do not qualify Firefox/Android/WAN or production adoption.
+
+## Exit and preservation
+
+Close this bounded repair only if unrelated captures survive while all affected/global/stale-owner/eviction/audit security checks remain effective, affected tests pass, and matched results are accurately qualified. Full original contention completion is a separate observed condition: if own-publisher races still refuse, preserve them and do not claim capacity closure. New tests stay conservatively blocked in planning until separate adapter qualification; retain every old obligation/construction status. Whitelist numeric/source evidence, never private fixture JSON/DB/browser storage/codes/keys. Preserve failures, source/probe/build identities, known-value privacy scan, append completion before active-state advancement, and independently apply patches01→05 in clean isolated Git indexes.
+
+## Retained fixture correction
+
+The first post-repair run passes 19/20 new+old publisher cases but its new external-connection control uses UPDATE response=response. A separate minimal SQLite probe shows data_version1→1 for that no-op, while an actual unrelated schema commit advances1→2. Preserve the failed run. Replace only the new control's no-op with a disposable marker-table commit, assert data_version changed, and retain exact equality of both publisher snapshots. This strengthens the control for unknown external changes; it does not repair or relax a product guard, old test or persistent production schema.

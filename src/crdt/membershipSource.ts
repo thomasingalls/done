@@ -51,6 +51,7 @@ import type { SuccessorBase } from '../../account-protocol/successor';
 import type { SessionTask } from './writeSession';
 import { sealGeneration } from '../account/generationWrap';
 import { unhex } from '../../account-protocol/recovery';
+import { reportEnrollmentProgress, type ReplacementProgress } from '../lib/enrollmentProgress';
 
 type Proofs = ReturnType<typeof parseMembershipChain>;
 type SourceArgs = { task: SessionTask; kind: 'promotion' | 'joined'; slotId: string; code: string };
@@ -323,7 +324,14 @@ export async function prepareNativeReplacement(
   candidate: string,
   read: (request: Bytes) => Promise<Bytes>,
   exchange: (request: HistoryExchange) => Promise<unknown>,
+  readBatch?: (requests: readonly Bytes[]) => Promise<readonly Bytes[]>,
+  onProgress?: (progress: ReplacementProgress) => void,
 ) {
+  const progress = (value: ReplacementProgress) => {
+    input.task.step(() => {});
+    reportEnrollmentProgress(onProgress, value);
+  };
+  progress({ stage: 'baseline' });
   const captured = structuredClone(authority);
   return withNativeHistorySource(input, async (source) => {
     if (!source.snapshot || (input.kind === 'promotion' && source.history.current.tip < 3))
@@ -373,11 +381,15 @@ export async function prepareNativeReplacement(
       sign: source.sign,
       read,
       exchange,
+      progress,
+      ...(readBatch ? { readBatch } : {}),
     });
     try {
+      progress({ stage: 'local-writing' });
       const local = await source.local();
       try {
         guard();
+        progress({ stage: 'snapshot' });
         return await createReplacementCheckpoint(
           accepted,
           local,

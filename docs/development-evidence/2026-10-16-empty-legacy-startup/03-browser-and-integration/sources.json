@@ -1,0 +1,20 @@
+{
+  "src/crdt/localGenesisStorage.ts": "2e2d76497283adc16a42f24e851d795c35bcdf9bfce930a6be33749d115da402",
+  "src/account/deviceEnrollment.ts": "512b8199766374f93518e8669a3b95def86dab8db6731d0aba97362c0bba90f6",
+  "test/emptyLegacyDatabase.test.ts": "c56bffa00961fb92a5e1159322c83ae884af36004e6b97a8c88e4eb213e79d24",
+  "test/devicePreparation.test.ts": "c2e8499ab1d936860b1878a2ae0ba72b72d39dbee374a29448e3339bd1796b4d",
+  "test/packaged-account/empty-legacy-startup.spec.ts": "d568f231b7c69b0d04031d57a1de9ab9caf0d05371575886751dac0253ac78b0",
+  "test/packaged-account/server.ts": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b",
+  "playwright.packaged-account.config.ts": "0906bf9cc220e4919f9faa56c8802243d75b3e2086f196926e318db14fa442c8",
+  ".github/workflows/ci.yml": "a5b2a9e5ac02c0f998b0e4428e4b86244cd5bda13db793814fa24715f0a3c6ed",
+  "scripts/release-validation/general-tests.json": "fceca6a52ed328e9e9501460a93c5fcccdd27b0f7e46a3a30d3a5629b2cc0758",
+  "test/release-validation/general-tests.test.mjs": "0576d472c200511e3708d1799fd5946b8d733068a099e1f0a11ec04bc033c90a",
+  "test/release-validation/generated-tests.test.mjs": "9eb7a610816583d41598427b51a57230947f0f01f27a52556a22b51c85a6b6f0",
+  "docs/account-crypto/census.json": "d3d461aab4bef0a4ba58d193965ae6d117af3439d7f72289381d756b2eb64910",
+  "docs/release-validation-graph.json": "65d919f03be0b9e7c65155e53262c0a392e07c3784b165e576a6a905d3ae8f24",
+  "docs/release-validation-manifest.json": "680906a2ac7c1f590a143bf037993ddf439ee9b4e0bd4d2b4c4438b0ee13aab7",
+  "docs/storage-contract.md": "b226865eeecf1dc83da47602cb7571b2d3a2a88611b9021813ec23662a053bb1",
+  "package.json": "0f36597716b4ee2785570a7bafaa0b9e1891510bfbfb812fc998007920a52c02",
+  "pnpm-lock.yaml": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8",
+  "vite.config.ts": "2556e1044d14dc1a26203d915d93624805c4ebc948e3c1ef51e4452c8b5115c3"
+}

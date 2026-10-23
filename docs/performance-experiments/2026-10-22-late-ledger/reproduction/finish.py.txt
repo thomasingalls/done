@@ -1,0 +1,12 @@
+from pathlib import Path
+import subprocess,os,time,json
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+while not(r/'metadata-review.json').exists():
+ for name in ['after-benchmark.log','post-metadata-v2.log']:
+  if 'Traceback'in(r/name).read_text():raise RuntimeError('Preserve failed step before packaging: '+name)
+ time.sleep(5)
+for name,cmd in [('cleanup-final',['python3',str(r/'cleanup.py')]),('final-review',['python3',str(r/'final-review.py')]),('record',['python3',str(r/'record.py')]),('package',['python3',str(r/'package.py')]),('prepare-patch',['python3',str(r/'prepare-patch.py')]),('post',['python3',str(r/'post.py')])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd='/Users/thomasingalls/.codex/worktrees/7fda/done',env=env,stdout=log,stderr=subprocess.STDOUT)
+ print(name,p.returncode,flush=True)
+ if p.returncode:raise RuntimeError('Final step failed; preserve prior output: '+name)
+print('Phase20 bounded work and sequential patch complete',flush=True)

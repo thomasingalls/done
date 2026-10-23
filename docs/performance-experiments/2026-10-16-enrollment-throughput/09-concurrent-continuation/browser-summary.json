@@ -1,0 +1,41 @@
+{
+  "connections": [
+    {
+      "arm": "reference",
+      "role": "original",
+      "bursts": 96,
+      "foregroundMs": 4845,
+      "certifiedMs": 4853,
+      "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757",
+      "writingAndReopen": "passed"
+    },
+    {
+      "arm": "candidate",
+      "role": "original",
+      "bursts": 96,
+      "foregroundMs": 4854,
+      "certifiedMs": 4860,
+      "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757",
+      "writingAndReopen": "passed"
+    },
+    {
+      "arm": "reference",
+      "role": "joined",
+      "bursts": 96,
+      "foregroundMs": 4847,
+      "certifiedMs": 4853,
+      "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757",
+      "writingAndReopen": "passed"
+    },
+    {
+      "arm": "candidate",
+      "role": "joined",
+      "bursts": 96,
+      "foregroundMs": 4843,
+      "certifiedMs": 4848,
+      "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757",
+      "writingAndReopen": "passed"
+    }
+  ],
+  "scope": "one restored pair per owner; export/writing/reopen guardrails, no causal speedup or population claim"
+}

@@ -1,0 +1,41 @@
+from pathlib import Path
+import hashlib,io,json,subprocess,tarfile
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());base=start['base'];prior=start['priorTree'];firstTree='37fa6fc1eb0d0572c7c69d1301908b4bfc358b49'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+def run(args,**kwargs):return subprocess.check_output(args,**kwargs)
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+assert run(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==base
+realIndex=Path(run(['git','rev-parse','--git-path','index'],cwd=repo,text=True).strip());indexBefore=sha(realIndex.read_bytes())
+allowed=['docs/completed.md','docs/decisions.md','docs/performance.md','docs/performance-experiments/2026-10-21-cold-verification','docs/account-receive-transport.md','account-service/publisherTips.ts','account-service/delivery.ts','test/account-service-delivery/cold-verification.test.mjs','test/account-service-inbound/controls.test.mjs','test/account-service-delivery/controls.test.mjs','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/account-crypto/census.json']
+def isolated(name,worktree):
+ bare=r/name;assert not bare.exists(),str(bare)
+ subprocess.run(['git','init','--bare','--quiet',str(bare)],check=True)
+ (bare/'objects/info/alternates').write_text('/private/tmp/done-publisher-races-20261021/patch06-index.git/objects\n')
+ return ['git','-C',str(worktree),'--git-dir='+str(bare),'--work-tree='+str(worktree)]
+git=isolated('patch07-index.git',repo);subprocess.run(git+['read-tree',prior],check=True)
+for f in allowed[:3]:assert (repo/f).read_bytes().startswith(run(git+['show',prior+':'+f])),f
+packet=repo/allowed[3]
+for line in (packet/'SHA256SUMS').read_text().splitlines():
+ h,f=line.split('  ',1);assert sha((packet/f).read_bytes())==h,f
+subprocess.run(git+['add','--',*allowed],check=True);tree=run(git+['write-tree'],text=True).strip()
+changed=run(git+['diff','--cached','--name-only',prior],text=True).splitlines();assert all(p in allowed or p.startswith(allowed[3]+'/') for p in changed),changed
+patch=run(git+['diff','--cached','--binary','--full-index','--no-ext-diff',prior]);patchdir=r/'patches';patchdir.mkdir(exist_ok=False);third=patchdir/'07-cold-publisher-admission.patch';third.write_bytes(patch)
+clean=r/'clean-sequential-apply';clean.mkdir()
+combined=run(git+['diff','--cached','--name-only',base],text=True).splitlines();tracked=set(run(['git','ls-tree','-r','--name-only',base],cwd=repo,text=True).splitlines());originalPaths=sorted(tracked.intersection(combined))
+archive=run(['git','archive',base,'--',*originalPaths],cwd=repo)
+with tarfile.open(fileobj=io.BytesIO(archive)) as t:t.extractall(clean,filter='data')
+verify=isolated('verify07-index.git',clean);subprocess.run(verify+['read-tree',base],check=True);subprocess.run(verify+['add','--',*originalPaths],check=True)
+assert run(verify+['write-tree'],text=True).strip()==run(['git','rev-parse',base+'^{tree}'],cwd=repo,text=True).strip()
+steps=[]
+for file,expected in [(Path(p['patch']),p['expectedTree']) for p in start['priorPatches']]+[(third,tree)]:
+ subprocess.run(verify+['apply','--index','--whitespace=nowarn','--check',str(file)],check=True);subprocess.run(verify+['apply','--index','--whitespace=nowarn',str(file)],check=True)
+ actual=run(verify+['write-tree'],text=True).strip();assert actual==expected
+ steps.append({'patch':str(file),'sha256':sha(file.read_bytes()),'expectedTree':expected,'independentCleanApplyTree':actual})
+assert run(git+['diff',tree,'--']).decode()==''
+assert sha(realIndex.read_bytes())==indexBefore
+assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+manifest={'baseCommit':base,'priorTree':prior,'expectedCumulativeTree':tree,'independentSequentialApply':steps,'changedFilesInPatch07':len(changed),'patch07Bytes':len(patch),'realIndexSha256BeforeAndAfter':indexBefore,'realIndexUntouched':True,'byteExactApplyFlag':'--whitespace=nowarn','knownGlobalWhitespacePolicy':'Override apply.whitespace=fix to preserve archived evidence bytes' ,'publication':'No real staging, signing, commit, push, preview change, merge or deployment.','scope':'Bounded cold publisher FIFO admission with independent fresh authorization, transactional scheduling capture,16 regressions and10 effective omissions. Original cold local acceptance and final client functional checks pass; failed/interrupted predecessors retained. Rates/guards/bounds unchanged, qualification paused.'}
+(patchdir/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+(patchdir/'07-commit-message.txt').write_text('fix(sync): bound cold publisher verification and drain queued writes\n\nAdmit a cold publisher group in FIFO order after independent authority\nand request checks, with fresh verification after waiting. Bound lanes,\nwaiters and wait time; close and finally release all entries safely.\nCapture scheduling headers transactionally, keeping every original\nproof, guard, audit, grant, expiry, rate and native commit check.\nRetain16 regressions, effective omissions and failed source variants.\nOriginal local cold acceptance now passes; general qualification paused.\n')
+(patchdir/'README.md').write_text('# Sequential patch application\n\nBase: `'+base+'`. The cumulative checkout already contains01→07. Do not reapply patches over it. Apply/sign immutable patches01,02,03,04,05,06, then07 separately when signing is available; exact hashes and trees are in manifest.json. Use `git apply --index --whitespace=nowarn` to preserve frozen evidence against global whitespace-fixing policy. The temporary-index construction leaves the real index untouched. Independent clean application reproduces all seven cumulative trees. This phase clears only the named local cold workload and functional client controls; rate/capacity promotion and qualification remain open. No real staging, commit, push, preview change, merge or deployment occurred.\n')
+print(json.dumps(manifest,indent=2))

@@ -1,0 +1,7 @@
+from pathlib import Path
+import subprocess,json,os
+r=Path(__file__).parent;image=json.loads((r/'container-image.json').read_text())['Id'];assert json.loads((r/'ast-review.json').read_text())['status']=='passed';assert 'pass 10'in(r/'frame-probe-tests.log').read_text();args=['docker','run','--rm','--network=none','--read-only','--cap-drop=ALL','--tmpfs','/tmp','--user',str(os.getuid())+':'+str(os.getgid()),'--volume',str(r)+':/experiment:ro','--volume',str(r/'diagnostic-account-service')+':/app/account-service:ro']
+for f in ['account-protocol','src','scripts','docs']:args+=['--volume',str(r/'source'/f)+':/app/'+f+':ro']
+args+=['--entrypoint','node',image,'--input-type=module','-e',"for(const f of ['delivery','inboundAuthorityReuse','membershipLocator','historyCheckpoint']) await import('/app/account-service/'+f+'.ts'); console.log('All4 observed native modules import');"]
+with(r/'native-import.log').open('w')as log:v=subprocess.run(args,stdout=log,stderr=subprocess.STDOUT)
+assert v.returncode==0;(r/'native-import.json').write_text(json.dumps({'status':'passed','network':'none','image':image,'exitCode':v.returncode},indent=2)+'\n');print('Native imports pass; frozen observer AST and10 frame tests pass')

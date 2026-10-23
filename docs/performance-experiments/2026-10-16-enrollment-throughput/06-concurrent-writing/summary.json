@@ -1,0 +1,74 @@
+[
+  {
+    "round": 0,
+    "arm": "reference",
+    "outcome": "failed",
+    "error": "Replay refused 409: {\"v\":1,\"kind\":\"unknown\",\"reason\":\"state-changed\"}",
+    "acceptedWrites": 9,
+    "fullCensuses": 19,
+    "verifiedRows": 13377,
+    "writeMaximumMs": 899.9396669999999,
+    "inputLatencyMaximumMs": 1483,
+    "scope": "incomplete replay retained; no success/timing credit"
+  },
+  {
+    "round": 0,
+    "arm": "candidate",
+    "outcome": "failed",
+    "error": "Replay refused 409: {\"v\":1,\"kind\":\"unknown\",\"reason\":\"state-changed\"}",
+    "acceptedWrites": 9,
+    "fullCensuses": 12,
+    "verifiedRows": 8219,
+    "writeMaximumMs": 980.8370000000004,
+    "inputLatencyMaximumMs": 1394,
+    "scope": "incomplete replay retained; no success/timing credit"
+  },
+  {
+    "round": 1,
+    "arm": "candidate",
+    "outcome": "failed",
+    "error": "Replay refused 409: {\"v\":1,\"kind\":\"unknown\",\"reason\":\"state-changed\"}",
+    "acceptedWrites": 9,
+    "fullCensuses": 12,
+    "verifiedRows": 8226,
+    "writeMaximumMs": 894.7698329999985,
+    "inputLatencyMaximumMs": 1031,
+    "scope": "incomplete replay retained; no success/timing credit"
+  },
+  {
+    "round": 1,
+    "arm": "reference",
+    "outcome": "failed",
+    "error": "Replay refused 409: {\"v\":1,\"kind\":\"unknown\",\"reason\":\"state-changed\"}",
+    "acceptedWrites": 9,
+    "fullCensuses": 19,
+    "verifiedRows": 13378,
+    "writeMaximumMs": 1119.6629580000008,
+    "inputLatencyMaximumMs": 1815,
+    "scope": "incomplete replay retained; no success/timing credit"
+  },
+  {
+    "round": 2,
+    "arm": "reference",
+    "outcome": "failed",
+    "error": "Replay refused 409: {\"v\":1,\"kind\":\"unknown\",\"reason\":\"state-changed\"}",
+    "acceptedWrites": 9,
+    "fullCensuses": 13,
+    "verifiedRows": 9240,
+    "writeMaximumMs": 907.2354169999999,
+    "inputLatencyMaximumMs": 1640,
+    "scope": "incomplete replay retained; no success/timing credit"
+  },
+  {
+    "round": 2,
+    "arm": "candidate",
+    "outcome": "failed",
+    "error": "Replay refused 409: {\"v\":1,\"kind\":\"unknown\",\"reason\":\"state-changed\"}",
+    "acceptedWrites": 9,
+    "fullCensuses": 6,
+    "verifiedRows": 4109,
+    "writeMaximumMs": 907.3989999999976,
+    "inputLatencyMaximumMs": 1180,
+    "scope": "incomplete replay retained; no success/timing credit"
+  }
+]

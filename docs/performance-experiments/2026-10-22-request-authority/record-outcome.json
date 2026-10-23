@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "phase": 22,
+  "runtimeFiles": 4,
+  "newCases": 20,
+  "focusedOldCases": 31,
+  "pairedBaseCases": 402,
+  "pairedCandidateCases": 422,
+  "sameExistingFailures": 17,
+  "onlyOldTestChange": "stronger single-complete-history count plus positive denominator assertion",
+  "completedFirst": true,
+  "qualificationPaused": true,
+  "obligations": 882,
+  "unresolved": 338,
+  "noLatencyPromotion": true,
+  "noPublication": true
+}

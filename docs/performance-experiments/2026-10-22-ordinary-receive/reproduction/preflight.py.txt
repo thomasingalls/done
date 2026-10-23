@@ -1,0 +1,24 @@
+from pathlib import Path
+import subprocess,json,os,time,shutil,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+old=(r/'before/content-transfer.test.mjs').read_bytes();current=(repo/'test/account-ceremony/content-transfer.test.mjs').read_bytes();assert current.startswith(old)
+f=r/'new-continuation-test.mjs';f.write_bytes(current[len(old):]);subprocess.run(['node',str(repo/'node_modules/oxfmt/bin/oxfmt'),'--write',str(f)],cwd=repo,env=env,check=True,stdout=subprocess.DEVNULL);(repo/'test/account-ceremony/content-transfer.test.mjs').write_bytes(old+b'\n'+f.read_bytes())
+for f in ['account-service/inboundAuthorityReuse.ts','account-service/deliveryVerification.ts','account-service/delivery.ts','test/account-sessions/inbound-authority-cache.test.mjs','test/account-ceremony/content-transfer.test.mjs']:(r/'source'/f).write_bytes((repo/f).read_bytes())
+def run(name,cmd,cwd):
+ at=int(time.time()*1000)
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(cwd),'startedAt':at,'finishedAt':int(time.time()*1000),'exitCode':p.returncode});(r/'preflight-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True);return p.returncode
+# New branded-history regression on original core, with exact full reference closure.
+f=r/'reference-source/test/account-ceremony/content-transfer.test.mjs';f.write_bytes((repo/'test/account-ceremony/content-transfer.test.mjs').read_bytes())
+assert run('baseline-branded-regression',['node','--test','--test-name-pattern=independent continuation reads reuse',str(f)],r/'reference-source')==1
+f.write_bytes(old)
+assert run('new-cache-regressions-final',['node','--test','--test-concurrency=1','test/account-sessions/inbound-authority-cache.test.mjs'],repo)==0
+assert run('new-branded-regression',['node','--test','--test-name-pattern=independent continuation reads reuse','test/account-ceremony/content-transfer.test.mjs'],repo)==0
+assert run('types-final',['node','node_modules/typescript/bin/tsc','--ignoreConfig','--target','ES2022','--lib','ES2022,DOM','--module','ESNext','--moduleResolution','bundler','--types','node','--strict','--skipLibCheck','--allowImportingTsExtensions','--noEmit','account-service/inboundAuthorityReuse.ts','account-service/deliveryVerification.ts','account-service/delivery.ts'],repo)==0
+files=['test/account-ceremony/content-transfer.test.mjs','test/account-history/service.test.mjs','test/account-history/pruning.test.mjs','test/account-history/checkpoint.test.mjs','test/account-membership/rotation-history.test.mjs']+[str(p.relative_to(repo))for p in sorted((repo/'test/account-sessions').glob('*.test.mjs'))if p.name!='inbound-authority-cache.test.mjs']
+for label,source in [('reference',r/'reference-source'),('candidate',r/'source')]:
+ run(label+'-affected',['node','--test','--test-concurrency=1',*files,*(['test/account-sessions/inbound-authority-cache.test.mjs']if label=='candidate'else[])],source)
+def failed(x):return sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',x,re.M)))
+def totals(x):return{k:int(re.search(r'ℹ '+k+r' (\d+)',x).group(1))for k in ['tests','pass','fail','cancelled','skipped']}
+a=(r/'reference-affected.log').read_text();b=(r/'candidate-affected.log').read_text();new=sorted(set(failed(b))-set(failed(a)));assert not new,new;assert 'EPERM'not in a+b
+(r/'affected-comparison.json').write_text(json.dumps({'status':'passed','reference':totals(a),'candidate':totals(b),'unchangedFailures':failed(a),'newFailures':new,'scope':'Affected native regressions and all session/grant/batch suites; old failures preserved, no assumption they are stale.'},indent=2)+'\n');print('Affected comparison complete',flush=True)

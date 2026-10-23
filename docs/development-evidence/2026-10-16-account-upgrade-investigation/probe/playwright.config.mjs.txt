@@ -1,0 +1,4 @@
+import {createRequire} from 'node:module';
+const source='/private/tmp/done-onboarding-publish-faf465f7/source';
+const {defineConfig}=createRequire(source+'/package.json')('@playwright/test');
+export default defineConfig({testDir:source+'/test/packaged-account',testMatch:'incident-full-upgrade.spec.ts',outputDir:'/private/tmp/done-disappearing-account-upgrade-2026-10-16/results/artifacts',timeout:240000,workers:1,retries:0,reporter:[['list'],['json',{outputFile:'/private/tmp/done-disappearing-account-upgrade-2026-10-16/results/results.json'}]]});

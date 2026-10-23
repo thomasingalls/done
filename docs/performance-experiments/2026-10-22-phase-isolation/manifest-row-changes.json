@@ -1,0 +1,19 @@
+{
+  "changed": [],
+  "added": [
+    {
+      "id": "test:test/sync-cadence-analysis.test.mjs",
+      "kind": "test",
+      "path": "test/sync-cadence-analysis.test.mjs",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/sync-cadence-analysis.test.mjs"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    }
+  ]
+}

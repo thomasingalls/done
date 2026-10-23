@@ -1,0 +1,32 @@
+from pathlib import Path
+import json,shutil,hashlib
+r=Path(__file__).parent;previous=Path('/private/tmp/done-word-comparison-20261021');h=r/'browser-harness';shutil.copytree(previous/'browser-harness',h)
+p=h/'runtime.mjs';s=p.read_text().replace("import {spawn} from 'node:child_process';","import {spawn} from 'node:child_process';\nimport {createHash} from 'node:crypto';\nimport {decodeInboundBatch} from '../../account-protocol/inboundBatch.ts';")
+s=s.replace('let injectedRead=false,injectedSubmit=false;','let injectedRead=false,injectedSubmit=false,independentStarted=false,independentTimer;\nexport const pressureOffers=[],independentTemplate={};')
+s=s.replace("process.env.SYNC_PRESSURE==='1'&&measured", "process.env.SYNC_PRESSURE==='feedback'&&measured")
+needle="    while(shadows.size<3){const extra=newRow(req,'shadow');extra.parent=row.id;send(req,body,undefined,extra)}\n   }"
+add="""
+   if(process.env.SYNC_PRESSURE==='independent'&&measured&&device==='B'&&row.path.endsWith('/read-v2-batch')&&!independentStarted){
+    const parsed=decodeInboundBatch(new Uint8Array(body)),count=parsed.length;for(const p of parsed)p.fill(0);
+    if(count===4){
+     independentStarted=true;Object.assign(independentTemplate,{count,parent:row.id,bodySha256:createHash('sha256').update(body).digest('hex')});const began=Date.now();let index=0;
+     const offer=()=>{const scheduledAt=began+index*250;const item={index,scheduledAt,at:Date.now(),inflight:shadows.size,skipped:shadows.size>=3,count};pressureOffers.push(item);if(!item.skipped){const extra=newRow(req,'independent');extra.parent=row.id;extra.offer=index;send(req,body,undefined,extra);item.request=extra.id;}index++;if(index<72)independentTimer=setTimeout(offer,Math.max(0,began+index*250-Date.now()));};offer();
+    }
+   }
+"""
+assert needle in s;s=s.replace(needle,needle+add).replace('export async function stop(){','export async function stop(){\n clearTimeout(independentTimer);');p.write_text(s)
+p=h/'live-sync.spec.ts';s=p.read_text().replace('requests, frames, labelBearer','requests, frames, pressureOffers, independentTemplate, labelBearer').replace('result.proxy=requests;result.frames=frames;','result.proxy=requests;result.frames=frames;result.pressureOffers=pressureOffers;result.independentTemplate=independentTemplate;').replace("result.pressure=process.env.SYNC_PRESSURE==='1'",'result.pressure=process.env.SYNC_PRESSURE')
+s=s.replace("    result.guards={bothWay:true", "    if(process.env.SYNC_PRESSURE==='independent'){expect(independentTemplate.count).toBe(4);expect(pressureOffers).toHaveLength(72);expect(pressureOffers.every((x:any)=>!x.skipped&&x.count===4)).toBe(true);}\n    result.guards={bothWay:true");p.write_text(s)
+for arm in ['R','C']:
+ shutil.copytree(h,r/('source-'+arm)/'test/live-sync-attribution')
+ # Separate B service snapshots reuse the same corresponding actual client artifact bytes.
+ dest=r/('source-'+arm+'B');shutil.copytree(r/('source-'+arm),dest,symlinks=True);p=dest/'account-service/requestBudget.ts';text=p.read_text().replace('sessionPerSecond: 16,','sessionPerSecond: 32,').replace('processPerSecond: 64,','processPerSecond: 128,');p.write_text(text);shutil.rmtree(dest/'dist');(dest/'dist').symlink_to(r/('source-'+arm)/'dist',target_is_directory=True)
+shutil.copyfile(previous/'node-monitor.mjs',r/'node-monitor.mjs')
+plan=[{'name':f'{i+1}-D-{arm}-feedback','arm':arm,'policy':'D','mode':'catchup','pressure':'feedback'}for i,arm in enumerate(['R','C','C','R'])]
+for prefix,mode,pressure in [(5,'catchup','none'),(7,'catchup','independent'),(9,'foreground','none')]:plan.extend([{'name':f'{prefix+i}-D-{arm}-'+('ordinary'if pressure=='none'and mode=='catchup'else pressure if pressure!='none'else mode),'arm':arm,'policy':'D','mode':mode,'pressure':pressure}for i,arm in enumerate(['R','C'])])
+plan.extend([{'name':f'{11+i}-B-{arm}-feedback','arm':arm,'policy':'B','mode':'catchup','pressure':'feedback'}for i,arm in enumerate(['R','C'])]);(r/'browser-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();ident={'browserClosure':{p.name:sha(p)for p in h.iterdir()if p.is_file()},'dist':{arm:{str(p.relative_to(r/('source-'+arm)/'dist')):sha(p)for p in sorted((r/('source-'+arm)/'dist').rglob('*'))if p.is_file()}for arm in ['R','C']},'BpolicySources':{arm:sha(r/('source-'+arm+'B')/'account-service/requestBudget.ts')for arm in ['R','C']}}
+# Reject accidental reuse of traced client/source snapshots.
+for arm in ['R','C']:
+ for p in(r/('source-'+arm)/'dist/assets').glob('*.js'):assert 'X-Done-Lab-Call'not in p.read_text()and '__capacity'not in p.read_text()
+(r/'browser-identity.json').write_text(json.dumps(ident,indent=2)+'\n')

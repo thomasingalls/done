@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "scopedRepairVerified": true,
+  "heavyFairnessAcceptance": false,
+  "candidateStatus": "HELD: backlog replay improves, but live peer latency regresses to20\u201321s p95 versus10.5\u201311.9s reference (target2.5s)",
+  "completedBeforeDecisionAndPerformance": true,
+  "originalJournalPrefixesRetained": true,
+  "newCases": 18
+}

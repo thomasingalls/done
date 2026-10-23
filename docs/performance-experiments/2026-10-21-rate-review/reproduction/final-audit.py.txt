@@ -1,0 +1,32 @@
+from pathlib import Path
+import json,subprocess,hashlib,re,gzip
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');prior=start['priorTree'];pgit=['git','--git-dir=/private/tmp/done-cold-verification-20261021/patch07-index.git','--work-tree='+str(repo)]
+def run(args):return subprocess.check_output(args,cwd=repo)
+def old(f):return run(pgit+['show',prior+':'+f])
+assert run(['git','rev-parse','HEAD']).decode().strip()==start['base'] and run(['git','diff','--cached','--name-only'])==b''
+for row in start['priorPatches']:assert sha(Path(row['patch']).read_bytes())==row['sha256']
+packets={}
+for name in ['live-sync-attribution','ordinary-receive-batching','sync-capacity','sync-continuation','publisher-isolation','publisher-commit-races','cold-verification']:
+ p=repo/'docs/performance-experiments'/('2026-10-21-'+name);lines=(p/'SHA256SUMS').read_text().splitlines()
+ for line in lines:h,f=line.split('  ',1);assert sha((p/f).read_bytes())==h
+ packets[name]=len(lines)
+append=['docs/completed.md','docs/decisions.md','docs/performance.md']
+assert set(run(pgit+['diff','--name-only',prior,'--']).decode().splitlines())==set(append)
+for f in append:assert (repo/f).read_bytes().startswith(old(f))
+priorPaths=set(run(pgit+['ls-tree','-r','--name-only',prior]).decode().splitlines());new=set(run(['git','ls-files','--others','--exclude-standard']).decode().splitlines())-priorPaths
+assert all(f.startswith('docs/performance-experiments/2026-10-21-rate-review/') for f in new)
+for f in ['docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:assert (repo/f).read_bytes()==old(f)
+identity=load(r/'identity.json');assert identity['allFourTestClosuresExact'] and identity['productionFilesPerArm']==803
+for f,h in load(r/'source-identity.json')['D']['sha256'].items():assert sha((repo/f).read_bytes())==h
+checks=load(r/'final-checks.json');assert len(checks)==9 and all(x['exitCode']==0 for x in checks)
+log=(r/'planning-tests.log').read_text();assert 'ℹ tests 109' in log and 'ℹ pass 109' in log and all(('ℹ '+k+' 0') in log for k in ['fail','cancelled','skipped','todo'])
+assert load(r/'browser-runner.json')[-1]['completedAt']<=checks[0]['startedAt']
+review=load(r/'evidence-review.json');assert review['status']=='passed' and review['nativeIndependentLiveAndColdProofRuns']==review['fullClientJourneysPassed']==10
+b=load(r/'browser-summary.json');decision=load(r/'decision.json');assert decision['failedChecks']==['allBrowserTypingGuards','nativeSReviewGate'];assert b['pressure']['localGuard'] is False and b['rows']['pressure-S']['localP95Ms']>16
+assert not decision['allAdoptionReviewGatesPassed'] and decision['configuredApplicationPolicyRemains']=={'sessionPerSecond':16,'processPerSecond':64}
+dest=r/'evidence-build'
+for f,v in load(dest/'artifact-provenance.json').items():
+ data=(dest/f).read_bytes();assert sha(data)==v['storedSha256'];assert sha(gzip.decompress(data) if f.endswith('.gz') else data)==v['sourceSha256']
+assert load(dest/'privacy-audit.json')['knownExactValuesChecked']==35
+result={'status':'passed','baseCommit':start['base'],'priorTree':prior,'priorImmutablePatchesExact':7,'priorPacketChecksumCounts':packets,'workingRuntimeAndAllExistingTestsUnchanged':True,'temporaryPolicies':{'D':[16,64],'S':[32,64],'P':[16,128],'B':[32,128]},'productionFilesPerFrozenArm':803,'allFourUnchangedTestClosuresExact':True,'sameClientAssets':110,'budgetTestsPerPolicy':17,'nativeIndependentProofAndColdAuditRuns':10,'storedUnacknowledgedWrites':0,'actualClientJourneys':10,'allFullDataEditOfflineGuardsPassed':True,'independentRawDOMMetricReconstruction':True,'primaryMedianImprovementPercent':b['medianPrimaryImprovementPercent'],'primaryReferenceDrift':b['referenceDrift'],'sessionOnlyNativeFairnessAndPressureTypingMissesRetained':True,'sessionOnlyPolicyNotEligibleForAdoption':True,'global128VariantsDiagnosticOnly':True,'configuredDefaultRemains16_64':True,'planningTestsPassed':109,'cryptoCensusAndPlanningFilesByteExact':True,'obligations':881,'unresolved':337,'constructionContractsAndStatusesExact':97,'aggregateQualificationPausedAndBlocked':True,'otherSeatProgressAndDeferredFormattingExact':True,'nativeStdoutCollisionQualified':True,'knownExactPrivateValuesChecked':35,'privateMatches':0,'realIndexEmpty':True,'scope':'Evidence-only local rate/capacity review. No adopted policy, measured production/container/platform capacity, universal fairness claim, real staging, commit, push, preview change, merge or deployment.'}
+(dest/'verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

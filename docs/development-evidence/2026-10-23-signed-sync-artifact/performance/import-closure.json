@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "files": {
+    "test/account-continuation-lab/playwright.config.ts": "1e930b9a8a34b8357cb0134bb9106128f4c8cd7468200287a68cf30a86f235a3",
+    "test/account-continuation-lab/continuation.spec.ts": "a8bb6e86329293f60912d91c69a4a5c8e1a2b8acc871fcb09e31c0c8e726f953",
+    "test/account-continuation-lab/common.ts": "d3d8914603fba7a75f444e8114ecad97b8bb2ef3e21a0f59eaf4283647cf54d6",
+    "test/account-continuation-lab/runtime.mjs": "1d263d7b0f0a42136ee6631428fe303ced8a601526c6d11734b8c7c13230cada",
+    "scripts/lib/account-gateway.mjs": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f",
+    "scripts/lib/packaged-application.mjs": "9343b7de953ac3fdf78097dad8ce99dc59ca2a72576f82bb9ae8e60f9a3b02bd",
+    "test/account-continuation-lab/dispatch-probe.ts": "c1bc7186690a945d2f4ca876b9f44f450748871f9c6b3ebb4b4ad16b9777c9bb",
+    "test/account-continuation-lab/seed-profile.ts": "ecc0fd7d248da2ebd51709dc72fd506075ccb618e0073d572607a0ab0f4ce8db",
+    "test/account-continuation-lab/devices.ts": "9a6992af600a27d7b58e32d557782289ac67350c148cf25a062670208de56226",
+    "test/device-enrollment/helpers.ts": "38f94e1f9cbc987418f72c24a4f0849bd19c510c2f375b2f9714b16ed5833942",
+    "test/account-continuation-lab/result.mjs": "191d89fe6b82522f92a5e52ca8aa61a62c080e8679c14d621dcf66bc982953d2"
+  },
+  "priorFailedLaunchZeroTests": true,
+  "helperExactPriorFrozen": true
+}

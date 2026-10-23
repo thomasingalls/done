@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,subprocess,sqlite3,shutil,time
+r=Path(__file__).parent;seed=json.loads((r/'private-fixture/fixture.json').read_text());folder=r/'private-audit-controls';folder.mkdir(mode=0o700);rows=[]
+def corrupt_cipher(b):
+ at=0
+ for _ in range(3): at+=2+int.from_bytes(b[at:at+2],'big')
+ at+=4
+ for _ in range(7): at+=2+int.from_bytes(b[at:at+2],'big')
+ at+=48
+ assert at<len(b)-64
+ return b[:at]+bytes([b[at]^1])+b[at+1:]
+controls={'accepted-response-signature':('delivery_decisions','response',lambda b:b[:-3]+(b'0'if b[-3:-2]!=b'0'else b'1')+b[-2:]),'submission-wrapper-signature':('delivery_decisions','submission',lambda b:b[:-1]+bytes([b[-1]^1])),'ciphertext-or-envelope-signature':('publisher_decisions','submission',corrupt_cipher)}
+for name,(table,column,mutate)in controls.items():
+ path=folder/(name+'.sqlite');shutil.copyfile(Path(seed['state'])/'account.sqlite',path);db=sqlite3.connect(path);row=db.execute(f'SELECT rowid,{column} FROM {table} WHERE kind=? LIMIT 1',('accepted',)).fetchone();assert row;new=mutate(row[1]);assert new!=row[1];db.execute(f'UPDATE {table} SET {column}=? WHERE rowid=?',(new,row[0]));db.commit();db.close();at=time.time_ns()//1000000
+ with(r/(name+'-control.log')).open('w')as log:p=subprocess.run(['node',str(r/'audit-native.mjs'),'--inspect',str(path)],stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'changedColumn':table+'.'+column,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});assert p.returncode!=0,name
+ expected={'accepted-response-signature':'independent accepted-head signature','submission-wrapper-signature':'independent wrapper signature','ciphertext-or-envelope-signature':'independent ciphertext digest'}[name];assert expected in(r/(name+'-control.log')).read_text(),name
+(r/'audit-sensitivity.json').write_text(json.dumps(rows,indent=2)+'\n');print('All3 deliberate observer corruptions detected in disposable copies; genuine seed untouched.')

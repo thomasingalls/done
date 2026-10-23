@@ -1,0 +1,20 @@
+[
+  {
+    "name": "full-hot-and-peer",
+    "hot": "1",
+    "other": "0",
+    "peer": "1"
+  },
+  {
+    "name": "full-writers-no-peer",
+    "hot": "1",
+    "other": "1",
+    "peer": "0"
+  },
+  {
+    "name": "full-other-and-peer",
+    "hot": "0",
+    "other": "1",
+    "peer": "1"
+  }
+]

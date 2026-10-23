@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "knownPrivateValues": 36,
+  "filesScannedAfterDecompression": 82,
+  "matches": 0,
+  "scope": "Exact known-value check plus closed-label/raw-file selection review; not universal DLP",
+  "excluded": [
+    "private fixture/native DBs",
+    "browser profiles/storage",
+    "unlock codes/credentials/keys/tokens",
+    "full carrier-image inspection",
+    "generated UI error snapshots"
+  ]
+}

@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,math,hashlib
+r=Path(__file__).parent;load=lambda p:json.loads(p.read_text());runs=load(r/'browser-runner.json');analysis=load(r/'browser-analysis.json');assert len(runs)==8 and all(x['exitCode']==0 for x in runs);assert all(a['completedAt']<=b['startedAt']for a,b in zip(runs,runs[1:]));reconstructed={}
+for run,summary in zip(runs,analysis['rows']):
+ d=load(r/run['name']/'result.json');offers=d['concurrent']['offers'];base=614 if run['mode']=='catchup'else 14+sum(3+len(str(i))for i in range(30));values=[];peer=[]
+ for i,o in enumerate(offers):
+  for device,target in [(0,values),(1,peer)]:
+   candidates=[row['at']-o['at']for row in d['browsers'][device]['rows']if row['at']>=o['at']-2 and row['lengths'][0]>=base+i+1];assert candidates;target.append(min(candidates))
+ assert values==[x['offerToDOM']for x in summary['rows']]and peer==[x['peerDOM']for x in summary['rows']];assert sorted(values)[113]==summary['metrics']['offerToDOM']['p95'];assert sorted(peer)[113]==summary['metrics']['peerDOM']['p95'];assert all(d['guards'].values())and d['all120EditorKeysReachedPeer'];assert d['roots'][0]['pid']!=d['roots'][1]['pid'];assert len(offers)==120
+ reconstructed[run['name']]={'localP95':sorted(values)[113],'peerP95':sorted(peer)[113]}
+ if run['mode']=='foreground':assert len(d['bursts'])==30
+result={'status':'passed','fullAppJourneys':8,'peerVerifiedKeys':960,'foregroundIsolatedMarkers':60,'independentReconstructedPercentiles':reconstructed,'fixedPlanCompletedWithoutOverlap':True,'catchupTimingAcceptance':analysis['timingAcceptance'],'holdingFailedCandidate':not analysis['timingAcceptance'],'scope':'Independent numeric reconstruction and data-guard review, not an independent security review or resumed qualification.'};(r/'evidence-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

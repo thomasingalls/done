@@ -1,0 +1,16 @@
+from pathlib import Path
+import os,json,hashlib,subprocess,time
+r=Path(__file__).parent;s=r/'source';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();start=json.loads((r/'starting.json').read_text());client=json.loads(Path('/private/tmp/done-publication-authority-20261022/measurement-identity.json').read_text())['clientFiles'];assert len(json.loads((r/'native-imports.json').read_text()))==4;assert json.loads((r/'ast-review.json').read_text())['status']=='passed';assert 'pass 10'in(r/'frame-probe-tests.log').read_text()
+for f,h in start['runtimeFiles'].items():assert sha(s/f)==h,f
+for f,h in client.items():assert sha(s/'dist'/f)==h,f
+files=[r/'protocol.md',r/'container-service.mjs',r/'observer.mjs',r/'freeze-and-run.py',r/'frame-probe.mjs',r/'frame-probe.test.mjs',r/'instrument.py',r/'transforms.json',s/'scripts/lib/sync-cadence-analysis.mjs',s/'test/sync-cadence-analysis.test.mjs',*list((s/'test/account-continuation-lab').glob('*'))];variants={label:{str(p.relative_to(r/'variants'/label)):sha(p)for p in(r/'variants'/label/'account-service').rglob('*')if p.is_file()}for label in 'ABCD'};plan=[{'name':str(i+1)+'-'+v,'variant':v}for i,v in enumerate('ABDC')];assert[v['variant']for v in plan]==list('ABDC');(r/'run-plan.json').write_text(json.dumps(plan,indent=2)+'\n');identity={'baseTree24':start['baseTree24'],'variants':variants,'sharedRuntimeFiles':{f:sha(s/f)for f in start['runtimeFiles']if not f.startswith('account-service/')},'clientFiles':client,'files':{str(p.relative_to(r)):sha(p)for p in files if p.is_file()},'privateFixtureSha256':start['privateFixtureSha256'],'image':json.loads((r/'container-image.json').read_text())['Id'],'plan':plan,'observation':'common native observational spans/cache/crypto and host-only frame projection; original client files unchanged; no performance promotion'};(r/'measurement-identity.json').write_text(json.dumps(identity,indent=2)+'\n');rows=[]
+for c in plan:
+ for f,h in identity['files'].items():assert sha(r/f)==h,f
+ for f,h in identity['sharedRuntimeFiles'].items():assert sha(s/f)==h,f
+ for f,h in client.items():assert sha(s/'dist'/f)==h,f
+ for label,inputs in variants.items():
+  for f,h in inputs.items():assert sha(r/'variants'/label/f)==h,(label,f)
+ out=r/c['name'];out.mkdir(mode=0o700);env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'FAIR_OUT':str(out),'FAIR_VARIANT':c['variant'],'FAIR_OBSERVED':'0','FAIR_DIST':str(s/'dist')};cmd=['node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/playwright.config.ts'];at=int(time.time()*1000)
+ with(out/'invocation.log').open('w')as log:v=subprocess.run(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':cmd,'startedAt':at,'completedAt':int(time.time()*1000),'exitCode':v.returncode});(r/'run-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows[-1]),flush=True)
+ if v.returncode:raise Exception('Hard diagnostic failure; preserve and investigate without selective replacement '+c['name'])

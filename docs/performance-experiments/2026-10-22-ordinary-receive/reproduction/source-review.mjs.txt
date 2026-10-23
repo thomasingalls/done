@@ -1,0 +1,25 @@
+import * as babel from './source/node_modules/@babel/core/lib/index.js';
+import {readFileSync,writeFileSync} from 'node:fs';import assert from 'node:assert/strict';import{createHash}from'node:crypto';
+const root=new URL('.',import.meta.url),get=p=>readFileSync(new URL(p,root),'utf8');
+const parse=s=>babel.parseSync(s,{configFile:false,babelrc:false,parserOpts:{sourceType:'module',plugins:['typescript']}});
+function shape(v){if(!v||typeof v!=='object')return v;if(Array.isArray(v))return v.map(shape);return Object.fromEntries(Object.entries(v).filter(([k])=>!['start','end','loc','extra','comments','leadingComments','trailingComments','innerComments','tokens','errors'].includes(k)).map(([k,v])=>[k,shape(v)]));}
+const equal=(a,b)=>assert.deepEqual(shape(a),shape(b));
+function walk(n,fn){if(!n||typeof n!=='object')return;if(Array.isArray(n)){n.forEach(x=>walk(x,fn));return}fn(n);Object.values(n).forEach(x=>walk(x,fn));}
+function declaration(ast,name){for(const v of ast.program.body){const n=v.declaration??v;if(n.id?.name===name)return n;if(n.type==='VariableDeclaration'){const d=n.declarations.find(x=>x.id.name===name);if(d)return d;}}throw Error('missing '+name)}
+const old=parse(get('before/delivery.ts')),after=parse(get('source/account-service/delivery.ts'));let calls=0;
+walk(after,n=>{if(n.type==='CallExpression'&&n.callee.name==='reuseInboundAuthority'){assert.equal(n.arguments.length,5);assert.equal(n.arguments[4].property.name,'authority');assert.equal(n.arguments[4].object.name,'reuse');n.arguments.pop();calls++;}});assert.equal(calls,1);equal(old,after);
+const a=parse(get('before/deliveryVerification.ts')),b=parse(get('source/account-service/deliveryVerification.ts'));
+b.program.body=b.program.body.filter(n=>!(n.type==='ImportDeclaration'&&n.source.value==='./inboundAuthorityReuse.ts'));
+const fn=declaration(b,'createDeliveryVerification');let creation=0,property=0,close=0,clear=0;
+fn.body.body=fn.body.body.filter(n=>{if(n.type==='VariableDeclaration'&&n.declarations[0].id.name==='authority'){assert.equal(n.declarations[0].init.callee.name,'createInboundAuthorityCache');creation++;return false}return true});
+const returned=fn.body.body.find(n=>n.type==='ReturnStatement').argument;
+returned.properties=returned.properties.filter(n=>{if(n.key.name==='authority'){property++;return false}if(['close','clear'].includes(n.key.name)){const first=n.body.body[0];assert.equal(first.expression.callee.object.name,'authority');assert.equal(first.expression.callee.property.name,n.key.name);n.body.body.shift();n.key.name==='close'?close++:clear++;}return true});
+assert.deepEqual([creation,property,close,clear],[1,1,1,1]);equal(a,b);
+const before=parse(get('before/inboundAuthorityReuse.ts')),current=parse(get('source/account-service/inboundAuthorityReuse.ts'));
+for(const name of ['copyAuthority','createInboundAuthorityReuse','clear'])equal(declaration(before,name),declaration(current,name));
+const context=node=>{let found;walk(node,n=>{if(n.type==='VariableDeclarator'&&n.id.name==='context')found=n;});return found};equal(context(before),context(current));
+const text=get('source/account-service/inboundAuthorityReuse.ts');
+for(const proof of ['previous?.context.equals(captured) && previous.verify === verify','issuer.check(structuredClone(check.seal), check.id, check.publicKey);','cache.revision !== revision','cache.entries.size >= INBOUND_AUTHORITY_CACHE_ENTRIES','cache.bytes + size > INBOUND_AUTHORITY_CACHE_BYTES','size <= INBOUND_AUTHORITY_CACHE_BYTES','current();','return copyAuthority(previous.authority);'])assert(text.includes(proof),proof);
+assert.equal(get('source/test/account-ceremony/content-transfer.test.mjs').startsWith(get('before/content-transfer.test.mjs')),true);
+assert.equal(get('source/test/account-sessions/inbound-authority-reuse.test.mjs'),get('before/inbound-authority-reuse.test.mjs'));
+const out={status:'passed',deliveryWholeAstEqualAfterRemovingOnlyOneNewCoreCacheArgument:true,deliveryVerificationWholeAstEqualAfterRemovingReviewedCacheCreationPropertyAndLifecycleCalls:true,requestSignatureRolesExpiryLedgerServedProofsSnapshotTransactionGrantCompletionAndSigningFencesByteSemanticsUnchanged:true,allOriginalContextInputsAndPrivateProofCopySemanticsExact:true,onlyOmittedContextField:'decision rows',liveWitnessesAndPublisherAndFutureInputsRetained:true,noInFlightCoalescing:true,oldTestPrefixesExact:true};writeFileSync(new URL('source-review.json',root),JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify(out));

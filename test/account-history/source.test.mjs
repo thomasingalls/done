@@ -426,3 +426,98 @@ test('a certified replacement uses exact history and handoff coverage with only 
     /does not establish/,
   );
 });
+
+test('history progress counts only completed source and accepted-prefix verification', async (t) => {
+  const x = await fixture(t),
+    progress = [];
+  x.input.progress = (value) => progress.push(structuredClone(value));
+  const read = x.input.read;
+  let returned = 0;
+  x.input.read = async (request) => {
+    assert.equal(progress.at(-1).completed, returned);
+    const page = await read(request);
+    returned++;
+    return page;
+  };
+  const doc = await c.readHistorySource(x.input);
+  try {
+    assert.deepEqual(progress, [
+      { stage: 'baseline' },
+      { stage: 'sources', completed: 0, total: 1 },
+      { stage: 'sources', completed: 1, total: 1 },
+      { stage: 'history', completed: 0, total: 2 },
+      { stage: 'history', completed: 1, total: 2 },
+      { stage: 'history', completed: 2, total: 2 },
+    ]);
+    assert.match(doc.getText('master').toString(), /handoff-only writing/);
+    assert.match(doc.getText('master').toString(), /removed accepted/);
+  } finally {
+    doc.destroy();
+  }
+});
+
+test('a rejected history page cannot advance the displayed verified count', async (t) => {
+  const x = await fixture(t),
+    progress = [],
+    read = x.input.read;
+  x.input.progress = (value) => progress.push(structuredClone(value));
+  x.input.read = async (request) => {
+    const page = JSON.parse(Buffer.from(await read(request)).toString());
+    page[6] = (page[6][0] === '0' ? '1' : '0') + page[6].slice(1);
+    return json(page);
+  };
+  await assert.rejects(c.readHistorySource(x.input));
+  assert.deepEqual(
+    progress.filter((p) => p.stage === 'history'),
+    [{ stage: 'history', completed: 0, total: 2 }],
+  );
+});
+
+test('a failing progress observer cannot interrupt genuine history verification', async (t) => {
+  const x = await fixture(t);
+  let calls = 0;
+  x.input.progress = () => {
+    calls++;
+    throw Error('Presentation failed');
+  };
+  const doc = await c.readHistorySource(x.input);
+  try {
+    assert.equal(calls, 6);
+    assert.match(doc.getText('master').toString(), /removed accepted/);
+    assert.deepEqual(x.counts(), { requests: 2, sourceReads: 1 });
+  } finally {
+    doc.destroy();
+  }
+});
+
+test('retirement during a history read cannot publish progress or return writing', async (t) => {
+  const x = await fixture(t),
+    progress = [],
+    read = x.input.read;
+  let retired = false;
+  x.input.progress = (value) => {
+    assert.equal(retired, false, 'no progress may escape a retired lifetime');
+    progress.push(structuredClone(value));
+  };
+  x.input.lifetime.assertCurrent = () => {
+    if (retired) throw Error('Retired source');
+  };
+  x.input.read = async (request) => {
+    const page = await read(request);
+    retired = true;
+    return page;
+  };
+  await assert.rejects(c.readHistorySource(x.input), /Retired source/);
+  assert.deepEqual(
+    progress.filter((p) => p.stage === 'history'),
+    [{ stage: 'history', completed: 0, total: 2 }],
+  );
+  assert.equal(
+    x.input.keys.get(1).every((n) => n === 41),
+    true,
+  );
+  assert.equal(
+    x.input.keys.get(2).every((n) => n === 42),
+    true,
+  );
+});

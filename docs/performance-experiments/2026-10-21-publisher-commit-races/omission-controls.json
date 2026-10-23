@@ -1,0 +1,112 @@
+[
+  {
+    "name": "commit-hook",
+    "file": "account-service/delivery.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "a known committed append rejects",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "2ddedcfc35e61e3d8f55e0a620155aa043a9a2b77d11de55eda6f920dbf5ad99"
+  },
+  {
+    "name": "guard-stamp",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "a known committed append rejects",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "404664b29665348781772248d16057e8b2dee0c5fee6e29517779d85682b3959"
+  },
+  {
+    "name": "remember-stamp",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "a delayed pre-commit full census",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "880322f6a26e3fa450ce0ae4c5c3839d53e58737b030df0cfaa0b56978032172"
+  },
+  {
+    "name": "transaction-boundary",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "fabricated and pre-COMMIT",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "f1ed291ada0895b91f8393c83a1c20d4a345de1b5c6cc2eebb7589f7645440f2"
+  },
+  {
+    "name": "proposed-only",
+    "file": "account-service/delivery.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "historical retries and non-proposed",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "44fcf7e140b844231474ccd269c8c82e1b8224e6b9cb7e23e3973fedc0412938"
+  },
+  {
+    "name": "before-commit",
+    "file": "account-service/delivery.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "a known committed append rejects",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "8ee3289d2059fc260d8f787572d0c6dd9be11f8b75d8965f97416c5dc7db7186"
+  },
+  {
+    "name": "audit-owner",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "corruption quarantine",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "10a87c41e53c6bd86acd063ccc5dcf8ed791687c93b68ac7e038aef9084310a9"
+  },
+  {
+    "name": "unknown-invalidation",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "an unannounced same-connection commit",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "913bef55111b00a97c4d8cf49474cadb14758d57bcc239395e2d2fca1a731ea9"
+  },
+  {
+    "name": "fresh-comparison",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "an unannounced same-connection commit",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "312d8e8469a810c784e66e3051f3c26c23c72e8bf5804418fb356470255c45a9"
+  },
+  {
+    "name": "external-clear",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "external-version still clears",
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs",
+    "mutatedSha256": "f21123079136c639337f5e692d9cfaf7897cb891b110f1aec6a5f41111f8172d"
+  },
+  {
+    "name": "owner-bound",
+    "file": "account-service/publisherTips.ts",
+    "anchorCount": 1,
+    "returncode": 1,
+    "intendedAssertionFailure": true,
+    "pattern": "bounded preliminary",
+    "test": "test/account-service-delivery/publisher-isolation.test.mjs",
+    "mutatedSha256": "33632cc932b212df169bfa45e66cf685cd1820585eed8092a447e7eb439a41fa"
+  }
+]

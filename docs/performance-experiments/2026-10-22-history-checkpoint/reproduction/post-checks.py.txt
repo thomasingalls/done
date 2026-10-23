@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,subprocess,os,hashlib,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'};rows=[]
+assert 'Fixed-v2 journeys and independent review complete'in(r/'run-fixed-v2.log').read_text()
+def run(name,cmd):
+ with(r/(name+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=repo,env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(r/'post-check-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');assert p.returncode==0,(name,p.returncode);print(name,'passed',flush=True)
+for name,script in [('census','scripts/account-crypto-prep/run.mjs'),('inventory','scripts/release-validation/check.mjs'),('manifest','scripts/release-validation/plan.mjs')]:run(name+'-record',['node',script,'--record']);run(name+'-check',['node',script])
+files=sorted(str(p.relative_to(repo))for p in(repo/'test/account-crypto-prep').glob('*.test.mjs'))+['test/account-first-authority/registry.test.mjs','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs'];run('planning-tests',['node','--test','--test-concurrency=1',*files])
+a=json.loads((r/'before/docs/account-crypto/census.json').read_text());b=json.loads((repo/'docs/account-crypto/census.json').read_text());old={x['path']:x['sha256']for x in a['sources']};new={x['path']:x['sha256']for x in b['sources']};assert old.keys()==new.keys();changed=sorted(f for f in old if old[f]!=new[f]);assert changed==['account-service/historyCheckpoint.ts'],changed
+def labels(x):return sorted((d['label'],d['kind'],tuple(sorted(v['path']for v in d['sites'])))for d in x['domains'])
+assert labels(a)==labels(b);assert(repo/'docs/account-crypto/constructions.json').read_bytes()==(r/'before/docs/account-crypto/constructions.json').read_bytes();manifest=json.loads((repo/'docs/release-validation-manifest.json').read_text());assert manifest['rows']==json.loads((r/'before/docs/release-validation-manifest.json').read_text())['rows'];plan=json.loads((r/'manifest-record.log').read_text().splitlines()[0]);assert plan['unresolved']==337 and plan['obligations']==881
+(r/'metadata-review.json').write_text(json.dumps({'status':'passed','onlySourceHashChanged':changed,'sources':len(new),'domainCount':len(b['domains']),'domainLabelsKindsAndSitePathsExact':True,'allConstructionBytesExact':True,'all881ObligationRowsExact':True,'unresolved':337,'qualificationStatus':manifest['status'],'planningOnly':True},indent=2)+'\n');print('Metadata review passed; qualification state retained',flush=True)

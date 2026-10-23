@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "deliveryWholeAstEqualAfterRemovingOnlyOneNewCoreCacheArgument": true,
+  "deliveryVerificationWholeAstEqualAfterRemovingReviewedCacheCreationPropertyAndLifecycleCalls": true,
+  "requestSignatureRolesExpiryLedgerServedProofsSnapshotTransactionGrantCompletionAndSigningFencesByteSemanticsUnchanged": true,
+  "allOriginalContextInputsAndPrivateProofCopySemanticsExact": true,
+  "onlyOmittedContextField": "decision rows",
+  "liveWitnessesAndPublisherAndFutureInputsRetained": true,
+  "noInFlightCoalescing": true,
+  "oldTestPrefixesExact": true
+}

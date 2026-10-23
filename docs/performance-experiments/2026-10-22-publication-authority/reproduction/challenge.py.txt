@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,os,subprocess,shutil
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'}
+cases=[
+ ('restore-per-publication-reconstruction','account-service/delivery.ts','auth = selectPublisher(await publicationAuthority(s, issuer, reuse), s.publisher);','auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);','publication authority is verified once'),
+ ('omit-future-native-context','account-service/delivery.ts','promotion: { ...s.promotion, delivery_witness: null },','promotion: { ...s.promotion, delivery_witness: null, future_publication: null },','publication authority context retains a future'),
+ ('omit-fresh-ledger-witness','account-service/delivery.ts','await verifyLedgerWitness(witness, auth, count, commitment);','/* deliberately omitted witness check */','publication authority reuse still rejects a damaged fresh'),
+ ('omit-fresh-custody-replay','account-service/inboundAuthorityReuse.ts','for (const check of previous.checks)','for (const check of [])','publication authority reuse keeps fresh native custody'),
+ ('omit-final-native-guard','account-service/delivery.ts','if (!unchanged(db, s, reuse)) {','if (false && !unchanged(db, s, reuse)) {','publication authority reuse retains the four-attempt'),
+ ('omit-current-grant','account-service/delivery.ts',None,None,'publication authority reuse cannot bypass a freshly revoked'),
+];rows=[]
+for name,f,a,b,pattern in cases:
+ d=r/('mutant-'+name);shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);p=d/f;t=p.read_text()
+ if name=='omit-final-native-guard':
+  i=t.index('export async function decideSubmission(');j=t.index('export interface ReadIssuer',i);body=t[i:j];assert body.count(a)==1;t=t[:i]+body.replace(a,b)+t[j:]
+ elif name=='omit-current-grant':
+  i=t.index('export async function decideSubmission(');j=t.index('export interface ReadIssuer',i);body=t[i:j];start=body.index('        const completeAuthorization = issuer.authorize?.');stop=body.index('        // Reopen custody',start);body=body[:start]+'        const completeAuthorization = undefined;\n'+body[stop:];t=t[:i]+body+t[j:]
+ else:assert t.count(a)==1,(name,t.count(a));t=t.replace(a,b)
+ p.write_text(t);cmd=['node','--test','--test-name-pattern='+pattern,'test/account-service-delivery/publisher-commit-races.test.mjs']
+ with(r/('control-'+name+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ assert v.returncode!=0,name;log=(r/('control-'+name+'.log')).read_text();assert'AssertionError'in log or'ERR_ASSERTION'in log,name;rows.append({'control':name,'detected':True,'exitCode':v.returncode,'pattern':pattern});print(name,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')

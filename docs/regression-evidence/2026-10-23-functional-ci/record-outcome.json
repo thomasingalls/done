@@ -1,0 +1,11 @@
+{
+  "status": "recorded",
+  "completedWrittenBeforeDecisions": true,
+  "completedAtNs": 1792715148244801000,
+  "recordedAtNs": 1792715148246253000,
+  "allRoutineFunctionalCommandsPassed": true,
+  "oneExistingNamedSkipRetained": true,
+  "noRuntimeChangesOrQualificationCredit": true,
+  "closingTreeBoundRefreshPending": "execute after packet/patch freeze; keep sidecar evidence",
+  "publication": "none"
+}

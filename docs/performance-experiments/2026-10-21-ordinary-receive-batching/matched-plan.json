@@ -1,0 +1,114 @@
+[
+  {
+    "name": "primary-75-01-baseline",
+    "source": "baseline",
+    "mode": "catchup",
+    "delay": 75,
+    "pair": 1,
+    "role": "reference"
+  },
+  {
+    "name": "primary-75-01-candidate-final",
+    "source": "candidate-final",
+    "mode": "catchup",
+    "delay": 75,
+    "pair": 1,
+    "role": "candidate"
+  },
+  {
+    "name": "primary-75-02-candidate-final",
+    "source": "candidate-final",
+    "mode": "catchup",
+    "delay": 75,
+    "pair": 2,
+    "role": "candidate"
+  },
+  {
+    "name": "primary-75-02-baseline",
+    "source": "baseline",
+    "mode": "catchup",
+    "delay": 75,
+    "pair": 2,
+    "role": "reference"
+  },
+  {
+    "name": "primary-75-03-baseline",
+    "source": "baseline",
+    "mode": "catchup",
+    "delay": 75,
+    "pair": 3,
+    "role": "reference"
+  },
+  {
+    "name": "primary-75-03-candidate-final",
+    "source": "candidate-final",
+    "mode": "catchup",
+    "delay": 75,
+    "pair": 3,
+    "role": "candidate"
+  },
+  {
+    "name": "primary-0-01-baseline",
+    "source": "baseline",
+    "mode": "catchup",
+    "delay": 0,
+    "pair": 1,
+    "role": "reference"
+  },
+  {
+    "name": "primary-0-01-candidate-final",
+    "source": "candidate-final",
+    "mode": "catchup",
+    "delay": 0,
+    "pair": 1,
+    "role": "candidate"
+  },
+  {
+    "name": "primary-0-02-candidate-final",
+    "source": "candidate-final",
+    "mode": "catchup",
+    "delay": 0,
+    "pair": 2,
+    "role": "candidate"
+  },
+  {
+    "name": "primary-0-02-baseline",
+    "source": "baseline",
+    "mode": "catchup",
+    "delay": 0,
+    "pair": 2,
+    "role": "reference"
+  },
+  {
+    "name": "primary-0-03-baseline",
+    "source": "baseline",
+    "mode": "catchup",
+    "delay": 0,
+    "pair": 3,
+    "role": "reference"
+  },
+  {
+    "name": "primary-0-03-candidate-final",
+    "source": "candidate-final",
+    "mode": "catchup",
+    "delay": 0,
+    "pair": 3,
+    "role": "candidate"
+  },
+  {
+    "name": "foreground-0-baseline",
+    "source": "baseline",
+    "mode": "foreground",
+    "delay": 0,
+    "pair": 1,
+    "role": "reference"
+  },
+  {
+    "name": "foreground-0-candidate-final",
+    "source": "candidate-final",
+    "mode": "foreground",
+    "delay": 0,
+    "pair": 1,
+    "role": "candidate"
+  }
+]

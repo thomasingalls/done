@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "1-A",
+      "bidirectionalHttpNativeMatches": 200,
+      "receiverMisses": 79,
+      "receiverAuthoritySignatures": 6083,
+      "signatureCountExactly77PerObservedMiss": true,
+      "observedPublisherAndLiveWitnessTupleAndContextOneToOne": true,
+      "nativeAcceptedEnvelopesMatched": 77,
+      "availableReturnedEnvelopeAndProofBytesMatchNativeLedger": true,
+      "allPositionTimelineStampsAndMissingnessIndependentlyReconstructed": true,
+      "bodyProjectionUnavailable": 63,
+      "unavailableAlsoHasRequestFailed": 63,
+      "allNativeHeadersStable": true
+    },
+    {
+      "name": "2-B",
+      "bidirectionalHttpNativeMatches": 180,
+      "receiverMisses": 70,
+      "receiverAuthoritySignatures": 5390,
+      "signatureCountExactly77PerObservedMiss": true,
+      "observedPublisherAndLiveWitnessTupleAndContextOneToOne": true,
+      "nativeAcceptedEnvelopesMatched": 71,
+      "availableReturnedEnvelopeAndProofBytesMatchNativeLedger": true,
+      "allPositionTimelineStampsAndMissingnessIndependentlyReconstructed": true,
+      "bodyProjectionUnavailable": 58,
+      "unavailableAlsoHasRequestFailed": 58,
+      "allNativeHeadersStable": true
+    },
+    {
+      "name": "3-D",
+      "bidirectionalHttpNativeMatches": 238,
+      "receiverMisses": 68,
+      "receiverAuthoritySignatures": 5236,
+      "signatureCountExactly77PerObservedMiss": true,
+      "observedPublisherAndLiveWitnessTupleAndContextOneToOne": true,
+      "nativeAcceptedEnvelopesMatched": 120,
+      "availableReturnedEnvelopeAndProofBytesMatchNativeLedger": true,
+      "allPositionTimelineStampsAndMissingnessIndependentlyReconstructed": true,
+      "bodyProjectionUnavailable": 72,
+      "unavailableAlsoHasRequestFailed": 72,
+      "allNativeHeadersStable": true
+    },
+    {
+      "name": "4-C",
+      "bidirectionalHttpNativeMatches": 244,
+      "receiverMisses": 74,
+      "receiverAuthoritySignatures": 5698,
+      "signatureCountExactly77PerObservedMiss": true,
+      "observedPublisherAndLiveWitnessTupleAndContextOneToOne": true,
+      "nativeAcceptedEnvelopesMatched": 120,
+      "availableReturnedEnvelopeAndProofBytesMatchNativeLedger": true,
+      "allPositionTimelineStampsAndMissingnessIndependentlyReconstructed": true,
+      "bodyProjectionUnavailable": 68,
+      "unavailableAlsoHasRequestFailed": 68,
+      "allNativeHeadersStable": true
+    }
+  ],
+  "limitations": "Body retrieval/projection unavailable for some requestfailed events; raw failures retained, no whole-body timing quantile inferred from incomplete observations. All publications are independently matched to verified native accepted envelopes. UI progress/timing is not protocol authority."
+}

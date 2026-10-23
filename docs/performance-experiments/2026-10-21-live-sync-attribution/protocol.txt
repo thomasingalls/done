@@ -1,0 +1,101 @@
+LIVE SYNC / REOPEN CATCH-UP — BOUNDED ATTRIBUTION PHASE
+2026-10-21. Prospective protocol; not executed. No runtime repair selected.
+
+Operator observation
+Production text arrives slowly in chunks, especially while catching up after opening. Reported across
+Android Chrome, Firefox and desktop Chrome on high-throughput internet. The requested priority is
+ordinary content synchronization. Skim/gather remains a design exploration, with no implementation.
+
+Established before measurement
+- Read-only public HTML/entry-asset inspection identifies faf465f7 and coordinated-2000.
+- Current branch HEAD is 27dc7d78, twenty commits after faf465f7, with a clean index/checkout.
+- Core accountReceive, accountSyncDriver, receivePrefetch, receiveGroup, admissionQueue, notifications
+  and accountBatchPolicy files are unchanged between those revisions.
+- Current publication eligibility uses 300 ms quiet / 2000 ms maximum windows. Queue, durability,
+  verification, requests and retries add time; 2000 ms is not an end-to-end delivery bound.
+- Normal receiving signs limit-one queries, prepares up to four per owner turn, prefetches at most
+  two and preserves original single-entry receipts. The branch's dense transient history pages
+  belong to the device-approval source reconstruction path. Do not confuse the two workloads.
+- These facts supply hypotheses, not measurements of this person's account or production latency.
+
+Decision
+Choose the next bounded repair to reduce (a) foreground input-to-visible-peer delay and (b) the time
+needed to display writing already accepted while a receiver was away. Attribute intentional batching,
+queue/storage work, server/native work, network intervals, notification delivery, and receiver
+verification/promotion separately. Do not declare a solution from setup timing or a final export alone.
+
+Design / units
+Mechanistic benchmark on disposable originally enrolled and invitation-joined browsers. First pin and
+reproduce the served faf465f7 frontend and API. Reuse a suitable complete synthetic seed if its private
+snapshot, hashes and authority remain usable; otherwise create a fresh fixture through actual UI
+enrollment with virtual credentials, recording its identity. No production profiles, accounts or codes.
+The former October-11 fixture's metadata directories exist, but usable private seed availability has
+not been established; no successful fixture restore is claimed by this protocol.
+
+A complete restored browser/service journey is the analysis unit. Bursts, keys, reads and pages are
+dependent within that journey and are not independent replicates. The estimands are descriptive
+per-journey timing distributions, progress curves, work counts and the location of elapsed waits.
+This phase is not a population or physical-phone speedup estimate.
+
+Workloads fixed before timing
+1. Foreground: both browsers already unlocked and caught up, one idle and one writing. Thirty short
+   isolated bursts, then 120 regularly offered character inputs at 150 ms cadence. Record offered
+   input times, actual local acceptance and peer appearance. Do not wait for a peer after every key.
+2. Reopen/catch-up: a realistic 120-card / approximately 12 KB Goals workspace with 600 accepted
+   updates missing at the receiver. Reopen it, measure initial writing appearance and full convergence.
+   Offer new writing on both devices during draining; distinguish old backlog from new input latency.
+3. Run each workload without added delay, then with 75 ms added per account request using the same
+   bounded proxy. This changes request latency, not bandwidth, phone CPU, TLS or the public cluster.
+   Ordinary timing and any instrumented/CPU-profiled diagnostic run remain separate.
+
+Instruments
+- Input event -> local admitted text -> send request start -> response -> receiver hint/read start ->
+  verified durable promotion -> first DOM observation of the exact peer text, all from the same host
+  timebase. DOM appearance is a display proxy, not a physical screen-paint timestamp.
+- An HTTP 200 is only transport evidence. Distinguish it from decoded and verified domain acceptance;
+  eventual complete convergence is checked independently.
+- Record server forwarding/request durations and status, useful accepted positions per read,
+  outstanding reads, repeated cursors, empty/own-stream reads, observed retry/backoff and 429/409 counts.
+- Record notification readiness/content-frame times. Establish whether hint delivery is timely before
+  attributing the delay to SSE or proposing WebSockets.
+- Existing numeric ledger counters, bounded function timings and CPU samples separate active JS,
+  native/storage waits and scheduler waits. Nested timers cannot be summed as disjoint elapsed work.
+- Record initial/deep history size and direction; a shallow smooth example does not establish deep
+  performance. Capture uninterrupted-input and peer-arrival curves, not only an eventual success.
+- Durable logs contain numeric timing/counts/status/code paths, not tokens, keys or personal writing.
+
+Guardrails
+All original signatures, current authority/expiry/prefix checks, exact bytes, durable-before-visible
+receiving, journal-before-local-acceptance, bounded queues/requests and cancellation remain required.
+Keep text/whole-export equality, both-way edits, undo/redo preserving received edits, lock/reopen and
+offline recovery. Do not prune accepted evidence, raise rate limits or substitute editor memory as a
+shortcut. Keep generalized qualification paused. No merge, publication or deployment is authorized.
+
+Runbook / stopping
+Freeze source/build/seed/harness/environment before timing. Use Node 24, one ordinary run at a time,
+one browser worker, no concurrent builds/validators and no user-profile access. Record known competing
+host load. Catch-up has a fixed 600-second ceiling; a timeout remains failed/censored, not a result
+made successful by extending its deadline. Preserve every failed setup and completed run.
+
+Report both ordinary conditions and the separate diagnostic. If an attribution is ambiguous or drift
+exceeds 15%, run the ordinary conditions in reverse order, retaining both; do not cherry-pick. There
+is no claimed statistical precision from one or two host runs. Functional device-family coverage is
+separate; Chromium emulation cannot establish actual Android Chrome or Firefox performance.
+
+Selection rule
+- If send eligibility accounts for the major live-delay component, compare a shorter publication
+  window independently of local disk-flush batching. The previous two-second policy was chosen for
+  CPU/input behavior; do not reintroduce its old flush stalls by blindly shrinking both windows.
+- If backlog costs concentrate in repeated per-read preparation/authority/commit work, investigate
+  denser reads in the normal receiver using the branch's transient-page experience while retaining
+  per-entry verification and existing durable receipt compatibility. Measure amortization before
+  selecting a new codec, larger group or writer behavior.
+- If notification or native/service work dominates, follow the observed path instead. A high-bandwidth
+  connection does not establish small per-request latency, but network delay must be measured rather
+  than assumed.
+- Close this phase with source identities, complete outcomes and a chosen falsifiable next mechanism.
+  No repair or end-user speed claim is complete until its matched comparison and guardrails pass.
+
+Pre-timing clarification after fixture pilots: there are 121 cards (including the helper's original writing card), approximately 12 KB Goals, plus two small boundary sentinels. Foreground uses the exact v2 caught-up snapshot with a fixed 3-second online warm-up outside timing. Catch-up retains B offline until timing. Backlog generation uses natural publication after each character and verifies exactly 600 new accepted positions; synthetic pagehide is unsuitable because it retires workspace authority.
+
+Fixture qualification before primary timing: the first two foreground observations used only a 35-byte master.md and are retained as pilots. Corrected v3 is checked by complete master.md exports equal to the intended 13,000-character Goals text at both peers; this replaces the insufficient viewport-text check. Primary runs use v3 snapshots and assert >=12,000 master characters before timing. The original 121-card, two-way sentinel and exact-600 position requirements remain.
