@@ -1,0 +1,29 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/regression-evidence/2026-10-23-native-fixtures';sha=lambda b:hashlib.sha256(b).hexdigest();rows=[]
+def cp(f,to,z=False):
+ f=Path(f);data=f.read_bytes();dest=p/(to+'.gz'if z else to);dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(gzip.compress(data,mtime=0)if z else data);rows.append({'source':str(f.relative_to(r)),'artifact':str(dest.relative_to(p)),'sourceSha256':sha(data),'artifactSha256':sha(dest.read_bytes())})
+for f in ['protocol.md','starting.json','static-leads.json','historical-run-receipts.json','historical-case-ast-review.json','fixed-bridge-review.json','history-classification.json','released-ancestry.json','source-review.json','challenge.json','format-review.json','affected-receipt.json','fixture-check-receipt.json','planning-receipts.json','metadata-review.json','applied-fixtures.json','record-outcome.json','preparation-correction.json','review-corrections.json','patch28-origin-fact-correction.json','patch28-sidecar-before-correction.json','patch28-sidecar-corrected.json']:
+ cp(r/f,f,z=f in ['starting.json','historical-run-receipts.json','patch28-sidecar-before-correction.json','patch28-sidecar-corrected.json'])
+for f in [*r.glob('*.py'),*r.glob('*.mjs')]:cp(f,'reproduction/'+f.name+'.txt')
+for f in sorted(r.glob('*.log')):
+ if not f.name.startswith(('package','prepare-patch','post')):cp(f,'checks/'+f.name,True)
+for f in sorted(r.glob('*-source.diff')):cp(f,'source-diffs/'+f.name,True)
+for f in sorted(r.glob('*-test-bridge.diff')):cp(f,'source-diffs/'+f.name,True)
+for v in json.loads((r/'historical-run-receipts.json').read_text()):
+ folder=v['boundary']+'-'+v['arm'];cp(r/folder/'historical-source-identity.json','historical-identities/'+folder+'.json')
+# The new independent checker corrects only the sidecar fact; retain original archived checker source too.
+p28=Path('/private/tmp/done-prelude-proof-reuse-20261022');out=p/'reproduction/patch28-post-v2.py.txt';out.write_bytes((p28/'post-v2.py').read_bytes());(p/'artifact-provenance.json').write_text(json.dumps(rows,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes())
+for f in p.rglob('*'):
+ if f.is_file():
+  data=f.read_bytes();data=gzip.decompress(data)if f.suffix=='.gz'else data;assert not any(v in data for v in secrets),f
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownBenchmarkPrivateValues':len(secrets),'matches':0,'scope':'known-value and selected-file audit; disposable unit model public test material retained; no profiles/native databases/private key files/codes, not universal DLP'},indent=2)+'\n');(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'));print('29 packet files',sum(f.is_file()for f in p.rglob('*')))

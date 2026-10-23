@@ -16601,7 +16601,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "db394c1c45a40062c8cdb1f162736b7a4c1c5241a229cdbc52e41e11fa67aa16"
+      "sha256": "5dd9806cd0fddbe6d19192e56e33e75c64f954bf07810ddc51d454b3e836daa3"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",
@@ -17201,7 +17201,7 @@
     },
     {
       "path": "test/account-membership/activation-entry.ts",
-      "sha256": "160927ce487d30736802cc016c0c9b552c1613d591329202caeb4c9410c53fda"
+      "sha256": "b9b7667b494f0fbf615064cb9ece92298490b3fb1c252625d7e8ae0628dc09f3"
     },
     {
       "path": "test/account-membership/admission.test.mjs",
@@ -17225,7 +17225,7 @@
     },
     {
       "path": "test/account-membership/comparison-entry.ts",
-      "sha256": "8ab4a49307c43303a5595cca01c9430c5adf1adfc35db8721257fdfc598dd4c8"
+      "sha256": "ac6ce72148172ffb933fcdd1ffba208ba9cc1188cd16a70e0512349c3e07f34f"
     },
     {
       "path": "test/account-membership/comparison.test.mjs",

@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "policy": "only layout edits wholly within new/changed lines; every pre-existing layout hunk retained",
+  "files": [
+    {
+      "file": "test/account-ceremony/content-transfer.test.mjs",
+      "newBlocksFormatted": 6,
+      "preExistingFormattingUntouched": [
+        {
+          "oldStart": 7491,
+          "oldEnd": 7494,
+          "reason": "includes pre-existing lines; retained untouched"
+        },
+        {
+          "oldStart": 7496,
+          "oldEnd": 7496,
+          "reason": "includes pre-existing lines; retained untouched"
+        },
+        {
+          "oldStart": 7513,
+          "oldEnd": 7515,
+          "reason": "includes pre-existing lines; retained untouched"
+        },
+        {
+          "oldStart": 7518,
+          "oldEnd": 7522,
+          "reason": "includes pre-existing lines; retained untouched"
+        },
+        {
+          "oldStart": 7526,
+          "oldEnd": 7526,
+          "reason": "includes pre-existing lines; retained untouched"
+        },
+        {
+          "oldStart": 7530,
+          "oldEnd": 7532,
+          "reason": "includes pre-existing lines; retained untouched"
+        },
+        {
+          "oldStart": 7553,
+          "oldEnd": 7553,
+          "reason": "includes pre-existing lines; retained untouched"
+        }
+      ]
+    },
+    {
+      "file": "test/account-membership/activation-entry.ts",
+      "newBlocksFormatted": 0,
+      "preExistingFormattingUntouched": []
+    },
+    {
+      "file": "test/account-membership/comparison-entry.ts",
+      "newBlocksFormatted": 0,
+      "preExistingFormattingUntouched": []
+    }
+  ]
+}

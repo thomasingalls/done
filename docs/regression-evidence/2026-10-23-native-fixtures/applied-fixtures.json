@@ -1,0 +1,5 @@
+{
+  "test/account-ceremony/content-transfer.test.mjs": "5dd9806cd0fddbe6d19192e56e33e75c64f954bf07810ddc51d454b3e836daa3",
+  "test/account-membership/activation-entry.ts": "b9b7667b494f0fbf615064cb9ece92298490b3fb1c252625d7e8ae0628dc09f3",
+  "test/account-membership/comparison-entry.ts": "ac6ce72148172ffb933fcdd1ffba208ba9cc1188cd16a70e0512349c3e07f34f"
+}

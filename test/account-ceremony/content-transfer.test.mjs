@@ -446,7 +446,9 @@ for (const combined of [false, true])
     );
     assert.throws(() => parseEnrollmentChallenge({ ...begun.challenge, v: 1 }));
     assert.throws(() => parseEnrollmentContext({ ...c, v: 1 }));
-    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 2 }));
+    // Version two also supports recovery from epoch two; version two at epoch one is invalid.
+    assert.equal(parseEnrollmentContext({ ...c, epoch: 2 }).epoch, 2);
+    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 1 }));
     assert.equal(
       (await x.enroll('finish', nextProof(x, entry, begun.challenge, 1))).refusal,
       'invalid-proof',
@@ -679,7 +681,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
       name,
     );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1278,7 +1280,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2281,6 +2283,8 @@ test('continuation certification verifies frozen publisher witnesses and refuses
   mutate(x, (db) =>
     db.prepare('UPDATE membership_admissions SET boundaries=?').run(row.boundaries),
   );
+  // Reopen after restoring the first fault so the missing-witness check owns a fresh verifier.
+  x.f.restart();
   const witness = x.f.rows('publisher_witnesses')[0];
   mutate(x, (db) => db.exec('DELETE FROM publisher_witnesses'));
   assert.equal((await d.transfer(install)).ok, false);
@@ -2289,6 +2293,8 @@ test('continuation certification verifies frozen publisher witnesses and refuses
       .prepare('INSERT INTO publisher_witnesses VALUES (?,?,?)')
       .run(witness.account_id, witness.credential_id, witness.witness),
   );
+  assert.equal((await d.transfer(install)).ok, false, 'restored bytes cannot clear quarantine');
+  x.f.restart();
   const result = await d.transfer(install);
   assert.equal(result.ok, true, JSON.stringify(result));
   const stored = x.f.rows('membership_transfers')[0];
@@ -2331,7 +2337,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2451,6 +2457,8 @@ test('three publisher ledgers preserve queued payloads, refused parents and live
   });
   assert.equal((await read(x, damaged)).kind, 'unknown');
   mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run(row.boundaries));
+  assert.equal((await read(x, damaged)).kind, 'unknown', 'byte restoration retains quarantine');
+  x.f.restart();
   page(x, await read(x, damaged), damaged, retained.get(x.context.existing.id));
 });
 
@@ -3544,6 +3552,9 @@ test('later native slot resumes activation after index interruption and rejects 
   await page.exposeFunction('fixtureCheckpoint', (body) =>
     x.authority.owner.readMembershipCheckpoint(x.f.core, body),
   );
+  await page.exposeFunction('fixtureHistory', (body) =>
+    x.authority.owner.exchangeHistoryCheckpoint(x.f.core, body),
+  );
   await page.exposeFunction('fixtureRead', async (bytes) => {
     const result = await x.authority.owner.readInbound(x.f.core, new Uint8Array(bytes));
     assert.equal(result.kind, 'decision');
@@ -3772,6 +3783,30 @@ async function compiledComparison() {
   })();
   return comparisonClient;
 }
+async function comparisonSnapshot(client, parent, producer, candidate, sign) {
+  const doc = new client.Y.Doc({ gc: false });
+  const key = new Uint8Array(32).fill(42);
+  try {
+    doc.getMap('meta').set('schemaVersion', 4);
+    const state = client.membershipState(parent);
+    doc
+      .getMap('meta')
+      .set('actor:' + state.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+    doc.getText('master').insert(0, 'Model source writing retained through comparison.');
+    return await client.createReplacementCheckpoint(
+      doc,
+      doc,
+      key,
+      parent,
+      producer,
+      candidate,
+      sign,
+    );
+  } finally {
+    key.fill(0);
+    doc.destroy();
+  }
+}
 for (const approver of ['existing', 'new'])
   test(`browser comparison by ${approver} composes with the real continuation relay and key handoff after restart`, async (t) => {
     const client = await compiledComparison(),
@@ -3796,12 +3831,23 @@ for (const approver of ['existing', 'new'])
         wrapContent: async () => ({ enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }),
         sealIncoming: async () => ({ sequence: 1, ct: 'ef'.repeat(48) }),
         checkInstalled: async (key) => assert.deepEqual(key, durable[role].content.key),
+        withInstalledKey: async (seal, _hash, work) => {
+          assert.deepEqual(seal, durable[role].content.key);
+          const key = new Uint8Array(32).fill(42);
+          try {
+            return await work(key);
+          } finally {
+            key.fill(0);
+          }
+        },
       };
     }
     const save = async (role) => {
       durable[role] = structuredClone(current[role]);
     };
     const request = async (path, body) => {
+      if (path === '/account/membership/v3/checkpoint')
+        return x.authority.owner.exchangeReplacementCheckpoint(x.f.core, body);
       if (path === '/account/membership/v2/transfer')
         return x.authority.owner.transferMembership(x.f.core, body);
       assert.equal(path, '/account/membership/v2/ceremony');
@@ -3838,7 +3884,19 @@ for (const approver of ['existing', 'new'])
       const result = await client.continueMembershipHandoff(
         current[role],
         owners[role],
-        { base: x.base, membership: parent, certification },
+        {
+          base: x.base,
+          membership: parent,
+          certification,
+          prepareReplacement: () =>
+            comparisonSnapshot(
+              client,
+              parent,
+              e.context.existing.id,
+              e.context.candidate.id,
+              (bytes) => signed(e.keys.existing, bytes),
+            ),
+        },
         () => save(role),
         request,
       );
@@ -4078,6 +4136,25 @@ for (const approver of ['existing', 'new'])
         wrapContent: async () => ({ enc: 'ab'.repeat(32), ct: 'cd'.repeat(48) }),
         sealIncoming: async () => ({ sequence: 1, ct: 'ef'.repeat(48) }),
         checkInstalled: async (key) => assert.deepEqual(key, durable[role].comparison.content.key),
+        prepareReplacement: async (authority, candidate) => {
+          const { history } = await client.verifyMembershipChain(authority.proofs, authority.base);
+          return comparisonSnapshot(
+            client,
+            client.historyMembership(history),
+            participants[role].id,
+            candidate,
+            (bytes) => signed(keys[role], bytes),
+          );
+        },
+        withInstalledKey: async (seal, _hash, work) => {
+          assert.deepEqual(seal, durable[role].comparison.content.key);
+          const key = new Uint8Array(32).fill(42);
+          try {
+            return await work(key);
+          } finally {
+            key.fill(0);
+          }
+        },
       };
     }
     const run = (role, input) =>
@@ -4098,6 +4175,8 @@ for (const approver of ['existing', 'new'])
             assert.deepEqual(base, x.base);
             if (path.includes('/enrollment/')) return x.enroll(path.split('/').at(-1), body);
             if (path.endsWith('/admit')) return authority.owner.admitMembership(x.f.core, body);
+            if (path === '/account/membership/v3/checkpoint')
+              return authority.owner.exchangeReplacementCheckpoint(x.f.core, body);
             if (path.endsWith('/ceremony')) {
               const result = await authority.owner.relayMembershipCeremony(x.f.core, body);
               if (body.action === 'decide' && loseDecision) {
@@ -4529,7 +4608,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4839,7 +4918,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
   assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
   db.close();
@@ -5189,7 +5268,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   assert.deepEqual(
     db.prepare('SELECT * FROM removal_preparations').all(),
     x.f.rows('removal_preparations'),
@@ -6113,7 +6192,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
     upgradeFromV20: true,
   }).close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 25);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 26);
   for (const [table, original] of rows)
     assert.deepEqual(db.prepare('SELECT * FROM ' + table).all(), original, table);
   assert.deepEqual(db.prepare('SELECT * FROM replacement_checkpoints').all(), []);

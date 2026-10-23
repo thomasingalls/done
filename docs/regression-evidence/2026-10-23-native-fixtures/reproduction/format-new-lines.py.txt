@@ -1,0 +1,15 @@
+from pathlib import Path
+import subprocess,os,difflib,shutil,json
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};out=r/'formatted';out.mkdir();rows=[]
+for f in ['test/account-ceremony/content-transfer.test.mjs','test/account-membership/activation-entry.ts','test/account-membership/comparison-entry.ts']:
+ before=(r/'before'/f).read_text().splitlines(keepends=True);current=(s/f).read_text().splitlines(keepends=True);p=out/Path(f).name;p.write_text(''.join(current));v=subprocess.run(['node','node_modules/oxfmt/bin/oxfmt','--config',str(repoConfig:=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/.oxfmtrc.json')),'--write',str(p)],cwd=s,env=env,capture_output=True,text=True);assert v.returncode==0;formatted=p.read_text().splitlines(keepends=True);added=set()
+ for tag,a,b,c,d in difflib.SequenceMatcher(None,before,current,autojunk=False).get_opcodes():
+  if tag!='equal':added.update(range(c,d))
+ changes=[];deferred=[]
+ for tag,a,b,c,d in difflib.SequenceMatcher(None,current,formatted,autojunk=False).get_opcodes():
+  if tag=='equal':continue
+  if all(i in added or not current[i].strip() for i in range(a,b))and(a!=b or a in added or a-1 in added):changes.append((a,b,c,d))
+  else:deferred.append({'oldStart':a+1,'oldEnd':b,'reason':'includes pre-existing lines; retained untouched'})
+ for a,b,c,d in reversed(changes):current[a:b]=formatted[c:d]
+ (s/f).write_text(''.join(current));rows.append({'file':f,'newBlocksFormatted':len(changes),'preExistingFormattingUntouched':deferred});print(f,len(changes),'new blocks only',flush=True)
+(r/'format-review.json').write_text(json.dumps({'status':'passed','policy':'only layout edits wholly within new/changed lines; every pre-existing layout hunk retained','files':rows},indent=2)+'\n')

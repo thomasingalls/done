@@ -18,6 +18,7 @@ import { openOwnedSyncingAccountWorkspace } from '../../src/crdt/accountReceive'
 declare global {
   interface Window {
     fixtureCheckpoint(body: unknown): Promise<unknown>;
+    fixtureHistory(body: unknown): Promise<unknown>;
     fixtureRead(bytes: number[]): Promise<number[]>;
     fixturePasskey(challenge: number[]): Promise<{
       credentialId: string;
@@ -116,7 +117,11 @@ export async function install(slotId: string, code: string, authority: JoinedAut
       {
         signal: signal(),
         save: () => owner.save(p),
-        request: (_path, body) => window.fixtureCheckpoint(body),
+        request: (path, body) => {
+          if (path === '/account/membership/v2/checkpoint') return window.fixtureCheckpoint(body);
+          if (path === '/account/history/v1/checkpoint') return window.fixtureHistory(body);
+          throw Error('Unexpected activation fixture path: ' + path);
+        },
         read: async (bytes) => new Uint8Array(await window.fixtureRead([...bytes])),
       },
     );

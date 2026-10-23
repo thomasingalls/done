@@ -1,0 +1,7 @@
+{
+  "initialWholeFileAssumption": "classify-history.py correctly refused to attribute when main test-file hash differed; selected cases are unchanged but673 adds a shared history route and unrelated new tests, andc609 adds an audit in another case",
+  "response": "independent selected-case AST/options/signature comparison plus same post-commit test bridge on complete passing parent production closure",
+  "initialAstSelector": "clear/external uses a template; human expanded name did not match literal AST title",
+  "responseAstSelector": "match the shared static template suffix and compare the entire same test body for both clear/external",
+  "preserve": "original scripts, historical runs and all failed reviews; no measured or historical attempt replaced"
+}

@@ -1,0 +1,73 @@
+from pathlib import Path
+import re
+r=Path(__file__).parent;s=r/'source';p=s/'test/account-ceremony/content-transfer.test.mjs';t=p.read_text();original=t
+# Keep the version/epoch refusals, but use the current supported protocol boundaries.
+a='    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 2 }));';b='''    // Version two also supports recovery from epoch two; version two at epoch one is invalid.
+    assert.equal(parseEnrollmentContext({ ...c, epoch: 2 }).epoch, 2);
+    assert.throws(() => parseEnrollmentContext({ ...c, epoch: 1 }));''';assert t.count(a)==1;t=t.replace(a,b)
+a=re.findall(r'(assert\.equal\([^;]*?user_version[^;]*?,\s*)25(\s*\);)',t);assert len(a)==7,len(a)
+t=re.sub(r'(assert\.equal\([^;]*?user_version[^;]*?,\s*)25(\s*\);)',r'\g<1>26\2',t)
+a='''  const witness = x.f.rows('publisher_witnesses')[0];
+  mutate(x, (db) => db.exec('DELETE FROM publisher_witnesses'));''';b='''  // Reopen after restoring the first fault so the missing-witness check owns a fresh verifier.
+  x.f.restart();
+  const witness = x.f.rows('publisher_witnesses')[0];
+  mutate(x, (db) => db.exec('DELETE FROM publisher_witnesses'));''';assert t.count(a)==1;t=t.replace(a,b)
+a='''  const result = await d.transfer(install);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  const stored = x.f.rows('membership_transfers')[0];''';b='''  assert.equal((await d.transfer(install)).ok, false, 'restored bytes cannot clear quarantine');
+  x.f.restart();
+  const result = await d.transfer(install);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  const stored = x.f.rows('membership_transfers')[0];''';assert t.count(a)==1;t=t.replace(a,b)
+a="  mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run(row.boundaries));\n  page(x, await read(x, damaged), damaged, retained.get(x.context.existing.id));";b="  mutate(x, (db) => db.prepare('UPDATE membership_transfers SET boundaries=?').run(row.boundaries));\n  assert.equal((await read(x, damaged)).kind, 'unknown', 'byte restoration retains quarantine');\n  x.f.restart();\n  page(x, await read(x, damaged), damaged, retained.get(x.context.existing.id));";assert t.count(a)==1;t=t.replace(a,b)
+a="  await page.exposeFunction('fixtureCheckpoint', (body) =>\n    x.authority.owner.readMembershipCheckpoint(x.f.core, body),\n  );";b=a+"\n  await page.exposeFunction('fixtureHistory', (body) =>\n    x.authority.owner.exchangeHistoryCheckpoint(x.f.core, body),\n  );";assert t.count(a)==1;t=t.replace(a,b)
+# Use real snapshot crypto in the same browser bundle/brand realm; these existing fixtures model custody.
+marker='for (const approver of [\'existing\', \'new\'])\n  test(`browser comparison by ${approver}'
+helper='''async function comparisonSnapshot(client, parent, producer, candidate, sign) {
+  const doc = new client.Y.Doc({ gc: false });
+  const key = new Uint8Array(32).fill(42);
+  try {
+    doc.getMap('meta').set('schemaVersion', 4);
+    const state = client.membershipState(parent);
+    doc.getMap('meta').set('actor:' + state.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+    doc.getText('master').insert(0, 'Model source writing retained through comparison.');
+    return await client.createReplacementCheckpoint(doc, doc, key, parent, producer, candidate, sign);
+  } finally {
+    key.fill(0);
+    doc.destroy();
+  }
+}
+''';assert t.count(marker)==1;t=t.replace(marker,helper+marker)
+# Coordinator-only case: current source/snapshot owner, exact key owner, native checkpoint route.
+a="        checkInstalled: async (key) => assert.deepEqual(key, durable[role].content.key),";b=a+'''
+        withInstalledKey: async (seal, _hash, work) => {
+          assert.deepEqual(seal, durable[role].content.key);
+          const key = new Uint8Array(32).fill(42);
+          try { return await work(key); } finally { key.fill(0); }
+        },''';assert t.count(a)==1;t=t.replace(a,b)
+a="      if (path === '/account/membership/v2/transfer')\n        return x.authority.owner.transferMembership(x.f.core, body);";b="      if (path === '/account/membership/v3/checkpoint')\n        return x.authority.owner.exchangeReplacementCheckpoint(x.f.core, body);\n"+a;assert t.count(a)==1;t=t.replace(a,b)
+a='''        { base: x.base, membership: parent, certification },''';b='''        {
+          base: x.base, membership: parent, certification,
+          prepareReplacement: () => comparisonSnapshot(client, parent, e.context.existing.id, e.context.candidate.id,
+            bytes => signed(e.keys.existing, bytes)),
+        },''';assert t.count(a)==1;t=t.replace(a,b)
+# Retained full connection model owner is passed the actual signed parent by the coordinator.
+a="        checkInstalled: async (key) => assert.deepEqual(key, durable[role].comparison.content.key),";b=a+'''
+        prepareReplacement: async (authority, candidate) => {
+          const { history } = await client.verifyMembershipChain(authority.proofs, authority.base);
+          return comparisonSnapshot(client, client.historyMembership(history), participants[role].id, candidate,
+            bytes => signed(keys[role], bytes));
+        },
+        withInstalledKey: async (seal, _hash, work) => {
+          assert.deepEqual(seal, durable[role].comparison.content.key);
+          const key = new Uint8Array(32).fill(42);
+          try { return await work(key); } finally { key.fill(0); }
+        },''';assert t.count(a)==1;t=t.replace(a,b)
+a="            if (path.endsWith('/admit')) return authority.owner.admitMembership(x.f.core, body);";b=a+"\n            if (path === '/account/membership/v3/checkpoint')\n              return authority.owner.exchangeReplacementCheckpoint(x.f.core, body);";assert t.count(a)==1;t=t.replace(a,b)
+p.write_text(t)
+p=s/'test/account-membership/comparison-entry.ts';t=p.read_text();t+='''\n// Real snapshot crypto stays in the coordinator's protocol-brand realm for model owners.\nexport { createReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';\nexport { Y } from '../../src/crdt/yjs';\nexport { membershipState } from '../../account-protocol/membership';\nexport { verifyMembershipChain } from '../../account-protocol/membershipLocator';\nexport { historyMembership } from '../../account-protocol/admissionHistory';\n''';p.write_text(t)
+p=s/'test/account-membership/activation-entry.ts';t=p.read_text();a='    fixtureCheckpoint(body: unknown): Promise<unknown>;';assert t.count(a)==1;t=t.replace(a,a+'\n    fixtureHistory(body: unknown): Promise<unknown>;');a='        request: (_path, body) => window.fixtureCheckpoint(body),';b='''        request: (path, body) => {
+          if (path === '/account/membership/v2/checkpoint') return window.fixtureCheckpoint(body);
+          if (path === '/account/history/v1/checkpoint') return window.fixtureHistory(body);
+          throw Error('Unexpected activation fixture path: ' + path);
+        },''';assert t.count(a)==1;p.write_text(t.replace(a,b));print('Precise fixture/version/epoch/quarantine/current-owner repairs prepared privately; all cases retained')

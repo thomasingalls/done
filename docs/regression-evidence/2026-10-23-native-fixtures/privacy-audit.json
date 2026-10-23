@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "knownBenchmarkPrivateValues": 36,
+  "matches": 0,
+  "scope": "known-value and selected-file audit; disposable unit model public test material retained; no profiles/native databases/private key files/codes, not universal DLP"
+}

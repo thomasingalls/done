@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "pairs": [
+    {
+      "boundary": "enrollment-epoch-two",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "next-device preparation binds the certified parent and survives a lost reply${}": "f64ccc606d3082e6f71b2e3e3e2dc2fdcc93d651a11d4ecaaf6a95af02a19c70"
+      }
+    },
+    {
+      "boundary": "schema26",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "continuation schema requires explicit offline opt-in and preserves retained session/account rows": "e114e1f83bef451afb61ffe8f1b42362d064c80a67d1c7034f625e84ceb42414",
+        "private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes": "e25cab368a01b78c859db50d4ea34485d7e861bfc163d8f3bb9a78bdc322fb95",
+        "schema ten upgrade preserves the checkpoint, admission and original publisher history": "fd2de1c470ef104f3ce17890ba21d34d8c9fa65460e41f1ab67fc1c20e7882cf",
+        "schema nine requires explicit upgrade and retains certified content access": "73e5bc8b9e47bb33fd47d493f4ec7088fc013adbbc6d992509ea66e0642aa4b6",
+        "schema eight opens only through the explicit offline upgrade, preserving retained attempts": "ddc1e13ba4688406e7c4bae3c66f793b93a3e34befa504a18b89c56308a67539",
+        "schema-16 pending comparison upgrades explicitly without replacing its messages": "5fc6e153b6f32c4c89b475d10f45846175a976dc38f779e1671f6d705eaf86b9",
+        "schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt": "658e98caff48016f117cf907eda12301994b6bf6d9620f9f99549aa4a3ed03f0",
+        "removal schema upgrades only offline from 18 and refuses an older host": "01cef819930a8fdc8a6b73abbd76d40a5cf9cbf02afd841c667a2d03012689e2",
+        "rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host": "705b15fe635301ad9aa30926bc1918191abc07defb6dad9cde4bc961bcc4a357",
+        "replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows": "befd1b72820f18d5131f5b5c9a1e0fd758467eee9e1826c1a857a5fd81cf2b03"
+      }
+    },
+    {
+      "boundary": "new-history-request",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "later native slot resumes activation after index interruption and rejects changed retained reading": "eed809ef536f857652a856f623e17f016ab9763a8ab3f4039d84f595aaf96b41"
+      }
+    },
+    {
+      "boundary": "replacement-owner-interface",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "retained connection coordinates invitation through third-device certification with ${} approving": "f5c4249096bd97610f05d39c8d8817d42c1f8e11d7ba9f7852cf65540846a5b7"
+      }
+    },
+    {
+      "boundary": "publisher-integrity-quarantine",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage": "1194363923aab0d6411563e3e07cf9e3534b56c366277563ccb43c4687403e9b",
+        "three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart": "242ee4cc4b42073c04d43286487aaaf487ff080150943e531eac4dc96e5bd9e2"
+      }
+    },
+    {
+      "boundary": "cold-clear-lifecycle",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "${} during a cold wait requires fresh verification after handoff": "6112894adedd9521ba07b23889f0ababcd110fcbe4228bbbd9091f933e8e8969"
+      }
+    },
+    {
+      "boundary": "generation-one-fresh-snapshot",
+      "allSelectedOriginalTestBodiesOptionsAndSignaturesExact": true,
+      "cases": {
+        "browser comparison by ${} composes with the real continuation relay and key handoff after restart": "ffd16e3dab5b11d1e7c8903fcb8b3d605e204e7a1da929f8fa585483d5981b7e",
+        "retained connection coordinates invitation through third-device certification with ${} approving": "f5c4249096bd97610f05d39c8d8817d42c1f8e11d7ba9f7852cf65540846a5b7"
+      }
+    }
+  ],
+  "scope": "All selected case ASTs match; changed shared fixture helper and unrelated appended/audit cases remain qualified separately, with fixed post-commit test bridge counterchecks."
+}

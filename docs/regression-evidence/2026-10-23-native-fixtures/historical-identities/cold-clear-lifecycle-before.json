@@ -1,0 +1,8 @@
+{
+  "revision": "716d0db74ab9c977a612c5fc877aaa678aa6f3fa",
+  "tree": "66df2f5b3d575eb8efa0928761dfd2cd28975e4d",
+  "archiveSha256": "1c6650bb29b7ec8b4bfaf96b04218580a8103fece9a2c22173b3c730a55556d4",
+  "testFileSha256": "579e76d98bb328024603603cc8a84aa049d882fcffb37284d8c45a758e192b0d",
+  "productionClosure": "all tracked source files from one complete immutable revision; no current modules substituted",
+  "dependencies": "fixed current installed node_modules+Node24.18.0, same for both arms; conclusions conditional on these dependencies"
+}

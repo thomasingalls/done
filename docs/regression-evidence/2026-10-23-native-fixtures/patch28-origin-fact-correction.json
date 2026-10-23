@@ -1,0 +1,13 @@
+{
+  "status": "corrected",
+  "field": "sequenceOriginTree",
+  "before": "d8a4d2eae1410815d964bc00d6e03ac268bbab32",
+  "after": "bb1cd37e573d1c44b8170b1be1a6478539b39bf5",
+  "independentSourceCommit": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "source": "git rev-parse COMMIT^{tree}, direct immutable Git object",
+  "canonicalPatchSha256Unchanged": true,
+  "canonicalTree28Unchanged": "056b5d967abc457a957b3959da3664fe1e942e7b",
+  "allHistoricalAndMeasuredRuntimeInputsUnchanged": true,
+  "scope": "sidecar manifest fact; not a code, patch-content, measurement or publication change",
+  "legacyReproductionCaveat": "Archived prepare-patch.py/post.py preserve the original metadata mistake. Use this correction and independent post-v2 review; do not erase the original success record or claim the old field comparison was independent."
+}

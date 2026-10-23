@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "control": "remove-quarantine-fence",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "three publisher ledgers preserve queued",
+      "scope": "focused fixture/security-boundary sensitivity, no release qualification credit"
+    },
+    {
+      "control": "remove-offline-schema-fence",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "continuation schema requires explicit offline opt-in",
+      "scope": "focused fixture/security-boundary sensitivity, no release qualification credit"
+    },
+    {
+      "control": "tamper-native-checkpoint-binding",
+      "detected": true,
+      "exitCode": 1,
+      "pattern": "browser comparison by",
+      "scope": "focused fixture/security-boundary sensitivity, no release qualification credit"
+    }
+  ]
+}
