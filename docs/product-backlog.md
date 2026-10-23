@@ -75,6 +75,26 @@ get a bounded scope and evidence before implementation. General release qualific
   retaining the source and copying its whole multiline body into a new Scheduled card. Preserve
   writable-day and durability rules; do not turn duplication into movement out of Done.
 
+- **UX-15 — Sidebar presentation and user-facing vocabulary.** Queued 2026-10-23 for after
+  the current work. Revisit styling, spacing, vertical rhythm and visual balance in Account
+  and the other sidebar sections. The operator’s [Account screenshot](product-references/2026-10-23-sidebar-account.png)
+  is the visual reference: form rows are crowded while section/action spacing and control
+  alignment feel uneven. Prefer **User** to **Actor** in the visible identity label; this is
+  wording for the interface, not a change to internal actor identity or authorization.
+  Related to UX-01/UX-03; no redesign or implementation is selected by this queue entry.
+- **UX-16 — Whole date control opens the native picker.** Queued 2026-10-23. The operator
+  reports that only the calendar icon currently opens the picker. Make the displayed date
+  and calendar icon one complete click/tap target, retaining native date selection and
+  keyboard access. Reproduce on the current preview, including Firefox/macOS, before repair;
+  the earlier overlay implementation is not evidence that every browser opens from its full area.
+- **UX-17 — macOS whole-line Cut.** Queued 2026-10-23. Cmd-X currently appears to do nothing
+  when the operator expects the current whole line to be cut. With no text selected, copy
+  the whole line to the clipboard and delete it; retain ordinary cutting of a selection.
+  Reproduce in Goals and card editors before choosing the repair. Check clipboard success/
+  refusal, native user-gesture permissions, storage admission, undo and line/EOF boundaries
+  without deleting writing that was not successfully copied. Extends UX-04; implementation
+  and regression tests are deferred until after the current work.
+
 ## Earlier conversation items retained
 
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this

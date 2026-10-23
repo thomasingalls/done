@@ -15728,3 +15728,17 @@ two fresh-context browser smokes pass, with API PID/service identity retained. I
 used wrong routes and then omitted Origin; both were refused before stopping the old gateway. Only
 the frontend gateway was restarted. UX-13 remains unresolved on physical Gboard. No commit/push or
 production deployment. Sequential patches42–45 extend immutable37–41.
+
+
+### Additional sidebar and macOS Cut requests retained in the UX queue
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch46 · **Stage:**product queue only
+
+**Exit.** UX-15–17 record the operator’s requested sidebar styling/spacing pass, preference for
+User over Actor, full date-control picker target, and macOS whole-line Cmd-X behavior. The supplied
+Account screenshot is preserved byte for byte as a linked product reference.
+
+**Notes.** These are queued for after the current work. No application code, tests, preview or
+security policy changed. The reported date/Cut behavior has not been reproduced in this slice.
+The documentation/screenshot change needs no runtime test; patch/replay checks retain the existing
+uncommitted sequence and leave the real Git index unchanged.
