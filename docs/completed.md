@@ -15919,3 +15919,22 @@ unchanged signed e86bd26c frontend and server on isolated test ports53225/53226 
 existing assertions, cases and deadlines remain; no runtime or authority change. The first
 full packaged run's stale-fixture failures and separate gateway teardown failures are retained
 in the managed signed-UX-image evidence. Planning inventory is refreshed without release credit.
+
+### Gateway shutdown reaps connections that have never dispatched an HTTP request
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch57 · **Stage:**bounded lifecycle repair
+
+**Exit.** Track sockets only until their first complete HTTP request. On shutdown, close those
+unadmitted preconnections and incomplete headers, while retaining existing stream cancellation,
+idle cleanup and draining of dispatched operations. The signed e86bd26c image reproduces the
+old shutdown hold until a disposable raw client disconnects. Two new regressions fail against
+the old implementation; all7 gateway cases pass after the11-line repair. One new case holds
+an admitted operation across shutdown and verifies its exact reply and single dispatch. No
+accepted operation is added to the unrequested set after dispatch; no authority, retry, body,
+session or framing policy changes. Existing tests/assertions/deadlines remain intact.
+
+**Notes.** This follows the full release browser run's development-server teardown failures.
+The original source-only idle probe reported its boolean after cleanup and is not valid
+deadline evidence; the corrected exact-image probe captures the decision before cleanup.
+Native ARM64 artifact rebuild, affected browser reruns and publication remain separate.
+Evidence and the original failures are retained under managed signed-UX-image artifacts.

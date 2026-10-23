@@ -5915,7 +5915,7 @@
           "test/account-application/gateway.test.mjs"
         ]
       },
-      "declarations": 5,
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15986,7 +15986,7 @@
     },
     {
       "path": "scripts/lib/account-gateway.mjs",
-      "sha256": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f"
+      "sha256": "90c20c3d8c1067825d7954c358d14bf6fb482cda182bd28b5138120cce1972c0"
     },
     {
       "path": "scripts/lib/asvs-5.0.0-index.json",
@@ -16638,7 +16638,7 @@
     },
     {
       "path": "test/account-application/gateway.test.mjs",
-      "sha256": "3b20f7207452290c523ed923677fc03064c88b59f56a0b72e530efe8cedafc7e"
+      "sha256": "4485a3502e3d26fb646e57119d18c16fdf54058f73944e97225f932176d924f1"
     },
     {
       "path": "test/account-application/removal-route.test.mjs",
