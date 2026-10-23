@@ -125,6 +125,13 @@ get a bounded scope and evidence before implementation. General release qualific
   question. Investigate lifecycle and transport separately; switching transport is not a
   selected remedy. No runtime or service-worker changes authorized by this reminder.
 
+**Implementation/investigation status, 2026-10-23:** UX-15 is implemented in patch48
+(sidebar layout and User vocabulary); UX-16 in patch49 (whole native date target); UX-17 in
+patch50 (whole-line Cut with clipboard/storage guards). UX-18’s investigation is complete in
+patch51: [findings and proposed next phases](background-sync-feasibility.md). Background sync
+behavior is unchanged; physical-device lifecycle evidence is still needed before selecting a repair.
+[UI evidence and limits](development-evidence/2026-10-23-sidebar-cut-background/README.md).
+
 ## Earlier conversation items retained
 
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this

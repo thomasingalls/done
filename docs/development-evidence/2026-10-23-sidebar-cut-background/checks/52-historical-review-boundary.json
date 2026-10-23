@@ -1,0 +1,5 @@
+{
+  "phase41NavigationReviewTree": "5eb2840f2df03dca52639c161baa3b0aad3444d3",
+  "reason": "Old navigation attestations are checked against their immutable historical source. Phase48 accessible-label changes have their own exact fixture review.",
+  "earlierReviewNotRewritten": true
+}

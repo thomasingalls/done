@@ -15820,3 +15820,22 @@ established, and the receiver remained visible/focused. This is retained as inco
 evidence, not a background-sync pass or latency result. Ordinary live sync worked. Source/receipts
 are preserved in the evidence packet. No background credential, worker, sync-policy or permission
 change. Physical-device lifecycle measurement is the recommended next implementation slice.
+
+
+### Sidebar/date/Cut validation and preview, with background study retained
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch52 · **Stage:**bounded UX validation
+
+**Exit.** All160 unit files pass (1927 passed/1 existing skip), full built-browser geometry168
+pass/24 existing platform skips,7 actual Firefox cases,12 existing packaged-account journeys
+and27 adapter/inventory cases pass. Type/build,232.7/350kB gzip budget, origin isolation and
+focused lint/format pass. Exact source/build identities and narrow label-only fixture review
+are retained. Four new test files remain required but uncredited in formal qualification.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md) includes
+the failed Cut/probe attempts, source trace and primary-source background report. No physical
+background/suspension or performance result is claimed. Qualification remains paused/blocked
+(891 obligations/347 unresolved). Local preview8443 serves the tested runtime, with60 HTTPS
+assets/deep links and two disposable-context smoke checks; only the gateway restarted, retaining
+API PID52585/service identity/data. Patches48–52 extend immutable37–47. No real staging, commit,
+push, merge or production deployment.

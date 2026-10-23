@@ -87,3 +87,37 @@ Source does not intentionally pause sync on hide: it flushes outbound work, reta
 and wakes on return. Platform suspension and locked-workspace authority are distinct problems.
 No worker/network/security behavior changed. Outcome recorded; active work advances to combined
 validation and a preview update for the three UI changes.
+
+## Phase52 combined result and handoff
+
+All160 Vitest files pass:1927 passed/1 existing named skip. Full built-frontend geometry168 pass/
+24 existing platform skips (192 total). Real Firefox date/Cut7 pass. Existing packaged-account
+welcome, device-list, sessions and text-admission12 pass, exercising protection, multi-tab retirement,
+revocation/login lifecycle, sync, undo, refusal and cold reopening.27 adapter/inventory cases plus
+type/build,232.7/350kB gzip budget, origin isolation and affected lint/format pass.
+
+The stale planning snapshot correctly refused first. Independent comparison allows only four new
+required test files and seven changed/new test-input hashes; all existing declarations, dispositions
+and other fields remain exact. New files remain blocked from aggregate credit. Qualification stays
+paused:891 obligations/347 unresolved. No old test/case/assertion is removed. The phase41 navigation
+attestation is now checked against its immutable phase41 tree; later phase48 label-only changes
+have a separate exact review. Old evidence is not rewritten to match current source.
+
+Source/build identities cover356 runtime/config/source inputs and the complete built file set.
+Only the8443 frontend gateway changed. Normal TLS verifies60 assets and two deep links; service
+config hash/API PID52585 are unchanged. Fresh1280/420 contexts verify User fields and existing
+card/composition/duplicate behavior with no page errors. No real account/browser profile was used.
+Preview worker2a6601d4bf9f; visible Version c4a66c79-dirty remains the same for uncommitted work.
+
+Outcome is in completed.md. Patches48–52 are prepared for sequential signed commits when requested.
+The real Git index remains unchanged. No push/merge/production rollout. UX-15–17 are implemented;
+UX-18’s investigation is complete, with physical lifecycle tracing still proposed and no background
+sync implementation. The older intermittent Gboard/continuous-deletion observations remain open.
+
+## Reproduction notes
+
+Configs identify this run’s absolute repository/scratch/browser paths. Replace them on another host.
+The source config uses the frozen patch47 source for counterexamples; the final config previews dist.
+The inventory-review script takes the previous planning snapshot path. The lifecycle probe is a
+diagnostic under reproduction; do not add it to aggregate regression credit or infer device-level
+background behavior from its normal live-sync completion.

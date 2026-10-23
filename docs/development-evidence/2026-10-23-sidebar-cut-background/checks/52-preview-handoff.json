@@ -1,0 +1,22 @@
+{
+  "directory": "/private/tmp/done-sidebar-cut-preview-20261023-4rxljx9m",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "appPort": 53219,
+  "servicePort": 53220,
+  "retainedApiPid": 52585,
+  "previousGatewayPid": 14471,
+  "previousPreview": "/private/tmp/done-card-input-preview-20261023-p7psbu8x",
+  "build": "/private/tmp/done-sidebar-cut-preview-20261023-4rxljx9m/build",
+  "version": "c4a66c79-dirty",
+  "baseCommit": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61",
+  "sourceTree": "de673417780e9e93fcf17e302903cc69d9a0ab39",
+  "status": "ready",
+  "committed": false,
+  "deployed": false,
+  "gatewayPid": 24540,
+  "verification": "/private/tmp/done-sidebar-cut-preview-20261023-4rxljx9m/https-verification.json",
+  "previewGatewayOnlyUpdated": true,
+  "retainedApiRestarted": false,
+  "browserSmoke": "/private/tmp/done-sidebar-cut-preview-20261023-4rxljx9m/browser-smoke.json",
+  "workerVersion": "2a6601d4bf9f"
+}

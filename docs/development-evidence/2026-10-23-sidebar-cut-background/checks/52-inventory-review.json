@@ -1,0 +1,73 @@
+{
+  "status": "passed",
+  "added": [
+    "test/admittedClipboard.test.ts",
+    "test/geometry/cut.spec.ts",
+    "test/geometry/date-picker.spec.ts",
+    "test/geometry/sidebar-polish.spec.ts"
+  ],
+  "changedInputHashes": [
+    "test/admittedClipboard.test.ts",
+    "test/first-device-setup/setup.spec.ts",
+    "test/first-device-upgrade/upgrade.spec.ts",
+    "test/geometry/cut.spec.ts",
+    "test/geometry/date-picker.spec.ts",
+    "test/geometry/sidebar-polish.spec.ts",
+    "test/geometry/workflow.spec.ts"
+  ],
+  "allExistingDeclarationsDispositionsAndOtherFieldsUnchanged": true,
+  "obligations": 891,
+  "unresolved": 347,
+  "newRows": [
+    {
+      "id": "test:test/admittedClipboard.test.ts",
+      "kind": "test",
+      "path": "test/admittedClipboard.test.ts",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/admittedClipboard.test.ts"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/geometry/cut.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/cut.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/geometry/date-picker.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/date-picker.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/geometry/sidebar-polish.spec.ts",
+      "kind": "test",
+      "path": "test/geometry/sidebar-polish.spec.ts",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": [
+          "test:geometry"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    }
+  ]
+}
