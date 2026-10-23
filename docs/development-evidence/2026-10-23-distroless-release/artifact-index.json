@@ -1,0 +1,128 @@
+{
+  "source": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+  "preservation": "Exact original artifact bytes; prior external locations are historical provenance. This repository packet is the maintained release evidence home.",
+  "archives": [
+    {
+      "path": "exploration/evidence.zip",
+      "sha256": "ff108131cdfef8613ee316d0411c08123f60ca2507f984a1ea341aadf8c6b4ea",
+      "entries": 90,
+      "allInnerHashesAndPopulationVerified": true
+    },
+    {
+      "path": "preparation/evidence.zip",
+      "sha256": "fc9f96e8ff7ae549cc528811dd2b128f7adf348b53644549913c02914bc9e4d4",
+      "entries": 88,
+      "allInnerHashesAndPopulationVerified": true
+    },
+    {
+      "path": "final-artifact/evidence.zip",
+      "sha256": "6054c21e1b9b3bfc984fa528d0c6201b997ccb9796a5eac7a7fa0faa35faf4bc",
+      "entries": 38,
+      "allInnerHashesAndPopulationVerified": true
+    }
+  ],
+  "files": [
+    {
+      "path": "exploration/HANDOFF.md",
+      "bytes": 3071,
+      "sha256": "151acc7f1905ca368396f9803abf611321f64ebb83b82178f4620386953d475c"
+    },
+    {
+      "path": "exploration/artifact-index.json",
+      "bytes": 14637,
+      "sha256": "9d601ffe5b7933628c48e2d7e157346473fca5633c289599c5ab5df62f56da18"
+    },
+    {
+      "path": "exploration/evidence.zip",
+      "bytes": 517135,
+      "sha256": "ff108131cdfef8613ee316d0411c08123f60ca2507f984a1ea341aadf8c6b4ea"
+    },
+    {
+      "path": "exploration/fix-verification.md",
+      "bytes": 9615,
+      "sha256": "5b012456ee38bcd9c814687601c4db3a9341a871323c7cc4722df161fc0ac955"
+    },
+    {
+      "path": "exploration/scan-summary.json",
+      "bytes": 26766,
+      "sha256": "12514a920286cd3ba3b746c3c42e5260ef54e4f7a937b9697e891f33d2d1ad6b"
+    },
+    {
+      "path": "exploration/source-image-identities.json",
+      "bytes": 3492,
+      "sha256": "3bb6f1aa5b8560ff16ae41694242fbef34a6de0181657f3ac2e95c97b7de42e3"
+    },
+    {
+      "path": "final-artifact/README.md",
+      "bytes": 7406,
+      "sha256": "fc82aea716a14f0205c2e76021eb4a3546394c53509ef33115b566af4b252630"
+    },
+    {
+      "path": "final-artifact/application-pr57-snapshot.json",
+      "bytes": 5334,
+      "sha256": "2402cc61e93e2e416144ddeebc123ec6f8673c6fe352ce49e5f0db42d416042a"
+    },
+    {
+      "path": "final-artifact/evidence-index.json",
+      "bytes": 5907,
+      "sha256": "ed1c710e3814c4bfdb115eb76905e11739aa41a0b31e90450ab964ae16ebe7f1"
+    },
+    {
+      "path": "final-artifact/evidence.zip",
+      "bytes": 106159,
+      "sha256": "6054c21e1b9b3bfc984fa528d0c6201b997ccb9796a5eac7a7fa0faa35faf4bc"
+    },
+    {
+      "path": "final-artifact/image.json",
+      "bytes": 1036,
+      "sha256": "92d71b1ab3078774277cee70fa2b6df5e5866620b9dc3435e159dbd00d8954f8"
+    },
+    {
+      "path": "final-artifact/infra-image-pin-preparation.json",
+      "bytes": 1429,
+      "sha256": "af86ea5181380685f6f9095c52ba0ba4e0d8c175a88d116c796f1be5c97ea332"
+    },
+    {
+      "path": "final-artifact/infra-image-pin.patch",
+      "bytes": 724,
+      "sha256": "36dabf3e8c9c2648ad477115f53573e5057ba99318ffee2a23da09e94fabdae9"
+    },
+    {
+      "path": "final-artifact/publication-preparation.json",
+      "bytes": 2322,
+      "sha256": "083b0f62a78c5829d4126d49e5dc4cc3d753da5ecf84600b1cd0f2b350381fd9"
+    },
+    {
+      "path": "final-artifact/publication-preparation.md",
+      "bytes": 2740,
+      "sha256": "7ccea07654916d32c1e71653ff868b16ed873d643455133bf286361ff4e3003a"
+    },
+    {
+      "path": "final-artifact/source.json",
+      "bytes": 3105,
+      "sha256": "493511f8584e81ebd06a7436a90944547181a5432dc3d0e5080260cc1c7ef156"
+    },
+    {
+      "path": "final-artifact/verification.json",
+      "bytes": 2532,
+      "sha256": "e0fbd482fd1423dc6417ac2115cf77ba555ba939f6779dddb0ede7337bab474e"
+    },
+    {
+      "path": "preparation/evidence.zip",
+      "bytes": 514345,
+      "sha256": "fc9f96e8ff7ae549cc528811dd2b128f7adf348b53644549913c02914bc9e4d4"
+    },
+    {
+      "path": "preparation/preparation-evidence-index.json",
+      "bytes": 14267,
+      "sha256": "1197cf3ec333b96bd92935dfcffda569dc5cfa52d04ba95b547bb5c5b4d096eb"
+    }
+  ],
+  "excluded": [
+    "image/source tar archives",
+    "private keys",
+    "service databases",
+    "browser profiles",
+    "dependency trees"
+  ]
+}

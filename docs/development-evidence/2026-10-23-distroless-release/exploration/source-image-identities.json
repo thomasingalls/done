@@ -1,0 +1,96 @@
+{
+  "head": "77669ec79f78779d77e500d0f163c0299156b968",
+  "realIndexEmpty": true,
+  "unchangedRuntimeFromRelease": true,
+  "source": {
+    "Dockerfile": "30bb7a9a85e825925db3f81599ad0055a9fd5ebd2cedcb1a0c4a27e94e92bf64",
+    ".dockerignore": "b4e9e59c6e092d9f3f34368cab22644bfb28e4a3e1d872b94d08b6b66d5f6966",
+    "package.json": "0f36597716b4ee2785570a7bafaa0b9e1891510bfbfb812fc998007920a52c02",
+    "pnpm-lock.yaml": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8",
+    "scripts/test-runtime-image.mjs": "474e0473e2d9c01c52b789cc615e625e8f8f29a5bf137a91e5d283a2cbef93e8"
+  },
+  "images": {
+    "done-public:51d8550d": {
+      "built": true,
+      "id": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+      "repoDigests": [
+        "done-public@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+        "ghcr.io/thomasingalls/done@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29"
+      ],
+      "platform": "linux/arm64",
+      "size": 450159115,
+      "user": "65532:65532",
+      "entrypoint": [
+        "node",
+        "scripts/public-account.mjs"
+      ],
+      "cmd": [
+        "app"
+      ],
+      "workingDirectory": "/app",
+      "labels": {
+        "org.opencontainers.image.revision": "51d8550d30585c93e623af0f2b3adf610781eebb",
+        "org.opencontainers.image.source": "https://github.com/thomasingalls/done"
+      }
+    },
+    "done-distroless:55-arm64": {
+      "built": true,
+      "id": "sha256:7e246ec99460ddc06e55716b13a98e3a62d04e07b5562086f435868f33cf1841",
+      "repoDigests": [
+        "done-distroless@sha256:7e246ec99460ddc06e55716b13a98e3a62d04e07b5562086f435868f33cf1841"
+      ],
+      "platform": "linux/arm64",
+      "size": 314242923,
+      "user": "65532:65532",
+      "entrypoint": [
+        "node",
+        "scripts/public-account.mjs"
+      ],
+      "cmd": [
+        "app"
+      ],
+      "workingDirectory": "/app",
+      "labels": {
+        "org.opencontainers.image.revision": "77669ec79f78779d77e500d0f163c0299156b968-dirty",
+        "org.opencontainers.image.source": "https://github.com/thomasingalls/done"
+      }
+    },
+    "done-distroless:55-amd64": {
+      "built": false,
+      "reason": "AMD64 Docker builds fail the existing eight-second backup-worker readiness check under emulation, before final runtime construction."
+    },
+    "done-distroless:55-tools-arm64": {
+      "built": true,
+      "id": "sha256:f52811834e8e7d12cb752425954b766ceee057c651fbbc3ebb9af2d78133b6ea",
+      "repoDigests": [
+        "done-distroless@sha256:f52811834e8e7d12cb752425954b766ceee057c651fbbc3ebb9af2d78133b6ea"
+      ],
+      "platform": "linux/arm64",
+      "size": 941011047,
+      "entrypoint": [
+        "docker-entrypoint.sh"
+      ],
+      "cmd": [
+        "node"
+      ],
+      "workingDirectory": "/app"
+    },
+    "done-distroless:55-tools-amd64": {
+      "built": true,
+      "id": "sha256:e7382f2cbc3a2d06da97d03d0e2732221e2551f25ad55cc9f3fed41066686ddb",
+      "repoDigests": [
+        "done-distroless@sha256:e7382f2cbc3a2d06da97d03d0e2732221e2551f25ad55cc9f3fed41066686ddb"
+      ],
+      "platform": "linux/amd64",
+      "size": 921132119,
+      "entrypoint": [
+        "docker-entrypoint.sh"
+      ],
+      "cmd": [
+        "node"
+      ],
+      "workingDirectory": "/app"
+    }
+  },
+  "validationBlocker": "AMD64 Docker builds fail the existing eight-second backup-worker readiness check under emulation, before final runtime construction."
+}

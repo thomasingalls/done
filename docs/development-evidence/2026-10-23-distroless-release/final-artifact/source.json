@@ -1,0 +1,81 @@
+{
+  "source": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+  "sourceTree": "647e606a9c02f09d478bb1b313bd2a940d94968b",
+  "sourceDate": "2026-10-23",
+  "sourceCommitDate": "2026-10-23T16:35:00+02:00",
+  "signedCommits": [
+    {
+      "commit": "7069ab9b41c243c1e0dd4ee7372bf8b5abba30b9",
+      "tree": "a4d5bb8c3bd6f5c61625305b7891d1b11771d235",
+      "parent": "77669ec79f78779d77e500d0f163c0299156b968",
+      "signature": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs"
+    },
+    {
+      "commit": "e86bd26cf14e4d396aeccd6613de1be35e9ca7c4",
+      "tree": "6dc20f0b2efc8fe133809fff5c2e38ae18dfd1b3",
+      "parent": "7069ab9b41c243c1e0dd4ee7372bf8b5abba30b9",
+      "signature": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs"
+    },
+    {
+      "commit": "df15fd9ff79215cf7163fbc66515d4ed21a1775d",
+      "tree": "75db4b04e8d2063d8ffcf338105be4a77432ea03",
+      "parent": "e86bd26cf14e4d396aeccd6613de1be35e9ca7c4",
+      "signature": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs"
+    },
+    {
+      "commit": "dcb4e9bb34446dd8b2b5b1889a53b81916df2077",
+      "tree": "b280bfd37b0b564177df703317e5e3b2ce969696",
+      "parent": "df15fd9ff79215cf7163fbc66515d4ed21a1775d",
+      "signature": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs"
+    },
+    {
+      "commit": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+      "tree": "647e606a9c02f09d478bb1b313bd2a940d94968b",
+      "parent": "dcb4e9bb34446dd8b2b5b1889a53b81916df2077",
+      "signature": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs"
+    }
+  ],
+  "archiveSha256": "abee66f306feb3e2cc7d44a6a55b7cabe5ba75a879833c137ddb4322751126e3",
+  "archiveBytes": 20480000,
+  "inputs": [
+    ".dockerignore",
+    "Dockerfile",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "vite.config.ts",
+    "index.html",
+    "local.html",
+    "account-service",
+    "account-protocol",
+    "src",
+    "public",
+    "private",
+    "vite",
+    "scripts",
+    "test",
+    "vendor-patches",
+    "relay/src/auth.ts",
+    "wasm/journal-seal/seal.generated.ts",
+    "playwright.account-setup.config.ts",
+    "playwright.account-upgrade.config.ts",
+    "playwright.app-upgrades.config.ts",
+    "playwright.compiler-loading.config.ts",
+    "playwright.config.ts",
+    "playwright.device-enrollment.config.ts",
+    "playwright.latency.config.ts",
+    "playwright.local-baseline.config.ts",
+    "playwright.local-startup.config.ts",
+    "playwright.packaged-account.config.ts",
+    "playwright.private-migration.config.ts",
+    "playwright.storage-compatibility.config.ts",
+    "tsconfig.app.json",
+    "tsconfig.json",
+    "tsconfig.node.json"
+  ],
+  "platform": "linux/arm64",
+  "candidateTag": "done-public:d1c2784b",
+  "featureOverrides": {},
+  "published": false,
+  "deployed": false
+}

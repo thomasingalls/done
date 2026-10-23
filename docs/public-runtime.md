@@ -136,6 +136,11 @@ against that Debian image observed first readiness after 10,245 ms; this is not 
 regression result. Run the normal build, final-image harness and uninstrumented smoke on a
 native AMD64 runner before claiming that platform verified. No test deadline was changed.
 
+The signed ARM64 candidate and its later gateway/fixture checks are retained in the
+[repository release packet](./development-evidence/2026-10-23-distroless-release/README.md).
+That packet preserves the original exploration and failed attempts as historical records;
+its final artifact metadata defines the tested source and image for publication.
+
 Account operations use incremental ledger verification and the corresponding editor snapshot path
 by default. For a diagnostic rollback, add `--build-arg VITE_ACCOUNT_LEDGER=reference` to the image
 build, or use `VITE_ACCOUNT_LEDGER=reference pnpm build` for a local application build. This is a

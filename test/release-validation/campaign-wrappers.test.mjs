@@ -1467,13 +1467,13 @@ function receiveEditorEvidence() {
   };
   return r;
 }
-test('receive-editor wrapper preserves three original commands, 299 cases and disposable browser without unused history', () => {
+test('receive-editor wrapper preserves three original commands, 324 cases and disposable browser without unused history', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-editor');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 299);
+  assert.equal(s.expect.cases.length, 324);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [30000, 60000, 480000],

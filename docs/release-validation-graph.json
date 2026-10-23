@@ -19410,7 +19410,7 @@
     },
     {
       "path": "test/release-validation/campaign-wrappers.test.mjs",
-      "sha256": "e350fba875932a466e85d76a1b9f221ebfa3b249b92453ecff6a7cbcf0730542"
+      "sha256": "4e540823a1f6f9a8b1292fac6c5724ff8befe63ec777505a58d3cf1a6c1078cb"
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",
@@ -19450,7 +19450,7 @@
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "d11cc83c6898c1d83ed2366a15a9da2c20861f9a573233af74359d265e13f44b"
+      "sha256": "4085129ec09b945b43cd862e0dafcfeaa52329740b8da77ffa44ae1f7e629f6a"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

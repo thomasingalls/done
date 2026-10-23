@@ -5230,3 +5230,44 @@ Choose a visible wait/refusal while earlier input is pending instead of extendin
 selections over uncopied queued text or adding a new conditional-mutation protocol in this slice.
 This can require retrying Cut during storage stalls; the invariant is more important than hiding
 that refusal. Local admission can still delay the deletion after copying; retry admits it once.
+
+
+### Repository bookkeeping remains authoritative during release preparation
+
+**Date:**2026-10-23 · **Commit:**follow-up to `d1c2784b`, sequential patch59 · **Against:**PRD v9 / TRD v8
+
+**Orientation.** PR57's ordinary CI failed its authority-map runtime census. Eleven edited
+editor/sidebar sources and one new presentation component had not been reviewed and recorded.
+The final distroless/release evidence was also retained only in an external tool's artifact store,
+instead of the repository's established evidence directories. The operator explicitly reaffirmed
+that the repository's procedure takes precedence over optional third-party tooling.
+
+**Decision.** Review the complete census delta against original and current Git objects, then use
+the existing recorder. Preserve all197 domain definitions/sites and the registry, construction
+dispositions and authority-map bytes. Keep the tool's original artifacts as historical snapshots
+but copy their exact bytes and independently verify their archive populations/hashes in the
+repository. This adds portable compressed evidence rather than a competing registry or closure
+claim. Run the ordinary contract/bookkeeping gates; paused generalized qualification and an
+operator's earlier acceptance of local tests do not waive these checks. Complete the append-only
+records before closing this seat's active slice or refreshing tree-bound receipts.
+
+The follow-up changes documentation and the reviewed census snapshot only. Keep the exact tested
+ARM64 image bound to signed `d1c2784b`; compare every allowlisted build input independently before
+carrying its evidence across the bookkeeping commit. Publishing, operator merges and deployment
+remain separate actions.
+
+
+### Expanded bookkeeping review requires a fresh artifact after fixture corrections
+
+**Date:**2026-10-23 · **Commit:**sequential patch59 · **Against:**PRD v9 / TRD v8
+
+**Orientation.** After the preceding decision, the broader checks found a stale execution manifest
+and two stale adapter count fixtures. This expands that entry's documentation-only scope; its
+1651-file context-equality observation remains valid only before these additional test-file edits.
+
+**Decision.** Review additions against independent runtime collection and preserve every old
+obligation, contract and blocker. The two fixtures take three literal corrections only; no case,
+assertion or deadline is removed. Keep the earlier image bound to signed `d1c2784b`. Since the
+fixture changes enter the allowlisted test context, rebuild and check the final signed source
+rather than carrying the earlier whole-context equality claim beyond its observed scope.
+Publishing, operator merges and deployment remain separate actions.

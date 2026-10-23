@@ -15961,3 +15961,39 @@ control also passes2/2. Browser checks use the exact e86bd26c image frontend, is
 services with signed gateway repair dcb4e9bb, and test-only successor builds. All failed attempts
 and apparatus corrections remain in managed signed-UX-image evidence. Signed final ARM64 image
 rebuild and its exact-image checks remain separate; no publication or deployment.
+
+
+### PR57 release bookkeeping follows the repository's authority and evidence owners
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch59 · **Stage:**bounded bookkeeping repair
+
+**Exit.** The hosted security-contract step correctly refused an unreviewed runtime census.
+Independent Git/blob/population review establishes400→401 sources:11 edited editor/sidebar
+sources and the new presentation-only MenuSection. All197 domain definitions and source sites,
+registry classifications, construction dispositions and authority-map bytes remain unchanged.
+The existing recorder refreshes the census only after that review. Optional tool storage no
+longer substitutes for repository evidence: the original distroless, preparation and exact-image
+archives are copied byte-for-byte into the established repository evidence directory, with every
+archive member's population, size and hash independently checked.
+
+**Wider bookkeeping.** Review of actual runtime collection and the retained full report establishes
+37 added general cases and25 added receive-editor wrapper cases. Two old adapter fixtures receive
+three count/title literal corrections. Every old manifest row, non-case contract, case assertion,
+deadline and execution selection remains; exactly nine new required files remain uncredited and
+blocked. The manifest now records892 obligations/348 unresolved. The graph changes only those two
+fixture hashes. No checker, test, assertion, deadline, security guarantee or qualification blocker
+was removed. Generalized qualification remains paused.
+
+**Checks.** All ten commands in CI's security-contract/vector step pass on Node24.18.0/pnpm11.20.0;
+18 census/contract/registry cases,10 inventory cases and175 release-adapter cases pass. Build,
+origin/budget and traceability checks pass; the trace reports101 claims,28/28 current defects with
+named falsifiers and9 registered debts. Final tree-bound receipts are refreshed after these records
+and again after signing. [Evidence](development-evidence/2026-10-23-distroless-release/README.md)
+retains the original hosted error, reviews, failed auditor assumptions, the pinned-manager launch
+failure and reruns. Two initial rolling local logs were overwritten; their explicitly identified
+transcript excerpts are retained without claiming complete original stdout.
+
+**Remaining boundary.** The earlier ARM64 image stays bound to signed d1c2784b. The two fixture
+files enter the allowlisted Docker context, so release preparation requires a fresh signed-source
+build and exact-image checks. No image was relabeled, published or deployed; operator merges and
+production rollout remain separate. This closes only this seat's bookkeeping slice.

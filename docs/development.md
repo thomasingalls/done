@@ -225,3 +225,19 @@ inside a case is unchanged. A filtered or capped exploratory command is not a
 substitute for the full `pnpm test` population. CI pins Node 24.18.0; record the
 actual runtime and keep failed attempts when comparing results. This worker
 budget is not a performance measurement or release-qualification result.
+
+## Release bookkeeping
+
+Pausing generalized release qualification does not pause the routine contract and bookkeeping
+checks. The command population for **Check security contracts and published vectors** lives in
+[the CI workflow](../.github/workflows/ci.yml); each command's implementation lives in
+[package.json](../package.json). Run that surface before calling a candidate ready, together with
+the release inventory/adapters and traceability checks appropriate to the changed files.
+
+Presentation changes can invalidate the runtime authority census too. Review changed source,
+domain sites and classification before explicitly refreshing it with
+`node scripts/account-crypto-prep/run.mjs --record`; a recorder is not a substitute for that review.
+Keep evidence in the established repository evidence directories, decisions and outcomes in their
+append-only journals, and active work in the owning seat's progress document. Optional tools and
+their storage conventions do not replace these homes. Finish bookkeeping before minting
+tree-bound execution receipts, and rerun the relevant checks after the tree changes.

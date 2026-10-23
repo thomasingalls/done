@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-23 14:49:12 UTC",
+  "baseRefName": "main",
+  "body": "Daily editing now follows familiar keyboard and focus behavior, the sidebar has clearer grouping and date navigation, and the production runtime moves to a tested non-root distroless image.\n\n## Changes\n\n- Restore macOS word deletion, indentation and whole-line cutting; disable Cmd-Enter checkbox cycling. Enter finishes card editing, Shift-Enter adds a newline, and three Shift-Enters retain card splitting.\n- Release stale card autofocus, leave IME confirmation to the keyboard, and add Duplicate to Scheduled for complete cards.\n- Group sidebar controls into collapsed Account, Sync, Data and Install sections; improve spacing, overflow and preferences layout; label Actor as User; make the entire date control open the native picker.\n- Add regression coverage for confirmed upload followed by non-overlapping device sessions in both directions. Background-sync feasibility is documented; background sync is not implemented here.\n- Replace the Debian Node runtime image with digest-pinned distroless CC/Debian 13, retaining Node 24.18.0 and non-root execution. Ship static age 1.3.2 with its compiler/module provenance and licenses; exclude npm, shells, package managers and OS archive/build tools.\n- Fix gateway shutdown hanging on speculative connections or incomplete first HTTP headers. Dispatched operations still drain; new regressions verify the exact admitted reply and single dispatch survive shutdown.\n\n## Local validation\n\n- Clean signed-source ARM64 build, including TypeScript, bundle budget and origin isolation checks.\n- **33/33 cases inside the final image:** runtime/gateway, SQLite/native workers, backup, restore and maintenance. Existing deadlines remain.\n- Final-image checks cover six old/new age round trips, twelve wrong-key/tamper refusals, TLS trust controls, external key custody, exclusive store ownership, precache bytes, accepted state across SIGKILL/restart, and graceful shutdown.\n- Production `51d8550d` frontend → candidate → predecessor → candidate rehearsal passes for protected original/joined profiles, queued/offline writing, wrong-code refusal, undo/redo and two-way delivery. The browser rehearsal uses disposable host Node 24 services; Linux container runtime checks are separate. It does not claim predecessor-server rollback.\n- Unit regression run at `e86bd26c`: **1,927 passed, one existing skip** across 160 files.\n- Initial full packaged run: 79 passed / 11 failed. After bounded repairs, the affected-file run passed 26/29, then the remaining three passed 3/3. All original failures have passing reruns; this is not a new uninterrupted 90-case run. Original failures, discriminating controls and disposable-harness corrections are retained.\n- Offline Trivy 0.75.0 scan of the exact final image, with no suppressions: **0 critical, 0 high, 25 medium, 8 low, 1 unknown**.\n\nThe late fixture repairs preserve every existing assertion and deadline. Generalized release qualification remains paused.\n\n## Prepared ARM64 artifact and publication\n\nSigned source: `d1c2784bef0ccc3ea88d99dfd82f1db3a83af384`.\n\nLocal candidate: `done-public:d1c2784b`.\n\nImage index:\n`sha256:a26278f6c36952f074355ca6378ae09c96bd9e3bfbc6ca4fbfb5910fcf3f6ae6`\n\nARM64 runtime manifest:\n`sha256:5203dad8362c19eb003ce17ca39ddf5e7e691477e23d600ffc25e31a436d4e20`\n\nThe saved image and evidence packets are retained locally. No image has been published and no infrastructure or deployment has changed. Account/service schemas and wire formats are unchanged; the backup-workspace initializer and existing Node probe/maintenance commands were checked against this image.\n\nMerge with **Create a merge commit**, preserving the signed commits. After verifying the merged build inputs, publish this exact tested image to the existing private package, verify its remote digest and authenticated pull, then prepare the separate infrastructure image-pin PR. The operator retains both merge buttons.\n\nCompatible predecessor: `done-public:51d8550d`, index `sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29`. An image rollback retains current data and identity; it is not a database restore. Cached-client adoption remains a separate post-rollout check.\n",
+  "headRefOid": "d1c2784bef0ccc3ea88d99dfd82f1db3a83af384",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "state": "OPEN",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/thomasingalls/done/actions/runs/39972700274/job/120479248077",
+      "name": "Build and regression gates",
+      "startedAt": "2026-10-23T14:48:02Z",
+      "status": "IN_PROGRESS",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-23T14:47:54Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/thomasingalls/done/actions/runs/39972700274/job/120479250559",
+      "name": "Full check (operator resumed)",
+      "startedAt": "2026-10-23T14:47:54Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    }
+  ],
+  "title": "Polish editor and sidebar UX and ship a distroless ARM64 runtime",
+  "url": "https://github.com/thomasingalls/done/pull/57"
+}
