@@ -1,3 +1,4 @@
+import { MenuSection } from './MenuSection';
 import { SyncNotice } from './SyncNotice';
 import { AccountHistory } from './AccountHistory';
 import { NetworkLoginNotice } from './NetworkLoginNotice';
@@ -137,104 +138,10 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           })}
         </div>
       </nav>
-      <section className="menu-section">
-        <h2 className="menu-heading">Data</h2>
-        <div className="menu-row">
-          <span>Local data</span>
-          <span className="menu-value">{storage}</span>
-        </div>
-        <p className="menu-note">
-          Writing is encrypted in this browser. Export a readable backup when you need one.
-        </p>
-        <button className="menu-button" onClick={download}>
-          Export markdown
-        </button>
-        {exportError && (
-          <p role="alert" className="menu-note">
-            {exportError}
-          </p>
-        )}
-        <RemoveFromDeviceButton slotId={slotId} />
-        <div className="menu-days">
-          <button
-            className="menu-day"
-            disabled={!snapshot.undo}
-            onClick={() => void execute({ kind: 'undo' })}
-          >
-            Undo
-          </button>
-          <button
-            className="menu-day"
-            disabled={!snapshot.redo}
-            onClick={() => void execute({ kind: 'redo' })}
-          >
-            Redo
-          </button>
-        </div>
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">Protection</h2>
-        <p className="menu-note">
-          {protection === 'automatic'
-            ? 'Opens automatically. Anyone using this browser can open your list.'
-            : 'Unlock code enabled. Your local copy requires an unlock code.'}
-        </p>
-        {protection === 'automatic' ? (
-          <button className="menu-button" onClick={protect}>
-            Add an unlock code
-          </button>
-        ) : (
-          <button className="menu-button" onClick={lock}>
-            Lock workspace
-          </button>
-        )}
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">{accountWorkspace ? 'Account' : 'Sync'}</h2>
-        {accountWorkspace && (
-          <div className="menu-row">
-            <span>Name</span>
-            <span className="menu-value">{actor.name}</span>
-          </div>
-        )}
+      <MenuSection title="Account">
         {accountId && <AccountIdentity id={accountId} />}
-        {sync && (
-          <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} details />
-        )}
-        {showDevices && (
-          <button className="menu-button" onClick={showDevices}>
-            Devices
-          </button>
-        )}
-        {devices?.history && <AccountHistory run={devices.history} />}
-        {switchAccount && (
-          <button className="menu-button" onClick={switchAccount}>
-            Use another account
-          </button>
-        )}
-        {devices?.detached ? (
-          <p className="menu-note" role="status">
-            Removed from account. This local copy can be edited and exported, but it no longer
-            syncs.
-          </p>
-        ) : (
-          networkLogin && <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
-        )}
-        {!networkLogin && !devices?.detached && (
-          <p className="menu-note">
-            {accountWorkspace
-              ? 'Account connected. Approved devices can sync writing.'
-              : 'Saved only in this browser. Sync is off.'}
-          </p>
-        )}
-        {connectAccount && (
-          <button className="menu-button" onClick={connectAccount}>
-            Set up sync
-          </button>
-        )}
-      </section>
-      <section className="menu-section">
-        <h2 className="menu-heading">Personalize</h2>
+        <h3 className="menu-subheading">Identity and preferences</h3>
+
         <div className="menu-row">
           <span>Actor</span>
           <span className="menu-value">
@@ -319,7 +226,103 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             </p>
           )}
         </form>
-      </section>
+        <h3 className="menu-subheading">Protection</h3>
+
+        <p className="menu-note">
+          {protection === 'automatic'
+            ? 'Opens automatically. Anyone using this browser can open your list.'
+            : 'Unlock code enabled. Your local copy requires an unlock code.'}
+        </p>
+        {protection === 'automatic' ? (
+          <button className="menu-button" onClick={protect}>
+            Add an unlock code
+          </button>
+        ) : (
+          <button className="menu-button" onClick={lock}>
+            Lock workspace
+          </button>
+        )}
+        {showDevices && (
+          <button className="menu-button" onClick={showDevices}>
+            Devices
+          </button>
+        )}
+        {switchAccount && (
+          <button className="menu-button" onClick={switchAccount}>
+            Use another account
+          </button>
+        )}
+        {networkLogin && !devices?.detached && (
+          <>
+            {switchAccount && (
+              <p className="menu-note">
+                Use another account keeps this account’s login remembered. Sign out ends that login.
+                Both keep your writing on this device.
+              </p>
+            )}
+            <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
+          </>
+        )}
+        <RemoveFromDeviceButton slotId={slotId} />
+      </MenuSection>
+      <MenuSection title="Sync">
+        {sync && (
+          <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} details />
+        )}
+        {devices?.detached ? (
+          <p className="menu-note" role="status">
+            Removed from account. This local copy can be edited and exported, but it no longer
+            syncs.
+          </p>
+        ) : (
+          !networkLogin && (
+            <p className="menu-note">
+              {accountWorkspace
+                ? 'Account connected. Approved devices can sync writing.'
+                : 'Saved only in this browser. Sync is off.'}
+            </p>
+          )
+        )}
+        {connectAccount && (
+          <button className="menu-button" onClick={connectAccount}>
+            Set up sync
+          </button>
+        )}
+      </MenuSection>
+      <MenuSection title="Data">
+        <div className="menu-row">
+          <span>Local data</span>
+          <span className="menu-value">{storage}</span>
+        </div>
+        <p className="menu-note">
+          Writing is encrypted in this browser. Export a readable backup when you need one.
+        </p>
+        <button className="menu-button" onClick={download}>
+          Export markdown
+        </button>
+        {exportError && (
+          <p role="alert" className="menu-note">
+            {exportError}
+          </p>
+        )}
+        <div className="menu-days">
+          <button
+            className="menu-day"
+            disabled={!snapshot.undo}
+            onClick={() => void execute({ kind: 'undo' })}
+          >
+            Undo
+          </button>
+          <button
+            className="menu-day"
+            disabled={!snapshot.redo}
+            onClick={() => void execute({ kind: 'redo' })}
+          >
+            Redo
+          </button>
+        </div>
+        {devices?.history && <AccountHistory run={devices.history} />}
+      </MenuSection>
       <InstallPanel />
     </aside>
   );

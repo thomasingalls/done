@@ -5186,3 +5186,16 @@ They explicitly retain the old split behavior on three Shift-Enters.
 **Decision.** Completion focuses that card's static surface and retains its caret for deliberate Enter
 reopening. Pointer blur continues to respect its actual destination. A held Enter cannot repeatedly
 reopen a newly completed card. Goals Enter/list behavior and admitted mutation/undo semantics stay.
+
+
+### Sidebar collapse changes organization, not session lifetime
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch40 · **Against:**PRD §6.6 / sidebar clarification
+
+**Orientation.** Account, protection and personalization fragmented related controls; sync lane details
+and export/history were mixed. The operator asked whether switching/sign-out could be combined.
+
+**Decision.** Use native initially closed disclosures with mounted children. Keep dates/update availability
+outside settings disclosures. Keep both switch and sign-out because their remembered-login effects
+are intentionally different; explain that distinction. Group service-history maintenance with export,
+while Devices retains membership/lifecycle history. No implicit sign-out, revocation or cancellation.

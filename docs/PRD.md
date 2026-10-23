@@ -3176,3 +3176,18 @@ is built; and whether a revoked device can be wiped remotely.
 delegation rules and management UI; human collaboration — invitations, sharing, multi-workspace navigation and
 permissions; the survivability package's implementation; and the operational and legal program — vendor
 contracts, jurisdiction-specific notices, support playbooks and filing obligations.
+
+
+## Sidebar organization — operator UX clarification, 2026-10-23
+
+Date navigation stays directly visible: a date/calendar ghost control backed by a native date input,
+with Yesterday, Today and Tomorrow beneath it. Account, Sync, Data and Install are native collapsible
+sections, closed by default on a fresh mount. Account combines identity/preferences, local protection,
+devices and session/lifecycle actions. Sync contains sending/receiving status and setup. Data groups
+readable export with history maintenance. Device membership/history remains reached through Devices.
+Installation is omitted when already installed; an available app update remains outside the disclosures.
+
+Use another account and Sign out retain their distinct §6.6 effects. Switching preserves the remembered
+login; sign-out ends it. Both retain local writing. Collapsing a section does not reset a form, cancel
+an in-flight operation or change authorization. This organizational clarification changes no protection,
+removal, history-maintenance or synchronization guarantee.

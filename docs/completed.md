@@ -15628,3 +15628,17 @@ two projects, including the explicit frozen-history date selection. TypeScript/f
 
 **Notes.** Picker appearance is browser-owned; no custom calendar, persisted state or timezone/security
 change. [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md). No publication.
+
+
+### Sidebar groups everyday controls into closed disclosures
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch40 · **Stage:**bounded UX
+
+**Exit.** Account combines personalization/protection and device/session actions; Sync holds lane details;
+Data groups history maintenance/export; Install is collapsible. All default closed; date/update controls
+stay accessible. Native disclosure keeps stateful children mounted. Two baseline width counterexamples
+fail; four candidate width/project checks, TypeScript and focused lint pass. Screenshots inspected.
+
+**Notes.** Sign-out remains distinct from switching under PRD §6.6, with explicit explanatory text.
+Runtime lifecycle/security effects remain unchanged. Existing walkthrough navigation and combined
+regression checks are the next bounded fixture phase. No full-suite, phone performance or release claim.

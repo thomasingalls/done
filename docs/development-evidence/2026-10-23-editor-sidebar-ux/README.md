@@ -61,3 +61,17 @@ on the candidate, including both widths, arbitrary-day selection, adjacent dates
 compaction case. Its old first-button week shortcut is replaced by the explicit native date selection;
 all frozen-card/content assertions stay. TypeScript/focused lint pass. Native OS picker visuals and
 physical phone interaction are not asserted by the headless browser journey.
+
+## Phase40 — collapsed sidebar organization
+
+Account combines preferences, device identity/code, protection, Devices, switching, sign-out and local
+removal. Sync owns sending/receiving details and sync setup; Data groups export and history maintenance;
+Install remains its own disclosure. All four default closed. Date navigation and update availability
+remain directly accessible. Native details keep child forms/status owners mounted across collapse.
+Switching and sign-out remain separate: only sign-out ends the remembered login; labels explain this.
+No NetworkLogin, transport, history, removal, lock, session or persistence implementation changed.
+Two width-specific counterexamples fail on baseline. Four candidate project/width checks pass for native
+keyboard disclosure, placement, saved preferences and default-closed reload. TypeScript/focused lint pass;
+phone-width/desktop screenshots were inspected. Remaining old walkthroughs need explicit navigation
+into collapsed sections; those fixture-only repairs and combined checks are phase41, not a claim of
+full-suite acceptance here. General qualification stays paused.

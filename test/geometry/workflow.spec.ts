@@ -332,3 +332,53 @@ for (const width of [420, 1280]) {
     await expect(activeDay(page)).toHaveAttribute('data-date', today);
   });
 }
+
+for (const width of [420, 1280]) {
+  test(`sidebar sections start collapsed and retain preferences at ${width}px`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openApp(page);
+    await openMenu(page);
+    const menu = page.locator('#menu');
+    const sections = menu.locator('details.menu-disclosure');
+    await expect(sections).toHaveCount(4);
+    await expect(sections.locator('summary')).toHaveText(['Account', 'Sync', 'Data', 'Install']);
+    for (const section of await sections.all()) await expect(section).not.toHaveAttribute('open');
+    await expect(menu.getByLabel('Device name', { exact: true })).toBeHidden();
+    const account = sections.filter({
+      has: page.getByRole('heading', { name: 'Account', exact: true }),
+    });
+    await account.locator('summary').focus();
+    await account.locator('summary').press('Enter');
+    await expect(
+      account.getByRole('button', { name: 'Add an unlock code', exact: true }),
+    ).toBeVisible();
+    await expect(
+      account.getByRole('button', { name: 'Use another account', exact: true }),
+    ).toBeVisible();
+    await expect(
+      account.getByRole('button', { name: 'Remove from this device', exact: true }),
+    ).toBeVisible();
+    await expect(account.getByRole('button', { name: 'Export markdown', exact: true })).toHaveCount(
+      0,
+    );
+    await account.getByLabel('Device name', { exact: true }).fill('UX test device');
+    await account.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    await expect(account.getByRole('status')).toContainText('Preferences saved.');
+    await account.locator('summary').click();
+    await expect(account.getByLabel('Device name', { exact: true })).toBeHidden();
+    await account.locator('summary').click();
+    await expect(account.getByLabel('Device name', { exact: true })).toHaveValue('UX test device');
+    await page.screenshot({ path: info.outputPath(`sidebar-${width}.png`) });
+    await reloadApp(page);
+    await openMenu(page);
+    for (const section of await sections.all()) await expect(section).not.toHaveAttribute('open');
+    await account.locator('summary').click();
+    await expect(account.getByLabel('Device name', { exact: true })).toHaveValue('UX test device');
+    const data = sections.filter({ has: page.getByRole('heading', { name: 'Data', exact: true }) });
+    await data.locator('summary').click();
+    await expect(data.getByRole('button', { name: 'Export markdown', exact: true })).toBeVisible();
+    await expect(data.getByRole('button', { name: 'Lock workspace', exact: true })).toHaveCount(0);
+  });
+}

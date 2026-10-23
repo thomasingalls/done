@@ -1,5 +1,6 @@
 import { useRef, useState, useSyncExternalStore } from 'react';
 import { installHelp, readInstallState, requestInstall, subscribeToInstallState } from '../pwa';
+import { MenuSection } from './MenuSection';
 import { useWorkspaceUi } from './workspaceUi';
 
 export const InstallPanel = () => {
@@ -44,8 +45,7 @@ export const InstallPanel = () => {
       });
   };
   return (
-    <section className="menu-section" aria-label="Install">
-      <h2 className="menu-heading">Install</h2>
+    <MenuSection title="Install">
       <p className="menu-note">
         {installState === 'available'
           ? 'Install done and check permission to keep local writing on this device.'
@@ -65,6 +65,6 @@ export const InstallPanel = () => {
           {error}
         </p>
       )}
-    </section>
+    </MenuSection>
   );
 };
