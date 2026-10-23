@@ -16477,6 +16477,10 @@
       "sha256": "3b20e667d564625806074644e1e732d706673547b42b4baedb67861323ab884f"
     },
     {
+      "path": "scripts/test-runtime-image.mjs",
+      "sha256": "474e0473e2d9c01c52b789cc615e625e8f8f29a5bf137a91e5d283a2cbef93e8"
+    },
+    {
       "path": "scripts/upgrade-account-setup.mjs",
       "sha256": "9e110256e460c5abf495f78a37bbfece2e36d8f08c11491d4d2380f97508f1ef"
     },

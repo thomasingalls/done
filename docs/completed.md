@@ -15878,3 +15878,32 @@ These are isolated contexts/new renderers, not physical-device or cross-engine t
 simultaneous-online requirement was reproduced after confirmed upload; the operator’s
 perceived delay remains unexplained. Qualification remains paused/blocked, with the new
 required file uncredited. Preview and real accounts untouched; sequential patch only.
+
+### Distroless runtime candidate, with ARM64 verification and an open AMD64 gate
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch55 · **Stage:**bounded image hardening
+
+**Exit.** Runtime now uses digest-pinned distroless CC/Debian13, retains Node24.18.0 and
+builds static age1.3.2 with pinned Go1.27.3. Only the Node/age executables and their licenses/
+provenance are copied from toolchain stages. No runtime shell, package manager or OS archive
+tools. Application/protocol source, dependency lockfile, non-root identity, private state,
+external key custody and exec probe/maintenance forms remain unchanged.
+
+**Evidence.** Native ARM64 build and all31 final-image runtime/gateway, backup, restore and
+maintenance cases pass at their original deadlines. Six old/new X25519 payload round trips,
+12 wrong-key/tamper refusals, strict/default TLS controls and the uninstrumented two-container
+identity/ownership/restart smoke pass. Syntax, focused lint/format and10 inventory cases pass.
+One independent read-only review found no concrete bypass/regression. Same-database offline
+Trivy0.75.0 scans: release baseline5 critical/78 high; candidate0 critical/0 high, with25
+medium/8 low/1 unknown retained. The initial candidate exposed age's old embedded Go, so
+that binary was updated rather than suppressing its findings. Scanner presence is not a
+demonstrated remote exploit; Debian's MiniZip/zlib applicability caveat remains recorded.
+
+**Limits.** Full verification remains blocked on AMD64: two emulated builds fail the existing
+eight-second backup-worker readiness gate in the unchanged Debian build stage. A separate
+first-startup observation becomes ready after10,245ms; it is not credited as the full test.
+No old test, assertion or deadline changed. Native AMD64 build/final-image/smoke checks remain
+required. Exploratory image/source identities, full scans, all failed attempts and commands
+are retained in Codex Security's standalone `done` collection under `artifacts/55-distroless`.
+Patch54 is preserved; patch55 is a separate sequential source patch. No signing, push, merge,
+preview update or deployment. Generalized release qualification remains paused/blocked.
