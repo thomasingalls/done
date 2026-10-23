@@ -1,0 +1,94 @@
+[
+  {
+    "name": "1-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792735046014,
+    "completedAt": 1792735345971,
+    "exitCode": 0
+  },
+  {
+    "name": "2-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792735346043,
+    "completedAt": 1792735648644,
+    "exitCode": 0
+  },
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "analyze.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "evidence-review",
+    "command": [
+      "python3",
+      "review-evidence.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "native-audit",
+    "command": [
+      "node",
+      "audit-native.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "sensitivity",
+    "command": [
+      "python3",
+      "sensitivity.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "clock-review",
+    "command": [
+      "python3",
+      "review-clock.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "clock-sensitivity",
+    "command": [
+      "python3",
+      "clock-sensitivity.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "cleanup",
+    "command": [
+      "python3",
+      "cleanup.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "frozen-review",
+    "command": [
+      "python3",
+      "review-artifact-performance.py"
+    ],
+    "exitCode": 0
+  }
+]

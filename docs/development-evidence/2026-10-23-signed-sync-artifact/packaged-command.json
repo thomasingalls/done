@@ -1,0 +1,23 @@
+[
+  "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+  "node_modules/@playwright/test/cli.js",
+  "test",
+  "--config",
+  "playwright.packaged-account.config.ts",
+  "test/packaged-account/removal-regressions.spec.ts",
+  "test/packaged-account/local-removal-flow.spec.ts",
+  "test/packaged-account/account-creation-entry.spec.ts",
+  "test/packaged-account/empty-legacy-startup.spec.ts",
+  "test/packaged-account/enrollment-batch.spec.ts",
+  "test/packaged-account/enrollment-progress.spec.ts",
+  "test/packaged-account/enrollment-capacity.spec.ts",
+  "test/packaged-account/enrollment-state-retry.spec.ts",
+  "test/packaged-account/welcome.spec.ts",
+  "test/packaged-account/passkey-local-access.spec.ts",
+  "test/packaged-account/multi-tab-protection.spec.ts",
+  "test/packaged-account/recovery-progress-isolation.spec.ts",
+  "test/packaged-account/receiver-compatibility.spec.ts",
+  "test/packaged-account/bootstrap-compatibility.spec.ts",
+  "test/packaged-account/text-admission.spec.ts",
+  "test/packaged-account/membership-custody.spec.ts"
+]

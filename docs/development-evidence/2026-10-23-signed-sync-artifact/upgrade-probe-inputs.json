@@ -1,0 +1,11 @@
+{
+  "existingProbe": "docs/development-evidence/2026-10-16-onboarding-release/publication-upgrade.spec.ts.txt",
+  "existingProbeSha256": "c0c67ff02be6efac3c7971db61b5a7cc3cf9737c8fe582a6460ead58a7965473",
+  "predecessorHelperSource": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+  "changes": "Exact candidate and predecessor version substitutions in existing bounded upgrade/compatible-rollback probe; actual predecessor helper sources with only import-path adaptation. The API remains the signed-source candidate throughout. No runtime code or image bytes changed.",
+  "files": {
+    "test/packaged-account/publication-upgrade.spec.ts": "aff707d6278f089a6d68676c656e8b3ae0a4b0ede88e6171e1ab4e2d7e17adb6",
+    "test/packaged-account/publication-legacy-devices.ts": "039aac678d1ea1146fb86e6ffd4198eb2f66fa96c5dc18dcd0bab79af315fcc0",
+    "test/device-enrollment/publication-predecessor-helpers.ts": "38f94e1f9cbc987418f72c24a4f0849bd19c510c2f375b2f9714b16ed5833942"
+  }
+}

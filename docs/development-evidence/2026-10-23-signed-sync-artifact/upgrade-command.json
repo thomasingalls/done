@@ -1,0 +1,8 @@
+[
+  "node",
+  "node_modules/@playwright/test/cli.js",
+  "test",
+  "--config",
+  "playwright.packaged-account.config.ts",
+  "test/packaged-account/publication-upgrade.spec.ts"
+]

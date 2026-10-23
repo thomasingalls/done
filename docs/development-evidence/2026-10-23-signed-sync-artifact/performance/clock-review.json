@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "bothNewJourneysClockValidAndAllOriginalGatesPass": true,
+  "originalSeriesStillHeldAndRetained": true,
+  "noAnchorOrThresholdRelaxation": true,
+  "clockPrecisionAllowanceMs": 1,
+  "maximumClockSpreadOrDriftMs": 4,
+  "runs": [
+    {
+      "name": "1-C",
+      "hostSamples": 242,
+      "hostWallMinusMonotonicSpreadMs": 1.292724609375,
+      "rendererCalibrations": [
+        {
+          "initialOffsetBoundsMs": [
+            -0.2998046875,
+            1.7001953125
+          ],
+          "postOffsetBoundsMs": [
+            -0.099853515625,
+            2.60009765625
+          ],
+          "maximumConsistentDriftMs": 2.89990234375
+        },
+        {
+          "initialOffsetBoundsMs": [
+            -0.7001953125,
+            2.099853515625
+          ],
+          "postOffsetBoundsMs": [
+            0.2998046875,
+            2.39990234375
+          ],
+          "maximumConsistentDriftMs": 3.10009765625
+        }
+      ],
+      "all120InputEventsCausallyCompatible": true
+    },
+    {
+      "name": "2-C",
+      "hostSamples": 242,
+      "hostWallMinusMonotonicSpreadMs": 1.432861328125,
+      "rendererCalibrations": [
+        {
+          "initialOffsetBoundsMs": [
+            -0.2001953125,
+            1.89990234375
+          ],
+          "postOffsetBoundsMs": [
+            -0.2001953125,
+            2.5
+          ],
+          "maximumConsistentDriftMs": 2.7001953125
+        },
+        {
+          "initialOffsetBoundsMs": [
+            -0.5,
+            2.2998046875
+          ],
+          "postOffsetBoundsMs": [
+            0,
+            2.89990234375
+          ],
+          "maximumConsistentDriftMs": 3.39990234375
+        }
+      ],
+      "all120InputEventsCausallyCompatible": true
+    }
+  ]
+}

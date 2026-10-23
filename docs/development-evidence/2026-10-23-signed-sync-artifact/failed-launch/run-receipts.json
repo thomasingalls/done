@@ -1,0 +1,16 @@
+[
+  {
+    "name": "1-C",
+    "variant": "C",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/playwright.config.ts"
+    ],
+    "startedAt": 1792734894646,
+    "completedAt": 1792734895132,
+    "exitCode": 1
+  }
+]

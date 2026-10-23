@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "signedSourceAndRuntimeBytesExact": true,
+  "imageHasNoApplicationSourceOverlays": true,
+  "frontendExactExtractedReleaseArtifact": true,
+  "workloadAndAcceptanceUnchanged": true,
+  "allOriginalGatesAndClockValidityPassBothJourneys": true,
+  "priorAcceptedRowsRemainByteExact": true,
+  "allApparatusAndSourceHashesUnchanged": true,
+  "sameSourceCleanAfterMeasurement": true,
+  "productionEntrypointSeparatelySmokeTested": true
+}

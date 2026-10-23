@@ -1,0 +1,155 @@
+{
+  "candidate": {
+    "Id": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+    "RepoTags": [
+      "done-public:51d8550d"
+    ],
+    "RepoDigests": [
+      "done-public@sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29"
+    ],
+    "Comment": "buildkit.dockerfile.v0",
+    "Created": "2026-10-23T05:43:05.990649636Z",
+    "Config": {
+      "User": "65532:65532",
+      "ExposedPorts": {
+        "8080/tcp": {}
+      },
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "NODE_VERSION=24.18.0",
+        "YARN_VERSION=1.22.22",
+        "NODE_ENV=production",
+        "DONE_SOURCE_REVISION=51d8550d30585c93e623af0f2b3adf610781eebb"
+      ],
+      "Entrypoint": [
+        "node",
+        "scripts/public-account.mjs"
+      ],
+      "Cmd": [
+        "app"
+      ],
+      "WorkingDir": "/app",
+      "Labels": {
+        "org.opencontainers.image.revision": "51d8550d30585c93e623af0f2b3adf610781eebb",
+        "org.opencontainers.image.source": "https://github.com/thomasingalls/done"
+      },
+      "StopSignal": "SIGTERM",
+      "ArgsEscaped": true
+    },
+    "Architecture": "arm64",
+    "Os": "linux",
+    "Size": 450159115,
+    "RootFS": {
+      "Type": "layers",
+      "Layers": [
+        "sha256:12cdff3b039e28c684ffd2097ff5a66df274a8500966a1431038b05f50bcf096",
+        "sha256:6a19106755a5362775536926958bbc12e5976dbae20ecfb1b40c18f54e80d2fe",
+        "sha256:ab6a83b01265ca42f0e1fe674f9dc4f017323b8f753bfb9be375de4671f0e012",
+        "sha256:5385ee079d676c4c1b0519ef8f3e8d7ea61aa7a53b204fdc2ad4221d44680d33",
+        "sha256:a56dedbc0c1321c5f490e3f23588487fb4d673a62004fce2b297eccf470988f0",
+        "sha256:a263baaa649940b1707645129fb6b131ccc98edea1762331546d87af8eea4b01",
+        "sha256:b92ce274f22def2d896dd2b18ef96e8cbcbacb7c3e99b9b5a4a491bea8580471",
+        "sha256:fc3d6a79d2ed03989de51b802e8f9b079a8f624bb2cd84513f7ed35abdd887d7",
+        "sha256:d1a492318f4e1c66f963191ac9cce54393ff502fadddaf75512461d2ab9ee870",
+        "sha256:92da8d0d1f0b44772bb1fd83c6b61b0763f04a0c4b654d8e30b70d2885b1229f",
+        "sha256:b5bf3c9a319cdd0d3c534c3b863ec3fcf5f4309745fae1d6900e645a5bf1b182",
+        "sha256:c3abd2766c95793d2f9ac1946912170bf2c2251f7c1ebf99dbeb5c40a6b0844e",
+        "sha256:0769305f6d5544eafee6caa22aa2b3143883f653de31b3b315ddebc6a5207967",
+        "sha256:4a10bec207d93fcfb7c83de632a85c8fd62fc358cc346c8628f15c081cfb31a1",
+        "sha256:e49f40400aac5a71a6706c1d458c1f2476e535213fb97d7eb7fca762a3225656"
+      ]
+    },
+    "Metadata": {
+      "LastTagTime": "2026-10-23T05:43:06.406221469Z"
+    },
+    "Descriptor": {
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "digest": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29",
+      "size": 856
+    },
+    "Identity": {
+      "Build": [
+        {
+          "Ref": "f7oillubjwxxx3vf72gr9bay1",
+          "CreatedAt": "2026-10-23T05:43:06.482103844Z"
+        }
+      ]
+    }
+  },
+  "predecessor": {
+    "Id": "sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b",
+    "RepoTags": [
+      "ghcr.io/thomasingalls/done@sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b"
+    ],
+    "RepoDigests": [
+      "ghcr.io/thomasingalls/done@sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b"
+    ],
+    "Comment": "buildkit.dockerfile.v0",
+    "Created": "2026-10-16T10:14:59.869857219Z",
+    "Config": {
+      "User": "65532:65532",
+      "ExposedPorts": {
+        "8080/tcp": {}
+      },
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "NODE_VERSION=24.18.0",
+        "YARN_VERSION=1.22.22",
+        "NODE_ENV=production",
+        "DONE_SOURCE_REVISION=faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2"
+      ],
+      "Entrypoint": [
+        "node",
+        "scripts/public-account.mjs"
+      ],
+      "Cmd": [
+        "app"
+      ],
+      "WorkingDir": "/app",
+      "Labels": {
+        "org.opencontainers.image.revision": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+        "org.opencontainers.image.source": "https://github.com/thomasingalls/done"
+      },
+      "StopSignal": "SIGTERM",
+      "ArgsEscaped": true
+    },
+    "Architecture": "arm64",
+    "Os": "linux",
+    "Size": 450042649,
+    "RootFS": {
+      "Type": "layers",
+      "Layers": [
+        "sha256:12cdff3b039e28c684ffd2097ff5a66df274a8500966a1431038b05f50bcf096",
+        "sha256:6a19106755a5362775536926958bbc12e5976dbae20ecfb1b40c18f54e80d2fe",
+        "sha256:ab6a83b01265ca42f0e1fe674f9dc4f017323b8f753bfb9be375de4671f0e012",
+        "sha256:5385ee079d676c4c1b0519ef8f3e8d7ea61aa7a53b204fdc2ad4221d44680d33",
+        "sha256:a56dedbc0c1321c5f490e3f23588487fb4d673a62004fce2b297eccf470988f0",
+        "sha256:a263baaa649940b1707645129fb6b131ccc98edea1762331546d87af8eea4b01",
+        "sha256:b92ce274f22def2d896dd2b18ef96e8cbcbacb7c3e99b9b5a4a491bea8580471",
+        "sha256:fc3d6a79d2ed03989de51b802e8f9b079a8f624bb2cd84513f7ed35abdd887d7",
+        "sha256:d1a492318f4e1c66f963191ac9cce54393ff502fadddaf75512461d2ab9ee870",
+        "sha256:1fb15cf31c5b012cf62cad5bddeec05141bb0f6227c5cc93363bfaeed52aeba0",
+        "sha256:af529dfc8e00d1741c4507238609b3265e980475ef09bc1348b15195d7dc6ace",
+        "sha256:9771cd2bc256bcc18e9366c5fb323d083ed84a651d2b7020448aea7b3e17fae4",
+        "sha256:f9b1a4684248c15aa5f9504968c26c2dc23dfdb8c88ea3ea7065f47cd2d39d6e",
+        "sha256:4c6acd9a2bdb8c6ee43cdd56f968914efac7f0d752729b0fe0267cce1d442a80",
+        "sha256:dce26e85a71b49c6e5f07b2fd40cb47bb9fa50da9bd0af5558cc3416bbdd486b"
+      ]
+    },
+    "Metadata": {
+      "LastTagTime": "2026-10-22T17:52:04.246094003Z"
+    },
+    "Descriptor": {
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "digest": "sha256:de9ead770b70113e6e391a128898be63c37c5a3afa9e8fda2f7b5d99f1aeea6b",
+      "size": 856
+    },
+    "Identity": {
+      "Pull": [
+        {
+          "Repository": "ghcr.io/thomasingalls/done"
+        }
+      ]
+    }
+  }
+}
