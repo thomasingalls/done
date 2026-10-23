@@ -1,0 +1,317 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-ux-20261023-patches/playwright.sidebar-cut.config.ts",
+      "date-picker.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-ux-20261023-patches/playwright.sidebar-cut.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-49-candidate",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-49-candidate",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-ux-20261023-patches/checks-49/candidate-browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node /Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 54176 --strictPort",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "port": 54176,
+      "reuseExistingServer": false,
+      "env": {
+        "APP_BUILD_REVISION": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61-dirty",
+        "APP_BUILD_DATE": "2026-10-23"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "date-picker.spec.ts",
+      "file": "date-picker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "date text, padding and icon all request the picker, as do Enter and Space",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2823,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:11:26.514Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-9959cc289426d01562cb",
+          "file": "date-picker.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "date text requests the real native picker during user activation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 694,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:11:30.192Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-e2f1ece6514283c29152",
+          "file": "date-picker.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "a missing or refused picker API retains native date entry and navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 749,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:11:30.893Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-07a10b44d520ecfb2d49",
+          "file": "date-picker.spec.ts",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "date text, padding and icon all request the picker, as do Enter and Space",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1107,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:11:31.980Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-bcdba2a2f52c4ee9b17b",
+          "file": "date-picker.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "date text requests the real native picker during user activation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 955,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:11:33.425Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-918cf3b4ca8cba78b42e",
+          "file": "date-picker.spec.ts",
+          "line": 27,
+          "column": 1
+        },
+        {
+          "title": "a missing or refused picker API retains native date entry and navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1431,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:11:34.386Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-e88091967b741ba26ee3",
+          "file": "date-picker.spec.ts",
+          "line": 47,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T10:11:25.865Z",
+    "duration": 10064.339999999998,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

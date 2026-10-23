@@ -15771,3 +15771,17 @@ checks pass. Narrow/wide screenshots inspected; typecheck/focused lint pass.
 source-only review of three old fixtures: only Actor-name locators become User-name locators;
 all assertions are preserved. Full historical setup/upgrade campaigns are not claimed. No
 authorization, lifecycle, data-format or default-disclosure behavior changes. Patch only.
+
+
+### Whole date target requests the native calendar
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch49 · **Stage:**bounded UX
+
+**Exit.** Text, padding and icon share explicit native showPicker activation, including Enter/Space.
+Missing/refused APIs keep native date entry. Four baseline activation checks fail and two fallback
+controls pass. Six Chromium and three real Firefox headless cases pass; native requests return
+inside user activation. TypeScript/focused lint pass.
+
+**Notes.** Native popup appearance remains browser-owned. The tests establish request acceptance,
+not physical-device calendar presentation. Date semantics and frozen-day rules are unchanged.
+[Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md). No publication.

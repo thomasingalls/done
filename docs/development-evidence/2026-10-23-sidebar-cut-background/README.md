@@ -31,3 +31,13 @@ strings (Actor name→User name), verified against the frozen baseline byte for 
 Full historical setup/upgrade execution remains outside this phase; fixture review is not execution.
 
 Outcome recorded in completed.md. Active work advances to full date activation.
+
+## Phase49 outcome
+
+The transparent native date field already covered the visual label, but editing native segments was
+not equivalent to opening the picker on Firefox. Explicit showPicker under click/Enter/Space now
+requests it anywhere on the control. Successful requests cancel a second default activation; missing
+or refused API leaves native entry available. Four baseline checks fail; two fallback controls pass.
+Candidate Chromium6 and actual headless Firefox3 pass. The native wrapper forwards to the browser
+API and confirms active user activation plus a normal return. No popup appearance or physical-phone
+claim is inferred. Typecheck/lint pass. Outcome recorded; active work advances to Cut.

@@ -21,6 +21,17 @@ export interface MenuProps {
   ref?: React.Ref<HTMLElement>;
 }
 const NEARBY = [-1, 0, 1];
+const openNativeDatePicker = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  const input = event.currentTarget;
+  if (typeof input.showPicker !== 'function') return;
+  try {
+    input.showPicker();
+    // Avoid a second native default activation toggling the newly opened picker.
+    event.preventDefault();
+  } catch {
+    // Keep ordinary native focus/date entry if the browser refuses this request.
+  }
+};
 export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   const {
     workspace,
@@ -104,13 +115,24 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             <rect x="3" y="5" width="18" height="16" rx="2" />
             <path d="M7 3v4m10-4v4M3 11h18" />
           </svg>
-          {/* The full-size native control owns pointer and keyboard activation, including
-              browsers without showPicker. Its label supplies the compact ghost appearance. */}
+          {/* Keep native date entry as the fallback; explicitly request the picker
+              from anywhere on the overlaid control, not just its native indicator. */}
           <input
             className="menu-native-date"
             type="date"
             aria-label="Go to date"
             value={date}
+            onClick={openNativeDatePicker}
+            onKeyDown={(event) => {
+              if (
+                (event.key === 'Enter' || event.key === ' ') &&
+                !event.altKey &&
+                !event.ctrlKey &&
+                !event.metaKey &&
+                !event.shiftKey
+              )
+                openNativeDatePicker(event);
+            }}
             onChange={(event) => {
               if (/^\d{4}-\d{2}-\d{2}$/.test(event.target.value)) {
                 onGoTo(event.target.value as ISODate);

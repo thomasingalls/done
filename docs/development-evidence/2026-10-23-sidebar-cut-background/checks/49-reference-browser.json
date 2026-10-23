@@ -1,0 +1,437 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-ux-20261023-patches/playwright.sidebar-cut.config.ts",
+      "date-picker.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-ux-20261023-patches/playwright.sidebar-cut.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-49-reference",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/done-ux-20261023-patches/artifacts-49-reference",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-ux-20261023-patches/checks-49/reference-browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node /Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 54176 --strictPort",
+      "cwd": "/private/tmp/done-ux-20261023-patches/reference-47",
+      "port": 54176,
+      "reuseExistingServer": false,
+      "env": {
+        "APP_BUILD_REVISION": "c4a66c79ddfc924c4c1f9b978428f544b16b4a61-dirty",
+        "APP_BUILD_DATE": "2026-10-23"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "date-picker.spec.ts",
+      "file": "date-picker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "date text, padding and icon all request the picker, as do Enter and Space",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 2975,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m5\u001b[39m\nReceived: \u001b[31m0\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m5\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:19:97",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                      "column": 97,
+                      "line": 19
+                    },
+                    "snippet": "  17 |   await picker.press('Enter');\n  18 |   await picker.press('Space');\n> 19 |   expect(await page.evaluate(() => (window as unknown as { pickerCalls: number }).pickerCalls)).toBe(5);\n     |                                                                                                 ^\n  20 | });\n  21 |\n  22 | test('date text requests the real native picker during user activation', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                        "column": 97,
+                        "line": 19
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m5\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n\n  17 |   await picker.press('Enter');\n  18 |   await picker.press('Space');\n> 19 |   expect(await page.evaluate(() => (window as unknown as { pickerCalls: number }).pickerCalls)).toBe(5);\n     |                                                                                                 ^\n  20 | });\n  21 |\n  22 | test('date text requests the real native picker during user activation', async ({ page }) => {\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:19:97"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:08:37.636Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-49-reference/date-picker-date-text-padd-4033d-icker-as-do-Enter-and-Space-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                    "column": 97,
+                    "line": 19
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-9959cc289426d01562cb",
+          "file": "date-picker.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "date text requests the real native picker during user activation",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 811,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"active\": true, \"returned\": true}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"active\": true, \"returned\": true}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:36:101",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                      "column": 101,
+                      "line": 36
+                    },
+                    "snippet": "  34 |   });\n  35 |   await page.getByLabel('Go to date', { exact: true }).click({ position: { x: 30, y: 15 } });\n> 36 |   expect(await page.evaluate(() => (window as unknown as { nativePicker?: unknown }).nativePicker)).toEqual({ active: true, returned: true });\n     |                                                                                                     ^\n  37 |   await page.keyboard.press('Escape');\n  38 | });\n  39 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                        "column": 101,
+                        "line": 36
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"active\": true, \"returned\": true}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  34 |   });\n  35 |   await page.getByLabel('Go to date', { exact: true }).click({ position: { x: 30, y: 15 } });\n> 36 |   expect(await page.evaluate(() => (window as unknown as { nativePicker?: unknown }).nativePicker)).toEqual({ active: true, returned: true });\n     |                                                                                                     ^\n  37 |   await page.keyboard.press('Escape');\n  38 | });\n  39 |\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:36:101"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:08:41.667Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-49-reference/date-picker-date-text-requ-8b15c-cker-during-user-activation-desktop/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                    "column": 101,
+                    "line": 36
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-e2f1ece6514283c29152",
+          "file": "date-picker.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "a missing or refused picker API retains native date entry and navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 849,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:08:43.067Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-07a10b44d520ecfb2d49",
+          "file": "date-picker.spec.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "date text, padding and icon all request the picker, as do Enter and Space",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1277,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m5\u001b[39m\nReceived: \u001b[31m0\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m5\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:19:97",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                      "column": 97,
+                      "line": 19
+                    },
+                    "snippet": "  17 |   await picker.press('Enter');\n  18 |   await picker.press('Space');\n> 19 |   expect(await page.evaluate(() => (window as unknown as { pickerCalls: number }).pickerCalls)).toBe(5);\n     |                                                                                                 ^\n  20 | });\n  21 |\n  22 | test('date text requests the real native picker during user activation', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                        "column": 97,
+                        "line": 19
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m5\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n\n  17 |   await picker.press('Enter');\n  18 |   await picker.press('Space');\n> 19 |   expect(await page.evaluate(() => (window as unknown as { pickerCalls: number }).pickerCalls)).toBe(5);\n     |                                                                                                 ^\n  20 | });\n  21 |\n  22 | test('date text requests the real native picker during user activation', async ({ page }) => {\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:19:97"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:08:44.515Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-49-reference/date-picker-date-text-padd-4033d-icker-as-do-Enter-and-Space-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                    "column": 97,
+                    "line": 19
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-bcdba2a2f52c4ee9b17b",
+          "file": "date-picker.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "date text requests the real native picker during user activation",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1128,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"active\": true, \"returned\": true}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"active\": true, \"returned\": true}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:36:101",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                      "column": 101,
+                      "line": 36
+                    },
+                    "snippet": "  34 |   });\n  35 |   await page.getByLabel('Go to date', { exact: true }).click({ position: { x: 30, y: 15 } });\n> 36 |   expect(await page.evaluate(() => (window as unknown as { nativePicker?: unknown }).nativePicker)).toEqual({ active: true, returned: true });\n     |                                                                                                     ^\n  37 |   await page.keyboard.press('Escape');\n  38 | });\n  39 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                        "column": 101,
+                        "line": 36
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"active\": true, \"returned\": true}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  34 |   });\n  35 |   await page.getByLabel('Go to date', { exact: true }).click({ position: { x: 30, y: 15 } });\n> 36 |   expect(await page.evaluate(() => (window as unknown as { nativePicker?: unknown }).nativePicker)).toEqual({ active: true, returned: true });\n     |                                                                                                     ^\n  37 |   await page.keyboard.press('Escape');\n  38 | });\n  39 |\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts:36:101"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:08:46.402Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-ux-20261023-patches/artifacts-49-reference/date-picker-date-text-requ-8b15c-cker-during-user-activation-android/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/date-picker.spec.ts",
+                    "column": 101,
+                    "line": 36
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-918cf3b4ca8cba78b42e",
+          "file": "date-picker.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "a missing or refused picker API retains native date entry and navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1578,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T10:08:48.140Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54e277610407c7c4e36d-e88091967b741ba26ee3",
+          "file": "date-picker.spec.ts",
+          "line": 40,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T10:08:36.945Z",
+    "duration": 13166.769999999999,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}
