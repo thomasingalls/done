@@ -15674,3 +15674,20 @@ and accepted writing survives reopen. TypeScript, focused lint and card-command 
 invalid first build metadata and a candidate port-conflict attempt. This establishes a reproducible trap,
 not the cause of every unknown modifier sequence or the intermittent physical Gboard report. No storage,
 protocol, credentials or frozen/Done policy changes. Preview8443 remains on patches37–41. No commit/deploy.
+
+
+### Quick entry respects IME confirmation without claiming the intermittent phone defect solved
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch43 · **Stage:**bounded UX
+
+**Exit.** Enter owned by an IME (native composition flag, keyCode229 or an active composition session)
+is not cancelled or submitted. Blur releases a cancelled session. Three unit counterexamples and four
+browser counterexamples fail on the unchanged patch41 Compose; six final unit cases and four Chromium
+composition journeys pass. Tests retain visible drafts, enabled Add, multiline/refused/pending submission
+semantics and actual card persistence. TypeScript and focused lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) separates the verified
+confirmation defect from UX-13. The operator uses Gboard, recalls no trigger and observed normal
+suggestion taps. No physical keyboard reproduction exists, so the intermittent invisible-text report
+remains unresolved. The textarea remains native and all submissions use existing storage admission.
+No commit, preview replacement or deployment.

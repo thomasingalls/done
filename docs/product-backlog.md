@@ -69,7 +69,8 @@ get a bounded scope and evidence before implementation. General release qualific
   field sometimes shows no text and Add stays disabled while keyboard suggestions follow typing.
   The operator does not recall a reliable trigger; suggestion taps have also worked normally.
   Track separately from UX-12 and from IME-confirmation handling. Do not infer a physical-phone
-  repair from synthetic events or a Chromium mobile user agent.
+  repair from synthetic events or a Chromium mobile user agent. Patch43 separately repairs
+  IME confirmation being mistaken for submission; the intermittent phone symptom stays open.
 - **UX-14 — Duplicate cards to Scheduled.** Add a Duplicate control in Next, Done and Scheduled,
   retaining the source and copying its whole multiline body into a new Scheduled card. Preserve
   writable-day and durability rules; do not turn duplication into movement out of Done.

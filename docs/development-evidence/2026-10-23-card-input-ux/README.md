@@ -35,3 +35,22 @@ rerun only after reference completion. Both failed logs are retained. Mac bindin
 Mac platform/UA in desktop and mobile layouts; this is not a physical Gboard keyboard result.
 
 Phase42 exit recorded in completed.md. Active work advances to the quick-entry investigation.
+
+## Phase43 outcome and unresolved observation
+
+The operator identified Gboard but deliberately declined to guess a trigger; suggestion taps also work
+normally. The native textarea keeps ordinary/composing input visible in the exercised sequences.
+A separate bug is demonstrated: Enter with native isComposing, legacy keyCode229 or tracked composition
+is wrongly cancelled and submits/clears the draft. Three of five baseline unit cases fail; all four
+browser counterexamples fail at the IME-owned key. The repaired six unit cases pass, as do four browser
+journeys using real Chromium preedit events via CDP plus an explicit composing key event. Final unit
+coverage also releases a cancelled session on blur. TypeScript and focused lint pass.
+
+The first attempt to copy the unit fixture used the reference working directory by mistake; that copy
+failed and the reference lacked explicit valid build metadata. The corrected run copies the new test
+by absolute path and provides full metadata. No product conclusion rests on that launch attempt.
+
+The tests establish composition handling, drafts across rerenders, pending/refused submissions, Shift-Enter
+and saved-card reopen. Chromium CDP is not Gboard on a phone. UX-13 remains open; the focus repair may
+remove one overlapping symptom but no cause is asserted. Phase43 exit is recorded in completed.md.
+Active work advances to Duplicate.
