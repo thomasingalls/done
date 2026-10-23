@@ -1,0 +1,9 @@
+{
+  ".github/workflows/ci.yml": "252ed775870262b22359af7e11b687a3ab23fef38ae5ddc70ea2bf88ff71d795",
+  "test/onboardingStorage.test.ts": "1c25802a3be421aa2d15c64d38fbc4717fb3a412ac8c23062206c4b12c3e0d97",
+  "docs/account-crypto/constructions.json": "d29685267e529d10dc5283e8916b651bd3d0aa6f2d94e4c88e7316da4db013dd",
+  "test/release-validation/account-fixtures.test.mjs": "370db9930691dd802040bfbdca00cfcb0113b3a956359114a232610f25efdd9b",
+  "test/release-validation/campaign-wrappers.test.mjs": "e350fba875932a466e85d76a1b9f221ebfa3b249b92453ecff6a7cbcf0730542",
+  "test/release-validation/general-tests.test.mjs": "3c30bdd0cacf7291e0081d45830ac922f4c6efce9a8fcdc5034ae4b030d61bfc",
+  "test/release-validation/generated-tests.test.mjs": "d11cc83c6898c1d83ed2366a15a9da2c20861f9a573233af74359d265e13f44b"
+}

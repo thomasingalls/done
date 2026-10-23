@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "allNativeProtocolClientBytesExactAccepted30": true,
+  "packageLockAndViteConfigurationExactMeasured30": true,
+  "onlyRoutineWorkflowChanged": true
+}

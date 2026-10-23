@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "sameCurrentProductionAndOriginalTestBodyAtBothCalendarDates": true,
+  "onlyExistingTodayInjectionDiffers": true,
+  "calendar14All13Pass": true,
+  "calendar17OriginalSourceDeletionCaseFailsSameFinalAssertion": true,
+  "allRuntimeBytesUnchanged": true,
+  "wallTimeBoundaryRatherThanUpgradeDataLossEstablishedForThisFixture": true,
+  "runs": [
+    {
+      "name": "calendar14",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/onboardingStorage.test.ts",
+        "--maxWorkers=1"
+      ],
+      "exitCode": 0,
+      "expected": 0
+    },
+    {
+      "name": "calendar17",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/onboardingStorage.test.ts",
+        "--maxWorkers=1",
+        "-t",
+        "resumes protection after refused source deletion"
+      ],
+      "exitCode": 1,
+      "expected": 1
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "allNativeProtocolClientBytesExactAccepted30": true,
+  "cryptoCensusBytesExact30": true,
+  "constructionRegistryOnlyReviewedSourceLineCorrection": true,
+  "all883ObligationRowIdentitiesAnd339UnresolvedExact": true,
+  "onlyThreeManifestCaseTitlesMatchExplicitCountUpdates": [
+    "test:test/release-validation/account-fixtures.test.mjs",
+    "test:test/release-validation/campaign-wrappers.test.mjs",
+    "test:test/release-validation/general-tests.test.mjs"
+  ],
+  "allOtherStageCasesOutcomesDeadlinesProcessPolicyAndEveryBlockExact": true,
+  "allSelectionsExclusionsStatusClaimExact": true,
+  "noNewAggregateCredit": true,
+  "generalQualificationPaused": true
+}

@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "onlyFixtureCalendarSeamAndFiveNewNonVacuityAssertionsInAllOriginalUnitAst": true,
+  "allOldUnitCasesActionsAssertionsOptionsDeadlinesExact": true,
+  "otherFourOldTestFilesOnlyPreciseCountAndTitleLiterals": true,
+  "registryOnlyOneSourceLineChangedIndependentlyAgreesWithNativeAstAndCensus": true,
+  "allNativeProtocolClientBytesExactAccepted30": true,
+  "allOriginalWorkflowBytesExactApartFromOneNewSerialStep": true
+}

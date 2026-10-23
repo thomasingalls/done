@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,hashlib,gzip
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/regression-evidence/2026-10-23-functional-ci';sha=lambda b:hashlib.sha256(b).hexdigest();rows=[]
+def cp(f,name,z=False):
+ data=f.read_bytes();out=p/(name+'.gz'if z else name);out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(gzip.compress(data,mtime=0)if z else data);rows.append({'source':str(f.relative_to(r)),'artifact':str(out.relative_to(p)),'sourceSha256':sha(data),'artifactSha256':sha(out.read_bytes())})
+for f in sorted(r.glob('*.json')):cp(f,f.name,z=f.name in ['starting.json','clock-counterfactual-identity.json','clock-counterfactual-identity-initial.json','expired-calendar-results.json','local-functional-review.json'])
+cp(r/'protocol.md','protocol.md');cp(r/'workflow-added-step.txt','workflow-added-step.txt');cp(r/'workflow-added-step-initial.txt','workflow-added-step-initial.txt')
+for f in sorted([*r.glob('*.py'),*r.glob('*.mjs'),*r.glob('*.mjs.txt'),*r.glob('*.py.txt')]):cp(f,'reproduction/'+f.name+'.txt')
+for f in sorted(r.glob('*.log')):
+ if not f.name.startswith(('package','prepare-patch','post','closing')):cp(f,'checks/'+f.name,True)
+for f in [*r.glob('inbound-core-*.mjs.txt')]:cp(f,'historical-sources/'+f.name,True)
+for name in ['test/onboardingStorage.test.ts','.github/workflows/ci.yml']:
+ cp(r/'before'/name,'before/'+name,True)
+(p/'artifact-provenance.json').write_text(json.dumps(rows,indent=2)+'\n')
+fixture=json.loads(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json').read_text());secrets=set()
+def collect(v):
+ if isinstance(v,dict):
+  for k,w in v.items():
+   if k in ['code','privateKey','credentialId','userHandle']and isinstance(w,str)and len(w)>=8:secrets.add(w.encode())
+   collect(w)
+ elif isinstance(v,list):
+  for w in v:collect(w)
+collect(fixture);secrets.add((Path(fixture['state'])/'operator.key').read_bytes())
+for f in p.rglob('*'):
+ if f.is_file():
+  data=f.read_bytes();data=gzip.decompress(data)if f.suffix=='.gz'else data;assert not any(s in data for s in secrets),f
+(p/'privacy-audit.json').write_text(json.dumps({'status':'passed','knownBenchmarkPrivateValues':len(secrets),'matches':0,'scope':'selected reports/scripts/logs and known fixture values; no databases, browser profiles, credential/key files; not universal DLP'},indent=2)+'\n');(p/'SHA256SUMS').write_text(''.join(sha(f.read_bytes())+'  '+str(f.relative_to(p))+'\n'for f in sorted(p.rglob('*'))if f.is_file()and f.name!='SHA256SUMS'));print('31 packet files',sum(f.is_file()for f in p.rglob('*')))

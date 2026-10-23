@@ -1,0 +1,82 @@
+[
+  {
+    "commit": "faf465f7",
+    "actualLine": [
+      673
+    ],
+    "registeredLine": 673,
+    "matches": true
+  },
+  {
+    "commit": "a80afebcdf7faf2501bce82218b8a5bfdc7f6425",
+    "actualLine": [
+      674
+    ],
+    "registeredLine": 674,
+    "matches": true
+  },
+  {
+    "commit": "0a1fc14682b56b89c919a37dff35c57794d3c7d6",
+    "actualLine": [
+      674
+    ],
+    "registeredLine": 674,
+    "matches": true
+  },
+  {
+    "commit": "599e25f195e8fbc4b82e26ecbfd98ad3c57aef0c",
+    "actualLine": [
+      674
+    ],
+    "registeredLine": 674,
+    "matches": true
+  },
+  {
+    "commit": "ddcbe5b6f7f51adf49a5d731d8ec8301df62064d",
+    "actualLine": [
+      685
+    ],
+    "registeredLine": 685,
+    "matches": true
+  },
+  {
+    "commit": "51c17a932c96612f771718303114cfdf6281b7eb",
+    "actualLine": [
+      685
+    ],
+    "registeredLine": 685,
+    "matches": true
+  },
+  {
+    "commit": "4a1e76100932e6725f93161ff7d9364f91de2311",
+    "actualLine": [
+      686
+    ],
+    "registeredLine": 685,
+    "matches": false
+  },
+  {
+    "commit": "de9f3cf422989556f9897709da7707e4f51f1917",
+    "actualLine": [
+      747
+    ],
+    "registeredLine": 685,
+    "matches": false
+  },
+  {
+    "commit": "334510ced1bf52c14379c6c7e299ca2b0d23bf82",
+    "actualLine": [
+      747
+    ],
+    "registeredLine": 685,
+    "matches": false
+  },
+  {
+    "commit": "82bf63e29472d58ac2ca4346770e44280e976c83",
+    "actualLine": [
+      747
+    ],
+    "registeredLine": 685,
+    "matches": false
+  }
+]

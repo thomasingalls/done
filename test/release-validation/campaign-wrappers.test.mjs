@@ -2956,13 +2956,13 @@ function serviceInboundEvidence() {
   };
   return r;
 }
-test('service-inbound wrapper binds all three commands, 21 cases and inherited browser process ownership', () => {
+test('service-inbound wrapper binds all three commands, 33 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-service-inbound');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 21);
+  assert.equal(s.expect.cases.length, 33);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 120000, 90000],

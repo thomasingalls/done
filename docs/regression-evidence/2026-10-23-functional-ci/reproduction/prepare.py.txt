@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,subprocess,os,hashlib
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');r=Path(__file__).parent;m=json.loads(Path('/private/tmp/done-cold-clear-retry-20261023/patches/manifest.json').read_text());files=['.github/workflows/ci.yml','docs/completed.md','docs/decisions.md','docs/release-validation-graph.json','docs/release-validation-manifest.json'];env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+assert not(r/'starting.json').exists()
+for f in files:
+ p=r/'before'/f;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((repo/f).read_bytes())
+runtime={str(f.relative_to(repo)):hashlib.sha256(f.read_bytes()).hexdigest()for name in ['account-service','account-protocol','src']for f in(repo/name).rglob('*')if f.is_file()}
+(r/'starting.json').write_text(json.dumps({'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip(),'indexSha256':hashlib.sha256(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index').read_bytes()).hexdigest(),'baseTree30':m['expectedCumulativeTree30'],'priorPatchManifest':m,'runtimeFiles':runtime},indent=2)+'\n')
+p=repo/'.github/workflows/ci.yml';s=p.read_text();anchor='      - name: Check development compiler loading with fresh and retained caches\n';assert s.count(anchor)==1
+step='''      - name: Check native authority-cache, publisher-race and cold-read regressions
+        run: >-
+          node --test --test-concurrency=1
+          test/account-sessions/inbound-authority-cache.test.mjs
+          test/account-service-delivery/publisher-commit-races.test.mjs
+          test/account-service-delivery/publisher-isolation.test.mjs
+          test/account-service-delivery/cold-verification.test.mjs
+          test/account-ceremony/content-transfer.test.mjs
+
+'''
+p.write_text(s.replace(anchor,step+anchor));assert p.read_text().replace(step,'')==s
+(r/'workflow-added-step.txt').write_text(step);(r/'workflow-review.json').write_text(json.dumps({'status':'passed','removingExactlyOneNewStepRestoresAllOriginalBytes':True,'newStepAfterChromiumBeforeCompiler':p.read_text().index(step)>p.read_text().index('name: Install Playwright Chromium'),'allFivePathsExist':all((repo/line.strip()).exists()for line in step.splitlines()if line.strip().startswith('test/')),'allExistingCommandsPermissionsTimeoutsQualitySwitchUnchanged':True},indent=2)+'\n')
+print('31 active; workflow only, native/client exact30')

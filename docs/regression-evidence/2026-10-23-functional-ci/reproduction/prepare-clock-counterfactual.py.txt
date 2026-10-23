@@ -1,0 +1,14 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');root=r/'clock-counterfactual';root.mkdir(exist_ok=False)
+for name in ['src','account-protocol','account-service','vite','wasm']:shutil.copytree(repo/name,root/name)
+(root/'test').mkdir()
+for name in ['test/onboardingStorage.test.ts','test/setup.ts','vite.config.ts','package.json','pnpm-lock.yaml',*map(lambda p:p.name,repo.glob('tsconfig*.json'))]:
+ p=root/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(repo/name,p)
+(root/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
+baseline=r/'before/test/onboardingStorage.test.ts';s=(baseline if baseline.exists() else repo/'test/onboardingStorage.test.ts').read_text();anchor="const result = await openLocalWorkspace(slot, code, {\n";assert s.count(anchor)==1
+(root/'original-onboardingStorage.test.ts.txt').write_text(s)
+fixed=s.replace(anchor,anchor+"    today: () => '2026-10-14',\n")
+(root/'fixed-onboardingStorage.test.ts.txt').write_text(fixed)
+(r/'clock-counterfactual-identity.json').write_text(json.dumps({'runtimeFiles':{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()for n in ['src','account-protocol','account-service','vite','wasm']for p in(root/n).rglob('*')if p.is_file()},'originalTestSha256':hashlib.sha256(s.encode()).hexdigest(),'onlyChange':'existing openLocalWorkspace options.today seam returns fixture date2026-10-14; no global clock/timer/runtime change'},indent=2)+'\n')
+print('Private date counterfactual ready; actual test remains unchanged')

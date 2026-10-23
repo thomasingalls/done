@@ -1,0 +1,146 @@
+[
+  {
+    "name": "Run all unit regression tests",
+    "command": "pnpm test --maxWorkers=1",
+    "log": "functional-01.log",
+    "exitCode": 1,
+    "startedAtNs": 1792712958353319000,
+    "completedAtNs": 1792713142963264000
+  },
+  {
+    "name": "Install locked dependencies",
+    "command": "pnpm install --frozen-lockfile --ignore-scripts --strict-peer-dependencies",
+    "log": "functional-02.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713142963724000,
+    "completedAtNs": 1792713143249567000
+  },
+  {
+    "name": "Build and check the application",
+    "command": "pnpm build",
+    "log": "functional-03.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713143249893000,
+    "completedAtNs": 1792713148489433000
+  },
+  {
+    "name": "Check security contracts and published vectors",
+    "command": "pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify",
+    "log": "functional-04.log",
+    "exitCode": 1,
+    "startedAtNs": 1792713148489839000,
+    "completedAtNs": 1792713156382699000
+  },
+  {
+    "name": "Check the complete release inventory",
+    "command": "pnpm validation:inventory && node scripts/release-validation/plan.mjs",
+    "log": "functional-05.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713156383115000,
+    "completedAtNs": 1792713160446641000
+  },
+  {
+    "name": "Check release execution adapters",
+    "command": "node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs",
+    "log": "functional-06.log",
+    "exitCode": 1,
+    "startedAtNs": 1792713160447024000,
+    "completedAtNs": 1792713211613054000
+  },
+  {
+    "name": "Check packaged application routing and gateway boundaries",
+    "command": "node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs",
+    "log": "functional-07.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713211613420000,
+    "completedAtNs": 1792713212496949000
+  },
+  {
+    "name": "Check authenticated enrollment read batching and existing transport boundaries",
+    "command": "node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/inbound-authority-reuse.test.mjs test/account-sessions/request-budget-work.test.mjs test/account-sessions/inbound-batch-budget.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-history/multi-page-source.test.mjs test/account-membership/handoff.test.mjs",
+    "log": "functional-08.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713212497306000,
+    "completedAtNs": 1792713222444454000
+  },
+  {
+    "name": "Install Playwright Chromium",
+    "command": "pnpm exec playwright install --with-deps chromium",
+    "log": "functional-09.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713222444808000,
+    "completedAtNs": 1792713223431736000
+  },
+  {
+    "name": "Check native authority-cache, publisher-race and cold-read regressions",
+    "command": "node --test --test-concurrency=1 test/account-sessions/inbound-authority-cache.test.mjs test/account-service-delivery/publisher-commit-races.test.mjs test/account-service-delivery/publisher-isolation.test.mjs test/account-service-delivery/cold-verification.test.mjs test/account-ceremony/content-transfer.test.mjs",
+    "log": "functional-10.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713223432114000,
+    "completedAtNs": 1792713354135829000
+  },
+  {
+    "name": "Check development compiler loading with fresh and retained caches",
+    "command": "pnpm exec playwright test --config playwright.compiler-loading.config.ts",
+    "log": "functional-11.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713354136209000,
+    "completedAtNs": 1792713365155947000
+  },
+  {
+    "name": "Check source artifacts and historical owner regressions",
+    "command": "node --test --test-concurrency=1 --test-timeout=60000 test/account-successor/emitted-bundle.test.mjs test/account-successor/stage-authentication.test.mjs test/account-admission-bounds/historical-closure.test.mjs test/account-receive/historical-owner.test.mjs test/account-receive/pre-group-closure.test.mjs",
+    "log": "functional-12.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713365156389000,
+    "completedAtNs": 1792713404619493000
+  },
+  {
+    "name": "Check service quarantine and restart histories",
+    "command": "node --test --test-concurrency=1 test/account-service-inbound/generated.test.mjs test/account-service-inbound/quarantine.test.mjs",
+    "log": "functional-13.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713404620118000,
+    "completedAtNs": 1792713409721801000
+  },
+  {
+    "name": "Check upgrade fixture listener ownership",
+    "command": "node --test --test-concurrency=1 test/harness-lifecycle/upgrade-fixture.test.mjs",
+    "log": "functional-14.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713409722167000,
+    "completedAtNs": 1792713409910662000
+  },
+  {
+    "name": "Check Local bootstrap and native compatibility refusals",
+    "command": "pnpm storage:compatibility",
+    "log": "functional-15.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713409911020000,
+    "completedAtNs": 1792713427204492000
+  },
+  {
+    "name": "Run onboarding, account compatibility and device-removal browser regressions",
+    "command": "pnpm exec playwright test --config playwright.packaged-account.config.ts test/packaged-account/removal-regressions.spec.ts test/packaged-account/local-removal-flow.spec.ts test/packaged-account/account-creation-entry.spec.ts test/packaged-account/empty-legacy-startup.spec.ts test/packaged-account/enrollment-batch.spec.ts test/packaged-account/enrollment-progress.spec.ts test/packaged-account/enrollment-capacity.spec.ts test/packaged-account/enrollment-state-retry.spec.ts test/packaged-account/welcome.spec.ts test/packaged-account/passkey-local-access.spec.ts test/packaged-account/multi-tab-protection.spec.ts test/packaged-account/recovery-progress-isolation.spec.ts test/packaged-account/receiver-compatibility.spec.ts test/packaged-account/bootstrap-compatibility.spec.ts",
+    "log": "functional-16.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713427205080000,
+    "completedAtNs": 1792713944384280000
+  },
+  {
+    "name": "Check development onboarding and service shutdown",
+    "command": "pnpm test:account-setup",
+    "log": "functional-17.log",
+    "exitCode": 0,
+    "startedAtNs": 1792713944385047000,
+    "completedAtNs": 1792714037118505000
+  },
+  {
+    "name": "Check security evidence traceability",
+    "command": "pnpm trace:check",
+    "log": "functional-18.log",
+    "exitCode": 1,
+    "startedAtNs": 1792714037118959000,
+    "completedAtNs": 1792714064702753000
+  }
+]

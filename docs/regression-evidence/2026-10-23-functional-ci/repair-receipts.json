@@ -1,0 +1,473 @@
+[
+  {
+    "label": "apply-fixtures",
+    "command": [
+      "python3",
+      "/private/tmp/done-functional-ci-20261023/apply-fixtures.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714065415746000,
+    "completedAtNs": 1792714065483280000
+  },
+  {
+    "label": "fixture-source-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/review-fixtures.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 1,
+    "expectedExit": 0,
+    "startedAtNs": 1792714065483599000,
+    "completedAtNs": 1792714065621240000
+  },
+  {
+    "label": "fixture-source-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/review-fixtures.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714081748776000,
+    "completedAtNs": 1792714081957126000
+  },
+  {
+    "label": "census-final-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/inspect-census.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714081957450000,
+    "completedAtNs": 1792714082590136000
+  },
+  {
+    "label": "new-guards-expired-calendar",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/onboardingStorage.test.ts",
+      "--maxWorkers=1"
+    ],
+    "cwd": "/private/tmp/done-functional-ci-20261023/clock-counterfactual",
+    "exitCode": 1,
+    "expectedExit": 1,
+    "startedAtNs": 1792714082590868000,
+    "completedAtNs": 1792714084019459000
+  },
+  {
+    "label": "new-guards-expired-calendar",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/onboardingStorage.test.ts",
+      "--maxWorkers=1",
+      "--reporter=json",
+      "--outputFile",
+      "/private/tmp/done-functional-ci-20261023/expired-calendar-results.json"
+    ],
+    "cwd": "/private/tmp/done-functional-ci-20261023/clock-counterfactual",
+    "exitCode": 1,
+    "expectedExit": 1,
+    "startedAtNs": 1792714124011156000,
+    "completedAtNs": 1792714125452197000
+  },
+  {
+    "label": "fixed-onboarding13",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/onboardingStorage.test.ts",
+      "--maxWorkers=1"
+    ],
+    "cwd": "/private/tmp/done-functional-ci-20261023/clock-counterfactual",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714125453220000,
+    "completedAtNs": 1792714127159656000
+  },
+  {
+    "label": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714127160278000,
+    "completedAtNs": 1792714128358742000
+  },
+  {
+    "label": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714128359075000,
+    "completedAtNs": 1792714130699242000
+  },
+  {
+    "label": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/account-crypto-prep/census.test.mjs",
+      "test/account-crypto-prep/contracts.test.mjs",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714130699675000,
+    "completedAtNs": 1792714163571384000
+  },
+  {
+    "label": "final-functional-01",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm test --maxWorkers=1"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714163572046000,
+    "completedAtNs": 1792714348043411000
+  },
+  {
+    "label": "final-functional-03",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm build"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714348043815000,
+    "completedAtNs": 1792714352824880000
+  },
+  {
+    "label": "final-functional-04",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714352825285000,
+    "completedAtNs": 1792714363862540000
+  },
+  {
+    "label": "final-functional-05",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm validation:inventory && node scripts/release-validation/plan.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714363862918000,
+    "completedAtNs": 1792714367849912000
+  },
+  {
+    "label": "final-functional-06",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 1,
+    "expectedExit": 0,
+    "startedAtNs": 1792714367850381000,
+    "completedAtNs": 1792714418686729000
+  },
+  {
+    "label": "fixture-source-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/review-fixtures.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714535708709000,
+    "completedAtNs": 1792714535907121000
+  },
+  {
+    "label": "census-final-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/inspect-census.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714535907496000,
+    "completedAtNs": 1792714536530438000
+  },
+  {
+    "label": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714536530762000,
+    "completedAtNs": 1792714537556577000
+  },
+  {
+    "label": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714537556950000,
+    "completedAtNs": 1792714539757929000
+  },
+  {
+    "label": "metadata-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-functional-ci-20261023/review-metadata.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714539758317000,
+    "completedAtNs": 1792714539837896000
+  },
+  {
+    "label": "final-functional-05",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm validation:inventory && node scripts/release-validation/plan.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714539838679000,
+    "completedAtNs": 1792714543602182000
+  },
+  {
+    "label": "final-functional-06",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 1,
+    "expectedExit": 0,
+    "startedAtNs": 1792714543602596000,
+    "completedAtNs": 1792714593678765000
+  },
+  {
+    "label": "focused-account-fixtures",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/account-fixtures.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714757103366000,
+    "completedAtNs": 1792714760522126000
+  },
+  {
+    "label": "fixture-source-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/review-fixtures.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714760522571000,
+    "completedAtNs": 1792714760711807000
+  },
+  {
+    "label": "census-final-review",
+    "command": [
+      "node",
+      "/private/tmp/done-functional-ci-20261023/inspect-census.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714760712165000,
+    "completedAtNs": 1792714763309681000
+  },
+  {
+    "label": "inventory-record",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714763310086000,
+    "completedAtNs": 1792714764330060000
+  },
+  {
+    "label": "manifest-record",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--record"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714764330442000,
+    "completedAtNs": 1792714766519708000
+  },
+  {
+    "label": "metadata-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-functional-ci-20261023/review-metadata.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714766520113000,
+    "completedAtNs": 1792714766604849000
+  },
+  {
+    "label": "final-functional-05",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm validation:inventory && node scripts/release-validation/plan.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714766605469000,
+    "completedAtNs": 1792714770405553000
+  },
+  {
+    "label": "final-functional-06",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714770405974000,
+    "completedAtNs": 1792714820908233000
+  },
+  {
+    "label": "final-functional-10",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "node --test --test-concurrency=1 test/account-sessions/inbound-authority-cache.test.mjs test/account-service-delivery/publisher-commit-races.test.mjs test/account-service-delivery/publisher-isolation.test.mjs test/account-service-delivery/cold-verification.test.mjs test/account-service-inbound/core.test.mjs test/sync-cadence-analysis.test.mjs test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714820909049000,
+    "completedAtNs": 1792714959016033000
+  },
+  {
+    "label": "final-functional-04",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792714959016545000,
+    "completedAtNs": 1792714970289517000
+  },
+  {
+    "label": "final-functional-18",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm trace:check"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 1,
+    "expectedExit": 0,
+    "startedAtNs": 1792714970289979000,
+    "completedAtNs": 1792714998625017000
+  },
+  {
+    "label": "final-functional-03",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm build"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792715070307957000,
+    "completedAtNs": 1792715074900503000
+  },
+  {
+    "label": "final-functional-18",
+    "command": [
+      "/bin/zsh",
+      "-c",
+      "pnpm trace:check"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792715074901133000,
+    "completedAtNs": 1792715102977435000
+  },
+  {
+    "label": "local-functional-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-functional-ci-20261023/review-functional.py"
+    ],
+    "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "exitCode": 0,
+    "expectedExit": 0,
+    "startedAtNs": 1792715102977863000,
+    "completedAtNs": 1792715103070242000
+  }
+]

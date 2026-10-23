@@ -74,6 +74,17 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 
+      - name: Check native sync authority and evidence regressions
+        run: >-
+          node --test --test-concurrency=1
+          test/account-sessions/inbound-authority-cache.test.mjs
+          test/account-service-delivery/publisher-commit-races.test.mjs
+          test/account-service-delivery/publisher-isolation.test.mjs
+          test/account-service-delivery/cold-verification.test.mjs
+          test/account-service-inbound/core.test.mjs
+          test/sync-cadence-analysis.test.mjs
+          test/account-ceremony/content-transfer.test.mjs
+
       - name: Check development compiler loading with fresh and retained caches
         run: pnpm exec playwright test --config playwright.compiler-loading.config.ts
 

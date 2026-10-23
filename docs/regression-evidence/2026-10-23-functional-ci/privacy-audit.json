@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "knownBenchmarkPrivateValues": 36,
+  "matches": 0,
+  "scope": "selected reports/scripts/logs and known fixture values; no databases, browser profiles, credential/key files; not universal DLP"
+}

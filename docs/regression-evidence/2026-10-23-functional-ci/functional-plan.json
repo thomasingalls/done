@@ -1,0 +1,81 @@
+{
+  "node": "v24.18.0",
+  "pnpm": "11.20.0",
+  "platform": "Darwin",
+  "steps": [
+    {
+      "name": "Run all unit regression tests",
+      "command": "pnpm test --maxWorkers=1"
+    },
+    {
+      "name": "Install locked dependencies",
+      "command": "pnpm install --frozen-lockfile --ignore-scripts --strict-peer-dependencies"
+    },
+    {
+      "name": "Build and check the application",
+      "command": "pnpm build"
+    },
+    {
+      "name": "Check security contracts and published vectors",
+      "command": "pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify"
+    },
+    {
+      "name": "Check the complete release inventory",
+      "command": "pnpm validation:inventory && node scripts/release-validation/plan.mjs"
+    },
+    {
+      "name": "Check release execution adapters",
+      "command": "node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs"
+    },
+    {
+      "name": "Check packaged application routing and gateway boundaries",
+      "command": "node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs"
+    },
+    {
+      "name": "Check authenticated enrollment read batching and existing transport boundaries",
+      "command": "node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/inbound-authority-reuse.test.mjs test/account-sessions/request-budget-work.test.mjs test/account-sessions/inbound-batch-budget.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-history/multi-page-source.test.mjs test/account-membership/handoff.test.mjs"
+    },
+    {
+      "name": "Install Playwright Chromium",
+      "command": "pnpm exec playwright install --with-deps chromium"
+    },
+    {
+      "name": "Check native authority-cache, publisher-race and cold-read regressions",
+      "command": "node --test --test-concurrency=1 test/account-sessions/inbound-authority-cache.test.mjs test/account-service-delivery/publisher-commit-races.test.mjs test/account-service-delivery/publisher-isolation.test.mjs test/account-service-delivery/cold-verification.test.mjs test/account-ceremony/content-transfer.test.mjs"
+    },
+    {
+      "name": "Check development compiler loading with fresh and retained caches",
+      "command": "pnpm exec playwright test --config playwright.compiler-loading.config.ts"
+    },
+    {
+      "name": "Check source artifacts and historical owner regressions",
+      "command": "node --test --test-concurrency=1 --test-timeout=60000 test/account-successor/emitted-bundle.test.mjs test/account-successor/stage-authentication.test.mjs test/account-admission-bounds/historical-closure.test.mjs test/account-receive/historical-owner.test.mjs test/account-receive/pre-group-closure.test.mjs"
+    },
+    {
+      "name": "Check service quarantine and restart histories",
+      "command": "node --test --test-concurrency=1 test/account-service-inbound/generated.test.mjs test/account-service-inbound/quarantine.test.mjs"
+    },
+    {
+      "name": "Check upgrade fixture listener ownership",
+      "command": "node --test --test-concurrency=1 test/harness-lifecycle/upgrade-fixture.test.mjs"
+    },
+    {
+      "name": "Check Local bootstrap and native compatibility refusals",
+      "command": "pnpm storage:compatibility"
+    },
+    {
+      "name": "Run onboarding, account compatibility and device-removal browser regressions",
+      "command": "pnpm exec playwright test --config playwright.packaged-account.config.ts test/packaged-account/removal-regressions.spec.ts test/packaged-account/local-removal-flow.spec.ts test/packaged-account/account-creation-entry.spec.ts test/packaged-account/empty-legacy-startup.spec.ts test/packaged-account/enrollment-batch.spec.ts test/packaged-account/enrollment-progress.spec.ts test/packaged-account/enrollment-capacity.spec.ts test/packaged-account/enrollment-state-retry.spec.ts test/packaged-account/welcome.spec.ts test/packaged-account/passkey-local-access.spec.ts test/packaged-account/multi-tab-protection.spec.ts test/packaged-account/recovery-progress-isolation.spec.ts test/packaged-account/receiver-compatibility.spec.ts test/packaged-account/bootstrap-compatibility.spec.ts"
+    },
+    {
+      "name": "Check development onboarding and service shutdown",
+      "command": "pnpm test:account-setup"
+    },
+    {
+      "name": "Check security evidence traceability",
+      "command": "pnpm trace:check"
+    }
+  ],
+  "allOriginalRoutineCommandsExact": true,
+  "manualQualityExcluded": true
+}
