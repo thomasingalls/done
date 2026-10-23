@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "title": "confirmed uploads survive non-overlapping sessions first-to-second",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "title": "confirmed uploads survive non-overlapping sessions second-to-first",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "title": "both devices retain offline edits across independent API and application restarts",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "title": "packaged session host enrolls both devices, renews after restart and retains offline writing",
+      "status": "passed",
+      "retry": 0
+    }
+  ],
+  "observations": [
+    {
+      "direction": "first-to-second",
+      "acceptedPosition": 5,
+      "exactCommittedUploadAndResponse": true,
+      "clientVerifiedAcceptance": true,
+      "senderClosedAndOfflineBeforeReceiverOpened": true,
+      "receiverInitiallyOfflineAndMissingMarker": true,
+      "receiverOfflineNetworkProbeFailed": true,
+      "receiverOfflineNavigatorOnlineHint": true,
+      "apiRestartedBetweenUploadAndReceive": true,
+      "catchupMs": 1818.812665999998,
+      "receiverOfflineReopenRetainedWriting": true,
+      "pageErrors": []
+    },
+    {
+      "direction": "second-to-first",
+      "acceptedPosition": 2,
+      "exactCommittedUploadAndResponse": true,
+      "clientVerifiedAcceptance": true,
+      "senderClosedAndOfflineBeforeReceiverOpened": true,
+      "receiverInitiallyOfflineAndMissingMarker": true,
+      "receiverOfflineNetworkProbeFailed": true,
+      "receiverOfflineNavigatorOnlineHint": true,
+      "apiRestartedBetweenUploadAndReceive": true,
+      "catchupMs": 1819.0475000000006,
+      "receiverOfflineReopenRetainedWriting": true,
+      "pageErrors": []
+    }
+  ]
+}

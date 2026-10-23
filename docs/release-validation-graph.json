@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 529,
-    "requiredTestFiles": 523,
+    "testFiles": 530,
+    "requiredTestFiles": 524,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11475,6 +11475,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/non-overlapping-sessions.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/offline.spec.ts",
       "status": "required",
       "invocation": {
@@ -19184,6 +19195,10 @@
     {
       "path": "test/packaged-account/multi-tab-protection.spec.ts",
       "sha256": "9ea934ebfb0a3dbf71f0d4d2b7ed45bdb27d6dc56a9457126751d4dd901a2ac5"
+    },
+    {
+      "path": "test/packaged-account/non-overlapping-sessions.spec.ts",
+      "sha256": "a10a4f1ed05915e3005273b5e248347b188f416b94170334a2e83dac5552d59f"
     },
     {
       "path": "test/packaged-account/offline.spec.ts",

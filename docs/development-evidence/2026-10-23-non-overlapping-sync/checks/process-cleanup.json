@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "listeners": {
+    "53219": [
+      29351
+    ],
+    "53220": [
+      52585
+    ],
+    "53221": [],
+    "53222": []
+  },
+  "previewGatewayAndApiUnchanged": true,
+  "testServersStopped": true
+}

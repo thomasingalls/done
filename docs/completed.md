@@ -15857,3 +15857,24 @@ No physical mobile scaling claim or new formal qualification credit. Preview8443
 `d541133789ab`;60 HTTPS assets/two deep links and four disposable-context smoke cases pass.
 Only the gateway restarted; API PID52585/service identity/data remain. No functional/security
 owner changes, real staging, commit, push, merge or production deployment.
+
+
+### Confirmed uploads sync between non-overlapping device sessions
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch54 · **Stage:**bounded sync regression
+
+**Exit.** New creating→enrolled and enrolled→creating browser cases confirm exact server
+acceptance against independently read committed SQLite bytes and the client frontier, close
+and disconnect the sender, restart the API, then open the receiver offline before restoring
+only its network. Both receive and retain writing on another offline reopen. Final run:
+4 passed including existing offline/session restart journeys; both withheld-upload/download
+sensitivity controls fail at the intended boundaries. Type/build/budget/origin/lint/format
+and10 inventory cases pass. No pre-existing test or production runtime change.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-non-overlapping-sync/README.md) retains
+all harness failures and corrections, controls, artifact identities and limits. Chromium’s
+optimistic onLine hint is distinguished from a proven uncached-request network denial.
+These are isolated contexts/new renderers, not physical-device or cross-engine tests. No
+simultaneous-online requirement was reproduced after confirmed upload; the operator’s
+perceived delay remains unexplained. Qualification remains paused/blocked, with the new
+required file uncredited. Preview and real accounts untouched; sequential patch only.

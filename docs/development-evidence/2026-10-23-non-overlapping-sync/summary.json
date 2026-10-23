@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "phase": 54,
+  "signedBase": "77669ec79f78779d77e500d0f163c0299156b968",
+  "newTestFile": "test/packaged-account/non-overlapping-sessions.spec.ts",
+  "directions": [
+    "first-to-second",
+    "second-to-first"
+  ],
+  "finalCasesPassed": 4,
+  "retries": 0,
+  "sensitivityControls": {
+    "withheldUpload": "expected failure at acceptance check",
+    "withheldDownload": "expected failure at receive check"
+  },
+  "uploadProof": [
+    "exact request/accepted response binding",
+    "independent read-only committed SQLite bytes",
+    "client verified accepted position"
+  ],
+  "closedSenderBeforeReceiverOpens": true,
+  "apiRestartedBetweenSessions": true,
+  "receiverOfflineReopenRetainsWriting": true,
+  "typeBuildBudgetOriginLintFormat": "passed",
+  "inventoryCasesPassed": 10,
+  "qualification": {
+    "status": "blocked",
+    "obligations": 892,
+    "unresolved": 348,
+    "creditAdded": false
+  },
+  "runtimeChanges": false,
+  "existingTestsChanged": false,
+  "previewChanged": false,
+  "committed": false,
+  "pushed": false,
+  "deployed": false
+}

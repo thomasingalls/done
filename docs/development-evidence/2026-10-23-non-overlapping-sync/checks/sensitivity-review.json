@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "withheldUpload": "failed at required server-acceptance boundary",
+  "withheldDownload": "failed at required receiver writing boundary",
+  "assertionDeadlinesUnchanged": true,
+  "onlyTemporaryNewTestCopiesChanged": true,
+  "temporaryControlCopiesRemoved": true
+}

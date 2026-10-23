@@ -1,0 +1,254 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-non-overlap-20261023-patches/playwright.final.config.ts",
+      "non-overlapping-sessions.spec.ts",
+      "offline.spec.ts",
+      "sessions.spec.ts"
+    ],
+    "configFile": "/private/tmp/done-non-overlap-20261023-patches/playwright.final.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-non-overlap-20261023-patches/artifacts-54-final",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-non-overlap-20261023-patches/checks-54/final-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "non-overlapping-sessions.spec.ts",
+      "file": "non-overlapping-sessions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "confirmed uploads survive non-overlapping sessions first-to-second",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20074,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:35:19.258Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "non-overlapping-session-evidence",
+                      "contentType": "application/json",
+                      "body": "eyJkaXJlY3Rpb24iOiJmaXJzdC10by1zZWNvbmQiLCJhY2NlcHRlZFBvc2l0aW9uIjo1LCJleGFjdENvbW1pdHRlZFVwbG9hZEFuZFJlc3BvbnNlIjp0cnVlLCJjbGllbnRWZXJpZmllZEFjY2VwdGFuY2UiOnRydWUsInNlbmRlckNsb3NlZEFuZE9mZmxpbmVCZWZvcmVSZWNlaXZlck9wZW5lZCI6dHJ1ZSwicmVjZWl2ZXJJbml0aWFsbHlPZmZsaW5lQW5kTWlzc2luZ01hcmtlciI6dHJ1ZSwicmVjZWl2ZXJPZmZsaW5lTmV0d29ya1Byb2JlRmFpbGVkIjp0cnVlLCJyZWNlaXZlck9mZmxpbmVOYXZpZ2F0b3JPbmxpbmVIaW50Ijp0cnVlLCJhcGlSZXN0YXJ0ZWRCZXR3ZWVuVXBsb2FkQW5kUmVjZWl2ZSI6dHJ1ZSwiY2F0Y2h1cE1zIjoxODE4LjgxMjY2NTk5OTk5OCwicmVjZWl2ZXJPZmZsaW5lUmVvcGVuUmV0YWluZWRXcml0aW5nIjp0cnVlLCJwYWdlRXJyb3JzIjpbXX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1564e6d264b7e69a5805-fdf15a568c9f0af18a46",
+          "file": "non-overlapping-sessions.spec.ts",
+          "line": 63,
+          "column": 3
+        },
+        {
+          "title": "confirmed uploads survive non-overlapping sessions second-to-first",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19043,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:35:40.312Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "non-overlapping-session-evidence",
+                      "contentType": "application/json",
+                      "body": "eyJkaXJlY3Rpb24iOiJzZWNvbmQtdG8tZmlyc3QiLCJhY2NlcHRlZFBvc2l0aW9uIjoyLCJleGFjdENvbW1pdHRlZFVwbG9hZEFuZFJlc3BvbnNlIjp0cnVlLCJjbGllbnRWZXJpZmllZEFjY2VwdGFuY2UiOnRydWUsInNlbmRlckNsb3NlZEFuZE9mZmxpbmVCZWZvcmVSZWNlaXZlck9wZW5lZCI6dHJ1ZSwicmVjZWl2ZXJJbml0aWFsbHlPZmZsaW5lQW5kTWlzc2luZ01hcmtlciI6dHJ1ZSwicmVjZWl2ZXJPZmZsaW5lTmV0d29ya1Byb2JlRmFpbGVkIjp0cnVlLCJyZWNlaXZlck9mZmxpbmVOYXZpZ2F0b3JPbmxpbmVIaW50Ijp0cnVlLCJhcGlSZXN0YXJ0ZWRCZXR3ZWVuVXBsb2FkQW5kUmVjZWl2ZSI6dHJ1ZSwiY2F0Y2h1cE1zIjoxODE5LjA0NzUwMDAwMDAwMDYsInJlY2VpdmVyT2ZmbGluZVJlb3BlblJldGFpbmVkV3JpdGluZyI6dHJ1ZSwicGFnZUVycm9ycyI6W119"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1564e6d264b7e69a5805-88b135bf60f7d46d0a15",
+          "file": "non-overlapping-sessions.spec.ts",
+          "line": 63,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "offline.spec.ts",
+      "file": "offline.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "both devices retain offline edits across independent API and application restarts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 24741,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:35:59.367Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "586fc5283fd8ec7c7982-b4b7c5d7d861011a173b",
+          "file": "offline.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "sessions.spec.ts",
+      "file": "sessions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "packaged session host enrolls both devices, renews after restart and retains offline writing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 32393,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T12:36:24.121Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "316fd374235e8aec2ba4-0b76f3f86358b016e98c",
+          "file": "sessions.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T12:35:18.928Z",
+    "duration": 97708.391,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

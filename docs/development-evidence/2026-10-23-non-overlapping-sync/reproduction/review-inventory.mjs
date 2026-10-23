@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { compileManifest } from '/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/release-validation/manifest.mjs';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done', scratch='/private/tmp/done-non-overlap-20261023-patches/checks-54';
+const old=JSON.parse(readFileSync(scratch+'/inventory-before.json')), next=JSON.parse(readFileSync(root+'/docs/release-validation-graph.json'));
+const file='test/packaged-account/non-overlapping-sessions.spec.ts';
+assert.deepEqual(next.tests.filter(t=>!old.tests.some(o=>o.path===t.path)).map(t=>t.path),[file]);
+assert.deepEqual(next.inputs.filter(t=>!old.inputs.some(o=>o.path===t.path)).map(t=>t.path),[file]);
+const restored=structuredClone(next);restored.tests=restored.tests.filter(t=>t.path!==file);restored.inputs=restored.inputs.filter(t=>t.path!==file);restored.counts.testFiles--;restored.counts.requiredTestFiles--;assert.deepEqual(restored,old);
+const a=compileManifest(root,old),b=compileManifest(root,next);const rows=b.rows.filter(r=>r.path===file);assert.equal(rows.length,1);assert(rows[0].blocked&&!rows[0].stage);assert.deepEqual(b.rows.filter(r=>r.path!==file),a.rows);assert.equal(b.status,'blocked');assert.equal(b.rows.length,a.rows.length+1);assert.equal(b.unresolved.length,a.unresolved.length+1);
+const receipt={status:'passed',addedRequiredFile:file,allExistingTestsInputsDispositionsAndRowsUnchanged:true,addedQualificationCredit:false,manifest:{status:b.status,obligations:b.rows.length,unresolved:b.unresolved.length},newRow:rows[0]};writeFileSync(scratch+'/inventory-review.json',JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt));
