@@ -45,6 +45,7 @@ for (const unlockOther of [false, true])
       }
       await page.getByRole('button', { name: 'Continue to sync setup', exact: true }).click();
       await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+      await page.bringToFront();
       await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
       await expect(
         page.getByRole('heading', { name: 'Try your new passkey', exact: true }),

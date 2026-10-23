@@ -39,6 +39,7 @@ test('an offline device resumes two missed rotations in order and delivers its o
   try {
     pair = await pairedEditors(page, browser, true);
     const connect = async (owner: Page, code: string, joining: Page) => {
+      await expect(owner.locator('.shell')).toBeVisible();
       await openMenuSection(owner, 'Account');
       await owner.getByRole('button', { name: 'Devices', exact: true }).click();
       await owner.getByRole('button', { name: 'Connect another device', exact: true }).click();
@@ -110,9 +111,11 @@ test('an offline device resumes two missed rotations in order and delivers its o
     for (const [i, target] of targets.entries()) {
       await openMenuSection(page, 'Account');
       await page.getByRole('button', { name: 'Devices', exact: true }).click();
-      const row = page
-        .locator('.account-device-list li')
-        .filter({ hasText: 'Device ' + target.slice(0, 8) });
+      const row = page.locator('.account-device-list li').filter({
+        has: page.locator('code[aria-label="Device code"]', {
+          hasText: new RegExp('^' + target.slice(0, 8) + '$'),
+        }),
+      });
       await row.getByRole('button', { name: 'Remove device', exact: true }).click();
       await page.getByRole('button', { name: 'Confirm removal', exact: true }).click();
       await expect(

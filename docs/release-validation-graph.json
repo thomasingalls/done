@@ -19194,11 +19194,11 @@
     },
     {
       "path": "test/packaged-account/missed-rotations.spec.ts",
-      "sha256": "37db05e5772f358d2f8ade7d5aae0117abeeba4dd065ff19aba42bdbb40c2d9a"
+      "sha256": "f0a7c6e894713ff6dea380c9ffef7ea5da328f07b4fdcc389863fe51243b1361"
     },
     {
       "path": "test/packaged-account/multi-tab-protection.spec.ts",
-      "sha256": "9ea934ebfb0a3dbf71f0d4d2b7ed45bdb27d6dc56a9457126751d4dd901a2ac5"
+      "sha256": "ac474298334b1f482c665df5c6d3985e85d177522fac577affb8fd64a5ab6a28"
     },
     {
       "path": "test/packaged-account/non-overlapping-sessions.spec.ts",
@@ -19210,7 +19210,7 @@
     },
     {
       "path": "test/packaged-account/passkey-local-access.spec.ts",
-      "sha256": "adaf55fc230b3ab101f32cd92826eeb45138dfab822f5dee154eb61dd500588d"
+      "sha256": "fde6165dcfbf06b02d4bf6b4c49ca8a8a6c245d5dd3719801903d14bc1f4f36c"
     },
     {
       "path": "test/packaged-account/receiver-compatibility.spec.ts",
@@ -19266,7 +19266,7 @@
     },
     {
       "path": "test/packaged-account/updates.spec.ts",
-      "sha256": "21c3bb504062416356d963e70f79819aa4377970902b06e480fccbc353296a11"
+      "sha256": "23385ba5aa7f3c3fce86ce1b93993cf8d7322433af2f25e000ad4ae7fa5757c7"
     },
     {
       "path": "test/packaged-account/welcome.spec.ts",

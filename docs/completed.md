@@ -15938,3 +15938,26 @@ The original source-only idle probe reported its boolean after cleanup and is no
 deadline evidence; the corrected exact-image probe captures the decision before cleanup.
 Native ARM64 artifact rebuild, affected browser reruns and publication remain separate.
 Evidence and the original failures are retained under managed signed-UX-image artifacts.
+
+### Browser fixtures wait for the writing shell and focus the passkey requester
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch58 · **Stage:**bounded fixture repair
+
+**Exit.** Three navigation sites wait for the existing writing shell before opening a collapsed
+sidebar section. The two-tab protection test brings the requesting tab to the foreground before
+the native passkey ceremony; both previously cancelled cases then pass with their writer-barrier,
+factor, reload and retained-writing assertions intact. Missed-rotation removal locates the exact
+device code instead of the retired display-name prefix. No application, authority or storage
+change; every existing case, assertion and deadline remains. The planning inventory updates only
+the four changed source hashes, without release credit.
+
+**Evidence and limits.** The original packaged run retains79 passes/11 failures. An affected-file
+rerun retains26 passes/3 failures: the new exact-code selector fixes the remaining rotation
+locator; two update builds initially lacked complete disposable build inputs, then HTML symlinks
+produced outside-root asset paths. Restoring regular-file signed build inputs yields3/3 final
+passes, including queued offline update and saved-passkey setup continuation. Thus all original
+failures have passing reruns, not a new single clean90-case run. The earlier focused passkey
+control also passes2/2. Browser checks use the exact e86bd26c image frontend, isolated host
+services with signed gateway repair dcb4e9bb, and test-only successor builds. All failed attempts
+and apparatus corrections remain in managed signed-UX-image evidence. Signed final ARM64 image
+rebuild and its exact-image checks remain separate; no publication or deployment.

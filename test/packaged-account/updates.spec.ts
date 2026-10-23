@@ -137,6 +137,7 @@ test('unfinished registration resumes after an update with the original saved pa
     await page.goto('/');
     await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
     await page.reload();
+    await expect(page.locator('.shell')).toBeVisible();
     await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page.getByRole('button', { name: 'Create a new account', exact: true }).click();

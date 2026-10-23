@@ -12,6 +12,7 @@ async function addWriting(page: Page) {
   await expect(page.locator('.shell')).toContainText(writing);
 }
 async function syncSetup(page: Page, first = true) {
+  await expect(page.locator('.shell')).toBeVisible();
   await openMenuSection(page, 'Sync');
   await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
   await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
