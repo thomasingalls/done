@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors, openSaved, add } from './devices';
 import { startService, stopService } from './server';
@@ -33,6 +34,7 @@ for (const joined of [false, true])
         }
         await route.continue();
       });
+      await openMenuSection(actor, 'Account');
       await actor.getByRole('button', { name: 'Devices', exact: true }).click();
       await expect(actor.getByRole('button', { name: 'Remove device', exact: true })).toHaveCount(
         1,
@@ -56,6 +58,7 @@ for (const joined of [false, true])
       expect(submitted.length).toBeGreaterThanOrEqual(2);
       expect(new Set(submitted).size).toBe(1);
       await add(actor, 'After removal this writing stays with the survivor');
+      await openMenuSection(actor, 'Account');
       await actor.getByRole('button', { name: 'Devices', exact: true }).click();
       await expect(actor.locator('.account-device-list li')).toHaveCount(1);
       await expect(actor.getByRole('button', { name: 'Remove device', exact: true })).toHaveCount(
@@ -65,6 +68,7 @@ for (const joined of [false, true])
       await expect(target.locator('.shell')).toHaveCount(0, { timeout: 25000 });
       await target.goto('/');
       await openSaved(target, targetCode, !joined);
+      await openMenuSection(target, 'Sync');
       await expect(target.getByText('Removed from account.', { exact: false })).toBeVisible();
       await expect(target.locator('.shell')).not.toContainText(
         'After removal this writing stays with the survivor',
@@ -74,6 +78,7 @@ for (const joined of [false, true])
         [actor, actorCode, joined, 'After removal this writing stays with the survivor'],
         [target, targetCode, !joined, 'A detached copy remains writable'],
       ] as const) {
+        await openMenuSection(p, 'Account');
         await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
         await p.goto('/');
         await openSaved(p, code, joining);

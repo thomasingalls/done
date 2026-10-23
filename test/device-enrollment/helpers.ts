@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { expect, type Page } from '@playwright/test';
 export async function authenticator(page: Page) {
   const cdp = await page.context().newCDPSession(page);
@@ -44,8 +45,10 @@ export async function account(page: Page, beforeInvite?: () => Promise<'invite' 
   await compose.press('Enter');
   const invitationStarted = await beforeInvite?.();
   if (invitationStarted !== 'invite') {
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page
       .getByRole('button', { name: 'Create invitation for Device owner', exact: true })

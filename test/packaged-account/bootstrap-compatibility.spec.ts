@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { openApp, protectApp } from '../geometry/openApp';
+import { openApp, protectApp, openMenuSection } from '../geometry/openApp';
 import { add } from './devices';
 import { startService, stopService } from './server';
 import { authenticator } from '../device-enrollment/helpers';
@@ -150,6 +150,7 @@ test('a promoted Account can authenticate a public locator without ordinary Loca
     await openApp(page);
     const code = await protectApp(page);
     await authenticator(page);
+    await openMenuSection(page, 'Sync');
     await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
     await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
     await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
@@ -163,6 +164,7 @@ test('a promoted Account can authenticate a public locator without ordinary Loca
     await page.getByRole('button', { name: 'Approve with passkey', exact: true }).click();
     await expect(page.locator('.shell')).toBeVisible();
     await add(page, 'Protected Account writing survives missing public hints');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await blank(page);
     expect(

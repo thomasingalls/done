@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { authenticator, account, unlock, pending, compared } from './helpers';
 test('both certified devices edit, exchange concurrent offline writing, and reopen durably', async ({
@@ -916,6 +917,7 @@ test('aborted comparison has no published result; a committed mismatch survives 
     await expect(page.getByRole('heading', { name: 'Codes did not match' })).toBeVisible();
     await page.evaluate(() => history.back());
     await expect(page.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page
       .getByRole('button', { name: 'Create invitation for Device owner', exact: true })
@@ -993,6 +995,7 @@ test('browser Back locks and resumes both devices without replacing codes, cance
     await page.getByLabel('Code on the new device').fill('unsent text');
     await back(page);
     await expect(page.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page
       .getByRole('button', { name: 'Create invitation for Device owner', exact: true })

@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 /**
  * The test-side half of the latency harness (TRD §12).
  *
@@ -260,6 +261,7 @@ export const lockLocal = async (page: Page): Promise<void> => {
     (await page.locator('.shell').getAttribute('data-menu')) !== 'open'
   )
     await trigger.click();
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click({ timeout: 10000 });
   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
 };

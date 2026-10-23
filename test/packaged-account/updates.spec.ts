@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { startService, stopService, origin } from './server';
@@ -88,8 +89,10 @@ test('a sidebar update preserves both publishers and queued writing through offl
     await pair.second.getByRole('button', { name: 'Unlock enrollment', exact: true }).click();
     await expect(pair.second.locator('.shell')).toBeVisible();
     await expect(pair.second.locator('body')).toContainText(nextVersion);
-    for (const p of [page, pair.second])
+    for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    }
     await page.close();
     await pair.second.close();
     await aContext.setOffline(true);
@@ -134,6 +137,7 @@ test('unfinished registration resumes after an update with the original saved pa
     await page.goto('/');
     await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
     await page.reload();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
     await page.getByLabel('Your name', { exact: true }).fill('Resumable setup');

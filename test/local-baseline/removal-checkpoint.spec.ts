@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -27,6 +28,7 @@ const removal = (p: Page, revision: number) =>
   }, revision);
 const panel = (p: Page) => p.getByRole('region', { name: 'History maintenance', exact: true });
 async function inspect(p: Page) {
+  await openMenuSection(p, 'Data');
   await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
   await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
   await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
@@ -107,6 +109,7 @@ test('reduced original and joined owners exchange/undo writing, refuse an unfini
       [page, pair.first.code, false],
       [second, pair.next.code, true],
     ] as const) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await p.goto('/');
       await openSaved(p, code, joining);

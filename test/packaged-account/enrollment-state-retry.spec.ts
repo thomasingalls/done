@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors } from './devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
@@ -43,6 +44,7 @@ for (const mode of [
       const joined = mode === 'recover-joined',
         approver = joined ? pair.second : page;
       const saved = joined ? pair.next : pair.first;
+      await openMenuSection(approver, 'Account');
       await approver.getByRole('button', { name: 'Devices', exact: true }).click();
       await approver.getByRole('button', { name: 'Connect another device', exact: true }).click();
       await unlock(approver, saved.code);

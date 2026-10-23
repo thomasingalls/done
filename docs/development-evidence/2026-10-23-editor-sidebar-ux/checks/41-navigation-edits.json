@@ -1,0 +1,142 @@
+[
+  {
+    "file": "test/local-app/startup.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/local-app/editor.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/local-app/packaged.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/enrollment-progress.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/recovery-progress-isolation.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/device-list.spec.ts",
+    "explicitNavigationCalls": 3
+  },
+  {
+    "file": "test/packaged-account/device-removal.spec.ts",
+    "explicitNavigationCalls": 3
+  },
+  {
+    "file": "test/packaged-account/removal-regressions.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/removal-observation.spec.ts",
+    "explicitNavigationCalls": 7
+  },
+  {
+    "file": "test/packaged-account/enrollment-capacity.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/history.spec.ts",
+    "explicitNavigationCalls": 6
+  },
+  {
+    "file": "test/packaged-account/text-admission.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/sessions.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/removal-custody.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/receiver-compatibility.spec.ts",
+    "explicitNavigationCalls": 3
+  },
+  {
+    "file": "test/packaged-account/recovery.spec.ts",
+    "explicitNavigationCalls": 7
+  },
+  {
+    "file": "test/packaged-account/bootstrap-compatibility.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/updates.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/membership-connection.spec.ts",
+    "explicitNavigationCalls": 8
+  },
+  {
+    "file": "test/packaged-account/welcome.spec.ts",
+    "explicitNavigationCalls": 7
+  },
+  {
+    "file": "test/packaged-account/membership-custody.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/enrollment-state-retry.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/generation-retry.spec.ts",
+    "explicitNavigationCalls": 3
+  },
+  {
+    "file": "test/packaged-account/replacement-handoff.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/passkey-local-access.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/enrollment-batch.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/account-creation-entry.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/offline.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/packaged-account/multi-tab-protection.spec.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/packaged-account/missed-rotations.spec.ts",
+    "explicitNavigationCalls": 4
+  },
+  {
+    "file": "test/private-migration/rehearsal.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/device-enrollment/helpers.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/device-enrollment/flow.spec.ts",
+    "explicitNavigationCalls": 2
+  },
+  {
+    "file": "test/geometry/openApp.ts",
+    "explicitNavigationCalls": 1
+  },
+  {
+    "file": "test/geometry/workflow.spec.ts",
+    "explicitNavigationCalls": 5
+  }
+]

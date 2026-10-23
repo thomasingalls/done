@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { pairedEditors, openSaved, add } from '../packaged-account/devices';
 import { startService, stopService } from '../packaged-account/server';
@@ -18,6 +19,7 @@ const owner = (p: Page) =>
     ).__rolloutOwner.workspace.whenDurable(),
   );
 async function inspect(p: Page) {
+  await openMenuSection(p, 'Data');
   await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
   const panel = p.getByRole('region', { name: 'History maintenance', exact: true });
   await panel.getByRole('button', { name: 'Check history', exact: true }).click();
@@ -89,6 +91,7 @@ test('reader-first update, private conversion, compatible rollback and incompati
         else await expect(d.page.locator('.shell')).toContainText('Offline reader writing ' + i);
       }
       await owner(d.page);
+      await openMenuSection(d.page, 'Account');
       await d.page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await d.page.goto('/');
       await openSaved(d.page, d.code, d.joined);

@@ -75,3 +75,48 @@ keyboard disclosure, placement, saved preferences and default-closed reload. Typ
 phone-width/desktop screenshots were inspected. Remaining old walkthroughs need explicit navigation
 into collapsed sections; those fixture-only repairs and combined checks are phase41, not a claim of
 full-suite acceptance here. General qualification stays paused.
+
+## Phase41 — existing walkthrough navigation and combined validation
+
+Existing browser helpers/actions explicitly expand Account, Sync, Data or Install before using their
+controls. The shared helper leaves non-writing entry screens and historical predecessor shells alone.
+Single-statement loop/conditional bodies are wrapped, preserving control flow. Syntax-tree comparison
+against exact phase40 source retains all pre-existing logic/assertions/waits after only those navigation
+additions are removed. The welcome `menu` helper is the explicit navigation replacement; marked new
+Device-list assertions independently check Account actions, separate sending/receiving and Data export.
+Three deliberate deleted-assertion/changed-value/changed-wait controls are detected. The two exact census
+fixtures update only 2499→2511 reviewed cases and the workflow browser count22→30; no deadline, skip,
+policy, failure disposition, security assertion or release block changes.
+
+Combined results on the cumulative runtime:
+
+- All158 unit files pass:1883 cases pass,1 existing named skip.
+- Complete production-built frontend geometry/interaction:132 pass,24 existing platform skips,0 failures.
+- Selected packaged account journeys:14/14 pass (device grouping and codes/names, both-way writing,
+  offline/API/application restart, session renewal/reconnect, undo, first-run/protection/removal and
+  interrupted protection). These use disposable accounts and simulated authenticators, not real providers.
+- TypeScript, affected correctness lint/format, Yjs patch check, production build,232.7/350kB initial
+  gzip budget and57-file origin-isolation scan pass.
+-17 affected release-adapter regressions and10 planning-inventory regressions pass. Planning snapshot
+  regeneration changes53 input hashes and five intentional declaration counts; every other field and
+  existing denominator/disposition remains exact. Qualification remains paused; no aggregate credit.
+- Test servers on54173/53221/53222 are absent after completion.
+
+Retained inconvenient results: the initial complete dev browser run has126 passes/24 existing skips/
+6 stale navigation failures; a targeted correction has4 passes/2 failures from Vite's HMR WebSocket in
+an unchanged no-relay assertion. The full production-frontend run removes HMR from the test machinery
+and passes that original assertion in both projects. Initial adapter denominators and the old planning
+snapshot correctly refuse drift. An overstrict inputs-only review forgot the five new declaration
+counts; its shell continued generating the documentation snapshot after that review failed. Acceptance
+instead uses the subsequent independent complete before/after comparison against signed HEAD, which
+checks the exact permitted declarations/hashes and all remaining fields. The original signed snapshot,
+initial failure log and complete changed-field list remain. No runtime policy changed to satisfy them.
+Early `pnpm --version` discovery could not resolve the pinned package-manager release through restricted
+network access; checks use the installed local executables directly under the existing Node24.18.0 runtime.
+No install, lockfile, package-manager configuration or dependency changes occurred.
+
+The original deferred formatting patches remain outside this work. Navigation edits preserve existing
+AST and assertions; this series does not include a repository-wide formatting pass. Older/historical,
+private migration and optional-baseline fixture navigation is adapted and source-reviewed, but those
+whole campaigns were not rerun here. Physical-phone deletion smoothness, native picker appearance and
+real-provider walkthroughs are outside these checks. No commit, push,8443 preview update, merge or deploy.

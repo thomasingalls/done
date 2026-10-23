@@ -15642,3 +15642,20 @@ fail; four candidate width/project checks, TypeScript and focused lint pass. Scr
 **Notes.** Sign-out remains distinct from switching under PRD §6.6, with explicit explanatory text.
 Runtime lifecycle/security effects remain unchanged. Existing walkthrough navigation and combined
 regression checks are the next bounded fixture phase. No full-suite, phone performance or release claim.
+
+
+### Editor/sidebar UX regression and sequential patch handoff
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch41 · **Stage:**bounded UX validation
+
+**Exit.** Existing walkthroughs follow the new disclosures. AST comparison plus3 sensitivity controls
+preserves old assertions/control flow. Exact census fixtures and the generated planning snapshot track
+the added cases without changing dispositions or qualification credit. All158 unit files pass (1883
+passed/1 existing skip), full built-frontend geometry132 pass/24 existing platform skips, selected
+packaged accounts14/14,17 adapter and10 inventory checks, build/type/lint/format/budget/origin checks pass.
+
+**Notes.** [Evidence and limitations](development-evidence/2026-10-23-editor-sidebar-ux/README.md) retains
+failed fixture/HMR/census/snapshot-review attempts and their corrections. History/private-migration/
+optional-baseline navigation is source-reviewed, not a claim those whole campaigns ran. Phone deletion
+pauses remain. Five exact sequential patches37–41 are prepared, already represented in the cumulative
+checkout, with no real Git staging/commit/push/preview update/deployment or qualification resumption.

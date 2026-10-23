@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { pairedEditors, openSaved } from './devices';
 import { startService, stopService } from './server';
@@ -33,6 +34,7 @@ test('Account text undo spans received edits and journal-only offline reopening'
     await pair.other.setOffline(true);
     await append(second, '\nRetained offline text');
     await append(page, '\nWriting while peer away');
+    await openMenuSection(second, 'Account');
     await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await second.goto('/');
     await openSaved(second, pair.next.code, true);
@@ -49,6 +51,7 @@ test('Account text undo spans received edits and journal-only offline reopening'
       [page, pair.first.code, false],
       [second, pair.next.code, true],
     ] as const) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await p.context().setOffline(true);
       await p.goto('/');

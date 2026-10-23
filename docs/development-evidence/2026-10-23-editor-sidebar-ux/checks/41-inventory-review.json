@@ -1,0 +1,35 @@
+{
+  "beforeSnapshotSha256": "b56880e45d299148707ad15a47f7ad3719d5893be84ac114624a14fcc1bbcb8e",
+  "afterSnapshotSha256": "c74597add397c26a38e6298d75868a985f1d83cd6d8e02954c37ee2da036bafc",
+  "declarationChanges": [
+    {
+      "path": "test/admittedText.test.ts",
+      "before": 15,
+      "after": 17
+    },
+    {
+      "path": "test/cardCommands.test.ts",
+      "before": 12,
+      "after": 14
+    },
+    {
+      "path": "test/geometry/keyboard.spec.ts",
+      "before": 6,
+      "after": 9
+    },
+    {
+      "path": "test/geometry/task-ux.spec.ts",
+      "before": 4,
+      "after": 7
+    },
+    {
+      "path": "test/geometry/workflow.spec.ts",
+      "before": 11,
+      "after": 13
+    }
+  ],
+  "changedInputHashes": 53,
+  "allOtherFieldsExact": true,
+  "qualificationCredit": "unchanged; paused",
+  "initialReviewFailure": "An overstrict inputs-only projection also detected the five intentional new test declaration counts. The shell continued to regenerate the documentation snapshot after that failed projection; the original snapshot is retained in signed HEAD and the complete generated difference is independently reviewed here before acceptance."
+}

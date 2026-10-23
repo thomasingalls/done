@@ -1,6 +1,6 @@
 import { devices, expect, type Page } from '@playwright/test';
 import { test } from '../release-validation/browser-fixture';
-import { openApp, reloadApp } from './openApp';
+import { openApp, reloadApp, openMenuSection } from './openApp';
 
 const day = (page: Page) => page.locator('.day-panel[data-active="true"]');
 const cards = (page: Page, section: string) =>
@@ -113,8 +113,10 @@ for (const section of ['next', 'scheduled']) {
       .press('ArrowDown');
     await expect(cards(page, section).nth(0)).toContainText('second');
     await expect(cards(page, section).nth(1)).toContainText('first');
+    await openMenuSection(page, 'Data');
     await page.locator('#menu').getByRole('button', { name: 'Undo', exact: true }).click();
     await expect(cards(page, section).nth(0)).toContainText('first');
+    await openMenuSection(page, 'Data');
     await page.locator('#menu').getByRole('button', { name: 'Redo', exact: true }).click();
     await reloadApp(page);
     await expect(cards(page, section).nth(0)).toContainText('second');

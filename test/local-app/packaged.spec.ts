@@ -1,6 +1,6 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect } from '@playwright/test';
-import { protectApp } from '../geometry/openApp';
+import { protectApp, openMenuSection } from '../geometry/openApp';
 import { readFile, access } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
@@ -52,6 +52,7 @@ for (const entry of ['/', '/local.html']) {
     await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
       'Offline encrypted writing',
     );
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace' }).click();
     await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
     await expect(page.getByText('Offline encrypted writing')).toHaveCount(0);
@@ -79,6 +80,7 @@ for (const entry of ['/', '/local.html']) {
     await expect(
       offline.locator('.card').filter({ hasText: 'Written while offline' }),
     ).toBeVisible();
+    await openMenuSection(offline, 'Account');
     await offline.getByRole('button', { name: 'Lock workspace' }).click();
     await expect(offline.locator('.local-startup')).toHaveAttribute(
       'data-state',

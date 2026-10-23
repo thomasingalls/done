@@ -1,0 +1,180 @@
+{
+  "base": "0e4dfbe40986462fe98c8e7bf1bd5cb619ddbbdd",
+  "records": [
+    {
+      "file": "test/local-app/startup.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/local-app/editor.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/local-app/packaged.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/enrollment-progress.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/recovery-progress-isolation.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/device-list.spec.ts",
+      "insertions": 3,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/device-removal.spec.ts",
+      "insertions": 3,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/removal-regressions.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/removal-observation.spec.ts",
+      "insertions": 7,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/enrollment-capacity.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/history.spec.ts",
+      "insertions": 6,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/text-admission.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/sessions.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/removal-custody.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/receiver-compatibility.spec.ts",
+      "insertions": 3,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/recovery.spec.ts",
+      "insertions": 7,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/bootstrap-compatibility.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/updates.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 1
+    },
+    {
+      "file": "test/packaged-account/membership-connection.spec.ts",
+      "insertions": 8,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/welcome.spec.ts",
+      "insertions": 7,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/membership-custody.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/enrollment-state-retry.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/generation-retry.spec.ts",
+      "insertions": 3,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/replacement-handoff.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/passkey-local-access.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/enrollment-batch.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/account-creation-entry.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/offline.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 2
+    },
+    {
+      "file": "test/packaged-account/multi-tab-protection.spec.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/packaged-account/missed-rotations.spec.ts",
+      "insertions": 4,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/private-migration/rehearsal.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/device-enrollment/helpers.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/device-enrollment/flow.spec.ts",
+      "insertions": 2,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/geometry/openApp.ts",
+      "insertions": 1,
+      "wrappedSingleBodies": 0
+    },
+    {
+      "file": "test/geometry/workflow.spec.ts",
+      "insertions": 5,
+      "wrappedSingleBodies": 0
+    }
+  ]
+}

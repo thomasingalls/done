@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { createdAccount } from '../device-enrollment/helpers';
 import { pairedEditors, openSaved, add } from './devices';
@@ -5,6 +6,7 @@ import { startService, stopService } from './server';
 
 const panel = (p: Page) => p.getByRole('region', { name: 'History maintenance', exact: true });
 async function inspect(p: Page) {
+  await openMenuSection(p, 'Data');
   await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
   await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
   await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
@@ -33,6 +35,7 @@ test('sole device creates repeated native snapshots, retries lost publication an
     await panel(page).getByRole('button', { name: 'Create history snapshot' }).click();
     await expect(panel(page).getByRole('alert')).toBeVisible();
     expect(lost).toBe(true);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await openSaved(page, first.code);
@@ -40,6 +43,7 @@ test('sole device creates repeated native snapshots, retries lost publication an
     await panel(page).getByRole('button', { name: 'Resume history snapshot' }).click();
     await expect(panel(page)).toContainText('Verified snapshot 2 is saved.', { timeout: 15000 });
     await add(page, 'Writing after interrupted history');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await openSaved(page, first.code);
@@ -139,6 +143,7 @@ test('two native device owners independently admit snapshots and keep two-way de
       timeout: 20000,
     });
     await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+    await openMenuSection(second, 'Account');
     await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.other.setOffline(true);
     await second.goto('/');
@@ -262,6 +267,7 @@ test('a returning editor installs admitted cuts after service pruning and keeps 
       await expect(second.locator('.shell')).not.toContainText('Covered remote writing 2');
       await second.route('**/account/delivery/submit', (route) => route.abort());
       await add(second, 'Unsent local writing survives server pruning');
+      await openMenuSection(second, 'Account');
       await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await panel(page).getByRole('button', { name: 'Prune covered history', exact: true }).click();
       await expect(panel(page)).toContainText('Covered service history removed.', {
@@ -290,6 +296,7 @@ test('a returning editor installs admitted cuts after service pruning and keeps 
       await expect(second.locator('.shell')).toContainText('New accepted suffix after pruning', {
         timeout: 20000,
       });
+      await openMenuSection(second, 'Account');
       await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await pair.other.setOffline(true);
       await second.goto('/');

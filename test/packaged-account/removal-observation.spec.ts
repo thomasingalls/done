@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -40,6 +41,7 @@ test('an offline survivor retains old-generation writing through rotation while 
     });
     pair = await pairedEditors(page, browser, true);
     pair.second.setDefaultTimeout(15000);
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(pair.second, pair.next.code);
@@ -63,6 +65,7 @@ test('an offline survivor retains old-generation writing through rotation while 
         timeout: 20000,
       });
     // Read only a native device identifier before reopening its live editor.
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.second.goto('/');
     await pair.second.evaluate(chunk.code);
@@ -77,6 +80,7 @@ test('an offline survivor retains old-generation writing through rotation while 
     );
     await openSaved(pair.second, pair.next.code, true);
     await thirdContext.setOffline(true);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);
@@ -136,6 +140,7 @@ test('an offline survivor retains old-generation writing through rotation while 
       [page, pair.first.code, false],
       [third, next.code, true],
     ] as const) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await p.goto('/');
       await openSaved(p, code, joining);
@@ -145,6 +150,7 @@ test('an offline survivor retains old-generation writing through rotation while 
       await expect(p.locator('.workspace-status')).toHaveCount(0);
     }
     // A second removal keeps the generation-two opener while its replacement pointer is pending.
+    await openMenuSection(third, 'Account');
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await third.goto('/');
     await third.evaluate(chunk.code);
@@ -160,6 +166,7 @@ test('an offline survivor retains old-generation writing through rotation while 
     await openSaved(third, next.code, true);
     await thirdContext.setOffline(true);
     await add(third, 'Second removed device keeps its offline generation-two writing');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);
@@ -210,6 +217,7 @@ test('an offline survivor retains old-generation writing through rotation while 
     await page.goto('/');
     await openSaved(page, pair.first.code);
     await add(page, 'Generation three survives two rotations');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await openSaved(page, pair.first.code);
@@ -218,6 +226,7 @@ test('an offline survivor retains old-generation writing through rotation while 
     await expect(third.locator('.shell')).toHaveCount(0, { timeout: 25000 });
     await third.goto('/');
     await openSaved(third, next.code, true);
+    await openMenuSection(third, 'Sync');
     await expect(third.getByText('Removed from account.', { exact: false })).toBeVisible();
     await expect(third.locator('.shell')).toContainText(
       'Second removed device keeps its offline generation-two writing',
@@ -226,6 +235,7 @@ test('an offline survivor retains old-generation writing through rotation while 
       'Generation three survives two rotations',
     );
     await add(third, 'Detached generation two can still edit');
+    await openMenuSection(third, 'Account');
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await third.goto('/');
     await openSaved(third, next.code, true);
@@ -243,8 +253,10 @@ test('an offline survivor retains old-generation writing through rotation while 
     await expect(pair.second.locator('.shell')).not.toContainText(
       'Survivor generation two travels after passive activation',
     );
+    await openMenuSection(pair.second, 'Sync');
     await expect(pair.second.getByText('Removed from account.', { exact: false })).toBeVisible();
     await add(pair.second, 'Writing retained only in this detached copy');
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.second.goto('/');
     await openSaved(pair.second, pair.next.code, true);

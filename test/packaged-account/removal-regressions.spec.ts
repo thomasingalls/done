@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { openApp, protectApp } from '../geometry/openApp';
+import { openApp, protectApp, openMenuSection } from '../geometry/openApp';
 import { startService, stopService } from './server';
 
 for (const freshBeforeReply of [false, true])
@@ -36,6 +36,7 @@ for (const freshBeforeReply of [false, true])
         await held;
         await route.fulfill({ response });
       });
+      await openMenuSection(page, 'Sync');
       await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
       await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
       await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();

@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { pairedEditors } from './devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
@@ -37,6 +38,7 @@ for (const mode of ['batched', 'older-server', 'substituted-page', 'lost-reply']
       const original = mode === 'batched',
         approver = original ? page : pair.second;
       const saved = original ? pair.first : pair.next;
+      await openMenuSection(approver, 'Account');
       await approver.getByRole('button', { name: 'Devices', exact: true }).click();
       await approver.getByRole('button', { name: 'Connect another device', exact: true }).click();
       await unlock(approver, saved.code);

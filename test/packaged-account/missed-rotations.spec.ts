@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -38,6 +39,7 @@ test('an offline device resumes two missed rotations in order and delivers its o
   try {
     pair = await pairedEditors(page, browser, true);
     const connect = async (owner: Page, code: string, joining: Page) => {
+      await openMenuSection(owner, 'Account');
       await owner.getByRole('button', { name: 'Devices', exact: true }).click();
       await owner.getByRole('button', { name: 'Connect another device', exact: true }).click();
       await unlock(owner, code);
@@ -106,6 +108,7 @@ test('an offline device resumes two missed rotations in order and delivers its o
     await fourthContext.setOffline(true);
     await add(fourth, 'Offline across two membership rotations');
     for (const [i, target] of targets.entries()) {
+      await openMenuSection(page, 'Account');
       await page.getByRole('button', { name: 'Devices', exact: true }).click();
       const row = page
         .locator('.account-device-list li')
@@ -118,6 +121,7 @@ test('an offline device resumes two missed rotations in order and delivers its o
       await expect(page.locator('.shell')).toHaveCount(0, { timeout: 25000 });
       await page.goto('/');
       await openSaved(page, pair.first.code);
+      await openMenuSection(page, 'Account');
       await page.getByRole('button', { name: 'Devices', exact: true }).click();
       await expect(page.locator('.account-device-list li')).toHaveCount(3 - i);
       await page.getByRole('button', { name: 'Back to writing', exact: true }).click();
@@ -140,6 +144,7 @@ test('an offline device resumes two missed rotations in order and delivers its o
     await expect(page.locator('.shell')).toContainText('Rejoined survivor sends generation three', {
       timeout: 20000,
     });
+    await openMenuSection(fourth, 'Account');
     await fourth.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await fourth.goto('/');
     await openSaved(fourth, four.code, true);

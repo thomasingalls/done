@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect } from '@playwright/test';
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
 import { mkdirSync, readFileSync } from 'node:fs';
@@ -136,6 +137,7 @@ test('schema-five account retains its original passkey, authority, name, code an
     );
     const credentials = await cdp.send('WebAuthn.getCredentials', { authenticatorId });
     expect(credentials.credentials).toHaveLength(1);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace' }).click();
     await expect(page.getByLabel('Device-lock code', { exact: true })).toBeVisible();
     await page.goto('about:blank');
@@ -185,7 +187,9 @@ test('schema-five account retains its original passkey, authority, name, code an
     await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
       'Writing saved before the service upgrade',
     );
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Connect devices', exact: true })).toBeVisible();
     const displayedIds = await page.getByLabel('Account ID', { exact: true }).allTextContents();

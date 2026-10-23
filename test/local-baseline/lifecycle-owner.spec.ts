@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test, expect, type Page, type TestInfo } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
@@ -183,6 +184,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
       readerActive = true;
     }
     pair.second.setDefaultTimeout(15000);
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(pair.second, pair.next.code);
@@ -206,6 +208,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
         timeout: 20000,
       });
     // Read only a native device identifier before reopening its live editor.
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.second.goto('/');
     await pair.second.evaluate(chunk.code);
@@ -221,6 +224,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     await openSaved(pair.second, pair.next.code, true);
     await anchor(third);
     await thirdContext.setOffline(true);
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);
@@ -280,6 +284,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
       [page, pair.first.code, false],
       [third, next.code, true],
     ] as const) {
+      await openMenuSection(p, 'Account');
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
       await p.goto('/');
       await openSaved(p, code, joining);
@@ -317,6 +322,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
         .toEqual({ kind: reduced ? 'already-removed' : 'already-installed' });
     }
     // A second removal keeps the generation-two opener while its replacement pointer is pending.
+    await openMenuSection(third, 'Account');
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await third.goto('/');
     await third.evaluate(chunk.code);
@@ -332,6 +338,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     await openSaved(third, next.code, true);
     await thirdContext.setOffline(true);
     await add(third, 'Second removed device keeps its offline generation-two writing');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);
@@ -388,6 +395,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     await page.goto('/');
     await openSaved(page, pair.first.code);
     await add(page, 'Generation three survives two rotations');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await openSaved(page, pair.first.code);
@@ -404,6 +412,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
       'Generation three survives two rotations',
     );
     await add(third, 'Detached generation two can still edit');
+    await openMenuSection(third, 'Account');
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await third.goto('/');
     await openSaved(third, next.code, true);
@@ -423,6 +432,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     );
     await expect(pair.second.getByText('Removed from account.', { exact: false })).toBeVisible();
     await add(pair.second, 'Writing retained only in this detached copy');
+    await openMenuSection(pair.second, 'Account');
     await pair.second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await pair.second.goto('/');
     await openSaved(pair.second, pair.next.code, true);
@@ -504,6 +514,7 @@ test('an anchored original device becomes an editable detached copy while its jo
       }
       readerActive = true;
     }
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);
@@ -517,6 +528,7 @@ test('an anchored original device becomes an editable detached copy while its jo
       pair.first.code,
     );
     await openSaved(page, pair.first.code);
+    await openMenuSection(second, 'Account');
     await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await second.goto('/');
     await second.evaluate(chunk.code);
@@ -555,6 +567,7 @@ test('an anchored original device becomes an editable detached copy while its jo
             .state,
       ),
     ).toBe('active');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await openSaved(page, pair.first.code);

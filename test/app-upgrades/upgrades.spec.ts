@@ -1,3 +1,4 @@
+import { openMenuSection } from '../geometry/openApp';
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
 import { protectApp } from '../geometry/openApp';
@@ -22,6 +23,7 @@ const write = async (page: Page, text: string) => {
   await expect(page.locator('.card').filter({ hasText: text })).toBeVisible();
 };
 const lock = async (page: Page) => {
+  await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Lock workspace' }).click();
   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
 };

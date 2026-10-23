@@ -1,5 +1,5 @@
 import { test } from '../release-validation/browser-fixture';
-import { openApp, reloadApp } from './openApp';
+import { openApp, reloadApp, openMenuSection } from './openApp';
 /** Browser regressions for Phase 2 interactions that unit tests cannot cover. */
 
 import { addDays } from '../../src/lib/date';
@@ -215,6 +215,7 @@ test.describe('Phase 2 workflow', () => {
       window.dispatchEvent(event);
     });
 
+    await openMenuSection(page, 'Install');
     const install = page.getByRole('button', { name: 'Install', exact: true });
     await expect(install).toBeVisible();
     await install.click();
@@ -277,12 +278,15 @@ test.describe('Phase 2 workflow', () => {
     await openApp(page);
     await openMenu(page);
 
+    await openMenuSection(page, 'Account');
     await page.getByRole('textbox', { name: 'Device name' }).fill('Kitchen laptop');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Save preferences' }).click();
     await expect(page.getByText('Preferences saved.')).toBeVisible();
     await page.waitForTimeout(100);
     await reloadApp(page);
     await openMenu(page);
+    await openMenuSection(page, 'Account');
     await expect(page.getByRole('textbox', { name: 'Device name' })).toHaveValue('Kitchen laptop');
   });
 
@@ -291,8 +295,11 @@ test.describe('Phase 2 workflow', () => {
     await openApp(page);
     await openMenu(page);
 
+    await openMenuSection(page, 'Account');
     await page.getByRole('textbox', { name: 'Actor name' }).fill('Phase Two Tester');
+    await openMenuSection(page, 'Account');
     await page.getByRole('combobox', { name: 'Day rollover hour' }).selectOption('4');
+    await openMenuSection(page, 'Account');
     await page.getByRole('button', { name: 'Save preferences' }).click();
     await expect(page.getByText('Preferences saved.')).toBeVisible();
     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();
@@ -300,6 +307,7 @@ test.describe('Phase 2 workflow', () => {
     await page.waitForTimeout(100);
     await reloadApp(page);
     await openMenu(page);
+    await openMenuSection(page, 'Account');
     await expect(page.getByRole('textbox', { name: 'Actor name' })).toHaveValue('Phase Two Tester');
     await expect(page.getByRole('combobox', { name: 'Day rollover hour' })).toHaveValue('4');
   });
