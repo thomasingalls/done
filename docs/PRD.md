@@ -653,7 +653,10 @@ cost and genuinely unpleasant to author by hand, which is precisely the case age
 
 Behaviors that matter disproportionately: list continuation on Enter in Goals, `Tab`/`Shift-Tab` and
 `Cmd/Ctrl-]` / `Cmd/Ctrl-[` indentation, checkbox toggle by click, clean selection across formatting marks.
-On macOS, Option-Backspace deletes the preceding word or selection. Cmd/Ctrl-Enter does not toggle
+On macOS, Option-Backspace deletes the preceding word or selection. With no selection, Cmd-X cuts
+the current complete line (including its following newline when present); selected text still cuts
+normally. Clipboard refusal keeps the writing. Cut waits for pending writing/composition to finish
+so it cannot delete text that was not copied. Deletion remains one admitted, undoable edit. Cmd/Ctrl-Enter does not toggle
 checkboxes or insert a blank line. Shift-Enter inserts an admitted plain newline.
 
 Inside a card, **Enter finishes editing and focuses that same static card**; a second Enter reopens it

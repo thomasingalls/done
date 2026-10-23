@@ -41,3 +41,29 @@ or refused API leaves native entry available. Four baseline checks fail; two fal
 Candidate Chromium6 and actual headless Firefox3 pass. The native wrapper forwards to the browser
 API and confirms active user activation plus a normal return. No popup appearance or physical-phone
 claim is inferred. Typecheck/lint pass. Outcome recorded; active work advances to Cut.
+
+## Phase50 outcome and failed attempts
+
+Native Cut with no selection now copies logical lines and then uses existing admitted selection
+replacement. Newline inclusion follows the actual removed range; final-line content has no invented
+newline. Duplicate/adjacent line ranges are unioned. Selected-text cutting is retained. Unreadable,
+frozen, pending/composing or unavailable surfaces refuse before copying; missing/throwing/silent
+clipboard failures refuse before deletion. An empty document leaves the clipboard alone.
+
+Baseline positives fail5 unit/4 browser cases. Final13 new plus28 existing focused unit cases pass;
+8 Chromium (two layouts under Mac hardware bindings) and4 actual Firefox cases pass. Trusted Cut
+events write expected text; storage refusal keeps accepted writing until retry; undo/redo/reopen
+retain the result. Type/lint pass.
+
+Earlier implementation mistakenly treated EditorSelection as having an empty flag; unit tests
+exposed the empty-range failure. Corrected to per-range emptiness. A second counterexample exposed
+touching selections not being merged, producing an extra clipboard separator. Both failures remain.
+A new fixture’s status literal initially widened to string and failed typecheck. Browser observation
+initially read ClipboardEvent data in a microtask after dispatch, when the native data is protected;
+text had already deleted correctly. The final observer forwards native setData and reads it during
+dispatch. These fixture corrections preserve the intended clipboard assertion. One apply-patch attempt
+failed on formatter-adjusted context before changing files. No failure is counted as passing evidence.
+
+Cut during pending writing reports a wait rather than deleting an accepted range that queued input
+could later expand. This is a deliberate bounded tradeoff, recorded in decisions.md. No new protocol
+or mutable-document capability is introduced. Outcome recorded; active work advances to UX-18 study.

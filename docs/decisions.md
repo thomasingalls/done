@@ -5214,3 +5214,19 @@ registration instead of cloning CRDT identity or inventing a second creation pat
 Done’s unlock protects editing/moving its source; duplication does neither. No new action appears
 on frozen days, no arbitrary destination capability is added, and unfiled/missing sources refuse.
 The source’s creation timestamp/author are not copied as though a new action were historical writing.
+
+
+### Whole-line Cut copies accepted writing before admitted deletion
+
+**Date:**2026-10-23 · **Scope:**bounded UX patch50
+
+Extend the native Cut event rather than intercept Cmd-X with an asynchronous clipboard prompt.
+When every selection is empty, copy complete logical lines, unioning duplicate/adjacent ranges;
+include an existing following newline. Use existing semantic selection replacement for deletion.
+Successful event clipboard writing/read-back precedes submission. A missing/refused clipboard,
+closed/frozen surface, active composition or queued predecessor cannot delete writing.
+
+Choose a visible wait/refusal while earlier input is pending instead of extending relative
+selections over uncopied queued text or adding a new conditional-mutation protocol in this slice.
+This can require retrying Cut during storage stalls; the invariant is more important than hiding
+that refusal. Local admission can still delay the deletion after copying; retry admits it once.

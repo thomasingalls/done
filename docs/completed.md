@@ -15785,3 +15785,20 @@ inside user activation. TypeScript/focused lint pass.
 **Notes.** Native popup appearance remains browser-owned. The tests establish request acceptance,
 not physical-device calendar presentation. Date semantics and frozen-day rules are unchanged.
 [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md). No publication.
+
+
+### Whole-line native Cut preserves clipboard and storage boundaries
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch50 · **Stage:**bounded UX
+
+**Exit.** Empty selections cut complete lines; ordinary selected cuts remain. Duplicate/adjacent
+carets do not duplicate clipboard text. Copying succeeds before semantic deletion; locked/frozen,
+pending/composing, empty or clipboard-refused paths preserve writing. Five baseline unit and four
+trusted-event browser counterexamples fail. Final41 focused unit cases,8 Chromium and4 Firefox
+journeys pass, with undo/redo, storage retry and reopen. Type/lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md) retains the
+invalid selection API attempt, adjacent-range defect, fixture type error and protected clipboard
+event timing mistake. The native write observer now forwards/captures synchronously. No arbitrary
+transaction bypass, plaintext persistence or protocol-format change. Earlier pending text requires
+a retry, deliberately. No commit or deployment.
