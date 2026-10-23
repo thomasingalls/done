@@ -5143,3 +5143,21 @@ Use Git's changed-test population as an independent coverage check, not just the
 A fixed calendar fixture must supply the existing today seam. Keep the three-day product freeze and original protection/refusal assertions; assert every intended fixture card exists before copying/removal so empty state cannot satisfy a retention test. Use unchanged-body calendar counterfactuals and per-case failed assertion evidence. Source-site metadata is a precise location fact, not authority: re-pin only its line after independently locating the unchanged native literal. Keep count assertions exact through independent old-prefix/AST/runtime evidence; preserve all883 obligations,339 unresolved and security contracts rather than waiving registration checks.
 
 Record all failed runs, zero-test closure errors and corrected auditors. Local routine checks establish exactly their executable surface, including the one existing named skip, not general qualification, Linux CI or production/device behavior. Finish documentation before refreshing tree-bound receipts; keep final closing evidence beside the immutable patch to avoid self-referential receipt packaging. Later signing, exact-artifact testing, pushing, merging and rollout are distinct operations.
+
+
+### Use local acceptance evidence for the sync catch-up publication
+
+**Date:**2026-10-23 · **Authority:**operator instruction in this conversation.
+
+The operator directs committing the release evidence and preparing production,
+and explicitly permits hosted GitHub Actions results to be non-blocking if local
+tests passed, because hosted runs time out. Select the recorded passing local
+routine/unit and exact-image functional/load evidence for this release. Preserve
+the original hosted results, Linux no-Git harness failure, host completion, named
+unit skip, finite-platform limits and all qualification obligations. No test,
+workflow, branch protection, cryptographic check or product security contract
+changes. This is an operator publication decision, not a claim that local tests
+prove universal safety or that failed hosted runs passed. Source/image identity,
+rollback, private registry, offline infrastructure checks and rollout verification
+remain required. Operator retains both merge buttons; generalized qualification
+remains paused. See [handoff](./account-sync-catch-up-publication.md).

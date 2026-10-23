@@ -15550,3 +15550,20 @@ Sign a5cf210b,810d330c,2679e889,5934ea7a,51d8550d in order, verifying every pare
 A complete exact-image/frontend C,C pair passes120/120 keys,16ms local and2.5s complete-peer gates: local p955.7/5.9ms and peer812.2/854.4ms.600s background replay, original delivery, recovery, encrypted pending/cold offline state, exports, reverse writing/undo, independent native audit, resource and clock-validity/sensitivity controls pass. No /app source overlay; existing development HTTP fixture wrapper is explicit. Retain the initial zero-test omitted-helper launch and the separate corrected import-closure pair; no measured run replaced. No additional runtime repair.
 
 Read-only subagent [comparison](./performance-experiments/2026-10-23-optimization-consolidation/README.md) reports13 bounded groups/43 source files:3 already shared,2 narrow common-kernel candidates,6 necessary distinctions,2 uncertain. Extracting synchronous IDB read pairs is the safest prospective maintenance change; positive-memo storage is second. No refactor or new speed claim. This task performs no push, merge, deploy or preview change; shared Git ref separately records a07:45 push whose actor is not established. Operator publication/remote CI remains separate;883 obligations/339 unresolved and qualification pause remain. The follow-up evidence patch is prepared without changing the signed runtime source.
+
+
+### Commit signed artifact evidence and prepare sync publication
+
+**Date:**2026-10-23 · **Evidence commit:**fa3af694 · **Status:**publication handoff prepared; operator application merge still required.
+
+Evidence patch32 is committed with the configured SSH signature; expected tree,
+parent and clean checkout match its independently reviewed manifest. All image
+inputs remain exact signed51d8550d. Record the operator's local-test acceptance
+decision without changing tests, workflow, branch protection or883/339 qualification
+state. [Current handoff](./account-sync-catch-up-publication.md) binds the exact
+retained image, checks, predecessor rollback and separate publication/rollout stages.
+Read-only production preflight verifies one ready faf465f7 replica, actual assets
+matching the retained predecessor, healthy backups with zero unprotected pending
+change age and15 retained historical failures, plus private GHCR visibility.
+No image rebuild, cluster change or release merge; publication and actual-device
+adoption remain distinct next stages.
