@@ -183,7 +183,7 @@ test('schema-five account retains its original passkey, authority, name, code an
       .getByRole('button', { name: 'Confirm code and unlock with passkey', exact: true })
       .click();
     await expect(page.locator('.shell')).toBeVisible();
-    await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
+    await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Alex');
     await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
       'Writing saved before the service upgrade',
     );

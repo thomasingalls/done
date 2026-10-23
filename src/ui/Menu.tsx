@@ -140,130 +140,141 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
       </nav>
       <MenuSection title="Account">
         {accountId && <AccountIdentity id={accountId} />}
-        <h3 className="menu-subheading">Identity and preferences</h3>
-
-        <div className="menu-row">
-          <span>Actor</span>
-          <span className="menu-value">
-            <span
-              className="actor-swatch"
-              style={{ '--actor-color': actor.color } as React.CSSProperties}
-            />
-            {actor.name}
-          </span>
-        </div>
-        <div className="menu-row">
-          <span>Version</span>
-          <span className="menu-value">{import.meta.env['VITE_APP_VERSION']}</span>
-        </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void save();
-          }}
-        >
-          <label className="menu-row">
-            <span>Device</span>
-            <input
-              className="menu-input"
-              value={deviceName}
-              aria-label="Device name"
-              disabled={saving}
-              onChange={(e) => setDeviceName(e.target.value)}
-            />
-          </label>
-          {accountWorkspace && (
+        <div className="menu-group">
+          <h3 className="menu-subheading">Identity and preferences</h3>
+          <div className="menu-metadata">
             <div className="menu-row">
-              <span>Device code</span>
-              <code className="menu-value" aria-label="Device code" title={snapshot.deviceId}>
-                {deviceCode(snapshot.deviceId)}
-              </code>
+              <span>User</span>
+              <span className="menu-value">
+                <span
+                  className="actor-swatch"
+                  style={{ '--actor-color': actor.color } as React.CSSProperties}
+                />
+                {actor.name}
+              </span>
             </div>
-          )}
-          <label className="menu-row">
-            <span>Name</span>
-            <input
-              className="menu-input"
-              value={name}
-              aria-label="Actor name"
-              disabled={saving}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
-          <label className="menu-row">
-            <span>Color</span>
-            <input
-              className="menu-color"
-              type="color"
-              value={color}
-              aria-label="Actor color"
-              disabled={saving}
-              onChange={(e) => setColor(e.target.value)}
-            />
-          </label>
-          <label className="menu-row">
-            <span>Day rollover</span>
-            <select
-              className="menu-input"
-              value={rollover}
-              aria-label="Day rollover hour"
-              disabled={saving}
-              onChange={(e) => setRollover(Number(e.target.value))}
-            >
-              {Array.from({ length: 24 }, (_, hour) => (
-                <option key={hour} value={hour}>
-                  {String(hour).padStart(2, '0')}:00
-                </option>
-              ))}
-            </select>
-          </label>
-          <button type="submit" className="menu-button" disabled={saving}>
-            {saving ? 'Saving…' : 'Save preferences'}
-          </button>
-          {saved && (
-            <p role="status" className="menu-note">
-              {saved}
-            </p>
-          )}
-        </form>
-        <h3 className="menu-subheading">Protection</h3>
-
-        <p className="menu-note">
-          {protection === 'automatic'
-            ? 'Opens automatically. Anyone using this browser can open your list.'
-            : 'Unlock code enabled. Your local copy requires an unlock code.'}
-        </p>
-        {protection === 'automatic' ? (
-          <button className="menu-button" onClick={protect}>
-            Add an unlock code
-          </button>
-        ) : (
-          <button className="menu-button" onClick={lock}>
-            Lock workspace
-          </button>
-        )}
-        {showDevices && (
-          <button className="menu-button" onClick={showDevices}>
-            Devices
-          </button>
-        )}
-        {switchAccount && (
-          <button className="menu-button" onClick={switchAccount}>
-            Use another account
-          </button>
-        )}
-        {networkLogin && !devices?.detached && (
-          <>
-            {switchAccount && (
-              <p className="menu-note">
-                Use another account keeps this account’s login remembered. Sign out ends that login.
-                Both keep your writing on this device.
+            <div className="menu-row">
+              <span>Version</span>
+              <span className="menu-value">{import.meta.env['VITE_APP_VERSION']}</span>
+            </div>
+          </div>
+          <form
+            className="menu-preferences"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void save();
+            }}
+          >
+            <label className="menu-field">
+              <span>Device</span>
+              <input
+                className="menu-input"
+                value={deviceName}
+                aria-label="Device name"
+                disabled={saving}
+                onChange={(e) => setDeviceName(e.target.value)}
+              />
+            </label>
+            {accountWorkspace && (
+              <div className="menu-row">
+                <span>Device code</span>
+                <code className="menu-value" aria-label="Device code" title={snapshot.deviceId}>
+                  {deviceCode(snapshot.deviceId)}
+                </code>
+              </div>
+            )}
+            <label className="menu-field">
+              <span>Name</span>
+              <input
+                className="menu-input"
+                value={name}
+                aria-label="User name"
+                disabled={saving}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+            <div className="menu-preference-pair">
+              <label className="menu-field">
+                <span>Color</span>
+                <input
+                  className="menu-color"
+                  type="color"
+                  value={color}
+                  aria-label="User color"
+                  disabled={saving}
+                  onChange={(e) => setColor(e.target.value)}
+                />
+              </label>
+              <label className="menu-field">
+                <span>Day rollover</span>
+                <select
+                  className="menu-input"
+                  value={rollover}
+                  aria-label="Day rollover hour"
+                  disabled={saving}
+                  onChange={(e) => setRollover(Number(e.target.value))}
+                >
+                  {Array.from({ length: 24 }, (_, hour) => (
+                    <option key={hour} value={hour}>
+                      {String(hour).padStart(2, '0')}:00
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <button type="submit" className="menu-button" disabled={saving}>
+              {saving ? 'Saving…' : 'Save preferences'}
+            </button>
+            {saved && (
+              <p role="status" className="menu-note">
+                {saved}
               </p>
             )}
-            <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
-          </>
-        )}
-        <RemoveFromDeviceButton slotId={slotId} />
+          </form>
+        </div>
+        <div className="menu-group">
+          <h3 className="menu-subheading">Protection</h3>
+
+          <p className="menu-note">
+            {protection === 'automatic'
+              ? 'Opens automatically. Anyone using this browser can open your list.'
+              : 'Unlock code enabled. Your local copy requires an unlock code.'}
+          </p>
+          {protection === 'automatic' ? (
+            <button className="menu-button" onClick={protect}>
+              Add an unlock code
+            </button>
+          ) : (
+            <button className="menu-button" onClick={lock}>
+              Lock workspace
+            </button>
+          )}
+        </div>
+        <div className="menu-group">
+          <h3 className="menu-subheading">On this device</h3>
+          {showDevices && (
+            <button className="menu-button" onClick={showDevices}>
+              Devices
+            </button>
+          )}
+          {switchAccount && (
+            <button className="menu-button" onClick={switchAccount}>
+              Use another account
+            </button>
+          )}
+          {networkLogin && !devices?.detached && (
+            <>
+              {switchAccount && (
+                <p className="menu-note">
+                  Use another account keeps this account’s login remembered. Sign out ends that
+                  login. Both keep your writing on this device.
+                </p>
+              )}
+              <NetworkLoginNotice login={networkLogin} close={switchAccount ?? lock} />
+            </>
+          )}
+          <RemoveFromDeviceButton slotId={slotId} />
+        </div>
       </MenuSection>
       <MenuSection title="Sync">
         {sync && (

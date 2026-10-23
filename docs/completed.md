@@ -15756,3 +15756,18 @@ full application, key/authentication custody, energy/permission costs and measur
 unfocus behavior still needs tracing. Existing protection, lock and admission requirements remain;
 remembered unlocking and transport replacement are not implicitly selected. No app/test/preview
 changes; documentation-only sequential patch with replay checks.
+
+
+### Sidebar preferences and access controls gain consistent spacing
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch48 · **Stage:**bounded UX
+
+**Exit.** Sidebar fields use full-width text inputs, paired color/rollover controls, separated
+preference/protection/device groups and consistent button sizes. Visible/accessibility identity
+wording uses User. Four baseline checks fail;34 combined browser cases plus4 dark/light layout
+checks pass. Narrow/wide screenshots inspected; typecheck/focused lint pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-cut-background/README.md) retains
+source-only review of three old fixtures: only Actor-name locators become User-name locators;
+all assertions are preserved. Full historical setup/upgrade campaigns are not claimed. No
+authorization, lifecycle, data-format or default-disclosure behavior changes. Patch only.

@@ -296,7 +296,7 @@ test.describe('Phase 2 workflow', () => {
     await openMenu(page);
 
     await openMenuSection(page, 'Account');
-    await page.getByRole('textbox', { name: 'Actor name' }).fill('Phase Two Tester');
+    await page.getByRole('textbox', { name: 'User name' }).fill('Phase Two Tester');
     await openMenuSection(page, 'Account');
     await page.getByRole('combobox', { name: 'Day rollover hour' }).selectOption('4');
     await openMenuSection(page, 'Account');
@@ -308,7 +308,7 @@ test.describe('Phase 2 workflow', () => {
     await reloadApp(page);
     await openMenu(page);
     await openMenuSection(page, 'Account');
-    await expect(page.getByRole('textbox', { name: 'Actor name' })).toHaveValue('Phase Two Tester');
+    await expect(page.getByRole('textbox', { name: 'User name' })).toHaveValue('Phase Two Tester');
     await expect(page.getByRole('combobox', { name: 'Day rollover hour' })).toHaveValue('4');
   });
 });

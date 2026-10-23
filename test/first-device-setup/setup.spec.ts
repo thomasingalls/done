@@ -397,7 +397,7 @@ test('create a second account on this device, resume it, and switch between isol
   const bId = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
   expect(bId).not.toBe(a.id);
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(0);
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Alex');
   const compose = page.locator(
     '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
   );
@@ -489,7 +489,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   const code = await local(page),
     before = await slot(page);
   await openMenuSection(page, 'Account');
-  await page.getByLabel('Actor name', { exact: true }).fill('Original name');
+  await page.getByLabel('User name', { exact: true }).fill('Original name');
   await openMenuSection(page, 'Account');
   await page.getByLabel('Device name', { exact: true }).fill('Original device');
   await openMenuSection(page, 'Account');
@@ -528,7 +528,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await expect(page.locator('.shell')).toBeVisible({ timeout: 20000 });
   expect((await slot(page)).stores).toEqual(before.stores);
   expect((await slot(page)).account).toBeDefined();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Original name');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Original name');
   await expect(page.getByLabel('Device name', { exact: true })).toHaveValue('Original device');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
@@ -658,7 +658,7 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
   await confirmAndApprove(page);
   await expect(page.locator('.shell')).toBeVisible();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Alex');
   const credentials = await cdp.send('WebAuthn.getCredentials', { authenticatorId });
   expect(credentials.credentials).toHaveLength(1);
   expect(credentials.credentials[0]?.userName).toBe(
@@ -667,7 +667,7 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   // Model the prior preview: its encrypted identity is still "You" and the UI
   // record predates name/connected fields. Its actual keys and writing stay intact.
   await openMenuSection(page, 'Account');
-  await page.getByLabel('Actor name', { exact: true }).fill('You');
+  await page.getByLabel('User name', { exact: true }).fill('You');
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();
@@ -707,12 +707,12 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   await page.getByLabel('Your name', { exact: true }).fill('Thomas');
   await page.getByRole('button', { name: 'Continue to writing' }).click();
   await expect(page.locator('.shell')).toBeVisible();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Thomas');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Thomas');
   expect((await cdp.send('WebAuthn.getCredentials', { authenticatorId })).credentials).toHaveLength(
     1,
   );
   await openMenuSection(page, 'Account');
-  await page.getByLabel('Actor name', { exact: true }).fill('Tom');
+  await page.getByLabel('User name', { exact: true }).fill('Tom');
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();
@@ -724,7 +724,7 @@ test('an existing unnamed preview account gains its name after unlock and rememb
   await page.screenshot({ path: testInfo.outputPath('named-account-unlock.png') });
   await reopen(page, code);
   await expect(page.locator('.shell')).toBeVisible();
-  await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Tom');
+  await expect(page.getByLabel('User name', { exact: true })).toHaveValue('Tom');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
@@ -1093,7 +1093,7 @@ test('legacy entry read failure keeps an explicit error instead of guessing a fr
 test('locking waits for native cleanup before exposing a live unlock form', async ({ page }) => {
   const { code } = await connectedAccount(page);
   await openMenuSection(page, 'Account');
-  await page.getByLabel('Actor name', { exact: true }).fill('After drain');
+  await page.getByLabel('User name', { exact: true }).fill('After drain');
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved.')).toBeVisible();

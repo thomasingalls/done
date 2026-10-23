@@ -1,0 +1,17 @@
+[
+  {
+    "file": "test/geometry/workflow.spec.ts",
+    "replacements": 2,
+    "onlyAccessibleLabelChanged": true
+  },
+  {
+    "file": "test/first-device-setup/setup.spec.ts",
+    "replacements": 9,
+    "onlyAccessibleLabelChanged": true
+  },
+  {
+    "file": "test/first-device-upgrade/upgrade.spec.ts",
+    "replacements": 1,
+    "onlyAccessibleLabelChanged": true
+  }
+]
