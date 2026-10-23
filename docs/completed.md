@@ -15742,3 +15742,17 @@ Account screenshot is preserved byte for byte as a linked product reference.
 security policy changed. The reported date/Cut behavior has not been reproduced in this slice.
 The documentation/screenshot change needs no runtime test; patch/replay checks retain the existing
 uncommitted sequence and leave the real Git index unchanged.
+
+
+### Background sync feasibility investigation queued
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch47 · **Stage:**product queue only
+
+**Exit.** UX-18 records the operator’s ready-on-return goal and a design-only investigation of
+app/OS lifecycle boundaries, browser support, background mechanisms, encrypted prefetch versus
+full application, key/authentication custody, energy/permission costs and measurable fallbacks.
+
+**Notes.** No feasibility conclusion, browser guarantee or implementation is claimed. Current
+unfocus behavior still needs tracing. Existing protection, lock and admission requirements remain;
+remembered unlocking and transport replacement are not implicitly selected. No app/test/preview
+changes; documentation-only sequential patch with replay checks.

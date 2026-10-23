@@ -95,6 +95,36 @@ get a bounded scope and evidence before implementation. General release qualific
   without deleting writing that was not successfully copied. Extends UX-04; implementation
   and regression tests are deferred until after the current work.
 
+- **UX-18 — Background sync and ready-on-return feasibility.** Queued 2026-10-23 as a
+  design investigation, **not implementation**. The operator wants an unfocused PWA to keep
+  up so reopening does not begin with a catch-up wait. Treat “sync likely pauses on unfocus”
+  as a reported concern to trace, not an established browser-independent cause.
+  - Distinguish an unfocused but running window, hidden tab, minimized app, suspended process,
+    phone screen lock, closed app and an explicitly locked workspace. Establish what the app
+    stops itself versus what the browser/OS stops, including the existing notifications,
+    reconnect and lifecycle owners. Measure transfer, verification and apply time separately.
+  - Produce a current browser/OS capability matrix for desktop Chrome/Firefox and mobile
+    Android/iOS, installed and ordinary-tab contexts. Evaluate service-worker Push, one-off
+    Background Sync, Periodic Background Sync and foreground continuation where supported;
+    verify wake/time/permission constraints, battery/data costs and delivery guarantees from
+    primary documentation and device observations. No mechanism or compatibility claim is
+    selected by this queue entry.
+  - Compare keeping the existing unlocked runtime working, background transfer of encrypted
+    records for later verified application, and full background verification/application.
+    Identify authentication, key custody, renewal, multi-tab/storage ownership, replay and
+    retry requirements for each. Preserve fresh authority/history checks and canonical storage
+    admission; downloaded ciphertext or a notification must never count as accepted writing.
+  - Keep existing protected-workspace lock/sign-out/removal guarantees. Do not persist unlock
+    secrets or silently add remembered unlocking to enable background work. If an option needs
+    a changed guarantee, make that an explicit separate decision; remember-me remains deferred.
+  - Deliver a recommendation with tradeoffs, bounded implementation phases/effort, an honest
+    fallback when background work cannot finish, and physical-device acceptance measurements
+    across background/return boundaries. Target writing already caught up on return where
+    feasible, without promising continuous execution or immediate freshness without evidence.
+  Related: device-setup interruption, UX-06/UX-07 and the separately deferred WebSocket transport
+  question. Investigate lifecycle and transport separately; switching transport is not a
+  selected remedy. No runtime or service-worker changes authorized by this reminder.
+
 ## Earlier conversation items retained
 
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this
