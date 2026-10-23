@@ -67,3 +67,23 @@ failed on formatter-adjusted context before changing files. No failure is counte
 Cut during pending writing reports a wait rather than deleting an accepted range that queued input
 could later expand. This is a deliberate bounded tradeoff, recorded in decisions.md. No new protocol
 or mutable-document capability is introduced. Outcome recorded; active work advances to UX-18 study.
+
+## Phase51 background investigation
+
+[Design report](../../background-sync-feasibility.md) includes primary sources, capability matrix,
+current-owner trace, security implications and proposed bounded implementation/acceptance. Rough
+effort is an estimate, not a delivery commitment. Runtime source identities are preserved.
+
+The experimental two-device probe runs the actual built app/local session+membership service. Its
+first assertion assumed a successful CDP freeze meant receiving was suspended, but the new card
+appeared. A corrected probe checks an independent timer: it kept ticking. The receiver also reports
+visible/focused despite bringing another test page forward. The probe is kept under reproduction,
+not promoted as a product regression or aggregate obligation. Its completed observation is not
+evidence of physical unfocus, suspension, energy use or resume latency. An early raw receipt used
+misleading freeze wording; interpretation.json explicitly corrects it and final source/receipt
+state the limitation. All failed attempts remain. No real accounts/profiles were used.
+
+Source does not intentionally pause sync on hide: it flushes outbound work, retains subscriptions
+and wakes on return. Platform suspension and locked-workspace authority are distinct problems.
+No worker/network/security behavior changed. Outcome recorded; active work advances to combined
+validation and a preview update for the three UI changes.

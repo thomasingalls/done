@@ -15802,3 +15802,21 @@ invalid selection API attempt, adjacent-range defect, fixture type error and pro
 event timing mistake. The native write observer now forwards/captures synchronously. No arbitrary
 transaction bypass, plaintext persistence or protocol-format change. Earlier pending text requires
 a retry, deliberately. No commit or deployment.
+
+
+### Background sync feasibility traced without changing sync policy
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch51 · **Stage:**UX-18 investigation
+
+**Exit.** [Investigation](background-sync-feasibility.md) traces the existing hide-flush, live
+notification/receive scheduler, short-lived network authority, lock cleanup and static-only worker.
+Primary browser/spec sources establish a capability matrix and constraints. A bounded design
+compares live continuation, encrypted inbox/outbox and full worker application, with next steps,
+rough effort and security/physical-device acceptance conditions.
+
+**Notes.** The two-device headless observation did not enter the intended hidden/frozen states.
+The initial suspension assertion failed; a timer control showed the requested freeze was not
+established, and the receiver remained visible/focused. This is retained as inconclusive platform
+evidence, not a background-sync pass or latency result. Ordinary live sync worked. Source/receipts
+are preserved in the evidence packet. No background credential, worker, sync-policy or permission
+change. Physical-device lifecycle measurement is the recommended next implementation slice.
