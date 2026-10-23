@@ -2,6 +2,7 @@ import { test } from '../release-validation/browser-fixture';
 import { openApp, reloadApp } from './openApp';
 /** Browser regressions for Phase 2 interactions that unit tests cannot cover. */
 
+import { addDays } from '../../src/lib/date';
 import { expect, type Locator, type Page } from '@playwright/test';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
@@ -261,7 +262,7 @@ test.describe('Phase 2 workflow', () => {
     await page.clock.fastForward(4_100);
 
     await openMenu(page);
-    await page.locator('.menu-day').first().click();
+    await page.getByLabel('Go to date', { exact: true }).fill('2026-08-01');
     await expect(activeDay(page)).toHaveAttribute('data-date', '2026-08-01');
     await expect(activeDay(page).getByText('kept after compaction')).toBeVisible();
     await expect(activeDay(page).locator('.card[data-frozen="true"]')).toHaveCount(1);
@@ -303,3 +304,31 @@ test.describe('Phase 2 workflow', () => {
     await expect(page.getByRole('combobox', { name: 'Day rollover hour' })).toHaveValue('4');
   });
 });
+
+for (const width of [420, 1280]) {
+  test(`sidebar native date navigation at ${width}px keeps only Yesterday Today Tomorrow`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openApp(page);
+    const today = (await activeDay(page).getAttribute('data-date'))!;
+    await openMenu(page);
+    const nav = page.getByRole('navigation', { name: 'Day', exact: true });
+    await expect(nav.getByRole('button')).toHaveText(['Yesterday', 'Today', 'Tomorrow']);
+    const picker = nav.getByLabel('Go to date', { exact: true });
+    await expect(picker).toHaveAttribute('type', 'date');
+    await expect(picker).toHaveValue(today);
+    await picker.fill(addDays(today, 10));
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(today, 10));
+    await openMenu(page);
+    await expect(picker).toHaveValue(addDays(today, 10));
+    await nav.getByRole('button', { name: 'Yesterday', exact: true }).click();
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(today, -1));
+    await openMenu(page);
+    await nav.getByRole('button', { name: 'Tomorrow', exact: true }).click();
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(today, 1));
+    await openMenu(page);
+    await nav.getByRole('button', { name: 'Today', exact: true }).click();
+    await expect(activeDay(page)).toHaveAttribute('data-date', today);
+  });
+}

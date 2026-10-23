@@ -50,3 +50,14 @@ the corrected type is explicit. Initial new Mac hardware tests used Android UA, 
 synthesizes unmodified Enter and therefore closes on Shift-Enter. The corrected hardware group uses a
 Mac UA/platform in both layout projects, as the established keyboard suite does, while a separate test
 keeps genuine Android-UA unmodified Enter coverage. This is not a physical phone/keyboard claim.
+
+## Phase39 — compact native date navigation
+
+The visible date/calendar ghost control is backed by the actual full-size native date input; pointer
+and keyboard activation do not depend on showPicker support. Exactly Yesterday/Today/Tomorrow sit below,
+anchored to the workspace's rollover-aware today. Choosing a valid native date navigates/closes the overlay.
+Two new width-specific counterexamples fail on the signed baseline; all26 workflow/project cases pass
+on the candidate, including both widths, arbitrary-day selection, adjacent dates and the existing frozen
+compaction case. Its old first-button week shortcut is replaced by the explicit native date selection;
+all frozen-card/content assertions stay. TypeScript/focused lint pass. Native OS picker visuals and
+physical phone interaction are not asserted by the headless browser journey.

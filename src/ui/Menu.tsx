@@ -19,7 +19,7 @@ export interface MenuProps {
   onClose: () => void;
   ref?: React.Ref<HTMLElement>;
 }
-const NEARBY = [-7, -2, -1, 0, 1, 2, 7];
+const NEARBY = [-1, 0, 1];
 export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   const {
     workspace,
@@ -88,9 +88,36 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   return (
     <aside className="menu" id="menu" aria-label="Menu" ref={ref}>
       <AppUpdateNotice beforeReload={workspace.whenDurable} />
-      <section className="menu-section">
-        <h2 className="menu-heading">Day</h2>
-        <p className="menu-note">{formatDayLong(date)}</p>
+      <nav className="menu-section menu-date-nav" aria-label="Day">
+        <label className="menu-date-control">
+          <span>{formatDayLong(date)}</span>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+          >
+            <rect x="3" y="5" width="18" height="16" rx="2" />
+            <path d="M7 3v4m10-4v4M3 11h18" />
+          </svg>
+          {/* The full-size native control owns pointer and keyboard activation, including
+              browsers without showPicker. Its label supplies the compact ghost appearance. */}
+          <input
+            className="menu-native-date"
+            type="date"
+            aria-label="Go to date"
+            value={date}
+            onChange={(event) => {
+              if (/^\d{4}-\d{2}-\d{2}$/.test(event.target.value)) {
+                onGoTo(event.target.value as ISODate);
+                onClose();
+              }
+            }}
+          />
+        </label>
         <div className="menu-days">
           {NEARBY.map((offset) => {
             const target = addDays(today, offset);
@@ -109,19 +136,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             );
           })}
         </div>
-        <label className="menu-row">
-          Go to date
-          <input
-            className="menu-input"
-            type="date"
-            aria-label="Go to date"
-            value={date}
-            onChange={(e) => {
-              if (/^\d{4}-\d{2}-\d{2}$/.test(e.target.value)) onGoTo(e.target.value as ISODate);
-            }}
-          />
-        </label>
-      </section>
+      </nav>
       <section className="menu-section">
         <h2 className="menu-heading">Data</h2>
         <div className="menu-row">

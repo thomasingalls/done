@@ -15616,3 +15616,15 @@ pass. Existing split/merge assertions remain, with only the new split modifier a
 **Notes.** [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md) records Android synthesis
 and the corrected Mac hardware fixtures plus separate Android Enter coverage. Done/frozen guards,
 admission and shared undo remain. No commit, preview update, publication or qualification advancement.
+
+
+### Compact sidebar date navigation retains native input
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch39 · **Stage:**bounded UX
+
+**Exit.** Date/calendar ghost control uses an overlaid native date input; Yesterday/Today/Tomorrow are
+the only adjacent-day actions. Both width counterexamples fail on baseline.26 workflow cases pass in
+two projects, including the explicit frozen-history date selection. TypeScript/focused lint pass.
+
+**Notes.** Picker appearance is browser-owned; no custom calendar, persisted state or timezone/security
+change. [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md). No publication.
