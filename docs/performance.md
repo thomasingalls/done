@@ -2297,3 +2297,17 @@ Two fixed instrumented26 journeys after one preserved failed Docker EOF attempt;
 |3-I|276/0|28.37|0.17|5.44|
 
 All stage counts, native request matches, available response-frame proof matches, missing bodies and independent native record/signature/prefix checks remain in the packet. Body-subset quantiles never stand in for complete peer latency or native commit authority. The first failed attempt has no completed cold/pending/replay acceptance credit; no journey or threshold was silently replaced. Actual runtime/old tests/metadata remain exact26, qualification883/339 paused. New uninstrumented repair acceptance is separate.
+
+
+### 2026-10-23 — phase28 complete discovery/catalog proof reuse, original heavy comparison
+
+Fixed prospective R26,C28,C28,R26, original110 client files and H6/M2/Q2 histories1024/256/32,1CPU/1GiB/zero swap/16session64process. Only4 reviewed native modules change. Original120 focused trusted500ms input,16mslocal/2500mscomplete-peer/30sdelivery/600sreplay/120scontinuation gates remain. [Packet](./performance-experiments/2026-10-22-prelude-proof-reuse/README.md).
+
+|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|
+|---|---:|---:|---:|---|---|
+|1-R|3.5|3.237|120/120|pass|held|
+|2-C|4.2|0.720|120/120|pass|pass|
+|3-C|4.8|0.749|120/120|pass|pass|
+|4-R|3.5|2.894|120/120|pass|held|
+
+**passes the original finite measured heavy-case gates.** All exercised data/pending/cold/no-reinjection/retained-record/export/native prefix/UndoRedo/reverse/isolation checks pass. Four whole journeys, dependent keystroke positions; fixed order brackets drift but establishes no population or physical-mobile/WAN claim. HTTP timings are descriptive; no observed subset or proof count replaces complete-peer acceptance. All26 new cases and79 focused cases pass;10 corrected baseline counterexamples and8 real omission controls are sensitive. Corrected paired affected suites retain exactly17 failures and add26 passing cases; no clean-full-suite claim. General883/339 qualification paused; no publication.

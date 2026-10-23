@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "onlyFourReviewedRuntimeSourceHashesChanged": [
+    "account-service/delivery.ts",
+    "account-service/historyCheckpoint.ts",
+    "account-service/inboundAuthorityReuse.ts",
+    "account-service/membershipLocator.ts"
+  ],
+  "domainLabelsKindsAndPathSetsExact": true,
+  "constructionBytesExact": true,
+  "all883ObligationRowsAnd339UnresolvedExact": true,
+  "noNewAggregateCredit": true,
+  "allOldTestBytesExactPrefix": true,
+  "all26NewCasesObservedExactlyOnceAndRemainUncredited": true,
+  "sameCorrectedCounterexampleTestBytesBothArms": true,
+  "allOtherProtocolAndClientBytesExact": true
+}

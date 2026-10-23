@@ -644,6 +644,36 @@ export async function verifyCurrentWorkspaceAuthorityWithHistory(
   if (!authority.history) throw Error('Missing current membership history');
   return { authority, history: authority.history };
 }
+// This private carrier retains the complete protocol brand through the existing copier.
+// It never escapes as early delivery authority, whose ledger dispatch omits history.
+const authenticateCompleteHeader = async (
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+): Promise<DeliveryAuthority> => {
+  const { authority, history } = await verifyCurrentWorkspaceAuthorityWithHistory(s, issuer);
+  return { ...authority, history };
+};
+/** Stable mathematical history only. Live ledger, request and transaction checks stay with callers. */
+export async function reuseWorkspaceAuthorityHistory(
+  s: Snapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+  reuse?: DeliveryVerification,
+): Promise<{ authority: DeliveryAuthority; history: AdmissionHistory }> {
+  if (!reuse?.authority) return verifyCurrentWorkspaceAuthorityWithHistory(s, issuer);
+  const header = workspaceAuthorityHeader(s),
+    deliveryHistory = needsMembershipHistory(header);
+  const proof = await reuseInboundAuthority(
+    undefined,
+    header,
+    issuer,
+    authenticateCompleteHeader,
+    reuse.authority,
+  );
+  const { history, ...earlyAuthority } = proof;
+  if (!history) throw Error('Missing complete authority history');
+  return { authority: deliveryHistory ? proof : earlyAuthority, history };
+}
+
 /** A publisher starts at its own verified certification; it has no earlier ledger. */
 export function selectPublisher(auth: Authority, publisher?: string): Authority {
   const id = publisher ?? auth.credential;

@@ -1,0 +1,14 @@
+from pathlib import Path
+import subprocess,os,json,time
+r=Path(__file__).parent;env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0'}
+for n in range(500):
+ if(r/'process-cleanup.json').exists():break
+ if(r/'run-receipts.json').exists()and any(v['exitCode']for v in json.loads((r/'run-receipts.json').read_text())):raise Exception('Measurement failed; preserve, no closure')
+ time.sleep(3)
+else:raise Exception('Measurements/audits incomplete; no closure')
+assert json.loads((r/'process-cleanup.json').read_text())['status']=='passed'
+rows=[]
+for name,cmd in [('frozen-review',['python3','review-frozen.py']),('apply-and-plan',['python3','apply-and-plan.py']),('metadata-review',['python3','review-metadata.py']),('write-records',['python3','write-records.py']),('package',['python3','package.py']),('prepare-patch',['python3','prepare-patch.py']),('post',['python3','post.py'])]:
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=r,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(r/'closure-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True);assert p.returncode==0,'Preserve and investigate '+name
+m=json.loads((r/'patches/manifest.json').read_text());(r/'checkpoint-closed.md').write_text('# Phase28 closed\n\nCanonical '+m['patch28']+' SHA256 '+m['patch28Sha256']+' tree28 '+m['expectedCumulativeTree28']+'. All direct28-after27/full01–28/post checks passed. RealHEAD82bf63e2/index unchanged unstaged;27/28unsigned; no push/preview/merge/deploy. Original heavy gates acceptance '+str(m['heavyFairnessAcceptance'])+'.26new/79focused/86planning pass; paired458/441/17→484/467/same17, no skips. Next REQUIRED user17failure history and repairs in bounded sequential phases; then local full functional tests before any push. General883/339qualification paused.\n')

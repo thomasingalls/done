@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,hashlib,gzip,subprocess,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-22-prelude-proof-reuse';start=json.loads((r/'starting.json').read_text());m=json.loads((r/'patches/manifest.json').read_text());env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};sha=lambda b:hashlib.sha256(b).hexdigest()
+assert sha(Path(m['patch28']).read_bytes())==m['patch28Sha256'];assert m['baseTree']==m['previousCumulativeTree27']==start['baseTree27'];assert m['baseCommit']==start['head'];assert m['sequenceOriginTree']==start['priorPatchManifest']['baseTree'];chain=m['independentSequentialApply01Through28'];assert len(chain)==28
+for v in chain:assert v['expectedTree']==v['independentCleanApplyTree']and sha(Path(v['patch']).read_bytes())==v['sha256']
+for line in(packet/'SHA256SUMS').read_text().splitlines():expected,path=line.split('  ',1);assert sha((packet/path).read_bytes())==expected,path
+for v in json.loads((packet/'artifact-provenance.json').read_text()):
+ source=(r/v['source']).read_bytes();artifact=(packet/v['artifact']).read_bytes();assert sha(source)==v['sourceSha256'];assert sha(artifact)==v['artifactSha256'];assert(gzip.decompress(artifact)if v['artifact'].endswith('.gz')else artifact)==source
+changed=set(m['runtimeFilesChanged'])
+for path,expected in start['runtimeFiles'].items():
+ if path not in changed:assert sha((repo/path).read_bytes())==expected,path
+for path,h in json.loads((r/'applied-candidate.json').read_text()).items():assert sha((repo/path).read_bytes())==h,path
+for name in ['completed.md','decisions.md','performance.md']:assert(repo/'docs'/name).read_bytes().startswith((r/'before/docs'/name).read_bytes())
+for name,work in [('patch28-index.git',repo),('verify28-index.git',r/'clean-apply28'),('verify01-28-index.git',r/'clean-apply01-28')]:
+ actual=subprocess.check_output(['git','-C',str(work),'--git-dir='+str(r/name),'--work-tree='+str(work),'write-tree'],env=env,text=True).strip();assert actual==m['expectedCumulativeTree28']
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index').read_bytes())==start['indexSha256'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+out={'status':'passed','tree28':m['expectedCumulativeTree28'],'patch28Sha256':m['patch28Sha256'],'direct28After27':True,'fullSequence01Through28':True,'packetFiles':sum(p.is_file()for p in packet.rglob('*')),'allProvenanceExact':True,'onlyFourReviewedProductionFilesAnd26AppendedCases':True,'allOtherBase27FilesBlobExact':True,'signedHeadAndIndexUnchangedUnstaged':True,'noNewPublication':True};(r/'patches/post-package-verification.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

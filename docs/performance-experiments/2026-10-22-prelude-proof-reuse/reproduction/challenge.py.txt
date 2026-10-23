@@ -1,0 +1,22 @@
+from pathlib import Path
+import subprocess,shutil,os,json
+r=Path(__file__).parent;s=r/'source';env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+cases=[
+ ('restore-per-request-proof','account-service/membershipLocator.ts','await reuseWorkspaceAuthorityHistory(before, issuer, reuse)','await verifyCurrentWorkspaceAuthorityWithHistory(before, issuer)','complete prelude authority is reused for independent discovery'),
+ ('remove-verifier-namespace','account-service/inboundAuthorityReuse.ts','key = cache ? `${verifierId}:${digest}` : digest;','key = digest;','proof namespaces retain two'),
+ ('leak-early-history','account-service/delivery.ts','authority: deliveryHistory ? proof : earlyAuthority','authority: proof','complete prelude proof preserves detached authority'),
+ ('omit-future-context','account-service/delivery.ts','    rows: [],\n    publisherWitness: null,','    rows: [],\n    futureAuthority: undefined,\n    publisherWitness: null,','complete prelude proof keeps future fields'),
+ ('omit-fresh-custody','account-service/inboundAuthorityReuse.ts','for (const check of previous.checks)','for (const check of [])','complete prelude proof keeps future fields'),
+ ('omit-discovery-grant-completion','account-service/membershipLocator.ts','      authorize?.();','      /* omitted completion */','warm complete discovery proof retains fresh request'),
+ ('omit-discovery-final-expiry','account-service/membershipLocator.ts',None,None,'warm complete discovery proof retains fresh request'),
+ ('omit-catalog-final-expiry','account-service/historyCheckpoint.ts','      checkHistoryExchangeLifetime(r.expiresAt, now());','      /* omitted final expiry */','warm complete catalog proof retains fresh request'),
+]
+for label,f,a,b,pat in cases:
+ d=r/('control-'+label);shutil.copytree(s,d,symlinks=True,ignore=shutil.ignore_patterns('node_modules','dist'));(d/'node_modules').symlink_to(s/'node_modules',target_is_directory=True);p=d/f;t=p.read_text()
+ if a is None:
+  start=t.index('      const at = now();',t.index('export async function discoverMembership'));end=t.index('      issuer.check',start);t=t[:start]+t[end:]
+ else:assert t.count(a)==1,(label,t.count(a));t=t.replace(a,b)
+ p.write_text(t);cmd=['node','--test','--test-reporter=spec','--test-name-pattern='+pat,'test/account-ceremony/content-transfer.test.mjs','test/account-sessions/inbound-authority-cache.test.mjs']
+ with(r/('control-'+label+'.log')).open('w')as log:v=subprocess.run(cmd,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ text=(r/('control-'+label+'.log')).read_text();assert v.returncode and ('AssertionError'in text or'ERR_ASSERTION'in text),(label,text[-2000:]);rows.append({'control':label,'detected':True,'exitCode':v.returncode,'pattern':pat});(r/'challenge.json').write_text(json.dumps({'status':'running','controls':rows},indent=2)+'\n');print(label,'detected',flush=True)
+(r/'challenge.json').write_text(json.dumps({'status':'passed','controls':rows},indent=2)+'\n')

@@ -265,7 +265,7 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "636c14763e916b7a99d7fafea65dc5fbd95cf99d5dd5f28c44ff915bd52af496"
+      "sha256": "da19dac8c23fb802f728b4f51b487aec9635a0768710d7ea7bad1dd8457f2075"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -305,7 +305,7 @@
     },
     {
       "path": "account-service/historyCheckpoint.ts",
-      "sha256": "032d45af98bebdaedbdb06d7d0e489957f4685954a962ad9f09a1e892061b224"
+      "sha256": "65e5306bdf57e592b9546b679b08e19f01a3204347d2a3ffbdcd6258e375df89"
     },
     {
       "path": "account-service/historySources.ts",
@@ -313,7 +313,7 @@
     },
     {
       "path": "account-service/inboundAuthorityReuse.ts",
-      "sha256": "8e3821eee14f15323e50b8cb4eb3dd0becd9250ffa161e1a4af7b161ea8470fe"
+      "sha256": "976d50b26b7256b56c79756b29e8b452b685594e2300f0a5781ed43daed6efa8"
     },
     {
       "path": "account-service/inboundBatch.ts",
@@ -349,7 +349,7 @@
     },
     {
       "path": "account-service/membershipLocator.ts",
-      "sha256": "81c64139cdc53f4f01e01d205c2d80ba081e39ae083e16bb355621ef6f06c0fa"
+      "sha256": "61e626136fe2896c25b7939388f689da1dc8682392d7b17e2038f07703fb8a2e"
     },
     {
       "path": "account-service/membershipStore.ts",
@@ -3617,7 +3617,7 @@
       "sites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 747
+          "line": 777
         }
       ]
     },

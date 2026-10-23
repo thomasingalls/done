@@ -48,6 +48,7 @@ import {
   selectPublisher,
   census,
   verifyCurrentWorkspaceAuthorityWithHistory,
+  reuseWorkspaceAuthorityHistory,
   type DeliveryIssuer,
   type DeliveryHook,
   type Snapshot,
@@ -216,10 +217,9 @@ export async function exchangeHistoryCheckpoint(
       let before = capture(catalogRead);
       db.exec('ROLLBACK');
       if (!before) return no('unavailable');
-      const { authority: auth, history } = await verifyCurrentWorkspaceAuthorityWithHistory(
-        before.original,
-        issuer,
-      );
+      const { authority: auth, history } = catalogRead
+        ? await reuseWorkspaceAuthorityHistory(before.original, issuer, reuse)
+        : await verifyCurrentWorkspaceAuthorityWithHistory(before.original, issuer);
       const authorities = memberships(auth, history);
       const membership = authorities.get(auth.a.tip)!,
         p = membershipState(membership);

@@ -1,0 +1,21 @@
+{
+  "status": "recorded",
+  "completedWrittenBeforeDecisionsAndPerformance": true,
+  "completedAtNs": 1792707701449929000,
+  "recordedAtNs": 1792707701457259000,
+  "heavyAcceptance": true,
+  "peerP95Seconds": [
+    3.236900146484375,
+    0.719699951171875,
+    0.74889990234375,
+    2.893900146484375
+  ],
+  "localP95Milliseconds": [
+    3.5,
+    4.199951171875,
+    4.800048828125,
+    3.5
+  ],
+  "pairedAffected17Remain": true,
+  "noPublication": true
+}

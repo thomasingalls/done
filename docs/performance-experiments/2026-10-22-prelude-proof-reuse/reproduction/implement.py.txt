@@ -1,0 +1,61 @@
+from pathlib import Path
+r=Path(__file__).parent;s=r/'source';p=s/'account-service/inboundAuthorityReuse.ts';t=p.read_text();a='''  entries: Map<string, { entry: Entry; charge: number }>;
+}''';b='''  entries: Map<string, { entry: Entry; charge: number }>;
+  verifiers: WeakMap<VerifyAuthority, number>;
+  nextVerifier: number;
+}''';assert t.count(a)==1;t=t.replace(a,b)
+a="const state: CacheState = { live: true, revision: 0, bytes: 0, entries: new Map() };";b="const state: CacheState = { live: true, revision: 0, bytes: 0, entries: new Map(), verifiers: new WeakMap(), nextVerifier: 0 };";assert t.count(a)==1;t=t.replace(a,b)
+a="    key = createHash('sha256').update(captured).digest('hex');";b="""    const digest = createHash('sha256').update(captured).digest('hex');
+    // Code identity partitions proof purposes within the same entry/byte/LRU bounds.
+    // Weak identities retain no callback after its code and bounded entries retire.
+    let verifierId = cache?.verifiers.get(verify);
+    if (cache && verifierId === undefined) {
+      verifierId = cache.nextVerifier++;
+      cache.verifiers.set(verify, verifierId);
+    }
+    key = cache ? `${verifierId}:${digest}` : digest;""";assert t.count(a)==1;p.write_text(t.replace(a,b))
+p=s/'account-service/delivery.ts';t=p.read_text();marker='/** A publisher starts at its own verified certification; it has no earlier ledger. */';assert t.count(marker)==1;insert='''// This private carrier retains the complete protocol brand through the existing copier.
+// It never escapes as early delivery authority, whose ledger dispatch omits history.
+const authenticateCompleteHeader = async (
+  s: WorkspaceAuthoritySnapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+): Promise<DeliveryAuthority> => {
+  const { authority, history } = await verifyCurrentWorkspaceAuthorityWithHistory(s, issuer);
+  return { ...authority, history };
+};
+/** Stable mathematical history only. Live ledger, request and transaction checks stay with callers. */
+export async function reuseWorkspaceAuthorityHistory(
+  s: Snapshot,
+  issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
+  reuse?: DeliveryVerification,
+): Promise<{ authority: DeliveryAuthority; history: AdmissionHistory }> {
+  if (!reuse?.authority) return verifyCurrentWorkspaceAuthorityWithHistory(s, issuer);
+  const header = workspaceAuthorityHeader(s),
+    deliveryHistory = needsMembershipHistory(header);
+  const proof = await reuseInboundAuthority(
+    undefined,
+    header,
+    issuer,
+    authenticateCompleteHeader,
+    reuse.authority,
+  );
+  const { history, ...earlyAuthority } = proof;
+  if (!history) throw Error('Missing complete authority history');
+  return { authority: deliveryHistory ? proof : earlyAuthority, history };
+}
+
+''';p.write_text(t.replace(marker,insert+marker))
+p=s/'account-service/membershipLocator.ts';t=p.read_text();a='  verifyCurrentWorkspaceAuthorityWithHistory,\n';assert t.count(a)==1;t=t.replace(a,a+'  reuseWorkspaceAuthorityHistory,\n');start=t.index('export async function discoverMembership(');body=t[start:];a='''await verifyCurrentWorkspaceAuthorityWithHistory(
+        before,
+        issuer,
+      )''';b='''await reuseWorkspaceAuthorityHistory(
+        before,
+        issuer,
+        reuse,
+      )''';assert body.count(a)==1;p.write_text(t[:start]+body.replace(a,b))
+p=s/'account-service/historyCheckpoint.ts';t=p.read_text();a='  verifyCurrentWorkspaceAuthorityWithHistory,\n';assert t.count(a)==1;t=t.replace(a,a+'  reuseWorkspaceAuthorityHistory,\n');a='''const { authority: auth, history } = await verifyCurrentWorkspaceAuthorityWithHistory(
+        before.original,
+        issuer,
+      );''';b='''const { authority: auth, history } = catalogRead
+        ? await reuseWorkspaceAuthorityHistory(before.original, issuer, reuse)
+        : await verifyCurrentWorkspaceAuthorityWithHistory(before.original, issuer);''';assert t.count(a)==1;p.write_text(t.replace(a,b));print('Complete prelude proof reuse and existing-pool verifier namespace implemented privately')

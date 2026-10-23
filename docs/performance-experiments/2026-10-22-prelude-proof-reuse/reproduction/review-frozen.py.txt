@@ -1,0 +1,15 @@
+from pathlib import Path
+import hashlib,json,os,subprocess
+r=Path(__file__).parent;s=r/'source';repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());m=json.loads((r/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for f,h in m['files'].items():assert sha(r/f)==h,f
+for key in ['candidateInputs','testFiles']:
+ for f,h in m[key].items():assert sha(s/f)==h,f
+for f,h in m['baselineInputs'].items():
+ if f.startswith('account-service/'):assert sha(r/'reference-account-service'/f.removeprefix('account-service/'))==h,f
+for f,h in m['clientFiles'].items():assert sha(s/'dist'/f)==h,f
+for f,h in start['runtimeFiles'].items():assert sha(repo/f)==h,f
+assert sha(Path('/private/tmp/done-account-fairness-20261021/private-fixture/fixture.json'))==start['privateFixtureSha256'];assert sha(Path('/Users/thomasingalls/Code/done/.git/worktrees/done8/index'))==start['indexSha256'];env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,env=env,text=True).strip()==start['head'];assert subprocess.check_output(['git','diff','--cached','--name-only'],cwd=repo,env=env)==b''
+receipts=json.loads((r/'run-receipts.json').read_text());assert [v['variant']for v in receipts]==['R','C','C','R'];assert all(v['exitCode']==0 for v in receipts)
+for v in receipts:
+ identity=json.loads((r/v['name']/'container-identity.json').read_text());mounts={x['Destination']:x['Source']for x in identity['Mounts']};native=r/'reference-account-service'if v['variant']=='R'else s/'account-service';assert mounts['/app/account-service']==str(native),mounts
+out={'status':'passed','allFourFrozenJourneysExact':True,'onlyFourReviewedNativeFilesChanged':True,'original110ClientFilesAndFull600sLabUnchanged':True,'noNativeOrClientInstrumentation':True,'exactNativeVariantMounts':True,'privateFixtureExact':True,'realRuntimeHeadAndIndexUnchangedUnstaged':True};(r/'frozen-input-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

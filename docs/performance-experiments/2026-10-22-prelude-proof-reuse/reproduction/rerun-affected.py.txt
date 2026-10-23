@@ -1,0 +1,10 @@
+from pathlib import Path
+import subprocess,os,json,re,hashlib
+r=Path(__file__).parent;s=r/'source';b=r/'reference-affected';old=json.loads(Path('/private/tmp/done-read-authority-20261022/affected-receipts.json').read_text());command=old[1]['command'];env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],'GIT_OPTIONAL_LOCKS':'0','GIT_DIR':'/Users/thomasingalls/Code/done/.git'};rows=[]
+for label,d in [('reference26',b),('candidate28',s)]:
+ with(r/(label+'-affected-corrected.log')).open('w')as log:v=subprocess.run(command,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ text=(r/(label+'-affected-corrected.log')).read_text();counts={k:int(re.search('ℹ '+k+r' (\d+)',text).group(1))for k in ['tests','pass','fail','cancelled','skipped']};failures=sorted(set(re.findall(r'^✖ (.*?) \([\d.]+ms\)',text,re.M)));rows.append({'label':label,'command':command,'cwd':str(d),'environmentCorrection':'GIT_DIR=/Users/thomasingalls/Code/done/.git; GIT_OPTIONAL_LOCKS=0, read-only historical source closure','exitCode':v.returncode,**counts,'failNames':failures});(r/'affected-corrected-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps({k:v for k,v in rows[-1].items()if k not in ['command','cwd']}),flush=True)
+assert rows[0]['failNames']==rows[1]['failNames'];assert len(rows[0]['failNames'])==17
+assert rows[0]['tests']==458 and rows[1]['tests']==484
+assert all(v['skipped']==v['cancelled']==0 for v in rows)
+(r/'affected-comparison.json').write_text(json.dumps({'status':'passed','sameExisting17Failures':True,'newFailures':[],'initialAttempt':'18 failures each, including missing read-only Git source object environment; original logs/receipts and original TAP-only parser failure retained; no initial green claim','baseline':rows[0],'candidate':rows[1]},indent=2)+'\n')

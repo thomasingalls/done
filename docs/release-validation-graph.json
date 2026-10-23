@@ -6050,7 +6050,7 @@
           "test/account-ceremony/content-transfer.test.mjs"
         ]
       },
-      "declarations": 116,
+      "declarations": 124,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -8759,7 +8759,7 @@
           "test/account-sessions/inbound-authority-cache.test.mjs"
         ]
       },
-      "declarations": 17,
+      "declarations": 21,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16601,7 +16601,7 @@
     },
     {
       "path": "test/account-ceremony/content-transfer.test.mjs",
-      "sha256": "d8bb06e0707b75bbe7a820a3939c785fe3facc3d431aa5a37cd52645dd09f783"
+      "sha256": "db394c1c45a40062c8cdb1f162736b7a4c1c5241a229cdbc52e41e11fa67aa16"
     },
     {
       "path": "test/account-ceremony/controls.test.mjs",
@@ -17897,7 +17897,7 @@
     },
     {
       "path": "test/account-sessions/inbound-authority-cache.test.mjs",
-      "sha256": "6c4e88cea4e2264410c8c0a58981bfa87b60b44368370d26942a26cd04dc36a0"
+      "sha256": "9b7caeb6631aae4bf4428720d42da8e3efff89b13ad3b6cd7674df64cef4b8b2"
     },
     {
       "path": "test/account-sessions/inbound-authority-reuse.test.mjs",

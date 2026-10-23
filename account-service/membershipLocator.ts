@@ -29,6 +29,7 @@ import { rethrowAuthorization } from './authorization.ts';
 import {
   snapshotWorkspaceAuthority,
   verifyCurrentWorkspaceAuthorityWithHistory,
+  reuseWorkspaceAuthorityHistory,
   read,
   selectPublisher,
   type WorkspaceAuthoritySnapshot,
@@ -150,10 +151,7 @@ export async function discoverMembership(
         purpose: 'membership-discovery',
       });
       if (!before) return no('unavailable');
-      const { authority, history } = await verifyCurrentWorkspaceAuthorityWithHistory(
-        before,
-        issuer,
-      );
+      const { authority, history } = await reuseWorkspaceAuthorityHistory(before, issuer, reuse);
       const auth = selectPublisher(authority, request.credentialId),
         proofs = membershipProofChain(before);
       if (history.current.head !== auth.a.head) throw Error('Discovery current head changed');

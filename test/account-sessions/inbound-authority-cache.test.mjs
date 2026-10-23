@@ -415,3 +415,97 @@ test('native core restart retires all reusable authority evidence', async (t) =>
   pageProof(await x.authority.owner.readInbound(x.f.core, q), q, x, []);
   assert.equal(offers, 2);
 });
+test('proof namespaces retain two independent verifiers for the same exact native input', async (t) => {
+  const h = await harness(t),
+    s = h.capture(),
+    value = await h.run();
+  let first = 0,
+    second = 0;
+  const a = async () => {
+      first++;
+      return value;
+    },
+    b = async () => {
+      second++;
+      return value;
+    };
+  for (let i = 0; i < 4; i++) {
+    await h.run(s, h.issuer, a);
+    await h.run(s, h.issuer, b);
+  }
+  assert.equal(first, 1);
+  assert.equal(second, 1);
+});
+test('proof namespaces keep a failed producer from evicting another producer owned proof', async (t) => {
+  const h = await harness(t),
+    s = h.capture(),
+    value = await h.run();
+  let entered,
+    release,
+    second = 0;
+  const arrived = new Promise((resolve) => {
+      entered = resolve;
+    }),
+    held = new Promise((resolve) => {
+      release = resolve;
+    });
+  const a = async () => {
+    entered();
+    await held;
+    throw Error('independent failed proof');
+  };
+  const b = async () => {
+    second++;
+    return value;
+  };
+  const waiting = assert.rejects(h.run(s, h.issuer, a), /independent failed proof/);
+  await arrived;
+  await h.run(s, h.issuer, b);
+  release();
+  await waiting;
+  await h.run(s, h.issuer, b);
+  assert.equal(second, 1);
+});
+test('proof namespaces share one global entry bound and LRU rather than multiplying capacity', async (t) => {
+  const h = await harness(t),
+    s = h.capture(),
+    value = await h.run();
+  h.cache.clear();
+  let a = 0,
+    b = 0;
+  const first = async () => {
+      a++;
+      return value;
+    },
+    second = async () => {
+      b++;
+      return value;
+    };
+  await h.run(s, h.issuer, first);
+  for (let i = 0; i < reuse.INBOUND_AUTHORITY_CACHE_ENTRIES - 1; i++)
+    await h.run({ ...s, salt: i }, h.issuer, second);
+  await h.run(s, h.issuer, first);
+  assert.equal(a, 1);
+  await h.run({ ...s, salt: reuse.INBOUND_AUTHORITY_CACHE_ENTRIES }, h.issuer, second);
+  await h.run(s, h.issuer, first);
+  assert.equal(a, 1, 'fresh first-purpose entry stays hot');
+  await h.run({ ...s, salt: 0 }, h.issuer, second);
+  assert.equal(
+    b,
+    reuse.INBOUND_AUTHORITY_CACHE_ENTRIES + 1,
+    'oldest entry is evicted across purposes',
+  );
+});
+test('complete prelude proof preserves epoch-one delivery shape and branded history', async (t) => {
+  const h = await harness(t),
+    s = { ...h.capture(), rows: [] };
+  const { reuseWorkspaceAuthorityHistory, verifyCurrentWorkspaceAuthorityWithHistory } =
+    await import('../../account-service/delivery.ts');
+  const { historyMembershipAt } = await import('../../account-protocol/admissionHistory.ts');
+  const expected = await verifyCurrentWorkspaceAuthorityWithHistory(s, h.issuer);
+  const result = await reuseWorkspaceAuthorityHistory(s, h.issuer, { authority: h.cache });
+  assert.deepEqual(result, expected);
+  assert.equal('history' in result.authority, false);
+  assert.equal(historyMembershipAt(result.history, 1).state.epoch, 1);
+  assert.throws(() => historyMembershipAt(structuredClone(result.history), 1), /Unverified/);
+});

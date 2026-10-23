@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,os,json,shutil,re
+r=Path(__file__).parent;s=r/'source';b=r/'reference-affected';shutil.copytree(r/'reference-tests',b,symlinks=True,ignore=shutil.ignore_patterns('node_modules'));(b/'node_modules').symlink_to(s/'node_modules',target_is_directory=True)
+for f in ['test/account-ceremony/content-transfer.test.mjs','test/account-sessions/inbound-authority-cache.test.mjs']:shutil.copy2(r/'before'/f,b/f)
+command=json.loads(Path('/private/tmp/done-read-authority-20261022/affected-receipts.json').read_text())[1]['command'];env={**os.environ,'PATH':'/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH']};rows=[]
+for label,d in [('reference26',b),('candidate28',s)]:
+ with(r/(label+'-affected.log')).open('w')as log:v=subprocess.run(command,cwd=d,env=env,stdout=log,stderr=subprocess.STDOUT)
+ text=(r/(label+'-affected.log')).read_text();rows.append({'label':label,'command':command,'exitCode':v.returncode,'tests':re.findall(r'# tests (\d+)',text),'pass':re.findall(r'# pass (\d+)',text),'fail':re.findall(r'# fail (\d+)',text),'failNames':re.findall(r'^not ok \d+ - (.+)$',text,re.M)});(r/'affected-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps({k:v for k,v in rows[-1].items()if k!='command'}),flush=True)
+assert rows[0]['failNames']==rows[1]['failNames'];assert len(rows[0]['failNames'])==17
+assert rows[0]['tests']==['458'] and rows[1]['tests']==['484']
+(r/'affected-comparison.json').write_text(json.dumps({'status':'passed','sameExisting17Failures':True,'newFailures':[],'baseline':rows[0],'candidate':rows[1]},indent=2)+'\n')

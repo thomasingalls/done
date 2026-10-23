@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "files": [
+    {
+      "file": "delivery.ts",
+      "allUnderlyingAstExactAfterOnlyReviewedAdapterCallsitesAndWeakVerifierNamespaceReversed": true,
+      "reviewedChanges": 2
+    },
+    {
+      "file": "membershipLocator.ts",
+      "allUnderlyingAstExactAfterOnlyReviewedAdapterCallsitesAndWeakVerifierNamespaceReversed": true,
+      "reviewedChanges": 1
+    },
+    {
+      "file": "historyCheckpoint.ts",
+      "allUnderlyingAstExactAfterOnlyReviewedAdapterCallsitesAndWeakVerifierNamespaceReversed": true,
+      "reviewedChanges": 1
+    },
+    {
+      "file": "inboundAuthorityReuse.ts",
+      "allUnderlyingAstExactAfterOnlyReviewedAdapterCallsitesAndWeakVerifierNamespaceReversed": true,
+      "reviewedChanges": 2
+    }
+  ],
+  "stableProjectionOmitsOnlyRowsAndTwoLiveWitnesses": true,
+  "noPoolStrictProducer": true,
+  "bootstrapSourceMutationsUnchanged": true,
+  "originalLiveCensusServedRequestGrantCustodyExpiryNativeOwnerVersionCommitAndRetryGuardsExact": true,
+  "oneOriginalBoundedPoolAllPurposes": true,
+  "allOldTestBytesExactPrefix": true
+}

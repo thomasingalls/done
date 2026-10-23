@@ -32,6 +32,8 @@ interface CacheState {
   revision: number;
   bytes: number;
   entries: Map<string, { entry: Entry; charge: number }>;
+  verifiers: WeakMap<VerifyAuthority, number>;
+  nextVerifier: number;
 }
 /** Core-private verified evidence; requests, grants and transaction authority are never retained. */
 export interface InboundAuthorityCache {
@@ -47,7 +49,14 @@ const remove = (cache: CacheState, key: string) => {
   cache.entries.delete(key);
 };
 export function createInboundAuthorityCache(): InboundAuthorityCache {
-  const state: CacheState = { live: true, revision: 0, bytes: 0, entries: new Map() };
+  const state: CacheState = {
+    live: true,
+    revision: 0,
+    bytes: 0,
+    entries: new Map(),
+    verifiers: new WeakMap(),
+    nextVerifier: 0,
+  };
   const owner = Object.freeze({
     clear() {
       state.revision++;
@@ -152,7 +161,15 @@ export async function reuseInboundAuthority(
       if (!state.live || (cache && !cache.live)) throw Error('Read authority owner changed');
       return authority;
     }
-    key = createHash('sha256').update(captured).digest('hex');
+    const digest = createHash('sha256').update(captured).digest('hex');
+    // Code identity partitions proof purposes within the same entry/byte/LRU bounds.
+    // Weak identities retain no callback after its code and bounded entries retire.
+    let verifierId = cache?.verifiers.get(verify);
+    if (cache && verifierId === undefined) {
+      verifierId = cache.nextVerifier++;
+      cache.verifiers.set(verify, verifierId);
+    }
+    key = cache ? `${verifierId}:${digest}` : digest;
     const cached = cache?.entries.get(key);
     const previous = cache ? cached?.entry : state.entry;
     if (previous?.context.equals(captured) && previous.verify === verify) {

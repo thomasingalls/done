@@ -1,0 +1,75 @@
+from pathlib import Path
+import json,time,math,collections
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');a=json.loads((r/'analysis.json').read_text());aff=json.loads((r/'affected-comparison.json').read_text())
+for f in ['source-review.json','challenge.json','frozen-input-review.json','metadata-review.json','process-cleanup.json','evidence-review.json','sensitivity.json']:assert json.loads((r/f).read_text())['status']=='passed',f
+assert all(v['exitCode']==0 for v in json.loads((r/'planning-receipts.json').read_text()));assert 'ℹ tests 86'in(r/'planning-tests.log').read_text()and'ℹ fail 0'in(r/'planning-tests.log').read_text();assert aff['sameExisting17Failures'];assert not(r/'record-outcome.json').exists()
+folder='2026-10-22-prelude-proof-reuse';packet=repo/'docs/performance-experiments'/folder;packet.mkdir(exist_ok=False);link='./performance-experiments/'+folder+'/README.md';passed=a['heavyFairnessAcceptance'];status='passes the original finite measured heavy-case gates'if passed else'HELD: the original heavy-case acceptance gate still fails';rows=[]
+for v in a['runs']:
+ peer=f"{v['peerObservedSubsetMs']['p95']/1000:.3f}"if v['peerSampleComplete']else'censored subset';rows.append(f"|{v['name']}|{v['localMs']['p95']:.1f}|{peer}|{v['peerKeysObserved']}/120|{'pass'if v['gates']['allBackgroundReplay600s']else'fail'}|{'pass'if v['primaryAcceptance']else'held'}|")
+peer=[v['peerObservedSubsetMs']['p95']/1000 if v['peerSampleComplete']else None for v in a['runs']];local=[v['localMs']['p95']for v in a['runs']];table='|Journey|Local p95, ms|Complete peer p95, s|Peer positions|600s replay|All primary gates|\n|---|---:|---:|---:|---|---|\n'+'\n'.join(rows)
+completed=f'''
+
+### Phase28 — reuse complete discovery/catalog proof evidence without retaining live authority
+
+**Date:** 2026-10-23 · **Commit:** sequential patch28 after27, unsigned/uncommitted · **Status:** {status}; general qualification remains paused.
+
+Discovery and catalog-read now retain complete mathematical authority/history in the existing private bounded core pool. A weak verifier-identity namespace lets complete and ordinary proofs coexist inside the same128-entry/16MiB/2MiB-context bounds and LRU. A private carrier preserves branded immutable history; the canonical native early/later dispatch strips history back out of early delivery authority. The no-pool path, bootstrap/source/other history requests and all checkpoint mutations retain their original producers. Only decision rows and the two live witnesses are outside the stable proof key. Pin, publisher, every other native/future field and immutable boundary remain. Fresh ledger/census/witness/served bytes, request/signature/role/scope/time, current grant/session/custody/completion and final owner/version/commit/four-attempt checks remain AST-exact. [Evidence]({link}).
+
+All26 added cases pass;10 genuine corrected baseline counterexamples fail on26. The79 focused cases and8 deliberate omission controls pass/detect. All old test bytes/assertions/deadlines remain exact prefixes. Affected graph TypeScript/lint and86 planning checks pass. Corrected paired affected suites458/441pass/17fail→484/467/17, identical identities, zero skips/cancellations. All883 obligation rows/339 unresolved, construction bytes and domain label/kind/path sets remain exact, with no new aggregate qualification credit. The17 failures remain a separate mandatory investigation; this is not a clean-full-suite claim.
+
+Fixed uninstrumented R26,C28,C28,R26 full600s comparison: complete peer p95 seconds{peer}; local p95 milliseconds{local}. Original110 client files and all1CPU/1GiB/zero-swap/16session64process bounds,120 trusted focused500ms inputs,16mslocal/2500mspeer/30sdelivery/600sreplay/120scontinuation gates stay unchanged. Every exercised original/pending writing, same-profile cold reopen without reinjection, retained encrypted record/whole-export, reverse/UndoRedo/isolation and independent native OpenSSL envelope/wrapper/seed/prefix guard passes. Gate outcomes are separate from operation counts and descriptive HTTP timings. This is finite local fixture evidence, not physical-phone/WAN or population validation.
+
+Preserved invalid harness prototypes: a new DB connection omitted the explicit membership opt-in; an oracle result path/count window was wrong; later authority is partly immutable; successful catalog reads retain an empty catalog; direct same-owner SQL bypassed external-change observation. Prototype logs remain and are not counterexample evidence; prototype source evolved before the corrected comparison was frozen. Corrected tests enable the connection, check the real history result, isolate native proof work from oracle/writer work, mutate a detached hit, compare retained catalog bytes and damage storage through an independent connection. The first broad disposable-source attempt additionally omitted the read-only Git object directory, producing one extra historical-source failure in both arms; its TAP-only summary parser also failed on spec output. Original logs/script/receipts remain; corrected full reruns establish the17-case comparison. No measured journey replaced or gate relaxed. Owned fixture processes stopped. No actual staging/signing/commit/push/preview8443/merge/deploy.
+'''
+p=repo/'docs/completed.md';assert p.read_bytes()==(r/'before/docs/completed.md').read_bytes();p.write_text(p.read_text()+completed);completedAt=time.time_ns()
+decision=f'''
+
+### Reuse complete history evidence through the existing bounded authority pool
+
+**Date:** 2026-10-23 · **Status:** phase28 {status}; publication and general qualification remain separate.
+
+Extend reuse to discovery and catalog-read only. Complete protocol history and ordinary delivery authority have different mathematical proof purposes, so retain distinct weak code identities in a single original bounded pool rather than replace equal-context entries or add a new budget. The private complete carrier uses the existing detached projection copier and preserves immutable protocol brands. Compute canonical needsMembershipHistory on the captured stable native header before awaiting; retain early authority.history absence and later history-bearing dispatch. No-pool consumers use the original complete producer over the original snapshot. Bootstrap/source/other reads and checkpoint mutations are unchanged.
+
+A hit is mathematical evidence only. Every native/pin/publisher/future-field and immutable boundary input still participates in exact serialized context; only rows and two live witnesses remain outside that proof. Keep fresh actual-snapshot ledger/census/witness/served coverage, independent request/signature/role/scope/expiry, current grant/session/custody/completion and final native owner/version/commit/four-attempt checks. Clear/close/revision/input/failure/custody/LRU and all shared bounds remain. Whole-module AST reversal independently checks all original guards after only the reviewed adapter/call sites/weak namespace are reversed. [Evidence]({link}).
+
+Retain the original2500ms complete-peer gate and full600s replay, all120 focused trusted inputs and finite whole-journey unit. No timing-based security window, quota increase, deadline/retry extension, native/client instrumentation or aggregate credit. Keep every prototype and broad-environment failure qualified; only corrected frozen tests establish the before/after counterexamples. Next investigate and resolve17 existing failures with coherent historical source and separate bounded repairs, then local functional full-suite checks before any push. General883/339 qualification remains paused; no new signature or publication here.
+'''
+p=repo/'docs/decisions.md';assert p.read_bytes()==(r/'before/docs/decisions.md').read_bytes();p.write_text(p.read_text()+decision)
+perf=f'''
+
+### 2026-10-23 — phase28 complete discovery/catalog proof reuse, original heavy comparison
+
+Fixed prospective R26,C28,C28,R26, original110 client files and H6/M2/Q2 histories1024/256/32,1CPU/1GiB/zero swap/16session64process. Only4 reviewed native modules change. Original120 focused trusted500ms input,16mslocal/2500mscomplete-peer/30sdelivery/600sreplay/120scontinuation gates remain. [Packet]({link}).
+
+{table}
+
+**{status}.** All exercised data/pending/cold/no-reinjection/retained-record/export/native prefix/UndoRedo/reverse/isolation checks pass. Four whole journeys, dependent keystroke positions; fixed order brackets drift but establishes no population or physical-mobile/WAN claim. HTTP timings are descriptive; no observed subset or proof count replaces complete-peer acceptance. All26 new cases and79 focused cases pass;10 corrected baseline counterexamples and8 real omission controls are sensitive. Corrected paired affected suites retain exactly17 failures and add26 passing cases; no clean-full-suite claim. General883/339 qualification paused; no publication.
+'''
+p=repo/'docs/performance.md';assert p.read_bytes()==(r/'before/docs/performance.md').read_bytes();p.write_text(p.read_text()+perf)
+(packet/'README.md').write_text(f'''# Phase28 — complete discovery/catalog proof reuse
+
+**Outcome: {status}.** Bounded development repair; all new source remains unsigned pending patch28. No release qualification, push, merge or deployment.
+
+Discovery and catalog reads reuse complete mathematical authority/history through the existing private128-entry/16MiB/2MiB context pool. Weak verifier identity separates proof purposes within the same global budget/LRU. Immutable brands survive the private carrier; mutable projections are detached and early delivery authority still omits history. Original no-pool/bootstrapping/source/other-read/mutation paths are unchanged. Stable projection omits only decision rows and two live witnesses. Pin, publisher, all other native/future fields and immutable boundaries remain exact. Fresh actual ledger/census/witness/served coverage, request/signature/roles/scope/expiry, current grant/session/custody/completion and final native owner/version/commit/four-attempt checks remain independently AST-exact.
+
+## Original acceptance comparison
+
+Whole disposable journey is the unit, not120 independent keystrokes. Fixed R26,C28,C28,R26,110 unchanged client files, H6/M2/Q2 histories1024/256/32,1CPU/1GiB/zero swap and16session64process. No native/client/crypto instrumentation; same closed HTTP observer. Every original16mslocal/2500mscomplete-peer/30sdelivery/600sreplay/120scontinuation and security/data gate remains. All4 outcomes retained; no replacement or threshold tuning.
+
+{table}
+
+All exercised original/pending writing, offline same-profile cold reopen without storage reinjection, exact retained encrypted records/whole exports, reverse/UndoRedo/isolation and independent native OpenSSL envelope/wrapper/seed/accepted-prefix checks pass. See raw journey results, analysis, independent evidence review, native audit, fault controls and frozen identities. Keystroke dependence, clock brackets and finite local scope remain explicit. This is not a final artifact/physical-phone/WAN/population or clean-full-suite claim.
+
+## Regression and challenge evidence
+
+26 appended cases pass, including epoch1/3/4 result equivalence and branded/early/later shapes, real independent committed writes, distinct proof purposes, future/native/pin/custody context, bad signatures/current grants/completion/post-sign expiry, live ledger corruption, fallback/clear/close and shared global bounds.10 corrected cases fail against exact26 runtime with the same frozen test bytes.79 focused cache/race cases pass. Eight deliberate implementation omissions are detected. Whole native AST reversal retains every original guard/call/branch after only reviewed adapter/consumer/weak-namespace changes are reversed. Every old test byte remains an exact prefix; no assertion/case/deadline removed.
+
+Corrected affected comparison:458/441pass/17fail→484/467/17, no skips/cancellations and identical failure identities. Those17 remain to be historically attributed and resolved in later bounded phases. Affected graph TypeScript/lint and86 planning checks pass. All883 obligation rows/339 unresolved, construction bytes and domain label/kind/path sets remain exact. New cases remain blocked/uncredited; generalized qualification is paused.
+
+## Preserved failures and reproduction limits
+
+The initial test prototypes failed for missing explicit connection opt-in, wrong independent oracle access/counting, immutable later raw authority, retained empty catalogs and storage damage injected through the wrong connection. Their logs remain but do not establish the intended boundary; prototype source evolved before freezing the corrected comparison. Corrected source/tests and native baseline are identity-bound, and only corrected independent before/after counterexamples receive evidentiary credit. First broad native/browser attempts had one extra Git source-closure environment failure in both arms and a TAP-only summary parser mismatch. Original logs/script/receipts are retained; corrected full reruns establish the17-case comparison. No product guards or old assertions changed to accommodate those harness mistakes.
+
+`artifact-provenance.json` and `SHA256SUMS` bind curated source, logs and all4 journeys to private originals. The known-value scan decompresses every artifact; profiles, native DBs, fixture codes and private keys remain outside the packet. It is not universal DLP. Owned containers, profiles and loopback gateway are stopped; preview8443 and production untouched. Patch28 is already represented in the cumulative checkout after27: do not reapply it there. No real stage/sign/commit/push/merge/deploy.
+''')
+(r/'record-outcome.json').write_text(json.dumps({'status':'recorded','completedWrittenBeforeDecisionsAndPerformance':True,'completedAtNs':completedAt,'recordedAtNs':time.time_ns(),'heavyAcceptance':passed,'peerP95Seconds':peer,'localP95Milliseconds':local,'pairedAffected17Remain':True,'noPublication':True},indent=2)+'\n');print(status,peer)

@@ -1,0 +1,14 @@
+{
+  "initialEightIntegrationCases": "invalid: new connection lacked explicit enableMembershipStore, so rejected first request before reuse boundary",
+  "secondPrototype": "invalid independent oracle result access and oracle crypto counted as native work",
+  "expandedPrototype": "continued raw first proof authority is partly immutable; successful catalog read persists empty catalog; direct same-owner SQL bypassed publisher-tip external-change observer",
+  "corrections": "enable required connection opt-in; check response.history; measure only native call excluding independent oracle/writer; mutate detached hit; compare preserved warm catalog bytes; inject external storage damage via independent native connection",
+  "files": [
+    "new-before.log",
+    "new-after.log",
+    "corrected-new-after.log",
+    "corrected2-new-after.log",
+    "new-expanded-after.log"
+  ],
+  "security": "no product guards or old assertions changed to accommodate prototypes"
+}
