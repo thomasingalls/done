@@ -15691,3 +15691,20 @@ confirmation defect from UX-13. The operator uses Gboard, recalls no trigger and
 suggestion taps. No physical keyboard reproduction exists, so the intermittent invisible-text report
 remains unresolved. The textarea remains native and all submissions use existing storage admission.
 No commit, preview replacement or deployment.
+
+
+### Duplicate cards into Scheduled through existing admitted creation
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch44 · **Stage:**bounded UX
+
+**Exit.** Duplicate is available in all three live sections, including locked Done. It creates a new
+independent Scheduled card on the same writable day, retaining the exact multiline source and its
+ID as provenance. Twenty positive unit counterexamples fail without the command (five rejection
+controls already pass); all25 new cases pass across five preparation modes. Full workspace admission
+passes238 with1 existing skip. Six browser journeys pass with undo/redo, independent edits and reopen.
+TypeScript, focused lint/format and an exact old-source preservation check pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) covers queued writing,
+accepted-only projection, full Next, deleted sources, execution-time freeze and durable byte replay.
+The command reuses compose rather than copying CRDT identity or using a stale UI text snapshot.
+No stored-format, credential, sync authority or publication changes. Sequential patch only.

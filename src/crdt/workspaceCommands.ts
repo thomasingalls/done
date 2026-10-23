@@ -38,6 +38,7 @@ export type TextTarget =
   | { readonly kind: 'card'; readonly id: string };
 export type WorkspaceCommand =
   | { readonly kind: 'compose'; readonly to: Ref; readonly text: string }
+  | { readonly kind: 'duplicate'; readonly id: string }
   | { readonly kind: 'move'; readonly id: string; readonly to: Ref; readonly index?: number }
   | { readonly kind: 'reorder'; readonly id: string; readonly index: number }
   | { readonly kind: 'remove'; readonly id: string }
@@ -285,6 +286,19 @@ const executeWorkspaceCommand = (
         const id = [...cardsMap(doc).keys()].find((id) => !old.has(id))!;
         value = { id };
       }
+      break;
+    }
+    case 'duplicate': {
+      const source = cardAt(doc, command.id);
+      if (!from || !source) break;
+      // Read from this admitted predecessor, including writing queued before
+      // the click. Reuse creation's freeze, identity, attribution and undo path.
+      value = compose(
+        workspace,
+        { date: from.date, section: 'scheduled' },
+        cardText(source).toString(),
+        { origin: command.id },
+      );
       break;
     }
     case 'move':

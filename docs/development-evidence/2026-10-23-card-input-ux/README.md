@@ -54,3 +54,22 @@ The tests establish composition handling, drafts across rerenders, pending/refus
 and saved-card reopen. Chromium CDP is not Gboard on a phone. UX-13 remains open; the focus repair may
 remove one overlapping symptom but no cause is asserted. Phase43 exit is recorded in completed.md.
 Active work advances to Duplicate.
+
+## Phase44 outcome
+
+The semantic command identifies the source, reads its accepted predecessor at execution and calls
+existing compose into same-day Scheduled with source ID provenance. The source is unchanged, the copy
+has a new identity/current actor, and discrete undo, freeze and storage admission are reused.
+Locked Done exposes Duplicate without exposing guarded move controls. Frozen/archived cards remain static.
+
+Twenty new positive unit counterexamples fail against patch41; five refusal controls already pass.
+Twenty-five new cases pass across reference, local-handoff, local-snapshots, account-snapshots and
+account-text preparation. Full workspace file:238 passed/1 existing named skip (239 total). Cases
+check exact multiline/trailing text, source identity, undo/redo, replay of carrier bytes, queued edits
+before duplication, no speculative publication, full Next and freeze after a queued predecessor.
+All six desktop/mobile-layout browser cases fail at the absent button on the reference, then pass
+with the repair, testing independent editing and undo/reopen. Type/lint/format pass. Removing only
+the newly added describe block reproduces the old workspace test file byte for byte.
+
+Phase44 exit recorded in completed.md. Active work advances to combined validation and inventory
+freshness. Formal release qualification remains paused; these checks do not assign new credit.

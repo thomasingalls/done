@@ -5199,3 +5199,18 @@ and export/history were mixed. The operator asked whether switching/sign-out cou
 outside settings disclosures. Keep both switch and sign-out because their remembered-login effects
 are intentionally different; explain that distinction. Group service-history maintenance with export,
 while Devices retains membership/lifecycle history. No implicit sign-out, revocation or cancellation.
+
+
+### Duplicate reads its admitted predecessor and reuses card creation
+
+**Date:**2026-10-23 · **Scope:**bounded UX patch44
+
+Choose a semantic duplicate-by-card-ID command rather than composing from the UI’s text snapshot.
+Writing queued before the click must be included when admission runs. Use the existing compose
+mechanism to create a fresh Scheduled card on the source’s current day, with the complete text,
+current actor attribution and source ID provenance. This reuses freeze, discrete undo and canonical
+registration instead of cloning CRDT identity or inventing a second creation path.
+
+Done’s unlock protects editing/moving its source; duplication does neither. No new action appears
+on frozen days, no arbitrary destination capability is added, and unfiled/missing sources refuse.
+The source’s creation timestamp/author are not copied as though a new action were historical writing.

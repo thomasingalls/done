@@ -423,6 +423,12 @@ purpose.
 | Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
 | Any collection → reordered        | Deliberate                   | Long-press then drag on touch/pen; drag or arrow keys on the reorder grip on desktop. Writable days only. |
 
+**Duplicate** on a live card in Next, Done or Scheduled creates a new Scheduled card on the
+same writable day, preserving the complete multiline Markdown and leaving the source unchanged.
+It is one undoable action with a new card identity and the source ID as item provenance. A locked
+Done card can be duplicated without unlocking because its writing and membership are unchanged.
+Creation still passes storage admission and frozen-day checks.
+
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
 
