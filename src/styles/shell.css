@@ -89,12 +89,14 @@
   .menu {
     grid-area: menu;
     inline-size: var(--menu-width);
+    max-inline-size: 100%;
+    min-inline-size: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     /* The menu is its own scroll container; horizontal swipes still close it. */
     touch-action: pan-y;
     padding: var(--space-4);
-    gap: var(--space-5);
+    gap: var(--space-2);
     border-inline-end: 1px solid var(--color-border);
   }
 
@@ -659,6 +661,11 @@
 
   /* ---- Menu contents ---------------------------------------------------- */
 
+  .menu > * {
+    flex-shrink: 0;
+    min-inline-size: 0;
+  }
+
   .menu-section {
     display: flex;
     flex-direction: column;
@@ -677,6 +684,15 @@
     border-radius: var(--radius-2);
     color: var(--color-text);
     cursor: pointer;
+  }
+
+  .menu-date-control > span {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .menu-date-control > svg {
+    flex: none;
   }
 
   .menu-date-control:hover,
@@ -709,13 +725,15 @@
     cursor: pointer;
   }
 
-  .menu-date-nav .menu-days {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .menu-date-nav {
+    margin-block-end: var(--space-2);
   }
 
   .menu-date-nav .menu-day {
+    /* Fit complete labels before distributing space; wrap when text grows. */
+    flex: 1 1 auto;
     min-block-size: 2.5rem;
+    padding-inline: var(--space-2);
   }
 
   .menu-disclosure {
@@ -747,6 +765,15 @@
     border-block-end: 1px solid currentColor;
     transform: rotate(-45deg);
     color: var(--color-text-dim);
+    flex: none;
+  }
+
+  .menu-heading {
+    min-inline-size: 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
   }
 
   .menu-disclosure[open] > summary::after {
@@ -812,6 +839,11 @@
     color: var(--color-text-dim);
   }
 
+  .menu-row > span:first-child {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
   .menu-value {
     color: var(--color-text);
     text-align: end;
@@ -830,7 +862,7 @@
 
   .menu-preference-pair {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
     gap: var(--space-3);
   }
 
@@ -862,6 +894,7 @@
 
   .menu .account-identity {
     min-inline-size: 0;
+    margin: 0;
     font-size: 0.8125rem;
   }
 
@@ -880,6 +913,7 @@
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     color: var(--color-text-dim);
+    max-inline-size: 100%;
   }
 
   .menu-day[data-current='true'] {
@@ -893,9 +927,21 @@
   }
 
   .menu-button {
+    min-inline-size: 0;
     align-self: stretch;
     text-align: start;
     line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .menu .sync-details,
+  .menu-section-content > section[aria-label='History maintenance'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-inline-size: 0;
+    font-size: 0.8125rem;
+    overflow-wrap: anywhere;
   }
 
   .actor-swatch {

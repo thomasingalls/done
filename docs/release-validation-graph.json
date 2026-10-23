@@ -10376,7 +10376,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 1,
+      "declarations": 2,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18595,7 +18595,7 @@
     },
     {
       "path": "test/geometry/sidebar-polish.spec.ts",
-      "sha256": "3e23efb4738e56ac72301356ded367ab84c6cbf1b898f92d1971c608e5d315a1"
+      "sha256": "2e187f2d8e01a2867ab44628512ee4b0a76e91d95892e016211919236ac012a0"
     },
     {
       "path": "test/geometry/sync.spec.ts",

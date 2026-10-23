@@ -15839,3 +15839,21 @@ background/suspension or performance result is claimed. Qualification remains pa
 assets/deep links and two disposable-context smoke checks; only the gateway restarted, retaining
 API PID52585/service identity/data. Patches48–52 extend immutable37–47. No real staging, commit,
 push, merge or production deployment.
+
+
+### Sidebar labels fit without clipping at narrow widths and enlarged text
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch53 · **Stage:**bounded styling
+
+**Exit.** CSS-only runtime repair lets complete day labels determine button width and wrap,
+caps the sidebar to its viewport, keeps icons/sections from shrinking, tightens collapsed
+spacing and permits long expanded control text to wrap. Eight baseline counterexamples fail;
+50 source Chromium,9 actual Firefox,18 built-frontend and10 inventory cases pass. Type/build,
+budget/origin and focused lint/format pass. Existing test assertions remain intact.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-sidebar-overflow/README.md) preserves the
+fractional-edge test correction, timing/inspection mistakes and exact source/build receipts.
+No physical mobile scaling claim or new formal qualification credit. Preview8443 serves worker
+`d541133789ab`;60 HTTPS assets/two deep links and four disposable-context smoke cases pass.
+Only the gateway restarted; API PID52585/service identity/data remain. No functional/security
+owner changes, real staging, commit, push, merge or production deployment.
