@@ -5271,3 +5271,21 @@ assertion or deadline is removed. Keep the earlier image bound to signed `d1c278
 fixture changes enter the allowlisted test context, rebuild and check the final signed source
 rather than carrying the earlier whole-context equality claim beyond its observed scope.
 Publishing, operator merges and deployment remain separate actions.
+
+
+### Keep the refreshed artifact bound to its signed build source
+
+**Date:**2026-10-23 · **Commit:**sequential patch60 · **Against:**publication procedure / patch59
+
+**Orientation.** Patch59's two fixture count corrections enter the allowlisted build context.
+A new native ARM64 artifact is therefore built and checked from clean signed d8b3f22b. The
+hosted contract, inventory and adapter steps pass that exact source; their longer unit step
+is still running in the retained snapshot.
+
+**Decision.** Preserve the new image/source identities and exact observations in the established
+repository evidence packet. This follow-up changes documentation only. Keep the image labeled
+with its actual signed build source and compare the full allowlisted context before carrying
+it across the evidence commit or application merge. Do not rebuild merely to relabel a docs-only
+head. Keep all lower package findings, earlier failed attempts, browser/server boundary limits
+and the open AMD64/generalized qualification boundaries. Operator merges, exact private image
+publication, infrastructure review and deployment remain separate.

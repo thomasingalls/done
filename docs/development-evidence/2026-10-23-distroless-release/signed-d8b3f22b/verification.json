@@ -1,0 +1,72 @@
+{
+  "status": "ARM64 artifact checks passed; publication is separate",
+  "source": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+  "tree": "fce1eea07e6fd684ac423af436c0c8fe4b766b5b",
+  "platform": "linux/arm64",
+  "image": {
+    "tag": "done-public:d8b3f22b",
+    "source": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+    "indexDigest": "sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb",
+    "runtimeManifestDigest": "sha256:d0eae2fbcb3e29fa9ecc527fe9a0abff35b66cda007f1220e6b49dc660a50210",
+    "runtimeConfigDigest": "sha256:4643ed22e7456d8d86802edcb4a77ed9d4da8587e57cee4b3176810085894da7",
+    "archiveSha256": "2983f27be0a0bedd12b08f669483e56ec8265a3608344017ee4e79514858468d",
+    "archiveBytes": 73255424,
+    "archivePath": "/private/tmp/done-pr57-arm64-d8b3f22b/candidate-image.tar",
+    "runtimeSourceFilesMatched": 122,
+    "frontendFiles": 110,
+    "platform": "linux/arm64",
+    "user": "65532:65532",
+    "entrypoint": [
+      "node",
+      "scripts/public-account.mjs"
+    ],
+    "sizeBytes": 314242787,
+    "compatibleRollback": "sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29"
+  },
+  "runtimeCases": {
+    "maintenance": 6,
+    "backup": 5,
+    "runtime-gateway": 16,
+    "restore": 6
+  },
+  "runtimePassed": 33,
+  "upgradeRollbackPassed": 1,
+  "upgradeBoundary": "Exact predecessor and candidate frontends; candidate host Node24 backend throughout, not predecessor-server rollback. Isolated Chromium contexts, not physical-device checks.",
+  "frontendManifestsUnchanged": true,
+  "tlsPassed": true,
+  "smokePassed": true,
+  "existingInfraNodeCommandsCompatible": true,
+  "scan": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 25,
+    "LOW": 8,
+    "UNKNOWN": 1
+  },
+  "priorUnitRun": {
+    "source": "e86bd26cf14e4d396aeccd6613de1be35e9ca7c4",
+    "passed": 1927,
+    "existingSkipped": 1
+  },
+  "priorBrowserRuns": {
+    "initial90": {
+      "passed": 79,
+      "failed": 11
+    },
+    "affected29": {
+      "passed": 26,
+      "failed": 3
+    },
+    "finalRemaining3": {
+      "passed": 3,
+      "failed": 0
+    },
+    "note": "All original failures have passing reruns; not a new single clean90-case run. Original failed attempts and apparatus corrections retained separately."
+  },
+  "archiveCapturedFromCleanCheckout": true,
+  "activeRecordOnlyDuringVerification": true,
+  "sourcePushed": true,
+  "published": false,
+  "deployed": false,
+  "generalizedQualificationRun": false
+}

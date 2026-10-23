@@ -1,0 +1,11 @@
+{
+  "source": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+  "testedImage": "sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb",
+  "sourceArchiveSha256": "3c2c10670b1154dfed6f10e08abc96b27d8930b5b1b7bfd617686eeced415f22",
+  "buildInputFiles": 1651,
+  "allBuildInputBytesAndExecutableModesMatchSignedArchive": true,
+  "noChangedOrUntrackedBuildInputs": true,
+  "imageRelabeled": false,
+  "bookkeepingOnly": true,
+  "imageRebuiltDuringComparison": false
+}

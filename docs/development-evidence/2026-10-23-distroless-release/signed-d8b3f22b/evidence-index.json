@@ -1,0 +1,295 @@
+{
+  "files": [
+    {
+      "path": "build-metadata.json",
+      "bytes": 2425,
+      "sha256": "ad28ede3a31a2651fa3810c37c0bdd9216ea9469cb63be680b8886c982ca2498"
+    },
+    {
+      "path": "build.log",
+      "bytes": 23323,
+      "sha256": "bf429a500554c082f390384c023db3e6d911b7bf79f28d110832c1fde0550261"
+    },
+    {
+      "path": "check-infra-final.py",
+      "bytes": 2448,
+      "sha256": "126f2936f145575d298ed42758a42c18444a6fb9137bfe2d5966003b2107f8bf"
+    },
+    {
+      "path": "check-tls.mjs",
+      "bytes": 2664,
+      "sha256": "fb484c447c52417cc1c7071484a599f101e9dd0d878e82dc66a655d207110d5b"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1125,
+      "sha256": "d9360f68dcacb56df0f791824992367372414c393637397f82d5e3c5b30b8085"
+    },
+    {
+      "path": "extract-image.log",
+      "bytes": 886,
+      "sha256": "c6be3c4ac39081602c42b24c5aab238a2e4f0758ca673397eb542ec25ca21ad4"
+    },
+    {
+      "path": "extract-image.py",
+      "bytes": 3118,
+      "sha256": "e62ca450f76743dcd28bfe23a97b4cfa3dba230add86bfdb8bf27a6e8861fe0a"
+    },
+    {
+      "path": "frontend-before.json",
+      "bytes": 17673,
+      "sha256": "3e016f6cab046e029e396c660e9a14912e9140270a5ea74838c0475ec0fa160b"
+    },
+    {
+      "path": "hosted-bookkeeping-status.json",
+      "bytes": 4969,
+      "sha256": "8d4d6d100c7800ad3bf29af9e1b74bd17190b2a6cb624f517e9cd6d5e58b12f7"
+    },
+    {
+      "path": "image.json",
+      "bytes": 886,
+      "sha256": "c6be3c4ac39081602c42b24c5aab238a2e4f0758ca673397eb542ec25ca21ad4"
+    },
+    {
+      "path": "infra-command-compatibility.json",
+      "bytes": 2870,
+      "sha256": "022d7673f7b6ca2ae302fd38f59491ab877d67ff7390feac2086fbdfb7d6999d"
+    },
+    {
+      "path": "infra-command-compatibility.log",
+      "bytes": 112,
+      "sha256": "04f73c96127cc2ea15bea4f30c0cf48743e6637b0d8b6e3c2626fa8d087e43df"
+    },
+    {
+      "path": "infra-image-pin-preparation.json",
+      "bytes": 1328,
+      "sha256": "0a80c0d61d1cbb4efc41f2773cbb4bfc01eff13ee95420a048e453de6f05c3a6"
+    },
+    {
+      "path": "infra-image-pin.patch",
+      "bytes": 724,
+      "sha256": "c705172f815c3a052e060a4f1f4c5555cb20eda1fefae06870d4150be3f5117c"
+    },
+    {
+      "path": "infra-preparation.log",
+      "bytes": 100,
+      "sha256": "0070d5931615f02ef8a60d5672e5da6d96dabe7aad58010cdc305d5e9134c51b"
+    },
+    {
+      "path": "predecessor-frontend-before.json",
+      "bytes": 15507,
+      "sha256": "9e697b6bb6846b4190ffe1b281650b005d72d5ca4bef8790bca26c9c25bfe5da"
+    },
+    {
+      "path": "prepare-infra.py",
+      "bytes": 2846,
+      "sha256": "7600ec738b3382a6bedd1e5afcda6e8ac48dc4462ef986b94a4a987d94600c83"
+    },
+    {
+      "path": "prepare-source.py",
+      "bytes": 2512,
+      "sha256": "cda3eb6d1ca9fabeaa9b6ce891616adaea8127c0a8b040d0b248d2be0f700352"
+    },
+    {
+      "path": "prepare-tests.py",
+      "bytes": 1229,
+      "sha256": "cd0f901d33c59b567376d370605556ca50e034d442b4f06c5ffce761d6175edb"
+    },
+    {
+      "path": "prepare-upgrade.log",
+      "bytes": 128,
+      "sha256": "eccda367d167fb5aefd4bf9d79a7f9051e8ddb499be2fee4b35016e83eedab6a"
+    },
+    {
+      "path": "prepare-upgrade.py",
+      "bytes": 3689,
+      "sha256": "57e9e3640c6f90c28faccf4c8bc4d12bc45354d7d8abc885cdade7019345b85c"
+    },
+    {
+      "path": "publication-upgrade.spec.ts.txt",
+      "bytes": 6405,
+      "sha256": "b9784c5fd2552cf7bbae3ce2ab2958fc6f1b3fc91a0e46201da0ea2c2910672d"
+    },
+    {
+      "path": "repo-checks/check-aad-coverage.mjs.json",
+      "bytes": 435,
+      "sha256": "e02295d5710bc7f1f46786c4265c771b1c1fc33710f811780d013914554643f1"
+    },
+    {
+      "path": "repo-checks/check-authority-map.mjs.json",
+      "bytes": 436,
+      "sha256": "cb5eeed62293c81e957f7e136f90dc75e63a48ba59a897130bf39c796e4e92e0"
+    },
+    {
+      "path": "repo-checks/check-debts.mjs.json",
+      "bytes": 445,
+      "sha256": "249c92c0dd7036beffd541eb9a5ec945c4ee43c3f7c4893284fe5db81334d896"
+    },
+    {
+      "path": "repo-checks/check-origin-isolation.mjs.json",
+      "bytes": 439,
+      "sha256": "445e500bb9f482dae4dbf8679c3d5edf8ab19e03c3fa2dcb4d327188ddd0bfb3"
+    },
+    {
+      "path": "repo-checks/check-recipient-authority.mjs.json",
+      "bytes": 442,
+      "sha256": "6a84d915d12b5c3653ced55635057cebcb467cd8c5a9869b99a8664c1413d331"
+    },
+    {
+      "path": "repo-checks/check-retention.mjs.json",
+      "bytes": 432,
+      "sha256": "dfc8f6009dd7be3c3c09ab5c968045e4e991eb12fe56484f4b615011e70e9b4b"
+    },
+    {
+      "path": "repo-checks/check-selection-status.mjs.json",
+      "bytes": 439,
+      "sha256": "ecf2ba21f0d66dc8675eaf0ddf2baff0b1de4455c7bcfcb0feb8a3f9e39c3400"
+    },
+    {
+      "path": "repo-checks/check-traceability.mjs.json",
+      "bytes": 452,
+      "sha256": "c4b4750e128e7316d74715a125a374319e1203ba13367556cdb73edd3387f5cf"
+    },
+    {
+      "path": "repo-checks/check-update-limit.mjs.json",
+      "bytes": 435,
+      "sha256": "61da60fe823b623ae3741140c4219301db3e76c00a580f6e73e77b09bfef9070"
+    },
+    {
+      "path": "repo-checks/check-wasm-seal.mjs.json",
+      "bytes": 432,
+      "sha256": "074cb1656fba332346339fadab062c926d6d367726b27a6da898b52a2f508d0e"
+    },
+    {
+      "path": "repo-checks/check-write-admission.mjs.json",
+      "bytes": 438,
+      "sha256": "2c0ecd923213ea559f6d170e601837ce0fd2f59d9564eeb9e81bc6940734390a"
+    },
+    {
+      "path": "repo-checks/contract-step.json",
+      "bytes": 1576,
+      "sha256": "6c7242fd83501bb4fe377210b0f20dbdb6d79d7146c6f3ab67718d6dd3afb933"
+    },
+    {
+      "path": "repo-checks/remediation-status.mjs.json",
+      "bytes": 452,
+      "sha256": "7b723c7660f890f5d0b6c9ea891802527b6c69b71ffc1674a06202a1193d873e"
+    },
+    {
+      "path": "repo-checks/trace-signed.log",
+      "bytes": 270,
+      "sha256": "d383bf4b1f1f39785b6e3a334555c9f3dd19ac99237a5eb70454af52df61792b"
+    },
+    {
+      "path": "run-offline-scan.py",
+      "bytes": 1197,
+      "sha256": "31388a8fe5b8747feca77f25331c206c474df0fd99e13da849e6e6a1f316c95c"
+    },
+    {
+      "path": "runtime-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-final/backup.tap",
+      "bytes": 2478,
+      "sha256": "c559996f228a480f8f304590ef893849c04d48a1d2c84c0def4b8bcb3a473b03"
+    },
+    {
+      "path": "runtime-final/maintenance.tap",
+      "bytes": 2243,
+      "sha256": "adae8ca3053396c812c69ee5d719fc411ff9d3ab4f4a408a9a3c722c05408bfc"
+    },
+    {
+      "path": "runtime-final/restore.tap",
+      "bytes": 2080,
+      "sha256": "17587228e5e32af430055fd0c108bdf36fded3d84d082dec2256e3972762efb5"
+    },
+    {
+      "path": "runtime-final/runtime-gateway.tap",
+      "bytes": 4991,
+      "sha256": "8e52e50db89212552a706576c87884b621f56e06843bc19aa4f7c00ded82d72e"
+    },
+    {
+      "path": "runtime-final/runtime-image-check.json",
+      "bytes": 2709,
+      "sha256": "7abdd3d8c5de5f54564449915f1e606947a18f54c6a99789c6ad6288a486329e"
+    },
+    {
+      "path": "runtime-source-files.json",
+      "bytes": 19312,
+      "sha256": "94497b7d40579049a536ee1177d359f9adacbf8b1a72ab899c4078fa08a50d1c"
+    },
+    {
+      "path": "scan.log",
+      "bytes": 607,
+      "sha256": "193ae481abe0a692175d7917f535a39f96f3069e8a669b1b8a993d8fdc90568f"
+    },
+    {
+      "path": "scanner-command.json",
+      "bytes": 990,
+      "sha256": "04b54daeb09591e43e44ab09a2b861fb81b071edcc192ded40c106d5e0d5f7c8"
+    },
+    {
+      "path": "scanner-database.json",
+      "bytes": 379,
+      "sha256": "9de32974aade4ab044550870e113ae8b1822b94c1d3e90a123812bc503b92628"
+    },
+    {
+      "path": "smoke.log",
+      "bytes": 741,
+      "sha256": "17f2e4fe8dc07678f50061e005942a04f46e7c78028d81fd4968fb6f039cbb47"
+    },
+    {
+      "path": "source-prepare.log",
+      "bytes": 3434,
+      "sha256": "0b5ebc61378ca7e1b97fd9f8da708c6e65937b6c38a8ae7963c4d4041d13d310"
+    },
+    {
+      "path": "source.json",
+      "bytes": 3434,
+      "sha256": "0b5ebc61378ca7e1b97fd9f8da708c6e65937b6c38a8ae7963c4d4041d13d310"
+    },
+    {
+      "path": "tls.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tls/tls-check.json",
+      "bytes": 201,
+      "sha256": "616e9fa74a2d64e525ac43fe8e7b290302c102beaa75dcaaa9399e8ea94d6efe"
+    },
+    {
+      "path": "upgrade-apparatus.json",
+      "bytes": 992,
+      "sha256": "4ce4f6710a72a03050e8704bdd1d6e5df2c88a310ed49d888b4590a471bd0ba3"
+    },
+    {
+      "path": "upgrade-results.json",
+      "bytes": 3221,
+      "sha256": "ed3f9531d241e0ec40b3cb073ef488ddde1b53d21348e45e11cdfd48613e2051"
+    },
+    {
+      "path": "upgrade.log",
+      "bytes": 408,
+      "sha256": "260262d96e9467e4cc1b29313bbcc6c01f6f3992983cac1dee9ec3e70e5ce556"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 2452,
+      "sha256": "d3b386bdddb9dfe8a5a75279813b4692dc4321511b445974c3b5c69600de3a69"
+    },
+    {
+      "path": "verify-and-retain.py",
+      "bytes": 6961,
+      "sha256": "15b1e50cb066a04cece924a2999979ad474432e29a15942b7f8ba9dd33687c9f"
+    },
+    {
+      "path": "vulnerabilities.json",
+      "bytes": 281650,
+      "sha256": "1e7373b198ce343506161892a5ea5741f8c4a6e8d9dab73cc93ad4640eeedbe6"
+    }
+  ],
+  "excluded": "Image/source tar archives remain local. No private keys, service databases, browser profiles or dependency trees are retained in the evidence zip."
+}

@@ -1,0 +1,15 @@
+--- a/infra/apps/done/components/runtime/kustomization.yaml
++++ b/infra/apps/done/components/runtime/kustomization.yaml
+@@ -1,10 +1,10 @@
+-# Published signed source 51d8550d; exact tested ARM64 index verified 2026-10-23.
++# Signed source d8b3f22b; exact tested ARM64 index verified 2026-10-23.
+ # Preserve source, PVC, identity, credentials and routes; operator merge/rollout is separate.
+ apiVersion: kustomize.config.k8s.io/v1alpha1
+ kind: Component
+ images:
+   - name: ghcr.io/thomasingalls/done
+-    digest: sha256:d16c39c27528d8a541a1a8bb35d7081c384c8c9a6f75d89cca80ea74aa80cb29
++    digest: sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb
+ configMapGenerator:
+   - name: done-public
+     envs:

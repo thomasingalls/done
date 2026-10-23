@@ -5,7 +5,15 @@ preparation work. Optional tool storage does not replace the repository's runtim
 journals, execution receipts or publication procedure. The original artifacts below are preserved
 byte-for-byte, including unsuccessful attempts and their limitations.
 
-## Artifact and scope
+## Current candidate
+
+The refreshed [signed d8b3f22b candidate](signed-d8b3f22b/README.md) completes the rebuild required
+by patch59. Its33 final-image cases, restart smoke, TLS and predecessor/candidate rehearsal pass;
+the offline package scan retains0 critical/0 high with all lower findings recorded. The hosted
+contract, inventory and adapter steps also pass. That packet owns the current image identity and
+unapplied infrastructure pin. It grants no generalized qualification or deployment credit.
+
+## Historical d1c2784b artifact and scope
 
 The tested source is signed `d1c2784bef0ccc3ea88d99dfd82f1db3a83af384`; the local image is
 `done-public:d1c2784b`, linux/arm64. [Image metadata](final-artifact/image.json) is the canonical
@@ -22,11 +30,11 @@ contains those changes plus the earlier editor/sidebar UX work.
 The initial bookkeeping delta changed no allowlisted Docker build input. The wider checks then
 found two stale release-adapter count fixtures. Their three literal corrections also enter the
 allowlisted test context, so the original1651-file context-equality observation is only a preliminary
-result. The original image remains bound to d1c2784b, not relabeled as a newer tested source. Final
-release preparation needs a signed-source rebuild and exact-image checks after the fixture repairs.
+result. The original image remains bound to d1c2784b, not relabeled as a newer tested source. The
+required signed-source rebuild and exact-image checks are now retained in the current candidate packet.
 The rollback target remains the retained51d8550d image identified in image.json.
 
-## Observations retained
+## Historical observations retained
 
 - All33 cases inside the final image pass at their original deadlines:16 runtime/gateway,
   5 backup,6 restore and6 maintenance. Non-root ownership, SQLite/native workers, actual age child
@@ -108,8 +116,10 @@ into a passing one.
 
 The operator retains both merge buttons. After the application merge, verify merged build inputs
 against the tested source, publish the exact tested image to the intended private package, verify
-remote index/runtime digests and authenticated pull, then prepare the infrastructure PR. Its
-[unapplied pin patch](final-artifact/infra-image-pin.patch) and [preparation receipt](final-artifact/infra-image-pin-preparation.json)
-are local-base preparation, not a claim about a refreshed remote base or a live cluster.
+remote index/runtime digests and authenticated pull, then prepare the infrastructure PR. The
+[current unapplied pin patch](signed-d8b3f22b/infra-image-pin.patch) and
+[preparation receipt](signed-d8b3f22b/infra-image-pin-preparation.json)
+are local-base preparation, not a claim about a refreshed remote base or a live cluster. The original
+d1c2784b pin remains unchanged as historical evidence.
 Reconciliation, rollout checks and cached-client adoption follow later. No image publication,
 infrastructure change, merge or deployment is performed by this bookkeeping repair.

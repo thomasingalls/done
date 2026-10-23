@@ -15997,3 +15997,33 @@ transcript excerpts are retained without claiming complete original stdout.
 files enter the allowlisted Docker context, so release preparation requires a fresh signed-source
 build and exact-image checks. No image was relabeled, published or deployed; operator merges and
 production rollout remain separate. This closes only this seat's bookkeeping slice.
+
+
+### Refreshed signed ARM64 artifact after repository bookkeeping repair
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch60 · **Stage:**bounded release preparation
+
+**Exit.** Clean signed source d8b3f22b builds a fresh native ARM64 distroless image. All122 runtime
+source files match the signed archive. All33 final-image cases pass at their existing deadlines,
+including gateway draining, backup/restore/maintenance, six old/new age round trips and12 wrong-key/
+tamper refusals. Uninstrumented container restart/identity/session/precache smoke, default/explicit
+TLS controls and production Node command compatibility pass. The exact51d8550d→candidate→old→new
+frontend rehearsal passes protected original/joined profiles, queued/offline writing, wrong-code
+refusal, undo/redo and two-way delivery. Both frontend populations and bytes remain unchanged.
+
+**Bookkeeping.** Patch59 is signed and pushed as d8b3f22b. Hosted run39992803591 passes the formerly
+failing contract step plus complete inventory and adapters for that source; its longer unit step
+is still running in the retained snapshot. Twelve genuine passing receipts against the clean signed
+tree are retained. [Repository evidence](development-evidence/2026-10-23-distroless-release/signed-d8b3f22b/README.md)
+contains exact image/source identities, reports, reproduction material and independently verified
+archive/copy indexes. This follow-up changes documentation only; image labels retain d8b3f22b,
+with full allowlisted-input equality checked before carry-forward and after signing.
+
+**Limits.** The same pinned offline scanner/database reports0 critical/0 high/25 medium/8 low/
+1 unknown without suppressions. This is not an exhaustive security proof. The browser rehearsal
+uses candidate host Node24 services throughout, not predecessor-server rollback or physical-device
+observation. Earlier failed runs and the open AMD64 boundary remain. No old test, assertion,
+deadline, source census classification or security guarantee changes. Generalized qualification
+stays paused/blocked at892 obligations/348 unresolved. An independently checked infrastructure
+pin patch is retained unapplied against the local base; no image publication, infrastructure
+mutation, merge or deployment. Other seat's progress document remains intact.
