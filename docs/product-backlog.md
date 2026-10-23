@@ -61,6 +61,19 @@ get a bounded scope and evidence before implementation. General release qualific
   do the work; automatic recurring tasks or AI-selected priorities are not the solution requested here.
   This is a design problem to explore, not a selected lens or implementation.
 
+- **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
+  sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
+  focus request, reopening the editor and stealing later input. Regression checks cover outside
+  click and action Tab navigation. This explains one path, not every possible focus defect.
+- **UX-13 — Intermittent invisible mobile quick entry.** Android with Gboard: the Today add-item
+  field sometimes shows no text and Add stays disabled while keyboard suggestions follow typing.
+  The operator does not recall a reliable trigger; suggestion taps have also worked normally.
+  Track separately from UX-12 and from IME-confirmation handling. Do not infer a physical-phone
+  repair from synthetic events or a Chromium mobile user agent.
+- **UX-14 — Duplicate cards to Scheduled.** Add a Duplicate control in Next, Done and Scheduled,
+  retaining the source and copying its whole multiline body into a new Scheduled card. Preserve
+  writable-day and durability rules; do not turn duplication into movement out of Done.
+
 ## Earlier conversation items retained
 
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this

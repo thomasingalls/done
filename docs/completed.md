@@ -15659,3 +15659,18 @@ failed fixture/HMR/census/snapshot-review attempts and their corrections. Histor
 optional-baseline navigation is source-reviewed, not a claim those whole campaigns ran. Phone deletion
 pauses remain. Five exact sequential patches37–41 are prepared, already represented in the cumulative
 checkout, with no real Git staging/commit/push/preview update/deployment or qualification resumption.
+
+
+### Automatically focused cards release outside focus
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch42 · **Stage:**bounded UX
+
+**Exit.** Outside blur clears the collection’s split/merge focus request. Eight browser counterexamples
+fail on cumulative patch41; the repaired combined card/task run passes24 with2 existing platform skips.
+Internal action focus remains unlocked; outside click/Tab stay outside while further writing is entered,
+and accepted writing survives reopen. TypeScript, focused lint and card-command unit checks pass.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-card-input-ux/README.md) records the exact baseline,
+invalid first build metadata and a candidate port-conflict attempt. This establishes a reproducible trap,
+not the cause of every unknown modifier sequence or the intermittent physical Gboard report. No storage,
+protocol, credentials or frozen/Done policy changes. Preview8443 remains on patches37–41. No commit/deploy.

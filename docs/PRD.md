@@ -654,7 +654,8 @@ Inside a card, **Enter finishes editing and focuses that same static card**; a s
 at the preceding caret. Shift-Enter adds a plain newline. **Three consecutive Shift-Enters split into a
 new card**, retaining the existing split behavior on the explicit multiline gesture. Goals retains list
 continuation on Enter. Escape also returns focus to the static card. Completion does not move writing or
-change its Done guard, frozen-day rules, storage admission or undo history.
+change its Done guard, frozen-day rules, storage admission or undo history. Outside focus movement consumes any split/merge focus
+request, so leaving by mouse or Tab cannot reopen the editor or reclaim focus.
 
 **TRD.** TRD §5 (editor).
 

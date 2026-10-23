@@ -142,6 +142,9 @@ export const Card = ({
           parent.closest('.card')?.contains(event.relatedTarget)
         )
           return;
+        // A split/merge request is consumed when focus leaves, just as it is
+        // for Enter/Escape. Otherwise the parent's request reopens this editor.
+        latestHooks.current.leave();
         setEditing(false);
       }),
     ]);
@@ -347,8 +350,10 @@ export const Card = ({
           !(
             event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)
           )
-        )
+        ) {
+          latestHooks.current.leave();
           setEditing(false);
+        }
       }}
       data-reordering={reorder?.dragging === true}
       style={
