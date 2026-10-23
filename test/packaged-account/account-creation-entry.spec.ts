@@ -148,6 +148,7 @@ test('direct sync entry returns an automatic Local list to protection without as
     await expect(page.locator('input[type=password]')).toHaveCount(0);
     await page.getByRole('button', { name: 'Back to local workspace', exact: true }).click();
     await expect(page.locator('.shell')).toContainText('Keep this automatic list');
+    await openMenuSection(page, 'Account');
     await expect(
       page.getByRole('button', { name: 'Add an unlock code', exact: true }),
     ).toBeVisible();

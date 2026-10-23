@@ -15907,3 +15907,15 @@ required. Exploratory image/source identities, full scans, all failed attempts a
 are retained in Codex Security's standalone `done` collection under `artifacts/55-distroless`.
 Patch54 is preserved; patch55 is a separate sequential source patch. No signing, push, merge,
 preview update or deployment. Generalized release qualification remains paused/blocked.
+
+### Release browser fixtures follow collapsed Account and concurrent progress statuses
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch56 · **Stage:**bounded fixture repair
+
+**Exit.** The direct Local-to-sync entry test now opens the collapsed Account section before
+checking Add an unlock code. Cancellation checks select the existing cancellation status while
+the progress indicator can also expose a status role. Both affected journeys pass against the
+unchanged signed e86bd26c frontend and server on isolated test ports53225/53226 (2/2). All
+existing assertions, cases and deadlines remain; no runtime or authority change. The first
+full packaged run's stale-fixture failures and separate gateway teardown failures are retained
+in the managed signed-UX-image evidence. Planning inventory is refreshed without release credit.

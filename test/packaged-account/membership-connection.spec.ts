@@ -196,13 +196,17 @@ test('pending connection cancellation recovers after losing its reply and reopen
     expect(lost).toBe(true);
     await third.reload();
     await unlock(third, next.code);
-    await expect(third.getByRole('status')).toContainText('The connection was cancelled.', {
+    await expect(
+      third.getByRole('status').filter({ hasText: 'The connection was cancelled.' }),
+    ).toContainText('The connection was cancelled.', {
       timeout: 15000,
     });
     await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toHaveCount(
       0,
     );
-    await expect(pair.second.getByRole('status')).toContainText('The connection was cancelled.', {
+    await expect(
+      pair.second.getByRole('status').filter({ hasText: 'The connection was cancelled.' }),
+    ).toContainText('The connection was cancelled.', {
       timeout: 20000,
     });
     await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
