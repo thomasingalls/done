@@ -15602,3 +15602,17 @@ restored cases plus the 2 corrected task cases); 44 unit cases, TypeScript and f
 and the sandbox launch refusal. New storage-refusal cases preserve accepted-only projection and one
 undoable change. Phone deletion stalls are recorded, not repaired. No protocol/storage format/security
 policy or deployment changes. This phase is prepared as a sequential patch, not committed.
+
+
+### Card completion preserves focus and multiline splitting
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch38 · **Stage:**bounded UX
+
+**Exit.** Enter/Escape return to the same static card, and Enter reopens at the preceding caret.
+Shift-Enter adds a newline; three Shift-Enters retain split. Four baseline counterexamples fail.
+Affected browser suites22 pass with2 existing named skips;37 unit cases, TypeScript and focused lint
+pass. Existing split/merge assertions remain, with only the new split modifier and one completion case.
+
+**Notes.** [Evidence](development-evidence/2026-10-23-editor-sidebar-ux/README.md) records Android synthesis
+and the corrected Mac hardware fixtures plus separate Android Enter coverage. Done/frozen guards,
+admission and shared undo remain. No commit, preview update, publication or qualification advancement.

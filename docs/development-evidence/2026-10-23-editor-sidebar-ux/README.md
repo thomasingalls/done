@@ -36,3 +36,17 @@ to raw Markdown; the third mistook an empty editor placeholder for saved writing
 raw Markdown for exact state and exercise the actual off-cursor checkbox click. All failed logs remain.
 The repaired writing path does not permit arbitrary CodeMirror transactions. The task semantic command
 remains for checkbox clicks, while Cmd/Ctrl-Enter is explicitly consumed to suppress default fallback.
+
+## Phase38 — card completion and focus
+
+Enter and Escape finish editing, restoring focus to the same static card; a second Enter reopens at
+its preceding caret. Shift-Enter inserts a plain admitted newline; three Shift-Enters retain splitting.
+All four directed card checks fail on the signed baseline. Final affected browser suites:22 pass,
+2 existing named Android keyboard-grip skips, with no new skips. These cover all three card collections,
+reopening/undo, split-tail/automatic focus and ordinary Android-UA Enter completion, plus existing
+15-construct geometry, guard, cap, quick-entry and reorder assertions. Affected unit suites37 pass;
+TypeScript/focused lint pass. Initial TypeScript caught an optional caret assigned to a nullable ref;
+the corrected type is explicit. Initial new Mac hardware tests used Android UA, whose CodeMirror path
+synthesizes unmodified Enter and therefore closes on Shift-Enter. The corrected hardware group uses a
+Mac UA/platform in both layout projects, as the established keyboard suite does, while a separate test
+keeps genuine Android-UA unmodified Enter coverage. This is not a physical phone/keyboard claim.

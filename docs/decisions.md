@@ -5174,3 +5174,15 @@ by the admitted editor, while Cmd-Enter unexpectedly toggled tasks.
 accept arbitrary extension document transactions to make shortcuts work. Explicitly consume Cmd/Ctrl-Enter
 so disabling task toggle cannot expose the default blank-line command. Keep click-to-toggle and its
 semantic command. Mobile pauses remain a separate profiling task.
+
+
+### Card Enter returns focus to the same card
+
+**Date:**2026-10-23 · **Commit:**pending sequential patch38 · **Against:**PRD §4.8 / TRD §5.4
+
+**Orientation.** The operator wants Enter to finish card editing and Shift-Enter to allow multiline text.
+They explicitly retain the old split behavior on three Shift-Enters.
+
+**Decision.** Completion focuses that card's static surface and retains its caret for deliberate Enter
+reopening. Pointer blur continues to respect its actual destination. A held Enter cannot repeatedly
+reopen a newly completed card. Goals Enter/list behavior and admitted mutation/undo semantics stay.

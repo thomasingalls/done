@@ -11,7 +11,7 @@ import { type Extension } from '@codemirror/state';
 import { type Command, EditorView, keymap } from '@codemirror/view';
 
 /**
- * PRD §10: "three consecutive returns splits into a new card. Three is a
+ * PRD §10: "three consecutive Shift-Enters split into a new card. Three is a
  * starting guess — likely too undiscoverable, and expected to drop to two or
  * one once the interaction proves out. It is a tunable, not a decision."
  *
@@ -82,7 +82,8 @@ const leave =
  */
 export const cardKeymap = (hooks: CardHooks): Extension =>
   keymap.of([
-    { key: 'Enter', run: splitOnReturns(hooks) },
+    { key: 'Enter', run: leave(hooks) },
+    { key: 'Shift-Enter', run: splitOnReturns(hooks) },
     { key: 'Backspace', run: mergeAtStart(hooks) },
     { key: 'Escape', run: leave(hooks) },
   ]);

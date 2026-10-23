@@ -650,9 +650,11 @@ Behaviors that matter disproportionately: list continuation on Enter in Goals, `
 On macOS, Option-Backspace deletes the preceding word or selection. Cmd/Ctrl-Enter does not toggle
 checkboxes or insert a blank line. Shift-Enter inserts an admitted plain newline.
 
-Inside a card, **three consecutive returns splits into a new card.** Three is a starting guess — likely too
-undiscoverable, and expected to drop to two or one once the interaction proves out. It is a tunable, not a
-decision (§11).
+Inside a card, **Enter finishes editing and focuses that same static card**; a second Enter reopens it
+at the preceding caret. Shift-Enter adds a plain newline. **Three consecutive Shift-Enters split into a
+new card**, retaining the existing split behavior on the explicit multiline gesture. Goals retains list
+continuation on Enter. Escape also returns focus to the static card. Completion does not move writing or
+change its Done guard, frozen-day rules, storage admission or undo history.
 
 **TRD.** TRD §5 (editor).
 
