@@ -5327,3 +5327,21 @@ composition/admission obligations. Current Android composition can begin by plac
 so disabling controls for every composition is not automatically usable. A real-keyboard exploratory
 slice should choose safe command ordering before implementation, separately from paused release
 qualification. [Report](./product-design/2026-10-23-goals-context/mobile-formatting.md).
+
+
+## 2026-10-23 — Keep scanning assistance inside the formatted editor
+
+**Commit:** pending sequential design patch64. **Orientation:** browser review approved only card
+breadcrumb placement, rejected incidental card styling, and clarified that Goals must retain its
+formatted live-preview editing behavior without an outliner or separate scan mode. Nearby controls
+added clicks/clutter; existing footer controls may already be better on phones.
+
+**Decision:** supersede the earlier visual recommendations with one fictional editable CodeMirror
+study using existing rendering/theme/command/CSS modules. Compare gentle context color, per-crumb
+menus, experimental scroll-opening and a reading rail without selecting one for app implementation.
+Preserve existing card styling and footer placement; retain desktop shortcuts and context-based
+return to Goals as separate candidates. No new binding, metadata format or return command is selected.
+
+**Tradeoff:** a real editor makes caret reveal/geometry visible, while its memory-only writes establish
+no app admission/IME/persistence guarantee. Longest-prefix return matching also needs an insertion
+contract: subtree-end append can misfile text under the last child. [Revision](./product-design/2026-10-23-goals-context/editor-study.md).

@@ -1,0 +1,114 @@
+{
+  "docs/product-design/2026-10-23-goals-context/editor-study.ts": {
+    "sha256": "cc848f9b4cdeaa815c0610c062a9adcd7badec0dd49e6771ea1a223a31403fe3",
+    "bytes": 26492
+  },
+  "node_modules/@codemirror/autocomplete/dist/index.js": {
+    "sha256": "2796fb2771a559ee9fbaa65367b96105368dd9ded1bb686df0e005be48801dcd",
+    "bytes": 90042
+  },
+  "node_modules/@codemirror/commands/dist/index.js": {
+    "sha256": "cf6df20d2748f4ad3502b2df3d045233dfd1444e74f5441faee609e7b5516ef1",
+    "bytes": 83936
+  },
+  "node_modules/@codemirror/lang-css/dist/index.js": {
+    "sha256": "0a7e271ad65f99f43f34a7169acf67ec3ad016f4c7818904b3e34a5c89f40916",
+    "bytes": 15969
+  },
+  "node_modules/@codemirror/lang-html/dist/index.js": {
+    "sha256": "582d49f270a748976abee0de7baca9c963209f8a5c961126de0ad18f9c29b258",
+    "bytes": 25938
+  },
+  "node_modules/@codemirror/lang-javascript/dist/index.js": {
+    "sha256": "3f6f84c3139a3e2601e2c81c9b26f80e5bcc4ba2da4e493303c74d948a327400",
+    "bytes": 20788
+  },
+  "node_modules/@codemirror/lang-markdown/dist/index.js": {
+    "sha256": "9089574c34f0a1497c92f2747a5387ae89fdc8e4ce131d6c440d07b3cf666121",
+    "bytes": 21605
+  },
+  "node_modules/@codemirror/language/dist/index.js": {
+    "sha256": "875ce988fbbed53c47cf4b2aad962afe1d6b23c15ecc40466cdc6be5b59d647e",
+    "bytes": 102129
+  },
+  "node_modules/@codemirror/state/dist/index.js": {
+    "sha256": "dd5fe354220f9fde94c1449fad2aec0ec3d56be3da949a85df8ca4d84af92866",
+    "bytes": 145680
+  },
+  "node_modules/@codemirror/view/dist/index.js": {
+    "sha256": "e4d91dc2e5a3c68e0b1f2b96bd4f458b85ed830c2b1bb573cd6a30f28b1c5a79",
+    "bytes": 490606
+  },
+  "node_modules/@lezer/common/dist/index.js": {
+    "sha256": "dab441db7948aae93b8a210d30a0481125bcb8943b129a8c5ebec1354a029e8d",
+    "bytes": 83319
+  },
+  "node_modules/@lezer/css/dist/index.js": {
+    "sha256": "3dae18cb268de99e0a5d9e98c216fd6e6009bec270a46947a1e41fdec6c446c0",
+    "bytes": 19572
+  },
+  "node_modules/@lezer/highlight/dist/index.js": {
+    "sha256": "01969c7657e12fa125543d7bfd1d6591f411fa92e5cae468ef00222a1018322f",
+    "bytes": 29915
+  },
+  "node_modules/@lezer/html/dist/index.js": {
+    "sha256": "fd4c7f475d40e7cb86346c7c18bbaf0902492a995b03cf372adb8b2a33cc8829",
+    "bytes": 20875
+  },
+  "node_modules/@lezer/javascript/dist/index.js": {
+    "sha256": "184d175bd9d6e29e4bcb4853719bfe4d50ef66dcc3a867bff1c98ed88edfbf28",
+    "bytes": 80756
+  },
+  "node_modules/@lezer/lr/dist/index.js": {
+    "sha256": "8d9b94f7c47b5226914e60613ec8bb49c3c3043df4e8d78ee7d19852fe34d582",
+    "bytes": 71678
+  },
+  "node_modules/@lezer/markdown/dist/index.js": {
+    "sha256": "7fefe4244953c37fe16634a264c83e28c25356d91133f10b90f9d5a08ae16e9c",
+    "bytes": 86937
+  },
+  "node_modules/@marijn/find-cluster-break/src/index.js": {
+    "sha256": "ceb85d7dfdf2447d558fa651633f59a355829eefd74792072a28f80362f74807",
+    "bytes": 4241
+  },
+  "node_modules/style-mod/src/style-mod.js": {
+    "sha256": "43690e452046d6a355a1a9211c1b48aab605613ab63c0aff13f585e742e66c83",
+    "bytes": 6935
+  },
+  "node_modules/w3c-keyname/index.js": {
+    "sha256": "b649dec4f01c7c5eb05be4641b5b698c6938231ee50b38e17a2f0f822ca3df2e",
+    "bytes": 2630
+  },
+  "src/editor/admittedCommands.ts": {
+    "sha256": "22708f50093e0683c74c0fc68582824361251251c8cd96ae5be1527de5ab2423",
+    "bytes": 2041
+  },
+  "src/editor/breadcrumbs.ts": {
+    "sha256": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+    "bytes": 5731
+  },
+  "src/editor/commands.ts": {
+    "sha256": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+    "bytes": 4950
+  },
+  "src/editor/keymap.ts": {
+    "sha256": "b43cc2222f0fde536d7ec2a4ed6d11815a9d48656e9352ddc02044b3edefa79e",
+    "bytes": 2941
+  },
+  "src/editor/livePreview.ts": {
+    "sha256": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+    "bytes": 10400
+  },
+  "src/editor/staticRender.ts": {
+    "sha256": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+    "bytes": 6506
+  },
+  "src/editor/theme.ts": {
+    "sha256": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+    "bytes": 6803
+  },
+  "src/styles/index.css": {
+    "sha256": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+    "bytes": 1435
+  }
+}

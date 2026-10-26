@@ -16072,3 +16072,19 @@ Work’s two direct sections. Sample mode/destination/Undo remain interactive.
 **Notes.** Preserve sealed61/62 patches and exact trees;63 is a separate small design clarification.
 No app/test/dependency/security changes. The screenshots remain applicable because the corrected
 hidden count is not shown in their expanded Work state. No implementation choice or release action.
+
+
+### Editor-preserving scanning ideas and breadcrumb-only cards revised after feedback
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch64 · **Stage:** design prototype only
+
+**Exit.** One fictional live-preview CodeMirror editor compares context dimming, individual crumb
+menus, scroll-opening and reading rail. Current static rendering/card styles add only a context row.
+The queue records footer retention, parked nearby controls, desktop-shortcut exploration and a
+context-based return candidate. Scope/matching/Markdown insertion ambiguities remain explicit.
+
+**Notes.** [Packet](./product-design/2026-10-23-goals-context/editor-study.md) retains module/style
+identities, licenses, source/build, inspected screenshots and bounded sample interaction/geometry
+results. Corrected harness caret/typecheck errors are preserved. No app runtime, old tests, locks,
+dependencies, real accounts, preview8443 or security guarantees changed. Earlier61–63 artifacts and
+the other seat’s progress record remain exact. No real staging/commit/push/deploy or qualification.

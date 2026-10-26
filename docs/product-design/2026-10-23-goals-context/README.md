@@ -2,6 +2,10 @@
 
 2026-10-23 · design study · sequential patch61 · no application implementation selected.
 
+**Subsequent feedback:** [editor-preserving revision64](editor-study.md) supersedes the outliner-like
+scanning and nearby-action recommendations below. Only breadcrumb placement received visual approval;
+the incidental card restyling is withdrawn. The earlier mock remains as design history.
+
 The operator asked to specify three interactions before coding: automatic card context from parent
 headings, a better scanning experience without gathering, and move/copy controls nearer the writing.
 The separate mobile formatting feasibility report follows in patch62. This packet contains fictional

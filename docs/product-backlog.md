@@ -71,6 +71,11 @@ get a bounded scope and evidence before implementation. General release qualific
   compares folds in the original document with a compact reading projection that exposes nested
   items and notes in source order. Neither alternative is selected for implementation.
 
+  **Browser-review clarification, 2026-10-23:** retain the formatted live-preview editor and caret
+  syntax reveal; no separate scanning mode or outliner. [Revision64](product-design/2026-10-23-goals-context/editor-study.md)
+  compares gentle caret-context dimming, per-crumb menus, experimental scroll-opening and a reading
+  rail. None is selected for application implementation.
+
 - **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
   sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
   focus request, reopening the editor and stealing later input. Regression checks cover outside
@@ -149,10 +154,20 @@ behavior is unchanged; physical-device lifecycle evidence is still needed before
   breadcrumb and compact-label alternative. Proposed opt-in captures context on new transfers;
   snapshot/live behavior, encrypted metadata and export/import policy remain product/format decisions.
   The user did not request a settings mock. No automatic tagging has been implemented.
+  Browser feedback approves breadcrumb placement only: preserve existing card styles/chrome.
+  [Revision64](product-design/2026-10-23-goals-context/editor-study.md) reuses the current renderer/CSS.
 - **UX-20 — Move/copy controls near the source.** Requested 2026-10-23; extends UX-08.
   [Study61](product-design/2026-10-23-goals-context/README.md) compares an explicit gutter popover
   with an attached action strip. Whole-subtree scope, current destination day and one-step Undo
   remain requirements; no application placement or new transfer implementation is selected.
+  **Parked after browser review:** keep the existing footer controls; neither extra popover nor
+  attached strip is selected. Desktop transfer shortcuts remain a separate candidate, with native
+  editing/browser conflicts and exact bindings to be resolved.
+- **UX-21 — Return a card to Goals using captured heading context.** Proposed by the operator on
+  2026-10-23. Resolve the longest current root-prefix heading match, disclose ambiguity/missing paths,
+  and append in a way that preserves the intended heading scope. The parent-with-subheadings insertion
+  problem, multiline encoding and missing-context policy are recorded in
+  [revision64](product-design/2026-10-23-goals-context/editor-study.md). No command is implemented.
 
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this
   before formal qualification. Pricing, entitlements and the associated UX need their own design pass.
