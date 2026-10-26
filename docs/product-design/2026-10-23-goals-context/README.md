@@ -61,8 +61,9 @@ on its own. Existing authored tags remain text.
 ### Proposed behavior
 
 - **Heading ancestors only.** Use the Markdown heading path of the source item, including skipped
-  heading levels as actually authored. Bullet/list ancestors stay part of transfer scope and content;
-  they are not automatically reinterpreted as tags. No headings means no invented label.
+  heading levels as actually authored. Bullet/list ancestors are not automatically reinterpreted as
+  tags. Transfer includes the selected item and its descendants, preserving their relative nesting;
+  selecting a child does not include its parent or siblings. No headings means no invented label.
 - **Capture at transfer.** Copy/Move from Goals captures context together with the source subtree.
   The source item's position is authoritative; the existing viewport breadcrumb may show a different
   place and cannot supply this snapshot. A selected heading used as the title excludes itself from
@@ -150,6 +151,9 @@ the source obvious, at the cost of deliberate layout movement while open. It nev
 because the caret moved. If later docked above a keyboard, it must retain the source title/scope;
 that docking is not established by this static prototype.
 
+Variant B is shown after deliberate activation, with its destinations already revealed. The sketch
+wires mode/destination/Undo, but not that initial Actions reveal or dismissal; those remain illustrative.
+
 **Starting recommendation:** compare A's footprint with B's clearer touch scope. A desktop popover
 and a phone action strip could share one command owner, but selecting different placements is still
 a product decision. These controls should compose with either scanning view.
@@ -172,6 +176,11 @@ both Next caps, folding/source reveal and nine width/tab overflow checks at1320/
 were visually inspected in dark and light narrow layouts. A local server bind was initially refused
 by the sandbox and retried with the required execution permission. An initially misdirected sample
 source link was corrected during review. The gutter target was enlarged before final capture.
+
+Follow-up design patch63 preserves the sealed61/62 artifacts and incorporates the read-only review:
+clarify descendant-only transfer scope, identify B as an already-open illustration, and correct the
+Work fold's count to its two direct sections. Existing screenshots show Work expanded, so the hidden
+count correction does not change their illustrated state.
 
 This demonstrates the standalone sketch only. It does not exercise a real phone keyboard, CodeMirror
 projection/folding, account data, app accessibility end-to-end, real command admission, migration,

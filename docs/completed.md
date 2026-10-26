@@ -16058,3 +16058,17 @@ and proposes a bounded composition/focus slice, admitted commands/panel, then op
 is claimed. Estimates remain qualified. No app/test/dependency/preview8443/security changes; no real
 index staging, commit, push, deployment or release qualification. Patch62 follows immutable design61;
 the other seat’s progress document and historical records remain untouched.
+
+
+### Design review clarifies scope and illustrative states
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch63 · **Stage:** design review only
+
+**Exit.** Read-only review caught an ambiguous ancestor/descendant sentence, an unmarked already-open
+state in action variant B, and an incorrect direct-section count. The packet now explicitly excludes
+parents/siblings from a selected child transfer, marks B’s reveal/dismissal as illustrative, and counts
+Work’s two direct sections. Sample mode/destination/Undo remain interactive.
+
+**Notes.** Preserve sealed61/62 patches and exact trees;63 is a separate small design clarification.
+No app/test/dependency/security changes. The screenshots remain applicable because the corrected
+hidden count is not shown in their expanded Work state. No implementation choice or release action.
