@@ -1,0 +1,20 @@
+{
+  "tag": "done-public:dc53fecf",
+  "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "indexDigest": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "runtimeManifestDigest": "sha256:6fe760f7734c11a191fc6eff3ab17ec230f1f6f79c7c53a3ffe43c5df866020f",
+  "runtimeConfigDigest": "sha256:55ce12550049168b1cdfb138844192b9ffd39b36d3c545b1c7cad3b2d91a0c0f",
+  "archiveSha256": "ff02b745354ad4f431c23a1676cfb748e957535583093bc079615eb0b5779e62",
+  "archiveBytes": 73276928,
+  "archivePath": "/private/tmp/done-release-2026-10-26/candidate-image.tar",
+  "runtimeSourceFilesMatched": 122,
+  "frontendFiles": 110,
+  "platform": "linux/arm64",
+  "user": "65532:65532",
+  "entrypoint": [
+    "node",
+    "scripts/public-account.mjs"
+  ],
+  "sizeBytes": 314342641,
+  "compatibleRollback": "sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb"
+}

@@ -17,6 +17,10 @@
  * src/editor/theme.ts, because CodeMirror sets that property itself.
  */
 @layer app {
+  /* A view decoration only: no hiding, opacity, wrapping or line-height change. */
+  .cm-line.cm-gentle-dim {
+    color: var(--color-context-dim);
+  }
   /* Syntax characters, on the line the cursor is on. */
   .cm-md-mark {
     color: var(--color-mark);

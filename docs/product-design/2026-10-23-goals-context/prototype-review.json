@@ -1,0 +1,61 @@
+{
+  "scope": "Standalone fictional prototype only; no app/phone/editor/crypto result",
+  "layouts": [
+    {
+      "width": 1320,
+      "tab": "context",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1320,
+      "tab": "scan",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1320,
+      "tab": "actions",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "tab": "context",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "tab": "scan",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "tab": "actions",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "tab": "context",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "tab": "scan",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "tab": "actions",
+      "horizontalOverflow": false
+    }
+  ],
+  "interactions": [
+    "context copy/reveal/undo",
+    "compact-label switch",
+    "fold all",
+    "correct source-page and source-measure ancestry reveal",
+    "both variants move/source restore",
+    "both variants Next cap and Undo",
+    "44px gutter target"
+  ],
+  "pageErrors": [],
+  "screenshotInspection": "dark context/scanning/actions and narrow light context inspected by agent"
+}

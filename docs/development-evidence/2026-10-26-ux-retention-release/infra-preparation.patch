@@ -1,0 +1,72 @@
+diff --git a/infra/apps/done/check.py b/infra/apps/done/check.py
+index 5a9789c..335efe7 100644
+--- a/infra/apps/done/check.py
++++ b/infra/apps/done/check.py
+@@ -118,7 +118,11 @@ assert stream['matches']==[{'path':{'type':'Exact','value':'/account/notificatio
+ assert stream['timeouts']=={'request':'0s','backendRequest':'0s'}
+ assert ordinary['matches']==[{'path':{'type':'PathPrefix','value':'/'}}]
+ assert ordinary['timeouts']=={'request':'30s','backendRequest':'25s'}
+-for r in route['spec']['rules']: assert r['backendRefs']==[{'name':'done','port':8080}] and not r.get('filters') and not r.get('retry')
++hsts=[{'type':'ResponseHeaderModifier','responseHeaderModifier':{'set':[{'name':'Strict-Transport-Security','value':'max-age=31536000'}]}}]
++for r in route['spec']['rules']:
++    assert r['backendRefs']==[{'name':'done','port':8080}] and not r.get('retry')
++    assert r.get('filters')==hsts, 'Exactly one host-only HSTS header on ordinary and streaming HTTPS responses'
++
+ redirect=one(public,'HTTPRoute','done-http-redirect')
+ assert redirect['spec']['rules']==[{'filters':[{'type':'RequestRedirect','requestRedirect':{'scheme':'https','statusCode':301}}]}]
+ assert redirect['spec']['parentRefs'][0]['sectionName']=='http'
+@@ -127,6 +131,7 @@ for name in ('done','done-public'):
+     flux=documents((ROOT/f'clusters/apps/{name}.yaml').read_text())[0]
+     assert flux['spec']['suspend'] is False, 'Application and public routing are enabled in this desired state'
+     assert flux['spec']['path']=='./infra/apps/done'+('/public' if name=='done-public' else '')
++    assert flux['spec']['dependsOn']==([{'name':'infra-core'}] if name=='done' else [{'name':'done'},{'name':'gateway'}]), 'Use current Flux tiers without reviving the retired infra dependency'
+ # Compare the enabled Gateway with a temporary baseline omitting only the done patch.
+ new=one(render(ROOT/'infra/gateway'),'Gateway','public')
+ with tempfile.TemporaryDirectory(prefix='done-gateway-render-') as d:
+diff --git a/infra/apps/done/components/runtime/kustomization.yaml b/infra/apps/done/components/runtime/kustomization.yaml
+index a8bcb2d..c9ae3a5 100644
+--- a/infra/apps/done/components/runtime/kustomization.yaml
++++ b/infra/apps/done/components/runtime/kustomization.yaml
+@@ -1,10 +1,10 @@
+-# Published signed source d8b3f22b; exact tested ARM64 index verified 2026-10-23.
++# Prepared signed source dc53fecf; exact tested ARM64 index, automatic local maintenance enabled.
+ # Preserve source, PVC, identity, credentials and routes; operator merge/rollout is separate.
+ apiVersion: kustomize.config.k8s.io/v1alpha1
+ kind: Component
+ images:
+   - name: ghcr.io/thomasingalls/done
+-    digest: sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb
++    digest: sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf
+ configMapGenerator:
+   - name: done-public
+     envs:
+diff --git a/infra/apps/done/public/httproute.yaml b/infra/apps/done/public/httproute.yaml
+index 26b0648..aaeee15 100644
+--- a/infra/apps/done/public/httproute.yaml
++++ b/infra/apps/done/public/httproute.yaml
+@@ -24,6 +24,12 @@ spec:
+       timeouts:
+         request: 0s
+         backendRequest: 0s
++      filters:
++        - type: ResponseHeaderModifier
++          responseHeaderModifier:
++            set:
++              - name: Strict-Transport-Security
++                value: max-age=31536000
+       backendRefs:
+         - name: done
+           port: 8080
+@@ -34,6 +40,12 @@ spec:
+       timeouts:
+         request: 30s
+         backendRequest: 25s
++      filters:
++        - type: ResponseHeaderModifier
++          responseHeaderModifier:
++            set:
++              - name: Strict-Transport-Security
++                value: max-age=31536000
+       backendRefs:
+         - name: done
+           port: 8080

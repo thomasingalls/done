@@ -1,0 +1,51 @@
+{
+  "phase": 74,
+  "prerequisites": [
+    {
+      "name": "debts",
+      "code": 0
+    },
+    {
+      "name": "retention",
+      "code": 0
+    },
+    {
+      "name": "selection-status",
+      "code": 0
+    },
+    {
+      "name": "update-limit",
+      "code": 0
+    },
+    {
+      "name": "wasm-seal",
+      "code": 0
+    },
+    {
+      "name": "authority-map",
+      "code": 0
+    },
+    {
+      "name": "yjs-patch",
+      "code": 0
+    },
+    {
+      "name": "budget",
+      "code": 0
+    },
+    {
+      "name": "origin",
+      "code": 0
+    }
+  ],
+  "traceability": "passed",
+  "unitCasesPassed": 25,
+  "nativeCasesPassed": 2,
+  "focusedRealPortRerunPassed": 1,
+  "typecheck": "passed",
+  "lint": "passed",
+  "format": "passed",
+  "build": "passed",
+  "publicActivation": "off",
+  "qualification": "paused; aggregate blocked"
+}

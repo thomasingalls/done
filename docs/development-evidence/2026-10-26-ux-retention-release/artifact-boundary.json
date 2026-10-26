@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "frontendFilesBeforeAndAfter": 110,
+  "allFrontendBytesUnchangedAfterRehearsal": true,
+  "signedBuildInputFilesStillEqual": 1676,
+  "runtimeSourceFilesEqualDeployedReader": 122,
+  "runtimeSourcePredecessor": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+  "predecessorBackendRollbackTested": false
+}

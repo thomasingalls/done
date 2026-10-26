@@ -1,0 +1,54 @@
+{
+  "sourceHead": "0a01b71510adca394ce01c758cb96c9400c302ef",
+  "applicationTreeAfter71": "6283cdee537d6e7dc8482a5721723f1f1ccd5ea0",
+  "unit": {
+    "passed": 1981,
+    "skipped": 1,
+    "files": 167
+  },
+  "geometry": {
+    "startTime": "2026-10-25T13:09:35.450Z",
+    "duration": 117146.153,
+    "expected": 216,
+    "skipped": 24,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "bookkeepingRegression": {
+    "passed": 109,
+    "failed": 0
+  },
+  "planning": {
+    "obligationsBefore": 897,
+    "obligationsAfter": 902,
+    "unresolvedBefore": 353,
+    "unresolvedAfter": 358,
+    "added": [
+      "test:test/browserPresentation.test.ts",
+      "test:test/cardGoalsContext.test.ts",
+      "test:test/cardGoalsContextAdmission.test.ts",
+      "test:test/cardGoalsContextSource.test.ts",
+      "test:test/geometry/card-context.spec.ts"
+    ],
+    "lostPriorObligations": [],
+    "newFilesCredited": false
+  },
+  "crypto": {
+    "sourcesBefore": 405,
+    "sourcesAfter": 408,
+    "domains": 197,
+    "domainsAndSitesUnchanged": true,
+    "ownershipAndConstructionDefinitionsUnchanged": true
+  },
+  "typecheck": "passed",
+  "focusedLintAndFormat": "passed",
+  "sourceMutationAnchors": "workspace-admission anchors unchanged; see final checks",
+  "qualification": "general qualification remains paused; existing aggregate block retained",
+  "preview": "isolated loopback53921 refreshed;8443/real profiles/production unchanged",
+  "publication": "unsigned sequential patches only",
+  "freshPrerequisiteChecks": {
+    "passed": 9,
+    "failed": 0
+  },
+  "traceability": "passed"
+}

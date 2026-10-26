@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>done — Context, scanning and nearby actions</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f3ed;color:#292720;font:15px/1.55 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,summary:focus-visible{outline:2px solid #d87947;outline-offset:4px}button,summary{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}a{color:inherit}header,.study{max-width:1160px;margin:auto;padding:0 30px}header{padding-top:32px}.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#716c60;display:flex;align-items:center;gap:10px}.wordmark{font-weight:700;font-size:20px;letter-spacing:-.05em;text-transform:none;color:#292720}.dot{width:7px;height:7px;border-radius:50%;background:#b4552a;display:inline-block}h1{font-weight:550;font-size:clamp(28px,4.5vw,44px);letter-spacing:-.045em;line-height:1.15;margin:25px 0 12px}header p{max-width:700px;color:#6c675d;margin:0}.study-nav{display:flex;gap:5px;margin:27px 0 0;border-bottom:1px solid #dcd6cb;flex-wrap:wrap}.study-nav button{border:0;background:none;color:#716c60;padding:14px 18px;border-bottom:2px solid transparent;min-height:48px}.study-nav button[aria-selected=true]{color:#a54e28;border-bottom-color:#b4552a}.study{padding-top:25px;padding-bottom:42px}.intro{display:flex;gap:25px;align-items:flex-start;justify-content:space-between;margin-bottom:23px}.intro h2{font-size:21px;font-weight:550;letter-spacing:-.02em;margin:0 0 7px}.intro p{margin:0;color:#6c675d;max-width:700px}.theme-button{border:1px solid #d4cfc4;border-radius:100px;padding:8px 14px;background:transparent;white-space:nowrap;color:#514a40}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}.label{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:14px;font-weight:650}.letter{border:1px solid #d7cdbd;background:#eee7dc;font-size:11px;line-height:24px;width:25px;text-align:center;border-radius:6px}.recommend{font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px;background:#e5e9dd;color:#4f6244}.caption{font-size:13px;color:#756e62;margin:13px 1px 0;max-width:480px}.caption strong{color:#51493e;font-weight:550}.screen{--bg:#1a1a1e;--surface:#232328;--text:#e8e6e1;--dim:#aaa69f;--faint:#8f8a81;--border:#343339;--accent:#e68b58;--tint:#e0783f15;--chip:#e0783f18;--highlight:#e0783f12;--rule:#4c4540;background:var(--bg);color:var(--text);border:1px solid #39373a;border-radius:17px;box-shadow:0 12px 32px #3c2a1810;overflow:hidden;min-width:0;font-size:15px}.light .screen{--bg:#fdfcfa;--surface:#f4f2ee;--text:#292720;--dim:#716a60;--faint:#81796d;--border:#e2ddd4;--accent:#a8552b;--tint:#b4552a09;--chip:#b4552a0c;--highlight:#b4552a0b;--rule:#d4c8b7;border-color:#ded6ca}.appbar{padding:17px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;min-height:62px}.appbar strong{font-size:17px;font-weight:550}.appbar .muted{margin-left:auto;font-size:12px}.hamburger{border:0;background:none;color:var(--dim);font-size:19px;line-height:1;padding:6px}.muted{color:var(--dim)}.appbody{padding:21px 22px 25px;min-height:540px}.daytitle{color:var(--dim);font-size:13px;margin:0 0 25px}.section-heading{font-weight:550;font-size:20px;margin:20px 0 11px;display:flex;gap:8px;align-items:center}.count{color:var(--faint);font-size:12px;font-weight:400}.card{border:1px solid var(--border);border-radius:9px;padding:15px 16px 11px;margin-bottom:11px;background:var(--surface)}.card-title{font-size:16px;font-weight:500;line-height:1.4}.card-body{font-size:13px;color:var(--dim);margin-top:7px;white-space:pre-line;line-height:1.6}.card-context{font-size:11px;color:var(--accent);display:flex;align-items:flex-start;gap:6px;line-height:1.65;margin-top:11px;border:0;background:none;text-align:left;padding:3px 0;min-height:25px;max-width:100%;overflow-wrap:anywhere}.context-mark{opacity:.65}.card-foot{display:flex;gap:15px;margin-top:11px;padding-top:9px;border-top:1px solid var(--border);font-size:11px;color:var(--faint)}.card-foot button{border:0;background:none;padding:2px 0;color:var(--dim);font-size:11px}.source-path{font-size:12px;color:var(--accent);line-height:1.8;margin-bottom:17px}.source h3{font-size:22px;font-weight:550;letter-spacing:-.025em;margin:15px 0 10px}.source h4{font-size:17px;font-weight:500;margin:21px 0 11px}.source p{color:var(--dim);font-size:13px}.source ul{padding-left:20px;color:var(--dim);font-size:14px}.source li{padding:5px 0}.source li::marker{color:var(--faint)}.chosen-source{border-left:2px solid var(--accent);padding:9px 12px;background:var(--highlight);border-radius:0 6px 6px 0;margin:17px 0 15px}.chosen-source ul{margin:5px 0 0;padding-left:19px}.source-note{font-size:12px;color:var(--faint);font-style:italic;border-left:1px solid var(--border);padding-left:12px}.primary{background:var(--chip);border:1px solid var(--accent);color:var(--accent);border-radius:7px;min-height:43px;padding:8px 13px}.quiet{background:transparent;color:var(--dim);border:1px solid var(--border);border-radius:7px;min-height:38px;padding:7px 11px;font-size:12px}.choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.study-note{margin:23px 0 0;background:#ece7dc;border:1px solid #e0d8ca;border-radius:10px;padding:17px 20px;color:#6a6153;font-size:13px}.study-note strong{color:#4e4537;font-weight:600}.doc-tools{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding:11px 17px;gap:7px;font-size:12px;color:var(--dim)}.doc-tools button{background:none;border:0;color:var(--accent);padding:4px;min-height:33px;font-size:11px}.doc-scroll{height:575px;overflow:auto;overscroll-behavior:contain;padding:8px 18px 23px;scrollbar-width:thin;scrollbar-color:var(--rule) transparent}.scratch-note{font-size:13px;color:var(--dim);padding:11px 0 15px;border-bottom:1px solid var(--border);margin:0 0 9px}.fold{padding-top:4px}.fold>summary{list-style:none;display:flex;align-items:baseline;gap:8px;cursor:pointer;min-height:43px;padding:7px 0;font-size:18px;font-weight:550}.fold>summary::-webkit-details-marker{display:none}.fold>summary:before{content:'›';color:var(--faint);font-weight:400;font-size:21px;width:12px;flex-shrink:0}.fold[open]>summary:before{transform:rotate(90deg)}.fold .fold>summary{font-size:15px;min-height:40px;font-weight:500}.fold-body{border-left:1px solid var(--border);margin-left:5px;padding-left:17px}.hidden-count{margin-left:auto;font-size:10px;color:var(--faint);font-weight:400;white-space:nowrap}.fold[open]>summary .hidden-count{visibility:hidden}.doc-line{font-size:14px;line-height:1.7;padding:7px 0;color:var(--text)}.doc-line.nested{margin-left:18px;color:var(--dim);font-size:13px}.doc-line.parent{padding-bottom:0}.doc-line::before{content:'•';color:var(--faint);display:inline-block;width:13px;margin-left:-1px}.doc-note{color:var(--dim);font-size:12px;line-height:1.65;margin:8px 0 12px}.doc-note.quote{border-left:2px solid var(--rule);padding-left:11px}.scan-group{padding:13px 0 9px;border-top:1px solid var(--border)}.scan-group:first-of-type{border-top:0}.scan-path{color:var(--accent);font-size:11px;margin-bottom:7px;line-height:1.6}.skim-row{padding:9px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.45}.skim-row:last-child{border-bottom:0}.skim-parent{color:var(--faint);font-size:10px;display:block;margin-bottom:3px}.skim-row button{border:0;background:none;color:var(--text);text-align:left;padding:0;font:inherit;line-height:inherit;width:100%;min-height:28px}.skim-note{font-size:12px;color:var(--dim);line-height:1.6}.peek{color:var(--faint);font-size:10px;border:0;background:none;padding:4px 0;text-align:left}.continuation{font-size:12px;line-height:1.65;color:var(--dim);padding:5px 0 2px}.scan-title{margin:0;font-size:17px;font-weight:500}.scan-path.small{color:var(--dim)}.selection-wrap{position:relative;border-left:2px solid var(--accent);border-radius:0 6px 6px 0;background:var(--highlight);margin:15px 0 10px}.selected-text{padding:11px 13px 10px 21px;font-size:14px;line-height:1.6}.selected-text ul{font-size:12px;color:var(--dim);padding-left:18px;margin:5px 0 0}.gutter-trigger{position:absolute;top:8px;left:-17px;width:44px;height:44px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--accent);font-size:20px}.screen[data-action-screen=popover] .selected-text{padding-left:36px}.popover{position:relative;background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:13px;box-shadow:0 8px 20px #0002;margin:11px 0 17px;z-index:1}.popover::before{content:'';width:9px;height:9px;position:absolute;top:-6px;left:18px;background:var(--surface);border-left:1px solid var(--rule);border-top:1px solid var(--rule);transform:rotate(45deg)}.popover-head{font-size:11px;color:var(--dim);display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}.close{background:none;border:0;color:var(--dim);padding:0 4px;min-width:26px;min-height:26px;font-size:18px}.mode-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px;margin:8px 0 12px}.mode-tabs button{border:0;flex:1;font-size:12px;background:none;border-radius:4px;color:var(--dim);padding:5px;min-height:34px}.mode-tabs button[aria-pressed=true]{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px #0001}.destinations{display:flex;gap:7px}.destinations button{flex:1;min-width:0;min-height:43px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;padding:7px 5px}.scope{color:var(--faint);font-size:10px;margin:10px 0 0;line-height:1.6}.action-source .doc-line{color:var(--dim)}.action-source .doc-note{margin-top:12px}.inline-actions{display:flex;gap:8px;padding:0 13px 11px 20px}.inline-actions button{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 11px;font-size:12px;min-height:40px}.inline-actions button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}.inline-dest{border-top:1px solid var(--rule);padding:10px 11px 12px 20px}.result-list .card{padding:11px 13px;margin-top:8px}.result-list .card-title{font-size:13px}.result-list .card-body{font-size:11px}.result-list .card-context{font-size:10px}.result-empty{border-top:1px solid var(--border);padding:14px 0;color:var(--faint);font-size:12px}.sent-source{font-size:12px;color:var(--faint);padding:20px 4px}.small-label{font-size:11px;color:var(--dim);letter-spacing:.05em;text-transform:uppercase;margin-top:20px}.arrival{animation:arrive .25s ease-out}@keyframes arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:5;background:#302a24;border:1px solid #74614c;color:#f7efe4;border-radius:9px;box-shadow:0 6px 30px #0003;padding:12px 17px;display:flex;align-items:center;gap:15px;font-size:13px;max-width:calc(100% - 24px)}.toast button{color:#e9a274;background:none;border:0;padding:4px;font-size:12px}.toast[hidden],section[hidden],[hidden]{display:none!important}.context-detail{padding:9px 0 0;border-top:1px solid var(--border);font-size:11px;color:var(--dim);margin-top:7px;line-height:1.8}.study-footer{font-size:11px;color:#8b8070;text-align:center;margin-top:25px}.reset{border:0;background:none;color:#a34f2a;text-decoration:underline;padding:8px 3px}.sample-label{font-size:11px;color:var(--faint);padding-top:12px}.flash-line{outline:1px solid var(--accent);outline-offset:4px;border-radius:3px}.full-path{font-size:10px;color:var(--dim)}.compact-context .context-parent{display:none}.compact-context .context-leaf::before{content:'#'}.compact-context .card-context{border:1px solid var(--border);background:var(--chip);border-radius:5px;padding:3px 7px;width:fit-content}.compact-context .context-mark{display:none}.context-switch{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.context-switch button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}.source-transfer{margin-top:20px}.study-number{color:#9f9481;font-size:11px;margin-right:8px}.target-note{font-size:11px;color:var(--dim);margin:12px 0 4px}.note-chip{font-size:10px;border:1px solid var(--border);border-radius:3px;padding:1px 4px;color:var(--faint);margin-right:5px}.scan-row-count{padding:10px 0 0;color:var(--faint);font-size:10px}
+@media(max-width:750px){header,.study{padding-left:16px;padding-right:16px}header{padding-top:21px}.comparison{grid-template-columns:1fr;gap:30px}.comparison>article{max-width:480px;width:100%;margin:auto}.study-nav button{font-size:13px;padding:12px 11px}.intro{gap:14px}.intro h2{font-size:20px}.intro p{font-size:13px}.theme-button{font-size:11px;padding:7px 10px}.appbody{min-height:0;padding:19px 18px 23px}.doc-scroll{height:580px}.study-note{padding:14px 16px}.screen{border-radius:12px}.comparison.context-comparison>article:first-child .appbody{min-height:0}.comparison.context-comparison>article:first-child .source-note{display:none}.study-footer{font-size:10px}.label{font-size:13px}.recommend{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow"><span class="wordmark">done</span><span class="dot"></span> A working sketch · 23 October 2026</div>
+  <h1>A little context. Less digging.</h1>
+  <p>Three ideas for keeping the big list useful without turning it into a system you have to maintain.</p>
+  <nav class="study-nav" aria-label="Design studies" role="tablist">
+    <button role="tab" id="tab-context" aria-controls="context" data-tab="context" aria-selected="true">01 &nbsp; Context on cards</button>
+    <button role="tab" id="tab-scan" aria-controls="scan" data-tab="scan" aria-selected="false" tabindex="-1">02 &nbsp; Scanning Goals</button>
+    <button role="tab" id="tab-actions" aria-controls="actions" data-tab="actions" aria-selected="false" tabindex="-1">03 &nbsp; Move &amp; copy nearby</button>
+  </nav>
+</header>
+<main class="study">
+<section id="context" role="tabpanel" aria-labelledby="tab-context">
+  <div class="intro"><div><h2>The heading comes with it.</h2><p>A small breadcrumb carries the context from Goals. The words you wrote stay the title; no more typing “website” into every card.</p></div><button class="theme-button" data-theme>Light preview</button></div>
+  <div class="comparison context-comparison">
+    <article><h3 class="label"><span class="letter">↗</span> Where the writing lives</h3>
+      <div class="screen"><div class="appbar"><button class="hamburger" aria-label="Sample menu" data-menu>☰</button><strong>Goals</strong><span class="muted">All your writing</span></div>
+      <div class="appbody source"><div class="source-path">Work &nbsp;›&nbsp; Studio site &nbsp;›&nbsp; Launch</div><h3>Launch</h3><div class="doc-line">Ask Leila which photos we can use</div>
+      <div class="chosen-source"><strong>Replace the “coming soon” page</strong><ul><li>Use the short introduction from the pitch</li><li>Link the two recent projects</li></ul></div>
+      <p class="source-note">“Keep this tiny. A finished page beats another redesign.”</p><div class="doc-line">Remove the old client logo from the footer</div>
+      <button class="primary source-transfer" id="copy-example">Copy selected item to Scheduled</button><p class="sample-label">One card, including its two nested lines.</p>
+      <h4>Later, maybe</h4><div class="doc-line">A place for little process notes?</div><div class="doc-line">Ask whether anyone actually uses the PDF</div></div></div>
+      <p class="caption">The path comes from <strong>Markdown headings</strong>. List nesting stays in the card’s content.</p>
+    </article>
+    <article><h3 class="label"><span class="letter">↓</span> What arrives on your day</h3>
+      <div class="screen" id="context-screen"><div class="appbar"><strong>Friday</strong><span class="muted">23 October</span></div><div class="appbody">
+        <div class="context-switch"><button class="quiet" data-context="path" aria-pressed="true">Breadcrumb</button><button class="quiet" data-context="compact" aria-pressed="false">Compact label</button></div>
+        <div class="section-heading">Next <span class="count">1 / 3</span></div>
+        <div class="card"><div class="card-title">Ask Leila which photos we can use</div><button class="card-context" aria-expanded="false"><span class="context-mark">↳</span><span><span class="context-parent">Work &nbsp;›&nbsp; Studio site &nbsp;›&nbsp; </span><span class="context-leaf">Launch</span></span></button><div class="context-detail" hidden>Goals · Work › Studio site › Launch<br>Captured when copied. Later heading edits do not rewrite this card.</div><div class="card-foot"><span>● You</span><button data-dummy>Done ✓</button></div></div>
+        <div class="section-heading">Scheduled</div>
+        <div id="context-results"><div class="card"><div class="card-title">Measure the cabinet doors</div><div class="card-body">Check the thickness before ordering hinges.</div><button class="card-context" aria-expanded="false"><span class="context-mark">↳</span><span><span class="context-parent">Home &nbsp;›&nbsp; </span><span class="context-leaf">Kitchen</span></span></button><div class="context-detail" hidden>Goals · Home › Kitchen<br>Captured when copied. Later heading edits do not rewrite this card.</div><div class="card-foot"><span>● You</span><button data-dummy>Next ↑</button><button data-dummy>Duplicate</button></div></div></div>
+        <div class="card"><div class="card-title">Pick up oat milk</div><div class="card-foot"><span>● You</span><button data-dummy>Next ↑</button></div></div><div class="sample-label">Added directly here; no invented Goals context.</div>
+      </div></div>
+      <p class="caption"><strong>Breadcrumb is my starting point.</strong> Compact labels take less space, but “Launch” alone loses context. Tap either to reveal the full captured path.</p>
+    </article>
+  </div>
+  <div class="study-note"><strong>Proposed behavior, not a decided format:</strong> opt in to adding context on new Goals transfers. Turning it off stops new capture; it doesn’t erase old context. Keep typed #tags untouched. No automatic backfill or live relationship between a card and a moving line of notes.</div>
+</section>
+<section id="scan" role="tabpanel" aria-labelledby="tab-scan" hidden>
+  <div class="intro"><div><h2>Less scrolling, without a gather tray.</h2><p>The same messy writing, two views. Neither ranks, chooses, or reorganizes anything for you.</p></div><button class="theme-button" data-theme>Light preview</button></div>
+  <div class="comparison">
+    <article><h3 class="label"><span class="letter">A</span> Fold in place <span class="recommend">smallest change</span></h3>
+      <div class="screen"><div class="appbar"><strong>Goals</strong><span class="muted">Work › Studio site</span></div><div class="doc-tools"><span>Keep the geography</span><div><button data-fold="closed">Fold headings</button><button data-fold="open">Open all</button></div></div>
+      <div class="doc-scroll" id="fold-document"><p class="scratch-note">Ask about the spare bike key. Also: that book Jo mentioned?</p>
+        <details class="fold" open><summary>Work <span class="hidden-count">2 sections hidden</span></summary><div class="fold-body">
+          <details class="fold" open><summary>Studio site <span class="hidden-count">2 sections hidden</span></summary><div class="fold-body">
+            <details class="fold" open><summary>Launch <span class="hidden-count">5 items + 2 notes hidden</span></summary><div class="fold-body">
+              <div class="doc-line" id="source-leila">Ask Leila which photos we can use</div><div class="doc-line parent" id="source-page">Replace the “coming soon” page</div><div class="doc-line nested">Use the short introduction from the pitch</div><div class="doc-line nested">Link the two recent projects</div><p class="doc-note quote">Keep this tiny. A finished page beats another redesign.</p><div class="doc-line" id="source-logo">Remove the old client logo from the footer</div><p class="doc-note">I think the invoice address needs changing too.</p>
+            </div></details>
+            <details class="fold" open><summary>Later, maybe <span class="hidden-count">2 items hidden</span></summary><div class="fold-body"><div class="doc-line">A place for little process notes?</div><div class="doc-line">Ask whether anyone actually uses the PDF</div></div></details>
+          </div></details>
+          <details class="fold" open><summary>Admin <span class="hidden-count">1 item + 1 note hidden</span></summary><div class="fold-body"><div class="doc-line">Send the expenses before Monday</div><p class="doc-note">Receipt is in the backpack, probably.</p></div></details>
+        </div></details>
+        <details class="fold" open><summary>Home <span class="hidden-count">2 sections hidden</span></summary><div class="fold-body">
+          <details class="fold" open><summary>Kitchen <span class="hidden-count">3 items hidden</span></summary><div class="fold-body"><div class="doc-line parent">Sort the cabinet doors</div><div class="doc-line nested" id="source-measure">Measure door thickness before ordering hinges</div><div class="doc-line nested">Send the photo to the carpenter</div></div></details>
+          <details class="fold" open><summary>Later, maybe <span class="hidden-count">1 item hidden</span></summary><div class="fold-body"><div class="doc-line">Could the desk face the window?</div></div></details>
+        </div></details>
+        <p class="doc-note">A line that doesn’t belong anywhere yet: try leaving Friday morning empty.</p>
+      </div></div>
+      <p class="caption"><strong>Your original layout stays recognizable.</strong> Tap heading chevrons or Fold headings. Counts say what’s hidden. First use starts expanded; only your actions fold things.</p>
+    </article>
+    <article><h3 class="label"><span class="letter">B</span> Read through the nesting</h3>
+      <div class="screen"><div class="appbar"><strong>Goals</strong><span class="muted">Compact scan</span></div><div class="doc-tools"><span>All items + notes · source order</span><button id="return-document">Back to document ↗</button></div>
+      <div class="doc-scroll" id="skim-document"><p class="scratch-note">Ask about the spare bike key. Also: that book Jo mentioned?</p>
+        <div class="scan-group"><div class="scan-path">Work › Studio site › Launch</div>
+          <div class="skim-row"><button data-jump="source-leila">Ask Leila which photos we can use</button></div>
+          <div class="skim-row"><button data-jump="source-page">Replace the “coming soon” page</button></div>
+          <div class="skim-row"><span class="skim-parent">Under “Replace the ‘coming soon’ page”</span>Use the short introduction from the pitch</div>
+          <div class="skim-row"><span class="skim-parent">Under “Replace the ‘coming soon’ page”</span>Link the two recent projects</div>
+          <div class="skim-row skim-note"><span class="note-chip">Note</span>Keep this tiny. A finished page beats another redesign.</div>
+          <div class="skim-row"><button data-jump="source-logo">Remove the old client logo from the footer</button></div>
+          <div class="skim-row skim-note"><span class="note-chip">Note</span>I think the invoice address needs changing too.</div>
+        </div>
+        <div class="scan-group"><div class="scan-path">Work › Studio site › Later, maybe</div><div class="skim-row">A place for little process notes?</div><div class="skim-row">Ask whether anyone actually uses the PDF</div></div>
+        <div class="scan-group"><div class="scan-path">Work › Admin</div><div class="skim-row">Send the expenses before Monday</div><div class="skim-row skim-note"><span class="note-chip">Note</span>Receipt is in the backpack, probably.</div></div>
+        <div class="scan-group"><div class="scan-path">Home › Kitchen</div><div class="skim-row">Sort the cabinet doors</div><div class="skim-row"><span class="skim-parent">Under “Sort the cabinet doors”</span><button data-jump="source-measure">Measure door thickness before ordering hinges</button></div><div class="skim-row"><span class="skim-parent">Under “Sort the cabinet doors”</span>Send the photo to the carpenter</div></div>
+        <div class="scan-group"><div class="scan-path">Home › Later, maybe</div><div class="skim-row">Could the desk face the window?</div></div>
+        <div class="scan-group"><div class="skim-row skim-note"><span class="note-chip">Note</span>A line that doesn’t belong anywhere yet: try leaving Friday morning empty.</div></div>
+      </div></div>
+      <p class="caption"><strong>Useful children aren’t buried under “sort this out.”</strong> Every item and note stays in source order. Tap a linked example to reveal its place in A, without opening a keyboard.</p>
+    </article>
+  </div>
+  <div class="study-note"><strong>The tradeoff:</strong> A reduces visible writing by hiding whole branches; you decide what to open. B reduces indentation and exposes nested lines, but doesn’t magically shorten the list. It is a temporary reading projection, with one action back to the document—not a second list to curate.</div>
+</section>
+<section id="actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+  <div class="intro"><div><h2>The controls come to the writing.</h2><p>Both sketches act on the highlighted item and its children. Try Copy or Move, choose a destination, then Undo.</p></div><button class="theme-button" data-theme>Light preview</button></div>
+  <div class="comparison">
+    <article><h3 class="label"><span class="letter">A</span> Gutter button + small popover</h3>
+      <div class="screen" data-action-screen="popover"><div class="appbar"><strong>Goals</strong><span class="muted">Work › Studio site › Launch</span></div><div class="appbody action-source">
+        <div class="doc-line">Ask Leila which photos we can use</div><div class="selection-wrap"><button class="gutter-trigger" data-popover-toggle aria-expanded="true" aria-label="Copy or move this item">⋮</button><div class="selected-text">Replace the “coming soon” page<ul><li>Use the short introduction from the pitch</li><li>Link the two recent projects</li></ul></div></div>
+        <div class="popover"><div class="popover-head"><span>1 card · 2 nested lines included</span><button class="close" data-popover-close aria-label="Close transfer controls">×</button></div><div class="mode-tabs"><button data-mode="copy" aria-pressed="true">Copy</button><button data-mode="move" aria-pressed="false">Move</button></div><div class="popover-head"><span>To Friday, 23 October</span></div><div class="destinations"><button data-destination="Next">Next <span class="next-count">2 / 3</span></button><button data-destination="Scheduled">Scheduled</button><button data-destination="Done">Done</button></div><p class="scope">Copy keeps the original in Goals.</p></div>
+        <div class="doc-line">Remove the old client logo from the footer</div><p class="doc-note quote">Keep this tiny. A finished page beats another redesign.</p><div class="small-label">Your day · sample result</div><div class="result-list"><p class="result-empty">Choose a destination above.</p></div>
+      </div></div>
+      <p class="caption"><strong>Small footprint.</strong> An explicit gutter target opens controls next to the item. It must be reachable on touch and by keyboard, without replacing native text selection.</p>
+    </article>
+    <article><h3 class="label"><span class="letter">B</span> Attached action strip <span class="recommend">clearest scope</span></h3>
+      <div class="screen" data-action-screen="inline"><div class="appbar"><strong>Goals</strong><span class="muted">Work › Studio site › Launch</span></div><div class="appbody action-source">
+        <div class="doc-line">Ask Leila which photos we can use</div><div class="selection-wrap"><div class="selected-text">Replace the “coming soon” page<ul><li>Use the short introduction from the pitch</li><li>Link the two recent projects</li></ul></div>
+          <div class="inline-actions"><button data-mode="copy" aria-pressed="true">Copy to…</button><button data-mode="move" aria-pressed="false">Move to…</button></div>
+          <div class="inline-dest"><div class="popover-head"><span>Copy 1 card · Friday, 23 October</span></div><div class="destinations"><button data-destination="Next">Next <span class="next-count">2 / 3</span></button><button data-destination="Scheduled">Scheduled</button><button data-destination="Done">Done</button></div><p class="scope">Copy keeps the original in Goals.</p></div>
+        </div>
+        <div class="doc-line">Remove the old client logo from the footer</div><p class="doc-note quote">Keep this tiny. A finished page beats another redesign.</p><div class="small-label">Your day · sample result</div><div class="result-list"><p class="result-empty">Choose a destination above.</p></div>
+      </div></div>
+      <p class="caption"><strong>More room for fingers and an obvious source.</strong> Shown after deliberately opening the selected item’s actions. It takes space while open; it never appears just because the cursor moved.</p>
+    </article>
+  </div>
+  <div class="study-note"><strong>Shared behavior:</strong> current day stays explicit; Next keeps its three-card admission limit. Copy is the initial mode. Move removes only the highlighted source subtree after acceptance. Both are one undoable action. These controls could accompany either scanning view.</div>
+</section>
+<footer class="study-footer">Interactive sketch · fictional writing only · no account, storage or app connection · <button class="reset" id="reset">Reset examples</button></footer>
+</main>
+<div class="toast" role="status" aria-live="polite" hidden><span id="toast-message"></span><button id="undo">Undo</button><button id="dismiss" aria-label="Dismiss notification">×</button></div>
+<script>
+(() => {
+  'use strict';
+  const select = (q, scope = document) => scope.querySelector(q);
+  const all = (q, scope = document) => Array.from(scope.querySelectorAll(q));
+  const original = {title:'Replace the “coming soon” page', body:'• Use the short introduction from the pitch\n• Link the two recent projects', path:'Work › Studio site › Launch'};
+  let lastUndo = null;
+  const toast = (message, undo) => {
+    select('#toast-message').textContent = message;
+    lastUndo = undo || null;
+    select('#undo').hidden = !lastUndo;
+    select('.toast').hidden = false;
+  };
+  const bindContext = scope => all('.card-context', scope).forEach(button => button.addEventListener('click', () => {
+    const detail = button.nextElementSibling;
+    const expanded = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', String(expanded));
+    detail.hidden = !expanded;
+  }));
+  const card = (item, destination) => {
+    const root = document.createElement('div'); root.className = 'card arrival';
+    const title = document.createElement('div'); title.className = 'card-title'; title.textContent = item.title;
+    const body = document.createElement('div'); body.className = 'card-body'; body.textContent = item.body;
+    const context = document.createElement('button'); context.className = 'card-context'; context.setAttribute('aria-expanded','false');
+    context.innerHTML = '<span class="context-mark">↳</span><span><span class="context-parent">Work &nbsp;›&nbsp; Studio site &nbsp;›&nbsp; </span><span class="context-leaf">Launch</span></span>';
+    const detail = document.createElement('div'); detail.className = 'context-detail'; detail.hidden = true; detail.textContent = 'Goals · ' + item.path + '. Captured at transfer; not a live link.';
+    const footer = document.createElement('div'); footer.className = 'card-foot'; footer.textContent = destination + ' · You';
+    root.append(title,body,context,detail,footer); bindContext(root); return root;
+  };
+  bindContext(document);
+  const activate = id => {
+    all('[role=tabpanel]').forEach(panel => panel.hidden = panel.id !== id);
+    all('[data-tab]').forEach(button => {
+      const active = button.dataset.tab === id;
+      button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
+    });
+    history.replaceState(null,'','#' + id);
+  };
+  all('[data-tab]').forEach(button => {
+    button.addEventListener('click', () => activate(button.dataset.tab));
+    button.addEventListener('keydown', event => {
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault();
+      const tabs = all('[data-tab]'), current = tabs.indexOf(button);
+      const index = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      activate(tabs[index].dataset.tab); tabs[index].focus();
+    });
+  });
+  all('[data-theme]').forEach(button => button.addEventListener('click', () => {
+    const light = document.body.classList.toggle('light');
+    all('[data-theme]').forEach(b => b.textContent = light ? 'Dark preview' : 'Light preview');
+  }));
+  all('[data-context]').forEach(button => button.addEventListener('click', () => {
+    select('#context-screen').classList.toggle('compact-context',button.dataset.context === 'compact');
+    all('[data-context]').forEach(b => b.setAttribute('aria-pressed',String(b === button)));
+  }));
+  select('#copy-example').addEventListener('click', () => {
+    const result = card(original,'Scheduled'); select('#context-results').prepend(result);
+    toast('Copied 1 card to Scheduled, with its Goals context.', () => result.remove());
+  });
+  all('[data-fold]').forEach(button => button.addEventListener('click', () => {
+    all('details',select('#fold-document')).forEach(detail => detail.open = button.dataset.fold === 'open');
+  }));
+  all('[data-jump]').forEach(button => button.addEventListener('click', () => {
+    const target = document.getElementById(button.dataset.jump);
+    let parent = target.parentElement;
+    while(parent) { if(parent.tagName === 'DETAILS') parent.open = true; parent = parent.parentElement; }
+    all('.flash-line').forEach(line => line.classList.remove('flash-line'));
+    target.classList.add('flash-line'); target.scrollIntoView({block:'center',behavior:'auto'});
+    toast('Revealed this line in the document (A). No writing changed.');
+  }));
+  select('#return-document').addEventListener('click', () => {
+    all('details',select('#fold-document')).forEach(detail => detail.open = true);
+    select('#fold-document').scrollTop = 0;
+    toast('Whole document revealed in A. No writing changed.');
+  });
+  all('[data-action-screen]').forEach(screen => {
+    let mode = 'copy', next = 2;
+    const source = select('.selection-wrap',screen);
+    const update = () => {
+      all('[data-mode]',screen).forEach(button => button.setAttribute('aria-pressed',String(button.dataset.mode === mode)));
+      select('.scope',screen).textContent = mode === 'copy' ? 'Copy keeps the original in Goals.' : 'Move transfers this item and its two nested lines out of Goals.';
+      const inlineHeading = select('.inline-dest .popover-head span',screen);
+      if(inlineHeading) inlineHeading.textContent = (mode === 'copy' ? 'Copy' : 'Move') + ' 1 card · Friday, 23 October';
+      all('.next-count',screen).forEach(count => count.textContent = next + ' / 3');
+      all('[data-destination]',screen).forEach(button => { button.disabled = (button.dataset.destination === 'Next' && next >= 3) || source.hidden; button.title = button.dataset.destination === 'Next' && next >= 3 ? 'Next already has three cards. Move one out before adding another.' : ''; });
+    };
+    all('[data-mode]',screen).forEach(button => button.addEventListener('click',() => { mode = button.dataset.mode; update(); }));
+    const popover = select('.popover',screen), trigger = select('[data-popover-toggle]',screen);
+    if(trigger) {
+      trigger.addEventListener('click',() => { popover.hidden = !popover.hidden; trigger.setAttribute('aria-expanded',String(!popover.hidden)); });
+      select('[data-popover-close]',screen).addEventListener('click',() => { popover.hidden = true; trigger.setAttribute('aria-expanded','false'); trigger.focus(); });
+    }
+    all('[data-destination]',screen).forEach(button => button.addEventListener('click',() => {
+      const destination = button.dataset.destination, action = mode;
+      const result = card(original,destination); select('.result-list',screen).prepend(result);
+      select('.result-empty',screen).hidden = true;
+      if(destination === 'Next') next++;
+      let placeholder = null;
+      if(action === 'move') {
+        source.hidden = true; if(popover) popover.hidden = true;
+        placeholder = document.createElement('p'); placeholder.className = 'sent-source'; placeholder.textContent = 'Moved to ' + destination + '. Undo restores it here.'; source.after(placeholder);
+      }
+      mode = 'copy'; update();
+      toast((action === 'copy' ? 'Copied' : 'Moved') + ' 1 card to ' + destination + '.', () => {
+        result.remove(); if(destination === 'Next') next--;
+        if(placeholder) placeholder.remove(); source.hidden = false;
+        if(popover) { popover.hidden = false; trigger.setAttribute('aria-expanded','true'); }
+        select('.result-empty',screen).hidden = !!select('.card',select('.result-list',screen)); update();
+      });
+    }));
+    screen.addEventListener('keydown',event => {
+      if(event.key === 'Escape' && popover && !popover.hidden) {
+        popover.hidden = true; trigger.setAttribute('aria-expanded','false'); trigger.focus();
+      }
+    });
+  });
+  select('#undo').addEventListener('click',() => { if(lastUndo) lastUndo(); lastUndo = null; select('.toast').hidden = true; });
+  select('#dismiss').addEventListener('click',() => select('.toast').hidden = true);
+  select('#reset').addEventListener('click',() => location.reload());
+  all('[data-dummy],[data-menu]').forEach(button => button.addEventListener('click',() => toast('This sketch only demonstrates context, scanning and transfer controls.')));
+  const tab = location.hash.slice(1); if(['context','scan','actions'].includes(tab)) activate(tab);
+})();
+</script>
+</body>
+</html>

@@ -22,6 +22,11 @@ get a bounded scope and evidence before implementation. General release qualific
 - **UX-05 — Mobile formatting controls.** Explore a small extension above the on-screen keyboard with
   one-tap heading and list formatting, especially in Goals. Evaluate keyboard/viewport behavior,
   selection, focus and available writing space on actual phones.
+  [Investigation62](product-design/2026-10-23-goals-context/mobile-formatting.md), 2026-10-23,
+  recommends a Goals-only in-app strip using existing CodeMirror panels/admitted commands, with
+  a stable editor-attached fallback. Perfect keyboard docking is not universally standardized;
+  composition/focus behavior must select the approach before implementation. No library or app
+  code was added, and no toolbar implementation is selected yet.
 - **UX-06 — Continuous mobile deletion.** The operator's barometer: “can I hold down backspace on mobile
   and watch the line disappear without pauses?” Pauses remain. Reproduce and measure sustained deletion
   on a physical phone, including while sync is active, alongside the existing typing measurements.
@@ -60,6 +65,29 @@ get a bounded scope and evidence before implementation. General release qualific
   and does not answer the whole need. Preserve the premise that actively prioritizing helps the user
   do the work; automatic recurring tasks or AI-selected priorities are not the solution requested here.
   This is a design problem to explore, not a selected lens or implementation.
+
+  **Direction updated 2026-10-23:** the operator withdrew gathering/the gather tray as too rigid.
+  Continue with scanning instead. [Design study61](product-design/2026-10-23-goals-context/README.md)
+  compares folds in the original document with a compact reading projection that exposes nested
+  items and notes in source order. Neither alternative is selected for implementation.
+
+  **Browser-review clarification, 2026-10-23:** retain the formatted live-preview editor and caret
+  syntax reveal; no separate scanning mode or outliner. [Revision64](product-design/2026-10-23-goals-context/editor-study.md)
+  compares gentle caret-context dimming, per-crumb menus, experimental scroll-opening and a reading
+  rail. None is selected for application implementation.
+
+  **Selected 2026-10-25:** gentle context with a settings-sidebar toggle, default on, plus
+  per-breadcrumb menus **and retention of the existing full-page outline dropdown**. Preserve the
+  formatted editor and caret reveal. Scroll-opening and the reading rail are parked after review;
+  a fixed viewport/percentage boundary does not establish the operator's attention. See the
+  [selection and remaining details](product-design/2026-10-23-goals-context/selection-2026-10-25.md).
+  No app implementation is authorized or claimed by this design selection.
+
+  **Implemented in unsigned phases66–68, 2026-10-25:** subsequent operator authorization includes
+  the offscreen-caret fallback. Gentle context defaults on, has an immediate browser setting, and
+  per-heading menus complement the full outline in the same formatted editor. Bounded unit/browser
+  evidence and remaining limits are in the [implementation record](development-evidence/2026-10-25-goals-navigation/phase68/README.md).
+  No source commit, preview8443 update or deployment has occurred.
 
 - **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
   sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
@@ -134,6 +162,33 @@ behavior is unchanged; physical-device lifecycle evidence is still needed before
 
 ## Earlier conversation items retained
 
+- **UX-19 — Automatic card context from Goals headings.** Requested 2026-10-23 for specification
+  before coding. [Study61](product-design/2026-10-23-goals-context/README.md) mocks a captured heading
+  breadcrumb and compact-label alternative. Proposed opt-in captures context on new transfers;
+  snapshot/live behavior, encrypted metadata and export/import policy remain product/format decisions.
+  The user did not request a settings mock. No automatic tagging has been implemented.
+  Browser feedback approves breadcrumb placement only: preserve existing card styles/chrome.
+  [Revision64](product-design/2026-10-23-goals-context/editor-study.md) reuses the current renderer/CSS.
+  **Implemented in unsigned phases69–72, 2026-10-25:** card transfers keep advisory heading
+  snapshots in encrypted workspace content. Paths appear beneath existing card writing with no
+  leading icon. Account → Editor has a default-on, browser-local display switch; hiding does not
+  erase context or stop capture. Optional export sidecars preserve Markdown. Mixed old clients may
+  omit/retain stale advisory metadata; no live backlink, backfill or Move-back command is added.
+  [Implementation evidence](development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md).
+
+- **UX-20 — Move/copy controls near the source.** Requested 2026-10-23; extends UX-08.
+  [Study61](product-design/2026-10-23-goals-context/README.md) compares an explicit gutter popover
+  with an attached action strip. Whole-subtree scope, current destination day and one-step Undo
+  remain requirements; no application placement or new transfer implementation is selected.
+  **Parked after browser review:** keep the existing footer controls; neither extra popover nor
+  attached strip is selected. Desktop transfer shortcuts remain a separate candidate, with native
+  editing/browser conflicts and exact bindings to be resolved.
+- **UX-21 — Return a card to Goals using captured heading context.** Proposed by the operator on
+  2026-10-23. Resolve the longest current root-prefix heading match, disclose ambiguity/missing paths,
+  and append in a way that preserves the intended heading scope. The parent-with-subheadings insertion
+  problem, multiline encoding and missing-context policy are recorded in
+  [revision64](product-design/2026-10-23-goals-context/editor-study.md). No command is implemented.
+
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this
   before formal qualification. Pricing, entitlements and the associated UX need their own design pass.
   [PRD §11 question 1](./PRD.md#11-remaining-product-questions) retains the earlier pricing question;
@@ -202,3 +257,20 @@ Confirm current behavior and subsequent decisions before promoting one into an a
 There may be other older conversation-only items. This recovery pass checked the repository's product
 questions, decision/completion records and the available conversation; it is not an exhaustive
 reconstruction of every past session. Add newly recalled items here with their source and status.
+
+## 2026-10-26 — Automatic history maintenance
+
+Growing-account open/sync delay is reported, without attributing the current account's cause.
+[Private scheduling73](./account-local-retention-automatic.md) reuses the earlier depth and preparation
+studies and adds automatic calls to the existing local removal owner. Public conversion remains off.
+Next work: capacity/refusal presentation and activation/rollback policy; physical-device behavior;
+separately consider automatic server snapshot/admission/pruning without weakening the two-snapshot or
+multi-device rules. No user-visible writing is selected for age-based deletion. Do not repeat the
+already completed preparation-task optimization as though it were still outstanding.
+
+**Follow-up74–75:** local capacity/refusal presentation and paced explicit retry are implemented, with
+quiet ordinary deferrals and a collapsed Data marker for persistent issues. The coherent automatic
+release profile and compatible reader rollback are implemented/tested; ordinary builds remain reader-
+only until an activated image is selected. The [runbook](./account-local-retention-activation.md) covers
+build-time flags and cached-client adoption. Automatic service snapshots/admission/pruning remain
+separate. No real-profile conversion or production release occurred in these unsigned phases.

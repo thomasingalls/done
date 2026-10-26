@@ -36,6 +36,8 @@ import { UnfiledPanel } from './UnfiledPanel';
 import { StaleBanner } from './StaleBanner';
 import { goalsIsPanel, menuIsPanel, useBreakpoint } from './useBreakpoint';
 import { useToday } from './useToday';
+import { useGentleContext } from './useGentleContext';
+import { CardGoalsContextDisplay, useCardGoalsContext } from './useCardGoalsContext';
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
@@ -47,6 +49,8 @@ const SNAP_MS = 220;
 type Lateral = 'menu' | 'goals';
 
 export const App = (): React.ReactElement => {
+  const gentleContext = useGentleContext();
+  const cardContext = useCardGoalsContext();
   const { snapshot } = useWorkspaceUi();
   const breakpoint = useBreakpoint();
   const settings = snapshot.settings;
@@ -440,14 +444,28 @@ export const App = (): React.ReactElement => {
         } as React.CSSProperties
       }
     >
-      <Menu ref={menu} today={today} date={date} onGoTo={goTo} onClose={closeLateral} />
-
-      <UnfiledPanel
+      <Menu
+        ref={menu}
         today={today}
-        cards={unfiled}
-        open={unfiledOpen}
-        onClose={() => setUnfiledOpen(false)}
+        date={date}
+        onGoTo={goTo}
+        onClose={closeLateral}
+        gentleContext={gentleContext.enabled}
+        onGentleContext={gentleContext.change}
+        gentleContextStored={gentleContext.stored}
+        cardGoalsContext={cardContext.enabled}
+        onCardGoalsContext={cardContext.change}
+        cardGoalsContextStored={cardContext.stored}
       />
+
+      <CardGoalsContextDisplay value={cardContext.enabled}>
+        <UnfiledPanel
+          today={today}
+          cards={unfiled}
+          open={unfiledOpen}
+          onClose={() => setUnfiledOpen(false)}
+        />
+      </CardGoalsContextDisplay>
 
       <button
         type="button"
@@ -461,31 +479,34 @@ export const App = (): React.ReactElement => {
 
       <div className="plane" ref={plane} onWheel={onDayWheel}>
         <StaleBanner today={today} onGoTo={goTo} />
-        <DayPlane
-          date={date}
-          today={today}
-          shift={dayShift}
-          settling={settling}
-          showMenuTrigger={menuOverlay}
-          menuOpen={menuOpen}
-          showGoalsTrigger={goalsOverlay}
-          goalsOpen={goalsOpen}
-          onOpenGoals={() => {
-            closeLateral();
-            setOpenPanel('goals');
-          }}
-          onOpenMenu={() => setOpenPanel((open) => (open === 'menu' ? null : 'menu'))}
-          onGoTo={goTo}
-          unfiledCount={unfiled.length}
-          unfiledOpen={unfiledOpen}
-          onOpenUnfiled={() => {
-            closeLateral();
-            setUnfiledOpen((open) => !open);
-          }}
-        />
+        <CardGoalsContextDisplay value={cardContext.enabled}>
+          <DayPlane
+            date={date}
+            today={today}
+            shift={dayShift}
+            settling={settling}
+            showMenuTrigger={menuOverlay}
+            menuOpen={menuOpen}
+            showGoalsTrigger={goalsOverlay}
+            goalsOpen={goalsOpen}
+            onOpenGoals={() => {
+              closeLateral();
+              setOpenPanel('goals');
+            }}
+            onOpenMenu={() => setOpenPanel((open) => (open === 'menu' ? null : 'menu'))}
+            onGoTo={goTo}
+            unfiledCount={unfiled.length}
+            unfiledOpen={unfiledOpen}
+            onOpenUnfiled={() => {
+              closeLateral();
+              setUnfiledOpen((open) => !open);
+            }}
+          />
+        </CardGoalsContextDisplay>
       </div>
 
       <Goals
+        gentleContext={gentleContext.enabled}
         ref={goals}
         date={date}
         today={today}

@@ -1,0 +1,86 @@
+{
+  "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "image": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "runtimeCases": {
+    "runtimeGateway": 16,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6,
+    "total": 33,
+    "passed": true,
+    "originalDeadlinesRetained": true
+  },
+  "containerSmoke": {
+    "passed": true,
+    "precacheUrls": 60,
+    "cleanupFailures": []
+  },
+  "tls": {
+    "selfSignedRefused": true,
+    "explicitDisposableCaAccepted": true,
+    "publicDefaultTrustWithHostResolvedDns": true,
+    "originalPublicProbe": "Docker DNS ENOTFOUND nodejs.org before TLS; original failed result retained",
+    "verificationDisabled": false
+  },
+  "upgrade": {
+    "passed": 1,
+    "failed": 0,
+    "retries": 0,
+    "deadlineMs": 180000,
+    "durationMs": 53500,
+    "predecessorFrontend": "d8b3f22b",
+    "candidateFrontend": "dc53fecf",
+    "waitingWorkerPath": true,
+    "originalAndJoinedProfiles": true,
+    "realAutomaticThresholdAndQuietClock": true,
+    "actualConvertedProfiles": 2,
+    "compatibleReaderReopenAndSync": true,
+    "hostServiceNode": "24.18.0",
+    "backendRollbackExercised": false,
+    "initialApparatusFailure": "No tests found because frozen legacy helper omitted geometry/openApp; exact pinned helper supplied before passing run"
+  },
+  "frontend": {
+    "filesUnchangedAfterRehearsal": 110,
+    "initialGzipKiB": 232.7,
+    "budgetKiB": 350,
+    "originIsolation": "passed; namespace-only allowlist; static scanner limits unchanged",
+    "allFourCompiledRetentionFlags": "1"
+  },
+  "routineRegressions": {
+    "packet": "../2026-10-26-signed-ux-retention-checkpoint/README.md",
+    "source": "92034c115dc5448f13e9d24ab50142726cbcbd91",
+    "buildInputsEqual": 1676,
+    "unitPassed": 2012,
+    "existingUnitSkip": 1,
+    "geometryPassed": 216,
+    "existingPlatformSkips": 24,
+    "ciAdapterCasesPassed": 175,
+    "ciContractLeafCommandsPassed": 40,
+    "hostNode": "26.12.1"
+  },
+  "infra": {
+    "base": "a7fcf5b26ec2a9c90156bd2b4c06de24f27c34a8",
+    "offlineCheckPassed": true,
+    "independentParsedComparisonPassed": true,
+    "counterexamplesRejected": 4,
+    "serverDryRunPassed": true,
+    "hsts": "max-age=31536000",
+    "hstsScope": "done.oxidationlabs.com HTTPS only, ordinary and notification stream rules; no includeSubDomains/preload"
+  },
+  "physicalAndroidWalkthrough": "deferred by operator while proceeding with two-user beta release",
+  "generalQualification": "paused; 907 obligations and 363 unresolved remain; no aggregate credit",
+  "freshVulnerabilityScan": false,
+  "publicationState": "local tested artifact and prepared infrastructure diff; nothing published or deployed in this checkpoint",
+  "freshRoutineBookkeeping": {
+    "node": "24.18.0",
+    "contractLeafCommandsPassed": 40,
+    "ciAdapterCasesPassed": 175,
+    "inventoryTestCasesPassed": 10,
+    "inventoryPlanCensusPassed": true,
+    "traceabilityAfterReceiptRefresh": "passed",
+    "retainedFailures": [
+      "Optional first-authority wrapper final formatter rejects existing constructions.json layout; functional and vector stages pass",
+      "Initial traceability rejects older origin receipt, repaired by executing current budget/origin checks"
+    ]
+  }
+}

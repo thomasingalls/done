@@ -1,0 +1,76 @@
+{
+  "signedSource": "92034c115dc5448f13e9d24ab50142726cbcbd91",
+  "tree": "cccaa6b89342dad12aae6b8a1197a4778c313b1a",
+  "node": "v26.12.1",
+  "chrome": "156.0.8078.48",
+  "unit": {
+    "passed": 2012,
+    "skipped": [
+      {
+        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/workspaceAdmission.test.ts",
+        "name": "workspace preparation account-text private prepared histories remain unpublished under pressure and are disposed on discard and drained close",
+        "status": "skipped"
+      }
+    ],
+    "files": 171,
+    "maxWorkers": 2
+  },
+  "browser": {
+    "startTime": "2026-10-26T11:34:12.824Z",
+    "duration": 118062.144,
+    "expected": 216,
+    "skipped": 24,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "ciAdapters": {
+    "passed": 175,
+    "failed": 0
+  },
+  "contractLeafCommands": 40,
+  "imageBuilt": false,
+  "physicalPhoneTested": false,
+  "qualification": "paused; aggregate remains blocked",
+  "checkpointScriptCorrection": "The initial extractor expected per-case pending; Vitest reports this case as skipped. Overall skipped count and raw reports are unchanged.",
+  "prerequisites": [
+    {
+      "name": "debts",
+      "code": 0
+    },
+    {
+      "name": "retention",
+      "code": 0
+    },
+    {
+      "name": "selection-status",
+      "code": 0
+    },
+    {
+      "name": "update-limit",
+      "code": 0
+    },
+    {
+      "name": "wasm-seal",
+      "code": 0
+    },
+    {
+      "name": "authority-map",
+      "code": 0
+    },
+    {
+      "name": "yjs-patch",
+      "code": 0
+    },
+    {
+      "name": "budget",
+      "code": 0
+    },
+    {
+      "name": "origin",
+      "code": 0
+    }
+  ],
+  "traceability": "passed",
+  "ciUnitWorkers": 1,
+  "allPriorNativeSourceBytesReused": true
+}

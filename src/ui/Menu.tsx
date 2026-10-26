@@ -12,8 +12,19 @@ import { AccountIdentity } from './AccountIdentity';
 import { deviceCode } from '../account/deviceRoster';
 import { InstallPanel } from './InstallPanel';
 import { RemoveFromDeviceButton } from './DeviceDataRemoval';
+import {
+  LocalHistoryMaintenance,
+  localHistoryNeedsAttention,
+  useLocalHistoryStatus,
+} from './LocalHistoryMaintenance';
 
 export interface MenuProps {
+  gentleContext: boolean;
+  onGentleContext: (enabled: boolean) => void;
+  gentleContextStored: boolean;
+  cardGoalsContext: boolean;
+  onCardGoalsContext: (enabled: boolean) => void;
+  cardGoalsContextStored: boolean;
   today: ISODate;
   date: ISODate;
   onGoTo: (date: ISODate) => void;
@@ -32,7 +43,19 @@ const openNativeDatePicker = (event: React.SyntheticEvent<HTMLInputElement>) => 
     // Keep ordinary native focus/date entry if the browser refuses this request.
   }
 };
-export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
+export const Menu = ({
+  today,
+  date,
+  onGoTo,
+  onClose,
+  ref,
+  gentleContext,
+  onGentleContext,
+  gentleContextStored,
+  cardGoalsContext,
+  onCardGoalsContext,
+  cardGoalsContextStored,
+}: MenuProps) => {
   const {
     workspace,
     snapshot,
@@ -53,6 +76,8 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     slotId,
   } = useWorkspaceUi();
   const actor = snapshot.actors.find((value) => value.id === actorId)!;
+  const localHistory = devices?.localHistory;
+  const localHistoryStatus = useLocalHistoryStatus(localHistory);
   const [name, setName] = useState(actor.name);
   const [deviceName, setDeviceName] = useState(snapshot.deviceName);
   const [color, setColor] = useState(actor.color);
@@ -255,6 +280,43 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           </form>
         </div>
         <div className="menu-group">
+          <h3 className="menu-subheading">Editor</h3>
+          <label className="menu-editor-toggle">
+            <input
+              type="checkbox"
+              checked={gentleContext}
+              onChange={(event) => onGentleContext(event.target.checked)}
+            />
+            <span>Gentle context</span>
+          </label>
+          <p className="menu-note">
+            Keep your current Goals section clear and other writing quieter. Applies immediately in
+            this browser.
+          </p>
+          {!gentleContextStored && (
+            <p className="menu-note" role="status">
+              This change applies for this visit. Browser preferences could not be saved.
+            </p>
+          )}
+          <label className="menu-editor-toggle">
+            <input
+              type="checkbox"
+              checked={cardGoalsContext}
+              onChange={(event) => onCardGoalsContext(event.target.checked)}
+            />
+            <span>Goals breadcrumbs on cards</span>
+          </label>
+          <p className="menu-note">
+            Show the heading path kept with cards from Goals. Hiding it keeps saved context. Applies
+            immediately in this browser.
+          </p>
+          {!cardGoalsContextStored && (
+            <p className="menu-note" role="status">
+              This change applies for this visit. Browser preferences could not be saved.
+            </p>
+          )}
+        </div>
+        <div className="menu-group">
           <h3 className="menu-subheading">Protection</h3>
 
           <p className="menu-note">
@@ -322,7 +384,10 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           </button>
         )}
       </MenuSection>
-      <MenuSection title="Data">
+      <MenuSection
+        title="Data"
+        notice={localHistoryNeedsAttention(localHistoryStatus) ? 'Maintenance paused' : undefined}
+      >
         <div className="menu-row">
           <span>Local data</span>
           <span className="menu-value">{storage}</span>
@@ -354,6 +419,9 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             Redo
           </button>
         </div>
+        {localHistory && localHistoryStatus && (
+          <LocalHistoryMaintenance runtime={localHistory} status={localHistoryStatus} />
+        )}
         {devices?.history && <AccountHistory run={devices.history} />}
       </MenuSection>
       <InstallPanel />

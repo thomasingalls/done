@@ -16,13 +16,14 @@
  * - **A frozen day** never mounts at all (§4.5).
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import type { EditorView } from '@codemirror/view';
 import { titleOf, type Section } from '../crdt/days';
 import type { WorkspaceSnapshot } from '../crdt/admittedWorkspace';
 import { useWorkspaceUi } from './workspaceUi';
 import { blurToStatic, cardKeymap, type CardHooks } from '../editor/cardCommands';
 import { renderStatic } from '../editor/staticRender';
+import { CardGoalsContextDisplay } from './useCardGoalsContext';
 
 export interface CardAction {
   label: string;
@@ -87,6 +88,7 @@ export const Card = ({
 }: CardProps): React.ReactElement => {
   const { mountEditor } = useWorkspaceUi();
   const { id, text } = card;
+  const showGoalsContext = useContext(CardGoalsContextDisplay);
   const [editing, setEditing] = useState(autoFocusAt !== undefined);
   const staticHost = useRef<HTMLDivElement>(null);
   const returnFocus = useRef(false);
@@ -392,6 +394,12 @@ export const Card = ({
           onLostPointerCapture={onLostPointerCapture}
         />
       )}
+
+      {showGoalsContext && card.goalsContext?.length ? (
+        <p className="card-goals-context">
+          {card.goalsContext.map((heading) => heading.title).join(' › ')}
+        </p>
+      ) : null}
 
       {!frozen && actions.length > 0 && (
         <div className="card-actions">

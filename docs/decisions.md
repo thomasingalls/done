@@ -5289,3 +5289,245 @@ it across the evidence commit or application merge. Do not rebuild merely to rel
 head. Keep all lower package findings, earlier failed attempts, browser/server boundary limits
 and the open AMD64/generalized qualification boundaries. Operator merges, exact private image
 publication, infrastructure review and deployment remain separate.
+
+
+## 2026-10-23 — Specify heading context and scanning before changing Goals
+
+**Commit:** pending sequential design patch61. **Orientation:** the operator withdrew the gather-tray
+direction as too rigid and requested visual alternatives for automatic parent-header card context,
+scanning/folding and near-cursor Copy/Move before application coding. Two read-only subagents reviewed
+interaction/storage boundaries and mobile formatting feasibility.
+
+**Decision:** build a standalone fictional-data sketch, retain it in the repo with the product queue,
+and keep every interaction/format choice explicitly proposed. Compare heading breadcrumb/compact label,
+in-place folds/compact source-order reading, and gutter popover/attached actions. Recommend captured
+context from the admitted source item, but do not select a metadata format, export policy or live-link
+contract. No gather workflow, task database, new dependency or app implementation is authorized by
+this study. Preserve old tests/runtime, the other seat’s progress document and release qualification pause.
+
+**Tradeoff:** interactive HTML makes scope and geometry concrete without establishing real editor,
+phone, encryption or admission behavior. Parent-header context needs a later encrypted-format/export
+decision; the existing viewport breadcrumb alone cannot supply transfer provenance. [Design packet](./product-design/2026-10-23-goals-context/README.md).
+
+
+## 2026-10-23 — Scope mobile formatting as an in-app editor strip
+
+**Commit:** pending sequential design patch62. **Orientation:** the operator knows the intended
+heading/list toolbar appearance, but asked whether cross-browser/OS/keyboard requirements make it
+unreasonably large or whether an established library settles them.
+
+**Decision:** preserve a primary-source feasibility report before selecting implementation. Existing
+CodeMirror panels and semantic commands are the starting recommendation; new heading/list adapters
+remain needed. Treat keyboard geometry, focus and provisional text as separate boundaries. A Goals-only
+strip with stable editor-attached fallback is a bounded proposal; neither universal keyboard docking
+nor a native wrapper is selected. No new dependencies, permissions or mutation bypasses.
+
+**Tradeoff:** a small formatting UI is practical, but no reviewed library removes app-specific
+composition/admission obligations. Current Android composition can begin by placing a caret in a word,
+so disabling controls for every composition is not automatically usable. A real-keyboard exploratory
+slice should choose safe command ordering before implementation, separately from paused release
+qualification. [Report](./product-design/2026-10-23-goals-context/mobile-formatting.md).
+
+
+## 2026-10-23 — Keep scanning assistance inside the formatted editor
+
+**Commit:** pending sequential design patch64. **Orientation:** browser review approved only card
+breadcrumb placement, rejected incidental card styling, and clarified that Goals must retain its
+formatted live-preview editing behavior without an outliner or separate scan mode. Nearby controls
+added clicks/clutter; existing footer controls may already be better on phones.
+
+**Decision:** supersede the earlier visual recommendations with one fictional editable CodeMirror
+study using existing rendering/theme/command/CSS modules. Compare gentle context color, per-crumb
+menus, experimental scroll-opening and a reading rail without selecting one for app implementation.
+Preserve existing card styling and footer placement; retain desktop shortcuts and context-based
+return to Goals as separate candidates. No new binding, metadata format or return command is selected.
+
+**Tradeoff:** a real editor makes caret reveal/geometry visible, while its memory-only writes establish
+no app admission/IME/persistence guarantee. Longest-prefix return matching also needs an insertion
+contract: subtree-end append can misfile text under the last child. [Revision](./product-design/2026-10-23-goals-context/editor-study.md).
+
+
+## 2026-10-25 — Select gentle context and preserve both outline navigation levels
+
+**Commit:** pending sequential design patch65. **Orientation:** the operator found viewport-edge
+and fixed-percentage activation unrelated to reading attention, favors gentle context plus breadcrumb
+menus, and explicitly wants the current full-page outline dropdown retained. The rail is distracting.
+
+**Decision:** select gentle context with a settings-sidebar toggle defaulting on, add per-crumb local
+navigation without replacing the full outline, and park scroll-opening/reading rail as historical
+experiments. Retain formatted editing/caret reveal and the existing footer. This is a design selection,
+not authorization to start application coding. Card-context capture defaults/format remain separate.
+
+**Tradeoff:** coordinate thresholds do not name the attended text; damping can reduce toggling but
+does not establish intent. Explicit caret/focus/navigation actions are stronger candidate signals,
+with the editing caret and reading location kept distinct. Offscreen dimming fallback and exact
+preference/contrast detail remain proposals. [Selection](./product-design/2026-10-23-goals-context/selection-2026-10-25.md).
+
+
+## 2026-10-25 — Gentle context remains a bounded, transient view projection
+
+**Commit:** pending sequential implementation66. **Orientation:** the operator authorized default-on
+gentle context, settings toggle/offscreen fallback and breadcrumb menus retaining the full outline.
+
+**Decision:** first implement the decoration and one browser-only presentation Boolean. Keep the
+workspace format, admission/crypto/sync owners and card rendering unchanged. Bound parser-node
+lookup, avoid forced parsing/title-catalogue reconstruction per keystroke, and coalesce visible-area
+measurement. Dispatch only after CodeMirror measurement completes, with owner/state/generation fences.
+Storage refusal affects remembering this choice only. Menus and final bookkeeping are separate phases.
+
+**Tradeoff:** incomplete parser coverage or pathological scope lookup shows ordinary contrast rather
+than guessing or blocking typing. The preference applies to this browser, without sync semantics.
+[Phase66 evidence](./development-evidence/2026-10-25-goals-navigation/phase66/README.md).
+
+## 2026-10-25 — Keep two navigation levels in the one Goals editor
+
+**Commit:** pending sequential implementation patch67. **Orientation:** the operator selected per-crumb
+menus while retaining the complete page outline and formatted editing.
+
+**Decision:** retain Goals as the full-outline control; give each heading a direct jump and local
+child/sibling menu. Capture its document identity and catalogue once, close on accepted edits, and
+independently reject stale destinations. Display ancestry/line context for duplicate headings. Menu
+selection focuses the stable Goals control because a leaf trigger can disappear when navigating to
+siblings; Escape returns to the original trigger. Neither action moves the editor caret or opens it.
+
+**Tradeoff:** this is ephemeral navigation over authored headings, not a new outline model, section
+identity or content command. Bounded parser availability remains the existing outline limit. Native
+horizontal breadcrumb scrolling worked in the disposable touch check, so no shell gesture change is
+needed. [Bounded evidence](./development-evidence/2026-10-25-goals-navigation/phase67/README.md).
+
+## 2026-10-25 — Keep new Goals tests required without inventing release credit
+
+**Commit:** pending sequential patch68. **Orientation:** phases66–67 implement the selected Goals
+presentation features; the repository's local bookkeeping and cautious old-test discipline still apply.
+
+**Decision:** refresh source hashes and add exactly five required test-file obligations. Keep every
+existing unresolved identity and the aggregate release block; new files remain uncredited until a
+separate adapter/process review. Cryptographic labels, ownership and construction dispositions stay
+unchanged. Existing outline fixtures wait for the complete admitted document, and card-reopen tests
+assert completed quick-entry submission before reload. Every old assertion and timeout remains.
+
+**Tradeoff:** broad functional success is recorded as execution evidence, not security qualification.
+The stale-menu regression is challenged with a one-guard-defective disposable build; earlier fixture,
+receipt and card-reopen failures remain visible alongside final passing results. Physical phone/IME,
+other engines and general qualification are outside this slice. [Evidence](./development-evidence/2026-10-25-goals-navigation/phase68/README.md).
+
+## 2026-10-25 — Card heading context is an advisory encrypted snapshot
+
+**Commit:** pending sequential patch70. **Orientation:** the operator asked to implement card heading
+breadcrumbs with an account-menu off option and a simpler symbol treatment, retaining card styling.
+
+**Decision:** capture bounded authored heading paths with the selected text as optional versioned
+card metadata through the existing admitted command. Preserve Markdown and crypto mechanisms. The
+forthcoming default-on browser display switch hides paths without deleting them or stopping capture.
+Keep supported lifecycle operations/undo consistent; clear differing merged paths. Export an optional
+versioned sidecar without changing Markdown or assigning live paths to archived positions.
+
+**Tradeoff:** the field is advisory, with no task/backlink/authority claim. Old clients can omit it
+or retain an older merge snapshot; a schema fence is not added for optional presentation provenance.
+Unavailable parse coverage/overlong headings omit the label, not the transfer. Sidecar import and
+whole-subtree transfers remain separate. [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase70/README.md).
+
+## 2026-10-25 — Close card breadcrumb implementation without expanding qualification
+
+**Commit:** pending sequential patch72. **Decision:** preserve all existing crypto domains, construction
+ownership, obligations, deadlines and release blocks while registering the five new test files as
+required/uncredited. Keep failed counterexamples and their repairs beside final regression results.
+The account setting controls browser display only; paths remain encrypted content. Prior unlabeled
+cards stay unlabeled. Metadata fidelity with older clients and sidecar import remain explicit limits.
+
+**Evidence:** 1,981 full unit passes/one existing skip; 216 browser passes/24 existing platform skips;
+109 bookkeeping regression passes. Scope and identities are in the
+[final record](./development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md). No release qualification
+resumption, real profile/8443 replacement, commit, push or deployment is implied by these checks.
+
+## 2026-10-26 — Reuse retention measurements; automate the private owner first (phase73)
+
+**Commit:** pending sequential patch73. **Orientation:** the operator reports increasing account-open
+and sync delay, asks about automatic history maintenance, and explicitly asks to reuse earlier
+measurements where sufficient before starting the next bounded phase.
+
+**Decision:** reuse the history-depth, outside-admission handoff, private evidence-reuse and later
+preparation-task studies. The latter already fixed the known remaining preparation stalls; an earlier
+recommendation to repair them again was stale. Implement an event-driven private scheduler over the
+existing removal owner, with a cheap authenticated revision/record-count hint, one flight, quiet and
+cooldown windows, paced refusals, lifecycle cleanup and halt on unexpected owner failure. Preserve
+all final proof/mutation boundaries. Keep automatic policy, installer and writer disabled in public
+builds behind separate opt-ins; compatible reading remains enabled.
+
+**Tradeoff:** reuse selects the next mechanism without diagnosing today's account or claiming new phone
+performance. The 1,024-record/10-second/30-minute policy is a conservative initial private policy, not
+an empirical optimum. Refusals may be reconsidered after reopening because policy state is ephemeral.
+Server pruning, public capacity/refusal UX, compatible activation and physical-device observations
+remain separate. [Contract and evidence](./account-local-retention-automatic.md).
+
+## 2026-10-26 — Quiet local-maintenance status and bounded explicit retry (phase74)
+
+**Commit:** pending sequential patch74. **Orientation:** the operator asked to work through capacity/
+refusal UX and activation in bounded patches, authorizing routine product choices.
+
+**Decision:** keep ordinary deferrals invisible; show persistent problems in Data, with “Maintenance
+paused” on its collapsed summary. Describe capacity without asking people to delete writing. Offer
+Check again for pre-mutation refusals, retaining quiet/backoff and all existing owner checks. A storage
+or verification halt requires lock/reopen; no retry clears it. Reuse the existing DeviceRoster
+presentation boundary for a narrow, optional local status/retry port; service history stays separate.
+
+**Tradeoff:** session status is not persisted across reopening, and ordinary waiting gets no progress
+banner. The status port exposes no authority/evidence. Public conversion stays gated until the
+activation build/runbook phase. [Evidence](./development-evidence/2026-10-26-automatic-local-retention/phase74/README.md).
+
+## 2026-10-26 — Explicit coherent activation with an automatic user experience (phase75)
+
+**Commit:** pending sequential patch75. **Orientation:** status/refusal behavior is frozen in74; the
+operator authorized product decisions while preparing bounded sequential work toward activation.
+
+**Decision:** keep routine builds reader-only and provide one explicit release build opt-in that
+sets compatible reader/installer/retention/automatic capabilities together. Reject contradictory
+zero overrides. Expose that opt-in to Docker's frontend build. The selected release is automatic for
+users, with no extra consent/settings chore; retain the initial threshold/quiet/cooldown policy.
+Prove current-source reader-only rollback after actual conversion, editing and cold reopening.
+
+**Tradeoff:** activation is compiled into immutable client code, so changing server/runtime environment
+cannot instantly stop cached clients. Rollback needs compatible readers and client adoption; it does
+not reconstruct removed operational history. Keep public conversion off in ordinary builds until the
+explicitly selected image is signed, tested and published by the existing procedure. No remote kill
+switch, live document shrinkage, automatic server pruning or new authority is introduced.
+[Runbook](./account-local-retention-activation.md).
+
+## 2026-10-26 — Preserve signed-series routine evidence before image preparation
+
+**Commit:** documentation-only checkpoint after signed `92034c11`.
+**Orientation:** the operator requested committing the prepared series and asked what is wise before
+release preparation. Focused maintenance evidence followed an earlier full UI/unit run.
+
+**Decision:** sign the15 exact prepared trees, then run full routine unit/browser and current CI
+contract/adapter surfaces on the final signed source. Preserve those results and the phase-to-commit
+map in the repository. Reuse exact-tree native maintenance evidence and historical performance work;
+keep general qualification paused. Recommend a targeted physical-phone first-conversion/lifecycle
+walkthrough and exact signed ARM64 artifact/compatible reader rollback as the next publication work.
+
+**Tradeoff:** the full local pass uses Node26 and Android emulation, so it does not establish target
+Node24/container or physical-phone behavior. Keep these limits explicit rather than calling the
+whole paused campaign complete. No product/source changes or publication are made in the checkpoint.
+
+## 2026-10-26 — Prepare automatic-maintenance activation with the deployed reader fallback
+
+**Orientation:** the operator authorized release preparation, chose to defer a physical Android
+walkthrough for the two-user beta, and requested HSTS while noting the infrastructure reorganization.
+
+**Decision:** build the clean signed `dc53fecf` source as an ARM64 distroless image with the coherent
+automatic-maintenance opt-in. Test the unchanged extracted frontend using the actual deployed
+`d8b3f22b` reader, real growth/quiet thresholds and automatic reduction on both original/joined
+profiles, followed by reader rollback and two-way writing. Retain that reader's immutable digest.
+Carry this tested artifact across documentation commits only after independently comparing every
+allowlisted input byte/mode. Keep both merge buttons with the operator and general qualification paused.
+
+Prepare host-only one-year HSTS in the current ol-infra HTTPS route rules, including the notification
+stream, without broadening subdomain scope or changing stream timeouts. Preserve the new `infra-core`
+Flux dependency and independently reconciled application/public route ownership. Image publication,
+infrastructure PR, reconciliation and client adoption follow after application merge.
+
+**Tradeoff:** a desktop real-threshold walkthrough does not establish physical-phone responsiveness or
+screen-lock behavior. Reader adoption stops future maintenance but cannot reconstruct removed local
+operational rows. The original public TLS probe's Docker DNS failure remains beside a successful
+default-trust DNS control. HSTS is sticky until expiry or HTTPS `max-age=0`; no preload is requested.
+[Exact artifact, failures, limits and handoff](./development-evidence/2026-10-26-ux-retention-release/README.md).

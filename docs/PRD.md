@@ -714,6 +714,45 @@ justifies it.
 
 **TRD.** TRD §8.6 (long-document projections).
 
+**Selected 2026-10-25 — gentle context.** Goals retains the same formatted, editable document.
+The caret's current heading section and its two nearest authored heading ancestors stay clear;
+unrelated writing becomes quieter without hiding or reflowing it. Selected text remains clear.
+When the caret is outside the visible editing area, ordinary contrast returns throughout the view.
+“Gentle context” is on by default and has an immediately applied settings-sidebar toggle for this
+browser. Unavailable preference storage affects saving that cosmetic choice, never writing.
+The pinned Goals control still opens the whole page outline. Each breadcrumb also provides a
+heading jump and a menu of immediate subsections (or siblings at a leaf), preserving authored
+order and skipped heading levels. Duplicate labels include ancestry and line location in the local
+menu. These controls scroll without moving the caret or opening the mobile keyboard. Document
+changes dismiss an open menu rather than reuse stale heading positions.
+
+This is separate from inherited heading labels on cards. It does not select automatic folding or
+a separate scanning mode, and does not alter text, placement, attribution, undo or synchronization.
+
+### 4.10 Goals heading context on cards — selected 2026-10-25
+
+Cards copied or moved from Goals retain a snapshot of the source item's authored heading ancestry.
+The selected heading itself is not its own parent; list nesting does not invent additional tags.
+The path appears beneath card writing, without a leading icon and without restyling the card.
+Existing line-based transfer granularity remains; whole-subtree transfer is a separate follow-up.
+
+“Goals breadcrumbs on cards” is on by default in the account settings menu. It hides or shows paths
+in this browser, without deleting them or changing future capture. Directly composed and existing
+unlabeled cards have no inferred path; never backfill by matching equal text. Source renames and
+reorganization do not rewrite historical snapshots. Bounds or incomplete parse coverage omit optional
+context while preserving the requested writing transfer.
+
+Moves, duplication and splitting preserve captured context on supporting clients. Merging different
+or labeled/unlabeled contexts clears the ambiguous path; undo restores the original metadata.
+The context is advisory provenance, not task identity, attribution, access authority or a live backlink.
+Older clients can ignore or omit this optional metadata and do not implement its merge policy; writing
+and existing protection remain compatible. Full cross-version metadata fidelity is not promised.
+
+Snapshots live with encrypted workspace content and sync through its existing admitted path. Browser
+preferences hold only the display Boolean. Export keeps Markdown unchanged and adds an optional
+versioned goals-context.json sidecar identifying the exported file, section and zero-based card index.
+The sidecar is portable data, not a new import/restore promise or an automatic return-to-Goals command.
+
 ---
 
 ## 5. Identity, attribution, sessions and presence
@@ -3201,3 +3240,14 @@ Use another account and Sign out retain their distinct §6.6 effects. Switching 
 login; sign-out ends it. Both retain local writing. Collapsing a section does not reset a form, cancel
 an in-flight operation or change authorization. This organizational clarification changes no protection,
 removal, history-maintenance or synchronization guarantee.
+
+### Automatic local history maintenance — 2026-10-26
+
+Once activated, local technical-history reduction runs automatically with no user opt-in step.
+Ordinary deferrals for editing, receiving and unfinished operations remain quiet. Data shows a
+local-history explanation and a collapsed-section “Maintenance paused” indicator for persistent
+capacity/history/ineligibility problems. Check again requests the same guarded maintenance path,
+retaining quiet/retry delays; it never authorizes a cut. A storage/verification halt requires lock
+and reopen, with no claim that an uncertain write succeeded. Tasks, notes and day writing are not
+selected for age-based deletion. Local maintenance and explicit service snapshot/pruning controls
+remain distinct. [Contract](./account-local-retention-automatic.md).

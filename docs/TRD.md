@@ -1658,11 +1658,69 @@ visible; the complete path remains available to assistive technology.
 This extension is installed only on the document surface. Card headings are presentation inside items and do not
 describe application location.
 
+#### Gentle context — selected 2026-10-25
+
+Gentle context is an ephemeral document-editor decoration over accepted text, never a content
+transformation. It changes text contrast only. Current-section scope and two nearest authored
+heading nodes come from the existing Markdown parser, including skipped levels and Setext headings.
+Keep selected writing clear and restore ordinary contrast when the caret leaves the actual visible
+editing area. Unavailable parse coverage or bounded-lookup exhaustion must leave ordinary contrast.
+
+Do not force full parsing or rebuild the complete heading-title catalogue on each keystroke.
+Coalesce geometry reads in the editor measurement phase. Dispatch view effects only after that
+phase finishes, checking editor lifetime and measured-state freshness; no document-changing
+transaction, admission command or persisted heading/caret snapshot is needed. Map transient
+decorations across accepted text changes and dispose of them with their editor.
+
+Persist only a non-content presentation Boolean for this browser, default on. The preference does
+not enter workspace formats, crypto authority or synchronization. Storage denial keeps the choice
+usable for the visit and reports that it was not saved. Disabling removes the editor extension.
+
+#### Card heading snapshots — selected 2026-10-25
+
+Card maps may contain optional `goalsContext: {v:1, headings:[{level,title}]}`. Levels are strictly
+increasing integers1–6; paths contain at most6 entries, each a nonblank single-line title of at most
+1,024 UTF-16 units. Invalid/future metadata is ignored without making card writing unreadable. Owners
+replace inline JSON rather than mutate it; validated returned paths and local writer values are
+frozen, with weak raw-value caching. The cache has no authority or persistence role.
+
+Capture only on explicit Goals transfer, from accepted source positions and matching selected text,
+not the viewport breadcrumb or text search. Reuse the parser with bounded work, recognize all physical
+lines of Setext headings, exclude the selected heading itself, and omit context on unavailable parse
+coverage. The command carries the text and advisory snapshot together through ordinary admission.
+Move context travels inside each line object so relative-anchor sorting cannot swap paths. Copy
+context follows its original line through markup filtering/capacity clipping. No per-keystroke heading
+catalogue, independent write, new root, crypto domain or authority check is introduced.
+
+The optional additive field uses the existing workspace schema and encrypted update/capsule lifecycle.
+Same-card moves retain it; supporting duplicates/splits copy it, and merges keep only an identical
+known path. Metadata changes share the human operation/undo transaction. Old readers ignore the field;
+old duplicate/split/export paths can omit it and old merges can retain the destination's snapshot.
+This is an advisory mixed-version limitation, not a reason to relax a reader/security fence.
+
+A content-free browser Boolean controls display, default on, independently from capture and sync.
+ZIP export keeps day/master Markdown byte-compatible and emits goals-context.json only when needed.
+Its v1 rows contain file, section (null for unfiled), zero-based index and headings. Context rows must
+refer to the actual serializer's source: never attach live-card metadata to archived Markdown when
+readDayContent chooses a retained archive. This adds no importer, task identity or trusted location.
+
 #### Heading outline and focus
 
-The later outline consumes the same derived heading representation. Navigation dispatches a CodeMirror scroll
-effect without moving the selection or focusing the editor, which prevents an outline tap from summoning the
-mobile keyboard. Navigating and focusing remain separate commands.
+The full document outline and per-breadcrumb menus consume the same derived heading representation.
+The Goals root control retains every heading in source order; local menus contain immediate authored
+children, with sibling navigation at a leaf. The heading stack honors skipped levels. Duplicate titles
+remain separate positions and local rows show ancestry and line number.
+
+Capture one heading catalogue and its immutable editor document identity when a menu opens, never
+per keystroke or per rendered row. Dismiss on document change and independently reject navigation
+when the captured document no longer matches. Direct heading jumps also validate their position,
+level and label against the current document. A menu is ephemeral presentation, not authority.
+
+Navigation dispatches a CodeMirror scroll effect without moving the selection or focusing the editor,
+which prevents a heading tap from summoning the mobile keyboard. Outside pointer actions close menus;
+Escape closes and restores the trigger without closing the narrow Goals surface. Local menus support
+arrow/Home/End navigation. Constrained widths retain the deepest breadcrumb, and the root outline
+remains available. Navigating and focusing remain separate commands.
 
 Focus is one editor showing one contiguous heading subtree. Its state is local and ephemeral. Positions must map
 through editor transactions so concurrent edits before the subtree do not detach the view from its heading.
@@ -4041,3 +4099,22 @@ must contain no material that unseals `R_priv`, and the escrow agent's must cont
 - §6.1 load-before-connect: [data loss with IndexedDB + websocket providers](https://discuss.yjs.dev/t/local-data-lost-with-indexeddb-websocket-providers/1816) · [rare data loss with y-prosemirror](https://discuss.yjs.dev/t/random-rare-data-loss-in-production-with-y-prosemirror/3728) · [y-indexeddb#20](https://github.com/yjs/y-indexeddb/issues/20)
 - §13 prior art, watched rather than adopted: [Ink & Switch Keyhive](https://www.inkandswitch.com/keyhive/notebook/) · [@localfirst/auth](https://github.com/local-first-web/auth). Both are Automerge-adjacent and solve service-independent authorization, which §13.1 deliberately does not need; their credential-separation and signed-operation patterns remain useful input to the design review.
 - §13.10 suite: [HPKE, RFC 9180](https://www.rfc-editor.org/rfc/rfc9180.html) · [WebCrypto security considerations](https://www.w3.org/TR/WebCryptoAPI/#security-considerations) · [WebAuthn PRF extension](https://w3c.github.io/webauthn/#prf-extension)
+
+### Local retention presentation port — 2026-10-26
+
+The composed owner optionally supplies a local-history status/subscription/retry port through its
+existing DeviceRoster presentation surface. It exposes no evidence, counters, keys or mutation
+callbacks. Frozen status snapshots are stable until presentation changes; observer failures do not
+change owner work. Explicit retry clears only the scheduler's parked hint and remains behind fresh
+eligibility, quiet/backoff, current authority, journal/activity and strict removal checks. Running,
+halted or closed lifetimes reject retry; a halt is never cleared by the port. Release detaches
+listeners. Public conversion remains gated separately from the baseline reader.
+
+### Coherent automatic-maintenance build activation — 2026-10-26
+
+The shared Vite build policy defaults to compatible reading only. An explicit
+`VITE_ACCOUNT_RETENTION_AUTO=1` build profile defaults installer/retention gates to1 and refuses
+contradictory explicit zero overrides. Runtime owners still require all four gates. The container
+passes the same build argument into its frontend build; changing runtime environment is insufficient.
+Reader-only rollback retains baseline/journal-era support and cannot restore reduced operational
+rows. Scheduling stops only as cached clients adopt that reader build. [Activation/rollback runbook](./account-local-retention-activation.md).

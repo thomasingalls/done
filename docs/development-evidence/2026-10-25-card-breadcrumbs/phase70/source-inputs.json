@@ -1,0 +1,12 @@
+{
+  "src/crdt/days.ts": "a19a2aae98499694fbb31c4ec284c2bdf5ab73701c7df91de5960a87ac47c105",
+  "src/crdt/moves.ts": "c923e9ff55163a2c56f64cfe5dba3dda99be3ab986f7bf84818835672369de83",
+  "src/crdt/workspaceCommands.ts": "eb8ac9ec6563a8b82956543e2b2786725ba15c838cf1c4a669ed6976570a0baa",
+  "src/crdt/admittedWorkspace.ts": "8c7e4e28a7a1c33d22930beccc4377c9b163c1482e0f785ee31362dce77d07e5",
+  "src/crdt/export.ts": "aa308b8336473367cf9c2cab9f98a9814832d6db82a201e06225e044806e96da",
+  "src/editor/breadcrumbs.ts": "4ddc2880566178a6b46bd60d60ea769efef969189334b6bdea8dfe9008ba0977",
+  "src/editor/cardGoalsContext.ts": "fe76be58bb27655621896a7bb9b638fda8114f246db0361d960ec655c631185b",
+  "test/cardGoalsContext.test.ts": "45eb69c19b7616f09b9a61440e50decf20dc90b2170d712670175fb17cf2b910",
+  "test/cardGoalsContextSource.test.ts": "b528c33d4c59a5891184e5417fb9f7fb04f74008cf0de68aa3c8a2419dd18a8a",
+  "test/cardGoalsContextAdmission.test.ts": "10a07bc47b2a4c8b321c5725ac0c4d7faff1e62afc427b49733568c7cf478753"
+}

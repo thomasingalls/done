@@ -1,0 +1,76 @@
+{
+  "sourceHead": "0a01b71510adca394ce01c758cb96c9400c302ef",
+  "applicationTreeAfter67": "fe7342bc5d3b811e67af2685178a301ecc1a0342",
+  "unit": {
+    "passed": 1948,
+    "existingSkipped": 1,
+    "files": 163
+  },
+  "geometry": {
+    "startTime": "2026-10-25T09:46:47.438Z",
+    "duration": 101565.879,
+    "expected": 200,
+    "skipped": 24,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "finalTypedObserver": {
+    "startTime": "2026-10-25T09:49:33.845Z",
+    "duration": 2609.638,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "removedGuardControl": {
+    "expectedFailure": true,
+    "stats": {
+      "startTime": "2026-10-25T09:49:59.998Z",
+      "duration": 2457.705,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "failure": "forbidden dispatch count expected0, actual1 in both projects"
+  },
+  "bookkeepingRegression": {
+    "passed": 109,
+    "failed": 0
+  },
+  "cardFocusRepeated": {
+    "passed": 24,
+    "failed": 0
+  },
+  "planning": {
+    "obligationsBefore": 892,
+    "obligationsAfter": 897,
+    "unresolvedBefore": 348,
+    "unresolvedAfter": 353,
+    "added": [
+      "test:test/gentleContext.test.ts",
+      "test:test/gentleContextPreference.test.ts",
+      "test:test/geometry/goals-context.spec.ts",
+      "test:test/geometry/goals-navigation.spec.ts",
+      "test:test/headingNavigation.test.ts"
+    ],
+    "lostPriorObligations": [],
+    "newFilesCredited": false
+  },
+  "crypto": {
+    "runtimeSourcesBefore": 401,
+    "runtimeSourcesAfter": 405,
+    "domainCount": 197,
+    "domainsAndSitesUnchanged": true,
+    "ownershipAndConstructionDefinitionsByteIdenticalToHead": true
+  },
+  "typecheck": "passed after correcting the new observer relay overload",
+  "focusedFormatAndLint": "passed",
+  "budget": {
+    "entryGzipKiB": 232.5,
+    "limitKiB": 350
+  },
+  "initialTraceability": "refused six stale execution receipts; preserved in trace68.log.gz",
+  "finalTraceability": "passed after nine fresh prerequisite checks",
+  "publication": "not requested; no commit, push, merge, deploy or preview8443 replacement"
+}

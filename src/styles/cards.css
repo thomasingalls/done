@@ -184,6 +184,15 @@
     border-radius: var(--radius-2);
   }
 
+  .card-goals-context {
+    margin: 0;
+    padding: 0 var(--space-3) var(--space-2);
+    color: var(--color-text-faint);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
   /*
    * Line 1 is the title, the rest is the description (PRD §3, TRD §5.3).
    * Presentation over markdown, not a schema: the card holds ordinary text and

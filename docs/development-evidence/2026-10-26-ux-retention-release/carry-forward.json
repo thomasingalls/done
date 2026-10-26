@@ -1,0 +1,10 @@
+{
+  "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "testedImage": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "sourceArchiveSha256": "84e28e7f88f8bbdcf55c49a711bfca6cb60015c4030a8aade8e51c934de98e38",
+  "compared": "working checkout at dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "buildInputFiles": 1676,
+  "allBuildInputBytesAndExecutableModesMatchSignedArchive": true,
+  "imageRebuiltDuringComparison": false,
+  "imageRelabeled": false
+}

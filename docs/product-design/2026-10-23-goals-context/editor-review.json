@@ -1,0 +1,83 @@
+{
+  "scope": "fictional in-memory CodeMirror only; no app/phone/persistence result",
+  "nativeInputAndUndo": true,
+  "sameTextAndCaretAcrossVariants": true,
+  "dimmingKeepsMeasuredLineGeometry": true,
+  "breadcrumbNavigationKeepsCaretAndDoesNotFocusEditor": true,
+  "caretObservations": {
+    "editedCaret": 275,
+    "afterUndoCaret": 263,
+    "afterNavigation": 263
+  },
+  "readingRail": true,
+  "autoFoldSampleTextAndCaretPreserved": true,
+  "autoFoldPlaceholderCount": 3,
+  "offscreenContrastFallback": true,
+  "breadcrumbToggleKeepsMeasuredCardWritingGeometry": true,
+  "returnIllustrations": [
+    {
+      "kind": "full",
+      "label": "Full match · Work › Studio site › Launch"
+    },
+    {
+      "kind": "partial",
+      "label": "Closest match · Work › Studio site"
+    },
+    {
+      "kind": "unrelated",
+      "label": "No root-path match · ask where"
+    },
+    {
+      "kind": "duplicate",
+      "label": "Two full matches · choose a section"
+    }
+  ],
+  "layouts": [
+    {
+      "width": 1300,
+      "tab": "editor",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1300,
+      "tab": "cards",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1300,
+      "tab": "return",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "tab": "editor",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "tab": "cards",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "tab": "return",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "tab": "editor",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "tab": "cards",
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "tab": "return",
+      "horizontalOverflow": false
+    }
+  ],
+  "pageErrors": []
+}

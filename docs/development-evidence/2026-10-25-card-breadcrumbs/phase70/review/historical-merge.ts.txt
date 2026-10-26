@@ -1,0 +1,25 @@
+export const mergeCardBackwards = (workspace: Workspace, ref: Ref, id: string): number | null => {
+  if (!writable(workspace, ref.date)) return null;
+
+  const collection = collectionOf(dayAt(workspace.doc, ref.date), ref.section);
+  if (!collection) return null;
+  const index = indexOfCard(collection, id);
+  if (index <= 0) return null;
+
+  const previousId = collection.get(index - 1);
+  const previous = previousId && cardAt(workspace.doc, previousId);
+  const current = cardAt(workspace.doc, id);
+  if (!previous || !current) return null;
+  const target = previous.get('text') as YText;
+  const body = cardBody(current);
+  const join = target.length;
+
+  discrete(workspace, () => {
+    if (body.length > 0) target.insert(join, body);
+    collection.delete(index, 1);
+    cardsMap(workspace.doc).delete(id);
+    setCardLocation(workspace.doc, id, null);
+  });
+
+  return join;
+};

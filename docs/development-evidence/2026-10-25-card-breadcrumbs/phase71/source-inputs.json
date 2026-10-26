@@ -1,0 +1,12 @@
+{
+  "src/ui/useBrowserBoolean.ts": "be7181354abfe6af0c7c53713f4822beef40f76e44ec1df261ef7a91d7f3c97b",
+  "src/ui/useGentleContext.ts": "1a7c9d94e2b83b214f5a59cea2813d927ab32067e78545b51541cfd5a85e7418",
+  "src/ui/useCardGoalsContext.ts": "ddfe3d01cebc4f302dd477904ba1599d49b1b992ebeea9c81c37877fb9f46822",
+  "src/ui/App.tsx": "d4e23dbadcb43bb57c34cd86568858008b84e71efe98a02be7e287d627c8e29e",
+  "src/ui/Menu.tsx": "6145e3307a308b7cd8752f53f08bf2832337cd34cbfea1c15c8a45f60d9f255d",
+  "src/ui/Goals.tsx": "471833ca51870dda85d81031b9fe50de45fcb18571756df31478c66839de9123",
+  "src/ui/Card.tsx": "c8940264485d32f5aa6abc099301688d5de48af3cd630fba2c44722929ecc4b8",
+  "src/styles/cards.css": "79dbe8ca73b49de3aac6ed11b61f401ce039df229cb95a4264f485ed834cc38d",
+  "test/browserPresentation.test.ts": "a046c0525e97b79a1142fb90fd608d9f3cb40ee068a76cff532d716211cf2c27",
+  "test/geometry/card-context.spec.ts": "7e290de21d0ded55b693bc855a3a10a1070d7178d9b050926aa7acf5980751ef"
+}

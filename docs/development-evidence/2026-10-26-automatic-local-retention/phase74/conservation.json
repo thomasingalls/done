@@ -1,0 +1,19 @@
+{
+  "baseTree": "3cb6a7cbe0bab0933285439771b6a4f75af5e2c4",
+  "domainsAndSitesUnchanged": true,
+  "constructionDefinitionsUnchanged": true,
+  "oldObligationsPreserved": true,
+  "obligations": [
+    904,
+    906
+  ],
+  "unresolved": [
+    360,
+    362
+  ],
+  "addedRequiredUncredited": [
+    "test:test/localHistoryMaintenance.test.tsx",
+    "test:test/localRetentionStatus.test.ts"
+  ],
+  "aggregateBlocked": true
+}

@@ -1,0 +1,127 @@
+{
+  "sourceCommit": "0a01b71510adca394ce01c758cb96c9400c302ef",
+  "completed": [
+    {
+      "phase": 61,
+      "commit": "a7d1f8fbb981a743732f98678dbbd014ab16e9fc",
+      "tree": "3d9d3c540a8caff78c6d14e32d96f0e71c0a9a3f",
+      "patchSha256": "807b515ef674a75963512473698bb913bd50de5cd1ee58a85571692155ef6080",
+      "message": "docs: explore Goals context, scanning and nearby actions",
+      "signatureVerified": true
+    },
+    {
+      "phase": 62,
+      "commit": "9378b52d282319a2a9d4df70a6e21c9a23bc374e",
+      "tree": "caf9206663be6402768e0546a6046e8594bb77a9",
+      "patchSha256": "1036d64a284effb14b0b1cea28ada1fe06805bf67caf07452c13ac3d67c823f2",
+      "message": "docs: assess mobile formatting controls",
+      "signatureVerified": true
+    },
+    {
+      "phase": 63,
+      "commit": "9dc1b533589c74bf2dfca2bf1a89a9cede189333",
+      "tree": "ba99aabb1695db47092f4be9b00827df84050bc8",
+      "patchSha256": "24c020816c433d5a603de373587085bb00afd48dc5de7fe3009e39dc393d09e7",
+      "message": "docs: capture Goals design review decisions",
+      "signatureVerified": true
+    },
+    {
+      "phase": 64,
+      "commit": "3b1a36f9c37a8397e6d59cb509dfcfcecb1bc7fe",
+      "tree": "eb7444ff6fd1076fcba6c45e01417da4ea5d6876",
+      "patchSha256": "c5c366c59937fe84f8513d18f7323f9443beb115b2f16b561b1074a4fce6a338",
+      "message": "docs: refine scanning within the live editor",
+      "signatureVerified": true
+    },
+    {
+      "phase": 65,
+      "commit": "dd5536ed30f8b348423eb6ebb076e7fcfbc6ed64",
+      "tree": "cb92626fa5036eb6df0e13830753348b3b5d1272",
+      "patchSha256": "39c3073f86e6615759d6f864d34133a4689d14a383df6f83539bf765d524e5df",
+      "message": "docs: select gentle context and breadcrumb navigation",
+      "signatureVerified": true
+    },
+    {
+      "phase": 66,
+      "commit": "fb21b1aedcb2842ef93bc3acd4081c1e537c40ad",
+      "tree": "14d3bad0b552f6cf9828b558617e6f6015c8b91c",
+      "patchSha256": "689a18651132eaca9a9f1e45217616aa3ecbcddeea493780afa2e6373b2572a7",
+      "message": "feat(goals): add gentle context and a browser preference",
+      "signatureVerified": true
+    },
+    {
+      "phase": 67,
+      "commit": "296bffa7fd969357e2922c857b000e90a79d47e8",
+      "tree": "fe7342bc5d3b811e67af2685178a301ecc1a0342",
+      "patchSha256": "fde38321872059800336f9ea905a10625d5391c0cb18dfac4ff91c3ca1d321ea",
+      "message": "feat(goals): add breadcrumb menus alongside the full outline",
+      "signatureVerified": true
+    },
+    {
+      "phase": 68,
+      "commit": "d598fdcd94186d83ec4f7445e5d16bbc633586fb",
+      "tree": "ad6f4ec29f783ca8f995f0826655bff204b50038",
+      "patchSha256": "18d38cb1e5558a6a2947934f6e8cba8798ed030be2c5cfb6ab920d9adecb71b5",
+      "message": "test(goals): record navigation regressions and bookkeeping",
+      "signatureVerified": true
+    },
+    {
+      "phase": 69,
+      "commit": "6d9a70afd906c2c7fd1d5b68775f6d0911c3f0e9",
+      "tree": "31a0f6e30bdfc1c608cd991da5817eda758930f8",
+      "patchSha256": "96d011b373997ce9eec52421500b5ef594ac583f66cb5cbef435f680af6f7d31",
+      "message": "fix(goals): lead breadcrumb menu controls with chevrons",
+      "signatureVerified": true
+    },
+    {
+      "phase": 70,
+      "commit": "d522272be8563c8187fa16a5021dea230559abe9",
+      "tree": "6db0bd8f9e769abe8b46c37554a3e8ffe6fdfbee",
+      "patchSha256": "45bfda325e33aa0170fbd441893d446e8ce18fcc1c131287a56f4d913693d3ef",
+      "message": "feat(cards): capture admitted Goals heading snapshots",
+      "signatureVerified": true
+    },
+    {
+      "phase": 71,
+      "commit": "259a76c87db9edbd8d6277d7fb50cc1c88f83fa6",
+      "tree": "6283cdee537d6e7dc8482a5721723f1f1ccd5ea0",
+      "patchSha256": "046a4525f5c7f00a6f9497cbd29cd84c4a21282913305afdf23d947109318783",
+      "message": "feat(cards): display heading breadcrumbs with a settings toggle",
+      "signatureVerified": true
+    },
+    {
+      "phase": 72,
+      "commit": "6ba96d77ef668240f9a8d9b66dc11d8df97b8957",
+      "tree": "1d503be6abaa5e9f262ddeebfe65bae01c1aa69c",
+      "patchSha256": "b80ddcde463efd34c4668cc9f10acffcb6c22a102369c7c3516d9664d0e7a4f5",
+      "message": "test(cards): record breadcrumb regressions and bookkeeping",
+      "signatureVerified": true
+    },
+    {
+      "phase": 73,
+      "commit": "dce411b0163013f96d8a062887dd1b096dadeded",
+      "tree": "3cb6a7cbe0bab0933285439771b6a4f75af5e2c4",
+      "patchSha256": "a185e3c8a3bd7116770cf320151682d60fb4132513d32da6c5bccbd1285e629e",
+      "message": "feat(history): schedule verified local retention privately",
+      "signatureVerified": true
+    },
+    {
+      "phase": 74,
+      "commit": "f6a8a327450b0a68164efaf48df5b562e4d95744",
+      "tree": "1693ce65705d9b59246500d891bf1af96511ae76",
+      "patchSha256": "4e5403bc4fc640efd83a57bc441ee274154e8e63ffd6413237d00799785383c4",
+      "message": "feat(history): show maintenance status and pace explicit retries",
+      "signatureVerified": true
+    },
+    {
+      "phase": 75,
+      "commit": "92034c115dc5448f13e9d24ab50142726cbcbd91",
+      "tree": "cccaa6b89342dad12aae6b8a1197a4778c313b1a",
+      "patchSha256": "71a37cce3968ff1bf5c8baac00eb41cce71cd3d1e5304936c38a04324ca3f2e2",
+      "message": "feat(history): prepare coherent activation and reader rollback",
+      "signatureVerified": true
+    }
+  ],
+  "finalHead": "92034c115dc5448f13e9d24ab50142726cbcbd91",
+  "clean": true
+}

@@ -38,6 +38,7 @@ import {
   cardId,
   cardLocation,
   cardOrigin,
+  cardGoalsContext,
   cardsIn,
   cardsMap,
   collectionOf,
@@ -53,6 +54,7 @@ import {
   type Card,
   type Collection,
   type Section,
+  type GoalsContext,
 } from './days';
 import { isFrozen } from './freeze';
 import { transact, type YDoc, type YText, type YUndoManager } from './yjs';
@@ -163,7 +165,7 @@ export const compose = (
   workspace: Workspace,
   ref: Ref,
   text: string,
-  options: { origin?: string | null } = {},
+  options: { origin?: string | null; goalsContext?: GoalsContext | null } = {},
 ): boolean => {
   if (!canAccept(workspace, ref)) return false;
 
@@ -174,6 +176,7 @@ export const compose = (
   const card = newCard(text, workspace.author, {
     id,
     origin: options.origin ?? null,
+    goalsContext: options.goalsContext ?? null,
   });
   return discrete(workspace, () => {
     registerCard(workspace.doc, id, card, ref);
@@ -351,8 +354,14 @@ export const copyFromMaster = (
   workspace: Workspace,
   ref: Ref,
   lines: readonly string[],
+  goalsContexts?: readonly (GoalsContext | null)[],
 ): number => {
-  const bodies = lines.map(masterLineBody).filter((line) => line.length > 0);
+  const bodies = lines
+    .map((line, index) => ({
+      body: masterLineBody(line),
+      goalsContext: goalsContexts?.[index] ?? null,
+    }))
+    .filter((line) => line.body.length > 0);
   if (bodies.length === 0) return 0;
 
   const capacity = capacityFor(workspace.doc, ref);
@@ -369,6 +378,7 @@ export const moveFromMaster = (
   master: YText,
   ref: Ref,
   lineNumbers: readonly number[],
+  goalsContexts?: ReadonlyMap<number, GoalsContext | null>,
 ): number => {
   const text = master.toString();
   const lines = text.split('\n');
@@ -387,7 +397,10 @@ export const moveFromMaster = (
   return placeMasterCards(
     workspace,
     ref,
-    selected.map((line) => masterLineBody(lines[line]!)),
+    selected.map((line) => ({
+      body: masterLineBody(lines[line]!),
+      goalsContext: goalsContexts?.get(line) ?? null,
+    })),
     () => {
       for (const { anchor, head } of [...deletion.ranges].reverse()) {
         master.delete(anchor, head - anchor);
@@ -400,17 +413,17 @@ export const moveFromMaster = (
 const placeMasterCards = (
   workspace: Workspace,
   ref: Ref,
-  bodies: readonly string[],
+  bodies: readonly { body: string; goalsContext: GoalsContext | null }[],
   removeSource?: () => void,
 ): number => {
   const target = collectionAt(workspace, ref);
   if (!target) return 0;
 
-  const cards = bodies.map((body) => {
+  const cards = bodies.map(({ body, goalsContext }) => {
     const id = newId();
     return {
       id,
-      card: newCard(body, workspace.author, { id, origin: 'master' }),
+      card: newCard(body, workspace.author, { id, origin: 'master', goalsContext }),
     };
   });
   return discrete(workspace, () => {
@@ -504,6 +517,7 @@ export const splitCard = (
   const created = newCard(tail, workspace.author, {
     id: createdId,
     origin: cardId(card),
+    goalsContext: cardGoalsContext(card),
   });
 
   discrete(workspace, () => {
@@ -538,6 +552,11 @@ export const mergeCardBackwards = (workspace: Workspace, ref: Ref, id: string): 
 
   discrete(workspace, () => {
     if (body.length > 0) target.insert(join, body);
+    const beforeContext = cardGoalsContext(previous),
+      incomingContext = cardGoalsContext(current);
+    // A combined card must not claim one source path for unrelated writing.
+    if (!beforeContext || JSON.stringify(beforeContext) !== JSON.stringify(incomingContext))
+      previous.delete('goalsContext');
     collection.delete(index, 1);
     cardsMap(workspace.doc).delete(id);
     setCardLocation(workspace.doc, id, null);

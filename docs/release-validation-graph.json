@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 530,
-    "requiredTestFiles": 524,
+    "testFiles": 545,
+    "requiredTestFiles": 539,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9828,6 +9828,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/automaticLocalRetention.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/automaticLocalRetention.test.ts"
+        ]
+      },
+      "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/bootstrapHttp.test.ts",
       "status": "required",
       "invocation": {
@@ -9858,6 +9873,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/browserPresentation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/browserPresentation.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/cap.test.ts",
       "status": "required",
       "invocation": {
@@ -9874,6 +9904,46 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/cardCommands.test.ts"]
       },
       "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/cardGoalsContext.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/cardGoalsContext.test.ts"]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/cardGoalsContextAdmission.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/cardGoalsContextAdmission.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/cardGoalsContextSource.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/cardGoalsContextSource.test.ts"
+        ]
+      },
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10238,6 +10308,31 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/gentleContext.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/gentleContext.test.ts"]
+      },
+      "declarations": 12,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/gentleContextPreference.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/gentleContextPreference.test.ts"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/geometry/breadcrumbs.spec.ts",
       "status": "required",
       "invocation": {
@@ -10245,6 +10340,17 @@
         "packages": ["test:geometry"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/card-context.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10311,6 +10417,28 @@
         "packages": ["test:geometry"]
       },
       "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/goals-context.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/goals-navigation.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10466,6 +10594,16 @@
         ]
       },
       "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/headingNavigation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/headingNavigation.test.ts"]
+      },
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10874,6 +11012,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/local-baseline/automatic.node.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/local-baseline/automatic.node.mjs"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/local-baseline/lifecycle-owner.spec.ts",
       "status": "required",
       "invocation": {
@@ -11045,6 +11193,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localHistoryMaintenance.test.tsx",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localHistoryMaintenance.test.tsx"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/localProperties.test.ts",
       "status": "required",
       "invocation": {
@@ -11088,6 +11251,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/localRetentionStatus.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localRetentionStatus.test.ts"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -13437,6 +13615,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "vite/accountRetentionFlags.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "vite/accountRetentionFlags.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "vite/appUpgradeProperties.test.ts",
       "status": "required",
       "invocation": {
@@ -15246,7 +15439,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "d29685267e529d10dc5283e8916b651bd3d0aa6f2d94e4c88e7316da4db013dd"
+      "sha256": "d5c7c7f9c5e9aaa15722a82d021b58146560580dd3e240ed38029bfe91a5f1a3"
     },
     {
       "path": "package.json",
@@ -18381,6 +18574,10 @@
       "sha256": "e2b17b6a78c3a70952d5a79b2e98a9c14a4e982b27ef1b158425279d52f6c42d"
     },
     {
+      "path": "test/automaticLocalRetention.test.ts",
+      "sha256": "ff32a605d9d49169b11d339a2e05056e45f45f3641eeaacf0b6024574efd7272"
+    },
+    {
       "path": "test/bootstrapHttp.test.ts",
       "sha256": "801657665628e4f0fde21e40934ef6972c6e187834f2d925d2f3b1bc67a01a13"
     },
@@ -18393,12 +18590,28 @@
       "sha256": "61ead7c76716b269d94acd6de2d660791aaec8770968720367308df4349a604e"
     },
     {
+      "path": "test/browserPresentation.test.ts",
+      "sha256": "a046c0525e97b79a1142fb90fd608d9f3cb40ee068a76cff532d716211cf2c27"
+    },
+    {
       "path": "test/cap.test.ts",
       "sha256": "ad8f702d83bde7d331237f88a25b1f62d05b9bd38b16d1feab09bde0d16603ed"
     },
     {
       "path": "test/cardCommands.test.ts",
       "sha256": "35cf900dfc0ba143355ce8a6e29e1554b80188023368566a46cf7c1d85ed402e"
+    },
+    {
+      "path": "test/cardGoalsContext.test.ts",
+      "sha256": "45eb69c19b7616f09b9a61440e50decf20dc90b2170d712670175fb17cf2b910"
+    },
+    {
+      "path": "test/cardGoalsContextAdmission.test.ts",
+      "sha256": "10a07bc47b2a4c8b321c5725ac0c4d7faff1e62afc427b49733568c7cf478753"
+    },
+    {
+      "path": "test/cardGoalsContextSource.test.ts",
+      "sha256": "b528c33d4c59a5891184e5417fb9f7fb04f74008cf0de68aa3c8a2419dd18a8a"
     },
     {
       "path": "test/commands.test.ts",
@@ -18557,12 +18770,24 @@
       "sha256": "ef41cb81409ac3376145bbc610bafb4a52ef51f044e1d9a9fbaed9a07f9f581d"
     },
     {
+      "path": "test/gentleContext.test.ts",
+      "sha256": "c25202b70135f629960f3efbffe1b46ef9584771ce755e53bc42019fbcfd6e9c"
+    },
+    {
+      "path": "test/gentleContextPreference.test.ts",
+      "sha256": "1f758dd41aa82f43662f47ee54a2f7edbcb9b80090f69d6762d6dc2bfab9042c"
+    },
+    {
       "path": "test/geometry/breadcrumbs.spec.ts",
-      "sha256": "7e48276855a886dfcd98827fa7b9bddc2499601e57685e32993885526ae90e45"
+      "sha256": "e9a031009ced513d8e04871fe193961053c02ddbbba3afa0346d1f38ade3bd0d"
+    },
+    {
+      "path": "test/geometry/card-context.spec.ts",
+      "sha256": "7e290de21d0ded55b693bc855a3a10a1070d7178d9b050926aa7acf5980751ef"
     },
     {
       "path": "test/geometry/card-focus.spec.ts",
-      "sha256": "2897408a71869e6d2780fcc2693d18d42aaf8538a16afd97d3f69be8e38e8c37"
+      "sha256": "ed981f82503af475677f80c5eaa86dfc74ace81de094277c771330f797b51975"
     },
     {
       "path": "test/geometry/cards.spec.ts",
@@ -18583,6 +18808,14 @@
     {
       "path": "test/geometry/duplicate-card.spec.ts",
       "sha256": "c6f00f2fb5334732ff9792aa4929836d0cc3ee30f01f415d9907a2e1321414f7"
+    },
+    {
+      "path": "test/geometry/goals-context.spec.ts",
+      "sha256": "3af9ea42ff3f5a5865bf40fa8a1db0fd82133cae05319a5347852fb50f9276b8"
+    },
+    {
+      "path": "test/geometry/goals-navigation.spec.ts",
+      "sha256": "175af9d7a348d64d896e46d071fcc790d4248be5ba7bd4664d8c3b7e0a542d38"
     },
     {
       "path": "test/geometry/install.spec.ts",
@@ -18643,6 +18876,10 @@
     {
       "path": "test/harness-lifecycle/upgrade-fixture.test.mjs",
       "sha256": "ac86d5c0a0d5a7c520dc45197ed1496a03032082bfb00e601aae07b426cfaf5c"
+    },
+    {
+      "path": "test/headingNavigation.test.ts",
+      "sha256": "203ff0eb47f77fc4cc62b5179cb9c3da48b914df604263dfc89c2afb921a4df1"
     },
     {
       "path": "test/helpers.ts",
@@ -18961,6 +19198,10 @@
       "sha256": "4d893b0fa8e383dd8869a976446c85dcdc36878528ed1b85bae3f244f8603ebf"
     },
     {
+      "path": "test/local-baseline/automatic.node.mjs",
+      "sha256": "71f31c72de4568fbcbb2327689c9aab46820c8d2ef11dcbd0d18362d50fb238a"
+    },
+    {
       "path": "test/local-baseline/fixtures.mjs",
       "sha256": "2c44c0732fdbe7b302f222ef61bf7b65fd586b9fe1c43f63b089938e6974b3a9"
     },
@@ -19053,12 +19294,20 @@
       "sha256": "8045fc61ffbd0a55bec1679b97ca2dcefff4897dd37c10903244a52892ce16f6"
     },
     {
+      "path": "test/localHistoryMaintenance.test.tsx",
+      "sha256": "b4a99ef1e49f7985852cfa9651b040c54a24f8b1903ba737b796ab48bc6486e2"
+    },
+    {
       "path": "test/localProperties.test.ts",
       "sha256": "3902f393012fdf18332ba1c3c68e3f297c7a2972ad0698ba306760d97c4abb5b"
     },
     {
       "path": "test/localRecovery.test.ts",
       "sha256": "10df0654bd6107f0ef4b4fc5fd714b95970d2dadba8d3d5e1fdb58008691bddd"
+    },
+    {
+      "path": "test/localRetentionStatus.test.ts",
+      "sha256": "0ba4868e89de9593f820c2c8b436d972def00968c7707fb15fe199622b6d34f2"
     },
     {
       "path": "test/localRetentionStorage.test.ts",
@@ -19950,7 +20199,15 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "2556e1044d14dc1a26203d915d93624805c4ebc948e3c1ef51e4452c8b5115c3"
+      "sha256": "cc6f53e9176a4ecf8ab4f32118ac301e88bc9e29a58fdd5c543957211fdd9bb4"
+    },
+    {
+      "path": "vite/accountRetentionFlags.test.ts",
+      "sha256": "ca79f9d1f7c7afb01219efc02112b89d004b36c70182ed165f360bab32a5c93e"
+    },
+    {
+      "path": "vite/accountRetentionFlags.ts",
+      "sha256": "4a34a7ca63b81980a076b9313b8daa897a8928aab7a52c1998e8f58fa932cba7"
     },
     {
       "path": "vite/appUpgradeProperties.test.ts",

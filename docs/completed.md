@@ -16027,3 +16027,267 @@ deadline, source census classification or security guarantee changes. Generalize
 stays paused/blocked at892 obligations/348 unresolved. An independently checked infrastructure
 pin patch is retained unapplied against the local base; no image publication, infrastructure
 mutation, merge or deployment. Other seat's progress document remains intact.
+
+
+### Goals context, scanning and nearby transfer alternatives made reviewable
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch61 · **Stage:** product design only
+
+**Exit.** A self-contained interactive fictional-data mock compares card heading breadcrumb/compact
+label, in-place heading folds/compact source-order reading, and gutter popover/attached action strip.
+Dark/light narrow layouts and sample context, transfer/Undo, Next-cap, fold and source-reveal interactions
+are reviewed. The user’s withdrawal of gathering is retained in the product queue.
+
+**Notes.** [Packet](./product-design/2026-10-23-goals-context/README.md) separates explicit user direction
+from proposed snapshot/setting/format/export/placement semantics. Prototype checks cover only sample
+DOM behavior, not real editor or command/storage guarantees. No application source, tests, dependencies,
+real account, preview8443 or security promise changed. No staging into the real index, commit, push,
+deployment or qualification resumption. Prepare patch61 before the separate mobile feasibility report.
+
+
+### Mobile formatting technical scope documented before implementation
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch62 · **Stage:** design investigation only
+
+**Exit.** [Report](./product-design/2026-10-23-goals-context/mobile-formatting.md) checks actual editor
+dependencies, semantic mutation/focus boundaries and primary browser/editor sources. It distinguishes
+an ordinary Goals toolbar from a native keyboard accessory, explains viewport/keyboard API limits,
+and proposes a bounded composition/focus slice, admitted commands/panel, then optional docking.
+
+**Notes.** No universal library/support, tested keyboard behavior, measured effort or runtime repair
+is claimed. Estimates remain qualified. No app/test/dependency/preview8443/security changes; no real
+index staging, commit, push, deployment or release qualification. Patch62 follows immutable design61;
+the other seat’s progress document and historical records remain untouched.
+
+
+### Design review clarifies scope and illustrative states
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch63 · **Stage:** design review only
+
+**Exit.** Read-only review caught an ambiguous ancestor/descendant sentence, an unmarked already-open
+state in action variant B, and an incorrect direct-section count. The packet now explicitly excludes
+parents/siblings from a selected child transfer, marks B’s reveal/dismissal as illustrative, and counts
+Work’s two direct sections. Sample mode/destination/Undo remain interactive.
+
+**Notes.** Preserve sealed61/62 patches and exact trees;63 is a separate small design clarification.
+No app/test/dependency/security changes. The screenshots remain applicable because the corrected
+hidden count is not shown in their expanded Work state. No implementation choice or release action.
+
+
+### Editor-preserving scanning ideas and breadcrumb-only cards revised after feedback
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch64 · **Stage:** design prototype only
+
+**Exit.** One fictional live-preview CodeMirror editor compares context dimming, individual crumb
+menus, scroll-opening and reading rail. Current static rendering/card styles add only a context row.
+The queue records footer retention, parked nearby controls, desktop-shortcut exploration and a
+context-based return candidate. Scope/matching/Markdown insertion ambiguities remain explicit.
+
+**Notes.** [Packet](./product-design/2026-10-23-goals-context/editor-study.md) retains module/style
+identities, licenses, source/build, inspected screenshots and bounded sample interaction/geometry
+results. Corrected harness caret/typecheck errors are preserved. No app runtime, old tests, locks,
+dependencies, real accounts, preview8443 or security guarantees changed. Earlier61–63 artifacts and
+the other seat’s progress record remain exact. No real staging/commit/push/deploy or qualification.
+
+
+### Goals scanning choice recorded without expanding application scope
+
+**Date:** 2026-10-25 · **Commit:** pending sequential patch65 · **Stage:** product specification
+
+**Exit.** The queue and design packet record default-on, toggleable gentle context plus per-crumb
+menus while retaining the whole-page outline dropdown. Scroll-opening and reading rail are parked;
+viewport cutoffs, intent-based alternatives and remaining offscreen/contrast/preference details are
+distinguished from selected requirements. Card styling/capture and footer decisions remain separate.
+
+**Notes.** [Selection](./product-design/2026-10-23-goals-context/selection-2026-10-25.md) adds no new
+prototype, app code, old-test change or behavioral claim. Earlier61–64 artifacts and append-only
+history stay intact. No real staging/commit/push, preview8443 change, deployment or qualification.
+
+
+### Gentle context implemented with browser preference and offscreen fallback
+
+**Date:** 2026-10-25 · **Commit:** pending patch66 · **Stage:** bounded UI implementation
+
+**Exit.** Default-on context changes rendered-line color only, respects heading ancestry/selection,
+restores contrast offscreen, and can be disabled immediately through Account/Editor. The one browser
+Boolean survives reopening, follows other tabs and reports denied persistence.24 unit/8 built-browser
+cases, TypeScript and focused lint pass; independent225-position comparison agrees.
+
+**Notes.** [Evidence](./development-evidence/2026-10-25-goals-navigation/phase66/README.md) retains
+parser-frontier and measurement-dispatch defects, fixture mistakes and raw-artifact limits. No old
+test/deadline, content, account, crypto, protocol, real staging/commit/deploy or8443 change. New test
+obligations stay uncredited; menus and repository bookkeeping follow. Previous61–65 stay exact.
+
+## 2026-10-25 — Goals breadcrumb menus preserve the full outline (phase67)
+
+**Commit:** pending unsigned sequential patch67 after66. Added direct per-heading navigation and
+child/sibling menus to the existing Goals header. One editor, authored source order, full outline,
+selection, undo, footer and admission remain. Captured-document checks prevent stale offsets;
+keyboard selection has a stable focus return. Six new helper cases and seven new built-browser
+cases pass; thirteen focused units pass including old breadcrumb coverage. Earlier fixture failures,
+reviewed focus defect and successful native-touch observation are retained in the
+[phase record](./development-evidence/2026-10-25-goals-navigation/phase67/README.md).
+
+The old root/trail geometry locator, wider regression and repository inventories follow in68.
+General qualification remains paused. No source commit, staging, release or preview8443 update.
+
+## 2026-10-25 — Gentle context and breadcrumb implementation closes bounded phases 66–68
+
+**Commit:** three unsigned sequential implementation patches prepared after design65. Goals now has
+default-on gentle context, an immediate browser setting, the offscreen-caret fallback and local
+breadcrumb menus alongside the full outline. The formatted editor, caret, undo, writing admission,
+footer, cards, credentials and sync authority remain. No real-index staging or publication occurred.
+
+**Evidence:** the full Vitest run passes 1,948 in 163 files with one existing named skip; final full
+geometry passes 200 with the existing 24 platform skips. Both projects pass the final typed stale-menu
+observer and both detect the deliberately removed guard. Card-focus/reopen passes 24 repeated cases
+with completed-submit preconditions. The separate inventory/adapter/authority regression run passes 109.
+TypeScript, focused lint/format, build, JS budget and origin isolation pass; final bookkeeping readback
+is recorded with the [phase68 evidence](./development-evidence/2026-10-25-goals-navigation/phase68/README.md).
+Earlier failed attempts and independent review are retained, not replaced by passing reruns.
+
+**Limits:** source census 405/197 domains retains identical domain sites and ownership; all prior
+manifest obligations remain, with five new required/uncredited files and the aggregate release block.
+Physical phones, Firefox/iOS, typing latency and paused general qualification are not established.
+Preview8443, production and real accounts are untouched. Sequential patch replay is independently
+checked through a temporary index; signed commits and any preview/release follow separately.
+
+## 2026-10-25 — Move breadcrumb menu affordances before the heading (phase69)
+
+**Commit:** pending unsigned sequential patch69. User feedback identified the trailing text caret
+as visually awkward. Existing per-crumb menus now use their leading SVG separators, preserving text
+jumps and the full outline. TypeScript/build and all20 existing navigation browser cases pass.
+[Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase69/README.md). Card context is next;
+no real staging, commit, preview8443 replacement or deployment.
+
+## 2026-10-25 — Card context foundation and lifecycle (phase70)
+
+**Commit:** pending unsigned sequential patch70. Optional heading snapshots share card creation,
+semantic admission, undo and sync content. Source-position capture excludes selected headings,
+including multiline Setext; filtering and sorted move anchors retain the correct path. Supporting
+moves/duplication/splits preserve it; ambiguous merges clear it. Optional sidecar export preserves
+Markdown and archive identity. No crypto or authority mechanism changes.
+
+Thirty new cases plus existing affected units yield298 passing/one existing skip. Independent
+review's three counterexamples now pass; original failures, first repair attempts and mixed-old-client
+limitations are retained. TypeScript/lint pass. [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase70/README.md).
+Card display/settings follow in71; inventory/regression closure follows separately. No real staging,
+commit, preview8443 replacement or deployment.
+
+## 2026-10-25 — Card breadcrumbs and default-on display switch (phase71)
+
+**Commit:** pending sequential patch71. Source heading snapshots now render as plain paths beneath
+card writing, with no leading symbol and no body/actions restyle. Account → Editor exposes a default-on
+browser switch that hides labels without deleting metadata or stopping capture. Existing gentle-context
+preferences share the same mechanism and keep their keys/behavior.
+
+Seven preference units and26 built-browser cases pass, including every section, direct entry,
+reopen, source rename, Move/Duplicate/Undo, cross-tab isolation, narrow wrap/literal text, denied saving,
+and an active editor/caret/composition across an external display change. TypeScript/lint/build pass.
+[Evidence and limits](./development-evidence/2026-10-25-card-breadcrumbs/phase71/README.md). Broader
+regression/inventories follow in72; no real staging, commit, preview8443 change or deployment.
+
+## 2026-10-25 — Card breadcrumbs close unsigned phases69–72
+
+The operator's requested card heading labels are implemented as historical snapshots on new Goals
+transfers, displayed beneath existing writing with no leading symbol. Account → Editor exposes a
+default-on browser switch. It hides existing labels without erasing context or stopping capture.
+Header menu affordances lead their headings; the full outline remains. Existing card styling, text,
+undo, protection and crypto mechanisms remain.
+
+Full units pass 1,981/one existing skip; full browser geometry passes 216/24 existing skips; separate
+bookkeeping regressions pass 109. TypeScript/lint/format, budget and planning/census readback pass.
+Independent source challenge and counterexamples are retained. All 197 cryptographic domains/sites and
+ownership definitions remain; five new required/uncredited test files preserve the aggregate release
+block. [Evidence and limits](./development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md).
+
+Four sequential unsigned patches are prepared with prior 61–68 unchanged. Real index staging/signing,
+preview8443, real accounts, publication and deployment remain separate. The candidate is available
+only on the existing isolated loopback53921 preview for review.
+
+## 2026-10-26 — Private automatic local-retention scheduler (phase73)
+
+**Commit:** pending sequential patch73. Reused earlier depth and preparation-task evidence rather than
+repeating performance sweeps or already completed repairs. The private composed owner now schedules
+its existing verified removal path from authenticated growth hints, with quiet/cooldown, one-flight,
+refusal pacing, input/lifecycle deferral and cleanup. No proof, storage format or server rule changes.
+
+Focused checks: 39 unit cases; two new native browser checks exercising real conversion/undo/redo/cold
+reopen and disabled/cancelled policy; three unchanged native safety checks for input interruption,
+failed readback and unpublished sources; 109 inventory/adapter/authority-registry cases. TypeScript, lint/format, default
+build and independent emitted-flag check pass. The native fixture reduced 27 physical records to zero
+suffix rows and preserved writing; its threshold-only probe does not establish performance at scale.
+Earlier check corrections and historical failures remain recorded. Two new required test obligations
+remain uncredited; all previous obligations, cryptographic domains/sites and aggregate blocks remain.
+[Evidence and limitations](./development-evidence/2026-10-26-automatic-local-retention/phase73/README.md).
+
+Public automatic conversion stays disabled. No real profile, production or preview8443 changed;
+no staging, signing, push, deployment or general qualification resumption. Other seats' progress
+records and frozen patches61–72 are unchanged.
+
+## 2026-10-26 — Local history maintenance status and retry (phase74)
+
+**Commit:** pending sequential patch74. Persistent maintenance refusals now have an explanation and
+paced Check again under Data, with a collapsed “Maintenance paused” marker. Ordinary deferrals stay
+quiet. Unexpected owner failures require lock/reopen. The stable, frozen status/subscription/retry
+port schedules existing verified removal and cannot clear a halt or bypass proof or retry clocks.
+
+25 focused units/component cases pass. The existing two native conversion/reopen/cancellation cases
+pass; extra assertions observe the actual composed owner's port. TypeScript/lint/build and reviewed
+source/planning snapshots pass. All previous assertions and protocol boundaries remain. Public
+conversion, real accounts, preview8443, staging/signing and deployment are unchanged.
+[Evidence](./development-evidence/2026-10-26-automatic-local-retention/phase74/README.md).
+
+## 2026-10-26 — Automatic-maintenance build profile and reader rollback (phase75)
+
+**Commit:** pending sequential patch75. A single explicit build-time activation flag now selects all
+required compatible read/write capabilities, rejecting contradictory zero overrides. The container
+build passes it through; default builds stay reader-only. The activation runbook selects automatic
+user behavior, retains the initial cadence and describes stop/adoption/compatible rollback boundaries.
+
+Focused units exercise default/activated profiles, all16 explicit combinations, invalid values and
+manual private fixtures. The native activation/reader-rollback walkthrough uses real conversion,
+then a fresh reader-only owner with no removal/scheduling port, preserving editing, undo/redo and
+another cold reopen. Candidate built flags, source/planning conservation, prerequisites and final
+checks are preserved in the [evidence](./development-evidence/2026-10-26-automatic-local-retention/phase75/README.md).
+No signed release artifact, public image, deployment, real profile or preview8443 change is claimed.
+
+## 2026-10-26 — Sign the Goals/card/retention series and rerun routine regressions
+
+Patches61–75 are committed in sequence, with all15 SSH signatures and cumulative trees verified.
+The final tested signed source is `92034c115dc5448f13e9d24ab50142726cbcbd91`. A fresh activated frontend
+build passes full Vitest (2,012 pass/one existing skip), full browser geometry (216 pass/24 existing
+platform skips),175 exact CI adapter cases and40 CI contract/vector leaf commands. The old native
+activation/reader rollback evidence is reused against the same source tree, without rerunning broad
+history/performance measurements. All assertions, workloads, deadlines and release blocks remain.
+
+The [signed checkpoint](./development-evidence/2026-10-26-signed-ux-retention-checkpoint/README.md)
+preserves source/build/commit identities, raw logs, named skip and runtime limits in the repository.
+Node26 host/browser emulation does not stand in for the Node24 ARM64 image or a physical phone.
+The next release operation needs the exact tested image and compatible rollback digest; a targeted
+real-phone first-conversion/lifecycle check remains advisable before activating real profiles.
+This follow-up changes documentation/evidence only. No push, merge, image publication or deployment.
+
+## 2026-10-26 — Exact ARM64 activation artifact and current infrastructure preparation
+
+Built signed `dc53fecf25ca341cb4b626a154e0df33a29728be` with automatic local maintenance enabled;
+the tested ARM64 index is `sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf`.
+All33 final-image cases pass at original deadlines, along with the separate two-container smoke and
+60 precache responses. TLS refusal/explicit-CA controls pass; public trust succeeds with a controlled
+hostname resolution after the original Docker DNS failure. The unchanged frontend passes the real
+waiting-worker reader→candidate→reader→candidate journey, including actual automatic reduction above
+the1,024-record threshold on two disposable profiles, protected reopen, offline writing, undo and sync.
+All110 frontend files and1,676 signed build inputs remain unchanged. The deployed `d8b3f22b` reader
+works after reduction and remains the compatible rollback target.
+
+Refreshed ol-infra to `a7fcf5b`, preserving the reorganized Flux tiers. Prepared the exact image pin
+and host-only one-year HSTS on both HTTPS routes; ordinary/stream timeouts, redirect, PVC, custody and
+backup controls remain. Offline checks, independent rendered comparison, four counterexamples and
+server-side route dry-run pass. Read-only production preflight finds readiness and healthy backups;
+the historical cumulative998 backup failures remain recorded, not erased by current health.
+
+The [repository packet](./development-evidence/2026-10-26-ux-retention-release/README.md) retains raw
+results, apparatus failures, identities, probes and reproduction material. Existing full unit/browser/
+contract/adapter results are reused against equal inputs. Physical Android first-conversion testing
+is deferred by the operator; general qualification remains paused. This checkpoint prepares the
+application PR and later infrastructure handoff; nothing is published or deployed yet.

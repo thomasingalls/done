@@ -1,0 +1,30 @@
+{
+  "baseTree": "1d503be6abaa5e9f262ddeebfe65bae01c1aa69c",
+  "runtimeSources": [
+    408,
+    409
+  ],
+  "domains": 197,
+  "domainsAndSourceSitesUnchangedExceptLineOffsets": true,
+  "ownershipAndConstructionDefinitionsUnchanged": true,
+  "sourceCoordinateRefresh": {
+    "path": "src/crdt/accountReceive.ts",
+    "before": 704,
+    "after": 711
+  },
+  "oldTestsAndInvocationsPreserved": true,
+  "existingSafetyTestBytesUnchanged": true,
+  "obligations": [
+    902,
+    904
+  ],
+  "unresolved": [
+    358,
+    360
+  ],
+  "addedRequiredUncredited": [
+    "test:test/automaticLocalRetention.test.ts",
+    "test:test/local-baseline/automatic.node.mjs"
+  ],
+  "aggregateBlocked": true
+}

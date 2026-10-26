@@ -20,6 +20,21 @@ const seed = async (page: Page): Promise<void> => {
   await expect(content).toBeVisible();
   await content.click();
   await page.keyboard.insertText(DOCUMENT);
+  // Large insertions are admitted in continuations. Open a navigation snapshot
+  // only after the complete fixture has reached its accepted projection.
+  await expect
+    .poll(() =>
+      content.evaluate((element) => {
+        const view = (
+          element as {
+            cmTile?: { root?: { view?: { state: { doc: { toString: () => string } } } } };
+          }
+        ).cmTile?.root?.view;
+        if (!view) throw Error('No Goals EditorView');
+        return view.state.doc.toString();
+      }),
+    )
+    .toBe(DOCUMENT);
 };
 
 test('the Goals breadcrumb follows the scroll edge rather than the cursor', async ({ page }) => {
@@ -37,9 +52,9 @@ test('the Goals breadcrumb follows the scroll edge rather than the cursor', asyn
   });
   await expect(breadcrumb).toHaveAttribute('title', 'Goals › Work');
   await expect(breadcrumb.locator('.goals-outline-indicator svg')).toBeVisible();
-  const rootGap = await breadcrumb.evaluate((element) => {
-    const root = element.querySelector('.goals-breadcrumb-root')?.getBoundingClientRect();
-    const trail = element.querySelector('.goals-breadcrumb-trail-text')?.getBoundingClientRect();
+  const rootGap = await page.locator('.goals-navigation').evaluate((element) => {
+    const root = element.querySelector('.goals-breadcrumbs')?.getBoundingClientRect();
+    const trail = element.querySelector('.goals-breadcrumb-piece')?.getBoundingClientRect();
     return root && trail ? trail.left - root.right : Number.POSITIVE_INFINITY;
   });
   expect(rootGap).toBeGreaterThan(0);

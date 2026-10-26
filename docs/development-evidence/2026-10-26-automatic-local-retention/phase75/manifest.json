@@ -1,0 +1,133 @@
+{
+  "algorithm": "SHA-256",
+  "files": {
+    "README.md": {
+      "bytes": 3806,
+      "sha256": "3bc1bd84e1ce9e4645ac61d3a51effc40b3d63b090a9643b7131a87053ea14f7"
+    },
+    "activated-flags75.json.gz": {
+      "bytes": 189,
+      "sha256": "39370947a73c7cb259f0cc3bdd8b44bc99088ac5584d19252c4e069599b3d8da"
+    },
+    "authority-map.log.gz": {
+      "bytes": 448,
+      "sha256": "9d5b66bcc3ef49da32704a402f2abbe55b01a5458662304c756fb2218ca687e4"
+    },
+    "bookkeeping75.log.gz": {
+      "bytes": 4588,
+      "sha256": "6f5b30d7f299b596b4c571230589e1a203b7074d754fd408220b46999566cb8d"
+    },
+    "budget.log.gz": {
+      "bytes": 464,
+      "sha256": "756d18eb1e997cf0e074deb6e504312ef257ef65ddf2b6eccf4a1367ec0e2139"
+    },
+    "build75.log.gz": {
+      "bytes": 1900,
+      "sha256": "426cbffff105e7c67ccd25ab47f1bf71a58197497f773564ec845e2917b065bd"
+    },
+    "census-check75.log.gz": {
+      "bytes": 231,
+      "sha256": "80406468725a6cf0cead9bec091d5ad68b62976480e50d23f1c130cda333d4b4"
+    },
+    "census75.log.gz": {
+      "bytes": 230,
+      "sha256": "486e67cc6f08fc63de44347d720b91e6f76d976c8bd233f4b5eaa4a47c0ebd3a"
+    },
+    "check-built-profile.mjs.gz": {
+      "bytes": 802,
+      "sha256": "eaa96d14f6a53edb5d1f2aa2b997285c7469b84236b3d15e46925c8b6ff2073e"
+    },
+    "checks.json": {
+      "bytes": 941,
+      "sha256": "af5ad2df2dedf5324cd14ca61f69e2e597e651de0c791156ced43ed8bdc4b1d7"
+    },
+    "conservation.json": {
+      "bytes": 457,
+      "sha256": "cf3907604b69f1048b7dcd9e25d63a5e4a3f89eef8ff4cdf0ee7be660c96629b"
+    },
+    "debts.log.gz": {
+      "bytes": 248,
+      "sha256": "a95242f3dc1590faa99ad764e6a47c690251cd7b354534e088ab1b01c2ca7748"
+    },
+    "format75.log.gz": {
+      "bytes": 108,
+      "sha256": "e3c3aedab9de906654d894a3e46c4f9f80fd4f29ad501b4a69ed4d9d0e9fe0de"
+    },
+    "inventory-check75.log.gz": {
+      "bytes": 240,
+      "sha256": "48dfba6a00ff910d521bc909768081037ce249cfe5e3f29c1ae770d337479a0b"
+    },
+    "inventory75.log.gz": {
+      "bytes": 239,
+      "sha256": "5c342fd33b3424467a793eb09b26c708f4cecfe5d2e424b459c06bb9e075004f"
+    },
+    "lint75.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    "native75.log.gz": {
+      "bytes": 474,
+      "sha256": "3b096feeb11b6eb02e3d54c8e174265c5e0499928fe08aaf51e2752dff1e1e0f"
+    },
+    "origin.log.gz": {
+      "bytes": 173,
+      "sha256": "f276653a2f40d9648e1dbbcf7f72400404ebb980b046f533b4c92489ed51cc8e"
+    },
+    "plan-check75.log.gz": {
+      "bytes": 222,
+      "sha256": "349ae8946057fbd0ec4347040224e6fd2221b9d55585109b2695bac06dca722b"
+    },
+    "plan75.log.gz": {
+      "bytes": 221,
+      "sha256": "b3b8dbf5b3b361bf72be4496104cea179df0069296f40fbe3eb027764a5cbc0a"
+    },
+    "reader-build75.log.gz": {
+      "bytes": 1902,
+      "sha256": "48b45cb862ecb180c492375ceb760428e6c1368e7aa6b5afe32c0b6472feb9d2"
+    },
+    "reader-flags75.json.gz": {
+      "bytes": 194,
+      "sha256": "411fb8ec49a057e77387a94e427a770aeb9f61ee30adbe1c87ad734b0b31bdba"
+    },
+    "retention.log.gz": {
+      "bytes": 366,
+      "sha256": "a9f5fb28a03e51835858df6b0b5c3d99869d46b81f0923c384e35803c9a67c78"
+    },
+    "selection-status.log.gz": {
+      "bytes": 249,
+      "sha256": "ec887c3018c45ea0a411df27912566a204281dc4dc5420157a0255783731f91f"
+    },
+    "source-inputs.json": {
+      "bytes": 121035,
+      "sha256": "25ef304c1800243b495eac4f59f0173f01dc2d0e4cf888fcfd3cdcc47a2c5f77"
+    },
+    "traceability.log.gz": {
+      "bytes": 174,
+      "sha256": "455d7c150831b380f7a7f84e52bdc0c8d6ca4ba024f6661286b27e34827e271c"
+    },
+    "type75.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    "unit75.json.gz": {
+      "bytes": 3133,
+      "sha256": "4a7a494bd5d0564bc07cadbb90b695146c6f6144d87ab6d6970b8b90497da188"
+    },
+    "unit75.log.gz": {
+      "bytes": 96,
+      "sha256": "191efd00c5dbe383a26d1baf0511a6d2a87531bc3434640dfbd9b8159581a5b9"
+    },
+    "update-limit.log.gz": {
+      "bytes": 161,
+      "sha256": "d38631d50eea1e2a6f9ff5e95bae7baa761a8c2768a33605366b2828ea230218"
+    },
+    "wasm-seal.log.gz": {
+      "bytes": 261,
+      "sha256": "7219563ae325c217e0e2639f1e8f675633f4022847975379c38b48a21383bab3"
+    },
+    "yjs-patch.log.gz": {
+      "bytes": 117,
+      "sha256": "eb581cf882a4f6a008e597b7a472dd237049d1c232c5c6e9c1a6d35b9ba98d97"
+    }
+  }
+}
