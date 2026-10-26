@@ -17,6 +17,9 @@ export interface MenuProps {
   gentleContext: boolean;
   onGentleContext: (enabled: boolean) => void;
   gentleContextStored: boolean;
+  cardGoalsContext: boolean;
+  onCardGoalsContext: (enabled: boolean) => void;
+  cardGoalsContextStored: boolean;
   today: ISODate;
   date: ISODate;
   onGoTo: (date: ISODate) => void;
@@ -44,6 +47,9 @@ export const Menu = ({
   gentleContext,
   onGentleContext,
   gentleContextStored,
+  cardGoalsContext,
+  onCardGoalsContext,
+  cardGoalsContextStored,
 }: MenuProps) => {
   const {
     workspace,
@@ -281,6 +287,23 @@ export const Menu = ({
             this browser.
           </p>
           {!gentleContextStored && (
+            <p className="menu-note" role="status">
+              This change applies for this visit. Browser preferences could not be saved.
+            </p>
+          )}
+          <label className="menu-editor-toggle">
+            <input
+              type="checkbox"
+              checked={cardGoalsContext}
+              onChange={(event) => onCardGoalsContext(event.target.checked)}
+            />
+            <span>Goals breadcrumbs on cards</span>
+          </label>
+          <p className="menu-note">
+            Show the heading path kept with cards from Goals. Hiding it keeps saved context. Applies
+            immediately in this browser.
+          </p>
+          {!cardGoalsContextStored && (
             <p className="menu-note" role="status">
               This change applies for this visit. Browser preferences could not be saved.
             </p>

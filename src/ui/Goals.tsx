@@ -20,6 +20,7 @@ import { scrollAwareBreadcrumb, type DocumentHeading } from '../editor/breadcrum
 import type { ISODate } from '../lib/date';
 import { GoalsNavigation } from './GoalsNavigation';
 import { gentleContextView } from '../editor/gentleContext';
+import { goalsContextsForLines } from '../editor/cardGoalsContext';
 import { GoalsActionsMenu, type GoalsMenuAction } from './GoalsActionsMenu';
 
 export interface GoalsProps {
@@ -115,13 +116,24 @@ export const Goals = ({
     setMode(action);
     setPending(true);
     setTransferError('');
+    const source = editor.current;
+    const rows = selected.lines.map((line, index) => ({ line, text: selected.text[index]! }));
+    const contexts = source ? goalsContextsForLines(source.state, rows) : rows.map(() => null);
     void execute(
       action === 'copy'
-        ? { kind: 'copy', to: { date, section }, lines: selected.text }
+        ? {
+            kind: 'copy',
+            to: { date, section },
+            lines: selected.text,
+            ...(contexts.some(Boolean) ? { goalsContexts: contexts } : {}),
+          }
         : {
             kind: 'move-from-master',
             to: { date, section },
-            lines: selected.lines.map((line, index) => ({ line, text: selected.text[index]! })),
+            lines: rows.map((row, index) => ({
+              ...row,
+              ...(contexts[index] ? { goalsContext: contexts[index]! } : {}),
+            })),
           },
       { feedback: 'local' },
     )

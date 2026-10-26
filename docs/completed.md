@@ -16173,3 +16173,16 @@ review's three counterexamples now pass; original failures, first repair attempt
 limitations are retained. TypeScript/lint pass. [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase70/README.md).
 Card display/settings follow in71; inventory/regression closure follows separately. No real staging,
 commit, preview8443 replacement or deployment.
+
+## 2026-10-25 — Card breadcrumbs and default-on display switch (phase71)
+
+**Commit:** pending sequential patch71. Source heading snapshots now render as plain paths beneath
+card writing, with no leading symbol and no body/actions restyle. Account → Editor exposes a default-on
+browser switch that hides labels without deleting metadata or stopping capture. Existing gentle-context
+preferences share the same mechanism and keep their keys/behavior.
+
+Seven preference units and26 built-browser cases pass, including every section, direct entry,
+reopen, source rename, Move/Duplicate/Undo, cross-tab isolation, narrow wrap/literal text, denied saving,
+and an active editor/caret/composition across an external display change. TypeScript/lint/build pass.
+[Evidence and limits](./development-evidence/2026-10-25-card-breadcrumbs/phase71/README.md). Broader
+regression/inventories follow in72; no real staging, commit, preview8443 change or deployment.
