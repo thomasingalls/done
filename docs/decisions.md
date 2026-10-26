@@ -5459,3 +5459,18 @@ performance. The 1,024-record/10-second/30-minute policy is a conservative initi
 an empirical optimum. Refusals may be reconsidered after reopening because policy state is ephemeral.
 Server pruning, public capacity/refusal UX, compatible activation and physical-device observations
 remain separate. [Contract and evidence](./account-local-retention-automatic.md).
+
+## 2026-10-26 — Quiet local-maintenance status and bounded explicit retry (phase74)
+
+**Commit:** pending sequential patch74. **Orientation:** the operator asked to work through capacity/
+refusal UX and activation in bounded patches, authorizing routine product choices.
+
+**Decision:** keep ordinary deferrals invisible; show persistent problems in Data, with “Maintenance
+paused” on its collapsed summary. Describe capacity without asking people to delete writing. Offer
+Check again for pre-mutation refusals, retaining quiet/backoff and all existing owner checks. A storage
+or verification halt requires lock/reopen; no retry clears it. Reuse the existing DeviceRoster
+presentation boundary for a narrow, optional local status/retry port; service history stays separate.
+
+**Tradeoff:** session status is not persisted across reopening, and ordinary waiting gets no progress
+banner. The status port exposes no authority/evidence. Public conversion stays gated until the
+activation build/runbook phase. [Evidence](./development-evidence/2026-10-26-automatic-local-retention/phase74/README.md).

@@ -3240,3 +3240,14 @@ Use another account and Sign out retain their distinct §6.6 effects. Switching 
 login; sign-out ends it. Both retain local writing. Collapsing a section does not reset a form, cancel
 an in-flight operation or change authorization. This organizational clarification changes no protection,
 removal, history-maintenance or synchronization guarantee.
+
+### Automatic local history maintenance — 2026-10-26
+
+Once activated, local technical-history reduction runs automatically with no user opt-in step.
+Ordinary deferrals for editing, receiving and unfinished operations remain quiet. Data shows a
+local-history explanation and a collapsed-section “Maintenance paused” indicator for persistent
+capacity/history/ineligibility problems. Check again requests the same guarded maintenance path,
+retaining quiet/retry delays; it never authorizes a cut. A storage/verification halt requires lock
+and reopen, with no claim that an uncertain write succeeded. Tasks, notes and day writing are not
+selected for age-based deletion. Local maintenance and explicit service snapshot/pruning controls
+remain distinct. [Contract](./account-local-retention-automatic.md).

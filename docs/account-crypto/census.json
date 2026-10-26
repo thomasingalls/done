@@ -561,7 +561,7 @@
     },
     {
       "path": "src/account/deviceRoster.ts",
-      "sha256": "c3d9c8de286d2f8409bfe98e0cdaa6ccc458a524523fd0bf7bbd73050377f25b"
+      "sha256": "ba698869116818d3e48a76827e60c86330de1e41324249911317a5a9e3c912bb"
     },
     {
       "path": "src/account/enrollmentChallenge.ts",
@@ -785,7 +785,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "8ad8c7edb386a6ba8e714e8d9873286ba650857eca796fb04440ee4b9d90e6ec"
+      "sha256": "4b581c6da032723e03c9a5195ea1fac82110e85c887a0e1e9b9a36b6c79c1dfc"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -857,7 +857,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "b07a4d24bf8a300fe930dae86383c8010a2506c1887b4006e0adf3871dcb8253"
+      "sha256": "3a508a3ac43552dbc4e52aefc8bae393b319e70846e1717952a790be34ed3427"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1556,16 +1556,20 @@
       "sha256": "abee360e377480868cc37493147092ae76e3049a5a7fc383bc8e3e78ad71fc68"
     },
     {
+      "path": "src/ui/LocalHistoryMaintenance.tsx",
+      "sha256": "15005ca77d56adca08830a91acf5141d3054c4a284f07dbbf18320510c012aee"
+    },
+    {
       "path": "src/ui/LocalRecovery.tsx",
       "sha256": "27b9482446aed3ded5a9ccf73515d12882ff3e53d415baf15b3cc0a606bcc7b1"
     },
     {
       "path": "src/ui/Menu.tsx",
-      "sha256": "6145e3307a308b7cd8752f53f08bf2832337cd34cbfea1c15c8a45f60d9f255d"
+      "sha256": "e73804506f4d8513ebfd259f71f37ffda828f4920da124496ca0ca4fed7218ed"
     },
     {
       "path": "src/ui/MenuSection.tsx",
-      "sha256": "193402b33a104c9894753012f9f8c2f2765ebf758d666487e2b36fb8051b3347"
+      "sha256": "0162a6574847a2c8617083ec64fa121c29a19e25c4417e2addb7f29bfc809d15"
     },
     {
       "path": "src/ui/NetworkLoginNotice.tsx",

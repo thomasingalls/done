@@ -16224,3 +16224,16 @@ remain uncredited; all previous obligations, cryptographic domains/sites and agg
 Public automatic conversion stays disabled. No real profile, production or preview8443 changed;
 no staging, signing, push, deployment or general qualification resumption. Other seats' progress
 records and frozen patches61–72 are unchanged.
+
+## 2026-10-26 — Local history maintenance status and retry (phase74)
+
+**Commit:** pending sequential patch74. Persistent maintenance refusals now have an explanation and
+paced Check again under Data, with a collapsed “Maintenance paused” marker. Ordinary deferrals stay
+quiet. Unexpected owner failures require lock/reopen. The stable, frozen status/subscription/retry
+port schedules existing verified removal and cannot clear a halt or bypass proof or retry clocks.
+
+25 focused units/component cases pass. The existing two native conversion/reopen/cancellation cases
+pass; extra assertions observe the actual composed owner's port. TypeScript/lint/build and reviewed
+source/planning snapshots pass. All previous assertions and protocol boundaries remain. Public
+conversion, real accounts, preview8443, staging/signing and deployment are unchanged.
+[Evidence](./development-evidence/2026-10-26-automatic-local-retention/phase74/README.md).

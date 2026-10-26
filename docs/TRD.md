@@ -4099,3 +4099,13 @@ must contain no material that unseals `R_priv`, and the escrow agent's must cont
 - §6.1 load-before-connect: [data loss with IndexedDB + websocket providers](https://discuss.yjs.dev/t/local-data-lost-with-indexeddb-websocket-providers/1816) · [rare data loss with y-prosemirror](https://discuss.yjs.dev/t/random-rare-data-loss-in-production-with-y-prosemirror/3728) · [y-indexeddb#20](https://github.com/yjs/y-indexeddb/issues/20)
 - §13 prior art, watched rather than adopted: [Ink & Switch Keyhive](https://www.inkandswitch.com/keyhive/notebook/) · [@localfirst/auth](https://github.com/local-first-web/auth). Both are Automerge-adjacent and solve service-independent authorization, which §13.1 deliberately does not need; their credential-separation and signed-operation patterns remain useful input to the design review.
 - §13.10 suite: [HPKE, RFC 9180](https://www.rfc-editor.org/rfc/rfc9180.html) · [WebCrypto security considerations](https://www.w3.org/TR/WebCryptoAPI/#security-considerations) · [WebAuthn PRF extension](https://w3c.github.io/webauthn/#prf-extension)
+
+### Local retention presentation port — 2026-10-26
+
+The composed owner optionally supplies a local-history status/subscription/retry port through its
+existing DeviceRoster presentation surface. It exposes no evidence, counters, keys or mutation
+callbacks. Frozen status snapshots are stable until presentation changes; observer failures do not
+change owner work. Explicit retry clears only the scheduler's parked hint and remains behind fresh
+eligibility, quiet/backoff, current authority, journal/activity and strict removal checks. Running,
+halted or closed lifetimes reject retry; a halt is never cleared by the port. Release detaches
+listeners. Public conversion remains gated separately from the baseline reader.

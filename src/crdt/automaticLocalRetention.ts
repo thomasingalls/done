@@ -7,6 +7,16 @@ export const LOCAL_RETENTION_MIN_RECORDS = 1024;
 export const LOCAL_RETENTION_QUIET_MS = 10000;
 export const LOCAL_RETENTION_COOLDOWN_MS = 30 * 60000;
 export const LOCAL_RETENTION_RETRY_MS = 60000;
+export interface LocalRetentionStatus {
+  readonly phase: 'idle' | 'waiting' | 'running' | 'halted' | 'closed';
+  readonly reason: string | undefined;
+}
+/** Presentation/retry port: never exposes evidence, counters or a mutation capability. */
+export interface LocalRetentionRuntime {
+  readonly status: LocalRetentionStatus;
+  onStatus(listener: () => void): () => void;
+  retry(): boolean;
+}
 type Outcome = { kind: string; reason?: string };
 export function createAutomaticLocalRetention(options: {
   signal: AbortSignal;
@@ -21,6 +31,28 @@ export function createAutomaticLocalRetention(options: {
     notBefore = 0;
   let parked: string | undefined, reason: string | undefined;
   let wakes = 0;
+  const listeners = new Set<() => void>();
+  let status: LocalRetentionStatus = Object.freeze({ phase: 'idle', reason: undefined });
+  const publish = () => {
+    const phase = closed
+      ? 'closed'
+      : halted
+        ? 'halted'
+        : running
+          ? 'running'
+          : timer !== undefined
+            ? 'waiting'
+            : 'idle';
+    if (status.phase === phase && status.reason === reason) return;
+    status = Object.freeze({ phase, reason });
+    for (const listener of [...listeners]) {
+      try {
+        listener();
+      } catch {
+        /* observer owns its failure */
+      }
+    }
+  };
   const clear = () => {
     if (timer !== undefined) clearTimeout(timer);
     timer = undefined;
@@ -40,16 +72,23 @@ export function createAutomaticLocalRetention(options: {
   };
   const schedule = () => {
     clear();
-    if (closed || halted || running) return;
+    if (closed || halted || running) {
+      publish();
+      return;
+    }
     const hint = observation();
-    if (!hint || hint.key === parked) return;
+    if (!hint || hint.key === parked) {
+      publish();
+      return;
+    }
     timer = setTimeout(
       () => {
         timer = undefined;
-        void attempt();
+        void attempt().finally(publish);
       },
       Math.max(0, quietUntil - Date.now(), notBefore - Date.now()),
     );
+    publish();
   };
   const attempt = async () => {
     if (closed || halted || running) return;
@@ -60,6 +99,7 @@ export function createAutomaticLocalRetention(options: {
       return;
     }
     running = true;
+    publish();
     const started = wakes;
     let again = false;
     try {
@@ -92,12 +132,15 @@ export function createAutomaticLocalRetention(options: {
     } finally {
       running = false;
       if (again) schedule();
+      publish();
     }
   };
   const dispose = () => {
     closed = true;
     clear();
     options.signal.removeEventListener('abort', dispose);
+    publish();
+    listeners.clear();
   };
   options.signal.addEventListener('abort', dispose, { once: true });
   if (options.signal.aborted) dispose();
@@ -110,18 +153,22 @@ export function createAutomaticLocalRetention(options: {
     },
     dispose,
     get status() {
-      return Object.freeze({
-        phase: closed
-          ? 'closed'
-          : halted
-            ? 'halted'
-            : running
-              ? 'running'
-              : timer !== undefined
-                ? 'waiting'
-                : 'idle',
-        reason,
-      });
+      return status;
+    },
+    onStatus(listener: () => void) {
+      if (closed) return () => {};
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+    retry() {
+      if (closed || halted || running) return false;
+      parked = undefined;
+      wakes++;
+      quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS;
+      schedule();
+      return true;
     },
   });
 }

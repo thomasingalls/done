@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 542,
-    "requiredTestFiles": 536,
+    "testFiles": 544,
+    "requiredTestFiles": 538,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11193,6 +11193,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localHistoryMaintenance.test.tsx",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localHistoryMaintenance.test.tsx"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/localProperties.test.ts",
       "status": "required",
       "invocation": {
@@ -11236,6 +11251,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/localRetentionStatus.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localRetentionStatus.test.ts"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -19154,7 +19184,7 @@
     },
     {
       "path": "test/local-baseline/automatic.node.mjs",
-      "sha256": "186da4811e59d2de31dcdb78e21aca94323e5502ee25632645207cbf105eb0ba"
+      "sha256": "333dbfe2f3bf720c3d43540683d7ad6794340d72b5b0e557191118bd26caed30"
     },
     {
       "path": "test/local-baseline/fixtures.mjs",
@@ -19249,12 +19279,20 @@
       "sha256": "8045fc61ffbd0a55bec1679b97ca2dcefff4897dd37c10903244a52892ce16f6"
     },
     {
+      "path": "test/localHistoryMaintenance.test.tsx",
+      "sha256": "b4a99ef1e49f7985852cfa9651b040c54a24f8b1903ba737b796ab48bc6486e2"
+    },
+    {
       "path": "test/localProperties.test.ts",
       "sha256": "3902f393012fdf18332ba1c3c68e3f297c7a2972ad0698ba306760d97c4abb5b"
     },
     {
       "path": "test/localRecovery.test.ts",
       "sha256": "10df0654bd6107f0ef4b4fc5fd714b95970d2dadba8d3d5e1fdb58008691bddd"
+    },
+    {
+      "path": "test/localRetentionStatus.test.ts",
+      "sha256": "0ba4868e89de9593f820c2c8b436d972def00968c7707fb15fe199622b6d34f2"
     },
     {
       "path": "test/localRetentionStorage.test.ts",

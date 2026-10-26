@@ -114,6 +114,16 @@ test(
   { timeout: 90000 },
   async (t) => {
     const { f, item } = await setup(t, 'automatic-local-retention', enabled);
+    assert.equal(
+      await f.page.evaluate(() => typeof opened.devices.localHistory?.retry),
+      'function',
+    );
+    await f.page.evaluate(() => {
+      globalThis.maintenancePhases = [];
+      opened.devices.localHistory.onStatus(() =>
+        maintenancePhases.push(opened.devices.localHistory.status.phase),
+      );
+    });
     const original = await f.page.evaluate(() => editor.read().master);
     await edit(f.page, 0, 0, 'AUTOMATIC ');
     await f.page.evaluate(() => editor.whenDurable());
@@ -129,6 +139,7 @@ test(
       30000,
     );
     const after = await inventory(f.page);
+    assert.ok((await f.page.evaluate(() => maintenancePhases)).includes('running'));
     assert.equal(after.version, 5);
     assert.equal(after.revision, 1);
     assert.equal(after.rows, 0);

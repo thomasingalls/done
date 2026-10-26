@@ -2810,6 +2810,7 @@ async function openReceivingWorkspace(
   operatorToken = access ?? operatorToken;
   let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
   let removingLocalHistory = false;
+  let automaticRetention: ReturnType<typeof createAutomaticLocalRetention> | undefined;
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
@@ -3018,6 +3019,9 @@ async function openReceivingWorkspace(
       kind: 'ready' as const,
       devices: Object.freeze({
         ...devices,
+        get localHistory() {
+          return automaticRetention;
+        },
         get transition() {
           return devices.transition;
         },
@@ -3153,6 +3157,7 @@ async function openReceivingWorkspace(
         }),
         remove: result.removeLocalHistory,
       });
+      automaticRetention = maintenance;
       const changed = workspace.subscribe(maintenance.wake);
       const statusChanged = workspace.onStatus(maintenance.wake);
       // Input/selection can precede its durable publication. Defer the quiet window immediately;

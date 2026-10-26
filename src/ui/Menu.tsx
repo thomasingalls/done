@@ -12,6 +12,11 @@ import { AccountIdentity } from './AccountIdentity';
 import { deviceCode } from '../account/deviceRoster';
 import { InstallPanel } from './InstallPanel';
 import { RemoveFromDeviceButton } from './DeviceDataRemoval';
+import {
+  LocalHistoryMaintenance,
+  localHistoryNeedsAttention,
+  useLocalHistoryStatus,
+} from './LocalHistoryMaintenance';
 
 export interface MenuProps {
   gentleContext: boolean;
@@ -71,6 +76,8 @@ export const Menu = ({
     slotId,
   } = useWorkspaceUi();
   const actor = snapshot.actors.find((value) => value.id === actorId)!;
+  const localHistory = devices?.localHistory;
+  const localHistoryStatus = useLocalHistoryStatus(localHistory);
   const [name, setName] = useState(actor.name);
   const [deviceName, setDeviceName] = useState(snapshot.deviceName);
   const [color, setColor] = useState(actor.color);
@@ -377,7 +384,10 @@ export const Menu = ({
           </button>
         )}
       </MenuSection>
-      <MenuSection title="Data">
+      <MenuSection
+        title="Data"
+        notice={localHistoryNeedsAttention(localHistoryStatus) ? 'Maintenance paused' : undefined}
+      >
         <div className="menu-row">
           <span>Local data</span>
           <span className="menu-value">{storage}</span>
@@ -409,6 +419,9 @@ export const Menu = ({
             Redo
           </button>
         </div>
+        {localHistory && localHistoryStatus && (
+          <LocalHistoryMaintenance runtime={localHistory} status={localHistoryStatus} />
+        )}
         {devices?.history && <AccountHistory run={devices.history} />}
       </MenuSection>
       <InstallPanel />
