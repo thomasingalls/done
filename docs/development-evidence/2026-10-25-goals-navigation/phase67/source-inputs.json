@@ -1,0 +1,8 @@
+{
+  "src/ui/Goals.tsx": "a5b0e9ebe0fb8b1911655d06407349e207cb714b9858adb1b6ee20dc38b72388",
+  "src/ui/GoalsNavigation.tsx": "1efd9b8277de294177a2fda5a6458c35f0f334e4245f1b4fbe34c2817ac1dec5",
+  "src/editor/headingNavigation.ts": "df2433bf6b9a8ffd65cde3c8bd9d33b7e84b30c99a514a0c8f88e736b89b320c",
+  "src/styles/shell.css": "fa45dad8ce835fa3cd41380ac3935e3a56af2075a856ca1532cdb207e6d6caaf",
+  "test/headingNavigation.test.ts": "203ff0eb47f77fc4cc62b5179cb9c3da48b914df604263dfc89c2afb921a4df1",
+  "test/geometry/goals-navigation.spec.ts": "57283cb5801acd487044a594007a2f56c4323a9e053a36e8aa5b20e203a33e4f"
+}

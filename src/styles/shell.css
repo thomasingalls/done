@@ -439,6 +439,74 @@
     text-align: start;
   }
 
+  .goals-navigation {
+    display: flex;
+    align-items: center;
+    min-inline-size: 0;
+    inline-size: 100%;
+    gap: 0.2rem;
+  }
+  .goals-navigation .goals-breadcrumbs {
+    inline-size: auto;
+    flex: none;
+    min-block-size: 2.75rem;
+  }
+  .goals-navigation .goals-breadcrumb-trail {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .goals-breadcrumb-piece {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+  }
+  .goals-crumb-label,
+  .goals-crumb-menu {
+    min-block-size: 2.75rem;
+    border-radius: var(--radius-1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-dim);
+    padding-inline: 0.3rem;
+  }
+  .goals-crumb-label {
+    max-inline-size: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .goals-crumb-menu {
+    min-inline-size: 2rem;
+  }
+  .goals-crumb-separator {
+    color: var(--color-text-faint);
+    font-size: 0.75rem;
+  }
+  .goals-crumb-label:hover,
+  .goals-crumb-menu:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+  .goals-crumb-label:focus-visible,
+  .goals-crumb-menu:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+  .goals-heading-menu-title {
+    padding: var(--space-2);
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+  }
+  .goals-heading-location {
+    display: block;
+    font-size: 0.6875rem;
+    color: var(--color-text-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .goals-outline-indicator {
     display: grid;
     place-items: center;

@@ -1678,9 +1678,21 @@ usable for the visit and reports that it was not saved. Disabling removes the ed
 
 #### Heading outline and focus
 
-The later outline consumes the same derived heading representation. Navigation dispatches a CodeMirror scroll
-effect without moving the selection or focusing the editor, which prevents an outline tap from summoning the
-mobile keyboard. Navigating and focusing remain separate commands.
+The full document outline and per-breadcrumb menus consume the same derived heading representation.
+The Goals root control retains every heading in source order; local menus contain immediate authored
+children, with sibling navigation at a leaf. The heading stack honors skipped levels. Duplicate titles
+remain separate positions and local rows show ancestry and line number.
+
+Capture one heading catalogue and its immutable editor document identity when a menu opens, never
+per keystroke or per rendered row. Dismiss on document change and independently reject navigation
+when the captured document no longer matches. Direct heading jumps also validate their position,
+level and label against the current document. A menu is ephemeral presentation, not authority.
+
+Navigation dispatches a CodeMirror scroll effect without moving the selection or focusing the editor,
+which prevents a heading tap from summoning the mobile keyboard. Outside pointer actions close menus;
+Escape closes and restores the trigger without closing the narrow Goals surface. Local menus support
+arrow/Home/End navigation. Constrained widths retain the deepest breadcrumb, and the root outline
+remains available. Navigating and focusing remain separate commands.
 
 Focus is one editor showing one contiguous heading subtree. Its state is local and ephemeral. Positions must map
 through editor transactions so concurrent edits before the subtree do not detach the view from its heading.

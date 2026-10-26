@@ -5378,3 +5378,19 @@ Storage refusal affects remembering this choice only. Menus and final bookkeepin
 **Tradeoff:** incomplete parser coverage or pathological scope lookup shows ordinary contrast rather
 than guessing or blocking typing. The preference applies to this browser, without sync semantics.
 [Phase66 evidence](./development-evidence/2026-10-25-goals-navigation/phase66/README.md).
+
+## 2026-10-25 — Keep two navigation levels in the one Goals editor
+
+**Commit:** pending sequential implementation patch67. **Orientation:** the operator selected per-crumb
+menus while retaining the complete page outline and formatted editing.
+
+**Decision:** retain Goals as the full-outline control; give each heading a direct jump and local
+child/sibling menu. Capture its document identity and catalogue once, close on accepted edits, and
+independently reject stale destinations. Display ancestry/line context for duplicate headings. Menu
+selection focuses the stable Goals control because a leaf trigger can disappear when navigating to
+siblings; Escape returns to the original trigger. Neither action moves the editor caret or opens it.
+
+**Tradeoff:** this is ephemeral navigation over authored headings, not a new outline model, section
+identity or content command. Bounded parser availability remains the existing outline limit. Native
+horizontal breadcrumb scrolling worked in the disposable touch check, so no shell gesture change is
+needed. [Bounded evidence](./development-evidence/2026-10-25-goals-navigation/phase67/README.md).

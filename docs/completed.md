@@ -16117,3 +16117,16 @@ cases, TypeScript and focused lint pass; independent225-position comparison agre
 parser-frontier and measurement-dispatch defects, fixture mistakes and raw-artifact limits. No old
 test/deadline, content, account, crypto, protocol, real staging/commit/deploy or8443 change. New test
 obligations stay uncredited; menus and repository bookkeeping follow. Previous61–65 stay exact.
+
+## 2026-10-25 — Goals breadcrumb menus preserve the full outline (phase67)
+
+**Commit:** pending unsigned sequential patch67 after66. Added direct per-heading navigation and
+child/sibling menus to the existing Goals header. One editor, authored source order, full outline,
+selection, undo, footer and admission remain. Captured-document checks prevent stale offsets;
+keyboard selection has a stable focus return. Six new helper cases and seven new built-browser
+cases pass; thirteen focused units pass including old breadcrumb coverage. Earlier fixture failures,
+reviewed focus defect and successful native-touch observation are retained in the
+[phase record](./development-evidence/2026-10-25-goals-navigation/phase67/README.md).
+
+The old root/trail geometry locator, wider regression and repository inventories follow in68.
+General qualification remains paused. No source commit, staging, release or preview8443 update.
