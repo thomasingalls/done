@@ -4,7 +4,9 @@
 
 **Selected direction, 2026-10-25:** [gentle context on by default plus breadcrumb menus, retaining
 the full-page outline](selection-2026-10-25.md). Scroll-opening and the reading rail are parked;
-the studies below remain historical comparisons. Application implementation has not started.
+the studies below remain historical comparisons. The selected editor/navigation features and card
+context are now implemented in unsigned phases66–72; see the
+[implementation evidence](../../development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md).
 
 **Subsequent feedback:** [editor-preserving revision64](editor-study.md) supersedes the outliner-like
 scanning and nearby-action recommendations below. Only breadcrumb placement received visual approval;

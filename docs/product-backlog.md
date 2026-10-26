@@ -169,6 +169,13 @@ behavior is unchanged; physical-device lifecycle evidence is still needed before
   The user did not request a settings mock. No automatic tagging has been implemented.
   Browser feedback approves breadcrumb placement only: preserve existing card styles/chrome.
   [Revision64](product-design/2026-10-23-goals-context/editor-study.md) reuses the current renderer/CSS.
+  **Implemented in unsigned phases69–72, 2026-10-25:** card transfers keep advisory heading
+  snapshots in encrypted workspace content. Paths appear beneath existing card writing with no
+  leading icon. Account → Editor has a default-on, browser-local display switch; hiding does not
+  erase context or stop capture. Optional export sidecars preserve Markdown. Mixed old clients may
+  omit/retain stale advisory metadata; no live backlink, backfill or Move-back command is added.
+  [Implementation evidence](development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md).
+
 - **UX-20 — Move/copy controls near the source.** Requested 2026-10-23; extends UX-08.
   [Study61](product-design/2026-10-23-goals-context/README.md) compares an explicit gutter popover
   with an attached action strip. Whole-subtree scope, current destination day and one-step Undo

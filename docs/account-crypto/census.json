@@ -849,7 +849,7 @@
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "53ec64ceec0415e2ccfd0fc100f01fea390845c8846af3286aee0c43f5decad8"
+      "sha256": "8c7e4e28a7a1c33d22930beccc4377c9b163c1482e0f785ee31362dce77d07e5"
     },
     {
       "path": "src/crdt/archiveProjection.ts",
@@ -921,7 +921,7 @@
     },
     {
       "path": "src/crdt/days.ts",
-      "sha256": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c"
+      "sha256": "a19a2aae98499694fbb31c4ec284c2bdf5ab73701c7df91de5960a87ac47c105"
     },
     {
       "path": "src/crdt/deliveryRecord.ts",
@@ -937,7 +937,7 @@
     },
     {
       "path": "src/crdt/export.ts",
-      "sha256": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf"
+      "sha256": "aa308b8336473367cf9c2cab9f98a9814832d6db82a201e06225e044806e96da"
     },
     {
       "path": "src/crdt/finalApplyGate.ts",
@@ -1157,7 +1157,7 @@
     },
     {
       "path": "src/crdt/moves.ts",
-      "sha256": "ecb713a4cbe3f49d0f204c3d04e868e9250b96f6dbd09cee9f6f05a5dba4e19f"
+      "sha256": "c923e9ff55163a2c56f64cfe5dba3dda99be3ab986f7bf84818835672369de83"
     },
     {
       "path": "src/crdt/ownedStartup.ts",
@@ -1317,7 +1317,7 @@
     },
     {
       "path": "src/crdt/workspaceCommands.ts",
-      "sha256": "69e40971d0951ed407f4d8d27a0811bba012679a624106af5b99a4b3a4f34dc3"
+      "sha256": "eb8ac9ec6563a8b82956543e2b2786725ba15c838cf1c4a669ed6976570a0baa"
     },
     {
       "path": "src/crdt/workspacePreparation.ts",
@@ -1345,11 +1345,15 @@
     },
     {
       "path": "src/editor/breadcrumbs.ts",
-      "sha256": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65"
+      "sha256": "4ddc2880566178a6b46bd60d60ea769efef969189334b6bdea8dfe9008ba0977"
     },
     {
       "path": "src/editor/cardCommands.ts",
       "sha256": "94788e4c6121409104859fcbcdd01213230d33ca8ef27d36199f2e235ebf7d28"
+    },
+    {
+      "path": "src/editor/cardGoalsContext.ts",
+      "sha256": "fe76be58bb27655621896a7bb9b638fda8114f246db0361d960ec655c631185b"
     },
     {
       "path": "src/editor/commands.ts",
@@ -1485,7 +1489,7 @@
     },
     {
       "path": "src/ui/App.tsx",
-      "sha256": "2573927c5545a0e38b3c13c0c70a968bebda4c1498a9f8391e6b0c233a81c86c"
+      "sha256": "d4e23dbadcb43bb57c34cd86568858008b84e71efe98a02be7e287d627c8e29e"
     },
     {
       "path": "src/ui/AppUpdateNotice.tsx",
@@ -1497,7 +1501,7 @@
     },
     {
       "path": "src/ui/Card.tsx",
-      "sha256": "f76860b69c7741acf53d6ca07bccc20024545ddeec9d16db5a8e6d402a021c6f"
+      "sha256": "c8940264485d32f5aa6abc099301688d5de48af3cd630fba2c44722929ecc4b8"
     },
     {
       "path": "src/ui/Collection.tsx",
@@ -1521,7 +1525,7 @@
     },
     {
       "path": "src/ui/Goals.tsx",
-      "sha256": "a5b0e9ebe0fb8b1911655d06407349e207cb714b9858adb1b6ee20dc38b72388"
+      "sha256": "471833ca51870dda85d81031b9fe50de45fcb18571756df31478c66839de9123"
     },
     {
       "path": "src/ui/GoalsActionsMenu.tsx",
@@ -1529,7 +1533,7 @@
     },
     {
       "path": "src/ui/GoalsNavigation.tsx",
-      "sha256": "1efd9b8277de294177a2fda5a6458c35f0f334e4245f1b4fbe34c2817ac1dec5"
+      "sha256": "ab1b1ba0590a045bd2d7c8de70e7f2a54026a0a3a55c17b14c615d62ef0e2049"
     },
     {
       "path": "src/ui/GoalsOutline.tsx",
@@ -1553,7 +1557,7 @@
     },
     {
       "path": "src/ui/Menu.tsx",
-      "sha256": "1d86b23cfd26488e42dbfc6d25c1343120aa2f493f9e17d24dc7bfd75d5a3464"
+      "sha256": "6145e3307a308b7cd8752f53f08bf2832337cd34cbfea1c15c8a45f60d9f255d"
     },
     {
       "path": "src/ui/MenuSection.tsx",
@@ -1608,12 +1612,20 @@
       "sha256": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99"
     },
     {
+      "path": "src/ui/useBrowserBoolean.ts",
+      "sha256": "be7181354abfe6af0c7c53713f4822beef40f76e44ec1df261ef7a91d7f3c97b"
+    },
+    {
+      "path": "src/ui/useCardGoalsContext.ts",
+      "sha256": "ddfe3d01cebc4f302dd477904ba1599d49b1b992ebeea9c81c37877fb9f46822"
+    },
+    {
       "path": "src/ui/useCardReorder.ts",
       "sha256": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529"
     },
     {
       "path": "src/ui/useGentleContext.ts",
-      "sha256": "b61e6e40b4d54ad088fb3ce56c823478b79ae1f6b968bd5c64785ef449c0023f"
+      "sha256": "1a7c9d94e2b83b214f5a59cea2813d927ab32067e78545b51541cfd5a85e7418"
     },
     {
       "path": "src/ui/useStore.ts",

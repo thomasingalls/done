@@ -16186,3 +16186,21 @@ reopen, source rename, Move/Duplicate/Undo, cross-tab isolation, narrow wrap/lit
 and an active editor/caret/composition across an external display change. TypeScript/lint/build pass.
 [Evidence and limits](./development-evidence/2026-10-25-card-breadcrumbs/phase71/README.md). Broader
 regression/inventories follow in72; no real staging, commit, preview8443 change or deployment.
+
+## 2026-10-25 — Card breadcrumbs close unsigned phases69–72
+
+The operator's requested card heading labels are implemented as historical snapshots on new Goals
+transfers, displayed beneath existing writing with no leading symbol. Account → Editor exposes a
+default-on browser switch. It hides existing labels without erasing context or stopping capture.
+Header menu affordances lead their headings; the full outline remains. Existing card styling, text,
+undo, protection and crypto mechanisms remain.
+
+Full units pass 1,981/one existing skip; full browser geometry passes 216/24 existing skips; separate
+bookkeeping regressions pass 109. TypeScript/lint/format, budget and planning/census readback pass.
+Independent source challenge and counterexamples are retained. All 197 cryptographic domains/sites and
+ownership definitions remain; five new required/uncredited test files preserve the aggregate release
+block. [Evidence and limits](./development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md).
+
+Four sequential unsigned patches are prepared with prior 61–68 unchanged. Real index staging/signing,
+preview8443, real accounts, publication and deployment remain separate. The candidate is available
+only on the existing isolated loopback53921 preview for review.

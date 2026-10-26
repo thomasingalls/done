@@ -5426,3 +5426,16 @@ versioned sidecar without changing Markdown or assigning live paths to archived 
 or retain an older merge snapshot; a schema fence is not added for optional presentation provenance.
 Unavailable parse coverage/overlong headings omit the label, not the transfer. Sidecar import and
 whole-subtree transfers remain separate. [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase70/README.md).
+
+## 2026-10-25 — Close card breadcrumb implementation without expanding qualification
+
+**Commit:** pending sequential patch72. **Decision:** preserve all existing crypto domains, construction
+ownership, obligations, deadlines and release blocks while registering the five new test files as
+required/uncredited. Keep failed counterexamples and their repairs beside final regression results.
+The account setting controls browser display only; paths remain encrypted content. Prior unlabeled
+cards stay unlabeled. Metadata fidelity with older clients and sidecar import remain explicit limits.
+
+**Evidence:** 1,981 full unit passes/one existing skip; 216 browser passes/24 existing platform skips;
+109 bookkeeping regression passes. Scope and identities are in the
+[final record](./development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md). No release qualification
+resumption, real profile/8443 replacement, commit, push or deployment is implied by these checks.
