@@ -16267,3 +16267,27 @@ Node26 host/browser emulation does not stand in for the Node24 ARM64 image or a 
 The next release operation needs the exact tested image and compatible rollback digest; a targeted
 real-phone first-conversion/lifecycle check remains advisable before activating real profiles.
 This follow-up changes documentation/evidence only. No push, merge, image publication or deployment.
+
+## 2026-10-26 — Exact ARM64 activation artifact and current infrastructure preparation
+
+Built signed `dc53fecf25ca341cb4b626a154e0df33a29728be` with automatic local maintenance enabled;
+the tested ARM64 index is `sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf`.
+All33 final-image cases pass at original deadlines, along with the separate two-container smoke and
+60 precache responses. TLS refusal/explicit-CA controls pass; public trust succeeds with a controlled
+hostname resolution after the original Docker DNS failure. The unchanged frontend passes the real
+waiting-worker reader→candidate→reader→candidate journey, including actual automatic reduction above
+the1,024-record threshold on two disposable profiles, protected reopen, offline writing, undo and sync.
+All110 frontend files and1,676 signed build inputs remain unchanged. The deployed `d8b3f22b` reader
+works after reduction and remains the compatible rollback target.
+
+Refreshed ol-infra to `a7fcf5b`, preserving the reorganized Flux tiers. Prepared the exact image pin
+and host-only one-year HSTS on both HTTPS routes; ordinary/stream timeouts, redirect, PVC, custody and
+backup controls remain. Offline checks, independent rendered comparison, four counterexamples and
+server-side route dry-run pass. Read-only production preflight finds readiness and healthy backups;
+the historical cumulative998 backup failures remain recorded, not erased by current health.
+
+The [repository packet](./development-evidence/2026-10-26-ux-retention-release/README.md) retains raw
+results, apparatus failures, identities, probes and reproduction material. Existing full unit/browser/
+contract/adapter results are reused against equal inputs. Physical Android first-conversion testing
+is deferred by the operator; general qualification remains paused. This checkpoint prepares the
+application PR and later infrastructure handoff; nothing is published or deployed yet.

@@ -5508,3 +5508,26 @@ walkthrough and exact signed ARM64 artifact/compatible reader rollback as the ne
 **Tradeoff:** the full local pass uses Node26 and Android emulation, so it does not establish target
 Node24/container or physical-phone behavior. Keep these limits explicit rather than calling the
 whole paused campaign complete. No product/source changes or publication are made in the checkpoint.
+
+## 2026-10-26 — Prepare automatic-maintenance activation with the deployed reader fallback
+
+**Orientation:** the operator authorized release preparation, chose to defer a physical Android
+walkthrough for the two-user beta, and requested HSTS while noting the infrastructure reorganization.
+
+**Decision:** build the clean signed `dc53fecf` source as an ARM64 distroless image with the coherent
+automatic-maintenance opt-in. Test the unchanged extracted frontend using the actual deployed
+`d8b3f22b` reader, real growth/quiet thresholds and automatic reduction on both original/joined
+profiles, followed by reader rollback and two-way writing. Retain that reader's immutable digest.
+Carry this tested artifact across documentation commits only after independently comparing every
+allowlisted input byte/mode. Keep both merge buttons with the operator and general qualification paused.
+
+Prepare host-only one-year HSTS in the current ol-infra HTTPS route rules, including the notification
+stream, without broadening subdomain scope or changing stream timeouts. Preserve the new `infra-core`
+Flux dependency and independently reconciled application/public route ownership. Image publication,
+infrastructure PR, reconciliation and client adoption follow after application merge.
+
+**Tradeoff:** a desktop real-threshold walkthrough does not establish physical-phone responsiveness or
+screen-lock behavior. Reader adoption stops future maintenance but cannot reconstruct removed local
+operational rows. The original public TLS probe's Docker DNS failure remains beside a successful
+default-trust DNS control. HSTS is sticky until expiry or HTTPS `max-age=0`; no preload is requested.
+[Exact artifact, failures, limits and handoff](./development-evidence/2026-10-26-ux-retention-release/README.md).

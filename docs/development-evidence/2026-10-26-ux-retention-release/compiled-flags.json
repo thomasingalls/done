@@ -1,0 +1,14 @@
+{
+  "expectedAutomatic": "1",
+  "compiledGateReads": [
+    {
+      "file": "deviceDataRemoval-C94Je0_1.js",
+      "flags": {
+        "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+        "VITE_ACCOUNT_BASELINE_READ": "1",
+        "VITE_ACCOUNT_RETENTION": "1",
+        "VITE_ACCOUNT_RETENTION_AUTO": "1"
+      }
+    }
+  ]
+}
