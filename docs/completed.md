@@ -16159,3 +16159,17 @@ as visually awkward. Existing per-crumb menus now use their leading SVG separato
 jumps and the full outline. TypeScript/build and all20 existing navigation browser cases pass.
 [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase69/README.md). Card context is next;
 no real staging, commit, preview8443 replacement or deployment.
+
+## 2026-10-25 — Card context foundation and lifecycle (phase70)
+
+**Commit:** pending unsigned sequential patch70. Optional heading snapshots share card creation,
+semantic admission, undo and sync content. Source-position capture excludes selected headings,
+including multiline Setext; filtering and sorted move anchors retain the correct path. Supporting
+moves/duplication/splits preserve it; ambiguous merges clear it. Optional sidecar export preserves
+Markdown and archive identity. No crypto or authority mechanism changes.
+
+Thirty new cases plus existing affected units yield298 passing/one existing skip. Independent
+review's three counterexamples now pass; original failures, first repair attempts and mixed-old-client
+limitations are retained. TypeScript/lint pass. [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase70/README.md).
+Card display/settings follow in71; inventory/regression closure follows separately. No real staging,
+commit, preview8443 replacement or deployment.

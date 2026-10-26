@@ -30,6 +30,8 @@ import {
   cardBody,
   cardAuthor,
   cardOrigin,
+  cardGoalsContext,
+  type GoalsContext,
   cardLocation,
   cardMembershipIssues,
   listDays,
@@ -76,6 +78,7 @@ export interface WorkspaceSnapshot {
     text: string;
     author: string;
     origin: string | null;
+    goalsContext?: GoalsContext;
     location: ReturnType<typeof cardLocation>;
   }[];
   readonly days: readonly {
@@ -857,11 +860,13 @@ export const createAdmittedWorkspace = async (
       master: doc.getText('master').toString(),
       cards: [...doc.getMap('cards').keys()].sort().map((id) => {
         const c = cardAt(doc, id)!;
+        const goalsContext = cardGoalsContext(c);
         return {
           id,
           text: cardBody(c),
           author: cardAuthor(c),
           origin: cardOrigin(c),
+          ...(goalsContext ? { goalsContext } : {}),
           location: cardLocation(doc, id),
         };
       }),

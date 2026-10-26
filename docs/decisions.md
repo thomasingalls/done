@@ -5410,3 +5410,19 @@ assert completed quick-entry submission before reload. Every old assertion and t
 The stale-menu regression is challenged with a one-guard-defective disposable build; earlier fixture,
 receipt and card-reopen failures remain visible alongside final passing results. Physical phone/IME,
 other engines and general qualification are outside this slice. [Evidence](./development-evidence/2026-10-25-goals-navigation/phase68/README.md).
+
+## 2026-10-25 — Card heading context is an advisory encrypted snapshot
+
+**Commit:** pending sequential patch70. **Orientation:** the operator asked to implement card heading
+breadcrumbs with an account-menu off option and a simpler symbol treatment, retaining card styling.
+
+**Decision:** capture bounded authored heading paths with the selected text as optional versioned
+card metadata through the existing admitted command. Preserve Markdown and crypto mechanisms. The
+forthcoming default-on browser display switch hides paths without deleting them or stopping capture.
+Keep supported lifecycle operations/undo consistent; clear differing merged paths. Export an optional
+versioned sidecar without changing Markdown or assigning live paths to archived positions.
+
+**Tradeoff:** the field is advisory, with no task/backlink/authority claim. Old clients can omit it
+or retain an older merge snapshot; a schema fence is not added for optional presentation provenance.
+Unavailable parse coverage/overlong headings omit the label, not the transfer. Sidecar import and
+whole-subtree transfers remain separate. [Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase70/README.md).

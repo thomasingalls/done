@@ -1676,6 +1676,34 @@ Persist only a non-content presentation Boolean for this browser, default on. Th
 not enter workspace formats, crypto authority or synchronization. Storage denial keeps the choice
 usable for the visit and reports that it was not saved. Disabling removes the editor extension.
 
+#### Card heading snapshots — selected 2026-10-25
+
+Card maps may contain optional `goalsContext: {v:1, headings:[{level,title}]}`. Levels are strictly
+increasing integers1–6; paths contain at most6 entries, each a nonblank single-line title of at most
+1,024 UTF-16 units. Invalid/future metadata is ignored without making card writing unreadable. Owners
+replace inline JSON rather than mutate it; validated returned paths and local writer values are
+frozen, with weak raw-value caching. The cache has no authority or persistence role.
+
+Capture only on explicit Goals transfer, from accepted source positions and matching selected text,
+not the viewport breadcrumb or text search. Reuse the parser with bounded work, recognize all physical
+lines of Setext headings, exclude the selected heading itself, and omit context on unavailable parse
+coverage. The command carries the text and advisory snapshot together through ordinary admission.
+Move context travels inside each line object so relative-anchor sorting cannot swap paths. Copy
+context follows its original line through markup filtering/capacity clipping. No per-keystroke heading
+catalogue, independent write, new root, crypto domain or authority check is introduced.
+
+The optional additive field uses the existing workspace schema and encrypted update/capsule lifecycle.
+Same-card moves retain it; supporting duplicates/splits copy it, and merges keep only an identical
+known path. Metadata changes share the human operation/undo transaction. Old readers ignore the field;
+old duplicate/split/export paths can omit it and old merges can retain the destination's snapshot.
+This is an advisory mixed-version limitation, not a reason to relax a reader/security fence.
+
+A content-free browser Boolean controls display, default on, independently from capture and sync.
+ZIP export keeps day/master Markdown byte-compatible and emits goals-context.json only when needed.
+Its v1 rows contain file, section (null for unfiled), zero-based index and headings. Context rows must
+refer to the actual serializer's source: never attach live-card metadata to archived Markdown when
+readDayContent chooses a retained archive. This adds no importer, task identity or trusted location.
+
 #### Heading outline and focus
 
 The full document outline and per-breadcrumb menus consume the same derived heading representation.

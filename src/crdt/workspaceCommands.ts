@@ -10,7 +10,15 @@ import {
   type Origin,
 } from './actors';
 import { openTree, readSchemaVersion, SCHEMA_VERSION, setRolloverHour } from './doc';
-import { cardAt, cardLocation, cardText, cardsMap, repairCardMemberships } from './days';
+import {
+  cardAt,
+  cardLocation,
+  cardText,
+  cardGoalsContext,
+  cardsMap,
+  repairCardMemberships,
+  type GoalsContext,
+} from './days';
 import {
   compose,
   moveCard,
@@ -44,11 +52,20 @@ export type WorkspaceCommand =
   | { readonly kind: 'remove'; readonly id: string }
   | { readonly kind: 'split'; readonly id: string; readonly at: number; readonly tailFrom?: number }
   | { readonly kind: 'merge'; readonly id: string }
-  | { readonly kind: 'copy'; readonly to: Ref; readonly lines: readonly string[] }
+  | {
+      readonly kind: 'copy';
+      readonly to: Ref;
+      readonly lines: readonly string[];
+      readonly goalsContexts?: readonly (GoalsContext | null)[];
+    }
   | {
       readonly kind: 'move-from-master';
       readonly to: Ref;
-      readonly lines: readonly { readonly line: number; readonly text: string }[];
+      readonly lines: readonly {
+        readonly line: number;
+        readonly text: string;
+        readonly goalsContext?: GoalsContext;
+      }[];
     }
   | { readonly kind: 'file'; readonly id: string; readonly to: Ref | 'master' }
   | { readonly kind: 'bulk'; readonly from: ISODate; readonly to: Ref | 'master' }
@@ -297,7 +314,7 @@ const executeWorkspaceCommand = (
         workspace,
         { date: from.date, section: 'scheduled' },
         cardText(source).toString(),
-        { origin: command.id },
+        { origin: command.id, goalsContext: cardGoalsContext(source) },
       );
       break;
     }
@@ -326,7 +343,7 @@ const executeWorkspaceCommand = (
       value = from ? mergeCardBackwards(workspace, from, command.id) : null;
       break;
     case 'copy':
-      value = copyFromMaster(workspace, command.to, command.lines);
+      value = copyFromMaster(workspace, command.to, command.lines, command.goalsContexts);
       break;
     case 'move-from-master': {
       if (!intent.masterMove) break;
@@ -353,6 +370,9 @@ const executeWorkspaceCommand = (
         master,
         command.to,
         lines.map((line) => line.number - 1),
+        new Map(
+          lines.map((line, index) => [line.number - 1, command.lines[index]!.goalsContext ?? null]),
+        ),
       );
       break;
     }

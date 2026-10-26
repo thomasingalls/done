@@ -18,21 +18,51 @@
 import { toISODate } from '../lib/date';
 import { nowLocal, type PlainDateTime } from '../lib/temporal';
 import { zip, type ZipEntry } from '../lib/zip';
-import { cardBody, dayAt, isDayEmpty, listDays, unfiledCards } from './days';
+import {
+  cardBody,
+  archiveOf,
+  cardGoalsContext,
+  cardsIn,
+  dayAt,
+  isDayEmpty,
+  listDays,
+  unfiledCards,
+  SECTIONS,
+  type GoalsContext,
+  type Section,
+} from './days';
 import { readDayContent, serializeCardList, serializeDay } from './serialize';
 import type { YDoc } from './yjs';
 
 export const exportEntries = (doc: YDoc, master: string): ZipEntry[] => {
   const entries: ZipEntry[] = [{ path: 'master.md', content: master }];
+  const contexts: {
+    file: string;
+    section: Section | null;
+    index: number;
+    headings: GoalsContext;
+  }[] = [];
 
   for (const date of listDays(doc)) {
     const day = dayAt(doc, date);
     if (isDayEmpty(day)) continue;
     entries.push({ path: `days/${date}.md`, content: serializeDay(readDayContent(doc, date)) });
+    // readDayContent gives a retained archive precedence over live collections.
+    // Never attach a live card's context to an unrelated archived list position.
+    if (!archiveOf(day))
+      for (const section of SECTIONS)
+        cardsIn(doc, date, section).forEach((card, index) => {
+          const headings = cardGoalsContext(card);
+          if (headings) contexts.push({ file: `days/${date}.md`, section, index, headings });
+        });
   }
 
   const unfiled = unfiledCards(doc);
   if (unfiled.length > 0) {
+    unfiled.forEach(({ card }, index) => {
+      const headings = cardGoalsContext(card);
+      if (headings) contexts.push({ file: 'unfiled.md', section: null, index, headings });
+    });
     const cards = serializeCardList(unfiled.map(({ card }) => cardBody(card)));
     const provenance = unfiled
       .map(({ id, location }, index) => {
@@ -59,6 +89,12 @@ export const exportEntries = (doc: YDoc, master: string): ZipEntry[] => {
     });
   }
 
+  // Preserve the optional snapshots without rewriting the user's Markdown.
+  if (contexts.length)
+    entries.push({
+      path: 'goals-context.json',
+      content: JSON.stringify({ v: 1, cards: contexts }, null, 2) + '\n',
+    });
   return entries;
 };
 

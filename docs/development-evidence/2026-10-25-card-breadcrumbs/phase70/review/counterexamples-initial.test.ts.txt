@@ -1,0 +1,62 @@
+import { expect, it } from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/dist/index.js';
+import { readFileSync } from 'node:fs';
+import { stripTypeScriptTypes } from 'node:module';
+import { stateFor } from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/helpers.ts';
+import { harness, TODAY } from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/workspace.ts';
+import { goalsContextsForLines } from '/Users/thomasingalls/.codex/worktrees/7fda/done/src/editor/cardGoalsContext.ts';
+import { compose, exportEntries, dayAt, serializeDay, parseDay, cardsIn, cardGoalsContext, cardId, collectionOf, indexOfCard, cardAt, cardBody, cardsMap, setCardLocation, isFrozen } from '/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/index.ts';
+import { newText } from '/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/yjs.ts';
+
+const PATH = [{ level: 1, title: 'Work' }];
+const HOME = [{ level: 1, title: 'Home' }];
+const TO = { date: TODAY, section: 'scheduled' as const };
+
+it('a later title line in a multiline Setext heading excludes that same heading', () => {
+  const text = '# Work\nFirst title\nsecond title\n---\n- task';
+  const state = stateFor(text);
+  const actual = goalsContextsForLines(state, [{ line: 2, text: 'second title' }]);
+  console.log('multiline-setext', JSON.stringify(actual));
+  expect(actual).toEqual([PATH]);
+});
+
+it('an export context points to the actual text at its serialized file/section/index', async () => {
+  const h = await harness();
+  try {
+    compose(h.me, TO, 'new writing', { goalsContext: PATH });
+    dayAt(h.store.doc, TODAY)!.set('archive', newText(serializeDay({ next: [], scheduled: ['old archive'], done: [] })));
+    const entries = exportEntries(h.store.doc, '');
+    const context = JSON.parse(entries.find(e => e.path === 'goals-context.json')!.content).cards[0];
+    const body = parseDay(entries.find(e => e.path === context.file)!.content)[context.section as 'scheduled'][context.index];
+    console.log('archive-sidecar', JSON.stringify({ context, body }));
+    expect(body).toBe('new writing');
+  } finally {
+    h.destroy();
+  }
+});
+
+it('the pinned older merge retains the first context when combining different contexts (compatibility limit)', async () => {
+  const h = await harness();
+  try {
+    compose(h.me, TO, 'work', { goalsContext: PATH });
+    compose(h.me, TO, 'home', { goalsContext: HOME });
+    const raw = readFileSync('/private/tmp/done-goals-implementation-2026-10-25/review-card-context/historical-merge.ts.txt', 'utf8');
+    const code = stripTypeScriptTypes(raw).replace('export const mergeCardBackwards =', 'return');
+    const discrete = (workspace: typeof h.me, fn: () => unknown) => {
+      workspace.undo?.stopCapturing();
+      let result: unknown;
+      workspace.doc.transact(() => { result = fn(); }, workspace.origin);
+      workspace.undo?.stopCapturing();
+      return result;
+    };
+    const writable = (workspace: typeof h.me, date: string) => !isFrozen(date, workspace.today);
+    const oldMerge = new Function('writable', 'collectionOf', 'dayAt', 'indexOfCard', 'cardAt', 'cardBody', 'discrete', 'cardsMap', 'setCardLocation', code)(writable, collectionOf, dayAt, indexOfCard, cardAt, cardBody, discrete, cardsMap, setCardLocation);
+    const id = cardId(cardsIn(h.store.doc, TODAY, 'scheduled')[1]!);
+    expect(oldMerge(h.me, TO, id)).toBe(4);
+    const survivor = cardsIn(h.store.doc, TODAY, 'scheduled')[0]!;
+    console.log('older-merge', JSON.stringify({ body: cardBody(survivor), path: cardGoalsContext(survivor) }));
+    expect(cardBody(survivor)).toBe('workhome');
+    expect(cardGoalsContext(survivor)).toEqual(PATH);
+  } finally {
+    h.destroy();
+  }
+});

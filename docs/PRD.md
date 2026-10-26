@@ -729,6 +729,30 @@ changes dismiss an open menu rather than reuse stale heading positions.
 This is separate from inherited heading labels on cards. It does not select automatic folding or
 a separate scanning mode, and does not alter text, placement, attribution, undo or synchronization.
 
+### 4.10 Goals heading context on cards — selected 2026-10-25
+
+Cards copied or moved from Goals retain a snapshot of the source item's authored heading ancestry.
+The selected heading itself is not its own parent; list nesting does not invent additional tags.
+The path appears beneath card writing, without a leading icon and without restyling the card.
+Existing line-based transfer granularity remains; whole-subtree transfer is a separate follow-up.
+
+“Goals breadcrumbs on cards” is on by default in the account settings menu. It hides or shows paths
+in this browser, without deleting them or changing future capture. Directly composed and existing
+unlabeled cards have no inferred path; never backfill by matching equal text. Source renames and
+reorganization do not rewrite historical snapshots. Bounds or incomplete parse coverage omit optional
+context while preserving the requested writing transfer.
+
+Moves, duplication and splitting preserve captured context on supporting clients. Merging different
+or labeled/unlabeled contexts clears the ambiguous path; undo restores the original metadata.
+The context is advisory provenance, not task identity, attribution, access authority or a live backlink.
+Older clients can ignore or omit this optional metadata and do not implement its merge policy; writing
+and existing protection remain compatible. Full cross-version metadata fidelity is not promised.
+
+Snapshots live with encrypted workspace content and sync through its existing admitted path. Browser
+preferences hold only the display Boolean. Export keeps Markdown unchanged and adds an optional
+versioned goals-context.json sidecar identifying the exported file, section and zero-based card index.
+The sidecar is portable data, not a new import/restore promise or an automatic return-to-Goals command.
+
 ---
 
 ## 5. Identity, attribution, sessions and presence

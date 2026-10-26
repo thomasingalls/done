@@ -59,7 +59,7 @@ const headingTitle = (state: EditorState, heading: SyntaxNodeRef, tree: Tree): s
   return title.replaceAll(/\s+/gu, ' ').trim() || 'Untitled';
 };
 
-const headingsThrough = (
+export const headingsThrough = (
   state: EditorState,
   through: number,
   timeout = 10,

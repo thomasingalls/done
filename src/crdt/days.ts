@@ -77,6 +77,48 @@ export type Card = YMap<unknown>;
 export type Collection = YArray<string>;
 export type Day = YMap<unknown>;
 
+/** Advisory source headings, never task identity, attribution or authority. */
+export type GoalsContext = readonly { readonly level: number; readonly title: string }[];
+
+/** Bounded, owned values; malformed/future optional metadata leaves writing readable. */
+export const normalizeGoalsContext = (value: unknown): GoalsContext | null => {
+  if (!Array.isArray(value) || value.length === 0 || value.length > 6) return null;
+  const headings: { level: number; title: string }[] = [];
+  let previous = 0;
+  for (const item of value) {
+    if (
+      !item ||
+      typeof item !== 'object' ||
+      !Number.isInteger(item.level) ||
+      item.level <= previous ||
+      item.level > 6 ||
+      typeof item.title !== 'string' ||
+      !item.title.trim() ||
+      item.title.length > 1024 ||
+      /[\r\n]/u.test(item.title)
+    )
+      return null;
+    headings.push(Object.freeze({ level: item.level, title: item.title }));
+    previous = item.level;
+  }
+  return Object.freeze(headings);
+};
+
+// Owners treat inline Yjs JSON as immutable and replace its field to change it.
+// Weak ownership avoids revalidating/allocating every path on each text publication.
+const goalsContextSnapshots = new WeakMap<object, GoalsContext | null>();
+export const cardGoalsContext = (card: Card): GoalsContext | null => {
+  const value = card.get('goalsContext');
+  if (!value || typeof value !== 'object') return null;
+  if (goalsContextSnapshots.has(value)) return goalsContextSnapshots.get(value)!;
+  const path =
+    'v' in value && value.v === 1 && 'headings' in value
+      ? normalizeGoalsContext(value.headings)
+      : null;
+  goalsContextSnapshots.set(value, path);
+  return path;
+};
+
 export interface CardLocation {
   date: ISODate;
   section: Section;
@@ -109,6 +151,7 @@ export interface NewCardOptions {
   origin?: string | null;
   createdAt?: string;
   id?: string;
+  goalsContext?: GoalsContext | null;
 }
 
 /**
@@ -122,6 +165,8 @@ export const newCard = (text: string, author: ActorId, options: NewCardOptions =
   card.set('origin', options.origin ?? null);
   card.set('author', author);
   card.set('createdAt', options.createdAt ?? nowInstant().toString());
+  const headings = normalizeGoalsContext(options.goalsContext);
+  if (headings) card.set('goalsContext', Object.freeze({ v: 1, headings }));
   return card;
 };
 
@@ -131,6 +176,7 @@ export const copyCard = (card: Card): Card =>
     id: cardId(card),
     origin: cardOrigin(card),
     createdAt: cardCreatedAt(card),
+    goalsContext: cardGoalsContext(card),
   });
 
 /** Cards own their text once, here; collections contain only stable ids. */
