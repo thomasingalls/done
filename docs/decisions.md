@@ -5308,3 +5308,22 @@ this study. Preserve old tests/runtime, the other seat’s progress document and
 **Tradeoff:** interactive HTML makes scope and geometry concrete without establishing real editor,
 phone, encryption or admission behavior. Parent-header context needs a later encrypted-format/export
 decision; the existing viewport breadcrumb alone cannot supply transfer provenance. [Design packet](./product-design/2026-10-23-goals-context/README.md).
+
+
+## 2026-10-23 — Scope mobile formatting as an in-app editor strip
+
+**Commit:** pending sequential design patch62. **Orientation:** the operator knows the intended
+heading/list toolbar appearance, but asked whether cross-browser/OS/keyboard requirements make it
+unreasonably large or whether an established library settles them.
+
+**Decision:** preserve a primary-source feasibility report before selecting implementation. Existing
+CodeMirror panels and semantic commands are the starting recommendation; new heading/list adapters
+remain needed. Treat keyboard geometry, focus and provisional text as separate boundaries. A Goals-only
+strip with stable editor-attached fallback is a bounded proposal; neither universal keyboard docking
+nor a native wrapper is selected. No new dependencies, permissions or mutation bypasses.
+
+**Tradeoff:** a small formatting UI is practical, but no reviewed library removes app-specific
+composition/admission obligations. Current Android composition can begin by placing a caret in a word,
+so disabling controls for every composition is not automatically usable. A real-keyboard exploratory
+slice should choose safe command ordering before implementation, separately from paused release
+qualification. [Report](./product-design/2026-10-23-goals-context/mobile-formatting.md).

@@ -22,6 +22,11 @@ get a bounded scope and evidence before implementation. General release qualific
 - **UX-05 — Mobile formatting controls.** Explore a small extension above the on-screen keyboard with
   one-tap heading and list formatting, especially in Goals. Evaluate keyboard/viewport behavior,
   selection, focus and available writing space on actual phones.
+  [Investigation62](product-design/2026-10-23-goals-context/mobile-formatting.md), 2026-10-23,
+  recommends a Goals-only in-app strip using existing CodeMirror panels/admitted commands, with
+  a stable editor-attached fallback. Perfect keyboard docking is not universally standardized;
+  composition/focus behavior must select the approach before implementation. No library or app
+  code was added, and no toolbar implementation is selected yet.
 - **UX-06 — Continuous mobile deletion.** The operator's barometer: “can I hold down backspace on mobile
   and watch the line disappear without pauses?” Pauses remain. Reproduce and measure sustained deletion
   on a physical phone, including while sync is active, alongside the existing typing measurements.

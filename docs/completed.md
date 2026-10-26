@@ -16043,3 +16043,18 @@ from proposed snapshot/setting/format/export/placement semantics. Prototype chec
 DOM behavior, not real editor or command/storage guarantees. No application source, tests, dependencies,
 real account, preview8443 or security promise changed. No staging into the real index, commit, push,
 deployment or qualification resumption. Prepare patch61 before the separate mobile feasibility report.
+
+
+### Mobile formatting technical scope documented before implementation
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch62 · **Stage:** design investigation only
+
+**Exit.** [Report](./product-design/2026-10-23-goals-context/mobile-formatting.md) checks actual editor
+dependencies, semantic mutation/focus boundaries and primary browser/editor sources. It distinguishes
+an ordinary Goals toolbar from a native keyboard accessory, explains viewport/keyboard API limits,
+and proposes a bounded composition/focus slice, admitted commands/panel, then optional docking.
+
+**Notes.** No universal library/support, tested keyboard behavior, measured effort or runtime repair
+is claimed. Estimates remain qualified. No app/test/dependency/preview8443/security changes; no real
+index staging, commit, push, deployment or release qualification. Patch62 follows immutable design61;
+the other seat’s progress document and historical records remain untouched.
