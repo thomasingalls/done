@@ -16251,3 +16251,19 @@ then a fresh reader-only owner with no removal/scheduling port, preserving editi
 another cold reopen. Candidate built flags, source/planning conservation, prerequisites and final
 checks are preserved in the [evidence](./development-evidence/2026-10-26-automatic-local-retention/phase75/README.md).
 No signed release artifact, public image, deployment, real profile or preview8443 change is claimed.
+
+## 2026-10-26 — Sign the Goals/card/retention series and rerun routine regressions
+
+Patches61–75 are committed in sequence, with all15 SSH signatures and cumulative trees verified.
+The final tested signed source is `92034c115dc5448f13e9d24ab50142726cbcbd91`. A fresh activated frontend
+build passes full Vitest (2,012 pass/one existing skip), full browser geometry (216 pass/24 existing
+platform skips),175 exact CI adapter cases and40 CI contract/vector leaf commands. The old native
+activation/reader rollback evidence is reused against the same source tree, without rerunning broad
+history/performance measurements. All assertions, workloads, deadlines and release blocks remain.
+
+The [signed checkpoint](./development-evidence/2026-10-26-signed-ux-retention-checkpoint/README.md)
+preserves source/build/commit identities, raw logs, named skip and runtime limits in the repository.
+Node26 host/browser emulation does not stand in for the Node24 ARM64 image or a physical phone.
+The next release operation needs the exact tested image and compatible rollback digest; a targeted
+real-phone first-conversion/lifecycle check remains advisable before activating real profiles.
+This follow-up changes documentation/evidence only. No push, merge, image publication or deployment.

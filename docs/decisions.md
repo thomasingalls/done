@@ -5492,3 +5492,19 @@ not reconstruct removed operational history. Keep public conversion off in ordin
 explicitly selected image is signed, tested and published by the existing procedure. No remote kill
 switch, live document shrinkage, automatic server pruning or new authority is introduced.
 [Runbook](./account-local-retention-activation.md).
+
+## 2026-10-26 — Preserve signed-series routine evidence before image preparation
+
+**Commit:** documentation-only checkpoint after signed `92034c11`.
+**Orientation:** the operator requested committing the prepared series and asked what is wise before
+release preparation. Focused maintenance evidence followed an earlier full UI/unit run.
+
+**Decision:** sign the15 exact prepared trees, then run full routine unit/browser and current CI
+contract/adapter surfaces on the final signed source. Preserve those results and the phase-to-commit
+map in the repository. Reuse exact-tree native maintenance evidence and historical performance work;
+keep general qualification paused. Recommend a targeted physical-phone first-conversion/lifecycle
+walkthrough and exact signed ARM64 artifact/compatible reader rollback as the next publication work.
+
+**Tradeoff:** the full local pass uses Node26 and Android emulation, so it does not establish target
+Node24/container or physical-phone behavior. Keep these limits explicit rather than calling the
+whole paused campaign complete. No product/source changes or publication are made in the checkpoint.
