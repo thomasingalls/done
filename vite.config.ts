@@ -105,6 +105,7 @@ export default defineConfig(({ mode }) => ({
         ['VITE_ACCOUNT_BASELINE_READ', '1'],
         ['VITE_ACCOUNT_BASELINE_INSTALL', '0'],
         ['VITE_ACCOUNT_RETENTION', '0'],
+        ['VITE_ACCOUNT_RETENTION_AUTO', '0'],
       ].map(([key, fallback]) => {
         const value = loadEnv(mode, process.cwd(), key!)[key!] || fallback;
         if (value !== '0' && value !== '1') throw Error(key + ' must be 0 or 1');

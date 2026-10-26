@@ -8,3 +8,6 @@ export const hasRetentionWriter = () =>
   hasBaselineReader() &&
   hasBaselineInstaller() &&
   import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1';
+/** Separate private policy opt-in; compatible reading alone must never schedule conversion. */
+export const hasAutomaticLocalRetention = () =>
+  hasRetentionWriter() && import.meta.env?.['VITE_ACCOUNT_RETENTION_AUTO'] === '1';

@@ -3,7 +3,9 @@ import {
   hasBaselineVerifier,
   hasBaselineInstaller,
   hasRetentionWriter,
+  hasAutomaticLocalRetention,
 } from './localBaselineMode';
+import { createAutomaticLocalRetention, type LocalRetentionHint } from './automaticLocalRetention';
 import { createRetentionReads } from './retentionReads';
 import { RetiredHistoryRequired } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
@@ -210,6 +212,7 @@ async function openAccountReceiveOwner(
   });
   let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
+  let localRetentionHint: LocalRetentionHint | undefined;
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
     auditDue = false,
@@ -331,6 +334,7 @@ async function openAccountReceiveOwner(
   let invalidateFinalPermission = () => {};
   let retentionAuthority = {};
   const invalidateAuthority = (checkedTransition = false) => {
+    localRetentionHint = undefined;
     retentionAuthority = {};
     if (checkedTransition) baselineShadow?.authorityChanged();
     else baselineShadow?.invalidate();
@@ -475,6 +479,7 @@ async function openAccountReceiveOwner(
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
     async validate(task, records, route, counter, view, baseline) {
+      localRetentionHint = undefined;
       if (baseline) {
         // The carrier has either fully replayed the authenticated origin or extended its private
         // reduced view under fresh authority. Never send these physical suffix rows to zero-origin replay.
@@ -494,6 +499,8 @@ async function openAccountReceiveOwner(
           );
           baselineReading = true;
           verifiedCounter = structuredClone(counter);
+          if (hasAutomaticLocalRetention())
+            localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
           sinceAudit = 0;
           auditDue = auditDeferred = false;
           memo.clear();
@@ -727,6 +734,8 @@ async function openAccountReceiveOwner(
         coverage.clear();
         throw e;
       }
+      if (hasAutomaticLocalRetention())
+        localRetentionHint = { revision: 0, records: records.length };
     },
     dispose() {
       baselineReading = false;
@@ -737,6 +746,7 @@ async function openAccountReceiveOwner(
       membershipAnchor = undefined;
       expectedPayload.fill(0);
       verifiedCounter = undefined;
+      localRetentionHint = undefined;
       verified.clear();
       memo.clear();
       coverage.clear();
@@ -2711,6 +2721,7 @@ async function openAccountReceiveOwner(
     checkLocalBaseline,
     installLocalBaseline,
     prepareLocalRemoval,
+    localRetentionHint: () => localRetentionHint,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -2787,6 +2798,7 @@ async function openReceivingWorkspace(
     checkLocalBaseline,
     installLocalBaseline,
     prepareLocalRemoval,
+    localRetentionHint,
   } = await openAccountReceiveOwner(
     options,
     options.identity.id,
@@ -3123,6 +3135,44 @@ async function openReceivingWorkspace(
           }
         : {}),
     });
+    // Private activation only. Growth comes from already authenticated owner loads: no census,
+    // decryption, dry run, network call or writing bytes are needed to decide when to try.
+    if (hasAutomaticLocalRetention() && result.removeLocalHistory && !account.detached) {
+      if (!carrier.beforeRelease) throw Error('Missing automatic retention cleanup ownership');
+      const maintenance = createAutomaticLocalRetention({
+        signal: carrier.signal,
+        observe: () => ({
+          ready:
+            carrier.state === 'active' &&
+            workspace.status.state === 'active' &&
+            workspace.status.durable &&
+            workspace.status.pendingItems === 0 &&
+            workspace.status.pressure === null &&
+            globalThis.document?.visibilityState !== 'hidden',
+          hint: localRetentionHint(),
+        }),
+        remove: result.removeLocalHistory,
+      });
+      const changed = workspace.subscribe(maintenance.wake);
+      const statusChanged = workspace.onStatus(maintenance.wake);
+      // Input/selection can precede its durable publication. Defer the quiet window immediately;
+      // the existing owner guard still interrupts preparation if activity races the attempt.
+      const activity = maintenance.wake;
+      globalThis.document?.addEventListener('keydown', activity, true);
+      globalThis.document?.addEventListener('beforeinput', activity, true);
+      globalThis.document?.addEventListener('pointerdown', activity, true);
+      globalThis.document?.addEventListener('visibilitychange', activity);
+      carrier.beforeRelease(() => {
+        maintenance.dispose();
+        changed();
+        statusChanged();
+        globalThis.document?.removeEventListener('keydown', activity, true);
+        globalThis.document?.removeEventListener('beforeinput', activity, true);
+        globalThis.document?.removeEventListener('pointerdown', activity, true);
+        globalThis.document?.removeEventListener('visibilitychange', activity);
+      });
+      maintenance.wake();
+    }
     if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;

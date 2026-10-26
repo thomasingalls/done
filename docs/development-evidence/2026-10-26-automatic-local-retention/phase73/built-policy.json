@@ -1,0 +1,14 @@
+{
+  "publicWriterAndPolicyDisabled": true,
+  "compiledGateReads": [
+    {
+      "file": "deviceDataRemoval-s1cw53T1.js",
+      "flags": {
+        "VITE_ACCOUNT_BASELINE_INSTALL": "0",
+        "VITE_ACCOUNT_BASELINE_READ": "1",
+        "VITE_ACCOUNT_RETENTION": "0",
+        "VITE_ACCOUNT_RETENTION_AUTO": "0"
+      }
+    }
+  ]
+}

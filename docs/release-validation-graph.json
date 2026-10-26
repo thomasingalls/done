@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 540,
-    "requiredTestFiles": 534,
+    "testFiles": 542,
+    "requiredTestFiles": 536,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9828,6 +9828,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/automaticLocalRetention.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/automaticLocalRetention.test.ts"
+        ]
+      },
+      "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/bootstrapHttp.test.ts",
       "status": "required",
       "invocation": {
@@ -10993,6 +11008,16 @@
         "packages": ["storage:app-startup", "storage:app-startup:packaged"]
       },
       "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/local-baseline/automatic.node.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/local-baseline/automatic.node.mjs"]
+      },
+      "declarations": 2,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15369,7 +15394,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "d29685267e529d10dc5283e8916b651bd3d0aa6f2d94e4c88e7316da4db013dd"
+      "sha256": "d5c7c7f9c5e9aaa15722a82d021b58146560580dd3e240ed38029bfe91a5f1a3"
     },
     {
       "path": "package.json",
@@ -18504,6 +18529,10 @@
       "sha256": "e2b17b6a78c3a70952d5a79b2e98a9c14a4e982b27ef1b158425279d52f6c42d"
     },
     {
+      "path": "test/automaticLocalRetention.test.ts",
+      "sha256": "ff32a605d9d49169b11d339a2e05056e45f45f3641eeaacf0b6024574efd7272"
+    },
+    {
       "path": "test/bootstrapHttp.test.ts",
       "sha256": "801657665628e4f0fde21e40934ef6972c6e187834f2d925d2f3b1bc67a01a13"
     },
@@ -19122,6 +19151,10 @@
     {
       "path": "test/local-baseline/anchor.native.mjs",
       "sha256": "4d893b0fa8e383dd8869a976446c85dcdc36878528ed1b85bae3f244f8603ebf"
+    },
+    {
+      "path": "test/local-baseline/automatic.node.mjs",
+      "sha256": "186da4811e59d2de31dcdb78e21aca94323e5502ee25632645207cbf105eb0ba"
     },
     {
       "path": "test/local-baseline/fixtures.mjs",
@@ -20113,7 +20146,7 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "2556e1044d14dc1a26203d915d93624805c4ebc948e3c1ef51e4452c8b5115c3"
+      "sha256": "f1a41bebd2082a29d7532686b2a331c783374eff1dedf9b9a05d153b44396094"
     },
     {
       "path": "vite/appUpgradeProperties.test.ts",

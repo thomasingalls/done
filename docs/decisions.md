@@ -5439,3 +5439,23 @@ cards stay unlabeled. Metadata fidelity with older clients and sidecar import re
 109 bookkeeping regression passes. Scope and identities are in the
 [final record](./development-evidence/2026-10-25-card-breadcrumbs/phase72/README.md). No release qualification
 resumption, real profile/8443 replacement, commit, push or deployment is implied by these checks.
+
+## 2026-10-26 — Reuse retention measurements; automate the private owner first (phase73)
+
+**Commit:** pending sequential patch73. **Orientation:** the operator reports increasing account-open
+and sync delay, asks about automatic history maintenance, and explicitly asks to reuse earlier
+measurements where sufficient before starting the next bounded phase.
+
+**Decision:** reuse the history-depth, outside-admission handoff, private evidence-reuse and later
+preparation-task studies. The latter already fixed the known remaining preparation stalls; an earlier
+recommendation to repair them again was stale. Implement an event-driven private scheduler over the
+existing removal owner, with a cheap authenticated revision/record-count hint, one flight, quiet and
+cooldown windows, paced refusals, lifecycle cleanup and halt on unexpected owner failure. Preserve
+all final proof/mutation boundaries. Keep automatic policy, installer and writer disabled in public
+builds behind separate opt-ins; compatible reading remains enabled.
+
+**Tradeoff:** reuse selects the next mechanism without diagnosing today's account or claiming new phone
+performance. The 1,024-record/10-second/30-minute policy is a conservative initial private policy, not
+an empirical optimum. Refusals may be reconsidered after reopening because policy state is ephemeral.
+Server pruning, public capacity/refusal UX, compatible activation and physical-device observations
+remain separate. [Contract and evidence](./account-local-retention-automatic.md).

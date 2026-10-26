@@ -16204,3 +16204,23 @@ block. [Evidence and limits](./development-evidence/2026-10-25-card-breadcrumbs/
 Four sequential unsigned patches are prepared with prior 61–68 unchanged. Real index staging/signing,
 preview8443, real accounts, publication and deployment remain separate. The candidate is available
 only on the existing isolated loopback53921 preview for review.
+
+## 2026-10-26 — Private automatic local-retention scheduler (phase73)
+
+**Commit:** pending sequential patch73. Reused earlier depth and preparation-task evidence rather than
+repeating performance sweeps or already completed repairs. The private composed owner now schedules
+its existing verified removal path from authenticated growth hints, with quiet/cooldown, one-flight,
+refusal pacing, input/lifecycle deferral and cleanup. No proof, storage format or server rule changes.
+
+Focused checks: 39 unit cases; two new native browser checks exercising real conversion/undo/redo/cold
+reopen and disabled/cancelled policy; three unchanged native safety checks for input interruption,
+failed readback and unpublished sources; 109 inventory/adapter/authority-registry cases. TypeScript, lint/format, default
+build and independent emitted-flag check pass. The native fixture reduced 27 physical records to zero
+suffix rows and preserved writing; its threshold-only probe does not establish performance at scale.
+Earlier check corrections and historical failures remain recorded. Two new required test obligations
+remain uncredited; all previous obligations, cryptographic domains/sites and aggregate blocks remain.
+[Evidence and limitations](./development-evidence/2026-10-26-automatic-local-retention/phase73/README.md).
+
+Public automatic conversion stays disabled. No real profile, production or preview8443 changed;
+no staging, signing, push, deployment or general qualification resumption. Other seats' progress
+records and frozen patches61–72 are unchanged.

@@ -1,0 +1,68 @@
+{
+  "unit": {
+    "passed": 39,
+    "failed": 0,
+    "newPolicyCases": 16
+  },
+  "native": {
+    "newIntegrationPassed": 2,
+    "unchangedSafetyPassed": 3,
+    "failed": 0,
+    "fixtureGrowthThreshold": 1,
+    "privatePolicyThreshold": 1024,
+    "quietMs": 10000,
+    "performanceClaim": false
+  },
+  "bookkeeping": {
+    "passed": 109,
+    "failed": 0,
+    "inventoryAndAdapters": 97,
+    "authorityRegistry": 12
+  },
+  "typecheck": "passed",
+  "lint": "passed",
+  "format": "passed",
+  "build": "passed",
+  "builtPolicy": "reader=1; installer=0; retention=0; automatic=0",
+  "qualification": "paused; aggregate blocked",
+  "personalProfiles": "untouched",
+  "prerequisites": [
+    {
+      "name": "debts",
+      "code": 0
+    },
+    {
+      "name": "retention",
+      "code": 0
+    },
+    {
+      "name": "selection-status",
+      "code": 0
+    },
+    {
+      "name": "update-limit",
+      "code": 0
+    },
+    {
+      "name": "wasm-seal",
+      "code": 0
+    },
+    {
+      "name": "authority-map",
+      "code": 0
+    },
+    {
+      "name": "yjs-patch",
+      "code": 0
+    },
+    {
+      "name": "budget",
+      "code": 0
+    },
+    {
+      "name": "origin",
+      "code": 0
+    }
+  ],
+  "traceability": "passed"
+}

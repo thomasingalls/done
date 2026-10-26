@@ -257,3 +257,13 @@ Confirm current behavior and subsequent decisions before promoting one into an a
 There may be other older conversation-only items. This recovery pass checked the repository's product
 questions, decision/completion records and the available conversation; it is not an exhaustive
 reconstruction of every past session. Add newly recalled items here with their source and status.
+
+## 2026-10-26 — Automatic history maintenance
+
+Growing-account open/sync delay is reported, without attributing the current account's cause.
+[Private scheduling73](./account-local-retention-automatic.md) reuses the earlier depth and preparation
+studies and adds automatic calls to the existing local removal owner. Public conversion remains off.
+Next work: capacity/refusal presentation and activation/rollback policy; physical-device behavior;
+separately consider automatic server snapshot/admission/pruning without weakening the two-snapshot or
+multi-device rules. No user-visible writing is selected for age-based deletion. Do not repeat the
+already completed preparation-task optimization as though it were still outstanding.
