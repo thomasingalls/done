@@ -66,3 +66,16 @@ abort/error behavior. Disposable native IndexedDB tests exercise actual removal,
 disabled policy and release cancellation. Their threshold-only probe avoids fabricating a large
 history; they keep the actual ten-second quiet interval and every verification/mutation boundary.
 This is new integration evidence, not another performance campaign or general release qualification.
+
+## Follow-up74–75 — status and explicit release activation
+
+The initial private implementation above is extended by [status/retry74](development-evidence/2026-10-26-automatic-local-retention/phase74/README.md)
+and the [activation/rollback runbook](./account-local-retention-activation.md). Persistent refusals are
+now surfaced under Data; explicit Check again may revisit an unchanged parked hint, preserving quiet,
+retry delay and all owner checks. It cannot clear a halt. Ordinary deferrals stay quiet.
+
+A single explicit automatic release build opt-in now defaults all required capabilities together,
+while refusing contradictory zero overrides. Runtime still requires all four flags. Ordinary builds
+remain reader-only; the selected activated release is automatic for users. Compatible rollback stops
+future scheduling as clients adopt it, retaining reduced data and editing. The original evidence,
+failures, format/proof boundaries and remaining production-account attribution limits stand.

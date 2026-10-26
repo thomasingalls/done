@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'vite';
 import { resolve } from 'node:path';
+import { accountRetentionFlags } from '../../vite/accountRetentionFlags.ts';
 import {
   native,
   selected,
@@ -17,18 +18,17 @@ import {
 
 // Use a tiny growth threshold, not a fake verification/removal operation. Quiet/retry clocks,
 // authority, census, journal, cryptography and the actual strict IDB exchange are unchanged.
-async function bundle(auto) {
+async function bundle(auto, readerOnly = false) {
   const hits = { threshold: 0, observation: 0 };
   const result = await build({
     configFile: false,
     logLevel: 'error',
-    define: Object.fromEntries(
-      [
-        ['BASELINE_READ', '1'],
-        ['BASELINE_INSTALL', '1'],
-        ['RETENTION', '1'],
-        ['RETENTION_AUTO', auto ? '1' : '0'],
-      ].map(([key, value]) => ['import.meta.env.VITE_ACCOUNT_' + key, JSON.stringify(value)]),
+    define: accountRetentionFlags(
+      auto
+        ? { VITE_ACCOUNT_RETENTION_AUTO: '1' }
+        : readerOnly
+          ? {}
+          : { VITE_ACCOUNT_BASELINE_INSTALL: '1', VITE_ACCOUNT_RETENTION: '1' },
     ),
     plugins: [
       {
@@ -68,7 +68,8 @@ async function bundle(auto) {
   return (Array.isArray(result) ? result[0] : result).output.find((x) => x.type === 'chunk').code;
 }
 const enabled = await bundle(true),
-  disabled = await bundle(false);
+  disabled = await bundle(false),
+  reader = await bundle(false, true);
 async function setup(t, id, script) {
   const f = await native(t),
     previous = f.setup;
@@ -179,6 +180,57 @@ test(
     await online(f.page, false);
     await syncing(f.page, item);
     assert.deepEqual(await inventory(f.page), before);
+    await close(f.page);
+  },
+);
+
+test(
+  'an activated candidate cold reopens in a compatible reader-only rollback and keeps editing/undo',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'automatic-reader-rollback', enabled);
+    const original = await f.page.evaluate(() => editor.read().master);
+    await edit(f.page, 0, 0, 'ACTIVATED ');
+    await f.page.evaluate(() => editor.whenDurable());
+    await online(f.page, true);
+    await settled(f.page);
+    await online(f.page, false);
+    await waitPredicate(
+      f.page,
+      () => globalThis.automaticResults?.some((r) => r.kind === 'removed'),
+      30000,
+    );
+    const converted = await inventory(f.page);
+    assert.equal(converted.version, 5);
+    assert.equal(converted.revision, 1);
+    await close(f.page);
+    await cold(f);
+    await f.page.evaluate(reader);
+    await configure(f.page, f.testOperatorToken);
+    await online(f.page, false);
+    await syncing(f.page, item);
+    assert.equal(await f.page.evaluate(() => opened.devices.localHistory), undefined);
+    assert.equal(await f.page.evaluate(() => typeof opened.removeLocalHistory), 'undefined');
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'ACTIVATED ' + original);
+    await edit(f.page, 0, 0, 'READER ');
+    await f.page.evaluate(() => editor.whenDurable());
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'ACTIVATED ' + original);
+    await f.page.evaluate(() => editor.command({ kind: 'redo' }).accepted);
+    await f.page.evaluate(() => editor.whenDurable());
+    const after = await inventory(f.page);
+    assert.equal(after.version, 5);
+    assert.equal(after.revision, converted.revision);
+    assert.ok(after.rows > 0);
+    await close(f.page);
+    await cold(f);
+    await f.page.evaluate(reader);
+    await configure(f.page, f.testOperatorToken);
+    await online(f.page, false);
+    await syncing(f.page, item);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'READER ACTIVATED ' + original);
+    assert.equal((await inventory(f.page)).version, 5);
+    t.diagnostic(JSON.stringify({ converted, after }));
     await close(f.page);
   },
 );

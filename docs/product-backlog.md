@@ -267,3 +267,10 @@ Next work: capacity/refusal presentation and activation/rollback policy; physica
 separately consider automatic server snapshot/admission/pruning without weakening the two-snapshot or
 multi-device rules. No user-visible writing is selected for age-based deletion. Do not repeat the
 already completed preparation-task optimization as though it were still outstanding.
+
+**Follow-up74–75:** local capacity/refusal presentation and paced explicit retry are implemented, with
+quiet ordinary deferrals and a collapsed Data marker for persistent issues. The coherent automatic
+release profile and compatible reader rollback are implemented/tested; ordinary builds remain reader-
+only until an activated image is selected. The [runbook](./account-local-retention-activation.md) covers
+build-time flags and cached-client adoption. Automatic service snapshots/admission/pruning remain
+separate. No real-profile conversion or production release occurred in these unsigned phases.

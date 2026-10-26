@@ -1,0 +1,20 @@
+{
+  "baseTree": "1693ce65705d9b59246500d891bf1af96511ae76",
+  "domainsAndSitesUnchanged": true,
+  "constructionDefinitionsUnchanged": true,
+  "oldObligationsPreserved": true,
+  "obligations": [
+    906,
+    907
+  ],
+  "unresolved": [
+    362,
+    363
+  ],
+  "addedRequiredUncredited": [
+    "test:vite/accountRetentionFlags.test.ts"
+  ],
+  "aggregateBlocked": true,
+  "priorNativeTestBodiesBytePreserved": true,
+  "existingNativeDeadlinesPreserved": true
+}

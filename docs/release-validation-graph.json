@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 544,
-    "requiredTestFiles": 538,
+    "testFiles": 545,
+    "requiredTestFiles": 539,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11017,7 +11017,7 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/local-baseline/automatic.node.mjs"]
       },
-      "declarations": 2,
+      "declarations": 3,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -13612,6 +13612,21 @@
           "form": "fc.property"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "vite/accountRetentionFlags.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "vite/accountRetentionFlags.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -19184,7 +19199,7 @@
     },
     {
       "path": "test/local-baseline/automatic.node.mjs",
-      "sha256": "333dbfe2f3bf720c3d43540683d7ad6794340d72b5b0e557191118bd26caed30"
+      "sha256": "71f31c72de4568fbcbb2327689c9aab46820c8d2ef11dcbd0d18362d50fb238a"
     },
     {
       "path": "test/local-baseline/fixtures.mjs",
@@ -20184,7 +20199,15 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "f1a41bebd2082a29d7532686b2a331c783374eff1dedf9b9a05d153b44396094"
+      "sha256": "cc6f53e9176a4ecf8ab4f32118ac301e88bc9e29a58fdd5c543957211fdd9bb4"
+    },
+    {
+      "path": "vite/accountRetentionFlags.test.ts",
+      "sha256": "ca79f9d1f7c7afb01219efc02112b89d004b36c70182ed165f360bab32a5c93e"
+    },
+    {
+      "path": "vite/accountRetentionFlags.ts",
+      "sha256": "4a34a7ca63b81980a076b9313b8daa897a8928aab7a52c1998e8f58fa932cba7"
     },
     {
       "path": "vite/appUpgradeProperties.test.ts",

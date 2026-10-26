@@ -4109,3 +4109,12 @@ change owner work. Explicit retry clears only the scheduler's parked hint and re
 eligibility, quiet/backoff, current authority, journal/activity and strict removal checks. Running,
 halted or closed lifetimes reject retry; a halt is never cleared by the port. Release detaches
 listeners. Public conversion remains gated separately from the baseline reader.
+
+### Coherent automatic-maintenance build activation — 2026-10-26
+
+The shared Vite build policy defaults to compatible reading only. An explicit
+`VITE_ACCOUNT_RETENTION_AUTO=1` build profile defaults installer/retention gates to1 and refuses
+contradictory explicit zero overrides. Runtime owners still require all four gates. The container
+passes the same build argument into its frontend build; changing runtime environment is insufficient.
+Reader-only rollback retains baseline/journal-era support and cannot restore reduced operational
+rows. Scheduling stops only as cached clients adopt that reader build. [Activation/rollback runbook](./account-local-retention-activation.md).

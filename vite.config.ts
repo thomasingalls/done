@@ -9,6 +9,7 @@ import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
+import { accountRetentionFlags } from './vite/accountRetentionFlags.ts';
 
 const applicationSourcePath = fileURLToPath(new URL('./src/', import.meta.url))
   .split(/[/\\]/)
@@ -99,19 +100,8 @@ export default defineConfig(({ mode }) => ({
     precacheServiceWorker(),
   ],
   define: {
-    // First ship compatible readers. Conversions remain a separate, explicit private opt-in.
-    ...Object.fromEntries(
-      [
-        ['VITE_ACCOUNT_BASELINE_READ', '1'],
-        ['VITE_ACCOUNT_BASELINE_INSTALL', '0'],
-        ['VITE_ACCOUNT_RETENTION', '0'],
-        ['VITE_ACCOUNT_RETENTION_AUTO', '0'],
-      ].map(([key, fallback]) => {
-        const value = loadEnv(mode, process.cwd(), key!)[key!] || fallback;
-        if (value !== '0' && value !== '1') throw Error(key + ' must be 0 or 1');
-        return ['import.meta.env.' + key, JSON.stringify(value)];
-      }),
-    ),
+    // Compatible readers remain the default; one release build opt-in enables coherent writers.
+    ...accountRetentionFlags(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_')),
     'import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION': JSON.stringify(
       (() => {
         const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_TEXT_ADMISSION')[

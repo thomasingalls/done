@@ -5474,3 +5474,21 @@ presentation boundary for a narrow, optional local status/retry port; service hi
 **Tradeoff:** session status is not persisted across reopening, and ordinary waiting gets no progress
 banner. The status port exposes no authority/evidence. Public conversion stays gated until the
 activation build/runbook phase. [Evidence](./development-evidence/2026-10-26-automatic-local-retention/phase74/README.md).
+
+## 2026-10-26 — Explicit coherent activation with an automatic user experience (phase75)
+
+**Commit:** pending sequential patch75. **Orientation:** status/refusal behavior is frozen in74; the
+operator authorized product decisions while preparing bounded sequential work toward activation.
+
+**Decision:** keep routine builds reader-only and provide one explicit release build opt-in that
+sets compatible reader/installer/retention/automatic capabilities together. Reject contradictory
+zero overrides. Expose that opt-in to Docker's frontend build. The selected release is automatic for
+users, with no extra consent/settings chore; retain the initial threshold/quiet/cooldown policy.
+Prove current-source reader-only rollback after actual conversion, editing and cold reopening.
+
+**Tradeoff:** activation is compiled into immutable client code, so changing server/runtime environment
+cannot instantly stop cached clients. Rollback needs compatible readers and client adoption; it does
+not reconstruct removed operational history. Keep public conversion off in ordinary builds until the
+explicitly selected image is signed, tested and published by the existing procedure. No remote kill
+switch, live document shrinkage, automatic server pruning or new authority is introduced.
+[Runbook](./account-local-retention-activation.md).

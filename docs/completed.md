@@ -16237,3 +16237,17 @@ pass; extra assertions observe the actual composed owner's port. TypeScript/lint
 source/planning snapshots pass. All previous assertions and protocol boundaries remain. Public
 conversion, real accounts, preview8443, staging/signing and deployment are unchanged.
 [Evidence](./development-evidence/2026-10-26-automatic-local-retention/phase74/README.md).
+
+## 2026-10-26 — Automatic-maintenance build profile and reader rollback (phase75)
+
+**Commit:** pending sequential patch75. A single explicit build-time activation flag now selects all
+required compatible read/write capabilities, rejecting contradictory zero overrides. The container
+build passes it through; default builds stay reader-only. The activation runbook selects automatic
+user behavior, retains the initial cadence and describes stop/adoption/compatible rollback boundaries.
+
+Focused units exercise default/activated profiles, all16 explicit combinations, invalid values and
+manual private fixtures. The native activation/reader-rollback walkthrough uses real conversion,
+then a fresh reader-only owner with no removal/scheduling port, preserving editing, undo/redo and
+another cold reopen. Candidate built flags, source/planning conservation, prerequisites and final
+checks are preserved in the [evidence](./development-evidence/2026-10-26-automatic-local-retention/phase75/README.md).
+No signed release artifact, public image, deployment, real profile or preview8443 change is claimed.
