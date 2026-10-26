@@ -5345,3 +5345,20 @@ return to Goals as separate candidates. No new binding, metadata format or retur
 **Tradeoff:** a real editor makes caret reveal/geometry visible, while its memory-only writes establish
 no app admission/IME/persistence guarantee. Longest-prefix return matching also needs an insertion
 contract: subtree-end append can misfile text under the last child. [Revision](./product-design/2026-10-23-goals-context/editor-study.md).
+
+
+## 2026-10-25 — Select gentle context and preserve both outline navigation levels
+
+**Commit:** pending sequential design patch65. **Orientation:** the operator found viewport-edge
+and fixed-percentage activation unrelated to reading attention, favors gentle context plus breadcrumb
+menus, and explicitly wants the current full-page outline dropdown retained. The rail is distracting.
+
+**Decision:** select gentle context with a settings-sidebar toggle defaulting on, add per-crumb local
+navigation without replacing the full outline, and park scroll-opening/reading rail as historical
+experiments. Retain formatted editing/caret reveal and the existing footer. This is a design selection,
+not authorization to start application coding. Card-context capture defaults/format remain separate.
+
+**Tradeoff:** coordinate thresholds do not name the attended text; damping can reduce toggling but
+does not establish intent. Explicit caret/focus/navigation actions are stronger candidate signals,
+with the editing caret and reading location kept distinct. Offscreen dimming fallback and exact
+preference/contrast detail remain proposals. [Selection](./product-design/2026-10-23-goals-context/selection-2026-10-25.md).

@@ -16088,3 +16088,17 @@ identities, licenses, source/build, inspected screenshots and bounded sample int
 results. Corrected harness caret/typecheck errors are preserved. No app runtime, old tests, locks,
 dependencies, real accounts, preview8443 or security guarantees changed. Earlier61–63 artifacts and
 the other seat’s progress record remain exact. No real staging/commit/push/deploy or qualification.
+
+
+### Goals scanning choice recorded without expanding application scope
+
+**Date:** 2026-10-25 · **Commit:** pending sequential patch65 · **Stage:** product specification
+
+**Exit.** The queue and design packet record default-on, toggleable gentle context plus per-crumb
+menus while retaining the whole-page outline dropdown. Scroll-opening and reading rail are parked;
+viewport cutoffs, intent-based alternatives and remaining offscreen/contrast/preference details are
+distinguished from selected requirements. Card styling/capture and footer decisions remain separate.
+
+**Notes.** [Selection](./product-design/2026-10-23-goals-context/selection-2026-10-25.md) adds no new
+prototype, app code, old-test change or behavioral claim. Earlier61–64 artifacts and append-only
+history stay intact. No real staging/commit/push, preview8443 change, deployment or qualification.

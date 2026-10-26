@@ -76,6 +76,13 @@ get a bounded scope and evidence before implementation. General release qualific
   compares gentle caret-context dimming, per-crumb menus, experimental scroll-opening and a reading
   rail. None is selected for application implementation.
 
+  **Selected 2026-10-25:** gentle context with a settings-sidebar toggle, default on, plus
+  per-breadcrumb menus **and retention of the existing full-page outline dropdown**. Preserve the
+  formatted editor and caret reveal. Scroll-opening and the reading rail are parked after review;
+  a fixed viewport/percentage boundary does not establish the operator's attention. See the
+  [selection and remaining details](product-design/2026-10-23-goals-context/selection-2026-10-25.md).
+  No app implementation is authorized or claimed by this design selection.
+
 - **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
   sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
   focus request, reopening the editor and stealing later input. Regression checks cover outside

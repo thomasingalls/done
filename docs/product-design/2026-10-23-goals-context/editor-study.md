@@ -2,6 +2,10 @@
 
 2026-10-23 · design patch64 · follows the operator's four browser comments on61–63.
 
+**Subsequent selection, 2026-10-25:** [gentle context with a default-on settings toggle, per-crumb
+menus and the existing full-page outline](selection-2026-10-25.md). C/D are parked. Descriptions
+below preserve the earlier comparison and are not the current implementation queue.
+
 [Editable sketch](editor-study.html) · [gentle context](editor-screenshots/gentle-context.png) ·
 [breadcrumb menus](editor-screenshots/breadcrumb-menus.png) · [reading rail](editor-screenshots/reading-rail.png) ·
 [scroll-open experiment](editor-screenshots/scroll-open.png) · [card styling](editor-screenshots/breadcrumb-only.png) ·

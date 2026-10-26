@@ -2,6 +2,10 @@
 
 2026-10-23 · design study · sequential patch61 · no application implementation selected.
 
+**Selected direction, 2026-10-25:** [gentle context on by default plus breadcrumb menus, retaining
+the full-page outline](selection-2026-10-25.md). Scroll-opening and the reading rail are parked;
+the studies below remain historical comparisons. Application implementation has not started.
+
 **Subsequent feedback:** [editor-preserving revision64](editor-study.md) supersedes the outliner-like
 scanning and nearby-action recommendations below. Only breadcrumb placement received visual approval;
 the incidental card restyling is withdrawn. The earlier mock remains as design history.
