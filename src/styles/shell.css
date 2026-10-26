@@ -478,11 +478,15 @@
     white-space: nowrap;
   }
   .goals-crumb-menu {
-    min-inline-size: 2rem;
+    display: grid;
+    place-items: center;
+    min-inline-size: 1.75rem;
   }
-  .goals-crumb-separator {
-    color: var(--color-text-faint);
-    font-size: 0.75rem;
+  .goals-crumb-menu svg {
+    transition: rotate var(--duration-snap) var(--ease-snap);
+  }
+  .goals-crumb-menu[aria-expanded='true'] svg {
+    rotate: 90deg;
   }
   .goals-crumb-label:hover,
   .goals-crumb-menu:hover {

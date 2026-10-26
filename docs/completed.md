@@ -16151,3 +16151,11 @@ manifest obligations remain, with five new required/uncredited files and the agg
 Physical phones, Firefox/iOS, typing latency and paused general qualification are not established.
 Preview8443, production and real accounts are untouched. Sequential patch replay is independently
 checked through a temporary index; signed commits and any preview/release follow separately.
+
+## 2026-10-25 — Move breadcrumb menu affordances before the heading (phase69)
+
+**Commit:** pending unsigned sequential patch69. User feedback identified the trailing text caret
+as visually awkward. Existing per-crumb menus now use their leading SVG separators, preserving text
+jumps and the full outline. TypeScript/build and all20 existing navigation browser cases pass.
+[Evidence](./development-evidence/2026-10-25-card-breadcrumbs/phase69/README.md). Card context is next;
+no real staging, commit, preview8443 replacement or deployment.

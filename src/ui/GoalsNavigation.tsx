@@ -188,9 +188,30 @@ export const GoalsNavigation = ({
             <span className="goals-breadcrumb-trail" ref={trail}>
               {path.map((heading) => (
                 <span className="goals-breadcrumb-piece" key={`${heading.from}:${heading.level}`}>
-                  <span aria-hidden="true" className="goals-crumb-separator">
-                    ›
-                  </span>
+                  <button
+                    type="button"
+                    className="goals-crumb-menu"
+                    aria-label={`Sections inside ${heading.title}`}
+                    aria-expanded={
+                      open?.kind === 'local' &&
+                      open.title === heading.title &&
+                      open.from === heading.from
+                    }
+                    aria-controls="goals-heading-menu"
+                    data-heading-from={heading.from}
+                    onClick={(event) => show(event.currentTarget, heading)}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                      <path
+                        d="m4.5 2 4 4-4 4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
                   <button
                     type="button"
                     className="goals-crumb-label"
@@ -209,21 +230,6 @@ export const GoalsNavigation = ({
                     }}
                   >
                     <span className="goals-breadcrumb-trail-text">{heading.title}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="goals-crumb-menu"
-                    aria-label={`Sections inside ${heading.title}`}
-                    aria-expanded={
-                      open?.kind === 'local' &&
-                      open.title === heading.title &&
-                      open.from === heading.from
-                    }
-                    aria-controls="goals-heading-menu"
-                    data-heading-from={heading.from}
-                    onClick={(event) => show(event.currentTarget, heading)}
-                  >
-                    <span aria-hidden="true">⌄</span>
                   </button>
                 </span>
               ))}
