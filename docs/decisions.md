@@ -5289,3 +5289,22 @@ it across the evidence commit or application merge. Do not rebuild merely to rel
 head. Keep all lower package findings, earlier failed attempts, browser/server boundary limits
 and the open AMD64/generalized qualification boundaries. Operator merges, exact private image
 publication, infrastructure review and deployment remain separate.
+
+
+## 2026-10-23 — Specify heading context and scanning before changing Goals
+
+**Commit:** pending sequential design patch61. **Orientation:** the operator withdrew the gather-tray
+direction as too rigid and requested visual alternatives for automatic parent-header card context,
+scanning/folding and near-cursor Copy/Move before application coding. Two read-only subagents reviewed
+interaction/storage boundaries and mobile formatting feasibility.
+
+**Decision:** build a standalone fictional-data sketch, retain it in the repo with the product queue,
+and keep every interaction/format choice explicitly proposed. Compare heading breadcrumb/compact label,
+in-place folds/compact source-order reading, and gutter popover/attached actions. Recommend captured
+context from the admitted source item, but do not select a metadata format, export policy or live-link
+contract. No gather workflow, task database, new dependency or app implementation is authorized by
+this study. Preserve old tests/runtime, the other seat’s progress document and release qualification pause.
+
+**Tradeoff:** interactive HTML makes scope and geometry concrete without establishing real editor,
+phone, encryption or admission behavior. Parent-header context needs a later encrypted-format/export
+decision; the existing viewport breadcrumb alone cannot supply transfer provenance. [Design packet](./product-design/2026-10-23-goals-context/README.md).

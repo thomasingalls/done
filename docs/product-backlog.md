@@ -61,6 +61,11 @@ get a bounded scope and evidence before implementation. General release qualific
   do the work; automatic recurring tasks or AI-selected priorities are not the solution requested here.
   This is a design problem to explore, not a selected lens or implementation.
 
+  **Direction updated 2026-10-23:** the operator withdrew gathering/the gather tray as too rigid.
+  Continue with scanning instead. [Design study61](product-design/2026-10-23-goals-context/README.md)
+  compares folds in the original document with a compact reading projection that exposes nested
+  items and notes in source order. Neither alternative is selected for implementation.
+
 - **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
   sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
   focus request, reopening the editor and stealing later input. Regression checks cover outside
@@ -133,6 +138,16 @@ behavior is unchanged; physical-device lifecycle evidence is still needed before
 [UI evidence and limits](development-evidence/2026-10-23-sidebar-cut-background/README.md).
 
 ## Earlier conversation items retained
+
+- **UX-19 — Automatic card context from Goals headings.** Requested 2026-10-23 for specification
+  before coding. [Study61](product-design/2026-10-23-goals-context/README.md) mocks a captured heading
+  breadcrumb and compact-label alternative. Proposed opt-in captures context on new transfers;
+  snapshot/live behavior, encrypted metadata and export/import policy remain product/format decisions.
+  The user did not request a settings mock. No automatic tagging has been implemented.
+- **UX-20 — Move/copy controls near the source.** Requested 2026-10-23; extends UX-08.
+  [Study61](product-design/2026-10-23-goals-context/README.md) compares an explicit gutter popover
+  with an attached action strip. Whole-subtree scope, current destination day and one-step Undo
+  remain requirements; no application placement or new transfer implementation is selected.
 
 - **Paid sync and storage.** The operator wants to charge for hosted sync/storage and address this
   before formal qualification. Pricing, entitlements and the associated UX need their own design pass.

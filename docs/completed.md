@@ -16027,3 +16027,19 @@ deadline, source census classification or security guarantee changes. Generalize
 stays paused/blocked at892 obligations/348 unresolved. An independently checked infrastructure
 pin patch is retained unapplied against the local base; no image publication, infrastructure
 mutation, merge or deployment. Other seat's progress document remains intact.
+
+
+### Goals context, scanning and nearby transfer alternatives made reviewable
+
+**Date:** 2026-10-23 · **Commit:** pending sequential patch61 · **Stage:** product design only
+
+**Exit.** A self-contained interactive fictional-data mock compares card heading breadcrumb/compact
+label, in-place heading folds/compact source-order reading, and gutter popover/attached action strip.
+Dark/light narrow layouts and sample context, transfer/Undo, Next-cap, fold and source-reveal interactions
+are reviewed. The user’s withdrawal of gathering is retained in the product queue.
+
+**Notes.** [Packet](./product-design/2026-10-23-goals-context/README.md) separates explicit user direction
+from proposed snapshot/setting/format/export/placement semantics. Prototype checks cover only sample
+DOM behavior, not real editor or command/storage guarantees. No application source, tests, dependencies,
+real account, preview8443 or security promise changed. No staging into the real index, commit, push,
+deployment or qualification resumption. Prepare patch61 before the separate mobile feasibility report.
