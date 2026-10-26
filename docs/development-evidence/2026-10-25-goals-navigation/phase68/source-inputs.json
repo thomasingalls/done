@@ -1,0 +1,28 @@
+{
+  "sourceHead": "0a01b71510adca394ce01c758cb96c9400c302ef",
+  "applicationTreeAfter67": "fe7342bc5d3b811e67af2685178a301ecc1a0342",
+  "files": {
+    "src/editor/gentleContext.ts": "46cba4ad74c2a6e3b4f68909cda9404ee8dd0aed496af0886758be68eca869aa",
+    "src/editor/headingNavigation.ts": "df2433bf6b9a8ffd65cde3c8bd9d33b7e84b30c99a514a0c8f88e736b89b320c",
+    "src/ui/GoalsNavigation.tsx": "1efd9b8277de294177a2fda5a6458c35f0f334e4245f1b4fbe34c2817ac1dec5",
+    "src/ui/Goals.tsx": "a5b0e9ebe0fb8b1911655d06407349e207cb714b9858adb1b6ee20dc38b72388",
+    "src/ui/useGentleContext.ts": "b61e6e40b4d54ad088fb3ce56c823478b79ae1f6b968bd5c64785ef449c0023f",
+    "src/ui/App.tsx": "2573927c5545a0e38b3c13c0c70a968bebda4c1498a9f8391e6b0c233a81c86c",
+    "src/ui/Menu.tsx": "1d86b23cfd26488e42dbfc6d25c1343120aa2f493f9e17d24dc7bfd75d5a3464",
+    "src/styles/shell.css": "fa45dad8ce835fa3cd41380ac3935e3a56af2075a856ca1532cdb207e6d6caaf",
+    "src/styles/markdown.css": "3b001bf4dde62585fcc29b139e098c7ac598a853412336fbe3dbcd5c4d89b491",
+    "src/styles/theme.css": "4f8250cc111b51d7a69930673b6c9b3c8f49c8de45166f48d1c63f8f25b4d29a",
+    "test/gentleContext.test.ts": "c25202b70135f629960f3efbffe1b46ef9584771ce755e53bc42019fbcfd6e9c",
+    "test/gentleContextPreference.test.ts": "1f758dd41aa82f43662f47ee54a2f7edbcb9b80090f69d6762d6dc2bfab9042c",
+    "test/headingNavigation.test.ts": "203ff0eb47f77fc4cc62b5179cb9c3da48b914df604263dfc89c2afb921a4df1",
+    "test/geometry/goals-context.spec.ts": "3af9ea42ff3f5a5865bf40fa8a1db0fd82133cae05319a5347852fb50f9276b8",
+    "test/geometry/goals-navigation.spec.ts": "175af9d7a348d64d896e46d071fcc790d4248be5ba7bd4664d8c3b7e0a542d38",
+    "test/geometry/breadcrumbs.spec.ts": "e9a031009ced513d8e04871fe193961053c02ddbbba3afa0346d1f38ade3bd0d",
+    "test/geometry/card-focus.spec.ts": "ed981f82503af475677f80c5eaa86dfc74ace81de094277c771330f797b51975",
+    "docs/account-crypto/census.json": "84cfd057ec34f6439c71799b959e6a903c2f438ef130daa5e6af4b289e6fd14c",
+    "docs/account-crypto/constructions.json": "d29685267e529d10dc5283e8916b651bd3d0aa6f2d94e4c88e7316da4db013dd",
+    "docs/account-crypto/registry.json": "753bac4934b68e9213214d15c40c0f3cf674be615e0f90eb579c262df16fcc6f",
+    "docs/release-validation-graph.json": "91a877a4e3a6c20438381b13c04d61acd4766b866568aa3e07d06244573b257e",
+    "docs/release-validation-manifest.json": "3f5dbe1f5bec4b66c408a195eeeb858355e3d62b8edcff237f8a3d306904d832"
+  }
+}

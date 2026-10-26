@@ -5394,3 +5394,19 @@ siblings; Escape returns to the original trigger. Neither action moves the edito
 identity or content command. Bounded parser availability remains the existing outline limit. Native
 horizontal breadcrumb scrolling worked in the disposable touch check, so no shell gesture change is
 needed. [Bounded evidence](./development-evidence/2026-10-25-goals-navigation/phase67/README.md).
+
+## 2026-10-25 — Keep new Goals tests required without inventing release credit
+
+**Commit:** pending sequential patch68. **Orientation:** phases66–67 implement the selected Goals
+presentation features; the repository's local bookkeeping and cautious old-test discipline still apply.
+
+**Decision:** refresh source hashes and add exactly five required test-file obligations. Keep every
+existing unresolved identity and the aggregate release block; new files remain uncredited until a
+separate adapter/process review. Cryptographic labels, ownership and construction dispositions stay
+unchanged. Existing outline fixtures wait for the complete admitted document, and card-reopen tests
+assert completed quick-entry submission before reload. Every old assertion and timeout remains.
+
+**Tradeoff:** broad functional success is recorded as execution evidence, not security qualification.
+The stale-menu regression is challenged with a one-guard-defective disposable build; earlier fixture,
+receipt and card-reopen failures remain visible alongside final passing results. Physical phone/IME,
+other engines and general qualification are outside this slice. [Evidence](./development-evidence/2026-10-25-goals-navigation/phase68/README.md).

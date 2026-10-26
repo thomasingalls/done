@@ -16130,3 +16130,24 @@ reviewed focus defect and successful native-touch observation are retained in th
 
 The old root/trail geometry locator, wider regression and repository inventories follow in68.
 General qualification remains paused. No source commit, staging, release or preview8443 update.
+
+## 2026-10-25 — Gentle context and breadcrumb implementation closes bounded phases 66–68
+
+**Commit:** three unsigned sequential implementation patches prepared after design65. Goals now has
+default-on gentle context, an immediate browser setting, the offscreen-caret fallback and local
+breadcrumb menus alongside the full outline. The formatted editor, caret, undo, writing admission,
+footer, cards, credentials and sync authority remain. No real-index staging or publication occurred.
+
+**Evidence:** the full Vitest run passes 1,948 in 163 files with one existing named skip; final full
+geometry passes 200 with the existing 24 platform skips. Both projects pass the final typed stale-menu
+observer and both detect the deliberately removed guard. Card-focus/reopen passes 24 repeated cases
+with completed-submit preconditions. The separate inventory/adapter/authority regression run passes 109.
+TypeScript, focused lint/format, build, JS budget and origin isolation pass; final bookkeeping readback
+is recorded with the [phase68 evidence](./development-evidence/2026-10-25-goals-navigation/phase68/README.md).
+Earlier failed attempts and independent review are retained, not replaced by passing reruns.
+
+**Limits:** source census 405/197 domains retains identical domain sites and ownership; all prior
+manifest obligations remain, with five new required/uncredited files and the aggregate release block.
+Physical phones, Firefox/iOS, typing latency and paused general qualification are not established.
+Preview8443, production and real accounts are untouched. Sequential patch replay is independently
+checked through a temporary index; signed commits and any preview/release follow separately.

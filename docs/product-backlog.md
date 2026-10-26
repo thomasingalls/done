@@ -83,6 +83,12 @@ get a bounded scope and evidence before implementation. General release qualific
   [selection and remaining details](product-design/2026-10-23-goals-context/selection-2026-10-25.md).
   No app implementation is authorized or claimed by this design selection.
 
+  **Implemented in unsigned phases66–68, 2026-10-25:** subsequent operator authorization includes
+  the offscreen-caret fallback. Gentle context defaults on, has an immediate browser setting, and
+  per-heading menus complement the full outline in the same formatted editor. Bounded unit/browser
+  evidence and remaining limits are in the [implementation record](development-evidence/2026-10-25-goals-navigation/phase68/README.md).
+  No source commit, preview8443 update or deployment has occurred.
+
 - **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
   sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
   focus request, reopening the editor and stealing later input. Regression checks cover outside

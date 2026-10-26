@@ -74,3 +74,12 @@ This patch records the choice and open details. Existing studies/assets, prior p
 application source, tests, dependencies, preview8443, real accounts and security guarantees remain
 unchanged. No new performance/phone/qualification evidence is claimed. No signing, commit, push,
 merge or deployment occurs. [Revision64](editor-study.md) remains the editable historical comparison.
+
+## Subsequent implementation authorization — 2026-10-25
+
+The operator subsequently asked to implement gentle context, default on with a settings toggle and
+an offscreen fallback, plus breadcrumb menus retaining the full outline. That supersedes the
+no-implementation boundary of this earlier design selection for those features only. The preference
+is browser-local and content-free; unavailable storage retains the visit's choice with feedback.
+Card context/return commands, folding and the parked experiments remain separate. See the
+[bounded implementation record](../../development-evidence/2026-10-25-goals-navigation/phase68/README.md).

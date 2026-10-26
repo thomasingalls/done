@@ -1360,6 +1360,14 @@
       "sha256": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff"
     },
     {
+      "path": "src/editor/gentleContext.ts",
+      "sha256": "46cba4ad74c2a6e3b4f68909cda9404ee8dd0aed496af0886758be68eca869aa"
+    },
+    {
+      "path": "src/editor/headingNavigation.ts",
+      "sha256": "df2433bf6b9a8ffd65cde3c8bd9d33b7e84b30c99a514a0c8f88e736b89b320c"
+    },
+    {
       "path": "src/editor/keymap.ts",
       "sha256": "b43cc2222f0fde536d7ec2a4ed6d11815a9d48656e9352ddc02044b3edefa79e"
     },
@@ -1477,7 +1485,7 @@
     },
     {
       "path": "src/ui/App.tsx",
-      "sha256": "3d7ebab7da2294a1e88fe480efb801aaed6a3e198e6528cd3d54a7aafcd5f360"
+      "sha256": "2573927c5545a0e38b3c13c0c70a968bebda4c1498a9f8391e6b0c233a81c86c"
     },
     {
       "path": "src/ui/AppUpdateNotice.tsx",
@@ -1513,11 +1521,15 @@
     },
     {
       "path": "src/ui/Goals.tsx",
-      "sha256": "6a999a2e5ec5ba24d5fc0af7232fe199bd465368cd44f68e1be5cbcd69f61a4b"
+      "sha256": "a5b0e9ebe0fb8b1911655d06407349e207cb714b9858adb1b6ee20dc38b72388"
     },
     {
       "path": "src/ui/GoalsActionsMenu.tsx",
       "sha256": "46c46b6fe8d3abda1f58e202cf6a2fe28e1ca0df7b99b9d7bbec9341ad8c7b05"
+    },
+    {
+      "path": "src/ui/GoalsNavigation.tsx",
+      "sha256": "1efd9b8277de294177a2fda5a6458c35f0f334e4245f1b4fbe34c2817ac1dec5"
     },
     {
       "path": "src/ui/GoalsOutline.tsx",
@@ -1541,7 +1553,7 @@
     },
     {
       "path": "src/ui/Menu.tsx",
-      "sha256": "1c41a4891319c13a4fdc914dbdc2f991f180f0583face4968956ee813ac144be"
+      "sha256": "1d86b23cfd26488e42dbfc6d25c1343120aa2f493f9e17d24dc7bfd75d5a3464"
     },
     {
       "path": "src/ui/MenuSection.tsx",
@@ -1598,6 +1610,10 @@
     {
       "path": "src/ui/useCardReorder.ts",
       "sha256": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529"
+    },
+    {
+      "path": "src/ui/useGentleContext.ts",
+      "sha256": "b61e6e40b4d54ad088fb3ce56c823478b79ae1f6b968bd5c64785ef449c0023f"
     },
     {
       "path": "src/ui/useStore.ts",

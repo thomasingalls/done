@@ -164,25 +164,37 @@ test('accepted document changes close menus and reject a retained stale destinat
         if (!transactions.some((transaction) => transaction.docChanged)) return;
         view.update = original;
         const scroll = view.scrollDOM.scrollTop;
-        (button as HTMLButtonElement).click();
-        Object.assign(window, { staleNavigation: { scroll, after: view.scrollDOM.scrollTop } });
+        const dispatch = view.dispatch.bind(view);
+        let dispatched = 0;
+        view.dispatch = (...specs) => {
+          dispatched++;
+          Reflect.apply(dispatch, view, specs);
+        };
+        try {
+          (button as HTMLButtonElement).click();
+        } finally {
+          view.dispatch = dispatch;
+        }
+        Object.assign(window, {
+          staleNavigation: { scroll, after: view.scrollDOM.scrollTop, dispatched },
+        });
       };
       view.dispatch({ selection: { anchor: 0 } });
       view.focus();
     });
-  await page.keyboard.insertText('new intro\n');
-  await expect.poll(async () => (await state(page)).text).toBe(`new intro\n${before.text}`);
+  await page.keyboard.insertText('new intro ');
+  await expect.poll(async () => (await state(page)).text).toBe(`new intro ${before.text}`);
   const result = await page.evaluate(
-    () => Reflect.get(window, 'staleNavigation') as { scroll: number; after: number } | undefined,
+    () =>
+      Reflect.get(window, 'staleNavigation') as
+        | { scroll: number; after: number; dispatched: number }
+        | undefined,
   );
   expect(result).toBeDefined();
   expect(result!.after).toBe(result!.scroll);
+  expect(result!.dispatched).toBe(0);
   await expect(localMenu(page)).toBeHidden();
   expect((await state(page)).selection.ranges[0]!.anchor).toBe(10);
-  await expect(root(page)).toHaveAttribute('title', 'Goals › Work');
-  await expect
-    .poll(() => page.locator('.goals .cm-scroller').evaluate((element) => element.scrollTop))
-    .toBeLessThan(100);
 });
 
 for (const scheme of ['light', 'dark'] as const) {

@@ -72,6 +72,10 @@ for (const [name, focus] of [
     await field(page).pressSequentially('another task');
     await expect(field(page)).toHaveValue('another task');
     await field(page).press('Enter');
+    // Match add() above: Enter starts an asynchronous admitted submission.
+    // Reopening below tests accepted writing, not interruption of that request.
+    await expect(field(page)).toHaveValue('');
+    await expect(scheduled(page).filter({ hasText: 'another task' })).toHaveCount(1);
     await expect(card).toHaveAttribute('data-editing', 'false');
     await expect(field(page)).toBeFocused();
     await reloadApp(page);

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 530,
-    "requiredTestFiles": 524,
+    "testFiles": 535,
+    "requiredTestFiles": 529,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10238,6 +10238,31 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/gentleContext.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/gentleContext.test.ts"]
+      },
+      "declarations": 12,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/gentleContextPreference.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/gentleContextPreference.test.ts"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/geometry/breadcrumbs.spec.ts",
       "status": "required",
       "invocation": {
@@ -10311,6 +10336,28 @@
         "packages": ["test:geometry"]
       },
       "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/goals-context.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/geometry/goals-navigation.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.config.ts",
+        "packages": ["test:geometry"]
+      },
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10466,6 +10513,16 @@
         ]
       },
       "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/headingNavigation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/headingNavigation.test.ts"]
+      },
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18557,12 +18614,20 @@
       "sha256": "ef41cb81409ac3376145bbc610bafb4a52ef51f044e1d9a9fbaed9a07f9f581d"
     },
     {
+      "path": "test/gentleContext.test.ts",
+      "sha256": "c25202b70135f629960f3efbffe1b46ef9584771ce755e53bc42019fbcfd6e9c"
+    },
+    {
+      "path": "test/gentleContextPreference.test.ts",
+      "sha256": "1f758dd41aa82f43662f47ee54a2f7edbcb9b80090f69d6762d6dc2bfab9042c"
+    },
+    {
       "path": "test/geometry/breadcrumbs.spec.ts",
-      "sha256": "7e48276855a886dfcd98827fa7b9bddc2499601e57685e32993885526ae90e45"
+      "sha256": "e9a031009ced513d8e04871fe193961053c02ddbbba3afa0346d1f38ade3bd0d"
     },
     {
       "path": "test/geometry/card-focus.spec.ts",
-      "sha256": "2897408a71869e6d2780fcc2693d18d42aaf8538a16afd97d3f69be8e38e8c37"
+      "sha256": "ed981f82503af475677f80c5eaa86dfc74ace81de094277c771330f797b51975"
     },
     {
       "path": "test/geometry/cards.spec.ts",
@@ -18583,6 +18648,14 @@
     {
       "path": "test/geometry/duplicate-card.spec.ts",
       "sha256": "c6f00f2fb5334732ff9792aa4929836d0cc3ee30f01f415d9907a2e1321414f7"
+    },
+    {
+      "path": "test/geometry/goals-context.spec.ts",
+      "sha256": "3af9ea42ff3f5a5865bf40fa8a1db0fd82133cae05319a5347852fb50f9276b8"
+    },
+    {
+      "path": "test/geometry/goals-navigation.spec.ts",
+      "sha256": "175af9d7a348d64d896e46d071fcc790d4248be5ba7bd4664d8c3b7e0a542d38"
     },
     {
       "path": "test/geometry/install.spec.ts",
@@ -18643,6 +18716,10 @@
     {
       "path": "test/harness-lifecycle/upgrade-fixture.test.mjs",
       "sha256": "ac86d5c0a0d5a7c520dc45197ed1496a03032082bfb00e601aae07b426cfaf5c"
+    },
+    {
+      "path": "test/headingNavigation.test.ts",
+      "sha256": "203ff0eb47f77fc4cc62b5179cb9c3da48b914df604263dfc89c2afb921a4df1"
     },
     {
       "path": "test/helpers.ts",
