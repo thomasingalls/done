@@ -14,6 +14,9 @@ import { InstallPanel } from './InstallPanel';
 import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 
 export interface MenuProps {
+  gentleContext: boolean;
+  onGentleContext: (enabled: boolean) => void;
+  gentleContextStored: boolean;
   today: ISODate;
   date: ISODate;
   onGoTo: (date: ISODate) => void;
@@ -32,7 +35,16 @@ const openNativeDatePicker = (event: React.SyntheticEvent<HTMLInputElement>) => 
     // Keep ordinary native focus/date entry if the browser refuses this request.
   }
 };
-export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
+export const Menu = ({
+  today,
+  date,
+  onGoTo,
+  onClose,
+  ref,
+  gentleContext,
+  onGentleContext,
+  gentleContextStored,
+}: MenuProps) => {
   const {
     workspace,
     snapshot,
@@ -253,6 +265,26 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
               </p>
             )}
           </form>
+        </div>
+        <div className="menu-group">
+          <h3 className="menu-subheading">Editor</h3>
+          <label className="menu-editor-toggle">
+            <input
+              type="checkbox"
+              checked={gentleContext}
+              onChange={(event) => onGentleContext(event.target.checked)}
+            />
+            <span>Gentle context</span>
+          </label>
+          <p className="menu-note">
+            Keep your current Goals section clear and other writing quieter. Applies immediately in
+            this browser.
+          </p>
+          {!gentleContextStored && (
+            <p className="menu-note" role="status">
+              This change applies for this visit. Browser preferences could not be saved.
+            </p>
+          )}
         </div>
         <div className="menu-group">
           <h3 className="menu-subheading">Protection</h3>

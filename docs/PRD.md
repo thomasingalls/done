@@ -714,6 +714,15 @@ justifies it.
 
 **TRD.** TRD §8.6 (long-document projections).
 
+**Selected 2026-10-25 — gentle context.** Goals retains the same formatted, editable document.
+The caret's current heading section and its two nearest authored heading ancestors stay clear;
+unrelated writing becomes quieter without hiding or reflowing it. Selected text remains clear.
+When the caret is outside the visible editing area, ordinary contrast returns throughout the view.
+“Gentle context” is on by default and has an immediately applied settings-sidebar toggle for this
+browser. Unavailable preference storage affects saving that cosmetic choice, never writing.
+This is separate from inherited heading labels on cards. It does not select automatic folding or
+a separate scanning mode, and does not alter text, placement, attribution, undo or synchronization.
+
 ---
 
 ## 5. Identity, attribution, sessions and presence

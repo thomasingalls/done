@@ -17,7 +17,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react';
-import { type EditorState, type Extension } from '@codemirror/state';
+import { Compartment, type EditorState, type Extension } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { NEXT_CAP, type Section } from '../crdt/days';
 import { isFrozen } from '../crdt/freeze';
@@ -30,9 +30,11 @@ import {
 } from '../editor/breadcrumbs';
 import type { ISODate } from '../lib/date';
 import { GoalsOutline } from './GoalsOutline';
+import { gentleContextView } from '../editor/gentleContext';
 import { GoalsActionsMenu, type GoalsMenuAction } from './GoalsActionsMenu';
 
 export interface GoalsProps {
+  gentleContext: boolean;
   /** Copies land on the day in view, which is the one the user is looking at. */
   date: ISODate;
   today: ISODate;
@@ -69,6 +71,7 @@ export const selectedLines = (state: EditorState): Selection => {
 };
 
 export const Goals = ({
+  gentleContext,
   date,
   today,
   ref,
@@ -79,6 +82,9 @@ export const Goals = ({
   const admissionState = useWorkspaceAdmissionState();
   const host = useRef<HTMLDivElement>(null);
   const editor = useRef<EditorView | null>(null);
+  const contextCompartment = useRef(new Compartment());
+  const contextEnabled = useRef(gentleContext);
+  contextEnabled.current = gentleContext;
   const outlineTrigger = useRef<HTMLButtonElement>(null);
   const outlinePanel = useRef<HTMLElement>(null);
   const [selection, setSelection] = useState<Selection>(EMPTY);
@@ -195,6 +201,7 @@ export const Goals = ({
       { kind: 'master' },
       [
         track,
+        contextCompartment.current.of(contextEnabled.current ? gentleContextView() : []),
         scrollAwareBreadcrumb(setHeadingPath),
         keymap.of([
           {
@@ -222,6 +229,12 @@ export const Goals = ({
       setOutlineOpen(false);
     };
   }, [onEditorReady, mountEditor]);
+
+  useEffect(() => {
+    editor.current?.dispatch({
+      effects: contextCompartment.current.reconfigure(gentleContext ? gentleContextView() : []),
+    });
+  }, [gentleContext]);
 
   useEffect(() => {
     if (!outlineOpen) return;

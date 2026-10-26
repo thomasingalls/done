@@ -16102,3 +16102,18 @@ distinguished from selected requirements. Card styling/capture and footer decisi
 **Notes.** [Selection](./product-design/2026-10-23-goals-context/selection-2026-10-25.md) adds no new
 prototype, app code, old-test change or behavioral claim. Earlier61–64 artifacts and append-only
 history stay intact. No real staging/commit/push, preview8443 change, deployment or qualification.
+
+
+### Gentle context implemented with browser preference and offscreen fallback
+
+**Date:** 2026-10-25 · **Commit:** pending patch66 · **Stage:** bounded UI implementation
+
+**Exit.** Default-on context changes rendered-line color only, respects heading ancestry/selection,
+restores contrast offscreen, and can be disabled immediately through Account/Editor. The one browser
+Boolean survives reopening, follows other tabs and reports denied persistence.24 unit/8 built-browser
+cases, TypeScript and focused lint pass; independent225-position comparison agrees.
+
+**Notes.** [Evidence](./development-evidence/2026-10-25-goals-navigation/phase66/README.md) retains
+parser-frontier and measurement-dispatch defects, fixture mistakes and raw-artifact limits. No old
+test/deadline, content, account, crypto, protocol, real staging/commit/deploy or8443 change. New test
+obligations stay uncredited; menus and repository bookkeeping follow. Previous61–65 stay exact.

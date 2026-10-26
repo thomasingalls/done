@@ -826,6 +826,21 @@
     gap: var(--space-3);
   }
 
+  .menu-editor-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 2.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text);
+  }
+  .menu-editor-toggle input {
+    inline-size: 1.1rem;
+    block-size: 1.1rem;
+    accent-color: var(--color-accent);
+    flex: none;
+  }
+
   .menu-metadata {
     padding-block-end: var(--space-1);
   }

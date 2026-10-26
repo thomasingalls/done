@@ -36,6 +36,7 @@ import { UnfiledPanel } from './UnfiledPanel';
 import { StaleBanner } from './StaleBanner';
 import { goalsIsPanel, menuIsPanel, useBreakpoint } from './useBreakpoint';
 import { useToday } from './useToday';
+import { useGentleContext } from './useGentleContext';
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
@@ -47,6 +48,7 @@ const SNAP_MS = 220;
 type Lateral = 'menu' | 'goals';
 
 export const App = (): React.ReactElement => {
+  const gentleContext = useGentleContext();
   const { snapshot } = useWorkspaceUi();
   const breakpoint = useBreakpoint();
   const settings = snapshot.settings;
@@ -440,7 +442,16 @@ export const App = (): React.ReactElement => {
         } as React.CSSProperties
       }
     >
-      <Menu ref={menu} today={today} date={date} onGoTo={goTo} onClose={closeLateral} />
+      <Menu
+        ref={menu}
+        today={today}
+        date={date}
+        onGoTo={goTo}
+        onClose={closeLateral}
+        gentleContext={gentleContext.enabled}
+        onGentleContext={gentleContext.change}
+        gentleContextStored={gentleContext.stored}
+      />
 
       <UnfiledPanel
         today={today}
@@ -486,6 +497,7 @@ export const App = (): React.ReactElement => {
       </div>
 
       <Goals
+        gentleContext={gentleContext.enabled}
         ref={goals}
         date={date}
         today={today}

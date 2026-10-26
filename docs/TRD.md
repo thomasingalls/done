@@ -1658,6 +1658,24 @@ visible; the complete path remains available to assistive technology.
 This extension is installed only on the document surface. Card headings are presentation inside items and do not
 describe application location.
 
+#### Gentle context — selected 2026-10-25
+
+Gentle context is an ephemeral document-editor decoration over accepted text, never a content
+transformation. It changes text contrast only. Current-section scope and two nearest authored
+heading nodes come from the existing Markdown parser, including skipped levels and Setext headings.
+Keep selected writing clear and restore ordinary contrast when the caret leaves the actual visible
+editing area. Unavailable parse coverage or bounded-lookup exhaustion must leave ordinary contrast.
+
+Do not force full parsing or rebuild the complete heading-title catalogue on each keystroke.
+Coalesce geometry reads in the editor measurement phase. Dispatch view effects only after that
+phase finishes, checking editor lifetime and measured-state freshness; no document-changing
+transaction, admission command or persisted heading/caret snapshot is needed. Map transient
+decorations across accepted text changes and dispose of them with their editor.
+
+Persist only a non-content presentation Boolean for this browser, default on. The preference does
+not enter workspace formats, crypto authority or synchronization. Storage denial keeps the choice
+usable for the visit and reports that it was not saved. Disabling removes the editor extension.
+
 #### Heading outline and focus
 
 The later outline consumes the same derived heading representation. Navigation dispatches a CodeMirror scroll

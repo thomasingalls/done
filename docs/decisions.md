@@ -5362,3 +5362,19 @@ not authorization to start application coding. Card-context capture defaults/for
 does not establish intent. Explicit caret/focus/navigation actions are stronger candidate signals,
 with the editing caret and reading location kept distinct. Offscreen dimming fallback and exact
 preference/contrast detail remain proposals. [Selection](./product-design/2026-10-23-goals-context/selection-2026-10-25.md).
+
+
+## 2026-10-25 — Gentle context remains a bounded, transient view projection
+
+**Commit:** pending sequential implementation66. **Orientation:** the operator authorized default-on
+gentle context, settings toggle/offscreen fallback and breadcrumb menus retaining the full outline.
+
+**Decision:** first implement the decoration and one browser-only presentation Boolean. Keep the
+workspace format, admission/crypto/sync owners and card rendering unchanged. Bound parser-node
+lookup, avoid forced parsing/title-catalogue reconstruction per keystroke, and coalesce visible-area
+measurement. Dispatch only after CodeMirror measurement completes, with owner/state/generation fences.
+Storage refusal affects remembering this choice only. Menus and final bookkeeping are separate phases.
+
+**Tradeoff:** incomplete parser coverage or pathological scope lookup shows ordinary contrast rather
+than guessing or blocking typing. The preference applies to this browser, without sync semantics.
+[Phase66 evidence](./development-evidence/2026-10-25-goals-navigation/phase66/README.md).

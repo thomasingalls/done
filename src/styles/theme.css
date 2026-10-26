@@ -14,6 +14,7 @@
     --color-text: #1c1b19;
     --color-text-dim: #57544e;
     --color-text-faint: #8b877f;
+    --color-context-dim: #706b64;
     --color-border: #e0ddd6;
     --color-mark: #b3aea3;
     --color-accent: #b4552a;
@@ -38,6 +39,7 @@
       --color-text: #e8e6e1;
       --color-text-dim: #a3a09a;
       --color-text-faint: #6f6c67;
+      --color-context-dim: #96928d;
       --color-border: #2e2e34;
       --color-mark: #5c5953;
       --color-accent: #e0783f;
