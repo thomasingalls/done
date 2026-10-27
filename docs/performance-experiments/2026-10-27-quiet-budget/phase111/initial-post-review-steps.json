@@ -1,0 +1,34 @@
+[
+  {
+    "name": "source-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/review-source.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/analyze.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "nonoverlap-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/nonoverlap-analysis.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "budget-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/analyze-budget.py"
+    ],
+    "exit": 1
+  }
+]

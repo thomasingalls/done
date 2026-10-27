@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "trees": {
+    "R": "2ec6a7d54c4bee4373f79181e3ef1f91de179028",
+    "C": "ee652a80e87c563b75b87c3e2c41ebc4a4d11b81"
+  },
+  "filesPerExportChecked": 1653,
+  "differences": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/receiveSelection.ts",
+    "test/receiveSelection.test.ts"
+  ],
+  "all18OldSelectorBodiesByteExact": true,
+  "serverAndAuthorityVerifierSourcesUnchanged": true,
+  "sourceCopiesComparedToIndependentGitObjects": true
+}

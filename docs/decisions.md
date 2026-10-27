@@ -5694,3 +5694,11 @@ Use the existing baseline cursor resolver for sparse streams; do not persist emp
 Opaque captured tokens fence pre-wake replies; a notification clears scheduling only, not valid I/O,
 own freshness or fairness. The actual composed one-fault race detects a missing token-generation
 fence. Full performance/data gates remain required; no adoption or release claim from units/race.
+
+## 2026-10-27 — Throughput does not override the peer-latency gate (phase111)
+
+Candidate gains16.8%/38.8% replay throughput and passes original eight cases, but new two-receiver
+complete peer p95s2532.0/2739.1ms miss2.5s. Reference withheld also misses; do not infer a causal
+regression from single observations. Retain every failed gate, disable optional quiet scheduling
+in the product default, and investigate active-writer discovery/publication pacing before adoption.
+Keep2.5s and full120 keys; no outcome-driven timing rerun, threshold relaxation or release preparation.

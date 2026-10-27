@@ -16668,3 +16668,17 @@ Rebuild both complete108/109 clients under identical flags/metadata; reference a
 journeys and four same-account late-writer cases before dispatch. Retain2.5s and all original gates;
 new lost-hint cases enable both receivers. [Inputs/limitations](performance-experiments/2026-10-27-quiet-budget/phase110/README.md).
 No result/adoption claim yet. Unsigned110 after109; qualification paused, no release prep or deployment.
+
+## 2026-10-27 — Quiet budget improves throughput but fails stronger peer-latency gate (phase111)
+
+All original eight journeys pass, with median replay gains16.8% heavy/38.8% nonoverlap and quiet
+request reductions38.5%/75.0%. New two-receiver120-key candidate p95s2532.0/2739.1ms fail the unchanged
+2.5s gate; reference withheld2581.8ms also fails. Preserve all observations and do not promote. All
+markers/data/independent native signatures/prefixes, seed-byte, cold-profile and isolation/resource
+guards pass. Independent raw reconstruction rejects false/missing gate credit; corrected post-parser
+field assumption/fidelity incident retained with no experiment rerun.13 fresh ordinary checks pass.
+[Complete results/limits](performance-experiments/2026-10-27-quiet-budget/phase111/README.md).
+
+Next bounded state is to retain implementation/evidence with optional quiet budget disabled, then
+separate recent-writer discovery from publication pacing. Unsigned111 after110;912/367 qualification
+paused. No release prep or deployment.

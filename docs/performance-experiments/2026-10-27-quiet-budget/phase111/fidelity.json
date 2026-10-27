@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "name": "heavy-1-R",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 4,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "heavy-2-C",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 4,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "heavy-3-C",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 4,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "heavy-4-R",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 4,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "nonoverlap-1-R",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "nonoverlap-2-C",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "nonoverlap-3-C",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true
+    },
+    {
+      "name": "nonoverlap-4-R",
+      "imageSourceAndReadonlyResourceEnvelopeExact": true,
+      "selectedRebuiltWorkerExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true
+    }
+  ],
+  "allFrozenApparatusAndClientFilesExact": true
+}

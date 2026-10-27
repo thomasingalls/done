@@ -1,0 +1,90 @@
+[
+  {
+    "name": "source-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/review-source.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/analyze.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "nonoverlap-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/nonoverlap-analysis.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "budget-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/analyze-budget.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "independent-time-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/review-evidence.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "fidelity",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/fidelity.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "late-fidelity",
+    "command": [
+      "python3",
+      "/private/tmp/done-quiet-budget-20261027/late-fidelity.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "native-audit",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-quiet-budget-20261027/audit-native.mjs"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "nonoverlap-native",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-quiet-budget-20261027/audit-nonoverlap.mjs"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "late-native",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-quiet-budget-20261027/audit-late.mjs"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "race-native",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-quiet-budget-20261027/audit-race.mjs"
+    ],
+    "exit": 0
+  }
+]

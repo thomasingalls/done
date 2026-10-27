@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "name": "late-1-R-normal",
+      "exactFrozenImageAndLoadedWorker": true,
+      "resourceEnvelopeAndReadonlySourceExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true,
+      "singleInitialReadyNoAlternativeReconnect": true,
+      "withheldWorkspaceFrames": 0
+    },
+    {
+      "name": "late-2-C-normal",
+      "exactFrozenImageAndLoadedWorker": true,
+      "resourceEnvelopeAndReadonlySourceExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true,
+      "singleInitialReadyNoAlternativeReconnect": true,
+      "withheldWorkspaceFrames": 0
+    },
+    {
+      "name": "late-3-C-withheld",
+      "exactFrozenImageAndLoadedWorker": true,
+      "resourceEnvelopeAndReadonlySourceExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true,
+      "singleInitialReadyNoAlternativeReconnect": true,
+      "withheldWorkspaceFrames": 83
+    },
+    {
+      "name": "late-4-R-withheld",
+      "exactFrozenImageAndLoadedWorker": true,
+      "resourceEnvelopeAndReadonlySourceExact": true,
+      "distinctBrowserRoots": 2,
+      "noOomOrResourceStop": true,
+      "singleInitialReadyNoAlternativeReconnect": true,
+      "withheldWorkspaceFrames": 74
+    }
+  ]
+}
