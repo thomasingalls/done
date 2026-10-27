@@ -1,0 +1,34 @@
+from pathlib import Path
+import gzip
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-publication-latch/phase116';e.mkdir();(e/'reproduction').mkdir();(e/'checks').mkdir()
+for n in ['protocol.md','measurement-identity.json','final-trees.json','experimental-enable.patch','late-plan.json','run-plan.json','nonoverlap-plan.json','build-receipts.json','R-client-identity.json','C-client-identity.json']:(e/n).write_bytes((s/n).read_bytes())
+for p in(s/'harness/test').rglob('*'):
+ if p.is_file():d=e/'reproduction'/str(p.relative_to(s/'harness'));d.parent.mkdir(parents=True,exist_ok=True);d.with_name(d.name+'.txt').write_bytes(p.read_bytes())
+for n in ['run.py','build.py','finalize-build.py','freeze-identity.py','analyze-two.py','analyze-budget.py','analyze.py','review-evidence.py','nonoverlap-analysis.py','read-request.mjs','read-request.d.mts','notification-probe.mjs','notification-probe.d.mts','container-service.mjs','observer.mjs','container-image.json','playwright-storage-source.txt','audit-lib.mjs','audit-native.mjs','audit-nonoverlap.mjs','audit-late.mjs','late-fidelity.py','review-late.py','fidelity.py','harness/tsconfig.json','package116.py']:
+ p=e/'reproduction'/(n+'.txt');p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((s/n).read_bytes())
+for n in ['final-build-console.log','build-console.log','R-types.log','R-build.log','R-budget.log','R-isolation.log','C-types.log','C-build.log','C-budget.log','C-isolation.log','harness-types.log','notification-check.log']:(e/'checks'/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+(e/'README.md').write_text('''# Phase116 — Frozen rebuilt two-receiver comparison
+
+R is complete114 runtime (signed112 code), quiet reuse off. C is115 publication latch plus one
+explicit isolated exported-owner constructor change enabling750ms reuse for this comparison. The
+product default remains off; this is a composite adoption candidate, not an isolated latch-effect
+estimate. Every exported Git blob checked (R31313/C31372), all1653 runtime/test/dependency files
+compared; only scheduler, exported-owner enablement and appended batching tests differ. All8 old
+batching cases/helpers byte-exact. Full preliminary/final builds agree; R matches held112 artifact.
+Both110-file artifacts, loaded worker checks and all source/image/fixture/apparatus hashes frozen
+before dispatch. Build label67288576/date2026-10-27/flags identical for control, not a signed release.
+
+Exact corrected111 late harness aside from scratch root, same stopped H6/M2/Q2 seed and pinned native
+reference service1CPU/1GiB/no swap/pids128 readonly. Fixed R-normal,C-normal,C-withheld,R-withheld once
+with no retries or concurrent builds/validators/profilers. Both receivers active,120 trusted focused
+keys500ms apart, early/mid/late markers; all2.5s/16ms/30s/600s/full archive/native signature/prefix/
+seed/cold/ownership/isolation/fault guards remain. Original observation code/gates are unchanged.
+Known5kH fixture and virtual Chrome credentials do not establish Android/physical-provider behavior.
+
+If either C fails, hold reuse/release and retain failure; no repeat for a win. If both pass, run the
+original eight heavy/nonoverlap journeys with both rebuilt clients and all original throughput/drift/
+local/data/fairness gates before activation/readiness. No blank qualification credit or relaxed2.5s.
+912/367 qualification remains paused. Product quiet default off; unsigned116 after115. No signing,
+push, preview/API update, image publication or deployment. Results pending.
+''')
+with(r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Freeze rebuilt publication-latch comparison (phase116)\n\nComplete R114 and C115+isolated750ms enablement exports rebuilt; all Git blobs and1653 runtime/test/\ndependency files checked. Exact corrected late harness, fixed four journeys, native resource/fixture/\nartifact/worker identities and all original2.5s/data gates frozen before dispatch. Conditional\noriginal-eight comparison required before activation; no timing-driven repeat.\n[Inputs and scope](performance-experiments/2026-10-27-publication-latch/phase116/README.md).\nProduct reuse held off; results pending. Unsigned116 after115; qualification paused, no release prep.\n''')

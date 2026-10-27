@@ -1,0 +1,94 @@
+[
+  {
+    "variant": "R",
+    "name": "types",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1793119601212,
+    "completedAt": 1793119601330,
+    "exitCode": 0
+  },
+  {
+    "variant": "R",
+    "name": "build",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "startedAt": 1793119601330,
+    "completedAt": 1793119605067,
+    "exitCode": 0
+  },
+  {
+    "variant": "R",
+    "name": "budget",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-budget.mjs"
+    ],
+    "startedAt": 1793119605068,
+    "completedAt": 1793119605162,
+    "exitCode": 0
+  },
+  {
+    "variant": "R",
+    "name": "isolation",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "startedAt": 1793119605163,
+    "completedAt": 1793119605235,
+    "exitCode": 0
+  },
+  {
+    "variant": "C",
+    "name": "types",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1793119605247,
+    "completedAt": 1793119605323,
+    "exitCode": 0
+  },
+  {
+    "variant": "C",
+    "name": "build",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "startedAt": 1793119605324,
+    "completedAt": 1793119608478,
+    "exitCode": 0
+  },
+  {
+    "variant": "C",
+    "name": "budget",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-budget.mjs"
+    ],
+    "startedAt": 1793119608478,
+    "completedAt": 1793119608580,
+    "exitCode": 0
+  },
+  {
+    "variant": "C",
+    "name": "isolation",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "startedAt": 1793119608580,
+    "completedAt": 1793119608646,
+    "exitCode": 0
+  }
+]

@@ -16731,3 +16731,12 @@ send mistakes and failed model invocation remain qualified.
 
 Next freeze/rerun both rebuilt two-receiver clients; full2.5s and data/gain gates remain. Product
 quiet reuse held off;912/367 qualification paused. Unsigned115 after114, no release prep/deployment.
+
+## 2026-10-27 — Freeze rebuilt publication-latch comparison (phase116)
+
+Complete R114 and C115+isolated750ms enablement exports rebuilt; all Git blobs and1653 runtime/test/
+dependency files checked. Exact corrected late harness, fixed four journeys, native resource/fixture/
+artifact/worker identities and all original2.5s/data gates frozen before dispatch. Conditional
+original-eight comparison required before activation; no timing-driven repeat.
+[Inputs and scope](performance-experiments/2026-10-27-publication-latch/phase116/README.md).
+Product reuse held off; results pending. Unsigned116 after115; qualification paused, no release prep.

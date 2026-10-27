@@ -1,0 +1,1 @@
+import{defineConfig}from'@playwright/test';export default defineConfig({testDir:'.',testMatch:'default.spec.ts',workers:1,retries:0,timeout:120000,reporter:[['list']],outputDir:process.env['FAIR_OUT']+'/artifacts',use:{actionTimeout:30000,trace:'off',screenshot:'off',video:'off'}});

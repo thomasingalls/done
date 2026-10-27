@@ -1,0 +1,24 @@
+from pathlib import Path
+import json,math,copy
+s=Path(__file__).parent;report=json.loads((s/'late-budget-analysis.json').read_text());rows=[]
+def verify(x,r):
+ offers=[o for o in x['offers']if o['kind']=='key'];assert len(offers)==120;out=[]
+ for d in range(2):
+  brackets=[v for group in x['clocks']for v in group['rows'][d]];low=max(v['renderer']-v['after']-1 for v in brackets);high=min(v['renderer']-v['before']+1 for v in brackets);assert low<=high;values=[]
+  for i,o in enumerate(offers,1):
+   times=[v['at']for v in x['probes'][d]['counts']if v['count']>=x['baselines'][d]+i and v['at']>=o['at']-5];assert times,'missing key observation';values.append(min(times)-o['at']-low)
+  assert values==r['keys'][d];out.append(sorted(values)[113])
+ assert out[0]==r['peerUpperMs']['p95']and out[1]==r['localUpperMs']['p95'];assert r['gates']['peer2500ms']==(out[0]<=2500);assert r['gates']['local16ms']==(out[1]<=16)
+ assert len(x['probes'][1]['events'])==123 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in x['probes'][1]['events'])
+ return out
+for r in report['runs']:
+ x=json.loads((s/r['name']/'result.json').read_text());v=verify(x,r);bad=copy.deepcopy(r);bad['gates']['peer2500ms']=not bad['gates']['peer2500ms']
+ try:verify(x,bad)
+ except AssertionError:pass
+ else:raise AssertionError('false gate accepted')
+ badx=copy.deepcopy(x);badx['probes'][0]['counts']=[]
+ try:verify(badx,r)
+ except AssertionError:pass
+ else:raise AssertionError('missing observation accepted')
+ rows.append({'name':r['name'],'peerP95UpperMs':v[0],'localP95UpperMs':v[1],'all120ObservationsReconstructed':True,'gateUnchanged':True,'falseGateRejected':True,'missingPeerSeriesRejected':True})
+(s/'late-time-review.json').write_text(json.dumps({'status':'passed','runs':rows,'candidateAccepted':report['allCandidateGates']},indent=2)+'\n')

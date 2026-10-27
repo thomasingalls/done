@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,hashlib,math,copy
+r=Path(__file__).parent;ident=json.loads((r/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();rows=[]
+for path,h in ident['apparatus'].items():assert sha(r/path)==h,path
+for variant,files in ident['clients'].items():
+ for path,h in files.items():assert sha(r/('source-'+variant)/'dist'/path)==h,path
+for case in json.loads((r/'run-plan.json').read_text())+json.loads((r/'nonoverlap-plan.json').read_text()):
+ d=r/case['name'];x=json.loads((d/'result.json').read_text());i=json.loads((d/'container-identity.json').read_text());h=i['HostConfig'];assert i['Image']==ident['imageId'];assert(h['NanoCpus'],h['Memory'],h['MemorySwap'],h['PidsLimit'],h['ReadonlyRootfs'])==(1000000000,1073741824,1073741824,128,True);assert i['cgroup']['memory.swap.max']=='0';assert all(not m['RW']for m in i['Mounts']if m['Destination'].startswith('/app/'));assert x['variant']==case['variant'];assert x['outcome']=='passed';assert not x.get('cleanupError');assert not x.get('resourceStop');assert x['metrics']['rssSampledPeak']<1073741824
+ expected=ident['clients'][case['variant']]['sw.js'];workers=[a['workerSha256']for a in x['actorIdentities']]if'actorIdentities'in x else[t['selectedWorkerSha256']for t in x['transitions']];assert all(v==expected for v in workers);assert len(set(b['pid']for b in x['roots']))==len(x['roots']);assert all(sha(Path(b['executable']))==b['sha256']for b in x['roots']);assert all(int(v.split()[1])==0 for v in x['metrics']['cgroupAfter']['memory.events'].splitlines()if v.split()[0]in['oom','oom_kill','max']);
+ rows.append({'name':case['name'],'imageSourceAndReadonlyResourceEnvelopeExact':True,'selectedRebuiltWorkerExact':True,'distinctBrowserRoots':len(x['roots']),'noOomOrResourceStop':True})
+(r/'fidelity.json').write_text(json.dumps({'status':'passed','rows':rows,'allFrozenApparatusAndClientFilesExact':True},indent=2)+'\n');print('Fidelity',len(rows),'journeys pass')

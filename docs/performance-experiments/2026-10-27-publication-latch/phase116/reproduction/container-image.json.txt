@@ -1,0 +1,101 @@
+{
+  "Id": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "RepoTags": [
+    "done-public:dc53fecf",
+    "ghcr.io/thomasingalls/done:dc53fecf",
+    "ghcr.io/thomasingalls/done@sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+  ],
+  "RepoDigests": [
+    "done-public@sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+    "ghcr.io/thomasingalls/done@sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+  ],
+  "Comment": "buildkit.dockerfile.v0",
+  "Created": "2026-10-26T15:36:58.18654125Z",
+  "Config": {
+    "User": "65532:65532",
+    "ExposedPorts": {
+      "8080/tcp": {}
+    },
+    "Env": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt",
+      "NODE_ENV=production",
+      "DONE_SOURCE_REVISION=dc53fecf25ca341cb4b626a154e0df33a29728be"
+    ],
+    "Entrypoint": [
+      "node",
+      "scripts/public-account.mjs"
+    ],
+    "Cmd": [
+      "app"
+    ],
+    "WorkingDir": "/app",
+    "Labels": {
+      "org.opencontainers.image.revision": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+      "org.opencontainers.image.source": "https://github.com/thomasingalls/done"
+    },
+    "StopSignal": "SIGTERM",
+    "ArgsEscaped": true
+  },
+  "Architecture": "arm64",
+  "Os": "linux",
+  "Size": 314342641,
+  "RootFS": {
+    "Type": "layers",
+    "Layers": [
+      "sha256:e842bc95a0a8664498b7881e537b5929e419d590f5a9954fb7f81c73c20fc6c7",
+      "sha256:621c35e751a51a9a9dc3e80aa0b7fe8be2a93402ea6ccd307d30852cd7776cda",
+      "sha256:763a77745f27b86cf26b97887b6842d83720e63b1c48848c0ba9ee54e351d63a",
+      "sha256:f0d0eff4c2312a7bd6e21797bdfea5eb35f60e76b555ce2b22794424af2cad36",
+      "sha256:275a30dd8ce958b21daa9ad962c6fbc09f98306ee2f486b65c9075dc257b1412",
+      "sha256:4d049f83d9cf21d1f5cc0e11deaf36df02790d0e60c1a3829538fb4b61685368",
+      "sha256:af5aa97ebe6ce1604747ec1e21af7136ded391bcabe4acef882e718a87c86bcc",
+      "sha256:6f1cdceb6a3146f0ccb986521156bef8a422cdbb0863396f7f751f575ba308f4",
+      "sha256:bd3cdfae1d3fdd83a2231d608969b38b82349777c2fff9a7c12d54f8ac5c9b38",
+      "sha256:4cde6b0bb6f50a5f255eef7b2a42162c661cf776b803225dcac9a659e396bb6b",
+      "sha256:ad51d0769d16ba578106a177987dfe3d2e02c1668c852b795b2f6b024068242a",
+      "sha256:187cfc6d1e3e8a40a5e64653bcd3239c140807dcf1c09e48021178705a5a6139",
+      "sha256:0762a1f6557d1e88a761ab05aa7f65a10dc0e559913ea13befb873d907e1a396",
+      "sha256:50a5575df19e16694e9b7bfca79ef13cfce85faab4b0585ff197a078a952b007",
+      "sha256:948af73b9b4f49fa4e0009269c2f4a5b174fb02c4485b13ab7f6d0c705d49966",
+      "sha256:91213e6dc2fda431a0de4541602a933c7a48206a0bf487217fa681260fccdc23",
+      "sha256:7b57942929394e731b49e8f1863a4da2cbd1b9fda48d9f1e75a0a28b2d89d01a",
+      "sha256:7578331450f7cd6e1f6f28caf2ce9af93ea935a049132bb63ed523dcbda068e4",
+      "sha256:323c2be748e4417f7ab7b05b33d6c1a52df0788e779143555109ddcd5325c76c",
+      "sha256:fcb0c313318aac64dde0e0574b4df3394902929eb62d43e8b6c47ec4562f170d",
+      "sha256:30884b21b6a1362fbcdb60743280a138148b6d0ac50a3f8ee3e9f213b371c9e7",
+      "sha256:eda5cb0550ab352dd7b48fc100a0521be95ac7cf675c1f56d0ec58aa1291c13e",
+      "sha256:bc90ee262effbf128c9c01b4139adfe8d1696d6809dfd6201089527898d4a418",
+      "sha256:1782a3206ba8822f67ebae454c6c9dfeb7ed566ad781d3605d8272f8fc827e3d",
+      "sha256:7b8b2e703b1242bdc83b96cb9448f1a86cc7d343bd89e4209cf142292b219b89",
+      "sha256:1d1995b1305fa1296fb049e267c4326b49182679bf2192c4a99ba00e7182cfc3",
+      "sha256:2850a78680232dc74dee5b1a85d74b7c5f105718b99cce3d2fa0760f2ef07cb6",
+      "sha256:7ac7c326f1cfbff221afac7e4ed6e4a6be23a6a8bcfb28320bf1ceca3428b971",
+      "sha256:f4232dce234d5a75e5c30c96ff5d919a8159ecac668e6e307a3c1e539651abba",
+      "sha256:b7eff90bffa25bd954e1c1f9672121c6cef5d97333463cb782d9be1cd59ac80c",
+      "sha256:56499cab6e6471fd99d2bb93f08305d7e7e1b4f1a869bf9905e5e39d24a19b28",
+      "sha256:5bddef7c6857ae3f0d52de6b7e333eafc40a68d3586c9b19c77c1e7c88825f6f"
+    ]
+  },
+  "Metadata": {
+    "LastTagTime": "2026-10-26T16:37:36.667824386Z"
+  },
+  "Descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+    "size": 856
+  },
+  "Identity": {
+    "Pull": [
+      {
+        "Repository": "ghcr.io/thomasingalls/done"
+      }
+    ],
+    "Build": [
+      {
+        "Ref": "zhbs1ovm5g89hp9eol7q5yww4",
+        "CreatedAt": "2026-10-26T15:37:00.176164501Z"
+      }
+    ]
+  }
+}

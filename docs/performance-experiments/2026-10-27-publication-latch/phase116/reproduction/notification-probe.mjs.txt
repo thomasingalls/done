@@ -1,0 +1,29 @@
+/** Disposable diagnostic only. No source/runtime import; closed counters, never grant or body logs. */
+export function installNotificationProbe(options) {
+  const original = globalThis.fetch;
+  const counters = { ready: 0, hint: 0, content: 0, heartbeat: 0, withheld: 0 };
+  globalThis.__quietNotifications = counters;
+  globalThis.fetch = async (...args) => {
+    const response = await original(...args);
+    const input = args[0];
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    if (new URL(url, globalThis.location?.href ?? 'http://localhost').pathname !== '/account/notifications/v1/subscribe' || !response.ok || !response.body) return response;
+    let pending = '';
+    const transform = new TransformStream({
+      transform(bytes, controller) {
+        for (const byte of bytes) {
+          pending += String.fromCharCode(byte);
+          if (pending.length > 4096) throw Error('Diagnostic notification frame bound');
+          if (!pending.endsWith('\n\n')) continue;
+          const event = pending === ': heartbeat\n\n' ? 'heartbeat' : /^event: (ready|hint|content)\ndata: \{\}\n\n$/.exec(pending)?.[1];
+          if (event) counters[event]++;
+          if (options.withhold && (event === 'hint' || event === 'content')) counters.withheld++;
+          else controller.enqueue(Uint8Array.from(pending, c => c.charCodeAt(0)));
+          pending = '';
+        }
+      },
+      flush(controller) { if (pending) controller.enqueue(Uint8Array.from(pending, c => c.charCodeAt(0))); },
+    });
+    return new Response(response.body.pipeThrough(transform), { status: response.status, statusText: response.statusText, headers: response.headers });
+  };
+}

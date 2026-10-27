@@ -1,0 +1,19 @@
+from pathlib import Path
+import subprocess,json,os,hashlib
+s=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');env={**os.environ,'GIT_INDEX_FILE':str(s/'final-candidate.index')};product=json.loads((s/'115-preparation.json').read_text())['expectedTree'];old=json.loads((s/'prototype-trees.json').read_text())['experimentalCandidateTree']
+def git(*a,input=None):return subprocess.check_output(['git',*a],cwd=repo,env=env,input=input)
+git('read-tree',product);source=git('show',product+':src/crdt/accountReceive.ts');needle=b'const receiveSelection = createReceiveSelection();';assert source.count(needle)==1;variant=source.replace(needle,b'const receiveSelection = createReceiveSelection(Date.now, composed);');blob=git('hash-object','-w','--stdin',input=variant).decode().strip();git('update-index','--cacheinfo','100644',blob,'src/crdt/accountReceive.ts');candidate=git('write-tree').decode().strip();(s/'final-trees.json').write_text(json.dumps({'R':'0905d8a8f59e97608d3ce55684c8832cd4934859','product115':product,'C':candidate},indent=2)+'\n');(s/'experimental-enable.patch').write_bytes(git('diff',product,candidate,'--','src/crdt/accountReceive.ts'))
+for row in git('diff','--name-status',old,candidate).decode().splitlines():
+ status,path=row.split('\t');p=s/'source-C'/path
+ if status=='D':p.unlink()
+ else:p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(git('show',candidate+':'+path))
+for v,tree in [('R','0905d8a8f59e97608d3ce55684c8832cd4934859'),('C',candidate)]:
+ count=0
+ for record in git('ls-tree','-r','-z',tree).split(b'\0'):
+  if not record:continue
+  info,path=record.split(b'\t');mode,kind,oid=info.split();p=s/('source-'+v)/path.decode();b=os.readlink(p).encode()if mode==b'120000'else p.read_bytes();assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==oid.decode(),str(p);count+=1
+ print(v,'complete exported Git blobs exact',count,flush=True)
+for n in ['build-receipts.json','R-client-identity.json','C-client-identity.json']:(s/('preliminary-'+n)).write_bytes((s/n).read_bytes())
+subprocess.run(['python3',str(s/'build.py')],check=True)
+for v in ['R','C']:assert json.loads((s/(v+'-client-identity.json')).read_text())==json.loads((s/('preliminary-'+v+'-client-identity.json')).read_text())
+oldheld=json.loads((repo/'docs/performance-experiments/2026-10-27-quiet-budget/phase112/disabled-artifact-identity.json').read_text())['artifact'];assert oldheld==json.loads((s/'R-client-identity.json').read_text());print('Both final artifacts match preliminary builds; R matches held112 artifact.',flush=True)
