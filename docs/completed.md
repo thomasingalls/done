@@ -16602,3 +16602,16 @@ Thirteen observer cases, final harness types and39 unchanged unit cases pass; pr
 missing-declaration/unused-binding type errors and the first command's18-case-only test selection.
 All runtime/old tests/912 obligations/367 blocks unchanged; qualification paused. Unsigned105 after104;
 no signing, push, preview update, release preparation or deployment.
+
+## 2026-10-27 — Aborted late-peer diagnostic and verified fixture correction (phase106)
+
+The first normal primary fails its localBefore+1 guard at0→2; withheld case remains unrun. Preserve
+the failed primary, not a passing pilot. Independent native signatures/prefixes show seed H2 already
+accepted1, all seed rows exact, exactly one new H2 position2 and M/Q unchanged. Bind final equality
+to that independently verified target seed tip+1, retaining the old local-progress guard and all data
+checks. Include initial client/service acceptance mismatch in the measured-workload limitation.
+[Failure, audit and corrected prospective pair](performance-experiments/2026-10-27-quiet-publisher-probes/phase106/README.md).
+
+Harness types and all1640 source/export identities per R/C pass. Freeze corrected normal/withheld
+pair before dispatch; no runtime/old test/gate/security/912-367 qualification change. Unsigned106
+after105. No signing, push, preview update, release prep or deployment.

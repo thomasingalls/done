@@ -1,0 +1,12 @@
+{
+  "status": "passed-for-fixture-diagnosis-only",
+  "localBefore": 0,
+  "nativeSeedBefore": 1,
+  "localAfter": 2,
+  "newNativePositions": 1,
+  "newPosition": 2,
+  "allOriginalSeedRowsByteExact": true,
+  "independentEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+  "unrelatedAccountsUnchanged": true,
+  "noLatencyOrJourneyPreservationCredit": true
+}

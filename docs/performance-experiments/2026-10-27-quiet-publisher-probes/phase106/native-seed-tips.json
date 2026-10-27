@@ -1,0 +1,36 @@
+{
+  "status": "independently-verified",
+  "databaseSha256": "496527fe50f4f84400c8ebefa2a60c0b1511b1686281cf28cce975ad5c864096",
+  "H": [
+    {
+      "credentialSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+      "positions": 1,
+      "finalLink": "2595f58e2b3b2e327ad85fcd21ed916e19b876d4e3ecaa4f803c518bfedef218"
+    },
+    {
+      "credentialSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+      "positions": 1,
+      "finalLink": "0d750f247c47bd12a8073acd0fbfe3ddbff0bc956e073784e4ca636edce9e4ac"
+    },
+    {
+      "credentialSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+      "positions": 1,
+      "finalLink": "7010743205980f3a9f704f584297fe67406e3f014e884dd5addfb3cfa084ea08"
+    },
+    {
+      "credentialSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+      "positions": 1,
+      "finalLink": "753b878bac0c838ca633ffef0d01cf6499b9a476cd5d39f6caa9d61302edd423"
+    },
+    {
+      "credentialSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+      "positions": 1,
+      "finalLink": "bc6c72efa352a9737043a3ac070d950fb173fd562c22135f70d5d37329e963bb"
+    },
+    {
+      "credentialSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+      "positions": 1029,
+      "finalLink": "816f43c1ad5e924fb5efd9987c5530a0af06060c4feb373936c7b4f79cc78be0"
+    }
+  ]
+}
