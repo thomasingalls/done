@@ -1,0 +1,30 @@
+[
+  {
+    "check": "analysis",
+    "exit": 0
+  },
+  {
+    "check": "review",
+    "exit": 0
+  },
+  {
+    "check": "nonoverlap-analysis",
+    "exit": 0
+  },
+  {
+    "check": "fidelity",
+    "exit": 0
+  },
+  {
+    "check": "native-audit",
+    "exit": 0
+  },
+  {
+    "check": "nonoverlap-native-audit",
+    "exit": 0
+  },
+  {
+    "check": "summary",
+    "exit": 0
+  }
+]

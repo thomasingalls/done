@@ -1,0 +1,227 @@
+{
+  "status": "passed",
+  "acceptance": {
+    "everyCandidateOriginalGate": true,
+    "h1SelfAttemptMedianAtMost80PercentReference": true,
+    "heavyReplayMedianNoMoreThan10PercentRegression": true,
+    "everyNonoverlapPreservationGate": true
+  },
+  "heavy": {
+    "referenceReplayMedianMs": 218564.0,
+    "candidateReplayMedianMs": 196850.0,
+    "medianChangePercent": 9.934847458867878,
+    "referenceBracketDriftPercent": 6.811331594997128,
+    "pairedDirectionConsistent": true,
+    "speedupAboveBracketDrift": true,
+    "referenceH1SelfAttemptMedian": 257.0,
+    "candidateH1SelfAttemptMedian": 34.5,
+    "selfAttemptReductionPercent": 86.57587548638132,
+    "runs": [
+      {
+        "name": "heavy-1-R",
+        "variant": "R",
+        "allOriginalGates": true,
+        "localP95Ms": 6.5,
+        "completePeerP95Ms": 751.2998046875,
+        "peerKeys": 120,
+        "maxReplayMs": 226270,
+        "h1SelfAttemptsMeasuredPhase": 257,
+        "h1SelfAttemptStatuses": {
+          "200": 257
+        },
+        "h1SelfAttemptsThroughH1Replay": 257,
+        "allActorSelfAttempts": {
+          "H1": 257,
+          "H2": 257,
+          "H3": 257,
+          "H4": 37,
+          "H5": 257,
+          "M1": 7,
+          "Q0": 3,
+          "Q1": 123
+        },
+        "readHttpAttempts": 7967,
+        "readHttpStatuses": {
+          "200": 7965,
+          "429": 2
+        },
+        "allAttemptMetadataPresent": true
+      },
+      {
+        "name": "heavy-2-C",
+        "variant": "C",
+        "allOriginalGates": true,
+        "localP95Ms": 6.099853515625,
+        "completePeerP95Ms": 757,
+        "peerKeys": 120,
+        "maxReplayMs": 200187,
+        "h1SelfAttemptsMeasuredPhase": 35,
+        "h1SelfAttemptStatuses": {
+          "200": 35
+        },
+        "h1SelfAttemptsThroughH1Replay": 35,
+        "allActorSelfAttempts": {
+          "H1": 35,
+          "H2": 35,
+          "H3": 35,
+          "H4": 34,
+          "H5": 35,
+          "M1": 6,
+          "Q0": 3,
+          "Q1": 120
+        },
+        "readHttpAttempts": 7068,
+        "readHttpStatuses": {
+          "200": 7067,
+          "429": 1
+        },
+        "allAttemptMetadataPresent": true
+      },
+      {
+        "name": "heavy-3-C",
+        "variant": "C",
+        "allOriginalGates": true,
+        "localP95Ms": 4.599853515625,
+        "completePeerP95Ms": 732.199951171875,
+        "peerKeys": 120,
+        "maxReplayMs": 193513,
+        "h1SelfAttemptsMeasuredPhase": 34,
+        "h1SelfAttemptStatuses": {
+          "200": 34
+        },
+        "h1SelfAttemptsThroughH1Replay": 33,
+        "allActorSelfAttempts": {
+          "H1": 34,
+          "H2": 34,
+          "H3": 34,
+          "H4": 35,
+          "H5": 34,
+          "M1": 6,
+          "Q0": 3,
+          "Q1": 122
+        },
+        "readHttpAttempts": 7056,
+        "readHttpStatuses": {
+          "200": 7054,
+          "429": 2
+        },
+        "allAttemptMetadataPresent": true
+      },
+      {
+        "name": "heavy-4-R",
+        "variant": "R",
+        "allOriginalGates": true,
+        "localP95Ms": 4.5,
+        "completePeerP95Ms": 716.10009765625,
+        "peerKeys": 120,
+        "maxReplayMs": 210858,
+        "h1SelfAttemptsMeasuredPhase": 257,
+        "h1SelfAttemptStatuses": {
+          "200": 257
+        },
+        "h1SelfAttemptsThroughH1Replay": 257,
+        "allActorSelfAttempts": {
+          "H1": 257,
+          "H2": 257,
+          "H3": 257,
+          "H4": 35,
+          "H5": 257,
+          "M1": 7,
+          "Q0": 3,
+          "Q1": 123
+        },
+        "readHttpAttempts": 7951,
+        "readHttpStatuses": {
+          "200": 7949,
+          "429": 2
+        },
+        "allAttemptMetadataPresent": true
+      }
+    ]
+  },
+  "nonoverlap": {
+    "referenceForwardMedianMs": 145045.5,
+    "candidateForwardMedianMs": 130415.0,
+    "medianChangePercent": 10.086834820797607,
+    "referenceBracketDriftPercent": 0.35580575896052413,
+    "pairedDirectionConsistent": true,
+    "runs": [
+      {
+        "name": "nonoverlap-1-R",
+        "variant": "R",
+        "backlogPositions": 1024,
+        "forwardCatchupMs": 145304,
+        "reverseFreshCatchupMs": 814,
+        "forwardOfflineUnlockToEditMs": 1276,
+        "reverseOfflineUnlockToEditMs": 4145,
+        "sourceAlreadyAcceptedAndClosed": true,
+        "reverseUploadAcceptedThenWriterClosed": true,
+        "wholeArchivesExact": true,
+        "offlineColdSameProfileExact": true,
+        "workerHashes": [
+          "1c1a9b1c62ebf91267fa65a0781540eb525be099a5ff66c7fb6a4248bb9bcd00",
+          "1c1a9b1c62ebf91267fa65a0781540eb525be099a5ff66c7fb6a4248bb9bcd00"
+        ]
+      },
+      {
+        "name": "nonoverlap-2-C",
+        "variant": "C",
+        "backlogPositions": 1024,
+        "forwardCatchupMs": 130163,
+        "reverseFreshCatchupMs": 815,
+        "forwardOfflineUnlockToEditMs": 1307,
+        "reverseOfflineUnlockToEditMs": 4104,
+        "sourceAlreadyAcceptedAndClosed": true,
+        "reverseUploadAcceptedThenWriterClosed": true,
+        "wholeArchivesExact": true,
+        "offlineColdSameProfileExact": true,
+        "workerHashes": [
+          "9a05a395d2544adf58ab726d0ceaccc9a8069b26164d423b1dbe305c195a12af",
+          "9a05a395d2544adf58ab726d0ceaccc9a8069b26164d423b1dbe305c195a12af"
+        ]
+      },
+      {
+        "name": "nonoverlap-3-C",
+        "variant": "C",
+        "backlogPositions": 1024,
+        "forwardCatchupMs": 130667,
+        "reverseFreshCatchupMs": 820,
+        "forwardOfflineUnlockToEditMs": 1256,
+        "reverseOfflineUnlockToEditMs": 4126,
+        "sourceAlreadyAcceptedAndClosed": true,
+        "reverseUploadAcceptedThenWriterClosed": true,
+        "wholeArchivesExact": true,
+        "offlineColdSameProfileExact": true,
+        "workerHashes": [
+          "9a05a395d2544adf58ab726d0ceaccc9a8069b26164d423b1dbe305c195a12af",
+          "9a05a395d2544adf58ab726d0ceaccc9a8069b26164d423b1dbe305c195a12af"
+        ]
+      },
+      {
+        "name": "nonoverlap-4-R",
+        "variant": "R",
+        "backlogPositions": 1024,
+        "forwardCatchupMs": 144787,
+        "reverseFreshCatchupMs": 825,
+        "forwardOfflineUnlockToEditMs": 1291,
+        "reverseOfflineUnlockToEditMs": 4105,
+        "sourceAlreadyAcceptedAndClosed": true,
+        "reverseUploadAcceptedThenWriterClosed": true,
+        "wholeArchivesExact": true,
+        "offlineColdSameProfileExact": true,
+        "workerHashes": [
+          "1c1a9b1c62ebf91267fa65a0781540eb525be099a5ff66c7fb6a4248bb9bcd00",
+          "1c1a9b1c62ebf91267fa65a0781540eb525be099a5ff66c7fb6a4248bb9bcd00"
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "Two journeys per arm/workload; descriptive engineering crossover, not population estimates.",
+    "Attempt counts are scheduling/HTTP observations, not counts of executed native work.",
+    "All measured-phase H1 attempts define the secondary count; through-H1-replay counts are also retained.",
+    "Catch-up completion uses polling assertions; typing latency uses direct DOM mutation observations.",
+    "Goals fixture is5000/4157/1049 characters, not the intended13k H seed.",
+    "No phone/Firefox/WAN claim, production adoption or release qualification."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "status": "reviewed",
+  "construction": "remaining-coordination-names",
+  "before": {
+    "path": "src/crdt/accountReceive.ts",
+    "line": 712,
+    "label": "done/account-ledger-reference-mismatch",
+    "kind": "literal"
+  },
+  "after": {
+    "path": "src/crdt/accountReceive.ts",
+    "line": 716,
+    "label": "done/account-ledger-reference-mismatch",
+    "kind": "literal"
+  },
+  "allRolesLabelsStatusesContractsAndBlocksUnchanged": true,
+  "failedPreparation": "Initial guarded preparation assumed713; actual expanded import moves the diagnostic to716. Assertion refused the write, then direct source review established716."
+}

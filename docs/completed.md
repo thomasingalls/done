@@ -16536,3 +16536,24 @@ own attempts versus1 candidate, with successful first checks in both; no latency
 Retain a scratch unused-binding type failure and final clean types. [Inputs/protocol](performance-experiments/2026-10-27-self-read-order/phase101/README.md).
 Freeze R,C,C,R heavy/editing and non-overlap, every original16ms/2.5s/30s/600s/120s and preservation gate,
 plus own-attempt/replay-regression checks. No primary results yet. Unsigned101 after100; no release prep.
+
+## 2026-10-27 — Self-read repair whole-client acceptance (phase102)
+
+All eight frozen heavy/editing and non-overlap journeys pass every original latency/preservation
+gate. Actual H1 self-attempt median257→34.5 (−86.6%). Maximum competing replay median218.564→196.850s
+(−9.9%, paired direction consistent, reference drift6.8%); non-overlap145.046→130.415s (−10.1%,
+reference drift0.36%). Complete candidate peer p95 is0.732–0.757s against the unchanged2.5s gate.
+These are two local journeys per arm/workload, not phone/WAN/population claims. Preserve the actual
+5000/4157/1049-character fixture limitation and every observed attempt/status.
+
+Independent native envelope/wrapper/head signatures, ciphertext/prefix/seed identities, full exports,
+original/pending continuation, same-profile offline cold reopens, reverse edits, undo/redo and
+isolation pass. All frozen inputs/resources match.13 normal checks and81 metadata cases pass after
+one reviewed authority-map source-coordinate repin712→716; failed first checks and a refused
+incorrect713 preparation are retained. No construction status/contract/block changes;912/367 stays.
+[Full result and scope audit](performance-experiments/2026-10-27-self-read-order/phase102/README.md).
+
+The scoped audit finds one additional conservative performance coupling: one publisher's successful
+aggregate overflow disables batching across the owner. Distinguish it from correctly endpoint-wide
+404 fallback in the next bounded patch. No runtime change after100's measurement freeze, signing,
+push, release preparation, preview/API restart or deployment. Unsigned sequential102 after101.
