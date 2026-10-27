@@ -81,11 +81,12 @@ test('breadcrumb menus retain the whole outline, skipped levels and distinct dup
   await expect(items.nth(0)).toContainText('Work › Site › Launch · line 43');
   await expect(items.nth(1)).toContainText('Work › Site › Launch · line 64');
   await items.nth(1).click();
-  await expect(root(page)).toBeFocused();
+  await expect(localMenu(page)).toBeVisible();
   await expect(root(page)).toHaveAttribute('title', 'Goals › Work › Site › Launch');
   await page.getByRole('button', { name: 'Sections inside Launch', exact: true }).click();
-  await expect(localMenu(page)).toContainText('Beside Launch');
-  await expect(localMenu(page).getByRole('button')).toHaveCount(2);
+  await expect(localMenu(page)).toContainText('Inside Launch');
+  await expect(localMenu(page)).toContainText('No subsections here.');
+  await expect(localMenu(page).getByRole('button')).toHaveCount(0);
   expect(await state(page)).toEqual(before);
   await expect(editor(page)).not.toBeFocused();
 });
@@ -226,6 +227,57 @@ test('the full outline remains available before any headings are written', async
   await openApp(page);
   await root(page).click();
   await expect(outline(page)).toContainText('Headings will appear here as you add them.');
-  await expect(page.locator('.goals-crumb-menu')).toHaveCount(0);
+  await expect(page.locator('.goals-crumb-menu')).toHaveCount(1);
   await expect(editor(page)).not.toBeFocused();
+});
+
+test('Goals owns the full outline; each trailing caret drills into its own children without closing', async ({
+  page,
+}) => {
+  await seed(page);
+  await top(page);
+  const before = await state(page);
+  const goals = root(page);
+  await expect(goals.locator('svg')).toHaveCount(0);
+  const rootCaret = page.getByRole('button', { name: 'Sections inside Goals', exact: true });
+  expect(
+    await rootCaret.evaluate((e) =>
+      e.previousElementSibling?.classList.contains('goals-breadcrumbs'),
+    ),
+  ).toBe(true);
+  await rootCaret.click();
+  await expect(localMenu(page).locator('.goals-outline-item > span:first-child')).toHaveText([
+    'Work',
+    'Home',
+  ]);
+  await localMenu(page).getByRole('button').first().click();
+  await expect(localMenu(page)).toBeVisible();
+  await expect(localMenu(page)).toContainText('Inside Work');
+  await expect(localMenu(page).locator('.goals-outline-item > span:first-child')).toHaveText([
+    'Site',
+    'Admin',
+  ]);
+  await localMenu(page).getByRole('button').first().click();
+  await expect(localMenu(page)).toContainText('Inside Site');
+  await expect(localMenu(page).getByRole('button')).toHaveCount(2);
+  await localMenu(page).getByRole('button').first().click();
+  await expect(localMenu(page)).toContainText('Inside Launch');
+  await expect(localMenu(page)).toContainText('No subsections here.');
+  await expect(localMenu(page)).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(rootCaret).toBeFocused();
+  await goals.click();
+  await expect(outline(page).getByRole('button')).toHaveCount(7);
+  await outline(page).getByRole('button', { name: 'Site', exact: true }).click();
+  await expect(localMenu(page)).toContainText('Inside Site');
+  expect(await state(page)).toEqual(before);
+  const shape = await page.locator('.goals-navigation button').evaluateAll((buttons) =>
+    buttons.map((e) => {
+      const style = getComputedStyle(e);
+      return { height: e.getBoundingClientRect().height, radius: style.borderRadius };
+    }),
+  );
+  expect(new Set(shape.map((s) => s.height)).size).toBe(1);
+  expect(shape[0]!.height).toBe(24);
+  expect(new Set(shape.map((s) => s.radius)).size).toBe(1);
 });

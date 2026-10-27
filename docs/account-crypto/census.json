@@ -1373,7 +1373,7 @@
     },
     {
       "path": "src/editor/headingNavigation.ts",
-      "sha256": "df2433bf6b9a8ffd65cde3c8bd9d33b7e84b30c99a514a0c8f88e736b89b320c"
+      "sha256": "8e394eb446e961650ad7b808c3f6cf05b35f6cecd9629aee1a31cb103b2fa93f"
     },
     {
       "path": "src/editor/keymap.ts",
@@ -1537,7 +1537,7 @@
     },
     {
       "path": "src/ui/GoalsNavigation.tsx",
-      "sha256": "ab1b1ba0590a045bd2d7c8de70e7f2a54026a0a3a55c17b14c615d62ef0e2049"
+      "sha256": "353321889f8cb453112932f6b9ba79d9eabb94fb482b15ea241c94e07fa9ea60"
     },
     {
       "path": "src/ui/GoalsOutline.tsx",

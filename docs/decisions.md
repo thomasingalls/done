@@ -5582,3 +5582,11 @@ the grip with its initial touch-action and capture-phase claim; for body holds c
 only after activation using a scoped listener installed at gesture start. Ordinary scrolling remains;
 editor input is excluded. Retain primary ownership and existing single release operation/cancellation.
 No backup/startup or security-contract mechanism changes. [Red/green and preservation evidence](./development-evidence/2026-10-26-mobile-reorder/README.md).
+
+## 2026-10-26 — Goals menu ownership (phase88)
+
+The operator selects the Goals word for the full outline and a trailing caret for that heading's
+children. Root children are H1s; leaves do not fall back to siblings. Selection drills into the chosen
+heading while preserving editor selection and the captured-document guard. Adopt the former outline
+indicator's24px centered geometry/2px corners, retaining current colors. This supersedes the previous
+leaf-sibling and close-on-select presentation only, not writing/admission behavior.

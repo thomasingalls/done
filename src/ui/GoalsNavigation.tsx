@@ -18,7 +18,7 @@ interface OpenMenu {
   readonly document: Text;
   readonly headings: readonly DocumentHeading[];
   readonly title: string;
-  readonly siblings: boolean;
+  readonly catalog: readonly DocumentHeading[];
 }
 
 /** Ephemeral navigation only; the root retains the entire page outline. */
@@ -56,7 +56,9 @@ export const GoalsNavigation = ({
     document.addEventListener('pointerdown', outside, true);
     const frame = requestAnimationFrame(() => {
       if (open.kind === 'local')
-        panel.current?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
+        (
+          panel.current?.querySelector<HTMLButtonElement>('.goals-outline-item') ?? panel.current
+        )?.focus({ preventScroll: true });
       else
         panel.current
           ?.querySelector<HTMLElement>('[aria-current="location"]')
@@ -71,8 +73,16 @@ export const GoalsNavigation = ({
     if (trail.current) trail.current.scrollLeft = trail.current.scrollWidth;
   }, [path]);
 
-  const show = (button: HTMLButtonElement, heading?: DocumentHeading) => {
-    if (open && trigger.current === button) {
+  const show = (
+    button: HTMLButtonElement,
+    kind: 'outline' | 'local',
+    heading: DocumentHeading | null = null,
+  ) => {
+    if (
+      open?.kind === kind &&
+      open.from === (heading?.from ?? null) &&
+      trigger.current === button
+    ) {
       close();
       return;
     }
@@ -91,23 +101,20 @@ export const GoalsNavigation = ({
       close();
       return;
     }
-    const choice = heading ? headingMenu(all, heading) : null;
+    const choice = kind === 'local' ? headingMenu(all, heading) : null;
     const ancestry = heading ? headingPathFrom(all, heading.from) : [];
-    const prefix = (choice?.siblings ? ancestry.slice(0, -1) : ancestry)
-      .map((value) => value.title)
-      .join(' › ');
     trigger.current = button;
     setOpen({
-      kind: choice ? 'local' : 'outline',
-      prefix,
+      kind,
+      prefix: ancestry.map((value) => value.title).join(' › '),
       from: heading?.from ?? null,
       document: view.state.doc,
       headings: choice?.headings ?? all,
+      catalog: all,
       title: heading?.title ?? 'Goals',
-      siblings: choice?.siblings ?? false,
     });
   };
-  const navigate = (from: number, snapshot: Text | undefined, restoreFocus = false) => {
+  const navigate = (from: number, snapshot: Text | undefined, drill = false) => {
     const view = readEditor();
     if (
       !view ||
@@ -120,14 +127,24 @@ export const GoalsNavigation = ({
       close();
       return;
     }
+    const heading = drill ? open?.catalog.find((value) => value.from === from) : null;
+    if (drill && !heading) {
+      close();
+      return;
+    }
     view.dispatch({ effects: EditorView.scrollIntoView(from, { y: 'start', yMargin: 0 }) });
-    close();
-    // A leaf's trigger can disappear after scrolling to its sibling. The root
-    // stays mounted, keeps keyboard navigation nearby and never opens an IME.
-    if (restoreFocus)
-      header.current
-        ?.querySelector<HTMLButtonElement>('.goals-breadcrumbs')
-        ?.focus({ preventScroll: true });
+    if (drill && heading && open) {
+      setOpen({
+        ...open,
+        kind: 'local',
+        from,
+        title: heading.title,
+        prefix: headingPathFrom(open.catalog, from)
+          .map((value) => value.title)
+          .join(' › '),
+        headings: headingMenu(open.catalog, heading).headings,
+      });
+    } else close();
   };
   const keys = (event: KeyboardEvent<HTMLElement>) => {
     if (!open) return;
@@ -157,6 +174,29 @@ export const GoalsNavigation = ({
     buttons[next]?.focus({ preventScroll: true });
   };
 
+  const caret = (heading: DocumentHeading | null) => (
+    <button
+      type="button"
+      className="goals-crumb-menu"
+      aria-label={`Sections inside ${heading?.title ?? 'Goals'}`}
+      aria-expanded={open?.kind === 'local' && open.from === (heading?.from ?? null)}
+      aria-controls="goals-heading-menu"
+      data-heading-from={heading?.from}
+      onClick={(event) => show(event.currentTarget, 'local', heading)}
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        <path
+          d="m4.5 2 4 4-4 4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+
   return (
     <>
       <header className="panel-header" ref={header} onKeyDownCapture={keys}>
@@ -169,49 +209,14 @@ export const GoalsNavigation = ({
               aria-expanded={open?.kind === 'outline'}
               aria-controls="goals-outline"
               title={breadcrumb}
-              onClick={(event) => show(event.currentTarget)}
+              onClick={(event) => show(event.currentTarget, 'outline')}
             >
               <span className="goals-breadcrumb-root">Goals</span>
-              <span className="goals-outline-indicator" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="m3.5 5.75 4.5 4.5 4.5-4.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
             </button>
+            {caret(null)}
             <span className="goals-breadcrumb-trail" ref={trail}>
               {path.map((heading) => (
                 <span className="goals-breadcrumb-piece" key={`${heading.from}:${heading.level}`}>
-                  <button
-                    type="button"
-                    className="goals-crumb-menu"
-                    aria-label={`Sections inside ${heading.title}`}
-                    aria-expanded={
-                      open?.kind === 'local' &&
-                      open.title === heading.title &&
-                      open.from === heading.from
-                    }
-                    aria-controls="goals-heading-menu"
-                    data-heading-from={heading.from}
-                    onClick={(event) => show(event.currentTarget, heading)}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                      <path
-                        d="m4.5 2 4 4-4 4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.25"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
                   <button
                     type="button"
                     className="goals-crumb-label"
@@ -231,6 +236,7 @@ export const GoalsNavigation = ({
                   >
                     <span className="goals-breadcrumb-trail-text">{heading.title}</span>
                   </button>
+                  {caret(heading)}
                 </span>
               ))}
             </span>
@@ -261,10 +267,12 @@ export const GoalsNavigation = ({
           aria-label={`Sections inside ${open.title}`}
           ref={panel}
           onKeyDownCapture={keys}
+          tabIndex={-1}
         >
-          <p className="goals-heading-menu-title">
-            {open.siblings ? `Beside ${open.title}` : `Inside ${open.title}`}
-          </p>
+          <p className="goals-heading-menu-title">{`Inside ${open.title}`}</p>
+          {open.headings.length === 0 && (
+            <p className="goals-outline-empty">No subsections here.</p>
+          )}
           <ol className="goals-outline-list">
             {open.headings.map((heading) => (
               <li key={`${heading.from}:${heading.level}`}>

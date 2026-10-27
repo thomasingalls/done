@@ -1717,8 +1717,9 @@ readDayContent chooses a retained archive. This adds no importer, task identity 
 #### Heading outline and focus
 
 The full document outline and per-breadcrumb menus consume the same derived heading representation.
-The Goals root control retains every heading in source order; local menus contain immediate authored
-children, with sibling navigation at a leaf. The heading stack honors skipped levels. Duplicate titles
+The Goals root word retains every heading in source order, without an outline icon. Its following
+caret lists H1s only; a heading's trailing caret lists immediate authored children, never siblings at
+a leaf. Leaf menus show an empty-state message. The heading stack honors skipped levels. Duplicate titles
 remain separate positions and local rows show ancestry and line number.
 
 Capture one heading catalogue and its immutable editor document identity when a menu opens, never
@@ -1730,7 +1731,11 @@ Navigation dispatches a CodeMirror scroll effect without moving the selection or
 which prevents a heading tap from summoning the mobile keyboard. Outside pointer actions close menus;
 Escape closes and restores the trigger without closing the narrow Goals surface. Local menus support
 arrow/Home/End navigation. Constrained widths retain the deepest breadcrumb, and the root outline
-remains available. Navigating and focusing remain separate commands.
+remains available. Selecting a row keeps the menu open and drills into the selected heading's
+children using the same captured catalogue/document. A leaf panel can receive focus for Escape.
+Root, words and carets share the removed outline indicator's centered24px geometry and2px corners,
+with the existing hover colors and transparent resting background.
+Navigating and focusing remain separate commands.
 
 Focus is one editor showing one contiguous heading subtree. Its state is local and ephemeral. Positions must map
 through editor transactions so concurrent edits before the subtree do not detach the view from its heading.

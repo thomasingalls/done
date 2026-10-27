@@ -721,9 +721,10 @@ unrelated writing becomes quieter without hiding or reflowing it. Selected text 
 When the caret is outside the visible editing area, ordinary contrast returns throughout the view.
 “Gentle context” is on by default and has an immediately applied settings-sidebar toggle for this
 browser. Unavailable preference storage affects saving that cosmetic choice, never writing.
-The pinned Goals control still opens the whole page outline. Each breadcrumb also provides a
-heading jump and a menu of immediate subsections (or siblings at a leaf), preserving authored
-order and skipped heading levels. Duplicate labels include ancestry and line location in the local
+The root word Goals opens the whole page outline without an icon. A caret immediately after Goals
+lists all H1 headings. Each heading word navigates to it; its following caret lists its immediate
+authored children, preserving order and skipped heading levels. Leaf menus report no subsections.
+Choosing a menu row navigates there and keeps the menu open at that heading's child level. Duplicate labels include ancestry and line location in the local
 menu. These controls scroll without moving the caret or opening the mobile keyboard. Document
 changes dismiss an open menu rather than reuse stale heading positions.
 

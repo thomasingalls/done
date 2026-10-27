@@ -16364,3 +16364,10 @@ project cases/eight desktop NAs. Runtime census changes only the Card source has
 No physical-phone/iOS or scroll-latency claim, release preparation, commit, push, preview update or
 deployment. Release remains explicitly deferred; phone startup minute and backup retry/recheck policy
 are the separate open work recorded in86.
+
+## 2026-10-26 — Goals child menus and retained outline (phase88)
+
+Implemented root-word full outline, trailing child carets, persistent drill-down, empty leaves and
+shared control geometry.22 navigation browser cases and7 helper cases pass; preceding fixture failures
+remain recorded. [Evidence](development-evidence/2026-10-26-navigation-backup-startup/88-navigation/README.md).
+No release preparation or actual-phone performance conclusion follows from these development checks.

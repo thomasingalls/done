@@ -10453,7 +10453,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 6,
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10618,7 +10618,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/headingNavigation.test.ts"]
       },
-      "declarations": 7,
+      "declarations": 8,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18798,7 +18798,7 @@
     },
     {
       "path": "test/geometry/breadcrumbs.spec.ts",
-      "sha256": "e9a031009ced513d8e04871fe193961053c02ddbbba3afa0346d1f38ade3bd0d"
+      "sha256": "f6016e24e1eff9d8e8f0acc8e399bfeb3726cea9a8fdee248ed37631671c8619"
     },
     {
       "path": "test/geometry/card-context.spec.ts",
@@ -18834,7 +18834,7 @@
     },
     {
       "path": "test/geometry/goals-navigation.spec.ts",
-      "sha256": "175af9d7a348d64d896e46d071fcc790d4248be5ba7bd4664d8c3b7e0a542d38"
+      "sha256": "856a84ffacc422ba2249f941395762981ccfa56876c8a754db9fca0a09a7b4a9"
     },
     {
       "path": "test/geometry/install.spec.ts",
@@ -18898,7 +18898,7 @@
     },
     {
       "path": "test/headingNavigation.test.ts",
-      "sha256": "203ff0eb47f77fc4cc62b5179cb9c3da48b914df604263dfc89c2afb921a4df1"
+      "sha256": "b02ad5e0811673e17b878812e9ab97fefbea122a53b784b43c8774ff06afd633"
     },
     {
       "path": "test/helpers.ts",
