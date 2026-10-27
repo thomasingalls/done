@@ -4133,3 +4133,13 @@ cleanup and writer exclusion until pending work finishes. Disarm queue priority 
 prepared evidence; input/lifecycle/route/journal and fresh authority/inventory checks remain. A final
 exchange or readback must never be cancelled solely by an arriving read. No scheduler hint authorizes
 removal or weakens the strict atomic exchange and uncertain-mutation close.
+
+
+### Automatic retention and synchronization readiness — 2026-10-26
+
+The automatic owner defers starting while either composed sync lane is starting, working or retrying.
+Idle/offline/blocked statuses are only scheduling eligibility; all current-authority, journal/activity,
+exact-inventory and atomic-removal checks still apply. A status refresh updates readiness without
+extending user quiet; key/input/pointer/lifecycle activity retains the existing quiet reset. Periodic
+repair polls must not starve maintenance by masquerading as input. Refresh does not clear parked
+refusals, error halts, retry clocks or success cooldowns. Release unsubscribes its lane observer.

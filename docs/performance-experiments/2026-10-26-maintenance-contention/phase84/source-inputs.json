@@ -1,0 +1,13 @@
+{
+  "src/editor/gentleContext.ts": "0f1b05068a6ef127240a59402232eeb1d345b97fdf6f55d1daf2c650c1470116",
+  "src/crdt/accountCapture.ts": "b7807be5c7710a23a1b412b991156551de6ef3e14ddc4e2967d29120535a2713",
+  "src/crdt/accountReceive.ts": "0e310e36e11778beab2dcc514015309f1e2125ec08760d025995b78b1abeadd6",
+  "src/crdt/automaticLocalRetention.ts": "b8f2181244bd61801bb8bcde843a259f729b9b2a5b595cb6bce78c94687c9f64",
+  "test/gentleContextIncremental.test.ts": "fb98f05ee0458f753ee321f040d581e94592a87dfb97221ffb0b30d09cbb9b38",
+  "test/automaticLocalRetention.test.ts": "cd406855818a02152b6c63cfa178bc3d82a88382d9e1089af4f0a61dd897b59a",
+  "test/local-baseline/automatic.node.mjs": "18cdba348f89c128d20ec50ee6c52e6f1fca4e0984b9c895f0b2f04d9764d459",
+  "test/local-baseline/removal.native.mjs": "10b7117978724f727324c46a4a4cbc16fde82fef14a7647d29cd658993486052",
+  "scripts/release-validation/general-tests.json": "1716abc56378678d4ab8438ade91d829f39202e9d64ebcb3ab5eaa449956077d",
+  "test/release-validation/general-tests.test.mjs": "33f0ced91148c1fcde0093be923409b7f1cda84f534289f8af6a7c329cb69259",
+  "test/release-validation/generated-tests.test.mjs": "e862855ed43f1fe3b88333ac53934d6ebfaeb87f80d86370dbe9c0eb5e4385f8"
+}

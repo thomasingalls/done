@@ -1,0 +1,13 @@
+{
+  "sources": 410,
+  "labels": 197,
+  "onlyChangedSourceHashes": [
+    "src/crdt/accountCapture.ts",
+    "src/crdt/accountReceive.ts",
+    "src/crdt/automaticLocalRetention.ts",
+    "src/editor/gentleContext.ts"
+  ],
+  "domainSitesAndClassificationsUnchanged": true,
+  "allCurrentSourceHashesMatch": true,
+  "oldQualificationBlocksPreserved": true
+}

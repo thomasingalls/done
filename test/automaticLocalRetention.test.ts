@@ -246,3 +246,21 @@ it('does not inspect an owner whose signal was already aborted', () => {
   expect(observe).not.toHaveBeenCalled();
   expect(remove).not.toHaveBeenCalled();
 });
+
+it('readiness refreshes do not mistake routine sync activity for new user input or starve the quiet window', async () => {
+  const f = fixture();
+  f.run.wake();
+  for (let index = 0; index < 3; index++) {
+    await f.tick(3000);
+    f.set({ ready: false, hint: { revision: 0, records: MIN } });
+    f.run.refresh();
+    f.set({ ready: true, hint: { revision: 0, records: MIN } });
+    f.run.refresh();
+  }
+  expect(f.calls).toHaveLength(0);
+  await f.tick(1000);
+  expect(f.calls).toHaveLength(1);
+  f.run.dispose();
+  f.calls[0]!.resolve({ kind: 'removed' });
+  await f.tick(0);
+});

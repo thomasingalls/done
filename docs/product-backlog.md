@@ -34,6 +34,11 @@ get a bounded scope and evidence before implementation. General release qualific
   after the sync release, the operator reports improvement but periodic pauses remain during held
   deletion on a phone; longer pauses also show the syncing warning. Native-input smoothness is not
   established. This UX patch series records the observation without claiming a performance repair.
+  **2026-10-26:** Goals-only slowdown partly improves with Gentle context off. Unsigned82 adds
+  numeric interval reuse/no-op effect suppression;83–84 prioritize sync over local-history preparation.
+  Native phone smoothness and the16ms gate remain open. Long synthetic backspace probes also fail
+  final-text checks on both released/candidate builds; capture focus, selection, admitted operations
+  and actual final text before attributing that failure. [Evidence](performance-experiments/2026-10-26-goals-context/README.md).
 - **UX-07 — Saving-status layout movement.** “Still saving” warnings currently move the text around.
   They make remaining latency visible during debugging, but this movement is unacceptable in the user
   experience. Keep save state truthful while making status changes preserve editor layout, selection,

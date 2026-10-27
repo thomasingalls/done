@@ -741,7 +741,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "42fa48f9d19fea2cde1858c7bdea824a104cc15bf33d7e459af96b5386a83104"
+      "sha256": "b7807be5c7710a23a1b412b991156551de6ef3e14ddc4e2967d29120535a2713"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -785,7 +785,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "4b581c6da032723e03c9a5195ea1fac82110e85c887a0e1e9b9a36b6c79c1dfc"
+      "sha256": "0e310e36e11778beab2dcc514015309f1e2125ec08760d025995b78b1abeadd6"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -857,7 +857,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "3a508a3ac43552dbc4e52aefc8bae393b319e70846e1717952a790be34ed3427"
+      "sha256": "b8f2181244bd61801bb8bcde843a259f729b9b2a5b595cb6bce78c94687c9f64"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1369,7 +1369,7 @@
     },
     {
       "path": "src/editor/gentleContext.ts",
-      "sha256": "46cba4ad74c2a6e3b4f68909cda9404ee8dd0aed496af0886758be68eca869aa"
+      "sha256": "0f1b05068a6ef127240a59402232eeb1d345b97fdf6f55d1daf2c650c1470116"
     },
     {
       "path": "src/editor/headingNavigation.ts",

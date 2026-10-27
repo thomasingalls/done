@@ -116,7 +116,7 @@ import {
   requireSelfEnvelope,
   verifySyncState,
 } from './accountSyncState';
-import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
+import { createSyncScheduler, driveOutboundStep, type SyncStatus } from './accountSyncDriver';
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
@@ -2891,6 +2891,7 @@ async function openReceivingWorkspace(
     };
     const outbound =
       composed && !account.detached ? createOutbound(() => workspace.whenDurable()) : undefined;
+    let synchronizationQuiet = !outbound;
     let flight: Promise<unknown> | undefined;
     carrier.beforeRelease?.(async () => {
       await flight?.catch(() => {});
@@ -3148,6 +3149,7 @@ async function openReceivingWorkspace(
         signal: carrier.signal,
         observe: () => ({
           ready:
+            synchronizationQuiet &&
             carrier.state === 'active' &&
             workspace.status.state === 'active' &&
             workspace.status.durable &&
@@ -3272,6 +3274,20 @@ async function openReceivingWorkspace(
           globalThis.removeEventListener?.('offline', offline);
         },
       });
+      if (automaticRetention) {
+        const maintenance = automaticRetention;
+        const changed = (status: SyncStatus) => {
+          const quiet = [status.send.phase, status.receive.phase].every(
+            (phase) =>
+              phase === 'idle' || phase === 'offline' || phase === 'blocked' || phase === 'closed',
+          );
+          if (quiet === synchronizationQuiet) return;
+          synchronizationQuiet = quiet;
+          maintenance.refresh();
+        };
+        carrier.beforeRelease!(scheduler.runtime.onStatus(changed));
+        changed(scheduler.runtime.status);
+      }
       try {
         let previousGate = gate();
         unsubscribeLogin = options.networkLogin?.subscribe(() => {

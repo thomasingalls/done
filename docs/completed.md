@@ -16313,3 +16313,16 @@ Predecessor fails both preparation cases. Initial full run19/21; two reopened-ow
 start offline, retaining checks and subsequent sync. Five affected cases pass on rerun. Final fresh
 full-file/type/contract checks follow cumulatively. [Failure and success evidence](./performance-experiments/2026-10-26-maintenance-contention/phase83/README.md).
 No deployment/preview change; next is sync-readiness gating with a non-starving user-quiet clock.
+
+
+## 2026-10-26 — Maintenance start contention repaired in an unsigned candidate (phase84)
+
+Automatic starting now yields through active/unresolved sync lanes; a separate readiness refresh
+preserves user quiet and existing backoff/halt/cooldown. The real held-receive test fails on the old
+scheduler and first guard, passes after retry-gap repair, and then completes maintenance/cold reopen.
+Final affected native suites25/25 and existing context/breadcrumb browsers16/16 pass. Full unit run
+2,021 passes/one existing skip precedes the last retry-predicate tightening; that predicate has fresh
+native coverage. Broad adapters299/301 followed by109/109 affected metadata cases; failed attempts and
+census review retained. All363 qualification blockers remain. [Evidence and source limits](./performance-experiments/2026-10-26-maintenance-contention/phase84/README.md).
+Backup cap unchanged/readback blocked. Physical-phone typing, probe text mismatch and complete latency
+attribution remain open; no preview/production change. Final static receipts and patch identities next.

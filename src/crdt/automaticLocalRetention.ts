@@ -151,6 +151,13 @@ export function createAutomaticLocalRetention(options: {
       quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS;
       schedule();
     },
+    // Sync readiness can change without user activity. Keep its quiet clock distinct so routine
+    // polling cannot postpone maintenance forever; eligibility is still rechecked on every attempt.
+    refresh() {
+      if (closed || halted) return;
+      wakes++;
+      schedule();
+    },
     dispose,
     get status() {
       return status;

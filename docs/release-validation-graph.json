@@ -9838,7 +9838,7 @@
           "test/automaticLocalRetention.test.ts"
         ]
       },
-      "declarations": 14,
+      "declarations": 15,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -11032,7 +11032,7 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/local-baseline/automatic.node.mjs"]
       },
-      "declarations": 3,
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18590,7 +18590,7 @@
     },
     {
       "path": "test/automaticLocalRetention.test.ts",
-      "sha256": "ff32a605d9d49169b11d339a2e05056e45f45f3641eeaacf0b6024574efd7272"
+      "sha256": "cd406855818a02152b6c63cfa178bc3d82a88382d9e1089af4f0a61dd897b59a"
     },
     {
       "path": "test/bootstrapHttp.test.ts",
@@ -19218,7 +19218,7 @@
     },
     {
       "path": "test/local-baseline/automatic.node.mjs",
-      "sha256": "71f31c72de4568fbcbb2327689c9aab46820c8d2ef11dcbd0d18362d50fb238a"
+      "sha256": "3c149b65b75e61901eef6baa5453e36d9833e5aeaf2b89490e3ef443791fa9ae"
     },
     {
       "path": "test/local-baseline/fixtures.mjs",
@@ -19258,7 +19258,7 @@
     },
     {
       "path": "test/local-baseline/removal.native.mjs",
-      "sha256": "9aa313eb078605347644b5e79da5693ae03ea1dd8d0fde5f9932e799db935614"
+      "sha256": "10b7117978724f727324c46a4a4cbc16fde82fef14a7647d29cd658993486052"
     },
     {
       "path": "test/local-baseline/shadow.native.mjs",
@@ -19718,7 +19718,7 @@
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "4085129ec09b945b43cd862e0dafcfeaa52329740b8da77ffa44ae1f7e629f6a"
+      "sha256": "e862855ed43f1fe3b88333ac53934d6ebfaeb87f80d86370dbe9c0eb5e4385f8"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

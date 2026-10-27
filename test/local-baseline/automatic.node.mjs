@@ -234,3 +234,62 @@ test(
     await close(f.page);
   },
 );
+
+test(
+  'automatic reduction waits through a held receive and its retry, then proceeds when sync is quiet',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'automatic-receive-priority', enabled),
+      original = await f.page.evaluate(() => editor.read().master),
+      before = await inventory(f.page);
+    let release, reached;
+    const held = new Promise((resolve) => {
+      release = resolve;
+    });
+    const requested = new Promise((resolve) => {
+      reached = resolve;
+    });
+    const url = f.server.origin + '/account/delivery/read-v2';
+    let once = true;
+    await f.context.route(url, async (route) => {
+      if (once) {
+        once = false;
+        reached();
+        await held;
+      }
+      await route.continue();
+    });
+    try {
+      await online(f.page, true);
+      await f.page.evaluate(() => opened.sync.retry('receive'));
+      await requested;
+      await f.page.waitForTimeout(11000); // Real quiet window, never a shortened scheduler clock.
+      assert.ok(
+        ['working', 'retrying'].includes(
+          await f.page.evaluate(() => opened.sync.status.receive.phase),
+        ),
+      );
+      assert.equal(await f.page.evaluate(() => globalThis.automaticAttempts ?? 0), 0);
+      assert.deepEqual(await inventory(f.page), before);
+      release();
+      await settled(f.page);
+      await online(f.page, false);
+      await waitPredicate(
+        f.page,
+        () => globalThis.automaticResults?.some((r) => r.kind === 'removed'),
+        30000,
+      );
+      assert.equal(await f.page.evaluate(() => editor.read().master), original);
+      assert.equal((await inventory(f.page)).version, 5);
+      await close(f.page);
+      await cold(f);
+      await online(f.page, false);
+      await syncing(f.page, item);
+      assert.equal(await f.page.evaluate(() => editor.read().master), original);
+      await close(f.page);
+    } finally {
+      release();
+      await f.context.unroute(url);
+    }
+  },
+);

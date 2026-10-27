@@ -5551,3 +5551,13 @@ storage arrival stops the next preparation effect/yield boundary, after native s
 mutation/readback retains its existing exclusive lifetime. Three native regressions distinguish the
 two boundaries. Offline-start fixture schedules keep their original storage/reader assertions rather
 than expecting discretionary maintenance to defeat a new sync flight. [Evidence](./performance-experiments/2026-10-26-maintenance-contention/phase83/README.md).
+
+
+## 2026-10-26 — Sync readiness and user quiet are separate clocks (phase84)
+
+The held-receive regression disproves the initial maintenance start guard; its timeout also exposes a
+retry gap. Defer automatic starting through starting/working/retrying lanes. Let offline/idle/blocked
+states use the existing proof path, and preserve all network deadlines. Refreshing readiness must not
+reset user quiet or routine polling can starve local reduction. This favors foreground convergence and
+can postpone discretionary maintenance on a continually busy account. No hint supplies authority.
+The current backup cap remains unchanged at the operator's request; no readback bypass. [Evidence](./performance-experiments/2026-10-26-maintenance-contention/phase84/README.md).
