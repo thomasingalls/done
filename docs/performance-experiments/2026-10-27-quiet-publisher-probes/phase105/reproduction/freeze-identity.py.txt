@@ -1,0 +1,10 @@
+from pathlib import Path
+import hashlib,json,subprocess
+s=Path(__file__).parent;old=Path('/private/tmp/done-self-read-order-20261027');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();expected=json.loads((old/'followup-client-identity.json').read_text());actual={str(p.relative_to(s/'source-C/dist')):sha(p)for p in(s/'source-C/dist').rglob('*')if p.is_file()};assert expected==actual and len(actual)==110
+fixture=json.loads((s/'private-fixture/fixture.json').read_text());state=Path(fixture['state']);seed={p.name:sha(p)for p in state.iterdir()if p.is_file()};apparatus={str(p.relative_to(s)):sha(p)for p in(s/'harness/test/account-continuation-lab').iterdir()if p.is_file()}
+for n in ['run.py','run-plan.json','protocol.md','read-request.mjs','read-request.d.mts','notification-probe.mjs','notification-probe.d.mts','check-notification-probe.mjs','container-service.mjs','observer.mjs','container-image.json','playwright-storage-source.txt']:apparatus[n]=sha(s/n)
+for p in(s/'harness/test/device-enrollment').rglob('*'):
+ if p.is_file():apparatus[str(p.relative_to(s))]=sha(p)
+for p in(s/'harness/test/geometry').rglob('*'):
+ if p.is_file():apparatus[str(p.relative_to(s))]=sha(p)
+(s/'identity.json').write_text(json.dumps({'currentBaseTree':'a8a55c109d13317a35e83602ff3a6eddb5a4f027','clientRuntimeTree':'75d52e5454f645b6117b02a93e255ddcb19ab789','serverRuntimeTree':'b444a049d5bdb4db935628d7ecda6f44622af217','imageId':json.loads((s/'container-image.json').read_text())['Id'],'client110Files':actual,'apparatus':apparatus,'fixtureSha256':sha(s/'private-fixture/fixture.json'),'seedServiceFiles':seed,'sourceFunctionOnlyDiagnostic':sha(s/'source-cases.mjs'),'nodeVersion':subprocess.check_output(['/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node','--version']).decode().strip(),'noAppRuntimeOrOldTestChange':True},indent=2)+'\n')

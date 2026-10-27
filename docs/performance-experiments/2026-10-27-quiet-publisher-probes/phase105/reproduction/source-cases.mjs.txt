@@ -1,0 +1,98 @@
+import { stripTypeScriptTypes } from 'node:module';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+const root = '/private/tmp/done-quiet-publisher-probes-20261027';
+const repo = '/Users/thomasingalls/.codex/worktrees/7fda/done';
+const sha = b => createHash('sha256').update(b).digest('hex');
+const text = readFileSync(repo + '/src/crdt/receiveSelection.ts', 'utf8');
+const poll = readFileSync(repo + '/src/crdt/accountReceiveDriver.ts', 'utf8').match(/export const RECEIVE_POLL_MS = (\d+);/)[1];
+const source = `const RECEIVE_POLL_MS = ${poll};\n` + text.slice(text.indexOf('export function createReceiveSelection'));
+const js = stripTypeScriptTypes(source, { mode: 'strip' });
+const { createReceiveSelection } = await import('data:text/javascript;base64,' + Buffer.from(js).toString('base64'));
+const publishers = ['q0', 'q1', 'own', 'q2', 'q3', 'hot'];
+const select = createReceiveSelection(() => 1000), counts = Object.fromEntries(publishers.map(p => [p, 0]));
+let received = 0, known = false;
+for (let rounds = 0; received < 1024 && rounds < 10000; rounds++) {
+  const p = select.next(publishers, { publisher: 'own', pending: false, peerBacklog: known });
+  counts[p]++;
+  if (p === 'hot') {
+    const n = Math.min(select.capacity(p), known ? 1024 - received : 1);
+    known = true;
+    for (let i = 0; i < n; i++) { received++; select.completed(publishers, p, true); }
+  } else select.completed(publishers, p, false, p === 'own');
+}
+assert.equal(received, 1024);
+assert.equal(counts.own, 1);
+assert.equal(counts.hot, 257);
+for (const p of ['q0', 'q1', 'q2', 'q3']) assert.equal(counts[p], 256);
+
+// Design sketch only: not exported to, imported by or executed in the product.
+class RecheckSketch {
+  constructor(ttl = 1000) { this.ttl = ttl; this.generation = {}; this.quiet = new Map(); }
+  capture() { return this.generation; }
+  invalidate() { this.generation = {}; this.quiet.clear(); }
+  empty(publisher, basis, capture, now) {
+    if (capture !== this.generation) return false;
+    if (!this.quiet.has(publisher) && this.quiet.size >= 128) this.quiet.delete(this.quiet.keys().next().value);
+    this.quiet.set(publisher, { basis, at: now }); return true;
+  }
+  defer(publisher, basis, now, { backlog = true, self = false, conflicted = false } = {}) {
+    const q = this.quiet.get(publisher);
+    return !!q && backlog && !self && !conflicted && q.basis === basis && now >= q.at && now - q.at < this.ttl;
+  }
+  productive(publisher) { this.quiet.delete(publisher); }
+}
+const cases = [];
+const check = (name, fn) => { fn(); cases.push(name); };
+check('a5s remote silence window can impose4999ms on newly started writing without a hint', () => {
+  const m = new RecheckSketch(5000), token = m.capture(); m.empty('quiet', 'A:1', token, 1000);
+  assert(m.defer('quiet', 'A:1', 1001)); assert(m.defer('quiet', 'A:1', 5999)); assert.equal(6000 - 1001, 4999);
+});
+check('a deadline refreshed by unrelated hot work can postpone a quiet publisher indefinitely', () => {
+  let last = 1000, deferred = 0;
+  for (let now = 1100; now <= 31000; now += 100) { last = now; if (now - last < 1000) deferred++; }
+  assert.equal(deferred, 300);
+});
+check('clear-only invalidation allows a pre-hint result to recreate quiet state; a captured generation refuses it', () => {
+  const naive = new Map(), m = new RecheckSketch(), token = m.capture(); naive.clear(); m.invalidate();
+  naive.set('quiet', 1100); assert(naive.has('quiet')); assert.equal(m.empty('quiet', 'A:1', token, 1100), false);
+  assert.equal(m.defer('quiet', 'A:1', 1101), false);
+});
+check('notification-only suppression has no finite discovery bound when an advisory hint is lost', () => {
+  const m = new RecheckSketch(Infinity); m.empty('quiet', 'A:1', m.capture(), 1000); assert(m.defer('quiet', 'A:1', 121000));
+});
+check('first and newly eligible publishers remain due', () => {
+  const m = new RecheckSketch(); assert.equal(m.defer('first', 'A:1', 1000), false);
+  m.empty('quiet', 'A:1', m.capture(), 1000); assert.equal(m.defer('new', 'A:1', 1100), false);
+});
+check('a fixed1s deadline expires exactly, and unrelated completions cannot extend it', () => {
+  const m = new RecheckSketch(); m.empty('quiet', 'A:1', m.capture(), 1000);
+  for (let now = 1100; now <= 2000; now += 100) m.empty('other', 'A:1', m.capture(), now);
+  assert(m.defer('quiet', 'A:1', 1999)); assert.equal(m.defer('quiet', 'A:1', 2000), false);
+});
+check('clock rollback and changed cursor/authority basis do not defer', () => {
+  const m = new RecheckSketch(); m.empty('quiet', 'A:1', m.capture(), 1000);
+  for (const [basis, at] of [['A:1', 999], ['A:2', 1001], ['B:1', 1001]]) assert.equal(m.defer('quiet', basis, at), false);
+});
+check('all-idle, own and conflicted paths remain outside remote quiet deferral', () => {
+  const m = new RecheckSketch(); m.empty('quiet', 'A:1', m.capture(), 1000);
+  for (const options of [{ backlog: false }, { self: true }, { conflicted: true }]) assert.equal(m.defer('quiet', 'A:1', 1100, options), false);
+});
+check('hint, reconnect and authority reset invalidate already recorded hints and every old in-flight token', () => {
+  for (const cause of ['hint', 'reconnect', 'authority']) {
+    const m = new RecheckSketch(), token = m.capture(); m.empty('quiet', 'A:1', token, 1000); m.invalidate();
+    assert.equal(m.defer('quiet', 'A:1', 1100), false); assert.equal(m.empty('quiet', 'A:1', token, 1100), false);
+  }
+});
+check('productive, unknown and refused outcomes cannot create or keep an empty hint', () => {
+  const m = new RecheckSketch(); assert.equal(m.defer('unknown', 'A:1', 1100), false);
+  m.empty('quiet', 'A:1', m.capture(), 1000); m.productive('quiet'); assert.equal(m.defer('quiet', 'A:1', 1100), false);
+});
+check('memory eviction makes an old publisher due instead of deferring an unrelated stream', () => {
+  const m = new RecheckSketch(); for (let i = 0; i < 129; i++) m.empty(String(i), 'A:1', m.capture(), 1000);
+  assert.equal(m.quiet.size, 128); assert.equal(m.defer('0', 'A:1', 1100), false); assert.equal(m.defer('new', 'A:1', 1100), false);
+});
+const result = { status: 'passed', productionSelectionSliceSha256: sha(source), actualProductionScheduling: { receivedPositions: received, counts, quietPeersRecheckedAfterEachHotTurn: true, fixedClockWithinOwnFreshnessWindow: true, notAWallTimeModel: true }, designSketchCases: cases, noRuntimeImplementationOrLatencyAcceptance: true, limitations: ['The sketch is a proposed scheduling boundary only, not production code or evidence about native verification, end-to-end clocks or security qualification.', 'A1s expiry bounds intentional deferral in the sketch, not actual network-to-DOM time. The2.5s gate still needs a real candidate comparison.'] };
+writeFileSync(root + '/source-cases.json', JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify(result, null, 2));

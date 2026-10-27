@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "productionSelectionSliceSha256": "2a1fca6cb0861b51dd7fa3035503f975f1063973d02c5a2ccab169146a02ed05",
+  "actualProductionScheduling": {
+    "receivedPositions": 1024,
+    "counts": {
+      "q0": 256,
+      "q1": 256,
+      "own": 1,
+      "q2": 256,
+      "q3": 256,
+      "hot": 257
+    },
+    "quietPeersRecheckedAfterEachHotTurn": true,
+    "fixedClockWithinOwnFreshnessWindow": true,
+    "notAWallTimeModel": true
+  },
+  "designSketchCases": [
+    "a5s remote silence window can impose4999ms on newly started writing without a hint",
+    "a deadline refreshed by unrelated hot work can postpone a quiet publisher indefinitely",
+    "clear-only invalidation allows a pre-hint result to recreate quiet state; a captured generation refuses it",
+    "notification-only suppression has no finite discovery bound when an advisory hint is lost",
+    "first and newly eligible publishers remain due",
+    "a fixed1s deadline expires exactly, and unrelated completions cannot extend it",
+    "clock rollback and changed cursor/authority basis do not defer",
+    "all-idle, own and conflicted paths remain outside remote quiet deferral",
+    "hint, reconnect and authority reset invalidate already recorded hints and every old in-flight token",
+    "productive, unknown and refused outcomes cannot create or keep an empty hint",
+    "memory eviction makes an old publisher due instead of deferring an unrelated stream"
+  ],
+  "noRuntimeImplementationOrLatencyAcceptance": true,
+  "limitations": [
+    "The sketch is a proposed scheduling boundary only, not production code or evidence about native verification, end-to-end clocks or security qualification.",
+    "A1s expiry bounds intentional deferral in the sketch, not actual network-to-DOM time. The2.5s gate still needs a real candidate comparison."
+  ]
+}

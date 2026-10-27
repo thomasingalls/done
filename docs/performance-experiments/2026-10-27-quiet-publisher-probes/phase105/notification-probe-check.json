@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "partition": 1,
+      "withhold": false,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 1,
+      "withhold": true,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 2,
+      "withhold": false,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 2,
+      "withhold": true,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 7,
+      "withhold": false,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 7,
+      "withhold": true,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 4096,
+      "withhold": false,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "partition": 4096,
+      "withhold": true,
+      "bytesAndHeadersExact": true
+    },
+    {
+      "nonNotificationAndRefusalPassThrough": true
+    },
+    {
+      "successfulNonNotificationPassThroughIdentity": true
+    },
+    {
+      "cancelPropagatesToOriginalStream": true
+    },
+    {
+      "unrecognizedBytesAndPartialFramesPreserved": true
+    },
+    {
+      "sourceStreamErrorPreserved": true
+    }
+  ]
+}

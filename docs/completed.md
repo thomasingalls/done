@@ -16585,3 +16585,20 @@ real index empty. Final104 replay is an external sidecar, avoiding a self-hashin
 Self-read repair improves this small local engineering comparison; do not extend it to phone/WAN
 or credit the separate large-payload repair with unmeasured gains. Unsigned sequential100–104 are
 prepared for later staging/signing. No commit/push, preview/API restart, release prep or deployment.
+
+## 2026-10-27 — Unchanged remote-publisher probe investigation (phase105)
+
+Reuse all eight102 journeys and independently audited native tips. Candidate H1 repeats1026–1028
+unchanged remote200s during heavy catch-up and1024 in each non-overlap forward window. Four remote
+cursors stay1. Distinguish failures/inner predictions and the two timestamp instruments; fixed-time
+pruning sensitivity predicts no saved time. Exact production-selector replay reproduces256 visits
+to each quiet remote per1024 hot entries. Eleven design-sketch cases reject5s/sliding/notification-
+only/clear-only shortcuts and demonstrate candidate fixed expiry/generation fences without runtime
+implementation. Mixed-publisher batches need broader outstanding-request/group-commit ownership.
+[Diagnostic/protocol](performance-experiments/2026-10-27-quiet-publisher-probes/phase105/README.md).
+
+Freeze two narrow current-build late-peer journeys (normal/withheld wake frames) before dispatch.
+Thirteen observer cases, final harness types and39 unchanged unit cases pass; preserve initial
+missing-declaration/unused-binding type errors and the first command's18-case-only test selection.
+All runtime/old tests/912 obligations/367 blocks unchanged; qualification paused. Unsigned105 after104;
+no signing, push, preview update, release preparation or deployment.

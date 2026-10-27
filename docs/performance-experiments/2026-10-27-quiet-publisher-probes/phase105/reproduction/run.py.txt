@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,json,os,time
+s=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+for case in json.loads((s/'run-plan.json').read_text()):
+ out=s/case['name'];out.mkdir(mode=0o700,exist_ok=False);env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','FAIR_OUT':str(out),'FAIR_DIST':str(s/'source-C/dist'),'QUIET_WITHHOLD':'1'if case['withhold']else'0'};cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/quiet.config.ts'];receipt={'case':case,'startedAt':time.time_ns()//1000000,'command':cmd}
+ with(out/'console.log').open('w')as f:p=subprocess.run(cmd,cwd=s/'harness',env=env,stdout=f,stderr=subprocess.STDOUT)
+ receipt.update(completedAt=time.time_ns()//1000000,exitCode=p.returncode);(out/'runner-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(case['name'],p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
