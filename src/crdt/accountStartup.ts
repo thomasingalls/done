@@ -1,6 +1,11 @@
 import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { recordEqual } from './custodyRecord';
-import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+import {
+  countLedgerWork,
+  markAccountOpen,
+  ledgerWorkStart,
+  measureLedgerWork,
+} from './accountLedgerMetrics';
 import type { NetworkLogin } from '../account/networkLogin';
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
 import { openContentCheckpoint } from './contentCheckpoint';
@@ -94,7 +99,9 @@ export async function verifyAccountUnderPermit(
     stores: local.stores,
   };
   if (!same(marker.handoff!.destination, destination)) throw Error('Account destination changed');
+  const preflightAt = ledgerWorkStart();
   await localCensus(task, claim, options.code);
+  measureLedgerWork('startupPreflightCensus', preflightAt);
   const opening = options.promotionOpening;
   if (opening) {
     delete options.promotionOpening;
@@ -109,7 +116,10 @@ export async function verifyAccountUnderPermit(
   markAccountOpen('authorized');
   const current = await readPromotion(task, options.slotId, options.code);
   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
+  const recheckAt = ledgerWorkStart();
   const census = await localCensus(task, claim, options.code);
+  measureLedgerWork('startupRecheckCensus', recheckAt);
+  const custodyAt = ledgerWorkStart();
   if (!same(census.slot, destination)) throw Error('Account index missing or changed');
   let route!: Awaited<ReturnType<typeof heldCaptureRoute>>;
   await withPromotionRoot(task, claim, record, options.code, async (root, subtle) => {
@@ -329,6 +339,7 @@ export async function verifyAccountUnderPermit(
       eraseRotationKeys(active);
     }
   });
+  measureLedgerWork('startupCustodyAndLedger', custodyAt);
   return {
     claim,
     record,

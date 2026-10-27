@@ -5861,7 +5861,7 @@
         },
         {
           "path": "src/crdt/accountStartup.ts",
-          "line": 147,
+          "line": 157,
           "label": "done/checkpoint/v1",
           "kind": "literal"
         },

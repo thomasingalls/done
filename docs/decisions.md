@@ -5606,3 +5606,11 @@ A download cap pauses reads/pruning until UTC reset, allowing new uploads; broad
 calls. Transient failures back off. Caches/backoff remain process-local: restart requires a fresh proof.
 Health means the selected upload/local-check/hourly-remote-check policy, with pending verification and
 actual verified recovery-point age exposed; it does not mean every newly uploaded byte is verified.
+
+## 2026-10-26 — Separate passkey presentation from authenticated opening (phase91)
+
+Provider return ends the prompt presentation, not proof verification. Show access/saved-writing
+progress while existing owners continue; retain Back as cancellation, never removal. A late owner
+must drain before the setup lease is released and cannot publish ready after cancellation. Add only
+opt-in fixed-label numeric phase metrics; do not remove fresh census/replay checks or claim the actual
+phone's delay has been attributed. Reuse the prior depth evidence, then profile the actual slow phase.

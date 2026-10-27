@@ -16387,3 +16387,12 @@ pipeline cases pass; two deliberate cadence/circuit faults are detected. Failed 
 [Evidence](development-evidence/2026-10-26-navigation-backup-startup/90-backups/README.md).
 The new cadence file receives no aggregate qualification credit pending adapter review. No deployment or
 cap change. The verified recovery point may lag writing by an hour under the operator's chosen policy.
+
+## 2026-10-26 — Post-passkey status and cancellation boundary (phase91)
+
+Fixed the stale passkey title after provider return; added opt-in startup phase/census/custody timing.
+Three held-provider/late-owner boundary regressions and four existing Local-factor/access tests pass;
+the14-case focused invocation includes7 heading cases. Back aborts/drains without deleting saved setup
+in the coordinator regression. [Evidence and diagnostic scope](development-evidence/2026-10-26-navigation-backup-startup/91-opening/README.md).
+The actual phone's minute remains unresolved; no fresh phone trace or startup speedup is claimed.
+New test-file qualification credit stays blocked pending adapter review. Release preparation remains held.

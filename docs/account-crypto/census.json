@@ -577,7 +577,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "c6b6cf5606bf4062735a4f2b0c1aa5d23a909461f301024dae85ca82f53db960"
+      "sha256": "a0636ad0d0d6031de72bef449114a67f30576429212ac2052e1702fc924bb69c"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -769,7 +769,7 @@
     },
     {
       "path": "src/crdt/accountLedgerMetrics.ts",
-      "sha256": "c16099d66a863edc5cc60554bcb4270975f65974b33d41a5249d8608c1c9f0c7"
+      "sha256": "27c6b563985d3944472063c6bc27fa4cbeca4b56ceb60ad862d298cba7d3ed2e"
     },
     {
       "path": "src/crdt/accountLedgerMode.ts",
@@ -801,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountStartup.ts",
-      "sha256": "ffb575244bd691abe86a79aa114f71f544f2da1d7f96c109231a401ba7555506"
+      "sha256": "7c9e1dd5dd6bce36bf1bfcf5c5ca4e96b52f9e78c6edc820541881e669f9a3a4"
     },
     {
       "path": "src/crdt/accountSuccessor.ts",
@@ -2111,7 +2111,7 @@
         },
         {
           "path": "src/crdt/accountStartup.ts",
-          "line": 147
+          "line": 157
         },
         {
           "path": "src/crdt/contentCheckpoint.ts",
