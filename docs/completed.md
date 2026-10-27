@@ -16646,3 +16646,17 @@ qualification documents stay exact to104,912 obligations/367 blocks unchanged. R
 remote rechecks during known backlog with target/generation/wake/clock fences, preserving self/idle/
 backoff/security checks and requiring original full gates plus late-peer contention before adoption.
 Unsigned108 after107; no runtime optimization, signing, push, preview update, release prep or deployment.
+
+## 2026-10-27 — Quiet-publisher budget implementation and race sensitivity (phase109)
+
+Implement fixed750ms per-target verified-empty scheduling reuse in composed receiving, bounded128,
+with fresh cursor/frontier/baseline/context checks, sparse certified cursor resolution, one-use attempt
+generation and wake/reset fences. Existing self/idle/four-page/backoff and all verification/commit
+boundaries stay. Both before-repair failures retained; all18 old selector bodies byte exact.67 unit,
+61 distinct encrypted native cases across conditional modes,81 metadata cases, types/lint and source
+bookkeeping pass. Held pre-hint empty reply cannot hide a new genuine page; omitting the generation
+fence demonstrably hides it until clock release. Diagnostic has no timing credit.
+[Evidence/limits](performance-experiments/2026-10-27-quiet-budget/phase109/README.md).
+
+Performance adoption pending the frozen whole-client and late-writer comparisons. Qualification
+912/367 unchanged and paused; unsigned109 after108. No preview update, release prep or deployment.

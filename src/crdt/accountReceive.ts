@@ -274,6 +274,8 @@ async function openAccountReceiveOwner(
     outstanding: Bytes | undefined;
   let outstandingGroup: Bytes[] = [];
   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
+  const receiveSelection = createReceiveSelection(Date.now, composed);
+  let outstandingQuiet: object | undefined;
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
   let skippedHistory: string | undefined;
@@ -747,6 +749,8 @@ async function openAccountReceiveOwner(
       baselineShadow?.invalidate();
       baselineShadow = undefined;
       retentionReads.close();
+      receiveSelection.invalidateQuiet();
+      outstandingQuiet = undefined;
       authority.dispose();
       membershipAnchor = undefined;
       expectedPayload.fill(0);
@@ -877,6 +881,8 @@ async function openAccountReceiveOwner(
           prepared.check();
           checkJournal();
           const release = retentionReads.begin();
+          receiveSelection.invalidateQuiet();
+          outstandingQuiet = undefined;
           outstanding?.fill(0);
           outstanding = undefined;
           for (const r of outstandingGroup) r.fill(0);
@@ -934,6 +940,8 @@ async function openAccountReceiveOwner(
                 await assertCurrent(task);
               }
               const release = retentionReads.begin();
+              receiveSelection.invalidateQuiet();
+              outstandingQuiet = undefined;
               outstanding?.fill(0);
               outstanding = undefined;
               for (const r of outstandingGroup) r.fill(0);
@@ -1028,7 +1036,6 @@ async function openAccountReceiveOwner(
   ) => {
     return await readState(task, owner, (v) => v.inbound);
   };
-  const receiveSelection = createReceiveSelection();
   const describe = (s: Awaited<ReturnType<typeof state>>) =>
     Object.freeze({
       state:
@@ -1071,6 +1078,13 @@ async function openAccountReceiveOwner(
                     !all.conflict && hasPeerBacklog(publishers, base.publisher.id, all.peers),
                 }
               : undefined,
+            composed
+              ? {
+                  context: base.authority,
+                  peers: all.peers,
+                  cursor: (id) => publisherState(all, base, id),
+                }
+              : undefined,
           )
         : base.publisher.id;
     const s = publisherState(all, base, publisher),
@@ -1105,6 +1119,10 @@ async function openAccountReceiveOwner(
             Math.max(1, s.prefix.observedThrough - cursor),
           )
         : 1;
+    const quiet =
+      composed && publisher !== base.publisher.id
+        ? receiveSelection.captureQuiet(base.authority, publisher, s)
+        : undefined;
     const requests: Bytes[] = [];
     try {
       for (let i = 0; i < count; i++) {
@@ -1124,6 +1142,7 @@ async function openAccountReceiveOwner(
         for (const request of outstandingGroup) request.fill(0);
         stamp.check();
         outstandingStamp = stamp;
+        outstandingQuiet = quiet;
         outstandingGroup = requests;
         outstanding = requests[0]!;
         return outstanding.slice();
@@ -1133,12 +1152,13 @@ async function openAccountReceiveOwner(
       throw cause;
     }
   };
-  const prepareGroup = () =>
+  const prepareGroupOwned = () =>
     runCaptureTask(async (task, owner, route) => {
       const first = await prepareRead(task, owner, route, undefined, true);
       first.fill(0);
-      return outstandingGroup.map((r) => r.slice());
+      return { requests: outstandingGroup.map((r) => r.slice()), quiet: outstandingQuiet };
     });
+  const prepareGroup = async () => (await prepareGroupOwned()).requests;
   const receivePages = createReceivePageTransport();
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
@@ -1148,7 +1168,8 @@ async function openAccountReceiveOwner(
       pages: Bytes[] = [];
     try {
       return await runNetworkTask(async (network) => {
-        requests = await prepareGroup();
+        const prepared = await prepareGroupOwned();
+        requests = prepared.requests;
         stamp.check();
         const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
@@ -1219,6 +1240,7 @@ async function openAccountReceiveOwner(
           page: pages[0] ?? null,
           requests,
           pages,
+          quiet: prepared.quiet,
           oversized:
             !pages.length && events[0]!.some((event) => event.code === 'response-too-large'),
         }));
@@ -1370,6 +1392,7 @@ async function openAccountReceiveOwner(
     check: () => void = () => {},
   ) => {
     const bytes = input.slice();
+    receiveSelection.invalidateQuiet();
     return runCaptureTask(async (task, owner, route) => {
       let result: Awaited<ReturnType<typeof verifyHistoryInstall>> | undefined,
         committed = false;
@@ -2741,7 +2764,9 @@ async function openAccountReceiveOwner(
     prepareGroup,
     receiveGroup,
     preparedPromotion,
-    completedRead: (request: Bytes, kind: string) => {
+    invalidateQuietReads: receiveSelection.invalidateQuiet,
+    completedRead: (request: Bytes, kind: string, quiet?: object) => {
+      receiveSelection.completedQuiet(quiet, kind);
       const publisher = decodeInboundRequest(request).publisher;
       receiveSelection.completed(
         base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
@@ -2795,6 +2820,7 @@ async function openReceivingWorkspace(
     devices,
     deviceId,
     publisherCount,
+    invalidateQuietReads,
     completedRead,
     isSelfRequest,
     api,
@@ -2916,7 +2942,7 @@ async function openReceivingWorkspace(
         return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
       if (flight) return Promise.resolve({ kind: 'busy' as const });
       const work = (async () => {
-        const { request, page, requests, pages, oversized } = await fetchPage(operatorToken);
+        const { request, page, requests, pages, oversized, quiet } = await fetchPage(operatorToken);
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
@@ -2950,7 +2976,7 @@ async function openReceivingWorkspace(
                   proof.fill(0);
                 }
               }
-              completedRead(request, received.kind);
+              completedRead(request, received.kind, quiet);
               return { kind: received.kind, recorded: false };
             }
             if (pages.length > 1) {
@@ -2972,14 +2998,14 @@ async function openReceivingWorkspace(
                       ),
                     );
                 for (let i = 0; i < received.kinds.length; i++)
-                  completedRead(requests[i]!, received.kinds[i]!);
+                  completedRead(requests[i]!, received.kinds[i]!, quiet);
                 return received;
               } finally {
                 packed.fill(0);
               }
             }
             const received = await receivePage(page, request);
-            completedRead(request, received.kind);
+            completedRead(request, received.kind, quiet);
             return received;
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
@@ -3217,10 +3243,14 @@ async function openReceivingWorkspace(
         if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
       };
       const online = () => {
+          invalidateQuietReads();
           resetDiscovery();
           scheduler.wake('online');
         },
-        offline = () => scheduler.wake('gate');
+        offline = () => {
+          invalidateQuietReads();
+          scheduler.wake('gate');
+        };
       const scheduler = createSyncScheduler({
         signal: carrier.signal,
         gate: () => {
@@ -3306,6 +3336,7 @@ async function openReceivingWorkspace(
       try {
         let previousGate = gate();
         unsubscribeLogin = options.networkLogin?.subscribe(() => {
+          invalidateQuietReads();
           // A completed login resumes work without requiring a subscription handshake or
           // clearing another lane's integrity halt. Login itself never prompts on this path.
           scheduler.wake(options.networkLogin?.getSnapshot() === 'remembered' ? 'online' : 'gate');
@@ -3321,6 +3352,7 @@ async function openReceivingWorkspace(
         unsubscribe = workspace.onStatus(() => {
           const current = gate();
           if (current !== previousGate) {
+            invalidateQuietReads();
             previousGate = current;
             scheduler.wake('gate');
           }
@@ -3334,6 +3366,7 @@ async function openReceivingWorkspace(
             signal: carrier.signal,
             open: (signal) => access.openNotifications(signal),
             wake: (event) => {
+              invalidateQuietReads();
               if (event !== 'content') resetDiscovery();
               // A fresh subscription handshake proves renewed reachability. Content
               // hints alone never override a failed operation's retry clock.
@@ -3341,7 +3374,10 @@ async function openReceivingWorkspace(
             },
             health: (healthy) => {
               notificationHealthy = healthy;
-              if (!healthy) scheduler.wake('remote');
+              if (!healthy) {
+                invalidateQuietReads();
+                scheduler.wake('remote');
+              }
             },
           });
           carrier.beforeRelease(notifications.dispose);
@@ -3354,7 +3390,16 @@ async function openReceivingWorkspace(
       return Object.freeze({
         ...result,
         outbound,
-        sync: scheduler.runtime,
+        sync: Object.freeze({
+          get status() {
+            return scheduler.runtime.status;
+          },
+          retry: (lane: Parameters<typeof scheduler.runtime.retry>[0]) => {
+            if (lane === 'receive') invalidateQuietReads();
+            scheduler.runtime.retry(lane);
+          },
+          onStatus: scheduler.runtime.onStatus,
+        }),
         receiver: undefined,
         refreshAuthority: async () => {
           const result = await refreshAuthority(operatorToken ?? '', true);

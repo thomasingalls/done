@@ -1,0 +1,71 @@
+import { test, expect, chromium, type BrowserContext } from '@playwright/test';
+import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
+import { join } from 'node:path';
+import { readRequestInfo } from '../../../read-request.mjs';
+import { installNotificationProbe } from '../../../notification-probe.mjs';
+import { start, stop, control } from './runtime.mjs';
+import { restoreAuthenticator, openSaved } from './devices';
+import { seedProfile } from './seed-profile';
+import { root, card, focus, position, digest } from './common';
+import { browserIdentity } from './dispatch-probe';
+const out = process.env['FAIR_OUT']!, exe = process.env['CHROMIUM_PATH']!;
+const marker = ' Quiet peer arrival 20261027;';
+function markerProbe(value: string) {
+  const now = () => performance.timeOrigin + performance.now();
+  const result: any = { markerAt: null, inputs: [] };
+  const observe = () => {
+    if (result.markerAt !== null) return;
+    const c = [...document.querySelectorAll('.day-panel[data-active="true"] .card')].find(c => c.textContent?.includes('Fair H reverse:'));
+    if (c?.textContent?.includes(value)) result.markerAt = now();
+  };
+  new MutationObserver(observe).observe(document, { subtree: true, childList: true, characterData: true });
+  addEventListener('beforeinput', (event: Event) => {
+    if (!(event.target instanceof Element) || !event.target.closest('.card')) return;
+    result.inputs.push({ at: now(), trusted: event.isTrusted, focused: document.hasFocus(), visible: document.visibilityState });
+  }, true);
+  (window as any).__quietMarker = result;
+}
+
+test('a wake fences a held pre-wake empty reply in the actual composed receiver', async () => {
+ mkdirSync(out,{recursive:true,mode:0o700});
+ const fixture=JSON.parse(readFileSync(root+'/private-fixture/fixture.json','utf8')),account=fixture.accounts.find((a:any)=>a.label==='H');
+ const contexts:BrowserContext[]=[],result:any={outcome:'starting',mutant:process.env['FAIR_MUTANT']==='1',network:[],clocks:[],roots:[],guards:{}};
+ const save=()=>writeFileSync(join(out,'partial-result.json'),JSON.stringify(result,null,2)+'\n');
+ let release:()=>void=()=>{},held=false,hot=false;
+ const released=new Promise<void>(r=>release=r);
+ const writerSha='8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411';
+ const open=async(index:number)=>{
+  const saved=account.actors[index],profile=join(out,'private-profile-H'+index);
+  const ctx=await chromium.launchPersistentContext(profile,{executablePath:exe,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000}});contexts.push(ctx);result.roots.push(await browserIdentity(ctx.browser()!));await seedProfile(ctx,saved.storage);
+  const p=ctx.pages()[0]??await ctx.newPage();await p.addInitScript(installNotificationProbe,{withhold:false});await p.addInitScript(markerProbe,marker);
+  await p.addInitScript(()=>{const original=Date.now;Date.now=()=>typeof(window as any).__quietClock==='number'?(window as any).__quietClock:original();});
+  p.on('response',r=>{const info=readRequestInfo(r.request());if(info.reads){result.network.push({label:'H'+index,at:Date.now(),status:r.status(),...info});if(index===1&&r.status()===200&&info.reads.some((v:any)=>v.after>=33))hot=true;}});
+  if(index===2)await ctx.route('**/account/delivery/read-v2*',route=>route.fulfill({status:409,contentType:'application/json',body:JSON.stringify({v:1,kind:'unknown',reason:'state-changed'})}));
+  else await ctx.route('**/account/delivery/read-v2*',async route=>{
+   const info=readRequestInfo(route.request());if(!held&&hot&&info.reads?.some((v:any)=>v.publisherSha256===writerSha&&v.after===1)){
+    const response=await route.fetch();if(response.status()!==200){await route.fulfill({response});return;}
+    await p.evaluate(()=>{(window as any).__quietClock=Date.now();});result.heldAt=Date.now();result.heldResponseSha256=digest(await response.body());held=true;save();await released;await route.fulfill({response});result.releasedAt=Date.now();save();
+   }else await route.continue();
+  });
+  await restoreAuthenticator(p,saved.credentials);await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await p.waitForFunction(()=>!!navigator.serviceWorker.controller);
+  const bytes=await p.evaluate(async()=>Array.from(new Uint8Array(await(await fetch((await navigator.serviceWorker.ready).active!.scriptURL)).arrayBuffer())));expect(digest(Buffer.from(bytes))).toBe(digest(readFileSync(process.env['FAIR_DIST']!+'/sw.js')));
+  await ctx.setOffline(true);await openSaved(p,saved.code,true);await p.getByLabel('Go to date',{exact:true}).fill(account.date);return{ctx,p};
+ };
+ try{
+  const state=join(out,'state');cpSync(fixture.state,state,{recursive:true,errorOnExist:true});await start(state,process.env['FAIR_DIST']!);await control('start');
+  const reader=await open(1),writer=await open(2);await reader.ctx.setOffline(false);
+  await expect.poll(()=>held,{timeout:30000}).toBe(true);
+  const before=await reader.p.evaluate(()=>(window as any).__quietNotifications.content+(window as any).__quietNotifications.hint);
+  await focus(writer.p,'H',true);await writer.p.keyboard.insertText(marker);await writer.p.keyboard.press('Escape');await writer.ctx.setOffline(false);
+  await expect.poll(()=>position(writer.p),{timeout:30000}).toBe(2);
+  await expect.poll(()=>reader.p.evaluate(()=>(window as any).__quietNotifications.content+(window as any).__quietNotifications.hint),{timeout:10000}).toBeGreaterThan(before);
+  result.hintBeforeRelease=await reader.p.evaluate(()=>structuredClone((window as any).__quietNotifications));release();
+  if(result.mutant){await reader.p.waitForTimeout(2500);expect(await reader.p.evaluate(()=>(window as any).__quietMarker.markerAt)).toBeNull();result.guards.omittedGenerationFenceDetected=true;}
+  else{await expect.poll(()=>reader.p.evaluate(()=>(window as any).__quietMarker.markerAt),{timeout:2500,intervals:[20,50]}).not.toBeNull();result.guards.staleEmptyDidNotHideNewWriting=true;}
+  result.clockReleasedAt=Date.now();await reader.p.evaluate(()=>delete(window as any).__quietClock);
+  await expect.poll(()=>reader.p.evaluate(()=>(window as any).__quietMarker.markerAt),{timeout:10000}).not.toBeNull();
+  result.markerAt=await reader.p.evaluate(()=>(window as any).__quietMarker.markerAt);result.notificationsAtMarker=await reader.p.evaluate(()=>structuredClone((window as any).__quietNotifications));
+  expect(await card(reader.p,'H',true).textContent()).toContain(marker);result.guards.realVerifiedNewPageDisplayed=true;result.metrics=(await control('end')as any).metrics;result.trace=await control('trace');result.outcome='passed';
+ }catch(error){result.outcome='failed';result.error=String(error);throw error;}
+ finally{release();await Promise.all(contexts.map(c=>c.close().catch(()=>{})));writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');await stop();}
+});

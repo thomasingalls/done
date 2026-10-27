@@ -5685,3 +5685,12 @@ causal hint-performance claim. Preserve both earlier failed/interrupted fixtures
 missing-receipt inference: displayed0 is the scheduler's initial counter, not a local-storage census;
 receipt replay was not established. Native seed-tip+1 and original byte identities are the reliable
 guard. No runtime or qualification change. [Evidence/next contract](performance-experiments/2026-10-27-quiet-publisher-probes/phase108/README.md).
+
+## 2026-10-27 — Fixed quiet deadlines require captured generation, not reset-on-completion (phase109)
+
+Implement750ms only after verified empty completion and while other authenticated backlog remains.
+Bind target primitives and stable public authority, not aggregate revision or detached object identity.
+Use the existing baseline cursor resolver for sparse streams; do not persist empty scheduling state.
+Opaque captured tokens fence pre-wake replies; a notification clears scheduling only, not valid I/O,
+own freshness or fairness. The actual composed one-fault race detects a missing token-generation
+fence. Full performance/data gates remain required; no adoption or release claim from units/race.
