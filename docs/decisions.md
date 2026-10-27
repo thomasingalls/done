@@ -5531,3 +5531,13 @@ screen-lock behavior. Reader adoption stops future maintenance but cannot recons
 operational rows. The original public TLS probe's Docker DNS failure remains beside a successful
 default-trust DNS control. HSTS is sticky until expiry or HTTPS `max-age=0`; no preload is requested.
 [Exact artifact, failures, limits and handoff](./development-evidence/2026-10-26-ux-retention-release/README.md).
+
+
+## 2026-10-26 — Incremental context without changing the editing model (phase82)
+
+The operator reports Goals-only typing slowdown partly relieved by disabling Gentle context.
+Reuse numeric ownership intervals across parser-proven ordinary paragraph edits and suppress unchanged
+view effects. Invalidate on structural/parser/coverage changes; retain bounded fail-open lookup and
+actual offscreen/lifetime guards. Keep the toggle default on; no content or security guarantees change.
+The browser timing probes do not establish the16ms gate or explain all lag, and preserve a separate
+final-text failure on both predecessor and candidate. [Evidence](./performance-experiments/2026-10-26-goals-context/README.md).

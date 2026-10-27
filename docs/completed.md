@@ -16291,3 +16291,15 @@ results, apparatus failures, identities, probes and reproduction material. Exist
 contract/adapter results are reused against equal inputs. Physical Android first-conversion testing
 is deferred by the operator; general qualification remains paused. This checkpoint prepares the
 application PR and later infrastructure handoff; nothing is published or deployed yet.
+
+
+## 2026-10-26 — Gentle context incremental view repair prepared (phase82)
+
+Implemented numeric interval mapping and omission of unchanged decoration effects. Eight new cases
+(including250 mixed edit steps) detect four predecessor failures;23 focused unit and16 existing
+browser cases pass, with TypeScript. New test population is explicitly registered, all363 unresolved
+qualification blockers retained. Timing comparisons remain qualified by heavy host load/incomplete
+arms and a final-text failure seen in both released/candidate probes; no native-phone or typing-budget
+closure. [Evidence and failures](./performance-experiments/2026-10-26-goals-context/README.md).
+Unsigned sequential patch only; no production or preview change. Next: read-only preparation priority,
+keeping final history exchange/readback under the existing exclusive fences. Backup cap unchanged.

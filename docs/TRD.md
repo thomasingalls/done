@@ -1672,6 +1672,11 @@ phase finishes, checking editor lifetime and measured-state freshness; no docume
 transaction, admission command or persisted heading/caret snapshot is needed. Map transient
 decorations across accepted text changes and dispose of them with their editor.
 
+Reuse only proven numeric context intervals across mapped paragraph edits; distinguish heading ownership
+(next heading of any depth) from the clear section (including descendants). Structural edits, parser
+configuration/frontier changes and ownership/coverage changes invalidate reuse. Omit view effects
+when mapped decoration ranges already equal the measured result. No cache carries authority or text.
+
 Persist only a non-content presentation Boolean for this browser, default on. The preference does
 not enter workspace formats, crypto authority or synchronization. Storage denial keeps the choice
 usable for the visit and reports that it was not saved. Disabling removes the editor extension.
