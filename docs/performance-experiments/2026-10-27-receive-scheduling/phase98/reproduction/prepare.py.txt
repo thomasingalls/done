@@ -1,0 +1,12 @@
+from pathlib import Path
+import shutil,json
+r=Path(__file__).parent;previous=Path('/private/tmp/done-whole-client-20261027');(r/'source-C').symlink_to(previous/'source-C',target_is_directory=True);(r/'private-fixture').symlink_to(previous/'private-fixture',target_is_directory=True)
+shutil.copytree(previous/'harness',r/'harness',symlinks=True)
+for n in ['container-image.json','observer.mjs','container-service.mjs','playwright-storage-source.txt','audit-lib.mjs']:
+ shutil.copy(previous/n,r/n)
+for name in ['runtime.mjs','common.ts','seed-profile.ts']:
+ p=r/'harness/test/account-continuation-lab'/name;p.write_text(p.read_text().replace(str(previous),str(r)))
+p=r/'harness/test/account-continuation-lab/nonoverlap.spec.ts';t=p.read_text();t=t.replace("result.transitions[0].reconnectAt=Date.now();await ctx.setOffline(false);", "const profiler=await ctx.newCDPSession(p);await profiler.send('Profiler.enable');await profiler.send('Profiler.setSamplingInterval',{interval:1000});await profiler.send('Profiler.start');result.transitions[0].reconnectAt=Date.now();await ctx.setOffline(false);")
+t=t.replace("result.transitions[0].caughtUpAt=Date.now();", "result.transitions[0].caughtUpAt=Date.now();const cpu=await profiler.send('Profiler.stop');writeFileSync(join(out,'client.cpuprofile'),JSON.stringify(cpu.profile));await profiler.detach();")
+p.write_text(t)
+(r/'trace-plan.json').write_text(json.dumps({'phase':98,'sourceTree':'2b443aa2e7aeaf2a6067f7af75d82a70c930c52a','runtimeTree':'761f4f9669b8208bcea1d5263a53d50047bb6adb','variant':'C','name':'trace-01','clientArtifactManifest':str(previous/'C-client-identity.json'),'fixtureIdentity':json.loads((previous/'measurement-identity.json').read_text())['privateFixture'],'previousUninstrumentedNonoverlapSeconds':[145.330,145.286],'primaryPurpose':'Classify publisher/page productivity and sampled main-thread work; not latency acceptance or a new reference/candidate comparison.'},indent=2)+'\n')

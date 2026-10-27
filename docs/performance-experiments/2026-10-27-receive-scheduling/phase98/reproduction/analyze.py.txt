@@ -1,0 +1,24 @@
+from pathlib import Path
+import json,collections,statistics,math
+r=Path(__file__).parent;p=Path('/private/tmp/done-whole-client-20261027');x=json.loads((r/'trace-01/result.json').read_text());assert x['outcome']=='passed';obs=x['trace']['readObservations'];assert not obs['overflow'];allrows=obs['rows'];forward=x['transitions'][0];rows=sorted([v for v in allrows if v['startedAt']>=forward['reconnectAt']and v['finishedAt']<=forward['caughtUpAt']],key=lambda v:v['startedAt']);seed=json.loads((p/'seed-native-audit.json').read_text());h=seed['accounts'][0];hot=max(h['streams'],key=lambda v:v['positions']);cert={v['credentialSha256']:v for v in h['streams']};by={};cycles=collections.defaultdict(lambda:{'http':0,'handlerWallMs':0,'cycleSpanMs':0,'interRequestGapMs':0});positions=[];unavailable=[];overlaps=0
+for i,row in enumerate(rows):
+ assert not row.get('responseDecodeRefused');status=row['status'];assert status in [200,429];requests=row['requests'];pages=row.get('pages',[])
+ if status==200:
+  assert requests and len(requests)==len(pages)
+  assert len({q['publisherSha256']for q in requests})==1
+  for q,a in zip(requests,pages):
+   assert q['workspaceSha256']==h['workspaceSha256'];assert q['readerSha256']in cert;assert q['publisherSha256']in cert;assert a['next']==q['after']+a['entries'];assert a['through']>=a['next'];assert q['limit']==1
+   if not a['entries']:assert a['through']==a['next']
+   v=by.setdefault(q['publisherSha256'],{'innerRequests':0,'entries':0,'emptyPages':0,'http':0,'handlerWallMs':0});v['innerRequests']+=1;v['entries']+=a['entries'];v['emptyPages']+=a['entries']==0
+   if a['entries']:
+    assert q['publisherSha256']==hot['credentialSha256'];positions.extend(range(q['after']+1,a['next']+1))
+  key=requests[0]['publisherSha256'];by[key]['http']+=1;by[key]['handlerWallMs']+=row['handlerWallMs'];kind='productive'if any(a['entries']for a in pages)else'empty'
+ else:
+  assert not pages;kind='refused';
+  if not requests:unavailable.append(i)
+ nextAt=rows[i+1]['startedAt']if i+1<len(rows)else forward['caughtUpAt'];gap=nextAt-row['finishedAt'];overlaps+=gap<0;cycle=nextAt-row['startedAt'];assert cycle>=0
+ c=cycles[kind];c['http']+=1;c['handlerWallMs']+=row['handlerWallMs'];c['cycleSpanMs']+=cycle;c['interRequestGapMs']+=gap
+assert len(set(positions))==len(positions)==1024;assert sorted(positions)==list(range(hot['positions']-1024+1,hot['positions']+1));assert sum(v['entries']for v in by.values())==1024
+assert len(by)==6;assert all(v['entries']==0 for k,v in by.items()if k!=hot['credentialSha256']);network=[v for v in x['network']if v['path'].startswith('/account/delivery/read-v2')];assert len(network)==len(allrows);assert collections.Counter(v['status']for v in network)==collections.Counter(v['status']for v in allrows)
+report={'status':'qualified','functionalJourneyPassed':True,'allSuccessfulRequestsAndPagesClassified':True,'allReadHttpResponsesAccounted':True,'initialStrictAllPublisherMetadataCriterionMet':not unavailable,'earlyRefusalsWithUnavailablePublisher':len(unavailable),'earlyRefusalCaveat':'These replies preceded body decoding in the observer. Retain their HTTP429 status but infer no publisher or page productivity. Do not relabel them as empty.','forwardCatchupMs':forward['caughtUpAt']-forward['reconnectAt'],'readHttpAllJourney':len(allrows),'forwardHttp':len(rows),'forwardStatusCounts':dict(collections.Counter(str(v['status'])for v in rows)),'allSixCertifiedPublishersSeen':True,'perPublisher':[{'role':'backlogged'if k==hot['credentialSha256']else'unchanged','publisherSha256':k,**v}for k,v in by.items()],'cyclesAssociatedWithPriorReply':dict(cycles),'overlappingAdjacentReadIntervals':overlaps,'initialBeforeFirstReadMs':rows[0]['startedAt']-forward['reconnectAt'],'observerRequestDecodeMs':sum(v['requestDecodeMs']for v in allrows),'observerResponseDecodeMs':sum(v['responseDecodeMs']for v in allrows),'original1024PositionsExactlyOnce':True,'scope':'Server reports page shapes; unchanged native owner and independent final signatures/prefixes provide authority. Cycle spans include verification/application/scheduling and intervening other work, not causal time saved by removing a request. CPU profiles cover main threads only; sampling and observation timings are not latency acceptance.','previousUninstrumentedNonoverlapRead429s':[51,57,57,52],'profiledAllJourneyRead429s':sum(v['status']==429 for v in allrows)}
+(r/'analysis.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

@@ -1,0 +1,1266 @@
+{
+  "status": "analyzed",
+  "scope": "CPU profiler sample weights approximate main-thread stack residence, not exclusive total CPU/wait cause; source mapping covers built-client frames only.",
+  "service": {
+    "startTime": 2876270,
+    "endTime": 166023433,
+    "profileWallMs": 163147.163,
+    "sampledWeightMs": 163146.3,
+    "samples": 123330,
+    "mainThreadOnly": true,
+    "sourceMappedBundleSampleWeightMs": 0,
+    "bundleSampleWeightMs": 0,
+    "topSelf": [
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "mapped": false,
+        "selfMs": 133237.62,
+        "samples": 98780
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 274,
+        "column": 22,
+        "name": "fingerprint",
+        "mapped": false,
+        "selfMs": 4461.1140000000005,
+        "samples": 3768
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "prepare",
+        "mapped": false,
+        "selfMs": 2721.2049999999986,
+        "samples": 2355
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "mapped": false,
+        "selfMs": 2508.697,
+        "samples": 1771
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "mapped": false,
+        "selfMs": 2341.89,
+        "samples": 1621
+      },
+      {
+        "path": "file:///app/account-service/protocol.ts",
+        "line": 98,
+        "column": 25,
+        "name": "canonical",
+        "mapped": false,
+        "selfMs": 1442.4289999999996,
+        "samples": 1180
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "all",
+        "mapped": false,
+        "selfMs": 1401.8329999999996,
+        "samples": 1216
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "update",
+        "mapped": false,
+        "selfMs": 1002.1429999999996,
+        "samples": 844
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 69,
+        "column": 32,
+        "name": "publisherContext",
+        "mapped": false,
+        "selfMs": 996.949,
+        "samples": 864
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "get",
+        "mapped": false,
+        "selfMs": 875.1830000000007,
+        "samples": 762
+      },
+      {
+        "path": "file:///app/account-service/inboundAuthorityReuse.ts",
+        "line": 110,
+        "column": 22,
+        "name": "copyAuthority",
+        "mapped": false,
+        "selfMs": 750.6200000000001,
+        "samples": 617
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "memoryUsage",
+        "mapped": false,
+        "selfMs": 709.817,
+        "samples": 496
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 348,
+        "column": 29,
+        "name": "snapshotBytes",
+        "mapped": false,
+        "selfMs": 696.5110000000001,
+        "samples": 593
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "init",
+        "mapped": false,
+        "selfMs": 532.7389999999999,
+        "samples": 447
+      },
+      {
+        "path": "file:///app/account-protocol/recovery.ts",
+        "line": 23,
+        "column": 21,
+        "name": "unhex",
+        "mapped": false,
+        "selfMs": 417.39700000000005,
+        "samples": 354
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 323,
+        "column": 9,
+        "name": "enter",
+        "mapped": false,
+        "selfMs": 395.473,
+        "samples": 347
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "run",
+        "mapped": false,
+        "selfMs": 364.555,
+        "samples": 305
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 218,
+        "column": 42,
+        "name": "snapshotWorkspaceAuthority",
+        "mapped": false,
+        "selfMs": 345.46600000000007,
+        "samples": 305
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 360,
+        "column": 39,
+        "name": "snapshotBytesForPurpose",
+        "mapped": false,
+        "selfMs": 289.91600000000005,
+        "samples": 250
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "export",
+        "mapped": false,
+        "selfMs": 271.437,
+        "samples": 227
+      },
+      {
+        "path": "node:internal/worker/js_transferable",
+        "line": 113,
+        "column": 24,
+        "name": "structuredClone",
+        "mapped": false,
+        "selfMs": 251.54799999999997,
+        "samples": 209
+      },
+      {
+        "path": "node:internal/crypto/keys",
+        "line": 1044,
+        "column": 17,
+        "name": "getSlots",
+        "mapped": false,
+        "selfMs": 216.99700000000004,
+        "samples": 182
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 308,
+        "column": 24,
+        "name": "snapshot",
+        "mapped": false,
+        "selfMs": 210.45400000000004,
+        "samples": 182
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 811,
+        "column": 28,
+        "name": "census",
+        "mapped": false,
+        "selfMs": 208.68200000000002,
+        "samples": 182
+      },
+      {
+        "path": "node:internal/timers",
+        "line": 546,
+        "column": 24,
+        "name": "listOnTimeout",
+        "mapped": false,
+        "selfMs": 192.23499999999999,
+        "samples": 136
+      },
+      {
+        "path": "file:///app/account-protocol/recovery.ts",
+        "line": 16,
+        "column": 19,
+        "name": "hex",
+        "mapped": false,
+        "selfMs": 188.12800000000007,
+        "samples": 163
+      },
+      {
+        "path": "file:///app/account-protocol/preparation.ts",
+        "line": 33,
+        "column": 22,
+        "name": "closed",
+        "mapped": false,
+        "selfMs": 170.231,
+        "samples": 146
+      },
+      {
+        "path": "node:internal/timers",
+        "line": 526,
+        "column": 24,
+        "name": "processTimers",
+        "mapped": false,
+        "selfMs": 161.248,
+        "samples": 120
+      },
+      {
+        "path": "node:internal/crypto/util",
+        "line": 545,
+        "column": 27,
+        "name": "normalizeAlgorithm",
+        "mapped": false,
+        "selfMs": 153.24900000000002,
+        "samples": 140
+      },
+      {
+        "path": "node:internal/crypto/keys",
+        "line": 738,
+        "column": 25,
+        "name": "prepareSecretKey",
+        "mapped": false,
+        "selfMs": 142.12800000000001,
+        "samples": 117
+      },
+      {
+        "path": "node:internal/encoding",
+        "line": 355,
+        "column": 8,
+        "name": "encode",
+        "mapped": false,
+        "selfMs": 137.194,
+        "samples": 119
+      },
+      {
+        "path": "node:v8",
+        "line": 453,
+        "column": 18,
+        "name": "serialize",
+        "mapped": false,
+        "selfMs": 133.32000000000002,
+        "samples": 115
+      },
+      {
+        "path": "file:///app/account-protocol/admission.ts",
+        "line": 108,
+        "column": 20,
+        "name": "json",
+        "mapped": false,
+        "selfMs": 125.91500000000003,
+        "samples": 101
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "exec",
+        "mapped": false,
+        "selfMs": 113.08299999999998,
+        "samples": 89
+      },
+      {
+        "path": "node:internal/crypto/keys",
+        "line": 649,
+        "column": 29,
+        "name": "prepareAsymmetricKey",
+        "mapped": false,
+        "selfMs": 110.37300000000002,
+        "samples": 88
+      }
+    ],
+    "byPath": [
+      [
+        "((idle))",
+        133237.62
+      ],
+      [
+        "file:///app/account-service/publisherTips.ts",
+        6063.284999999999
+      ],
+      [
+        "(prepare)",
+        2721.2049999999986
+      ],
+      [
+        "((program))",
+        2508.697
+      ],
+      [
+        "((garbage collector))",
+        2341.89
+      ],
+      [
+        "file:///app/account-service/delivery.ts",
+        2044.793999999999
+      ],
+      [
+        "file:///app/account-service/protocol.ts",
+        1510.5469999999996
+      ],
+      [
+        "(all)",
+        1401.8329999999996
+      ],
+      [
+        "(update)",
+        1002.1429999999996
+      ],
+      [
+        "(get)",
+        875.1830000000007
+      ],
+      [
+        "file:///app/account-protocol/recovery.ts",
+        816.4110000000001
+      ],
+      [
+        "file:///app/account-service/inboundAuthorityReuse.ts",
+        798.883
+      ],
+      [
+        "(memoryUsage)",
+        709.817
+      ],
+      [
+        "node:internal/crypto/keys",
+        681.2239999999999
+      ],
+      [
+        "(init)",
+        532.7389999999999
+      ],
+      [
+        "node:internal/timers",
+        369.78499999999997
+      ],
+      [
+        "(run)",
+        364.555
+      ],
+      [
+        "(export)",
+        271.437
+      ],
+      [
+        "node:internal/worker/js_transferable",
+        251.90199999999996
+      ],
+      [
+        "file:///app/account-service/membershipStore.ts",
+        223.2
+      ],
+      [
+        "node:internal/crypto/util",
+        195.45999999999992
+      ],
+      [
+        "file:///app/account-protocol/preparation.ts",
+        171.325
+      ],
+      [
+        "file:///app/account-protocol/positionDecision.ts",
+        157.16400000000004
+      ],
+      [
+        "file:///app/account-protocol/admission.ts",
+        153.034
+      ],
+      [
+        "node:internal/encoding",
+        152.17699999999996
+      ]
+    ],
+    "topInclusive": [
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(root)",
+        "mapped": false,
+        "inclusiveMs": 163146.3
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "mapped": false,
+        "inclusiveMs": 133237.62
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 1457,
+        "column": 33,
+        "name": "readInbound",
+        "mapped": false,
+        "inclusiveMs": 13944.653
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 370,
+        "column": 20,
+        "name": "read",
+        "mapped": false,
+        "inclusiveMs": 4846.442
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 369,
+        "column": 11,
+        "name": "capture",
+        "mapped": false,
+        "inclusiveMs": 4816.319
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 965,
+        "column": 25,
+        "name": "unchanged",
+        "mapped": false,
+        "inclusiveMs": 3339.922
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 439,
+        "column": 9,
+        "name": "guard",
+        "mapped": false,
+        "inclusiveMs": 3332.154
+      },
+      {
+        "path": "node:internal/process/task_queues",
+        "line": 72,
+        "column": 34,
+        "name": "processTicksAndRejections",
+        "mapped": false,
+        "inclusiveMs": 3220.748
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "runMicrotasks",
+        "mapped": false,
+        "inclusiveMs": 2933.46
+      },
+      {
+        "path": "file:///app/account-service/scoped-http.ts",
+        "line": 185,
+        "column": 9,
+        "name": "",
+        "mapped": false,
+        "inclusiveMs": 2636.273
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 274,
+        "column": 22,
+        "name": "fingerprint",
+        "mapped": false,
+        "inclusiveMs": 2554.06
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "mapped": false,
+        "inclusiveMs": 2508.697
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 274,
+        "column": 22,
+        "name": "fingerprint",
+        "mapped": false,
+        "inclusiveMs": 2390.909
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "mapped": false,
+        "inclusiveMs": 2341.89
+      },
+      {
+        "path": "file:///app/account-service/scoped-http.ts",
+        "line": 262,
+        "column": 52,
+        "name": "authorization",
+        "mapped": false,
+        "inclusiveMs": 2045.268
+      },
+      {
+        "path": "file:///app/account-service/grants.ts",
+        "line": 390,
+        "column": 11,
+        "name": "",
+        "mapped": false,
+        "inclusiveMs": 2035.766
+      },
+      {
+        "path": "file:///app/account-service/scoped-http.ts",
+        "line": 185,
+        "column": 9,
+        "name": "",
+        "mapped": false,
+        "inclusiveMs": 1935.912
+      },
+      {
+        "path": "file:///app/account-service/scoped-http.ts",
+        "line": 164,
+        "column": 13,
+        "name": "run",
+        "mapped": false,
+        "inclusiveMs": 1813.707
+      },
+      {
+        "path": "file:///app/account-service/notifications.ts",
+        "line": 34,
+        "column": 11,
+        "name": "reconcile",
+        "mapped": false,
+        "inclusiveMs": 1717.189
+      },
+      {
+        "path": "file:///app/account-service/publisherTips.ts",
+        "line": 323,
+        "column": 9,
+        "name": "enter",
+        "mapped": false,
+        "inclusiveMs": 1448.631
+      },
+      {
+        "path": "file:///app/account-service/historyCheckpoint.ts",
+        "line": 109,
+        "column": 47,
+        "name": "exchangeHistoryCheckpoint",
+        "mapped": false,
+        "inclusiveMs": 1406.532
+      },
+      {
+        "path": "file:///app/account-service/grants.ts",
+        "line": 365,
+        "column": 18,
+        "name": "check",
+        "mapped": false,
+        "inclusiveMs": 1288.714
+      },
+      {
+        "path": "node:internal/timers",
+        "line": 526,
+        "column": 24,
+        "name": "processTimers",
+        "mapped": false,
+        "inclusiveMs": 1268.438
+      },
+      {
+        "path": "file:///app/account-service/delivery.ts",
+        "line": 308,
+        "column": 24,
+        "name": "snapshot",
+        "mapped": false,
+        "inclusiveMs": 1214.884
+      },
+      {
+        "path": "file:///app/account-service/grants.ts",
+        "line": 390,
+        "column": 11,
+        "name": "",
+        "mapped": false,
+        "inclusiveMs": 1179.453
+      }
+    ]
+  },
+  "client": {
+    "startTime": 10547711661048,
+    "endTime": 10547856859908,
+    "profileWallMs": 145198.86,
+    "sampledWeightMs": 145197.318,
+    "samples": 99396,
+    "mainThreadOnly": true,
+    "sourceMappedBundleSampleWeightMs": 27528.405000000104,
+    "bundleSampleWeightMs": 27533.538000000102,
+    "topSelf": [
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "mapped": false,
+        "selfMs": 101275.59,
+        "samples": 68860
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "mapped": false,
+        "selfMs": 9459.249,
+        "samples": 6540
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 8,
+        "column": 6,
+        "name": "q",
+        "mapped": true,
+        "selfMs": 9005.131000000001,
+        "samples": 6272
+      },
+      {
+        "path": "../../src/crdt/startupStorage.ts",
+        "line": 102,
+        "column": 10,
+        "name": "",
+        "mapped": true,
+        "selfMs": 4810.119,
+        "samples": 3340
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 115,
+        "column": 4,
+        "name": "select",
+        "mapped": true,
+        "selfMs": 1895.705,
+        "samples": 1332
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(garbage collector)",
+        "mapped": false,
+        "selfMs": 1763.733,
+        "samples": 1122
+      },
+      {
+        "path": "../../account-protocol/recovery.ts",
+        "line": 23,
+        "column": 13,
+        "name": "r",
+        "mapped": true,
+        "selfMs": 1486.3619999999992,
+        "samples": 1027
+      },
+      {
+        "path": "../../src/crdt/cpuBudget.ts",
+        "line": 7,
+        "column": 2,
+        "name": "t",
+        "mapped": true,
+        "selfMs": 942.7439999999999,
+        "samples": 658
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 8,
+        "column": 6,
+        "name": "Or",
+        "mapped": true,
+        "selfMs": 863.3089999999997,
+        "samples": 605
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "verify",
+        "mapped": false,
+        "selfMs": 766.2109999999999,
+        "samples": 535
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 36,
+        "column": 6,
+        "name": "kr",
+        "mapped": true,
+        "selfMs": 582.495,
+        "samples": 410
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 30,
+        "column": 7,
+        "name": "",
+        "mapped": true,
+        "selfMs": 519.502,
+        "samples": 358
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "transaction",
+        "mapped": false,
+        "selfMs": 394.426,
+        "samples": 277
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "now",
+        "mapped": false,
+        "selfMs": 368.0460000000001,
+        "samples": 256
+      },
+      {
+        "path": "../../account-protocol/recovery.ts",
+        "line": 16,
+        "column": 20,
+        "name": "n",
+        "mapped": true,
+        "selfMs": 364.31600000000003,
+        "samples": 254
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "get",
+        "mapped": false,
+        "selfMs": 347.585,
+        "samples": 243
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "encode",
+        "mapped": false,
+        "selfMs": 335.67400000000015,
+        "samples": 236
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 146,
+        "column": 10,
+        "name": "verify",
+        "mapped": true,
+        "selfMs": 317.774,
+        "samples": 223
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "fetch",
+        "mapped": false,
+        "selfMs": 315.505,
+        "samples": 221
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "open",
+        "mapped": false,
+        "selfMs": 301.54,
+        "samples": 213
+      },
+      {
+        "path": "../../account-protocol/inboundTransport.ts",
+        "line": 38,
+        "column": 13,
+        "name": "U",
+        "mapped": true,
+        "selfMs": 295.14,
+        "samples": 201
+      },
+      {
+        "path": "../../src/crdt/verificationOwnership.ts",
+        "line": 2,
+        "column": 9,
+        "name": "H",
+        "mapped": true,
+        "selfMs": 280.42,
+        "samples": 196
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 135,
+        "column": 4,
+        "name": "read",
+        "mapped": true,
+        "selfMs": 271.675,
+        "samples": 184
+      },
+      {
+        "path": "../../src/crdt/warmContent.ts",
+        "line": 144,
+        "column": 16,
+        "name": "",
+        "mapped": true,
+        "selfMs": 237.087,
+        "samples": 165
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "decode",
+        "mapped": false,
+        "selfMs": 207.22899999999993,
+        "samples": 143
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "continue",
+        "mapped": false,
+        "selfMs": 181.593,
+        "samples": 128
+      },
+      {
+        "path": "../../account-protocol/inboundTransport.ts",
+        "line": 43,
+        "column": 16,
+        "name": "W",
+        "mapped": true,
+        "selfMs": 180.58200000000002,
+        "samples": 124
+      },
+      {
+        "path": "../../account-protocol/recovery.ts",
+        "line": 37,
+        "column": 28,
+        "name": "",
+        "mapped": true,
+        "selfMs": 155.44899999999998,
+        "samples": 108
+      },
+      {
+        "path": "../../src/crdt/contentRecord.ts",
+        "line": 89,
+        "column": 6,
+        "name": "p",
+        "mapped": true,
+        "selfMs": 144.16500000000002,
+        "samples": 102
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "get result",
+        "mapped": false,
+        "selfMs": 137.85399999999998,
+        "samples": 97
+      },
+      {
+        "path": "../../src/crdt/accountReceive.ts",
+        "line": 482,
+        "column": 10,
+        "name": "validate",
+        "mapped": true,
+        "selfMs": 123.78999999999999,
+        "samples": 86
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "openKeyCursor",
+        "mapped": false,
+        "selfMs": 121.759,
+        "samples": 84
+      },
+      {
+        "path": "../../src/crdt/contentRecord.ts",
+        "line": 79,
+        "column": 6,
+        "name": "f",
+        "mapped": true,
+        "selfMs": 116.81300000000002,
+        "samples": 82
+      },
+      {
+        "path": "../../src/account/privateDeliveryHttp.ts",
+        "line": 25,
+        "column": 22,
+        "name": "hr",
+        "mapped": true,
+        "selfMs": 114.635,
+        "samples": 87
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "read",
+        "mapped": false,
+        "selfMs": 111.15499999999999,
+        "samples": 79
+      }
+    ],
+    "byPath": [
+      [
+        "((idle))",
+        101275.59
+      ],
+      [
+        "../../src/crdt/verifiedRecords.ts",
+        11692.313000000004
+      ],
+      [
+        "((program))",
+        9459.249
+      ],
+      [
+        "../../src/crdt/startupStorage.ts",
+        5074.267000000001
+      ],
+      [
+        "../../src/crdt/accountAuthority.ts",
+        2100.596999999999
+      ],
+      [
+        "../../account-protocol/recovery.ts",
+        2072.8860000000004
+      ],
+      [
+        "((garbage collector))",
+        1763.733
+      ],
+      [
+        "../../src/crdt/cpuBudget.ts",
+        1050.371
+      ],
+      [
+        "(verify)",
+        766.2109999999999
+      ],
+      [
+        "../../account-protocol/inboundTransport.ts",
+        679.4649999999996
+      ],
+      [
+        "../../src/crdt/warmContent.ts",
+        512.827
+      ],
+      [
+        "../../src/crdt/contentRecord.ts",
+        396.9099999999999
+      ],
+      [
+        "(transaction)",
+        394.426
+      ],
+      [
+        "(now)",
+        368.0460000000001
+      ],
+      [
+        "(get)",
+        347.585
+      ],
+      [
+        "../../src/crdt/verificationOwnership.ts",
+        343.63899999999995
+      ],
+      [
+        "(encode)",
+        335.67400000000015
+      ],
+      [
+        "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js",
+        320.39
+      ],
+      [
+        "(fetch)",
+        315.505
+      ],
+      [
+        "../../src/crdt/accountReceive.ts",
+        310.0649999999999
+      ],
+      [
+        "(open)",
+        301.54
+      ],
+      [
+        "../../src/crdt/writeSession.ts",
+        240.32399999999996
+      ],
+      [
+        "(decode)",
+        207.22899999999993
+      ],
+      [
+        "../../src/crdt/custodyCrypto.ts",
+        196.37300000000005
+      ],
+      [
+        "../../account-protocol/envelope.ts",
+        195.36999999999998
+      ]
+    ],
+    "topInclusive": [
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(root)",
+        "mapped": false,
+        "inclusiveMs": 145197.318
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(idle)",
+        "mapped": false,
+        "inclusiveMs": 101275.59
+      },
+      {
+        "path": "../../src/crdt/writeSession.ts",
+        "line": 156,
+        "column": 25,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 11233.037
+      },
+      {
+        "path": "../../src/crdt/cpuBudget.ts",
+        "line": 30,
+        "column": 18,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 11102.643
+      },
+      {
+        "path": "",
+        "line": 0,
+        "column": -1,
+        "name": "(program)",
+        "mapped": false,
+        "inclusiveMs": 9459.249
+      },
+      {
+        "path": "../../src/crdt/contentStore.ts",
+        "line": 554,
+        "column": 25,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 8621.266
+      },
+      {
+        "path": "../../src/crdt/accountCapture.ts",
+        "line": 160,
+        "column": 20,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 8619.722
+      },
+      {
+        "path": "../../src/crdt/accountReceive.ts",
+        "line": 482,
+        "column": 10,
+        "name": "validate",
+        "mapped": true,
+        "inclusiveMs": 8616.676
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 146,
+        "column": 10,
+        "name": "verify",
+        "mapped": true,
+        "inclusiveMs": 8609.522
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 52,
+        "column": 22,
+        "name": "Z",
+        "mapped": true,
+        "inclusiveMs": 8328.859
+      },
+      {
+        "path": "../../src/crdt/verifiedRecords.ts",
+        "line": 8,
+        "column": 6,
+        "name": "q",
+        "mapped": true,
+        "inclusiveMs": 7146.555
+      },
+      {
+        "path": "../../src/crdt/startupStorage.ts",
+        "line": 101,
+        "column": 12,
+        "name": "o.onsuccess",
+        "mapped": true,
+        "inclusiveMs": 5057.768
+      },
+      {
+        "path": "../../src/crdt/contentDatabase.ts",
+        "line": 98,
+        "column": 19,
+        "name": "p",
+        "mapped": true,
+        "inclusiveMs": 5038.245
+      },
+      {
+        "path": "../../src/crdt/writeSession.ts",
+        "line": 150,
+        "column": 17,
+        "name": "step",
+        "mapped": true,
+        "inclusiveMs": 5029.324
+      },
+      {
+        "path": "../../src/crdt/finalApplyGate.ts",
+        "line": 24,
+        "column": 19,
+        "name": "step",
+        "mapped": true,
+        "inclusiveMs": 5029.324
+      },
+      {
+        "path": "../../src/crdt/cpuBudget.ts",
+        "line": 28,
+        "column": 11,
+        "name": "step",
+        "mapped": true,
+        "inclusiveMs": 5029.324
+      },
+      {
+        "path": "../../src/crdt/startupStorage.ts",
+        "line": 102,
+        "column": 10,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 5013.323
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 64,
+        "column": 10,
+        "name": "check",
+        "mapped": true,
+        "inclusiveMs": 2978.773
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 8,
+        "column": 6,
+        "name": "Or",
+        "mapped": true,
+        "inclusiveMs": 2385.982
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 17,
+        "column": 8,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 2379.318
+      },
+      {
+        "path": "../../src/crdt/contentStore.ts",
+        "line": 491,
+        "column": 17,
+        "name": "A",
+        "mapped": true,
+        "inclusiveMs": 2364.74
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 8,
+        "column": 6,
+        "name": "Or",
+        "mapped": true,
+        "inclusiveMs": 2364.674
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 30,
+        "column": 7,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 2358.85
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 8,
+        "column": 6,
+        "name": "Or",
+        "mapped": true,
+        "inclusiveMs": 2357.32
+      },
+      {
+        "path": "../../src/crdt/accountAuthority.ts",
+        "line": 30,
+        "column": 7,
+        "name": "",
+        "mapped": true,
+        "inclusiveMs": 2305.699
+      }
+    ]
+  }
+}

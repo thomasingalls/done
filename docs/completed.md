@@ -16476,3 +16476,20 @@ A small metadata review overlaps late C2 replay; no build/test suite overlaps me
 1540 read requests for one1024-position receiver make scheduling/application verification the next
 bounded trace candidate, without causal attribution from counts alone.96/97 stay sequential unsigned
 patches; preview remains92 UX. No old tests/runtime changed, release preparation or deployment.
+
+## 2026-10-27 — Read scheduling attribution (phase98)
+
+Reuse97's unchanged client/service/fixture for one observed non-overlap journey. All1024 missing
+positions arrive exactly once; five unchanged publishers each return257 empty pages. Classify1542
+successful forward HTTP replies and49 native capacity refusals. Read-cycle spans partition145.089s:
+60.131s after empty replies,33.978s after productive replies,49.460s after refusals,1.520s initial.
+These are associated intervals, not causal savings. Main-thread samples retain byte checks, selection/
+copying and scoped-control cursor work; native/storage/worker wait is not fully decomposed.
+
+The observer's Buffer alias bug is caught by transparency checks before the real journey; final5
+cases pass and failed source/log remain. The strict all-publisher metadata goal is qualified:10 early
+refusals have no publisher metadata; all successful frames/HTTP statuses are accounted for. Keep
+that limitation and after-dispatch identity-receipt timing. Independent signatures/prefixes/seed
+rows, exact exports, reverse accepted writing, sender-closed ordering and offline cold-profile checks
+pass. [Diagnostic](performance-experiments/2026-10-27-receive-scheduling/phase98/README.md).
+No runtime/old-test/policy change or latency acceptance claim;97's original gates remain. No release prep.

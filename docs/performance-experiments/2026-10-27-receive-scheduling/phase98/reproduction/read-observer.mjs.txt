@@ -1,0 +1,13 @@
+import{performance}from'node:perf_hooks';import{createHash}from'node:crypto';
+import{decodeInboundRequest,decodeInboundPage}from'/app/account-protocol/inboundTransport.ts';
+import{decodeInboundBatch,decodeInboundBatchPages,INBOUND_BATCH_REQUEST_LIMIT,INBOUND_BATCH_PAGE_LIMIT}from'/app/account-protocol/inboundBatch.ts';
+const hash=s=>createHash('sha256').update(s).digest('hex');let rows=[],overflow=0;
+/** An observation only; no returned value enters the service, authority owner or response bytes. */
+export function observeRead(req,res){
+ const path=(req.url??'').split('?')[0];if(!['/account/delivery/read-v2','/account/delivery/read-v2-batch'].includes(path))return;
+ const batch=path.endsWith('-batch'),startedAt=Date.now(),started=performance.now(),parts=[];let length=0,requests=[],requestBytes=0,requestDecodeMs=0;
+ req.on('data',b=>{length+=b.length;if(length<=INBOUND_BATCH_REQUEST_LIMIT)parts.push(Buffer.from(b));});
+ req.on('end',()=>{const at=performance.now();const body=Buffer.concat(parts);requestBytes=body.length;let frames=[];try{frames=batch?decodeInboundBatch(body):[body];requests=frames.map(b=>{const r=decodeInboundRequest(b);return{workspaceSha256:hash(r.workspace),readerSha256:hash(r.reader),publisherSha256:hash(r.publisher),after:r.after,limit:r.limit}})}catch{requests=[{decodeRefused:true}]}finally{for(const b of frames)if(b!==body)b.fill(0);body.fill(0);for(const b of parts)b.fill(0);parts.length=0;requestDecodeMs=performance.now()-at}});
+ const end=res.end;res.end=function(chunk,...args){const serviceEnd=performance.now();const row={path,batch,startedAt,finishedAt:Date.now(),handlerWallMs:serviceEnd-started,status:res.statusCode,requestBytes,requests,requestDecodeMs};const at=performance.now();let frames=[];try{if(res.statusCode===200&&chunk){const bytes=Buffer.isBuffer(chunk)?chunk:Buffer.from(chunk);if(bytes.length>INBOUND_BATCH_PAGE_LIMIT)throw Error('Observer response bound');const own=new Uint8Array(bytes);frames=batch?decodeInboundBatchPages(own):[own];row.pages=frames.map(b=>{const p=decodeInboundPage(b),v={requestSha256:p.request,through:p.through,next:p.next,entries:p.entries.length,bytes:b.length};for(const e of p.entries){e.envelope.fill(0);e.proof.fill(0)}return v});row.responseBytes=bytes.length;}}catch{row.responseDecodeRefused=true}finally{for(const b of frames)b.fill(0);row.responseDecodeMs=performance.now()-at;if(rows.length<10000)rows.push(row);else overflow++}return end.call(this,chunk,...args)};
+}
+export function takeReads(){const result={rows,overflow};rows=[];overflow=0;return result;}
