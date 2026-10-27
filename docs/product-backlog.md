@@ -303,3 +303,15 @@ separate. No real-profile conversion or production release occurred in these uns
 
 [Discussion, source evidence and boundaries](development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
 Release preparation waits for the operator's explicit instruction; these are development follow-ups.
+
+
+## Catch-up performance — 2026-10-27
+
+- **PERF-RECEIVE-COPY — Implemented in unsigned94.** Read preparation/status were copying all inbound
+  receipt histories before selecting a publisher or scalar result. Project cursor metadata inside the
+  existing verified owner before detached copying. Real encrypted receiver regressions observe zero
+  retained payload copies while preserving old-position replay, conflicts and cold/reduced-baseline
+  behavior; all old tests remain byte-exact. Synthetic copy timings support the mechanism, not total
+  catch-up latency. Next: matched whole-client comparison with both clients rebuilt and original
+  responsiveness/durability/fairness gates intact. Do not reuse service-only fixed-client timings as
+  evidence of this client optimization. [Checkpoint](performance-experiments/2026-10-27-receive-projection/README.md).

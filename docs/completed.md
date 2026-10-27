@@ -16430,3 +16430,14 @@ files under test/ remain byte-exact. [Evidence](performance-experiments/2026-10-
 The actual helper's fixed synthetic comparison confirms the copy mechanism; no whole catch-up/phone
 latency improvement or2.5s-gate acceptance is claimed. Two new files remain blocked from aggregate
 qualification. Preview stays on92 UX, and release preparation remains held.
+
+## 2026-10-27 — Receiver projection development checkpoint (phase95)
+
+Three additional unchanged reduced-baseline cases pass, covering old/fresh signed read flights,
+undo, absolute positions and cold replay. Across proper configs82 distinct affected native cases
+pass, alongside30 unit,93 metadata and13 normal checks; no stitched single-run/full-suite claim.
+All903 old test/helper files, construction contracts and365 old qualification blocks remain; two new
+files retain separate blocked adapters. Restored an incidental equivalent JSON Unicode escape to
+original UTF8 and retained the independent exact-byte review. [Checkpoint](performance-experiments/2026-10-27-receive-projection/phase95/README.md).
+Prepared sequential93–95 without staging/signing. Preview remains frozen92 UX; whole-client catch-up
+latency and actual phone-opening attribution remain unestablished. No production/release change.
