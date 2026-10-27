@@ -15,6 +15,8 @@ import {
 // it, drain that response and use the existing full-single-page reservations instead.
 const BATCH_LIMIT = Math.min(INBOUND_BATCH_PAGE_LIMIT, MAX_PENDING_BYTES);
 const BATCH_COUNT = Math.min(INBOUND_BATCH_COUNT, RECEIVE_GROUP_LIMIT);
+// Scheduling hints only. Eviction permits safe re-probing; it never disables another publisher.
+const MAX_SIZE_HINTS = 128;
 
 export interface ReceivePageIO {
   read(request: Bytes, index: number, signal: AbortSignal, limit: number): Promise<Bytes | null>;
@@ -22,12 +24,13 @@ export interface ReceivePageIO {
     body: Bytes,
     signal: AbortSignal,
     limit: number,
-    individual: () => Promise<Bytes | null>,
+    individual: (reason?: 'aggregate-limit') => Promise<Bytes | null>,
   ): Promise<Bytes | null>;
 }
 
 /** Transport only. Every returned original page still needs the receive owner's verifier. */
 export function createReceivePageTransport() {
+  const oversized = new Set<string>();
   let available = true,
     active = false;
   return async (
@@ -35,9 +38,12 @@ export function createReceivePageTransport() {
     signal: AbortSignal,
     io: ReceivePageIO,
     more: (page: Bytes) => boolean,
+    publisher?: string,
   ): Promise<{ pages: Bytes[]; attempted: number }> => {
     if (active) throw Error('Overlapping receive transport');
     if (
+      (publisher !== undefined &&
+        (typeof publisher !== 'string' || !/^[0-9a-f]{32}$/.test(publisher))) ||
       !requests.length ||
       requests.length > RECEIVE_GROUP_LIMIT ||
       requests.some((r) => !(r instanceof Uint8Array) || !r.length || r.length > READ_REQUEST_LIMIT)
@@ -67,7 +73,13 @@ export function createReceivePageTransport() {
           },
           more,
         );
-      if (!available || captured.length === 1 || BATCH_COUNT < 2) return await individual();
+      if (
+        !available ||
+        (publisher !== undefined && oversized.has(publisher)) ||
+        captured.length === 1 ||
+        BATCH_COUNT < 2
+      )
+        return await individual();
       const count = Math.min(captured.length, BATCH_COUNT),
         limit = BATCH_LIMIT;
       body = encodeInboundBatch(captured.slice(0, count));
@@ -75,8 +87,12 @@ export function createReceivePageTransport() {
       // Only an absent route or an aggregate HTTP byte limit selects individual reads.
       // The callback schedules no I/O: fallback waits for cancellation/drain to settle
       // and shares the original logical deadline. Invalid individual evidence still refuses.
-      reply = await io.batch(body, stopped, limit, async () => {
-        available = false;
+      reply = await io.batch(body, stopped, limit, async (reason) => {
+        if (reason === 'aggregate-limit' && publisher !== undefined) {
+          if (!oversized.has(publisher) && oversized.size >= MAX_SIZE_HINTS)
+            oversized.delete(oversized.values().next().value!);
+          oversized.add(publisher);
+        } else available = false;
         unsupported = true;
         return null;
       });

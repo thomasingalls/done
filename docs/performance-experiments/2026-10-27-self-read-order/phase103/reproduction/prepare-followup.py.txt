@@ -1,0 +1,20 @@
+from pathlib import Path
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path(__file__).parent
+p=r/'src/crdt/receivePageTransport.ts';b=p.read_text();(s/'receivePageTransport.before.ts').write_text(b)
+b=b.replace('const BATCH_COUNT = Math.min(INBOUND_BATCH_COUNT, RECEIVE_GROUP_LIMIT);','const BATCH_COUNT = Math.min(INBOUND_BATCH_COUNT, RECEIVE_GROUP_LIMIT);\n// Scheduling hints only. Eviction permits safe re-probing; it never disables another publisher.\nconst MAX_SIZE_HINTS = 128;')
+b=b.replace('individual: () => Promise<Bytes | null>,',"individual: (reason?: 'aggregate-limit') => Promise<Bytes | null>,")
+b=b.replace('export function createReceivePageTransport() {','export function createReceivePageTransport() {\n  const oversized = new Set<string>();')
+b=b.replace('more: (page: Bytes) => boolean,','more: (page: Bytes) => boolean,\n    publisher?: string,')
+b=b.replace('!requests.length ||',"(publisher !== undefined &&\n        (typeof publisher !== 'string' || !/^[0-9a-f]{32}$/.test(publisher))) ||\n      !requests.length ||")
+b=b.replace('if (!available || captured.length === 1 || BATCH_COUNT < 2) return await individual();','if (!available || (publisher !== undefined && oversized.has(publisher)) || captured.length === 1 || BATCH_COUNT < 2) return await individual();')
+b=b.replace('reply = await io.batch(body, stopped, limit, async () => {\n        available = false;',"reply = await io.batch(body, stopped, limit, async (reason) => {\n        if (reason === 'aggregate-limit' && publisher !== undefined) {\n          if (!oversized.has(publisher) && oversized.size >= MAX_SIZE_HINTS)\n            oversized.delete(oversized.values().next().value!);\n          oversized.add(publisher);\n        } else available = false;")
+p.write_text(b)
+p=r/'src/crdt/accountReceive.ts';b=p.read_text();(s/'accountReceive.phase102.ts').write_text(b)
+assert b.count('void unsupported();')==1;b=b.replace('void unsupported();',"void unsupported('aggregate-limit');")
+anchor='''            },
+          );
+          pages = collected.pages;''';assert b.count(anchor)==1
+b=b.replace(anchor,'''            },
+            decodeInboundRequest(requests[0]!).publisher,
+          );
+          pages = collected.pages;''');p.write_text(b)

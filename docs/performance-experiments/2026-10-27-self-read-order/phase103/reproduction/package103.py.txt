@@ -1,0 +1,46 @@
+from pathlib import Path
+import json,gzip,subprocess
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path(__file__).parent;e=r/'docs/performance-experiments/2026-10-27-self-read-order/phase103';e.mkdir(exist_ok=False);(e/'protocol.md').write_bytes((s/'followup-protocol.md').read_bytes());c=e/'checks';c.mkdir()
+for n in ['scoped-before.log','scoped-after.log','scoped-types.log','scoped-lint.log','scoped-format.log','scoped-format-check.log','scoped-native.log','scoped-crypto.log','scoped-inventory.log','scoped-manifest.log','scoped-metadata.log']:(c/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+repro=e/'reproduction';repro.mkdir()
+for n in ['prepare-followup.py','scoped-transport-tests.formatted.ts','package103.py']:(repro/(n+'.txt')).write_bytes((s/n).read_bytes())
+b=(s/'receivePageTransport.tests-before.ts').read_bytes();assert (r/'test/receivePageTransport.test.ts').read_bytes().startswith(b.rstrip()+b'\n\n')
+old=json.loads(subprocess.check_output(['git','show','3df01ded7f0cb16a234a62a7a3c200e1f7bffca4:docs/account-crypto/constructions.json'],cwd=r));assert old==json.loads((r/'docs/account-crypto/constructions.json').read_text())
+(e/'review.json').write_text(json.dumps({'status':'passed','beforeRepair':{'selectedCases':2,'failed':2,'unselected':28,'reason':'After A overflow, B incorrectly loses batch transport in both publisher orders.'},'newRegressionCases':13,'allOldTransportTestImportsBodiesAndAssertionsByteExact':True,'focusedUnitCases':53,'oldEncryptedBrowserCases':17,'metadataCases':81,'typesLintAndFormat':'passed','constructionRegistryExactlyUnchangedTo102':True,'qualification':{'obligations':912,'unresolved':367,'unchanged':True},'runtimeChanges':['src/crdt/receivePageTransport.ts','src/crdt/accountReceive.ts'],'limits':['Two-publisher and real-HTTP-classifier regressions are transport-level.','The17 unchanged encrypted owner browser cases cover original receipts, fallback, byte bounds, retry, cancellation and cold replay.','The new large-payload fallback is not in100s frozen whole-client performance comparison; no additional speedup claimed.']},indent=2)+'\n')
+(e/'README.md').write_text('''# Phase103 — Keep an aggregate-size fallback with its publisher
+
+The conservative owner-wide downgrade combined two different observations: an absent optional
+endpoint, and one successful binary aggregate exceeding its byte reservation. The latter describes
+the current publisher's payload. Two new ordering counterexamples fail before repair: after A
+falls back, an otherwise small B loses batching, whether B was visited before A or after it.
+Only those two cases run in the falsifier; the other28 are explicitly unselected, not credited.
+
+Decode the publisher from the receiver's already-owned first request and pass that immutable32-hex
+identity to its owner-local transport. Successful-size fallback now remembers only that publisher.
+A404 still disables batching across the owner. Byte-only callers without a publisher retain the old
+conservative behavior. Scheduling memory holds at most128 validated IDs; evicting an old size hint
+permits a safe bounded re-probe, never disables an unrelated publisher. This is a memory policy, not
+an account device limit. Reopen creates a fresh transport. No verification result or authority is
+cached here. The previous batching decision is superseded only for size-fallback scope.
+
+All old transport test imports, bodies and assertions remain byte-exact.13 appended cases cover
+both publisher orders, same-publisher memory, owner/endpoint separation,128-ID eviction, caller
+mutation, cancellation/drain, the original logical deadline, conservative unscoped callers, malformed
+IDs, invalid/refused/oversized replies and the actual HTTP adapter's overflow-versus404 classifier.
+53 focused unit cases,17 unchanged encrypted native-browser batch cases,81 metadata cases, types,
+lint and format pass. Native cases retain original exact signed receipts, no progress from invalid
+frames/signatures, full single-page support, temporary retry semantics, lock/close, speculative-tail
+rules and cold continuation. No old test or security assertion is removed or relaxed.
+
+No byte/page/queue bound, original captured request, four-page turn, deadline, erasure, admission,
+authority/history/signature/prefix/witness/final commit check, format, server, rate or backoff changes.
+The construction registry is exactly unchanged to102; refreshed census/manifest retain912 obligations
+and367 unresolved blocks. New unit cases remain in their existing unqualified test-file obligation.
+This is a targeted transport repair; its large-payload behavior is not in100's measured client tree.
+Do not attribute a further whole-client timing gain to it. Normal source checks and a fresh complete
+unsigned local build follow in104, keeping the measured100 artifacts untouched.
+
+Unsigned sequential103 after102. No signing, push, release preparation, preview restart or deployment.
+''')
+with (r/'docs/decisions.md').open('a')as f:f.write('''\n## 2026-10-27 — Separate publisher payload size from endpoint availability (phase103)\n\nThe old owner-wide downgrade was safe but too broad for aggregate size. Keep404 owner-wide; bind a\nsuccessful aggregate-limit hint to the publisher decoded from the owned request. Keep unscoped\nbyte-only callers conservative. Bound scheduling hints to128 fixed-size IDs, evicting to re-probe\nrather than downgrading another publisher. This changes no account-size limit or authority cache.\nAll original byte/ownership/deadline/verifier/commit boundaries remain. The frozen100 comparison\nmeasures only the self-read repair; do not attach its timing result to this separate size repair.\n''')
+with (r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Publisher-specific aggregate-size fallback (phase103)\n\nTwo ordering falsifiers fail before repair: A's oversized aggregate disables B's small batching.\nSeparate payload-size memory by the immutable captured publisher, retaining endpoint-wide404 and\nconservative unscoped fallback.128 fixed-size scheduling IDs bound memory; eviction safely re-probes.\n13 appended regressions pass with every old transport body/assertion exact.53 focused unit cases,\n17 unchanged encrypted browser cases,81 metadata cases, types/lint/format pass. Original receipts,\nbyte/deadline/drain/abort/retry/commit/security checks and912/367 qualification obligations remain.\n[Repair, scope and limitations](performance-experiments/2026-10-27-self-read-order/phase103/README.md).\n\nNo extra whole-client gain is claimed:100's eight-journey comparison is a different immutable tree.\nRun normal checks and build the complete103 snapshot next. Sequential unsigned103 after102; no\nsigning, push, preview update, release preparation or deployment.\n''')

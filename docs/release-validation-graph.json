@@ -12217,7 +12217,7 @@
           "test/receivePageTransport.test.ts"
         ]
       },
-      "declarations": 14,
+      "declarations": 23,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -19718,7 +19718,7 @@
     },
     {
       "path": "test/receivePageTransport.test.ts",
-      "sha256": "86d626aaf2b1e096ca56c721772a5cef5e6cd1f25f80d9c31845d31f50a9d97b"
+      "sha256": "8f18931e8e837e43aa13000000f5283e74c5d7d58ca13bb59a2d1de74f790abe"
     },
     {
       "path": "test/receivePrefetch.test.ts",

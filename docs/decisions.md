@@ -5659,3 +5659,12 @@ suppress pending-self reconciliation. Keep all other publisher opportunities and
 five-second own recheck boundary; no new remote-peer silence cache or polling interval. No crypto,
 format, authority, rate, concurrency or failure-backoff contract changes. Validate whole-client
 behavior separately, retaining the2.5s complete-peer gate and every preservation check.
+
+## 2026-10-27 — Separate publisher payload size from endpoint availability (phase103)
+
+The old owner-wide downgrade was safe but too broad for aggregate size. Keep404 owner-wide; bind a
+successful aggregate-limit hint to the publisher decoded from the owned request. Keep unscoped
+byte-only callers conservative. Bound scheduling hints to128 fixed-size IDs, evicting to re-probe
+rather than downgrading another publisher. This changes no account-size limit or authority cache.
+All original byte/ownership/deadline/verifier/commit boundaries remain. The frozen100 comparison
+measures only the self-read repair; do not attach its timing result to this separate size repair.

@@ -1192,7 +1192,7 @@ async function openAccountReceiveOwner(
                         // The aggregate's size is a transport choice, not the individual result.
                         // A failed fallback retains its own retry/refusal classification.
                         events[0]!.length = 0;
-                        void unsupported();
+                        void unsupported('aggregate-limit');
                       },
                     )
                   : Promise.resolve(null),
@@ -1205,6 +1205,7 @@ async function openAccountReceiveOwner(
                 return false;
               }
             },
+            decodeInboundRequest(requests[0]!).publisher,
           );
           pages = collected.pages;
           attempted = collected.attempted;

@@ -16557,3 +16557,17 @@ The scoped audit finds one additional conservative performance coupling: one pub
 aggregate overflow disables batching across the owner. Distinguish it from correctly endpoint-wide
 404 fallback in the next bounded patch. No runtime change after100's measurement freeze, signing,
 push, release preparation, preview/API restart or deployment. Unsigned sequential102 after101.
+
+## 2026-10-27 — Publisher-specific aggregate-size fallback (phase103)
+
+Two ordering falsifiers fail before repair: A's oversized aggregate disables B's small batching.
+Separate payload-size memory by the immutable captured publisher, retaining endpoint-wide404 and
+conservative unscoped fallback.128 fixed-size scheduling IDs bound memory; eviction safely re-probes.
+13 appended regressions pass with every old transport body/assertion exact.53 focused unit cases,
+17 unchanged encrypted browser cases,81 metadata cases, types/lint/format pass. Original receipts,
+byte/deadline/drain/abort/retry/commit/security checks and912/367 qualification obligations remain.
+[Repair, scope and limitations](performance-experiments/2026-10-27-self-read-order/phase103/README.md).
+
+No extra whole-client gain is claimed:100's eight-journey comparison is a different immutable tree.
+Run normal checks and build the complete103 snapshot next. Sequential unsigned103 after102; no
+signing, push, preview update, release preparation or deployment.
