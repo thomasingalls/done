@@ -16341,3 +16341,13 @@ Both real indexes remain unstaged; no signing, preview replacement, push, merge 
 Local technical-history maintenance is automatic; service-history pruning stays manual. Native phone
 smoothness, unexplained synthetic final-text mismatch and complete production latency attribution
 remain open. Fresh static/trace receipts follow this durable record; committing invalidates recency.
+
+
+## 2026-10-26 — Maintenance scope and backup cadence clarified (phase86)
+
+Recorded the operator's confirmed service-prune outcome and minute-long phone delay before editing.
+Local reduction also applies to synced Accounts; service pruning leaves signed metadata and the phone's
+existing ledger separate. Source confirms immediate/30s backup attempts, duplicate uploads after failed
+readback and5min idle-anchor rechecks. No new provider request, cap/policy change, startup attribution
+or performance promise. [Evidence and follow-ups](./development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
+Release preparation explicitly waits for a later operator instruction. Mobile drag repair follows87.

@@ -5561,3 +5561,14 @@ states use the existing proof path, and preserve all network deadlines. Refreshi
 reset user quiet or routine polling can starve local reduction. This favors foreground convergence and
 can postpone discretionary maintenance on a continually busy account. No hint supplies authority.
 The current backup cap remains unchanged at the operator's request; no readback bypass. [Evidence](./performance-experiments/2026-10-26-maintenance-contention/phase84/README.md).
+
+
+## 2026-10-26 — Explicit release hold; distinguish local Account replay from service pruning (phase86)
+
+The operator explicitly defers release preparation until a later request. Continue bounded development
+and sequential patches only. Clarify that automatic **local** reduction applies to synced Accounts'
+device storage. The confirmed manual service prune removes covered ciphertext but retains proof
+metadata and does not rewrite the phone's existing replay ledger. A reported minute before editing
+selects startup-phase attribution, not another generic catch-up sweep. Backup cap/cadence and exact
+readback remain unchanged; daily verification is a discussed option, not an implementation decision.
+[Source-backed cadence and next bounded questions](./development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
