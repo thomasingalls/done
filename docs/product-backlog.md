@@ -288,13 +288,18 @@ separate. No real-profile conversion or production release occurred in these uns
   baseline reduction are separate; check whether the latter completed before attributing startup.
   Trace numeric unlock/authentication/classification/replay/render phases on the actual slow path;
   reuse existing depth evidence rather than repeat a broad sweep. Preserve all authority/lifetime
-  and replay guarantees. A minute is an unresolved defect, not the promised effect of pruning.
-- **OPS-B2 — Quota-aware backup retry and redundant readback.** Worker ticks every30s; capped readback
-  leaves dirty state and uploads a fresh snapshot again next tick. Healthy idle anchors are also
-  fully downloaded every5min. Keep the existing cap. Design typed quota backoff and exact pending-
-  version verification reuse first; separately assess unchanged-object rechecks. Daily verification
-  of new backups changes the verified-recovery-point policy and is not selected. No verification/
-  health/pruning guarantee may be weakened by a retry optimization.
+  and replay guarantees. The operator locates the wait after code/passkey entry, under a stale
+  passkey title. Phase91 fixes that presentation and adds opt-in numeric census/opening timings;
+  Back aborts/drains rather than removing data. No actual slow-phone trace is captured yet.
+  A minute remains an unresolved defect, not the promised effect of pruning.
+- **OPS-B2 — Implemented in development, not deployed (phase90).** The operator selects one remote
+  verification cycle/hour, including unfamiliar retained keepers, and five-minute local encrypted
+  checksums. New uploads stay prompt; receipts remain distinct from verified recovery-point credit.
+  Quota circuits/backoff and retained exact-version receipts stop unchanged reuploads and redundant
+  readback. A download cap pauses reads/pruning until UTC reset while allowing new uploads. Exact
+  readback still gates anchor/keeper/prune credit. The cap is unchanged. New uploads can remain
+  unverified for an hour; local checksum is not decryption/restore proof. New cadence-file aggregate
+  execution credit remains blocked until separate adapter review.
 
 [Discussion, source evidence and boundaries](development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
 Release preparation waits for the operator's explicit instruction; these are development follow-ups.

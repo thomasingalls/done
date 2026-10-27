@@ -16396,3 +16396,13 @@ the14-case focused invocation includes7 heading cases. Back aborts/drains withou
 in the coordinator regression. [Evidence and diagnostic scope](development-evidence/2026-10-26-navigation-backup-startup/91-opening/README.md).
 The actual phone's minute remains unresolved; no fresh phone trace or startup speedup is claimed.
 New test-file qualification credit stays blocked pending adapter review. Release preparation remains held.
+
+## 2026-10-26 — Navigation/backup/opening development checkpoint (phase92)
+
+Phases88–91 are prepared as sequential unsigned patches, with91-v2 retaining the original artifact and
+adding a line-only construction pin repair after independent derivation comparison.30 UI,14 unit,
+22 backup/maintenance/restore and93 metadata cases pass; controlled cadence/backoff faults are detected.
+All363 old release blocks and34 old pipeline assertions remain; two new regression files add unresolved
+adapter obligations, not qualification credit. [Checkpoint](development-evidence/2026-10-26-navigation-backup-startup/README.md).
+The phone minute remains open pending numeric slow-path attribution. Release preparation stays held;
+no preview restart, production/infra change, signing, push or deployment is authorized by this checkpoint.
