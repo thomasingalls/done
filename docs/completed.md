@@ -16326,3 +16326,18 @@ native coverage. Broad adapters299/301 followed by109/109 affected metadata case
 census review retained. All363 qualification blockers remain. [Evidence and source limits](./performance-experiments/2026-10-26-maintenance-contention/phase84/README.md).
 Backup cap unchanged/readback blocked. Physical-phone typing, probe text mismatch and complete latency
 attribution remain open; no preview/production change. Final static receipts and patch identities next.
+
+
+## 2026-10-26 — Backup/performance repair sequence prepared, not deployed (phase85)
+
+Infra80–81 retain adoption/health observations and the confirmed B2 download cap. The operator keeps
+that cap unchanged; verification stays mandatory and backup readback remains unverified while refused.
+Application82–84 prepare incremental Gentle context, read-only storage priority and non-starving
+sync-readiness gating.85 preserves the exact final fixture pin/checkpoint.25 native and16 browser
+cases pass, plus46 final focused units; full unit2,021/one existing skip precedes only the final retry
+predicate (fresh native/focused coverage). Raw failures, limits and unchanged363 qualification blocks
+remain. [Sequence, evidence and remaining work](./performance-experiments/2026-10-26-maintenance-contention/checkpoint/README.md).
+Both real indexes remain unstaged; no signing, preview replacement, push, merge or deployment.
+Local technical-history maintenance is automatic; service-history pruning stays manual. Native phone
+smoothness, unexplained synthetic final-text mismatch and complete production latency attribution
+remain open. Fresh static/trace receipts follow this durable record; committing invalidates recency.

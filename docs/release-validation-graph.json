@@ -19218,7 +19218,7 @@
     },
     {
       "path": "test/local-baseline/automatic.node.mjs",
-      "sha256": "3c149b65b75e61901eef6baa5453e36d9833e5aeaf2b89490e3ef443791fa9ae"
+      "sha256": "18cdba348f89c128d20ec50ee6c52e6f1fca4e0984b9c895f0b2f04d9764d459"
     },
     {
       "path": "test/local-baseline/fixtures.mjs",

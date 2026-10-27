@@ -1,0 +1,49 @@
+[
+  {
+    "phase": 80,
+    "repository": "oxidationlabs/ol-infra",
+    "base": "3abe35ed4e141cca8b644d4fa94608f2876d5470",
+    "expectedTree": "1e0575c1cc370066de8b2dfd730533b7cd7845f6",
+    "patchSha256": "31cc54c09d0277381dc263881289155e58d0b30b27e232daa0bc4e86a500a5bd",
+    "status": "prepared, unsigned; no real-index staging or push",
+    "scope": "documentation-only direct operator performance feedback and later backup failure; no repair or production change",
+    "number": 80
+  },
+  {
+    "phase": 81,
+    "repository": "oxidationlabs/ol-infra",
+    "baseTree": "1e0575c1cc370066de8b2dfd730533b7cd7845f6",
+    "expectedTree": "7458ab37b69b2518a8e13233ecba7543a44d1d59",
+    "patchSha256": "97c36cb599807596dcd70ac067b3db1bb53c42efcb189e07c3051b0479db6aac",
+    "status": "prepared, unsigned; follows80; no real-index staging/push",
+    "scope": "provider cap diagnosis and unchanged-cap decision; no runtime repair",
+    "number": 81
+  },
+  {
+    "repository": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "baseCommit": "67288576b61185aa2eb316123794052b16f63da9",
+    "expectedTree": "2f7020cbf18fca1de5603a391735da4053022f99",
+    "patch": "82-incremental-gentle-context.patch",
+    "sha256": "45a8cc81b7b4c72257db698070efa30bf93aed3e8dbd3dbc0215dddfda7db020",
+    "realIndexStaged": false,
+    "number": 82
+  },
+  {
+    "repository": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "baseTree": "2f7020cbf18fca1de5603a391735da4053022f99",
+    "expectedTree": "5babe9ba5e29e743c13731da3602ace4ac45b1e8",
+    "patch": "83-maintenance-preparation-priority.patch",
+    "sha256": "6858e2ce41dd10c6620afa44905bdb2eea48be05d710e1160f65c388987a697f",
+    "realIndexStaged": false,
+    "number": 83
+  },
+  {
+    "repository": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+    "baseTree": "5babe9ba5e29e743c13731da3602ace4ac45b1e8",
+    "expectedTree": "a27884ccadd0c66782ede68bfc56acbaf6581cce",
+    "patch": "84-sync-quiet-maintenance.patch",
+    "sha256": "bfba9e6b414edf80eec2bc88dc6574ca15ff0cf5f53332f1d5e600d8b771de18",
+    "realIndexStaged": false,
+    "number": 84
+  }
+]
