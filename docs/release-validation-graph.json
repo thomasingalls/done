@@ -12257,7 +12257,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/receiveSelection.test.ts"]
       },
-      "declarations": 10,
+      "declarations": 18,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -19730,7 +19730,7 @@
     },
     {
       "path": "test/receiveSelection.test.ts",
-      "sha256": "507df2886b0ca8f4463167dad89ec4a74c4654fd10806cabdb8b9248ab4174ef"
+      "sha256": "70b9e7e0ec878ce35fe3ac09ce911bcb3fd0bb87f346e20db6ae5ab5a109d993"
     },
     {
       "path": "test/recoveryProgressIsolation.test.ts",

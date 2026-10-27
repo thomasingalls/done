@@ -16514,3 +16514,15 @@ retained peer backlog hints and existing verified-own/pending-self/clock/reset f
 turns, authority checks, rates and original latency gates must remain; broader peer deferral needs
 separate liveness design. No software/policy change, aggregate test credit, release preparation or
 deployment.98/99 are prepared sequential diagnostic patches after97; all912/367 obligations/blocks stay.
+
+## 2026-10-27 — Publisher-order-independent self-read suppression (phase100)
+
+Supply fresh eligible/unconflicted retained peer backlog to the existing verified-self selector.
+Preserve pending-self/clock/credential/reset fences and all non-self turns, page/proof/authority/
+commit checks and limits. Six new cases fail3/pass13 with old code; repaired45-case focused run
+passes with eight appended regressions and870 publisher permutations. All10 old selector bodies
+remain byte-exact.24 distinct affected native cases pass over required configurations; final-source
+self-refusal cases pass again after the conservative own-conflict hint guard.81 metadata cases and
+types pass; registry exactly unchanged and all912 obligations/367 blocks remain. [Repair/evidence](performance-experiments/2026-10-27-self-read-order/phase100/README.md).
+No end-to-end gain yet: rebuild both clients and rerun the original gated journeys next. Sequential
+unsigned100 after99; no release preparation, signing, push, preview change or deployment.

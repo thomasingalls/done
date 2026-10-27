@@ -25,7 +25,11 @@ import {
   unpackReceivePages,
   receiveGroupFits,
 } from './receiveGroup';
-import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
+import {
+  createReceiveSelection,
+  hasPeerBacklog,
+  unresolvedSelfSubmission,
+} from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
 import { ledgerWorkStart, measureLedgerWork, countLedgerWork } from './accountLedgerMetrics';
@@ -1059,7 +1063,14 @@ async function openAccountReceiveOwner(
       after === undefined
         ? receiveSelection.next(
             publishers,
-            composed ? { publisher: base.publisher.id, pending: pendingSelf } : undefined,
+            composed
+              ? {
+                  publisher: base.publisher.id,
+                  pending: pendingSelf,
+                  peerBacklog:
+                    !all.conflict && hasPeerBacklog(publishers, base.publisher.id, all.peers),
+                }
+              : undefined,
           )
         : base.publisher.id;
     const s = publisherState(all, base, publisher),

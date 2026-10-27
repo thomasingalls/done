@@ -1,11 +1,24 @@
 import { publicationState, type DeliveryState } from './deliveryRecord';
 import { RECEIVE_POLL_MS } from './accountReceiveDriver';
+import type { InboundReadCursor } from './inboundLedger';
 
 /** Called only on verified delivery state; allocation alone is not evidence of a sent request. */
 export function unresolvedSelfSubmission(s: Readonly<DeliveryState>): boolean {
   // Old refusal responses survive a current-key retry. Only the verified current state
   // decides whether its retained submission is unresolved, not the presence of old replies.
   return publicationState(s) === 'ready' && s.submissions.has(s.acceptedThrough + 1);
+}
+
+/** Scheduling hint from the current verified projection, restricted to eligible peer streams. */
+export function hasPeerBacklog(
+  publishers: readonly string[],
+  own: string,
+  peers: InboundReadCursor['peers'],
+): boolean {
+  return publishers.some((id) => {
+    const peer = id === own ? undefined : peers?.get(id);
+    return !!peer && !peer.conflict && peer.prefix.observedThrough > peer.prefix.position;
+  });
 }
 
 /** Scheduling only. A selected publisher and every returned page still require fresh authority. */
@@ -26,7 +39,10 @@ export function createReceiveSelection(now: () => number = Date.now) {
     capacity(publisher: string) {
       return previous === publisher ? 4 - streak : 4;
     },
-    next(publishers: readonly string[], own?: { publisher: string; pending: boolean }) {
+    next(
+      publishers: readonly string[],
+      own?: { publisher: string; pending: boolean; peerBacklog?: boolean },
+    ) {
       if (!publishers.length) throw Error('No eligible receive publisher');
       const at = now();
       // Keep the existing idle-poll interval, including after a clock rollback. An
@@ -35,7 +51,7 @@ export function createReceiveSelection(now: () => number = Date.now) {
         publishers.length > 1 &&
         own &&
         !own.pending &&
-        (previous === own.publisher || productive) &&
+        (previous === own.publisher || productive || own.peerBacklog === true) &&
         checkedOwn?.publisher === own.publisher &&
         at >= checkedOwn.at &&
         at - checkedOwn.at < RECEIVE_POLL_MS;
