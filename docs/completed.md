@@ -16718,3 +16718,16 @@ window in the publication scheduler, keeping shared local flush and failed-opera
 then address proactive capacity pacing if needed. [Full evidence/limits](performance-experiments/2026-10-27-peer-pacing/phase114/README.md).
 Unsigned114 after113; runtime/old tests/default held/2.5s and912/367 qualification unchanged. No
 release prep, preview update or deployment.
+
+## 2026-10-27 — Publication-only expiry latch and regressions (phase115)
+
+Close an existing overdue publication window before later local notes; retain the original helper/
+local flushing, persisted retries and every security/durability/backoff boundary.83 focused cases
+pass; all8 old batching cases/helpers byte-exact. One-statement omission restores5 expiry failures.
+Fixed scheduler histories now300/500/550ms versus300/2000/2100, without client timing credit.61
+encrypted cases across required modes,81 metadata, types/lint pass. New-fixture getter/type/dirty-
+send mistakes and failed model invocation remain qualified.
+[Implementation/evidence](performance-experiments/2026-10-27-publication-latch/phase115/README.md).
+
+Next freeze/rerun both rebuilt two-receiver clients; full2.5s and data/gain gates remain. Product
+quiet reuse held off;912/367 qualification paused. Unsigned115 after114, no release prep/deployment.

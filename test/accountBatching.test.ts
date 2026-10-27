@@ -210,3 +210,198 @@ it('manual send retry closes its batch immediately; receive retry leaves that ba
   await flush();
   await f.scheduler.dispose();
 });
+
+const deadlineFixture = () =>
+  fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      publicationBatch: { quietMs: 300, maxMs: 2000 },
+      send: (beforeNewEnvelope) => {
+        const due = beforeNewEnvelope?.();
+        return due === undefined
+          ? options.send()
+          : Promise.resolve({ kind: 'batching' as const, due, acceptedThrough: 0 });
+      },
+    }),
+  );
+
+it.each([300, 500])(
+  'keeps a publication deadline due when input at %i ms arrives during receiving',
+  async (at) => {
+    const f = deadlineFixture();
+    await startDeadlineFixture(f);
+    f.scheduler.wake('local');
+    await f.tick(250);
+    f.scheduler.runtime.retry('receive');
+    await f.tick(0);
+    expect(f.calls[2]!.lane).toBe('receive');
+    await f.tick(at - 250);
+    f.scheduler.wake('local');
+    expect(f.scheduler.runtime.status.send.nextAttemptAt).toBe(300);
+    f.calls[2]!.finish('idle');
+    await flush();
+    await f.tick(0);
+    expect(f.calls[3]!).toMatchObject({ lane: 'send', at });
+    f.calls[3]!.finish('idle');
+    await flush();
+    expect(f.maximum).toBe(1);
+    await f.scheduler.dispose();
+  },
+);
+
+const preludeFixture = () => {
+  let hold = false;
+  let release: (() => void) | undefined;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      publicationBatch: { quietMs: 300, maxMs: 2000 },
+      send: async (beforeNewEnvelope) => {
+        if (hold)
+          await new Promise<void>((resolve) => {
+            release = resolve;
+          });
+        const due = beforeNewEnvelope?.();
+        return due === undefined
+          ? options.send()
+          : { kind: 'batching' as const, due, acceptedThrough: 0 };
+      },
+    }),
+  );
+  return Object.assign(f, {
+    hold() {
+      hold = true;
+    },
+    release() {
+      hold = false;
+      release!();
+    },
+  });
+};
+const startDeadlineFixture = async (f: ReturnType<typeof fixture>) => {
+  f.scheduler.wake('start');
+  await f.tick(0);
+  f.calls[0]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  f.calls[1]!.finish('idle');
+  await flush();
+};
+
+it('keeps an expired window through a send prelude and starts a fresh window after consumption', async () => {
+  const f = preludeFixture();
+  await startDeadlineFixture(f);
+  f.hold();
+  f.scheduler.wake('local');
+  await f.tick(300);
+  expect(f.calls).toHaveLength(2);
+  await f.tick(200);
+  f.scheduler.wake('local');
+  f.release();
+  await flush();
+  expect(f.calls[2]!).toMatchObject({ lane: 'send', at: 500 });
+  f.calls[2]!.finish('idle');
+  await flush();
+  f.scheduler.wake('local');
+  expect(f.scheduler.runtime.status.send.nextAttemptAt).toBe(800);
+  await f.tick(299);
+  expect(f.calls).toHaveLength(3);
+  await f.tick(1);
+  expect(f.calls[3]!).toMatchObject({ lane: 'send', at: 800 });
+  f.calls[3]!.finish('idle');
+  await flush();
+  expect(f.maximum).toBe(1);
+  await f.scheduler.dispose();
+});
+
+it('continues collecting a publication window when later input precedes its deadline', async () => {
+  const f = deadlineFixture();
+  await startDeadlineFixture(f);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  f.scheduler.wake('local');
+  await f.tick(299);
+  f.scheduler.wake('local');
+  expect(f.scheduler.runtime.status.send.nextAttemptAt).toBe(599);
+  f.calls[2]!.finish('idle');
+  await flush();
+  await f.tick(299);
+  expect(f.calls).toHaveLength(3);
+  await f.tick(1);
+  expect(f.calls[3]!).toMatchObject({ lane: 'send', at: 599 });
+  f.calls[3]!.finish('idle');
+  await flush();
+  await f.scheduler.dispose();
+});
+
+it('latching an expired send window leaves the failed receive clock untouched', async () => {
+  const f = preludeFixture();
+  await startDeadlineFixture(f);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  f.calls[2]!.finish('unknown');
+  await flush();
+  f.hold();
+  f.scheduler.wake('local');
+  await f.tick(300);
+  await f.tick(200);
+  f.scheduler.wake('local');
+  f.release();
+  await flush();
+  expect(f.calls[3]!).toMatchObject({ lane: 'send', at: 500 });
+  expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(1000);
+  f.calls[3]!.finish('idle');
+  await flush();
+  await f.tick(50);
+  expect(f.calls[4]!).toMatchObject({ lane: 'send', at: 550 });
+  f.calls[4]!.finish('idle');
+  await flush();
+  await f.tick(449);
+  expect(f.calls).toHaveLength(5);
+  await f.tick(1);
+  expect(f.calls[5]!).toMatchObject({ lane: 'receive', at: 1000 });
+  f.calls[5]!.finish('idle');
+  await flush();
+  await f.scheduler.dispose();
+});
+
+it('cancels a latched window while draining the active receive without sending', async () => {
+  const f = deadlineFixture();
+  await startDeadlineFixture(f);
+  f.scheduler.wake('local');
+  await f.tick(250);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  await f.tick(250);
+  f.scheduler.wake('local');
+  f.controller.abort();
+  f.calls[2]!.finish('idle');
+  await flush();
+  await f.tick(3000);
+  expect(f.calls).toHaveLength(3);
+  expect(f.timers.size).toBe(0);
+  expect(f.detached).toBe(1);
+  await f.scheduler.dispose();
+});
+
+it('does not latch the separate local-flush window when publication becomes overdue', async () => {
+  const f = deadlineFixture();
+  await startDeadlineFixture(f);
+  const local = createBatchWindow({ quietMs: 300, maxMs: 2000 }, () => f.now);
+  f.scheduler.wake('local');
+  local.note();
+  await f.tick(250);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  await f.tick(250);
+  f.scheduler.wake('local');
+  local.note();
+  expect(f.scheduler.runtime.status.send.nextAttemptAt).toBe(300);
+  expect(local.due).toBe(800);
+  f.calls[2]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  f.calls[3]!.finish('idle');
+  await flush();
+  await f.scheduler.dispose();
+});

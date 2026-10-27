@@ -5724,3 +5724,12 @@ latching fails the unchanged whole-client2.5s/gain/data gates, pace capacity bef
 than bypass it or infer a safe larger quota. These traces identify capacity but not the exact quota
 branch; policy limits are not measured machine capacity. No runtime repair/default activation or
 release preparation in this diagnostic.
+
+## 2026-10-27 — Latch at the publication call site, preserving local flushing (phase115)
+
+Use the scheduler's existing close/clear semantics when a local wake finds an overdue window.
+Later input may extend a not-yet-due window, but cannot erase an expired opportunity while receiving
+or a send prelude runs. Keep the shared batchWindow helper untouched because local journal flush
+has a separately measured policy. A deadline remains urgency, not persistence or allocation authority.
+Existing failure clocks and sealed retries stay; one-statement omission proves expiry sensitivity.
+Full rebuilt-client gates still decide acceptance; do not enable quiet reuse from model/unit results.

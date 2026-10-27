@@ -1,0 +1,28 @@
+{
+  "protocolSha256": "4d06ce6aafdda5fa7acb4ff8080e8c6cb471d10c01d9b31628fd65e78ff4e7d6",
+  "windowWholeSourceSha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535",
+  "schedulerWholeSourceSha256": "fe0640d10222704ec0daf73ab880377b9600ec0fa99bde2720abf399df0737a5",
+  "schedulerSliceSha256": "7141cbbf6316f1851d28e784e3c49b506492a1bd2c595f9cb0d07c3882ce7009",
+  "cases": [
+    {
+      "name": "control",
+      "quantum": 100,
+      "prelude": 0
+    },
+    {
+      "name": "receive-slot-overlap",
+      "quantum": 250,
+      "prelude": 0
+    },
+    {
+      "name": "send-prelude-overlap",
+      "quantum": 100,
+      "prelude": 250
+    }
+  ],
+  "keys": 8,
+  "spacingMs": 500,
+  "stopAt": 8000,
+  "noProductionSourceEdits": true,
+  "successOnlyMockOperationsNoCryptoPaths": true
+}

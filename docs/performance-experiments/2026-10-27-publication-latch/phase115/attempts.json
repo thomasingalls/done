@@ -1,0 +1,11 @@
+{
+  "initialRedRun": "6 failed/9 passed:5 expiry-sensitive failures and1 new-fixture getter error",
+  "firstGreenDraft": "6 failed/77 passed: new wrapper spread snapshotted getters including clock/maximum/detach; product latch already fixed expiry",
+  "secondDraft": "1 failure/82 passes and4 type errors: new helper referred to old narrower helper type; existing send-dirty continuation needed draining before receive-floor assertion",
+  "final": "83 pass, types pass; wrappers preserve live getters, original extra send reconciliation preserved",
+  "omission": "remove only latch statement from transformed module:5 fail/10 pass, original8 batching cases stay passing",
+  "schedulerInvocation": "missing protocol copy stopped before histories; fixed copy retained; no timing credit",
+  "all8OldBatchingCasesAndHelpersByteExact": true,
+  "noOldTestRemovedOrAssertionWeakened": true,
+  "initialOrdinaryTrace": "Two receipts became stale when documentation was appended while the normal gate loop ran. All12 gate operations passed but trace refused; retain failure and rerun the whole loop on stable tracked inputs, no exemption."
+}

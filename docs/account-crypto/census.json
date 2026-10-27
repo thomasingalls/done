@@ -809,7 +809,7 @@
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
-      "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+      "sha256": "fe0640d10222704ec0daf73ab880377b9600ec0fa99bde2720abf399df0737a5"
     },
     {
       "path": "src/crdt/accountSyncState.ts",

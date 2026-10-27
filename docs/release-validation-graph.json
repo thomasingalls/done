@@ -9471,7 +9471,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/accountBatching.test.ts"]
       },
-      "declarations": 7,
+      "declarations": 13,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18554,7 +18554,7 @@
     },
     {
       "path": "test/accountBatching.test.ts",
-      "sha256": "03d3bf82192b5e9f81c0202ffc4fade97e8bee1f69b7af7141cb280015f47b17"
+      "sha256": "0c27c65745386098e959b8a73cd347835a5298b19399021b2b06c1265c2fc2f7"
     },
     {
       "path": "test/accountConsumerPrimitives.test.ts",
