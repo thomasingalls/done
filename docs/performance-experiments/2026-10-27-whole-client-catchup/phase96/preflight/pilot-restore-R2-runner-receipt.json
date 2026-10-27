@@ -1,0 +1,13 @@
+{
+  "name": "pilot-restore-R2",
+  "startedAt": 1793087897736,
+  "command": [
+    "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "test/account-continuation-lab/playwright.config.ts"
+  ],
+  "exitCode": 0,
+  "completedAt": 1793087929793
+}

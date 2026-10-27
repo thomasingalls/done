@@ -16441,3 +16441,15 @@ files retain separate blocked adapters. Restored an incidental equivalent JSON U
 original UTF8 and retained the independent exact-byte review. [Checkpoint](performance-experiments/2026-10-27-receive-projection/phase95/README.md).
 Prepared sequential93–95 without staging/signing. Preview remains frozen92 UX; whole-client catch-up
 latency and actual phone-opening attribution remain unestablished. No production/release change.
+
+## 2026-10-27 — Rebuilt-client comparison frozen (phase96)
+
+Rebuild both reference93 and candidate95 clients (110 files each), sharing identical current server,
+compiler/dependencies/feature policy and resource envelope. Both pass types/build/budget/isolation;
+separate lab types pass. Regenerate disposable H6/M2/Q2 accounts with1024/256/32 accepted backlog
+positions and independently audit signatures/prefixes. A restoration-only pilot verifies all ten
+saved devices/four browser roots and exact quiet-account exports. Preserve setup/type/localStorage-order
+preflight failures; keyed comparison retains all values/IndexedDB assertions. [Protocol and identities](performance-experiments/2026-10-27-whole-client-catchup/phase96/README.md).
+Freeze serial R,C,C,R heavy/editing and non-overlap journeys, original16ms/2.5s/30s/600s/120s gates and
+all durability/isolation/authority checks. No timing acceptance yet, real data access, app repair,
+qualification credit or release preparation. Existing preview/API/data remain untouched.

@@ -5631,3 +5631,12 @@ Compute scalar status there too, then retain its frozen public shape. Type-only 
 not make hints eligible for page verification/history installation: those paths keep full retained
 evidence and every existing check. Confirm the default path via real receiver clone observations,
 old-source failure and cold/conflict regressions; keep whole-client latency acceptance separate.
+
+## 2026-10-27 — Compare rebuilt whole clients with maintenance enabled (phase96)
+
+Use two complete rebuilt clients differing only in the receiver projection repair against one identical
+current service and freshly regenerated disposable seed. Preserve current automatic retention policy,
+unequal device/history load, original latency gates and cold durability/native signature checks. Fixed
+R,C,C,R journeys bracket drift; correlated keys do not create independent replicates. Bulk replay and
+non-overlapping-session timing stay separate from the complete-peer2.5s realtime gate. No Android/
+phone-opening or generalized qualification inference follows from this finite native desktop study.

@@ -1,0 +1,14 @@
+from pathlib import Path
+import subprocess,json,os,time,hashlib,sys
+r=Path(__file__).parent;h=r/'harness';node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';baseEnv={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}
+mode=sys.argv[1]
+if mode=='pilot':plan=[{'name':'pilot-restore-R2','variant':'R','config':'playwright.config.ts','pilot':True}]
+else:plan=json.loads((r/('run-plan.json'if mode=='heavy'else'nonoverlap-plan.json')).read_text())
+for case in plan:
+ out=r/case['name'];out.mkdir(mode=0o700,exist_ok=False);variant=case['variant'];env={**baseEnv,'FAIR_OUT':str(out),'FAIR_VARIANT':variant,'FAIR_DIST':str(r/('source-'+variant)/'dist')}
+ if mode=='pilot':env['FAIR_PILOT']='1'
+ cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/'+case['config']]
+ row={'name':case['name'],'startedAt':time.time_ns()//1000000,'command':cmd}
+ with(out/'console.log').open('w')as f:p=subprocess.run(cmd,cwd=h,env=env,stdout=f,stderr=subprocess.STDOUT)
+ row.update(exitCode=p.returncode,completedAt=time.time_ns()//1000000);(out/'runner-receipt.json').write_text(json.dumps(row,indent=2)+'\n');print(case['name'],p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "seed-01",
+    "status": "failed-preflight",
+    "reason": "Copied helper omitted the explicit Check again invitation step.",
+    "privateRawConsoleSha256": "07f7903fa604d3a64089073d4d1a186b41aba2c2767283b68220aa15e38ac906",
+    "privateRawResultOrSeedSha256": "3a75c6b50b97413c409901a9680e8fa235199f35766826b917e35ac9b03b0813",
+    "rawPrivateEvidenceLocation": "/private/tmp/done-whole-client-20261027/seed-01",
+    "containsNoPrimaryMeasurement": true
+  },
+  {
+    "name": "pilot-restore-R",
+    "status": "failed-preflight",
+    "reason": "localStorage key ordering differs across fresh profiles; the comparator is corrected to keyed exact equality, retaining every value and all IndexedDB comparisons.",
+    "privateRawConsoleSha256": "5846eadb8224f31aa7298f1c12bb2378da75bdc1a436f428495590dbc6a72cf6",
+    "privateRawResultOrSeedSha256": "d21024ffa6c65d2b24841dc8fb8c074a4c4be37a7e5dd96ea58e2ca2c856fd67",
+    "rawPrivateEvidenceLocation": "/private/tmp/done-whole-client-20261027/pilot-restore-R",
+    "containsNoPrimaryMeasurement": true
+  }
+]
