@@ -16703,3 +16703,18 @@ Reuse four original111 journeys/all480 keys with native-count/cursor/clock bound
 calibration controls. Pinned scheduler/window/budget mechanism probes are not application timings
 or authority proof; no new benchmark, runtime/test policy change or aggregate credit. Unsigned113
 after signed112;912/367 qualification paused. No release prep, PR, merge, preview update or deployment.
+
+## 2026-10-27 — Attribute late-peer tails to publication and capacity pauses (phase114)
+
+All480 retained keys match reviewed111 totals;448 have one position,32 bounded grouped alternatives,
+all33 keys over2.5s uniquely map. Independent312-position/timing/omission reconstruction and13 helper
+controls pass. C-normal p95 key spends2268–2272ms pre-submit; C-withheld p95 key waits1598–1613ms from
+availability to read. All136 native errors identify capacity; H1's~1s post429 no-read intervals overlap
+6/7 normal and12/13 withheld candidate tail keys. No new benchmark or claimed causal repair effect.
+
+Pinned scheduler counterexamples publish first at300ms control versus2000/2100ms under controlled
+receive/prelude overlap; no real internal-cost estimate. Next repair: preserve a due publication
+window in the publication scheduler, keeping shared local flush and failed-operation clocks intact;
+then address proactive capacity pacing if needed. [Full evidence/limits](performance-experiments/2026-10-27-peer-pacing/phase114/README.md).
+Unsigned114 after113; runtime/old tests/default held/2.5s and912/367 qualification unchanged. No
+release prep, preview update or deployment.

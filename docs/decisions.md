@@ -5710,3 +5710,17 @@ for the next bounded repair. The actual composed guard distinguishes active and 
 than relying only on a source flag. Keep every failed p95 and unchanged2.5s gate. A recent-writer grace
 period is only a hypothesis; trace publication versus receiver delay before selecting it. No release
 preparation, threshold relaxation or production/default feature activation from this experiment.
+
+## 2026-10-27 — Repair expired publication urgency before broad capacity policy (phase114)
+
+Retained full-series attribution finds both source pre-HTTP wait and capacity-induced receiver pauses.
+All over-gate keys map uniquely; no partial p95 or HTTP-only acceptance inference. The existing
+scheduler can postpone an already-due window when later input arrives during receive/prelude work,
+confirmed as a possible mechanism by pinned fake-clock histories. Prefer publication-only deadline
+latching next; the shared helper also serves local flush, which needs its own typing evidence.
+
+Keep existing persisted retries, durability, authorization/final checks and refusal backoff. If
+latching fails the unchanged whole-client2.5s/gain/data gates, pace capacity before refusal rather
+than bypass it or infer a safe larger quota. These traces identify capacity but not the exact quota
+branch; policy limits are not measured machine capacity. No runtime repair/default activation or
+release preparation in this diagnostic.
