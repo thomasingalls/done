@@ -16526,3 +16526,13 @@ self-refusal cases pass again after the conservative own-conflict hint guard.81 
 types pass; registry exactly unchanged and all912 obligations/367 blocks remain. [Repair/evidence](performance-experiments/2026-10-27-self-read-order/phase100/README.md).
 No end-to-end gain yet: rebuild both clients and rerun the original gated journeys next. Sequential
 unsigned100 after99; no release preparation, signing, push, preview change or deployment.
+
+## 2026-10-27 — Rebuilt self-read-order comparison frozen (phase101)
+
+Rebuild full99 reference/100 candidate: types/build/budget/origin pass,110 artifacts each. Reference
+matches97's prior C artifact exactly. Same fixed server/image/fixture, real ten-device restoration
+pilot and byte-safe hashed read observer pass. Actual composed-owner prefix probe gives7 reference
+own attempts versus1 candidate, with successful first checks in both; no latency credit from pilots.
+Retain a scratch unused-binding type failure and final clean types. [Inputs/protocol](performance-experiments/2026-10-27-self-read-order/phase101/README.md).
+Freeze R,C,C,R heavy/editing and non-overlap, every original16ms/2.5s/30s/600s/120s and preservation gate,
+plus own-attempt/replay-regression checks. No primary results yet. Unsigned101 after100; no release prep.

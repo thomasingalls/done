@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "cases": 5,
+  "callerRequestBytesExact": true,
+  "onlyHashedScopeAndIntegerSchedulingMetadata": true
+}

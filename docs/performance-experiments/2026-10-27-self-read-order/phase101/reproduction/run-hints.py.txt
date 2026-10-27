@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,os,json
+r=Path(__file__).parent
+for v in ['R','C']:
+ out=r/('hint-'+v);out.mkdir(mode=0o700);env={**os.environ,'FAIR_OUT':str(out),'FAIR_DIST':str(r/('source-'+v)/'dist'),'FAIR_VARIANT':v,'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}
+ with(out/'console.log').open('w')as f:p=subprocess.run(['/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node','node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/hint.config.ts'],cwd=r/'harness',env=env,stdout=f,stderr=subprocess.STDOUT)
+ print('hint',v,p.returncode,flush=True);assert p.returncode==0
+ref=json.loads((r/'hint-R/result.json').read_text())['hintObservation'];candidate=json.loads((r/'hint-C/result.json').read_text())['hintObservation'];assert candidate['selfAttempts']<=ref['selfAttempts']*.8,(ref,candidate);(r/'hint-review.json').write_text(json.dumps({'status':'passed','reference':ref,'candidate':candidate,'actualAuthenticatedComposedReceiverWiringDemonstrated':True,'pilotNotWholeLatencyCredit':True},indent=2)+'\n');print(ref,candidate)

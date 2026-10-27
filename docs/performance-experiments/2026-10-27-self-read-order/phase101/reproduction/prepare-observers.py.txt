@@ -1,0 +1,10 @@
+from pathlib import Path
+r=Path(__file__).parent;lab=r/'harness/test/account-continuation-lab'
+for name in ['continuation.spec.ts','nonoverlap.spec.ts']:
+ p=lab/name;t=p.read_text();t="import{readRequestInfo}from'../../../read-request.mjs';\n"+t
+ if name=='continuation.spec.ts':t=t.replace("label,path,phase,at:Date.now(),bodySha256", "label,path,phase,at:Date.now(),...readRequestInfo(q),bodySha256")
+ else:
+  t=t.replace("p.on('response',(r:any)=>", "p.on('response',(r:any)=>")
+  t=t.replace("{device:index,path,status:r.status(),at:Date.now()}","{device:index,path,status:r.status(),at:Date.now(),...readRequestInfo(r.request())}")
+ p.write_text(t)
+(r/'read-request.d.mts').write_text('export function readRequestInfo(request:any):{reads?:{workspaceSha256:string;readerSha256:string;publisherSha256:string;after:number;limit:number;self:boolean}[];readMetadataMissing?:boolean;readMetadataInvalid?:boolean};\n')

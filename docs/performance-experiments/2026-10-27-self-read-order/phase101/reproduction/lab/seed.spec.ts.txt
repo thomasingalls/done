@@ -1,0 +1,34 @@
+import{openMenuSection}from'../geometry/openApp';
+import{test,expect}from'@playwright/test';
+import{mkdirSync,writeFileSync}from'node:fs';
+import{join}from'node:path';
+import{pairedEditors,credentials,openSaved,add}from'./devices';
+import{pending,compared,unlock}from'../device-enrollment/helpers';
+import{start,stop}from'./runtime.mjs';
+import{root,card,focus,edit,position,exported,archiveIdentity,lock}from'./common';
+const out=process.env['FAIR_OUT']!;
+test('seed three real accounts, ten distinct devices and unequal accepted histories',async({browser})=>{
+ mkdirSync(out,{recursive:true,mode:0o700});const contexts:any[]=[],accounts:any[]=[];const record:any={outcome:'starting',startedAt:Date.now(),accounts:[]};
+ try{
+  await start(join(out,'state'),process.env['FAIR_DIST']!);
+  for(const spec of [{label:'H',devices:6,backlog:1024,cards:24,goals:13000},{label:'M',devices:2,backlog:256,cards:12,goals:4000},{label:'Q',devices:2,backlog:32,cards:6,goals:1000}]){
+   const c=await browser.newContext(),p=await c.newPage();contexts.push(c);console.log('Creating account',spec.label);
+   const pair=await pairedEditors(p,browser,true,{beforeInvite:async()=>{await add(p,`Fair ${spec.label} target:`);await add(p,`Fair ${spec.label} reverse:`);for(let i=0;i<spec.cards;i++)await add(p,`${spec.label} planning item ${i}: Review decisions and follow up.`);await p.locator('.goals .cm-content').click();await p.keyboard.insertText(`# Account ${spec.label}\n\n`+'- Review the notes and nested plans.\n'.repeat(Math.ceil(spec.goals/36)));await p.keyboard.press('Escape');}});contexts.push(pair.other);
+   const actors:any[]=[{page:p,context:c,code:pair.first.code,auth:pair.first.auth},{page:pair.second,context:pair.other,code:pair.next.code,auth:pair.next.auth}];
+   while(actors.length<spec.devices){const approver=actors.at(-1)!,context=await browser.newContext(),candidate=await context.newPage();contexts.push(context);await openMenuSection(approver.page,'Account');await approver.page.getByRole('button',{name:'Devices',exact:true}).click();await approver.page.getByRole('button',{name:'Connect another device',exact:true}).click();await unlock(approver.page,approver.code);const link=await approver.page.getByLabel('Device invitation link').inputValue();const next=await pending(candidate,link,approver.auth);const comparison=await compared(approver.page,candidate);await approver.page.getByLabel('Code on the new device').fill(comparison);await approver.page.getByRole('button',{name:'Compare and approve',exact:true}).click();await expect(candidate.getByRole('button',{name:'Open your writing',exact:true})).toBeVisible({timeout:30000});await expect(approver.page.getByText('The device is connected.',{exact:false})).toBeVisible({timeout:30000});await candidate.getByRole('button',{name:'Open your writing',exact:true}).click();await expect(candidate.locator('.shell')).toBeVisible({timeout:20000});await approver.page.getByRole('link',{name:'Close and return to accounts'}).click();await approver.page.goto('/');await openSaved(approver.page,approver.code,true);actors.push({page:candidate,context,code:next.code,auth:next.auth});console.log('Certified device',spec.label,actors.length);}
+   // Synchronize genuine device-owned writing once before snapshotting, including membership continuation.
+   const marker=` Seed ${spec.label} all-device boundary;`;await focus(p,spec.label);await p.keyboard.insertText(marker);await p.keyboard.press('Escape');for(const a of actors)await expect(card(a.page,spec.label)).toContainText(marker,{timeout:30000});const baseline=await exported(p);for(const a of actors)expect(await exported(a.page)).toEqual(baseline);
+   await openMenuSection(p,'Account');await p.getByRole('button',{name:'Devices',exact:true}).click();await expect(p.locator('.account-device-list li')).toHaveCount(spec.devices);await p.getByRole('button',{name:'Back to writing',exact:true}).click();
+   const saved:any[]=[];
+   for(let i=1;i<actors.length;i++){const a=actors[i];await lock(a.page);await a.context.setOffline(true);saved[i]={code:a.code,storage:await a.context.storageState({indexedDB:true}),credentials:await credentials(a.auth)};}
+   const before=await position(p);await focus(p,spec.label);let expected=await edit(p).innerText();
+   for(let i=0;i<spec.backlog;i++){const at=await position(p);const value=String(i%10);await p.keyboard.insertText(value);expected+=value;await expect.poll(()=>position(p),{timeout:30000,intervals:[25,50,100]}).toBe(at+1);if((i+1)%64===0)console.log('Accepted seed positions',spec.label,i+1);}
+   await p.keyboard.press('Escape');const after=await position(p);expect(after-before).toBe(spec.backlog);const archive=await exported(p);const date=await p.getByLabel('Go to date',{exact:true}).inputValue();
+   if(spec.label==='Q'){const a=actors[1];await a.context.setOffline(false);await openSaved(a.page,a.code,true);await expect(card(a.page,spec.label)).toContainText(expected,{timeout:30000});expect(await exported(a.page)).toEqual(archive);await lock(a.page);saved[1]={code:a.code,storage:await a.context.storageState({indexedDB:true}),credentials:await credentials(a.auth)};await a.context.setOffline(true);}
+   await lock(p);await c.setOffline(true);saved[0]={code:actors[0].code,storage:await c.storageState({indexedDB:true}),credentials:await credentials(actors[0].auth)};
+   accounts.push({...spec,actors:saved,expected,date,archive});record.accounts.push({...spec,before,after,acceptedDelta:after-before,archive:archiveIdentity(archive)});writeFileSync(join(out,'seed-check.json'),JSON.stringify(record,null,2)+'\n');console.log('Account fixture complete',spec.label);
+   for(const a of actors)await a.context.close();
+  }
+  await stop();mkdirSync(root+'/private-fixture',{mode:0o700});writeFileSync(root+'/private-fixture/fixture.json',JSON.stringify({accounts,state:join(out,'state')}),{mode:0o600});record.outcome='passed';record.completedAt=Date.now();writeFileSync(join(out,'seed-check.json'),JSON.stringify(record,null,2)+'\n');
+ }catch(e){record.outcome='failed';record.error=String(e);record.failedAt=Date.now();writeFileSync(join(out,'seed-check.json'),JSON.stringify(record,null,2)+'\n');throw e;}finally{for(const c of contexts)await c.close().catch(()=>{});await stop();}
+});
