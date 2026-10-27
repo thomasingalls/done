@@ -5668,3 +5668,20 @@ byte-only callers conservative. Bound scheduling hints to128 fixed-size IDs, evi
 rather than downgrading another publisher. This changes no account-size limit or authority cache.
 All original byte/ownership/deadline/verifier/commit boundaries remain. The frozen100 comparison
 measures only the self-read repair; do not attach its timing result to this separate size repair.
+
+## 2026-10-27 — Bound remote quiet rechecks without borrowing the self window (phase108)
+
+Keep unchanged-peer discovery explicit: four certified remotes are checked roughly1024 times per
+1024-position catch-up. Neither permanent silence nor the5s self window is justified for independent
+writers. Select750ms as the next experimental fixed per-publisher budget while other verified backlog
+exists, with target/context binding, immediate wake/reset invalidation and per-attempt generation
+fences; do not slide with unrelated work, key to aggregate progress, reset own freshness or weaken
+verification/backoff. This is a proposed candidate, not an implemented/adopted default. Full original
+gates and a same-account late-writer case under real contention must pass before adoption. A broader
+mixed-publisher cohort needs its own outstanding-request/group-commit contract.
+
+The two guarded baseline observations are below2.5s with normal/withheld wake frames; no p95 or
+causal hint-performance claim. Preserve both earlier failed/interrupted fixtures. Correct106's
+missing-receipt inference: displayed0 is the scheduler's initial counter, not a local-storage census;
+receipt replay was not established. Native seed-tip+1 and original byte identities are the reliable
+guard. No runtime or qualification change. [Evidence/next contract](performance-experiments/2026-10-27-quiet-publisher-probes/phase108/README.md).

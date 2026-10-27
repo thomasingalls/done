@@ -1,0 +1,21 @@
+{
+  "status": "design-sketch-only",
+  "sourceSha256": "f8e4b5ce1cea7e3f582d4bb52329d7666af9534e34acfb4ed9295d08a108d473",
+  "rows": [
+    {
+      "ttl": 750,
+      "expiryExact": true,
+      "unrelatedWorkDoesNotSlideDeadline": true,
+      "rollbackForcesRead": true,
+      "inflightOldGenerationRefused": true
+    },
+    {
+      "ttl": 1000,
+      "expiryExact": true,
+      "unrelatedWorkDoesNotSlideDeadline": true,
+      "rollbackForcesRead": true,
+      "inflightOldGenerationRefused": true
+    }
+  ],
+  "noRuntimePolicyOrLatencyAcceptance": true
+}

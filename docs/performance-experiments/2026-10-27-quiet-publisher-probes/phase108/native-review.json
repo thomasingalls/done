@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "guarded-normal-1",
+      "status": "passed",
+      "allOriginalEnvelopeAndPrefixIdentitiesExact": true,
+      "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+      "exactlyOneNewTargetPublisherPosition": 2,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "bc8dd08e2cdd966607147560640e624ca3a4d302194da554c89852d9cb8a48d3"
+    },
+    {
+      "name": "guarded-withheld-2",
+      "status": "passed",
+      "allOriginalEnvelopeAndPrefixIdentitiesExact": true,
+      "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+      "exactlyOneNewTargetPublisherPosition": 2,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "7bdf510bad760f967ef1564f4099d63f0bc3d54b64e9d172fc77e40ebe424edc"
+    }
+  ]
+}

@@ -16629,3 +16629,20 @@ Remove only the known marker in the poll predicate, retaining exact full export 
 check/deadline; add partial-result checkpoints. Types pass; freeze guarded normal/withheld pair
 before dispatch. No product/old-test/912-367 qualification change or timing-driven repeat. Unsigned
 107 after106; no signing, push, preview update, release preparation or deployment.
+
+## 2026-10-27 — Guarded late-peer discovery observations and next boundary (phase108)
+
+Both guarded current-build journeys finish. Host dispatch→peer clock bounds1081.8–1085.1ms normal,
+877.5–880.5ms with one content wake genuinely withheld; each has one initial ready and complete
+archive/native-prefix/cold same-profile guards. One new expected position2 per run, every old proof
+byte exact and M/Q unchanged. These are two early-baseline observations, not a p95, capacity bound
+or notification-performance comparison. H2 receives no remote pages; reconnect/grant work is included.
+[All outcomes, failures and limits](performance-experiments/2026-10-27-quiet-publisher-probes/phase108/README.md).
+
+Actual scheduler source corrects106's interpretation: its display starts0 independently of durable
+acceptance. Missing prior receipt/retry was not established. All failed records remain.39 unchanged
+unit/13 observer cases and13 ordinary checks pass;1640 runtime/test/helper/dependency files and all
+qualification documents stay exact to104,912 obligations/367 blocks unchanged. Recommend750ms fixed
+remote rechecks during known backlog with target/generation/wake/clock fences, preserving self/idle/
+backoff/security checks and requiring original full gates plus late-peer contention before adoption.
+Unsigned108 after107; no runtime optimization, signing, push, preview update, release prep or deployment.

@@ -1,0 +1,16 @@
+import { readFileSync,writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-quiet-publisher-probes-20261027',full=readFileSync(root+'/source-cases.mjs','utf8');
+const source=full.slice(full.indexOf('class RecheckSketch'),full.indexOf('const cases ='))+'\nexport { RecheckSketch };';
+const {RecheckSketch}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+const rows=[];
+for(const ttl of [750,1000]){
+ const m=new RecheckSketch(ttl),token=m.capture();assert(m.empty('quiet','head:cursor',token,1000));
+ assert(m.defer('quiet','head:cursor',1000+ttl-1));assert.equal(m.defer('quiet','head:cursor',1000+ttl),false);
+ for(let t=1100;t<1000+ttl;t+=50)m.empty('other','head:cursor',m.capture(),t);
+ assert.equal(m.defer('quiet','head:cursor',1000+ttl),false);assert.equal(m.defer('quiet','head:cursor',999),false);
+ m.invalidate();assert.equal(m.empty('quiet','head:cursor',token,1200),false);
+ rows.push({ttl,expiryExact:true,unrelatedWorkDoesNotSlideDeadline:true,rollbackForcesRead:true,inflightOldGenerationRefused:true});
+}
+writeFileSync(root+'/budget-sketch-review.json',JSON.stringify({status:'design-sketch-only',sourceSha256:createHash('sha256').update(source).digest('hex'),rows,noRuntimePolicyOrLatencyAcceptance:true},null,2)+'\n');

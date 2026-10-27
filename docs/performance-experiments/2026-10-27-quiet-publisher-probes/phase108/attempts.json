@@ -1,0 +1,33 @@
+{
+  "attempts": [
+    {
+      "name": "quiet-normal-1",
+      "exit": 1,
+      "classification": "failed fixture local-counter delta assumption",
+      "resultWritten": true,
+      "latencyCredit": false,
+      "home": "../phase106/aborted-normal/"
+    },
+    {
+      "name": "corrected-normal-1",
+      "exit": 130,
+      "classification": "interrupted invalid contiguous-text wait",
+      "resultWritten": false,
+      "latencyCredit": false,
+      "home": "../phase107/interrupted-normal/"
+    },
+    {
+      "name": "guarded-normal-1",
+      "exit": 0,
+      "classification": "complete corrected normal baseline",
+      "latencyCredit": "one bounded observation, not p95"
+    },
+    {
+      "name": "guarded-withheld-2",
+      "exit": 0,
+      "classification": "complete corrected withheld baseline",
+      "latencyCredit": "one bounded observation, not p95"
+    }
+  ],
+  "noFailedAttemptReclassifiedAsPassing": true
+}

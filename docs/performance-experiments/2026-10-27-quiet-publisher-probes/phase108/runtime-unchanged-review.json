@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "baseTree": "a8a55c109d13317a35e83602ff3a6eddb5a4f027",
+  "runtimeTestHelperAndDependencyFilesByteExact": 1640,
+  "appRuntimeOldTestsAndAllQualificationStatusesUnchanged": true,
+  "realIndexEmpty": true,
+  "qualificationDocumentsExactlyUnchanged": [
+    "docs/account-crypto/constructions.json",
+    "docs/account-crypto/registry.json",
+    "docs/account-crypto/census.json",
+    "docs/release-validation-graph.json",
+    "docs/release-validation-manifest.json",
+    "scripts/release-validation/general-tests.json"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "productionSchedulerSliceSha256": "fac2ca9c025d25965a31ecab9f74c56d0a5dddf0d67827bf7dc069ef0fdf03b1",
+  "initialOfflineDisplay": 0,
+  "controlledSendStatusReturnedByFirstRead": 1,
+  "displayAfterFirstIdleRead": 1,
+  "newWritingOrHttpRequired": false,
+  "interpretation": "The initial displayed0 is not a native or retained-local accepted-prefix census. Missing prior receipt/retry was not established by the fixture diagnostic."
+}
