@@ -858,6 +858,7 @@ async function openAccountReceiveOwner(
           checkRetained,
         );
       },
+      true, // Read-only preparation yields to queued storage; final exchange below remains exclusive.
     );
     if (prepared.kind !== 'prepared-removal') return prepared;
     return Object.freeze({

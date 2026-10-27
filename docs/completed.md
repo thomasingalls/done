@@ -16303,3 +16303,13 @@ arms and a final-text failure seen in both released/candidate probes; no native-
 closure. [Evidence and failures](./performance-experiments/2026-10-26-goals-context/README.md).
 Unsigned sequential patch only; no production or preview change. Next: read-only preparation priority,
 keeping final history exchange/readback under the existing exclusive fences. Backup cap unchanged.
+
+
+## 2026-10-26 — Queued storage preempts read-only retention preparation (phase83)
+
+Prepared a private queue-priority guard used only by read-only local-removal preparation. Three new
+native cases preserve no-reservation/storage identity on interruption and exclusive final readback.
+Predecessor fails both preparation cases. Initial full run19/21; two reopened-owner fixture races now
+start offline, retaining checks and subsequent sync. Five affected cases pass on rerun. Final fresh
+full-file/type/contract checks follow cumulatively. [Failure and success evidence](./performance-experiments/2026-10-26-maintenance-contention/phase83/README.md).
+No deployment/preview change; next is sync-readiness gating with a non-starving user-quiet clock.

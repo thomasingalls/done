@@ -5541,3 +5541,13 @@ view effects. Invalidate on structural/parser/coverage changes; retain bounded f
 actual offscreen/lifetime guards. Keep the toggle default on; no content or security guarantees change.
 The browser timing probes do not establish the16ms gate or explain all lag, and preserve a separate
 final-text failure on both predecessor and candidate. [Evidence](./performance-experiments/2026-10-26-goals-context/README.md).
+
+
+## 2026-10-26 — Storage arrivals interrupt preparation, not final exchange (phase83)
+
+The operator asks to repair maintenance contention while preserving security. Separate the read-only
+preparation queue-priority generation from retained evidence's input/lifecycle guards. Foreground
+storage arrival stops the next preparation effect/yield boundary, after native settlement; final
+mutation/readback retains its existing exclusive lifetime. Three native regressions distinguish the
+two boundaries. Offline-start fixture schedules keep their original storage/reader assertions rather
+than expecting discretionary maintenance to defeat a new sync flight. [Evidence](./performance-experiments/2026-10-26-maintenance-contention/phase83/README.md).

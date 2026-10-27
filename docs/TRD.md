@@ -4123,3 +4123,13 @@ contradictory explicit zero overrides. Runtime owners still require all four gat
 passes the same build argument into its frontend build; changing runtime environment is insufficient.
 Reader-only rollback retains baseline/journal-era support and cannot restore reduced operational
 rows. Scheduling stops only as cached clients adopt that reader build. [Activation/rollback runbook](./account-local-retention-activation.md).
+
+
+### Read-only retention preparation priority — 2026-10-26
+
+Only read-only removal preparation may yield to queued owned storage work. Queue arrival changes a
+private generation checked at preparation's existing effect/yield boundaries. Keep native settlement,
+cleanup and writer exclusion until pending work finishes. Disarm queue priority before retaining the
+prepared evidence; input/lifecycle/route/journal and fresh authority/inventory checks remain. A final
+exchange or readback must never be cancelled solely by an arriving read. No scheduler hint authorizes
+removal or weakens the strict atomic exchange and uncertain-mutation close.

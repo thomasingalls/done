@@ -465,6 +465,7 @@ test(
     await waitPredicate(f.page, () => window.cryptoHeld);
     const contender = await f.context.newPage();
     await f.setup(contender);
+    await online(contender, false);
     await contender.evaluate((item) => {
       window.acquired = false;
       window.contenderWork = openSync(item).then(() => {
@@ -485,9 +486,10 @@ test(
     await f.page.evaluate(() => closing);
     assert.deepEqual(await inventory(f.page), before);
     await waitPredicate(contender, () => acquired);
+    assert.equal((await remove(contender)).kind, 'removed');
+    await online(contender, true);
     await settled(contender);
     await online(contender, false);
-    assert.equal((await remove(contender)).kind, 'removed');
     await close(contender);
     await contender.close();
   },
@@ -609,6 +611,7 @@ test(
     await assert.rejects(syncing(f.page, item), /unknown-content-metadata|reader|required/i);
     assert.deepEqual(await inventory(f.page), before);
     await cold(f);
+    await online(f.page, false);
     await syncing(f.page, item);
     assert.deepEqual(await remove(f.page), { kind: 'already-removed' });
     await close(f.page);
@@ -739,6 +742,79 @@ test(
     assert.deepEqual([...new Set(ids)].sort(), before.map((c) => c.id).sort());
     assert.equal((await remove(f.page, 2)).kind, 'removed');
     assert.deepEqual(await captures(f.page), []);
+    await close(f.page);
+  },
+);
+
+for (const count of [1, 4])
+  test(
+    `queued foreground storage (${count} reads) interrupts read-only preparation without reserving`,
+    { timeout: 90000 },
+    async (t) => {
+      const { f, item } = await setup(t, 'remove-foreground-' + count),
+        before = await inventory(f.page),
+        original = await f.page.evaluate(() => editor.read().master);
+      await holdCrypto(f.page);
+      await begin(f.page);
+      await waitPredicate(f.page, () => window.cryptoHeld);
+      await f.page.evaluate((count) => {
+        window.foregroundFinished = false;
+        window.foreground = Promise.all(
+          Array.from({ length: count }, () => opened.deliveryStatus()),
+        ).then(() => {
+          window.foregroundFinished = true;
+        });
+      }, count);
+      // Pending native work still owns its lifetime and exclusion; cancellation is not early release.
+      assert.equal(await f.page.evaluate(() => foregroundFinished), false);
+      assert.deepEqual(await inventory(f.page), before);
+      await f.page.evaluate(() => releaseCrypto());
+      assert.deepEqual(await f.page.evaluate(() => removal), {
+        kind: 'skipped',
+        reason: 'activity-or-journal',
+      });
+      await f.page.evaluate(() => foreground);
+      assert.deepEqual(await inventory(f.page), before);
+      assert.equal(await f.page.evaluate(() => editor.read().master), original);
+      assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
+      // The interruption is discretionary, not an integrity halt or a permanent maintenance block.
+      assert.equal((await remove(f.page)).kind, 'removed');
+      await close(f.page);
+      await cold(f);
+      await syncing(f.page, item);
+      await online(f.page, false);
+      assert.equal(await f.page.evaluate(() => editor.read().master), original);
+      await close(f.page);
+    },
+  );
+
+test(
+  'queued storage during final removal waits for exchange/readback instead of cancelling retained proof',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'remove-final-foreground'),
+      original = await f.page.evaluate(() => editor.read().master);
+    await holdCrypto(f.page, true);
+    await begin(f.page);
+    await waitPredicate(f.page, () => window.cryptoHeld);
+    await f.page.evaluate(() => {
+      window.foregroundFinished = false;
+      window.foreground = opened.deliveryStatus().then(() => {
+        window.foregroundFinished = true;
+      });
+    });
+    assert.equal(await f.page.evaluate(() => foregroundFinished), false);
+    await f.page.evaluate(() => releaseCrypto());
+    assert.equal((await f.page.evaluate(() => removal)).kind, 'removed');
+    await f.page.evaluate(() => foreground);
+    assert.equal(counter(await inventory(f.page)).v, 5);
+    assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await online(f.page, false);
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
     await close(f.page);
   },
 );
