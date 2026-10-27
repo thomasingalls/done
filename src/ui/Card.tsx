@@ -118,6 +118,26 @@ export const Card = ({
     }
   }, [editing, text]);
 
+  const reorderable = reorder !== undefined;
+  useEffect(() => {
+    const host = staticHost.current;
+    if (editing || !reorderable || !host) return;
+    // Pointer capture does not override native scrolling. This listener must exist before the
+    // touch starts; cancel only after the hold owns it, preserving ordinary pre-hold scrolling.
+    const touchMove = (event: TouchEvent) => {
+      const active = pointer.current;
+      if (!active?.armed || active.element !== host) return;
+      if (event.touches.length !== 1) {
+        pointer.current = null;
+        latestReorder.current?.cancel();
+        return;
+      }
+      if (event.cancelable) event.preventDefault();
+    };
+    host.addEventListener('touchmove', touchMove, { passive: false });
+    return () => host.removeEventListener('touchmove', touchMove);
+  }, [editing, reorderable]);
+
   useEffect(() => {
     if (!editing) return;
     const parent = editorHost.current;
@@ -205,7 +225,14 @@ export const Card = ({
   );
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>): void => {
-    if ((!guarded && !reorder) || editing || frozen || !editable || event.pointerType === 'mouse')
+    if (
+      !event.isPrimary ||
+      (!guarded && !reorder) ||
+      editing ||
+      frozen ||
+      !editable ||
+      event.pointerType === 'mouse'
+    )
       return;
     const { clientX: x, clientY: y, pointerId } = event;
     clearHold();
@@ -241,8 +268,9 @@ export const Card = ({
   };
 
   const onHandlePointerDown = (event: React.PointerEvent<HTMLButtonElement>): void => {
-    if (!reorder || editing || event.button !== 0) return;
+    if (!event.isPrimary || !reorder || editing || event.button !== 0) return;
     event.preventDefault();
+    event.stopPropagation();
     clearHold();
     const active: ReorderPointer = {
       pointerId: event.pointerId,
@@ -415,7 +443,7 @@ export const Card = ({
                 event.preventDefault();
                 reorder.moveBy(event.key === 'ArrowUp' ? -1 : 1);
               }}
-              onPointerDown={onHandlePointerDown}
+              onPointerDownCapture={onHandlePointerDown}
               onPointerMoveCapture={onReorderPointerMove}
               onPointerUp={onReorderPointerUp}
               onPointerCancel={onReorderPointerCancel}

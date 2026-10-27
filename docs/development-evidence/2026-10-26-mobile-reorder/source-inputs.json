@@ -1,0 +1,9 @@
+{
+  "src/ui/Card.tsx": "6102ccb054414778b437fea40f919e531515e2c93b7616116e78d6c340d33b0c",
+  "src/styles/cards.css": "5bbc305debb48da2b0ccd80add73dc9dbf064f026e67b9999940af445bd5e9e1",
+  "test/geometry/reorder.spec.ts": "2ee333d496cae7fdb611fadd662d69b1d8cace105419602fd338fbdd341c86f8",
+  "scripts/release-validation/playwright-adapter.mjs": "9cd1480dc8d0556e7b9411b140e7800ffc1471a48d2f3a2dea69e044314924c6",
+  "test/release-validation/playwright.test.mjs": "c9671dc17a86f7587fd5346ecba2e53f4aa5f9c3f6248495a5935a31fc824c7b",
+  "test/release-validation/general-tests.test.mjs": "7fd100d87406c9a85c74ecc200a2478379c1c6e96373f099817aa63c7b13a308",
+  "test/release-validation/generated-tests.test.mjs": "3eb954eb86b1564cb592c046d72e437acc45829a2223aac5f5f5047a37d36c69"
+}

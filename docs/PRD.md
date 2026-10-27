@@ -373,7 +373,8 @@ A day shows them in the order **Next, Done, Scheduled**: what you are doing, wha
 intentions that have not come up yet. **Done reads newest-first** — whatever was completed most recently is
 on top, and a record you only ever add to is read from the top. Next and Scheduled are ordered by intent
 rather than by time and keep the order you put them in. All three collections can be reordered on
-writable days, using the desktop grip, arrow keys on the grip, or a touch/pen hold followed by a drag.
+writable days, using the visible grip on touch or desktop, arrow keys on the grip, or a touch/pen
+hold followed by a drag. The grip remains available on mobile.
 
 **The cap bounds what you can add, not what a day can hold.** Three is a rule about the act of putting
 something in Next, and it is enforced by refusing: at three, the app does not take a fourth. It is not a
@@ -421,7 +422,7 @@ purpose.
 | Master → Next / Scheduled / Done | Explicit Copy or Move       | **Copy** keeps the original; **Move** transfers the selected lines in one undoable action. **Remove** remains independent. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §4.3.                                                                |
 | Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
-| Any collection → reordered        | Deliberate                   | Long-press then drag on touch/pen; drag or arrow keys on the reorder grip on desktop. Writable days only. |
+| Any collection → reordered        | Deliberate                   | Drag the visible grip with touch/mouse, use its arrow keys, or hold then drag on touch/pen. Writable days only. |
 
 **Duplicate** on a live card in Next, Done or Scheduled creates a new Scheduled card on the
 same writable day, preserving the complete multiline Markdown and leaving the source unchanged.

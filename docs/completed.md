@@ -16351,3 +16351,16 @@ existing ledger separate. Source confirms immediate/30s backup attempts, duplica
 readback and5min idle-anchor rechecks. No new provider request, cap/policy change, startup attribution
 or performance promise. [Evidence and follow-ups](./development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
 Release preparation explicitly waits for a later operator instruction. Mobile drag repair follows87.
+
+
+## 2026-10-26 — Mobile reorder cancellation reproduced and repaired in development (phase87)
+
+Visible mobile grip,44px coarse target and stable sustained grip/body drags prepared. The new test
+shows native pointercancel in the predecessor's overflowing list. Full affected browser file16 passes/
+24 explicit platform NAs;20 focused existing unit cases, TypeScript/lint/format and35 metadata cases
+pass. All24 old browser identities and23 old dispositions remain; eight new authored cases add16
+project cases/eight desktop NAs. Runtime census changes only the Card source hash, all363 blocks kept.
+[Evidence and limitations](./development-evidence/2026-10-26-mobile-reorder/README.md).
+No physical-phone/iOS or scroll-latency claim, release preparation, commit, push, preview update or
+deployment. Release remains explicitly deferred; phone startup minute and backup retry/recheck policy
+are the separate open work recorded in86.

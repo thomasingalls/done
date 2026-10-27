@@ -10508,7 +10508,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 10,
+      "declarations": 16,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16546,7 +16546,7 @@
     },
     {
       "path": "scripts/release-validation/playwright-adapter.mjs",
-      "sha256": "3bb0381236aec3ef65415b90765df2ea01f79fa01b23d656a3f8cb43422a5238"
+      "sha256": "9cd1480dc8d0556e7b9411b140e7800ffc1471a48d2f3a2dea69e044314924c6"
     },
     {
       "path": "scripts/release-validation/playwright-census.mjs",
@@ -18858,7 +18858,7 @@
     },
     {
       "path": "test/geometry/reorder.spec.ts",
-      "sha256": "dca8215a4a1f482daeb88604b5a318fed4f6db3f0ec7b8d89ec97a88fc99811d"
+      "sha256": "2ee333d496cae7fdb611fadd662d69b1d8cace105419602fd338fbdd341c86f8"
     },
     {
       "path": "test/geometry/sidebar-polish.spec.ts",
@@ -19714,11 +19714,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "33f0ced91148c1fcde0093be923409b7f1cda84f534289f8af6a7c329cb69259"
+      "sha256": "7fd100d87406c9a85c74ecc200a2478379c1c6e96373f099817aa63c7b13a308"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "e862855ed43f1fe3b88333ac53934d6ebfaeb87f80d86370dbe9c0eb5e4385f8"
+      "sha256": "3eb954eb86b1564cb592c046d72e437acc45829a2223aac5f5f5047a37d36c69"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -19758,7 +19758,7 @@
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "f2f7a02b469879bb767c46da84e3db05117d25fce44b0703e5d93bdc0229875e"
+      "sha256": "c9671dc17a86f7587fd5346ecba2e53f4aa5f9c3f6248495a5935a31fc824c7b"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

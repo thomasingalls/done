@@ -1619,8 +1619,13 @@ Pointer Events. **Swipe navigates; long-press-then-drag selects.**
    pointer and arms reordering; movement drags it, a stationary release unlocks it.
 4. `pointerup` before either → **tap.** Place cursor, mounting an editor if needed (§4.4).
 
-On a fine pointer, Done cards expose a reorder grip. Both paths write once, on release, through the atomic CRDT
-reorder operation.
+Live reorderable cards expose a grip on all pointer types, including mobile, with a minimum44px
+coarse-pointer target. Declare `touch-action:none` on that target before the touch starts, and claim
+its pointer before shell navigation. Body hold-and-drag keeps a scoped non-passive native touchmove
+listener before gesture start, cancelling native scroll only after the hold arms reordering. Do not
+suppress ordinary pre-hold scrolling or editor input. Pointer capture alone does not prevent native
+panning. Preserve primary-pointer ownership, cancellation/lost-capture cleanup and release-only writes
+through the existing atomic CRDT reorder operation; no storage/undo work is added while moving.
 
 Requires `user-select: none` on the container with selection re-enabled on entering selection mode, and
 `touch-action: none` on navigable surfaces. `overscroll-behavior: contain` prevents pull-to-refresh. Gestures must

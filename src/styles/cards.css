@@ -236,7 +236,7 @@
   }
 
   .card-reorder-handle {
-    display: none;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: grab;
@@ -248,9 +248,10 @@
     cursor: grabbing;
   }
 
-  @media (any-hover: hover) and (any-pointer: fine) {
+  @media (pointer: coarse) {
     .card-reorder-handle {
-      display: inline-flex;
+      min-inline-size: 2.75rem;
+      min-block-size: 2.75rem;
     }
   }
 

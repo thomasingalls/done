@@ -5572,3 +5572,13 @@ metadata and does not rewrite the phone's existing replay ledger. A reported min
 selects startup-phase attribution, not another generic catch-up sweep. Backup cap/cadence and exact
 readback remain unchanged; daily verification is a discussed option, not an implementation decision.
 [Source-backed cadence and next bounded questions](./development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
+
+
+## 2026-10-26 — Visible mobile grip and explicit post-hold scroll ownership (phase87)
+
+The operator asks to retain the mobile grip and reports immediate drag cancellation. A real sustained
+scrollable-list test reproduces native pointercancel after capture. Keep both activation paths: expose
+the grip with its initial touch-action and capture-phase claim; for body holds cancel native touchmove
+only after activation using a scoped listener installed at gesture start. Ordinary scrolling remains;
+editor input is excluded. Retain primary ownership and existing single release operation/cancellation.
+No backup/startup or security-contract mechanism changes. [Red/green and preservation evidence](./development-evidence/2026-10-26-mobile-reorder/README.md).
