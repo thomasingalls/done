@@ -16682,3 +16682,13 @@ field assumption/fidelity incident retained with no experiment rerun.13 fresh or
 Next bounded state is to retain implementation/evidence with optional quiet budget disabled, then
 separate recent-writer discovery from publication pacing. Unsigned111 after110;912/367 qualification
 paused. No release prep or deployment.
+
+## 2026-10-27 — Hold optional quiet budget after failed peer gate (phase112)
+
+Restore the composed owner's original default selector, retaining experimental750ms implementation
+and every111 failure.68 unit cases,3 affected encrypted default cases,81 metadata, types/lint and13
+fresh ordinary checks pass;18 old selector bodies byte-exact. Actual composed promotion-guard probe
+fails active109 with9 quiet requests and passes held default with28, one own check each. Rebuilt
+held artifact/source identities retained; no new timing credit or claim to repair reference pacing.
+[Current hold and next boundary](performance-experiments/2026-10-27-quiet-budget/phase112/README.md).
+Unsigned112 after111;912/367 qualification paused. No release prep, preview update or deployment.

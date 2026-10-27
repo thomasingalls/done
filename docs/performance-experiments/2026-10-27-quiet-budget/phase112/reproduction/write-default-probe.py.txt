@@ -1,0 +1,8 @@
+from pathlib import Path
+s=Path(__file__).parent;old=Path('/private/tmp/done-self-read-order-20261027/harness/test/account-continuation-lab/hint.spec.ts').read_text().replace('/private/tmp/done-self-read-order-20261027',str(s))
+old=old.replace('actual composed self checks survive unrelated empty peers while verified backlog remains','default composed receiving does not activate the rejected quiet budget')
+old=old.replace("JSON.parse(readFileSync(root+'/seed-native-audit.json','utf8')).accounts[0].streams", "JSON.parse(readFileSync(root+'/native-seed-tips.json','utf8')).H")
+needle="expect(result.hintObservation.selfSuccessfulChecks).toBeGreaterThan(0);";assert old.count(needle)==1
+old=old.replace(needle,needle+"result.hintObservation.quietAttempts=result.network.filter((q:any)=>q.reads?.some((v:any)=>!v.self&&v.after===1&&v.publisherSha256!==hot)).length;expect(result.hintObservation.quietAttempts).toBeGreaterThanOrEqual(16);")
+(s/'harness/test/account-continuation-lab/default.spec.ts').write_text(old)
+(s/'harness/test/account-continuation-lab/default.config.ts').write_text("import{defineConfig}from'@playwright/test';export default defineConfig({testDir:'.',testMatch:'default.spec.ts',workers:1,retries:0,timeout:120000,reporter:[['list']],outputDir:process.env['FAIR_OUT']+'/artifacts',use:{actionTimeout:30000,trace:'off',screenshot:'off',video:'off'}});\n")

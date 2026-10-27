@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,os,json,time
+s=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';plan=[{'name':'default-before','source':'source-C','expectedExit':'nonzero: active candidate must fail disabled-default assertion'},{'name':'default-after','source':'source-disabled','expectedExit':'zero'}];(s/'default-plan.json').write_text(json.dumps({'frozenAt':time.time_ns()//1000000,'guard':'at least16 actual unchanged-remote opportunities before hot cursor29; no timing credit','runs':plan},indent=2)+'\n');rows=[]
+for c in plan:
+ d=s/c['name'];d.mkdir(mode=0o700);env={**os.environ,'FAIR_OUT':str(d),'FAIR_DIST':str(s/c['source']/'dist'),'FAIR_VARIANT':c['name'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}
+ with(d/'console.log').open('w')as f:p=subprocess.run([node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/default.config.ts'],cwd=s/'harness',env=env,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({**c,'exitCode':p.returncode});(s/'default-review.json').write_text(json.dumps(rows,indent=2)+'\n');print(c['name'],p.returncode,flush=True)
+ if(c['name']=='default-before'and p.returncode==0)or(c['name']=='default-after'and p.returncode!=0):raise SystemExit('default promotion guard failed sensitivity')

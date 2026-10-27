@@ -588,3 +588,12 @@ it('uses the certified baseline cursor resolver when an empty stream has no stor
   ).toBe('busy');
   expect(calls).toBe(1);
 });
+
+it('keeps optional quiet deferral disabled in the default selector', () => {
+  const f = quietFixture();
+  const s = createReceiveSelection(() => 1000);
+  expect(s.captureQuiet(f.context, 'quiet', f.peers.get('quiet')!)).toBeUndefined();
+  expect(s.completedQuiet({}, 'empty')).toBe(false);
+  s.completed(f.publishers, 'busy', false);
+  expect(s.next(f.publishers, f.own, f.view)).toBe('quiet');
+});

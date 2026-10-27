@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "preliminaryRaceAndFinalCandidateArtifactAll110FilesByteExact": true,
+  "mutantDiffersOnlyByRecordedOmission": true,
+  "independentSourceFilesChecked": 1653,
+  "onlyMutatedSource": [
+    "src/crdt/receiveSelection.ts"
+  ]
+}

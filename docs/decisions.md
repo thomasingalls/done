@@ -5702,3 +5702,11 @@ complete peer p95s2532.0/2739.1ms miss2.5s. Reference withheld also misses; do n
 regression from single observations. Retain every failed gate, disable optional quiet scheduling
 in the product default, and investigate active-writer discovery/publication pacing before adoption.
 Keep2.5s and full120 keys; no outcome-driven timing rerun, threshold relaxation or release preparation.
+
+## 2026-10-27 — Preserve the failed candidate without enabling it (phase112)
+
+Use the original selector default in composed product owners while retaining optional750ms machinery
+for the next bounded repair. The actual composed guard distinguishes active and held builds, rather
+than relying only on a source flag. Keep every failed p95 and unchanged2.5s gate. A recent-writer grace
+period is only a hypothesis; trace publication versus receiver delay before selecting it. No release
+preparation, threshold relaxation or production/default feature activation from this experiment.

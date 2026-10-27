@@ -12257,7 +12257,7 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/receiveSelection.test.ts"]
       },
-      "declarations": 35,
+      "declarations": 36,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15514,7 +15514,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "b83e280c01723bd5cf9014a2ac45369aeb138d191e29d2a84edec933cd8f6745"
+      "sha256": "29202d8c2b23fb358b49b7a0d367eb7ae4afd2a443c089c2933c7b97748d6476"
     },
     {
       "path": "package.json",
@@ -19730,7 +19730,7 @@
     },
     {
       "path": "test/receiveSelection.test.ts",
-      "sha256": "5b33e12eb203c89de95e1dc8258cc708609654aa4f5a29d8269bcfa9a0322cf3"
+      "sha256": "f57a2aed2c5824a2736ac016753c08711f2f7fa21d1363317053a42728683dfa"
     },
     {
       "path": "test/recoveryProgressIsolation.test.ts",
