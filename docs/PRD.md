@@ -447,6 +447,9 @@ the footer so the destination buttons stay in place and the footer stays at two 
 
 Done is a record. Once written, editing it should require intent.
 
+Done cards rest at33% opacity. Interacting with an individual card (hover, focus within, active
+pointer, editing or dragging) restores it to100%; other Done cards stay dim.
+
 Creation is easy and editing is hard, and these don't conflict because they're different affordances. A done
 card renders as static text and does not become editable by tapping it; unlocking is a stationary long-press
 (mobile) or explicit action (desktop). Moving after the hold reorders the card instead. Meanwhile the compose

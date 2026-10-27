@@ -1,0 +1,6 @@
+{
+  "sha256": {
+    "src/styles/cards.css": "6549fcdfc77022604f2054db0893107483dd2cb410a5636c3deb983b6a0d9b6f",
+    "test/geometry/cards.spec.ts": "dd74183cbdf36749889927f01225d602a9a162d8f978fc83d8a0701f95b0ec20"
+  }
+}

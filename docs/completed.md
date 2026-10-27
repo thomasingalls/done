@@ -16371,3 +16371,9 @@ Implemented root-word full outline, trailing child carets, persistent drill-down
 shared control geometry.22 navigation browser cases and7 helper cases pass; preceding fixture failures
 remain recorded. [Evidence](development-evidence/2026-10-26-navigation-backup-startup/88-navigation/README.md).
 No release preparation or actual-phone performance conclusion follows from these development checks.
+
+## 2026-10-26 — Done-card contrast (phase89)
+
+Implemented per-card33%/100% interaction opacity. Eight desktop/mobile-emulation card cases pass,
+including unchanged geometry and guard checks. [Evidence](development-evidence/2026-10-26-navigation-backup-startup/89-done/README.md).
+Development only; release preparation remains on hold.

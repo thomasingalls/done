@@ -10387,7 +10387,7 @@
         "config": "playwright.config.ts",
         "packages": ["test:geometry"]
       },
-      "declarations": 3,
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18810,7 +18810,7 @@
     },
     {
       "path": "test/geometry/cards.spec.ts",
-      "sha256": "59d9d5871e3bdc62c125518f3f5fcd58c24ca082085f4dbfeaa99251852caca3"
+      "sha256": "dd74183cbdf36749889927f01225d602a9a162d8f978fc83d8a0701f95b0ec20"
     },
     {
       "path": "test/geometry/compose-input.spec.ts",
@@ -19714,11 +19714,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "7fd100d87406c9a85c74ecc200a2478379c1c6e96373f099817aa63c7b13a308"
+      "sha256": "f18ea0d33445deed6b40b5bcf418bc485df1b47ab3f443900ee493b427e2f566"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "3eb954eb86b1564cb592c046d72e437acc45829a2223aac5f5f5047a37d36c69"
+      "sha256": "78d48f501808a304747557ab68116110cc5b31dbf72a7543e8d7cc915327ac39"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -19758,7 +19758,7 @@
     },
     {
       "path": "test/release-validation/playwright.test.mjs",
-      "sha256": "c9671dc17a86f7587fd5346ecba2e53f4aa5f9c3f6248495a5935a31fc824c7b"
+      "sha256": "ae664d48cbb87dd9c79d56def8875fede147cf4955e13b73d6d591a5759dd2b5"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

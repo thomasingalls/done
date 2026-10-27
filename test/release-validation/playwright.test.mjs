@@ -84,7 +84,7 @@ test('reviewed browser files preserve Local and storage cases and cannot bypass 
   assert.equal(browserFiles.length, 17);
   assert.deepEqual(
     browserFiles.map((f) => playwrightStage(process.cwd(), f).expect.cases.length),
-    [4, 12, 4, 40, 2, 12, 30, 6, 6, 26, 12, 9, 3, 6, 5, 4, 11],
+    [4, 12, 4, 40, 2, 12, 30, 6, 8, 26, 12, 9, 3, 6, 5, 4, 11],
   );
   for (const f of browserFiles) {
     const stage = playwrightStage(process.cwd(), f);

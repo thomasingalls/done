@@ -5590,3 +5590,8 @@ children. Root children are H1s; leaves do not fall back to siblings. Selection 
 heading while preserving editor selection and the captured-document guard. Adopt the former outline
 indicator's24px centered geometry/2px corners, retaining current colors. This supersedes the previous
 leaf-sibling and close-on-select presentation only, not writing/admission behavior.
+
+## 2026-10-26 — Done contrast is per card (phase89)
+
+The operator selects33% resting opacity and100% while interacting. Apply this to the individual
+card, including focus within and explicit editing/reordering state, without changing layout or guards.
