@@ -1,0 +1,30 @@
+import {createRequire} from 'node:module';import {writeFileSync,readFileSync} from 'node:fs';import {cpus,loadavg} from 'node:os';import {createHash} from 'node:crypto';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done',out='/private/tmp/done-receive-projection-2026-10-27',require=createRequire(root+'/package.json'),{chromium}=require('@playwright/test');
+const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+const result={sourceTree:'42187324d94441d548f5bc82667af7dbc34f45cd',sourceSha256:createHash('sha256').update(readFileSync(root+'/src/crdt/accountReceive.ts')).digest('hex'),browser:browser.version(),cpu:cpus()[0].model,load:loadavg(),rows:[],errors:[]};
+const save=()=>writeFileSync(out+'/raw.json',JSON.stringify(result,null,2)+'\n');save();
+try{
+ for(const depth of [32,256,1024,2048])for(const [block,order] of [['a',['R','C']],['b',['C','R']],['c',['R','C']]]){
+  const context=await browser.newContext(),page=await context.newPage(),cdp=await context.newCDPSession(page);await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
+  try{
+   const row=await page.evaluate(({depth,block,order})=>{
+    const stream=(tag)=>({prefix:{position:depth,link:tag.repeat(64),observedThrough:depth+1},startingPoint:{position:3,link:'0'.repeat(64)},conflict:false,retained:new Map(Array.from({length:depth},(_,i)=>[i+1,{previous:'0'.repeat(64),envelope:new Uint8Array(2048).fill(i%255),proof:new Uint8Array(512).fill((i+tag.charCodeAt(0))%255)}]))});
+    const inbound=stream('a');inbound.peers=new Map([['peer',stream('b')]]);
+    const cursor=s=>({prefix:{...s.prefix},conflict:s.conflict,...(s.startingPoint?{startingPoint:{...s.startingPoint}}:{})});
+    const hints=s=>({...cursor(s),...(s.peers?{peers:new Map([...s.peers].map(([id,p])=>[id,cursor(p)]))}:{})});
+    const describe=s=>({state:s.conflict||[...(s.peers?.values()??[])].some(p=>p.conflict)?'conflict':'ready',receivedThrough:s.prefix.position+[...(s.peers?.values()??[])].reduce((n,p)=>n+p.prefix.position,0),link:s.prefix.link,observedThrough:s.prefix.observedThrough+[...(s.peers?.values()??[])].reduce((n,p)=>n+p.prefix.observedThrough,0)});
+    function bytes(value,seen=new Set()){if(!value||typeof value!=='object'||seen.has(value))return 0;seen.add(value);if(value instanceof Uint8Array)return value.byteLength;if(value instanceof Map)return [...value.values()].reduce((n,v)=>n+bytes(v,seen),0);return Object.values(value).reduce((n,v)=>n+bytes(v,seen),0);}
+    const sample={depth,block,order,iterations:20,copiedBytes:{R:bytes(inbound),C:bytes(hints(inbound))},conditions:{}};
+    for(const condition of order){
+     const project=condition==='R'?()=>({inbound,pendingSelf:false}):()=>({inbound:hints(inbound),pendingSelf:false});
+     let answer;for(let i=0;i<3;i++)answer=structuredClone(project());
+     const start=performance.now();for(let i=0;i<20;i++)answer=structuredClone(project());const prepareMs=(performance.now()-start)/20;
+     const statusStart=performance.now();let status;for(let i=0;i<20;i++)status=condition==='R'?describe(structuredClone(inbound)):structuredClone(describe(inbound));const statusMs=(performance.now()-statusStart)/20;
+     sample.conditions[condition]={prepareMs,statusMs,status,shape:{prefix:answer.inbound.prefix,startingPoint:answer.inbound.startingPoint,conflict:answer.inbound.conflict,peers:[...answer.inbound.peers].map(([id,p])=>[id,p.prefix,p.startingPoint,p.conflict])}};
+    }
+    if(JSON.stringify(sample.conditions.R.shape)!==JSON.stringify(sample.conditions.C.shape)||JSON.stringify(sample.conditions.R.status)!==JSON.stringify(sample.conditions.C.status))throw Error('Projection differs');
+    return sample;
+   },{depth,block,order});result.rows.push(row);save();console.log(JSON.stringify({depth,block,R:row.conditions.R.prepareMs,C:row.conditions.C.prepareMs}));
+  }finally{await context.close();}
+ }
+}catch(e){result.errors.push(String(e));throw e;}finally{result.loadAfter=loadavg();save();await browser.close();}

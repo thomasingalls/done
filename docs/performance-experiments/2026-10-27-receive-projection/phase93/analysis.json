@@ -1,0 +1,56 @@
+{
+  "rows": [
+    {
+      "depthPerPublisher": 32,
+      "copiedBytesR": 163840,
+      "copiedBytesC": 0,
+      "prepareRMs": 0.6300000190734864,
+      "prepareCMs": 0.039999961853027344,
+      "statusRMs": 0.790000057220459,
+      "statusCMs": 0,
+      "referenceDrift": 0.15217394909922,
+      "timingQualified": true,
+      "deepThresholdPass": true
+    },
+    {
+      "depthPerPublisher": 256,
+      "copiedBytesR": 1310720,
+      "copiedBytesC": 0,
+      "prepareRMs": 4.594999980926514,
+      "prepareCMs": 0.005000019073486328,
+      "statusRMs": 5.225,
+      "statusCMs": 0.005000019073486328,
+      "referenceDrift": 0.09684441308837988,
+      "timingQualified": false,
+      "deepThresholdPass": true
+    },
+    {
+      "depthPerPublisher": 1024,
+      "copiedBytesR": 5242880,
+      "copiedBytesC": 0,
+      "prepareRMs": 19.664999961853027,
+      "prepareCMs": 0.034999942779541014,
+      "statusRMs": 19.369999980926515,
+      "statusCMs": 0.005000019073486328,
+      "referenceDrift": 0.03634053173331786,
+      "timingQualified": false,
+      "deepThresholdPass": true
+    },
+    {
+      "depthPerPublisher": 2048,
+      "copiedBytesR": 10485760,
+      "copiedBytesC": 0,
+      "prepareRMs": 44.56500005722046,
+      "prepareCMs": 0.025,
+      "statusRMs": 42.369999980926515,
+      "statusCMs": 0.025,
+      "referenceDrift": 0.035566025821708314,
+      "timingQualified": false,
+      "deepThresholdPass": true
+    }
+  ],
+  "shapeAgreement": true,
+  "allRawBlocksRetained": true,
+  "endToEndClaim": false,
+  "candidateChosen": true
+}

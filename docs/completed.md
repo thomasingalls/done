@@ -16406,3 +16406,15 @@ All363 old release blocks and34 old pipeline assertions remain; two new regressi
 adapter obligations, not qualification credit. [Checkpoint](development-evidence/2026-10-26-navigation-backup-startup/README.md).
 The phone minute remains open pending numeric slow-path attribution. Release preparation stays held;
 no preview restart, production/infra change, signing, push or deployment is authorized by this checkpoint.
+
+## 2026-10-27 — Preview UX update and receive-copy diagnostic (phase93)
+
+Updated only preview8443's application gateway to unsigned92 (67288576-dirty); HTTPS worker bytes,
+public config and fresh disposable-profile breadcrumb/Done behavior pass. Retained API identity/data
+remain unchanged. The same frozen UI build stays available while performance work continues.
+
+A fixed12-block synthetic receiver-copy probe selects the still-present whole-inbound projection as
+next bounded work: at1024/2048 positions per publisher, full projection medians19.665/44.565ms versus
+narrow hints near timer resolution. All shapes agree and retained bytes disappear from the prototype
+projection. Shallow drift/quantization are qualified. [Evidence](performance-experiments/2026-10-27-receive-projection/phase93/README.md).
+No end-to-end/phone speedup, changed latency gate, release preparation or deployment is claimed.

@@ -5614,3 +5614,11 @@ progress while existing owners continue; retain Back as cancellation, never remo
 must drain before the setup lease is released and cannot publish ready after cancellation. Add only
 opt-in fixed-label numeric phase metrics; do not remove fresh census/replay checks or claim the actual
 phone's delay has been attributed. Reuse the prior depth evidence, then profile the actual slow phase.
+
+## 2026-10-27 — Project receiver cursors before detached copying (phase93)
+
+Reuse existing verified-owner selection and certified publisher resolution for a narrow request/status
+projection. The source and fixed synthetic probe support removing whole retained-history copies from
+these read-only consumers. Keep full retained evidence on page verification/application/history paths,
+scheduling order, fresh authority/commit checks and all original latency gates. This is a bounded
+client-copy repair, not another service proof cache or permission to infer phone-opening attribution.
