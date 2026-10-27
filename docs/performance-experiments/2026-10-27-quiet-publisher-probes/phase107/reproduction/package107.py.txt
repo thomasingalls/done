@@ -1,0 +1,39 @@
+from pathlib import Path
+import gzip
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-quiet-publisher-probes/phase107';e.mkdir(exist_ok=False);c=e/'checks';c.mkdir();re=e/'reproduction';re.mkdir();raw=e/'interrupted-normal';raw.mkdir()
+for n in ['identity.json','protocol.md','run-plan.json','replay-guard-review.json','interrupted-native-review.json']:(e/n).write_bytes((s/n).read_bytes())
+for n in ['audit-interrupted.mjs','package107.py']:(re/(n+'.txt')).write_bytes((s/n).read_bytes())
+for n in ['quiet-probe.spec.ts','replay-guard.spec.ts','guard.config.ts']:(re/(n+'.txt')).write_bytes((s/'harness/test/account-continuation-lab'/n).read_bytes())
+for n in ['harness-types-guarded.log','replay-guard-console.log','run-console-corrected.log']:(c/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+for n in ['runner.json','console.log','runner-receipt.json','container-identity.json','docker-command.json','services.log']:(raw/(n+'.gz')).write_bytes(gzip.compress((s/'corrected-normal-1'/n).read_bytes(),mtime=0))
+(e/'README.md').write_text('''# Phase107 — Correct the replay needle; preserve interruption and its data evidence
+
+The corrected normal primary reaches the replay wait, whose implementation still requires the
+entire original text as a contiguous substring. That contradicts the intended concurrent-marker
+workload: Yjs can place the late marker inside that text. Stop the invalid wait with SIGINT after
+7.3 minutes instead of spending the rest of600s. Playwright terminates the worker before finally
+writes result.json: preserve exit130, interrupted runner/report, missing result and no timing/full-
+journey credit. The withheld case remains unrun. Stop only the verified disposable container; keep
+its private DB/WAL and profiles outside Git. This is a failed diagnostic, not a passing primary.
+
+A separate3-second cold offline opening of that exact saved H1 profile, without reinjection, proves
+what happened: the original substring is absent, removing only the one known marker restores it,
+and the entire export with that marker removed exactly equals the complete seed archive. A control
+deleting one original character fails. Independently verify all native old envelope/wrapper/head
+signatures and prefixes, exactly one new expected publisher position2, and unchanged M/Q. Retain
+main+WAL hashes for the interrupted native state rather than pretending the main DB alone identifies
+an uncheckpointed database. These checks establish diagnosis/preservation, not missing timings.
+
+Correct only the poll predicate to remove the known marker before finding the original text. Keep
+one-marker and full-export equality, all native checks, original600s deadline, single2500ms comparison
+and every security guard. Add explicit closed-field partial-result checkpoints so interruption
+cannot discard observations already made. Harness types pass. No product or old-test code changes.
+
+Freeze a fresh guarded normal/withheld pair before dispatch with the exact same runtime/fixture/
+resources. Neither aborted attempt's latency has been inspected or pooled. No repeated primary is
+selected to obtain a favorable timing result; any further unexpected failure stops and remains.
+105/106 retain all previous sources/failures; this checkpoint records the narrow harness correction.
+All912 obligations/367 unresolved blocks stay; qualification paused. Unsigned107 after106. No commit,
+push, preview/API update, release preparation or deployment.
+''')
+with (r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Marker-aware replay wait and interrupted-probe preservation (phase107)\n\nThe corrected normal diagnostic waits for a contiguous original substring that the intentionally\nconcurrent marker can split. Interrupt at7.3m, preserving exit130/interrupted report/missing result\nand giving no timing/primary credit. A separate offline cold reopening of the same saved H1 profile\nproves full original archive plus exactly one marker; deleting an original character fails. Native\naudit retains all old signatures/prefixes/rows, exactly one expected new position2, unchanged M/Q\nand DB/WAL identities. [Diagnosis and corrected frozen inputs](performance-experiments/2026-10-27-quiet-publisher-probes/phase107/README.md).\n\nRemove only the known marker in the poll predicate, retaining exact full export and every original\ncheck/deadline; add partial-result checkpoints. Types pass; freeze guarded normal/withheld pair\nbefore dispatch. No product/old-test/912-367 qualification change or timing-driven repeat. Unsigned\n107 after106; no signing, push, preview update, release preparation or deployment.\n''')

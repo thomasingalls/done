@@ -1,0 +1,12 @@
+{
+  "status": "passed-for-interrupted-fixture-diagnosis-only",
+  "allSeedEnvelopeAndPrefixIdentitiesExact": true,
+  "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+  "exactlyOneNewExpectedPublisherPosition": 2,
+  "unrelatedAccountsUnchanged": true,
+  "privateDatabaseFamilySha256": {
+    "account.sqlite": "496527fe50f4f84400c8ebefa2a60c0b1511b1686281cf28cce975ad5c864096",
+    "account.sqlite-wal": "ac21f4a05c9d6af292984e75d0b52238c531227077b1cb6fe7b46f9e1288ad17"
+  },
+  "noOriginalJourneyLatencyOrFullGuardCredit": true
+}

@@ -16615,3 +16615,17 @@ checks. Include initial client/service acceptance mismatch in the measured-workl
 Harness types and all1640 source/export identities per R/C pass. Freeze corrected normal/withheld
 pair before dispatch; no runtime/old test/gate/security/912-367 qualification change. Unsigned106
 after105. No signing, push, preview update, release prep or deployment.
+
+## 2026-10-27 — Marker-aware replay wait and interrupted-probe preservation (phase107)
+
+The corrected normal diagnostic waits for a contiguous original substring that the intentionally
+concurrent marker can split. Interrupt at7.3m, preserving exit130/interrupted report/missing result
+and giving no timing/primary credit. A separate offline cold reopening of the same saved H1 profile
+proves full original archive plus exactly one marker; deleting an original character fails. Native
+audit retains all old signatures/prefixes/rows, exactly one expected new position2, unchanged M/Q
+and DB/WAL identities. [Diagnosis and corrected frozen inputs](performance-experiments/2026-10-27-quiet-publisher-probes/phase107/README.md).
+
+Remove only the known marker in the poll predicate, retaining exact full export and every original
+check/deadline; add partial-result checkpoints. Types pass; freeze guarded normal/withheld pair
+before dispatch. No product/old-test/912-367 qualification change or timing-driven repeat. Unsigned
+107 after106; no signing, push, preview update, release preparation or deployment.

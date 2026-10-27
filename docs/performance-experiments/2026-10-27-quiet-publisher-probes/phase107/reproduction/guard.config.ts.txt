@@ -1,0 +1,2 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({ testDir: '.', testMatch: 'replay-guard.spec.ts', workers: 1, retries: 0, timeout: 90000, reporter: [['list']], use: { actionTimeout: 30000, trace: 'off', screenshot: 'off', video: 'off' } });
