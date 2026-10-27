@@ -1,0 +1,22 @@
+[
+  {
+    "name": "heavy-1-R",
+    "variant": "R",
+    "config": "playwright.config.ts"
+  },
+  {
+    "name": "heavy-2-C",
+    "variant": "C",
+    "config": "playwright.config.ts"
+  },
+  {
+    "name": "heavy-3-C",
+    "variant": "C",
+    "config": "playwright.config.ts"
+  },
+  {
+    "name": "heavy-4-R",
+    "variant": "R",
+    "config": "playwright.config.ts"
+  }
+]

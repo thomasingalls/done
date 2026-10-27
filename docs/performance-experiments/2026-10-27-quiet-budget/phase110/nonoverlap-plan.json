@@ -1,0 +1,22 @@
+[
+  {
+    "name": "nonoverlap-1-R",
+    "variant": "R",
+    "config": "nonoverlap.config.ts"
+  },
+  {
+    "name": "nonoverlap-2-C",
+    "variant": "C",
+    "config": "nonoverlap.config.ts"
+  },
+  {
+    "name": "nonoverlap-3-C",
+    "variant": "C",
+    "config": "nonoverlap.config.ts"
+  },
+  {
+    "name": "nonoverlap-4-R",
+    "variant": "R",
+    "config": "nonoverlap.config.ts"
+  }
+]

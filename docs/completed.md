@@ -16660,3 +16660,11 @@ fence demonstrably hides it until clock release. Diagnostic has no timing credit
 
 Performance adoption pending the frozen whole-client and late-writer comparisons. Qualification
 912/367 unchanged and paused; unsigned109 after108. No preview update, release prep or deployment.
+
+## 2026-10-27 — Freeze quiet-budget comparison before dispatch (phase110)
+
+Rebuild both complete108/109 clients under identical flags/metadata; reference artifact byte-matches
+103/runtime through108. Freeze source/image/artifact/fixture/apparatus identities, original eight
+journeys and four same-account late-writer cases before dispatch. Retain2.5s and all original gates;
+new lost-hint cases enable both receivers. [Inputs/limitations](performance-experiments/2026-10-27-quiet-budget/phase110/README.md).
+No result/adoption claim yet. Unsigned110 after109; qualification paused, no release prep or deployment.

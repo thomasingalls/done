@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json,os,time,hashlib
+r=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'APP_BUILD_REVISION':'67288576b61185aa2eb316123794052b16f63da9','APP_BUILD_DATE':'2026-10-27','VITE_ACCOUNT_BATCH':'coordinated-2000','VITE_ACCOUNT_RETENTION_AUTO':'1'};rows=[]
+for v in ['R','C']:
+ s=r/('source-'+v)
+ for name,cmd in [('types',[node,'node_modules/typescript/bin/tsc','-b']),('build',[node,'node_modules/vite/bin/vite.js','build']),('budget',[node,'scripts/check-budget.mjs']),('isolation',[node,'scripts/check-origin-isolation.mjs'])]:
+  at=time.time_ns()//1000000
+  with(r/(v+'-'+name+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=s,env=env,stdout=f,stderr=subprocess.STDOUT)
+  rows.append({'variant':v,'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'build-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(v,name,p.returncode,flush=True)
+  if p.returncode:raise SystemExit(p.returncode)
+ (r/(v+'-client-identity.json')).write_text(json.dumps({str(p.relative_to(s/'dist')):hashlib.sha256(p.read_bytes()).hexdigest()for p in(s/'dist').rglob('*')if p.is_file()},indent=2)+'\n')
