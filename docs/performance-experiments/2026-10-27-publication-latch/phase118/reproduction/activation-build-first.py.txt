@@ -1,0 +1,68 @@
+from pathlib import Path
+import subprocess, os, json, tarfile, hashlib, time
+
+s = Path(__file__).parent
+r = Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+node = '/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+env = dict(os.environ, GIT_INDEX_FILE=str(s / 'activation.index'))
+def git(*args):
+    return subprocess.check_output(['git', *args], cwd=r, env=env)
+
+base = json.loads((s / '117-preparation.json').read_text())['expectedTree']
+git('read-tree', base)
+git('add', '--', 'src/crdt/accountReceive.ts')
+tree = git('write-tree').decode().strip()
+source = s / 'source-A'
+source.mkdir()
+p = subprocess.Popen(['git', 'archive', tree], cwd=r, env=env, stdout=subprocess.PIPE)
+with tarfile.open(fileobj=p.stdout, mode='r|') as archive:
+    archive.extractall(source, filter='data')
+assert p.wait() == 0
+count = 0
+for record in git('ls-tree', '-r', '-z', tree).split(b'\0'):
+    if not record:
+        continue
+    info, path = record.split(b'\t')
+    mode, kind, oid = info.split()
+    q = source / path.decode()
+    b = os.readlink(q).encode() if mode == b'120000' else q.read_bytes()
+    assert hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest() == oid.decode()
+    count += 1
+(source / 'node_modules').symlink_to(r / 'node_modules', target_is_directory=True)
+before = (s / 'source-C/src/crdt/accountReceive.ts').read_text()
+after = (source / 'src/crdt/accountReceive.ts').read_text()
+strip_comments = lambda text: '\n'.join(line for line in text.splitlines() if not line.strip().startswith('//'))
+assert strip_comments(before) == strip_comments(after)
+assert (source / 'src/crdt/accountSyncDriver.ts').read_bytes() == (s / 'source-C/src/crdt/accountSyncDriver.ts').read_bytes()
+build_env = dict(os.environ, PATH=str(Path(node).parent) + ':' + os.environ['PATH'],
+                 APP_BUILD_REVISION='67288576b61185aa2eb316123794052b16f63da9',
+                 APP_BUILD_DATE='2026-10-27', VITE_ACCOUNT_BATCH='coordinated-2000',
+                 VITE_ACCOUNT_RETENTION_AUTO='1')
+rows = []
+for name, cmd in [
+    ('types', [node, 'node_modules/typescript/bin/tsc', '-b']),
+    ('build', [node, 'node_modules/vite/bin/vite.js', 'build']),
+    ('budget', [node, 'scripts/check-budget.mjs']),
+    ('isolation', [node, 'scripts/check-origin-isolation.mjs']),
+]:
+    at = time.time_ns() // 1000000
+    with (s / ('activation-' + name + '-build.log')).open('w') as f:
+        result = subprocess.run(cmd, cwd=source, env=build_env, stdout=f, stderr=subprocess.STDOUT)
+    rows.append({'name': name, 'command': cmd, 'startedAt': at,
+                 'completedAt': time.time_ns() // 1000000, 'exitCode': result.returncode})
+    print(name, result.returncode, flush=True)
+    if result.returncode:
+        raise SystemExit(result.returncode)
+identity = {str(p.relative_to(source / 'dist')): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in (source / 'dist').rglob('*') if p.is_file()}
+assert identity == json.loads((s / 'C-client-identity.json').read_text())
+(s / 'activation-build-identity.json').write_text(json.dumps({
+    'sourceTree': tree, 'baseTree': base, 'everyExportedGitBlobExact': count,
+    'accountReceiveExecutableLinesExactToMeasuredC': True,
+    'schedulerSourceByteExactToMeasuredC': True,
+    'allClientFilesByteExactToMeasuredC': True,
+    'client': identity, 'checks': rows,
+    'scope': 'Controlled comparison label, unsigned source. Not a signed release artifact.'
+}, indent=2) + '\n')
+subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=r, check=True)
+print('All', len(identity), 'client artifacts match measured C exactly; real index empty.')

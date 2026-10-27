@@ -16752,3 +16752,21 @@ fall48.44%/75.22%. Maxima still exceed some p95 thresholds; no universal latency
 The experimental combined candidate clears acceptance; actual owner remains disabled until separate
 activation/checks. No release artifact or Android/provider qualification;912/367 remains paused.
 Unsigned117 after116, real index empty; no preview, production, commit or push change.
+
+## 2026-10-27 — Activate the accepted guarded receive budget (phase118)
+
+Composed owner now matches the C constructor accepted in117; all other owners/factory defaults stay.
+Full Vitest174 files/2082 pass/1 existing skip,67 distinct native cases across required modes and152
+metadata cases pass. Types, changed-file lint/format, build/budget/isolation pass.1653 source inputs
+compared; executable/worker artifacts byte-exact to measured C. One map embeds updated comments;
+its initial all-file equality failure and final exact-field diagnosis retained. Broad optional lint
+still fails in three archived files byte-exact to signed HEAD; scoped lint passes, no broad pass claim.
+[Activation, full checks and limitations](performance-experiments/2026-10-27-publication-latch/phase118/README.md).
+Original2.5s and all security/durability gates retained. Ready to begin signed-source/artifact release
+preparation, not a completed release or blanket qualification.912/367 remains paused; no preview or
+production change. Unsigned118 follows117; real index empty, no commit/push/deploy.
+
+Phase118 normal-check follow-up: the initial loop refuses two stale runtime-census uses after owner
+activation; trace is not attempted. Explicit reviewed --record changes only accountReceive.ts hash,
+retaining every other entry/classification and obligation. Initial logs remain in118; rerun all normal
+gates on stable inputs rather than waiving the check.

@@ -1,0 +1,23 @@
+from pathlib import Path
+import subprocess, os, json, time
+
+s = Path(__file__).parent
+r = Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+node = '/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+env = dict(os.environ, PATH=str(Path(node).parent) + ':' + os.environ['PATH'],
+           CHROMIUM_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+steps = [
+    ('activation-native-groups-projection', [node, '--test', '--test-timeout=120000',
+        'test/account-receive/groups.test.mjs', 'test/account-receive/read-projection.test.mjs'], {}),
+]
+rows = []
+for name, cmd, extra in steps:
+    at = time.time_ns() // 1000000
+    with (s / (name + '.log')).open('w') as f:
+        p = subprocess.run(cmd, cwd=r, env={**env, **extra}, stdout=f, stderr=subprocess.STDOUT)
+    rows.append({'name': name, 'command': cmd, 'environment': extra, 'startedAt': at,
+                 'completedAt': time.time_ns() // 1000000, 'exitCode': p.returncode})
+    (s / 'activation-additional-checks.json').write_text(json.dumps(rows, indent=2) + '\n')
+    print(name, p.returncode, flush=True)
+    if p.returncode:
+        raise SystemExit(p.returncode)

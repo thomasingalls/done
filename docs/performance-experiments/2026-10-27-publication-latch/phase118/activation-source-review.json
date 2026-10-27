@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "runtimeTestDependencyFilesCompared": 1653,
+  "onlyDifferenceFromMeasuredC": "src/crdt/accountReceive.ts",
+  "differenceIsCommentsOnly": true,
+  "all8OldBatchingCasesAndHelpersByteExact": true,
+  "differencesFromHeldReference": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/accountSyncDriver.ts",
+    "test/accountBatching.test.ts"
+  ],
+  "localFlushServiceWireAuthorityAndBackoffInputsByteExactToReference": true,
+  "allBroadLintErrorFilesByteExactToSignedHEAD": [
+    "docs/development-evidence/2026-10-23-sidebar-cut-background/reproduction/playwright.sidebar-firefox.config.ts",
+    "docs/development-evidence/2026-10-23-sidebar-overflow/reproduction/playwright.firefox.config.ts",
+    "docs/product-design/2026-10-23-goals-context/editor-assets/editor-study.js"
+  ],
+  "realIndexEmpty": true
+}

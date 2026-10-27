@@ -1,0 +1,30 @@
+from pathlib import Path
+import subprocess, json, hashlib
+
+s = Path(__file__).parent
+r = Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+tree = json.loads((s / 'final-trees.json').read_text())['R']
+paths = [p for p in subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', tree], cwd=r).decode().splitlines()
+         if p.startswith(('src/', 'account-service/', 'account-protocol/', 'scripts/', 'test/', 'vite/', 'wasm/', 'vendor-patches/'))
+         or p in ['package.json', 'pnpm-lock.yaml', 'vite.config.ts', 'Dockerfile']]
+diffs = [p for p in paths if (r / p).read_bytes() != (s / 'source-C' / p).read_bytes()]
+assert diffs == ['src/crdt/accountReceive.ts'], diffs
+strip = lambda t: '\n'.join(v for v in t.splitlines() if not v.strip().startswith('//'))
+assert strip((r / diffs[0]).read_text()) == strip((s / 'source-C' / diffs[0]).read_text())
+assert (r / 'test/accountBatching.test.ts').read_bytes().startswith((s / 'tests-before.ts').read_bytes())
+old = [p for p in paths if (r / p).read_bytes() != (s / 'source-R' / p).read_bytes()]
+assert old == ['src/crdt/accountReceive.ts', 'src/crdt/accountSyncDriver.ts', 'test/accountBatching.test.ts']
+lint = json.loads((s / 'activation-lint-scope.json').read_text())
+for p in lint['pathsWithErrors']:
+    assert subprocess.check_output(['git', 'show', 'HEAD:' + p], cwd=r) == (r / p).read_bytes()
+subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=r, check=True)
+(s / 'activation-source-review.json').write_text(json.dumps({
+    'status': 'passed', 'runtimeTestDependencyFilesCompared': len(paths),
+    'onlyDifferenceFromMeasuredC': diffs[0], 'differenceIsCommentsOnly': True,
+    'all8OldBatchingCasesAndHelpersByteExact': True,
+    'differencesFromHeldReference': old,
+    'localFlushServiceWireAuthorityAndBackoffInputsByteExactToReference': True,
+    'allBroadLintErrorFilesByteExactToSignedHEAD': list(lint['pathsWithErrors']),
+    'realIndexEmpty': True,
+}, indent=2) + '\n')
+print('Activation source comparison passes:', len(paths), 'files; real index empty.')

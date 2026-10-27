@@ -5743,3 +5743,14 @@ composed owner, retaining all quiet-target/authority/cursor/frontier/baseline/ge
 the750ms expiry. No change to local flush policy, verification, server limits, concurrency or retry
 backoff. This replaces the product hold from112 only after activation and affected checks;111 failed
 attempts remain historical failures. Signed-source/artifact release checks are a later operation.
+
+## 2026-10-27 — Activate only the measured composed-owner budget (phase118)
+
+After all12 fixed journeys and the activated-candidate regressions pass, replace112's product hold
+with the exact measured composed-owner constructor. Keep factory/noncomposed defaults,750ms expiry,
+all target/authority/cursor/frontier/baseline/generation fences and pending/idle/own-stream handling.
+Publication latch changes urgency only; durable barriers, wire allocation, verification, local flush
+policy, limits and retry backoff retain their existing authority. Accept the comment-only source-map
+difference through exact-field inspection, without claiming all110 artifact files are byte-identical.
+Release preparation begins with signed-source identity and artifact checks; it is not accomplished
+by this unsigned comparison. Retain optional broad-lint archive failures outside this bounded repair.

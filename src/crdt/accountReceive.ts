@@ -274,9 +274,9 @@ async function openAccountReceiveOwner(
     outstanding: Bytes | undefined;
   let outstandingGroup: Bytes[] = [];
   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
-  // The optional quiet budget failed the two-receiver 2.5s acceptance gate (phase111).
-  // Keep it disabled until publication/discovery pacing clears that gate.
-  const receiveSelection = createReceiveSelection();
+  // Composed owners reuse unchanged quiet proofs within the guarded 750 ms budget.
+  // Publication deadline latching preserves the two-receiver 2.5s acceptance gate (phase117).
+  const receiveSelection = createReceiveSelection(Date.now, composed);
   let outstandingQuiet: object | undefined;
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
