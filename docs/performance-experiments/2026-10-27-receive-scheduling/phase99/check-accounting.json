@@ -1,0 +1,20 @@
+{
+  "finalUnchangedTests": {
+    "vitestSelectionAndSyncScheduler": 31,
+    "nativeBudgetAndHttpBatchAdmission": 22,
+    "distinctCasesTotal": 53
+  },
+  "initialBudgetInvocation": {
+    "passed": 14,
+    "blockedBeforeAssertions": 8,
+    "reason": "Sandbox listen EPERM on127.0.0.1; all22 pass with loopback access. No test edit."
+  },
+  "sourceReplayInitialFailure": "Expected257 own checks, but the model ends at delivery and correctly has256. The native observation includes one final idle sweep before the polling assertion notices completion. Preserve failed source/log; correct only expected model count. No runtime change.",
+  "sourceReplaysAreDiagnosticNotAggregateTestCredit": true,
+  "previous97ChecksNotRerunOrRelabelledAsFresh": true,
+  "qualification": {
+    "obligations": 912,
+    "unresolved": 367,
+    "unchanged": true
+  }
+}

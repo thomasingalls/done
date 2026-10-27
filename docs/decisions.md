@@ -5640,3 +5640,13 @@ unequal device/history load, original latency gates and cold durability/native s
 R,C,C,R journeys bracket drift; correlated keys do not create independent replicates. Bulk replay and
 non-overlapping-session timing stay separate from the complete-peer2.5s realtime gate. No Android/
 phone-opening or generalized qualification inference follows from this finite native desktop study.
+
+## 2026-10-27 — Repair self-read ordering before broader idle-peer scheduling (phase99)
+
+The native trace confirms repeated empty publisher reads and capacity retry gaps. Exact source
+replay shows a smaller defect in existing self-check reuse: an intervening empty peer clears the
+productive flag and defeats a still-recent own check. Select that as the next bounded repair, with
+fresh retained backlog hints, pending-self reconciliation and original non-self turns preserved.
+No implementation or timing win is claimed yet. Keep the bulk-custody reader opt-in because its
+previous adoption criterion failed. A broader remote-peer delay requires its own discovery-latency
+contract and must retain the2.5s acceptance gate, not inherit a delay merely because a poll constant exists.

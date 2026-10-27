@@ -16493,3 +16493,24 @@ that limitation and after-dispatch identity-receipt timing. Independent signatur
 rows, exact exports, reverse accepted writing, sender-closed ordering and offline cold-profile checks
 pass. [Diagnostic](performance-experiments/2026-10-27-receive-scheduling/phase98/README.md).
 No runtime/old-test/policy change or latency acceptance claim;97's original gates remain. No release prep.
+
+## 2026-10-27 — Read scheduling source falsifiers/checkpoint (phase99)
+
+Type-erase the actual production selector and sync scheduler for diagnostic replay. Publisher order
+alone changes fresh self-check reuse:256 own checks before1024-position delivery with own between
+empty peers, versus one immediately after productive work. The real trace includes a final idle
+sweep,257 checks; retain the model's initial off-by-one expectation failure. The unchanged scheduler
+replays49 intermittent unknowns as49 separate1000ms waits, preserving failure backoff against remote
+hints. Real work-budget code still charges every inner read and atomically handles failed top-up.
+
+31 unchanged selection/scheduler and22 unchanged budget/HTTP tests pass. Initial sandbox budget run
+passes14/blocks8 before assertions; all22 pass with loopback access and both logs remain. Every905
+old test/helper file, runtime input and110 client assets remain exact. Prior bulk-reader negative
+adoption evidence remains authoritative; new stack samples do not enable it. [Counterexamples and
+next repair contract](performance-experiments/2026-10-27-receive-scheduling/phase99/README.md).
+
+Select publisher-order-independent self-read suppression as the next small repair, using only fresh
+retained peer backlog hints and existing verified-own/pending-self/clock/reset fences. Other peer
+turns, authority checks, rates and original latency gates must remain; broader peer deferral needs
+separate liveness design. No software/policy change, aggregate test credit, release preparation or
+deployment.98/99 are prepared sequential diagnostic patches after97; all912/367 obligations/blocks stay.

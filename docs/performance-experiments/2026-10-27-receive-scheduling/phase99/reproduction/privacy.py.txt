@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');fixture=json.loads((r/'private-fixture/fixture.json').read_text());secrets=set()
+for a in fixture['accounts']:
+ for d in a['actors']:
+  secrets.add(d['code'])
+  for c in d['credentials']:secrets.add(c['privateKey'])
+  def visit(v):
+   if isinstance(v,dict):
+    for k,x in v.items():
+     if isinstance(x,str)and any(t in k.lower()for t in ['privatekey','secret','resumekey','ticket','bearer','token'])and len(x)>20:secrets.add(x)
+     visit(x)
+   elif isinstance(v,list):
+    for x in v:visit(x)
+   elif isinstance(v,str):
+    try:visit(json.loads(v))
+    except Exception:pass
+  visit(d['storage'])
+found=[];count=0
+for p in(repo/'docs/performance-experiments/2026-10-27-receive-scheduling').rglob('*'):
+ if not p.is_file():continue
+ b=p.read_bytes();b=gzip.decompress(b)if p.suffix=='.gz'else b;count+=1
+ for s in secrets:
+  if s.encode()in b:found.append(str(p.relative_to(repo)));break
+assert not found,found
+(r/'privacy-review.json').write_text(json.dumps({'status':'passed','filesReviewed':count,'knownPrivateFixtureValuesChecked':len(secrets),'noKnownCodesCredentialPrivateKeysOrNamedSecretsInRetainedEvidence':True,'scope':'Known fixture-value scan plus manual closed-label/numeric artifact review, not universal DLP.'},indent=2)+'\n');print('Known-private-value review passes',count,'files')
