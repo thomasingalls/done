@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "actualShapes": [
+    {
+      "label": "H",
+      "planningCardsActuallyExported": 24,
+      "actualGoalsCharacters": 5000,
+      "acceptedBacklogPositions": 1024
+    },
+    {
+      "label": "M",
+      "planningCardsActuallyExported": 12,
+      "actualGoalsCharacters": 4157,
+      "acceptedBacklogPositions": 256
+    },
+    {
+      "label": "Q",
+      "planningCardsActuallyExported": 6,
+      "actualGoalsCharacters": 1049,
+      "acceptedBacklogPositions": 32
+    }
+  ],
+  "largeGoalsRequestNotFullyEstablished": true
+}

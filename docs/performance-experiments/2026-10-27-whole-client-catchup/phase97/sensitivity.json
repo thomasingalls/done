@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "faults": [
+    {
+      "fault": "peer-delay",
+      "unchanged2500msGateRejects": true,
+      "otherCandidateNoFaultPreserved": true
+    },
+    {
+      "fault": "missing-peer",
+      "missingObservationsCannotPassCompletePeerGate": true,
+      "analyzerExitCode": 0
+    },
+    {
+      "fault": "cold-record-changed",
+      "independentReviewerRejects": true
+    }
+  ],
+  "scope": "Only disposable copies of raw reports are faulted; measured data and frozen apparatus stay unchanged."
+}

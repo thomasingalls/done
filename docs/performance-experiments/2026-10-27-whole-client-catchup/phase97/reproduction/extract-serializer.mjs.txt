@@ -1,0 +1,2 @@
+import{readFileSync,writeFileSync}from'node:fs';import vm from'node:vm';import{join}from'node:path';
+const src=readFileSync(join(process.argv[2],'node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/coreBundle.js'),'utf8');const line=src.split('\n').find(l=>l.trim().startsWith("source10 = '")&&l.includes('storageScript_exports'));if(!line)throw Error('Pinned serializer missing');writeFileSync(new URL('./playwright-storage-source.txt',import.meta.url),vm.runInNewContext('('+line.trim().slice('source10 = '.length,-1)+')'));

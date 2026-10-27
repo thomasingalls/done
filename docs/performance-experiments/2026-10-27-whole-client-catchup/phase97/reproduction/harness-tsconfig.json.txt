@@ -1,0 +1,11 @@
+{
+  "extends": "../source-C/tsconfig.app.json",
+  "compilerOptions": {
+    "composite": false
+  },
+  "include": [
+    "test/account-continuation-lab",
+    "test/device-enrollment/helpers.ts",
+    "test/geometry/openApp.ts"
+  ]
+}

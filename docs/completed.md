@@ -16453,3 +16453,26 @@ preflight failures; keyed comparison retains all values/IndexedDB assertions. [P
 Freeze serial R,C,C,R heavy/editing and non-overlap journeys, original16ms/2.5s/30s/600s/120s gates and
 all durability/isolation/authority checks. No timing acceptance yet, real data access, app repair,
 qualification credit or release preparation. Existing preview/API/data remain untouched.
+
+## 2026-10-27 — Whole-client catch-up comparison (phase97)
+
+All eight fixed rebuilt-client journeys pass: four unequal-device/history catch-up/editing runs and
+four non-overlapping sessions in both directions. Original16ms local/2.5s complete peer/30s delivery/
+600s replay/120s continuation stay unchanged. Candidate peer p95.746–.767s, local5.0–5.5ms; reference
+peer.711–.761s/local4.4–4.8ms. Candidate maximum contended replay220–223s and non-overlap1024-position
+replay145s are essentially reference. **No whole-client speedup established.** Keep the higher local
+observations visible and do not infer phone or population effects from two journeys per arm/workload.
+
+Exact exports, sealed-record prefixes, pending offline same-profile cold reopen without reinjection,
+automatic convergence, reverse writes, undo/redo, isolation and independent native signatures/prefixes
+all pass. Delayed/missing peer observations, a false cold-record guard and a tampered envelope nonce
+are detected by the relevant independent gates/auditor. All905 existing test/helper files and29373
+mounted source/script/doc files match95;13 ordinary checks pass and all912 obligations/367 unresolved
+blocks remain. [Evidence and limits](performance-experiments/2026-10-27-whole-client-catchup/phase97/README.md).
+
+The old large Goals seed requested~13k but exported5000 before invitation. The actual fixture is
+verified and identical across arms; retain the shortfall/setup-readiness limitation, not a13k claim.
+A small metadata review overlaps late C2 replay; no build/test suite overlaps measurement. Roughly
+1540 read requests for one1024-position receiver make scheduling/application verification the next
+bounded trace candidate, without causal attribution from counts alone.96/97 stay sequential unsigned
+patches; preview remains92 UX. No old tests/runtime changed, release preparation or deployment.

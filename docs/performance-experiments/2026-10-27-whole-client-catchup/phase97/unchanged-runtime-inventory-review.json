@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "runtimeAndEveryExistingTestExactTo95": true,
+  "realIndexEmpty": true,
+  "rows": [
+    {
+      "path": "docs/account-crypto/census.json",
+      "sha256": "7388bb71fa530c67dec75ad5eb5a3f94b9bed99befbfd4de84b416cd11ea7c9c",
+      "unchangedFrom95": true
+    },
+    {
+      "path": "docs/account-crypto/constructions.json",
+      "sha256": "26116749d9508ad7a248e2cafe08e67062a621c010720253038b78a9e01583b6",
+      "unchangedFrom95": true
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "05523514c5a5f0cc0dee93a6df45f8b6bbe2211b5236b0ae27f99cdd66aee704",
+      "unchangedFrom95": true
+    },
+    {
+      "path": "docs/release-validation-manifest.json",
+      "sha256": "045df6f66a48d2e33291bd10378b0993e0955b6ab7afdf7ee1e5c73c57891294",
+      "unchangedFrom95": true
+    },
+    {
+      "path": "scripts/release-validation/general-tests.json",
+      "sha256": "1716abc56378678d4ab8438ade91d829f39202e9d64ebcb3ab5eaa449956077d",
+      "unchangedFrom95": true
+    },
+    {
+      "path": "scripts/release-validation/playwright-adapter.mjs",
+      "sha256": "9cd1480dc8d0556e7b9411b140e7800ffc1471a48d2f3a2dea69e044314924c6",
+      "unchangedFrom95": true
+    }
+  ],
+  "reviewToolCaveat": "Initial git diff TREE treated five prior untracked regression files as absent from the real index. Corrected review uses a temporary95 index to compare actual working bytes; none changed."
+}

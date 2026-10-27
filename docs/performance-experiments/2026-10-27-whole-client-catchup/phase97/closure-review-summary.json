@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "allMountedSourceDocsScriptFilesMatchFrozenCTree": true,
+  "mounts": [
+    "account-service",
+    "account-protocol",
+    "src",
+    "scripts",
+    "docs"
+  ],
+  "completeMountedFilesChecked": 29373,
+  "allExistingTestAndHelperFilesExact": 905,
+  "sourceTree": "761f4f9669b8208bcea1d5263a53d50047bb6adb"
+}

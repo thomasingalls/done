@@ -1,0 +1,29 @@
+from pathlib import Path
+import json,shutil,subprocess,sys
+r=Path(__file__).parent;faultRoot=r/'sensitivity';faultRoot.mkdir(exist_ok=False);plan=json.loads((r/'run-plan.json').read_text());rows=[]
+for name in ['peer-delay','missing-peer','cold-record-changed']:
+ d=faultRoot/name;d.mkdir();shutil.copy(r/'run-plan.json',d/'run-plan.json');shutil.copy(r/'analyze.py',d/'analyze.py');shutil.copy(r/'review-evidence.py',d/'review-evidence.py')
+ for c in plan:
+  out=d/c['name'];out.mkdir();x=json.loads((r/c['name']/'result.json').read_text())
+  if c['name']=='heavy-2-C':
+   if name=='peer-delay':
+    for v in x['probesAtDeadline'][1]['lengths']:
+     if v['at']>x['startedAt']:v['at']+=3000
+   elif name=='missing-peer':
+    x['probesAtDeadline'][1]['lengths']=[v for v in x['probesAtDeadline'][1]['lengths']if v['at']<=x['startedAt']];x['originalDeliveryPassed']=False;x['backgroundReplayPassed']=False
+   else:x['offlineColdWriterReopen']['retainedDeliveryByteExact']=False
+  (out/'result.json').write_text(json.dumps(x));shutil.copy(r/c['name']/'container-identity.json',out/'container-identity.json')
+ with(d/'analyze.log').open('w')as f:p=subprocess.run([sys.executable,str(d/'analyze.py')],stdout=f,stderr=subprocess.STDOUT)
+ if name=='cold-record-changed':
+  assert p.returncode==0
+  with(d/'review.log').open('w')as f:q=subprocess.run([sys.executable,str(d/'review-evidence.py')],stdout=f,stderr=subprocess.STDOUT)
+  assert q.returncode!=0;rows.append({'fault':name,'independentReviewerRejects':True})
+ elif name=='peer-delay':
+  assert p.returncode==0;x=json.loads((d/'analysis.json').read_text());c=next(v for v in x['runs']if v['name']=='heavy-2-C');assert not c['gates']['peerP95']and not x['heavyFairnessAcceptance'];rows.append({'fault':name,'unchanged2500msGateRejects':True,'otherCandidateNoFaultPreserved':True})
+ else:
+  # A missing-complete-series case may fail structural consistency before producing a report;
+  # it must never receive complete-peer acceptance.
+  if p.returncode==0:
+   x=json.loads((d/'analysis.json').read_text());c=next(v for v in x['runs']if v['name']=='heavy-2-C');assert not c['peerSampleComplete']and not c['gates']['peerP95']and not x['heavyFairnessAcceptance']
+  rows.append({'fault':name,'missingObservationsCannotPassCompletePeerGate':True,'analyzerExitCode':p.returncode})
+(r/'sensitivity.json').write_text(json.dumps({'status':'passed','faults':rows,'scope':'Only disposable copies of raw reports are faulted; measured data and frozen apparatus stay unchanged.'},indent=2)+'\n');print(json.dumps(rows))

@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "freezeIdentityHelperPassesInShadowWithoutChangingFrozenIdentity": true,
+  "newPythonHelperSyntaxParsed": true,
+  "serializerExtractorSyntaxChecked": true,
+  "originalMeasurementIdentitySha256": "8853dc848b5ae585944a38b0f7528ce8ad2ed213c7bb9f95940b3c99f7c87ad8"
+}

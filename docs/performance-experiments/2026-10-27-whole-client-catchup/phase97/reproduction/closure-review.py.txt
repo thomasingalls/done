@@ -1,0 +1,14 @@
+from pathlib import Path
+import subprocess,json,hashlib
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');r=Path(__file__).parent;tree='761f4f9669b8208bcea1d5263a53d50047bb6adb';rows=[];oldTests=0
+raw=subprocess.check_output(['git','ls-tree','-r','-z',tree,'--','account-service','account-protocol','src','scripts','docs','test'],cwd=repo)
+for record in raw.split(b'\0'):
+ if not record:continue
+ meta,path=record.split(b'\t');mode,kind,oid=meta.decode().split();path=path.decode()
+ if kind!='blob':continue
+ if path.startswith('test/'):
+  b=(repo/path).read_bytes();oldTests+=1
+ else:b=(r/'source-C'/path).read_bytes()
+ actual=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();assert actual==oid,path
+ if not path.startswith('test/'):rows.append({'path':path,'gitBlob':oid,'sha256':hashlib.sha256(b).hexdigest()})
+(r/'closure-review.json').write_text(json.dumps({'status':'passed','allMountedSourceDocsScriptFilesMatchFrozenCTree':True,'mounts':['account-service','account-protocol','src','scripts','docs'],'completeMountedFilesChecked':len(rows),'allExistingTestAndHelperFilesExact':oldTests,'sourceTree':tree,'rows':rows},indent=2)+'\n');print('Mounted closure',len(rows),'files; existing tests/helpers',oldTests,'exact')
