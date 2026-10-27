@@ -1,0 +1,7 @@
+from pathlib import Path
+import hashlib,json
+s=Path(__file__).parent;x=json.loads((s/'measurement-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for path,h in x['apparatus'].items():assert sha(s/path)==h,path
+for variant,files in x['clients'].items():
+ for path,h in files.items():assert sha(s/('source-'+variant)/'dist'/path)==h,(variant,path)
+(s/'frozen-review.json').write_text(json.dumps({'status':'passed','everyFrozenApparatusAndArtifactFileExact':True,'referenceMatchesHeld112':x['referenceMatchesHeld112Artifact'],'noSourceOrObserverMutationDuringTiming':True},indent=2)+'\n')

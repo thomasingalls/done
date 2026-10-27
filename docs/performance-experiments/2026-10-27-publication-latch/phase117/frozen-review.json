@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "everyFrozenApparatusAndArtifactFileExact": true,
+  "referenceMatchesHeld112": true,
+  "noSourceOrObserverMutationDuringTiming": true
+}

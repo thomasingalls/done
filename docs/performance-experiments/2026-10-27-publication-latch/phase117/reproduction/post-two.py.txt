@@ -1,0 +1,7 @@
+from pathlib import Path
+import subprocess,json
+s=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';steps=[('two-analysis',['python3',str(s/'analyze-two.py')]),('two-independent-time',['python3',str(s/'review-late.py')]),('two-resource-fidelity',['python3',str(s/'late-fidelity.py')]),('two-native',[node,str(s/'audit-late.mjs')]),('two-frozen',['python3',str(s/'check-frozen.py')])];rows=[]
+for name,cmd in steps:
+ with(s/(name+'.log')).open('w')as f:p=subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'exitCode':p.returncode});(s/'post-two-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

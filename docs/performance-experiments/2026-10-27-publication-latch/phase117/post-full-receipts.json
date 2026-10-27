@@ -1,0 +1,66 @@
+[
+  {
+    "name": "full-heavy-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/analyze.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-nonoverlap-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/nonoverlap-analysis.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-budget-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/analyze-budget.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-independent-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/review-evidence.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-fidelity",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/fidelity.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-native",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-publication-latch-20261027/audit-native.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-nonoverlap-native",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-publication-latch-20261027/audit-nonoverlap.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "full-frozen",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/check-frozen.py"
+    ],
+    "exitCode": 0
+  }
+]

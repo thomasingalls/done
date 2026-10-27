@@ -1,0 +1,42 @@
+[
+  {
+    "name": "two-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/analyze-two.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "two-independent-time",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/review-late.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "two-resource-fidelity",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/late-fidelity.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "two-native",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/private/tmp/done-publication-latch-20261027/audit-late.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "two-frozen",
+    "command": [
+      "python3",
+      "/private/tmp/done-publication-latch-20261027/check-frozen.py"
+    ],
+    "exitCode": 0
+  }
+]

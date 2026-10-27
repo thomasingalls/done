@@ -5733,3 +5733,13 @@ or a send prelude runs. Keep the shared batchWindow helper untouched because loc
 has a separately measured policy. A deadline remains urgency, not persistence or allocation authority.
 Existing failure clocks and sealed retries stay; one-statement omission proves expiry sensitivity.
 Full rebuilt-client gates still decide acceptance; do not enable quiet reuse from model/unit results.
+
+## 2026-10-27 — Accept combined publication latch and guarded quiet budget for adoption
+
+Phase117 meets all prospectively retained2.5s/16ms/data/continuation gates in the four two-receiver
+and eight broader journeys. Both throughput paired directions exceed reference drift; native bytes
+and independent signature/prefix checks pass. Permit a separate activation of the exact tested
+composed owner, retaining all quiet-target/authority/cursor/frontier/baseline/generation fences and
+the750ms expiry. No change to local flush policy, verification, server limits, concurrency or retry
+backoff. This replaces the product hold from112 only after activation and affected checks;111 failed
+attempts remain historical failures. Signed-source/artifact release checks are a later operation.

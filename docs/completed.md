@@ -16740,3 +16740,15 @@ artifact/worker identities and all original2.5s/data gates frozen before dispatc
 original-eight comparison required before activation; no timing-driven repeat.
 [Inputs and scope](performance-experiments/2026-10-27-publication-latch/phase116/README.md).
 Product reuse held off; results pending. Unsigned116 after115; qualification paused, no release prep.
+
+## 2026-10-27 — Publication latch clears the two-receiver blocker (phase117)
+
+All12 fixed journeys pass with unchanged gates, complete input series, native signatures/prefixes,
+seed byte identity, same-profile cold reopen and pending continuation. Candidate two-receiver peer
+p95 upper bounds2047.5/2367.2ms normal/withheld; local8.1/9.0ms. Heavy/non-overlap median replay
+gains30.18%/38.48%, exceeding reference drift with both paired directions agreeing; quiet requests
+fall48.44%/75.22%. Maxima still exceed some p95 thresholds; no universal latency claim.
+[Raw journeys, audits and limitations](performance-experiments/2026-10-27-publication-latch/phase117/README.md).
+The experimental combined candidate clears acceptance; actual owner remains disabled until separate
+activation/checks. No release artifact or Android/provider qualification;912/367 remains paused.
+Unsigned117 after116, real index empty; no preview, production, commit or push change.
