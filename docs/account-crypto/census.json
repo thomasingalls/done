@@ -213,7 +213,7 @@
     },
     {
       "path": "account-service/backup/b2.ts",
-      "sha256": "ae4b00154949655b4776d3b173aa04c8e726e4e4884e92c5828dcf092923510a"
+      "sha256": "482169690d3ddbd0307395f386355b091c98446607e75c0710d9fd7bba795b49"
     },
     {
       "path": "account-service/backup/config.ts",
@@ -221,7 +221,7 @@
     },
     {
       "path": "account-service/backup/cycle.ts",
-      "sha256": "74a030f9ff498258ad43e61415fa58b187800f3378844ccfda763141d68c29ca"
+      "sha256": "1a026aa3a1174c1a8da02ff4e5c31f3e61a4fd3db14da8eada328a67f151a12b"
     },
     {
       "path": "account-service/backup/owner.ts",

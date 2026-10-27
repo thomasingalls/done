@@ -15,6 +15,8 @@ import { b2Fixture } from './b2-fixture.mjs';
 
 process.umask(0o077);
 test('real encrypted pipeline uses version readback; failures never authorize pruning or lose pending changes', async (t) => {
+  t.mock.timers.enable({ apis: ['Date'], now: Date.now() });
+  const advance = (ms = 3600000) => t.mock.timers.tick(ms);
   const root = mkdtempSync(join(tmpdir(), 'done-b2-'));
   const options = {
     directory: join(root, 'state'),
@@ -87,9 +89,11 @@ test('real encrypted pipeline uses version readback; failures never authorize pr
   assert.equal(fixture.files.size, 0);
   fixture.controls.broadKey = false;
   fixture.controls.badUploadHost = true;
+  advance(30000);
   await cycle.tick();
   assert.equal(fixture.files.size, 0);
   fixture.controls.badUploadHost = false;
+  advance(60000);
   await cycle.tick();
   assert.equal(cycle.health().backups, 1);
   assert(cycle.health().healthy);
@@ -130,21 +134,18 @@ test('real encrypted pipeline uses version readback; failures never authorize pr
   assert.equal(cycle.health().backups, 1);
   assert(fixture.files.has(old.fileId));
   fixture.controls.corruptDownload = true;
+  advance();
   await cycle.tick();
   assert.equal(cycle.health().backups, 1);
   assert(fixture.files.has(old.fileId));
   assert.equal(fixture.events.filter((e) => e.method === 'b2_delete_file_version').length, 0);
   fixture.controls.corruptDownload = false;
+  advance();
   const unverified = {
     ...old,
     fileId: randomUUID(),
     fileName:
-      namespace +
-      (Date.now() - 3600000) +
-      '-' +
-      '01'.repeat(16) +
-      '-' +
-      first.fileName.split('-').at(-1),
+      namespace + Date.now() + '-' + '01'.repeat(16) + '-' + first.fileName.split('-').at(-1),
     bytes: Buffer.from(first.bytes),
   };
   unverified.bytes[unverified.bytes.length - 1] ^= 1;
@@ -160,16 +161,40 @@ test('real encrypted pipeline uses version readback; failures never authorize pr
   );
   unverified.bytes = Buffer.from(first.bytes);
   fixture.controls.failDelete = true;
+  advance();
   await cycle.tick();
   assert.equal(cycle.health().backups, 2);
   assert.equal(cycle.health().lastFailureStage, 'retention');
   fixture.controls.failDelete = false;
+  advance();
   await cycle.tick();
   assert.equal(cycle.health().backups, 2);
   assert(cycle.health().healthy);
   assert(!fixture.files.has(old.fileId));
   assert(fixture.files.has(foreign.fileId));
   assert(fixture.files.has(unknown.fileId));
+  advance();
+  fixture.controls.downloadQuota = true;
+  await cycle.tick();
+  assert.equal(cycle.health().lastFailureStage, 'remote-verify');
+  assert.equal(cycle.health().quotaBlocked, true);
+  const capEvents = fixture.events.length;
+  advance(300000);
+  await cycle.tick();
+  assert.equal(
+    fixture.events.length,
+    capEvents,
+    'actual B2 cap reply suppresses repeated provider calls',
+  );
+  fixture.controls.downloadQuota = false;
+  advance(cycle.health().remoteRetryAt - Date.now());
+  await cycle.tick();
+  assert.equal(cycle.health().backups, 2, 'quota recovery reuses the uploaded version');
+  assert(cycle.health().healthy);
+  const retained = readdirSync(work);
+  assert.equal(retained.length, 1);
+  assert.deepEqual(readdirSync(join(work, retained[0])), ['payload.age']);
+  await cycle.close();
   assert.deepEqual(readdirSync(work), []);
   assert(
     fixture.events
@@ -208,7 +233,7 @@ test('overlapping ticks coalesce; a late write stays dirty; close aborts transfe
     verify: async () => {},
     list: async () => [],
     delete: async () => {},
-    upload: async (_path, _name, _digest, signal) => {
+    put: async (_path, _name, _digest, signal) => {
       uploadCalls++;
       await new Promise((resolve, reject) =>
         signal.addEventListener('abort', () => reject(Error('aborted')), { once: true }),
@@ -219,7 +244,11 @@ test('overlapping ticks coalesce; a late write stays dirty; close aborts transfe
     { workDirectory: root, sourceRevision: '12'.repeat(20), recipient: 'unused' },
     source,
     store,
-    async () => ({ bytes: 1, sha256: 'ab'.repeat(32), sha1: 'ab'.repeat(20) }),
+    async (_directory, path) => {
+      writeFileSync(path, 'x', { mode: 0o600 });
+      const { fileDigest } = await import('../../account-service/backup/snapshot.ts');
+      return fileDigest(path);
+    },
   );
   const first = cycle.tick();
   assert.equal(cycle.tick(), first);

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 546,
-    "requiredTestFiles": 540,
+    "testFiles": 547,
+    "requiredTestFiles": 541,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -12072,6 +12072,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/public-backup/cadence.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/public-backup/cadence.test.mjs"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/public-backup/pipeline.test.mjs",
       "status": "required",
       "invocation": {
@@ -19598,7 +19608,11 @@
     },
     {
       "path": "test/public-backup/b2-fixture.mjs",
-      "sha256": "6fa242cdd40ddffebf6a08b7ba7542199fe562543cfece714b572866cc46228e"
+      "sha256": "67dfbc35d41a580477c902d9f4631dce62ff6fa24d9a50f5beb1c2617f4377a6"
+    },
+    {
+      "path": "test/public-backup/cadence.test.mjs",
+      "sha256": "d6bc94e6cd9aeebea9a519e19e89f790a5d8e1ca11b9056ad2eaa30d3b673c4f"
     },
     {
       "path": "test/public-backup/fixture-network.mjs",
@@ -19606,7 +19620,7 @@
     },
     {
       "path": "test/public-backup/pipeline.test.mjs",
-      "sha256": "437cfc3cd1543e97fff4e871e518de97ac8dfc2c5fa46547a76447ba6f948961"
+      "sha256": "1b0a3138204c7e6f9b274e5c51464ed8796d3fa30ad99af81f1c3df3cc4387d9"
     },
     {
       "path": "test/public-backup/snapshot.test.mjs",

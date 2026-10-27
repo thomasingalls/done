@@ -16377,3 +16377,13 @@ No release preparation or actual-phone performance conclusion follows from these
 Implemented per-card33%/100% interaction opacity. Eight desktop/mobile-emulation card cases pass,
 including unchanged geometry and guard checks. [Evidence](development-evidence/2026-10-26-navigation-backup-startup/89-done/README.md).
 Development only; release preparation remains on hold.
+
+## 2026-10-26 — Backup verification cadence and quota backoff (phase90)
+
+Implemented separate receipt/readback credit, hourly remote cycles, five-minute encrypted local checks,
+quota circuits and transient backoff. Plaintext cleanup, namespace/pin/exact-version/keeper checks and
+maintenance's immediate verification remain.22 backup/maintenance/restore cases and7 subsequent cadence/
+pipeline cases pass; two deliberate cadence/circuit faults are detected. Failed attempts remain recorded.
+[Evidence](development-evidence/2026-10-26-navigation-backup-startup/90-backups/README.md).
+The new cadence file receives no aggregate qualification credit pending adapter review. No deployment or
+cap change. The verified recovery point may lag writing by an hour under the operator's chosen policy.

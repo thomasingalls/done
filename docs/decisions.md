@@ -5595,3 +5595,14 @@ leaf-sibling and close-on-select presentation only, not writing/admission behavi
 
 The operator selects33% resting opacity and100% while interacting. Apply this to the individual
 card, including focus within and explicit editing/reordering state, without changing layout or guards.
+
+## 2026-10-26 — Hourly backup verification, five-minute local checks (phase90)
+
+The operator selects one remote verification cycle/hour, including unfamiliar retained keepers. Uploads
+remain independent and prompt; receipt credit is distinct from exact-readback backup credit. Keep
+immediate verification for explicit maintenance backups. Local checksum checks cannot prove restoreability
+without the separately held recovery key and cannot grant pruning. Keep every anchor/keeper/listing fence.
+A download cap pauses reads/pruning until UTC reset, allowing new uploads; broader caps pause provider
+calls. Transient failures back off. Caches/backoff remain process-local: restart requires a fresh proof.
+Health means the selected upload/local-check/hourly-remote-check policy, with pending verification and
+actual verified recovery-point age exposed; it does not mean every newly uploaded byte is verified.

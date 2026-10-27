@@ -12,6 +12,7 @@ export async function b2Fixture(config) {
     loseUploadReply: false,
     repeatedCursor: false,
     failDelete: false,
+    downloadQuota: false,
   };
   const server = createServer(async (req, res) => {
     try {
@@ -82,6 +83,12 @@ export async function b2Fixture(config) {
             : 'https://pod-001.backblaze.com/b2api/v4/b2_upload_file',
         });
       if (method === 'b2_download_file_by_id') {
+        if (controls.downloadQuota) {
+          res
+            .writeHead(403, { 'Content-Type': 'application/json' })
+            .end(JSON.stringify({ code: 'download_cap_exceeded' }));
+          return;
+        }
         const file = files.get(url.searchParams.get('fileId'));
         if (!file) {
           res.writeHead(404).end();
