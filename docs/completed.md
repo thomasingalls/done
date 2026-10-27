@@ -16571,3 +16571,17 @@ byte/deadline/drain/abort/retry/commit/security checks and912/367 qualification 
 No extra whole-client gain is claimed:100's eight-journey comparison is a different immutable tree.
 Run normal checks and build the complete103 snapshot next. Sequential unsigned103 after102; no
 signing, push, preview update, release preparation or deployment.
+
+## 2026-10-27 — Final local source/build checkpoint (phase104)
+
+The full103 snapshot passes types/build/budget/origin and yields110 hashed client files. All1640
+runtime/test/helper/dependency files match both checkout and build export.13 ordinary source checks
+pass;103's53 focused unit,17 native encrypted browser and81 metadata cases remain the affected
+functional evidence. All old tests/assertions and912 obligations/367 blocks remain; no aggregate
+qualification resumption. Ordered100–103 replay matches every hash/tree and current file with the
+real index empty. Final104 replay is an external sidecar, avoiding a self-hashing record.
+[Build/checkpoint](performance-experiments/2026-10-27-self-read-order/phase104/README.md).
+
+Self-read repair improves this small local engineering comparison; do not extend it to phone/WAN
+or credit the separate large-payload repair with unmeasured gains. Unsigned sequential100–104 are
+prepared for later staging/signing. No commit/push, preview/API restart, release prep or deployment.

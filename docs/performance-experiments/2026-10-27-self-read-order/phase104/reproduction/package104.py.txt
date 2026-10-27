@@ -1,0 +1,49 @@
+from pathlib import Path
+import json,gzip
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-self-read-order/phase104';e.mkdir(exist_ok=False);c=e/'checks';c.mkdir();repro=e/'reproduction';repro.mkdir()
+for n in ['followup-build-receipts.json','followup-client-identity.json','followup-source-review.json','scoped-fresh-results.json','replay-103.json']:(e/n).write_bytes((s/n).read_bytes())
+for n in ['build-followup.py','development-checks-scoped.py','replay.py','package104.py']:(repro/(n+'.txt')).write_bytes((s/n).read_bytes())
+for p in list(s.glob('followup-*.log'))+list(s.glob('scoped-fresh-*.log')):(c/(p.name+'.gz')).write_bytes(gzip.compress(p.read_bytes(),mtime=0))
+(e/'README.md').write_text('''# Phase104 — Complete build and final source checkpoint
+
+Export immutable103 tree75d52e5454f645b6117b02a93e255ddcb19ab789 to a new disposable directory.
+Build all of it with the same explicit local metadata/flags and dependencies as the preceding
+comparison. Types, full build, size budget and origin scan pass;110 complete client artifacts are
+hashed independently. All1640 runtime/test/helper/dependency files are exact in the checkout and
+export. No source changes after freezing103. This is an unsigned local validation build, with no
+image publication or release preparation.100's frozen measured artifacts are left unchanged.
+
+All13 normal source/static checks pass, including authority map, source census, inventory, manifest,
+traceability and the new build's budget/origin.103 already records53 focused unit cases,17 unchanged
+encrypted browser cases and81 metadata cases, all passing with13 appended regressions and unchanged
+old assertions. No broad suite or aggregate qualification credit follows:912 obligations and367
+unresolved blocks remain, general qualification paused.
+
+Ordered replay through103 independently verifies each patch SHA, base/result tree, exact cumulative
+checkout and an empty real index. The final104 replay receipt and five-patch map accompany the
+immutable patch files outside the repository to avoid a self-hashing artifact. Private browser/API
+state, test codes and private keys remain outside Git; known-value privacy checks accompany this
+packet and are not universal DLP. Preserve all earlier failed falsifiers and source-check attempts.
+
+100/101/102 fix and measure fresh own-read reuse: about87% fewer H1 own attempts and about10% faster
+local bulk catch-up, all original16ms/2.5s/30s/600s/120s gates and preservation checks retained.103
+separately keeps large-payload fallback with its publisher, retaining endpoint-wide404. The latter
+is not in the eight measured journeys; no additional whole-client gain is claimed. See102/103 for
+exact outcomes, boundaries and fixture/population limitations.
+
+Sequential unsigned104 after103. Real index stays empty; no signed commit, push, preview/API update,
+merge, deployment, generalized qualification resumption or release preparation.
+''')
+(r/'docs/performance-experiments/2026-10-27-self-read-order/README.md').write_text('''# Publisher-order-independent receiving — 2026-10-27
+
+[100: self-read repair and regressions](phase100/README.md) →
+[101: rebuilt clients and prospective protocol](phase101/README.md) →
+[102: eight journeys and independent audits](phase102/README.md) →
+[103: publisher-specific aggregate-size fallback](phase103/README.md) →
+[104: complete local build and final checks](phase104/README.md).
+
+Self-read attempts fall about87%; this local comparison observes about10% faster bulk catch-up.
+Every original latency/preservation gate remains. The separate size-fallback repair passes focused
+checks; its further whole-client effect is unmeasured. No release preparation or deployment.
+''')
+with (r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Final local source/build checkpoint (phase104)\n\nThe full103 snapshot passes types/build/budget/origin and yields110 hashed client files. All1640\nruntime/test/helper/dependency files match both checkout and build export.13 ordinary source checks\npass;103's53 focused unit,17 native encrypted browser and81 metadata cases remain the affected\nfunctional evidence. All old tests/assertions and912 obligations/367 blocks remain; no aggregate\nqualification resumption. Ordered100–103 replay matches every hash/tree and current file with the\nreal index empty. Final104 replay is an external sidecar, avoiding a self-hashing record.\n[Build/checkpoint](performance-experiments/2026-10-27-self-read-order/phase104/README.md).\n\nSelf-read repair improves this small local engineering comparison; do not extend it to phone/WAN\nor credit the separate large-payload repair with unmeasured gains. Unsigned sequential100–104 are\nprepared for later staging/signing. No commit/push, preview/API restart, release prep or deployment.\n''')
