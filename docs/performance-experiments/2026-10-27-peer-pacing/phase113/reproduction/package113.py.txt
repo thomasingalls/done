@@ -1,0 +1,45 @@
+from pathlib import Path
+import json,gzip,hashlib,subprocess
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-peer-pacing/phase113';e.mkdir(parents=True);(e/'reproduction').mkdir();(e/'checks').mkdir()
+for n in ['protocol.md','model-protocol.md','input-identity.json','source-sites.json','source-pin-review.json','scheduler-inputs.json']:(e/n).write_bytes((s/n).read_bytes())
+for n in ['attribution.py','analyze-retained.py','analyze-refusals.py','test-attribution.py','scheduler-probe.mjs','budget-probe.mjs','review-attribution.py','source-sites.py','package113.py']:(e/'reproduction'/(n+'.txt')).write_bytes((s/n).read_bytes())
+for n in ['attribution-tests.log']:(e/'checks'/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+commits=json.loads((s/'signed-commits.json').read_text());verification=json.loads((s/'signature-verification.json').read_text());assert len(commits['rows'])==len(verification)==31;assert all(v['exit']==0 for v in verification)
+(e/'signed-source.json').write_text(json.dumps({'baseHead':commits['baseHead'],'signedAndPushedHead':'1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659','remote':'git@github.com:thomasingalls/done.git','branch':'codex/reduce-goals-context-overhead','commits':[{'phase':v['phase'],'commit':v['commit'],'expectedTree':v['expectedTree'],'preparedPatchSha256':v['sha256'],'sshSignatureIndependentlyVerified':True}for v in commits['rows']],'all31TreesMatchPreparedSequence':True,'checkoutCleanAfterPush':True,'pushVerifiedBySuccessAndMatchingUpstream':True,'noMergeOrDeployment':True},indent=2)+'\n')
+(e/'checks/push.log.gz').write_bytes(gzip.compress((s/'push.log').read_bytes(),mtime=0))
+(e/'README.md').write_text('''# Phase113 — Pushed signed source and retained-trace attribution contract
+
+All31 application patches82–112 are signed, independently SSH-verified and pushed to
+`origin/codex/reduce-goals-context-overhead` at`1ee9c351`. Every prepared tree/hash matches and the
+checkout was clean after push. Infrastructure80–81 are a separate chain and are excluded. No PR,
+merge, deployment or release preparation. Historical unsigned records remain unchanged; the durable
+signed mapping is [here](signed-source.json). Budget stays disabled by112.
+
+Trace the four fixed111 two-receiver journeys, reusing the complete original480-key observations
+instead of rerunning benchmarks. [Original raw home](../../2026-10-27-quiet-budget/phase111/README.md).
+Retrospective plan is fixed after initial exploratory inspection and before full attribution/control
+execution; this is not an outcome-blind treatment trial. Whole journeys are units; dependent keys
+are observations. Hash/clock/protocol/omission/source controls accompany the instrument. No gate or
+population effect is inferred from a convenient subset.
+
+Require all200 submission counts to match independently verified native contiguous new positions,
+nonoverlap and single ownership before assigning ordinal publisher positions. Success HTTP alone
+is insufficient. Fresh following read cursors bound installed positions; grouped positions remain
+ranges. Intersect before/after renderer-host clocks, retain every ambiguous/missing key, and preserve
+original complete-series2.5s results. Bound the pre-submit, submit HTTP, discovery, read HTTP and
+verified application intervals. Do not add marginal p95s, call headers a client receipt/server CPU,
+or turn timing proximity into an exact payload association.13 synthetic calibration/omission
+controls exercise missing keys, native mismatch, overlap, clock/cursor disorder and group ambiguity.
+
+Pinned production scheduler/window and request-budget mechanism probes are explicitly limited:
+mocked success-only lane costs show possible delay, not which real internal operation ran or a new
+client latency. A post-hoc deterministic budget boundary check establishes policy arithmetic, not
+which acquire/top-up branch refused a historical request. Full functions/slice and source commit
+hashes are retained, source unchanged. After pinning Git source access, deterministic outcomes
+remain exact; initial/pinned runs stay qualified in114. Authority/crypto paths are outside the model
+and remain the real application's original checks. No credentials, writing or request bytes retained.
+
+Unsigned113 follows signed112. Results/next repair in114. Qualification912/367 remains paused; product
+runtime, old tests, limits, concurrency, failure floors and every data/security gate stay unchanged.
+''')
+with(r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Sign/push prepared82–112 and establish pacing attribution (phase113)\n\nAll31 application patches are committed in order, independently SSH-verified and pushed on\n`codex/reduce-goals-context-overhead` at1ee9c351, exact prepared112 tree and clean checkout. Infra80–81\nexcluded.112 keeps quiet reuse disabled. [Signed mapping and attribution protocol](performance-experiments/2026-10-27-peer-pacing/phase113/README.md).\n\nReuse four original111 journeys/all480 keys with native-count/cursor/clock bounds and13 synthetic\ncalibration controls. Pinned scheduler/window/budget mechanism probes are not application timings\nor authority proof; no new benchmark, runtime/test policy change or aggregate credit. Unsigned113\nafter signed112;912/367 qualification paused. No release prep, PR, merge, preview update or deployment.\n''')

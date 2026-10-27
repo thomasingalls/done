@@ -16692,3 +16692,14 @@ fails active109 with9 quiet requests and passes held default with28, one own che
 held artifact/source identities retained; no new timing credit or claim to repair reference pacing.
 [Current hold and next boundary](performance-experiments/2026-10-27-quiet-budget/phase112/README.md).
 Unsigned112 after111;912/367 qualification paused. No release prep, preview update or deployment.
+
+## 2026-10-27 — Sign/push prepared82–112 and establish pacing attribution (phase113)
+
+All31 application patches are committed in order, independently SSH-verified and pushed on
+`codex/reduce-goals-context-overhead` at1ee9c351, exact prepared112 tree and clean checkout. Infra80–81
+excluded.112 keeps quiet reuse disabled. [Signed mapping and attribution protocol](performance-experiments/2026-10-27-peer-pacing/phase113/README.md).
+
+Reuse four original111 journeys/all480 keys with native-count/cursor/clock bounds and13 synthetic
+calibration controls. Pinned scheduler/window/budget mechanism probes are not application timings
+or authority proof; no new benchmark, runtime/test policy change or aggregate credit. Unsigned113
+after signed112;912/367 qualification paused. No release prep, PR, merge, preview update or deployment.

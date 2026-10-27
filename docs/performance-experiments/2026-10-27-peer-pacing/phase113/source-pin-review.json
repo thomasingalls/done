@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "signedSourceCommit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+  "sourceFiles": [
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+    },
+    {
+      "path": "src/crdt/batchWindow.ts",
+      "sha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "d9e6ca3eec37f71cbc2c9559113b5be1cbf97fef1e318f2f0a357cc2ec0f7ea1"
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "4cac228235b0482e490b0b9f59a831721bd4c02994e7b47f2b14bc143f2d9f72"
+    },
+    {
+      "path": "src/crdt/accountEnvelopePreparation.ts",
+      "sha256": "d81819cb32c7967ee9c2892fbf1a9d917b0bb382952c7b82217a6fda0bfe44c0"
+    },
+    {
+      "path": "src/crdt/accountBatchPolicy.ts",
+      "sha256": "32e7a6b7ca0ae995126a329086a36a86e61df3e920768a3f0ba4a63f4259f8ca"
+    },
+    {
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "9c9850467782e9f88df09af447d3855079c663edba3a31c6037c598261380828"
+    },
+    {
+      "path": "account-service/requestBudget.ts",
+      "sha256": "c65258f954e49339adacd94a62a4b6c07400f3030674aff718f0761ad07ee41b"
+    },
+    {
+      "path": "account-service/scoped-http.ts",
+      "sha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb"
+    },
+    {
+      "path": "account-service/batchReadAdmission.ts",
+      "sha256": "16f2eb20570065de995263b9aeb59829612d75827de401b914e4b84e0431cd1e"
+    },
+    {
+      "path": "account-service/grants.ts",
+      "sha256": "b13965acf05fa2b4f85bb26147316a6ef484ba891793d93d495af4b5e9d7ac36"
+    },
+    {
+      "path": "account-service/sessions.ts",
+      "sha256": "95799a434d58d9a6b9b1842849990799fa40e5dc5191b22e57b11ecb7c3c28a3"
+    }
+  ],
+  "bothOriginalArmsSameSchedulerWindowAndAdmissionPolicyBytes": true,
+  "pinningChangesNoModelOutcomes": true,
+  "noRuntimeEdits": true
+}

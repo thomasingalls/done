@@ -1,0 +1,229 @@
+{
+  "baseHead": "67288576b61185aa2eb316123794052b16f63da9",
+  "signedAndPushedHead": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+  "remote": "git@github.com:thomasingalls/done.git",
+  "branch": "codex/reduce-goals-context-overhead",
+  "commits": [
+    {
+      "phase": 82,
+      "commit": "40cc47ffb8cfb1fb79f21f18a9aa8aca9094fdfc",
+      "expectedTree": "2f7020cbf18fca1de5603a391735da4053022f99",
+      "preparedPatchSha256": "45a8cc81b7b4c72257db698070efa30bf93aed3e8dbd3dbc0215dddfda7db020",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 83,
+      "commit": "00ad4cc77b0b688c398ba9d593fb0f093a116e03",
+      "expectedTree": "5babe9ba5e29e743c13731da3602ace4ac45b1e8",
+      "preparedPatchSha256": "6858e2ce41dd10c6620afa44905bdb2eea48be05d710e1160f65c388987a697f",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 84,
+      "commit": "d9307613a2ec98707bf88d81905d0362817f2e78",
+      "expectedTree": "a27884ccadd0c66782ede68bfc56acbaf6581cce",
+      "preparedPatchSha256": "bfba9e6b414edf80eec2bc88dc6574ca15ff0cf5f53332f1d5e600d8b771de18",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 85,
+      "commit": "515432fbffc21d1160d47a315bd017edf5388097",
+      "expectedTree": "274a99a4a4838b2b88f79ddb803a32ed61ffb9a3",
+      "preparedPatchSha256": "10b03bde89a80555804830a246e66a46d9352f24a050fb6733c6006773e8b761",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 86,
+      "commit": "0e1394b0feede37ac62828fee7e6edad6b80ff08",
+      "expectedTree": "1dcb539e256ac28726111bc9873a67f361ed7bf7",
+      "preparedPatchSha256": "3d0d6d81193645c990149d6f0f6ebb08560dd0f0e61d100a8facd8bb0ced03d1",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 87,
+      "commit": "868945773dba6bdf7e70d0d5792fc6dd4169cf87",
+      "expectedTree": "be4f9c7b51df980b3c8e0a0463cddb9ecd1d19a8",
+      "preparedPatchSha256": "b558d737e8a605933afa75113eb6ab6c262afa1f862a2599fd0680542739b88d",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 88,
+      "commit": "24373eaa8c2e4486af39195f931026e0cdad867e",
+      "expectedTree": "008acd2df3b7895298b0550c4c105f9d6988db82",
+      "preparedPatchSha256": "82ae68cedc04587094912b09d920a1a43a9aaf86959d81d829eae45b406e94a9",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 89,
+      "commit": "30b8a9ddd9f0ac61755f9f85e25a4ad4bbb195a1",
+      "expectedTree": "872f1b0830ffdbdb558cab516e6f789394a7f72a",
+      "preparedPatchSha256": "23d217afb30542aacd4c3ae9002c96e57f6e28ae0a210d640b0d180ca1adb3c5",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 90,
+      "commit": "d4bbe72b437515dd9033c25cd2451f543a1c4cf3",
+      "expectedTree": "0cce5fe1eb44f692399883866010757caecc6b07",
+      "preparedPatchSha256": "3282e842ab60c696b854ad0bda2b0e586140cf717edb91cff70e3c5a0cae418b",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 91,
+      "commit": "943972d41538b0916c37928230f042642d821d0b",
+      "expectedTree": "c6400f4ea0e1ffbdb47f25039482721e4d5d76b5",
+      "preparedPatchSha256": "24c32b9e5b25a9929983b4ad71a1330a6b18ded480a4af6a32c33b92e13d0db3",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 92,
+      "commit": "5f793d8a9263d0e1a76b6fe9139ed726a8ea9026",
+      "expectedTree": "42187324d94441d548f5bc82667af7dbc34f45cd",
+      "preparedPatchSha256": "3dc9c1050dcb63612577a41a347940d6e5b01722dc5169457c3f8a759e214c8b",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 93,
+      "commit": "6a8d052bc15bac3ca57e709df74b94d369b0731c",
+      "expectedTree": "a1ad3e3a81563a049e1d4b65aaff91dabe6516ba",
+      "preparedPatchSha256": "8117338a68723d4f06f9d2c4319f703dd40ead150a4c4d6fcbf6bfd611a1c82f",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 94,
+      "commit": "ba4eb6dbd8f11e714540773f775e38ca0561616e",
+      "expectedTree": "59e8cd058d7d0e7df9b918f2935ec37149ba1235",
+      "preparedPatchSha256": "cb8b2276ce8db116b182f4940bb8e736f006b59500ce5f10586bd87094676785",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 95,
+      "commit": "bf7063230fd0c8846c5b326d3d127235a718475e",
+      "expectedTree": "761f4f9669b8208bcea1d5263a53d50047bb6adb",
+      "preparedPatchSha256": "19ec1d96cc8501502c6e1defbdfe423dbcfdc9be09f619a1f93b9f4f6a48305d",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 96,
+      "commit": "5f11be00d86b10b9813985baa110422e893697a7",
+      "expectedTree": "62427b50d0f1187d9bb9dccd46f1045c07258edd",
+      "preparedPatchSha256": "c8a62ea845eafb1b434eed4caf4cf98094ea2d226994825875e3e85607242722",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 97,
+      "commit": "490bffa3b7d2a6b11aa1f9606bfe52971e8ce797",
+      "expectedTree": "2b443aa2e7aeaf2a6067f7af75d82a70c930c52a",
+      "preparedPatchSha256": "0d308108ee3b25a69bd3c3a9c8dc0ab91ba0d7e2172f88949f8145d96bb09f6f",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 98,
+      "commit": "6217b3a6c821ca103b62daad8cc09f6fa4410cd0",
+      "expectedTree": "2740b1028735fff8ceda4c146bb44501d8999f1c",
+      "preparedPatchSha256": "1d8733b9f1c703eec4c20e237c61dfac4b5faf1ff6aac0b16e8e2900fe5a9e9e",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 99,
+      "commit": "3fe7b57eb3f21ff01d8437f3da23360a37e6af2a",
+      "expectedTree": "b444a049d5bdb4db935628d7ecda6f44622af217",
+      "preparedPatchSha256": "ecb69909b2a4ed239e98a74023fc22820bab3be73c49889644832f04c8bef0a2",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 100,
+      "commit": "a43c34fe23f4fc0979fc838d41f012834119dfe5",
+      "expectedTree": "1e603e541fd95be1222a9a301ed4b90e0b8d8aee",
+      "preparedPatchSha256": "bb3b362e72fb18c5e3197c1c6ae571ed29824fa8c4d326ff383292be6aa783a2",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 101,
+      "commit": "0ca9d845acf710c4d871ec77fc78cfdf97ddf73e",
+      "expectedTree": "f3df0e9418ef196a01e8983b5c9f62e250319b3e",
+      "preparedPatchSha256": "02ebbcf4c24509bdb6fb2c1a780e5eaf1a106ebdfd108615de7a674add52f2df",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 102,
+      "commit": "8bd38fa16a3c4745eebac2c79b4c7ed80b535710",
+      "expectedTree": "3df01ded7f0cb16a234a62a7a3c200e1f7bffca4",
+      "preparedPatchSha256": "411da916ead60fb2d84fecc75a2ab121a9b87c8a658ec7b8d6044b1d8b488137",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 103,
+      "commit": "a0d84bdfe47016c4f5e6db175ed822536bb018e2",
+      "expectedTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+      "preparedPatchSha256": "4320ebed886980bfdcaa07774146fd27f53689804542f0c37eb0d9b10be052ec",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 104,
+      "commit": "c202cec1f5c1f5fd6a857bfe4e992f272b73e291",
+      "expectedTree": "a8a55c109d13317a35e83602ff3a6eddb5a4f027",
+      "preparedPatchSha256": "94ddc41c7d78219bd49269906e5b6b93f2bd338a81a8462cf9a3d91cc74e1537",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 105,
+      "commit": "e91518fa76c5794ce348cf8e53817ef3f02527f2",
+      "expectedTree": "be37670e32bc0d986058af6c6b0a0e49a730a6df",
+      "preparedPatchSha256": "7f0acad72d3e46984e92ca81a56f1df70ae7b3b8676f87f5ce006f30ce0a29aa",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 106,
+      "commit": "57b10491b071a042beb73e919f2cf9080c1e6cb6",
+      "expectedTree": "417baf3130583f6abbf61e2f512fefaa6937f640",
+      "preparedPatchSha256": "ecc8e1c6cee9befc6320155f2077664affbfb8cd73283c7d5f92487d49dafa6a",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 107,
+      "commit": "86059578a0c4a3e277603093729734727a0478a2",
+      "expectedTree": "93796561d6716c40b84b12a66b7d88b67e785f9c",
+      "preparedPatchSha256": "70dffbb4bdf1db98a3f0870fef5dc9a020ad4cf7e9352c121b76289764c7693b",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 108,
+      "commit": "5dd281b3742ac5f1b067f7032c86aad44de8252d",
+      "expectedTree": "2ec6a7d54c4bee4373f79181e3ef1f91de179028",
+      "preparedPatchSha256": "30bd27ca46094acf82047bf7c4a6e0506422761362878a9b3e24dcd3723b2893",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 109,
+      "commit": "0b3814c01ef60c842c36857c88aee7666e4d96fe",
+      "expectedTree": "ee652a80e87c563b75b87c3e2c41ebc4a4d11b81",
+      "preparedPatchSha256": "5115ead429274a2e685531906915e896ae0a684e55bef15c672eae990294c9ba",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 110,
+      "commit": "12e9ed9ff55f63aed6342a410eb1b3c20d18a5cd",
+      "expectedTree": "56836c5b2ed206cc0fd3e59780204af8c0135b43",
+      "preparedPatchSha256": "93d3c68c964a7a582e32a40dd52bae74b8b41fa422a47b13e9658114a9b324a6",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 111,
+      "commit": "e1e6a1ce0effebeb30c0b846c7a99ed00ac06260",
+      "expectedTree": "0570a956a19c94b05dec7cd6269eda748cfc9a5d",
+      "preparedPatchSha256": "24fa5735ba6d224cf4f6c6941f5a73de999ee1750777c30e3dd03cfa5b78778c",
+      "sshSignatureIndependentlyVerified": true
+    },
+    {
+      "phase": 112,
+      "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+      "expectedTree": "1b2b4f7cbc727c23795a8481e25bf8561d8ca9d2",
+      "preparedPatchSha256": "938a420be1f3085cb66112bace63e2e74f947b28be2f5810e2f25a3315a7254d",
+      "sshSignatureIndependentlyVerified": true
+    }
+  ],
+  "all31TreesMatchPreparedSequence": true,
+  "checkoutCleanAfterPush": true,
+  "pushVerifiedBySuccessAndMatchingUpstream": true,
+  "noMergeOrDeployment": true
+}

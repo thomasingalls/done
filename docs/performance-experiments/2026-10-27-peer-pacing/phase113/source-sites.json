@@ -1,0 +1,90 @@
+[
+  {
+    "name": "window-note",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/batchWindow.ts",
+    "line": 22,
+    "matchedSource": "    note() {",
+    "wholeFileSha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535"
+  },
+  {
+    "name": "async-publication-recheck",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/accountSyncDriver.ts",
+    "line": 218,
+    "matchedSource": "                      if (batch.due !== undefined",
+    "wholeFileSha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+  },
+  {
+    "name": "single-active-pass",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/accountSyncDriver.ts",
+    "line": 192,
+    "matchedSource": "    if (stopped || work || !ready()) return;",
+    "wholeFileSha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+  },
+  {
+    "name": "receive-failure-floor",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/accountSyncDriver.ts",
+    "line": 283,
+    "matchedSource": "            ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)",
+    "wholeFileSha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+  },
+  {
+    "name": "local-window-note",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/accountSyncDriver.ts",
+    "line": 349,
+    "matchedSource": "    if (cause === 'local') batch?.note();",
+    "wholeFileSha256": "7a04d856775c18b5c05eaead15f070b3a71cd2d0507bbc2c565f37db1e51daed"
+  },
+  {
+    "name": "durability-before-envelope",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/accountEnvelopePreparation.ts",
+    "line": 143,
+    "matchedSource": "      await context.whenDurable();",
+    "wholeFileSha256": "d81819cb32c7967ee9c2892fbf1a9d917b0bb382952c7b82217a6fda0bfe44c0"
+  },
+  {
+    "name": "group-promotion-after-readback",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/accountReceive.ts",
+    "line": 1631,
+    "matchedSource": "          promote(updates);",
+    "wholeFileSha256": "d9e6ca3eec37f71cbc2c9559113b5be1cbf97fef1e318f2f0a357cc2ec0f7ea1"
+  },
+  {
+    "name": "prepared-complete-before-next",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "src/crdt/admissionQueue.ts",
+    "line": 1069,
+    "matchedSource": "        await receiveOwned(new Uint8Array([1]),",
+    "wholeFileSha256": "4cac228235b0482e490b0b9f59a831721bd4c02994e7b47f2b14bc143f2d9f72"
+  },
+  {
+    "name": "work-unit-limits",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "account-service/requestBudget.ts",
+    "line": 6,
+    "matchedSource": "  sessionPerSecond: 16,",
+    "wholeFileSha256": "c65258f954e49339adacd94a62a4b6c07400f3030674aff718f0761ad07ee41b"
+  },
+  {
+    "name": "batch-reserves-actual-work",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "account-service/scoped-http.ts",
+    "line": 319,
+    "matchedSource": "            if (!reservation.reserveWork(requests.length))",
+    "wholeFileSha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb"
+  },
+  {
+    "name": "grant-budget-parent",
+    "commit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+    "path": "account-service/grants.ts",
+    "line": 356,
+    "matchedSource": "      return grant && grant.expiresAt > this.#time() ? grant.challenge.sessionId : undefined;",
+    "wholeFileSha256": "b13965acf05fa2b4f85bb26147316a6ef484ba891793d93d495af4b5e9d7ac36"
+  }
+]
