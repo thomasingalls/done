@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 548,
-    "requiredTestFiles": 542,
+    "testFiles": 550,
+    "requiredTestFiles": 544,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -7934,6 +7934,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-receive/read-projection.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-receive/read-projection.test.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-recovery-contract/controls.test.mjs",
       "status": "required",
       "invocation": {
@@ -12217,6 +12232,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/receiveReadProjection.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/receiveReadProjection.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [
+        {
+          "line": 70,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/receiveSelection.test.ts",
       "status": "required",
       "invocation": {
@@ -15479,7 +15514,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "c044c5f89843ef29f2a2070bc3cc6a104a33821db90372776bc57f82b9bf8b14"
+      "sha256": "4e7dea155b30c44072112bddea2629805498ac17da2b2e7b0c110ff493bc6a4d"
     },
     {
       "path": "package.json",
@@ -17850,6 +17885,10 @@
       "sha256": "f5cba0c35c9c5179036bcc83f6fc0d13fae75c761cb62b844ca84631c14bb7f8"
     },
     {
+      "path": "test/account-receive/read-projection.test.mjs",
+      "sha256": "181abdf3d711d6a9cd81c1179bb3165b920e23552f4a7947fe4f35abc05bcc97"
+    },
+    {
       "path": "test/account-recovery-contract/controls.test.mjs",
       "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
     },
@@ -19684,6 +19723,10 @@
     {
       "path": "test/receivePrefetch.test.ts",
       "sha256": "df77170a47cfa3fd524caf5d3ab1b4a92edbc39f695b208e429250b404486941"
+    },
+    {
+      "path": "test/receiveReadProjection.test.ts",
+      "sha256": "5c4cdc50d78532759f3e296315f564d0f00f83f5b294b94a9a600245648689d7"
     },
     {
       "path": "test/receiveSelection.test.ts",

@@ -1,0 +1,10 @@
+{
+  "baseTree": "a1ad3e3a81563a049e1d4b65aaff91dabe6516ba",
+  "sha256": {
+    "src/crdt/accountReceive.ts": "bd1c6f6a0d18fed38244e599a6a186a2f6d71e39782e8550bcba4ec0a0486c9e",
+    "src/crdt/inboundLedger.ts": "7fbf8b25d312deeaae01c6f022d18cec900d42545e6507a00e40b9efac242076",
+    "test/receiveReadProjection.test.ts": "5c4cdc50d78532759f3e296315f564d0f00f83f5b294b94a9a600245648689d7",
+    "test/account-receive/read-projection.test.mjs": "181abdf3d711d6a9cd81c1179bb3165b920e23552f4a7947fe4f35abc05bcc97"
+  },
+  "compiledHelperSha256": "56398c45a687a9680025a05cd232dfb51f76f42955c415aed8ef4d2944818dfb"
+}

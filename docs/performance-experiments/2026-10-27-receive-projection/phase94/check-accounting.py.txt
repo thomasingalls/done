@@ -1,0 +1,9 @@
+from pathlib import Path
+import re,json
+s=Path(__file__).parent
+names=lambda file,mark:set(re.findall(r'^'+re.escape(mark)+r' (.*?) \([\d.]+ms\)',(s/file).read_text(),re.M))
+a=names('affected-native.log','✔');failed=names('affected-native.log','✖');skipped=names('affected-native.log','﹣');total=a|failed|skipped
+b=names('default-rollover.log','✔');c=names('conditional-native.log','✔');assert len(total)==79 and len(a)==75 and len(failed)==1 and len(skipped)==3
+assert failed==b and skipped==c and a|b|c==total
+j={'broadRun':{'cases':79,'pass':75,'fail':1,'skip':3},'failedAssertionWasProfileOptInVsOrdinaryRealmPrivacyExpectation':True,'unchangedFailedCaseDefaultRun':list(b),'conditionalCasesInRequiredModes':sorted(c),'distinctCasesPassingAcrossAppropriateConfigurations':79,'notASingle79PassInvocation':True,'newProjectionFinalCases':2,'unitInvocationCases':30,'oldTestsModified':0,'fullSuiteClaim':False}
+(s/'check-accounting.json').write_text(json.dumps(j,indent=2)+'\n');print(json.dumps(j))

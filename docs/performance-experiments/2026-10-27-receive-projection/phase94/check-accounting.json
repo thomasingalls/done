@@ -1,0 +1,23 @@
+{
+  "broadRun": {
+    "cases": 79,
+    "pass": 75,
+    "fail": 1,
+    "skip": 3
+  },
+  "failedAssertionWasProfileOptInVsOrdinaryRealmPrivacyExpectation": true,
+  "unchangedFailedCaseDefaultRun": [
+    "retained Account writing crosses reference, default and rollback builds without migration"
+  ],
+  "conditionalCasesInRequiredModes": [
+    "generated incremental ledger histories preserve inserts, deletes, compaction and cold continuation",
+    "hidden-page batch close sends promptly; death before the next batch recovers journalled writing",
+    "reference audit disagreement refuses the warm owner and cold replay preserves writing"
+  ],
+  "distinctCasesPassingAcrossAppropriateConfigurations": 79,
+  "notASingle79PassInvocation": true,
+  "newProjectionFinalCases": 2,
+  "unitInvocationCases": 30,
+  "oldTestsModified": 0,
+  "fullSuiteClaim": false
+}

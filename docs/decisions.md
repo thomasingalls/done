@@ -5622,3 +5622,12 @@ projection. The source and fixed synthetic probe support removing whole retained
 these read-only consumers. Keep full retained evidence on page verification/application/history paths,
 scheduling order, fresh authority/commit checks and all original latency gates. This is a bounded
 client-copy repair, not another service proof cache or permission to infer phone-opening attribution.
+
+## 2026-10-27 — Read cursors are scheduling data, not retained proof (phase94)
+
+Narrow the detached request projection to prefix/conflict/starting point per publisher and pending-self,
+inside the existing freshly authenticated selection; retain the exact checked publisher resolver.
+Compute scalar status there too, then retain its frozen public shape. Type-only cursor support does
+not make hints eligible for page verification/history installation: those paths keep full retained
+evidence and every existing check. Confirm the default path via real receiver clone observations,
+old-source failure and cold/conflict regressions; keep whole-client latency acceptance separate.

@@ -16418,3 +16418,15 @@ next bounded work: at1024/2048 positions per publisher, full projection medians1
 narrow hints near timer resolution. All shapes agree and retained bytes disappear from the prototype
 projection. Shallow drift/quantization are qualified. [Evidence](performance-experiments/2026-10-27-receive-projection/phase93/README.md).
 No end-to-end/phone speedup, changed latency gate, release preparation or deployment is claimed.
+
+## 2026-10-27 — Receiver cursor/status copy repair (phase94)
+
+Project metadata before detached cloning for requests/status, reusing the verified owner and original
+publisher resolver. Full retained evidence/authority/lifetime/commit paths remain unchanged.30 unit
+cases pass;79 distinct affected native cases pass across appropriate configs (initial broad run75pass/
+1profiling-mode failure/3conditional skips retained; each is exercised separately). Both new receiver
+cases pass; old source fails the intended projection case and retains conflict behavior. All903 old
+files under test/ remain byte-exact. [Evidence](performance-experiments/2026-10-27-receive-projection/phase94/README.md).
+The actual helper's fixed synthetic comparison confirms the copy mechanism; no whole catch-up/phone
+latency improvement or2.5s-gate acceptance is claimed. Two new files remain blocked from aggregate
+qualification. Preview stays on92 UX, and release preparation remains held.

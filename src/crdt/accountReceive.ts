@@ -163,6 +163,7 @@ import {
   contextAt,
   publisherContext,
   publisherState,
+  inboundReadCursors,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery, emptyDelivery } from './deliveryRecord';
@@ -1050,7 +1051,7 @@ async function openAccountReceiveOwner(
     // The scheduling hint comes from the same fresh, authenticated load as the prefix.
     // A retained submission without a decision must still get its reconciliation read.
     const { inbound: all, pendingSelf } = await readState(task, owner, (v) => ({
-      inbound: v.inbound,
+      inbound: inboundReadCursors(v.inbound),
       pendingSelf: unresolvedSelfSubmission(v.delivery),
     }));
     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
@@ -1457,7 +1458,9 @@ async function openAccountReceiveOwner(
     ...account,
     close: () => carrier.close(),
     status: () =>
-      runCaptureTask(async (task, owner, route) => describe(await state(task, owner, route))),
+      runCaptureTask(async (task, owner) =>
+        Object.freeze(await readState(task, owner, (v) => describe(v.inbound))),
+      ),
     /** A single outstanding owner-signed request; retry old positions only against retained evidence. */
     prepareRead: (after?: number) =>
       runCaptureTask((task, owner, route) => prepareRead(task, owner, route, after)),

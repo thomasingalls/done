@@ -219,7 +219,17 @@ export function publisherContext(base: InboundContext, publisher: string): Inbou
     },
   };
 }
-export function publisherState(state: InboundState, base: InboundContext, publisher: string) {
+export function publisherState(
+  state: InboundState,
+  base: InboundContext,
+  publisher: string,
+): InboundState;
+export function publisherState(
+  state: InboundReadCursor,
+  base: InboundContext,
+  publisher: string,
+): InboundReadCursor;
+export function publisherState(state: InboundReadCursor, base: InboundContext, publisher: string) {
   if (publisher === base.publisher.id) return state;
   publisherContext(base, publisher);
   return state.peers?.get(publisher) ?? emptyInbound(baselinePrefix(base, publisher));
@@ -650,4 +660,23 @@ export async function verifyInboundLedger(
   } finally {
     localCoverage?.clear();
   }
+}
+
+/** Read preparation only: these hints cannot verify/apply a page or establish retained history. */
+export type InboundReadCursor = Pick<InboundState, 'prefix' | 'startingPoint' | 'conflict'> & {
+  peers?: Map<string, InboundReadCursor>;
+};
+/** Project inside the verified-owner callback, before its detached structured clone. */
+export function inboundReadCursors(state: Readonly<InboundState>): InboundReadCursor {
+  const cursor = (value: InboundReadCursor): InboundReadCursor => ({
+    prefix: { ...value.prefix },
+    conflict: value.conflict,
+    ...(value.startingPoint ? { startingPoint: { ...value.startingPoint } } : {}),
+  });
+  return {
+    ...cursor(state),
+    ...(state.peers
+      ? { peers: new Map([...state.peers].map(([id, peer]) => [id, cursor(peer)])) }
+      : {}),
+  };
 }
