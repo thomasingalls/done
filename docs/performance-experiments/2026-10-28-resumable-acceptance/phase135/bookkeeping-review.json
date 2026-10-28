@@ -1,0 +1,12 @@
+{
+  "graphChangedLeaves": [
+    "/inputs/1092/sha256"
+  ],
+  "graphSourceHash": "test/release-validation/onboarding-gates.test.mjs",
+  "manifestOnlyDigestChanged": true,
+  "allObligationsAndBlocksRetained": true,
+  "obligations": 932,
+  "unresolved": 386,
+  "specifiedConstructions": 78,
+  "openConstructions": 15
+}

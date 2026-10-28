@@ -16939,3 +16939,24 @@ Both full132 client exports and numeric-only observation probe, source/worker in
 ## 2026-10-28 — Phase134: retain failed typing acceptance, preserve successful data/peer results
 
 R/Cnormal new maintenance workloads complete all120keys/3markers, whole data/undo/cold and independent native proof/resource guards. Peer p95 1749.6/1874.2ms passes; local19.3/20.4ms fails unchanged16. Candidate backlog105638ms versus106835ms, ratio0.9888 passes nonregression. All120keys overlap backlog; C saves and later completes. Stop on C failure as frozen; six remaining cases unexecuted. [Evidence, controls and limits](performance-experiments/2026-10-28-resumable-acceptance/phase134/README.md). Retained-timestamp attribution locates tails before beforeinput (handler→DOM p950.7ms both), without identifying driver versus browser/page scheduling. Three complete save cycles2.76–2.90s are not2s whole-operation proof. Defaults/activation held; phone deferred, no signing/deploy.
+
+
+## 2026-10-28 — Phase135: local checks and focused preparation review
+
+Full188-file Vitest2181pass/1existing skip,40 contract/vector leaves,175 adapter cases, types,
+51-file affected lint, focused format, diagnostic build and13 ordinary checks pass. The initial
+adapter run preserves one stale14-open expectation; the repair expects15, names the new open
+construction and retains every assertion/refusal. Independent graph/manifest comparison changes
+only that source hash and inventory digest;932/386blocked and78specified/15open remain. Actual
+root opening/export with valid or deliberately corrupted unfinished cache succeeds; online
+continuation succeeds in the documented isolated cases. Failed chooser, offline-retry and lab
+shutdown-timer attempts remain in [phase135](performance-experiments/2026-10-28-resumable-acceptance/phase135/README.md).
+Focused receipt/authority/allocation/cut/removal/activation review finds no validated security
+defect; it does not close the construction or general qualification. Phase134's16ms typing failure
+still blocks activation; six frozen cases remain unexecuted. Phone explicitly deferred, new resume
+and service automation default off. No signing, push, preview, registry or deployment work.
+
+
+Phase135 receipt addendum: the final trace recheck correctly rejects six receipts after the durable
+outcome changes their tree. Retain that failure and refresh ordinary executions against the final
+record before freezing the patch; no gate or receipt rule is changed.

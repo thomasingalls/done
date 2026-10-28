@@ -20171,7 +20171,7 @@
     },
     {
       "path": "test/release-validation/onboarding-gates.test.mjs",
-      "sha256": "9ccaf2e2a42a461ac33af8b1093e1c65b4bcfc6b6b50a63e62b50a02145874c4"
+      "sha256": "0f27401e8688416c6b0930d0ce3ab347e5865404bd0ce42df2fccef0a3483bb3"
     },
     {
       "path": "test/release-validation/owned-startup.test.mjs",

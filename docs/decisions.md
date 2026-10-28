@@ -5825,3 +5825,16 @@ Native automatic testing found each whenDurable barrier reset the editing quiet 
 ## 2026-10-28 — Qualify explicit resumable preparation before release activation
 
 Release candidate covers the entire branch since recorded dc53fecf, retaining backup/UX/sync repairs rather than considering only the last five patches. Keep Docker default switches off; test explicit local auto1/resume1/service auto0 against identical source with resume0. Reject contradictory writer capabilities before building. Phone evidence is deferred by the operator, not replaced by desktop emulation. Preparation/typing/catch-up acceptance remains2.5s peer p95 and existing guardrails. General qualification stays paused.
+
+
+## 2026-10-28 — Phase135: keep acceptance failure separate from successful local checks
+
+The ordinary checks and focused authority/storage review may close independently of performance
+acceptance. Retain both normal input failures and the six unexecuted cases, with resume default0
+and service automation0. Do not substitute handler-only latency for the unchanged16ms end-to-end
+local gate. The next discriminating study is controlled trusted dispatch versus editor scheduling;
+a passing baseline rerun alone cannot erase the failed comparison. The operator defers today's
+phone walkthrough. A stale14→15 open-construction fixture is repaired while independently naming
+the new open construction and retaining the zero-open release block. Supplemental root/cache
+review runs variants in separate processes to avoid the inherited mutable-path shutdown timer;
+offline retry deferral and the failed attempts remain evidence rather than discarded results.
