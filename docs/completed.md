@@ -17063,3 +17063,13 @@ the unchanged analyzer rejects timing and stops the sequence; six cases remain u
 [Full retained results/independent/native review](performance-experiments/2026-10-28-publication-selection/phase145/README.md).
 No candidate speedup/gate claim. Select monotonic-driver apparatus repair with the same1ms
 intersection allowance/gates before a fresh comparison; application source remains143. No release.
+
+
+## 2026-10-28 — Phase146: freeze monotonic-driver comparison repair
+
+Correct only three lab timing files to use the host monotonic performance clock, retaining the
+renderer clock/intersection/1ms allowance and every16ms/2.5s gate. Real headless Chrome survives a
+simulated10s wall step; old wall-clock and malformed-bracket controls refuse. Four analyzer fault
+controls still pass. [Fresh prospective protocol/identities](performance-experiments/2026-10-28-publication-selection/phase146/README.md).
+Both application artifacts remain byte-exact144;145 is preserved without candidate timing credit.
+No timing dispatched yet, no activation or release.

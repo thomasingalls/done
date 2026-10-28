@@ -1,0 +1,20 @@
+{
+  "applicationAssetsReusedByteExact": true,
+  "onlyThreeHarnessFilesChanged": [
+    {
+      "path": "maintenance.spec.ts",
+      "callsReplaced": 12
+    },
+    {
+      "path": "late.spec.ts",
+      "callsReplaced": 13
+    },
+    {
+      "path": "dispatch-probe.ts",
+      "callsReplaced": 2
+    }
+  ],
+  "allowanceMs": 1,
+  "thresholdsChanged": false,
+  "previousAttemptRetained": "/private/tmp/done-publication-selection-20261028"
+}

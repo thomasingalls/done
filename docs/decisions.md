@@ -5862,3 +5862,11 @@ publication predicate. Keep speculative proposal verification and native/witness
 checks unchanged. Selection refusal fails closed; only capability absence uses the original raw
 record path. This first bounded repair does not combine ownership cleanup or broaden proof
 lifetimes. Retain the full-history input and peer gates before making any performance claim.
+
+
+## 2026-10-28 — Reject mixed wall/monotonic timing and repair the apparatus separately
+
+The145 candidate has an empty constant-offset clock intersection and cannot receive timing credit.
+Keep its raw results and stop rule. Measure future driver offers/scheduling/brackets on a monotonic
+clock, test a controlled wall-clock step, and keep the original1ms bound and all performance gates.
+Use fresh profiles and a new frozen comparison; do not widen the allowance to fit an observed run.
