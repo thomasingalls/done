@@ -1,0 +1,32 @@
+[
+  {
+    "name": "dispatch-1-static-fault",
+    "app": false,
+    "target": "plain",
+    "fault": true
+  },
+  {
+    "name": "dispatch-2-static-before",
+    "app": false,
+    "target": "plain",
+    "fault": false
+  },
+  {
+    "name": "dispatch-3-app-native",
+    "app": true,
+    "target": "plain",
+    "fault": false
+  },
+  {
+    "name": "dispatch-4-app-editor",
+    "app": true,
+    "target": "editor",
+    "fault": false
+  },
+  {
+    "name": "dispatch-5-static-after",
+    "app": false,
+    "target": "plain",
+    "fault": false
+  }
+]

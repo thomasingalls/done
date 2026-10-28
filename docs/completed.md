@@ -16990,3 +16990,12 @@ reconstruction and false-marker control preserve the mixed result; audit syntax 
 Old-asset conditional pair stays unexecuted by the frozen rule. [Evidence](performance-experiments/2026-10-28-input-investigation/phase138/README.md).
 The full-history condition remains the typing lead; no general regression/activation inference.
 Phase134 failures remain, defaults/service off, phone deferred, no runtime/old-test edits or release.
+
+
+## 2026-10-28 — Phase139: freeze reused dispatch sensors for the full-history condition
+
+Five serial known-fault/static/app-native/app-editor/bookend journeys frozen before dispatch. Reuse
+existing event/DOM/RAF/heartbeat/driver sensors; parser verifies retained controls and refuses four
+faults. Fixture lint passes. Preserve original preparation exposure, data/undo/cold/native guards
+and16ms/2.5s gates. [Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase139/README.md).
+No timing yet or runtime/old-test/default/release change; qualification paused, service off.

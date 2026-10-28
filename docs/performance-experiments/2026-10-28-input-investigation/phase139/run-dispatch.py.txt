@@ -1,0 +1,14 @@
+from pathlib import Path
+import subprocess,os,json,time,sys,hashlib
+s=Path(__file__).resolve().parents[1];node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';plan=json.loads((s/'dispatch-plan.json').read_text());env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}
+identity=json.loads((s/'dispatch-identity.json').read_text());assert all(hashlib.sha256((s/p).read_bytes()).hexdigest()==h for p,h in identity['apparatus'].items());rows=[]
+for case in plan:
+ out=s/case['name'];out.mkdir(mode=0o700,exist_ok=False);e={**env,'FAIR_OUT':str(out),'FAIR_VARIANT':'C','FAIR_DIST':str(s/'source-C/dist'),'QUIET_WITHHOLD':'0','DISPATCH_TARGET':case['target'],'DISPATCH_FAULT':'1'if case['fault']else'0','DISPATCH_MONITOR_DIR':str(out/'node-monitors'),'NODE_OPTIONS':env.get('NODE_OPTIONS','')+' --import='+str(s/'diagnostic/node-monitor.mjs')};config='dispatch-app.config.ts'if case['app']else'dispatch-static.config.ts';cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/'+config];receipt={'case':case,'startedAt':time.time_ns()//1000000,'command':cmd}
+ with(out/'console.log').open('w')as f:p=subprocess.run(cmd,cwd=s/'harness-D',env=e,stdout=f,stderr=subprocess.STDOUT)
+ receipt.update(exit=p.returncode,finishedAt=time.time_ns()//1000000);(out/'runner-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(case['name'],'functional exit',p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
+ with(out/'analysis.log').open('w')as f:p=subprocess.run([sys.executable,str(s/'diagnostic/analyze-dispatch.py'),json.dumps(case)],stdout=f,stderr=subprocess.STDOUT)
+ print(case['name'],'analysis exit',p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
+ row=json.loads((out/'analysis.json').read_text());rows.append(row);print(case['name'],json.dumps(row['metrics']),flush=True);(s/'dispatch-summary.json').write_text(json.dumps({'kind':'instrumented mechanism study; no activation credit','runs':rows},indent=2)+'\n')
+print('All five frozen diagnostic journeys completed.',flush=True)
