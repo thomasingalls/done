@@ -17073,3 +17073,16 @@ simulated10s wall step; old wall-clock and malformed-bracket controls refuse. Fo
 controls still pass. [Fresh prospective protocol/identities](performance-experiments/2026-10-28-publication-selection/phase146/README.md).
 Both application artifacts remain byte-exact144;145 is preserved without candidate timing credit.
 No timing dispatched yet, no activation or release.
+
+
+## 2026-10-28 — Phase147: retain durable follow-up publication failure
+
+Fresh monotonic normal R/C local8.756/10.693ms and peer1893.781/1797.876ms pass; every marker,
+archive/undo/cold/resource guard passes, backlog ratio1.00045. No typing-speedup claim. Withheld C
+finishes measured writing/archive equality, then fails30s delivery of the separate pre-undo edit;
+five remaining cases unexecuted. Offline copies prove that edit durable/cold-visible only on the
+writer. [Raw results, independent/native audit and copied-profile diagnostic](performance-experiments/2026-10-28-publication-selection/phase147/README.md).
+Native audit passes three stopped stores; all593 original evidence files remain exact, with two
+new read-only-audit SQLite sidecars explicitly retained. Do not dismiss the missing delivery as
+a fixture or accept its partial11.433ms/2390.760ms window. Next trace post-maintenance publication.
+All16ms/2.5s guarantees and prior failures remain; resume/service off, no release or deployment.
