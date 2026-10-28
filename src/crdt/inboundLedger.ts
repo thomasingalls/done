@@ -538,6 +538,8 @@ export async function verifyInboundLedger(
     coverage: Pick<ReturnType<typeof createInboundCoverage>, 'check'>;
     /** Reference maintenance can yield between complete receipt checks, outside native transactions. */
     checkpoint?(): Promise<void>;
+    /** Preparation only: exact-input durable coverage receipt; all reducers still run. */
+    checkCoverage?(updates: readonly Bytes[]): Promise<void>;
   },
   continuation?: { state: InboundState; after: number },
 ): Promise<InboundState> {
@@ -588,7 +590,8 @@ export async function verifyInboundLedger(
             )
           : await check();
         try {
-          if (reuse) reuse.coverage.check(records, [result.update]);
+          if (reuse?.checkCoverage) await reuse.checkCoverage([result.update]);
+          else if (reuse) reuse.coverage.check(records, [result.update]);
           else localCoverage!.check([result.update]);
           if (result.heads)
             await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
@@ -637,7 +640,8 @@ export async function verifyInboundLedger(
       if (result.kind === 'conflict') state.conflict = true;
       else if (result.kind === 'received') {
         try {
-          if (reuse) reuse.coverage.check(records, result.updates);
+          if (reuse?.checkCoverage) await reuse.checkCoverage(result.updates);
+          else if (reuse) reuse.coverage.check(records, result.updates);
           else localCoverage!.check(result.updates);
         } finally {
           for (const b of result.updates) b.fill(0);

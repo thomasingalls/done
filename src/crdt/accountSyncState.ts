@@ -131,7 +131,7 @@ export async function advanceSelfReceiveCooperatively(
   delivery: DeliveryState,
   inbound: InboundState,
   route: CaptureRoute,
-  checkCoverage: (updates: readonly Bytes[]) => void,
+  checkCoverage: (updates: readonly Bytes[]) => void | Promise<void>,
   checkpoint: () => Promise<void>,
 ): Promise<void> {
   const originals: Bytes[] = [];
@@ -143,7 +143,7 @@ export async function advanceSelfReceiveCooperatively(
     for (const _ of steps) await checkpoint();
     for (const update of originals) {
       await checkpoint();
-      checkCoverage([update]);
+      await checkCoverage([update]);
     }
     await checkpoint();
   } finally {

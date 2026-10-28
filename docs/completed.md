@@ -16915,3 +16915,7 @@ release preparation remain paused. No computer use, signing, push or deployment.
 ## 2026-10-28 — Phase128: encrypted resumable-preparation storage
 
 Implemented exact native-prefix/context binding, append-only encrypted auxiliary checkpoints, burned allocation on failure, strict native exchange/readback, sealed task handoff and credential-free removal cleanup. 49 directed cases and4 actual Chromium interruption/reopen cases pass; typecheck passes. Initial apparatus failures retained. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase128/README.md). Application wiring and composed/performance proof remain next. Service automation off;2.5s gate unchanged. No release work.
+
+## 2026-10-28 — Phase129: first-reference receipt adapters
+
+Added optional exact-input receipts to physical opening and the first full reference, including pending-aware coverage bound to original content basis. Final independent replay is unchanged. 22 directed cases pass, including fresh-owner sliced mixed own/peer/history equivalence and completeness/ciphertext refusals. Types pass. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase129/README.md). Runtime scheduling next; service automation off and2.5s gate unchanged.

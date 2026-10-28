@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 563,
-    "requiredTestFiles": 557,
+    "testFiles": 564,
+    "requiredTestFiles": 558,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -13180,6 +13180,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/retentionPreparationReplay.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/retentionPreparationReplay.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/retentionPreparationStorage.test.ts",
       "status": "required",
       "invocation": {
@@ -15712,7 +15727,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "7550dd50f11018d5535ae63d56d520d18e6625514531a2ee021bfdc9391f7a9a"
+      "sha256": "738160feacbf49e4141aa6cd4ed57291b482b94f27e40dfea9fc50ed84af806a"
     },
     {
       "path": "package.json",
@@ -19519,6 +19534,10 @@
       "sha256": "c2227b1cfddec42340a367f391fe8f20cfdd000dc50fa83d103cd7a326a0a68a"
     },
     {
+      "path": "test/local-baseline/preparation-protocol-fixture.ts",
+      "sha256": "428e0cf1f56fea11bc5434548622fece90446dca5b26b76414895e0c4350a5c9"
+    },
+    {
       "path": "test/local-baseline/preparation.node.mjs",
       "sha256": "6edff1a1cd2639152eff06d7c20dd07fc0c87ec7fdeea357ceea8ba8f92b491a"
     },
@@ -20121,6 +20140,10 @@
     {
       "path": "test/retentionPreparationOwnership.test.ts",
       "sha256": "d8444b0b388d611648a1445149976ba5fbf547a50c736d9d9ea5b87df9100eb8"
+    },
+    {
+      "path": "test/retentionPreparationReplay.test.ts",
+      "sha256": "ef01f80835fae55bbedd889b3889a76eae52621b88d9302f4e158ca6cf4351b2"
     },
     {
       "path": "test/retentionPreparationStorage.test.ts",

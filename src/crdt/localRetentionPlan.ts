@@ -25,6 +25,7 @@ import {
   LocalBaselineError,
   type LocalBaselineContext,
   type BaselineAuthentication,
+  type PreparationVerification,
 } from './localBaselineReplay';
 import { compareBaselineReplay } from './localBaselineShadow';
 import { createCpuBudget } from './cpuBudget';
@@ -252,6 +253,7 @@ export async function planLocalRetention(
   // expiring preparation task. Context/task checks still govern every preparation effect.
   retainCurrent: () => void = () => context.assertCurrent(),
   progress?: RetentionProgressSink,
+  preparation?: (counter: ContentCounter) => Promise<PreparationVerification>,
 ): Promise<
   LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
 > {
@@ -324,6 +326,7 @@ export async function planLocalRetention(
       const { baseline: _pointer, ...allocation } = stored;
       counter = parseCounter({ ...allocation, v: 2 }, scope, stored.intent);
     } else counter = stored;
+    const reuse = preparation && (await preparation(counter));
     const seen = new Set<number>();
     reportRetentionProgress(progress, {
       stage: 'opening',
@@ -347,7 +350,16 @@ export async function planLocalRetention(
       )
         corrupt('Retention row placement differs.');
       seen.add(r.seq);
-      records.push({ seq: r.seq, kind: r.kind, gen: r.gen, bytes: await crypt.open(r) });
+      const bytes = reuse
+        ? await reuse.memo.check(
+            'opened:' + r.seq,
+            JSON.stringify([r.v, r.kind, r.gen, r.seq]),
+            [r.nonce, r.ct],
+            () => crypt.open(r),
+            context.assertCurrent,
+          )
+        : await crypt.open(r);
+      records.push({ seq: r.seq, kind: r.kind, gen: r.gen, bytes });
       if (records.length % 32 === 0 || records.length === inventory.rows.length)
         reportRetentionProgress(progress, {
           stage: 'opening',
@@ -359,7 +371,8 @@ export async function planLocalRetention(
     const replay = { records, counter };
     // Integrity failures in existing evidence must never be reported as capacity/ineligibility.
     reportRetentionProgress(progress, { stage: 'verifying' });
-    if (stored.v !== 5 && previous) reference = await replayFullLocalHistory(replay, context);
+    if (stored.v !== 5 && previous)
+      reference = await replayFullLocalHistory(replay, context, reuse);
     if (previous) {
       const old = decodeLocalBaseline(previous.baseline.payload);
       try {
@@ -422,6 +435,7 @@ export async function planLocalRetention(
             buildingCandidate = true;
             reportRetentionProgress(progress, { stage: 'building' });
           },
+          reuse,
         );
         candidate = prepared.candidate;
         reference = prepared.reference;

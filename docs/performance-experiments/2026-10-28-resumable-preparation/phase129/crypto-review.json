@@ -1,0 +1,11 @@
+{
+  "changedSources": [
+    "src/crdt/accountSyncState.ts",
+    "src/crdt/inboundLedger.ts",
+    "src/crdt/localBaselineReplay.ts",
+    "src/crdt/localRetentionPlan.ts"
+  ],
+  "sourceSetUnchanged": true,
+  "domainLabelsUnchanged": true,
+  "onlyContractLinePinsUpdated": true
+}

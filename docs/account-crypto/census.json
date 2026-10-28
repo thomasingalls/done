@@ -817,7 +817,7 @@
     },
     {
       "path": "src/crdt/accountSyncState.ts",
-      "sha256": "f4801b91b1bffa5f219d4cd6f2a20a6bff17a0ad31ebfb0440c0563effa2780e"
+      "sha256": "36c95d3b21fcf69cc1b8553e999d8543aeacb4e0b7da6b7257c909d3aa9f139c"
     },
     {
       "path": "src/crdt/accountTextMode.ts",
@@ -993,7 +993,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "7fbf8b25d312deeaae01c6f022d18cec900d42545e6507a00e40b9efac242076"
+      "sha256": "d7aa02ef2c7975b4ca5111561879218fa6205bc5c14644d2b7a75ae30df23de0"
     },
     {
       "path": "src/crdt/inboundRecord.ts",
@@ -1097,7 +1097,7 @@
     },
     {
       "path": "src/crdt/localBaselineReplay.ts",
-      "sha256": "51afed9b622fb1af155195a139fc15121cecc803b83489fa8874cf00ba703c8e"
+      "sha256": "d23dccbe0209999830ae188b6f674056256a10081da65ce89fa10c8b6c2ce90f"
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
@@ -1149,7 +1149,7 @@
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "d49016ff91202d80733dab80a56160d58056cc2613378077a45c4379f019b7e2"
+      "sha256": "110aab59ecd6a4b4e4c9a734ba3a2eb87f0f9fc108e28b17bab613eb9c044c4a"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -1779,7 +1779,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 485
+          "line": 499
         }
       ]
     },
@@ -1825,7 +1825,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 486
+          "line": 500
         }
       ]
     },
@@ -1991,7 +1991,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 484
+          "line": 498
         },
         {
           "path": "src/crdt/spoolRecord.ts",
@@ -3811,7 +3811,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 478
+          "line": 492
         },
         {
           "path": "src/crdt/sourceCapture.ts",

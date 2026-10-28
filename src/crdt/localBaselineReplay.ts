@@ -1,3 +1,5 @@
+import type { VerificationMemo } from './verificationMemo';
+import { encodePreparationValue } from './preparationValue';
 /** Experimental pure reader/builder. No IndexedDB, journal, install, deletion or live-owner wiring. */
 import { decodeNetworkEnvelope, openNetworkEnvelope } from '../../account-protocol/envelope';
 import { decodePositionResponse, ZERO_REFUSAL } from '../../account-protocol/positionDecision';
@@ -190,99 +192,168 @@ function documentState(records: readonly OpenedRecord[], complete: boolean): Byt
     doc.destroy();
   }
 }
-async function full(input: ReturnType<typeof captureInput>, c: LocalBaselineContext) {
-  const checkpoint = createCpuBudget(c.assertCurrent);
-  // The guarded primitive still rechecks the captured owner after a budget yield.
-  // No authentication result is memoised here.
-  const subtle = new Proxy(guardedSubtle(c.assertCurrent), {
-    get(target, property) {
-      const value: unknown = Reflect.get(target, property, target);
-      if (typeof value !== 'function') return value;
-      return (...args: unknown[]) => {
-        const pause = checkpoint();
-        return pause
-          ? pause.then(() => Reflect.apply(value, target, args))
-          : Reflect.apply(value, target, args);
-      };
-    },
-  });
-  const { route, inbound: base } = c;
-  const census = await inspectInboundCooperatively(input.records, route, base, checkpoint);
-  await verifySpoolWitness(census.delivery.spool, input.counter, subtle);
-  if (c.installation.kind === 'original')
-    await verifyInstalledSuccessor(
-      census.delivery.spool,
-      route,
-      c.installation.successor,
-      subtle,
-      undefined,
-      c.installation.membership,
-    );
-  else if (c.installation.membership) {
-    if (!route.history) refuse('scope');
-    await verifyInstalledMembership(
-      census.delivery.spool,
-      route.history!,
-      c.installation.membership,
-      c.installation.initialEpoch,
-      subtle,
-    );
-  } else {
-    if (
-      !route.history ||
-      c.installation.initialEpoch !== route.epoch ||
-      census.delivery.spool.events.some((e) => membershipEventEpoch(e) !== route.epoch)
-    )
-      refuse('scope');
-  }
-  await verifySpool(census.delivery.spool, route, keys(c), c.signer, subtle);
-  const delivery = await verifyDelivery(census.delivery, route, base.authority, c.signer, subtle);
-  const inbound = await verifyInboundLedger(census, input.records, base, c);
-  // These captured rows are private and immutable for this pass. Rebuild once,
-  // retaining the pending-aware fork/apply/compare proof for each distinct original.
-  const coverage = createInboundCoverage();
+/** Only the first full reference may consume receipts; candidate/readback replay never does. */
+export interface PreparationVerification {
+  memo: VerificationMemo;
+}
+async function full(
+  input: ReturnType<typeof captureInput>,
+  c: LocalBaselineContext,
+  preparation?: PreparationVerification,
+) {
+  let delivered = false;
   try {
-    const checking = coverage.bind(input.records);
-    const check = (updates: readonly Bytes[]) => checking.check(input.records, updates);
-    await advanceSelfReceiveCooperatively(
-      census.delivery,
-      delivery,
-      inbound,
-      route,
-      check,
-      async () => {
-        const pause = checkpoint();
-        if (pause) await pause;
+    const checkpoint = createCpuBudget(c.assertCurrent);
+    // The guarded primitive still rechecks the captured owner after a budget yield.
+    // Preparation can reuse exact completed checks; the normal/reference path remains uncached.
+    const subtle = new Proxy(guardedSubtle(c.assertCurrent), {
+      get(target, property) {
+        const value: unknown = Reflect.get(target, property, target);
+        if (typeof value !== 'function') return value;
+        return (...args: unknown[]) => {
+          const pause = checkpoint();
+          return pause
+            ? pause.then(() => Reflect.apply(value, target, args))
+            : Reflect.apply(value, target, args);
+        };
       },
+    });
+    const { route, inbound: base } = c;
+    const census = await inspectInboundCooperatively(input.records, route, base, checkpoint);
+    const reuse = preparation && { memo: preparation.memo, current: c.assertCurrent };
+    await verifySpoolWitness(census.delivery.spool, input.counter, subtle, reuse);
+    if (c.installation.kind === 'original')
+      await verifyInstalledSuccessor(
+        census.delivery.spool,
+        route,
+        c.installation.successor,
+        subtle,
+        reuse,
+        c.installation.membership,
+      );
+    else if (c.installation.membership) {
+      if (!route.history) refuse('scope');
+      await verifyInstalledMembership(
+        census.delivery.spool,
+        route.history!,
+        c.installation.membership,
+        c.installation.initialEpoch,
+        subtle,
+        reuse,
+      );
+    } else {
+      if (
+        !route.history ||
+        c.installation.initialEpoch !== route.epoch ||
+        census.delivery.spool.events.some((e) => membershipEventEpoch(e) !== route.epoch)
+      )
+        refuse('scope');
+    }
+    await verifySpool(census.delivery.spool, route, keys(c), c.signer, subtle, reuse);
+    const delivery = await verifyDelivery(
+      census.delivery,
+      route,
+      base.authority,
+      c.signer,
+      subtle,
+      reuse,
     );
-    // Originals remain durable even before allocation to a network position.
-    for (const bytes of census.delivery.spool.sources.values()) {
-      const pause = checkpoint();
-      if (pause) await pause;
-      const capsule = decodeSourceCapsule(bytes, route);
+    // These captured rows are private and immutable for this pass. Rebuild once,
+    // retaining the pending-aware fork/apply/compare proof for each distinct original.
+    const coverage = createInboundCoverage();
+    try {
+      const checking = coverage.bind(input.records);
+      const basisBytes =
+        preparation &&
+        encodePreparationValue(
+          input.records.filter((r) => r.kind === 'state' || r.kind === 'update'),
+        );
+      let basis: string | undefined;
       try {
-        for (const source of capsule.sources) {
+        if (basisBytes) basis = await hash(basisBytes);
+      } finally {
+        if (basisBytes) basisBytes.fill(0);
+      }
+      const check = async (updates: readonly Bytes[]) => {
+        if (!preparation) {
+          checking.check(input.records, updates);
+          return;
+        }
+        const frame = encodePreparationValue(updates);
+        let slot: string;
+        try {
+          slot = 'coverage:' + (await hash(frame));
+        } finally {
+          frame.fill(0);
+        }
+        await preparation.memo.check(
+          slot,
+          basis!,
+          updates,
+          async () => checking.check(input.records, updates),
+          c.assertCurrent,
+        );
+      };
+      const inbound = await verifyInboundLedger(
+        census,
+        input.records,
+        base,
+        c,
+        preparation && {
+          memo: preparation.memo,
+          coverage,
+          checkpoint: async () => {
+            const p = checkpoint();
+            if (p) await p;
+          },
+          checkCoverage: check,
+        },
+      );
+      await advanceSelfReceiveCooperatively(
+        census.delivery,
+        delivery,
+        inbound,
+        route,
+        check,
+        async () => {
           const pause = checkpoint();
           if (pause) await pause;
-          check([source.bytes]);
+        },
+      );
+      // Originals remain durable even before allocation to a network position.
+      for (const bytes of census.delivery.spool.sources.values()) {
+        const pause = checkpoint();
+        if (pause) await pause;
+        const capsule = decodeSourceCapsule(bytes, route);
+        try {
+          for (const source of capsule.sources) {
+            const pause = checkpoint();
+            if (pause) await pause;
+            await check([source.bytes]);
+          }
+        } finally {
+          eraseCapsule(capsule);
         }
-      } finally {
-        eraseCapsule(capsule);
       }
+      c.assertCurrent();
+      const result = { census, delivery, inbound, snapshot: documentState(input.records, false) };
+      delivered = true;
+      return result;
+    } finally {
+      coverage.clear();
     }
-    c.assertCurrent();
-    return { census, delivery, inbound, snapshot: documentState(input.records, false) };
   } finally {
-    coverage.clear();
+    if (!delivered) eraseVerified(input);
   }
 }
 export async function replayFullLocalHistory(
   input: LocalReplayInput,
   context: LocalBaselineContext,
+  preparation?: PreparationVerification,
 ) {
   const c = captureLocalBaselineContext(context);
   try {
-    return await full(captureInput(input, c), c);
+    return await full(captureInput(input, c), c, preparation);
   } finally {
     clearLocalBaselineContext(c);
   }
@@ -316,6 +387,7 @@ export async function prepareLocalBaselineWithReference(
   journalEra?: import('./journalEra').JournalEra,
   // Reports a completed reference without exposing mutable evidence to candidate construction.
   onReferenceReady?: () => void,
+  preparation?: PreparationVerification,
 ) {
   const c = captureLocalBaselineContext(context);
   previous = previous && { ...previous };
@@ -324,7 +396,7 @@ export async function prepareLocalBaselineWithReference(
   let delivered = false;
   try {
     const captured = captureInput(input, c);
-    reference = await full(captured, c);
+    reference = await full(captured, c, preparation);
     onReferenceReady?.();
     const candidate = await summarizeBaseline(captured, reference, c, auth, previous, journalEra);
     delivered = true;
