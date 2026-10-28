@@ -5900,3 +5900,14 @@ authority/native/witness checks or change erasure ownership. A narrowed type on 
 states its existing inputs without changing arithmetic. Keep reference readers and proposal
 verification independent; use measured zero-history traversal plus original actual-client gates
 rather than claiming speed from the field count alone.
+
+
+## 2026-10-28 — Accept the bounded projection candidate for signed-artifact preparation
+
+Four fixed actual-client after journeys clear the unchanged16ms local,2.5s peer/every-marker and
+30s late-edit guards with actual preparation, Undo, complete/offline writing and independent native
+proofs. Lift this candidate's measured performance hold for explicit local-auto1/resume1/service-auto0;
+do not activate source defaults or service automation. The next release boundary is a signed-source,
+identified ARM64 artifact with selected switches and its own tests. Keep prior failures as evidence,
+phone deferral and generalized qualification paused. No universal latency/capacity inference from
+these four journeys and no authorization to merge or deploy is inferred from this acceptance.

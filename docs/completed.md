@@ -17182,3 +17182,18 @@ verified. [Four after-only cases frozen](performance-experiments/2026-10-28-enve
 failed full-history withheld first, both late variants, normal full-history last. All16ms/2.5s/
 30s/data/native guards and failure stop rule retained. Four analyzer fault controls pass; no
 measurement yet. No before reruns, old-test changes, activation, computer use, signing or release.
+
+
+## 2026-10-28 — Phase156: envelope projection candidate passes all four after journeys
+
+Both rebuilt154 clients now pass full-history normal/withheld and two-receiver normal/withheld:
+local p959.189–9.686ms, peer p951752.818–2419.896ms, every marker<=2500ms. The previously failing
+30s delivery/Undo, actual preparation, maintenance completion, entire writing, both offline cold,
+worker/resource and independent native proof guards pass. No retries or repeated before baselines;
+paired withheld backlog1.009279 passes1.10. [Results and scoped readiness](performance-experiments/2026-10-28-envelope-projection/phase156/README.md).
+All2211unit cases/1existing skip,103affected metadata cases and types/lint/format pass. Final ordinary
+check results are recorded with the evidence. Final runtime/tests remain154; old tests unchanged.
+This clears the measured candidate hold for explicit local-auto1/resume1/service-auto0 and supports
+signed-source artifact preparation. Keep the original failed/invalid attempts,16ms/2.5s/30s gates,
+source resume/service defaults0, phone deferral and general935/389 paused qualification block.
+No staging, signing, push, release image, preview update, publication or deployment.

@@ -1,0 +1,70 @@
+{
+  "allCompletedBoundsIndependentlyExact": true,
+  "fixedStopObserved": true,
+  "onlyThreeRuntimeFilesAndOneNewTestChanged": true,
+  "allOldTestFilesUnchanged": true,
+  "rows": [
+    {
+      "name": "after-1-maintenance-C-withheld",
+      "state": "passed",
+      "localP95": 9.188720703125,
+      "peerP95": 2419.896484375,
+      "markers": [
+        1053.6416015625,
+        2016.83984375,
+        843.83154296875
+      ],
+      "accepted": true,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "after-2-late-C-normal",
+      "state": "passed",
+      "localP95": 9.685791015625,
+      "peerP95": 1834.37109375,
+      "markers": [
+        1039.404296875,
+        838.84228515625,
+        1791.143798828125
+      ],
+      "accepted": true,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "after-3-late-C-withheld",
+      "state": "passed",
+      "localP95": 9.573486328125,
+      "peerP95": 2313.43359375,
+      "markers": [
+        1490.048583984375,
+        1744.74462890625,
+        1292.49560546875
+      ],
+      "accepted": true,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "after-4-maintenance-C-normal",
+      "state": "passed",
+      "localP95": 9.32861328125,
+      "peerP95": 1752.817626953125,
+      "markers": [
+        1986.354248046875,
+        853.3115234375,
+        747.197509765625
+      ],
+      "accepted": true,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    }
+  ],
+  "stopIndex": null,
+  "activationAccepted": true
+}

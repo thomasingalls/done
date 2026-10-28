@@ -1,0 +1,114 @@
+{
+  "allFourCompleteCasesAccepted": true,
+  "totalKeys": 480,
+  "totalMarkers": 12,
+  "rows": [
+    {
+      "name": "after-1-maintenance-C-withheld",
+      "allRawInputTrustAndFunctionalGuards": true,
+      "completeBacklogAndFinalDeliveryBounds": true,
+      "originalResourceLimitsExact": true,
+      "suppressedHintsRetained": true,
+      "backlogMs": 92513.24536132812,
+      "localP95": 9.188720703125,
+      "peerP95": 2419.896484375,
+      "markers": [
+        1053.6416015625,
+        2016.83984375,
+        843.83154296875
+      ],
+      "allGates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true,
+        "atLeast60KeysDuringCatchup": true,
+        "actualPreparation": true,
+        "maintenanceCompletes": true,
+        "pairedBacklogNonregression10percent": true
+      }
+    },
+    {
+      "name": "after-2-late-C-normal",
+      "allRawInputTrustAndFunctionalGuards": true,
+      "completeBacklogAndFinalDeliveryBounds": true,
+      "originalResourceLimitsExact": true,
+      "suppressedHintsRetained": false,
+      "backlogMs": 101040.65625,
+      "localP95": 9.685791015625,
+      "peerP95": 1834.37109375,
+      "markers": [
+        1039.404296875,
+        838.84228515625,
+        1791.143798828125
+      ],
+      "allGates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      }
+    },
+    {
+      "name": "after-3-late-C-withheld",
+      "allRawInputTrustAndFunctionalGuards": true,
+      "completeBacklogAndFinalDeliveryBounds": true,
+      "originalResourceLimitsExact": true,
+      "suppressedHintsRetained": true,
+      "backlogMs": 93131.57446289062,
+      "localP95": 9.573486328125,
+      "peerP95": 2313.43359375,
+      "markers": [
+        1490.048583984375,
+        1744.74462890625,
+        1292.49560546875
+      ],
+      "allGates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      }
+    },
+    {
+      "name": "after-4-maintenance-C-normal",
+      "allRawInputTrustAndFunctionalGuards": true,
+      "completeBacklogAndFinalDeliveryBounds": true,
+      "originalResourceLimitsExact": true,
+      "suppressedHintsRetained": false,
+      "backlogMs": 105270.45141601562,
+      "localP95": 9.32861328125,
+      "peerP95": 1752.817626953125,
+      "markers": [
+        1986.354248046875,
+        853.3115234375,
+        747.197509765625
+      ],
+      "allGates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true,
+        "atLeast60KeysDuringCatchup": true,
+        "actualPreparation": true,
+        "maintenanceCompletes": true
+      }
+    }
+  ]
+}

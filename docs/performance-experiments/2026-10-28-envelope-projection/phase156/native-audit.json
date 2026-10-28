@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "preparedSeedAcceptanceExact": true,
+  "rows": [
+    {
+      "name": "after-1-maintenance-C-withheld",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 119,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "d4d755ff9768e5ca91fd9130097f8d1c5b18964525d9efde83242e2a63c74ddf"
+    },
+    {
+      "name": "after-2-late-C-normal",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 98,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "12c8eedb8d4a5541ff5057c6f80e648ac5a8971dcc097494fdd0de68310fff38"
+    },
+    {
+      "name": "after-3-late-C-withheld",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 96,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "ae003423bc7710f61db7a69fe369f67c7bcad9ef568dae9f19df57667a29c856"
+    },
+    {
+      "name": "after-4-maintenance-C-normal",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 118,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "f2d6721940146f01cbdadd5766d29b590573ae308784b30b0bb42b5695ba9326"
+    }
+  ]
+}
