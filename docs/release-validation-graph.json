@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 567,
-    "requiredTestFiles": 561,
+    "testFiles": 568,
+    "requiredTestFiles": 562,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -13037,6 +13037,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/snapshot-size.node.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/snapshot-size.node.mjs"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/stage.test.mjs",
       "status": "required",
       "invocation": {
@@ -16768,7 +16783,7 @@
     },
     {
       "path": "scripts/release-validation/check.mjs",
-      "sha256": "880653a86fde57681df0385fe1562e152b1a4a6bf0fb4211f42d3287117d3f43"
+      "sha256": "322cecb5d01b3a47d2474e4fcfb892f0c7818286ea3736726662c5c43824211f"
     },
     {
       "path": "scripts/release-validation/command-wrappers.mjs",
@@ -20153,6 +20168,10 @@
     {
       "path": "test/release-validation/playwright.test.mjs",
       "sha256": "ae664d48cbb87dd9c79d56def8875fede147cf4955e13b73d6d591a5759dd2b5"
+    },
+    {
+      "path": "test/release-validation/snapshot-size.node.mjs",
+      "sha256": "005c9af7a9a2f4597e394fd6fd841c9b46b671cdd0c068968a91ae77b912b88b"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

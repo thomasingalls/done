@@ -1,0 +1,6 @@
+{
+  "allPriorTestRecordsUnchanged": true,
+  "addedTest": "test/release-validation/snapshot-size.node.mjs",
+  "byteLimitUnchanged": 700000,
+  "sourceAndCryptoRuntimeUnchanged": true
+}

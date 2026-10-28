@@ -20,15 +20,14 @@ if (args[0] === '--record') {
   bytes = result.code;
 }
 const path = new URL('../../docs/release-validation-graph.json', import.meta.url);
+// Both modes bound the actual canonical snapshot, not a discarded raw representation.
+if (args[0] !== '--record') bytes = readFileSync(path, 'utf8');
 assert(
   Buffer.byteLength(bytes) <= 700000,
   'Inventory exceeds the 700 kB prospective artifact budget; review representation',
 );
 if (args[0] === '--record') writeFileSync(path, bytes);
-else {
-  bytes = readFileSync(path, 'utf8');
-  assertSnapshot(inventory, bytes);
-}
+else assertSnapshot(inventory, bytes);
 console.log(
   JSON.stringify({
     status: 'passed',
