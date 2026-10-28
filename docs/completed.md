@@ -17031,3 +17031,15 @@ Select existing synchronous carrier/verified-view leases at redundant projection
 prove caller counts/lifetimes and retain detached async proposal inputs. Ownership traversal stays
 a separate follow-up. Runtime/tests equal135; full unit/native evidence is reused, final ordinary
 checks accompany the freeze. Bookend drift and16ms/2.5s failures remain; no activation/release.
+
+
+## 2026-10-28 — Phase143: guarded publication metadata selection
+
+Replace redundant raw-history loads/matches at delivery and envelope metadata boundaries with the
+existing fresh carrier selection and detached verified projections. Nine new cases reproduce five
+failures before repair, then pass alongside62 affected cases; full units189files/2190pass/1existing
+skip. Preserve initial fixture type errors, final passing type/lint/format and independent byte-exact
+proposal/witness/selection/storage boundary review. Census keeps classifications/domains; the new
+required test adds one unresolved general obligation (933/387). [Contract/evidence](performance-experiments/2026-10-28-publication-selection/phase143/README.md).
+Performance acceptance is still pending;16ms/2.5s gates and all previous failures remain. Cleanup
+traversal stays separate, defaults/service off, no computer use, signing, release or deployment.

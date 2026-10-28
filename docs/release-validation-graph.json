@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 569,
-    "requiredTestFiles": 563,
+    "testFiles": 570,
+    "requiredTestFiles": 564,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -12318,6 +12318,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/publicationMetadataSelection.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/publicationMetadataSelection.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/pwa.test.ts",
       "status": "required",
       "invocation": {
@@ -20052,6 +20067,10 @@
     {
       "path": "test/public-runtime/state.test.mjs",
       "sha256": "bdd92fc453a19218b14e4c02cad06880266fc8751bf5d6157d12bf4e95eab906"
+    },
+    {
+      "path": "test/publicationMetadataSelection.test.ts",
+      "sha256": "5ba7885c377dcf13c08e52a322a3c33f2f55693572cffdf8441945c81c2c3795"
     },
     {
       "path": "test/pwa.test.ts",

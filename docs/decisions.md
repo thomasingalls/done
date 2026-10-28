@@ -5852,3 +5852,13 @@ Do not widen leases across awaits, treat a revision/hash as authority, remove ex
 or change buffer erasure casually. Cleanup traversal is a separate mechanism. This records an
 investigation choice, not an implemented repair or passing acceptance; all failures/default holds
 and the operator's phone deferral remain. No publication or generalized qualification.
+
+
+## 2026-10-28 — Reuse private verified selections at metadata-only publication loads
+
+Adopt the existing carrier lease only synchronously, returning detached projections before async
+work. Delivery retains separate census/state ownership; envelope independently refreshes the
+publication predicate. Keep speculative proposal verification and native/witness/final-commit
+checks unchanged. Selection refusal fails closed; only capability absence uses the original raw
+record path. This first bounded repair does not combine ownership cleanup or broaden proof
+lifetimes. Retain the full-history input and peer gates before making any performance claim.

@@ -2484,6 +2484,15 @@ async function openAccountReceiveOwner(
         }),
       ...(incremental
         ? {
+            loadState: (task, owner) =>
+              owner.carrier.select(task, (lease) => ({
+                // Separate detached copies preserve the old census/state ownership boundary.
+                census: verified.select(lease, (v) => v.census.delivery),
+                state: verified.select(lease, ({ inbound, delivery }) => {
+                  if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+                  return delivery;
+                }),
+              })),
             loadSelection: (task, owner, select) =>
               selectState(task, owner, ({ inbound, delivery }) => {
                 if (inbound.conflict) throw Error('Publication halted by inbound conflict');
@@ -2593,6 +2602,12 @@ async function openAccountReceiveOwner(
         whenDurable,
         checkPublication,
         inspect: (records, route) => inspectCensus(records, route, (c) => c.delivery.spool),
+        ...(incremental
+          ? {
+              loadSelection: (task, owner) =>
+                selectState(task, owner, (v) => v.census.delivery.spool),
+            }
+          : {}),
         run: runCaptureTask,
       }),
       spoolStatus: () =>

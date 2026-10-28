@@ -42,6 +42,8 @@ export interface EnvelopePreparationContext {
     currentRecords?: readonly import('./contentRecord').OpenedRecord[],
   ): Promise<void>;
   inspect(records: Awaited<ReturnType<Owner['carrier']['load']>>, route: CaptureRoute): SpoolState;
+  /** Only the private carrier may select this detached, already-verified metadata. */
+  loadSelection?(task: SessionTask, owner: Owner): Promise<SpoolState>;
   run<T>(
     operation: (task: SessionTask, owner: Owner, route: CaptureRoute) => Promise<T>,
   ): Promise<T>;
@@ -107,6 +109,8 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
   const runCaptureTask = context.run;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const verified = async (task: SessionTask, owner: Owner, route: CaptureRoute) => {
+    if (owner.carrier.canSelect && context.loadSelection)
+      return { records: undefined, state: await context.loadSelection(task, owner) };
     const records = await owner.carrier.load(task);
     try {
       return { records, state: context.inspect(records, route) };
@@ -147,7 +151,8 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
         let wire: Bytes | undefined;
         const originals: import('./sourceCapture').SourceUpdate[] = [];
         try {
-          // Same just-loaded complete view; every append still obtains a fresh publication census.
+          // A selection exposes no records. Publication then checks a fresh small projection;
+          // record-based owners retain their just-loaded exact comparison. Every append rechecks.
           await context.checkPublication(task, owner, route, records);
           let position = state.positions.find((p) => !p.wire) ?? state.positions.at(-1);
           const allocate = !position || !!position.wire;
@@ -192,7 +197,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
                   },
             );
             countLedgerWork('positions');
-            for (const r of records) r.bytes.fill(0);
+            for (const r of records ?? []) r.bytes.fill(0);
             ({ records, state } = await verified(task, owner, route));
             position = state.positions.at(-1)!;
           }
@@ -221,7 +226,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
             attempt,
             wire,
           });
-          for (const r of records) r.bytes.fill(0);
+          for (const r of records ?? []) r.bytes.fill(0);
           ({ records, state } = await verified(task, owner, route));
           const saved = state.positions.find((p) => p.position === position!.position)?.wire;
           if (!saved) captureError('Persisted envelope missing after commit');
@@ -229,7 +234,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
         } finally {
           for (const source of originals) source.bytes.fill(0);
           wire?.fill(0);
-          for (const r of records) r.bytes.fill(0);
+          for (const r of records ?? []) r.bytes.fill(0);
         }
       });
     },
