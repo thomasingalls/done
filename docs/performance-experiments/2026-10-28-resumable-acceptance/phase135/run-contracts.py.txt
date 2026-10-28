@@ -1,0 +1,8 @@
+from pathlib import Path
+import json,subprocess,os,time
+s=Path(__file__).parent;root=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH']};rows=[]
+for i,c in enumerate(json.loads((s/'135-contract-commands.json').read_text()),1):
+ argv=c['argv'];assert argv[0]=='node';argv=[node,*argv[1:]];at=time.time_ns()//1000000
+ with(s/f'135-contract-{i}.log').open('w')as f:p=subprocess.run(argv,cwd=root,env={**env,**c.get('env',{})},stdout=f,stderr=subprocess.STDOUT)
+ rows.append({**c,'command':argv,'startedAt':at,'finishedAt':time.time_ns()//1000000,'exit':p.returncode});(s/'135-contract-results.json').write_text(json.dumps(rows,indent=2)+'\n');print(i,c['id'],p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

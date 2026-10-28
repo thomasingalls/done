@@ -1,0 +1,68 @@
+[
+  {
+    "path": "src/crdt/localBaselineStorage.ts",
+    "sha256": "2befdce0a55b627f3ffecabb01379c038def5b2b2241fa326df7279ba602ec43",
+    "checks": [
+      {
+        "text": "b.cut.nextSequence !== p.firstSequence",
+        "line": 494
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/localRetentionPlan.ts",
+    "sha256": "d49016ff91202d80733dab80a56160d58056cc2613378077a45c4379f019b7e2",
+    "checks": [
+      {
+        "text": "survivors",
+        "line": 64
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/retentionAttempts.ts",
+    "sha256": "c352a74892570b8a95f350822c4384775431f4c01675eaa025e1d3cd3d925793",
+    "checks": [
+      {
+        "text": "return p.attempt === null && p.discard === null",
+        "line": 31
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/accountReceive.ts",
+    "sha256": "24b48587f8799e4b905a9812d65f9687c466c73acc23bda67ed96ce55b90dd4a",
+    "checks": [
+      {
+        "text": "runNativeHistoryMaintenance",
+        "line": 2686
+      },
+      {
+        "text": "pendingPromotions",
+        "line": 286
+      },
+      {
+        "text": "runCaptureTask",
+        "line": 783
+      }
+    ]
+  },
+  {
+    "path": "src/account/historyMaintenance.ts",
+    "sha256": "9ff10bef78498eb8175bc5a4aa239e118e0e38f0b1314e767b36054742623333",
+    "checks": [
+      {
+        "text": "Pruning requires two unchanged admitted snapshots",
+        "line": 327
+      },
+      {
+        "text": "p.certificate.members.length > 1",
+        "line": 278
+      },
+      {
+        "text": "await save({ ...current(), attempt: { checkpoint, admission: null } })",
+        "line": 369
+      }
+    ]
+  }
+]

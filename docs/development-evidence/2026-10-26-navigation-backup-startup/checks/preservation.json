@@ -1,0 +1,21 @@
+{
+  "runtimeSources": 410,
+  "domainFamilies": 197,
+  "sourceHashChanges": [
+    "account-service/backup/b2.ts",
+    "account-service/backup/cycle.ts",
+    "src/account/firstDeviceSetup.ts",
+    "src/crdt/accountLedgerMetrics.ts",
+    "src/crdt/accountStartup.ts",
+    "src/editor/headingNavigation.ts",
+    "src/ui/GoalsNavigation.tsx"
+  ],
+  "domainSitesPreservedIgnoringLineMovement": true,
+  "oldReleaseBlocksRetained": 363,
+  "addedBlocks": [
+    "test:test/firstDeviceOpeningProgress.test.ts",
+    "test:test/public-backup/cadence.test.mjs"
+  ],
+  "allOldPipelineAssertionsRetained": 34,
+  "additionalPipelineAssertions": 7
+}

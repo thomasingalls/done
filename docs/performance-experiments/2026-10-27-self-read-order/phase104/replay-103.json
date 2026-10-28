@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "baseTree": "b444a049d5bdb4db935628d7ecda6f44622af217",
+  "orderedPatches": [
+    {
+      "phase": 100,
+      "baseTree": "b444a049d5bdb4db935628d7ecda6f44622af217",
+      "expectedTree": "1e603e541fd95be1222a9a301ed4b90e0b8d8aee",
+      "patch": "100-self-read-order-repair.patch",
+      "sha256": "bb3b362e72fb18c5e3197c1c6ae571ed29824fa8c4d326ff383292be6aa783a2"
+    },
+    {
+      "phase": 101,
+      "baseTree": "1e603e541fd95be1222a9a301ed4b90e0b8d8aee",
+      "expectedTree": "f3df0e9418ef196a01e8983b5c9f62e250319b3e",
+      "patch": "101-self-read-order-comparison-inputs.patch",
+      "sha256": "02ebbcf4c24509bdb6fb2c1a780e5eaf1a106ebdfd108615de7a674add52f2df"
+    },
+    {
+      "phase": 102,
+      "baseTree": "f3df0e9418ef196a01e8983b5c9f62e250319b3e",
+      "expectedTree": "3df01ded7f0cb16a234a62a7a3c200e1f7bffca4",
+      "patch": "102-self-read-order-results.patch",
+      "sha256": "411da916ead60fb2d84fecc75a2ab121a9b87c8a658ec7b8d6044b1d8b488137"
+    },
+    {
+      "phase": 103,
+      "baseTree": "3df01ded7f0cb16a234a62a7a3c200e1f7bffca4",
+      "expectedTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+      "patch": "103-publisher-scoped-size-fallback.patch",
+      "sha256": "4320ebed886980bfdcaa07774146fd27f53689804542f0c37eb0d9b10be052ec"
+    }
+  ],
+  "replayEqualsCumulativeWorkingFiles": true,
+  "realIndexEmpty": true,
+  "noUnexpectedUntrackedFiles": true
+}

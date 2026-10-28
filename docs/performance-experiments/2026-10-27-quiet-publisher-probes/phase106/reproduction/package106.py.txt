@@ -1,0 +1,38 @@
+from pathlib import Path
+import gzip,json
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-quiet-publisher-probes/phase106';e.mkdir(exist_ok=False);c=e/'checks';c.mkdir();re=e/'reproduction';re.mkdir();raw=e/'aborted-normal';raw.mkdir()
+for n in ['identity.json','protocol.md','run-plan.json','failed-probe-review.json','native-seed-tips.json','exported-source-review.json']:(e/n).write_bytes((s/n).read_bytes())
+for n in ['audit-failed.mjs','audit-lib.mjs','native-seed-tips.mjs','freeze-identity.py','privacy.py','package106.py']:(re/(n+'.txt')).write_bytes((s/n).read_bytes())
+(re/'quiet-probe.spec.ts.txt').write_bytes((s/'harness/test/account-continuation-lab/quiet-probe.spec.ts').read_bytes())
+for n in ['harness-types-corrected.log','failed-probe-review.log','run-console-initial.log']:(c/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+for n in ['result.json','runner.json','console.log','runner-receipt.json','container-identity.json','docker-command.json','services.log']:(raw/(n+'.gz')).write_bytes(gzip.compress((s/'quiet-normal-1'/n).read_bytes(),mtime=0))
+(e/'README.md').write_text('''# Phase106 — Preserve an aborted primary and correct its fixture basis
+
+The first normal diagnostic reaches a genuine accepted late write, then fails a new harness guard:
+local UI acceptance starts0, advances2, and the guard wrongly expects localBefore+1=1. Do not count
+this as a passing pilot or infer peer latency. The normal primary is aborted and the planned withheld
+case is unrun. Its exact sources/inputs precede dispatch in105; raw results/receipts and failure remain.
+
+Independent native Node/OpenSSL inspection establishes the discriminating fact: the original seed
+already has an accepted H2 position1, whose exact envelope/wrapper/head bytes and all other seed rows
+survive. There is exactly one new H2 position2. M/Q are unchanged. The saved local client has not yet
+retained the earlier accepted receipt. This is a fixture-counter assumption, not evidence of duplicate
+new writing. It means the future observation includes initial receipt replay/grant startup as well
+as discovery, which must be retained as a workload limitation.
+
+Keep the existing greater-than-local-before assertion and bind the stronger equality to the actual
+target publisher's independently verified native seed tip+1. Resolve its public identity from the
+real outgoing request. No application code, production test, deadline, trust check or data guard is
+weakened. The native audit separately requires precisely one new position and every original row
+exact; a changed/missing old row cannot pass by merely updating a UI expectation. Harness types pass.
+
+Freeze a fresh corrected pair before dispatch: normal wake frames, then intentionally withheld wake
+frames. Same latest110-file client, unchanged server/fixture/resources, original2500ms single-
+observation comparison and600s replay boundary. Every R/C source export file is rechecked against
+its immutable source tree:1640 runtime/test/helper/dependency files each. No candidate optimization,
+no outcome-driven further repetitions, no latency claim from this aborted attempt. No old test edits
+or912/367 qualification changes. Exact current identities/apparatus and all initial105 evidence stay.
+
+Sequential unsigned106 after105. No commit/push, preview/API restart, release prep or deployment.
+''')
+with (r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Aborted late-peer diagnostic and verified fixture correction (phase106)\n\nThe first normal primary fails its localBefore+1 guard at0→2; withheld case remains unrun. Preserve\nthe failed primary, not a passing pilot. Independent native signatures/prefixes show seed H2 already\naccepted1, all seed rows exact, exactly one new H2 position2 and M/Q unchanged. Bind final equality\nto that independently verified target seed tip+1, retaining the old local-progress guard and all data\nchecks. Include initial client/service acceptance mismatch in the measured-workload limitation.\n[Failure, audit and corrected prospective pair](performance-experiments/2026-10-27-quiet-publisher-probes/phase106/README.md).\n\nHarness types and all1640 source/export identities per R/C pass. Freeze corrected normal/withheld\npair before dispatch; no runtime/old test/gate/security/912-367 qualification change. Unsigned106\nafter105. No signing, push, preview update, release prep or deployment.\n''')

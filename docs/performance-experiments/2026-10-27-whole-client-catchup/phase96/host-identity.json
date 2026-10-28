@@ -1,0 +1,20 @@
+{
+  "nodeVersion": "v24.18.0",
+  "hardware": {
+    "status": 0,
+    "values": [
+      "MacBookPro18,1",
+      "10",
+      "34359738368"
+    ],
+    "stderr": ""
+  },
+  "featureFlagEnvironment": {
+    "VITE_ACCOUNT_LEDGER": "<unset>",
+    "VITE_ACCOUNT_TEXT_ADMISSION": "<unset>",
+    "VITE_ACCOUNT_BASELINE_READ": "<unset>",
+    "VITE_ACCOUNT_BASELINE_INSTALL": "<unset>",
+    "VITE_ACCOUNT_RETENTION": "<unset>",
+    "VITE_ACCOUNT_AUTHORITY_PROFILE": "<unset>"
+  }
+}

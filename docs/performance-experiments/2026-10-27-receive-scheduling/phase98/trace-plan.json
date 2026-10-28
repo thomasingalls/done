@@ -1,0 +1,26 @@
+{
+  "phase": 98,
+  "sourceTree": "2b443aa2e7aeaf2a6067f7af75d82a70c930c52a",
+  "runtimeTree": "761f4f9669b8208bcea1d5263a53d50047bb6adb",
+  "variant": "C",
+  "name": "trace-01",
+  "clientArtifactManifest": "/private/tmp/done-whole-client-20261027/C-client-identity.json",
+  "fixtureIdentity": {
+    "jsonSha256": "a0dae92006ec40c01fcb525e25172f74fe4dc4f65aaf073f27247c6acbb3db50",
+    "serviceFiles": {
+      "authority.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "authority.sqlite": "17f126ce29c7da364b6c83b748f0e32d63137e0c4c09575bae3547287dafe1af",
+      "authority.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "operator.key": "b4b0dd7d9de02a9f5c12c9ea06b3149b45a40bb029a4bc8abcadba83fc79aa64",
+      "account.sqlite": "496527fe50f4f84400c8ebefa2a60c0b1511b1686281cf28cce975ad5c864096",
+      "pin.json": "d8fd4ca8ae6ee6ab36e203fbaab4d52b59e41961929048d890a8288a8aa2bedc",
+      "account.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "account.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "previousUninstrumentedNonoverlapSeconds": [
+    145.33,
+    145.286
+  ],
+  "primaryPurpose": "Classify publisher/page productivity and sampled main-thread work; not latency acceptance or a new reference/candidate comparison."
+}

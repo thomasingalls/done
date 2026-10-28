@@ -1,0 +1,475 @@
+[
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-suite-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-record-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-journal-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-recovery-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-device-lock-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-finalization-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-enrollment-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-envelope-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-private-envelope-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-head-discovery-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-attribution-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-checkpoint-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-antireplay-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-package-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-account-credential-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-transition-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/generate-baseline-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-admission-bounds/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-first-authority/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-recovery-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-transport-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-service-custody/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/check-aad-coverage.mjs"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check",
+      "vectors:coverage"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-promotion-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-ledger-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-counter-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-store-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-local-custody/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-checkpoint-contract/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-local-provenance/vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "vectors:check",
+    "argv": [
+      "node",
+      "scripts/account-successor-vectors.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "vectors:check"
+    ]
+  },
+  {
+    "id": "retention:check",
+    "argv": [
+      "node",
+      "scripts/check-retention.mjs"
+    ],
+    "env": {},
+    "via": [
+      "retention:check"
+    ]
+  },
+  {
+    "id": "status:check",
+    "argv": [
+      "node",
+      "scripts/check-selection-status.mjs"
+    ],
+    "env": {},
+    "via": [
+      "status:check"
+    ]
+  },
+  {
+    "id": "limit:check",
+    "argv": [
+      "node",
+      "scripts/check-update-limit.mjs"
+    ],
+    "env": {},
+    "via": [
+      "limit:check"
+    ]
+  },
+  {
+    "id": "authority:check",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "env": {},
+    "via": [
+      "authority:check"
+    ]
+  },
+  {
+    "id": "recipient:check",
+    "argv": [
+      "node",
+      "scripts/check-recipient-authority.mjs"
+    ],
+    "env": {},
+    "via": [
+      "recipient:check"
+    ]
+  },
+  {
+    "id": "admission:check",
+    "argv": [
+      "node",
+      "scripts/check-write-admission.mjs"
+    ],
+    "env": {},
+    "via": [
+      "admission:check"
+    ]
+  },
+  {
+    "id": "remediation:check",
+    "argv": [
+      "node",
+      "scripts/remediation-status.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "remediation:check"
+    ]
+  },
+  {
+    "id": "debts:check",
+    "argv": [
+      "node",
+      "scripts/check-debts.mjs",
+      "--check"
+    ],
+    "env": {},
+    "via": [
+      "debts:check"
+    ]
+  },
+  {
+    "id": "wasm:verify",
+    "argv": [
+      "node",
+      "scripts/check-wasm-seal.mjs"
+    ],
+    "env": {},
+    "via": [
+      "wasm:verify"
+    ]
+  }
+]

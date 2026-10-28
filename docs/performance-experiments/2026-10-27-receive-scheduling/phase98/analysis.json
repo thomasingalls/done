@@ -1,0 +1,111 @@
+{
+  "status": "qualified",
+  "functionalJourneyPassed": true,
+  "allSuccessfulRequestsAndPagesClassified": true,
+  "allReadHttpResponsesAccounted": true,
+  "initialStrictAllPublisherMetadataCriterionMet": false,
+  "earlyRefusalsWithUnavailablePublisher": 10,
+  "earlyRefusalCaveat": "These replies preceded body decoding in the observer. Retain their HTTP429 status but infer no publisher or page productivity. Do not relabel them as empty.",
+  "forwardCatchupMs": 145089,
+  "readHttpAllJourney": 1598,
+  "forwardHttp": 1591,
+  "forwardStatusCounts": {
+    "200": 1542,
+    "429": 49
+  },
+  "allSixCertifiedPublishersSeen": true,
+  "perPublisher": [
+    {
+      "role": "unchanged",
+      "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+      "innerRequests": 257,
+      "entries": 0,
+      "emptyPages": 257,
+      "http": 257,
+      "handlerWallMs": 2503.2219149999346
+    },
+    {
+      "role": "unchanged",
+      "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+      "innerRequests": 257,
+      "entries": 0,
+      "emptyPages": 257,
+      "http": 257,
+      "handlerWallMs": 2694.03272000005
+    },
+    {
+      "role": "unchanged",
+      "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+      "innerRequests": 257,
+      "entries": 0,
+      "emptyPages": 257,
+      "http": 257,
+      "handlerWallMs": 2817.9670050000186
+    },
+    {
+      "role": "unchanged",
+      "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+      "innerRequests": 257,
+      "entries": 0,
+      "emptyPages": 257,
+      "http": 257,
+      "handlerWallMs": 2252.1104249998643
+    },
+    {
+      "role": "unchanged",
+      "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+      "innerRequests": 257,
+      "entries": 0,
+      "emptyPages": 257,
+      "http": 257,
+      "handlerWallMs": 2669.1594120001146
+    },
+    {
+      "role": "backlogged",
+      "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+      "innerRequests": 1024,
+      "entries": 1024,
+      "emptyPages": 0,
+      "http": 257,
+      "handlerWallMs": 10855.260298999929
+    }
+  ],
+  "cyclesAssociatedWithPriorReply": {
+    "empty": {
+      "http": 1285,
+      "handlerWallMs": 12936.491476999981,
+      "cycleSpanMs": 60131,
+      "interRequestGapMs": 47188
+    },
+    "productive": {
+      "http": 257,
+      "handlerWallMs": 10855.260298999929,
+      "cycleSpanMs": 33978,
+      "interRequestGapMs": 23127
+    },
+    "refused": {
+      "http": 49,
+      "handlerWallMs": 22.07878800002436,
+      "cycleSpanMs": 49460,
+      "interRequestGapMs": 49437
+    }
+  },
+  "overlappingAdjacentReadIntervals": 0,
+  "initialBeforeFirstReadMs": 1520,
+  "observerRequestDecodeMs": 90.74529900022662,
+  "observerResponseDecodeMs": 40.182269999856544,
+  "original1024PositionsExactlyOnce": true,
+  "scope": "Server reports page shapes; unchanged native owner and independent final signatures/prefixes provide authority. Cycle spans include verification/application/scheduling and intervening other work, not causal time saved by removing a request. CPU profiles cover main threads only; sampling and observation timings are not latency acceptance.",
+  "previousUninstrumentedNonoverlapRead429s": [
+    51,
+    57,
+    57,
+    52
+  ],
+  "profiledAllJourneyRead429s": 49,
+  "nativeRefusalBodiesClassified": {
+    "capacity": 49
+  },
+  "backoffConnectionEvidence": "49 native HTTP authorization-refused/capacity replies, about49.44s of subsequent inter-read gaps, and unchanged production-scheduler replay49x1000ms; the exact native bucket-subcondition is not directly instrumented.",
+  "refusalBodiesAreAdvisoryNotSignedProgressProofs": true
+}

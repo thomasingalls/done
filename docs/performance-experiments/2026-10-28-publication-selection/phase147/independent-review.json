@@ -1,0 +1,65 @@
+{
+  "allCompletedBoundsIndependentlyExact": true,
+  "fixedStopObserved": true,
+  "onlyThreeRuntimeFilesAndOneNewTestChanged": true,
+  "allOldTestFilesUnchanged": true,
+  "rows": [
+    {
+      "name": "maintenance-1-R-normal",
+      "state": "passed",
+      "localP95": 8.75634765625,
+      "peerP95": 1893.78125,
+      "markers": [
+        1783.3662109375,
+        825.28857421875,
+        789.351318359375
+      ],
+      "accepted": true,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "maintenance-2-C-normal",
+      "state": "passed",
+      "localP95": 10.693115234375,
+      "peerP95": 1797.87646484375,
+      "markers": [
+        994.84765625,
+        705.646240234375,
+        877.8349609375
+      ],
+      "accepted": true,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "maintenance-3-C-withheld",
+      "state": "failed",
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.day-panel[data-active=\"true\"] .card').filter({ hasText: 'Fair H reverse:' }).first()\nExpected substring: \u001b[32m\" Undo safety guard;\"\u001b[39m\nReceived string:    \u001b[31m\"Fair H reverse: Early peer;wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww Mid peer;wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww Late peer;wUnlockDuplicateRemove\"\u001b[39m\nTimeout: 30000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 30000ms\u001b[22m\n\u001b[2m  - waiting for locator('.day-panel[data-active=\"true\"] .card').filter({ hasText: 'Fair H reverse:' }).first()\u001b[22m\n\u001b[2m    63 \u00d7 locator resolved to <article class=\"card\" data-section=\"done\" data-guarded=\"true\" data-frozen=\"false\" data-editing=\"false\" data-reordering=\"false\" data-card=\"1cb2bd6b-acbe-474f-b486-8b13ffb03e05\">\u2026</article>\u001b[22m\n\u001b[2m       - unexpected value \"Fair H reverse: Early peer;wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww Mid peer;wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww Late peer;wUnlockDuplicateRemove\"\u001b[22m\n"
+    },
+    {
+      "name": "maintenance-4-R-withheld",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-1-R-normal",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-2-C-normal",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-3-C-withheld",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-4-R-withheld",
+      "state": "unexecuted"
+    }
+  ],
+  "stopIndex": 2,
+  "activationAccepted": false
+}

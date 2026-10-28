@@ -1,0 +1,2 @@
+{"status":"passed","mode":"check","packageScripts":145,"campaigns":78,"testFiles":550,"requiredTestFiles":544,"excludedProductTestFiles":6,"catalogues":12,"vectorCorpora":30,"constructions":97,"vectorChainConsumers":18,"snapshotBytes":649765}
+Planning coverage only: no test bodies, native campaigns or aggregate have run.

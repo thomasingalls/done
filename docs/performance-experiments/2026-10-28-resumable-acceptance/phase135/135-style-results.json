@@ -1,0 +1,12 @@
+[
+  {
+    "check": "lint",
+    "exit": 0,
+    "files": 51
+  },
+  {
+    "check": "format",
+    "exit": 0,
+    "files": 4
+  }
+]

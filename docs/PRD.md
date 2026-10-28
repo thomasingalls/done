@@ -373,7 +373,8 @@ A day shows them in the order **Next, Done, Scheduled**: what you are doing, wha
 intentions that have not come up yet. **Done reads newest-first** — whatever was completed most recently is
 on top, and a record you only ever add to is read from the top. Next and Scheduled are ordered by intent
 rather than by time and keep the order you put them in. All three collections can be reordered on
-writable days, using the desktop grip, arrow keys on the grip, or a touch/pen hold followed by a drag.
+writable days, using the visible grip on touch or desktop, arrow keys on the grip, or a touch/pen
+hold followed by a drag. The grip remains available on mobile.
 
 **The cap bounds what you can add, not what a day can hold.** Three is a rule about the act of putting
 something in Next, and it is enforced by refusing: at three, the app does not take a fourth. It is not a
@@ -421,7 +422,7 @@ purpose.
 | Master → Next / Scheduled / Done | Explicit Copy or Move       | **Copy** keeps the original; **Move** transfers the selected lines in one undoable action. **Remove** remains independent. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §4.3.                                                                |
 | Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
-| Any collection → reordered        | Deliberate                   | Long-press then drag on touch/pen; drag or arrow keys on the reorder grip on desktop. Writable days only. |
+| Any collection → reordered        | Deliberate                   | Drag the visible grip with touch/mouse, use its arrow keys, or hold then drag on touch/pen. Writable days only. |
 
 **Duplicate** on a live card in Next, Done or Scheduled creates a new Scheduled card on the
 same writable day, preserving the complete multiline Markdown and leaving the source unchanged.
@@ -445,6 +446,9 @@ the footer so the destination buttons stay in place and the footer stays at two 
 ### 4.3 Done items are guarded
 
 Done is a record. Once written, editing it should require intent.
+
+Done cards rest at33% opacity. Interacting with an individual card (hover, focus within, active
+pointer, editing or dragging) restores it to100%; other Done cards stay dim.
 
 Creation is easy and editing is hard, and these don't conflict because they're different affordances. A done
 card renders as static text and does not become editable by tapping it; unlocking is a stationary long-press
@@ -720,9 +724,10 @@ unrelated writing becomes quieter without hiding or reflowing it. Selected text 
 When the caret is outside the visible editing area, ordinary contrast returns throughout the view.
 “Gentle context” is on by default and has an immediately applied settings-sidebar toggle for this
 browser. Unavailable preference storage affects saving that cosmetic choice, never writing.
-The pinned Goals control still opens the whole page outline. Each breadcrumb also provides a
-heading jump and a menu of immediate subsections (or siblings at a leaf), preserving authored
-order and skipped heading levels. Duplicate labels include ancestry and line location in the local
+The root word Goals opens the whole page outline without an icon. A caret immediately after Goals
+lists all H1 headings. Each heading word navigates to it; its following caret lists its immediate
+authored children, preserving order and skipped heading levels. Leaf menus report no subsections.
+Choosing a menu row navigates there and keeps the menu open at that heading's child level. Duplicate labels include ancestry and line location in the local
 menu. These controls scroll without moving the caret or opening the mobile keyboard. Document
 changes dismiss an open menu rather than reuse stale heading positions.
 

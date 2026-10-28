@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,subprocess,hashlib
+root=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path(__file__).parent;base='a1ad3e3a81563a049e1d4b65aaff91dabe6516ba'
+old=(s/'accountReceive.ts.before').read_text();now=(root/'src/crdt/accountReceive.ts').read_text()
+restored=now.replace('  inboundReadCursors,\n','',1).replace('inbound: inboundReadCursors(v.inbound),','inbound: v.inbound,',1).replace('''      runCaptureTask(async (task, owner) =>
+        Object.freeze(await readState(task, owner, (v) => describe(v.inbound))),
+      ),''','''      runCaptureTask(async (task, owner, route) => describe(await state(task, owner, route))),''',1)
+assert restored==old,'Unexpected accountReceive difference'
+ledger=(root/'src/crdt/inboundLedger.ts').read_text();oldLedger=(s/'inboundLedger.ts.before').read_text()
+start=ledger.index('export function publisherState(');body=ledger.index('  if (publisher === base.publisher.id)',start)
+a=oldLedger.index('export function publisherState(');b=oldLedger.index('  if (publisher === base.publisher.id)',a)
+restored=ledger[:start]+oldLedger[a:b]+ledger[body:]
+restored=restored[:restored.index('\n/** Read preparation only:')]
+assert restored==oldLedger,'Unexpected inboundLedger difference'
+for f in ['accountReceive.ts','inboundLedger.ts']:
+ actual=subprocess.check_output(['git','show',base+':src/crdt/'+f],cwd=root)
+ assert actual==(s/(f+'.before')).read_bytes()
+checked=0
+for row in subprocess.check_output(['git','ls-tree','-rz',base,'--','test'],cwd=root).split(b'\0'):
+ if not row:continue
+ info,path=row.split(b'\t',1);mode,kind,blob=info.decode().split()
+ if kind!='blob':continue
+ data=(root/path.decode()).read_bytes();digest=hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest();assert digest==blob,path.decode();checked+=1
+result={'baseTree':base,'allOtherReceiveRuntimeBytesExactAfterReversingTwoProjectionsAndImport':True,'existingPublisherResolverRuntimeExact':True,'ledgerOnlyTypeOverloadsAndNewReadOnlyProjector':True,'oldTestFilesByteExact':checked,'fullStateVerificationApplicationHistoryPathsUntouched':True,'sourceHashes':{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/'src/crdt/accountReceive.ts',root/'src/crdt/inboundLedger.ts']}}
+(s/'source-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))

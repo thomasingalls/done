@@ -5531,3 +5531,394 @@ screen-lock behavior. Reader adoption stops future maintenance but cannot recons
 operational rows. The original public TLS probe's Docker DNS failure remains beside a successful
 default-trust DNS control. HSTS is sticky until expiry or HTTPS `max-age=0`; no preload is requested.
 [Exact artifact, failures, limits and handoff](./development-evidence/2026-10-26-ux-retention-release/README.md).
+
+
+## 2026-10-26 — Incremental context without changing the editing model (phase82)
+
+The operator reports Goals-only typing slowdown partly relieved by disabling Gentle context.
+Reuse numeric ownership intervals across parser-proven ordinary paragraph edits and suppress unchanged
+view effects. Invalidate on structural/parser/coverage changes; retain bounded fail-open lookup and
+actual offscreen/lifetime guards. Keep the toggle default on; no content or security guarantees change.
+The browser timing probes do not establish the16ms gate or explain all lag, and preserve a separate
+final-text failure on both predecessor and candidate. [Evidence](./performance-experiments/2026-10-26-goals-context/README.md).
+
+
+## 2026-10-26 — Storage arrivals interrupt preparation, not final exchange (phase83)
+
+The operator asks to repair maintenance contention while preserving security. Separate the read-only
+preparation queue-priority generation from retained evidence's input/lifecycle guards. Foreground
+storage arrival stops the next preparation effect/yield boundary, after native settlement; final
+mutation/readback retains its existing exclusive lifetime. Three native regressions distinguish the
+two boundaries. Offline-start fixture schedules keep their original storage/reader assertions rather
+than expecting discretionary maintenance to defeat a new sync flight. [Evidence](./performance-experiments/2026-10-26-maintenance-contention/phase83/README.md).
+
+
+## 2026-10-26 — Sync readiness and user quiet are separate clocks (phase84)
+
+The held-receive regression disproves the initial maintenance start guard; its timeout also exposes a
+retry gap. Defer automatic starting through starting/working/retrying lanes. Let offline/idle/blocked
+states use the existing proof path, and preserve all network deadlines. Refreshing readiness must not
+reset user quiet or routine polling can starve local reduction. This favors foreground convergence and
+can postpone discretionary maintenance on a continually busy account. No hint supplies authority.
+The current backup cap remains unchanged at the operator's request; no readback bypass. [Evidence](./performance-experiments/2026-10-26-maintenance-contention/phase84/README.md).
+
+
+## 2026-10-26 — Explicit release hold; distinguish local Account replay from service pruning (phase86)
+
+The operator explicitly defers release preparation until a later request. Continue bounded development
+and sequential patches only. Clarify that automatic **local** reduction applies to synced Accounts'
+device storage. The confirmed manual service prune removes covered ciphertext but retains proof
+metadata and does not rewrite the phone's existing replay ledger. A reported minute before editing
+selects startup-phase attribution, not another generic catch-up sweep. Backup cap/cadence and exact
+readback remain unchanged; daily verification is a discussed option, not an implementation decision.
+[Source-backed cadence and next bounded questions](./development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
+
+
+## 2026-10-26 — Visible mobile grip and explicit post-hold scroll ownership (phase87)
+
+The operator asks to retain the mobile grip and reports immediate drag cancellation. A real sustained
+scrollable-list test reproduces native pointercancel after capture. Keep both activation paths: expose
+the grip with its initial touch-action and capture-phase claim; for body holds cancel native touchmove
+only after activation using a scoped listener installed at gesture start. Ordinary scrolling remains;
+editor input is excluded. Retain primary ownership and existing single release operation/cancellation.
+No backup/startup or security-contract mechanism changes. [Red/green and preservation evidence](./development-evidence/2026-10-26-mobile-reorder/README.md).
+
+## 2026-10-26 — Goals menu ownership (phase88)
+
+The operator selects the Goals word for the full outline and a trailing caret for that heading's
+children. Root children are H1s; leaves do not fall back to siblings. Selection drills into the chosen
+heading while preserving editor selection and the captured-document guard. Adopt the former outline
+indicator's24px centered geometry/2px corners, retaining current colors. This supersedes the previous
+leaf-sibling and close-on-select presentation only, not writing/admission behavior.
+
+## 2026-10-26 — Done contrast is per card (phase89)
+
+The operator selects33% resting opacity and100% while interacting. Apply this to the individual
+card, including focus within and explicit editing/reordering state, without changing layout or guards.
+
+## 2026-10-26 — Hourly backup verification, five-minute local checks (phase90)
+
+The operator selects one remote verification cycle/hour, including unfamiliar retained keepers. Uploads
+remain independent and prompt; receipt credit is distinct from exact-readback backup credit. Keep
+immediate verification for explicit maintenance backups. Local checksum checks cannot prove restoreability
+without the separately held recovery key and cannot grant pruning. Keep every anchor/keeper/listing fence.
+A download cap pauses reads/pruning until UTC reset, allowing new uploads; broader caps pause provider
+calls. Transient failures back off. Caches/backoff remain process-local: restart requires a fresh proof.
+Health means the selected upload/local-check/hourly-remote-check policy, with pending verification and
+actual verified recovery-point age exposed; it does not mean every newly uploaded byte is verified.
+
+## 2026-10-26 — Separate passkey presentation from authenticated opening (phase91)
+
+Provider return ends the prompt presentation, not proof verification. Show access/saved-writing
+progress while existing owners continue; retain Back as cancellation, never removal. A late owner
+must drain before the setup lease is released and cannot publish ready after cancellation. Add only
+opt-in fixed-label numeric phase metrics; do not remove fresh census/replay checks or claim the actual
+phone's delay has been attributed. Reuse the prior depth evidence, then profile the actual slow phase.
+
+## 2026-10-27 — Project receiver cursors before detached copying (phase93)
+
+Reuse existing verified-owner selection and certified publisher resolution for a narrow request/status
+projection. The source and fixed synthetic probe support removing whole retained-history copies from
+these read-only consumers. Keep full retained evidence on page verification/application/history paths,
+scheduling order, fresh authority/commit checks and all original latency gates. This is a bounded
+client-copy repair, not another service proof cache or permission to infer phone-opening attribution.
+
+## 2026-10-27 — Read cursors are scheduling data, not retained proof (phase94)
+
+Narrow the detached request projection to prefix/conflict/starting point per publisher and pending-self,
+inside the existing freshly authenticated selection; retain the exact checked publisher resolver.
+Compute scalar status there too, then retain its frozen public shape. Type-only cursor support does
+not make hints eligible for page verification/history installation: those paths keep full retained
+evidence and every existing check. Confirm the default path via real receiver clone observations,
+old-source failure and cold/conflict regressions; keep whole-client latency acceptance separate.
+
+## 2026-10-27 — Compare rebuilt whole clients with maintenance enabled (phase96)
+
+Use two complete rebuilt clients differing only in the receiver projection repair against one identical
+current service and freshly regenerated disposable seed. Preserve current automatic retention policy,
+unequal device/history load, original latency gates and cold durability/native signature checks. Fixed
+R,C,C,R journeys bracket drift; correlated keys do not create independent replicates. Bulk replay and
+non-overlapping-session timing stay separate from the complete-peer2.5s realtime gate. No Android/
+phone-opening or generalized qualification inference follows from this finite native desktop study.
+
+## 2026-10-27 — Repair self-read ordering before broader idle-peer scheduling (phase99)
+
+The native trace confirms repeated empty publisher reads and capacity retry gaps. Exact source
+replay shows a smaller defect in existing self-check reuse: an intervening empty peer clears the
+productive flag and defeats a still-recent own check. Select that as the next bounded repair, with
+fresh retained backlog hints, pending-self reconciliation and original non-self turns preserved.
+No implementation or timing win is claimed yet. Keep the bulk-custody reader opt-in because its
+previous adoption criterion failed. A broader remote-peer delay requires its own discovery-latency
+contract and must retain the2.5s acceptance gate, not inherit a delay merely because a poll constant exists.
+
+## 2026-10-27 — Fresh peer backlog preserves only the existing own-check optimization (phase100)
+
+Use already authenticated retained cursors to show that useful peer work remains despite an
+intervening empty peer. The hint can preserve an existing recent own check, never create one or
+suppress pending-self reconciliation. Keep all other publisher opportunities and the original
+five-second own recheck boundary; no new remote-peer silence cache or polling interval. No crypto,
+format, authority, rate, concurrency or failure-backoff contract changes. Validate whole-client
+behavior separately, retaining the2.5s complete-peer gate and every preservation check.
+
+## 2026-10-27 — Separate publisher payload size from endpoint availability (phase103)
+
+The old owner-wide downgrade was safe but too broad for aggregate size. Keep404 owner-wide; bind a
+successful aggregate-limit hint to the publisher decoded from the owned request. Keep unscoped
+byte-only callers conservative. Bound scheduling hints to128 fixed-size IDs, evicting to re-probe
+rather than downgrading another publisher. This changes no account-size limit or authority cache.
+All original byte/ownership/deadline/verifier/commit boundaries remain. The frozen100 comparison
+measures only the self-read repair; do not attach its timing result to this separate size repair.
+
+## 2026-10-27 — Bound remote quiet rechecks without borrowing the self window (phase108)
+
+Keep unchanged-peer discovery explicit: four certified remotes are checked roughly1024 times per
+1024-position catch-up. Neither permanent silence nor the5s self window is justified for independent
+writers. Select750ms as the next experimental fixed per-publisher budget while other verified backlog
+exists, with target/context binding, immediate wake/reset invalidation and per-attempt generation
+fences; do not slide with unrelated work, key to aggregate progress, reset own freshness or weaken
+verification/backoff. This is a proposed candidate, not an implemented/adopted default. Full original
+gates and a same-account late-writer case under real contention must pass before adoption. A broader
+mixed-publisher cohort needs its own outstanding-request/group-commit contract.
+
+The two guarded baseline observations are below2.5s with normal/withheld wake frames; no p95 or
+causal hint-performance claim. Preserve both earlier failed/interrupted fixtures. Correct106's
+missing-receipt inference: displayed0 is the scheduler's initial counter, not a local-storage census;
+receipt replay was not established. Native seed-tip+1 and original byte identities are the reliable
+guard. No runtime or qualification change. [Evidence/next contract](performance-experiments/2026-10-27-quiet-publisher-probes/phase108/README.md).
+
+## 2026-10-27 — Fixed quiet deadlines require captured generation, not reset-on-completion (phase109)
+
+Implement750ms only after verified empty completion and while other authenticated backlog remains.
+Bind target primitives and stable public authority, not aggregate revision or detached object identity.
+Use the existing baseline cursor resolver for sparse streams; do not persist empty scheduling state.
+Opaque captured tokens fence pre-wake replies; a notification clears scheduling only, not valid I/O,
+own freshness or fairness. The actual composed one-fault race detects a missing token-generation
+fence. Full performance/data gates remain required; no adoption or release claim from units/race.
+
+## 2026-10-27 — Throughput does not override the peer-latency gate (phase111)
+
+Candidate gains16.8%/38.8% replay throughput and passes original eight cases, but new two-receiver
+complete peer p95s2532.0/2739.1ms miss2.5s. Reference withheld also misses; do not infer a causal
+regression from single observations. Retain every failed gate, disable optional quiet scheduling
+in the product default, and investigate active-writer discovery/publication pacing before adoption.
+Keep2.5s and full120 keys; no outcome-driven timing rerun, threshold relaxation or release preparation.
+
+## 2026-10-27 — Preserve the failed candidate without enabling it (phase112)
+
+Use the original selector default in composed product owners while retaining optional750ms machinery
+for the next bounded repair. The actual composed guard distinguishes active and held builds, rather
+than relying only on a source flag. Keep every failed p95 and unchanged2.5s gate. A recent-writer grace
+period is only a hypothesis; trace publication versus receiver delay before selecting it. No release
+preparation, threshold relaxation or production/default feature activation from this experiment.
+
+## 2026-10-27 — Repair expired publication urgency before broad capacity policy (phase114)
+
+Retained full-series attribution finds both source pre-HTTP wait and capacity-induced receiver pauses.
+All over-gate keys map uniquely; no partial p95 or HTTP-only acceptance inference. The existing
+scheduler can postpone an already-due window when later input arrives during receive/prelude work,
+confirmed as a possible mechanism by pinned fake-clock histories. Prefer publication-only deadline
+latching next; the shared helper also serves local flush, which needs its own typing evidence.
+
+Keep existing persisted retries, durability, authorization/final checks and refusal backoff. If
+latching fails the unchanged whole-client2.5s/gain/data gates, pace capacity before refusal rather
+than bypass it or infer a safe larger quota. These traces identify capacity but not the exact quota
+branch; policy limits are not measured machine capacity. No runtime repair/default activation or
+release preparation in this diagnostic.
+
+## 2026-10-27 — Latch at the publication call site, preserving local flushing (phase115)
+
+Use the scheduler's existing close/clear semantics when a local wake finds an overdue window.
+Later input may extend a not-yet-due window, but cannot erase an expired opportunity while receiving
+or a send prelude runs. Keep the shared batchWindow helper untouched because local journal flush
+has a separately measured policy. A deadline remains urgency, not persistence or allocation authority.
+Existing failure clocks and sealed retries stay; one-statement omission proves expiry sensitivity.
+Full rebuilt-client gates still decide acceptance; do not enable quiet reuse from model/unit results.
+
+## 2026-10-27 — Accept combined publication latch and guarded quiet budget for adoption
+
+Phase117 meets all prospectively retained2.5s/16ms/data/continuation gates in the four two-receiver
+and eight broader journeys. Both throughput paired directions exceed reference drift; native bytes
+and independent signature/prefix checks pass. Permit a separate activation of the exact tested
+composed owner, retaining all quiet-target/authority/cursor/frontier/baseline/generation fences and
+the750ms expiry. No change to local flush policy, verification, server limits, concurrency or retry
+backoff. This replaces the product hold from112 only after activation and affected checks;111 failed
+attempts remain historical failures. Signed-source/artifact release checks are a later operation.
+
+## 2026-10-27 — Activate only the measured composed-owner budget (phase118)
+
+After all12 fixed journeys and the activated-candidate regressions pass, replace112's product hold
+with the exact measured composed-owner constructor. Keep factory/noncomposed defaults,750ms expiry,
+all target/authority/cursor/frontier/baseline/generation fences and pending/idle/own-stream handling.
+Publication latch changes urgency only; durable barriers, wire allocation, verification, local flush
+policy, limits and retry backoff retain their existing authority. Accept the comment-only source-map
+difference through exact-field inspection, without claiming all110 artifact files are byte-identical.
+Release preparation begins with signed-source identity and artifact checks; it is not accomplished
+by this unsigned comparison. Retain optional broad-lint archive failures outside this bounded repair.
+
+
+## 2026-10-27 — opt-in exact baseline reuse inside startup recovery (phase122)
+
+Reuse a completed v5 baseline proof only within the same carrier and after exact fresh physical
+evidence and verifier-owned authority checks. Require an explicit immutable-capability opt-in;
+original/joined startup hold that contract, other one-shot readers do not implicitly acquire it.
+Keep live warm reference audits and cross-owner initialization separate. This removes duplicated
+verification without adopting a scalar revision/hash as authority or retaining an expired task.
+[Contract and evidence](performance-experiments/2026-10-27-maintenance-continuation/phase122/README.md).
+
+
+## 2026-10-27 — one verifier owns first-conversion reference and candidate (phase123)
+
+Keep full input verification inside the paired builder instead of accepting caller-supplied
+preverified state. Share its owned reference with first-conversion planning while retaining the
+independent compact-candidate replay and exact survivor/reference comparison. Keep reference
+failures outside candidate refusal classification. The standalone builder erases its unused
+reference; no proof crosses owner lifetimes or authorizes a broader cut.
+
+
+## 2026-10-27 — phase progress is presentation, not a retained proof (phase124)
+
+Show real local-maintenance stages and definite counts only for the record-reading subphase.
+Coalesce updates without adding polling; keep an indeterminate indicator for work with no honest
+total. Only the verified removal outcome may publish completion. Keep diagnostic attempt/stage
+facts volatile, separate from future authenticated resumable work, and preserve observer isolation.
+
+
+## 2026-10-27 — retain verified work before changing the retirement format (phase125)
+
+Choose closed authenticated preparation checkpoints with unchanged originals as the first durable
+resumption slice. Fixed earlier cuts plus later chunk reservations need a separate compatible
+representation; do not reinterpret v5 or persist a bare verification success. Keep normal factor
+unlock/erasure, fresh current authority, exact prefix evidence and final independent readback.
+Provisional slice/fence targets need implementation evidence; no phone bound is asserted.
+
+
+## 2026-10-27 — automate existing commands without enabling long unattended work (phase126)
+
+Keep service automation default-off until bounded/preemptible preparation and the unchanged2.5s
+peer gate permit activation. Choose1024 observed records and an hour between creations per lifetime
+as conservative policy, not measured optima or a durable global quota. Keep numeric scheduling debt
+across local cuts/custody refresh, with all real owner checks fresh. Preserve pending manual work: no
+automatic discard, no substituted second-device admission and no weakening the local retirement pin.
+Existing control events replace periodic catalog polling; network failures require events plus
+backoff and unknown/integrity failures halt. Phase125's durable resumption remains a design.
+
+
+## 2026-10-28 — derive the frontier again from exact completed evidence (phase127)
+
+Refine125's continuation design: preserve authenticated, exact-input verifier receipts and rebuild
+semantic ordering/authority/coverage frontiers on resume. Do not deserialize an accepted ledger or
+use a generic success flag. This uses the existing per-check memo seams while keeping independent
+candidate/readback paths separate. Native binding must include the verifier implementation closure,
+current keys/authority and an exact physical prefix; source upgrades cannot silently inherit old
+acceptance. The standalone model is not native durability or a time bound on indivisible work.
+
+## 2026-10-28 — Preparation storage and handoff
+
+Derive an auxiliary database name from the existing canonical content name; preserve original stores and schemas. Reserve every encryption invocation in the existing authenticated main allocator before sealing, atomically append encrypted receipt chunks plus head, and check exact readback. An old read task may export only a MAC-protected delta; a fresh serialized task reauthenticates context/prefix/delta before allocation. Bind receipt reuse to conservative runtime/build-source closure so changed verifier code cannot inherit old acceptance. Unknown layouts refuse overwrite; interrupted saves retain the old head.
+
+## 2026-10-28 — Fresh serialized preparation saves; readiness is distinct from input
+
+A read preparation task may export only its locally authenticated delta before settlement. A new serialized task rechecks owner/context/prefix and authenticates the delta before allocating any seal; disposal expires the handoff. Cached individual checks do not confer deletion authority; final candidate and strict cut/readback stay independent. Useful persisted slices yield and continue, but no service automation is enabled.
+
+Native automatic testing found each whenDurable barrier reset the editing quiet clock through admission status observers. Treat those notifications as readiness refreshes, as the service policy already does. Actual accepted writing, keyboard/beforeinput/pointer activity and visibility still wake/reset quiet; pending/blocked/non-durable admission still refuses work. Preserve both failed deadlines and the passing discriminating run. Keep the new resume flag off until the existing2.5s peer p95/typing/catch-up contention gate is met; a2s new-work target and tiny native fixture do not establish phone wall-clock bounds.
+
+## 2026-10-28 — Qualify explicit resumable preparation before release activation
+
+Release candidate covers the entire branch since recorded dc53fecf, retaining backup/UX/sync repairs rather than considering only the last five patches. Keep Docker default switches off; test explicit local auto1/resume1/service auto0 against identical source with resume0. Reject contradictory writer capabilities before building. Phone evidence is deferred by the operator, not replaced by desktop emulation. Preparation/typing/catch-up acceptance remains2.5s peer p95 and existing guardrails. General qualification stays paused.
+
+
+## 2026-10-28 — Phase135: keep acceptance failure separate from successful local checks
+
+The ordinary checks and focused authority/storage review may close independently of performance
+acceptance. Retain both normal input failures and the six unexecuted cases, with resume default0
+and service automation0. Do not substitute handler-only latency for the unchanged16ms end-to-end
+local gate. The next discriminating study is controlled trusted dispatch versus editor scheduling;
+a passing baseline rerun alone cannot erase the failed comparison. The operator defers today's
+phone walkthrough. A stale14→15 open-construction fixture is repaired while independently naming
+the new open construction and retaining the zero-open release block. Supplemental root/cache
+review runs variants in separate processes to avoid the inherited mutable-path shutdown timer;
+offline retry deferral and the failed attempts remain evidence rather than discarded results.
+
+
+## 2026-10-28 — Phase142: reduce repeated verified-view work before changing the byte kernel
+
+Current original-workload input11.9/7.6ms remains below16, while the full-history card condition
+reproduces20.6ms with17.6ms browser queueing and0.7ms mutation. Static drift blocks timing promotion;
+a separate paused-maintenance profile and concrete helper-code match select whole-record cache
+matching/projection and ownership traversal. The existing word comparator is already optimized.
+Prefer a bounded adoption of the existing synchronous ContentSelection/verified.select contract
+where fresh carrier authority already exists, after a discriminating call-count/ownership proof.
+Do not widen leases across awaits, treat a revision/hash as authority, remove exact fallback/audits,
+or change buffer erasure casually. Cleanup traversal is a separate mechanism. This records an
+investigation choice, not an implemented repair or passing acceptance; all failures/default holds
+and the operator's phone deferral remain. No publication or generalized qualification.
+
+
+## 2026-10-28 — Reuse private verified selections at metadata-only publication loads
+
+Adopt the existing carrier lease only synchronously, returning detached projections before async
+work. Delivery retains separate census/state ownership; envelope independently refreshes the
+publication predicate. Keep speculative proposal verification and native/witness/final-commit
+checks unchanged. Selection refusal fails closed; only capability absence uses the original raw
+record path. This first bounded repair does not combine ownership cleanup or broaden proof
+lifetimes. Retain the full-history input and peer gates before making any performance claim.
+
+
+## 2026-10-28 — Reject mixed wall/monotonic timing and repair the apparatus separately
+
+The145 candidate has an empty constant-offset clock intersection and cannot receive timing credit.
+Keep its raw results and stop rule. Measure future driver offers/scheduling/brackets on a monotonic
+clock, test a controlled wall-clock step, and keep the original1ms bound and all performance gates.
+Use fresh profiles and a new frozen comparison; do not widen the allowance to fit an observed run.
+
+
+## 2026-10-28 — Separate accepted publication from peer discovery before blaming maintenance
+
+The147 follow-up is already in the server’s accepted history; copies discover it with no new
+submission and unchanged native proofs. Reframe the blocker as receiver discovery after a missed
+last hint. A healthy60–65s idle repair policy predates143; deterministic controls reproduce a
+30s miss without maintenance. Do not claim an exact original live-state replay or silently
+reclassify the frozen failure as a fixture success. Preserve30s/16ms/2.5s gates while deciding a
+bounded reconciliation repair with an explicit network/capacity budget.
+
+
+## 2026-10-28 — Bound healthy idle reconciliation without changing hints or backoff
+
+Choose15–20s healthy idle checks to leave nominal10s for discovery/receive under the existing30s
+post-backlog peer guard; preserve jitter and the5s unhealthy path. Hints remain non-authoritative
+scheduling inputs. Accept3–4 idle passes/minute instead of~1, retaining per-operation authority
+checks, rate refusals and retry backoff. This does not promise idle2.5s delivery when all hints
+are lost, nor arbitrary server capacity. Reuse existing before failures; require actual after
+edit/undo/cold/native and unchanged16ms/2.5s gates before accepting the bounded repair.
+
+
+## 2026-10-28 — Omit unused envelope history at the existing projection boundary
+
+Keep the complete authenticated private view, but detach only the four envelope-preparation fields
+it reads. Do not spread/rest the full object, prolong a selection lease across await, omit fresh
+authority/native/witness checks or change erasure ownership. A narrowed type on nextSpoolPosition
+states its existing inputs without changing arithmetic. Keep reference readers and proposal
+verification independent; use measured zero-history traversal plus original actual-client gates
+rather than claiming speed from the field count alone.
+
+
+## 2026-10-28 — Accept the bounded projection candidate for signed-artifact preparation
+
+Four fixed actual-client after journeys clear the unchanged16ms local,2.5s peer/every-marker and
+30s late-edit guards with actual preparation, Undo, complete/offline writing and independent native
+proofs. Lift this candidate's measured performance hold for explicit local-auto1/resume1/service-auto0;
+do not activate source defaults or service automation. The next release boundary is a signed-source,
+identified ARM64 artifact with selected switches and its own tests. Keep prior failures as evidence,
+phone deferral and generalized qualification paused. No universal latency/capacity inference from
+these four journeys and no authorization to merge or deploy is inferred from this acceptance.
+
+
+## 2026-10-28 — Select the measured resumable profile for exact-artifact release preparation
+
+The operator authorizes signing the canonical bounded series and starting release preparation.
+Use explicit local-auto1/resume1/service-auto0/coordinated-2000, matching accepted phase156; leave
+ordinary source defaults and experimental service-history automation off. Preserve the exact tested
+ARM64 image rather than rebuilding after documentation. Reuse source-identical unit/performance
+runs as such; run exact-artifact functional/upgrade/rollback and fresh bounded native/contract checks.
+Phone testing remains deferred and general qualification paused. Both operator merge buttons and
+exact private-registry image approval remain separate later publication boundaries.

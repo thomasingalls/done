@@ -1,0 +1,7 @@
+# Phase155 — rebuilt after candidate and fixed remaining case scope
+
+Both browsers use rebuilt154 source55199166, same local-auto1/resume1/service-auto0/coordinated-2000 and unchanged numeric observer. Exported Git blobs/modes, only-three-source-change scope, assets/probe, exact TypeScript/serializer/harness/image/fixture identities and118 unchanged backend/protocol files are independently bound. No new before/R or source-profile journeys;153’s complete native/functional before has the failed17.009ms input gate.
+
+Fixed serial after cases: full-history withheld first, both late variants, full-history normal last to complete candidate coverage if earlier cases pass. Exact original test bodies/assertions/faults,16ms/2.5s/each-marker/30s/600s and data/Undo/preparation/cold/native/resource guards remain. Stop at first failure and keep unexecuted cases; no retries/concurrent work. Use10% backlog comparison only for matched153 withheld before; absolute-after credit elsewhere. The complete prospective protocol is included.
+
+All191unit files/2211tests pass with one existing skip.103affected construction/inventory/adapter cases pass without fixture changes. Retained positive bounds and four malformed-input controls pass. General935/389 qualification stays blocked/paused. This freezes evidence and test scope before timing; it is not a candidate acceptance or activation claim. Source resume/service defaults0, phone deferred, no computer use/signing/staging/push/publication/deployment.

@@ -1,0 +1,44 @@
+from pathlib import Path
+import subprocess, os, json, time
+
+s = Path(__file__).parent
+r = Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+node = '/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+env = dict(os.environ, PATH=str(Path(node).parent) + ':' + os.environ['PATH'],
+           CHROMIUM_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+steps = [
+    ('activation-units', [node, 'node_modules/vitest/vitest.mjs', 'run'], {}),
+    ('activation-types', [node, 'node_modules/typescript/bin/tsc', '-b', '--noEmit'], {}),
+    ('activation-lint', [node, 'node_modules/oxlint/bin/oxlint', '--react-plugin'], {}),
+    ('activation-format', [node, 'node_modules/oxfmt/bin/oxfmt', '--check',
+                           'src/crdt/accountSyncDriver.ts', 'src/crdt/accountReceive.ts',
+                           'test/accountBatching.test.ts'], {}),
+    ('activation-native-default', [node, '--test', '--test-timeout=90000',
+                                   'test/account-receive/batch-transport.test.mjs',
+                                   'test/account-receive/groups-transport.test.mjs',
+                                   'test/account-sync/native.test.mjs'], {}),
+    ('activation-native-authority', [node, '--test', '--test-name-pattern=authority reuse authenticates',
+                                     'test/account-sync/native.test.mjs'], {'ACCOUNT_AUTHORITY_REUSE': '1'}),
+    ('activation-native-audit', [node, '--test',
+                                 '--test-name-pattern=reference audit disagreement|generated incremental ledger histories',
+                                 'test/account-sync/native.test.mjs'], {'ACCOUNT_LEDGER_AUDIT': 'every'}),
+    ('activation-native-hidden', [node, '--test', '--test-name-pattern=hidden-page batch close',
+                                  'test/account-sync/native.test.mjs'], {'ACCOUNT_BATCH_MODE': 'coordinated-2000'}),
+    ('activation-metadata', [node, '--test', 'test/release-validation/general-tests.test.mjs',
+                            'test/release-validation/campaign-wrappers.test.mjs',
+                            'test/release-validation/account-fixtures.test.mjs',
+                            'test/release-validation/vitest.test.mjs',
+                            'test/release-validation/generated-tests.test.mjs',
+                            'test/release-validation/manifest.test.mjs'], {}),
+]
+rows = []
+for name, cmd, extra in steps:
+    at = time.time_ns() // 1000000
+    with (s / (name + '.log')).open('w') as f:
+        p = subprocess.run(cmd, cwd=r, env={**env, **extra}, stdout=f, stderr=subprocess.STDOUT)
+    rows.append({'name': name, 'command': cmd, 'environment': extra, 'startedAt': at,
+                 'completedAt': time.time_ns() // 1000000, 'exitCode': p.returncode})
+    (s / 'activation-checks.json').write_text(json.dumps(rows, indent=2) + '\n')
+    print(name, p.returncode, flush=True)
+    if p.returncode:
+        raise SystemExit(p.returncode)

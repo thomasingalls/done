@@ -9,7 +9,8 @@ import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
-import { accountRetentionFlags } from './vite/accountRetentionFlags.ts';
+import { retentionPreparationIdentity } from './vite/retentionPreparationIdentity.ts';
+import { accountRetentionFlags, accountPreparationFlags } from './vite/accountRetentionFlags.ts';
 
 const applicationSourcePath = fileURLToPath(new URL('./src/', import.meta.url))
   .split(/[/\\]/)
@@ -100,8 +101,15 @@ export default defineConfig(({ mode }) => ({
     precacheServiceWorker(),
   ],
   define: {
+    __ACCOUNT_PREPARATION_VERIFIER__: JSON.stringify(
+      retentionPreparationIdentity(process.cwd(), {
+        ...loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_'),
+        $mode: mode,
+      }).digest,
+    ),
     // Compatible readers remain the default; one release build opt-in enables coherent writers.
     ...accountRetentionFlags(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_')),
+    ...accountPreparationFlags(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_')),
     'import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION': JSON.stringify(
       (() => {
         const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_TEXT_ADMISSION')[

@@ -1,0 +1,394 @@
+{
+  "lineOnly": true,
+  "allContractsDispositionsAndSitesPreserved": true,
+  "changes": [
+    {
+      "id": "account-source-capsule",
+      "before": [
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 309,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 440,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 102,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 130,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 264,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 309,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 457,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 102,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 130,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 264,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-spool-capsule",
+      "before": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 177,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 209,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 446,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 164,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 177,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 209,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 463,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 164,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-delivery-capsule",
+      "before": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 104,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 131,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 177,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 210,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 345,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 447,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 104,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 131,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 177,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 210,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 345,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 464,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-inbound-capsule",
+      "before": [
+        {
+          "path": "src/crdt/accountMembership.ts",
+          "line": 80,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountSuccessor.ts",
+          "line": 181,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 120,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 138,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 74,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 96,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 206,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 259,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 325,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 448,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/accountMembership.ts",
+          "line": 80,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountSuccessor.ts",
+          "line": 181,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 120,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 138,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 74,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 96,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 206,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 259,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 325,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 465,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ]
+    }
+  ]
+}

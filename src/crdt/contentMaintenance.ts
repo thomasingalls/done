@@ -1,5 +1,61 @@
 import type { SessionTask } from './writeSession';
 
+export const RETENTION_STAGES = [
+  'durability',
+  'reading',
+  'opening',
+  'verifying',
+  'building',
+  'coverage',
+  'current',
+  'installing',
+  'readback',
+  'complete',
+] as const;
+export interface RetentionProgress {
+  readonly stage: (typeof RETENTION_STAGES)[number];
+  readonly completed?: number;
+  readonly total?: number;
+}
+export type RetentionProgressSink = (progress: RetentionProgress) => void;
+/** Presentation only: copy fixed labels/numbers, never retain arbitrary observer payloads. */
+export function copyRetentionProgress(value: RetentionProgress): RetentionProgress | undefined {
+  try {
+    if (!value || typeof value !== 'object') return;
+    const { stage, completed, total } = value;
+    if (!RETENTION_STAGES.includes(stage)) return;
+    if (completed !== undefined || total !== undefined) {
+      if (
+        !Number.isSafeInteger(completed) ||
+        !Number.isSafeInteger(total) ||
+        completed! < 0 ||
+        total! < completed!
+      )
+        return;
+      return Object.freeze({
+        stage,
+        completed: completed!,
+        total: total!,
+      });
+    }
+    return Object.freeze({ stage });
+  } catch {
+    return;
+  }
+}
+export function reportRetentionProgress(
+  sink: RetentionProgressSink | undefined,
+  value: RetentionProgress,
+) {
+  if (!sink) return;
+  try {
+    const snapshot = copyRetentionProgress(value);
+    if (snapshot) sink(snapshot);
+  } catch {
+    /* Presentation cannot change verification or storage outcomes. */
+  }
+}
+
 /** Discretionary maintenance yielded to queued input; never a storage/integrity refusal. */
 export class MaintenanceInterrupted extends Error {
   override readonly name = 'MaintenanceInterrupted';

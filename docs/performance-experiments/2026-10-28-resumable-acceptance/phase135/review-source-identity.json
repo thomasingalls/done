@@ -1,0 +1,16 @@
+{
+  "src/crdt/retentionPreparation.ts": "6820ba8a5135b4c792718e96988577a1435383530aeb4ee8fa047253241a3b2b",
+  "src/crdt/retentionPreparationBinding.ts": "13593b2253e92b2fe3812729dbbe70841b925c93f7cbfc37bc623c4bd647f786",
+  "src/crdt/retentionPreparationStorage.ts": "e2f73dcd97e7dd51186dd5fc8aea319ae95ff30bf39958201f82f57d3e1f03fa",
+  "src/crdt/retentionPreparationDatabase.ts": "06a2a995bcd0c9321fc0a600e9120df79162458ba0c4aac4b0c0ed94e3f138cb",
+  "src/crdt/preparationValue.ts": "b735e68be9279794aebdaccf665fd97c97bdcd5ae98ae0fe9e5f3a9b8b5990a1",
+  "src/crdt/contentStore.ts": "b8ee4dd07761245328d4b6ed92726bf3f17b0c21dbbcd81033509aad398bf0e2",
+  "src/crdt/accountReceive.ts": "d1460ac52db864a38336bcdfa6aabf2d9bb082a4cf9bd82755c8ac922dca2f8a",
+  "src/crdt/localBaselineReplay.ts": "d23dccbe0209999830ae188b6f674056256a10081da65ce89fa10c8b6c2ce90f",
+  "src/crdt/localRetentionPlan.ts": "110aab59ecd6a4b4e4c9a734ba3a2eb87f0f9fc108e28b17bab613eb9c044c4a",
+  "src/crdt/deviceDataRemoval.ts": "fe97fc69d2205d40892d976e2221a6aa2b59476f86e8def164fd47d676ce3468",
+  "src/crdt/startupClassification.ts": "293b6406a7193ea1fd9dfea04e82441a8325dd237821909fbaa77c93bcbe40b3",
+  "vite/accountRetentionFlags.ts": "a6b66b483e2851bf9e8ede962a88bb9724d5650a85ba4e168a72aa2b88e88655",
+  "vite/retentionPreparationIdentity.ts": "ea4d54e4ba3462336573fcb76f04f8740fe0b0f5e86b1384eb70727dae8de5a0",
+  "Dockerfile": "d1c5661a516f6a5ec9229407b93daae88838a2137f358b640b520aeb6e50d6f2"
+}

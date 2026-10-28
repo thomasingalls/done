@@ -1,0 +1,320 @@
+{
+  "kind": "supplemental functional boundary review, no performance credit",
+  "validRootAndOnlineContinuation": "review-root-04-valid",
+  "corruptRootAndOnlineContinuation": "review-root-05-corrupt",
+  "attempts": [
+    {
+      "attempt": "review-root-01-corrupt",
+      "outcome": "failed",
+      "ordinaryRootReopen": false,
+      "reconnected": false,
+      "before": null,
+      "archive": null,
+      "error": "Error: Container exited 125",
+      "phase": null,
+      "diagnostics": null,
+      "rawSha256": "6ed38bd03ceae7ace8c54eab51ac90167b14ed7c64f4f8105461bac09442294a"
+    },
+    {
+      "attempt": "review-root-01-valid",
+      "outcome": "failed",
+      "ordinaryRootReopen": false,
+      "reconnected": false,
+      "before": null,
+      "archive": null,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByLabel('Unlock code', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Unlock code', { exact: true })\u001b[22m\n",
+      "phase": null,
+      "diagnostics": null,
+      "rawSha256": "aa6f05e60782b40fc8dbf8e495f388ecd7a22a4f17aa50216e6232b9b35dc8a5"
+    },
+    {
+      "attempt": "review-root-02-corrupt",
+      "outcome": "failed",
+      "ordinaryRootReopen": true,
+      "reconnected": false,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": true
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "phase": {
+        "phase": "idle"
+      },
+      "diagnostics": {
+        "attempts": 0,
+        "interruptions": 0,
+        "completions": 0,
+        "events": []
+      },
+      "rawSha256": "808b7d8b9bfb88fa85dd6c8aa545ee19fc33c2eb7924119a6fec628e5f8dbb4d"
+    },
+    {
+      "attempt": "review-root-02-valid",
+      "outcome": "failed",
+      "ordinaryRootReopen": true,
+      "reconnected": false,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": false
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "phase": {
+        "phase": "idle"
+      },
+      "diagnostics": {
+        "attempts": 0,
+        "interruptions": 0,
+        "completions": 0,
+        "events": []
+      },
+      "rawSha256": "fa952c120d18a8c7f0916fea77a0b911fd0596bb6727f120ee097eacde26ef12"
+    },
+    {
+      "attempt": "review-root-03-corrupt",
+      "outcome": "failed",
+      "ordinaryRootReopen": true,
+      "reconnected": false,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": true
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "phase": {
+        "phase": "idle"
+      },
+      "diagnostics": {
+        "attempts": 0,
+        "interruptions": 0,
+        "completions": 0,
+        "events": []
+      },
+      "rawSha256": "b05f2b5ee236f2c21209ba249d14b0e149888803e4559c933cb0783479503f08"
+    },
+    {
+      "attempt": "review-root-03-valid",
+      "outcome": "failed",
+      "ordinaryRootReopen": true,
+      "reconnected": false,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": false
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "phase": {
+        "phase": "idle"
+      },
+      "diagnostics": {
+        "attempts": 0,
+        "interruptions": 0,
+        "completions": 0,
+        "events": []
+      },
+      "rawSha256": "dc9769e5bd90f3e453769356f9bbb9833193572135ea6c499803e6f3ee438823"
+    },
+    {
+      "attempt": "review-root-04-corrupt",
+      "outcome": "failed",
+      "ordinaryRootReopen": true,
+      "reconnected": true,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": true
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+      "phase": {
+        "phase": "idle"
+      },
+      "diagnostics": {
+        "attempts": 0,
+        "interruptions": 0,
+        "completions": 0,
+        "events": []
+      },
+      "rawSha256": "e9bbba7c14de3df40dcbd250beaae4afa8d7976579d795c781b13faf79931966"
+    },
+    {
+      "attempt": "review-root-04-valid",
+      "outcome": "passed",
+      "ordinaryRootReopen": true,
+      "reconnected": true,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": false
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": null,
+      "phase": {
+        "phase": "running",
+        "reason": "preparation-saved",
+        "progress": {
+          "stage": "durability",
+          "attempt": 2,
+          "elapsedMs": 0
+        }
+      },
+      "diagnostics": {
+        "attempts": 2,
+        "interruptions": 0,
+        "completions": 0,
+        "events": [
+          {
+            "stage": "durability",
+            "attempt": 2,
+            "elapsedMs": 0
+          }
+        ]
+      },
+      "rawSha256": "86f54462fd11f6c54bb3b568849d05616a980387cbb9fa59c7163227ee6e8ebf"
+    },
+    {
+      "attempt": "review-root-05-corrupt",
+      "outcome": "passed",
+      "ordinaryRootReopen": true,
+      "reconnected": true,
+      "before": {
+        "chunks": 29,
+        "headPresent": true,
+        "corrupted": true
+      },
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      },
+      "error": null,
+      "phase": {
+        "phase": "running",
+        "reason": "preparation-saved",
+        "progress": {
+          "stage": "durability",
+          "attempt": 2,
+          "elapsedMs": 0
+        }
+      },
+      "diagnostics": {
+        "attempts": 2,
+        "interruptions": 0,
+        "completions": 0,
+        "events": [
+          {
+            "stage": "durability",
+            "attempt": 2,
+            "elapsedMs": 0
+          }
+        ]
+      },
+      "rawSha256": "96c1c15ae8c37ea62c0c64b6e5a2c640217dcea5d81fb67247ef2709992ca6d7"
+    }
+  ],
+  "limitations": [
+    "Virtual passkeys and synthetic Chromium profiles; phone deferred.",
+    "Offline-only auto waits remain failed network-outage observations, not successful continuation.",
+    "Run root variants in separate processes: inherited lab shutdown fallback can stop the next case.",
+    "No browser profile, credential fixture, stored writing or service state included."
+  ]
+}

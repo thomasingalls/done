@@ -1,0 +1,393 @@
+{
+  "status": "passed",
+  "developmentOnly": true,
+  "allEightFunctionalJourneysPass": true,
+  "allFourHeavyOriginalAcceptanceGatesPass": true,
+  "originalGates": {
+    "localP95Ms": 16,
+    "completePeerP95Ms": 2500,
+    "finalDeliveryMs": 30000,
+    "replayMs": 600000,
+    "continuationMs": 120000
+  },
+  "arms": {
+    "R": {
+      "heavyJourneys": 2,
+      "nonoverlapJourneys": 2,
+      "localP95Ms": [
+        4.39990234375,
+        4.7998046875
+      ],
+      "completePeerP95Ms": [
+        711.199951171875,
+        761.400146484375
+      ],
+      "maxCompetingReplayMs": [
+        227656,
+        212955
+      ],
+      "nonoverlapReplayMs": [
+        144291,
+        145285
+      ],
+      "nonoverlapReverseFreshMs": [
+        821,
+        819
+      ]
+    },
+    "C": {
+      "heavyJourneys": 2,
+      "nonoverlapJourneys": 2,
+      "localP95Ms": [
+        5,
+        5.5
+      ],
+      "completePeerP95Ms": [
+        766.7998046875,
+        745.60009765625
+      ],
+      "maxCompetingReplayMs": [
+        219875,
+        222621
+      ],
+      "nonoverlapReplayMs": [
+        145330,
+        145286
+      ],
+      "nonoverlapReverseFreshMs": [
+        821,
+        815
+      ]
+    }
+  },
+  "descriptiveChangesOnly": {
+    "localP95Ms": {
+      "referenceMedian": 4.599853515625,
+      "candidateMedian": 5.25,
+      "candidateRelativeChangePercent": 14.134069316915232,
+      "referenceBracketRelativeDriftPercent": 9.088891355010542
+    },
+    "completePeerP95Ms": {
+      "referenceMedian": 736.300048828125,
+      "candidateMedian": 756.199951171875,
+      "candidateRelativeChangePercent": 2.7026892603663644,
+      "referenceBracketRelativeDriftPercent": 7.058520635411036
+    },
+    "maxCompetingReplayMs": {
+      "referenceMedian": 220305.5,
+      "candidateMedian": 221248.0,
+      "candidateRelativeChangePercent": 0.4278150114273238,
+      "referenceBracketRelativeDriftPercent": -6.457549987700739
+    },
+    "nonoverlapReplayMs": {
+      "referenceMedian": 144788.0,
+      "candidateMedian": 145308.0,
+      "candidateRelativeChangePercent": 0.35914578556233145,
+      "referenceBracketRelativeDriftPercent": 0.6888856546839461
+    }
+  },
+  "wholeClientSpeedupEstablished": false,
+  "rows": [
+    {
+      "name": "heavy-1-R",
+      "variant": "R",
+      "localP95Ms": 4.39990234375,
+      "completePeerP95Ms": 711.199951171875,
+      "maxCompetingReplayMs": 227656,
+      "allOriginalGatesPassed": true,
+      "all120PeerObservations": true,
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1793088013798,
+          "completedAt": 1793088241454,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H2",
+          "startedAt": 1793088013798,
+          "completedAt": 1793088238916,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H3",
+          "startedAt": 1793088013798,
+          "completedAt": 1793088237940,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H4",
+          "startedAt": 1793088013798,
+          "completedAt": 1793088215320,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H5",
+          "startedAt": 1793088013798,
+          "completedAt": 1793088236423,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "M1",
+          "startedAt": 1793088013798,
+          "completedAt": 1793088027905,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "H1ReadRequests": {
+        "/account/delivery/read-v2": 1290,
+        "/account/delivery/read-v2-batch": 257
+      },
+      "H1ReadStatuses": {
+        "200": 1547
+      },
+      "H1ReadHeadersP50Ms": 56,
+      "H1ReadHeadersP95Ms": 244,
+      "serviceCpuSeconds": 224.291849,
+      "serviceRssSampledPeakBytes": 262873088,
+      "quiet429s": 0,
+      "checkpoint409s": 0
+    },
+    {
+      "name": "heavy-2-C",
+      "variant": "C",
+      "localP95Ms": 5,
+      "completePeerP95Ms": 766.7998046875,
+      "maxCompetingReplayMs": 219875,
+      "allOriginalGatesPassed": true,
+      "all120PeerObservations": true,
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1793088287361,
+          "completedAt": 1793088507236,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H2",
+          "startedAt": 1793088287361,
+          "completedAt": 1793088504662,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H3",
+          "startedAt": 1793088287361,
+          "completedAt": 1793088505736,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H4",
+          "startedAt": 1793088287361,
+          "completedAt": 1793088492627,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H5",
+          "startedAt": 1793088287361,
+          "completedAt": 1793088504139,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "M1",
+          "startedAt": 1793088287361,
+          "completedAt": 1793088300858,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "H1ReadRequests": {
+        "/account/delivery/read-v2": 1288,
+        "/account/delivery/read-v2-batch": 256
+      },
+      "H1ReadStatuses": {
+        "200": 1544
+      },
+      "H1ReadHeadersP50Ms": 56,
+      "H1ReadHeadersP95Ms": 236,
+      "serviceCpuSeconds": 218.519108,
+      "serviceRssSampledPeakBytes": 252997632,
+      "quiet429s": 0,
+      "checkpoint409s": 0
+    },
+    {
+      "name": "heavy-3-C",
+      "variant": "C",
+      "localP95Ms": 5.5,
+      "completePeerP95Ms": 745.60009765625,
+      "maxCompetingReplayMs": 222621,
+      "allOriginalGatesPassed": true,
+      "all120PeerObservations": true,
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1793088553785,
+          "completedAt": 1793088776406,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H2",
+          "startedAt": 1793088553785,
+          "completedAt": 1793088773901,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H3",
+          "startedAt": 1793088553785,
+          "completedAt": 1793088773918,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H4",
+          "startedAt": 1793088553785,
+          "completedAt": 1793088758792,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H5",
+          "startedAt": 1793088553785,
+          "completedAt": 1793088772397,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "M1",
+          "startedAt": 1793088553785,
+          "completedAt": 1793088567310,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "H1ReadRequests": {
+        "/account/delivery/read-v2": 1291,
+        "/account/delivery/read-v2-batch": 256
+      },
+      "H1ReadStatuses": {
+        "200": 1547
+      },
+      "H1ReadHeadersP50Ms": 57,
+      "H1ReadHeadersP95Ms": 247,
+      "serviceCpuSeconds": 220.889299,
+      "serviceRssSampledPeakBytes": 256016384,
+      "quiet429s": 0,
+      "checkpoint409s": 0
+    },
+    {
+      "name": "heavy-4-R",
+      "variant": "R",
+      "localP95Ms": 4.7998046875,
+      "completePeerP95Ms": 761.400146484375,
+      "maxCompetingReplayMs": 212955,
+      "allOriginalGatesPassed": true,
+      "all120PeerObservations": true,
+      "catchups": [
+        {
+          "label": "H1",
+          "startedAt": 1793088823382,
+          "completedAt": 1793089036337,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H2",
+          "startedAt": 1793088823382,
+          "completedAt": 1793089034377,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H3",
+          "startedAt": 1793088823382,
+          "completedAt": 1793089034366,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H4",
+          "startedAt": 1793088823382,
+          "completedAt": 1793089021757,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "H5",
+          "startedAt": 1793088823382,
+          "completedAt": 1793089032353,
+          "exportEquality": true,
+          "outcome": "passed"
+        },
+        {
+          "label": "M1",
+          "startedAt": 1793088823382,
+          "completedAt": 1793088837880,
+          "exportEquality": true,
+          "outcome": "passed"
+        }
+      ],
+      "H1ReadRequests": {
+        "/account/delivery/read-v2": 1292,
+        "/account/delivery/read-v2-batch": 256
+      },
+      "H1ReadStatuses": {
+        "200": 1548
+      },
+      "H1ReadHeadersP50Ms": 53,
+      "H1ReadHeadersP95Ms": 221,
+      "serviceCpuSeconds": 211.292665,
+      "serviceRssSampledPeakBytes": 249335808,
+      "quiet429s": 0,
+      "checkpoint409s": 0
+    }
+  ],
+  "actualFixture": [
+    {
+      "label": "H",
+      "devices": 6,
+      "acceptedBacklogPositions": 1024,
+      "requestedGoalsCharactersApproximate": 13000,
+      "actualExportedGoalsCharacters": 5000,
+      "planningCards": 24,
+      "archiveWholeFiles": 2
+    },
+    {
+      "label": "M",
+      "devices": 2,
+      "acceptedBacklogPositions": 256,
+      "requestedGoalsCharactersApproximate": 4000,
+      "actualExportedGoalsCharacters": 4157,
+      "planningCards": 12,
+      "archiveWholeFiles": 2
+    },
+    {
+      "label": "Q",
+      "devices": 2,
+      "acceptedBacklogPositions": 32,
+      "requestedGoalsCharactersApproximate": 1000,
+      "actualExportedGoalsCharacters": 1049,
+      "planningCards": 6,
+      "archiveWholeFiles": 2
+    }
+  ],
+  "limitations": [
+    "Two complete journeys per arm/workload; correlated keys are not independent replicates. Fixed R,C,C,R brackets drift but is not a population estimate.",
+    "Large Goals paste seed requested~13000 characters but exported5000 before the invitation; both arms use that same exact5000-character fixture. The claimed13000-character workload was not established. Partial-paste setup readiness requires a separate check; do not attribute it to data loss without reproduction.",
+    "One lightweight Git source/inventory metadata review overlaps late bulk replay in candidate2 after typing finished; no builds or test suites run concurrently. These small changes cannot support a precise speedup claim.",
+    "Desktop Chromium/native Linux resource-limited service; not actual Android opening/Goals typing attribution.",
+    "Legacy frozen analysis names peerObservedSubsetMs even for a complete series; peerSampleComplete and all120 observations are independently checked. New descriptive summary computes reference drift separately."
+  ],
+  "nextBoundedCandidate": "Trace large-backlog per-page read scheduling/application, including single versus grouped reads. Request counts suggest an opportunity but do not attribute their contents, CPU or idle-publisher behavior; preserve authority/history/final commit checks and all gates."
+}

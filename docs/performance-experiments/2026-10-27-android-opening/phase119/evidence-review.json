@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "captures": [
+    {
+      "capture": 1,
+      "postProviderToEditorMs": 71923.70000000001,
+      "exactClosedSchema": true,
+      "privateExtraFieldRejected": true
+    },
+    {
+      "capture": 2,
+      "postProviderToEditorMs": 76158.9,
+      "exactClosedSchema": true,
+      "privateExtraFieldRejected": true
+    }
+  ],
+  "sameSizeThreeReadPassesConfirmed": true,
+  "noControlVisibilityChangeDuringOpening": true,
+  "scope": "Closed numeric/public-location schema and independent timing arithmetic; not population inference or full CPU attribution."
+}

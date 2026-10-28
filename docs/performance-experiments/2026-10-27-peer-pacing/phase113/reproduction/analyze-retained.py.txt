@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,hashlib
+from attribution import attribute,quantile
+s=Path(__file__).parent;old=Path('/private/tmp/done-quiet-budget-20261027');identity=json.loads((s/'input-identity.json').read_text());reviews=json.loads((old/'late-native-review.json').read_text());oldanalysis=json.loads((old/'late-budget-analysis.json').read_text());rows=[]
+for name,sha in identity['cases'].items():
+    p=old/name/'result.json';assert hashlib.sha256(p.read_bytes()).hexdigest()==sha;x=json.loads(p.read_text());native=next(v for v in reviews['runs']if v['name']==name);a=attribute(x,native['contiguousNewPositionCount']);prior=next(v for v in oldanalysis['runs']if v['name']==name)
+    assert[a['keys'][i]['peerMs'][1]for i in range(120)]==prior['keys'][0]
+    stagekeys=list(next(k for k in a['keys']if k['bounds'])['bounds']);matched=[k for k in a['keys']if k['bounds']];tails=[k for k in a['keys']if k['peerMs'][1]>2500]
+    row={'name':name,'variant':x['variant'],'withhold':x['withhold'],'peerP95UpperMs':quantile([k['peerMs'][1]for k in a['keys']]),'completePeerGateUnchanged':prior['gates']['peer2500ms'],'observations':120,'matchedKeys':len(matched),'unresolvedKeys':[k['index']for k in a['keys']if not k['bounds']],'exactSinglePositionKeys':sum(len(k['alternatives'])==1 for k in a['keys']),'stageP95BoundsForMatchedOnly':{stage:[quantile([k['bounds'][stage][0]for k in matched]),quantile([k['bounds'][stage][1]for k in matched])]for stage in stagekeys},'tailCount':len(tails),'tailKeys':tails,'details':a}
+    rows.append(row);print(name,'p95',round(row['peerP95UpperMs'],1),'matched',len(matched),'exact',row['exactSinglePositionKeys'],'tail',len(tails),flush=True)
+(s/'retained-attribution.json').write_text(json.dumps({'status':'descriptive-bounds-not-a-causal-repair-effect','runs':rows,'noNewTimingRuns':True,'noIncompleteSeriesGateCredit':True},indent=2)+'\n')

@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,hashlib,time,subprocess
+s=Path(__file__).parent;sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();old=Path('/private/tmp/done-self-read-order-20261027');repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');trees={'R':'2ec6a7d54c4bee4373f79181e3ef1f91de179028','C':json.loads((s/'109-preparation.json').read_text())['expectedTree']}
+clients={v:json.loads((s/(v+'-client-identity.json')).read_text())for v in['R','C']};assert clients['R']==json.loads((old/'followup-client-identity.json').read_text()),'reference artifact differs'
+for v,t in trees.items():
+ for p in ['src/crdt/accountReceive.ts','src/crdt/receiveSelection.ts','package.json','pnpm-lock.yaml']:
+  assert(s/('source-'+v)/p).read_bytes()==subprocess.check_output(['git','show',t+':'+p],cwd=repo)
+fixture=json.loads((s/'private-fixture/fixture.json').read_text());apparatus={str(p.relative_to(s)):sha(p)for p in(s/'harness/test').rglob('*')if p.is_file()}
+for n in ['protocol.md','run.py','run-plan.json','nonoverlap-plan.json','late-plan.json','read-request.mjs','read-request.d.mts','notification-probe.mjs','notification-probe.d.mts','container-service.mjs','observer.mjs','container-image.json','playwright-storage-source.txt','native-seed-tips.json','analyze.py','review-evidence.py','analyze-budget.py','nonoverlap-analysis.py','audit-native.mjs','audit-lib.mjs','audit-nonoverlap.mjs','fidelity.py','freeze-identity.py','harness/tsconfig.json']:apparatus[n]=sha(s/n)
+(s/'measurement-identity.json').write_text(json.dumps({'frozenAtEpochMs':time.time_ns()//1000000,'sourceTrees':trees,'clients':clients,'imageId':json.loads((s/'container-image.json').read_text())['Id'],'apparatus':apparatus,'referenceArtifactMatches103And108Runtime':True,'runtimeDifferences':['src/crdt/accountReceive.ts','src/crdt/receiveSelection.ts'],'privateFixture':{'fixtureSha256':sha(s/'private-fixture/fixture.json'),'seedServiceFiles':{p.name:sha(p)for p in Path(fixture['state']).iterdir()if p.is_file()}},'buildEnvironment':json.loads((old/'measurement-identity.json').read_text())['sameBuildEnvironment'],'serverFromReferenceOnly':True,'noConcurrentBuildValidationProfilingDuringTiming':True},indent=2)+'\n')
+print('Frozen',trees,'clients',[len(clients[v])for v in['R','C']])

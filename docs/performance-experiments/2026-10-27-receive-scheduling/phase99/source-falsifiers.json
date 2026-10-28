@@ -1,0 +1,101 @@
+{
+  "status": "passed",
+  "actualSourceSlicesSha256": {
+    "actualSelectionFunction": "93cc85f4733bf40fff6b354ff01b904d652fc15c003c06c761ff84fc5af9c4cf",
+    "actualSyncScheduler": "fac2ca9c025d25965a31ecab9f74c56d0a5dddf0d67827bf7dc069ef0fdf03b1"
+  },
+  "selector": {
+    "clockFixedWithinFreshOwnCheckWindow": true,
+    "ownInMiddle": {
+      "quiet-a": 256,
+      "quiet-b": 256,
+      "own": 256,
+      "quiet-c": 256,
+      "quiet-d": 256,
+      "hot": 257
+    },
+    "ownImmediatelyAfterProductive": {
+      "own": 1,
+      "quiet-a": 256,
+      "quiet-b": 256,
+      "quiet-c": 256,
+      "quiet-d": 256,
+      "hot": 257
+    },
+    "ownOptimizationDependsOnPublisherOrder": true,
+    "syntheticSchedulingOnlyNoPredictedWallSpeedup": true
+  },
+  "retry": {
+    "scriptedUnknowns": 49,
+    "successfulProgressBetweenFailures": true,
+    "actualSchedulerRetryDelaysMs": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "totalDelayMs": 49000,
+    "remoteHintsDoNotBypassFailureBackoff": true,
+    "capacityToUnknownMappingComesFromTheRealHttpTraceNotThisScript": true
+  },
+  "budget": {
+    "actualPolicy": {
+      "sessionBurst": 120,
+      "sessionPerSecond": 16,
+      "processBurst": 480,
+      "processPerSecond": 64,
+      "active": 16,
+      "sessionActive": 4,
+      "sessions": 1024
+    },
+    "fourInnerReadsChargedAsFour": true,
+    "atomicFailedTopUpRetainsOnlyAdmissionCharge": true,
+    "perSessionRateLimitedOnOneKey": true
+  },
+  "scope": "Exact production scheduling functions are type-erased, not rewritten. Error/crypto/storage paths are not executed or qualified by this deterministic replay; whole-client97/native98 guards are separate."
+}

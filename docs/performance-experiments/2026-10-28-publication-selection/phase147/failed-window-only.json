@@ -1,0 +1,24 @@
+{
+  "accepted": false,
+  "reason": "post-window peer edit guard failed; cold/undo/resource guards not completed",
+  "partialWindowOnly": [
+    {
+      "device": 0,
+      "p95": 2390.759521484375,
+      "markers": [
+        2202.05322265625,
+        1038.629150390625,
+        883.29931640625
+      ]
+    },
+    {
+      "device": 1,
+      "p95": 11.433349609375,
+      "markers": [
+        9.18603515625,
+        2.9619140625,
+        3.33203125
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "initialAttempt": "pre-browser config failure; missing source-R tsconfig extends target",
+  "repairedInput": "source-R aliases exact C source for unchanged shared TypeScript config only",
+  "tsconfigSha256": "46d4bbdb12998f72f2cf19882ab762b147092ae32a795f3b084526644e03b154",
+  "tsconfigMatchesOriginalReference": true,
+  "allFrozenHarnessBytesUnchanged": true,
+  "productionSourceOrAssetsChanged": false,
+  "newOutput": "copied-continuation-repaired-01",
+  "initialFailureLogSha256": "af997981d71b58a0dc51aebf7fcb255de43a338267f89ff169fb6514ac404365"
+}

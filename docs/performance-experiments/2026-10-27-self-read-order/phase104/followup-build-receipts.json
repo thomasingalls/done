@@ -1,0 +1,48 @@
+[
+  {
+    "sourceTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+    "check": "types",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1793103367431,
+    "completedAt": 1793103368712,
+    "exitCode": 0
+  },
+  {
+    "sourceTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+    "check": "build",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "startedAt": 1793103368713,
+    "completedAt": 1793103371767,
+    "exitCode": 0
+  },
+  {
+    "sourceTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+    "check": "budget",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-budget.mjs"
+    ],
+    "startedAt": 1793103371767,
+    "completedAt": 1793103371856,
+    "exitCode": 0
+  },
+  {
+    "sourceTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+    "check": "isolation",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-origin-isolation.mjs"
+    ],
+    "startedAt": 1793103371856,
+    "completedAt": 1793103371916,
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "tag": "done-public:b6f0160a",
+  "source": "b6f0160a8fe7251407a3606cb653632f10885c81",
+  "indexDigest": "sha256:f81bd4ba3621fc5c1fd28979d22c9605d522fd6ba5cf7b06eafde63cd2459872",
+  "runtimeManifestDigest": "sha256:c82c05b3975dff745db8e0f8b280ec161b6bb277225d1c320242e2e357b1d7bf",
+  "runtimeConfigDigest": "sha256:b5d4324835eb73a855be09e10346f1f005312fd367e16c2fc99d202e05caa1a9",
+  "archiveSha256": "89ccf7c46858685a570e118182994befe1f262fcbb5607c7c2aaf3d7380c6e25",
+  "archiveBytes": 73307648,
+  "archivePath": "/private/tmp/done-resumable-release-20261028/candidate-image.tar",
+  "runtimeSourceFilesMatched": 122,
+  "frontendFiles": 86,
+  "platform": "linux/arm64",
+  "user": "65532:65532",
+  "entrypoint": [
+    "node",
+    "scripts/public-account.mjs"
+  ],
+  "sizeBytes": 314512852,
+  "compatibleRollback": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+}

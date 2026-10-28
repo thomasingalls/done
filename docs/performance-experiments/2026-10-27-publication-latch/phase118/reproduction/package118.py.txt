@@ -1,0 +1,98 @@
+from pathlib import Path
+import json, gzip
+
+s = Path(__file__).parent
+r = Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+assert all(x['exitCode'] == 0 for x in json.loads((s / 'activation-followup-checks.json').read_text()))
+assert all(x['exitCode'] == 0 for x in json.loads((s / 'activation-additional-checks.json').read_text()))
+initial = json.loads((s / 'activation-checks.json').read_text())
+assert [x['exitCode'] for x in initial] == [0, 0, 1]
+assert json.loads((s / 'activation-build-identity.json').read_text())['allExecutableAndServiceWorkerFilesByteExactToMeasuredC']
+e = r / 'docs/performance-experiments/2026-10-27-publication-latch/phase118'
+e.mkdir()
+(s / 'activation-artifact-attempts.json').write_text(json.dumps({
+    'initialAttempt': {
+        'outcome': 'failed', 'exitCode': 1, 'typesBuildBudgetIsolationExitCodes': [0, 0, 0, 0],
+        'failure': 'AssertionError at identity == C-client-identity: all110-file byte equality failed.',
+        'receiptLimitation': 'The first script emitted console output but did not persist per-step times before its assertion. Do not infer first-attempt timing.'
+    },
+    'diagnosis': 'Only AccountDevices-peym9T1a.js.map differs. Only accountReceive.ts comments differ in sourcesContent; mappings and every other field match.',
+    'finalAttempt': 'Rebuilt again and checked exact executable/worker bytes, exact109 other files, and the sole map difference explicitly. No latency or data gate relaxed.',
+    'nativeSelectionReview': 'Initial rerun selected54 cases including6 additional grouped-transport cases. Compared case names against phase115 and added all13 grouped-commit/projection cases before closure. All67 distinct cases exercised across required modes.'
+}, indent=2) + '\n')
+for n in ['activation-checks.json', 'activation-followup-checks.json', 'activation-additional-checks.json',
+          'activation-build-identity.json', 'activation-source-review.json', 'activation-lint-scope.json',
+          'activation-artifact-attempts.json']:
+    (e / n).write_bytes((s / n).read_bytes())
+logs = ['activation-units', 'activation-types', 'activation-lint', 'activation-lint-targeted',
+        'activation-format', 'activation-native-default', 'activation-native-authority',
+        'activation-native-audit', 'activation-native-hidden', 'activation-metadata',
+        'activation-native-groups-projection', 'activation-build-final',
+        'activation-types-build', 'activation-build-build', 'activation-budget-build',
+        'activation-isolation-build']
+(e / 'checks').mkdir()
+for n in logs:
+    (e / 'checks' / (n + '.log.gz')).write_bytes(gzip.compress((s / (n + '.log')).read_bytes(), mtime=0))
+(e / 'reproduction').mkdir()
+for n in ['activation-checks.py', 'activation-followup-checks.py', 'activation-additional-checks.py',
+          'activation-build-first.py', 'activation-build.py', 'activation-source-review.py',
+          'development-checks.py', 'package118.py']:
+    (e / 'reproduction' / (n + '.txt')).write_bytes((s / n).read_bytes())
+# Freeze all retained result paths before receipt-producing checks run. Real content is copied afterward.
+(e / 'ordinary-checks.json').write_text('{"status":"pending"}\n')
+for n in ['debts', 'retention', 'status', 'limit', 'authority', 'yjs', 'wasm',
+          'crypto-census', 'inventory', 'manifest', 'budget', 'origin', 'trace']:
+    (e / 'checks' / ('ordinary-' + n + '.log.gz')).write_bytes(gzip.compress(b'', mtime=0))
+(e / 'README.md').write_text('''# Phase118 — Activate the accepted composed receive owner
+
+Enable the guarded750ms quiet-publisher budget only for composed owners, matching the experimental
+C owner that cleared all12 phase117 journeys. Other owners retain their original behavior; the
+factory default stays off. The previously held phase111 outcome remains recorded as a failed
+attempt, with its blocker repaired by publication-only deadline latching. No rate, backoff, local
+flush, authority/history/signature/witness/authorization or commit policy changes.
+
+Activated candidate checks:
+
+| Check | Result |
+| --- | --- |
+| Full Vitest suite | 174 files,2082 pass,1 existing skip |
+| Native batch/sync/group/projection cases | 67 distinct cases exercised across required modes |
+| Metadata/wrapper/census tests | 152 pass |
+| Types, changed-file lint/format | Pass |
+| Build, size and origin isolation | Pass |
+| Independent source comparison | 1653 runtime/test/dependency files checked |
+
+The83 focused cases from115 are included in the full unit run; do not double-count them. All8 old
+batching cases/helpers remain byte-exact, all7 additions retained. The omission control from115
+still applies to the byte-exact scheduler: deleting only the latch causes5 failures, with the8
+old cases passing. Native checks retain all malformed/tampered/oversized/expired/superseded reply,
+atomic grouped commit, interruption, exact sealed retry, lost answer, custody change, cold reopen,
+projection and local-journal barriers. Conditional authority/audit/hidden cases ran in their modes.
+
+Rebuilt activation source snapshot12cf4bdb43e83998d2d9ae31ed2a44be1eff7ea2 is not a signed release.
+All31548 exported blobs verified. Every executable/worker file matches measured C exactly;109/110
+artifact files are byte-exact. One source map differs only in updated source comments, with exact
+mappings and all other fields unchanged. The initial all110-byte assertion failed for that reason;
+both the failed attempt and the explicitly bounded follow-up are retained. No benchmark repeated
+or acceptance gate relaxed. Same controlled comparison label67288576/date/flags as116.
+
+Broad optional lint fails on1213 errors in three archived mockup/reproduction files, all byte-exact
+to signed HEAD. The failure is retained. Lint on all three changed code/test files passes; there is
+no repository-wide lint pass claim and no unsolicited archived-file cleanup. The runner stopped
+before native dispatch at that broad check, then continued with explicitly scoped checks.
+
+Ordinary repository checks are recorded in ordinary-checks.json and their logs, after documentation
+and retained paths are stable. Frozen-source/performance identities live in116, all12 raw journeys
+and independent native/timing audits in117. Known fixture-value/privacy review remains bounded,
+not universal DLP. Private fixture, databases and profiles are not retained in Git.
+
+The requested acceptance blocker is cleared and the tested owner activated for release preparation.
+Next sign the unsigned sequence, then perform the repository's signed-source ARM64 artifact and
+publication checks. No release image was built/published here; preview8443 and production untouched.
+Android/physical-provider and full qualification are not established;912/367 remains paused.
+Unsigned118 follows117; real index empty. No commit, push, merge or deployment.
+''')
+with (r / 'docs/completed.md').open('a') as f:
+    f.write('''\n## 2026-10-27 — Activate the accepted guarded receive budget (phase118)\n\nComposed owner now matches the C constructor accepted in117; all other owners/factory defaults stay.\nFull Vitest174 files/2082 pass/1 existing skip,67 distinct native cases across required modes and152\nmetadata cases pass. Types, changed-file lint/format, build/budget/isolation pass.1653 source inputs\ncompared; executable/worker artifacts byte-exact to measured C. One map embeds updated comments;\nits initial all-file equality failure and final exact-field diagnosis retained. Broad optional lint\nstill fails in three archived files byte-exact to signed HEAD; scoped lint passes, no broad pass claim.\n[Activation, full checks and limitations](performance-experiments/2026-10-27-publication-latch/phase118/README.md).\nOriginal2.5s and all security/durability gates retained. Ready to begin signed-source/artifact release\npreparation, not a completed release or blanket qualification.912/367 remains paused; no preview or\nproduction change. Unsigned118 follows117; real index empty, no commit/push/deploy.\n''')
+with (r / 'docs/decisions.md').open('a') as f:
+    f.write('''\n## 2026-10-27 — Activate only the measured composed-owner budget (phase118)\n\nAfter all12 fixed journeys and the activated-candidate regressions pass, replace112's product hold\nwith the exact measured composed-owner constructor. Keep factory/noncomposed defaults,750ms expiry,\nall target/authority/cursor/frontier/baseline/generation fences and pending/idle/own-stream handling.\nPublication latch changes urgency only; durable barriers, wire allocation, verification, local flush\npolicy, limits and retry backoff retain their existing authority. Accept the comment-only source-map\ndifference through exact-field inspection, without claiming all110 artifact files are byte-identical.\nRelease preparation begins with signed-source identity and artifact checks; it is not accomplished\nby this unsigned comparison. Retain optional broad-lint archive failures outside this bounded repair.\n''')

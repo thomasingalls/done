@@ -1,0 +1,11 @@
+{
+  "file": "src/crdt/accountStartup.ts",
+  "normalizedCheckpointDerivationUnchanged": true,
+  "sha256": "07aa9748a8366d4208b804132ffdb5752ecdd221ac91419670b37c429a9d089b",
+  "onlyRegistryChange": {
+    "construction": "genesis-checkpoint-key",
+    "path": "src/crdt/accountStartup.ts",
+    "lineBefore": 147,
+    "lineAfter": 157
+  }
+}

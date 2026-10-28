@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,hashlib
+s=Path(__file__).parent;ident=json.loads((s/'measurement-identity.json').read_text());rows=[]
+for c in json.loads((s/'late-plan.json').read_text()):
+ d=s/c['name'];x=json.loads((d/'result.json').read_text());i=json.loads((d/'container-identity.json').read_text());h=i['HostConfig'];assert i['Image']==ident['imageId'];assert(h['NanoCpus'],h['Memory'],h['MemorySwap'],h['PidsLimit'],h['ReadonlyRootfs'])==(1000000000,1073741824,1073741824,128,True);assert i['cgroup']['memory.swap.max']=='0';assert all(not m['RW']for m in i['Mounts']if m['Destination'].startswith('/app/'));assert x['variant']==c['variant'];assert x['outcome']=='passed';assert x['metrics']['rssSampledPeak']<1073741824;assert all(int(v.split()[1])==0 for v in x['metrics']['cgroupAfter']['memory.events'].splitlines()if v.split()[0]in['oom','oom_kill','max']);assert len(x['roots'])==2 and len(set(b['pid']for b in x['roots']))==2
+ expected=ident['clients'][c['variant']]['sw.js'];assert all(v['workerSha256']==expected for v in x['roots']);assert all(hashlib.sha256(Path(b['executable']).read_bytes()).hexdigest()==b['sha256']for b in x['roots'])
+ assert x['notifications'][0]['ready']==1,'reconnect alternative wake needs separate qualification';assert not c['withhold']or x['notifications'][0]['withheld']>0
+ rows.append({'name':c['name'],'exactFrozenImageAndLoadedWorker':True,'resourceEnvelopeAndReadonlySourceExact':True,'distinctBrowserRoots':2,'noOomOrResourceStop':True,'singleInitialReadyNoAlternativeReconnect':True,'withheldWorkspaceFrames':x['notifications'][0]['withheld']})
+(s/'late-fidelity.json').write_text(json.dumps({'status':'passed','rows':rows},indent=2)+'\n')

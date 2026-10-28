@@ -1,0 +1,11 @@
+{
+  "probesStopped": true,
+  "nativeAPIs": {
+    "getAll": true,
+    "credentialsGet": true,
+    "decrypt": true
+  },
+  "globalsRemoved": true,
+  "devtoolsWindowClosedAndDetached": true,
+  "noStorageClearingOrAppUpgrade": true
+}

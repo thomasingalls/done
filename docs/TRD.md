@@ -1619,8 +1619,13 @@ Pointer Events. **Swipe navigates; long-press-then-drag selects.**
    pointer and arms reordering; movement drags it, a stationary release unlocks it.
 4. `pointerup` before either → **tap.** Place cursor, mounting an editor if needed (§4.4).
 
-On a fine pointer, Done cards expose a reorder grip. Both paths write once, on release, through the atomic CRDT
-reorder operation.
+Live reorderable cards expose a grip on all pointer types, including mobile, with a minimum44px
+coarse-pointer target. Declare `touch-action:none` on that target before the touch starts, and claim
+its pointer before shell navigation. Body hold-and-drag keeps a scoped non-passive native touchmove
+listener before gesture start, cancelling native scroll only after the hold arms reordering. Do not
+suppress ordinary pre-hold scrolling or editor input. Pointer capture alone does not prevent native
+panning. Preserve primary-pointer ownership, cancellation/lost-capture cleanup and release-only writes
+through the existing atomic CRDT reorder operation; no storage/undo work is added while moving.
 
 Requires `user-select: none` on the container with selection re-enabled on entering selection mode, and
 `touch-action: none` on navigable surfaces. `overscroll-behavior: contain` prevents pull-to-refresh. Gestures must
@@ -1672,6 +1677,11 @@ phase finishes, checking editor lifetime and measured-state freshness; no docume
 transaction, admission command or persisted heading/caret snapshot is needed. Map transient
 decorations across accepted text changes and dispose of them with their editor.
 
+Reuse only proven numeric context intervals across mapped paragraph edits; distinguish heading ownership
+(next heading of any depth) from the clear section (including descendants). Structural edits, parser
+configuration/frontier changes and ownership/coverage changes invalidate reuse. Omit view effects
+when mapped decoration ranges already equal the measured result. No cache carries authority or text.
+
 Persist only a non-content presentation Boolean for this browser, default on. The preference does
 not enter workspace formats, crypto authority or synchronization. Storage denial keeps the choice
 usable for the visit and reports that it was not saved. Disabling removes the editor extension.
@@ -1707,8 +1717,9 @@ readDayContent chooses a retained archive. This adds no importer, task identity 
 #### Heading outline and focus
 
 The full document outline and per-breadcrumb menus consume the same derived heading representation.
-The Goals root control retains every heading in source order; local menus contain immediate authored
-children, with sibling navigation at a leaf. The heading stack honors skipped levels. Duplicate titles
+The Goals root word retains every heading in source order, without an outline icon. Its following
+caret lists H1s only; a heading's trailing caret lists immediate authored children, never siblings at
+a leaf. Leaf menus show an empty-state message. The heading stack honors skipped levels. Duplicate titles
 remain separate positions and local rows show ancestry and line number.
 
 Capture one heading catalogue and its immutable editor document identity when a menu opens, never
@@ -1720,7 +1731,11 @@ Navigation dispatches a CodeMirror scroll effect without moving the selection or
 which prevents a heading tap from summoning the mobile keyboard. Outside pointer actions close menus;
 Escape closes and restores the trigger without closing the narrow Goals surface. Local menus support
 arrow/Home/End navigation. Constrained widths retain the deepest breadcrumb, and the root outline
-remains available. Navigating and focusing remain separate commands.
+remains available. Selecting a row keeps the menu open and drills into the selected heading's
+children using the same captured catalogue/document. A leaf panel can receive focus for Escape.
+Root, words and carets share the removed outline indicator's centered24px geometry and2px corners,
+with the existing hover colors and transparent resting background.
+Navigating and focusing remain separate commands.
 
 Focus is one editor showing one contiguous heading subtree. Its state is local and ephemeral. Positions must map
 through editor transactions so concurrent edits before the subtree do not detach the view from its heading.
@@ -4118,3 +4133,23 @@ contradictory explicit zero overrides. Runtime owners still require all four gat
 passes the same build argument into its frontend build; changing runtime environment is insufficient.
 Reader-only rollback retains baseline/journal-era support and cannot restore reduced operational
 rows. Scheduling stops only as cached clients adopt that reader build. [Activation/rollback runbook](./account-local-retention-activation.md).
+
+
+### Read-only retention preparation priority — 2026-10-26
+
+Only read-only removal preparation may yield to queued owned storage work. Queue arrival changes a
+private generation checked at preparation's existing effect/yield boundaries. Keep native settlement,
+cleanup and writer exclusion until pending work finishes. Disarm queue priority before retaining the
+prepared evidence; input/lifecycle/route/journal and fresh authority/inventory checks remain. A final
+exchange or readback must never be cancelled solely by an arriving read. No scheduler hint authorizes
+removal or weakens the strict atomic exchange and uncertain-mutation close.
+
+
+### Automatic retention and synchronization readiness — 2026-10-26
+
+The automatic owner defers starting while either composed sync lane is starting, working or retrying.
+Idle/offline/blocked statuses are only scheduling eligibility; all current-authority, journal/activity,
+exact-inventory and atomic-removal checks still apply. A status refresh updates readiness without
+extending user quiet; key/input/pointer/lifecycle activity retains the existing quiet reset. Periodic
+repair polls must not starve maintenance by masquerading as input. Refresh does not clear parked
+refusals, error halts, retry clocks or success cooldowns. Release unsubscribes its lane observer.

@@ -1,0 +1,74 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {resolve,dirname} from 'node:path';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const repo=process.cwd(),out=dirname(fileURLToPath(import.meta.url));
+const {build}=await import(pathToFileURL(resolve(repo,'node_modules/vite/dist/node/index.js')));
+const ts=(await import(pathToFileURL(resolve(repo,'node_modules/typescript/lib/typescript.js')))).default;
+const fixture=await import(pathToFileURL(resolve(repo,'test/account-sync/fixtures.mjs')));
+const {accountRetentionFlags}=await import(pathToFileURL(resolve(repo,'vite/accountRetentionFlags.ts')));
+const targets={
+ 'localBaselineReplay.ts':['full','prepareLocalBaseline','replayLocalBaseline','summarizeBaseline','documentState'],
+ 'localBaselineRecord.ts':['decodeLocalBaseline'],
+ 'localBaselineStorage.ts':['readEncryptedBaseline','openEncryptedBaselineSnapshot'],
+ 'localBaselineShadow.ts':['verifyCompleteLocalBaseline'],
+ 'localRetentionPlan.ts':['planLocalRetention'],
+};
+const hits={},inputs={};
+const result=await build({configFile:false,logLevel:'error',
+ define:{...accountRetentionFlags({VITE_ACCOUNT_RETENTION:'1',VITE_ACCOUNT_BASELINE_INSTALL:'1'}),'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE':'"1"','import.meta.env.VITE_ACCOUNT_AUTHORITY_REUSE':'"1"'},
+ plugins:[{name:'numeric-entry-counts-only',enforce:'pre',transform(code,id){
+  if(id.startsWith(repo+'/')&&!id.includes('/node_modules/')) inputs[id.slice(repo.length+1)]=createHash('sha256').update(code).digest('hex');
+  const file=Object.keys(targets).find(f=>id.endsWith('/src/crdt/'+f));if(!file)return;
+  const ast=ts.createSourceFile(id,code,ts.ScriptTarget.Latest,true),edits=[];
+  function visit(n){
+   if(ts.isFunctionDeclaration(n)&&n.body&&targets[file].includes(n.name?.text)){
+    const label=file+':'+n.name.text;hits[label]=(hits[label]??0)+1;
+    edits.push({at:n.body.getStart(ast)+1,text:'\n(globalThis as any).__openingEntry?.('+JSON.stringify(label)+');\n'});
+   }
+   ts.forEachChild(n,visit);
+  }visit(ast);
+  for(const e of edits.sort((a,b)=>b.at-a.at))code=code.slice(0,e.at)+e.text+code.slice(e.at);
+  return code;
+ }}],
+ build:{write:false,minify:false,lib:{entry:resolve(repo,'test/account-sync/browser.ts'),name:'Harness',formats:['iife']}}
+});
+for(const [file,names]of Object.entries(targets))for(const name of names)assert.equal(hits[file+':'+name],1);
+const script=(Array.isArray(result)?result[0]:result).output.find(x=>x.type==='chunk').code;
+writeFileSync(out+'/maintenance-bundle-identity.json',JSON.stringify({sourceInputs:inputs,hits,bundleSha256:createHash('sha256').update(script).digest('hex'),scope:'Entry observations only; no omitted verification, storage or lifecycle operation; manual call uses same automatic removal owner.'},null,2)+'\n');
+const arm=page=>page.evaluate(()=>{
+ globalThis.openingEntries=[];const start=performance.now();
+ globalThis.__openingEntry=name=>{if(openingEntries.length<1000)openingEntries.push({name,at:performance.now()-start});};
+});
+const take=page=>page.evaluate(()=>{const events=openingEntries;delete globalThis.__openingEntry;return{events,metrics:__doneLedgerMetrics()};});
+const inventory=page=>page.evaluate(async()=>{
+ const db=await new Promise((ok,no)=>{const r=indexedDB.open(opened.dbName);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error);});
+ try{return await new Promise((ok,no)=>{const tx=db.transaction(['meta','content','heads','outbound']);const counter=tx.objectStore('meta').get('counter'),counts=['content','heads','outbound'].map(s=>tx.objectStore(s).count());tx.oncomplete=()=>ok({version:counter.result.v,revision:counter.result.baseline?.revision??0,baselineBytes:counter.result.baseline?.bytes??0,rows:counts.map(r=>r.result)});tx.onabort=()=>no(tx.error);});}finally{db.close();}
+});
+test('diagnostic first reduction and reduced reopen retain writing with observed production functions',{timeout:120000},async t=>{
+ const f=await fixture.native(t),prior=f.setup;
+ f.setup=async page=>{await prior(page);await page.evaluate(script);await fixture.configure(page,f.testOperatorToken);};
+ await f.setup(f.page);const item=await fixture.selected(f,'disposable-opening-maintenance-observation');
+ await fixture.syncing(f.page,item);await fixture.settled(f.page);
+ for(let i=0;i<16;i++)await fixture.edit(f.page,0,0,'sample '+i+' ');
+ await f.page.evaluate(()=>editor.whenDurable());await fixture.settled(f.page);await fixture.online(f.page,false);
+ await f.page.evaluate(()=>{globalThis.expectedWriting=editor.read().master;});
+ const before=await inventory(f.page);
+ await arm(f.page);const removal=await f.page.evaluate(()=>opened.removeLocalHistory(0));const maintenance=await take(f.page);
+ const after=await inventory(f.page);
+ assert.equal(removal.kind,'removed');assert.equal(before.version,2);assert.equal(after.version,5);assert.deepEqual(after.rows,[0,0,0]);
+ assert.equal(await f.page.evaluate(()=>editor.read().master===expectedWriting),true);
+ await fixture.close(f.page);await fixture.cold(f);await fixture.online(f.page,false);await arm(f.page);
+ await fixture.syncing(f.page,item);const reopen=await take(f.page);
+ assert.equal(await f.page.evaluate(()=>editor.read().master.includes('sample 15 sample 14')),true);
+ function counts(x){const r={};for(const e of x.events)r[e.name]=(r[e.name]??0)+1;return r;}
+ const report={scope:'Disposable native Chromium account; function-entry counts and existing owner metrics, not actual-phone latency attribution or a production timing estimate.',before,after,removal,maintenance:{...maintenance,counts:counts(maintenance)},reopen:{...reopen,counts:counts(reopen)}};
+ writeFileSync(out+'/maintenance-observation.json',JSON.stringify(report,null,2)+'\n');
+ assert.equal(report.maintenance.counts['localBaselineReplay.ts:full'],2);
+ assert.equal(report.reopen.counts['localBaselineStorage.ts:readEncryptedBaseline'],3);
+ assert.equal(report.reopen.counts['localBaselineShadow.ts:verifyCompleteLocalBaseline'],3);
+ console.log(JSON.stringify({before,after,maintenance:report.maintenance.counts,reopen:report.reopen.counts}));
+ await fixture.close(f.page);
+});

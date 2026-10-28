@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "preparedSeedAcceptanceExact": true,
+  "rows": [
+    {
+      "name": "dispatch-3-app-native",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 2,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "50c03139bf265f5f8682bbf01bc8af8f2c456ef2321f60ee0b87a23cc08a73a0"
+    },
+    {
+      "name": "dispatch-4-app-editor",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 121,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "94fccdf7000cbc1db8ccef0a3dd7e81501a0699089defc66f4ff4e50aaad31cb"
+    }
+  ]
+}

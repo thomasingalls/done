@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "runtimeDifferences": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/receiveSelection.ts"
+  ],
+  "referenceArtifactMatchesPreviousC": true,
+  "trees": {
+    "R": "b444a049d5bdb4db935628d7ecda6f44622af217",
+    "C": "1e603e541fd95be1222a9a301ed4b90e0b8d8aee"
+  },
+  "serverSourcesSharedFromR": true
+}

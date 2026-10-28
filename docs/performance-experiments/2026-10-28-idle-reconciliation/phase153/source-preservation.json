@@ -1,0 +1,45 @@
+{
+  "workingTreeRuntimeAndTestsEqual151": true,
+  "filesIndependentlyComparedToGitBlobsBothDirections": 1676,
+  "onlyRuntimeChangesSince150": [
+    "accountReceive import/callback",
+    "accountSyncDriver added idle policy helper"
+  ],
+  "schedulerAuthorityCryptoBackoffLocalFlushBodiesPreserved": {
+    "schedulerBodyByteExact150": true,
+    "onlyAddedPolicyHelperInDriver": true,
+    "ownerBodyByteExactExceptImportAndIntervalCallback": true,
+    "authorityPublicationLocalFlushBackoffWitnessCryptoNativeChecksUnchanged": true,
+    "unhealthyRepairMs": 5000,
+    "healthyRepairRangeMs": [
+      15000,
+      20000
+    ],
+    "noNewProtocolOrStorageShape": true,
+    "beforeEvidenceReused": [
+      "147withheld30sFailure",
+      "150nativeAcceptedEditProof",
+      "150realSchedulerNoMaintenanceControls"
+    ],
+    "oldTestsUnchanged": true
+  },
+  "oldTestsUnchanged": true,
+  "sourceDefaultsResumeAndServiceStill0": true,
+  "realIndexEmpty": true,
+  "canonicalPatchRecomposition": {
+    "implementationV1": "9f124c6992e64db2785b5af1af2718be6abeb54a",
+    "implementationV2": "6a7c07f51bbc87d9feaa9768b6074cdd740912bb",
+    "protocolV1": "5e9399bf70088ab12f5ff52d43bd181f32bfb673",
+    "protocolV2": "11238fb42e593eab8e0c38c0f61af4a40fc776d8",
+    "metadataAndDocsOnlyChanged": [
+      "docs/account-crypto/constructions.json",
+      "docs/account-sessions-subscriptions.md",
+      "docs/performance-experiments/2026-10-28-idle-reconciliation/phase151/README.md",
+      "docs/release-validation-graph.json",
+      "docs/release-validation-manifest.json"
+    ],
+    "allExportedBuildRuntimeAndTestRootsByteExact": true,
+    "originalBuiltAssetsRetained": true,
+    "realIndexEmpty": true
+  }
+}

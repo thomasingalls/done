@@ -1,0 +1,11 @@
+{
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/native-audit.json": "58f3264f6a2087c42d8b24a1ee9678c8da8f831f4b13b436679fb8ce41249850",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/heavy-1-R/result.json.gz": "c3883119fd3e98d486940a215cd9533de3c3105c607274db0d1569c0155ec761",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/heavy-2-C/result.json.gz": "d526bc18c138de3440708008ae8fc70badbcc769379c57f76aa5295315b7274e",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/heavy-3-C/result.json.gz": "21b8f24ebfa4a465938bd2efcffbc4fa85cd704d43179acc79137ecef819f462",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/heavy-4-R/result.json.gz": "7ec3ec7ec25834a3863db0c3b09ece1278e98d7e1245c595fb0d6815045d51cc",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/nonoverlap-1-R/result.json.gz": "c4b7391a04b7edbe25f86524866e44e6400a9b215a4076cc488d34a2b2e79ecd",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/nonoverlap-2-C/result.json.gz": "b72e3f47f1a0c8e3e5581a3389bc0c21aecd96eb5d226ed6f5cf4e6a264031ba",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/nonoverlap-3-C/result.json.gz": "c79cf41813b30a16f9b42c524e3469b8f65f21a66c866bbd4086bfef959a1378",
+  "docs/performance-experiments/2026-10-27-self-read-order/phase102/raw/nonoverlap-4-R/result.json.gz": "a7a7c6a1632bae03392b7728091e96460f490822b3b70118de78902a63fcfb4f"
+}

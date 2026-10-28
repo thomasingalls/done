@@ -1,0 +1,82 @@
+{
+  "outcome": "passed",
+  "startedAt": 1793086781429,
+  "accounts": [
+    {
+      "label": "H",
+      "devices": 6,
+      "backlog": 1024,
+      "cards": 24,
+      "goals": 13000,
+      "before": 5,
+      "after": 1029,
+      "acceptedDelta": 1024,
+      "archive": {
+        "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2465,
+            "characters": 2465
+          }
+        ]
+      }
+    },
+    {
+      "label": "M",
+      "devices": 2,
+      "backlog": 256,
+      "cards": 12,
+      "goals": 4000,
+      "before": 5,
+      "after": 261,
+      "acceptedDelta": 256,
+      "archive": {
+        "sha256": "834408f0749d7f6a6c28290c8bc3ed5946c0d232ad6dafca0c1224030d4dfac2",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 4157,
+            "characters": 4157
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 1037,
+            "characters": 1037
+          }
+        ]
+      }
+    },
+    {
+      "label": "Q",
+      "devices": 2,
+      "backlog": 32,
+      "cards": 6,
+      "goals": 1000,
+      "before": 5,
+      "after": 37,
+      "acceptedDelta": 32,
+      "archive": {
+        "sha256": "823afcc018201b6a7de01e680345d661e25aa577aac196e4f49c314902cb8fef",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 1049,
+            "characters": 1049
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 487,
+            "characters": 487
+          }
+        ]
+      }
+    }
+  ],
+  "completedAt": 1793087792470
+}

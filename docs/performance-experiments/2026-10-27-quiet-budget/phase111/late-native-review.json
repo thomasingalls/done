@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "late-1-R-normal",
+      "status": "passed",
+      "allOriginalProofBytesExact": true,
+      "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+      "onlyExpectedWriterAcceptedNewPositions": true,
+      "contiguousNewPositionCount": 72,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "d6104465a337c58e9bf78dec45a963bb2c4ed9a46349f42bcc51704090ff7195"
+    },
+    {
+      "name": "late-2-C-normal",
+      "status": "passed",
+      "allOriginalProofBytesExact": true,
+      "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+      "onlyExpectedWriterAcceptedNewPositions": true,
+      "contiguousNewPositionCount": 83,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "c6d797c49727769db9afabdc9a36e9eff0ece952f6a8653b7a0ac14463b20f44"
+    },
+    {
+      "name": "late-3-C-withheld",
+      "status": "passed",
+      "allOriginalProofBytesExact": true,
+      "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+      "onlyExpectedWriterAcceptedNewPositions": true,
+      "contiguousNewPositionCount": 83,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "2822ecd37c77490fbadc4adca87022f27af732e2c5de556740748bb6568e1e5d"
+    },
+    {
+      "name": "late-4-R-withheld",
+      "status": "passed",
+      "allOriginalProofBytesExact": true,
+      "independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes": true,
+      "onlyExpectedWriterAcceptedNewPositions": true,
+      "contiguousNewPositionCount": 74,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "e6178630e35c738f670322c90d2d3b72831acc8fbd4654e7af45aff90bd20fd5"
+    }
+  ]
+}

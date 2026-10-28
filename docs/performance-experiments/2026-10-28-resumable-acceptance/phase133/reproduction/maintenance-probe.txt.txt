@@ -1,0 +1,13 @@
+  clearAccountTransition(result.accountId);
+  globalThis.__maintenanceOwner = result;
+  const maintenanceTrace = [];
+  let maintenanceOverflow = 0;
+  const maintenance = result.devices?.localHistory;
+  const sampleMaintenance = () => {
+    if (!maintenance) return;
+    const status = maintenance.status;
+    const row = {at: performance.timeOrigin + performance.now(), phase:status.phase, reason:status.reason, progress:status.progress && {...status.progress}, diagnostics:maintenance.diagnostics};
+    if (maintenanceTrace.length < 16384) maintenanceTrace.push(row); else maintenanceOverflow++;
+  };
+  maintenance?.onStatus(sampleMaintenance); sampleMaintenance();
+  globalThis.__maintenanceRead = () => { sampleMaintenance(); return {events:structuredClone(maintenanceTrace),overflow:maintenanceOverflow,status:maintenance?.status,diagnostics:maintenance?.diagnostics}; };

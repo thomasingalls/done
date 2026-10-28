@@ -1,0 +1,4 @@
+{
+  "failedInlineAudit": "Python SyntaxError: else16 lacked required whitespace in a conditional expression; no audit executed",
+  "resolution": "Save the explicit multiline auditor with else 16; run and retain passing reconstruction plus false-marker control. No raw observation or threshold changed."
+}

@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,math
+s=Path(__file__).parent;rows=[]
+def stats(v):return {'n':len(v),'p50':sorted(v)[math.ceil(len(v)*.5)-1],'p95':sorted(v)[math.ceil(len(v)*.95)-1],'max':max(v)}
+for name in ['maintenance-1-R-normal','maintenance-2-C-normal']:
+ x=json.loads((s/name/'result.json').read_text());a=json.loads((s/name/'analysis.json').read_text());p=x['probes'][1];assert len(x['offers'])==len(p['events'])==123;offset=max(v['renderer']-v['after']-1 for g in x['clocks']for v in g['rows'][1]);keys=[];n=0
+ for o,e in zip(x['offers'],p['events']):
+  if o['kind']!='key':continue
+  n+=1;at=next(v['at']for v in p['counts']if v['at']>=o['at']-5 and v['count']>=x['baselines'][1]+n);dispatch=e['at']-o['at']-offset;editing=at-e['at'];assert abs(dispatch+editing-a['allKeyUpperMs'][1][n-1])<.00001;keys.append({'index':o['index'],'dispatchUpperMs':dispatch,'beforeinputToDomMs':editing,'wholeUpperMs':a['allKeyUpperMs'][1][n-1]})
+ rows.append({'name':name,'hostOfferToBeforeinputUpperMs':stats([v['dispatchUpperMs']for v in keys]),'beforeinputToDomMs':stats([v['beforeinputToDomMs']for v in keys]),'wholeUpperMs':a['localUpperMs'],'tailKeys':[v for v in keys if v['wholeUpperMs']>16],'all120Keys':keys})
+(s/'local-tail-attribution.json').write_text(json.dumps({'kind':'exploratory decomposition of retained failed acceptance, no new run or changed gate','rows':rows,'marginalQuantilesAreNotAdditive':True,'candidateActivationStillHeld':True},indent=2)+'\n');print(json.dumps([{k:v for k,v in r.items()if k not in ['all120Keys','tailKeys']}for r in rows],indent=2))

@@ -147,6 +147,16 @@
     container: card / inline-size;
   }
 
+  .card[data-section='done'] {
+    opacity: 0.33;
+  }
+
+  .card[data-section='done']:is(:hover, :active, :focus-within),
+  .card[data-section='done'][data-editing='true'],
+  .card[data-section='done'][data-reordering='true'] {
+    opacity: 1;
+  }
+
   .card[data-editing='true'] {
     border-color: var(--color-accent-dim);
   }
@@ -236,7 +246,7 @@
   }
 
   .card-reorder-handle {
-    display: none;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: grab;
@@ -248,9 +258,10 @@
     cursor: grabbing;
   }
 
-  @media (any-hover: hover) and (any-pointer: fine) {
+  @media (pointer: coarse) {
     .card-reorder-handle {
-      display: inline-flex;
+      min-inline-size: 2.75rem;
+      min-block-size: 2.75rem;
     }
   }
 

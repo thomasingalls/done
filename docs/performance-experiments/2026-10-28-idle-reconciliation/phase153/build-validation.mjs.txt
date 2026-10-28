@@ -1,0 +1,4 @@
+import{build}from'/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/dist/node/index.js';
+const root='/private/tmp/done-idle-reconciliation-20261028';
+process.env.APP_BUILD_REVISION='3ae028480fa988c694b01394a43fc6f0d5eddc43-dirty';process.env.APP_BUILD_DATE='2026-10-28';
+await build({root:root+'/source-C',configFile:root+'/source-C/vite.config.ts',build:{outDir:root+'/153-validation/dist',emptyOutDir:true},logLevel:'warn'});

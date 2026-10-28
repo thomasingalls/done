@@ -1,0 +1,45 @@
+from pathlib import Path
+import subprocess,os,tarfile,io,json,hashlib
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done'); d=Path(__file__).parent
+ids={'R':'a1ad3e3a81563a049e1d4b65aaff91dabe6516ba','C':'761f4f9669b8208bcea1d5263a53d50047bb6adb'}
+for v,t in ids.items():
+ s=d/('source-'+v);s.mkdir()
+ with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(['git','archive',t],cwd=r)))as a:a.extractall(s,filter='data')
+ (s/'node_modules').symlink_to(r/'node_modules',target_is_directory=True)
+lab=d/'source-C/test/account-continuation-lab';lab.mkdir()
+old=r/'docs/performance-experiments/2026-10-22-prelude-proof-reuse/reproduction'
+for f in (old/'lab').glob('*.txt'):(lab/f.name.removesuffix('.txt')).write_bytes(f.read_bytes())
+for name in ['container-service.mjs','observer.mjs','analyze.py','review-evidence.py','audit-native.mjs']:
+ (d/name).write_bytes((old/(name+'.txt')).read_bytes())
+(lab/'seed.spec.ts').write_bytes((r/'docs/performance-experiments/2026-10-21-account-fairness/reproduction/browser/seed.spec.ts.txt').read_bytes())
+# Use the checked-in, current enrollment/geometry helpers. All fixture edits are local apparatus.
+(lab/'devices.ts').write_bytes((r/'test/packaged-account/devices.ts').read_bytes())
+for name in ['runtime.mjs','common.ts','seed-profile.ts','seed.spec.ts']:
+ p=lab/name;text=p.read_text()
+ for previous in ['/private/tmp/done-prelude-proof-reuse-20261022','/private/tmp/done-account-fairness-20261021','/private/tmp/done-discovery-dependency-20261022']:text=text.replace(previous,str(d))
+ if name=='runtime.mjs':
+  text=text.replace("source=root+'/source'","source=root+'/source-C'")
+  text=text.replace("(f==='account-service'&&process.env.FAIR_VARIANT==='D'?root+'/diagnostic-account-service':f==='account-service'&&process.env.FAIR_VARIANT==='R'?root+'/reference-account-service':source+'/'+f)","(source+'/'+f)")
+  text=text.replace("'--entrypoint','node'","'--entrypoint','/usr/local/bin/node'")
+ if name=='common.ts':
+  text="import{openMenuSection}from'../geometry/openApp';\n"+text
+  text=text.replace("await p.getByRole('button',{name:'Lock workspace'","await openMenuSection(p,'Account');await p.getByRole('button',{name:'Lock workspace'")
+  text=text.replace("export async function position(p:Page){return","export async function position(p:Page){await openMenuSection(p,'Sync');return")
+  text=text.replace("const wait=p.waitForEvent('download');","await openMenuSection(p,'Data');const wait=p.waitForEvent('download');")
+ if name=='seed.spec.ts':
+  text="import{openMenuSection}from'../geometry/openApp';\n"+text
+  text=text.replace("await approver.page.getByRole('button',{name:'Devices'","await openMenuSection(approver.page,'Account');await approver.page.getByRole('button',{name:'Devices'")
+  text=text.replace("await p.getByRole('button',{name:'Devices'","await openMenuSection(p,'Account');await p.getByRole('button',{name:'Devices'")
+  text=text.replace("await focus(p,spec.label);let expected", "await focus(p,spec.label);let expected")
+ p.write_text(text)
+# Avoid restored serialization depending on a retired file path; extract pinned installed serializer below.
+p=lab/'seed-profile.ts';p.write_text(p.read_text().replace('playwright-storage-source.txt','playwright-storage-source.txt'))
+p=lab/'continuation.spec.ts';text=p.read_text().replace("chromium.launch()","chromium.launch({executablePath:process.env['CHROMIUM_PATH']})").replace("chromium.launchPersistentContext(path,{","chromium.launchPersistentContext(path,{executablePath:process.env['CHROMIUM_PATH'],").replace("chromium.launchPersistentContext(q.profile,{","chromium.launchPersistentContext(q.profile,{executablePath:process.env['CHROMIUM_PATH'],").replace("chromium.launchPersistentContext(peer.profile,{","chromium.launchPersistentContext(peer.profile,{executablePath:process.env['CHROMIUM_PATH'],")
+text=text.replace("phase='offline-pending';for", "phase='offline-pending';await q.page.locator('details[data-menu-section=Sync] summary').evaluate(e=>(e.parentElement as HTMLDetailsElement).open=true);for")
+p.write_text(text)
+config=(lab/'playwright.config.ts').read_text().replace("viewport:{width:1440,height:1000}","launchOptions:{executablePath:process.env['CHROMIUM_PATH']},viewport:{width:1440,height:1000}")
+(lab/'playwright.config.ts').write_text(config)
+(lab/'seed.config.ts').write_text(config.replace("testMatch:'continuation.spec.ts'","testMatch:'seed.spec.ts'").replace('timeout:1200000','timeout:1800000'))
+for name in ['audit-native.mjs','analyze.py','review-evidence.py']:
+ p=d/name;text=p.read_text().replace('/private/tmp/done-prelude-proof-reuse-20261022',str(d)).replace('/private/tmp/done-account-fairness-20261021',str(d));p.write_text(text)
+(d/'source-identities.json').write_text(json.dumps(ids,indent=2)+'\n')

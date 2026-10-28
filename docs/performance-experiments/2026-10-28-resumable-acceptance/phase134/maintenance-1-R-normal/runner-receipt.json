@@ -1,0 +1,19 @@
+{
+  "case": {
+    "name": "maintenance-1-R-normal",
+    "mode": "maintenance",
+    "variant": "R",
+    "withhold": false,
+    "config": "maintenance.config.ts"
+  },
+  "startedAt": 1793183623676,
+  "command": [
+    "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "test/account-continuation-lab/maintenance.config.ts"
+  ],
+  "exit": 0,
+  "finishedAt": 1793183764224
+}

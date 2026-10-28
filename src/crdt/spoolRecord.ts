@@ -76,7 +76,7 @@ export interface SpoolReplayStart {
   /** Consumed indexes of capsules whose other originals must remain available. */
   consumed: readonly { id: string; index: number }[];
 }
-export const nextSpoolPosition = (s: SpoolState): number =>
+export const nextSpoolPosition = (s: Pick<SpoolState, 'origin' | 'positions'>): number =>
   (s.origin?.position ?? 0) + s.positions.length + 1;
 export const positionSources = (p: Pick<SpoolPosition, 'source' | 'additional'>): SourceRef[] => [
   p.source,

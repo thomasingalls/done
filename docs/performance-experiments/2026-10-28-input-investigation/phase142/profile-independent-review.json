@@ -1,0 +1,716 @@
+{
+  "status": "passed independent profile/data/source audit",
+  "completeSamplesAndSelfDenominator": true,
+  "unknownSampleAndMissingWeightControlsRejected": true,
+  "samePausedMaintenanceAttemptAcrossCapture": true,
+  "full120InputDataUndoColdResourceWorkerGuards": true,
+  "selfSourceAttribution": [
+    {
+      "source": "../../src/crdt/verifiedRecords.ts",
+      "weightedMs": 6656.036000000001,
+      "nonIdleFraction": 0.5285395521096206
+    },
+    {
+      "source": "",
+      "weightedMs": 2983.6099999999997,
+      "nonIdleFraction": 0.2369211784716586
+    },
+    {
+      "source": "../../src/crdt/verificationOwnership.ts",
+      "weightedMs": 909.068,
+      "nonIdleFraction": 0.07218686821363174
+    },
+    {
+      "source": "../../src/crdt/cpuBudget.ts",
+      "weightedMs": 301.691,
+      "nonIdleFraction": 0.023956545008996872
+    },
+    {
+      "source": "../../src/crdt/startupStorage.ts",
+      "weightedMs": 266.27899999999994,
+      "nonIdleFraction": 0.021144564632192137
+    },
+    {
+      "source": "../../src/crdt/accountAuthority.ts",
+      "weightedMs": 158.8,
+      "nonIdleFraction": 0.012609919909538914
+    },
+    {
+      "source": "../../src/crdt/contentRecord.ts",
+      "weightedMs": 114.59,
+      "nonIdleFraction": 0.00909931185411879
+    },
+    {
+      "source": "../../src/crdt/accountDelivery.ts",
+      "weightedMs": 100.96300000000001,
+      "nonIdleFraction": 0.008017225087070385
+    },
+    {
+      "source": "../../src/crdt/warmContent.ts",
+      "weightedMs": 97.56299999999999,
+      "nonIdleFraction": 0.007747239396311994
+    },
+    {
+      "source": "../../src/crdt/incrementalAccountLedger.ts",
+      "weightedMs": 82.97699999999999,
+      "nonIdleFraction": 0.006589000782958502
+    },
+    {
+      "source": "../../src/crdt/accountEnvelopePreparation.ts",
+      "weightedMs": 77.91700000000002,
+      "nonIdleFraction": 0.006187198549065136
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js",
+      "weightedMs": 73.043,
+      "nonIdleFraction": 0.005800166120607373
+    },
+    {
+      "source": "../../src/crdt/contentStore.ts",
+      "weightedMs": 65.161,
+      "nonIdleFraction": 0.00517427576338454
+    },
+    {
+      "source": "../../src/crdt/accountCapture.ts",
+      "weightedMs": 64.31,
+      "nonIdleFraction": 0.005106699933138838
+    },
+    {
+      "source": "../../src/crdt/custodyCrypto.ts",
+      "weightedMs": 51.955,
+      "nonIdleFraction": 0.004125619577456512
+    },
+    {
+      "source": "../../account-protocol/recovery.ts",
+      "weightedMs": 47.742000000000004,
+      "nonIdleFraction": 0.0037910755435844254
+    },
+    {
+      "source": "../../src/crdt/inboundLedger.ts",
+      "weightedMs": 47.185,
+      "nonIdleFraction": 0.003746845534833713
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "weightedMs": 46.468999999999994,
+      "nonIdleFraction": 0.0036899897246622394
+    },
+    {
+      "source": "../../src/crdt/contentDatabase.ts",
+      "weightedMs": 36.407000000000004,
+      "nonIdleFraction": 0.002890990895129617
+    },
+    {
+      "source": "../../src/crdt/writeSession.ts",
+      "weightedMs": 33.586000000000006,
+      "nonIdleFraction": 0.002666982179356259
+    },
+    {
+      "source": "../../src/crdt/deliveryRecord.ts",
+      "weightedMs": 33.34400000000001,
+      "nonIdleFraction": 0.0026477655507787506
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+      "weightedMs": 30.373,
+      "nonIdleFraction": 0.0024118457015895804
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+      "weightedMs": 29.413999999999998,
+      "nonIdleFraction": 0.002335693855284493
+    },
+    {
+      "source": "../../src/crdt/sourceCapture.ts",
+      "weightedMs": 25.769,
+      "nonIdleFraction": 0.0020462533132802785
+    },
+    {
+      "source": "../../account-protocol/envelope.ts",
+      "weightedMs": 24.080000000000002,
+      "nonIdleFraction": 0.0019121339510182432
+    },
+    {
+      "source": "../../src/crdt/custody.ts",
+      "weightedMs": 19.583000000000002,
+      "nonIdleFraction": 0.00155503817121222
+    },
+    {
+      "source": "../../account-protocol/positionDecision.ts",
+      "weightedMs": 17.914,
+      "nonIdleFraction": 0.0014225069600722927
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/logging.js",
+      "weightedMs": 14.865,
+      "nonIdleFraction": 0.0011803933215069012
+    },
+    {
+      "source": "../../src/crdt/spoolRecord.ts",
+      "weightedMs": 13.987,
+      "nonIdleFraction": 0.0011106734872463524
+    },
+    {
+      "source": "../../account-protocol/admissionHistory.ts",
+      "weightedMs": 12.914,
+      "nonIdleFraction": 0.0010254691795452487
+    },
+    {
+      "source": "../../src/crdt/admittedWorkspace.ts",
+      "weightedMs": 10.111,
+      "nonIdleFraction": 0.0008028897997817881
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+state@6.7.1/node_modules/@codemirror/state/dist/index.js",
+      "weightedMs": 9.085,
+      "nonIdleFraction": 0.0007214176472176387
+    },
+    {
+      "source": "../../account-protocol/submission.ts",
+      "weightedMs": 8.385,
+      "nonIdleFraction": 0.0006658323579438525
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@lezer+markdown@1.7.2/node_modules/@lezer/markdown/dist/index.js",
+      "weightedMs": 7.627000000000001,
+      "nonIdleFraction": 0.0006056414304159527
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/observable.js",
+      "weightedMs": 7.626,
+      "nonIdleFraction": 0.0006055620228598473
+    },
+    {
+      "source": "../../src/crdt/contentSelection.ts",
+      "weightedMs": 7.402,
+      "nonIdleFraction": 0.0005877747302922356
+    },
+    {
+      "source": "../../src/crdt/accountLedgerMetrics.ts",
+      "weightedMs": 6.7219999999999995,
+      "nonIdleFraction": 0.0005337775921405577
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react@19.2.8/node_modules/react/cjs/react.production.js",
+      "weightedMs": 6.370000000000001,
+      "nonIdleFraction": 0.0005058261323914539
+    },
+    {
+      "source": "../../src/lib/date.ts",
+      "weightedMs": 6.028,
+      "nonIdleFraction": 0.000478668748203404
+    },
+    {
+      "source": "../../src/crdt/accountSyncDriver.ts",
+      "weightedMs": 5.94,
+      "nonIdleFraction": 0.0004716808832661281
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+language@6.12.4/node_modules/@codemirror/language/dist/index.js",
+      "weightedMs": 5.640999999999999,
+      "nonIdleFraction": 0.00044793802399061076
+    },
+    {
+      "source": "../../src/ui/Collection.tsx",
+      "weightedMs": 5.114,
+      "nonIdleFraction": 0.0004060902419230604
+    },
+    {
+      "source": "../../src/crdt/selectionSnapshots.ts",
+      "weightedMs": 4.661,
+      "nonIdleFraction": 0.0003701186190073102
+    },
+    {
+      "source": "../../src/crdt/localBaselineMetadata.ts",
+      "weightedMs": 4.628,
+      "nonIdleFraction": 0.00036749816965583177
+    },
+    {
+      "source": "../../src/editor/admittedEditor.ts",
+      "weightedMs": 4.59,
+      "nonIdleFraction": 0.00036448068252382623
+    },
+    {
+      "source": "../../src/crdt/journalCodec.ts",
+      "weightedMs": 4.545999999999999,
+      "nonIdleFraction": 0.0003609867500551882
+    },
+    {
+      "source": "../../src/crdt/finalApplyGate.ts",
+      "weightedMs": 4.404,
+      "nonIdleFraction": 0.0003497108770882202
+    },
+    {
+      "source": "../../src/crdt/admissionQueue.ts",
+      "weightedMs": 4.319,
+      "nonIdleFraction": 0.00034296123481926047
+    },
+    {
+      "source": "../../src/crdt/verificationMemo.ts",
+      "weightedMs": 4.299,
+      "nonIdleFraction": 0.0003413730836971523
+    },
+    {
+      "source": "../../src/ui/Card.tsx",
+      "weightedMs": 4.156,
+      "nonIdleFraction": 0.0003300178031740788
+    },
+    {
+      "source": "../../src/lib/temporal.ts",
+      "weightedMs": 3.042,
+      "nonIdleFraction": 0.00024155778567265345
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/iterator.js",
+      "weightedMs": 3.025,
+      "nonIdleFraction": 0.0002402078572188615
+    },
+    {
+      "source": "../../src/account/privateDeliveryHttp.ts",
+      "weightedMs": 3.024,
+      "nonIdleFraction": 0.0002401284496627561
+    },
+    {
+      "source": "../../src/ui/SyncNotice.tsx",
+      "weightedMs": 2.809,
+      "nonIdleFraction": 0.00022305582510009323
+    },
+    {
+      "source": "../../src/ui/workspaceUi.tsx",
+      "weightedMs": 2.713,
+      "nonIdleFraction": 0.00021543269971397398
+    },
+    {
+      "source": "../../src/ui/Goals.tsx",
+      "weightedMs": 1.602,
+      "nonIdleFraction": 0.00012721090488086484
+    },
+    {
+      "source": "../../src/crdt/contentCompaction.ts",
+      "weightedMs": 1.59,
+      "nonIdleFraction": 0.00012625801420759994
+    },
+    {
+      "source": "wasm://wasm/6c3319e2",
+      "weightedMs": 1.521,
+      "nonIdleFraction": 0.00012077889283632672
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js",
+      "weightedMs": 1.52,
+      "nonIdleFraction": 0.00012069948528022133
+    },
+    {
+      "source": "../../src/ui/App.tsx",
+      "weightedMs": 1.513,
+      "nonIdleFraction": 0.00012014363238748345
+    },
+    {
+      "source": "../../src/editor/livePreview.ts",
+      "weightedMs": 1.512,
+      "nonIdleFraction": 0.00012006422483137805
+    },
+    {
+      "source": "../../src/crdt/journalStore.ts",
+      "weightedMs": 1.508,
+      "nonIdleFraction": 0.00011974659460695642
+    },
+    {
+      "source": "../../src/ui/GoalsActionsMenu.tsx",
+      "weightedMs": 1.507,
+      "nonIdleFraction": 0.000119667187050851
+    },
+    {
+      "source": "http://localhost:53781/assets/rolldown-runtime-QTnfLwEv.js",
+      "weightedMs": 1.505,
+      "nonIdleFraction": 0.00011950837193864019
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/scheduler@0.27.0/node_modules/scheduler/cjs/scheduler.production.js",
+      "weightedMs": 1.503,
+      "nonIdleFraction": 0.00011934955682642937
+    },
+    {
+      "source": "../../src/crdt/localGenesisRecord.ts",
+      "weightedMs": 1.499,
+      "nonIdleFraction": 0.00011903192660200775
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@lezer+common@1.5.2/node_modules/@lezer/common/dist/index.js",
+      "weightedMs": 1.334,
+      "nonIdleFraction": 0.0001059296798446153
+    },
+    {
+      "source": "../../src/crdt/localBaselineMode.ts",
+      "weightedMs": 1.284,
+      "nonIdleFraction": 0.00010195930203934486
+    },
+    {
+      "source": "../../src/ui/InstallPanel.tsx",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/ui/DayPanel.tsx",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/crdt/workspaceCommands.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/account/scopedTransport.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/crdt/days.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/ui/GoalsNavigation.tsx",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/crdt/freeze.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../wasm/journal-seal/seal.generated.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/crdt/accountSyncState.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/function.js",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/crdt/yjs.ts",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../src/ui/Menu.tsx",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    },
+    {
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+lang-markdown@6.5.1/node_modules/@codemirror/lang-markdown/dist/index.js",
+      "weightedMs": 0.0,
+      "nonIdleFraction": 0.0
+    }
+  ],
+  "sourceMapChecks": [
+    {
+      "source": "verifiedRecords.ts",
+      "sourceMapContentEqualsRepository": true,
+      "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
+    },
+    {
+      "source": "verificationOwnership.ts",
+      "sourceMapContentEqualsRepository": true,
+      "sha256": "2189144ef4ab0f5cbc1ff8605d763a121ba949f91ed13edaecfe14eaea9ee3e4"
+    }
+  ],
+  "generatedHotHelperExamples": [
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "read",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 9407,
+      "snippet": "eadProjection`,i),a},read(e,t=e=>e){if(!n||!X(n,e))throw Error(`No verified view for these records`);let i=j(),a=structuredClone(t(r));return M(`readProjection`,i),a},async verify(e,c,l,u,d,f){if(o)throw Error(`Concurrent verification is not allowed`);o=!0;try{try{u()}catch(e){throw s(),e}let o=a;if(n&&i===c){let t=f?await "
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "readIfMatches",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 9301,
+      "snippet": "!!n&&X(n,e),readIfMatches(e,t){if(!n||!X(n,e))return;let i=j(),a={value:structuredClone(t(r))};return M(`readProjection`,i),a},read(e,t=e=>e){if(!n||!X(n,e))throw Error(`No verified view for these records`);let i=j(),a=structuredClone(t(r));return M(`readProjection`,i),a},async verify(e,c,l,u,d,f){if(o)throw Error(`Concurre"
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "read",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 9407,
+      "snippet": "eadProjection`,i),a},read(e,t=e=>e){if(!n||!X(n,e))throw Error(`No verified view for these records`);let i=j(),a=structuredClone(t(r));return M(`readProjection`,i),a},async verify(e,c,l,u,d,f){if(o)throw Error(`Concurrent verification is not allowed`);o=!0;try{try{u()}catch(e){throw s(),e}let o=a;if(n&&i===c){let t=f?await "
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "read",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 9407,
+      "snippet": "eadProjection`,i),a},read(e,t=e=>e){if(!n||!X(n,e))throw Error(`No verified view for these records`);let i=j(),a=structuredClone(t(r));return M(`readProjection`,i),a},async verify(e,c,l,u,d,f){if(o)throw Error(`Concurrent verification is not allowed`);o=!0;try{try{u()}catch(e){throw s(),e}let o=a;if(n&&i===c){let t=f?await "
+    },
+    {
+      "function": "readIfMatches",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 9301,
+      "snippet": "!!n&&X(n,e),readIfMatches(e,t){if(!n||!X(n,e))return;let i=j(),a={value:structuredClone(t(r))};return M(`readProjection`,i),a},read(e,t=e=>e){if(!n||!X(n,e))throw Error(`No verified view for these records`);let i=j(),a=structuredClone(t(r));return M(`readProjection`,i),a},async verify(e,c,l,u,d,f){if(o)throw Error(`Concurre"
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    },
+    {
+      "function": "read",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 9407,
+      "snippet": "eadProjection`,i),a},read(e,t=e=>e){if(!n||!X(n,e))throw Error(`No verified view for these records`);let i=j(),a=structuredClone(t(r));return M(`readProjection`,i),a},async verify(e,c,l,u,d,f){if(o)throw Error(`Concurrent verification is not allowed`);o=!0;try{try{u()}catch(e){throw s(),e}let o=a;if(n&&i===c){let t=f?await "
+    },
+    {
+      "function": "q",
+      "assetSha256": "07b32a668b7c6768389fdb3d5d73f02c8bfb8d557ad1a6ca37fa4254d9631143",
+      "line": 1,
+      "column": 7568,
+      "snippet": "nally{W.delete(i)}}var q=(e,t,n,r)=>{if(e[n]!==t[n])return!1;let i=n;if(r-n>=256&&(e.byteOffset+n)%4==0&&(t.byteOffset+n)%4==0){let a=Math.floor((r-n)/4),o=new Uint32Array(e.buffer,e.byteOffset+n,a),s=new Uint32Array(t.buffer,t.byteOffset+n,a);for(let e=0;e<a;e++)if(o[e]!==s[e])return!1;i+=a*4}for(;i<r;i++)if(e[i]!==t[i])re"
+    }
+  ],
+  "inclusiveCaution": "Original inclusive function aggregation may count recursive occurrences repeatedly. Do not add it; source-self totals have one attribution per sample. Unique raw-function inclusive weights are independently derived here.",
+  "uniqueInclusiveHotHelpers": [
+    {
+      "rawLocation": [
+        "verify",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        9561
+      ],
+      "weightedMs": 3732.643
+    },
+    {
+      "rawLocation": [
+        "Z",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        8439
+      ],
+      "weightedMs": 2769.598
+    },
+    {
+      "rawLocation": [
+        "q",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        7568
+      ],
+      "weightedMs": 2448.174
+    },
+    {
+      "rawLocation": [
+        "read",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        9407
+      ],
+      "weightedMs": 1699.255
+    },
+    {
+      "rawLocation": [
+        "readIfMatches",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        9301
+      ],
+      "weightedMs": 1592.789
+    },
+    {
+      "rawLocation": [
+        "X",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        8293
+      ],
+      "weightedMs": 1011.666
+    },
+    {
+      "rawLocation": [
+        "",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        8329
+      ],
+      "weightedMs": 1004.249
+    },
+    {
+      "rawLocation": [
+        "J",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        7887
+      ],
+      "weightedMs": 986.559
+    },
+    {
+      "rawLocation": [
+        "H",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        6683
+      ],
+      "weightedMs": 906.076
+    },
+    {
+      "rawLocation": [
+        "U",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        6942
+      ],
+      "weightedMs": 898.551
+    },
+    {
+      "rawLocation": [
+        "Y",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        8151
+      ],
+      "weightedMs": 512.556
+    },
+    {
+      "rawLocation": [
+        "",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        8173
+      ],
+      "weightedMs": 502.361
+    },
+    {
+      "rawLocation": [
+        "Q",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        8850
+      ],
+      "weightedMs": 244.078
+    },
+    {
+      "rawLocation": [
+        "",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        6966
+      ],
+      "weightedMs": 83.391
+    },
+    {
+      "rawLocation": [
+        "",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        7004
+      ],
+      "weightedMs": 72.606
+    },
+    {
+      "rawLocation": [
+        "w",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        3293
+      ],
+      "weightedMs": 52.524
+    },
+    {
+      "rawLocation": [
+        "C",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        3037
+      ],
+      "weightedMs": 41.716
+    },
+    {
+      "rawLocation": [
+        "g",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        840
+      ],
+      "weightedMs": 37.01
+    },
+    {
+      "rawLocation": [
+        "b",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        1902
+      ],
+      "weightedMs": 27.979
+    },
+    {
+      "rawLocation": [
+        "f",
+        "http://localhost:53781/assets/verifiedRecords-BFI8BGxU.js",
+        0,
+        504
+      ],
+      "weightedMs": 22.855
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "status": "passed-for-fixture-diagnosis-only",
+  "originalNeedleInterrupted": true,
+  "markerStrippedNeedlePresent": true,
+  "exactlyOneMarker": true,
+  "fullArchivePlusOnlyMarkerExact": true,
+  "corruptedOriginalRejected": true,
+  "sameSavedProfileOfflineNoReinjection": true,
+  "archive": {
+    "sha256": "e04bb2fe3f73e3f6890ae090108b80ae2f5a30111e4a68384ddcb4792f5addbf",
+    "files": [
+      {
+        "name": "master.md",
+        "bytes": 5000,
+        "characters": 5000
+      },
+      {
+        "name": "days/2026-10-27.md",
+        "bytes": 2494,
+        "characters": 2494
+      }
+    ]
+  },
+  "noTimingCredit": true
+}

@@ -1,0 +1,18 @@
+{
+  "schedulerBodyByteExact150": true,
+  "onlyAddedPolicyHelperInDriver": true,
+  "ownerBodyByteExactExceptImportAndIntervalCallback": true,
+  "authorityPublicationLocalFlushBackoffWitnessCryptoNativeChecksUnchanged": true,
+  "unhealthyRepairMs": 5000,
+  "healthyRepairRangeMs": [
+    15000,
+    20000
+  ],
+  "noNewProtocolOrStorageShape": true,
+  "beforeEvidenceReused": [
+    "147withheld30sFailure",
+    "150nativeAcceptedEditProof",
+    "150realSchedulerNoMaintenanceControls"
+  ],
+  "oldTestsUnchanged": true
+}

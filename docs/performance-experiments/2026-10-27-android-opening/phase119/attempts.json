@@ -1,0 +1,10 @@
+{
+  "initialConsolePaste": "Blocked by Chrome self-XSS warning; user performed the required enable-paste action. No automated bypass.",
+  "macAutomationStall": "Opening TextEdit took595.45s after the first recording stopped. This idle/export delay is outside both provider-to-editor measurements. Initial Chrome launch also took93.23s before recording.",
+  "cpuProfile": "Console profile started/stopped and loaded a147.503s session, but no usable CPU-sample export was established. No flamegraph attribution claimed. Long-task facts come from PerformanceObserver.",
+  "publicSourceMap": "Adjacent public map404 retained as a failed fetch; all three public scripts subsequently match the retained release, maps taken from that exact artifact.",
+  "saveDestination": "First Go To folder batch did not reach requested directory; explicitly set/verified scratch folder before saving. No file saved to the unintended folder.",
+  "phoneOutcome": "Both captures stopped on editable CodeMirror DOM; user separately confirmed the editor usable on each run.",
+  "maintenance": "Still running in observed status and no baseline in final readonly metadata. No completion or post-baseline speedup claimed.",
+  "notifications": "HTTP2_PROTOCOL_ERROR/CONNECTION_ABORTED200 notification stream console errors observed after editing became available. Not timed or attributed as the pre-editor cause."
+}

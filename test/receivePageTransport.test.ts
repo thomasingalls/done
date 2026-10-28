@@ -303,3 +303,211 @@ it('only successful bounded binary aggregates select overflow work; malformed de
     expect(overflow).toHaveBeenCalledTimes(mode === 'declared' || mode === 'stream' ? 1 : 0);
   }
 });
+
+const publisherId = (n: number) => n.toString(16).padStart(32, '0');
+it.each([false, true])(
+  'keeps a large publisher fallback separate from a small publisher, small first=%s',
+  async (smallFirst) => {
+    const transport = createReceivePageTransport();
+    const large = io({
+      batch: vi.fn(async (_body, _stop, _limit, fallback) => fallback('aggregate-limit')),
+    });
+    const small = io();
+    if (smallFirst) await transport(requests(), signal(), small, () => true, publisherId(2));
+    expect(
+      (await transport(requests(), signal(), large, () => true, publisherId(1))).pages,
+    ).toEqual([bytes(11), bytes(12), bytes(13), bytes(14)]);
+    expect(
+      (await transport(requests(), signal(), small, () => true, publisherId(2))).pages,
+    ).toEqual([bytes(11), bytes(12), bytes(13), bytes(14)]);
+    await transport(requests(), signal(), large, () => true, publisherId(1));
+    expect(large.batch).toHaveBeenCalledTimes(1);
+    expect(large.read).toHaveBeenCalledTimes(8);
+    expect(small.batch).toHaveBeenCalledTimes(smallFirst ? 2 : 1);
+    expect(small.read).not.toHaveBeenCalled();
+  },
+);
+it('an absent endpoint disables every explicitly scoped publisher for this owner only', async () => {
+  const transport = createReceivePageTransport();
+  const missing = io({ batch: vi.fn(async (_body, _stop, _limit, fallback) => fallback()) });
+  await transport(requests(), signal(), missing, () => true, publisherId(1));
+  const other = io();
+  await transport(requests(), signal(), other, () => true, publisherId(2));
+  expect(other.batch).not.toHaveBeenCalled();
+  expect(other.read).toHaveBeenCalledTimes(4);
+  const fresh = io();
+  await createReceivePageTransport()(requests(), signal(), fresh, () => true, publisherId(2));
+  expect(fresh.batch).toHaveBeenCalledTimes(1);
+});
+it('keeps size-hint memory bounded by safe re-probing instead of downgrading an unrelated publisher', async () => {
+  const transport = createReceivePageTransport();
+  const large = io({
+    batch: vi.fn(async (_body, _stop, _limit, fallback) => fallback('aggregate-limit')),
+  });
+  for (let n = 1; n <= 129; n++)
+    await transport(requests(), signal(), large, () => true, publisherId(n));
+  expect(large.batch).toHaveBeenCalledTimes(129);
+  await transport(requests(), signal(), large, () => true, publisherId(129));
+  expect(large.batch).toHaveBeenCalledTimes(129);
+  await transport(requests(), signal(), large, () => true, publisherId(1));
+  expect(large.batch).toHaveBeenCalledTimes(130);
+  const small = io();
+  await transport(requests(), signal(), small, () => true, publisherId(130));
+  expect(small.batch).toHaveBeenCalledTimes(1);
+  expect(small.read).not.toHaveBeenCalled();
+});
+it.each([false, true])(
+  'a scoped size fallback drains before original individual work, aborted=%s',
+  async (aborted) => {
+    const transport = createReceivePageTransport();
+    const stop = new AbortController();
+    let release!: () => void;
+    const held = new Promise<void>((r) => {
+      release = r;
+    });
+    const api = io({
+      batch: vi.fn(async (_body, _signal, _limit, fallback) => {
+        await fallback('aggregate-limit');
+        await held;
+        return null;
+      }),
+    });
+    const input = requests();
+    const pending = transport(input, stop.signal, api, () => true, publisherId(1));
+    const outcome = pending.then(
+      (v) => ({ value: v }),
+      (error: unknown) => ({ error }),
+    );
+    await tick();
+    input.forEach((r) => r.fill(99));
+    expect(api.read).not.toHaveBeenCalled();
+    if (aborted) stop.abort();
+    release();
+    const result = await outcome;
+    if (aborted) {
+      expect('error' in result).toBe(true);
+      expect(api.read).not.toHaveBeenCalled();
+    } else {
+      expect(result).toEqual({
+        value: { pages: [bytes(11), bytes(12), bytes(13), bytes(14)], attempted: 4 },
+      });
+    }
+    const small = io();
+    await transport(requests(), signal(), small, () => true, publisherId(2));
+    expect(small.batch).toHaveBeenCalledTimes(1);
+    expect(small.read).not.toHaveBeenCalled();
+  },
+);
+it('a scoped fallback shares its original logical deadline', async () => {
+  const deadline = new AbortController();
+  const timeout = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal);
+  const api = io({
+    batch: vi.fn(async (_body, _stop, _limit, fallback) => {
+      await fallback('aggregate-limit');
+      deadline.abort();
+      return null;
+    }),
+  });
+  await expect(
+    createReceivePageTransport()(requests(), signal(), api, () => true, publisherId(1)),
+  ).rejects.toThrow();
+  expect(timeout).toHaveBeenCalledTimes(1);
+  expect(timeout).toHaveBeenCalledWith(PRIVATE_DELIVERY_TIMEOUT_MS);
+  expect(api.read).not.toHaveBeenCalled();
+});
+it('preserves the conservative byte-only fallback without an explicit publisher', async () => {
+  const transport = createReceivePageTransport();
+  const large = io({
+    batch: vi.fn(async (_body, _stop, _limit, fallback) => fallback('aggregate-limit')),
+  });
+  await transport(requests(), signal(), large, () => true);
+  const other = io();
+  await transport(requests(), signal(), other, () => true, publisherId(2));
+  expect(other.batch).not.toHaveBeenCalled();
+  expect(other.read).toHaveBeenCalledTimes(4);
+});
+it('rejects malformed explicit publisher identifiers before transport work', async () => {
+  const transport = createReceivePageTransport();
+  const api = io();
+  for (const id of ['', 'g'.repeat(32), 'a'.repeat(31), 'a'.repeat(33)])
+    await expect(transport(requests(), signal(), api, () => true, id)).rejects.toThrow();
+  expect(api.batch).not.toHaveBeenCalled();
+  expect(api.read).not.toHaveBeenCalled();
+});
+it.each(['refused', 'invalid', 'oversized'] as const)(
+  'a scoped %s reply cannot poison either publisher fallback state',
+  async (mode) => {
+    const transport = createReceivePageTransport();
+    const bad = io({
+      batch: vi.fn(async () =>
+        mode === 'refused'
+          ? null
+          : mode === 'invalid'
+            ? bytes(99)
+            : new Uint8Array(MAX_PENDING_BYTES + 1),
+      ),
+    });
+    if (mode === 'refused')
+      expect(await transport(requests(), signal(), bad, () => true, publisherId(1))).toEqual({
+        pages: [],
+        attempted: 1,
+      });
+    else
+      await expect(
+        transport(requests(), signal(), bad, () => true, publisherId(1)),
+      ).rejects.toThrow();
+    expect(bad.read).not.toHaveBeenCalled();
+    for (const id of [publisherId(1), publisherId(2)]) {
+      const good = io();
+      await transport(requests(), signal(), good, () => true, id);
+      expect(good.batch).toHaveBeenCalledTimes(1);
+      expect(good.read).not.toHaveBeenCalled();
+    }
+  },
+);
+it('actual HTTP overflow is publisher-scoped while a drained404 remains endpoint-scoped', async () => {
+  const pin = { origin: 'http://127.0.0.1:12345' } as AuthorityPin;
+  for (const mode of ['overflow', 'absent'] as const) {
+    const fetches = vi.fn(async () =>
+      mode === 'absent'
+        ? new Response('', { status: 404 })
+        : new Response('', {
+            headers: {
+              'Content-Type': 'application/octet-stream',
+              'Content-Length': String(MAX_PENDING_BYTES + 1),
+            },
+          }),
+    );
+    vi.stubGlobal('fetch', fetches);
+    const api = io({
+      batch: async (body, stop, limit, fallback) =>
+        privateDeliveryPost(
+          pin,
+          'A'.repeat(43),
+          'read-v2-batch',
+          body,
+          limit,
+          stop,
+          undefined,
+          false,
+          () => fallback(),
+          () => {
+            void fallback('aggregate-limit');
+          },
+        ),
+    });
+    const transport = createReceivePageTransport();
+    expect(
+      (await transport(requests(), signal(), api, () => true, publisherId(1))).pages.length,
+    ).toBe(4);
+    expect(fetches).toHaveBeenCalledTimes(1);
+    await transport(requests(), signal(), api, () => true, publisherId(1));
+    expect(fetches).toHaveBeenCalledTimes(1);
+    const small = io();
+    expect(
+      (await transport(requests(), signal(), small, () => true, publisherId(2))).pages.length,
+    ).toBe(4);
+    expect(small.batch).toHaveBeenCalledTimes(mode === 'overflow' ? 1 : 0);
+    expect(small.read).toHaveBeenCalledTimes(mode === 'absent' ? 4 : 0);
+  }
+});

@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "signedSource": "b6f0160a8fe7251407a3606cb653632f10885c81",
+  "allSignedImageInputsStillMatch": 1714,
+  "actualImageFrontendUnchangedAfterRehearsal": true,
+  "predecessorFrontendUnchangedAfterRehearsal": true,
+  "runtimeSourcesMatched": 122,
+  "onlyDeployedBackendSourceChanges": [
+    "account-service/backup/b2.ts",
+    "account-service/backup/cycle.ts"
+  ],
+  "predecessorBackendRollbackTested": false,
+  "freshImageCasesPassed": 38,
+  "freshNativeSourceCasesPassed": 7,
+  "freshContractLeafCommandsPassed": 40,
+  "freshMetadataCasesPassed": 175,
+  "reusedFullUnitEvidence": {
+    "path": "docs/performance-experiments/2026-10-28-envelope-projection/phase155/154-full-units.log.gz",
+    "passed": 2211,
+    "existingSkips": 1,
+    "scope": "Source-equivalent full host unit run; not claimed as new in-image execution"
+  },
+  "reusedPerformanceEvidence": {
+    "path": "docs/performance-experiments/2026-10-28-envelope-projection/phase156/README.md",
+    "sourceTree": "551991664565e96d336da66bd76171967246364c",
+    "actualClients": 2,
+    "fourFixedAfterCasesPassed": true,
+    "localP95RangeMs": [
+      9.188720703125,
+      9.685791015625
+    ],
+    "peerP95RangeMs": [
+      1752.817626953125,
+      2419.896484375
+    ],
+    "allMarkersBelow2500": true,
+    "limits": "Source-equivalent explicit build flags; observation probe omitted in release image; no new release-image performance run or Android claim"
+  },
+  "generalQualification": "paused;935obligations/389unresolved; no aggregate credit",
+  "phone": "operator deferred"
+}

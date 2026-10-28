@@ -22,6 +22,7 @@ const workNames = [
   'loads',
   'warmLoads',
   'baselineFullReplays',
+  'baselineExactReuses',
   'baselineWarmReuses',
   'baselineIncrementalReuses',
   'selectedLoads',
@@ -102,7 +103,10 @@ type WorkTiming =
   | 'admissionBackgroundFlush'
   | 'waitLocal'
   | 'waitRemote'
-  | 'waitFlush';
+  | 'waitFlush'
+  | 'startupPreflightCensus'
+  | 'startupRecheckCensus'
+  | 'startupCustodyAndLedger';
 const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
 /** Bounded numeric-only development counters. Names are internal literals, never input. */
 export const countLedgerWork = (name: keyof typeof work, count = 1) => {
@@ -160,13 +164,19 @@ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
 /** Fixed milestones for a single opening; numeric diagnostics never retain account identifiers. */
 const openMilestones: Partial<
   Record<
-    'authorized' | 'classified' | 'owner' | 'editor',
+    'started' | 'passkeyReturned' | 'authorized' | 'classified' | 'owner' | 'editor',
     {
       at: number;
       metrics: ReturnType<typeof accountLedgerMetrics>;
     }
   >
 > = {};
+export const beginAccountOpen = () => {
+  if (!ledgerProfiling) return;
+  for (const name of Object.keys(openMilestones) as (keyof typeof openMilestones)[])
+    delete openMilestones[name];
+  markAccountOpen('started');
+};
 export const markAccountOpen = (name: keyof typeof openMilestones) => {
   if (ledgerProfiling)
     openMilestones[name] = { at: performance.now(), metrics: accountLedgerMetrics() };

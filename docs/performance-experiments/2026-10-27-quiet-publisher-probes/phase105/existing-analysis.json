@@ -1,0 +1,1931 @@
+{
+  "status": "passed",
+  "measurementHome": "phase102 frozen eight journeys; source hashes retained",
+  "nativeHStreams": [
+    {
+      "credentialSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+      "positions": 1,
+      "finalLink": "2595f58e2b3b2e327ad85fcd21ed916e19b876d4e3ecaa4f803c518bfedef218"
+    },
+    {
+      "credentialSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+      "positions": 1,
+      "finalLink": "0d750f247c47bd12a8073acd0fbfe3ddbff0bc956e073784e4ca636edce9e4ac"
+    },
+    {
+      "credentialSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+      "positions": 1,
+      "finalLink": "7010743205980f3a9f704f584297fe67406e3f014e884dd5addfb3cfa084ea08"
+    },
+    {
+      "credentialSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+      "positions": 1,
+      "finalLink": "753b878bac0c838ca633ffef0d01cf6499b9a476cd5d39f6caa9d61302edd423"
+    },
+    {
+      "credentialSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+      "positions": 1,
+      "finalLink": "bc6c72efa352a9737043a3ac070d950fb173fd562c22135f70d5d37329e963bb"
+    },
+    {
+      "credentialSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+      "positions": 1029,
+      "finalLink": "816f43c1ad5e924fb5efd9987c5530a0af06060c4feb373936c7b4f79cc78be0"
+    }
+  ],
+  "journeys": [
+    {
+      "name": "heavy-1-R",
+      "variant": "R",
+      "workload": "heavy",
+      "windowDurationMs": 226270,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 382,
+            "p50": 734,
+            "p95": 1201,
+            "max": 5047
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 255,
+              "skippedHistoricalSuccessfulObservations": 2
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 170,
+              "skippedHistoricalSuccessfulObservations": 87
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 138,
+              "skippedHistoricalSuccessfulObservations": 119
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 39,
+              "skippedHistoricalSuccessfulObservations": 218
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 376,
+            "p50": 718,
+            "p95": 1239,
+            "max": 4424
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 255,
+              "skippedHistoricalSuccessfulObservations": 2
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 165,
+              "skippedHistoricalSuccessfulObservations": 92
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 137,
+              "skippedHistoricalSuccessfulObservations": 120
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 39,
+              "skippedHistoricalSuccessfulObservations": 218
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 374,
+            "p50": 698,
+            "p95": 1252,
+            "max": 3825
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 387,
+            "p50": 741,
+            "p95": 1253,
+            "max": 3225
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 254,
+              "skippedHistoricalSuccessfulObservations": 3
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 172,
+              "skippedHistoricalSuccessfulObservations": 85
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 137,
+              "skippedHistoricalSuccessfulObservations": 120
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 39,
+              "skippedHistoricalSuccessfulObservations": 218
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 382,
+            "p50": 711,
+            "p95": 1222,
+            "max": 2778
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 254,
+              "skippedHistoricalSuccessfulObservations": 3
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 157,
+              "skippedHistoricalSuccessfulObservations": 100
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 136,
+              "skippedHistoricalSuccessfulObservations": 121
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 39,
+              "skippedHistoricalSuccessfulObservations": 218
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 261,
+          "httpStatuses": {
+            "200": 261
+          },
+          "innerAttempts": 1028,
+          "cursorRange": [
+            5,
+            1029
+          ],
+          "repeatGapMs": {
+            "n": 260,
+            "min": 81,
+            "p50": 550,
+            "p95": 1018,
+            "max": 1354
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1028,
+      "unchangedRemote200s": 1028,
+      "unchangedRemote429s": 0,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "heavy-2-C",
+      "variant": "C",
+      "workload": "heavy",
+      "windowDurationMs": 197634,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 456,
+            "p50": 654,
+            "p95": 914,
+            "max": 4600
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 249,
+              "skippedHistoricalSuccessfulObservations": 8
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 145,
+              "skippedHistoricalSuccessfulObservations": 112
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 130,
+              "skippedHistoricalSuccessfulObservations": 127
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 34,
+              "skippedHistoricalSuccessfulObservations": 223
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 454,
+            "p50": 631,
+            "p95": 899,
+            "max": 4195
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 250,
+              "skippedHistoricalSuccessfulObservations": 7
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 145,
+              "skippedHistoricalSuccessfulObservations": 112
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 34,
+              "skippedHistoricalSuccessfulObservations": 223
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 35,
+          "httpStatuses": {
+            "200": 35
+          },
+          "innerAttempts": 35,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 34,
+            "min": 4665,
+            "p50": 5374,
+            "p95": 5780,
+            "max": 5842
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 477,
+            "p50": 641,
+            "p95": 900,
+            "max": 2872
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 254,
+              "skippedHistoricalSuccessfulObservations": 3
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 144,
+              "skippedHistoricalSuccessfulObservations": 113
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 34,
+              "skippedHistoricalSuccessfulObservations": 223
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 450,
+            "p50": 627,
+            "p95": 893,
+            "max": 2332
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 248,
+              "skippedHistoricalSuccessfulObservations": 9
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 141,
+              "skippedHistoricalSuccessfulObservations": 116
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 131,
+              "skippedHistoricalSuccessfulObservations": 126
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 34,
+              "skippedHistoricalSuccessfulObservations": 223
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 260,
+          "httpStatuses": {
+            "200": 260
+          },
+          "innerAttempts": 1027,
+          "cursorRange": [
+            5,
+            1028
+          ],
+          "repeatGapMs": {
+            "n": 259,
+            "min": 49,
+            "p50": 462,
+            "p95": 729,
+            "max": 864
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1028,
+      "unchangedRemote200s": 1028,
+      "unchangedRemote429s": 0,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "heavy-3-C",
+      "variant": "C",
+      "workload": "heavy",
+      "windowDurationMs": 190477,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 485,
+            "p50": 603,
+            "p95": 939,
+            "max": 3328
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 251,
+              "skippedHistoricalSuccessfulObservations": 6
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 150,
+              "skippedHistoricalSuccessfulObservations": 107
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 130,
+              "skippedHistoricalSuccessfulObservations": 127
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 33,
+              "skippedHistoricalSuccessfulObservations": 224
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 459,
+            "p50": 595,
+            "p95": 917,
+            "max": 2824
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 247,
+              "skippedHistoricalSuccessfulObservations": 10
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 149,
+              "skippedHistoricalSuccessfulObservations": 108
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 130,
+              "skippedHistoricalSuccessfulObservations": 127
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 33,
+              "skippedHistoricalSuccessfulObservations": 224
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 33,
+          "httpStatuses": {
+            "200": 33
+          },
+          "innerAttempts": 33,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 32,
+            "min": 5102,
+            "p50": 5352,
+            "p95": 5823,
+            "max": 5861
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 451,
+            "p50": 614,
+            "p95": 1015,
+            "max": 1564
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 256,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 250,
+              "skippedHistoricalSuccessfulObservations": 6
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 143,
+              "skippedHistoricalSuccessfulObservations": 113
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 124
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 33,
+              "skippedHistoricalSuccessfulObservations": 223
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 439,
+            "p50": 580,
+            "p95": 962,
+            "max": 1165
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 256,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 240,
+              "skippedHistoricalSuccessfulObservations": 16
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 141,
+              "skippedHistoricalSuccessfulObservations": 115
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 129,
+              "skippedHistoricalSuccessfulObservations": 127
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 33,
+              "skippedHistoricalSuccessfulObservations": 223
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 260,
+          "httpStatuses": {
+            "200": 260
+          },
+          "innerAttempts": 1029,
+          "cursorRange": [
+            5,
+            1028
+          ],
+          "repeatGapMs": {
+            "n": 259,
+            "min": 55,
+            "p50": 430,
+            "p95": 769,
+            "max": 880
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1026,
+      "unchangedRemote200s": 1026,
+      "unchangedRemote429s": 0,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "heavy-4-R",
+      "variant": "R",
+      "workload": "heavy",
+      "windowDurationMs": 210858,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 377,
+            "p50": 712,
+            "p95": 979,
+            "max": 3734
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 253,
+              "skippedHistoricalSuccessfulObservations": 4
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 155,
+              "skippedHistoricalSuccessfulObservations": 102
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 37,
+              "skippedHistoricalSuccessfulObservations": 220
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 382,
+            "p50": 693,
+            "p95": 979,
+            "max": 3212
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 253,
+              "skippedHistoricalSuccessfulObservations": 4
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 148,
+              "skippedHistoricalSuccessfulObservations": 109
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 37,
+              "skippedHistoricalSuccessfulObservations": 220
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 410,
+            "p50": 678,
+            "p95": 980,
+            "max": 2681
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 427,
+            "p50": 708,
+            "p95": 991,
+            "max": 1934
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 252,
+              "skippedHistoricalSuccessfulObservations": 5
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 155,
+              "skippedHistoricalSuccessfulObservations": 102
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 37,
+              "skippedHistoricalSuccessfulObservations": 220
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 419,
+            "p50": 683,
+            "p95": 981,
+            "max": 1451
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 257,
+              "skippedHistoricalSuccessfulObservations": 0
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 253,
+              "skippedHistoricalSuccessfulObservations": 4
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 152,
+              "skippedHistoricalSuccessfulObservations": 105
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 37,
+              "skippedHistoricalSuccessfulObservations": 220
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 258,
+          "httpStatuses": {
+            "200": 258
+          },
+          "innerAttempts": 1025,
+          "cursorRange": [
+            5,
+            1029
+          ],
+          "repeatGapMs": {
+            "n": 257,
+            "min": 223,
+            "p50": 525,
+            "p95": 810,
+            "max": 996
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1028,
+      "unchangedRemote200s": 1028,
+      "unchangedRemote429s": 0,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "nonoverlap-1-R",
+      "variant": "R",
+      "workload": "nonoverlap",
+      "windowDurationMs": 145304,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 226,
+            "p50": 342,
+            "p95": 1437,
+            "max": 1506
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 248,
+              "skippedHistoricalSuccessfulObservations": 8
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 138,
+              "skippedHistoricalSuccessfulObservations": 118
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 114,
+              "skippedHistoricalSuccessfulObservations": 142
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 88,
+              "skippedHistoricalSuccessfulObservations": 168
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 27,
+              "skippedHistoricalSuccessfulObservations": 229
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 256,
+            "429": 1
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 225,
+            "p50": 339,
+            "p95": 1436,
+            "max": 1508
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 245,
+              "skippedHistoricalSuccessfulObservations": 11
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 137,
+              "skippedHistoricalSuccessfulObservations": 119
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 114,
+              "skippedHistoricalSuccessfulObservations": 142
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 88,
+              "skippedHistoricalSuccessfulObservations": 168
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 27,
+              "skippedHistoricalSuccessfulObservations": 229
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 256,
+            "429": 1
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 223,
+            "p50": 341,
+            "p95": 1438,
+            "max": 1513
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 259,
+          "httpStatuses": {
+            "200": 256,
+            "429": 3
+          },
+          "innerAttempts": 259,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 224,
+            "p50": 340,
+            "p95": 1436,
+            "max": 1509
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 247,
+              "skippedHistoricalSuccessfulObservations": 9
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 138,
+              "skippedHistoricalSuccessfulObservations": 118
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 112,
+              "skippedHistoricalSuccessfulObservations": 144
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 89,
+              "skippedHistoricalSuccessfulObservations": 167
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 27,
+              "skippedHistoricalSuccessfulObservations": 229
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 258,
+          "httpStatuses": {
+            "200": 256,
+            "429": 2
+          },
+          "innerAttempts": 258,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 225,
+            "p50": 341,
+            "p95": 1435,
+            "max": 1511
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 247,
+              "skippedHistoricalSuccessfulObservations": 9
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 139,
+              "skippedHistoricalSuccessfulObservations": 117
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 111,
+              "skippedHistoricalSuccessfulObservations": 145
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 89,
+              "skippedHistoricalSuccessfulObservations": 167
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 26,
+              "skippedHistoricalSuccessfulObservations": 230
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 307,
+          "httpStatuses": {
+            "200": 257,
+            "429": 50
+          },
+          "innerAttempts": 1224,
+          "cursorRange": [
+            5,
+            1028
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 169,
+            "p50": 349,
+            "p95": 1388,
+            "max": 1429
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1030,
+      "unchangedRemote200s": 1024,
+      "unchangedRemote429s": 6,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "nonoverlap-2-C",
+      "variant": "C",
+      "workload": "nonoverlap",
+      "windowDurationMs": 130163,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 197,
+            "p50": 289,
+            "p95": 1386,
+            "max": 1522
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 218,
+              "skippedHistoricalSuccessfulObservations": 38
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 124
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 100,
+              "skippedHistoricalSuccessfulObservations": 156
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 80,
+              "skippedHistoricalSuccessfulObservations": 176
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 23,
+              "skippedHistoricalSuccessfulObservations": 233
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 258,
+          "httpStatuses": {
+            "200": 256,
+            "429": 2
+          },
+          "innerAttempts": 258,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 196,
+            "p50": 289,
+            "p95": 1383,
+            "max": 1520
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 219,
+              "skippedHistoricalSuccessfulObservations": 37
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 133,
+              "skippedHistoricalSuccessfulObservations": 123
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 100,
+              "skippedHistoricalSuccessfulObservations": 156
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 81,
+              "skippedHistoricalSuccessfulObservations": 175
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 23,
+              "skippedHistoricalSuccessfulObservations": 233
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 23,
+          "httpStatuses": {
+            "200": 23
+          },
+          "innerAttempts": 23,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 22,
+            "min": 5081,
+            "p50": 5276,
+            "p95": 6332,
+            "max": 6382
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 259,
+          "httpStatuses": {
+            "200": 256,
+            "429": 3
+          },
+          "innerAttempts": 259,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 200,
+            "p50": 285,
+            "p95": 1379,
+            "max": 1573
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 219,
+              "skippedHistoricalSuccessfulObservations": 37
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 131,
+              "skippedHistoricalSuccessfulObservations": 125
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 100,
+              "skippedHistoricalSuccessfulObservations": 156
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 81,
+              "skippedHistoricalSuccessfulObservations": 175
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 23,
+              "skippedHistoricalSuccessfulObservations": 233
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 261,
+          "httpStatuses": {
+            "200": 256,
+            "429": 5
+          },
+          "innerAttempts": 261,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 197,
+            "p50": 287,
+            "p95": 1365,
+            "max": 1558
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 220,
+              "skippedHistoricalSuccessfulObservations": 36
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 124
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 102,
+              "skippedHistoricalSuccessfulObservations": 154
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 82,
+              "skippedHistoricalSuccessfulObservations": 174
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 24,
+              "skippedHistoricalSuccessfulObservations": 232
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 300,
+          "httpStatuses": {
+            "200": 257,
+            "429": 43
+          },
+          "innerAttempts": 1196,
+          "cursorRange": [
+            5,
+            1028
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 162,
+            "p50": 290,
+            "p95": 1329,
+            "max": 1523
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1034,
+      "unchangedRemote200s": 1024,
+      "unchangedRemote429s": 10,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "nonoverlap-3-C",
+      "variant": "C",
+      "workload": "nonoverlap",
+      "windowDurationMs": 130667,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 199,
+            "p50": 299,
+            "p95": 1367,
+            "max": 1539
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 223,
+              "skippedHistoricalSuccessfulObservations": 33
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 133,
+              "skippedHistoricalSuccessfulObservations": 123
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 103,
+              "skippedHistoricalSuccessfulObservations": 153
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 83,
+              "skippedHistoricalSuccessfulObservations": 173
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 24,
+              "skippedHistoricalSuccessfulObservations": 232
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 201,
+            "p50": 299,
+            "p95": 1371,
+            "max": 1537
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 221,
+              "skippedHistoricalSuccessfulObservations": 35
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 132,
+              "skippedHistoricalSuccessfulObservations": 124
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 103,
+              "skippedHistoricalSuccessfulObservations": 153
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 82,
+              "skippedHistoricalSuccessfulObservations": 174
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 24,
+              "skippedHistoricalSuccessfulObservations": 232
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 24,
+          "httpStatuses": {
+            "200": 24
+          },
+          "innerAttempts": 24,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 23,
+            "min": 5089,
+            "p50": 5241,
+            "p95": 6141,
+            "max": 6366
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 256,
+          "httpStatuses": {
+            "200": 256
+          },
+          "innerAttempts": 256,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 194,
+            "p50": 295,
+            "p95": 1378,
+            "max": 1585
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 222,
+              "skippedHistoricalSuccessfulObservations": 34
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 133,
+              "skippedHistoricalSuccessfulObservations": 123
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 101,
+              "skippedHistoricalSuccessfulObservations": 155
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 82,
+              "skippedHistoricalSuccessfulObservations": 174
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 24,
+              "skippedHistoricalSuccessfulObservations": 232
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 261,
+          "httpStatuses": {
+            "200": 256,
+            "429": 5
+          },
+          "innerAttempts": 261,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 194,
+            "p50": 294,
+            "p95": 1378,
+            "max": 1574
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 226,
+              "skippedHistoricalSuccessfulObservations": 30
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 133,
+              "skippedHistoricalSuccessfulObservations": 123
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 100,
+              "skippedHistoricalSuccessfulObservations": 156
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 82,
+              "skippedHistoricalSuccessfulObservations": 174
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 24,
+              "skippedHistoricalSuccessfulObservations": 232
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 304,
+          "httpStatuses": {
+            "200": 257,
+            "429": 47
+          },
+          "innerAttempts": 1212,
+          "cursorRange": [
+            5,
+            1028
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 158,
+            "p50": 302,
+            "p95": 1348,
+            "max": 1452
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1029,
+      "unchangedRemote200s": 1024,
+      "unchangedRemote429s": 5,
+      "unchangedRemoteOtherOrMissing": 0
+    },
+    {
+      "name": "nonoverlap-4-R",
+      "variant": "R",
+      "workload": "nonoverlap",
+      "windowDurationMs": 144787,
+      "streams": [
+        {
+          "publisherSha256": "b4be5c22e016cdb4ab29ef03a7e36b6ddb5ba3d7e3b27b04b6b66d6b83b3859f",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 223,
+            "p50": 340,
+            "p95": 1436,
+            "max": 1491
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 246,
+              "skippedHistoricalSuccessfulObservations": 11
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 136,
+              "skippedHistoricalSuccessfulObservations": 121
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 112,
+              "skippedHistoricalSuccessfulObservations": 145
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 88,
+              "skippedHistoricalSuccessfulObservations": 169
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 26,
+              "skippedHistoricalSuccessfulObservations": 231
+            }
+          }
+        },
+        {
+          "publisherSha256": "929c68ceef823fb97f7ded43234baba5da5abbd0e68eb83c69c9108b227a0a98",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 257,
+          "httpStatuses": {
+            "200": 257
+          },
+          "innerAttempts": 257,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 222,
+            "p50": 339,
+            "p95": 1435,
+            "max": 1492
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 244,
+              "skippedHistoricalSuccessfulObservations": 13
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 137,
+              "skippedHistoricalSuccessfulObservations": 120
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 112,
+              "skippedHistoricalSuccessfulObservations": 145
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 89,
+              "skippedHistoricalSuccessfulObservations": 168
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 26,
+              "skippedHistoricalSuccessfulObservations": 231
+            }
+          }
+        },
+        {
+          "publisherSha256": "b66390148179736421c2e7d03a4d57455c52101f8f7df9d6e568be3e7dd66ee0",
+          "nativeAcceptedTip": 1,
+          "self": true,
+          "unchangedRemote": false,
+          "httpAttempts": 258,
+          "httpStatuses": {
+            "200": 256,
+            "429": 2
+          },
+          "innerAttempts": 258,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 220,
+            "p50": 340,
+            "p95": 1431,
+            "max": 1492
+          },
+          "fixedTimestampSensitivity": {}
+        },
+        {
+          "publisherSha256": "750917300ca1ab87f19b7e32a054519e49ffa1cb6a59c8dc53232308fd4982f3",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 260,
+          "httpStatuses": {
+            "200": 256,
+            "429": 4
+          },
+          "innerAttempts": 260,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 220,
+            "p50": 340,
+            "p95": 1431,
+            "max": 1494
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 245,
+              "skippedHistoricalSuccessfulObservations": 11
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 136,
+              "skippedHistoricalSuccessfulObservations": 120
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 110,
+              "skippedHistoricalSuccessfulObservations": 146
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 88,
+              "skippedHistoricalSuccessfulObservations": 168
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 26,
+              "skippedHistoricalSuccessfulObservations": 230
+            }
+          }
+        },
+        {
+          "publisherSha256": "8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411",
+          "nativeAcceptedTip": 1,
+          "self": false,
+          "unchangedRemote": true,
+          "httpAttempts": 259,
+          "httpStatuses": {
+            "200": 256,
+            "429": 3
+          },
+          "innerAttempts": 259,
+          "cursorRange": [
+            1,
+            1
+          ],
+          "repeatGapMs": {
+            "n": 255,
+            "min": 225,
+            "p50": 340,
+            "p95": 1442,
+            "max": 1493
+          },
+          "fixedTimestampSensitivity": {
+            "250": {
+              "retainedHistoricalSuccessfulObservations": 245,
+              "skippedHistoricalSuccessfulObservations": 11
+            },
+            "500": {
+              "retainedHistoricalSuccessfulObservations": 137,
+              "skippedHistoricalSuccessfulObservations": 119
+            },
+            "750": {
+              "retainedHistoricalSuccessfulObservations": 109,
+              "skippedHistoricalSuccessfulObservations": 147
+            },
+            "1000": {
+              "retainedHistoricalSuccessfulObservations": 89,
+              "skippedHistoricalSuccessfulObservations": 167
+            },
+            "5000": {
+              "retainedHistoricalSuccessfulObservations": 26,
+              "skippedHistoricalSuccessfulObservations": 230
+            }
+          }
+        },
+        {
+          "publisherSha256": "db71115fdb12a4300575a8d5370205b19f3521a9decac9b9b058b3c3a32f7621",
+          "nativeAcceptedTip": 1029,
+          "self": false,
+          "unchangedRemote": false,
+          "httpAttempts": 305,
+          "httpStatuses": {
+            "200": 257,
+            "429": 48
+          },
+          "innerAttempts": 1216,
+          "cursorRange": [
+            5,
+            1028
+          ],
+          "repeatGapMs": {
+            "n": 256,
+            "min": 166,
+            "p50": 348,
+            "p95": 1381,
+            "max": 1417
+          },
+          "fixedTimestampSensitivity": {}
+        }
+      ],
+      "unchangedRemoteHttpAttempts": 1033,
+      "unchangedRemote200s": 1026,
+      "unchangedRemote429s": 7,
+      "unchangedRemoteOtherOrMissing": 0
+    }
+  ],
+  "limitations": [
+    "HTTP200 is not an independent proof of empty-page signature verification. Stable authenticated native tips identify unchanged request targets.",
+    "Heavy rows timestamp request dispatch and headers; non-overlap rows timestamp responses only. Gap measures differ and are labeled.",
+    "Fixed-timestamp pruning sensitivity ignores changed wall time, verification completion and all hints; it predicts no saved time/native work.",
+    "No new candidate is run; no performance improvement or qualification credit."
+  ]
+}

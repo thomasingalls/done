@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "closedSchemaAndThreeNegativeControls": true,
+  "providerMs": 2462.4,
+  "postProviderToEditorMs": 6172.4,
+  "noVisibilityChangeDuringOpening": true,
+  "suffixReadPasses": 3,
+  "suffixRowsPerPass": 0,
+  "fullBaselineReadPasses": 3,
+  "chunksPerFullPass": 4,
+  "fullChunkRequestWindowMs": [
+    10.2,
+    10.2,
+    8.2
+  ],
+  "warmChunkProbesBeforeEditor": 3,
+  "majorLongTaskMs": [
+    1421,
+    1377,
+    1428
+  ],
+  "postProviderLongTaskOverlapMs": 5199.0,
+  "scope": "One observed reduced warm lock/unlock, not a population estimate, clean cold-start benchmark or function-level CPU attribution."
+}

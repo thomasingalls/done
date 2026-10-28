@@ -1,0 +1,13 @@
+{
+  "purpose": "inspect only detached copies of failed persistent profiles offline",
+  "sourceCase": "maintenance-3-C-withheld",
+  "profileOrder": [
+    2,
+    1
+  ],
+  "network": "offline throughout opening/export",
+  "freshStorageInjection": false,
+  "noTimedAcceptance": true,
+  "writingOrCredentialsReported": false,
+  "recordOnlyFollowupPresenceAndStatus": true
+}

@@ -1,0 +1,30 @@
+{
+  "same120KeyWindow": true,
+  "descriptiveNotPopulationOrCapacityInference": true,
+  "rows": [
+    {
+      "label": "before153",
+      "windowMs": 59533.835693359375,
+      "requests": 615,
+      "byDevice": {
+        "H1": 477,
+        "H2": 138
+      },
+      "httpRefusals": {
+        "429": 13
+      }
+    },
+    {
+      "label": "after156",
+      "windowMs": 59533.14892578125,
+      "requests": 622,
+      "byDevice": {
+        "H1": 483,
+        "H2": 139
+      },
+      "httpRefusals": {
+        "429": 16
+      }
+    }
+  ]
+}

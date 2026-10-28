@@ -1,4 +1,4 @@
-import { headingPathFrom, type DocumentHeading } from './breadcrumbs';
+import { type DocumentHeading } from './breadcrumbs';
 
 /** Same authored hierarchy as the full outline, including skipped heading levels. */
 export const childHeadings = (
@@ -15,12 +15,11 @@ export const childHeadings = (
   return result;
 };
 
+/** Each caret belongs to the word before it. Root lists H1s; leaves have no child menu items. */
 export const headingMenu = (
   headings: readonly DocumentHeading[],
-  heading: DocumentHeading,
-): { readonly siblings: boolean; readonly headings: readonly DocumentHeading[] } => {
-  const children = childHeadings(headings, heading.from);
-  if (children.length) return { siblings: false, headings: children };
-  const parent = headingPathFrom(headings, heading.from).at(-2)?.from ?? null;
-  return { siblings: true, headings: childHeadings(headings, parent) };
-};
+  heading: DocumentHeading | null,
+): { readonly siblings: false; readonly headings: readonly DocumentHeading[] } => ({
+  siblings: false,
+  headings: heading ? childHeadings(headings, heading.from) : headings.filter((h) => h.level === 1),
+});

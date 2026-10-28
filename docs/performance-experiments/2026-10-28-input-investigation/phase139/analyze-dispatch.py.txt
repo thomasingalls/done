@@ -1,0 +1,73 @@
+from pathlib import Path
+import json, math, sys
+s = Path(__file__).resolve().parents[1]
+case = json.loads(sys.argv[1]); out = s / case['name']; x = json.loads((out / 'result.json').read_text())
+assert x['outcome'] == 'passed', x.get('error')
+a = x['dispatch']; target = x['target']; offers = x['offers']; keys = [o for o in offers if o['kind'] == 'key']
+assert [o['index'] for o in keys] == list(range(120)); assert a['overflow'] == 0
+clocks = [v for group in x['clocks'] for v in (group['rows'][1] if case['app'] else group)]
+lo = max(v['renderer'] - v['after'] - 1 for v in clocks); hi = min(v['renderer'] - v['before'] + 1 for v in clocks); assert lo <= hi
+start = offers[0]['at']; end = offers[-1]['returnedAt']; window = (start + lo - 5, end + hi + 10)
+events = [e for e in a['events'] if e['kind'] == 'beforeinput' and e['target'] == target and window[0] <= e['at'] <= window[1]]
+assert len(events) == len(offers)
+assert all(e['trusted'] and e['focused'] and e['visible'] == 'visible' and e['active'] == target for e in events)
+monitors = [json.loads(p.read_text()) for p in sorted((out / 'node-monitors').glob('node-*.json'))]
+parents = [m for m in monitors if m['role'] == 'cli.js']; assert len(parents) == 1
+worker = x['driver']; assert worker and all(m['overflow'] == 0 for m in monitors)
+def stats(v):
+    v = sorted(v)
+    return {'n': len(v), 'p50': v[math.ceil(.5 * len(v)) - 1], 'p95': v[math.ceil(.95 * len(v)) - 1], 'max': v[-1]} if v else None
+def overlap(rows, begin, finish, field):
+    return max((r[field] for r in rows if r['previous'] <= finish and r['at'] >= begin), default=None)
+rows = []; n = 0
+if target == 'plain': assert len(a['plainRows']) == len(offers)
+for j, (offer, event) in enumerate(zip(offers, events)):
+    if offer['kind'] != 'key': continue
+    n += 1
+    kd = max((e for e in a['events'] if e['kind'] == 'keydown' and e['target'] == target and e['at'] <= event['at']), key=lambda e: e['at'])
+    assert kd['index'] == event['index'] - 1
+    dom = a['plainRows'][j]['at'] if target == 'plain' else min(v['at'] for v in x['probes'][1]['counts'] if v['count'] >= x['baselines'][1] + n and v['at'] >= offer['at'] - 5)
+    row = {'index': offer['index'], 'offerAt': offer['at'], 'beforeinputAt': event['at'], 'domAt': dom,
+           'offerToDomUpperMs': dom - offer['at'] - lo,
+           'offerToKeydownUpperMs': kd['at'] - offer['at'] - lo,
+           'keydownStampToHandlerMs': kd['at'] - kd['stampEpoch'],
+           'keydownToBeforeinputMs': event['at'] - kd['at'],
+           'beforeinputToDomMs': dom - event['at'],
+           'beforeinputToRafMs': event['rafAt'] - event['at'],
+           'keyboardRoundtripMs': offer['returnedAt'] - offer['at'],
+           'offerLatenessMs': offer['at'] - offer['scheduledAt'],
+           'rendererLateMs': overlap(a['beats'], offer['at'] + lo, event['at'], 'lateMs'),
+           'workerLateMs': overlap(worker['beats'], offer['at'], event['at'] - lo, 'lateMs'),
+           'parentLateMs': overlap(parents[0]['beats'], offer['at'], event['at'] - lo, 'lateMs')}
+    assert abs(row['offerToKeydownUpperMs'] + row['keydownToBeforeinputMs'] + row['beforeinputToDomMs'] - row['offerToDomUpperMs']) < .00001
+    assert row['beforeinputToDomMs'] >= 0 and event['rafAt'] > 0
+    rows.append(row)
+metrics = {k: stats([r[k] for r in rows if r[k] is not None]) for k in rows[0] if k.endswith('Ms')}
+report = {'case': case, 'kind': 'instrumented mechanism diagnostics, no acceptance credit', 'metrics': metrics, 'clockOffsetBounds': [lo, hi], 'rows': rows, 'longtasks': [t for t in a['longtasks'] if window[0] <= t['at'] <= window[1]], 'all120KeysTrustedFocusedVisible': True}
+if case['app']:
+    assert all(x['guards'].values()) and x['serviceAutomationPortPresent'] is False
+    assert x['maintenanceBeforeTyping']['status']['progress']['stage'] == 'verifying'
+    assert any(e.get('reason') == 'preparation-saved' for e in x['maintenanceBeforeTyping']['events'])
+    assert x['maintenanceAfter']['diagnostics']['completions'] >= 1
+    report['keysDuringBacklog'] = sum(o['at'] < x['catchups'][0]['completedAt'] for o in keys)
+    assert report['keysDuringBacklog'] >= 60
+    report['maintenanceAtTypingEnd'] = {k: x['maintenanceTypingWindowEnd'][k] for k in ['status', 'diagnostics']}
+    report['maintenanceAtTypingStart'] = {k: x['maintenanceBeforeTyping'][k] for k in ['status', 'diagnostics']}
+    report['backlogMs'] = x['catchups'][0]['completedAt'] - x['startedAt']
+    report['nativeOmitsNewEditorWriting'] = target == 'plain'
+    if target == 'editor':
+        peer_clocks = [v for group in x['clocks'] for v in group['rows'][0]]; peer_lo = max(v['renderer'] - v['after'] - 1 for v in peer_clocks)
+        vals = [min(v['at'] for v in x['probes'][0]['counts'] if v['count'] >= x['baselines'][0] + i and v['at'] >= o['at'] - 5) - o['at'] - peer_lo for i, o in enumerate(keys, 1)]
+        report['peerUpperMs'] = stats(vals)
+if case.get('fault'):
+    sensitivity = []
+    for fault in a['faults']:
+        r = rows[fault['index'] - 1]
+        gaps = [v['at'] - v['previous'] for v in a['beats'] if v['previous'] <= fault['end'] and v['at'] >= fault['at']]
+        checks = {'actualBusy80ms': fault['end'] - fault['at'] >= 80, 'dom70ms': r['beforeinputToDomMs'] >= 70, 'whole70ms': r['offerToDomUpperMs'] >= 70, 'raf70ms': r['beforeinputToRafMs'] >= 70, 'heartbeat70ms': bool(gaps) and max(gaps) >= 70, 'longtask70ms': any(t['at'] <= fault['at'] + 2 and t['at'] + t['ms'] >= fault['end'] - 2 and t['ms'] >= 70 for t in a['longtasks'])}
+        assert all(checks.values()), (fault, checks)
+        sensitivity.append({'index': fault['index'], 'checks': checks})
+    assert [v['index'] for v in sensitivity] == [30, 60, 90]
+    report['faultSensitivity'] = sensitivity
+(out / 'analysis.json').write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({k: v for k, v in report.items() if k not in ['rows', 'longtasks']}, indent=2))

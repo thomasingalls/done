@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "reference": {
+    "allMetadataValid": true,
+    "selfAttempts": 7,
+    "selfSuccessfulChecks": 7,
+    "hotCursorSeen": true
+  },
+  "candidate": {
+    "allMetadataValid": true,
+    "selfAttempts": 1,
+    "selfSuccessfulChecks": 1,
+    "hotCursorSeen": true
+  },
+  "actualAuthenticatedComposedReceiverWiringDemonstrated": true,
+  "pilotNotWholeLatencyCredit": true
+}

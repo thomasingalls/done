@@ -1,0 +1,9 @@
+# Phase144 — both-client comparison frozen before timing
+
+Reference142 tree e9e4081b versus repaired143 b3521aea; both rebuilt with identical local-auto1/resume1/service-auto0 and coordinated-2000. Immutable per-arm source files match Git in both directions. Exactly three runtime paths differ; both probes are identical. Established server/protocol bytes match the immutable ARM641CPU/1GiB/no-swap server fixture. Private synthetic fixtures/state are hash-bound outsideGit. No real phone/account data is used. The complete fixed protocol/order and hashed apparatus are included.
+
+The new analyzer reconstructs the retained passing original-workload case and rejects four controls: false marker, missing key, missing cold guard and invalid clock intersection. It checks required guard names and exact catchup populations, not just truthy values present in a report. This prospective plan adds no timing credit. Existing maintenance readiness now requires saved progress for both arms, because both use resumable preparation; old assertions and deadlines remain.
+
+Broad adapter attempt without local browser permissions fails18/289; retain it. The permitted serial rerun passes289/289 with no fixture/test/assertion changes. The initial patch freeze also refused text-log trailing whitespace; logs were compressed unchanged and the original temporary-index attempt is retained outsideGit. Phase143 remains implemented/unit-tested, awaiting actual-client timing/native results.
+
+Stop on first candidate absolute/paired gate or functional failure, preserve all completed/failed/unexecuted cases. No retries or concurrent workloads. Keep16ms local p95,2500ms peer p95 AND every marker, paired backlog10%, full120keys/3markers, original data/undo/cold/native/resource checks. No source flag activation, cleanup repair, computer use, commit/staging, release preparation or deployment.

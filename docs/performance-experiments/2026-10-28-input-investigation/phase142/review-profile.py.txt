@@ -1,0 +1,40 @@
+from pathlib import Path
+import json,hashlib,copy,collections,math
+s=Path(__file__).parent;p=json.loads((s/'profile-1-full-history/typing.cpuprofile.json').read_text());a=json.loads((s/'profile-analysis.json').read_text());x=json.loads((s/'profile-1-full-history/result.json').read_text());identity=json.loads((s/'profile-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();assert all(sha(s/f)==h for f,h in identity['apparatus'].items());assert all(sha(s/'source-C/dist'/f)==h for f,h in identity['client']['assets'].items());assert sha(Path(identity['sourceMapLibrary']['path']))==identity['sourceMapLibrary']['sha256']
+def totals(profile):
+ nodes={n['id']:n for n in profile['nodes']};assert len(nodes)==len(profile['nodes']);assert len(profile['samples'])==len(profile['timeDeltas']);parents={}
+ for n in profile['nodes']:
+  for c in n.get('children',[]):assert c not in parents;parents[c]=n['id']
+ idle=0;active=0;unique=collections.defaultdict(float)
+ for sample,delta in zip(profile['samples'],profile['timeDeltas']):
+  assert sample in nodes and delta>=0
+  if nodes[sample]['callFrame']['functionName']=='(idle)':idle+=delta;continue
+  active+=delta;seen=set();n=sample;visited=set()
+  while n is not None:
+   assert n not in visited;visited.add(n);f=nodes[n]['callFrame'];key=(f['functionName'],f['url'],f['lineNumber'],f['columnNumber'])
+   if key not in seen:unique[key]+=delta;seen.add(key)
+   n=parents.get(n)
+ return idle/1000,active/1000,unique
+idle,active,unique=totals(p);assert abs(idle-a['idleWeightedMs'])<.00001 and abs(active-a['nonIdleWeightedMs'])<.00001;assert abs(sum(r['selfWeightedMs']for r in a['allFunctions'])-active)<.00001
+bad=copy.deepcopy(p);bad['samples'][40]=987654321
+try:totals(bad);raise RuntimeError('unknown sample accepted')
+except AssertionError:pass
+bad=copy.deepcopy(p);bad['timeDeltas'].pop()
+try:totals(bad);raise RuntimeError('missing time weight accepted')
+except AssertionError:pass
+assert all(x['guards'].values());assert len([o for o in x['offers']if o['kind']=='key'])==120;assert len([o for o in x['offers']if o['kind']=='marker'])==3;assert len(x['probes'][1]['events'])==123 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in x['probes'][1]['events']);window=x['profileWindow'];assert window['before']['status']['phase']!='running'and window['after']['status']['phase']!='running';assert window['before']['diagnostics']['attempts']==window['after']['diagnostics']['attempts'];assert not any(e['phase']=='running'and window['before']['at']<=e['at']<=window['after']['at']for e in window['after']['events'])
+c=json.loads((s/'profile-1-full-history/container-identity.json').read_text());h=c['HostConfig'];assert c['Image']==identity['image']['Id'];assert[h[k]for k in ['NanoCpus','Memory','MemorySwap','PidsLimit','ReadonlyRootfs']]==[1000000000,1073741824,1073741824,128,True];assert all(int(line.split()[1])==0 for line in x['metrics']['cgroupAfter']['memory.events'].splitlines()if line.split()[0]in ['oom','oom_kill','max']);assert len(set(v['pid']for v in x['roots']))==2;assert all(sha(Path(v['executable']))==v['sha256']and v['workerSha256']==identity['client']['assets']['sw.js']for v in x['roots'])
+sourceTotals=collections.defaultdict(float)
+for r in a['allFunctions']:sourceTotals[r['source']]+=r['selfWeightedMs']
+# Independently match hot helper source-map contents against the exact repository bytes.
+mapPath=next((s/'source-C/dist/assets').glob('verifiedRecords-*.js.map'));m=json.loads(mapPath.read_text());matching=[]
+for name in ['verifiedRecords.ts','verificationOwnership.ts']:
+ i=next(i for i,v in enumerate(m['sources'])if v.endswith('/'+name));raw=m['sourcesContent'][i];assert raw==Path('src/crdt/'+name).read_text();matching.append({'source':name,'sourceMapContentEqualsRepository':True,'sha256':hashlib.sha256(raw.encode()).hexdigest()})
+examples=[]
+for n in p['nodes']:
+ f=n['callFrame']
+ if f['functionName']not in ['q','read','readIfMatches']or'/verifiedRecords-'not in f['url']:continue
+ from urllib.parse import urlparse
+ file=s/'source-C/dist'/urlparse(f['url']).path.lstrip('/');line=file.read_text().splitlines()[f['lineNumber']];snippet=line[max(0,f['columnNumber']-25):f['columnNumber']+300];examples.append({'function':f['functionName'],'assetSha256':sha(file),'line':f['lineNumber']+1,'column':f['columnNumber'],'snippet':snippet})
+assert any('readIfMatches' in v['snippet']for v in examples);assert any('structuredClone' in v['snippet']for v in examples);assert any('Uint32Array' in v['snippet']for v in examples)
+report={'status':'passed independent profile/data/source audit','completeSamplesAndSelfDenominator':True,'unknownSampleAndMissingWeightControlsRejected':True,'samePausedMaintenanceAttemptAcrossCapture':True,'full120InputDataUndoColdResourceWorkerGuards':True,'selfSourceAttribution':sorted([{'source':k,'weightedMs':v,'nonIdleFraction':v/active}for k,v in sourceTotals.items()],key=lambda r:r['weightedMs'],reverse=True),'sourceMapChecks':matching,'generatedHotHelperExamples':examples,'inclusiveCaution':'Original inclusive function aggregation may count recursive occurrences repeatedly. Do not add it; source-self totals have one attribution per sample. Unique raw-function inclusive weights are independently derived here.','uniqueInclusiveHotHelpers':[{'rawLocation':list(k),'weightedMs':v/1000}for k,v in sorted(unique.items(),key=lambda kv:kv[1],reverse=True)if'/verifiedRecords-'in k[1]][:20]};(s/'profile-independent-review.json').write_text(json.dumps(report,indent=2)+'\n');print('Complete sample/source/data audits pass; two malformed-profile controls rejected')

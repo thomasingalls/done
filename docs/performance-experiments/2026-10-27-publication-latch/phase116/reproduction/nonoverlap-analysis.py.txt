@@ -1,0 +1,7 @@
+from pathlib import Path
+import json
+r=Path(__file__).parent;rows=[]
+for case in json.loads((r/'nonoverlap-plan.json').read_text()):
+ x=json.loads((r/case['name']/'result.json').read_text());assert x['outcome']=='passed';assert x['noSimultaneousOpenSenders']and x['coldSameProfileOfflineExact']and x['noStorageReinjectionOnColdReopen'];a,b=x['transitions'];assert a['closedAt']<b['openedAt'];assert a['acceptedAfter']>a['acceptedBefore'];assert all(v['exactArchive']for v in [a,b]);assert a['confirmedAcceptedAt']<a['closedAt']
+ row={'name':case['name'],'variant':case['variant'],'backlogPositions':1024,'forwardCatchupMs':a['caughtUpAt']-a['reconnectAt'],'reverseFreshCatchupMs':b['caughtUpAt']-b['reconnectAt'],'forwardOfflineUnlockToEditMs':a['offlineUnlockToEditMs'],'reverseOfflineUnlockToEditMs':b['offlineUnlockToEditMs'],'sourceAlreadyAcceptedAndClosed':True,'reverseUploadAcceptedThenWriterClosed':True,'wholeArchivesExact':True,'offlineColdSameProfileExact':True,'workerHashes':[a['selectedWorkerSha256'],b['selectedWorkerSha256']]};rows.append(row)
+(r/'nonoverlap-analysis.json').write_text(json.dumps({'status':'passed','runs':rows,'scope':'No device-session overlap in either direction;1024 bulk backlog catch-up is reported separately from120-key heavy realtime2.5s gate.'},indent=2)+'\n');print(json.dumps(rows,indent=2))

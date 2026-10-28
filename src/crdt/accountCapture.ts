@@ -118,6 +118,8 @@ export async function openAccountCaptureOwner(
     if (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1' || hasBaselineVerifier())
       shadowActivity = {};
   };
+  // Queue arrival can interrupt read-only preparation, never a retained proof or final mutation.
+  let preparationActivity = {};
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
     extension ? extension.sourceRecords(records, route) : records;
@@ -298,7 +300,11 @@ export async function openAccountCaptureOwner(
   );
   options.networkLogin?.activate(live);
   let scheduleAudit = () => {};
-  const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
+  const run = <T>(
+    operation: (task: SessionTask) => Promise<T>,
+    preparation = false,
+  ): Promise<T> => {
+    if (!preparation) preparationActivity = {};
     const activity = finalApply.request();
     const previous = tail;
     const enqueued = ledgerWorkStart();
@@ -687,8 +693,10 @@ export async function openAccountCaptureOwner(
         checkJournal: () => void,
         checkRetained: () => void,
       ) => Promise<T>,
-    ) =>
-      run(async (parent) => {
+      preparation = false,
+    ) => {
+      const priority = preparationActivity;
+      return run(async (parent) => {
         if (
           extension?.version !== 9 ||
           (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1' &&
@@ -696,11 +704,17 @@ export async function openAccountCaptureOwner(
         )
           throw Error('Account baseline experiment is disabled');
         const activity = shadowActivity;
+        let preparing = true;
         // This guard belongs to the owner, not the expiring storage task. Only isolated,
         // read-only preparation evidence may retain it across task settlement.
         const check = () =>
           live.write(() => {
-            if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+            if (
+              suspended ||
+              activity !== shadowActivity ||
+              (preparing && preparation && priority !== preparationActivity)
+            )
+              throw new MaintenanceInterrupted();
           });
         const task: SessionTask = {
           signal: parent.signal,
@@ -724,9 +738,16 @@ export async function openAccountCaptureOwner(
               eraseJournalSnapshot(entries);
             }
           });
-        checkJournal();
-        return operation(task, owner!, route, checkJournal, check);
-      }),
+        try {
+          checkJournal();
+          return await operation(task, owner!, route, checkJournal, check);
+        } finally {
+          // Queue priority applies only to read-only preparation. A retained proof still checks
+          // input/lifecycle changes, and final mutation/readback must never be interrupted by reads.
+          preparing = false;
+        }
+      }, preparation);
+    },
     listCaptures: () =>
       run((task) =>
         withSnapshot(task, async (journal) => {

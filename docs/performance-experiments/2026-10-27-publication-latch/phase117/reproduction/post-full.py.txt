@@ -1,0 +1,24 @@
+from pathlib import Path
+import subprocess, json
+
+s = Path(__file__).parent
+node = '/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+steps = [
+    ('full-heavy-analysis', ['python3', str(s / 'analyze.py')]),
+    ('full-nonoverlap-analysis', ['python3', str(s / 'nonoverlap-analysis.py')]),
+    ('full-budget-analysis', ['python3', str(s / 'analyze-budget.py')]),
+    ('full-independent-review', ['python3', str(s / 'review-evidence.py')]),
+    ('full-fidelity', ['python3', str(s / 'fidelity.py')]),
+    ('full-native', [node, str(s / 'audit-native.mjs')]),
+    ('full-nonoverlap-native', [node, str(s / 'audit-nonoverlap.mjs')]),
+    ('full-frozen', ['python3', str(s / 'check-frozen.py')]),
+]
+rows = []
+for name, cmd in steps:
+    with (s / (name + '.log')).open('w') as f:
+        p = subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT)
+    rows.append({'name': name, 'command': cmd, 'exitCode': p.returncode})
+    (s / 'post-full-receipts.json').write_text(json.dumps(rows, indent=2) + '\n')
+    print(name, p.returncode, flush=True)
+    if p.returncode:
+        raise SystemExit(p.returncode)

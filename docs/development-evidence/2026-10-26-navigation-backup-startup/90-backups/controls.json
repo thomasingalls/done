@@ -1,0 +1,12 @@
+[
+  {
+    "control": "hourly-cadence",
+    "exit": 1,
+    "detectedBy": "uploads remain prompt"
+  },
+  {
+    "control": "quota-circuit",
+    "exit": 1,
+    "detectedBy": "quota refusal opens a circuit"
+  }
+]

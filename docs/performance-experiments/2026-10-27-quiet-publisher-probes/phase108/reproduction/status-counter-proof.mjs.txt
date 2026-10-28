@@ -1,0 +1,15 @@
+import { stripTypeScriptTypes } from 'node:module';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-quiet-publisher-probes-20261027',repo='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const source=readFileSync(repo+'/src/crdt/accountSyncDriver.ts','utf8');
+const slice=source.slice(source.indexOf('const clockDefault:'),source.indexOf('/** Private v9 outbound step'));
+const {createSyncScheduler}=await import('data:text/javascript;base64,'+Buffer.from(stripTypeScriptTypes(slice,{mode:'strip'})).toString('base64'));
+let gate='offline',now=1000,serial=0,sends=0;const timers=new Map();
+const s=createSyncScheduler({signal:new AbortController().signal,gate:()=>gate,detach(){},clock:{now:()=>now,set:(fn,delay)=>{const id=++serial;timers.set(id,{fn,at:now+delay});return id},clear:id=>timers.delete(id)},send:async()=>{sends++;return{kind:'idle',acceptedThrough:1}},receive:async()=>({kind:'idle',receivedThrough:0})});
+s.wake('start');assert.equal(s.runtime.status.send.acceptedThrough,0);assert.equal(sends,0);
+gate='ready';s.wake('online');for(let round=0;round<10&&sends===0;round++){for(let i=0;i<50;i++)await Promise.resolve();const next=[...timers.entries()].sort((a,b)=>a[1].at-b[1].at)[0];assert(next);timers.delete(next[0]);now=next[1].at;next[1].fn();for(let i=0;i<50;i++)await Promise.resolve();}
+assert.equal(sends,1);assert.equal(s.runtime.status.send.acceptedThrough,1);await s.dispose();
+const ui=readFileSync(repo+'/src/ui/SyncNotice.tsx','utf8');assert(ui.includes('`Accepted position: ${status.send.acceptedThrough}`'));
+writeFileSync(root+'/status-counter-proof.json',JSON.stringify({status:'passed',productionSchedulerSliceSha256:createHash('sha256').update(slice).digest('hex'),initialOfflineDisplay:0,controlledSendStatusReturnedByFirstRead:1,displayAfterFirstIdleRead:1,newWritingOrHttpRequired:false,interpretation:'The initial displayed0 is not a native or retained-local accepted-prefix census. Missing prior receipt/retry was not established by the fixture diagnostic.'},null,2)+'\n');

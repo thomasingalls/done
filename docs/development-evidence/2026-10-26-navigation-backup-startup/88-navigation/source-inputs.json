@@ -1,0 +1,14 @@
+{
+  "baseTree": "be4f9c7b51df980b3c8e0a0463cddb9ecd1d19a8",
+  "sha256": {
+    "src/ui/GoalsNavigation.tsx": "353321889f8cb453112932f6b9ba79d9eabb94fb482b15ea241c94e07fa9ea60",
+    "src/editor/headingNavigation.ts": "8e394eb446e961650ad7b808c3f6cf05b35f6cecd9629aee1a31cb103b2fa93f",
+    "src/styles/shell.css": "6db443b9b21e83d50424b368f601cbbc635e1416bad8761c41a2bbd418d103dc",
+    "test/headingNavigation.test.ts": "b02ad5e0811673e17b878812e9ab97fefbea122a53b784b43c8774ff06afd633",
+    "test/geometry/breadcrumbs.spec.ts": "f6016e24e1eff9d8e8f0acc8e399bfeb3726cea9a8fdee248ed37631671c8619",
+    "test/geometry/goals-navigation.spec.ts": "856a84ffacc422ba2249f941395762981ccfa56876c8a754db9fca0a09a7b4a9",
+    "ui-browser.log.gz": "75b5fa6287cb9964bbe0209d5df77f73c6e035e969357f0ddd9c8dab96b66a1c",
+    "ui2-browser.log.gz": "7d01141bdd378cdb9e18bdcd70cf391925c4df1565a67cb19f01ca959b32e7b7",
+    "ui3-browser.log.gz": "c0cad046d66ca5b6a72682752aab8c8904e1db1677977b3fa4938326b98c2281"
+  }
+}

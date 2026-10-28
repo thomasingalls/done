@@ -1,0 +1,30 @@
+[
+  {
+    "name": "late-1-R-normal",
+    "mode": "late",
+    "variant": "R",
+    "withhold": false,
+    "config": "late.config.ts"
+  },
+  {
+    "name": "late-2-C-normal",
+    "mode": "late",
+    "variant": "C",
+    "withhold": false,
+    "config": "late.config.ts"
+  },
+  {
+    "name": "late-3-C-withheld",
+    "mode": "late",
+    "variant": "C",
+    "withhold": true,
+    "config": "late.config.ts"
+  },
+  {
+    "name": "late-4-R-withheld",
+    "mode": "late",
+    "variant": "R",
+    "withhold": true,
+    "config": "late.config.ts"
+  }
+]

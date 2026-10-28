@@ -16291,3 +16291,925 @@ results, apparatus failures, identities, probes and reproduction material. Exist
 contract/adapter results are reused against equal inputs. Physical Android first-conversion testing
 is deferred by the operator; general qualification remains paused. This checkpoint prepares the
 application PR and later infrastructure handoff; nothing is published or deployed yet.
+
+
+## 2026-10-26 — Gentle context incremental view repair prepared (phase82)
+
+Implemented numeric interval mapping and omission of unchanged decoration effects. Eight new cases
+(including250 mixed edit steps) detect four predecessor failures;23 focused unit and16 existing
+browser cases pass, with TypeScript. New test population is explicitly registered, all363 unresolved
+qualification blockers retained. Timing comparisons remain qualified by heavy host load/incomplete
+arms and a final-text failure seen in both released/candidate probes; no native-phone or typing-budget
+closure. [Evidence and failures](./performance-experiments/2026-10-26-goals-context/README.md).
+Unsigned sequential patch only; no production or preview change. Next: read-only preparation priority,
+keeping final history exchange/readback under the existing exclusive fences. Backup cap unchanged.
+
+
+## 2026-10-26 — Queued storage preempts read-only retention preparation (phase83)
+
+Prepared a private queue-priority guard used only by read-only local-removal preparation. Three new
+native cases preserve no-reservation/storage identity on interruption and exclusive final readback.
+Predecessor fails both preparation cases. Initial full run19/21; two reopened-owner fixture races now
+start offline, retaining checks and subsequent sync. Five affected cases pass on rerun. Final fresh
+full-file/type/contract checks follow cumulatively. [Failure and success evidence](./performance-experiments/2026-10-26-maintenance-contention/phase83/README.md).
+No deployment/preview change; next is sync-readiness gating with a non-starving user-quiet clock.
+
+
+## 2026-10-26 — Maintenance start contention repaired in an unsigned candidate (phase84)
+
+Automatic starting now yields through active/unresolved sync lanes; a separate readiness refresh
+preserves user quiet and existing backoff/halt/cooldown. The real held-receive test fails on the old
+scheduler and first guard, passes after retry-gap repair, and then completes maintenance/cold reopen.
+Final affected native suites25/25 and existing context/breadcrumb browsers16/16 pass. Full unit run
+2,021 passes/one existing skip precedes the last retry-predicate tightening; that predicate has fresh
+native coverage. Broad adapters299/301 followed by109/109 affected metadata cases; failed attempts and
+census review retained. All363 qualification blockers remain. [Evidence and source limits](./performance-experiments/2026-10-26-maintenance-contention/phase84/README.md).
+Backup cap unchanged/readback blocked. Physical-phone typing, probe text mismatch and complete latency
+attribution remain open; no preview/production change. Final static receipts and patch identities next.
+
+
+## 2026-10-26 — Backup/performance repair sequence prepared, not deployed (phase85)
+
+Infra80–81 retain adoption/health observations and the confirmed B2 download cap. The operator keeps
+that cap unchanged; verification stays mandatory and backup readback remains unverified while refused.
+Application82–84 prepare incremental Gentle context, read-only storage priority and non-starving
+sync-readiness gating.85 preserves the exact final fixture pin/checkpoint.25 native and16 browser
+cases pass, plus46 final focused units; full unit2,021/one existing skip precedes only the final retry
+predicate (fresh native/focused coverage). Raw failures, limits and unchanged363 qualification blocks
+remain. [Sequence, evidence and remaining work](./performance-experiments/2026-10-26-maintenance-contention/checkpoint/README.md).
+Both real indexes remain unstaged; no signing, preview replacement, push, merge or deployment.
+Local technical-history maintenance is automatic; service-history pruning stays manual. Native phone
+smoothness, unexplained synthetic final-text mismatch and complete production latency attribution
+remain open. Fresh static/trace receipts follow this durable record; committing invalidates recency.
+
+
+## 2026-10-26 — Maintenance scope and backup cadence clarified (phase86)
+
+Recorded the operator's confirmed service-prune outcome and minute-long phone delay before editing.
+Local reduction also applies to synced Accounts; service pruning leaves signed metadata and the phone's
+existing ledger separate. Source confirms immediate/30s backup attempts, duplicate uploads after failed
+readback and5min idle-anchor rechecks. No new provider request, cap/policy change, startup attribution
+or performance promise. [Evidence and follow-ups](./development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
+Release preparation explicitly waits for a later operator instruction. Mobile drag repair follows87.
+
+
+## 2026-10-26 — Mobile reorder cancellation reproduced and repaired in development (phase87)
+
+Visible mobile grip,44px coarse target and stable sustained grip/body drags prepared. The new test
+shows native pointercancel in the predecessor's overflowing list. Full affected browser file16 passes/
+24 explicit platform NAs;20 focused existing unit cases, TypeScript/lint/format and35 metadata cases
+pass. All24 old browser identities and23 old dispositions remain; eight new authored cases add16
+project cases/eight desktop NAs. Runtime census changes only the Card source hash, all363 blocks kept.
+[Evidence and limitations](./development-evidence/2026-10-26-mobile-reorder/README.md).
+No physical-phone/iOS or scroll-latency claim, release preparation, commit, push, preview update or
+deployment. Release remains explicitly deferred; phone startup minute and backup retry/recheck policy
+are the separate open work recorded in86.
+
+## 2026-10-26 — Goals child menus and retained outline (phase88)
+
+Implemented root-word full outline, trailing child carets, persistent drill-down, empty leaves and
+shared control geometry.22 navigation browser cases and7 helper cases pass; preceding fixture failures
+remain recorded. [Evidence](development-evidence/2026-10-26-navigation-backup-startup/88-navigation/README.md).
+No release preparation or actual-phone performance conclusion follows from these development checks.
+
+## 2026-10-26 — Done-card contrast (phase89)
+
+Implemented per-card33%/100% interaction opacity. Eight desktop/mobile-emulation card cases pass,
+including unchanged geometry and guard checks. [Evidence](development-evidence/2026-10-26-navigation-backup-startup/89-done/README.md).
+Development only; release preparation remains on hold.
+
+## 2026-10-26 — Backup verification cadence and quota backoff (phase90)
+
+Implemented separate receipt/readback credit, hourly remote cycles, five-minute encrypted local checks,
+quota circuits and transient backoff. Plaintext cleanup, namespace/pin/exact-version/keeper checks and
+maintenance's immediate verification remain.22 backup/maintenance/restore cases and7 subsequent cadence/
+pipeline cases pass; two deliberate cadence/circuit faults are detected. Failed attempts remain recorded.
+[Evidence](development-evidence/2026-10-26-navigation-backup-startup/90-backups/README.md).
+The new cadence file receives no aggregate qualification credit pending adapter review. No deployment or
+cap change. The verified recovery point may lag writing by an hour under the operator's chosen policy.
+
+## 2026-10-26 — Post-passkey status and cancellation boundary (phase91)
+
+Fixed the stale passkey title after provider return; added opt-in startup phase/census/custody timing.
+Three held-provider/late-owner boundary regressions and four existing Local-factor/access tests pass;
+the14-case focused invocation includes7 heading cases. Back aborts/drains without deleting saved setup
+in the coordinator regression. [Evidence and diagnostic scope](development-evidence/2026-10-26-navigation-backup-startup/91-opening/README.md).
+The actual phone's minute remains unresolved; no fresh phone trace or startup speedup is claimed.
+New test-file qualification credit stays blocked pending adapter review. Release preparation remains held.
+
+## 2026-10-26 — Navigation/backup/opening development checkpoint (phase92)
+
+Phases88–91 are prepared as sequential unsigned patches, with91-v2 retaining the original artifact and
+adding a line-only construction pin repair after independent derivation comparison.30 UI,14 unit,
+22 backup/maintenance/restore and93 metadata cases pass; controlled cadence/backoff faults are detected.
+All363 old release blocks and34 old pipeline assertions remain; two new regression files add unresolved
+adapter obligations, not qualification credit. [Checkpoint](development-evidence/2026-10-26-navigation-backup-startup/README.md).
+The phone minute remains open pending numeric slow-path attribution. Release preparation stays held;
+no preview restart, production/infra change, signing, push or deployment is authorized by this checkpoint.
+
+## 2026-10-27 — Preview UX update and receive-copy diagnostic (phase93)
+
+Updated only preview8443's application gateway to unsigned92 (67288576-dirty); HTTPS worker bytes,
+public config and fresh disposable-profile breadcrumb/Done behavior pass. Retained API identity/data
+remain unchanged. The same frozen UI build stays available while performance work continues.
+
+A fixed12-block synthetic receiver-copy probe selects the still-present whole-inbound projection as
+next bounded work: at1024/2048 positions per publisher, full projection medians19.665/44.565ms versus
+narrow hints near timer resolution. All shapes agree and retained bytes disappear from the prototype
+projection. Shallow drift/quantization are qualified. [Evidence](performance-experiments/2026-10-27-receive-projection/phase93/README.md).
+No end-to-end/phone speedup, changed latency gate, release preparation or deployment is claimed.
+
+## 2026-10-27 — Receiver cursor/status copy repair (phase94)
+
+Project metadata before detached cloning for requests/status, reusing the verified owner and original
+publisher resolver. Full retained evidence/authority/lifetime/commit paths remain unchanged.30 unit
+cases pass;79 distinct affected native cases pass across appropriate configs (initial broad run75pass/
+1profiling-mode failure/3conditional skips retained; each is exercised separately). Both new receiver
+cases pass; old source fails the intended projection case and retains conflict behavior. All903 old
+files under test/ remain byte-exact. [Evidence](performance-experiments/2026-10-27-receive-projection/phase94/README.md).
+The actual helper's fixed synthetic comparison confirms the copy mechanism; no whole catch-up/phone
+latency improvement or2.5s-gate acceptance is claimed. Two new files remain blocked from aggregate
+qualification. Preview stays on92 UX, and release preparation remains held.
+
+## 2026-10-27 — Receiver projection development checkpoint (phase95)
+
+Three additional unchanged reduced-baseline cases pass, covering old/fresh signed read flights,
+undo, absolute positions and cold replay. Across proper configs82 distinct affected native cases
+pass, alongside30 unit,93 metadata and13 normal checks; no stitched single-run/full-suite claim.
+All903 old test/helper files, construction contracts and365 old qualification blocks remain; two new
+files retain separate blocked adapters. Restored an incidental equivalent JSON Unicode escape to
+original UTF8 and retained the independent exact-byte review. [Checkpoint](performance-experiments/2026-10-27-receive-projection/phase95/README.md).
+Prepared sequential93–95 without staging/signing. Preview remains frozen92 UX; whole-client catch-up
+latency and actual phone-opening attribution remain unestablished. No production/release change.
+
+## 2026-10-27 — Rebuilt-client comparison frozen (phase96)
+
+Rebuild both reference93 and candidate95 clients (110 files each), sharing identical current server,
+compiler/dependencies/feature policy and resource envelope. Both pass types/build/budget/isolation;
+separate lab types pass. Regenerate disposable H6/M2/Q2 accounts with1024/256/32 accepted backlog
+positions and independently audit signatures/prefixes. A restoration-only pilot verifies all ten
+saved devices/four browser roots and exact quiet-account exports. Preserve setup/type/localStorage-order
+preflight failures; keyed comparison retains all values/IndexedDB assertions. [Protocol and identities](performance-experiments/2026-10-27-whole-client-catchup/phase96/README.md).
+Freeze serial R,C,C,R heavy/editing and non-overlap journeys, original16ms/2.5s/30s/600s/120s gates and
+all durability/isolation/authority checks. No timing acceptance yet, real data access, app repair,
+qualification credit or release preparation. Existing preview/API/data remain untouched.
+
+## 2026-10-27 — Whole-client catch-up comparison (phase97)
+
+All eight fixed rebuilt-client journeys pass: four unequal-device/history catch-up/editing runs and
+four non-overlapping sessions in both directions. Original16ms local/2.5s complete peer/30s delivery/
+600s replay/120s continuation stay unchanged. Candidate peer p95.746–.767s, local5.0–5.5ms; reference
+peer.711–.761s/local4.4–4.8ms. Candidate maximum contended replay220–223s and non-overlap1024-position
+replay145s are essentially reference. **No whole-client speedup established.** Keep the higher local
+observations visible and do not infer phone or population effects from two journeys per arm/workload.
+
+Exact exports, sealed-record prefixes, pending offline same-profile cold reopen without reinjection,
+automatic convergence, reverse writes, undo/redo, isolation and independent native signatures/prefixes
+all pass. Delayed/missing peer observations, a false cold-record guard and a tampered envelope nonce
+are detected by the relevant independent gates/auditor. All905 existing test/helper files and29373
+mounted source/script/doc files match95;13 ordinary checks pass and all912 obligations/367 unresolved
+blocks remain. [Evidence and limits](performance-experiments/2026-10-27-whole-client-catchup/phase97/README.md).
+
+The old large Goals seed requested~13k but exported5000 before invitation. The actual fixture is
+verified and identical across arms; retain the shortfall/setup-readiness limitation, not a13k claim.
+A small metadata review overlaps late C2 replay; no build/test suite overlaps measurement. Roughly
+1540 read requests for one1024-position receiver make scheduling/application verification the next
+bounded trace candidate, without causal attribution from counts alone.96/97 stay sequential unsigned
+patches; preview remains92 UX. No old tests/runtime changed, release preparation or deployment.
+
+## 2026-10-27 — Read scheduling attribution (phase98)
+
+Reuse97's unchanged client/service/fixture for one observed non-overlap journey. All1024 missing
+positions arrive exactly once; five unchanged publishers each return257 empty pages. Classify1542
+successful forward HTTP replies and49 native capacity refusals. Read-cycle spans partition145.089s:
+60.131s after empty replies,33.978s after productive replies,49.460s after refusals,1.520s initial.
+These are associated intervals, not causal savings. Main-thread samples retain byte checks, selection/
+copying and scoped-control cursor work; native/storage/worker wait is not fully decomposed.
+
+The observer's Buffer alias bug is caught by transparency checks before the real journey; final5
+cases pass and failed source/log remain. The strict all-publisher metadata goal is qualified:10 early
+refusals have no publisher metadata; all successful frames/HTTP statuses are accounted for. Keep
+that limitation and after-dispatch identity-receipt timing. Independent signatures/prefixes/seed
+rows, exact exports, reverse accepted writing, sender-closed ordering and offline cold-profile checks
+pass. [Diagnostic](performance-experiments/2026-10-27-receive-scheduling/phase98/README.md).
+No runtime/old-test/policy change or latency acceptance claim;97's original gates remain. No release prep.
+
+## 2026-10-27 — Read scheduling source falsifiers/checkpoint (phase99)
+
+Type-erase the actual production selector and sync scheduler for diagnostic replay. Publisher order
+alone changes fresh self-check reuse:256 own checks before1024-position delivery with own between
+empty peers, versus one immediately after productive work. The real trace includes a final idle
+sweep,257 checks; retain the model's initial off-by-one expectation failure. The unchanged scheduler
+replays49 intermittent unknowns as49 separate1000ms waits, preserving failure backoff against remote
+hints. Real work-budget code still charges every inner read and atomically handles failed top-up.
+
+31 unchanged selection/scheduler and22 unchanged budget/HTTP tests pass. Initial sandbox budget run
+passes14/blocks8 before assertions; all22 pass with loopback access and both logs remain. Every905
+old test/helper file, runtime input and110 client assets remain exact. Prior bulk-reader negative
+adoption evidence remains authoritative; new stack samples do not enable it. [Counterexamples and
+next repair contract](performance-experiments/2026-10-27-receive-scheduling/phase99/README.md).
+
+Select publisher-order-independent self-read suppression as the next small repair, using only fresh
+retained peer backlog hints and existing verified-own/pending-self/clock/reset fences. Other peer
+turns, authority checks, rates and original latency gates must remain; broader peer deferral needs
+separate liveness design. No software/policy change, aggregate test credit, release preparation or
+deployment.98/99 are prepared sequential diagnostic patches after97; all912/367 obligations/blocks stay.
+
+## 2026-10-27 — Publisher-order-independent self-read suppression (phase100)
+
+Supply fresh eligible/unconflicted retained peer backlog to the existing verified-self selector.
+Preserve pending-self/clock/credential/reset fences and all non-self turns, page/proof/authority/
+commit checks and limits. Six new cases fail3/pass13 with old code; repaired45-case focused run
+passes with eight appended regressions and870 publisher permutations. All10 old selector bodies
+remain byte-exact.24 distinct affected native cases pass over required configurations; final-source
+self-refusal cases pass again after the conservative own-conflict hint guard.81 metadata cases and
+types pass; registry exactly unchanged and all912 obligations/367 blocks remain. [Repair/evidence](performance-experiments/2026-10-27-self-read-order/phase100/README.md).
+No end-to-end gain yet: rebuild both clients and rerun the original gated journeys next. Sequential
+unsigned100 after99; no release preparation, signing, push, preview change or deployment.
+
+## 2026-10-27 — Rebuilt self-read-order comparison frozen (phase101)
+
+Rebuild full99 reference/100 candidate: types/build/budget/origin pass,110 artifacts each. Reference
+matches97's prior C artifact exactly. Same fixed server/image/fixture, real ten-device restoration
+pilot and byte-safe hashed read observer pass. Actual composed-owner prefix probe gives7 reference
+own attempts versus1 candidate, with successful first checks in both; no latency credit from pilots.
+Retain a scratch unused-binding type failure and final clean types. [Inputs/protocol](performance-experiments/2026-10-27-self-read-order/phase101/README.md).
+Freeze R,C,C,R heavy/editing and non-overlap, every original16ms/2.5s/30s/600s/120s and preservation gate,
+plus own-attempt/replay-regression checks. No primary results yet. Unsigned101 after100; no release prep.
+
+## 2026-10-27 — Self-read repair whole-client acceptance (phase102)
+
+All eight frozen heavy/editing and non-overlap journeys pass every original latency/preservation
+gate. Actual H1 self-attempt median257→34.5 (−86.6%). Maximum competing replay median218.564→196.850s
+(−9.9%, paired direction consistent, reference drift6.8%); non-overlap145.046→130.415s (−10.1%,
+reference drift0.36%). Complete candidate peer p95 is0.732–0.757s against the unchanged2.5s gate.
+These are two local journeys per arm/workload, not phone/WAN/population claims. Preserve the actual
+5000/4157/1049-character fixture limitation and every observed attempt/status.
+
+Independent native envelope/wrapper/head signatures, ciphertext/prefix/seed identities, full exports,
+original/pending continuation, same-profile offline cold reopens, reverse edits, undo/redo and
+isolation pass. All frozen inputs/resources match.13 normal checks and81 metadata cases pass after
+one reviewed authority-map source-coordinate repin712→716; failed first checks and a refused
+incorrect713 preparation are retained. No construction status/contract/block changes;912/367 stays.
+[Full result and scope audit](performance-experiments/2026-10-27-self-read-order/phase102/README.md).
+
+The scoped audit finds one additional conservative performance coupling: one publisher's successful
+aggregate overflow disables batching across the owner. Distinguish it from correctly endpoint-wide
+404 fallback in the next bounded patch. No runtime change after100's measurement freeze, signing,
+push, release preparation, preview/API restart or deployment. Unsigned sequential102 after101.
+
+## 2026-10-27 — Publisher-specific aggregate-size fallback (phase103)
+
+Two ordering falsifiers fail before repair: A's oversized aggregate disables B's small batching.
+Separate payload-size memory by the immutable captured publisher, retaining endpoint-wide404 and
+conservative unscoped fallback.128 fixed-size scheduling IDs bound memory; eviction safely re-probes.
+13 appended regressions pass with every old transport body/assertion exact.53 focused unit cases,
+17 unchanged encrypted browser cases,81 metadata cases, types/lint/format pass. Original receipts,
+byte/deadline/drain/abort/retry/commit/security checks and912/367 qualification obligations remain.
+[Repair, scope and limitations](performance-experiments/2026-10-27-self-read-order/phase103/README.md).
+
+No extra whole-client gain is claimed:100's eight-journey comparison is a different immutable tree.
+Run normal checks and build the complete103 snapshot next. Sequential unsigned103 after102; no
+signing, push, preview update, release preparation or deployment.
+
+## 2026-10-27 — Final local source/build checkpoint (phase104)
+
+The full103 snapshot passes types/build/budget/origin and yields110 hashed client files. All1640
+runtime/test/helper/dependency files match both checkout and build export.13 ordinary source checks
+pass;103's53 focused unit,17 native encrypted browser and81 metadata cases remain the affected
+functional evidence. All old tests/assertions and912 obligations/367 blocks remain; no aggregate
+qualification resumption. Ordered100–103 replay matches every hash/tree and current file with the
+real index empty. Final104 replay is an external sidecar, avoiding a self-hashing record.
+[Build/checkpoint](performance-experiments/2026-10-27-self-read-order/phase104/README.md).
+
+Self-read repair improves this small local engineering comparison; do not extend it to phone/WAN
+or credit the separate large-payload repair with unmeasured gains. Unsigned sequential100–104 are
+prepared for later staging/signing. No commit/push, preview/API restart, release prep or deployment.
+
+## 2026-10-27 — Unchanged remote-publisher probe investigation (phase105)
+
+Reuse all eight102 journeys and independently audited native tips. Candidate H1 repeats1026–1028
+unchanged remote200s during heavy catch-up and1024 in each non-overlap forward window. Four remote
+cursors stay1. Distinguish failures/inner predictions and the two timestamp instruments; fixed-time
+pruning sensitivity predicts no saved time. Exact production-selector replay reproduces256 visits
+to each quiet remote per1024 hot entries. Eleven design-sketch cases reject5s/sliding/notification-
+only/clear-only shortcuts and demonstrate candidate fixed expiry/generation fences without runtime
+implementation. Mixed-publisher batches need broader outstanding-request/group-commit ownership.
+[Diagnostic/protocol](performance-experiments/2026-10-27-quiet-publisher-probes/phase105/README.md).
+
+Freeze two narrow current-build late-peer journeys (normal/withheld wake frames) before dispatch.
+Thirteen observer cases, final harness types and39 unchanged unit cases pass; preserve initial
+missing-declaration/unused-binding type errors and the first command's18-case-only test selection.
+All runtime/old tests/912 obligations/367 blocks unchanged; qualification paused. Unsigned105 after104;
+no signing, push, preview update, release preparation or deployment.
+
+## 2026-10-27 — Aborted late-peer diagnostic and verified fixture correction (phase106)
+
+The first normal primary fails its localBefore+1 guard at0→2; withheld case remains unrun. Preserve
+the failed primary, not a passing pilot. Independent native signatures/prefixes show seed H2 already
+accepted1, all seed rows exact, exactly one new H2 position2 and M/Q unchanged. Bind final equality
+to that independently verified target seed tip+1, retaining the old local-progress guard and all data
+checks. Include initial client/service acceptance mismatch in the measured-workload limitation.
+[Failure, audit and corrected prospective pair](performance-experiments/2026-10-27-quiet-publisher-probes/phase106/README.md).
+
+Harness types and all1640 source/export identities per R/C pass. Freeze corrected normal/withheld
+pair before dispatch; no runtime/old test/gate/security/912-367 qualification change. Unsigned106
+after105. No signing, push, preview update, release prep or deployment.
+
+## 2026-10-27 — Marker-aware replay wait and interrupted-probe preservation (phase107)
+
+The corrected normal diagnostic waits for a contiguous original substring that the intentionally
+concurrent marker can split. Interrupt at7.3m, preserving exit130/interrupted report/missing result
+and giving no timing/primary credit. A separate offline cold reopening of the same saved H1 profile
+proves full original archive plus exactly one marker; deleting an original character fails. Native
+audit retains all old signatures/prefixes/rows, exactly one expected new position2, unchanged M/Q
+and DB/WAL identities. [Diagnosis and corrected frozen inputs](performance-experiments/2026-10-27-quiet-publisher-probes/phase107/README.md).
+
+Remove only the known marker in the poll predicate, retaining exact full export and every original
+check/deadline; add partial-result checkpoints. Types pass; freeze guarded normal/withheld pair
+before dispatch. No product/old-test/912-367 qualification change or timing-driven repeat. Unsigned
+107 after106; no signing, push, preview update, release preparation or deployment.
+
+## 2026-10-27 — Guarded late-peer discovery observations and next boundary (phase108)
+
+Both guarded current-build journeys finish. Host dispatch→peer clock bounds1081.8–1085.1ms normal,
+877.5–880.5ms with one content wake genuinely withheld; each has one initial ready and complete
+archive/native-prefix/cold same-profile guards. One new expected position2 per run, every old proof
+byte exact and M/Q unchanged. These are two early-baseline observations, not a p95, capacity bound
+or notification-performance comparison. H2 receives no remote pages; reconnect/grant work is included.
+[All outcomes, failures and limits](performance-experiments/2026-10-27-quiet-publisher-probes/phase108/README.md).
+
+Actual scheduler source corrects106's interpretation: its display starts0 independently of durable
+acceptance. Missing prior receipt/retry was not established. All failed records remain.39 unchanged
+unit/13 observer cases and13 ordinary checks pass;1640 runtime/test/helper/dependency files and all
+qualification documents stay exact to104,912 obligations/367 blocks unchanged. Recommend750ms fixed
+remote rechecks during known backlog with target/generation/wake/clock fences, preserving self/idle/
+backoff/security checks and requiring original full gates plus late-peer contention before adoption.
+Unsigned108 after107; no runtime optimization, signing, push, preview update, release prep or deployment.
+
+## 2026-10-27 — Quiet-publisher budget implementation and race sensitivity (phase109)
+
+Implement fixed750ms per-target verified-empty scheduling reuse in composed receiving, bounded128,
+with fresh cursor/frontier/baseline/context checks, sparse certified cursor resolution, one-use attempt
+generation and wake/reset fences. Existing self/idle/four-page/backoff and all verification/commit
+boundaries stay. Both before-repair failures retained; all18 old selector bodies byte exact.67 unit,
+61 distinct encrypted native cases across conditional modes,81 metadata cases, types/lint and source
+bookkeeping pass. Held pre-hint empty reply cannot hide a new genuine page; omitting the generation
+fence demonstrably hides it until clock release. Diagnostic has no timing credit.
+[Evidence/limits](performance-experiments/2026-10-27-quiet-budget/phase109/README.md).
+
+Performance adoption pending the frozen whole-client and late-writer comparisons. Qualification
+912/367 unchanged and paused; unsigned109 after108. No preview update, release prep or deployment.
+
+## 2026-10-27 — Freeze quiet-budget comparison before dispatch (phase110)
+
+Rebuild both complete108/109 clients under identical flags/metadata; reference artifact byte-matches
+103/runtime through108. Freeze source/image/artifact/fixture/apparatus identities, original eight
+journeys and four same-account late-writer cases before dispatch. Retain2.5s and all original gates;
+new lost-hint cases enable both receivers. [Inputs/limitations](performance-experiments/2026-10-27-quiet-budget/phase110/README.md).
+No result/adoption claim yet. Unsigned110 after109; qualification paused, no release prep or deployment.
+
+## 2026-10-27 — Quiet budget improves throughput but fails stronger peer-latency gate (phase111)
+
+All original eight journeys pass, with median replay gains16.8% heavy/38.8% nonoverlap and quiet
+request reductions38.5%/75.0%. New two-receiver120-key candidate p95s2532.0/2739.1ms fail the unchanged
+2.5s gate; reference withheld2581.8ms also fails. Preserve all observations and do not promote. All
+markers/data/independent native signatures/prefixes, seed-byte, cold-profile and isolation/resource
+guards pass. Independent raw reconstruction rejects false/missing gate credit; corrected post-parser
+field assumption/fidelity incident retained with no experiment rerun.13 fresh ordinary checks pass.
+[Complete results/limits](performance-experiments/2026-10-27-quiet-budget/phase111/README.md).
+
+Next bounded state is to retain implementation/evidence with optional quiet budget disabled, then
+separate recent-writer discovery from publication pacing. Unsigned111 after110;912/367 qualification
+paused. No release prep or deployment.
+
+## 2026-10-27 — Hold optional quiet budget after failed peer gate (phase112)
+
+Restore the composed owner's original default selector, retaining experimental750ms implementation
+and every111 failure.68 unit cases,3 affected encrypted default cases,81 metadata, types/lint and13
+fresh ordinary checks pass;18 old selector bodies byte-exact. Actual composed promotion-guard probe
+fails active109 with9 quiet requests and passes held default with28, one own check each. Rebuilt
+held artifact/source identities retained; no new timing credit or claim to repair reference pacing.
+[Current hold and next boundary](performance-experiments/2026-10-27-quiet-budget/phase112/README.md).
+Unsigned112 after111;912/367 qualification paused. No release prep, preview update or deployment.
+
+## 2026-10-27 — Sign/push prepared82–112 and establish pacing attribution (phase113)
+
+All31 application patches are committed in order, independently SSH-verified and pushed on
+`codex/reduce-goals-context-overhead` at1ee9c351, exact prepared112 tree and clean checkout. Infra80–81
+excluded.112 keeps quiet reuse disabled. [Signed mapping and attribution protocol](performance-experiments/2026-10-27-peer-pacing/phase113/README.md).
+
+Reuse four original111 journeys/all480 keys with native-count/cursor/clock bounds and13 synthetic
+calibration controls. Pinned scheduler/window/budget mechanism probes are not application timings
+or authority proof; no new benchmark, runtime/test policy change or aggregate credit. Unsigned113
+after signed112;912/367 qualification paused. No release prep, PR, merge, preview update or deployment.
+
+## 2026-10-27 — Attribute late-peer tails to publication and capacity pauses (phase114)
+
+All480 retained keys match reviewed111 totals;448 have one position,32 bounded grouped alternatives,
+all33 keys over2.5s uniquely map. Independent312-position/timing/omission reconstruction and13 helper
+controls pass. C-normal p95 key spends2268–2272ms pre-submit; C-withheld p95 key waits1598–1613ms from
+availability to read. All136 native errors identify capacity; H1's~1s post429 no-read intervals overlap
+6/7 normal and12/13 withheld candidate tail keys. No new benchmark or claimed causal repair effect.
+
+Pinned scheduler counterexamples publish first at300ms control versus2000/2100ms under controlled
+receive/prelude overlap; no real internal-cost estimate. Next repair: preserve a due publication
+window in the publication scheduler, keeping shared local flush and failed-operation clocks intact;
+then address proactive capacity pacing if needed. [Full evidence/limits](performance-experiments/2026-10-27-peer-pacing/phase114/README.md).
+Unsigned114 after113; runtime/old tests/default held/2.5s and912/367 qualification unchanged. No
+release prep, preview update or deployment.
+
+## 2026-10-27 — Publication-only expiry latch and regressions (phase115)
+
+Close an existing overdue publication window before later local notes; retain the original helper/
+local flushing, persisted retries and every security/durability/backoff boundary.83 focused cases
+pass; all8 old batching cases/helpers byte-exact. One-statement omission restores5 expiry failures.
+Fixed scheduler histories now300/500/550ms versus300/2000/2100, without client timing credit.61
+encrypted cases across required modes,81 metadata, types/lint pass. New-fixture getter/type/dirty-
+send mistakes and failed model invocation remain qualified.
+[Implementation/evidence](performance-experiments/2026-10-27-publication-latch/phase115/README.md).
+
+Next freeze/rerun both rebuilt two-receiver clients; full2.5s and data/gain gates remain. Product
+quiet reuse held off;912/367 qualification paused. Unsigned115 after114, no release prep/deployment.
+
+## 2026-10-27 — Freeze rebuilt publication-latch comparison (phase116)
+
+Complete R114 and C115+isolated750ms enablement exports rebuilt; all Git blobs and1653 runtime/test/
+dependency files checked. Exact corrected late harness, fixed four journeys, native resource/fixture/
+artifact/worker identities and all original2.5s/data gates frozen before dispatch. Conditional
+original-eight comparison required before activation; no timing-driven repeat.
+[Inputs and scope](performance-experiments/2026-10-27-publication-latch/phase116/README.md).
+Product reuse held off; results pending. Unsigned116 after115; qualification paused, no release prep.
+
+## 2026-10-27 — Publication latch clears the two-receiver blocker (phase117)
+
+All12 fixed journeys pass with unchanged gates, complete input series, native signatures/prefixes,
+seed byte identity, same-profile cold reopen and pending continuation. Candidate two-receiver peer
+p95 upper bounds2047.5/2367.2ms normal/withheld; local8.1/9.0ms. Heavy/non-overlap median replay
+gains30.18%/38.48%, exceeding reference drift with both paired directions agreeing; quiet requests
+fall48.44%/75.22%. Maxima still exceed some p95 thresholds; no universal latency claim.
+[Raw journeys, audits and limitations](performance-experiments/2026-10-27-publication-latch/phase117/README.md).
+The experimental combined candidate clears acceptance; actual owner remains disabled until separate
+activation/checks. No release artifact or Android/provider qualification;912/367 remains paused.
+Unsigned117 after116, real index empty; no preview, production, commit or push change.
+
+## 2026-10-27 — Activate the accepted guarded receive budget (phase118)
+
+Composed owner now matches the C constructor accepted in117; all other owners/factory defaults stay.
+Full Vitest174 files/2082 pass/1 existing skip,67 distinct native cases across required modes and152
+metadata cases pass. Types, changed-file lint/format, build/budget/isolation pass.1653 source inputs
+compared; executable/worker artifacts byte-exact to measured C. One map embeds updated comments;
+its initial all-file equality failure and final exact-field diagnosis retained. Broad optional lint
+still fails in three archived files byte-exact to signed HEAD; scoped lint passes, no broad pass claim.
+[Activation, full checks and limitations](performance-experiments/2026-10-27-publication-latch/phase118/README.md).
+Original2.5s and all security/durability gates retained. Ready to begin signed-source/artifact release
+preparation, not a completed release or blanket qualification.912/367 remains paused; no preview or
+production change. Unsigned118 follows117; real index empty, no commit/push/deploy.
+
+Phase118 normal-check follow-up: the initial loop refuses two stale runtime-census uses after owner
+activation; trace is not attempted. Explicit reviewed --record changes only accountReceive.ts hash,
+retaining every other entry/classification and obligation. Initial logs remain in118; rerun all normal
+gates on stable inputs rather than waiving the check.
+
+## 2026-10-27 — Signed113–118 and actual Android opening attribution (phase119)
+
+All six requested patches signed sequentially and independently signature/tree verified, ending
+3ae02848 with the exact118 tree and clean checkout before this new evidence. No push or publication.
+
+Actual protected production Pixel9a account: provider-to-editor71923.7ms, then76158.9ms with CPU
+sampling/per-crypto observers removed. Three identical-size native read passes each61 content,4618
+heads,6318 outbound rows. Long main-thread tasks dominate; first run counts28980 decrypts/28909
+verifications. Public script/map identities and signed-source mapping locate the full-store reader.
+Temporary startup recovery followed by live-owner initialization explains a concrete repeated-work
+boundary, without claiming per-function CPU attribution or removing either security boundary.
+
+Later readonly metadata stillv2/no local baseline; maintenance UI remains checking during observed
+visible periods. No local-reduction completion/post-baseline improvement observed. All observations,
+probe controls, source identities, macOS export stall/unusable CPU-profile attempt and limits are
+[retained here](performance-experiments/2026-10-27-android-opening/phase119/README.md). Probes restored
+and removed, debugger detached; no writing, codes, keys or account/database identifiers retained.
+Next diagnose/complete local reduction and scope safe reuse/cooperative yielding at startup, with
+fresh authority/counter/witness/lifetime checks. No product repair, old-test edit, candidate phone
+speedup, deployment or qualification claim. New evidence-only119 remains an unsigned patch.
+
+Phase119 final arithmetic review: the lighter run has10997 rows per pass (61+4618+6318),32991
+returned rows total. The first run instead reports33045 aggregate rows; live storage changed between
+opens. Correct a copied11015 doc total, preserve both raw reports and the superseded119 artifact,
+and make no between-run matched-workload or instrumentation-overhead estimate.
+
+
+## 2026-10-27 — reduced Android opening confirmed (phase120)
+
+The production Pixel9a account now has v5 baseline revision1 (989,284 bytes), zero suffix rows,
+and a later light lock/unlock reaches editing6,172.4ms after provider return. Three full baseline
+reads remain, each followed by a large main-thread task; native chunk windows are8.2–10.2ms.
+This supports repeated processing as the next target without attributing CPU from read stacks.
+The six public scripts/maps match signed dc53fecf; numeric/schema/probe-restoration controls pass.
+Same-owner proof reuse and startup/live-owner handoff remain separate, with fresh security and
+lifecycle checks required. Real profile unchanged, probe removed and debugger detached. Evidence
+and limits: [phase120](performance-experiments/2026-10-27-android-opening/phase120/README.md).
+No runtime repair, old-test edit, signing, push, release prep or deployment; qualification paused.
+
+
+## 2026-10-27 — first local reduction call shape traced (phase121)
+
+A disposable real-service/Chromium/IndexedDB fixture converts57 v2 rows to a v5 baseline, keeps
+exact writing, and reopens offline. Entry observations confirm two full-history replays and four
+baseline replays during first conversion, plus three full baseline validations at reduced reopen.
+The seven core files match production dc53fecf;241 bundle inputs are pinned. The1/1 diagnostic
+passes after retained compiler-API and sandbox-listen apparatus failures. Phase121 distinguishes
+intended independent comparisons from opportunities to reuse an immutable completed proof. The
+phone's original maintenance attempt count/phase timings remain unmeasured; no exact cause or
+speedup is claimed. Next order: same-owner reuse, explicit cross-owner handoff, then first-conversion
+reuse, retaining fresh snapshot/authority/lifecycle/commit and independent candidate/readback checks.
+[Evidence and limits](performance-experiments/2026-10-27-android-opening/phase121/README.md). No
+runtime/old-test edits, signing, push, release prep or deployment; qualification remains paused.
+
+
+## 2026-10-27 — same-owner baseline proof reuse (phase122)
+
+Original/joined startup explicitly opt into exact v5 proof reuse within one recovery owner. Full
+native row/chunk reads, fresh MAC/authority checks, invalidation, callback validation and detached
+results remain; distinct capabilities/reference/warm-audit/cold-owner paths keep full replay. The
+new discriminators fail on the predecessor. Ten new regressions plus affected suites pass95 cases;
+type/lint pass. Final disposable native opening performs2 full replays instead of3 while retaining
+all3 native snapshots, writing and offline reopening. No phone timing claim or computer use.
+The reviewed inventory preserves existing blocks and adds the required uncredited file:913/368;
+86 metadata cases pass. [Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase122/README.md).
+No signing, push, release preparation or deployment; general qualification remains paused.
+
+Phase122 final-review addendum: require the retained view to remain identical across reuse awaits.
+A new late-disposal regression brings new cases to11 and affected cases to96, all passing. Final
+native work counts, types/format and normal diagnostic build pass after this guard. The earlier
+21 native failure cases remain evidence for the version immediately before this guard.
+
+
+## 2026-10-27 — first-conversion full verification shared (phase123)
+
+A paired internal builder owns/captures input, verifies full history once and returns its independent
+compact candidate plus reference. Exact survivor/reference comparison and all final proof/transaction
+checks remain. The predecessor count discriminator fails; a second control catches and repairs
+misclassification of reference failures as candidate skips. Six new cases plus affected suites pass96
+cases; type/lint/build pass. The native diagnostic confirms full replay2→1 while all4 candidate/
+installed baseline replays remain, preserving writing and offline reopen. No phone timing inference.
+The reviewed graph retains all prior obligations and adds one uncredited required file:914/369.
+[Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase123/README.md). No old
+test edits, signing, push, release preparation or deployment; qualification remains paused.
+
+Phase123 bookkeeping addendum: authority checking catches four shifted source-site line pins in
+the planner. Independent joins preserve every site, label, contract and disposition; only four
+line fields change. All12 registry controls pass, with914/369 obligations/blocks unchanged.
+
+
+## 2026-10-27 — local maintenance stage/count and restart reporting (phase124)
+
+The actual automatic owner reports guarded numeric progress into a stable sidebar indicator and
+bounded lifetime-local diagnostics. Coalescing, stage/completion provenance, observer isolation and
+late/closed guards preserve scheduling and all storage/verification outcomes. Eight new unit cases
+plus existing affected suites pass70 cases; real native automatic reduction passes1/1, retaining
+writing, undo/redo and cold/offline reopen. Type/lint/build pass after a retained malformed-payload
+test-cast error. No old tests edited; graph916/371 adds two uncredited required files and preserves
+all earlier blocks. [Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase124/README.md).
+Progress is volatile and not a cross-lock continuation proof. No computer use, signing, push,
+release preparation or deployment; general qualification remains paused.
+
+
+## 2026-10-27 — resumable preparation contract (phase125)
+
+Source review confirms v5 couples the verified cut and later chunk allocation; partial retirement
+cannot be enabled by loosening that equality. The [design](account-local-retention-resumption-design.md)
+selects preparation-only encrypted verifier checkpoints first, then a reader-first fixed-cut format,
+retaining originals, fresh authority and exact independent final checks. Explicit implementation
+falsifiers cover crash/lock, appended versus changed prefix, source obligations, nonce reservations,
+compatibility and performance. It is a design, not durable resumability or a phone time bound.
+[Source evidence](performance-experiments/2026-10-27-maintenance-continuation/phase125/README.md).
+No runtime/old-test change, signing, push, release preparation or deployment; qualification paused.
+
+
+## 2026-10-27 — default-off automatic service-history policy (phase126)
+
+Scoped composed owners can schedule the existing history commands behind a separate experimental
+flag. Quiet/readiness/one-flight, event-driven inspection, saved-attempt reconciliation, independent
+peer admission and two-unchanged-snapshot pruning remain; waiting/stale work is not auto-discarded.
+New regressions catch missing growth-hint gating and custody invalidation; growth remains scheduling
+only. Sixteen policy cases, two effective fault controls and both real scoped/native walkthroughs
+pass. Full units pass178 files (2123 passed,1 existing skip);63 history and35 metadata cases pass.
+Type/lint/format/build pass. Failed apparatus, wiring, fixture/type/lint attempts are retained in
+[phase126](performance-experiments/2026-10-27-maintenance-continuation/phase126/README.md). No old
+test edited. Inventory918/373 retains earlier blocks and adds two uncredited required files. Heavy
+preparation/storage-tail contention and the offline-peer local-retirement pin still block activation.
+No phone/computer use, signing, push, preview/release preparation or deployment; qualification paused.
+
+
+## 2026-10-28 — exact-input preparation receipt model (phase127)
+
+A closed binary result grammar and verifier-owned journal retain completed individual checks; only
+authenticated opaque deltas can seed a fresh journal. Scope/input/role mutation, bare pass bits,
+failed/late callbacks, invalidation, disposal and malformed encodings refuse.13 model cases and12
+registry controls pass; two injected faults are independently caught. Type/lint pass after retained
+initial type errors. The registry fixture adds only the new open obligation (14→15); specified78
+and all prior security assertions remain. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase127/README.md).
+No native persistence, app wiring, history cut or service automation is enabled; qualification and
+release preparation remain paused. No computer use, signing, push or deployment.
+
+## 2026-10-28 — Phase128: encrypted resumable-preparation storage
+
+Implemented exact native-prefix/context binding, append-only encrypted auxiliary checkpoints, burned allocation on failure, strict native exchange/readback, sealed task handoff and credential-free removal cleanup. 49 directed cases and4 actual Chromium interruption/reopen cases pass; typecheck passes. Initial apparatus failures retained. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase128/README.md). Application wiring and composed/performance proof remain next. Service automation off;2.5s gate unchanged. No release work.
+
+## 2026-10-28 — Phase129: first-reference receipt adapters
+
+Added optional exact-input receipts to physical opening and the first full reference, including pending-aware coverage bound to original content basis. Final independent replay is unchanged. 22 directed cases pass, including fresh-owner sliced mixed own/peer/history equivalence and completeness/ciphertext refusals. Types pass. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase129/README.md). Runtime scheduling next; service automation off and2.5s gate unchanged.
+
+## 2026-10-28 — Phase130: owned durable preparation and continuation
+
+Application preparation now persists encrypted exact-input receipts through a one-use sealed handoff, reauthenticated under fresh serialized ownership before nonce allocation. Original rows and independent final cut/readback remain. Cold resume, appended writing, undo, interrupted writes and cleanup are exercised. Full187-file Vitest2176pass/1existing skip;32 directed and27 distinct native cases across explicit modes pass. The automatic native test exposed self-reset quiet clocks: two60s failures remain; changing admission status to readiness refresh yields23 useful attempts and completion within the same deadline. Input/accepted writing retain quiet reset. [Evidence and limits](performance-experiments/2026-10-28-resumable-preparation/phase130/README.md). New resume opt-in defaults off pending unchanged2.5s heavy-contention acceptance; service automation off, no phone/computer use or release preparation.
+
+## 2026-10-28 — Phase131: consistent inventory byte-budget representation
+
+Read-only and recording now measure their actual canonical saved snapshot against the same unchanged700000-byte limit. Full independent input/disposition agreement remains.13 focused/inherited tests pass, including oversized and drifted fault controls with unchanged repo bytes. Every prior test record survives; one new uncredited test adds931/385 blocked obligations. Initial failures retained. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase131/README.md). No runtime, crypto or gate change and no release preparation.
+
+## 2026-10-28 — Phase132: release scope and resumable build switches
+
+Read public frontend version dc53fecf and reconciled its recorded source with the whole cumulative branch (42signed commits plus13pending patches). Docker now forwards default-off resume/service switches; checked build definitions validate dependencies and keep service off independently.15 directed cases and types pass; original missing-argument failure and fixture errors retained. [Scope and evidence](performance-experiments/2026-10-28-resumable-acceptance/phase132/README.md). Resume activation contingent on unchanged2.5s gate. Operator defers phone test; no signing/publish/deploy.
+
+## 2026-10-28 — Phase133: freeze resumable preparation acceptance
+
+Both full132 client exports and numeric-only observation probe, source/worker inputs, eight ordered whole journeys and unchanged gates are frozen before dispatch. Fixture-only real catch-up produces a1616-row joined writer under native v2; candidate pilot confirms actual production-threshold preparation plus durable checkpoint. These are apparatus results, not acceptance. [Protocol and inputs](performance-experiments/2026-10-28-resumable-acceptance/phase133/README.md). Phone deferred by operator; source default/activation/service automation unchanged, no release publication.
+
+## 2026-10-28 — Phase134: retain failed typing acceptance, preserve successful data/peer results
+
+R/Cnormal new maintenance workloads complete all120keys/3markers, whole data/undo/cold and independent native proof/resource guards. Peer p95 1749.6/1874.2ms passes; local19.3/20.4ms fails unchanged16. Candidate backlog105638ms versus106835ms, ratio0.9888 passes nonregression. All120keys overlap backlog; C saves and later completes. Stop on C failure as frozen; six remaining cases unexecuted. [Evidence, controls and limits](performance-experiments/2026-10-28-resumable-acceptance/phase134/README.md). Retained-timestamp attribution locates tails before beforeinput (handler→DOM p950.7ms both), without identifying driver versus browser/page scheduling. Three complete save cycles2.76–2.90s are not2s whole-operation proof. Defaults/activation held; phone deferred, no signing/deploy.
+
+
+## 2026-10-28 — Phase135: local checks and focused preparation review
+
+Full188-file Vitest2181pass/1existing skip,40 contract/vector leaves,175 adapter cases, types,
+51-file affected lint, focused format, diagnostic build and13 ordinary checks pass. The initial
+adapter run preserves one stale14-open expectation; the repair expects15, names the new open
+construction and retains every assertion/refusal. Independent graph/manifest comparison changes
+only that source hash and inventory digest;932/386blocked and78specified/15open remain. Actual
+root opening/export with valid or deliberately corrupted unfinished cache succeeds; online
+continuation succeeds in the documented isolated cases. Failed chooser, offline-retry and lab
+shutdown-timer attempts remain in [phase135](performance-experiments/2026-10-28-resumable-acceptance/phase135/README.md).
+Focused receipt/authority/allocation/cut/removal/activation review finds no validated security
+defect; it does not close the construction or general qualification. Phase134's16ms typing failure
+still blocks activation; six frozen cases remain unexecuted. Phone explicitly deferred, new resume
+and service automation default off. No signing, push, preview, registry or deployment work.
+
+
+Phase135 receipt addendum: the final trace recheck correctly rejects six receipts after the durable
+outcome changes their tree. Retain that failure and refresh ordinary executions against the final
+record before freezing the patch; no gate or receipt rule is changed.
+
+
+## 2026-10-28 — Phase136: freeze original-workload input investigation
+
+Current production paths equal132; measured C and older117 C asset bytes are independently exact.
+Freeze two current original-workload journeys, plus an old pair only if local16ms misses. Analyzer
+reconstructs both accepted117 bounds and rejects four controls; setup identity-shape error retained.
+[Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase136/README.md). No timing
+yet, no runtime/old-test/default/gate change. Phase134 failures and six unexecuted cases remain;
+phone deferred, service off, no signing/push/publication. Next bounded native/editor diagnostics
+will depend on these results. General qualification remains paused.
+
+
+## 2026-10-28 — Phase137: retain and repair missing lab serializer input
+
+First136 execution stops before any browser/timed work: omitted pinned Playwright serializer text
+raises ENOENT. Copy its exact133 bytes, extend the closed manifest, freeze new baseline-repair-*
+identities and preserve the failed directory/logs. No runtime, threshold, test assertion, source
+fixture or activation changes. [Evidence](performance-experiments/2026-10-28-input-investigation/phase137/README.md).
+
+
+## 2026-10-28 — Phase138: current original-workload input baseline remains below16ms
+
+Both frozen current C journeys complete120keys/3markers, full data/cold/worker/resource guards and
+independent native proofs. Normal/withheld local p9511.9/7.6ms passes; peer p951883.7/2305.1ms
+passes, but withheld marker2578ms fails2500. Normal local max62.8ms remains. Independent full-bound
+reconstruction and false-marker control preserve the mixed result; audit syntax error retained.
+Old-asset conditional pair stays unexecuted by the frozen rule. [Evidence](performance-experiments/2026-10-28-input-investigation/phase138/README.md).
+The full-history condition remains the typing lead; no general regression/activation inference.
+Phase134 failures remain, defaults/service off, phone deferred, no runtime/old-test edits or release.
+
+
+## 2026-10-28 — Phase139: freeze reused dispatch sensors for the full-history condition
+
+Five serial known-fault/static/app-native/app-editor/bookend journeys frozen before dispatch. Reuse
+existing event/DOM/RAF/heartbeat/driver sensors; parser verifies retained controls and refuses four
+faults. Fixture lint passes. Preserve original preparation exposure, data/undo/cold/native guards
+and16ms/2.5s gates. [Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase139/README.md).
+No timing yet or runtime/old-test/default/release change; qualification paused, service off.
+
+
+## 2026-10-28 — Phase140: input delay localizes to renderer queue under real full-history edits
+
+Five fixed diagnostic journeys finish; known80ms fault sensors and complete600-key independent
+reconstruction pass. Busy app native p955.4ms versus real card20.6ms; browser stamp→handler0.8/17.6ms,
+mutation0.5/0.7ms, driver/parent~2ms. Bookend8.3→5.2ms crosses declared3ms/20% instability flag: no
+timing promotion or causal claim.24slow inputs after5s last observe maintenance not running. Both
+app cases retain all data/undo/cold/native guards. [Evidence](performance-experiments/2026-10-28-input-investigation/phase140/README.md).
+Next separately profile middle-of-typing with maintenance explicitly idle/unchanged, to locate
+induced page work. Existing16ms/2.5s failures remain, defaults/service off, no runtime/test/release change.
+
+
+## 2026-10-28 — Phase141: freeze source profile with maintenance explicitly paused
+
+One middle-of-typing source-attribution journey frozen, preserving complete input/data/undo/cold/
+native checks and all failures. Require unchanged attempts/non-running maintenance across30s,
+full CPU sample denominator, mapped-code validation and no timing promotion. [Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase141/README.md).
+No profile dispatched yet, no runtime/old-test/default/qualification/release change.
+
+
+## 2026-10-28 — Phase142: paused-maintenance profile selects repeated verified-view work
+
+A30s middle-of-typing profile completes with idle maintenance, unchanged attempt2 and all input/
+data/undo/cold/native/resource guards. Complete20,272samples retained; verifiedRecords contributes
+52.85% and ownership traversal7.22% of non-idle time-delta weight, not exclusive CPU. Independent
+sample/source-map/generated-code checks and two malformed-profile controls pass; native audit
+preserves old proofs/prefixes/unrelated accounts. [Evidence and next bounded repair](performance-experiments/2026-10-28-input-investigation/phase142/README.md).
+Select existing synchronous carrier/verified-view leases at redundant projection boundaries; first
+prove caller counts/lifetimes and retain detached async proposal inputs. Ownership traversal stays
+a separate follow-up. Runtime/tests equal135; full unit/native evidence is reused, final ordinary
+checks accompany the freeze. Bookend drift and16ms/2.5s failures remain; no activation/release.
+
+
+## 2026-10-28 — Phase143: guarded publication metadata selection
+
+Replace redundant raw-history loads/matches at delivery and envelope metadata boundaries with the
+existing fresh carrier selection and detached verified projections. Nine new cases reproduce five
+failures before repair, then pass alongside62 affected cases; full units189files/2190pass/1existing
+skip. Preserve initial fixture type errors, final passing type/lint/format and independent byte-exact
+proposal/witness/selection/storage boundary review. Census keeps classifications/domains; the new
+required test adds one unresolved general obligation (933/387). [Contract/evidence](performance-experiments/2026-10-28-publication-selection/phase143/README.md).
+Performance acceptance is still pending;16ms/2.5s gates and all previous failures remain. Cleanup
+traversal stays separate, defaults/service off, no computer use, signing, release or deployment.
+
+
+## 2026-10-28 — Phase144: freeze matched publication-selection comparison
+
+Both immutable clients rebuilt from142/143 with identical local-auto1/resume1/service-auto0; only
+three runtime paths differ. Both-direction Git/assets/probe/server/fixture/apparatus hashes and
+fixed eight-case order frozen. Analyzer reconstructs retained passing bounds and rejects four
+fault controls. Restricted adapter18failures retained; permitted serial rerun289/289 passes with
+no fixture edits. [Protocol/input/evidence](performance-experiments/2026-10-28-publication-selection/phase144/README.md).
+No timing yet. Keep stop rule and16ms/2.5s gates, phone deferred, service/defaults off, no release.
+
+
+## 2026-10-28 — Phase145: reject inconsistent comparison clocks
+
+Both full-history journeys pass all functional/cold/native guards. Reference local20.9ms fails16;
+peer1740.9ms/markers pass. Candidate before/after wall-clock intersections miss by1.3/1.4ms, so
+the unchanged analyzer rejects timing and stops the sequence; six cases remain unexecuted.
+[Full retained results/independent/native review](performance-experiments/2026-10-28-publication-selection/phase145/README.md).
+No candidate speedup/gate claim. Select monotonic-driver apparatus repair with the same1ms
+intersection allowance/gates before a fresh comparison; application source remains143. No release.
+
+
+## 2026-10-28 — Phase146: freeze monotonic-driver comparison repair
+
+Correct only three lab timing files to use the host monotonic performance clock, retaining the
+renderer clock/intersection/1ms allowance and every16ms/2.5s gate. Real headless Chrome survives a
+simulated10s wall step; old wall-clock and malformed-bracket controls refuse. Four analyzer fault
+controls still pass. [Fresh prospective protocol/identities](performance-experiments/2026-10-28-publication-selection/phase146/README.md).
+Both application artifacts remain byte-exact144;145 is preserved without candidate timing credit.
+No timing dispatched yet, no activation or release.
+
+
+## 2026-10-28 — Phase147: retain durable follow-up publication failure
+
+Fresh monotonic normal R/C local8.756/10.693ms and peer1893.781/1797.876ms pass; every marker,
+archive/undo/cold/resource guard passes, backlog ratio1.00045. No typing-speedup claim. Withheld C
+finishes measured writing/archive equality, then fails30s delivery of the separate pre-undo edit;
+five remaining cases unexecuted. Offline copies prove that edit durable/cold-visible only on the
+writer. [Raw results, independent/native audit and copied-profile diagnostic](performance-experiments/2026-10-28-publication-selection/phase147/README.md).
+Native audit passes three stopped stores; all593 original evidence files remain exact, with two
+new read-only-audit SQLite sidecars explicitly retained. Do not dismiss the missing delivery as
+a fixture or accept its partial11.433ms/2390.760ms window. Next trace post-maintenance publication.
+All16ms/2.5s guarantees and prior failures remain; resume/service off, no release or deployment.
+
+
+## 2026-10-28 — Phase148: bounded repair checkpoint; acceptance remains blocked
+
+Guarded metadata selections, nine regressions and full2190pass/1skip units plus289 adapters are
+recorded in143/144. Retain145 invalid clock,146 isolated apparatus correction and147 durable
+sender-only follow-up failure; do not equate a passing timing window with whole-client acceptance.
+[Closure/source/default/ordinary checks](performance-experiments/2026-10-28-publication-selection/phase148/README.md).
+Runtime remains143; old tests and security-boundary functions remain142. Fresh ordinary build
+uses a separate output tree, with the bad CLI invocation preserved. Record final check outcomes
+before patch replay; general933/387 qualification block,16ms/2.5s gates, phone deferral and
+resume/service defaults0 remain. No signing, release preparation or deployment. Next bounded
+correctness discriminator: publication of durable writing after automatic baseline installation.
+
+
+## 2026-10-28 — Phase149: freeze retained-profile publication discriminator
+
+The next investigation addresses147’s acceptance blocker directly. Freeze an offline-open/online
+continuation diagnostic on detached copies of the failed sender/receiver and server state, using
+byte-exact143 assets. Sample authenticated owner metadata, then automatic delivery and one
+explicit send retry if necessary; no new writing or storage reinjection. [Protocol/identities](performance-experiments/2026-10-28-post-maintenance-publication/phase149/README.md).
+No diagnostic dispatched yet. Cause/introduction remain unproven; old failures/gates/defaults
+and real data are preserved. No runtime/test change, phone/computer use, signing or release.
+
+
+## 2026-10-28 — Phase150: accepted edit missed receiver discovery
+
+Copied failed profiles reconnect and receive the missing edit at the5s observation, with no new
+submit or manual retry, unchanged sender prefix121 and byte-identical native server store/proofs.
+The sender had published successfully. Last original receive precedes the last submit; suppressed
+hint/content plus a healthy60–65s idle interval explains why a30s peer guard can fail. Two real-
+scheduler fake-clock controls reproduce that gap without maintenance and immediate discovery
+with a hint. [Evidence/causal limits](performance-experiments/2026-10-28-post-maintenance-publication/phase150/README.md).
+Retain both pre-execution configuration failures and successful diagnostics. Policy/scheduler
+are byte-exact142; original profiles/data remain exact. No production/test or guarantee change.
+Original147 remains failed/incomplete; next target is missed-hint idle reconciliation and its
+capacity cost, not an assumed maintenance/publication defect. No activation or release.
+
+
+## 2026-10-28 — Phase151: bounded healthy idle reconciliation repair
+
+Reuse147/150 before evidence, change healthy idle checks60–65s→15–20s and retain5s unhealthy
+checks. Ten new scheduler/policy regressions plus26 existing cases pass; typecheck/lint/format
+pass. Independent byte comparison preserves scheduler/owner bodies except the declared policy
+helper/import/callback, including authority/backoff/flush/crypto/final commit. [Contract/evidence](performance-experiments/2026-10-28-idle-reconciliation/phase151/README.md).
+Accept up to four extra healthy idle passes/minute as the bounded cost; do not call a pass one
+network request. Actual-client after validation remains pending with all original16ms/2.5s/30s
+guards and no repeated before journeys. No old tests, formats, server limits or defaults change.
+No activation, computer use, signing or release.
+
+
+## 2026-10-28 — Phase152: rebuilt after client and fixed confirmation scope
+
+Full190unit files/2200pass/1existing skip and91 affected metadata adapters pass. Rebuild151, verify
+1713 exported files/118 unchanged backend-protocol files, actual assets and closed apparatus/
+fixture/serializer/probe identities. [After-only protocol](performance-experiments/2026-10-28-idle-reconciliation/phase152/README.md):
+reuse147/150 before evidence, run withheld full-history then both late variants, keep16ms/2.5s/
+30s/all original guards and fixed stop rule. Four analyzer fault controls pass. No journeys yet.
+No old test changes or activation/release; general934/388 block remains.
+
+
+## 2026-10-28 — Phase153: after confirms missed-hint repair;16ms acceptance still blocked
+
+The exact withheld full-history after journey now passes its formerly failing30s edit delivery,
+Undo, complete data, maintenance, worker/resource and both offline cold/no-injection guards.
+Independent native/clock/old-proof/unrelated-account checks pass. Peer2309.094ms/all markers
+and backlog ratio1.01193 pass; local17.009ms fails16. Stop rule leaves both late after cases
+unexecuted. [Full before/after evidence and limits](performance-experiments/2026-10-28-idle-reconciliation/phase153/README.md).
+Actual requests during120keys600→615;429counts19→13 are descriptive, not capacity improvement.
+2200unit cases/1existing skip and91adapters pass. No old tests/default/server/backoff/crypto changes;
+no repeated before run. An import-shifted non-crypto source pin729→734 is refreshed after the
+authority check refuses it; keep the refusal and all statuses/contracts. Runtime remains151;
+final ordinary checks recorded here, general934/388
+block and all gates retained. No activation, signing, release preparation or deployment.
+
+
+## 2026-10-28 — Phase154: narrow envelope projection without weakening its owner
+
+Project only origin/sources/positions/attempts; omit unused sourceRecords/events before the existing
+lease detaches data. Eleven new regressions +56existing cases pass:1MiB full-copy control→zero
+history visits, detachment/invalidation, actual original/witness/envelope/resumed-attempt behavior
+and reference/refusal paths. Type/lint/format pass; retain initial fixture/type failures. [Evidence](performance-experiments/2026-10-28-envelope-projection/phase154/README.md).
+Independent byte checks preserve envelope/append/selection bodies, six security/storage modules
+and the next-position expression. Census changes only3hashes, new test adds one uncredited
+obligation (935/389). Reuse before evidence; actual after/performance acceptance remains pending.
+No old tests, formats, defaults, async proposal/cleanup or service activation change; no release.
+
+
+## 2026-10-28 — Phase155: rebuilt projection candidate; fixed after scope
+
+Full191unit files/2211pass/1existing skip and103affected metadata cases pass. Rebuild154 for both
+clients; immutable Git/assets/probe/serializer/fixture/image and118backend-protocol identities
+verified. [Four after-only cases frozen](performance-experiments/2026-10-28-envelope-projection/phase155/README.md):
+failed full-history withheld first, both late variants, normal full-history last. All16ms/2.5s/
+30s/data/native guards and failure stop rule retained. Four analyzer fault controls pass; no
+measurement yet. No before reruns, old-test changes, activation, computer use, signing or release.
+
+
+## 2026-10-28 — Phase156: envelope projection candidate passes all four after journeys
+
+Both rebuilt154 clients now pass full-history normal/withheld and two-receiver normal/withheld:
+local p959.189–9.686ms, peer p951752.818–2419.896ms, every marker<=2500ms. The previously failing
+30s delivery/Undo, actual preparation, maintenance completion, entire writing, both offline cold,
+worker/resource and independent native proof guards pass. No retries or repeated before baselines;
+paired withheld backlog1.009279 passes1.10. [Results and scoped readiness](performance-experiments/2026-10-28-envelope-projection/phase156/README.md).
+All2211unit cases/1existing skip,103affected metadata cases and types/lint/format pass. Final ordinary
+check results are recorded with the evidence. Final runtime/tests remain154; old tests unchanged.
+This clears the measured candidate hold for explicit local-auto1/resume1/service-auto0 and supports
+signed-source artifact preparation. Keep the original failed/invalid attempts,16ms/2.5s/30s gates,
+source resume/service defaults0, phone deferral and general935/389 paused qualification block.
+No staging, signing, push, release image, preview update, publication or deployment.
+
+
+## 2026-10-28 — Phase157: sign the bounded series and test exact ARM64 release candidate
+
+All38 canonical119–156 patches are individually signed/verified through `b6f0160a`;
+every expected tree matches and checkout is clean before release evidence. Build the clean1,714-input
+archive as `done-public:b6f0160a`, index `sha256:f81bd4ba3621fc5c1fd28979d22c9605d522fd6ba5cf7b06eafde63cd2459872`,
+explicit local-auto1/resume1/service-auto0/coordinated-2000.38final-image cases,8container smoke checks,
+TLS controls, two-device exact-frontend upgrade/queued/offline/undo/conversion/rollback/return,
+7native source cases,40contract leaves and175metadata cases pass. Reuse source-equivalent2211unit
+cases/1existing skip and phase156 performance; no new phone/image performance claim.
+[Identities, evidence, limits and publication handoff](development-evidence/2026-10-28-resumable-sync-release/README.md).
+Current infrastructure main27369a8/offline checks and read-only live identity/PVC/readiness/backup
+health pass; historical backup failures1484 retained. Source defaults/service automation unchanged;
+general935/389 qualification paused. Final ordinary results recorded with the packet. No image
+publication, infrastructure change, merge, reconciliation or deployment in this preparation.

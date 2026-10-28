@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "all1714InputsEqualTestedSignedSource": true,
+  "completeInputPopulationComparedBothDirections": true,
+  "retainedImageArchiveSha256Exact": true,
+  "pendingDiffOnlyReleaseDocs": [
+    "docs/completed.md",
+    "docs/decisions.md"
+  ],
+  "sourceUnchangedByReleasePrep": true,
+  "realIndexEmpty": true
+}

@@ -1,0 +1,13 @@
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index d3cd1bd7..3976f111 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -276,7 +276,7 @@ async function openAccountReceiveOwner(
+   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
+   // The optional quiet budget failed the two-receiver 2.5s acceptance gate (phase111).
+   // Keep it disabled until publication/discovery pacing clears that gate.
+-  const receiveSelection = createReceiveSelection();
++  const receiveSelection = createReceiveSelection(Date.now, composed);
+   let outstandingQuiet: object | undefined;
+   let pendingPromotions = 0;
+   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;

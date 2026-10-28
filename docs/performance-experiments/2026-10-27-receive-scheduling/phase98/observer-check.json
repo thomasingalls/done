@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "cases": 5,
+  "requestAndResponseBytesRemainExact": true,
+  "singleAndBatchEmptyProductiveAndRefusedCasesCovered": true,
+  "syntheticCodecFramesNotAuthenticationEvidence": true
+}

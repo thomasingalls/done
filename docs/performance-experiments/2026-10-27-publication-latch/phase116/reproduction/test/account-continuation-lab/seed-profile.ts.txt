@@ -1,0 +1,11 @@
+import{readFileSync}from'node:fs';import{expect,type BrowserContext}from'@playwright/test';
+const source=readFileSync('/private/tmp/done-publication-latch-20261027/playwright-storage-source.txt','utf8');
+/** Initial fixture import only. Pinned Playwright serializer, followed by explicit IDB transaction barriers. */
+export async function seedProfile(context:BrowserContext,state:any){
+ const p=await context.newPage();await p.route('**/*',route=>route.fulfill({body:'<html></html>',contentType:'text/html'}));
+ for(const origin of state.origins){await p.goto(origin.origin);await p.evaluate(async({source,origin})=>{
+  const module:any={exports:{}};eval(source);await new (module.exports.StorageScript())(false).restore(origin);
+  for(const info of origin.indexedDB??[]){const db=await new Promise<IDBDatabase>((resolve,reject)=>{const q=indexedDB.open(info.name);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});try{if(db.objectStoreNames.length)await new Promise<void>((resolve,reject)=>{const tx=db.transaction([...db.objectStoreNames],'readonly');tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);for(const name of db.objectStoreNames)tx.objectStore(name).count()})}finally{db.close()}}
+ },{source,origin});}
+ await p.close();const got=await context.storageState({indexedDB:true});const ordered=(origins:any[])=>origins.map(o=>({...o,localStorage:[...o.localStorage].sort((a,b)=>a.name.localeCompare(b.name))}));expect(ordered(got.origins)).toEqual(ordered(state.origins));
+}

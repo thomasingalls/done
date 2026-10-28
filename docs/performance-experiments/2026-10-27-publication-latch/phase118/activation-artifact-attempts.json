@@ -1,0 +1,17 @@
+{
+  "initialAttempt": {
+    "outcome": "failed",
+    "exitCode": 1,
+    "typesBuildBudgetIsolationExitCodes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "failure": "AssertionError at identity == C-client-identity: all110-file byte equality failed.",
+    "receiptLimitation": "The first script emitted console output but did not persist per-step times before its assertion. Do not infer first-attempt timing."
+  },
+  "diagnosis": "Only AccountDevices-peym9T1a.js.map differs. Only accountReceive.ts comments differ in sourcesContent; mappings and every other field match.",
+  "finalAttempt": "Rebuilt again and checked exact executable/worker bytes, exact109 other files, and the sole map difference explicitly. No latency or data gate relaxed.",
+  "nativeSelectionReview": "Initial rerun selected54 cases including6 additional grouped-transport cases. Compared case names against phase115 and added all13 grouped-commit/projection cases before closure. All67 distinct cases exercised across required modes."
+}

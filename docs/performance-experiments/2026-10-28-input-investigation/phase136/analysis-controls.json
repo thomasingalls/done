@@ -1,0 +1,38 @@
+[
+  {
+    "control": "late-2-C-normal",
+    "originalBoundsReconstructed": true,
+    "local": {
+      "n": 120,
+      "p50": 2.800048828125,
+      "p95": 8.099853515625,
+      "max": 17.199951171875
+    }
+  },
+  {
+    "control": "late-3-C-withheld",
+    "originalBoundsReconstructed": true,
+    "local": {
+      "n": 120,
+      "p50": 3.199951171875,
+      "p95": 9.0,
+      "max": 25.39990234375
+    }
+  },
+  {
+    "control": "missing-key",
+    "rejected": true
+  },
+  {
+    "control": "untrusted-event",
+    "rejected": true
+  },
+  {
+    "control": "clock-disagreement",
+    "rejected": true
+  },
+  {
+    "control": "failed-data-guard",
+    "rejected": true
+  }
+]

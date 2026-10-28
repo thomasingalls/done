@@ -79,3 +79,12 @@ while refusing contradictory zero overrides. Runtime still requires all four fla
 remain reader-only; the selected activated release is automatic for users. Compatible rollback stops
 future scheduling as clients adopt it, retaining reduced data and editing. The original evidence,
 failures, format/proof boundaries and remaining production-account attribution limits stand.
+
+
+## Follow-up2026-10-27 — visible progress and bounded diagnostics
+
+[Phase124](performance-experiments/2026-10-27-maintenance-continuation/phase124/README.md) adds
+fixed-label stage/count progress from the actual owner, an indeterminate/record-subphase sidebar
+indicator, and bounded lifetime-local attempts/interruption/completion diagnostics. These facts
+never authorize a cut or survive a new owner. Reporting errors and stale callbacks cannot alter
+verification/storage. All scheduling and refusal policy above remains.

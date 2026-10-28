@@ -1,0 +1,7 @@
+{
+  "knownFactorOrPrivateKeyValues": 13,
+  "rawOrEscapedPatterns": 13,
+  "artifactAndArchiveMembersScanned": 905,
+  "matches": 0,
+  "scope": "additional known-value check; not a universal DLP guarantee"
+}

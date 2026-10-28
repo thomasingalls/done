@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import { writeFileSync } from 'node:fs';
+import { installNotificationProbe } from './notification-probe.mjs';
+const original = globalThis.fetch, encode = s => Uint8Array.from(s, c => c.charCodeAt(0));
+const frame = 'event: ready\ndata: {}\n\n: heartbeat\n\nevent: content\ndata: {}\n\nevent: hint\ndata: {}\n\n';
+const checks = [];
+try {
+  for (const n of [1, 2, 7, 4096]) for (const withhold of [false, true]) {
+    globalThis.fetch = async () => new Response(new ReadableStream({ start(c) { for (let i=0;i<frame.length;i+=n)c.enqueue(encode(frame.slice(i,i+n)));c.close(); } }), { headers: { 'Content-Type':'text/event-stream','X-Identity':'original' } });
+    installNotificationProbe({ withhold });
+    const res = await fetch('http://localhost/account/notifications/v1/subscribe');
+    assert.equal(res.headers.get('X-Identity'), 'original');
+    const expected = withhold ? 'event: ready\ndata: {}\n\n: heartbeat\n\n' : frame;
+    assert.equal(await res.text(), expected);
+    assert.deepEqual(globalThis.__quietNotifications,{ready:1,content:1,hint:1,heartbeat:1,withheld:withhold?2:0});
+    checks.push({partition:n,withhold,bytesAndHeadersExact:true});
+  }
+  for (const url of ['http://localhost/not-notifications', 'http://localhost/account/notifications/v1/subscribe']) {
+    const res = new Response('denied', {status:403}); globalThis.fetch=async()=>res;installNotificationProbe({withhold:true});assert.equal(await fetch(url),res);
+  }
+  checks.push({nonNotificationAndRefusalPassThrough:true});
+  const successful=new Response('ordinary');globalThis.fetch=async()=>successful;installNotificationProbe({withhold:true});assert.equal(await fetch('http://localhost/ordinary'),successful);checks.push({successfulNonNotificationPassThroughIdentity:true});
+  let canceled=false;globalThis.fetch=async()=>new Response(new ReadableStream({start(c){c.enqueue(encode('event: ready\ndata: {}\n\n'));},cancel(){canceled=true;}}));installNotificationProbe({withhold:true});const res=await fetch('http://localhost/account/notifications/v1/subscribe'),reader=res.body.getReader();assert.deepEqual((await reader.read()).value,encode('event: ready\ndata: {}\n\n'));await reader.cancel();await new Promise(r=>setTimeout(r,0));assert(canceled);checks.push({cancelPropagatesToOriginalStream:true});
+  const invalid=new Uint8Array([128,10,10,1,255]);globalThis.fetch=async()=>new Response(invalid);installNotificationProbe({withhold:false});assert.deepEqual(new Uint8Array(await(await fetch('http://localhost/account/notifications/v1/subscribe')).arrayBuffer()),invalid);checks.push({unrecognizedBytesAndPartialFramesPreserved:true});
+  const failure=Error('source-failed');globalThis.fetch=async()=>new Response(new ReadableStream({start(c){c.error(failure)}}));installNotificationProbe({withhold:false});await assert.rejects((await fetch('http://localhost/account/notifications/v1/subscribe')).text(),/source-failed/);checks.push({sourceStreamErrorPreserved:true});
+}finally{globalThis.fetch=original;}
+writeFileSync('/private/tmp/done-quiet-budget-20261027/notification-probe-check.json',JSON.stringify({status:'passed',checks},null,2)+'\n');console.log(checks.length,'notification observer transparency/fault cases passed');

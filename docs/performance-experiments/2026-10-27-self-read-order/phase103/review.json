@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "beforeRepair": {
+    "selectedCases": 2,
+    "failed": 2,
+    "unselected": 28,
+    "reason": "After A overflow, B incorrectly loses batch transport in both publisher orders."
+  },
+  "newRegressionCases": 13,
+  "allOldTransportTestImportsBodiesAndAssertionsByteExact": true,
+  "focusedUnitCases": 53,
+  "oldEncryptedBrowserCases": 17,
+  "metadataCases": 81,
+  "typesLintAndFormat": "passed",
+  "constructionRegistryExactlyUnchangedTo102": true,
+  "qualification": {
+    "obligations": 912,
+    "unresolved": 367,
+    "unchanged": true
+  },
+  "runtimeChanges": [
+    "src/crdt/receivePageTransport.ts",
+    "src/crdt/accountReceive.ts"
+  ],
+  "limits": [
+    "Two-publisher and real-HTTP-classifier regressions are transport-level.",
+    "The17 unchanged encrypted owner browser cases cover original receipts, fallback, byte bounds, retry, cancellation and cold replay.",
+    "The new large-payload fallback is not in100s frozen whole-client performance comparison; no additional speedup claimed."
+  ]
+}

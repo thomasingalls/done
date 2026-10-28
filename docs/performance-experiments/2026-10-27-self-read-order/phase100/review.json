@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "all10OldSelectorTestBodiesByteExact": true,
+  "newRegressionCases": 8,
+  "publisherPermutationHistories": 870,
+  "beforeRepair": {
+    "passed": 13,
+    "failed": 3,
+    "tests": 16,
+    "scope": "six new selection cases plus10 unchanged old cases before adding the backlog-projection helper cases"
+  },
+  "focusedUnitCasesFinal": 45,
+  "nativeDistinctCases": 24,
+  "nativeConfigurations": "Default19 pass/5 conditional skips, required authority3 pass and audit2 pass; final-source self-decision2 cases rerun after fail-closed own-conflict hint guard. Do not stitch into a fictitious single24-case run.",
+  "metadataCases": 81,
+  "constructionRegistryExactlyUnchanged": true,
+  "qualifications": {
+    "obligations": 912,
+    "unresolved": 367,
+    "unchanged": true
+  },
+  "runtimeChanges": [
+    "src/crdt/receiveSelection.ts",
+    "src/crdt/accountReceive.ts"
+  ],
+  "realIndexEmpty": true
+}

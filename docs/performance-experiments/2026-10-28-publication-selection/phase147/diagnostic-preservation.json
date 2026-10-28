@@ -1,0 +1,21 @@
+{
+  "fileCountBefore": 593,
+  "fileCountAfter": 595,
+  "allHashesAndPopulationUnchanged": false,
+  "changes": [
+    {
+      "path": "state/account.sqlite-shm",
+      "before": null,
+      "after": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+    },
+    {
+      "path": "state/account.sqlite-wal",
+      "before": null,
+      "after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "interpretation": "The first strict population assertion failed because the concurrent read-only native auditor created SQLite SHM and an empty WAL. All593 original files, both persistent profiles and the main database remain byte-exact; preserve the new sidecars.",
+  "allOriginalFileHashesUnchanged": true,
+  "originalPersistentProfilesAndMainDatabaseExact": true,
+  "onlyNewFilesAreReadonlySQLiteAuditSidecars": true
+}

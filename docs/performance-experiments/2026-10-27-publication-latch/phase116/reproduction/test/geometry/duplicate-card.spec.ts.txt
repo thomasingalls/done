@@ -1,0 +1,69 @@
+import { expect, type Locator } from '@playwright/test';
+import type { EditorView } from '@codemirror/view';
+import { test } from '../release-validation/browser-fixture';
+import { openApp, openMenuSection, reloadApp } from './openApp';
+
+const bodyOf = (card: Locator) =>
+  card.locator('.cm-content').evaluate((element) => {
+    const view = (element as HTMLElement & { cmTile?: { root?: { view?: EditorView } } }).cmTile
+      ?.root?.view;
+    if (!view) throw Error('No card editor');
+    return view.state.doc.toString();
+  });
+
+for (const section of ['next', 'done', 'scheduled']) {
+  test(`${section} Duplicate creates an independent multiline Scheduled card with undo and reopen`, async ({
+    page,
+  }) => {
+    await openApp(page);
+    const day = page.locator('.day-panel[data-active="true"]');
+    const collection = (name: string) => day.locator(`.collection[data-section="${name}"]`);
+    const cards = (name: string) => collection(name).locator('.card');
+    const body = 'Plan the trip\n- Book trains\n  - Check dates\n\nNotes **stay** here';
+    const entry = collection(section === 'done' ? 'done' : 'scheduled').getByRole('textbox');
+    await entry.fill(body);
+    await entry.press('Enter');
+    if (section === 'next')
+      await cards('scheduled')
+        .getByRole('button', { name: 'Move to Next: Plan the trip', exact: true })
+        .click();
+    const source = cards(section).first();
+    const id = await source.getAttribute('data-card');
+    const duplicate = source.getByRole('button', {
+      name: 'Duplicate to Scheduled: Plan the trip',
+      exact: true,
+    });
+    await expect(duplicate).toBeVisible();
+    if (section === 'done') {
+      await expect(source).toHaveAttribute('data-guarded', 'true');
+      await expect(source.getByRole('button', { name: /^Move to Scheduled:/ })).toHaveCount(0);
+    }
+    await duplicate.click();
+    // Match by identity, since Scheduled duplication deliberately retains the source.
+    const copy = day.locator(`.card[data-section="scheduled"]:not([data-card="${id}"])`);
+    await expect(copy).toHaveCount(1);
+    const copyId = await copy.getAttribute('data-card');
+    expect(copyId).not.toBe(id);
+    await expect(source).toHaveAttribute('data-card', id!);
+    if (section === 'done') await expect(source).toHaveAttribute('data-guarded', 'true');
+    await copy.locator('.card-surface').click();
+    await expect.poll(() => bodyOf(copy)).toBe(body);
+    await page.keyboard.insertText('independent ');
+    await copy.locator('.cm-content').press('Enter');
+    await expect(source).not.toContainText('independent');
+    await openMenuSection(page, 'Data');
+    const undo = page.locator('#menu').getByRole('button', { name: 'Undo', exact: true });
+    await undo.click();
+    await expect(copy).not.toContainText('independent');
+    await undo.click();
+    await expect(copy).toHaveCount(0);
+    await expect(day.locator(`.card[data-card="${id}"]`)).toHaveCount(1);
+    await page.locator('#menu').getByRole('button', { name: 'Redo', exact: true }).click();
+    await reloadApp(page);
+    const coldCopy = day.locator(`.card[data-card="${copyId}"]`);
+    await expect(coldCopy).toContainText('Check dates');
+    await expect(day.locator(`.card[data-card="${id}"]`)).toContainText('Plan the trip');
+    await coldCopy.locator('.card-surface').click();
+    await expect.poll(() => bodyOf(coldCopy)).toBe(body);
+  });
+}

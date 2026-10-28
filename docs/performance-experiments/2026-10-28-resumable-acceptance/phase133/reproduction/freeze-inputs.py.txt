@@ -1,0 +1,35 @@
+from pathlib import Path
+import hashlib,json,subprocess,os
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path(__file__).parent;tree='fcb35a25a53f4360d689ae73b45c3219cbc28dd6';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+# Independently verify every exported path against its Git object in each variant, including modes.
+entries=subprocess.check_output(['git','ls-tree','-r','-z',tree],cwd=r).split(b'\0');items=[]
+for b in entries:
+ if not b:continue
+ a,path=b.split(b'\t');mode,kind,oid=a.decode().split();path=path.decode()
+ p=s/'source-R'/path
+ if not p.is_file():continue
+ items.append((path,mode,oid))
+batch=subprocess.run(['git','cat-file','--batch'],cwd=r,input=('\n'.join(x[2]for x in items)+'\n').encode(),stdout=subprocess.PIPE,check=True).stdout;at=0;files={}
+for path,mode,oid in items:
+ end=batch.index(b'\n',at);header=batch[at:end].split();size=int(header[2]);blob=batch[end+1:end+1+size];at=end+size+2
+ assert header[0].decode()==oid
+ for v in ['R','C']:
+  p=s/('source-'+v)/path;assert p.read_bytes()==blob,(v,path);assert bool(p.stat().st_mode&0o111)==(mode=='100755')
+ files[path]=hashlib.sha256(blob).hexdigest()
+# Ensure no source file was silently added outside the captured Git population.
+for v in ['R','C']:
+ for prefix in ['src','account-service','account-protocol','scripts','test','vite','private','vendor-patches']:
+  for p in(s/('source-'+v)/prefix).rglob('*'):
+   if p.is_file():assert str(p.relative_to(s/('source-'+v)))in files
+clients={v:json.loads((s/(v+'-client-identity.json')).read_text())for v in ['R','C']}
+for v,c in clients.items():
+ assert c['flags']['VITE_ACCOUNT_RETENTION_RESUME']==('1'if v=='C'else'0');assert c['flags']['VITE_ACCOUNT_HISTORY_AUTO']=='0'
+ for path,h in c['assets'].items():assert sha(s/('source-'+v)/'dist'/path)==h
+apparatus={str(p.relative_to(s)):sha(p)for p in(s/'harness').rglob('*')if p.is_file()and'node_modules'not in p.parts}
+for name in ['protocol.md','run.py','run-plan.json','maintenance-plan.json','late-plan.json','analyze-case.py','analyze-original-two.py','read-request.mjs','read-request.d.mts','notification-probe.mjs','notification-probe.d.mts','container-service.mjs','observer.mjs','container-image.json','playwright-storage-source.txt','audit-lib.mjs','audit-native.mjs','maintenance-probe.txt','build-clients.mjs','server-source-equality.json','fixture-summary.json','freeze-inputs.py']:
+ apparatus[name]=sha(s/name)
+private={}
+for label in ['private-fixture','prepared-fixture']:
+ f=s/label/'fixture.json';x=json.loads(f.read_text());private[label]={'fixtureSha256':sha(f),'stateFiles':{str(p.relative_to(Path(x['state']))):sha(p)for p in Path(x['state']).rglob('*')if p.is_file()}}
+report={'sourceTree':tree,'allExportedSourceFilesMatchGitInBothDirections':True,'sourceFiles':files,'clients':clients,'apparatus':apparatus,'privateInputs':private,'imageId':json.loads((s/'container-image.json').read_text())['Id'],'phone':'explicitly deferred','resumableDefaultUnchanged':True,'serviceAutomationOff':True,'noConcurrentWorkDuringMeasurement':True}
+(s/'measurement-identity.json').write_text(json.dumps(report,indent=2)+'\n');print('Frozen',len(files),'exact source paths,',len(apparatus),'apparatus inputs and both client artifact populations.')

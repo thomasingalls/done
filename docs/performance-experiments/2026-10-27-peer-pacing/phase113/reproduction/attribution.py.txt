@@ -1,0 +1,61 @@
+"""Retained-clock and protocol-order bounds; no plaintext, credentials or request bodies."""
+import math
+PUB='8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411'
+
+def quantile(values, fraction=.95):
+    if not values: raise ValueError('missing observations')
+    return sorted(values)[math.ceil(len(values)*fraction)-1]
+
+def clock_bounds(brackets):
+    lo=max(v['renderer']-v['after']-1 for v in brackets)
+    hi=min(v['renderer']-v['before']+1 for v in brackets)
+    if lo>hi: raise ValueError('clock brackets disagree')
+    return lo,hi
+
+def publication_map(network, native_count):
+    requests=[q for q in network if q['label']=='H2' and q['path']=='/account/delivery/submit']
+    if len(requests)!=native_count: raise ValueError('native count and observed submissions disagree')
+    if any(q.get('status')!=200 or 'headersAt'not in q or q['at']>q['headersAt'] for q in requests):raise ValueError('submission not bounded successful HTTP')
+    if any(a['headersAt']>b['at']for a,b in zip(requests,requests[1:])):raise ValueError('submission overlap')
+    return {i+2:q for i,q in enumerate(requests)}
+
+def receive_windows(network):
+    reads=[q for q in network if q['label']=='H1'and q.get('reads')and q['reads'][0]['publisherSha256']==PUB]
+    windows=[]
+    for index,(a,b)in enumerate(zip(reads,reads[1:])):
+        if a.get('status')!=200 or 'headersAt'not in a:raise ValueError('unbounded receiving response')
+        frames=a['reads'];cursor=frames[0]['after'];following=b['reads'][0]['after'];increment=following-cursor
+        if not 0<=increment<=len(frames):raise ValueError('cursor progression exceeds owned request set')
+        if any(v['publisherSha256']!=PUB or v['limit']!=1 or v['after']!=cursor+i for i,v in enumerate(frames)):raise ValueError('not one contiguous publisher request set')
+        if b['at']<a['headersAt']:raise ValueError('overlapping receive requests')
+        if increment:windows.append({'index':index,'request':a,'nextAt':b['at'],'positions':list(range(cursor+1,following+1))})
+    return windows,reads
+
+def attribute(x, native_count):
+    pubs=publication_map(x['network'],native_count);windows,reads=receive_windows(x['network'])
+    brackets=[v for g in x['clocks']for v in g['rows'][0]];offsetlo,offsethi=clock_bounds(brackets)
+    keys=[o for o in x['offers']if o['kind']=='key'];counts=x['probes'][0]['counts'];baseline=x['baselines'][0]
+    if len(keys)!=120 or [o['index']for o in keys]!=list(range(120)):raise ValueError('incomplete offered key series')
+    if any(b['at']<a['at']or b['count']<a['count']for a,b in zip(counts,counts[1:])):raise ValueError('nonmonotone peer observations')
+    result=[]
+    for i,o in enumerate(keys,1):
+        hits=[v['at']for v in counts if v['count']>=baseline+i and v['at']>=o['at']-5]
+        if not hits:raise ValueError('missing peer key')
+        seen=min(hits);hostlo=seen-offsethi;hosthi=seen-offsetlo;alternatives=[]
+        for w in windows:
+            q=w['request']
+            if q['headersAt']-1>hosthi or w['nextAt']+1<hostlo:continue
+            for position in w['positions']:
+                p=pubs.get(position)
+                if not p or p['at']+1<o['at'] or p['at']-1>q['headersAt']:continue
+                alternatives.append({'position':position,'readIndex':w['index'],
+                    'dispatchToSubmitStartMs':[p['at']-o['at']-2,p['at']-o['at']+2],
+                    'submitHttpMs':[max(0,p['headersAt']-p['at']-2),p['headersAt']-p['at']+2],
+                    'submitHeadersToReadStartMs':[q['at']-p['headersAt']-2,q['at']-p['headersAt']+2],
+                    'availabilityToReadOpportunityMs':[max(0,q['at']-p['headersAt']-2),max(0,q['at']-p['at']+2)],
+                    'readHttpMs':[max(0,q['headersAt']-q['at']-2),q['headersAt']-q['at']+2],
+                    'readHeadersToPeerDomMs':[hostlo-q['headersAt']-1,hosthi-q['headersAt']+1],
+                    'timestamps':{'offeredAt':o['at'],'submitAt':p['at'],'submitHeadersAt':p['headersAt'],'readAt':q['at'],'readHeadersAt':q['headersAt'],'peerDomHostBounds':[hostlo,hosthi]}})
+        bounds={k:[min(a[k][0]for a in alternatives),max(a[k][1]for a in alternatives)]for k in alternatives[0]if k.endswith('Ms')}if alternatives else None
+        result.append({'index':i,'offerAt':o['at'],'peerMs':[hostlo-o['at'],hosthi-o['at']],'alternatives':alternatives,'bounds':bounds,'unresolved':not bool(alternatives)})
+    return {'keys':result,'nativeSubmissions':len(pubs),'positiveReadGroups':len(windows),'installedPositionsThroughClosedRanges':sum(len(w['positions'])for w in windows),'closedPositiveGroupsWithMultiplePositions':sum(len(w['positions'])>1 for w in windows),'totalTargetReadRequests':len(reads),'clockOffsetBounds':[offsetlo,offsethi]}

@@ -1,0 +1,210 @@
+{
+  "browserCounts": [
+    4,
+    12,
+    4,
+    40,
+    2,
+    12,
+    30,
+    6,
+    6,
+    26,
+    12,
+    9,
+    3,
+    6,
+    5,
+    4,
+    11
+  ],
+  "reorder": [
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"done card reordering\",\"a mouse drag on the grip reorders cards\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"done card reordering\",\"a touch long-press then drag reorders cards\"]",
+      "outcome": "not-applicable",
+      "reason": "Long-press activation is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"done card reordering\",\"sustained touch grip retains ownership until release\"]",
+      "outcome": "not-applicable",
+      "reason": "Real touch arbitration is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"done card reordering\",\"sustained touch hold retains ownership until release\"]",
+      "outcome": "not-applicable",
+      "reason": "Real touch arbitration is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"done card reordering\",\"movement before the hold remains day navigation\"]",
+      "outcome": "not-applicable",
+      "reason": "The touch arbitration path is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"done card reordering\",\"a stationary touch long-press still unlocks Done\"]",
+      "outcome": "not-applicable",
+      "reason": "The touch unlock path is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"next card reordering\",\"a mouse drag on the grip reorders cards\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"next card reordering\",\"a touch long-press then drag reorders cards\"]",
+      "outcome": "not-applicable",
+      "reason": "Long-press activation is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"next card reordering\",\"sustained touch grip retains ownership until release\"]",
+      "outcome": "not-applicable",
+      "reason": "Real touch arbitration is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"next card reordering\",\"sustained touch hold retains ownership until release\"]",
+      "outcome": "not-applicable",
+      "reason": "Real touch arbitration is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"next card reordering\",\"movement before the hold remains day navigation\"]",
+      "outcome": "not-applicable",
+      "reason": "The touch arbitration path is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"next card reordering\",\"a stationary touch long-press still unlocks Done\"]",
+      "outcome": "not-applicable",
+      "reason": "The touch unlock path is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"scheduled card reordering\",\"a mouse drag on the grip reorders cards\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"scheduled card reordering\",\"a touch long-press then drag reorders cards\"]",
+      "outcome": "not-applicable",
+      "reason": "Long-press activation is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"scheduled card reordering\",\"sustained touch grip retains ownership until release\"]",
+      "outcome": "not-applicable",
+      "reason": "Real touch arbitration is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"scheduled card reordering\",\"sustained touch hold retains ownership until release\"]",
+      "outcome": "not-applicable",
+      "reason": "Real touch arbitration is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"scheduled card reordering\",\"movement before the hold remains day navigation\"]",
+      "outcome": "not-applicable",
+      "reason": "The touch arbitration path is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"scheduled card reordering\",\"a stationary touch long-press still unlocks Done\"]",
+      "outcome": "not-applicable",
+      "reason": "The touch unlock path is exercised in the Android project."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"an ordinary pre-hold touch still scrolls the overflowing day without reordering\"]",
+      "outcome": "not-applicable",
+      "reason": "Native touch scrolling is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"desktop\",\"cancelling a mobile grip drag leaves order unchanged and permits the next drag\"]",
+      "outcome": "not-applicable",
+      "reason": "Native touch cancellation is covered on the Android profile."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"done card reordering\",\"a mouse drag on the grip reorders cards\"]",
+      "outcome": "not-applicable",
+      "reason": "The mouse grip is the desktop activation path."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"done card reordering\",\"a touch long-press then drag reorders cards\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"done card reordering\",\"sustained touch grip retains ownership until release\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"done card reordering\",\"sustained touch hold retains ownership until release\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"done card reordering\",\"movement before the hold remains day navigation\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"done card reordering\",\"a stationary touch long-press still unlocks Done\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"next card reordering\",\"a mouse drag on the grip reorders cards\"]",
+      "outcome": "not-applicable",
+      "reason": "The mouse grip is the desktop activation path."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"next card reordering\",\"a touch long-press then drag reorders cards\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"next card reordering\",\"sustained touch grip retains ownership until release\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"next card reordering\",\"sustained touch hold retains ownership until release\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"next card reordering\",\"movement before the hold remains day navigation\"]",
+      "outcome": "not-applicable",
+      "reason": "Shared gesture arbitration is covered by the Done case."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"next card reordering\",\"a stationary touch long-press still unlocks Done\"]",
+      "outcome": "not-applicable",
+      "reason": "Only Done has the guarded unlock path; the Done case exercises it."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"scheduled card reordering\",\"a mouse drag on the grip reorders cards\"]",
+      "outcome": "not-applicable",
+      "reason": "The mouse grip is the desktop activation path."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"scheduled card reordering\",\"a touch long-press then drag reorders cards\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"scheduled card reordering\",\"sustained touch grip retains ownership until release\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"scheduled card reordering\",\"sustained touch hold retains ownership until release\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"scheduled card reordering\",\"movement before the hold remains day navigation\"]",
+      "outcome": "not-applicable",
+      "reason": "Shared gesture arbitration is covered by the Done case."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"scheduled card reordering\",\"a stationary touch long-press still unlocks Done\"]",
+      "outcome": "not-applicable",
+      "reason": "Only Done has the guarded unlock path; the Done case exercises it."
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"an ordinary pre-hold touch still scrolls the overflowing day without reordering\"]",
+      "outcome": "pass"
+    },
+    {
+      "id": "test/geometry/reorder.spec.ts::[\"android\",\"cancelling a mobile grip drag leaves order unchanged and permits the next drag\"]",
+      "outcome": "pass"
+    }
+  ],
+  "generalCases": 2560,
+  "obligations": 908,
+  "unresolved": 363
+}

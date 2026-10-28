@@ -1,0 +1,80 @@
+from pathlib import Path
+import json,gzip,shutil
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-quiet-budget/phase111';e.mkdir();(e/'raw').mkdir();(e/'checks').mkdir();(e/'reproduction').mkdir()
+for n in ['budget-acceptance.json','heavy-budget-analysis.json','nonoverlap-budget-analysis.json','late-budget-analysis.json','analysis.json','nonoverlap-analysis.json','source-review.json','evidence-review.json','fidelity.json','late-fidelity.json','native-audit.json','nonoverlap-native-audit.json','late-native-review.json','race-native-review.json','late-time-review.json','race-final-artifact-review.json','post-review-steps.json','initial-post-review-steps.json','investigation-fresh-results.json']:
+ if(s/n).exists():(e/n).write_bytes((s/n).read_bytes())
+for plan in ['run-plan.json','nonoverlap-plan.json','late-plan.json']:
+ for c in json.loads((s/plan).read_text()):
+  d=e/'raw'/c['name'];d.mkdir()
+  for n in ['result.json','partial-result.json','runner.json','console.log','runner-receipt.json','container-identity.json','docker-command.json','services.log']:
+   p=s/c['name']/n
+   if p.exists():(d/(n+'.gz')).write_bytes(gzip.compress(p.read_bytes(),mtime=0))
+for p in list(s.glob('investigation-fresh-*.log'))+[s/n for n in ['heavy-console.log','nonoverlap-console.log','late-console.log','post-console.log','post-resume-console.log','post-final-console.log','initial-budget-analysis.log','initial-fidelity.log','format-final.log','source-review.log','analysis.log','nonoverlap-analysis.log','budget-analysis.log','independent-time-review.log','fidelity.log','late-fidelity.log','native-audit.log','nonoverlap-native.log','late-native.log','race-native.log']]:
+ if p.exists():(e/'checks'/(p.name+'.gz')).write_bytes(gzip.compress(p.read_bytes(),mtime=0))
+for n in ['analyze-budget-corrected.py','review-late.py','late-fidelity.py','audit-late.mjs','audit-race.mjs','review-source.py','post.py','post-resume.py','post-resume-fidelity.py','development-checks.py','package111.py']:(e/'reproduction'/(n+'.txt')).write_bytes((s/n).read_bytes())
+(e/'attempts.json').write_text(json.dumps({'timedRuns':'exactly the frozen12 once, no performance-driven repeat','preRepairRegressions':'intentionally fail, retained109','initialUnitFilters':'a nonexistent scheduler filter ran46 cases; another driver selection ran59. Neither replaces final67 correct cases. The46-case log was overwritten before archival; console result remains in task history. No false scheduler credit.','formatterLauncher':'initial nonexistent oxfmt.js path failed; actual installed oxfmt launcher then passed. No formatting credit from failed command.','harnessTypes':'initial11 unused-import/declaration diagnostics corrected before frozen timing; both logs retained109','hiddenMode':'first invocation skipped with wrong switch; corrected ACCOUNT_BATCH_MODE exercised1 case','postParser':'frozen budget analyzer incorrectly expected a second confirmation field that the original nonoverlap recorder never emits. Corrected derivative checks existing accepted-before-close/source-before-receiver fields; no test, assertion, timing gate or observations change. Original and traceback retained.','fidelity':'detected post-run analyzer modification; frozen original restored byte-exact, corrected derivative retained separately; all original apparatus hashes then pass','noFailureReclassifiedAsTimingPass':True},indent=2)+'\n')
+(e/'README.md').write_text('''# Phase111 — Faster catch-up, acceptance blocked by late-peer latency
+
+**Do not promote the750ms candidate:** original eight journeys pass every original gate, but the new
+same-account120-key peer p95 exceeds2.5s in both candidate journeys. All observations are complete;
+these are failures, not passing subsets. Generalized qualification remains paused912/367.
+
+| Fixed workload | Reference median replay | Candidate median replay | Gain | Quiet requests, R→C median |
+|---|---:|---:|---:|---:|
+| Six receivers + competing Q edits |233.230s|194.121s|16.8%|1028→632.5 (−38.5%)|
+| Non-overlap1024-position replay |130.362s|79.718s|38.8%|1029→257.5 (−75.0%)|
+
+R,C,C,R for each original workload; two engineering journeys/arm, not120 independent samples.
+Both paired directions improve. Reference drift6.36% heavy/.111% nonoverlap is smaller than gains;
+no population interval or broad capacity claim. Heavy candidate complete-peer p95 clock upper bounds
+.909/1.277s; local6.1/10.8ms. Every16ms/2.5s/30s/600s/120s gate, all archives, durable pending source,
+reverse/undo/redo, same-profile offline cold reopen, isolation and unchanged native seed proofs pass.
+
+## Stronger same-account case finds the blocker
+
+Both H1/H2 receive while H2 offers120 focused trusted keys at500ms plus three markers in a separate
+reverse card. Fixed R-normal,C-normal,C-withheld,R-withheld, one finite observation each:
+
+| Journey | Complete peer p95 upper bound | Local p95 upper bound | Peer gate |
+|---|---:|---:|---|
+| R normal |2250.1ms|7.1ms|pass|
+| C normal |2532.0ms|9.2ms|**fail**|
+| C withheld |2739.1ms|8.3ms|**fail**|
+| R withheld |2581.8ms|8.7ms|**fail**|
+
+All three individual markers in every journey remain below2.5s (candidate max2201.2ms normal,
+1582.1ms withheld). All120 keys and full original archive plus only exact offered append survive;
+both independent profiles reopen offline without reinjection. Exact native inspection verifies
+ciphertext/envelope/wrapper/head signatures and prefixes, every seed proof byte, contiguous new
+positions only from expected H2, unchanged M/Q. All resource/loaded-worker/apparatus identities pass;
+no OOM. Withheld candidate genuinely drops83 workspace content frames, preserves8 heartbeats and one
+initial ready, with no alternative reconnect wake. Reference withheld also fails, so no causal claim
+that this budget explains the whole tail; single normal/withheld observations do not estimate a
+hint-mode effect. Independent complete-series reconstruction rejects missing samples/false gate credit.
+
+The candidate demonstrates throughput value, not full acceptance. Keep the2.5s gate and disable the
+optional budget in the cumulative product default next. Investigate recently active publisher
+rechecks jointly with publication cadence; distinguish publication delay from discovery/application
+before another bounded repair. Do not reduce a threshold, select fewer keys, repeat until passing,
+or claim client progress/native HTTP status substitutes for durable evidence.
+
+## Reproduction, failures and limits
+
+110 contains original frozen plans, source/artifacts and apparatus. Post-run analysis corrects one
+nonoverlap recorder-field assumption in a separate derivative; original script, traceback, exact
+observations and every old test remain. Fidelity deliberately catches modifying the frozen script;
+restoring its original bytes and retaining the corrected derivative separately passes all original
+hashes. No timing reruns. All12 journeys retained, including failed acceptance values despite
+successful data harness exits. Preliminary race artifact equals final candidate110 files; omission
+control and independent native race audits pass. Earlier invocation/type errors remain qualified in
+`attempts.json`; no inflated test credit.
+
+61 encrypted cases across modes,67 unit,81 metadata and13 observer checks precede timing;13 fresh
+ordinary source/static checks and scoped format pass afterward. No validators/builds/profiling ran
+concurrently with the12 timed journeys. Actual fixture Goals5000/4157/1049, not the old unestablished
+13kH seed; native1CPU/1GiB/no swap, browser Chrome on this Mac, not Android/real passkey-provider
+qualification. Known fixture secrets are excluded/checked, not universal DLP. Unsigned111 after110.
+No signing, push, preview/API restart, release prep or deployment.
+''')
+with(r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Quiet budget improves throughput but fails stronger peer-latency gate (phase111)\n\nAll original eight journeys pass, with median replay gains16.8% heavy/38.8% nonoverlap and quiet\nrequest reductions38.5%/75.0%. New two-receiver120-key candidate p95s2532.0/2739.1ms fail the unchanged\n2.5s gate; reference withheld2581.8ms also fails. Preserve all observations and do not promote. All\nmarkers/data/independent native signatures/prefixes, seed-byte, cold-profile and isolation/resource\nguards pass. Independent raw reconstruction rejects false/missing gate credit; corrected post-parser\nfield assumption/fidelity incident retained with no experiment rerun.13 fresh ordinary checks pass.\n[Complete results/limits](performance-experiments/2026-10-27-quiet-budget/phase111/README.md).\n\nNext bounded state is to retain implementation/evidence with optional quiet budget disabled, then\nseparate recent-writer discovery from publication pacing. Unsigned111 after110;912/367 qualification\npaused. No release prep or deployment.\n''')
+with(r/'docs/decisions.md').open('a')as f:f.write('''\n## 2026-10-27 — Throughput does not override the peer-latency gate (phase111)\n\nCandidate gains16.8%/38.8% replay throughput and passes original eight cases, but new two-receiver\ncomplete peer p95s2532.0/2739.1ms miss2.5s. Reference withheld also misses; do not infer a causal\nregression from single observations. Retain every failed gate, disable optional quiet scheduling\nin the product default, and investigate active-writer discovery/publication pacing before adoption.\nKeep2.5s and full120 keys; no outcome-driven timing rerun, threshold relaxation or release preparation.\n''')

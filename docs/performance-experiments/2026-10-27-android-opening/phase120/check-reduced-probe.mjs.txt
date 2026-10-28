@@ -1,0 +1,20 @@
+import{readFileSync}from'node:fs';import{runInNewContext}from'node:vm';import assert from'node:assert/strict';
+const script=readFileSync(new URL('./reduced-probe.js',import.meta.url),'utf8');
+const sentinel='PRIVATE-SENTINEL-NOT-REAL-DATA',result={private:sentinel},promise=Promise.resolve(result);
+let ready=false,mutation,clock=0;
+class Request{constructor(){this.result={ct:new Uint8Array(100),private:sentinel};this.handlers={};}addEventListener(n,f){this.handlers[n]=f;}}
+const req=new Request();class Store{constructor(){this.name='meta';}get(){return req;}getAll(){return req;}}
+const credential={get:()=>promise},prior=credential.get,oldGet=Store.prototype.get,oldAll=Store.prototype.getAll;
+const context={performance:{now:()=>++clock},navigator:{credentials:credential},IDBObjectStore:Store,Uint8Array,
+  document:{visibilityState:'visible',querySelector:()=>ready?{}:null,getElementById:()=>({}),addEventListener(){},removeEventListener(){}},
+  MutationObserver:class{constructor(f){mutation=f;}observe(){}disconnect(){}},PerformanceObserver:class{observe(){}disconnect(){}},setInterval:()=>1,clearInterval(){}};
+assert.match(runInNewContext(script,context),/armed/);assert.equal(credential.get({private:sentinel}),promise);
+assert.equal(new Store().get(['local-baseline',0]),req);req.handlers.success();await Promise.resolve();
+assert.equal(context.__doneOpeningReduced.read().reads[0].cipherBytes,100);
+assert(!JSON.stringify(context.__doneOpeningReduced.read()).includes(sentinel));
+assert.equal(new Store().getAll({private:sentinel}),req);req.result=[result,result];req.handlers.success();
+assert.equal(context.__doneOpeningReduced.read().reads[1].rows,2);
+ready=true;mutation();assert.equal(context.__doneOpeningReduced.read().active,false);
+assert.equal(credential.get,prior);assert.equal(Store.prototype.get,oldGet);assert.equal(Store.prototype.getAll,oldAll);
+assert(!JSON.stringify(context.__doneOpeningReduced.read()).includes(sentinel));
+console.log('Reduced probe controls pass: original API identities, numeric lengths/rows, no sentinel retention, editor stop/restoration.');

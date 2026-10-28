@@ -1,0 +1,126 @@
+from pathlib import Path
+import json,gzip
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');base=r/'docs/performance-experiments/2026-10-27-peer-pacing';e=base/'phase114';e.mkdir();(e/'reports').mkdir();(e/'checks').mkdir();(e/'reproduction').mkdir()
+for n in ['retained-attribution.json','capacity-attribution.json','independent-review.json','scheduler-replay.json','budget-replay.json','initial-scheduler-replay.json','initial-scheduler-inputs.json','initial-budget-replay.json']:(e/'reports'/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+for n in ['retained-console.log','capacity-console.log','independent-review.log','scheduler-console.log','budget-console.log','initial-scheduler-console.log','initial-budget-console.log']:(e/'checks'/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+(e/'next-repair.md').write_bytes((s/'next-repair.md').read_bytes())
+for n in ['initial-scheduler-probe.mjs','initial-budget-probe.mjs','package114.py']:(e/'reproduction'/(n+'.txt')).write_bytes((s/n).read_bytes())
+(e/'README.md').write_text('''# Phase114 — Publication delay and capacity backoff both contribute
+
+**The aim remains complete peer p95 below2.5s while retaining the catch-up gains. Quiet reuse stays
+disabled; this diagnosis does not clear the gate or activate a repair.** All31 earlier patches are
+signed/pushed at1ee9c351.113/114 are new unsigned evidence patches; no release preparation/deployment.
+
+Reuse every key in the four original111 journeys:480 observations, no new benchmark run. Native
+accepted-position counts312 and sequential successful submission requests agree. All480 keys have
+admissible bounded mappings;448 identify a single publisher position,32 retain grouped alternatives.
+All33 keys over2.5s map uniquely. Following fresh read cursors account for every native position in
+both directions. Independent reconstruction verifies every key total/stage sum and original p95;
+missing-key and false-gate controls fail.13 synthetic instrument controls pass. Original native/data/
+cold/profile/resource guards remain [at their existing home](../../2026-10-27-quiet-budget/phase111/README.md).
+
+## Where the two candidate p95 samples spent time
+
+| Original sample | Complete peer p95 upper bound | Dispatch→submission start | Server availability→read opportunity | Read headers→peer DOM |
+|---|---:|---:|---:|---:|
+| C normal, key91 / accepted position65 |2532.0ms (**fail**)|2268–2272ms|182–199ms|47.3–51.0ms|
+| C withheld, key81 / accepted position63 |2739.1ms (**fail**)|1063–1067ms|1598–1613ms|41.1–45.1ms|
+
+These are the actual keys at each complete-series p95, not a sum of independent marginal p95s.
+Availability is bounded between successful submission start and headers using independent native
+accepted-prefix evidence, not HTTP status alone. Pre-HTTP includes local admission, waiting/batching,
+preparation and persistence; uninstrumented internals remain unresolved. Post-header includes remaining
+body transfer, verification, native commit/readback, final owned application and DOM notification.
+Neither stage is a measurement of server CPU or just network delay.
+
+Across all120 candidate keys, submission HTTP p95 is bounded22–32ms normal/22–28ms withheld; read
+HTTP38–42ms/32–36ms; final read-header→DOM56.3–60.0ms/66.0–70.0ms. These marginal intervals must not be
+added to predict an end-to-end quantile. The seconds are largely before HTTP publication and before
+the right read opportunity. Exact stage alternatives and each failed key remain in the reports.
+
+## Capacity creates a whole-receive-lane pause
+
+| Journey | H1 batch429s | H2 batch429s | H1 no-read interval after429 | Failed peer keys overlapping H1 capacity pause |
+|---|---:|---:|---:|---:|
+| R normal |24|17|1001–1009ms|1/3|
+| C normal |21|10|1002–1009ms|6/7|
+| C withheld |23|12|1001–1010ms|12/13|
+| R withheld |18|11|1001–1007ms|10/10|
+
+All136 recorded native errors independently identify429 `authorization-refused/capacity`; browser
+counts agree. No submit, membership or grant failures in these journeys. A catch-up batch refusal
+returns an unknown receive outcome, and the existing composed scheduler imposes the1s receive failure
+clock. It pauses subsequent reads of **every publisher** in that receiver, including an already
+available interactive peer. Sending has its own failure state; do not call this a halt of both lanes.
+The overlap table is observed temporal overlap, not a counterfactual guarantee that removing the
+refusal saves exactly that interval. Ready remained1; content hints do not bypass failed receive clocks.
+
+A concrete withheld tail (key33): after an empty-progress opportunity, H1 gets a hot-publisher batch
+429, waits about1s, refreshes membership/history and sweeps other publishers, then reads H2. Its
+availability→opportunity delay is2014–2048ms. Thus750ms is a fixed eligibility budget at selection,
+not a preemptive wall-clock read deadline when a pass or failure clock prevents selection. Shrinking
+only that budget cannot repair the whole composition.
+
+The policy admits16 work units/s per service-held session with120 burst; process64/s with480 burst,
+active16/per-session4. A4-frame batch reserves4 units, not one HTTP unit. Observed scoped concurrency
+upper bound3 (per client2) is below those active ceilings; each client has one successful grant begin/
+finish. Source keeps renewed grants on the parent session key. The native capacity response does not
+identify whether admission or batch top-up refused: do not invent that unavailable counter. A
+pinned budget boundary check shows30 four-page calls exhaust a session, another session still has its
+own burst, and at63ms refill one peer read fits while a4-page top-up fails. Failed top-up still costs
+one admission unit; later refill admits4. This tests existing policy arithmetic, not historical branch
+attribution or measured physical server capacity. No limit, concurrency or backoff was changed.
+
+## Publication can lose an already-expired quiet opportunity
+
+Current `batchWindow.note()` replaces the due time on later local input until the fixed2s cap.
+The composed scheduler serializes receive/send passes and rechecks the quiet deadline after an async
+send prelude. An opportunity that was due while another pass ran can be postponed by the next input.
+The same helper also controls local journal flush; scope a repair to publication first.
+
+Three frozen fake-clock histories use the verbatim production window/scheduler slice from signed
+1ee9c351.8 local wakes at500ms spacing, otherwise controlled successful operations:
+
+| Deliberately controlled history | First publication |
+|---|---:|
+| Receive100ms, prelude0ms |300ms|
+| Receive250ms, prelude0ms |2000ms|
+| Receive100ms, prelude250ms |2100ms|
+
+All8 inputs publish, at most one lane is active, cancellation drains. Round quanta were fixed before
+execution and are not fitted estimates of real internal costs. This demonstrates a possible mechanism;
+it does not prove which real prelude took250ms or predict a repaired p95. Native authority/crypto and
+application paths are outside this success-only model and retain all original checks. Pinning reads
+to complete signed Git source afterward leaves source hashes and every deterministic outcome exact;
+initial and pinned artifacts remain. No timing-driven rerun or benchmark adoption credit.
+
+## Next bounded repair and safeguards
+
+[Contract](next-repair.md): once a publication window becomes due, later input must not reopen it.
+Prefer the publication scheduler's existing close/clear lifecycle so local flush batching and mobile
+admission stay unchanged. Preserve persisted-wire retries, source custody, durable barriers, ownership,
+all fresh authority/history/witness/authorization/commit checks and every existing failure clock. Add
+expired-window, async-prelude, fresh-window, persisted-retry, backoff, lock/flush and local-flush
+independence regressions before change. This is a proposed repair, not implemented here.
+
+Then rebuild both clients and rerun original eight plus four complete two-receiver normal/withheld
+journeys. Keep2.5s, all120 keys, every data/fairness/local-typing/replay gate and measured catch-up gains.
+If publication latching is insufficient, the separate capacity target is proactive pacing/reserved
+interactive opportunity before429, not ignoring refusals or allowing new hints to erase backoff.
+Changed interference means no fixed-timestamp subtraction predicts success.
+
+Same fixture limitation: actual5kH Goals, virtual browser credentials, Chrome on this Mac, native1CPU/
+1GiB; no Android or population inference. Generalized qualification912/367 stays paused. No product
+runtime/old-test change, default activation, preview/API restart, release prep or deployment.
+''')
+(base/'README.md').write_text('''# Publication pacing versus receiver discovery
+
+[113](phase113/README.md) records the31 signed/pushed commits and retained-trace attribution contract.
+[114](phase114/README.md) reconstructs all480 keys: both pre-publication wait and capacity-driven
+receive pauses contribute to the failed2.5s cases. No new benchmark or runtime change; quiet reuse
+stays disabled. The [next bounded repair](phase114/next-repair.md) is publication-only expiry latching,
+followed by proactive capacity pacing if needed. Preserve all security, data and2.5s gates before
+adopting the earlier catch-up speedup. Qualification remains paused; no release preparation.
+''')
+with(r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Attribute late-peer tails to publication and capacity pauses (phase114)\n\nAll480 retained keys match reviewed111 totals;448 have one position,32 bounded grouped alternatives,\nall33 keys over2.5s uniquely map. Independent312-position/timing/omission reconstruction and13 helper\ncontrols pass. C-normal p95 key spends2268–2272ms pre-submit; C-withheld p95 key waits1598–1613ms from\navailability to read. All136 native errors identify capacity; H1's~1s post429 no-read intervals overlap\n6/7 normal and12/13 withheld candidate tail keys. No new benchmark or claimed causal repair effect.\n\nPinned scheduler counterexamples publish first at300ms control versus2000/2100ms under controlled\nreceive/prelude overlap; no real internal-cost estimate. Next repair: preserve a due publication\nwindow in the publication scheduler, keeping shared local flush and failed-operation clocks intact;\nthen address proactive capacity pacing if needed. [Full evidence/limits](performance-experiments/2026-10-27-peer-pacing/phase114/README.md).\nUnsigned114 after113; runtime/old tests/default held/2.5s and912/367 qualification unchanged. No\nrelease prep, preview update or deployment.\n''')
+with(r/'docs/decisions.md').open('a')as f:f.write('''\n## 2026-10-27 — Repair expired publication urgency before broad capacity policy (phase114)\n\nRetained full-series attribution finds both source pre-HTTP wait and capacity-induced receiver pauses.\nAll over-gate keys map uniquely; no partial p95 or HTTP-only acceptance inference. The existing\nscheduler can postpone an already-due window when later input arrives during receive/prelude work,\nconfirmed as a possible mechanism by pinned fake-clock histories. Prefer publication-only deadline\nlatching next; the shared helper also serves local flush, which needs its own typing evidence.\n\nKeep existing persisted retries, durability, authorization/final checks and refusal backoff. If\nlatching fails the unchanged whole-client2.5s/gain/data gates, pace capacity before refusal rather\nthan bypass it or infer a safe larger quota. These traces identify capacity but not the exact quota\nbranch; policy limits are not measured machine capacity. No runtime repair/default activation or\nrelease preparation in this diagnostic.\n''')

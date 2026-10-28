@@ -1,0 +1,16 @@
+[
+  {
+    "name": "activation-native-groups-projection",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "--test",
+      "--test-timeout=120000",
+      "test/account-receive/groups.test.mjs",
+      "test/account-receive/read-projection.test.mjs"
+    ],
+    "environment": {},
+    "startedAt": 1793122747412,
+    "completedAt": 1793122817084,
+    "exitCode": 0
+  }
+]

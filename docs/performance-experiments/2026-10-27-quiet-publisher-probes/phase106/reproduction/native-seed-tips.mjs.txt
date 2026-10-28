@@ -1,0 +1,6 @@
+import { inspect } from './audit-lib.mjs';
+import { readFileSync,writeFileSync } from 'node:fs';
+const root='/private/tmp/done-quiet-publisher-probes-20261027';
+const f=JSON.parse(readFileSync(root+'/private-fixture/fixture.json'));
+const seed=inspect(f.state+'/account.sqlite');
+writeFileSync(root+'/native-seed-tips.json',JSON.stringify({status:'independently-verified',databaseSha256:seed.databaseSha256,H:seed.accounts.find(a=>a.label==='H').streams},null,2)+'\n');

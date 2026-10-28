@@ -1,0 +1,146 @@
+{
+  "scope": "same120keys; request counts include actual read batching/discovery/publication, not a count of scheduler passes",
+  "beforeFunctionalGuardFailed": true,
+  "afterAllFunctionalGuardsPassed": true,
+  "notArbitraryMultiAccountCapacityEvidence": true,
+  "rows": [
+    {
+      "label": "before",
+      "typingWindowMs": 59510.163330078125,
+      "requestsDuring120KeyWindow": 600,
+      "byDevice": {
+        "H1": 475,
+        "H2": 125
+      },
+      "refusals": {
+        "429": 19
+      },
+      "endpoints": [
+        {
+          "device": "H1",
+          "path": "/account/delivery/read-v2",
+          "status": 200,
+          "requests": 264
+        },
+        {
+          "device": "H1",
+          "path": "/account/delivery/read-v2-batch",
+          "status": 200,
+          "requests": 169
+        },
+        {
+          "device": "H1",
+          "path": "/account/delivery/read-v2-batch",
+          "status": 429,
+          "requests": 19
+        },
+        {
+          "device": "H1",
+          "path": "/account/history/v1/checkpoint",
+          "status": 200,
+          "requests": 11
+        },
+        {
+          "device": "H1",
+          "path": "/account/membership/v2/discover",
+          "status": 200,
+          "requests": 12
+        },
+        {
+          "device": "H2",
+          "path": "/account/delivery/read-v2",
+          "status": 200,
+          "requests": 6
+        },
+        {
+          "device": "H2",
+          "path": "/account/delivery/submit",
+          "status": 200,
+          "requests": 117
+        },
+        {
+          "device": "H2",
+          "path": "/account/history/v1/checkpoint",
+          "status": 200,
+          "requests": 1
+        },
+        {
+          "device": "H2",
+          "path": "/account/membership/v2/discover",
+          "status": 200,
+          "requests": 1
+        }
+      ],
+      "fullNetworkRequestCount": 875
+    },
+    {
+      "label": "after",
+      "typingWindowMs": 59533.835693359375,
+      "requestsDuring120KeyWindow": 615,
+      "byDevice": {
+        "H1": 477,
+        "H2": 138
+      },
+      "refusals": {
+        "429": 13
+      },
+      "endpoints": [
+        {
+          "device": "H1",
+          "path": "/account/delivery/read-v2",
+          "status": 200,
+          "requests": 283
+        },
+        {
+          "device": "H1",
+          "path": "/account/delivery/read-v2-batch",
+          "status": 200,
+          "requests": 159
+        },
+        {
+          "device": "H1",
+          "path": "/account/delivery/read-v2-batch",
+          "status": 429,
+          "requests": 13
+        },
+        {
+          "device": "H1",
+          "path": "/account/history/v1/checkpoint",
+          "status": 200,
+          "requests": 11
+        },
+        {
+          "device": "H1",
+          "path": "/account/membership/v2/discover",
+          "status": 200,
+          "requests": 11
+        },
+        {
+          "device": "H2",
+          "path": "/account/delivery/read-v2",
+          "status": 200,
+          "requests": 18
+        },
+        {
+          "device": "H2",
+          "path": "/account/delivery/submit",
+          "status": 200,
+          "requests": 114
+        },
+        {
+          "device": "H2",
+          "path": "/account/history/v1/checkpoint",
+          "status": 200,
+          "requests": 3
+        },
+        {
+          "device": "H2",
+          "path": "/account/membership/v2/discover",
+          "status": 200,
+          "requests": 3
+        }
+      ],
+      "fullNetworkRequestCount": 956
+    }
+  ]
+}

@@ -1,0 +1,1272 @@
+{
+  "status": "finite-mechanism-probe-not-client-timing",
+  "rows": [
+    {
+      "name": "control",
+      "quantum": 100,
+      "prelude": 0,
+      "firstPublicationMs": 300,
+      "maximumActiveLanes": 1,
+      "all8KeysPublished": true,
+      "cleanCancellation": true,
+      "events": [
+        {
+          "kind": "input",
+          "at": 0,
+          "index": 0
+        },
+        {
+          "kind": "receive-start",
+          "at": 0
+        },
+        {
+          "kind": "receive-start",
+          "at": 100
+        },
+        {
+          "kind": "receive-start",
+          "at": 200
+        },
+        {
+          "kind": "send-start",
+          "at": 300,
+          "offered": 1,
+          "sent": 0
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 300,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 300,
+          "sent": 1,
+          "accepted": 1
+        },
+        {
+          "kind": "receive-start",
+          "at": 300
+        },
+        {
+          "kind": "send-start",
+          "at": 400,
+          "offered": 1,
+          "sent": 1
+        },
+        {
+          "kind": "receive-start",
+          "at": 400
+        },
+        {
+          "kind": "input",
+          "at": 500,
+          "index": 1
+        },
+        {
+          "kind": "receive-start",
+          "at": 500
+        },
+        {
+          "kind": "receive-start",
+          "at": 600
+        },
+        {
+          "kind": "receive-start",
+          "at": 700
+        },
+        {
+          "kind": "send-start",
+          "at": 800,
+          "offered": 2,
+          "sent": 1
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 800,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 800,
+          "sent": 2,
+          "accepted": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 800
+        },
+        {
+          "kind": "send-start",
+          "at": 900,
+          "offered": 2,
+          "sent": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 900
+        },
+        {
+          "kind": "input",
+          "at": 1000,
+          "index": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 1000
+        },
+        {
+          "kind": "receive-start",
+          "at": 1100
+        },
+        {
+          "kind": "receive-start",
+          "at": 1200
+        },
+        {
+          "kind": "send-start",
+          "at": 1300,
+          "offered": 3,
+          "sent": 2
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 1300,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 1300,
+          "sent": 3,
+          "accepted": 3
+        },
+        {
+          "kind": "receive-start",
+          "at": 1300
+        },
+        {
+          "kind": "send-start",
+          "at": 1400,
+          "offered": 3,
+          "sent": 3
+        },
+        {
+          "kind": "receive-start",
+          "at": 1400
+        },
+        {
+          "kind": "input",
+          "at": 1500,
+          "index": 3
+        },
+        {
+          "kind": "receive-start",
+          "at": 1500
+        },
+        {
+          "kind": "receive-start",
+          "at": 1600
+        },
+        {
+          "kind": "receive-start",
+          "at": 1700
+        },
+        {
+          "kind": "send-start",
+          "at": 1800,
+          "offered": 4,
+          "sent": 3
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 1800,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 1800,
+          "sent": 4,
+          "accepted": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 1800
+        },
+        {
+          "kind": "send-start",
+          "at": 1900,
+          "offered": 4,
+          "sent": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 1900
+        },
+        {
+          "kind": "input",
+          "at": 2000,
+          "index": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 2000
+        },
+        {
+          "kind": "receive-start",
+          "at": 2100
+        },
+        {
+          "kind": "receive-start",
+          "at": 2200
+        },
+        {
+          "kind": "send-start",
+          "at": 2300,
+          "offered": 5,
+          "sent": 4
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 2300,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 2300,
+          "sent": 5,
+          "accepted": 5
+        },
+        {
+          "kind": "receive-start",
+          "at": 2300
+        },
+        {
+          "kind": "send-start",
+          "at": 2400,
+          "offered": 5,
+          "sent": 5
+        },
+        {
+          "kind": "receive-start",
+          "at": 2400
+        },
+        {
+          "kind": "input",
+          "at": 2500,
+          "index": 5
+        },
+        {
+          "kind": "receive-start",
+          "at": 2500
+        },
+        {
+          "kind": "receive-start",
+          "at": 2600
+        },
+        {
+          "kind": "receive-start",
+          "at": 2700
+        },
+        {
+          "kind": "send-start",
+          "at": 2800,
+          "offered": 6,
+          "sent": 5
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 2800,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 2800,
+          "sent": 6,
+          "accepted": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 2800
+        },
+        {
+          "kind": "send-start",
+          "at": 2900,
+          "offered": 6,
+          "sent": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 2900
+        },
+        {
+          "kind": "input",
+          "at": 3000,
+          "index": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 3000
+        },
+        {
+          "kind": "receive-start",
+          "at": 3100
+        },
+        {
+          "kind": "receive-start",
+          "at": 3200
+        },
+        {
+          "kind": "send-start",
+          "at": 3300,
+          "offered": 7,
+          "sent": 6
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 3300,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 3300,
+          "sent": 7,
+          "accepted": 7
+        },
+        {
+          "kind": "receive-start",
+          "at": 3300
+        },
+        {
+          "kind": "send-start",
+          "at": 3400,
+          "offered": 7,
+          "sent": 7
+        },
+        {
+          "kind": "receive-start",
+          "at": 3400
+        },
+        {
+          "kind": "input",
+          "at": 3500,
+          "index": 7
+        },
+        {
+          "kind": "receive-start",
+          "at": 3500
+        },
+        {
+          "kind": "receive-start",
+          "at": 3600
+        },
+        {
+          "kind": "receive-start",
+          "at": 3700
+        },
+        {
+          "kind": "send-start",
+          "at": 3800,
+          "offered": 8,
+          "sent": 7
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 3800,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 3800,
+          "sent": 8,
+          "accepted": 8
+        },
+        {
+          "kind": "receive-start",
+          "at": 3800
+        },
+        {
+          "kind": "send-start",
+          "at": 3900,
+          "offered": 8,
+          "sent": 8
+        },
+        {
+          "kind": "receive-start",
+          "at": 3900
+        },
+        {
+          "kind": "receive-start",
+          "at": 4000
+        },
+        {
+          "kind": "receive-start",
+          "at": 4100
+        },
+        {
+          "kind": "receive-start",
+          "at": 4200
+        },
+        {
+          "kind": "receive-start",
+          "at": 4300
+        },
+        {
+          "kind": "receive-start",
+          "at": 4400
+        },
+        {
+          "kind": "receive-start",
+          "at": 4500
+        },
+        {
+          "kind": "receive-start",
+          "at": 4600
+        },
+        {
+          "kind": "receive-start",
+          "at": 4700
+        },
+        {
+          "kind": "receive-start",
+          "at": 4800
+        },
+        {
+          "kind": "receive-start",
+          "at": 4900
+        },
+        {
+          "kind": "receive-start",
+          "at": 5000
+        },
+        {
+          "kind": "receive-start",
+          "at": 5100
+        },
+        {
+          "kind": "receive-start",
+          "at": 5200
+        },
+        {
+          "kind": "receive-start",
+          "at": 5300
+        },
+        {
+          "kind": "receive-start",
+          "at": 5400
+        },
+        {
+          "kind": "receive-start",
+          "at": 5500
+        },
+        {
+          "kind": "receive-start",
+          "at": 5600
+        },
+        {
+          "kind": "receive-start",
+          "at": 5700
+        },
+        {
+          "kind": "receive-start",
+          "at": 5800
+        },
+        {
+          "kind": "receive-start",
+          "at": 5900
+        },
+        {
+          "kind": "receive-start",
+          "at": 6000
+        },
+        {
+          "kind": "receive-start",
+          "at": 6100
+        },
+        {
+          "kind": "receive-start",
+          "at": 6200
+        },
+        {
+          "kind": "receive-start",
+          "at": 6300
+        },
+        {
+          "kind": "receive-start",
+          "at": 6400
+        },
+        {
+          "kind": "receive-start",
+          "at": 6500
+        },
+        {
+          "kind": "receive-start",
+          "at": 6600
+        },
+        {
+          "kind": "receive-start",
+          "at": 6700
+        },
+        {
+          "kind": "receive-start",
+          "at": 6800
+        },
+        {
+          "kind": "receive-start",
+          "at": 6900
+        },
+        {
+          "kind": "receive-start",
+          "at": 7000
+        },
+        {
+          "kind": "receive-start",
+          "at": 7100
+        },
+        {
+          "kind": "receive-start",
+          "at": 7200
+        },
+        {
+          "kind": "receive-start",
+          "at": 7300
+        },
+        {
+          "kind": "receive-start",
+          "at": 7400
+        },
+        {
+          "kind": "receive-start",
+          "at": 7500
+        },
+        {
+          "kind": "receive-start",
+          "at": 7600
+        },
+        {
+          "kind": "receive-start",
+          "at": 7700
+        },
+        {
+          "kind": "receive-start",
+          "at": 7800
+        },
+        {
+          "kind": "receive-start",
+          "at": 7900
+        },
+        {
+          "kind": "receive-start",
+          "at": 8000
+        }
+      ]
+    },
+    {
+      "name": "receive-slot-overlap",
+      "quantum": 250,
+      "prelude": 0,
+      "firstPublicationMs": 500,
+      "maximumActiveLanes": 1,
+      "all8KeysPublished": true,
+      "cleanCancellation": true,
+      "events": [
+        {
+          "kind": "input",
+          "at": 0,
+          "index": 0
+        },
+        {
+          "kind": "receive-start",
+          "at": 0
+        },
+        {
+          "kind": "receive-start",
+          "at": 250
+        },
+        {
+          "kind": "input",
+          "at": 500,
+          "index": 1
+        },
+        {
+          "kind": "send-start",
+          "at": 500,
+          "offered": 2,
+          "sent": 0
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 500,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 500,
+          "sent": 2,
+          "accepted": 1
+        },
+        {
+          "kind": "receive-start",
+          "at": 500
+        },
+        {
+          "kind": "send-start",
+          "at": 750,
+          "offered": 2,
+          "sent": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 750
+        },
+        {
+          "kind": "input",
+          "at": 1000,
+          "index": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 1000
+        },
+        {
+          "kind": "receive-start",
+          "at": 1250
+        },
+        {
+          "kind": "input",
+          "at": 1500,
+          "index": 3
+        },
+        {
+          "kind": "send-start",
+          "at": 1500,
+          "offered": 4,
+          "sent": 2
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 1500,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 1500,
+          "sent": 4,
+          "accepted": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 1500
+        },
+        {
+          "kind": "send-start",
+          "at": 1750,
+          "offered": 4,
+          "sent": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 1750
+        },
+        {
+          "kind": "input",
+          "at": 2000,
+          "index": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 2000
+        },
+        {
+          "kind": "receive-start",
+          "at": 2250
+        },
+        {
+          "kind": "input",
+          "at": 2500,
+          "index": 5
+        },
+        {
+          "kind": "send-start",
+          "at": 2500,
+          "offered": 6,
+          "sent": 4
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 2500,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 2500,
+          "sent": 6,
+          "accepted": 3
+        },
+        {
+          "kind": "receive-start",
+          "at": 2500
+        },
+        {
+          "kind": "send-start",
+          "at": 2750,
+          "offered": 6,
+          "sent": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 2750
+        },
+        {
+          "kind": "input",
+          "at": 3000,
+          "index": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 3000
+        },
+        {
+          "kind": "receive-start",
+          "at": 3250
+        },
+        {
+          "kind": "input",
+          "at": 3500,
+          "index": 7
+        },
+        {
+          "kind": "send-start",
+          "at": 3500,
+          "offered": 8,
+          "sent": 6
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 3500,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 3500,
+          "sent": 8,
+          "accepted": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 3500
+        },
+        {
+          "kind": "send-start",
+          "at": 3750,
+          "offered": 8,
+          "sent": 8
+        },
+        {
+          "kind": "receive-start",
+          "at": 3750
+        },
+        {
+          "kind": "receive-start",
+          "at": 4000
+        },
+        {
+          "kind": "receive-start",
+          "at": 4250
+        },
+        {
+          "kind": "receive-start",
+          "at": 4500
+        },
+        {
+          "kind": "receive-start",
+          "at": 4750
+        },
+        {
+          "kind": "receive-start",
+          "at": 5000
+        },
+        {
+          "kind": "receive-start",
+          "at": 5250
+        },
+        {
+          "kind": "receive-start",
+          "at": 5500
+        },
+        {
+          "kind": "receive-start",
+          "at": 5750
+        },
+        {
+          "kind": "receive-start",
+          "at": 6000
+        },
+        {
+          "kind": "receive-start",
+          "at": 6250
+        },
+        {
+          "kind": "receive-start",
+          "at": 6500
+        },
+        {
+          "kind": "receive-start",
+          "at": 6750
+        },
+        {
+          "kind": "receive-start",
+          "at": 7000
+        },
+        {
+          "kind": "receive-start",
+          "at": 7250
+        },
+        {
+          "kind": "receive-start",
+          "at": 7500
+        },
+        {
+          "kind": "receive-start",
+          "at": 7750
+        },
+        {
+          "kind": "receive-start",
+          "at": 8000
+        }
+      ]
+    },
+    {
+      "name": "send-prelude-overlap",
+      "quantum": 100,
+      "prelude": 250,
+      "firstPublicationMs": 550,
+      "maximumActiveLanes": 1,
+      "all8KeysPublished": true,
+      "cleanCancellation": true,
+      "events": [
+        {
+          "kind": "input",
+          "at": 0,
+          "index": 0
+        },
+        {
+          "kind": "receive-start",
+          "at": 0
+        },
+        {
+          "kind": "receive-start",
+          "at": 100
+        },
+        {
+          "kind": "receive-start",
+          "at": 200
+        },
+        {
+          "kind": "send-start",
+          "at": 300,
+          "offered": 1,
+          "sent": 0
+        },
+        {
+          "kind": "input",
+          "at": 500,
+          "index": 1
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 550,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 550,
+          "sent": 2,
+          "accepted": 1
+        },
+        {
+          "kind": "receive-start",
+          "at": 550
+        },
+        {
+          "kind": "send-start",
+          "at": 650,
+          "offered": 2,
+          "sent": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 650
+        },
+        {
+          "kind": "receive-start",
+          "at": 750
+        },
+        {
+          "kind": "receive-start",
+          "at": 850
+        },
+        {
+          "kind": "receive-start",
+          "at": 950
+        },
+        {
+          "kind": "input",
+          "at": 1000,
+          "index": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 1050
+        },
+        {
+          "kind": "receive-start",
+          "at": 1150
+        },
+        {
+          "kind": "receive-start",
+          "at": 1250
+        },
+        {
+          "kind": "send-start",
+          "at": 1350,
+          "offered": 3,
+          "sent": 2
+        },
+        {
+          "kind": "input",
+          "at": 1500,
+          "index": 3
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 1600,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 1600,
+          "sent": 4,
+          "accepted": 2
+        },
+        {
+          "kind": "receive-start",
+          "at": 1600
+        },
+        {
+          "kind": "send-start",
+          "at": 1700,
+          "offered": 4,
+          "sent": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 1700
+        },
+        {
+          "kind": "receive-start",
+          "at": 1800
+        },
+        {
+          "kind": "receive-start",
+          "at": 1900
+        },
+        {
+          "kind": "input",
+          "at": 2000,
+          "index": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 2000
+        },
+        {
+          "kind": "receive-start",
+          "at": 2100
+        },
+        {
+          "kind": "receive-start",
+          "at": 2200
+        },
+        {
+          "kind": "send-start",
+          "at": 2300,
+          "offered": 5,
+          "sent": 4
+        },
+        {
+          "kind": "input",
+          "at": 2500,
+          "index": 5
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 2550,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 2550,
+          "sent": 6,
+          "accepted": 3
+        },
+        {
+          "kind": "receive-start",
+          "at": 2550
+        },
+        {
+          "kind": "send-start",
+          "at": 2650,
+          "offered": 6,
+          "sent": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 2650
+        },
+        {
+          "kind": "receive-start",
+          "at": 2750
+        },
+        {
+          "kind": "receive-start",
+          "at": 2850
+        },
+        {
+          "kind": "receive-start",
+          "at": 2950
+        },
+        {
+          "kind": "input",
+          "at": 3000,
+          "index": 6
+        },
+        {
+          "kind": "receive-start",
+          "at": 3050
+        },
+        {
+          "kind": "receive-start",
+          "at": 3150
+        },
+        {
+          "kind": "receive-start",
+          "at": 3250
+        },
+        {
+          "kind": "send-start",
+          "at": 3350,
+          "offered": 7,
+          "sent": 6
+        },
+        {
+          "kind": "input",
+          "at": 3500,
+          "index": 7
+        },
+        {
+          "kind": "pre-envelope-check",
+          "at": 3600,
+          "due": null
+        },
+        {
+          "kind": "publish",
+          "at": 3600,
+          "sent": 8,
+          "accepted": 4
+        },
+        {
+          "kind": "receive-start",
+          "at": 3600
+        },
+        {
+          "kind": "send-start",
+          "at": 3700,
+          "offered": 8,
+          "sent": 8
+        },
+        {
+          "kind": "receive-start",
+          "at": 3700
+        },
+        {
+          "kind": "receive-start",
+          "at": 3800
+        },
+        {
+          "kind": "receive-start",
+          "at": 3900
+        },
+        {
+          "kind": "receive-start",
+          "at": 4000
+        },
+        {
+          "kind": "receive-start",
+          "at": 4100
+        },
+        {
+          "kind": "receive-start",
+          "at": 4200
+        },
+        {
+          "kind": "receive-start",
+          "at": 4300
+        },
+        {
+          "kind": "receive-start",
+          "at": 4400
+        },
+        {
+          "kind": "receive-start",
+          "at": 4500
+        },
+        {
+          "kind": "receive-start",
+          "at": 4600
+        },
+        {
+          "kind": "receive-start",
+          "at": 4700
+        },
+        {
+          "kind": "receive-start",
+          "at": 4800
+        },
+        {
+          "kind": "receive-start",
+          "at": 4900
+        },
+        {
+          "kind": "receive-start",
+          "at": 5000
+        },
+        {
+          "kind": "receive-start",
+          "at": 5100
+        },
+        {
+          "kind": "receive-start",
+          "at": 5200
+        },
+        {
+          "kind": "receive-start",
+          "at": 5300
+        },
+        {
+          "kind": "receive-start",
+          "at": 5400
+        },
+        {
+          "kind": "receive-start",
+          "at": 5500
+        },
+        {
+          "kind": "receive-start",
+          "at": 5600
+        },
+        {
+          "kind": "receive-start",
+          "at": 5700
+        },
+        {
+          "kind": "receive-start",
+          "at": 5800
+        },
+        {
+          "kind": "receive-start",
+          "at": 5900
+        },
+        {
+          "kind": "receive-start",
+          "at": 6000
+        },
+        {
+          "kind": "receive-start",
+          "at": 6100
+        },
+        {
+          "kind": "receive-start",
+          "at": 6200
+        },
+        {
+          "kind": "receive-start",
+          "at": 6300
+        },
+        {
+          "kind": "receive-start",
+          "at": 6400
+        },
+        {
+          "kind": "receive-start",
+          "at": 6500
+        },
+        {
+          "kind": "receive-start",
+          "at": 6600
+        },
+        {
+          "kind": "receive-start",
+          "at": 6700
+        },
+        {
+          "kind": "receive-start",
+          "at": 6800
+        },
+        {
+          "kind": "receive-start",
+          "at": 6900
+        },
+        {
+          "kind": "receive-start",
+          "at": 7000
+        },
+        {
+          "kind": "receive-start",
+          "at": 7100
+        },
+        {
+          "kind": "receive-start",
+          "at": 7200
+        },
+        {
+          "kind": "receive-start",
+          "at": 7300
+        },
+        {
+          "kind": "receive-start",
+          "at": 7400
+        },
+        {
+          "kind": "receive-start",
+          "at": 7500
+        },
+        {
+          "kind": "receive-start",
+          "at": 7600
+        },
+        {
+          "kind": "receive-start",
+          "at": 7700
+        },
+        {
+          "kind": "receive-start",
+          "at": 7800
+        },
+        {
+          "kind": "receive-start",
+          "at": 7900
+        },
+        {
+          "kind": "receive-start",
+          "at": 8000
+        }
+      ]
+    }
+  ],
+  "conclusions": {
+    "controlBelow500ms": true,
+    "receiveOverlapPublishesBy500ms": true,
+    "preludeOverlapPublishesBy550ms": true
+  },
+  "notAnEstimateOfObservedPreludeCost": true
+}

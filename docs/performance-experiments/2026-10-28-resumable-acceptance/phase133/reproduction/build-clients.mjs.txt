@@ -1,0 +1,33 @@
+import {build} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/dist/node/index.js';
+import {readFileSync,writeFileSync,readdirSync,statSync} from 'node:fs';
+import {createHash}from'node:crypto';import{join}from'node:path';import assert from'node:assert/strict';
+const root='/private/tmp/done-resumable-acceptance-20261028';const sha=b=>createHash('sha256').update(b).digest('hex');
+const anchor='  clearAccountTransition(result.accountId);';
+const probe=`${anchor}
+  globalThis.__maintenanceOwner = result;
+  const maintenanceTrace = [];
+  let maintenanceOverflow = 0;
+  const maintenance = result.devices?.localHistory;
+  const sampleMaintenance = () => {
+    if (!maintenance) return;
+    const status = maintenance.status;
+    const row = {at: performance.timeOrigin + performance.now(), phase:status.phase, reason:status.reason, progress:status.progress && {...status.progress}, diagnostics:maintenance.diagnostics};
+    if (maintenanceTrace.length < 16384) maintenanceTrace.push(row); else maintenanceOverflow++;
+  };
+  maintenance?.onStatus(sampleMaintenance); sampleMaintenance();
+  globalThis.__maintenanceRead = () => { sampleMaintenance(); return {events:structuredClone(maintenanceTrace),overflow:maintenanceOverflow,status:maintenance?.status,diagnostics:maintenance?.diagnostics}; };
+`;
+writeFileSync(root+'/maintenance-probe.txt',probe);
+const buildRows=[];
+for(const variant of ['R','C']) {
+ const source=root+'/source-'+variant;
+ const flags={VITE_ACCOUNT_RETENTION_AUTO:'1',VITE_ACCOUNT_RETENTION_RESUME:variant==='C'?'1':'0',VITE_ACCOUNT_HISTORY_AUTO:'0',VITE_ACCOUNT_BATCH:'coordinated-2000'};
+ Object.assign(process.env,flags,{APP_BUILD_REVISION:'3ae028480fa988c694b01394a43fc6f0d5eddc43-dirty',APP_BUILD_DATE:'2026-10-28'});
+ let hits=0;
+ const before=Date.now();
+ await build({root:source,configFile:source+'/vite.config.ts',logLevel:'warn',plugins:[{name:'observe-real-local-maintenance',enforce:'pre',transform(code,id){if(!id.endsWith('/src/crdt/accountReceive.ts'))return;assert.equal(code.split(anchor).length,2);hits++;return code.replace(anchor,probe);}}]});
+ assert.equal(hits,1);
+ const assets={};for(const path of readdirSync(source+'/dist',{recursive:true}))if(statSync(source+'/dist/'+path).isFile())assets[path]=sha(readFileSync(source+'/dist/'+path));
+ writeFileSync(root+'/'+variant+'-client-identity.json',JSON.stringify({flags,sourceTree:'fcb35a25a53f4360d689ae73b45c3219cbc28dd6',observationProbeSha256:sha(probe),assets},null,2)+'\n');
+ buildRows.push({variant,flags,before,after:Date.now(),probeHits:hits});writeFileSync(root+'/build-receipts.json',JSON.stringify(buildRows,null,2)+'\n');
+}

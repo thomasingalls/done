@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "preparedSeedAcceptanceExact": true,
+  "rows": [
+    {
+      "name": "baseline-repair-1-C-normal",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 91,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "a01dd0b26fa1ad06dc545696e6690aa335277baf9b67db3f0e298e1088698e9a"
+    },
+    {
+      "name": "baseline-repair-2-C-withheld",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 93,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "c14a9a21307daa4e36b9e65a3693b9c3d02ff57b941430119c9c2549ef65ce66"
+    }
+  ]
+}

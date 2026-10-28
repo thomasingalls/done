@@ -1,0 +1,9 @@
+from pathlib import Path
+import subprocess,os,json,time
+s=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';rows=[]
+steps=[('source-review',['python3',str(s/'review-source.py')]),('analysis',['python3',str(s/'analyze.py')]),('nonoverlap-analysis',['python3',str(s/'nonoverlap-analysis.py')]),('budget-analysis',['python3',str(s/'analyze-budget.py')]),('independent-time-review',['python3',str(s/'review-evidence.py')]),('fidelity',['python3',str(s/'fidelity.py')]),('late-fidelity',['python3',str(s/'late-fidelity.py')]),('native-audit',[node,str(s/'audit-native.mjs')]),('nonoverlap-native',[node,str(s/'audit-nonoverlap.mjs')]),('late-native',[node,str(s/'audit-late.mjs')]),('race-native',[node,str(s/'audit-race.mjs')])]
+rows=json.loads((s/'initial-post-review-steps.json').read_text())[:3]
+for label,cmd in steps[3:]:
+ with(s/(label+'.log')).open('w')as f:p=subprocess.run(cmd,cwd=repo,stdout=f,stderr=subprocess.STDOUT)
+ rows.append({'name':label,'command':cmd,'exit':p.returncode});(s/'post-review-steps.json').write_text(json.dumps(rows,indent=2)+'\n');print(label,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

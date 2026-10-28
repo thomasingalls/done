@@ -1,0 +1,40 @@
+{
+  "scope": "Bounded local-preparation / typing / catch-up candidate; eligible for signed-source release-artifact preparation after final ordinary checks",
+  "performanceAccepted": true,
+  "fourFrozenAfterJourneysPassed": true,
+  "originalFunctionalAndNativeGuardsPassed": true,
+  "localInputP95GateMs": 16,
+  "peerP95AndEveryMarkerGateMs": 2500,
+  "lateEditDeadlineMs": 30000,
+  "fullUnitTestsPassed": 2211,
+  "existingUnitSkips": 1,
+  "affectedMetadataTestsPassed": 103,
+  "testedBuildFlags": {
+    "VITE_ACCOUNT_RETENTION_AUTO": "1",
+    "VITE_ACCOUNT_RETENTION_RESUME": "1",
+    "VITE_ACCOUNT_HISTORY_AUTO": "0",
+    "VITE_ACCOUNT_BATCH": "coordinated-2000"
+  },
+  "sourceResumeDefault": 0,
+  "sourceServiceAutomationDefault": 0,
+  "releaseArtifactBuiltFromSignedSource": false,
+  "releaseArtifactTested": false,
+  "sourceSigned": false,
+  "published": false,
+  "deployed": false,
+  "phoneWalkthrough": "deferred by operator; not performed",
+  "generalQualification": {
+    "status": "paused and blocked; no aggregate qualification credit",
+    "obligations": 935,
+    "unresolved": 389
+  },
+  "limitations": [
+    "Four fixed synthetic desktop-browser journeys are scoped evidence, not Android measurements or a population/capacity guarantee.",
+    "No repeated before baseline; primary backlog comparison reuses complete phase153 failure evidence. Other cases have absolute after credit only.",
+    "Earlier input/functional failures and invalid measurements are retained, not reclassified as successes.",
+    "Acceptance is for explicit resume=1 candidate; default source switches remain unchanged.",
+    "Signed source, exact ARM64 artifact build/tests and separate publication procedure remain before a production release."
+  ],
+  "finalOrdinaryChecksPassed": 13,
+  "separateUninstrumentedDefaultSwitchBuildPassed": true
+}

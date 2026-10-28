@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "filesReviewed": 41,
+  "knownPrivateFixtureValuesChecked": 13,
+  "noKnownCodesCredentialPrivateKeysOrNamedSecretsInRetainedEvidence": true,
+  "scope": "Known fixture-value scan plus manual closed-label/numeric artifact review, not universal DLP."
+}

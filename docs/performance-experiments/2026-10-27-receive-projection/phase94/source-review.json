@@ -1,0 +1,12 @@
+{
+  "baseTree": "a1ad3e3a81563a049e1d4b65aaff91dabe6516ba",
+  "allOtherReceiveRuntimeBytesExactAfterReversingTwoProjectionsAndImport": true,
+  "existingPublisherResolverRuntimeExact": true,
+  "ledgerOnlyTypeOverloadsAndNewReadOnlyProjector": true,
+  "oldTestFilesByteExact": 903,
+  "fullStateVerificationApplicationHistoryPathsUntouched": true,
+  "sourceHashes": {
+    "src/crdt/accountReceive.ts": "bd1c6f6a0d18fed38244e599a6a186a2f6d71e39782e8550bcba4ec0a0486c9e",
+    "src/crdt/inboundLedger.ts": "7fbf8b25d312deeaae01c6f022d18cec900d42545e6507a00e40b9efac242076"
+  }
+}

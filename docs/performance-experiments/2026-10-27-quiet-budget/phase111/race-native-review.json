@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "race-C",
+      "status": "passed",
+      "everySeedProofByteExact": true,
+      "onlyExpectedNewPublisherPosition2": true,
+      "unrelatedAccountsUnchanged": true,
+      "noReconnectSubstitutesForHeldWake": true,
+      "normalSignaturesAndPrefixesVerified": true,
+      "databaseSha256": "57105705fd5802abead31a042070acad8c4a9f6a6fa525e4b67bb53759c5fa5c"
+    },
+    {
+      "name": "race-mutant",
+      "status": "passed",
+      "everySeedProofByteExact": true,
+      "onlyExpectedNewPublisherPosition2": true,
+      "unrelatedAccountsUnchanged": true,
+      "noReconnectSubstitutesForHeldWake": true,
+      "normalSignaturesAndPrefixesVerified": true,
+      "databaseSha256": "a61645def8504c3e7da96570d5525907e0f9ca4fa55ced48f8f28437c5e9fef6"
+    }
+  ]
+}

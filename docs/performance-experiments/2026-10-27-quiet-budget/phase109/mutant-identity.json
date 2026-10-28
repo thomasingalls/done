@@ -1,0 +1,6 @@
+{
+  "mutation": "omit attempt-generation replacement only",
+  "beforeSha256": "9c9850467782e9f88df09af447d3855079c663edba3a31c6037c598261380828",
+  "afterSha256": "ae96051c427af0bffb507a546d31f1d4b36b79601f54ea0e9e21a2ea192a7354",
+  "occurrences": 1
+}

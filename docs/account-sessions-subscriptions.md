@@ -392,3 +392,18 @@ Control hints, initial readiness and reconnect still reset discovery. Coalesced 
 content events. Periodic authenticated discovery remains in place to repair missed notifications;
 a hint is never a proof. A fresh stream readiness handshake can expedite failed network work but
 cannot clear an integrity/conflict/size/closed halt. Content events do not defeat failure backoff.
+
+
+## 2026-10-28 — Candidate: bounded editor idle reconciliation
+
+The editor candidate checks healthy idle receive state every15–20seconds, replacing its original
+60–65second interval. A missed last hint can otherwise outlive the existing30second peer-delivery
+guard even when the transport keeps sending heartbeats. The disconnected editor fallback remains
+5seconds; ceremony timing is unchanged. Hints still carry no authority, and every scheduled pass
+uses the existing authenticated discovery/receive owners, gates, rate refusals and retry backoff.
+
+This permits up to four additional quiescent editor passes/minute instead of approximately one;
+a pass may issue multiple requests. It is a scheduling bound, not an end-to-end network/processor
+deadline or a promise of2.5second idle delivery when all hints are lost. Unit regressions are in
+[test/idleSyncReconciliation.test.ts](../test/idleSyncReconciliation.test.ts). Source/default/service
+activation and release/performance acceptance remain separate; this note does not claim deployment.

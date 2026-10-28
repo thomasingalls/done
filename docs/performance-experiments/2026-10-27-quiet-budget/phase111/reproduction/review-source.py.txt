@@ -1,0 +1,13 @@
+from pathlib import Path
+import json,hashlib,subprocess
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda b:hashlib.sha256(b).hexdigest();trees={'R':'2ec6a7d54c4bee4373f79181e3ef1f91de179028','C':json.loads((s/'109-preparation.json').read_text())['expectedTree']}
+files=[p for p in subprocess.check_output(['git','ls-tree','-r','--name-only',trees['R']],cwd=r).decode().splitlines()if p.startswith(('src/','account-service/','account-protocol/','scripts/','test/','vite/','wasm/','vendor-patches/'))or p in['package.json','pnpm-lock.yaml','vite.config.ts','Dockerfile']]
+diffs=[]
+for p in files:
+ expected={v:subprocess.check_output(['git','show',t+':'+p],cwd=r)for v,t in trees.items()}
+ for v in trees:assert(s/('source-'+v)/p).read_bytes()==expected[v],(v,p)
+ if expected['R']!=expected['C']:diffs.append(p)
+assert diffs==sorted(['src/crdt/accountReceive.ts','src/crdt/receiveSelection.ts','test/receiveSelection.test.ts'])
+assert(s/'tests-before.ts').read_bytes()==subprocess.check_output(['git','show',trees['R']+':test/receiveSelection.test.ts'],cwd=r)
+assert(s/'source-C/test/receiveSelection.test.ts').read_bytes().startswith((s/'tests-before.ts').read_bytes())
+(s/'source-review.json').write_text(json.dumps({'status':'passed','trees':trees,'filesPerExportChecked':len(files),'differences':diffs,'all18OldSelectorBodiesByteExact':True,'serverAndAuthorityVerifierSourcesUnchanged':True,'sourceCopiesComparedToIndependentGitObjects':True},indent=2)+'\n')

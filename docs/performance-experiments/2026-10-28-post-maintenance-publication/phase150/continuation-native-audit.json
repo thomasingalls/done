@@ -1,0 +1,12 @@
+{
+  "allAcceptedProofAndEnvelopeIdentitiesUnchanged": true,
+  "allAccountNativePrefixesAndSignaturesVerified": true,
+  "noNewSubmitRequests": true,
+  "noManualRetry": true,
+  "writerAcceptedPrefixUnchanged": 121,
+  "missingFollowupArrivesOnReceiver": true,
+  "serverAlreadyHeldItBeforeReopen": true,
+  "originalStateDatabaseSha256": "78ce31c13fb61d9e5fdf6275061fd3a3c625c3447b54a98056300731ab54bf0a",
+  "copyStateDatabaseSha256": "78ce31c13fb61d9e5fdf6275061fd3a3c625c3447b54a98056300731ab54bf0a",
+  "diagnosticDoesNotClearOriginalFailure": true
+}

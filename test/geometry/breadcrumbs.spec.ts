@@ -51,9 +51,12 @@ test('the Goals breadcrumb follows the scroll edge rather than the cursor', asyn
     element.scrollTop = 0;
   });
   await expect(breadcrumb).toHaveAttribute('title', 'Goals › Work');
-  await expect(breadcrumb.locator('.goals-outline-indicator svg')).toBeVisible();
+  await expect(breadcrumb.locator('svg')).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Sections inside Goals', exact: true }),
+  ).toBeVisible();
   const rootGap = await page.locator('.goals-navigation').evaluate((element) => {
-    const root = element.querySelector('.goals-breadcrumbs')?.getBoundingClientRect();
+    const root = element.querySelector('.goals-crumb-menu')?.getBoundingClientRect();
     const trail = element.querySelector('.goals-breadcrumb-piece')?.getBoundingClientRect();
     return root && trail ? trail.left - root.right : Number.POSITIVE_INFINITY;
   });
@@ -90,7 +93,7 @@ test('the outline navigates without moving the editor selection', async ({ page 
   );
 
   await outline.getByRole('button', { name: 'Phase' }).click();
-  await expect(outline).toBeHidden();
+  await expect(page.getByRole('navigation', { name: 'Sections inside Phase' })).toBeVisible();
   await expect(content).not.toBeFocused();
   await expect(breadcrumb).toHaveAttribute('title', 'Goals › Work › Project › Phase');
   expect(await scroller.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);

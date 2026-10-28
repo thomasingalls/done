@@ -1,0 +1,33 @@
+{
+  "origin": "https://done.oxidationlabs.com",
+  "productionSource": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "device": "Pixel 9a",
+  "browser": "Chrome 156.0.8078.47",
+  "beforeOpening": {
+    "counterVersion": 5,
+    "baselinePresent": true,
+    "baselineRevision": 1,
+    "baselineBytes": 989284,
+    "history": "baseline-plus-suffix",
+    "rows": [
+      0,
+      0,
+      0
+    ]
+  },
+  "maintenanceStatus": "History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes.",
+  "cleanup": {
+    "active": false,
+    "credentialsNative": true,
+    "getNative": true,
+    "getAllNative": true,
+    "removed": true,
+    "debuggerDetached": true
+  },
+  "initialPublicSourceFetch": {
+    "result": "sandbox DNS lookup refused",
+    "retry": "public HTTPS read with network escalation succeeded",
+    "accountRequestsOrValuesFetched": false
+  },
+  "scope": "Read-only metadata plus observations of real app reads. No storage clearing, account code/writing/key extraction, app update or maintenance invocation on this account."
+}

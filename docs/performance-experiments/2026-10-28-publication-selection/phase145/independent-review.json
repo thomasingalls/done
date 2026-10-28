@@ -1,0 +1,60 @@
+{
+  "allCompletedBoundsIndependentlyExact": true,
+  "fixedStopObserved": true,
+  "onlyThreeRuntimeFilesAndOneNewTestChanged": true,
+  "allOldTestFilesUnchanged": true,
+  "rows": [
+    {
+      "name": "maintenance-1-R-normal",
+      "state": "passed",
+      "localP95": 20.89990234375,
+      "peerP95": 1740.900146484375,
+      "markers": [
+        940.0,
+        1268.60009765625,
+        1128.300048828125
+      ],
+      "accepted": false,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "maintenance-2-C-normal",
+      "state": "functional-pass-clock-invalid",
+      "clockIntersectionGapMs": [
+        1.300048828125,
+        1.400146484375
+      ],
+      "all120OffersRetained": true,
+      "allFunctionalGuards": true,
+      "accepted": false
+    },
+    {
+      "name": "maintenance-3-C-withheld",
+      "state": "unexecuted"
+    },
+    {
+      "name": "maintenance-4-R-withheld",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-1-R-normal",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-2-C-normal",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-3-C-withheld",
+      "state": "unexecuted"
+    },
+    {
+      "name": "late-4-R-withheld",
+      "state": "unexecuted"
+    }
+  ],
+  "stopIndex": 1,
+  "activationAccepted": false
+}

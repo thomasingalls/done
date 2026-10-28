@@ -1,0 +1,44 @@
+from pathlib import Path
+import json, subprocess, hashlib
+
+s = Path(__file__).parent
+r = Path.cwd()
+report = json.loads((s / 'maintenance-observation.json').read_text())
+identity = json.loads((s / 'maintenance-bundle-identity.json').read_text())
+expected = {
+    'localRetentionPlan.ts:planLocalRetention': 1,
+    'localBaselineReplay.ts:full': 2,
+    'localBaselineReplay.ts:documentState': 11,
+    'localBaselineReplay.ts:prepareLocalBaseline': 1,
+    'localBaselineReplay.ts:summarizeBaseline': 1,
+    'localBaselineRecord.ts:decodeLocalBaseline': 16,
+    'localBaselineReplay.ts:replayLocalBaseline': 4,
+    'localBaselineStorage.ts:readEncryptedBaseline': 1,
+    'localBaselineStorage.ts:openEncryptedBaselineSnapshot': 1,
+    'localBaselineShadow.ts:verifyCompleteLocalBaseline': 2,
+}
+assert report['maintenance']['counts'] == expected
+assert report['reopen']['counts']['localBaselineStorage.ts:readEncryptedBaseline'] == 3
+assert report['reopen']['counts']['localBaselineShadow.ts:verifyCompleteLocalBaseline'] == 3
+for x in report['maintenance']['events'] + report['reopen']['events']:
+    assert set(x) == {'name', 'at'} and x['name'] in identity['hits'] and x['at'] >= 0
+for path, digest in identity['sourceInputs'].items():
+    assert hashlib.sha256((r / path).read_bytes()).hexdigest() == digest, path
+core = []
+for name in ['localRetentionPlan', 'localBaselineReplay', 'localBaselineRecord', 'localBaselineStorage', 'localBaselineShadow', 'contentStore', 'custody']:
+    path = 'src/crdt/' + name + '.ts'
+    data = (r / path).read_bytes()
+    assert data == subprocess.check_output(['git', 'show', 'dc53fecf:' + path]), path
+    core.append({'path': path, 'sha256': hashlib.sha256(data).hexdigest(), 'matchesSignedProductionDc53fecf': True})
+assert report['before']['version'] == 2 and sum(report['before']['rows']) == 57
+assert report['after']['version'] == 5 and report['after']['rows'] == [0, 0, 0]
+assert report['maintenance']['metrics']['costs']['retentionPreparation']['calls'] == 1
+assert report['maintenance']['metrics']['costs']['retentionFenced']['calls'] == 1
+result = {
+    'status': 'passed', 'bundleInputCount': len(identity['sourceInputs']),
+    'allBundleInputHashesCurrent': True, 'sourceCore': core,
+    'observedCountsIndependentlyChecked': True, 'beforeRows': 57, 'afterRows': 0,
+    'scope': 'Counts, source identity and synthetic fixture integrity; not a phone timing estimate or safety qualification for a proposed optimisation.',
+}
+(s / 'maintenance-source-review.json').write_text(json.dumps(result, indent=2) + '\n')
+print(json.dumps(result))

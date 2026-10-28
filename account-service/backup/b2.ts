@@ -21,10 +21,39 @@ function url(input: string) {
     throw Error('Unexpected B2 endpoint');
   return input;
 }
+/** Only a bounded, documented cap code escapes the provider reply; no credentials/messages. */
+export class B2QuotaExceeded extends Error {
+  readonly scope: 'download' | 'all';
+  constructor(scope: 'download' | 'all' = 'all') {
+    super('B2 daily cap exceeded');
+    this.scope = scope;
+  }
+}
+async function refused(response: Response): Promise<never> {
+  const parts: Uint8Array[] = [];
+  let bytes = 0;
+  try {
+    if (response.body)
+      for await (const p of response.body) {
+        bytes += p.length;
+        if (bytes > 8192) break;
+        parts.push(p);
+      }
+    if (response.status === 403 && bytes <= 8192) {
+      const value = JSON.parse(Buffer.concat(parts).toString());
+      if (
+        ['download_cap_exceeded', 'transaction_cap_exceeded', 'cap_exceeded'].includes(value.code)
+      )
+        throw new B2QuotaExceeded(value.code === 'download_cap_exceeded' ? 'download' : 'all');
+    }
+  } catch (cause) {
+    if (cause instanceof B2QuotaExceeded) throw cause;
+  }
+  throw Error('B2 request refused');
+}
 async function json(response: Response) {
   if (!response.ok || !response.body) {
-    await response.body?.cancel();
-    throw Error('B2 request refused');
+    return refused(response);
   }
   const parts: Uint8Array[] = [];
   let bytes = 0;
@@ -113,7 +142,7 @@ export class B2Store {
       ),
     );
   }
-  async upload(
+  async put(
     path: string,
     name: string,
     digest: Digest,
@@ -149,11 +178,21 @@ export class B2Store {
       )
         throw Error('B2 upload receipt mismatch');
       const version = { fileId: value.fileId, fileName: name, ...parsed, bytes: digest.bytes };
-      await this.verify(version, signal); // Read back this exact version, not a mutable filename.
       return version;
     } finally {
       stream.destroy();
     }
+  }
+  /** Explicit maintenance backups still require immediate exact-version readback. */
+  async upload(
+    path: string,
+    name: string,
+    digest: Digest,
+    signal: AbortSignal,
+  ): Promise<BackupVersion> {
+    const version = await this.put(path, name, digest, signal);
+    await this.verify(version, signal);
+    return version;
   }
   async verify(v: BackupVersion, signal: AbortSignal) {
     const parsed =
@@ -173,8 +212,7 @@ export class B2Store {
       signal,
     );
     if (!response.ok || !response.body) {
-      await response.body?.cancel();
-      throw Error('B2 backup readback failed');
+      return refused(response);
     }
     const hash = createHash('sha256');
     let bytes = 0;

@@ -1,0 +1,17 @@
+{
+  "runtimeAndTestsEqualMeasured154": true,
+  "sourceTree": "551991664565e96d336da66bd76171967246364c",
+  "filesIndependentlyComparedToGitBlobsBothDirections": 1677,
+  "onlyThreeRuntimeFilesAndOneNewTestSince153": [
+    "src/crdt/accountEnvelopePreparation.ts",
+    "src/crdt/accountReceive.ts",
+    "src/crdt/spoolRecord.ts",
+    "test/envelopePreparationProjection.test.ts"
+  ],
+  "allOldTestsUnchangedSince153": true,
+  "coreBoundaryProof": "../phase154/boundary-preservation.json",
+  "measuredClientAssetsUnchanged": true,
+  "defaultPolicyFileByteExact154": true,
+  "sourceResumeAndServiceDefaultsStill0": true,
+  "realIndexEmpty": true
+}

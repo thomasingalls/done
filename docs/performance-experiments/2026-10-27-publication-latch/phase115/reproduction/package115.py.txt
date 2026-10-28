@@ -1,0 +1,40 @@
+from pathlib import Path
+import json,gzip
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=r/'docs/performance-experiments/2026-10-27-publication-latch/phase115';e.mkdir(parents=True);(e/'checks').mkdir();(e/'reproduction').mkdir()
+assert(r/'test/accountBatching.test.ts').read_bytes().startswith((s/'tests-before.ts').read_bytes())
+for n in ['protocol.md','model-protocol.md','scheduler-replay.json','scheduler-inputs.json']:(e/n).write_bytes((s/n).read_bytes())
+for n in ['before-unit.log','after-unit-first-draft.log','after-unit-second-draft.log','types-second-draft.log','unit-final.log','types-final.log','omission-unit.log','format-final.log','format.log','lint.log','native-default.log','native-authority.log','native-audit.log','native-hidden.log','metadata-tests.log','crypto.log','inventory.log','manifest.log','scheduler-initial-invocation.log','scheduler-console.log']:(e/'checks'/(n+'.gz')).write_bytes(gzip.compress((s/n).read_bytes(),mtime=0))
+for n in ['scheduler-probe.mjs','omission.config.mjs','package115.py']:(e/'reproduction'/(n+'.txt')).write_bytes((s/n).read_bytes())
+(e/'attempts.json').write_text(json.dumps({'initialRedRun':'6 failed/9 passed:5 expiry-sensitive failures and1 new-fixture getter error','firstGreenDraft':'6 failed/77 passed: new wrapper spread snapshotted getters including clock/maximum/detach; product latch already fixed expiry','secondDraft':'1 failure/82 passes and4 type errors: new helper referred to old narrower helper type; existing send-dirty continuation needed draining before receive-floor assertion','final':'83 pass, types pass; wrappers preserve live getters, original extra send reconciliation preserved','omission':'remove only latch statement from transformed module:5 fail/10 pass, original8 batching cases stay passing','schedulerInvocation':'missing protocol copy stopped before histories; fixed copy retained; no timing credit','all8OldBatchingCasesAndHelpersByteExact':True,'noOldTestRemovedOrAssertionWeakened':True},indent=2)+'\n')
+(e/'README.md').write_text('''# Phase115 — Latch expired publication deadlines only
+
+On a local wake, if an existing publication deadline has passed, close that window before noting
+new input. It stays due until the existing new-envelope callback consumes/clears it. Local journal
+flush uses its original independent window/helper. No source admission, persistence, wire retry,
+authority/history/signature/witness/auth/final-commit, limit, concurrency, backoff or notification
+change. Quiet reuse remains disabled in the product default pending full comparison.
+
+83 focused cases pass:15 batching (8 original+7 new),21 scheduler,41 selector,6 projection. All8 old
+batching cases/helpers are byte-exact. New tests cover exact/past expiry under receive, async prelude,
+fresh consumed window, nonexpired collection, receive retry floor, cancellation/drain and local flush
+independence. Existing tests retain sealed-wire retry, send-backoff and hidden flush checks. Omitting
+only the new close statement restores5 expiry-sensitive failures while all original8 remain passing.
+
+Verbatim production scheduler/window replays of the same fixed histories now publish first at300ms
+control,500ms receive overlap,550ms prelude overlap (old300/2000/2100). One active lane, all8 inputs,
+clean cancellation. Controlled quanta are not actual internal costs or a prediction of peer p95.
+
+61 encrypted/native cases exercised across modes:55 default/6 conditional skips,3 authority-reuse,
+2 ledger-audit,1 hidden batching pass.81 metadata checks and types/lint pass. Before-repair failures,
+new helper errors (spread copied getter values, narrower type, required dirty-send drain) and missing
+model-protocol invocation are retained/qualified. Final tests retain live observations and the
+existing extra reconciliation pass. No altered old assertion or failed attempt gets passing credit.
+
+This is implementation evidence only. Rebuild both complete exports, enable750ms solely in the
+isolated experimental C owner, freeze/run the four normal/withheld two-receiver cases next. If they
+pass, run original eight throughput/fairness/data gates before adoption/readiness.2.5s complete peer,
+16ms local and all security/durability bounds stay. Qualification912/367 remains paused.115 follows
+immutable114; unsigned, real index empty. No signing/push/preview/API update or release preparation.
+''')
+with(r/'docs/completed.md').open('a')as f:f.write('''\n## 2026-10-27 — Publication-only expiry latch and regressions (phase115)\n\nClose an existing overdue publication window before later local notes; retain the original helper/\nlocal flushing, persisted retries and every security/durability/backoff boundary.83 focused cases\npass; all8 old batching cases/helpers byte-exact. One-statement omission restores5 expiry failures.\nFixed scheduler histories now300/500/550ms versus300/2000/2100, without client timing credit.61\nencrypted cases across required modes,81 metadata, types/lint pass. New-fixture getter/type/dirty-\nsend mistakes and failed model invocation remain qualified.\n[Implementation/evidence](performance-experiments/2026-10-27-publication-latch/phase115/README.md).\n\nNext freeze/rerun both rebuilt two-receiver clients; full2.5s and data/gain gates remain. Product\nquiet reuse held off;912/367 qualification paused. Unsigned115 after114, no release prep/deployment.\n''')
+with(r/'docs/decisions.md').open('a')as f:f.write('''\n## 2026-10-27 — Latch at the publication call site, preserving local flushing (phase115)\n\nUse the scheduler's existing close/clear semantics when a local wake finds an overdue window.\nLater input may extend a not-yet-due window, but cannot erase an expired opportunity while receiving\nor a send prelude runs. Keep the shared batchWindow helper untouched because local journal flush\nhas a separately measured policy. A deadline remains urgency, not persistence or allocation authority.\nExisting failure clocks and sealed retries stay; one-statement omission proves expiry sensitivity.\nFull rebuilt-client gates still decide acceptance; do not enable quiet reuse from model/unit results.\n''')

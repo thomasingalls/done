@@ -1,0 +1,29 @@
+{
+  "workloads": [
+    {
+      "mode": "heavy",
+      "allCandidateGates": true,
+      "replayMedianRatio": 0.698221316334556,
+      "replayGain": 0.301778683665444,
+      "referenceDrift": 0.07782183876826569,
+      "quietAttemptRatio": 0.5155642023346303,
+      "throughputNonregression": true,
+      "quietReduction": true
+    },
+    {
+      "mode": "nonoverlap",
+      "allCandidateGates": true,
+      "replayMedianRatio": 0.6151805832248951,
+      "replayGain": 0.3848194167751049,
+      "referenceDrift": 0.006425684312348139,
+      "quietAttemptRatio": 0.2478134110787172,
+      "throughputNonregression": true,
+      "quietReduction": true
+    },
+    {
+      "mode": "late",
+      "allCandidateGates": true
+    }
+  ],
+  "accepted": true
+}

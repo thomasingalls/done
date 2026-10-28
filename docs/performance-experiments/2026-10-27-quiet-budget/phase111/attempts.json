@@ -1,0 +1,11 @@
+{
+  "timedRuns": "exactly the frozen12 once, no performance-driven repeat",
+  "preRepairRegressions": "intentionally fail, retained109",
+  "initialUnitFilters": "a nonexistent scheduler filter ran46 cases; another driver selection ran59. Neither replaces final67 correct cases. The46-case log was overwritten before archival; console result remains in task history. No false scheduler credit.",
+  "formatterLauncher": "initial nonexistent oxfmt.js path failed; actual installed oxfmt launcher then passed. No formatting credit from failed command.",
+  "harnessTypes": "initial11 unused-import/declaration diagnostics corrected before frozen timing; both logs retained109",
+  "hiddenMode": "first invocation skipped with wrong switch; corrected ACCOUNT_BATCH_MODE exercised1 case",
+  "postParser": "frozen budget analyzer incorrectly expected a second confirmation field that the original nonoverlap recorder never emits. Corrected derivative checks existing accepted-before-close/source-before-receiver fields; no test, assertion, timing gate or observations change. Original and traceback retained.",
+  "fidelity": "detected post-run analyzer modification; frozen original restored byte-exact, corrected derivative retained separately; all original apparatus hashes then pass",
+  "noFailureReclassifiedAsTimingPass": true
+}

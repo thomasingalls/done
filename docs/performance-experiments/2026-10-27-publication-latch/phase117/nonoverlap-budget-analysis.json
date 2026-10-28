@@ -1,0 +1,75 @@
+{
+  "runs": [
+    {
+      "name": "nonoverlap-1-R",
+      "variant": "R",
+      "outcome": "passed",
+      "backlogMs": 130677,
+      "reverseMs": 817,
+      "gates": {
+        "replay600s": true,
+        "sourceClosedAfterAccepted": true,
+        "reverseWriterClosedBeforeReceiverOpened": true,
+        "dataAndCold": true
+      },
+      "quietAttempts": 1029,
+      "quiet200s": 1028,
+      "accepted": true
+    },
+    {
+      "name": "nonoverlap-2-C",
+      "variant": "C",
+      "outcome": "passed",
+      "backlogMs": 80281,
+      "reverseMs": 805,
+      "gates": {
+        "replay600s": true,
+        "sourceClosedAfterAccepted": true,
+        "reverseWriterClosedBeforeReceiverOpened": true,
+        "dataAndCold": true
+      },
+      "quietAttempts": 244,
+      "quiet200s": 242,
+      "accepted": true
+    },
+    {
+      "name": "nonoverlap-3-C",
+      "variant": "C",
+      "outcome": "passed",
+      "backlogMs": 79984,
+      "reverseMs": 823,
+      "gates": {
+        "replay600s": true,
+        "sourceClosedAfterAccepted": true,
+        "reverseWriterClosedBeforeReceiverOpened": true,
+        "dataAndCold": true
+      },
+      "quietAttempts": 266,
+      "quiet200s": 264,
+      "accepted": true
+    },
+    {
+      "name": "nonoverlap-4-R",
+      "variant": "R",
+      "outcome": "passed",
+      "backlogMs": 129840,
+      "reverseMs": 819,
+      "gates": {
+        "replay600s": true,
+        "sourceClosedAfterAccepted": true,
+        "reverseWriterClosedBeforeReceiverOpened": true,
+        "dataAndCold": true
+      },
+      "quietAttempts": 1029,
+      "quiet200s": 1028,
+      "accepted": true
+    }
+  ],
+  "allCandidateGates": true,
+  "replayMedianRatio": 0.6151805832248951,
+  "replayGain": 0.3848194167751049,
+  "referenceDrift": 0.006425684312348139,
+  "quietAttemptRatio": 0.2478134110787172,
+  "throughputNonregression": true,
+  "quietReduction": true
+}

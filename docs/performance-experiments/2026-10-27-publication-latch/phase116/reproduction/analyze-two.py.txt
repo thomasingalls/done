@@ -1,0 +1,42 @@
+from pathlib import Path
+import json,math,statistics as st
+s=Path(__file__).parent;allrows=[]
+def pct(v,p):return sorted(v)[math.ceil(len(v)*p)-1]
+def summary(v):return {'n':len(v),'p50':pct(v,.5),'p95':pct(v,.95),'max':max(v)} if v else {'n':0}
+def bounds(brackets):
+ lo=max(v['renderer']-v['after']-1 for v in brackets);hi=min(v['renderer']-v['before']+1 for v in brackets);assert lo<=hi;return(lo,hi)
+for mode,plan in [('late','late-plan.json')]:
+ rows=[]
+ for c in json.loads((s/plan).read_text()):
+  x=json.loads((s/c['name']/'result.json').read_text());row={'name':c['name'],'variant':c['variant'],'outcome':x['outcome']};assert x['outcome']=='passed',row
+  if mode=='heavy':
+   assert len(x['offers'])==120 and x['originalDeliveryPassed'];assert all(x['guards'].values());assert x['backgroundReplayPassed'] and all(v['exportEquality']for v in x['catchups']);row['backlogMs']=max(v['completedAt']-v['startedAt']for v in x['catchups']);probes=x['probesAtDeadline'];baselines=[next(v['length']for v in reversed(p['lengths'])if v['at']<=x['startedAt'])for p in probes];obs=[]
+   for device,p in enumerate(probes):
+    offset=bounds(x['clocks'][device]);values=[]
+    for i,o in enumerate(x['offers'],1):
+     hit=next((v['at']for v in p['lengths']if v['at']>=o['at']-5 and v['length']>=baselines[device]+i),None);assert hit is not None,(row,i,'missing key');values.append(hit-o['at']-offset[0])
+    obs.append(values)
+   row['localUpperMs']=summary(obs[0]);row['peerUpperMs']=summary(obs[1]);row['keys']=obs
+   events=[e for e in probes[0]['events']if e['kind']=='beforeinput'and x['startedAt']<=e['at']<=x['typingFinishedAt']];assert len(events)==120 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in events)
+   row['gates']={'allKeysComplete':True,'local16ms':pct(obs[0],.95)<=16,'peer2500ms':pct(obs[1],.95)<=2500,'allReplay600s':row['backlogMs']<=600000,'delivery30s':x['originalDeliveredAt']-x['typingFinishedAt']<=30000,'dataAndCold':True,'originalContinuation120s':x['originalRecoveredAt']-x['loadStoppedAt']<=120000,'pendingContinuation120s':x['pendingConvergedAt']-x['pendingReconnectAt']<=120000}
+  elif mode=='nonoverlap':
+   a,b=x['transitions'];assert x['noSimultaneousOpenSenders']and x['coldSameProfileOfflineExact']and x['noStorageReinjectionOnColdReopen'];assert a['closedAt']<b['openedAt']and all(v['exactArchive']for v in[a,b]);row['backlogMs']=a['caughtUpAt']-a['reconnectAt'];row['reverseMs']=b['caughtUpAt']-b['reconnectAt'];row['gates']={'replay600s':row['backlogMs']<=600000,'sourceClosedAfterAccepted':a['confirmedAcceptedAt']<a['closedAt'],'reverseWriterClosedBeforeReceiverOpened':a['closedAt']<b['openedAt'],'dataAndCold':True}
+  else:
+   assert len(x['offers'])==123 and all(x['guards'].values());assert len(x['catchups'])==2 and all(r['outcome']=='passed'for r in x['catchups']);keys=[o for o in x['offers']if o['kind']=='key'];markers=[o for o in x['offers']if o['kind']=='marker'];assert[key['index']for key in keys]==list(range(120));assert[o['index']for o in markers]==[0,1,2]
+   probes=x['probes'];vals=[];markerValues=[]
+   for d,p in enumerate(probes):
+    # Both before/after bracket sets bound each renderer independently.
+    offset=bounds([v for group in x['clocks']for v in group['rows'][d]]);v=[]
+    for i,o in enumerate(keys,1):
+     hit=next((h['at']for h in p['counts']if h['at']>=o['at']-5 and h['count']>=x['baselines'][d]+i),None);assert hit is not None,(row,i,'missing key');v.append(hit-o['at']-offset[0])
+    vals.append(v);markerValues.append([p['markers'][i]-o['at']-offset[0]for i,o in enumerate(markers)])
+   assert len(probes[1]['events'])==123 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in probes[1]['events']);assert not c['withhold']or x['notifications'][0]['withheld']>0
+   row['peerUpperMs']=summary(vals[0]);row['localUpperMs']=summary(vals[1]);row['markerPeerUpperMs']=markerValues[0];row['keys']=vals;row['notificationCounts']=x['notifications'];row['backlogMs']=max(r['completedAt']-x['startedAt']for r in x['catchups']);row['gates']={'all120KeysComplete':True,'local16ms':pct(vals[1],.95)<=16,'peer2500ms':pct(vals[0],.95)<=2500,'eachMarker2500ms':max(markerValues[0])<=2500,'allReplay600s':row['backlogMs']<=600000,'newDelivery30s':x['newDeliveryAt']-max(o['returnedAt']for o in x['offers'])<=30000,'bothReceiveAndColdData':True,'faultExercised':not c['withhold']or x['notifications'][0]['withheld']>0}
+  if mode!='late':
+   quiet=[q for q in x['network']if (q.get('label')=='H1'or q.get('device')==1)and any(not v.get('self')and v['after']==1 for v in q.get('reads',[]))];row['quietAttempts']=len(quiet);row['quiet200s']=sum(q.get('status')==200 for q in quiet)
+  row['accepted']=all(row['gates'].values());rows.append(row)
+ result={'runs':rows,'allCandidateGates':all(r['accepted']for r in rows if r['variant']=='C')}
+ if mode!='late':
+  refs=[r for r in rows if r['variant']=='R'];cs=[r for r in rows if r['variant']=='C'];rmed=st.median(r['backlogMs']for r in refs);cmed=st.median(r['backlogMs']for r in cs);result.update(replayMedianRatio=cmed/rmed,replayGain=1-cmed/rmed,referenceDrift=abs(refs[1]['backlogMs']-refs[0]['backlogMs'])/rmed,quietAttemptRatio=st.median(r['quietAttempts']for r in cs)/st.median(r['quietAttempts']for r in refs));result['throughputNonregression']=result['replayMedianRatio']<=1.10;result['quietReduction']=result['quietAttemptRatio']<=.80
+ (s/(mode+'-budget-analysis.json')).write_text(json.dumps(result,indent=2)+'\n');allrows.append({'mode':mode,**{k:v for k,v in result.items()if k!='runs'}});print(mode,json.dumps(allrows[-1]),flush=True)
+(s/'two-receiver-acceptance.json').write_text(json.dumps({'workloads':allrows,'accepted':all(r['allCandidateGates']and r.get('throughputNonregression',True)and r.get('quietReduction',True)for r in allrows)},indent=2)+'\n')

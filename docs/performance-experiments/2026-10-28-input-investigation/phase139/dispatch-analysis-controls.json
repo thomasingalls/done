@@ -1,0 +1,28 @@
+[
+  {
+    "case": "control-normal",
+    "retained120InputSensorCompatibility": true,
+    "faultSensitivity": false
+  },
+  {
+    "case": "control-fault",
+    "retained120InputSensorCompatibility": true,
+    "faultSensitivity": true
+  },
+  {
+    "case": "missing-offer",
+    "rejected": true
+  },
+  {
+    "case": "untrusted",
+    "rejected": true
+  },
+  {
+    "case": "missing-native-dom",
+    "rejected": true
+  },
+  {
+    "case": "inconsistent-clock",
+    "rejected": true
+  }
+]

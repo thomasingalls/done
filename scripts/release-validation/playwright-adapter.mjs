@@ -105,6 +105,20 @@ export const upgradePriorDisposition = {
 };
 export const namedBrowserDispositions = [
   upgradePriorDisposition,
+  ...[
+    [
+      'an ordinary pre-hold touch still scrolls the overflowing day without reordering',
+      'Native touch scrolling is covered on the Android profile.',
+    ],
+    [
+      'cancelling a mobile grip drag leaves order unchanged and permits the next drag',
+      'Native touch cancellation is covered on the Android profile.',
+    ],
+  ].map(([title, reason]) => ({
+    id: playwrightCaseId('test/geometry/reorder.spec.ts', 'desktop', [title]),
+    outcome: 'not-applicable',
+    reason,
+  })),
   ...['done', 'next', 'scheduled'].flatMap((section) => {
     const named = (project, title, reason) => ({
       id: playwrightCaseId('test/geometry/reorder.spec.ts', project, [
@@ -115,6 +129,13 @@ export const namedBrowserDispositions = [
       reason,
     });
     return [
+      ...['grip', 'hold'].map((activation) =>
+        named(
+          'desktop',
+          `sustained touch ${activation} retains ownership until release`,
+          'Real touch arbitration is covered on the Android profile.',
+        ),
+      ),
       named(
         'android',
         'a mouse drag on the grip reorders cards',

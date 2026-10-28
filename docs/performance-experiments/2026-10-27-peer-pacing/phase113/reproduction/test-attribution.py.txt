@@ -1,0 +1,53 @@
+import unittest,copy
+from attribution import PUB,attribute,quantile,clock_bounds,publication_map,receive_windows
+
+def fixture():
+    x={'network':[],'clocks':[{'rows':[[{'before':0,'after':0,'renderer':0}]]}], 'offers':[], 'probes':[{'counts':[{'at':0,'count':0}]}],'baselines':[0]}
+    for i in range(120):
+        at=1000+10*i;x['offers'].append({'kind':'key','index':i,'at':at});x['probes'][0]['counts'].append({'at':at+6,'count':i+1})
+        x['network'].append({'label':'H2','path':'/account/delivery/submit','at':at+2,'headersAt':at+3,'status':200})
+        x['network'].append({'label':'H1','at':at+4,'headersAt':at+5,'status':200,'reads':[{'publisherSha256':PUB,'after':i+1,'limit':1}]})
+    x['network'].append({'label':'H1','at':2210,'headersAt':2211,'status':200,'reads':[{'publisherSha256':PUB,'after':121,'limit':1}]})
+    return x
+
+class AttributionControls(unittest.TestCase):
+    def test_known_pipeline_120_keys_all_exact(self):
+        a=attribute(fixture(),120);self.assertEqual(len(a['keys']),120);self.assertTrue(all(len(k['alternatives'])==1 for k in a['keys']));self.assertEqual(a['keys'][0]['alternatives'][0]['position'],2);self.assertEqual(a['keys'][-1]['alternatives'][0]['position'],121)
+    def test_quantile_needs_full_denominator(self):
+        self.assertEqual(quantile(list(range(120))),113)
+        with self.assertRaises(ValueError):quantile([])
+    def test_clock_disagreement_refuses(self):
+        with self.assertRaises(ValueError):clock_bounds([{'before':0,'after':0,'renderer':0},{'before':0,'after':0,'renderer':5}])
+    def test_successful_http_without_matching_native_count_refuses(self):
+        with self.assertRaises(ValueError):publication_map(fixture()['network'],119)
+    def test_refused_or_unbounded_publication_refuses(self):
+        for change in [{'status':429},{'headersAt':999}]:
+            x=fixture();x['network'][0].update(change)
+            with self.assertRaises(ValueError):attribute(x,120)
+    def test_publication_overlap_refuses(self):
+        x=fixture();x['network'][0]['headersAt']=1020
+        with self.assertRaises(ValueError):attribute(x,120)
+    def test_impossible_cursor_advance_refuses(self):
+        x=fixture();x['network'][3]['reads'][0]['after']=4
+        with self.assertRaises(ValueError):attribute(x,120)
+    def test_mixed_publisher_group_refuses(self):
+        x=fixture();x['network'][1]['reads'].append({'publisherSha256':'other','after':2,'limit':1})
+        with self.assertRaises(ValueError):attribute(x,120)
+    def test_missing_key_or_observation_refuses(self):
+        x=fixture();x['offers'].pop()
+        with self.assertRaises(ValueError):attribute(x,120)
+        x=fixture();x['probes'][0]['counts']=[]
+        with self.assertRaises(ValueError):attribute(x,120)
+    def test_unclosed_or_impossible_timing_stays_unresolved(self):
+        x=fixture();x['network'].pop();a=attribute(x,120);self.assertTrue(a['keys'][-1]['unresolved'])
+        x=fixture();x['probes'][0]['counts'][-1]['at']=99999;a=attribute(x,120);self.assertTrue(a['keys'][-1]['unresolved'])
+    def test_grouped_frames_keep_admissible_alternatives(self):
+        x=fixture();x['network'][1].update(at=1014,headersAt=1015);x['network'][1]['reads'].append({'publisherSha256':PUB,'after':2,'limit':1});del x['network'][3]
+        x['probes'][0]['counts']=[v for v in x['probes'][0]['counts']if v['count']!=1];x['probes'][0]['counts'][1]['at']=1016
+        a=attribute(x,120);self.assertEqual([v['position']for v in a['keys'][0]['alternatives']],[2,3]);self.assertEqual([v['position']for v in a['keys'][1]['alternatives']],[3])
+    def test_preoffer_submission_is_excluded_even_in_group(self):
+        x=fixture();x['offers'][0]['at']=1009;a=attribute(x,120);self.assertTrue(a['keys'][0]['unresolved'])
+    def test_nonmonotone_counts_refuse(self):
+        x=fixture();x['probes'][0]['counts'][2]['count']=0
+        with self.assertRaises(ValueError):attribute(x,120)
+if __name__=='__main__':unittest.main()

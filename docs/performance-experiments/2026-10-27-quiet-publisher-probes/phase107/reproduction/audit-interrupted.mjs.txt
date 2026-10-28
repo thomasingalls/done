@@ -1,0 +1,13 @@
+import { inspect } from './audit-lib.mjs';
+import { readFileSync,writeFileSync,readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-quiet-publisher-probes-20261027',f=JSON.parse(readFileSync(root+'/private-fixture/fixture.json'));
+const seed=inspect(f.state+'/account.sqlite'),state=root+'/corrected-normal-1/state',a=inspect(state+'/account.sqlite');
+for(const[k,v]of Object.entries(seed.identities))assert.deepEqual(a.identities[k],v);
+const first=JSON.parse(readFileSync(root+'/quiet-normal-1/result.json'));
+const id=first.network.find(q=>q.label==='H2'&&q.reads)?.reads[0].readerSha256;assert(id);
+const added=Object.keys(a.identities).filter(k=>!seed.identities[k]);assert.deepEqual(added,[`H:${id}:2`]);
+for(let i=1;i<3;i++)assert.deepEqual(a.accounts[i],seed.accounts[i]);
+const files=Object.fromEntries(readdirSync(state).filter(n=>n==='account.sqlite'||n==='account.sqlite-wal').map(n=>[n,createHash('sha256').update(readFileSync(state+'/'+n)).digest('hex')]));
+writeFileSync(root+'/interrupted-native-review.json',JSON.stringify({status:'passed-for-interrupted-fixture-diagnosis-only',allSeedEnvelopeAndPrefixIdentitiesExact:true,independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes:true,exactlyOneNewExpectedPublisherPosition:2,unrelatedAccountsUnchanged:true,privateDatabaseFamilySha256:files,noOriginalJourneyLatencyOrFullGuardCredit:true},null,2)+'\n');

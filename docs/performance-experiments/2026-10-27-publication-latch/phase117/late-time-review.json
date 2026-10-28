@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "late-1-R-normal",
+      "peerP95UpperMs": 2498.5,
+      "localP95UpperMs": 6.0,
+      "all120ObservationsReconstructed": true,
+      "gateUnchanged": true,
+      "falseGateRejected": true,
+      "missingPeerSeriesRejected": true
+    },
+    {
+      "name": "late-2-C-normal",
+      "peerP95UpperMs": 2047.5,
+      "localP95UpperMs": 8.099853515625,
+      "all120ObservationsReconstructed": true,
+      "gateUnchanged": true,
+      "falseGateRejected": true,
+      "missingPeerSeriesRejected": true
+    },
+    {
+      "name": "late-3-C-withheld",
+      "peerP95UpperMs": 2367.199951171875,
+      "localP95UpperMs": 9.0,
+      "all120ObservationsReconstructed": true,
+      "gateUnchanged": true,
+      "falseGateRejected": true,
+      "missingPeerSeriesRejected": true
+    },
+    {
+      "name": "late-4-R-withheld",
+      "peerP95UpperMs": 2372.800048828125,
+      "localP95UpperMs": 5.5,
+      "all120ObservationsReconstructed": true,
+      "gateUnchanged": true,
+      "falseGateRejected": true,
+      "missingPeerSeriesRejected": true
+    }
+  ],
+  "candidateAccepted": true
+}

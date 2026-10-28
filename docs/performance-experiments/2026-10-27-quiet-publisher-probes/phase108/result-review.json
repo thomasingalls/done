@@ -1,0 +1,95 @@
+{
+  "status": "baseline-single-observation-checks-pass",
+  "allInputsAndClientFilesExact": true,
+  "runs": [
+    {
+      "name": "guarded-normal-1",
+      "withheld": false,
+      "hostDispatchToPeerMsBounds": [
+        1081.7998046875,
+        1085.099853515625
+      ],
+      "inputEventToPeerMsBounds": [
+        1081.19970703125,
+        1085.399658203125
+      ],
+      "singleObservationWithin2500ms": true,
+      "displayedAcceptedBefore": 0,
+      "nativeSeedAcceptedThrough": 1,
+      "acceptedAfter": 2,
+      "confirmationAfterReconnectMs": 959,
+      "successfulSubmitResponses": 1,
+      "firstSuccessfulSubmitHeadersAfterReconnectMs": 817,
+      "lastSuccessfulSubmitHeadersAfterReconnectMs": 817,
+      "notificationCounters": {
+        "ready": 1,
+        "hint": 0,
+        "content": 1,
+        "heartbeat": 0,
+        "withheld": 0
+      },
+      "clockOffsetBounds": {
+        "H1": [
+          -0.5,
+          1.800048828125
+        ],
+        "H2": [
+          -0.199951171875,
+          1.699951171875
+        ]
+      },
+      "oldBacklogReplayMs": 130495,
+      "allArchiveAndColdProfileGuards": true,
+      "sameRebuiltWorkerAndResourceEnvelope": true,
+      "scope": "One baseline observation; no p95/candidate speedup or phone/WAN inference."
+    },
+    {
+      "name": "guarded-withheld-2",
+      "withheld": true,
+      "hostDispatchToPeerMsBounds": [
+        877.5,
+        880.5
+      ],
+      "inputEventToPeerMsBounds": [
+        876.199951171875,
+        880.699951171875
+      ],
+      "singleObservationWithin2500ms": true,
+      "displayedAcceptedBefore": 0,
+      "nativeSeedAcceptedThrough": 1,
+      "acceptedAfter": 2,
+      "confirmationAfterReconnectMs": 899,
+      "successfulSubmitResponses": 1,
+      "firstSuccessfulSubmitHeadersAfterReconnectMs": 766,
+      "lastSuccessfulSubmitHeadersAfterReconnectMs": 766,
+      "notificationCounters": {
+        "ready": 1,
+        "hint": 0,
+        "content": 1,
+        "heartbeat": 0,
+        "withheld": 1
+      },
+      "clockOffsetBounds": {
+        "H1": [
+          -0.199951171875,
+          1.800048828125
+        ],
+        "H2": [
+          -0.60009765625,
+          1.89990234375
+        ]
+      },
+      "oldBacklogReplayMs": 130263,
+      "allArchiveAndColdProfileGuards": true,
+      "sameRebuiltWorkerAndResourceEnvelope": true,
+      "scope": "One baseline observation; no p95/candidate speedup or phone/WAN inference."
+    }
+  ],
+  "limitations": [
+    "Only two baseline journeys, one observed late write each; not a complete peer p95 gate or worst-case fairness bound.",
+    "Writer starts offline with displayed0 and native1; the display reads a scheduler counter initialized0, not a retained-storage census. Timing includes first reconnect/grant work; receipt replay was not established.",
+    "All four quiet streams reply after hot cursor33 before the offer; later/more contended arrival phases are not exercised.",
+    "The withheld mode removes wake frames only; initial ready/heartbeats, polling and normal fresh verification remain.",
+    "H2 receiving is deliberately unavailable to isolate publication; these are not the original ten-context contention workload."
+  ]
+}

@@ -1,0 +1,16 @@
+import { inspect } from './audit-lib.mjs';
+import { readFileSync,writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-quiet-publisher-probes-20261027';
+const fixture=JSON.parse(readFileSync(root+'/private-fixture/fixture.json'));
+const seed=inspect(fixture.state+'/account.sqlite');
+const got=inspect(root+'/quiet-normal-1/state/account.sqlite');
+for(const[id,v]of Object.entries(seed.identities))assert.deepEqual(got.identities[id],v);
+const added=Object.keys(got.identities).filter(k=>!seed.identities[k]);assert.equal(added.length,1);assert(added[0].startsWith('H:')&&added[0].endsWith(':2'));
+for(let i=1;i<3;i++)assert.deepEqual(got.accounts[i],seed.accounts[i]);
+const x=JSON.parse(readFileSync(root+'/quiet-normal-1/result.json'));
+const pubs=[...new Set(x.network.flatMap(q=>q.label==='H2'?(q.reads??[]).map(v=>v.readerSha256):[]))];assert.equal(pubs.length,1);assert.equal(added[0],`H:${pubs[0]}:2`);
+assert.equal(seed.accounts[0].streams.find(v=>v.credentialSha256===pubs[0]).positions,1);
+assert.equal(x.acceptedBefore,0);assert.equal(x.acceptedAfter,2);
+const out={status:'passed-for-fixture-diagnosis-only',localBefore:0,nativeSeedBefore:1,localAfter:2,newNativePositions:1,newPosition:2,allOriginalSeedRowsByteExact:true,independentEnvelopeWrapperHeadSignaturesAndPrefixes:true,unrelatedAccountsUnchanged:true,noLatencyOrJourneyPreservationCredit:true};
+writeFileSync(root+'/failed-probe-review.json',JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify(out));

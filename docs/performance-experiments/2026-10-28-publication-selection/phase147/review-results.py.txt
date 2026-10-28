@@ -1,0 +1,37 @@
+from pathlib import Path
+import json,math,sys,hashlib,subprocess
+s=Path(__file__).parent;r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');plan=json.loads((s/'run-plan.json').read_text());rows=[]
+# Reconstruct clock inequalities and exact nearest-rank p95 independently of the primary analyzer.
+for c in plan:
+ p=s/c['name'];f=p/'result.json'
+ if not f.exists():rows.append({'name':c['name'],'state':'unexecuted'});continue
+ x=json.loads(f.read_text());row={'name':c['name'],'state':x['outcome']}
+ if x['outcome']!='passed':row['error']=x.get('error');rows.append(row);continue
+ if not(p/'analysis.json').exists():
+  gaps=[]
+  for d in range(2):
+   brackets=[q for clock in x['clocks']for q in clock['rows'][d]];low=max(q['renderer']-q['after']-1 for q in brackets);high=min(q['renderer']-q['before']+1 for q in brackets);gaps.append(low-high)
+  assert max(gaps)>0 and 'AssertionError' in (p/'analysis.log').read_text()
+  assert len(x['offers'])==123 and all(x['guards'].values())
+  row.update(state='functional-pass-clock-invalid',clockIntersectionGapMs=gaps,all120OffersRetained=True,allFunctionalGuards=True,accepted=False);rows.append(row);continue
+ a=json.loads((p/'analysis.json').read_text());offers=x['offers'];keys=[v for v in offers if v['kind']=='key'];marks=[v for v in offers if v['kind']=='marker'];assert len(keys)==120 and len(marks)==3
+ arrays=[];marker=[]
+ for d in range(2):
+  brackets=[q for clock in x['clocks']for q in clock['rows'][d]];low=float('-inf');high=float('inf')
+  for q in brackets:low=max(low,q['renderer']-q['after']-1);high=min(high,q['renderer']-q['before']+1)
+  assert low<=high
+  values=[]
+  for i,key in enumerate(keys):
+   candidates=[v['at']for v in x['probes'][d]['counts']if v['at']>=key['at']-5 and v['count']>=x['baselines'][d]+i+1];assert candidates;values.append(candidates[0]-key['at']-low)
+  arrays.append(values);marker.append([x['probes'][d]['markers'][i]-v['at']-low for i,v in enumerate(marks)])
+ assert arrays==a['allKeyUpperMs'];assert marker[0]==a['markerPeerUpperMs'];assert sorted(arrays[0])[113]==a['peerUpperMs']['p95'];assert sorted(arrays[1])[113]==a['localUpperMs']['p95']
+ assert a['gates']['local16ms']==(sorted(arrays[1])[113]<=16);assert a['gates']['peer2500ms']==(sorted(arrays[0])[113]<=2500);assert a['gates']['everyMarker2500ms']==(max(marker[0])<=2500)
+ for root in x['roots']:assert root['workerSha256']==json.loads((s/(c['variant']+'-client-identity.json')).read_text())['assets']['sw.js']
+ assert all(x['guards'].values());row.update(localP95=a['localUpperMs']['p95'],peerP95=a['peerUpperMs']['p95'],markers=marker[0],accepted=a['accepted'],all120BoundsExact=True,workerIdentityExact=True,allFunctionalGuards=True);rows.append(row)
+expectedStop=next((i for i,v in enumerate(rows)if v['state'] not in ['passed','unexecuted']or('-C-'in v['name']and v['state']=='passed'and not v['accepted'])),None)
+if expectedStop is not None:assert all(v['state']=='unexecuted'for v in rows[expectedStop+1:])
+# Independent source and old-test preservation; no broader ownership rewrite was smuggled in.
+def git(*args):return subprocess.check_output(['git',*args],cwd=r).decode().strip()
+base='e9e4081b644f3ce6a454f635f74512bb31e1b622';candidate='b3521aea9258c9dd17e3f490b93903a27d9734b2';diff=git('diff','--name-only',base,candidate,'--','src','test','account-service','account-protocol','vite','scripts').splitlines();assert diff==['src/crdt/accountDelivery.ts','src/crdt/accountEnvelopePreparation.ts','src/crdt/accountReceive.ts','test/publicationMetadataSelection.test.ts'],diff
+report={'allCompletedBoundsIndependentlyExact':True,'fixedStopObserved':True,'onlyThreeRuntimeFilesAndOneNewTestChanged':True,'allOldTestFilesUnchanged':True,'rows':rows,'stopIndex':expectedStop,'activationAccepted':len(rows)==8 and all(v.get('accepted')for v in rows if '-C-'in v['name'])and all(v['state']=='passed'for v in rows)}
+(s/'independent-review.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

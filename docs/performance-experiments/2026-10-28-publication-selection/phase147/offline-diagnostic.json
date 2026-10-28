@@ -1,0 +1,111 @@
+{
+  "noStorageReinjection": true,
+  "offline": true,
+  "originalProfilesUntouched": true,
+  "rows": [
+    {
+      "index": 2,
+      "followupInCard": true,
+      "followupInExport": true,
+      "archive": {
+        "sha256": "2714b475741ff202773e75a9a432ec043988509c5f7c80471382f3ec5e2e9845",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2637,
+            "characters": 2637
+          }
+        ]
+      },
+      "status": {
+        "workspaceKeys": [
+          "state",
+          "revision",
+          "pendingItems",
+          "pendingBytes",
+          "reservedBytes",
+          "durable",
+          "pressure"
+        ],
+        "workspaceDurable": true,
+        "sync": {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 121
+          },
+          "receive": {
+            "phase": "retrying",
+            "failures": 1,
+            "nextAttemptAt": 1793193353360,
+            "issueSince": 1793193352360,
+            "lastSuccessAt": null,
+            "reason": "network-unavailable",
+            "receivedThrough": 1153
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "followupInCard": false,
+      "followupInExport": false,
+      "archive": {
+        "sha256": "60f1f6bbbbac315cd96c570b9c92db101588f2ef9593a119e0484bd2fc35782b",
+        "files": [
+          {
+            "name": "master.md",
+            "bytes": 5000,
+            "characters": 5000
+          },
+          {
+            "name": "days/2026-10-27.md",
+            "bytes": 2618,
+            "characters": 2618
+          }
+        ]
+      },
+      "status": {
+        "workspaceKeys": [
+          "state",
+          "revision",
+          "pendingItems",
+          "pendingBytes",
+          "reservedBytes",
+          "durable",
+          "pressure"
+        ],
+        "workspaceDurable": true,
+        "sync": {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "retrying",
+            "failures": 1,
+            "nextAttemptAt": 1793193355851,
+            "issueSince": 1793193354851,
+            "lastSuccessAt": null,
+            "reason": "network-unavailable",
+            "receivedThrough": 1153
+          }
+        }
+      }
+    }
+  ]
+}

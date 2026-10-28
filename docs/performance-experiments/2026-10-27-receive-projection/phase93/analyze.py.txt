@@ -1,0 +1,14 @@
+from pathlib import Path
+import json,statistics
+p=Path(__file__).parent;j=json.loads((p/'raw.json').read_text());assert not j['errors'] and len(j['rows'])==12
+rows=[]
+for depth in [32,256,1024,2048]:
+ r=[x for x in j['rows'] if x['depth']==depth];assert [x['order'] for x in r]==[['R','C'],['C','R'],['R','C']]
+ for x in r:
+  assert x['copiedBytes']['R']==2*depth*(2048+512) and x['copiedBytes']['C']==0
+  assert x['conditions']['R']['shape']==x['conditions']['C']['shape'] and x['conditions']['R']['status']==x['conditions']['C']['status']
+ med=lambda c,m:statistics.median(x['conditions'][c][m] for x in r)
+ drift=abs(r[-1]['conditions']['R']['prepareMs']/r[0]['conditions']['R']['prepareMs']-1)
+ rows.append({'depthPerPublisher':depth,'copiedBytesR':r[0]['copiedBytes']['R'],'copiedBytesC':0,'prepareRMs':med('R','prepareMs'),'prepareCMs':med('C','prepareMs'),'statusRMs':med('R','statusMs'),'statusCMs':med('C','statusMs'),'referenceDrift':drift,'timingQualified':drift>.15,'deepThresholdPass':depth<1024 or med('C','prepareMs')<=.8*med('R','prepareMs')})
+assert all(x['deepThresholdPass'] for x in rows)
+(p/'analysis.json').write_text(json.dumps({'rows':rows,'shapeAgreement':True,'allRawBlocksRetained':True,'endToEndClaim':False,'candidateChosen':True},indent=2)+'\n');print(json.dumps(rows))

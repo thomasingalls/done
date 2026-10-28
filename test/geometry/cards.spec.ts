@@ -171,3 +171,37 @@ test.describe('the three-item cap', () => {
     await expect(toNext).toBeDisabled();
   });
 });
+
+test('Done cards dim independently at rest and regain full opacity for focus, editing and hover', async ({
+  page,
+  isMobile,
+}) => {
+  await openApp(page);
+  await compose(page, 'second');
+  await compose(page, 'first');
+  const cards = page.locator('.day-panel[data-active="true"] .card[data-section="done"]');
+  const first = cards.first(),
+    second = cards.nth(1);
+  await page.mouse.move(0, 0);
+  await expect(first).toHaveCSS('opacity', '0.33');
+  await expect(second).toHaveCSS('opacity', '0.33');
+  const surface = first.locator('.card-surface');
+  await surface.focus();
+  await expect(first).toHaveCSS('opacity', '1');
+  await expect(second).toHaveCSS('opacity', '0.33');
+  await surface.press('Enter');
+  await expect(first).toHaveAttribute('data-editing', 'true');
+  await expect(first).toHaveCSS('opacity', '1');
+  await first.locator('.cm-content').press('Escape');
+  await page
+    .locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field')
+    .focus();
+  await expect(first).toHaveCSS('opacity', '0.33');
+  if (!isMobile) {
+    await first.hover();
+    await expect(first).toHaveCSS('opacity', '1');
+    await expect(second).toHaveCSS('opacity', '0.33');
+    await page.mouse.move(0, 0);
+    await expect(first).toHaveCSS('opacity', '0.33');
+  }
+});

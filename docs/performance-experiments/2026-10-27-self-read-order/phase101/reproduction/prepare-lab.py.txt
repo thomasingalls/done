@@ -1,0 +1,19 @@
+from pathlib import Path
+import subprocess,tarfile,io,shutil,json
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');r=Path(__file__).parent;old=Path('/private/tmp/done-whole-client-20261027')
+for v,t in {'R':'b444a049d5bdb4db935628d7ecda6f44622af217','C':json.loads((r/'100-preparation.json').read_text())['expectedTree']}.items():
+ s=r/('source-'+v);s.mkdir()
+ with tarfile.open(fileobj=io.BytesIO(subprocess.check_output(['git','archive',t],cwd=repo)))as a:a.extractall(s,filter='data')
+ (s/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
+(r/'private-fixture').symlink_to(old/'private-fixture',target_is_directory=True)
+shutil.copytree(old/'harness',r/'harness',symlinks=True)
+for n in ['container-image.json','container-service.mjs','observer.mjs','playwright-storage-source.txt','analyze.py','review-evidence.py','nonoverlap-analysis.py','audit-native.mjs','audit-lib.mjs','audit-nonoverlap.mjs','run.py','build.py','fidelity.py']:
+ p=r/n;p.write_text((old/n).read_text().replace(str(old),str(r)))
+p=r/'harness/scripts';p.unlink();p.symlink_to(r/'source-R/scripts',target_is_directory=True)
+for n in ['common.ts','runtime.mjs','seed-profile.ts']:
+ p=r/'harness/test/account-continuation-lab'/n;p.write_text(p.read_text().replace(str(old),str(r)))
+p=r/'harness/test/account-continuation-lab/runtime.mjs';p.write_text(p.read_text().replace("source=root+'/source-C'","source=root+'/source-R'"))
+p=r/'harness/tsconfig.json';p.write_text(p.read_text().replace('../source-C/','../source-R/'))
+# This candidate has no code borrowed from the previous client's directories.
+for mode,config in [('heavy','playwright.config.ts'),('nonoverlap','nonoverlap.config.ts')]:
+ (r/('run-plan.json'if mode=='heavy'else'nonoverlap-plan.json')).write_text(json.dumps([{'name':f'{mode}-{i+1}-{v}','variant':v,'config':config}for i,v in enumerate(['R','C','C','R'])],indent=2)+'\n')

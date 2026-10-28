@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "preparedSeedAcceptanceExact": true,
+  "rows": [
+    {
+      "name": "maintenance-1-R-normal",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 120,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "ef65ce563ab3476a16603a5c5acd3c238ebd61ef7bfb8f80ba601f34a80cf7e4"
+    },
+    {
+      "name": "maintenance-2-C-normal",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 121,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "7db4b5deecbe646347c4811b07b9231d75dce64821b7ef9ac3f921cb88e98cff"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "main": "27369a806d94ee88bb8c55405a3dec536f49cfbd",
+  "command": [
+    "python3",
+    "infra/apps/done/check.py"
+  ],
+  "exit": 0,
+  "scope": "Current-main offline render/security/operation checks; baseline only, no new image pin, no cluster mutation"
+}

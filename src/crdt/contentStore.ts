@@ -1,4 +1,23 @@
-import { hasBaselineInstaller, hasRetentionWriter } from './localBaselineMode';
+import {
+  PreparationPause,
+  createPreparationJournal,
+  type PreparationJournal,
+} from './retentionPreparation';
+import { preparationContext } from './retentionPreparationBinding';
+import {
+  loadPreparationCheckpoint,
+  importPreparationCheckpoint,
+  disposePreparationCheckpoint,
+  savePreparationDelta,
+  removePreparationCache,
+  type PreparationCheckpoint,
+  type PreparationStorageOwner,
+} from './retentionPreparationStorage';
+import {
+  hasBaselineInstaller,
+  hasRetentionWriter,
+  preparationVerifierIdentity,
+} from './localBaselineMode';
 import type { AccountBaselineRead } from './localBaselineShadow';
 import type { createBaselineReuse } from './localBaselineReuse';
 import { StorageCompatibilityError } from './storageCompatibility';
@@ -6,7 +25,11 @@ import type { RetentionInventory } from './localRetentionPlan';
 import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
 import { createBaselineMetadata } from './localBaselineMetadata';
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
-import { MaintenanceInterrupted } from './contentMaintenance';
+import {
+  MaintenanceInterrupted,
+  reportRetentionProgress,
+  type RetentionProgressSink,
+} from './contentMaintenance';
 import { withContentSelection, type ContentSelection } from './contentSelection';
 import {
   countLedgerWork,
@@ -68,6 +91,8 @@ export interface ContentCrypto {
   ): Promise<LocalBaselineContext>;
   /** Account owners opt into lifetime-local plaintext reuse. The validation callback still runs. */
   reuseOpened?: true;
+  /** One-shot startup only: its verifier-owned authority capabilities remain immutable in this owner. */
+  exactBaselineReuse?: true;
   /** Private exclusive Account lifetime only; generic/shared Local owners must not opt in. */
   warmLoads?: true;
   /** Private v9 validator: reads retained input immutably and owns any bytes it retains. */
@@ -119,6 +144,8 @@ export const createContentOwner = (
   )
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
+  const pendingPreparations = new Set<() => void>();
+  let disposed = false;
   let witness!: ContentWitness;
   const allowReduced = crypt.readBaseline === true;
   const metadata = crypt.baseline ? createBaselineMetadata(scope, allowReduced) : undefined;
@@ -148,6 +175,7 @@ export const createContentOwner = (
         id: object;
         baseline?: AccountBaselineRead;
         baselineChunks?: StoredRecord[];
+        baselineMatches?: (current: LocalBaselineContext) => boolean;
       }
     | undefined;
   let warm: ReturnType<typeof createWarmContent> | undefined;
@@ -333,7 +361,11 @@ export const createContentOwner = (
         'strict',
       ),
     );
-  const openSnapshot = async (task: SessionTask, snapshot: DiskState): Promise<OpenedRecord[]> => {
+  const openSnapshot = async (
+    task: SessionTask,
+    snapshot: DiskState,
+    allowExactBaselineReuse = false,
+  ): Promise<OpenedRecord[]> => {
     const counter = snapshot.counter;
     const opened: OpenedRecord[] = [],
       seen = new Set<number>(),
@@ -367,6 +399,7 @@ export const createContentOwner = (
         equalCounter(scope, counter, openedView.counter) &&
         sealed.length === openedView.sealed.length &&
         sealed.every((r, i) => equalStoredRecord(r, openedView!.sealed[i]!));
+      const reusedView = reuse ? openedView : undefined;
       if (reuse) opened.push(...copyRecords(openedView!.opened));
       else {
         const prior = new Map(
@@ -386,59 +419,101 @@ export const createContentOwner = (
           });
         }
       }
-      const id = metadata?.active() ? {} : reuse ? openedView!.id : {};
+      let id = metadata?.active() ? {} : reuse ? openedView!.id : {};
       let logical: AccountBaselineRead | undefined;
       let chunks: StoredRecord[] | undefined, baselineContext: LocalBaselineContext | undefined;
+      let baselineMatches: ((current: LocalBaselineContext) => boolean) | undefined;
       try {
         if (metadata?.active()) {
-          const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
+          const { readEncryptedBaselineSnapshot, openEncryptedBaselineSnapshot } = await task.wait(
+            () => import('./localBaselineStorage'),
+          );
           const { verifyCompleteLocalBaseline } = await task.wait(
             () => import('./localBaselineShadow'),
           );
           let context = await crypt.baseline!(task, { ...scope }, counter);
-          const held = await readEncryptedBaseline(
-            task,
-            baselineOwner(
-              async () => {
-                context = await crypt.baseline!(task, { ...scope }, counter);
-              },
-              () => context.assertCurrent(),
-            ),
+          const owner = baselineOwner(
+            async () => {
+              context = await crypt.baseline!(task, { ...scope }, counter);
+            },
+            () => context.assertCurrent(),
           );
+          const snapshot = await readEncryptedBaselineSnapshot(task, owner);
+          let held: Awaited<ReturnType<typeof openEncryptedBaselineSnapshot>> | undefined;
           try {
-            const allocation = metadata.parse(held.counter, witness.intent);
+            const allocation = metadata.parse(snapshot.counter, witness.intent);
             if (!equalCounter(scope, allocation, counter))
               corrupt('Baseline census changed during read.');
             const { baselineAuthorityPin } = await task.wait(() => import('./localBaselineReuse'));
             const unchangedAuthority = baselineAuthorityPin(context);
-            countLedgerWork('baselineFullReplays');
-            logical = await verifyCompleteLocalBaseline(
-              { records: opened, counter },
-              context,
-              baselineAuth(task),
-              held,
-              crypt.readBaseline === true,
-              held.counter.v === 5,
-            );
-            baselineContext = await crypt.baseline!(task, { ...scope }, counter);
-            // One-shot rotation/custody readers reconstruct equivalent evidence per call.
-            // Only live warm owners promise stable verifier-owned capability identities.
-            if (crypt.warmLoads && metadata.reduced() && !unchangedAuthority(baselineContext))
-              throw new ContentError(
-                'generation-changed',
-                'Baseline authority changed during replay.',
-              );
+            const prior = openedView;
+            // One-shot recovery still reads every row/chunk. Only exact authenticated evidence
+            // under the same verifier-owned authority can retain its completed logical proof.
+            // Warm reference/oracle calls and other direct snapshot consumers stay full replays.
             if (
-              logical &&
-              openedView?.baseline &&
+              allowExactBaselineReuse &&
+              crypt.exactBaselineReuse &&
+              !crypt.warmLoads &&
+              !forceFullRead &&
+              metadata.reduced() &&
               reuse &&
-              baselineReuse?.hasIdentity(openedView.id) &&
-              baselineReuse.matches(baselineContext)
-            )
-              baselineReuse.compare(logical);
-            if (held.counter.v === 5) chunks = structuredClone(held.chunks);
+              prior === reusedView &&
+              prior?.baseline &&
+              prior.baselineChunks &&
+              prior.baselineMatches?.(context) &&
+              prior.baselineChunks.length === snapshot.chunks.length &&
+              snapshot.chunks.every((row, n) => equalStoredRecord(row, prior.baselineChunks![n]!))
+            ) {
+              await verify(task, counterPayload(scope, allocation), allocation.mac);
+              baselineContext = await crypt.baseline!(task, { ...scope }, counter);
+              if (openedView !== prior || forceFullRead || !prior.baselineMatches(baselineContext))
+                throw new ContentError(
+                  'generation-changed',
+                  'Baseline authority changed during reuse.',
+                );
+              logical = task.step(() => structuredClone(prior.baseline!));
+              chunks = structuredClone(snapshot.chunks);
+              baselineMatches = prior.baselineMatches;
+              id = prior.id;
+              countLedgerWork('baselineExactReuses');
+            } else {
+              held = await openEncryptedBaselineSnapshot(task, owner, snapshot);
+              countLedgerWork('baselineFullReplays');
+              logical = await verifyCompleteLocalBaseline(
+                { records: opened, counter },
+                context,
+                baselineAuth(task),
+                held,
+                crypt.readBaseline === true,
+                held.counter.v === 5,
+              );
+              baselineContext = await crypt.baseline!(task, { ...scope }, counter);
+              // One-shot rotation/custody readers reconstruct equivalent evidence per call.
+              // Only live warm owners promise stable verifier-owned capability identities.
+              if (crypt.warmLoads && metadata.reduced() && !unchangedAuthority(baselineContext))
+                throw new ContentError(
+                  'generation-changed',
+                  'Baseline authority changed during replay.',
+                );
+              if (
+                logical &&
+                openedView?.baseline &&
+                reuse &&
+                baselineReuse?.hasIdentity(openedView.id) &&
+                baselineReuse.matches(baselineContext)
+              )
+                baselineReuse.compare(logical);
+              if (held.counter.v === 5) chunks = structuredClone(held.chunks);
+              if (
+                crypt.exactBaselineReuse &&
+                metadata.reduced() &&
+                unchangedAuthority(baselineContext)
+              )
+                baselineMatches = unchangedAuthority;
+            }
           } finally {
             eraseVerified(held);
+            eraseVerified(snapshot);
           }
         }
         if (crypt.validate)
@@ -453,6 +528,7 @@ export const createContentOwner = (
               opened: copyRecords(opened),
               ...(logical ? { baseline: structuredClone(logical) } : {}),
               ...(chunks ? { baselineChunks: structuredClone(chunks) } : {}),
+              ...(baselineMatches ? { baselineMatches } : {}),
             };
           });
         if (crypt.warmLoads && openedView && !metadata?.active())
@@ -573,12 +649,13 @@ export const createContentOwner = (
           }
         }
       }
+      const allowExactBaselineReuse = !forceFullRead;
       forceFullRead = false;
       const at = ledgerWorkStart();
       const snapshot = await read(task, true);
       measureLedgerWork('physicalRead', at);
       countLedgerWork('loadedRows', snapshot.rows.length);
-      const result = await openSnapshot(task, snapshot);
+      const result = await openSnapshot(task, snapshot, allowExactBaselineReuse);
       if (ledgerProfiling)
         countLedgerWork(
           'loadedBytes',
@@ -715,6 +792,60 @@ export const createContentOwner = (
       for (const bytes of plaintexts) bytes.fill(0);
     }
   };
+  const preparationStorage = (
+    implementation: string,
+    fresh: (task: SessionTask) => Promise<void>,
+    check: () => void,
+  ): PreparationStorageOwner => ({
+    name: db!.name,
+    crypt,
+    async capture(task) {
+      await fresh(task);
+      check();
+      const inventory = await retentionInventory(task);
+      let delivered = false;
+      try {
+        const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
+        const counter = parseCounter(raw, scope, witness.intent);
+        await verify(task, counterPayload(scope, counter), counter.mac);
+        if (counter.active_gen !== generation || disposed) throw new MaintenanceInterrupted();
+        const context = await crypt.baseline!(task, { ...scope }, counter);
+        const bound = await preparationContext(
+          context,
+          implementation,
+          witness.intent,
+          baselineAuth(task),
+        );
+        task.step(check);
+        delivered = true;
+        return { context: bound, inventory, counter };
+      } finally {
+        if (!delivered) eraseVerified(inventory);
+      }
+    },
+    async reserve(task, count) {
+      await fresh(task);
+      task.step(check);
+      for (;;) {
+        if (disposed) throw new MaintenanceInterrupted();
+        const before = await currentCounter(task);
+        let next = reserveCounter(before, count, generation);
+        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+        if (await compareAndWrite(task, before, next, [], check)) {
+          if (
+            crypt.warmLoads &&
+            warm &&
+            openedView &&
+            equalCounter(scope, openedView.counter, before)
+          )
+            task.step(() => {
+              openedView!.counter = structuredClone(next);
+            });
+          return { first: before.next_seq, generation };
+        }
+      }
+    },
+  });
   /** Read-only preparation may finish before final FIFO entry. No task/crypto callback escapes. */
   const prepareHistoryRemoval = async (
     task: SessionTask,
@@ -722,6 +853,7 @@ export const createContentOwner = (
     checkCommit: () => void,
     expectedRevision: number,
     checkRetained: () => void,
+    progress?: RetentionProgressSink,
   ) => {
     if (
       !hasRetentionWriter() ||
@@ -742,9 +874,13 @@ export const createContentOwner = (
       copyRetentionCandidate,
       matchesRetentionPlan,
     } = await task.wait(() => import('./localRetentionPlan'));
+    reportRetentionProgress(progress, { stage: 'reading' });
     const inventory = await retentionInventory(task);
     let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
     let delivered = false;
+    let preparation: { journal: PreparationJournal; checkpoint: PreparationCheckpoint } | undefined;
+    let transferred = false;
+    const implementation = preparationVerifierIdentity();
     try {
       const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
       const counter = parseCounter(raw, scope, witness.intent);
@@ -784,6 +920,37 @@ export const createContentOwner = (
         },
         binding,
         checkRetained,
+        progress,
+        implementation
+          ? async (counter) => {
+              const bound = await preparationContext(
+                context,
+                implementation,
+                witness.intent,
+                baselineAuth(task),
+              );
+              const storage = preparationStorage(
+                implementation,
+                async () => assertCurrent(),
+                checkCommit,
+              );
+              const read = await loadPreparationCheckpoint(task, storage, {
+                context: bound,
+                inventory,
+                counter,
+              });
+              const journal = createPreparationJournal({
+                context: bound,
+                current: () => {
+                  task.step(checkCommit);
+                  context.assertCurrent();
+                },
+              });
+              preparation = { journal, checkpoint: read.checkpoint };
+              if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
+              return journal;
+            }
+          : undefined,
       );
       if (plan.kind === 'skipped') return plan;
       const prepared = plan;
@@ -812,6 +979,7 @@ export const createContentOwner = (
         let candidate: ReturnType<typeof copyRetentionCandidate> | undefined;
         try {
           check();
+          reportRetentionProgress(progress, { stage: 'current' });
           let phase = ledgerWorkStart();
           await fresh();
           check();
@@ -832,6 +1000,7 @@ export const createContentOwner = (
             () => import('./localRetentionStorage'),
           );
           beforeMutation();
+          reportRetentionProgress(progress, { stage: 'installing' });
           phase = ledgerWorkStart();
           expected = await removePlannedLocalHistory(
             currentTask,
@@ -843,6 +1012,7 @@ export const createContentOwner = (
           clearView();
           metadata.replaced();
           eraseVerified(actual);
+          reportRetentionProgress(progress, { stage: 'readback' });
           phase = ledgerWorkStart();
           actual = await retentionInventory(currentTask);
           measureLedgerWork('retentionReadback', phase);
@@ -871,6 +1041,7 @@ export const createContentOwner = (
           await fresh();
           check();
           measureLedgerWork('retentionEndAuthority', phase);
+          await removePreparationCache(currentTask, db!.name);
           return { kind: 'removed' as const, revision: report.revision, removed: report.rows };
         } finally {
           const cleanup = ledgerWorkStart();
@@ -891,13 +1062,54 @@ export const createContentOwner = (
         dispose,
         check: checkRetained,
       });
+    } catch (cause) {
+      if (!(cause instanceof PreparationPause) || !preparation || !implementation) throw cause;
+      // Only a still-live read task can authenticate the delta. No expired task callback escapes.
+      const delta = await preparation.journal.delta(baselineAuth(task));
+      const checkpoint = preparation.checkpoint;
+      preparation.journal.dispose();
+      let used = false;
+      const dispose = () => {
+        used = true;
+        eraseVerified(delta);
+        disposePreparationCheckpoint(checkpoint);
+        pendingPreparations.delete(dispose);
+      };
+      pendingPreparations.add(dispose);
+      transferred = true;
+      return Object.freeze({
+        kind: 'preparation-checkpoint' as const,
+        dispose,
+        async persist(
+          currentTask: SessionTask,
+          fresh: () => Promise<void>,
+          checkJournal: () => void,
+        ) {
+          if (used || disposed) throw new MaintenanceInterrupted();
+          used = true;
+          try {
+            return await savePreparationDelta(
+              currentTask,
+              preparationStorage(implementation, fresh, checkJournal),
+              checkpoint,
+              delta,
+            );
+          } finally {
+            dispose();
+          }
+        },
+      });
     } finally {
       if (!delivered && plan?.kind === 'local-retention-dry-run') disposeRetentionPlan(plan);
+      preparation?.journal.dispose();
+      if (preparation && !transferred) disposePreparationCheckpoint(preparation.checkpoint);
       eraseVerified(inventory);
     }
   };
   return {
     dispose() {
+      disposed = true;
+      for (const dispose of [...pendingPreparations]) dispose();
       clearView();
       db?.close();
       db = undefined;
@@ -1220,6 +1432,13 @@ export const createContentOwner = (
         expectedRevision,
         () => task.step(checkCommit),
       );
+      if (prepared.kind === 'preparation-checkpoint') {
+        try {
+          return await prepared.persist(task, assertCurrent, checkCommit);
+        } finally {
+          prepared.dispose();
+        }
+      }
       if (prepared.kind !== 'prepared-removal') return prepared;
       try {
         return await prepared.commit(task, assertCurrent, checkCommit, () => {});

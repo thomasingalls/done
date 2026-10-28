@@ -1,0 +1,6 @@
+from pathlib import Path
+import subprocess,os,json,hashlib,sys
+root=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path(__file__).parent;env=dict(os.environ,GIT_INDEX_FILE=str(s/'sequence.index'))
+def git(*a):return subprocess.check_output(['git',*a],cwd=root,env=env)
+if not(s/'sequence.index').exists():git('read-tree','761f4f9669b8208bcea1d5263a53d50047bb6adb')
+phase=sys.argv[1];base=git('write-tree').decode().strip();git('add','--',*sys.argv[3:]);tree=git('write-tree').decode().strip();patch=git('diff','--cached','--binary',base);p=s/sys.argv[2];p.write_bytes(patch);(s/(phase+'-preparation.json')).write_text(json.dumps({'baseTree':base,'expectedTree':tree,'patch':p.name,'sha256':hashlib.sha256(patch).hexdigest()},indent=2)+'\n');git('diff','--cached','--check',base);subprocess.run(['git','diff','--cached','--quiet'],cwd=root,check=True);print(phase,tree,p.name)

@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,gzip,hashlib,collections,math
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'docs/performance-experiments/2026-10-27-self-read-order/phase102';sources={}
+def read(path):
+ b=path.read_bytes();sources[str(path.relative_to(repo))]=hashlib.sha256(b).hexdigest();return json.loads(gzip.decompress(b)if path.suffix=='.gz'else b)
+def stats(v):
+ v=sorted(v);return {'n':len(v),'min':v[0],'p50':v[math.ceil(len(v)*.5)-1],'p95':v[math.ceil(len(v)*.95)-1],'max':v[-1]}if v else {'n':0}
+audit=read(p/'native-audit.json');h=audit[0]['accounts'][0];assert h['label']=='H';tips={x['credentialSha256']:x['positions']for x in h['streams']};assert sorted(tips.values())==[1,1,1,1,1,1029];rows=[]
+for workload,names in [('heavy',['heavy-1-R','heavy-2-C','heavy-3-C','heavy-4-R']),('nonoverlap',['nonoverlap-1-R','nonoverlap-2-C','nonoverlap-3-C','nonoverlap-4-R'])]:
+ for name in names:
+  x=read(p/'raw'/name/'result.json.gz');cut=next(z['completedAt']for z in x['catchups']if z['label']=='H1')if workload=='heavy'else x['transitions'][0]['caughtUpAt'];start=x['startedAt']if workload=='heavy'else x['transitions'][0]['reconnectAt'];qs=[q for q in x['network']if q['path']in ['/account/delivery/read-v2','/account/delivery/read-v2-batch']and q['at']<=cut and ((q['label']=='H1'and q['phase']=='measured')if workload=='heavy'else q['device']==1 and q['at']>=start)]
+  groups=collections.defaultdict(list)
+  for q in qs:
+   assert q.get('reads')and not q.get('readMetadataMissing')and not q.get('readMetadataInvalid')
+   pub=q['reads'][0]['publisherSha256'];assert pub in tips;assert all(v['publisherSha256']==pub for v in q['reads']);groups[pub].append(q)
+  classified=[]
+  for pub,queries in groups.items():
+   quiet=tips[pub]==1;own=queries[0]['reads'][0]['self'];assert all(v['self']==own for q in queries for v in q['reads']);assert not quiet or all(v['after']==1 for q in queries for v in q['reads']);success=[q for q in queries if q.get('status')==200];ends=[q.get('headersAt',q['at'])for q in success];gaps=[success[i]['at']-ends[i-1]for i in range(1,len(success))]if workload=='heavy'else [ends[i]-ends[i-1]for i in range(1,len(ends))];sensitivity={}
+   if quiet and not own:
+    for ttl in [250,500,750,1000,5000]:
+     last=None;kept=0
+     for q in success:
+      if last is None or q['at']<last or q['at']-last>=ttl:kept+=1;last=q.get('headersAt',q['at'])
+     sensitivity[str(ttl)]={'retainedHistoricalSuccessfulObservations':kept,'skippedHistoricalSuccessfulObservations':len(success)-kept}
+   classified.append({'publisherSha256':pub,'nativeAcceptedTip':tips[pub],'self':own,'unchangedRemote':quiet and not own,'httpAttempts':len(queries),'httpStatuses':dict(collections.Counter(str(q.get('status','no-response'))for q in queries)),'innerAttempts':sum(len(q['reads'])for q in queries),'cursorRange':[min(v['after']for q in queries for v in q['reads']),max(v['after']for q in queries for v in q['reads'])],'repeatGapMs':stats(gaps),'fixedTimestampSensitivity':sensitivity})
+  rem=[v for v in classified if v['unchangedRemote']];assert len(rem)==4;rows.append({'name':name,'variant':x['variant'],'workload':workload,'windowDurationMs':cut-start,'streams':classified,'unchangedRemoteHttpAttempts':sum(v['httpAttempts']for v in rem),'unchangedRemote200s':sum(v['httpStatuses'].get('200',0)for v in rem),'unchangedRemote429s':sum(v['httpStatuses'].get('429',0)for v in rem),'unchangedRemoteOtherOrMissing':sum(v['httpAttempts']-v['httpStatuses'].get('200',0)-v['httpStatuses'].get('429',0)for v in rem)})
+out={'status':'passed','measurementHome':'phase102 frozen eight journeys; source hashes retained','nativeHStreams':h['streams'],'journeys':rows,'limitations':['HTTP200 is not an independent proof of empty-page signature verification. Stable authenticated native tips identify unchanged request targets.','Heavy rows timestamp request dispatch and headers; non-overlap rows timestamp responses only. Gap measures differ and are labeled.','Fixed-timestamp pruning sensitivity ignores changed wall time, verification completion and all hints; it predicts no saved time/native work.','No new candidate is run; no performance improvement or qualification credit.']};(r/'existing-analysis.json').write_text(json.dumps(out,indent=2)+'\n');(r/'input-identities.json').write_text(json.dumps(sources,indent=2)+'\n');print(json.dumps([{k:v for k,v in row.items()if k!='streams'}for row in rows],indent=2))

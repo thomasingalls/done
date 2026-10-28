@@ -1,0 +1,76 @@
+from pathlib import Path
+import json,gzip,hashlib
+s=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');e=repo/'docs/performance-experiments/2026-10-27-self-read-order/phase102';e.mkdir(parents=True,exist_ok=False)
+for n in ['summary.json','analysis.json','evidence-review.json','nonoverlap-analysis.json','native-audit.json','nonoverlap-native-audit.json','fidelity.json','review-results.json','fresh-results.json']:(e/n).write_bytes((s/n).read_bytes())
+(e/'scope-audit.md').write_bytes((s/'scope-audit.md').read_bytes());repro=e/'reproduction';repro.mkdir()
+for n in ['summarize.py','execute-reviews.py','development-checks.py','privacy.py','package102.py']:(repro/(n+'.txt')).write_bytes((s/n).read_bytes())
+raw=e/'raw';raw.mkdir()
+for case in json.loads((s/'run-plan.json').read_text())+json.loads((s/'nonoverlap-plan.json').read_text()):
+ dest=raw/case['name'];dest.mkdir()
+ for n in ['result.json','runner.json','console.log','container-identity.json','runner-receipt.json','docker-command.json','services.log']:(dest/(n+'.gz')).write_bytes(gzip.compress((s/case['name']/n).read_bytes(),mtime=0))
+c=e/'checks';c.mkdir()
+for p in list(s.glob('fresh-*.log'))+list(s.glob('*-console.log')):
+ if p.name in ['build-console.log','pilot-console.log','hints-console.log']:continue
+ (c/(p.name+'.gz')).write_bytes(gzip.compress(p.read_bytes(),mtime=0))
+a=json.loads((s/'summary.json').read_text());h=a['heavy'];n=a['nonoverlap'];assert a['status']=='passed'
+rows=h['runs'];R=[x for x in rows if x['variant']=='R'];C=[x for x in rows if x['variant']=='C'];fmt=lambda xs,key,div=1:', '.join(f"{x[key]/div:.3f}"for x in xs)
+readme=f'''# Phase102 — Whole-client self-read repair comparison
+
+All eight frozen journeys finish: R,C,C,R competing catch-up/editing, then R,C,C,R non-overlapping
+sessions. Both complete clients were rebuilt; exact source/artifact/apparatus/resource checks pass.
+Same unchanged native server/policy/image/stopped encrypted fixture, four browser roots/ten contexts
+under contention; no real account/profile/provider/device is accessed. See101 for the prospective
+protocol, identities and frozen apparatus. Every original gate stays; no subset latency credit.
+
+| Whole-journey observation | Reference (two runs) | Candidate (two runs) | Gate |
+|---|---:|---:|---:|
+| Local typing p95 (ms) |{fmt(R,'localP95Ms')}|{fmt(C,'localP95Ms')}|16 ms|
+| Complete120-key peer p95 (s) |{fmt(R,'completePeerP95Ms',1000)}|{fmt(C,'completePeerP95Ms',1000)}|2.5 s|
+| Slowest competing replay (s) |{fmt(R,'maxReplayMs',1000)}|{fmt(C,'maxReplayMs',1000)}|600 s|
+| H1 self-read attempts, measured phase |{', '.join(str(x['h1SelfAttemptsMeasuredPhase'])for x in R)}|{', '.join(str(x['h1SelfAttemptsMeasuredPhase'])for x in C)}|median C<=80%R|
+| Non-overlap1024-position catch-up (s) |{fmt([x for x in n['runs']if x['variant']=='R'],'forwardCatchupMs',1000)}|{fmt([x for x in n['runs']if x['variant']=='C'],'forwardCatchupMs',1000)}|separate bulk observation|
+
+H1 self-attempt median falls {h['selfAttemptReductionPercent']:.1f}%. These are outgoing HTTP attempts,
+with status breakdowns and hashed publisher/reader/scope metadata, not executed native work. Every
+read attempt has valid metadata, including refused attempts; retain both whole measured-phase and
+through-H1-replay counts. The self-check remains individual and its first successful verification,
+freshness/pending/credential/reset fences are unchanged. No quiet non-self peer is deferred here.
+
+Competing replay medians are {h['referenceReplayMedianMs']/1000:.3f}→{h['candidateReplayMedianMs']/1000:.3f}s,
+a {h['medianChangePercent']:.1f}% improvement; reference bracket drift is {h['referenceBracketDriftPercent']:.1f}%.
+Paired direction consistent: {h['pairedDirectionConsistent']}; gain above reference drift:
+{h['speedupAboveBracketDrift']}. Non-overlap medians are {n['referenceForwardMedianMs']/1000:.3f}→{n['candidateForwardMedianMs']/1000:.3f}s
+({n['medianChangePercent']:.1f}% change; reference drift {n['referenceBracketDriftPercent']:.1f}%). Read the full
+[descriptive result](summary.json), including both individual journeys and all limitations. Two per
+arm/workload do not establish population or phone/Firefox/WAN performance. Polling assertions make
+bulk completion coarse; direct mutation timestamps measure the complete typing series. Actual Goals
+fixtures remain5000/4157/1049 characters, not the intended13k seed. No outcome-driven extra repeats.
+
+All original16ms/2.5s/30s/600s/120s gates, exact full exports, original/pending automatic continuation,
+retained encrypted prefix bytes, same-profile cold offline reopening without reinjection, reverse
+writing, undo/redo and account isolation pass. Native Node/OpenSSL independently verifies envelope,
+ciphertext, wrapper/head signatures and complete prefixes; all seed rows remain exact. Heavy runs
+add onlyQ writing; non-overlap adds only the expected H reverse edit. Other accounts stay unchanged.
+No authority/history/witness/nonce/commit check, persistent format, rate/burst/concurrency or retry
+floor changes. Independent raw-time reconstruction and frozen fidelity audits pass. Thirteen normal
+source/static checks pass.100's source/tests remain exact; generalized qualification remains paused
+with912 obligations/367 unresolved, no new aggregate credit. Private keys/profiles/database snapshots
+stay outside Git; known-value privacy review follows packaging and is not universal DLP.
+
+[Bounded scope audit](scope-audit.md) identifies one further performance coupling: aggregate overflow
+from one publisher disables all batching in the owner. Missing-route fallback correctly has broader
+scope. Demonstrate and repair the size-specific case separately after this checkpoint. Necessary
+retry/authority/one-use capability boundaries remain unchanged; the audit is not an exhaustive scan.
+
+Sequential unsigned102 after101. No signing, push, release preparation, preview restart or deployment.
+'''
+(e/'README.md').write_text(readme)
+(repo/'docs/performance-experiments/2026-10-27-self-read-order/README.md').write_text('''# Publisher-order-independent self reads — 2026-10-27
+
+[100: repair and regressions](phase100/README.md) →
+[101: rebuilt inputs and prospective comparison](phase101/README.md) →
+[102: eight journeys, independent audits and scope review](phase102/README.md).
+
+All original gates remain. See102 for measured effects and limits; no release preparation.
+''')
+print(e)

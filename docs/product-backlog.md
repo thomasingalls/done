@@ -34,6 +34,11 @@ get a bounded scope and evidence before implementation. General release qualific
   after the sync release, the operator reports improvement but periodic pauses remain during held
   deletion on a phone; longer pauses also show the syncing warning. Native-input smoothness is not
   established. This UX patch series records the observation without claiming a performance repair.
+  **2026-10-26:** Goals-only slowdown partly improves with Gentle context off. Unsigned82 adds
+  numeric interval reuse/no-op effect suppression;83–84 prioritize sync over local-history preparation.
+  Native phone smoothness and the16ms gate remain open. Long synthetic backspace probes also fail
+  final-text checks on both released/candidate builds; capture focus, selection, admitted operations
+  and actual final text before attributing that failure. [Evidence](performance-experiments/2026-10-26-goals-context/README.md).
 - **UX-07 — Saving-status layout movement.** “Still saving” warnings currently move the text around.
   They make remaining latency visible during debugging, but this movement is unacceptable in the user
   experience. Keep save state truthful while making status changes preserve editor layout, selection,
@@ -274,3 +279,39 @@ release profile and compatible reader rollback are implemented/tested; ordinary 
 only until an activated image is selected. The [runbook](./account-local-retention-activation.md) covers
 build-time flags and cached-client adoption. Automatic service snapshots/admission/pruning remain
 separate. No real-profile conversion or production release occurred in these unsigned phases.
+
+
+## Startup and backup follow-ups — 2026-10-26
+
+- **PERF-OPEN — Active synced account takes about a minute before editing.** Reported on the phone
+  after the operator confirms covered service history was pruned. Service pruning and device-local
+  baseline reduction are separate; check whether the latter completed before attributing startup.
+  Trace numeric unlock/authentication/classification/replay/render phases on the actual slow path;
+  reuse existing depth evidence rather than repeat a broad sweep. Preserve all authority/lifetime
+  and replay guarantees. The operator locates the wait after code/passkey entry, under a stale
+  passkey title. Phase91 fixes that presentation and adds opt-in numeric census/opening timings;
+  Back aborts/drains rather than removing data. No actual slow-phone trace is captured yet.
+  A minute remains an unresolved defect, not the promised effect of pruning.
+- **OPS-B2 — Implemented in development, not deployed (phase90).** The operator selects one remote
+  verification cycle/hour, including unfamiliar retained keepers, and five-minute local encrypted
+  checksums. New uploads stay prompt; receipts remain distinct from verified recovery-point credit.
+  Quota circuits/backoff and retained exact-version receipts stop unchanged reuploads and redundant
+  readback. A download cap pauses reads/pruning until UTC reset while allowing new uploads. Exact
+  readback still gates anchor/keeper/prune credit. The cap is unchanged. New uploads can remain
+  unverified for an hour; local checksum is not decryption/restore proof. New cadence-file aggregate
+  execution credit remains blocked until separate adapter review.
+
+[Discussion, source evidence and boundaries](development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
+Release preparation waits for the operator's explicit instruction; these are development follow-ups.
+
+
+## Catch-up performance — 2026-10-27
+
+- **PERF-RECEIVE-COPY — Implemented in unsigned94.** Read preparation/status were copying all inbound
+  receipt histories before selecting a publisher or scalar result. Project cursor metadata inside the
+  existing verified owner before detached copying. Real encrypted receiver regressions observe zero
+  retained payload copies while preserving old-position replay, conflicts and cold/reduced-baseline
+  behavior; all old tests remain byte-exact. Synthetic copy timings support the mechanism, not total
+  catch-up latency. Next: matched whole-client comparison with both clients rebuilt and original
+  responsiveness/durability/fairness gates intact. Do not reuse service-only fixed-client timings as
+  evidence of this client optimization. [Checkpoint](performance-experiments/2026-10-27-receive-projection/README.md).

@@ -1,0 +1,113 @@
+import { test, expect, chromium, type BrowserContext, type Page } from '@playwright/test';
+import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
+import { join } from 'node:path';
+import { readRequestInfo } from '../../../read-request.mjs';
+import { installNotificationProbe } from '../../../notification-probe.mjs';
+import { start, stop, control } from './runtime.mjs';
+import { restoreAuthenticator, openSaved } from './devices';
+import { seedProfile } from './seed-profile';
+import { root, card, focus, position, exported, archiveIdentity, lock, digest } from './common';
+import { browserIdentity, clockBrackets } from './dispatch-probe';
+const out = process.env['FAIR_OUT']!, exe = process.env['CHROMIUM_PATH']!;
+const withhold = process.env['QUIET_WITHHOLD'] === '1';
+const marker = ' Quiet peer arrival 20261027;';
+function markerProbe(value: string) {
+  const now = () => performance.timeOrigin + performance.now();
+  const result: any = { markerAt: null, inputs: [] };
+  const observe = () => {
+    if (result.markerAt !== null) return;
+    const c = [...document.querySelectorAll('.day-panel[data-active="true"] .card')].find(c => c.textContent?.includes('Fair H target:'));
+    if (c?.textContent?.includes(value)) result.markerAt = now();
+  };
+  new MutationObserver(observe).observe(document, { subtree: true, childList: true, characterData: true });
+  addEventListener('beforeinput', (event: Event) => {
+    if (!(event.target instanceof Element) || !event.target.closest('.card')) return;
+    result.inputs.push({ at: now(), trusted: event.isTrusted, focused: document.hasFocus(), visible: document.visibilityState });
+  }, true);
+  (window as any).__quietMarker = result;
+}
+test('a previously quiet same-account publisher writes during catch-up', async () => {
+  mkdirSync(out, { recursive: true, mode: 0o700 });
+  const fixture = JSON.parse(readFileSync(root + '/private-fixture/fixture.json', 'utf8'));
+  const account = fixture.accounts.find((a: any) => a.label === 'H');
+  const result: any = { outcome: 'starting', withhold, roots: [], network: [], clocks: [], guards: {} };
+  const contexts: BrowserContext[] = [];
+  const watch = (p: Page, label: string) => {
+    const queries = new Map<any, any>();
+    p.on('request', q => {
+      const path = new URL(q.url()).pathname;
+      if (!path.startsWith('/account/')) return;
+      const row = { label, path, at: Date.now(), ...readRequestInfo(q) };
+      result.network.push(row); queries.set(q, row);
+    });
+    p.on('response', r => { const row = queries.get(r.request()); if (row) { row.headersAt = Date.now(); row.status = r.status(); } });
+  };
+  const open = async (index: number, unavailable: boolean) => {
+    const saved = account.actors[index], profile = join(out, 'private-profile-H' + index);
+    const ctx = await chromium.launchPersistentContext(profile, { executablePath: exe, baseURL: 'http://localhost:53781', viewport: { width: 1440, height: 1000 } });
+    contexts.push(ctx); result.roots.push(await browserIdentity(ctx.browser()!));
+    await seedProfile(ctx, saved.storage);
+    const p = ctx.pages()[0] ?? await ctx.newPage();
+    await p.addInitScript(installNotificationProbe, { withhold: index === 1 && withhold });
+    await p.addInitScript(markerProbe, marker); watch(p, 'H' + index);
+    if (unavailable) await ctx.route('**/account/delivery/read-v2*', route => route.fulfill({ status: 409, contentType: 'application/json', body: JSON.stringify({ v: 1, kind: 'unknown', reason: 'state-changed' }) }));
+    await restoreAuthenticator(p, saved.credentials); await p.goto('/');
+    await p.evaluate(() => navigator.serviceWorker.ready); await p.reload();
+    await p.waitForFunction(() => !!navigator.serviceWorker.controller);
+    const hash = await p.evaluate(async () => Array.from(new Uint8Array(await (await fetch((await navigator.serviceWorker.ready).active!.scriptURL)).arrayBuffer())));
+    const workerSha256 = digest(Buffer.from(hash)); expect(workerSha256).toBe(digest(readFileSync(process.env['FAIR_DIST']! + '/sw.js')));
+    result.roots.at(-1).workerSha256 = workerSha256;
+    await ctx.setOffline(true); await openSaved(p, saved.code, true);
+    await p.getByLabel('Go to date', { exact: true }).fill(account.date);
+    await expect(card(p, 'H')).toBeVisible();
+    return { ctx, p, saved, profile };
+  };
+  try {
+    const state = join(out, 'state'); cpSync(fixture.state, state, { recursive: true, errorOnExist: true });
+    await start(state, process.env['FAIR_DIST']!); await control('start');
+    const reader = await open(1, false), writer = await open(2, true);
+    const acceptedBefore = await position(writer.p); result.acceptedBefore = acceptedBefore;
+    result.catchupStartedAt = Date.now(); await reader.ctx.setOffline(false);
+    await expect.poll(() => reader.p.evaluate(() => (window as any).__quietNotifications.ready), { timeout: 30000 }).toBeGreaterThan(0);
+    await expect.poll(() => result.network.some((q: any) => q.label === 'H1' && q.status === 200 && q.reads?.some((v: any) => v.after >= 33)), { timeout: 30000 }).toBe(true);
+    const hotAt = Date.now();
+    const writerSha = () => result.network.find((q: any) => q.label === 'H2' && q.reads)?.reads[0].readerSha256;
+    result.hotObservedAt = hotAt;
+    // All four unchanged remote streams reply after the hot threshold. Reconcile H2's identity after its first online request.
+    await expect.poll(() => new Set(result.network.flatMap((q: any) => q.label === 'H1' && q.status === 200 && q.headersAt >= hotAt ? (q.reads ?? []).filter((v: any) => !v.self && v.after === 1).map((v: any) => v.publisherSha256) : [])).size, { timeout: 15000 }).toBe(4);
+    result.clocks.push({ label: 'H1-before', rows: await clockBrackets(reader.p) });
+    result.clocks.push({ label: 'H2-before', rows: await clockBrackets(writer.p) });
+    await focus(writer.p, 'H'); result.offeredAt = Date.now();
+    await writer.p.keyboard.insertText(marker); await writer.p.keyboard.press('Escape');
+    result.writerInput = await writer.p.evaluate(() => structuredClone((window as any).__quietMarker.inputs));
+    expect(result.writerInput).toHaveLength(1); expect(result.writerInput[0].trusted).toBe(true); expect(result.writerInput[0].focused).toBe(true); expect(result.writerInput[0].visible).toBe('visible');
+    result.onlineAt = Date.now(); await writer.ctx.setOffline(false);
+    await expect.poll(() => position(writer.p), { timeout: 30000 }).toBeGreaterThan(acceptedBefore);
+    result.confirmedAcceptedAt = Date.now(); result.acceptedAfter = await position(writer.p); expect(result.acceptedAfter).toBe(acceptedBefore + 1);
+    result.publisherSha256 = writerSha(); expect(result.publisherSha256).toBeTruthy();
+    expect(result.network.some((q: any) => q.label === 'H1' && q.status === 200 && q.headersAt >= hotAt && q.headersAt <= result.offeredAt && q.reads?.some((v: any) => v.publisherSha256 === result.publisherSha256 && v.after === 1))).toBe(true);
+    await expect.poll(() => reader.p.evaluate(() => (window as any).__quietMarker.markerAt), { timeout: 30000 }).not.toBeNull();
+    result.peerMarkerAt = await reader.p.evaluate(() => (window as any).__quietMarker.markerAt);
+    await expect.poll(() => reader.p.evaluate(() => (window as any).__quietNotifications.content + (window as any).__quietNotifications.hint), { timeout: 10000 }).toBeGreaterThan(0);
+    result.notificationAtMarker = await reader.p.evaluate(() => structuredClone((window as any).__quietNotifications));
+    if (withhold) expect(result.notificationAtMarker.withheld).toBeGreaterThan(0);
+    result.clocks.push({ label: 'H1-after', rows: await clockBrackets(reader.p) });
+    result.clocks.push({ label: 'H2-after', rows: await clockBrackets(writer.p) });
+    result.rawHostDispatchToPeerMs = result.peerMarkerAt - result.offeredAt;
+    result.rawInputEventToPeerMs = result.peerMarkerAt - result.writerInput[0].at;
+    result.within2500RawProvisional = result.rawHostDispatchToPeerMs <= 2500;
+    await lock(writer.p); await writer.ctx.close(); result.writerClosedAt = Date.now();
+    await expect(card(reader.p, 'H')).toContainText(account.expected, { timeout: Math.max(1, 600000 - (Date.now() - result.catchupStartedAt)) });
+    result.catchupCompletedAt = Date.now();
+    const final = await exported(reader.p); const clean = Object.fromEntries(Object.entries(final).map(([name, text]) => [name, (text as string).replace(marker, '')]));
+    expect(Object.values(final).join('\n').split(marker)).toHaveLength(2); expect(clean).toEqual(account.archive);
+    result.finalArchive = archiveIdentity(final); result.guards.fullOriginalArchivePlusOnlyMarker = true;
+    await reader.ctx.setOffline(true); await lock(reader.p); await reader.ctx.close();
+    const cold = await chromium.launchPersistentContext(reader.profile, { executablePath: exe, baseURL: 'http://localhost:53781', viewport: { width: 1440, height: 1000 }, offline: true });
+    contexts.push(cold); const p = cold.pages()[0] ?? await cold.newPage(); await restoreAuthenticator(p, reader.saved.credentials); await p.goto('/'); await openSaved(p, reader.saved.code, true);
+    await p.getByLabel('Go to date', { exact: true }).fill(account.date); expect(await exported(p)).toEqual(final);
+    result.guards.sameProfileOfflineColdExact = true; result.guards.noColdStorageReinjection = true;
+    result.metrics = (await control('end') as any).metrics; result.trace = await control('trace'); result.outcome = 'passed';
+  } catch (error) { result.outcome = 'failed'; result.error = String(error); throw error; }
+  finally { await Promise.all(contexts.map(ctx => ctx.close().catch(() => {}))); writeFileSync(join(out, 'result.json'), JSON.stringify(result, null, 2) + '\n'); await stop(); }
+});

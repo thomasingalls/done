@@ -1,0 +1,65 @@
+{
+  "baseHead": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+  "rows": [
+    {
+      "phase": 113,
+      "path": "/private/tmp/done-peer-pacing-20261027/113-signed-source-and-pacing-attribution.patch",
+      "baseTree": "1b2b4f7cbc727c23795a8481e25bf8561d8ca9d2",
+      "expectedTree": "dd5049993dd841eae3ca886f9ffa018f381756cd",
+      "patch": "113-signed-source-and-pacing-attribution.patch",
+      "sha256": "6dd752ca401a536da799a3041136a3b30ae4c6f98c02c4f94fb825e62ec5ca6a",
+      "commit": "006687273e58625f0699607f4978ebc8c4af1013",
+      "signatureVerified": true
+    },
+    {
+      "phase": 114,
+      "path": "/private/tmp/done-peer-pacing-20261027/114-publication-and-capacity-tail-findings.patch",
+      "baseTree": "dd5049993dd841eae3ca886f9ffa018f381756cd",
+      "expectedTree": "0905d8a8f59e97608d3ce55684c8832cd4934859",
+      "patch": "114-publication-and-capacity-tail-findings.patch",
+      "sha256": "6ab4285b97f6569d2144fefe6381bb7c6bce644f0b76d0b1c487f2bb288fdacf",
+      "commit": "1612f918cc5b41d468f7d7c23044a28eb2827e26",
+      "signatureVerified": true
+    },
+    {
+      "phase": 115,
+      "path": "/private/tmp/done-publication-latch-20261027/115-publication-deadline-latching.patch",
+      "baseTree": "0905d8a8f59e97608d3ce55684c8832cd4934859",
+      "expectedTree": "3bbef24ab3509057b08126cf13f07ec88e7fdd33",
+      "patch": "115-publication-deadline-latching.patch",
+      "sha256": "45bd7dd40c292b9ceffc649f28ea3dab528fb12c4579051fde3f22e47c15a294",
+      "commit": "40fd18aa8827daf6fb2242cc29d09f6bb893264d",
+      "signatureVerified": true
+    },
+    {
+      "phase": 116,
+      "path": "/private/tmp/done-publication-latch-20261027/116-publication-latch-comparison-inputs.patch",
+      "baseTree": "3bbef24ab3509057b08126cf13f07ec88e7fdd33",
+      "expectedTree": "9de2e7312b24873fd0c32a185a672725bd7b90e0",
+      "patch": "116-publication-latch-comparison-inputs.patch",
+      "sha256": "67a7cde1cf36c963c87849b9aa820b1380f3923ebdc049347e91404efd5b74cc",
+      "commit": "1187f8205821913e789a5ae105cef6d0e29a1147",
+      "signatureVerified": true
+    },
+    {
+      "phase": 117,
+      "path": "/private/tmp/done-publication-latch-20261027/117-publication-latch-accepted-comparison.patch",
+      "baseTree": "9de2e7312b24873fd0c32a185a672725bd7b90e0",
+      "expectedTree": "46dd59ed7a20f9711a60fd4d449a899fd2374061",
+      "patch": "117-publication-latch-accepted-comparison.patch",
+      "sha256": "8a0266a031a1fa4fc076b8f3ef6e822f4316f369d2cf532580317b1cd452d9ef",
+      "commit": "dd203c8ab5d232a1e40cc93a80ab867e004136f0",
+      "signatureVerified": true
+    },
+    {
+      "phase": 118,
+      "path": "/private/tmp/done-publication-latch-20261027/118-activate-accepted-quiet-budget.patch",
+      "baseTree": "46dd59ed7a20f9711a60fd4d449a899fd2374061",
+      "expectedTree": "46dd9697a976cea5941d2bf8329f6415e53591ab",
+      "patch": "118-activate-accepted-quiet-budget.patch",
+      "sha256": "83008c4a15a4687a15c7f3645e882432b5107c297518708fcc8c44c9941bb6e5",
+      "commit": "3ae028480fa988c694b01394a43fc6f0d5eddc43",
+      "signatureVerified": true
+    }
+  ]
+}

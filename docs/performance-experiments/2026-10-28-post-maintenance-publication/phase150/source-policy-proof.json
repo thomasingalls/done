@@ -1,0 +1,16 @@
+{
+  "receiverHealthyIdleIntervalMs": [
+    60000,
+    65000
+  ],
+  "unhealthyIdleIntervalMs": 5000,
+  "intervalClauseByteExact142": true,
+  "actualSchedulerByteExact142": true,
+  "faultProbeDropsHintAndContentButKeepsReadyAndHeartbeats": true,
+  "notificationProbeSha256": "179a77f2ed0debbfe257821c61411a4b0b67d32e80bab7333e1f39125bc604f0",
+  "lastOriginalReceiverReadMs": 90405.25927734375,
+  "lastOriginalSubmitMs": 91184.17993164062,
+  "submissionAfterLastReceiverReadMs": 778.920654296875,
+  "noExactPostEditLiveSchedulerSampleInOriginalRun": true,
+  "causeCalibration": "accepted edit failed receiver discovery; idle healthy repair policy plus withheld hint is strongly supported, not an exact replay of original live scheduler state"
+}

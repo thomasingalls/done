@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "preparedSeedAcceptanceExact": true,
+  "rows": [
+    {
+      "name": "profile-1-full-history",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 121,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "3ce0af72e7b366d064c9d3f53b253fc953ad9cf060abc99419378102c2b4b83d"
+    }
+  ]
+}

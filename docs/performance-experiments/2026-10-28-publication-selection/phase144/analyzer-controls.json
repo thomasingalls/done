@@ -1,0 +1,31 @@
+{
+  "retainedPassingCaseBoundsReconstructed": true,
+  "fourFaultsRefused": true,
+  "rows": [
+    {
+      "control": "none",
+      "expectedOutcome": true,
+      "exit": 0
+    },
+    {
+      "control": "false-marker",
+      "expectedOutcome": true,
+      "exit": 0
+    },
+    {
+      "control": "missing-key",
+      "expectedOutcome": true,
+      "exit": 1
+    },
+    {
+      "control": "missing-guard",
+      "expectedOutcome": true,
+      "exit": 1
+    },
+    {
+      "control": "bad-clock",
+      "expectedOutcome": true,
+      "exit": 1
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+import {ScopedRequestBudget,REQUEST_LIMITS}from'/Users/thomasingalls/.codex/worktrees/7fda/done/account-service/requestBudget.ts';
+import{writeFileSync,readFileSync}from'node:fs';import{createHash}from'node:crypto';import assert from'node:assert/strict';
+const root='/private/tmp/done-peer-pacing-20261027';let now=0;const b=new ScopedRequestBudget(()=>now);
+const run=(key,work)=>{const r=b.acquire(key);if(!r)return false;try{const ok=r.reserveWork(work);r.settleWork(ok?work:0);return ok;}finally{r()}};
+let h1=0,h2=0;while(run('service-held-H1',4))h1++;assert.equal(h1,30);assert.equal(run('service-held-H1',1),false);
+while(run('service-held-H2',4))h2++;assert.equal(h2,30);assert.equal(run('service-held-H1',4),false);
+now=63;const singlePeerRead=run('service-held-H1',1);assert.equal(singlePeerRead,true);const fourPageRead=run('service-held-H2',4);assert.equal(fourPageRead,false);
+now=313;const afterRefill=run('service-held-H2',4);assert.equal(afterRefill,true);
+writeFileSync(root+'/budget-replay.json',JSON.stringify({status:'deterministic-policy-boundary-not-client-timing',sourceSha256:createHash('sha256').update(readFileSync('/Users/thomasingalls/.codex/worktrees/7fda/done/account-service/requestBudget.ts')).digest('hex'),limits:REQUEST_LIMITS,initial4PageRequestsH1:h1,initial4PageRequestsH2:h2,firstSessionRefusalDoesNotExhaustOtherSession:true,singlePeerReadAt63ms:singlePeerRead,fourPageReadAt63ms:fourPageRead,fourPageReadAfterRefillAt313ms:afterRefill,failedTopUpStillCostsAdmissionUnit:true,notAnIdentificationOfEveryHistoricalRefusalBranch:true},null,2)+'\n');console.log('Existing policy: each session accepts30 four-page requests; at63ms a one-page read fits but four-page top-up does not; later refill admits4.');

@@ -1,6 +1,6 @@
 /** View-only context: no text transactions, forced parsing, or retained content outside this view. */
 import { ensureSyntaxTree, syntaxTree, syntaxTreeAvailable } from '@codemirror/language';
-import { StateEffect, type EditorState } from '@codemirror/state';
+import { RangeSet, StateEffect, type EditorState } from '@codemirror/state';
 import {
   Decoration,
   EditorView,
@@ -23,7 +23,7 @@ export interface GentleContextPlan {
 }
 const HEADING = /^(?:ATX|Setext)Heading([1-6])$/u;
 const CONTAINERS = new Set(['Document', 'Blockquote', 'BulletList', 'OrderedList', 'ListItem']);
-const measureContext = StateEffect.define<boolean>();
+const measureContext = StateEffect.define<DecorationSet>();
 
 /** Skip inline syntax and code/prose subtrees; cap pathological authored block structure. */
 const within = (
@@ -126,8 +126,117 @@ export const gentleLineIsClear = (
     range.empty ? state.doc.lineAt(range.head).from === from : from < range.to && to >= range.from,
   );
 
+/** A paragraph-only edit cannot change heading ownership if both parser block paths map exactly. */
+const paragraphEdit = (update: ViewUpdate): boolean => {
+  let safe = true;
+  const before = syntaxTree(update.startState),
+    after = syntaxTree(update.state);
+  update.changes.iterChanges((fromA, toA, fromB, toB, inserted) => {
+    if (!safe) return;
+    if (
+      inserted.lines !== 1 ||
+      update.startState.doc.lineAt(fromA).number !== update.startState.doc.lineAt(toA).number ||
+      !syntaxTreeAvailable(update.startState, toA) ||
+      !syntaxTreeAvailable(update.state, toB)
+    ) {
+      safe = false;
+      return;
+    }
+    const paragraph = (tree: Tree, from: number, to: number): SyntaxNode | null => {
+      let node: SyntaxNode | null = tree.resolveInner(from, -1);
+      while (node && node.name !== 'Paragraph') node = node.parent;
+      return node && from >= node.from && to <= node.to ? node : null;
+    };
+    let oldNode = paragraph(before, fromA, toA),
+      newNode = paragraph(after, fromB, toB);
+    if (!oldNode || !newNode) {
+      safe = false;
+      return;
+    }
+    while (oldNode && newNode) {
+      if (
+        oldNode.name !== newNode.name ||
+        update.changes.mapPos(oldNode.from, -1) !== newNode.from ||
+        update.changes.mapPos(oldNode.to, 1) !== newNode.to
+      ) {
+        safe = false;
+        return;
+      }
+      oldNode = oldNode.parent;
+      newNode = newNode.parent;
+    }
+    if (oldNode || newNode) safe = false;
+  });
+  return safe;
+};
+
+/** Numeric interval cache, owned by one editor. No heading titles or workspace content are retained. */
+class ContextInterval {
+  private tree: Tree | null = null;
+  private plan: GentleContextPlan | null = null;
+  private owner: Span = { from: 0, to: 0 };
+  private through = 0;
+
+  update(update: ViewUpdate): void {
+    if (!this.tree) return;
+    if (
+      update.transactions.some((transaction) => transaction.reconfigured) ||
+      this.tree !== syntaxTree(update.startState) ||
+      (!update.docChanged && this.tree !== syntaxTree(update.state)) ||
+      (update.docChanged && !paragraphEdit(update))
+    ) {
+      this.tree = null;
+      return;
+    }
+    if (update.docChanged) {
+      const position = (value: number, association: number) =>
+        value > update.startState.doc.length
+          ? update.changes.mapPos(update.startState.doc.length, association) + 1
+          : update.changes.mapPos(value, association);
+      const span = (value: Span): Span => ({
+        from: position(value.from, -1),
+        to: position(value.to, 1),
+      });
+      if (this.plan)
+        this.plan = { section: span(this.plan.section), headings: this.plan.headings.map(span) };
+      this.owner = span(this.owner);
+      this.through = position(this.through, 1);
+    }
+    this.tree = syntaxTree(update.state);
+  }
+
+  get(state: EditorState, through: number): GentleContextPlan | null {
+    const head = state.selection.main.head;
+    if (
+      this.tree === syntaxTree(state) &&
+      through <= this.through &&
+      head >= this.owner.from &&
+      head < this.owner.to &&
+      syntaxTreeAvailable(state, through)
+    )
+      return this.plan;
+    this.plan = gentleContextPlan(state, through);
+    this.tree = syntaxTree(state);
+    this.through = through;
+    // Cache only proven parse coverage. Unknown/budget-exhausted scope is restricted to this caret.
+    this.owner = { from: head, to: head + 1 };
+    if (!syntaxTreeAvailable(state, through)) {
+      this.tree = null;
+      return this.plan;
+    }
+    if (this.plan) {
+      const budget = { left: 4096 };
+      const next = findHeading(this.tree, head, through, 6, true, budget);
+      if (budget.left > 0)
+        this.owner = { from: this.plan.section.from, to: next?.from ?? through + 1 };
+    }
+    return this.plan;
+  }
+}
+
 class GentleContext {
   decorations: DecorationSet = Decoration.none;
+  private readonly context = new ContextInterval();
   private alive = true;
   private scheduled = false;
   private generation = 0;
@@ -143,38 +252,12 @@ class GentleContext {
     this.schedule(view);
   }
   update(update: ViewUpdate): void {
+    this.context.update(update);
     if (update.docChanged) this.decorations = this.decorations.map(update.changes);
     const measurement = update.transactions
       .flatMap((transaction) => transaction.effects)
       .find((effect) => effect.is(measureContext));
-    if (measurement) {
-      this.decorations = Decoration.none;
-      if (measurement.value === true) {
-        const through = Math.max(
-          update.state.selection.main.head,
-          ...update.view.visibleRanges.map((range) => range.to),
-        );
-        const plan = gentleContextPlan(update.state, through);
-        if (plan) {
-          const decorations = [];
-          const seen = new Set<number>();
-          for (const range of update.view.visibleRanges) {
-            for (
-              let number = update.state.doc.lineAt(range.from).number;
-              number <= update.state.doc.lineAt(range.to).number;
-              number++
-            ) {
-              const line = update.state.doc.line(number);
-              if (seen.has(line.from)) continue;
-              seen.add(line.from);
-              if (!gentleLineIsClear(update.state, line.from, line.to, plan))
-                decorations.push(Decoration.line({ class: 'cm-gentle-dim' }).range(line.from));
-            }
-          }
-          this.decorations = Decoration.set(decorations, true);
-        }
-      }
-    }
+    if (measurement) this.decorations = measurement.value;
     if (
       !measurement &&
       (update.docChanged ||
@@ -226,7 +309,34 @@ class GentleContext {
             this.schedule(measured);
             return;
           }
-          measured.dispatch({ effects: measureContext.of(measurement.visible) });
+          let next = Decoration.none;
+          if (measurement.visible) {
+            const through = Math.max(
+              measured.state.selection.main.head,
+              ...measured.visibleRanges.map((range) => range.to),
+            );
+            const plan = this.context.get(measured.state, through);
+            if (plan) {
+              const decorations = [];
+              const seen = new Set<number>();
+              for (const range of measured.visibleRanges) {
+                for (
+                  let number = measured.state.doc.lineAt(range.from).number;
+                  number <= measured.state.doc.lineAt(range.to).number;
+                  number++
+                ) {
+                  const line = measured.state.doc.line(number);
+                  if (seen.has(line.from)) continue;
+                  seen.add(line.from);
+                  if (!gentleLineIsClear(measured.state, line.from, line.to, plan))
+                    decorations.push(Decoration.line({ class: 'cm-gentle-dim' }).range(line.from));
+                }
+              }
+              next = Decoration.set(decorations, true);
+            }
+          }
+          if (!RangeSet.eq([this.decorations], [next]))
+            measured.dispatch({ effects: measureContext.of(next) });
         });
       },
     });

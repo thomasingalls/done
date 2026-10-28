@@ -1,0 +1,1 @@
+export function readRequestInfo(request:any):{reads?:{workspaceSha256:string;readerSha256:string;publisherSha256:string;after:number;limit:number;self:boolean}[];readMetadataMissing?:boolean;readMetadataInvalid?:boolean};

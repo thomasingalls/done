@@ -1,0 +1,12 @@
+import {inspect} from './audit-lib.mjs';
+import {readFileSync,writeFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-quiet-budget-20261027',fixture=JSON.parse(readFileSync(root+'/private-fixture/fixture.json')),seed=inspect(fixture.state+'/account.sqlite'),rows=[];
+for(const name of ['race-C','race-mutant']){
+ const a=inspect(root+'/'+name+'/state/account.sqlite'),x=JSON.parse(readFileSync(root+'/'+name+'/result.json'));assert.equal(x.outcome,'passed');
+ for(const[id,proof]of Object.entries(seed.identities))assert.deepEqual(a.identities[id],proof);
+ const added=Object.keys(a.identities).filter(k=>!seed.identities[k]);assert.deepEqual(added,['H:8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411:2']);
+ for(let i=1;i<3;i++)assert.deepEqual(a.accounts[i],seed.accounts[i]);assert.equal(x.notificationsAtMarker.ready,1);assert.equal(x.hintBeforeRelease.ready,1);assert(x.hintBeforeRelease.content>0);
+ rows.push({name,status:'passed',everySeedProofByteExact:true,onlyExpectedNewPublisherPosition2:true,unrelatedAccountsUnchanged:true,noReconnectSubstitutesForHeldWake:true,normalSignaturesAndPrefixesVerified:true,databaseSha256:a.databaseSha256});
+}
+writeFileSync(root+'/race-native-review.json',JSON.stringify({status:'passed',runs:rows},null,2)+'\n');console.log(JSON.stringify(rows,null,2));

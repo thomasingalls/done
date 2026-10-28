@@ -1,0 +1,109 @@
+[
+  {
+    "name": "activation-lint-targeted",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/oxlint/bin/oxlint",
+      "--react-plugin",
+      "src/crdt/accountReceive.ts",
+      "src/crdt/accountSyncDriver.ts",
+      "test/accountBatching.test.ts"
+    ],
+    "environment": {},
+    "startedAt": 1793122507704,
+    "completedAt": 1793122507791,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-format",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "src/crdt/accountSyncDriver.ts",
+      "src/crdt/accountReceive.ts",
+      "test/accountBatching.test.ts"
+    ],
+    "environment": {},
+    "startedAt": 1793122507792,
+    "completedAt": 1793122507956,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-native-default",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "--test",
+      "--test-timeout=90000",
+      "test/account-receive/batch-transport.test.mjs",
+      "test/account-receive/groups-transport.test.mjs",
+      "test/account-sync/native.test.mjs"
+    ],
+    "environment": {},
+    "startedAt": 1793122507956,
+    "completedAt": 1793122691664,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-native-authority",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "--test",
+      "--test-name-pattern=authority reuse authenticates",
+      "test/account-sync/native.test.mjs"
+    ],
+    "environment": {
+      "ACCOUNT_AUTHORITY_REUSE": "1"
+    },
+    "startedAt": 1793122691665,
+    "completedAt": 1793122706198,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-native-audit",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "--test",
+      "--test-name-pattern=reference audit disagreement|generated incremental ledger histories",
+      "test/account-sync/native.test.mjs"
+    ],
+    "environment": {
+      "ACCOUNT_LEDGER_AUDIT": "every"
+    },
+    "startedAt": 1793122706199,
+    "completedAt": 1793122744873,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-native-hidden",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "--test",
+      "--test-name-pattern=hidden-page batch close",
+      "test/account-sync/native.test.mjs"
+    ],
+    "environment": {
+      "ACCOUNT_BATCH_MODE": "coordinated-2000"
+    },
+    "startedAt": 1793122744874,
+    "completedAt": 1793122755250,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-metadata",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "--test",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/campaign-wrappers.test.mjs",
+      "test/release-validation/account-fixtures.test.mjs",
+      "test/release-validation/vitest.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/release-validation/manifest.test.mjs"
+    ],
+    "environment": {},
+    "startedAt": 1793122755251,
+    "completedAt": 1793122808729,
+    "exitCode": 0
+  }
+]

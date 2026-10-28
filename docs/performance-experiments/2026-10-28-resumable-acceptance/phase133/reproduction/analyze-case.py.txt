@@ -1,0 +1,32 @@
+from pathlib import Path
+import json,math,sys
+s=Path(__file__).parent;c=json.loads(sys.argv[1]);d=s/c['name'];x=json.loads((d/'result.json').read_text());row={'name':c['name'],'variant':c['variant'],'mode':c['mode'],'outcome':x['outcome']}
+def quantile(v,p):return sorted(v)[math.ceil(p*len(v))-1]
+def summary(v):return {'n':len(v),'p50':quantile(v,.5),'p95':quantile(v,.95),'max':max(v)}
+def clock(v):
+ lo=max(q['renderer']-q['after']-1 for q in v);hi=min(q['renderer']-q['before']+1 for q in v);assert lo<=hi;return lo,hi
+assert x['outcome']=='passed',x.get('error');assert len(x['offers'])==123 and all(x['guards'].values());keys=[o for o in x['offers']if o['kind']=='key'];markers=[o for o in x['offers']if o['kind']=='marker'];assert [q['index']for q in keys]==list(range(120));assert [q['index']for q in markers]==[0,1,2]
+values=[];markerValues=[]
+for device,probe in enumerate(x['probes']):
+ offset=clock([v for group in x['clocks']for v in group['rows'][device]]);v=[]
+ for i,o in enumerate(keys,1):
+  seen=next((q['at']for q in probe['counts']if q['at']>=o['at']-5 and q['count']>=x['baselines'][device]+i),None);assert seen is not None,('missing',i,device);v.append(seen-o['at']-offset[0])
+ values.append(v);markerValues.append([probe['markers'][i]-o['at']-offset[0]for i,o in enumerate(markers)])
+assert len(x['probes'][1]['events'])==123 and all(e['trusted']and e['focused']and e['visible']=='visible'for e in x['probes'][1]['events']);assert not c['withhold']or x['notifications'][0]['withheld']>0
+row.update(peerUpperMs=summary(values[0]),localUpperMs=summary(values[1]),markerPeerUpperMs=markerValues[0],allKeyUpperMs=values,notificationCounts=x['notifications']);row['backlogMs']=max(v['completedAt']-x['startedAt']for v in x['catchups']);row['gates']={'all120KeysComplete':True,'local16ms':quantile(values[1],.95)<=16,'peer2500ms':quantile(values[0],.95)<=2500,'everyMarker2500ms':max(markerValues[0])<=2500,'fullBacklog600s':row['backlogMs']<=600000,'finalNewDelivery30s':x['newDeliveryAt']-max(o['returnedAt']for o in x['offers'])<=30000,'archiveAndColdGuards':True,'faultExercised':not c['withhold']or x['notifications'][0]['withheld']>0}
+if c['mode']=='maintenance':
+ before=x['maintenanceBeforeTyping'];after=x['maintenanceAfter'];assert before['status']['phase']=='running'and before['status']['progress']['stage']=='verifying';assert after['overflow']==0
+ if c['variant']=='C':assert any(e.get('reason')=='preparation-saved'for e in before['events'])
+ overlap=sum(k['at']<x['catchups'][0]['completedAt']for k in keys);row['keysDuringBacklog']=overlap;row['gates']['atLeast60KeysDuringCatchup']=overlap>=60
+ starts={};slices=[];saved=set()
+ for e in after['events']:
+  p=e.get('progress')or{};attempt=p.get('attempt')
+  if p.get('stage')=='durability'and attempt not in starts:starts[attempt]=e['at']
+  if e.get('reason')=='preparation-saved'and e['phase'] in ['waiting','idle']and attempt not in saved and attempt in starts:saved.add(attempt);slices.append({'attempt':attempt,'wholeObservedMs':e['at']-starts[attempt]})
+ row['maintenance']={'attempts':after['diagnostics']['attempts'],'interruptions':after['diagnostics']['interruptions'],'completions':after['diagnostics']['completions'],'savedSliceIntervals':slices,'snapshot':after['status']};row['gates']['actualPreparation']=True;row['gates']['maintenanceCompletes']=after['diagnostics']['completions']>=1
+# Throughput comparison is conditional paired nonregression, not population inference.
+if c['variant']=='C':
+ ref=next(p for p in json.loads((s/'run-plan.json').read_text())if p['mode']==c['mode']and p['variant']=='R'and p['withhold']==c['withhold'])
+ f=s/ref['name']/'analysis.json'
+ if f.exists():row['pairedBacklogRatio']=row['backlogMs']/json.loads(f.read_text())['backlogMs'];row['gates']['pairedBacklogNonregression10percent']=row['pairedBacklogRatio']<=1.10
+row['accepted']=all(row['gates'].values());(d/'analysis.json').write_text(json.dumps(row,indent=2)+'\n');print(json.dumps({k:v for k,v in row.items()if k not in['allKeyUpperMs','notificationCounts']},indent=2));sys.exit(0 if row['accepted']or c['variant']=='R'else 2)

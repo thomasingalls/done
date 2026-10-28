@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "allOriginalSeedRowsExact": true,
+  "independentEnvelopeCiphertextWrapperHeadAndPrefixChecks": true,
+  "onlyOneGenuineAcceptedHReverseEdit": true,
+  "otherAccountsUnchanged": true,
+  "nonoverlappingOrderExactArchivesAndOfflineColdProfilePass": true,
+  "readonlyResourceEnvelopeExact": true,
+  "selectedPreviousRebuiltClientExact": true,
+  "databaseSha256": "2d2599708d1b52dfe639e1c4454ae5625be3332f0c1822a9e67e3df0b7faa4a8"
+}

@@ -6,6 +6,10 @@ import {
   hasAutomaticLocalRetention,
 } from './localBaselineMode';
 import { createAutomaticLocalRetention, type LocalRetentionHint } from './automaticLocalRetention';
+import {
+  createAutomaticServiceHistory,
+  hasAutomaticServiceHistory,
+} from '../account/automaticHistoryMaintenance';
 import { createRetentionReads } from './retentionReads';
 import { RetiredHistoryRequired } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
@@ -16,7 +20,12 @@ import { authenticateJoinedAccountRows } from './joinedAccount';
 import { authenticatePromotionRows } from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
 import { accountTextMode } from './accountTextMode';
-import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
+import {
+  MaintenanceInterrupted,
+  isMaintenanceTask,
+  reportRetentionProgress,
+  type RetentionProgressSink,
+} from './contentMaintenance';
 import { createReceivePageTransport } from './receivePageTransport';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
@@ -25,7 +34,11 @@ import {
   unpackReceivePages,
   receiveGroupFits,
 } from './receiveGroup';
-import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
+import {
+  createReceiveSelection,
+  hasPeerBacklog,
+  unresolvedSelfSubmission,
+} from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
 import { ledgerWorkStart, measureLedgerWork, countLedgerWork } from './accountLedgerMetrics';
@@ -107,7 +120,7 @@ import {
 } from './incrementalAccountLedger';
 import { countLedger, measureLedger } from './accountLedgerMetrics';
 import { createInboundCoverage } from './inboundLedger';
-import { createEnvelopePreparation } from './accountEnvelopePreparation';
+import { createEnvelopePreparation, envelopePreparationState } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
 import {
@@ -116,7 +129,12 @@ import {
   requireSelfEnvelope,
   verifySyncState,
 } from './accountSyncState';
-import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
+import {
+  createSyncScheduler,
+  driveOutboundStep,
+  idleReceiveInterval,
+  type SyncStatus,
+} from './accountSyncDriver';
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
@@ -163,6 +181,7 @@ import {
   contextAt,
   publisherContext,
   publisherState,
+  inboundReadCursors,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery, emptyDelivery } from './deliveryRecord';
@@ -269,6 +288,10 @@ async function openAccountReceiveOwner(
     outstanding: Bytes | undefined;
   let outstandingGroup: Bytes[] = [];
   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
+  // Composed owners reuse unchanged quiet proofs within the guarded 750 ms budget.
+  // Publication deadline latching preserves the two-receiver 2.5s acceptance gate (phase117).
+  const receiveSelection = createReceiveSelection(Date.now, composed);
+  let outstandingQuiet: object | undefined;
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
   let skippedHistory: string | undefined;
@@ -499,7 +522,7 @@ async function openAccountReceiveOwner(
           );
           baselineReading = true;
           verifiedCounter = structuredClone(counter);
-          if (hasAutomaticLocalRetention())
+          if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
             localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
           sinceAudit = 0;
           auditDue = auditDeferred = false;
@@ -734,7 +757,7 @@ async function openAccountReceiveOwner(
         coverage.clear();
         throw e;
       }
-      if (hasAutomaticLocalRetention())
+      if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
         localRetentionHint = { revision: 0, records: records.length };
     },
     dispose() {
@@ -742,6 +765,8 @@ async function openAccountReceiveOwner(
       baselineShadow?.invalidate();
       baselineShadow = undefined;
       retentionReads.close();
+      receiveSelection.invalidateQuiet();
+      outstandingQuiet = undefined;
       authority.dispose();
       membershipAnchor = undefined;
       expectedPayload.fill(0);
@@ -839,7 +864,10 @@ async function openAccountReceiveOwner(
     await assertCurrent(task);
     return undefined;
   };
-  const prepareLocalRemoval = async (expectedRevision: number) => {
+  const prepareLocalRemoval = async (
+    expectedRevision: number,
+    progress?: RetentionProgressSink,
+  ) => {
     await carrier.flushJournal();
     const prepared = await runBaselineShadow(
       async (task, owner, _route, checkJournal, checkActivity) => {
@@ -856,9 +884,22 @@ async function openAccountReceiveOwner(
           checkJournal,
           expectedRevision,
           checkRetained,
+          progress,
         );
       },
+      true, // Read-only preparation yields to queued storage; final exchange below remains exclusive.
     );
+    if (prepared.kind === 'preparation-checkpoint') {
+      try {
+        return await runBaselineShadow(async (task, _owner, _route, checkJournal) => {
+          const refused = await retentionReady(task);
+          if (refused) return refused;
+          return prepared.persist(task, () => assertCurrent(task), checkJournal);
+        });
+      } finally {
+        prepared.dispose();
+      }
+    }
     if (prepared.kind !== 'prepared-removal') return prepared;
     return Object.freeze({
       kind: 'prepared-removal' as const,
@@ -871,6 +912,8 @@ async function openAccountReceiveOwner(
           prepared.check();
           checkJournal();
           const release = retentionReads.begin();
+          receiveSelection.invalidateQuiet();
+          outstandingQuiet = undefined;
           outstanding?.fill(0);
           outstanding = undefined;
           for (const r of outstandingGroup) r.fill(0);
@@ -928,6 +971,8 @@ async function openAccountReceiveOwner(
                 await assertCurrent(task);
               }
               const release = retentionReads.begin();
+              receiveSelection.invalidateQuiet();
+              outstandingQuiet = undefined;
               outstanding?.fill(0);
               outstanding = undefined;
               for (const r of outstandingGroup) r.fill(0);
@@ -1022,7 +1067,6 @@ async function openAccountReceiveOwner(
   ) => {
     return await readState(task, owner, (v) => v.inbound);
   };
-  const receiveSelection = createReceiveSelection();
   const describe = (s: Awaited<ReturnType<typeof state>>) =>
     Object.freeze({
       state:
@@ -1049,7 +1093,7 @@ async function openAccountReceiveOwner(
     // The scheduling hint comes from the same fresh, authenticated load as the prefix.
     // A retained submission without a decision must still get its reconciliation read.
     const { inbound: all, pendingSelf } = await readState(task, owner, (v) => ({
-      inbound: v.inbound,
+      inbound: inboundReadCursors(v.inbound),
       pendingSelf: unresolvedSelfSubmission(v.delivery),
     }));
     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
@@ -1057,7 +1101,21 @@ async function openAccountReceiveOwner(
       after === undefined
         ? receiveSelection.next(
             publishers,
-            composed ? { publisher: base.publisher.id, pending: pendingSelf } : undefined,
+            composed
+              ? {
+                  publisher: base.publisher.id,
+                  pending: pendingSelf,
+                  peerBacklog:
+                    !all.conflict && hasPeerBacklog(publishers, base.publisher.id, all.peers),
+                }
+              : undefined,
+            composed
+              ? {
+                  context: base.authority,
+                  peers: all.peers,
+                  cursor: (id) => publisherState(all, base, id),
+                }
+              : undefined,
           )
         : base.publisher.id;
     const s = publisherState(all, base, publisher),
@@ -1092,6 +1150,10 @@ async function openAccountReceiveOwner(
             Math.max(1, s.prefix.observedThrough - cursor),
           )
         : 1;
+    const quiet =
+      composed && publisher !== base.publisher.id
+        ? receiveSelection.captureQuiet(base.authority, publisher, s)
+        : undefined;
     const requests: Bytes[] = [];
     try {
       for (let i = 0; i < count; i++) {
@@ -1111,6 +1173,7 @@ async function openAccountReceiveOwner(
         for (const request of outstandingGroup) request.fill(0);
         stamp.check();
         outstandingStamp = stamp;
+        outstandingQuiet = quiet;
         outstandingGroup = requests;
         outstanding = requests[0]!;
         return outstanding.slice();
@@ -1120,12 +1183,13 @@ async function openAccountReceiveOwner(
       throw cause;
     }
   };
-  const prepareGroup = () =>
+  const prepareGroupOwned = () =>
     runCaptureTask(async (task, owner, route) => {
       const first = await prepareRead(task, owner, route, undefined, true);
       first.fill(0);
-      return outstandingGroup.map((r) => r.slice());
+      return { requests: outstandingGroup.map((r) => r.slice()), quiet: outstandingQuiet };
     });
+  const prepareGroup = async () => (await prepareGroupOwned()).requests;
   const receivePages = createReceivePageTransport();
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
@@ -1135,7 +1199,8 @@ async function openAccountReceiveOwner(
       pages: Bytes[] = [];
     try {
       return await runNetworkTask(async (network) => {
-        requests = await prepareGroup();
+        const prepared = await prepareGroupOwned();
+        requests = prepared.requests;
         stamp.check();
         const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
@@ -1179,7 +1244,7 @@ async function openAccountReceiveOwner(
                         // The aggregate's size is a transport choice, not the individual result.
                         // A failed fallback retains its own retry/refusal classification.
                         events[0]!.length = 0;
-                        void unsupported();
+                        void unsupported('aggregate-limit');
                       },
                     )
                   : Promise.resolve(null),
@@ -1192,6 +1257,7 @@ async function openAccountReceiveOwner(
                 return false;
               }
             },
+            decodeInboundRequest(requests[0]!).publisher,
           );
           pages = collected.pages;
           attempted = collected.attempted;
@@ -1205,6 +1271,7 @@ async function openAccountReceiveOwner(
           page: pages[0] ?? null,
           requests,
           pages,
+          quiet: prepared.quiet,
           oversized:
             !pages.length && events[0]!.some((event) => event.code === 'response-too-large'),
         }));
@@ -1356,6 +1423,7 @@ async function openAccountReceiveOwner(
     check: () => void = () => {},
   ) => {
     const bytes = input.slice();
+    receiveSelection.invalidateQuiet();
     return runCaptureTask(async (task, owner, route) => {
       let result: Awaited<ReturnType<typeof verifyHistoryInstall>> | undefined,
         committed = false;
@@ -1456,7 +1524,9 @@ async function openAccountReceiveOwner(
     ...account,
     close: () => carrier.close(),
     status: () =>
-      runCaptureTask(async (task, owner, route) => describe(await state(task, owner, route))),
+      runCaptureTask(async (task, owner) =>
+        Object.freeze(await readState(task, owner, (v) => describe(v.inbound))),
+      ),
     /** A single outstanding owner-signed request; retry old positions only against retained evidence. */
     prepareRead: (after?: number) =>
       runCaptureTask((task, owner, route) => prepareRead(task, owner, route, after)),
@@ -2419,6 +2489,15 @@ async function openAccountReceiveOwner(
         }),
       ...(incremental
         ? {
+            loadState: (task, owner) =>
+              owner.carrier.select(task, (lease) => ({
+                // Separate detached copies preserve the old census/state ownership boundary.
+                census: verified.select(lease, (v) => v.census.delivery),
+                state: verified.select(lease, ({ inbound, delivery }) => {
+                  if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+                  return delivery;
+                }),
+              })),
             loadSelection: (task, owner, select) =>
               selectState(task, owner, ({ inbound, delivery }) => {
                 if (inbound.conflict) throw Error('Publication halted by inbound conflict');
@@ -2528,6 +2607,12 @@ async function openAccountReceiveOwner(
         whenDurable,
         checkPublication,
         inspect: (records, route) => inspectCensus(records, route, (c) => c.delivery.spool),
+        ...(incremental
+          ? {
+              loadSelection: (task, owner) =>
+                selectState(task, owner, (v) => envelopePreparationState(v.census.delivery.spool)),
+            }
+          : {}),
         run: runCaptureTask,
       }),
       spoolStatus: () =>
@@ -2725,7 +2810,9 @@ async function openAccountReceiveOwner(
     prepareGroup,
     receiveGroup,
     preparedPromotion,
-    completedRead: (request: Bytes, kind: string) => {
+    invalidateQuietReads: receiveSelection.invalidateQuiet,
+    completedRead: (request: Bytes, kind: string, quiet?: object) => {
+      receiveSelection.completedQuiet(quiet, kind);
       const publisher = decodeInboundRequest(request).publisher;
       receiveSelection.completed(
         base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
@@ -2779,6 +2866,7 @@ async function openReceivingWorkspace(
     devices,
     deviceId,
     publisherCount,
+    invalidateQuietReads,
     completedRead,
     isSelfRequest,
     api,
@@ -2811,6 +2899,8 @@ async function openReceivingWorkspace(
   let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
   let removingLocalHistory = false;
   let automaticRetention: ReturnType<typeof createAutomaticLocalRetention> | undefined;
+  let automaticHistory: ReturnType<typeof createAutomaticServiceHistory> | undefined;
+  let historyFlights = 0;
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
@@ -2890,6 +2980,7 @@ async function openReceivingWorkspace(
     };
     const outbound =
       composed && !account.detached ? createOutbound(() => workspace.whenDurable()) : undefined;
+    let synchronizationQuiet = !outbound;
     let flight: Promise<unknown> | undefined;
     carrier.beforeRelease?.(async () => {
       await flight?.catch(() => {});
@@ -2899,7 +2990,7 @@ async function openReceivingWorkspace(
         return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
       if (flight) return Promise.resolve({ kind: 'busy' as const });
       const work = (async () => {
-        const { request, page, requests, pages, oversized } = await fetchPage(operatorToken);
+        const { request, page, requests, pages, oversized, quiet } = await fetchPage(operatorToken);
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
@@ -2933,7 +3024,7 @@ async function openReceivingWorkspace(
                   proof.fill(0);
                 }
               }
-              completedRead(request, received.kind);
+              completedRead(request, received.kind, quiet);
               return { kind: received.kind, recorded: false };
             }
             if (pages.length > 1) {
@@ -2955,14 +3046,14 @@ async function openReceivingWorkspace(
                       ),
                     );
                 for (let i = 0; i < received.kinds.length; i++)
-                  completedRead(requests[i]!, received.kinds[i]!);
+                  completedRead(requests[i]!, received.kinds[i]!, quiet);
                 return received;
               } finally {
                 packed.fill(0);
               }
             }
             const received = await receivePage(page, request);
-            completedRead(request, received.kind);
+            completedRead(request, received.kind, quiet);
             return received;
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
@@ -3014,6 +3105,23 @@ async function openReceivingWorkspace(
       void work.then(settled, settled);
       return work;
     };
+    const runHistory = async (
+      command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
+      automatic = false,
+    ) => {
+      historyFlights++;
+      try {
+        return await afterReceivedHandoffs(
+          () => workspace.whenDurable(),
+          () => devices.history!(command),
+        );
+      } finally {
+        historyFlights--;
+        automaticRetention?.refresh();
+        if (automatic) automaticHistory?.refresh();
+        else automaticHistory?.hint();
+      }
+    };
     const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
@@ -3022,6 +3130,9 @@ async function openReceivingWorkspace(
         get localHistory() {
           return automaticRetention;
         },
+        get automaticHistory() {
+          return automaticHistory;
+        },
         get transition() {
           return devices.transition;
         },
@@ -3029,11 +3140,7 @@ async function openReceivingWorkspace(
           ? {
               history: (
                 command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
-              ) =>
-                afterReceivedHandoffs(
-                  () => workspace.whenDurable(),
-                  () => devices.history!(command),
-                ),
+              ) => runHistory(command),
             }
           : {}),
       }),
@@ -3054,18 +3161,23 @@ async function openReceivingWorkspace(
               ? {
                   ...(hasRetentionWriter()
                     ? {
-                        removeLocalHistory: async (expectedRevision: number) => {
+                        removeLocalHistory: async (
+                          expectedRevision: number,
+                          progress?: RetentionProgressSink,
+                        ) => {
                           if (removingLocalHistory)
                             return { kind: 'skipped' as const, reason: 'already-preparing' };
                           removingLocalHistory = true;
                           try {
+                            reportRetentionProgress(progress, { stage: 'durability' });
                             await workspace.whenDurable();
                             // Settle the preparation storage task BEFORE joining admission. Input
                             // may journal/apply during preparation and invalidates its private guard.
                             const preparing = ledgerWorkStart();
-                            const prepared = await prepareLocalRemoval(expectedRevision).finally(
-                              () => measureLedgerWork('retentionPreparation', preparing),
-                            );
+                            const prepared = await prepareLocalRemoval(
+                              expectedRevision,
+                              progress,
+                            ).finally(() => measureLedgerWork('retentionPreparation', preparing));
                             if (prepared.kind !== 'prepared-removal') return prepared;
                             try {
                               return await enqueue(new Uint8Array([1]), async (_input, promote) => {
@@ -3147,6 +3259,9 @@ async function openReceivingWorkspace(
         signal: carrier.signal,
         observe: () => ({
           ready:
+            synchronizationQuiet &&
+            historyFlights === 0 &&
+            automaticHistory?.status.phase !== 'running' &&
             carrier.state === 'active' &&
             workspace.status.state === 'active' &&
             workspace.status.durable &&
@@ -3159,7 +3274,9 @@ async function openReceivingWorkspace(
       });
       automaticRetention = maintenance;
       const changed = workspace.subscribe(maintenance.wake);
-      const statusChanged = workspace.onStatus(maintenance.wake);
+      // A durability barrier also publishes status. It is readiness, not new writing;
+      // otherwise each saved slice would reset its own ten-second quiet window.
+      const statusChanged = workspace.onStatus(maintenance.refresh);
       // Input/selection can precede its durable publication. Defer the quiet window immediately;
       // the existing owner guard still interrupts preparation if activity races the attempt.
       const activity = maintenance.wake;
@@ -3177,6 +3294,59 @@ async function openReceivingWorkspace(
         globalThis.document?.removeEventListener('visibilitychange', activity);
       });
       maintenance.wake();
+    }
+    // Separate default-off experiment: heavy history preparation still occupies the storage tail.
+    // Do not activate publicly until bounded/resumable preparation and the peer gate are proved.
+    if (
+      hasAutomaticServiceHistory() &&
+      outbound &&
+      access &&
+      devices.history &&
+      !account.detached
+    ) {
+      if (!carrier.beforeRelease)
+        throw Error('Missing automatic service history cleanup ownership');
+      const maintenance = createAutomaticServiceHistory({
+        signal: carrier.signal,
+        observe: () => ({
+          ready:
+            synchronizationQuiet &&
+            historyFlights === 0 &&
+            !removingLocalHistory &&
+            automaticRetention?.status.phase !== 'running' &&
+            gate() === 'ready' &&
+            !networkLoginNeedsPasskey(options.networkLogin?.getSnapshot()) &&
+            workspace.status.durable &&
+            workspace.status.pendingItems === 0 &&
+            globalThis.document?.visibilityState !== 'hidden',
+          hint: localRetentionHint(),
+        }),
+        run: (command) => runHistory(command, true),
+        retryable: (cause) =>
+          cause instanceof HistoryTransportUnavailable || cause instanceof HistoryReceivePending,
+      });
+      automaticHistory = maintenance;
+      const changed = workspace.subscribe(maintenance.activity);
+      const statusChanged = workspace.onStatus(maintenance.refresh);
+      const localChanged = automaticRetention?.onStatus(maintenance.refresh);
+      const serviceChanged = maintenance.onStatus(() => automaticRetention?.refresh());
+      const activity = maintenance.activity;
+      globalThis.document?.addEventListener('keydown', activity, true);
+      globalThis.document?.addEventListener('beforeinput', activity, true);
+      globalThis.document?.addEventListener('pointerdown', activity, true);
+      globalThis.document?.addEventListener('visibilitychange', activity);
+      carrier.beforeRelease(() => {
+        maintenance.dispose();
+        changed();
+        statusChanged();
+        localChanged?.();
+        serviceChanged();
+        globalThis.document?.removeEventListener('keydown', activity, true);
+        globalThis.document?.removeEventListener('beforeinput', activity, true);
+        globalThis.document?.removeEventListener('pointerdown', activity, true);
+        globalThis.document?.removeEventListener('visibilitychange', activity);
+      });
+      maintenance.refresh();
     }
     if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;
@@ -3199,10 +3369,15 @@ async function openReceivingWorkspace(
         if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
       };
       const online = () => {
+          automaticHistory?.hint();
+          invalidateQuietReads();
           resetDiscovery();
           scheduler.wake('online');
         },
-        offline = () => scheduler.wake('gate');
+        offline = () => {
+          invalidateQuietReads();
+          scheduler.wake('gate');
+        };
       const scheduler = createSyncScheduler({
         signal: carrier.signal,
         gate: () => {
@@ -3211,7 +3386,7 @@ async function openReceivingWorkspace(
             ? 'sign-in-required'
             : state;
         },
-        receiveInterval: () => (notificationHealthy ? 60000 + Math.random() * 5000 : 5000),
+        receiveInterval: () => idleReceiveInterval(notificationHealthy),
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         send: (beforeNewEnvelope) =>
           driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
@@ -3271,9 +3446,25 @@ async function openReceivingWorkspace(
           globalThis.removeEventListener?.('offline', offline);
         },
       });
+      if (automaticRetention || automaticHistory) {
+        const changed = (status: SyncStatus) => {
+          const quiet = [status.send.phase, status.receive.phase].every(
+            (phase) =>
+              phase === 'idle' || phase === 'offline' || phase === 'blocked' || phase === 'closed',
+          );
+          if (quiet === synchronizationQuiet) return;
+          synchronizationQuiet = quiet;
+          automaticRetention?.refresh();
+          automaticHistory?.refresh();
+        };
+        carrier.beforeRelease!(scheduler.runtime.onStatus(changed));
+        changed(scheduler.runtime.status);
+      }
       try {
         let previousGate = gate();
         unsubscribeLogin = options.networkLogin?.subscribe(() => {
+          automaticHistory?.hint();
+          invalidateQuietReads();
           // A completed login resumes work without requiring a subscription handshake or
           // clearing another lane's integrity halt. Login itself never prompts on this path.
           scheduler.wake(options.networkLogin?.getSnapshot() === 'remembered' ? 'online' : 'gate');
@@ -3289,6 +3480,7 @@ async function openReceivingWorkspace(
         unsubscribe = workspace.onStatus(() => {
           const current = gate();
           if (current !== previousGate) {
+            invalidateQuietReads();
             previousGate = current;
             scheduler.wake('gate');
           }
@@ -3302,6 +3494,8 @@ async function openReceivingWorkspace(
             signal: carrier.signal,
             open: (signal) => access.openNotifications(signal),
             wake: (event) => {
+              if (event !== 'content') automaticHistory?.hint();
+              invalidateQuietReads();
               if (event !== 'content') resetDiscovery();
               // A fresh subscription handshake proves renewed reachability. Content
               // hints alone never override a failed operation's retry clock.
@@ -3309,7 +3503,10 @@ async function openReceivingWorkspace(
             },
             health: (healthy) => {
               notificationHealthy = healthy;
-              if (!healthy) scheduler.wake('remote');
+              if (!healthy) {
+                invalidateQuietReads();
+                scheduler.wake('remote');
+              }
             },
           });
           carrier.beforeRelease(notifications.dispose);
@@ -3322,7 +3519,16 @@ async function openReceivingWorkspace(
       return Object.freeze({
         ...result,
         outbound,
-        sync: scheduler.runtime,
+        sync: Object.freeze({
+          get status() {
+            return scheduler.runtime.status;
+          },
+          retry: (lane: Parameters<typeof scheduler.runtime.retry>[0]) => {
+            if (lane === 'receive') invalidateQuietReads();
+            scheduler.runtime.retry(lane);
+          },
+          onStatus: scheduler.runtime.onStatus,
+        }),
         receiver: undefined,
         refreshAuthority: async () => {
           const result = await refreshAuthority(operatorToken ?? '', true);

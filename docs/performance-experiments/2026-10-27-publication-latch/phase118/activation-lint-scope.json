@@ -1,0 +1,9 @@
+{
+  "broadLintFailed": true,
+  "pathsWithErrors": {
+    "docs/development-evidence/2026-10-23-sidebar-cut-background/reproduction/playwright.sidebar-firefox.config.ts": 1,
+    "docs/development-evidence/2026-10-23-sidebar-overflow/reproduction/playwright.firefox.config.ts": 1,
+    "docs/product-design/2026-10-23-goals-context/editor-assets/editor-study.js": 1211
+  },
+  "policy": "Preserve broad failure; do not edit archived mockups. Explicitly run all three affected code files. No broad lint pass claim."
+}

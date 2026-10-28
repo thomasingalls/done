@@ -21,10 +21,15 @@ describe('local breadcrumb navigation retains authored hierarchy', () => {
     expect(menu.siblings).toBe(false);
     expect(menu.headings.map((h) => h.title)).toEqual(['Launch']);
   });
-  it('a leaf offers siblings from its own parent, not same-named branches elsewhere', () => {
+  it('a leaf has no children and never substitutes siblings', () => {
     const menu = headingMenu(headings, headings[3]!);
-    expect(menu.siblings).toBe(true);
-    expect(menu.headings.map((h) => h.title)).toEqual(['Site', 'Admin']);
+    expect(menu.siblings).toBe(false);
+    expect(menu.headings).toEqual([]);
+  });
+  it('the root caret lists H1 only, leaving orphan/skipped headings in the full outline', () => {
+    const all = documentHeadings(stateFor('## Loose\n# Area\n### Deep\n# Other'));
+    expect(headingMenu(all, null).headings.map((h) => h.title)).toEqual(['Area', 'Other']);
+    expect(all.map((h) => h.title)).toEqual(['Loose', 'Area', 'Deep', 'Other']);
   });
   it('empty outlines remain empty', () => {
     expect(childHeadings([], null)).toEqual([]);

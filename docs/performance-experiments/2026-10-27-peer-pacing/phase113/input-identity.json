@@ -1,0 +1,15 @@
+{
+  "protocolSha256": "dc72a835aa0e4b10c505af79c509640eca9f2838f1e6a165a240c2701c87fe97",
+  "signedHead": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+  "originalTimingIdentitySha256": "b53c072b3575ade6cb045340a16b181e5b9638fbab95cf71ea0dae1ca0ce5674",
+  "cases": {
+    "late-1-R-normal": "8add4708fd350fe81122bc5efab38c2fda479477d53fd21fad50c5e95adc29fe",
+    "late-2-C-normal": "94eb14faec141ff1b26f31172a882090f7b18b29b10ec5f274d99eb5b9bd8e5b",
+    "late-3-C-withheld": "2baaf852efabdfcfa65028b414e54e72ac2d3dc7b0ae3ff3920ecc618a1b2001",
+    "late-4-R-withheld": "070d19210d16e0920a1b9726c0ab48ba0d14f7f06a79827ac9cab3e17815c0fe"
+  },
+  "reviewedAnalysisSha256": "3d212e024db717fbdf7c401332022f3fc8b601f9a4e1660b6ab4ef5486e7a5e6",
+  "independentTimeReviewSha256": "5b7bcb088620ea1330564edc7b1834a24131dac559c46be6f5f9f159ca2b918e",
+  "independentNativeReviewSha256": "78f03507df13ad185e95c95ed08872c75b20b3585f7087b19db1254b26a6ad1a",
+  "noNewTimingRuns": true
+}

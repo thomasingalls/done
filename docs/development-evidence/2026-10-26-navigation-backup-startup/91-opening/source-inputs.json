@@ -1,0 +1,12 @@
+{
+  "sha256": {
+    "src/account/firstDeviceSetup.ts": "a0636ad0d0d6031de72bef449114a67f30576429212ac2052e1702fc924bb69c",
+    "src/crdt/accountStartup.ts": "7c9e1dd5dd6bce36bf1bfcf5c5ca4e96b52f9e78c6edc820541881e669f9a3a4",
+    "src/crdt/accountLedgerMetrics.ts": "27c6b563985d3944472063c6bc27fa4cbeca4b56ceb60ad862d298cba7d3ed2e",
+    "test/firstDeviceOpeningProgress.test.ts": "3c93cb7c91276d61f5333f92cf645baffe57487d5e6ac29663999ec43d8b80f6",
+    "test/firstDeviceSetupAccess.test.ts": "73a2b3ba507d21e66a6d7c37bacd3eb4c3065bb724cbff45a09711a5fc652247",
+    "opening-unit.log.gz": "bef0987d842726e18dc26da8ac04d2bfac0a12b8db63ec05e8347a5b1bd8d2f6",
+    "unit-final2.log.gz": "6d293064e5cf23613d0662f54a156685853d9a48e94151c0007171b8a83d4970",
+    "docs/account-crypto/constructions.json": "c044c5f89843ef29f2a2070bc3cc6a104a33821db90372776bc57f82b9bf8b14"
+  }
+}

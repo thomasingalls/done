@@ -1,0 +1,14 @@
+[
+  {
+    "name": "default-before",
+    "source": "source-C",
+    "expectedExit": "nonzero: active candidate must fail disabled-default assertion",
+    "exitCode": 1
+  },
+  {
+    "name": "default-after",
+    "source": "source-disabled",
+    "expectedExit": "zero",
+    "exitCode": 0
+  }
+]

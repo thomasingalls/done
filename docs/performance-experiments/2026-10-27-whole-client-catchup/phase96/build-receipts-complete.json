@@ -1,0 +1,111 @@
+{
+  "initialAttempt": [
+    {
+      "variant": "R",
+      "name": "types",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "-b"
+      ],
+      "startedAt": 1793086617824,
+      "completedAt": 1793086619030,
+      "exitCode": 0
+    },
+    {
+      "variant": "R",
+      "name": "build",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "startedAt": 1793086619030,
+      "completedAt": 1793086622298,
+      "exitCode": 0
+    },
+    {
+      "variant": "R",
+      "name": "budget",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "scripts/check-budget.mjs"
+      ],
+      "startedAt": 1793086622298,
+      "completedAt": 1793086622390,
+      "exitCode": 0
+    },
+    {
+      "variant": "R",
+      "name": "isolation",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "scripts/check-origin-isolation.mjs"
+      ],
+      "startedAt": 1793086622390,
+      "completedAt": 1793086622455,
+      "exitCode": 0
+    },
+    {
+      "variant": "C",
+      "name": "types",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "-b"
+      ],
+      "startedAt": 1793086622468,
+      "completedAt": 1793086623447,
+      "exitCode": 1
+    }
+  ],
+  "followup": [
+    {
+      "variant": "C",
+      "name": "types",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "-b"
+      ],
+      "startedAt": 1793086714570,
+      "completedAt": 1793086715122,
+      "exitCode": 0
+    },
+    {
+      "variant": "C",
+      "name": "build",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "startedAt": 1793086715122,
+      "completedAt": 1793086718352,
+      "exitCode": 0
+    },
+    {
+      "variant": "C",
+      "name": "budget",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "scripts/check-budget.mjs"
+      ],
+      "startedAt": 1793086718353,
+      "completedAt": 1793086718447,
+      "exitCode": 0
+    },
+    {
+      "variant": "C",
+      "name": "isolation",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "scripts/check-origin-isolation.mjs"
+      ],
+      "startedAt": 1793086718447,
+      "completedAt": 1793086718515,
+      "exitCode": 0
+    }
+  ],
+  "apparatusFailure": "C typecheck initially included untyped restored lab files. Moved the lab into an independent harness; no app source or type settings changed. Both clean snapshots pass types/build/budget/isolation."
+}

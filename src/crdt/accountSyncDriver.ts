@@ -59,6 +59,9 @@ const clockDefault: DriverClock = {
   clear: (timer) => clearTimeout(timer as ReturnType<typeof setTimeout>),
 };
 const names: SyncLane[] = ['send', 'receive'];
+/** A live hint stream can still miss its last content hint. Bound idle reconciliation too. */
+export const idleReceiveInterval = (notificationHealthy: boolean): number =>
+  notificationHealthy ? 15000 + Math.random() * 5000 : 5000;
 export function createSyncScheduler(options: {
   signal: AbortSignal;
   gate(): SyncGate;
@@ -346,7 +349,12 @@ export function createSyncScheduler(options: {
     if (stopped) return;
     if (options.gate() === 'offline')
       for (const lane of Object.values(lanes)) delete lane.issueSince;
-    if (cause === 'local') batch?.note();
+    if (cause === 'local') {
+      // A due publication window survives receive work or an asynchronous send prelude.
+      // Local journal flushing owns a separate window with its original policy.
+      if (batch?.due !== undefined && batch.due <= clock.now()) batch.close();
+      batch?.note();
+    }
     if (cause === 'flush' || cause === 'authority' || (cause === 'retry' && target === 'send'))
       batch?.close();
     for (const name of names) {

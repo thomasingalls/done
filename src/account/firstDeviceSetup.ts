@@ -1,3 +1,4 @@
+import { beginAccountOpen, markAccountOpen } from '../crdt/accountLedgerMetrics';
 import { defaultDeviceName } from '../lib/browser';
 import { RemovalPending } from './accountTransitionNotice';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
@@ -412,6 +413,7 @@ export function createFirstDeviceSetup(
       networkLogin = new NetworkLogin(pin, slotId);
       void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
     }
+    beginAccountOpen();
     publish({ kind: 'working', message: 'Opening your workspace…' });
     const opening = promotionOpening;
     promotionOpening = undefined;
@@ -421,10 +423,21 @@ export function createFirstDeviceSetup(
         slotId: slotId,
         code,
         pin,
-        assertPasskey: (request) => {
-          if (state.kind !== 'ready')
-            publish({ kind: 'working', message: 'Use your passkey to unlock' });
-          return assertPasskey(request);
+        assertPasskey: async (request) => {
+          const opening = state.kind !== 'ready';
+          if (opening) publish({ kind: 'working', message: 'Use your passkey to unlock' });
+          const assertion = await assertPasskey(request);
+          guard();
+          if (opening) {
+            markAccountOpen('passkeyReturned');
+            publish({
+              kind: 'working',
+              message: 'Opening your encrypted writing…',
+              detail:
+                'Your passkey prompt is complete. Verifying access and checking saved writing before the editor opens. You can go back safely.',
+            });
+          }
+          return assertion;
         },
         signal: lifetime.signal,
         ...(networkLogin ? { networkLogin } : {}),

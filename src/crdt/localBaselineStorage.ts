@@ -369,12 +369,19 @@ export async function anchorLocalBaseline(
 
 /** Reads the independent pointer and encrypted chunks from one native snapshot. This authenticates
  * the carrier only; callers still must replay its protocol/content evidence before using its state. */
-export async function readEncryptedBaseline(
+export async function readEncryptedBaseline(task: SessionTask, owner: BaselineStorageOwner) {
+  const snapshot = await readEncryptedBaselineSnapshot(task, owner);
+  try {
+    return await openEncryptedBaselineSnapshot(task, owner, snapshot);
+  } finally {
+    eraseVerified(snapshot);
+  }
+}
+/** Detached native evidence only. This does not authenticate/decrypt the baseline or authorize use. */
+export async function readEncryptedBaselineSnapshot(
   task: SessionTask,
   ownerInput: BaselineStorageOwner,
 ): Promise<{
-  baseline: AuthenticatedLocalBaseline;
-  anchor: BaselineAnchor;
   counter: BaselineCounter;
   chunks: StoredRecord[];
 }> {
@@ -422,7 +429,7 @@ export async function readEncryptedBaseline(
       },
     ),
   );
-  return openEncryptedBaselineSnapshot(task, owner, snapshot);
+  return task.step(() => snapshot);
 }
 /** Read-only authentication of detached metadata. Also used by the non-writing retention planner. */
 export async function openEncryptedBaselineSnapshot(

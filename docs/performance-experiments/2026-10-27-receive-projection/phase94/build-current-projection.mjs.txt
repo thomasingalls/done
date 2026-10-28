@@ -1,0 +1,5 @@
+import {build} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/dist/node/index.js';import {writeFileSync} from 'node:fs';
+const dir='/private/tmp/done-receive-projection-2026-10-27';
+writeFileSync(dir+'/current-projection-entry.ts',"export {inboundReadCursors} from '/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/inboundLedger.ts';\n");
+const result=await build({configFile:false,logLevel:'error',build:{write:false,minify:false,lib:{entry:dir+'/current-projection-entry.ts',name:'ProjectionHarness',formats:['iife']}}});
+writeFileSync(dir+'/current-projection.js',(Array.isArray(result)?result[0]:result).output.find(x=>x.type==='chunk').code);

@@ -1,0 +1,15 @@
+import subprocess,json,os
+from pathlib import Path
+root=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path('/private/tmp/done-maintenance-continuation-20261027');node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';env=dict(os.environ,PATH=str(Path(node).parent)+os.pathsep+os.environ.get('PATH',''))
+steps=[('debts',['scripts/check-debts.mjs','--check']),('retention',['scripts/check-retention.mjs']),('status',['scripts/check-selection-status.mjs']),('limit',['scripts/check-update-limit.mjs']),('authority',['scripts/check-authority-map.mjs']),('yjs',['scripts/check-yjs-patch.mjs']),('wasm',['scripts/check-wasm-seal.mjs']),('crypto-census',['scripts/account-crypto-prep/run.mjs']),('inventory',['scripts/release-validation/check.mjs']),('manifest',['scripts/release-validation/plan.mjs'])]
+rows=[]
+for label,args in steps:
+ with open(s/('ordinary-'+label+'.log'),'wb') as out:r=subprocess.run([node,*args],cwd=root,env=env,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'check':label,'exit':r.returncode})
+for label,path in [('budget','scripts/check-budget.mjs'),('origin','scripts/check-origin-isolation.mjs')]:
+ with open(s/('ordinary-'+label+'.log'),'wb') as out:r=subprocess.run([node,str(root/path)],cwd=Path('/private/tmp/done-maintenance-continuation-20261027/126-build'),env=env,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'check':label,'exit':r.returncode})
+if all(x['exit']==0 for x in rows):
+ with open(s/'ordinary-trace.log','wb') as out:r=subprocess.run([node,'scripts/check-traceability.mjs','--check'],cwd=root,env=env,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'check':'trace','exit':r.returncode})
+(s/'ordinary-results.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows));raise SystemExit(any(x['exit'] for x in rows))

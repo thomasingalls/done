@@ -1,0 +1,45 @@
+import { test, expect, chromium, type BrowserContext } from '@playwright/test';
+import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
+import { join } from 'node:path';
+import { readRequestInfo } from '../../../read-request.mjs';
+import { installNotificationProbe } from '../../../notification-probe.mjs';
+import { start, stop, control } from './runtime.mjs';
+import { restoreAuthenticator, openSaved } from './devices';
+import { seedProfile } from './seed-profile';
+import { root, card, focus, exported, archiveIdentity, lock, digest } from './common';
+import { browserIdentity, clockBrackets } from './dispatch-probe';
+const out = process.env['FAIR_OUT']!, exe = process.env['CHROMIUM_PATH']!;
+const withhold = process.env['QUIET_WITHHOLD'] === '1';
+
+const markers=[' Early peer;',' Mid peer;',' Late peer;'];
+function lateProbe(values:string[]){
+ const now=()=>performance.timeOrigin+performance.now(),state:any={counts:[],markers:values.map(()=>null),events:[]};let previous=-1;
+ const read=()=>{const c=[...document.querySelectorAll('.day-panel[data-active="true"] .card')].find(c=>c.textContent?.includes('Fair H reverse:'));const text=(c?.querySelector('.cm-content')??c?.querySelector('.card-surface'))?.textContent??'';const count=text.split('w').length-1;if(count!==previous){previous=count;state.counts.push({at:now(),count});}values.forEach((v,i)=>{if(state.markers[i]===null&&text.includes(v))state.markers[i]=now();});return count;};
+ new MutationObserver(read).observe(document,{subtree:true,childList:true,characterData:true});addEventListener('beforeinput',(e:Event)=>{if(!(e.target instanceof Element)||!e.target.closest('.card'))return;state.events.push({at:now(),trusted:e.isTrusted,focused:document.hasFocus(),visible:document.visibilityState});},true);(window as any).__late={read:()=>{read();return structuredClone(state)},count:read};
+}
+test('same-account late writing competes with both receivers catching up',async()=>{
+ mkdirSync(out,{recursive:true,mode:0o700});const fixture=JSON.parse(readFileSync(root+'/private-fixture/fixture.json','utf8')),account=fixture.accounts.find((a:any)=>a.label==='H');
+ const contexts:BrowserContext[]=[],result:any={variant:process.env['FAIR_VARIANT'],withhold,outcome:'starting',roots:[],network:[],offers:[],clocks:[],guards:{},catchups:[]};let hot=0,append='';
+ const save=()=>writeFileSync(join(out,'partial-result.json'),JSON.stringify(result,null,2)+'\n');
+ const open=async(index:number)=>{const saved=account.actors[index],profile=join(out,'private-profile-H'+index),ctx=await chromium.launchPersistentContext(profile,{executablePath:exe,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000}});contexts.push(ctx);result.roots.push(await browserIdentity(ctx.browser()!));await seedProfile(ctx,saved.storage);const p=ctx.pages()[0]??await ctx.newPage();await p.addInitScript(installNotificationProbe,{withhold:index===1&&withhold});await p.addInitScript(lateProbe,markers);
+ const requests=new Map<any,any>();p.on('request',q=>{const path=new URL(q.url()).pathname;if(!path.startsWith('/account/'))return;const row={label:'H'+index,path,at:Date.now(),...readRequestInfo(q)};requests.set(q,row);result.network.push(row);});p.on('response',r=>{const row=requests.get(r.request());if(!row)return;row.status=r.status();row.headersAt=Date.now();if(index===1&&row.status===200)for(const v of row.reads??[])if(v.after>hot)hot=v.after;});
+ await restoreAuthenticator(p,saved.credentials);await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await p.waitForFunction(()=>!!navigator.serviceWorker.controller);const bytes=await p.evaluate(async()=>Array.from(new Uint8Array(await(await fetch((await navigator.serviceWorker.ready).active!.scriptURL)).arrayBuffer())));result.roots.at(-1).workerSha256=digest(Buffer.from(bytes));expect(digest(Buffer.from(bytes))).toBe(digest(readFileSync(process.env['FAIR_DIST']!+'/sw.js')));
+ await ctx.setOffline(true);await openSaved(p,saved.code,true);await p.getByLabel('Go to date',{exact:true}).fill(account.date);await expect(card(p,'H',true)).toBeVisible();return{ctx,p,saved,profile,index};};
+ try{
+ const state=join(out,'state');cpSync(fixture.state,state,{recursive:true,errorOnExist:true});await start(state,process.env['FAIR_DIST']!);await control('start');const reader=await open(1),writer=await open(2);
+ result.baselines=await Promise.all([reader,writer].map(a=>a.p.evaluate(()=>(window as any).__late.count())));expect(result.baselines[0]).toBe(result.baselines[1]);
+ result.clocks.push({phase:'before',rows:await Promise.all([reader,writer].map(a=>clockBrackets(a.p)))});result.startedAt=Date.now();await Promise.all([reader,writer].map(a=>a.ctx.setOffline(false)));
+ const catchups=[reader,writer].map(async a=>{const row:any={label:'H'+a.index};result.catchups.push(row);try{await expect(card(a.p,'H')).toContainText(account.expected,{timeout:600000});row.completedAt=Date.now();row.outcome='passed';}catch(error){row.outcome='failed';row.error=String(error);}save();});
+ await expect.poll(()=>hot,{timeout:30000}).toBeGreaterThanOrEqual(33);
+ const publisher='8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411';await expect.poll(()=>result.network.some((q:any)=>q.label==='H1'&&q.status===200&&q.reads?.some((v:any)=>v.publisherSha256===publisher&&v.after===1)),{timeout:10000}).toBe(true);
+ await focus(writer.p,'H',true);result.typingStartedAt=Date.now();let markerIndex=0;
+ const offerMarker=async()=>{const i=markerIndex++;const row:any={kind:'marker',index:i,hotCursor:hot,at:Date.now()};await writer.p.keyboard.insertText(markers[i]!);row.returnedAt=Date.now();result.offers.push(row);append+=markers[i]!;save();};
+ for(let i=0;i<120;i++){const scheduledAt=result.typingStartedAt+i*500;await writer.p.waitForTimeout(Math.max(0,scheduledAt-Date.now()));if(markerIndex<3&&hot>=[33,513,993][markerIndex]!)await offerMarker();const row:any={kind:'key',index:i,scheduledAt,at:Date.now()};await writer.p.keyboard.press('w');row.returnedAt=Date.now();result.offers.push(row);append+='w';}
+ result.typingFinishedAt=Date.now();while(markerIndex<3){await expect.poll(()=>hot,{timeout:Math.max(1,600000-(Date.now()-result.startedAt))}).toBeGreaterThanOrEqual([33,513,993][markerIndex]!);await offerMarker();}
+ await writer.p.keyboard.press('Escape');await expect.poll(()=>reader.p.evaluate(()=>(window as any).__late.count()),{timeout:30000}).toBe(result.baselines[0]+120);await expect(card(reader.p,'H',true)).toContainText(append,{timeout:30000});result.newDeliveryAt=Date.now();result.probes=await Promise.all([reader,writer].map(a=>a.p.evaluate(()=>(window as any).__late.read())));result.notifications=await Promise.all([reader,writer].map(a=>a.p.evaluate(()=>structuredClone((window as any).__quietNotifications))));if(withhold)expect(result.notifications[0].withheld).toBeGreaterThan(0);result.clocks.push({phase:'after',rows:await Promise.all([reader,writer].map(a=>clockBrackets(a.p)))});save();
+ await Promise.all(catchups);expect(result.catchups.every((r:any)=>r.outcome==='passed')).toBe(true);
+ const files=await Promise.all([reader,writer].map(a=>exported(a.p)));expect(files[0]).toEqual(files[1]);const clean=Object.fromEntries(Object.entries(files[0]!).map(([name,text])=>[name,text.replace(append,'')]));expect(Object.values(files[0]!).join('\n').split(append)).toHaveLength(2);expect(clean).toEqual(account.archive);result.finalArchive=archiveIdentity(files[0]!);result.guards.fullOriginalArchivePlusOnlyOfferedAppend=true;result.guards.bothReceiversActive=true;save();
+ for(const a of[reader,writer]){await a.ctx.setOffline(true);await lock(a.p);await a.ctx.close();const ctx=await chromium.launchPersistentContext(a.profile,{executablePath:exe,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000},offline:true});contexts.push(ctx);const p=ctx.pages()[0]??await ctx.newPage();await restoreAuthenticator(p,a.saved.credentials);await p.goto('/');await openSaved(p,a.saved.code,true);await p.getByLabel('Go to date',{exact:true}).fill(account.date);expect(await exported(p)).toEqual(files[0]);await ctx.close();}result.guards.bothOfflineColdProfilesExact=true;result.guards.noColdStorageReinjection=true;result.metrics=(await control('end')as any).metrics;result.trace=await control('trace');result.outcome='passed';
+ }catch(error){result.outcome='failed';result.error=String(error);throw error;}
+ finally{await Promise.all(contexts.map(c=>c.close().catch(()=>{})));writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');await stop();}
+});

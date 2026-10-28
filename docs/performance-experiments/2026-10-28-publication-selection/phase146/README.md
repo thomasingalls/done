@@ -1,0 +1,7 @@
+# Phase146 — monotonic measurement-clock repair, no application change
+
+Replace Date.now only in host scheduling/offers/receipts in maintenance/late journeys and the shared bracket helper with performance.timeOrigin+performance.now. The renderer already uses its monotonic performance clock. Preserve the constant-offset intersection,1ms allowance, all16ms/2500ms/marker/paired/backlog/functional/native gates, fixed order and stop rule. No reinterpretation of145 or threshold change.
+
+A real isolated headless browser control survives a simulated10s host wall-clock step with intersecting monotonic brackets; the old wall-clock control and deliberately malformed brackets are rejected. Existing positive reconstruction and all four analyzer fault controls still pass. The frozen per-arm client assets, source trees and observation probe remain exactly144, independently rehashed from the same build outputs. The only apparatus edits are three harness files; private state is freshly copied per new case, not reused from145. Both source populations and closed apparatus/fixture/image/serializer identities rechecked before execution.
+
+This is a new prospective eight-case comparison, not a retry presented as the old run. Preserve145 in full and leave its candidate unrateable. No other tests/builds run concurrently with timing. No client/runtime change, cleanup work, activation, phone/computer use, signing or release operation.

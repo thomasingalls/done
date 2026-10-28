@@ -1,0 +1,906 @@
+{
+  "variant": "R",
+  "outcome": "pilot-restored",
+  "roots": [
+    {
+      "pid": 33975,
+      "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "sha256": "00ba2d076d622800fe24e1323e1963a77ed115fe7b20105e3d40ffca422805e3",
+      "version": {
+        "protocolVersion": "1.3",
+        "product": "Chrome/156.0.8078.48",
+        "revision": "@d0c02bfad08ec92a6ffcf989e53cd995e6381a4c",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "jsVersion": "15.6.75.19"
+      }
+    },
+    {
+      "pid": 33998,
+      "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "sha256": "00ba2d076d622800fe24e1323e1963a77ed115fe7b20105e3d40ffca422805e3",
+      "version": {
+        "protocolVersion": "1.3",
+        "product": "Chrome/156.0.8078.48",
+        "revision": "@d0c02bfad08ec92a6ffcf989e53cd995e6381a4c",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "jsVersion": "15.6.75.19"
+      }
+    },
+    {
+      "pid": 34022,
+      "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "sha256": "00ba2d076d622800fe24e1323e1963a77ed115fe7b20105e3d40ffca422805e3",
+      "version": {
+        "protocolVersion": "1.3",
+        "product": "Chrome/156.0.8078.48",
+        "revision": "@d0c02bfad08ec92a6ffcf989e53cd995e6381a4c",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "jsVersion": "15.6.75.19"
+      }
+    },
+    {
+      "pid": 34051,
+      "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "sha256": "00ba2d076d622800fe24e1323e1963a77ed115fe7b20105e3d40ffca422805e3",
+      "version": {
+        "protocolVersion": "1.3",
+        "product": "Chrome/156.0.8078.48",
+        "revision": "@d0c02bfad08ec92a6ffcf989e53cd995e6381a4c",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+        "jsVersion": "15.6.75.19"
+      }
+    }
+  ],
+  "catchups": [],
+  "offers": [],
+  "traces": [
+    {
+      "label": "finally",
+      "at": 1793087928823,
+      "id": 1,
+      "active": 2,
+      "events": [
+        {
+          "at": 1793087925598,
+          "id": 25,
+          "path": "/account/grant/v1/begin",
+          "bodySha256": "a1905c74db1858d96ee4b54cde5d870bd1ae40819096d00f3e36376943a0fec9",
+          "credentialSha256": "cbe979dfe25f2cc80c55d30d4a3b5856d8f50e2ec32fef4f916aa1174442455e",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "workspace"
+        },
+        {
+          "at": 1793087925599,
+          "id": 26,
+          "path": "/account/grant/v1/begin",
+          "bodySha256": "1b128d384c80113e53e8db8fad46237592f3c7a5ca59aba8bd90be878475fdbb",
+          "credentialSha256": "160e8f7d7428d320f48d9c8281bf6fbeab5d735bce971e83b61f3cab7f0f7818",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "workspace"
+        },
+        {
+          "at": 1793087925725,
+          "id": 32,
+          "path": "/account/membership/v2/discover",
+          "bodySha256": "3a086f3d97b16ee38958f6c68b258a9e837b4638ddce0b4a9ddba6086f7c2d18",
+          "credentialSha256": "160e8f7d7428d320f48d9c8281bf6fbeab5d735bce971e83b61f3cab7f0f7818",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "membership-discovery-request",
+          "kind": "membership-discovery"
+        },
+        {
+          "at": 1793087925800,
+          "id": 30,
+          "path": "/account/membership/v2/discover",
+          "bodySha256": "3729161beac7834529e3b56925a64d3a668d8c57b7a736281951e8bb929c3a38",
+          "credentialSha256": "cbe979dfe25f2cc80c55d30d4a3b5856d8f50e2ec32fef4f916aa1174442455e",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "membership-discovery-request",
+          "kind": "membership-discovery"
+        },
+        {
+          "at": 1793087925837,
+          "id": 33,
+          "path": "/account/history/v1/checkpoint",
+          "bodySha256": "fc3d5a7748ebfbdd0af219110dc6fe14a57517d41e1ebd32ba18ef818f7e1ca8",
+          "credentialSha256": "160e8f7d7428d320f48d9c8281bf6fbeab5d735bce971e83b61f3cab7f0f7818",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "history-checkpoint-request"
+        },
+        {
+          "at": 1793087925865,
+          "id": 34,
+          "path": "/account/history/v1/checkpoint",
+          "bodySha256": "aa6f341b43eec9952daecbbd7d11dcd3a41208cd192cce1432d1c1784c114a84",
+          "credentialSha256": "cbe979dfe25f2cc80c55d30d4a3b5856d8f50e2ec32fef4f916aa1174442455e",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "history-checkpoint-request"
+        },
+        {
+          "at": 1793087926129,
+          "id": 39,
+          "path": "/account/membership/v2/discover",
+          "bodySha256": "230e4369fbf435b5a0792ec226aec072acc6fa53d2a75897126dc0807eef57de",
+          "credentialSha256": "160e8f7d7428d320f48d9c8281bf6fbeab5d735bce971e83b61f3cab7f0f7818",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "membership-discovery-request",
+          "kind": "membership-discovery"
+        },
+        {
+          "at": 1793087926138,
+          "id": 40,
+          "path": "/account/membership/v2/discover",
+          "bodySha256": "e60265a679081aa9dccf062496e650d6af54a05e734063def675ff0902666961",
+          "credentialSha256": "cbe979dfe25f2cc80c55d30d4a3b5856d8f50e2ec32fef4f916aa1174442455e",
+          "tag": "http-result",
+          "status": 200,
+          "scope": "membership-discovery-request",
+          "kind": "membership-discovery"
+        }
+      ]
+    }
+  ],
+  "actorIdentities": [
+    {
+      "label": "Q0",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "Q1",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "H0",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "H1",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "H2",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "H3",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "H4",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "H5",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "M0",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    },
+    {
+      "label": "M1",
+      "workerSha256": "bd804192347354355897ce4458595cc8f34a83d2168b401313a8b22b82079d40"
+    }
+  ],
+  "selected": [
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "M1"
+  ],
+  "network": [
+    {
+      "id": 0,
+      "label": "Q0",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087907661,
+      "bodySha256": "1c9b8c286625b5a4f6e73803edbd612ca8df6c824898d8351d1073859e24e2c6",
+      "failedAt": 1793087907661
+    },
+    {
+      "id": 1,
+      "label": "Q0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087908117,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "failedAt": 1793087908117
+    },
+    {
+      "id": 2,
+      "label": "Q0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087908129,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "failedAt": 1793087908129
+    },
+    {
+      "id": 3,
+      "label": "Q1",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087908918,
+      "bodySha256": "beae617d815cbe76335924c8ca54a5f71f6a518a49c3b21cf9b5ed0ee938dd58",
+      "failedAt": 1793087908918
+    },
+    {
+      "id": 4,
+      "label": "Q1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087909322,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "failedAt": 1793087909323
+    },
+    {
+      "id": 5,
+      "label": "Q1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087909330,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "failedAt": 1793087909385
+    },
+    {
+      "id": 6,
+      "label": "H0",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087909977,
+      "bodySha256": "0a6dbe37aeec4096149e3521271abb7f86ea5632765128f0790e091f36b76257",
+      "failedAt": 1793087909979
+    },
+    {
+      "id": 7,
+      "label": "Q0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087910513,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "failedAt": 1793087910513
+    },
+    {
+      "id": 8,
+      "label": "Q1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087911643,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "failedAt": 1793087911643
+    },
+    {
+      "id": 9,
+      "label": "H0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087913462,
+      "bodySha256": "2de7f6c20edffbbe3705c0eb7c96d0ba929a41f05fce977eaff112ef2895719c",
+      "failedAt": 1793087913463
+    },
+    {
+      "id": 10,
+      "label": "H0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087913512,
+      "bodySha256": "2de7f6c20edffbbe3705c0eb7c96d0ba929a41f05fce977eaff112ef2895719c",
+      "failedAt": 1793087913512
+    },
+    {
+      "id": 11,
+      "label": "H1",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087914548,
+      "bodySha256": "13d67833c97b4b514f6b5dbc06469bbcb956c89188d64d4c42c77dcbb4e63874",
+      "failedAt": 1793087914549
+    },
+    {
+      "id": 12,
+      "label": "Q0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087914781,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "failedAt": 1793087914782
+    },
+    {
+      "id": 13,
+      "label": "H1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087914940,
+      "bodySha256": "3596085e5073f2429798810524530dbe5ffb2d04dc9af5970ec47fbedc38d4fa",
+      "failedAt": 1793087914940
+    },
+    {
+      "id": 14,
+      "label": "H1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087914955,
+      "bodySha256": "3596085e5073f2429798810524530dbe5ffb2d04dc9af5970ec47fbedc38d4fa",
+      "failedAt": 1793087915001
+    },
+    {
+      "id": 15,
+      "label": "H0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087915907,
+      "bodySha256": "2de7f6c20edffbbe3705c0eb7c96d0ba929a41f05fce977eaff112ef2895719c",
+      "failedAt": 1793087915908
+    },
+    {
+      "id": 16,
+      "label": "H2",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087916014,
+      "bodySha256": "71817ae31d11efb48712f2fdb497eae4dc4c46fac75285a01ae169a4235cac9d",
+      "failedAt": 1793087916015
+    },
+    {
+      "id": 17,
+      "label": "Q1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087916190,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "failedAt": 1793087916191
+    },
+    {
+      "id": 18,
+      "label": "H2",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087916474,
+      "bodySha256": "6c67a0f808177f7aae070f9fb6760d637e212fd534d0b5cad5ddc7d5e415392a",
+      "failedAt": 1793087916474
+    },
+    {
+      "id": 19,
+      "label": "H2",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087916483,
+      "bodySha256": "6c67a0f808177f7aae070f9fb6760d637e212fd534d0b5cad5ddc7d5e415392a",
+      "failedAt": 1793087916527
+    },
+    {
+      "id": 20,
+      "label": "H1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087917461,
+      "bodySha256": "3596085e5073f2429798810524530dbe5ffb2d04dc9af5970ec47fbedc38d4fa",
+      "failedAt": 1793087917462
+    },
+    {
+      "id": 21,
+      "label": "H3",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087917559,
+      "bodySha256": "31f82b664b6dd45bb18790af66a3e04e6b8ac84e4f0deb34442ed63de864f991",
+      "failedAt": 1793087917562
+    },
+    {
+      "id": 22,
+      "label": "H3",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087918012,
+      "bodySha256": "d597a00944d0988bea6b88265e0ede837377498adb880a5a89aaf427bc27f18d",
+      "failedAt": 1793087918012
+    },
+    {
+      "id": 23,
+      "label": "H3",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087918024,
+      "bodySha256": "d597a00944d0988bea6b88265e0ede837377498adb880a5a89aaf427bc27f18d",
+      "failedAt": 1793087918073
+    },
+    {
+      "id": 24,
+      "label": "H4",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087919136,
+      "bodySha256": "30298c37760a37b9db07e5c013d8b141932194d36e170a5c894406bf088a26a4",
+      "failedAt": 1793087919137
+    },
+    {
+      "id": 25,
+      "label": "H2",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087919157,
+      "bodySha256": "6c67a0f808177f7aae070f9fb6760d637e212fd534d0b5cad5ddc7d5e415392a",
+      "failedAt": 1793087919158
+    },
+    {
+      "id": 26,
+      "label": "H4",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087919651,
+      "bodySha256": "ac9b0c423e9dcacb7bf87f0a42fda0523d09e1cb44efa8cbe66c0f48517010c6",
+      "failedAt": 1793087919651
+    },
+    {
+      "id": 27,
+      "label": "H4",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087919661,
+      "bodySha256": "ac9b0c423e9dcacb7bf87f0a42fda0523d09e1cb44efa8cbe66c0f48517010c6",
+      "failedAt": 1793087919705
+    },
+    {
+      "id": 28,
+      "label": "H3",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087920484,
+      "bodySha256": "d597a00944d0988bea6b88265e0ede837377498adb880a5a89aaf427bc27f18d",
+      "failedAt": 1793087920485
+    },
+    {
+      "id": 29,
+      "label": "H0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087920505,
+      "bodySha256": "2de7f6c20edffbbe3705c0eb7c96d0ba929a41f05fce977eaff112ef2895719c",
+      "failedAt": 1793087920505
+    },
+    {
+      "id": 30,
+      "label": "H5",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087920746,
+      "bodySha256": "0bb8a6a8bb199cdb868a464ac8e01f0e9454360061c51334cf944cb5a185406c",
+      "failedAt": 1793087920747
+    },
+    {
+      "id": 31,
+      "label": "H5",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087921166,
+      "bodySha256": "316128bc7e1b9d1e83eecb25e52b9f58b32ca96e70ef834388bde6ad43078d2a",
+      "failedAt": 1793087921167
+    },
+    {
+      "id": 32,
+      "label": "H5",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087921176,
+      "bodySha256": "316128bc7e1b9d1e83eecb25e52b9f58b32ca96e70ef834388bde6ad43078d2a",
+      "failedAt": 1793087921222
+    },
+    {
+      "id": 33,
+      "label": "H1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087921510,
+      "bodySha256": "3596085e5073f2429798810524530dbe5ffb2d04dc9af5970ec47fbedc38d4fa",
+      "failedAt": 1793087921511
+    },
+    {
+      "id": 34,
+      "label": "M0",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087922349,
+      "bodySha256": "30db550eb74d4771821751513db4077ca3a91428732f9a7873d34db6c368340a",
+      "failedAt": 1793087922350
+    },
+    {
+      "id": 35,
+      "label": "H4",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087922607,
+      "bodySha256": "ac9b0c423e9dcacb7bf87f0a42fda0523d09e1cb44efa8cbe66c0f48517010c6",
+      "failedAt": 1793087922607
+    },
+    {
+      "id": 36,
+      "label": "Q0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087923499,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "failedAt": 1793087923506
+    },
+    {
+      "id": 37,
+      "label": "M0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087923672,
+      "bodySha256": "cf3c4444ab15dacba3dd88200aea6fca507ea2ac1c3f44ce499542ab15e12da6",
+      "failedAt": 1793087923672
+    },
+    {
+      "id": 38,
+      "label": "M0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087923692,
+      "bodySha256": "cf3c4444ab15dacba3dd88200aea6fca507ea2ac1c3f44ce499542ab15e12da6",
+      "failedAt": 1793087923692
+    },
+    {
+      "id": 39,
+      "label": "H5",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087923817,
+      "bodySha256": "316128bc7e1b9d1e83eecb25e52b9f58b32ca96e70ef834388bde6ad43078d2a",
+      "failedAt": 1793087923817
+    },
+    {
+      "id": 40,
+      "label": "H2",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087923899,
+      "bodySha256": "6c67a0f808177f7aae070f9fb6760d637e212fd534d0b5cad5ddc7d5e415392a",
+      "failedAt": 1793087923899
+    },
+    {
+      "id": 41,
+      "label": "M1",
+      "path": "/account/session/v1/begin",
+      "phase": "restore",
+      "at": 1793087924437,
+      "bodySha256": "5867310734b17142b1f03ae7b6dc9f6417ef6cd086f8499bfe985b8f77d879fc",
+      "failedAt": 1793087924439
+    },
+    {
+      "id": 42,
+      "label": "Q1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087924528,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "failedAt": 1793087924531
+    },
+    {
+      "id": 43,
+      "label": "M1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087924821,
+      "bodySha256": "f81f4215e05eb8b406d910b9166d74eedee0d601a2eee321c3be68ec182ee9ea",
+      "failedAt": 1793087924821
+    },
+    {
+      "id": 44,
+      "label": "M1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087924830,
+      "bodySha256": "f81f4215e05eb8b406d910b9166d74eedee0d601a2eee321c3be68ec182ee9ea",
+      "failedAt": 1793087924878
+    },
+    {
+      "id": 45,
+      "label": "H3",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087925043,
+      "bodySha256": "d597a00944d0988bea6b88265e0ede837377498adb880a5a89aaf427bc27f18d",
+      "failedAt": 1793087925044
+    },
+    {
+      "id": 46,
+      "label": "Q0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087925332,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "headersAt": 1793087925400,
+      "status": 200
+    },
+    {
+      "id": 47,
+      "label": "Q1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087925335,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "headersAt": 1793087925409,
+      "status": 200
+    },
+    {
+      "id": 48,
+      "label": "Q0",
+      "path": "/account/session/v1/renew",
+      "phase": "restore",
+      "at": 1793087925405,
+      "bodySha256": "010e703017f07ac231ff86966970d54eeb1cd4b56e2aaaad5e5cdab9320bcb4b",
+      "headersAt": 1793087925423,
+      "status": 200
+    },
+    {
+      "id": 49,
+      "label": "Q1",
+      "path": "/account/session/v1/renew",
+      "phase": "restore",
+      "at": 1793087925410,
+      "bodySha256": "fcc86c4acaf4a0f7f3cdb1666fe9698de91d8c39605db14afe9a799b5725dc59",
+      "headersAt": 1793087925432,
+      "status": 200
+    },
+    {
+      "id": 50,
+      "label": "Q0",
+      "path": "/account/grant/v1/begin",
+      "phase": "restore",
+      "at": 1793087925437,
+      "bodySha256": "a1905c74db1858d96ee4b54cde5d870bd1ae40819096d00f3e36376943a0fec9",
+      "scope": "workspace",
+      "credentialSha256": "cbe979dfe25f2cc80c55d30d4a3b5856d8f50e2ec32fef4f916aa1174442455e",
+      "headersAt": 1793087925601,
+      "status": 200
+    },
+    {
+      "id": 51,
+      "label": "Q1",
+      "path": "/account/grant/v1/begin",
+      "phase": "restore",
+      "at": 1793087925438,
+      "bodySha256": "1b128d384c80113e53e8db8fad46237592f3c7a5ca59aba8bd90be878475fdbb",
+      "scope": "workspace",
+      "credentialSha256": "160e8f7d7428d320f48d9c8281bf6fbeab5d735bce971e83b61f3cab7f0f7818",
+      "headersAt": 1793087925602,
+      "status": 200
+    },
+    {
+      "id": 52,
+      "label": "Q0",
+      "path": "/account/grant/v1/finish",
+      "phase": "restore",
+      "at": 1793087925602,
+      "bodySha256": "2b0d1b3c9bf8267ac4a722c9176d067a61e17f88fc23bb8e306f25e0b602359d",
+      "headersAt": 1793087925607,
+      "status": 200
+    },
+    {
+      "id": 53,
+      "label": "Q1",
+      "path": "/account/grant/v1/finish",
+      "phase": "restore",
+      "at": 1793087925603,
+      "bodySha256": "e145c16c11a48008f7e7266dc9edcbe4faf388bfbf520770f20d787b1d078ff9",
+      "headersAt": 1793087925609,
+      "status": 200,
+      "failedAt": 1793087925609
+    },
+    {
+      "id": 54,
+      "label": "Q0",
+      "path": "/account/notifications/v1/subscribe",
+      "phase": "restore",
+      "at": 1793087925608,
+      "bodySha256": "a1905c74db1858d96ee4b54cde5d870bd1ae40819096d00f3e36376943a0fec9",
+      "headersAt": 1793087925613,
+      "status": 200
+    },
+    {
+      "id": 55,
+      "label": "Q0",
+      "path": "/account/membership/v2/discover",
+      "phase": "restore",
+      "at": 1793087925608,
+      "bodySha256": "3729161beac7834529e3b56925a64d3a668d8c57b7a736281951e8bb929c3a38",
+      "headersAt": 1793087925804,
+      "status": 200
+    },
+    {
+      "id": 56,
+      "label": "Q1",
+      "path": "/account/notifications/v1/subscribe",
+      "phase": "restore",
+      "at": 1793087925610,
+      "bodySha256": "1b128d384c80113e53e8db8fad46237592f3c7a5ca59aba8bd90be878475fdbb",
+      "headersAt": 1793087925625,
+      "status": 200
+    },
+    {
+      "id": 57,
+      "label": "Q1",
+      "path": "/account/membership/v2/discover",
+      "phase": "restore",
+      "at": 1793087925610,
+      "bodySha256": "3a086f3d97b16ee38958f6c68b258a9e837b4638ddce0b4a9ddba6086f7c2d18",
+      "headersAt": 1793087925729,
+      "status": 200
+    },
+    {
+      "id": 58,
+      "label": "Q1",
+      "path": "/account/history/v1/checkpoint",
+      "phase": "restore",
+      "at": 1793087925759,
+      "bodySha256": "fc3d5a7748ebfbdd0af219110dc6fe14a57517d41e1ebd32ba18ef818f7e1ca8",
+      "headersAt": 1793087925844,
+      "status": 200
+    },
+    {
+      "id": 59,
+      "label": "Q0",
+      "path": "/account/history/v1/checkpoint",
+      "phase": "restore",
+      "at": 1793087925852,
+      "bodySha256": "aa6f341b43eec9952daecbbd7d11dcd3a41208cd192cce1432d1c1784c114a84",
+      "headersAt": 1793087925868,
+      "status": 200
+    },
+    {
+      "id": 60,
+      "label": "Q1",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087925857,
+      "bodySha256": "014164e30552773ae0844512d99e58f56bff5af4c623f3763f80d73dc134d72a",
+      "headersAt": 1793087925966,
+      "status": 200
+    },
+    {
+      "id": 61,
+      "label": "Q0",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087925878,
+      "bodySha256": "dfa27c6623f0245a103d9902e8f05a0171d1ea065a23277a3b5f9268145b81c6",
+      "headersAt": 1793087925985,
+      "status": 200
+    },
+    {
+      "id": 62,
+      "label": "Q1",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087925988,
+      "bodySha256": "94c2b698fa212e4c72978e77be648fccc5be8e291da54cfa66f0ce55b55789b9",
+      "headersAt": 1793087926053,
+      "status": 200
+    },
+    {
+      "id": 63,
+      "label": "Q0",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087926004,
+      "bodySha256": "2373c762475a49d66edc30e4bd1796924169da6e6f077c0c1f39a9241495b84b",
+      "headersAt": 1793087926085,
+      "status": 200
+    },
+    {
+      "id": 64,
+      "label": "Q1",
+      "path": "/account/membership/v2/discover",
+      "phase": "restore",
+      "at": 1793087926109,
+      "bodySha256": "230e4369fbf435b5a0792ec226aec072acc6fa53d2a75897126dc0807eef57de",
+      "headersAt": 1793087926132,
+      "status": 200
+    },
+    {
+      "id": 65,
+      "label": "Q0",
+      "path": "/account/membership/v2/discover",
+      "phase": "restore",
+      "at": 1793087926128,
+      "bodySha256": "e60265a679081aa9dccf062496e650d6af54a05e734063def675ff0902666961",
+      "headersAt": 1793087926141,
+      "status": 200
+    },
+    {
+      "id": 66,
+      "label": "Q1",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087926175,
+      "bodySha256": "6aed48255d8a1b85e7fca04cdd63540fad5f3336ed75039eaa9df771b6fbd73e",
+      "headersAt": 1793087926183,
+      "status": 200
+    },
+    {
+      "id": 67,
+      "label": "Q0",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087926180,
+      "bodySha256": "4d5bfefa61a5adccf47c0952e95c2fc77af2bf08cc3306bd2046020915fb59d2",
+      "headersAt": 1793087926190,
+      "status": 200
+    },
+    {
+      "id": 68,
+      "label": "Q1",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087926200,
+      "bodySha256": "ba95035690073786f1624ff36ecafd83381a19d42356f590ee2a2999a77b923b",
+      "headersAt": 1793087926209,
+      "status": 200
+    },
+    {
+      "id": 69,
+      "label": "Q0",
+      "path": "/account/delivery/read-v2",
+      "phase": "restore",
+      "at": 1793087926207,
+      "bodySha256": "00072339344e283d3c6b1c64ff4e9cc99583506ef5ce8730eb7e3de794bdb5f3",
+      "headersAt": 1793087926216,
+      "status": 200
+    },
+    {
+      "id": 70,
+      "label": "M0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087926213,
+      "bodySha256": "cf3c4444ab15dacba3dd88200aea6fca507ea2ac1c3f44ce499542ab15e12da6",
+      "failedAt": 1793087926213
+    },
+    {
+      "id": 71,
+      "label": "M1",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087927106,
+      "bodySha256": "f81f4215e05eb8b406d910b9166d74eedee0d601a2eee321c3be68ec182ee9ea",
+      "failedAt": 1793087927107
+    },
+    {
+      "id": 72,
+      "label": "H4",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087927609,
+      "bodySha256": "ac9b0c423e9dcacb7bf87f0a42fda0523d09e1cb44efa8cbe66c0f48517010c6",
+      "failedAt": 1793087927609
+    },
+    {
+      "id": 73,
+      "label": "H5",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087928528,
+      "bodySha256": "316128bc7e1b9d1e83eecb25e52b9f58b32ca96e70ef834388bde6ad43078d2a",
+      "failedAt": 1793087928529
+    },
+    {
+      "id": 74,
+      "label": "H0",
+      "path": "/account/session/v1/acknowledge",
+      "phase": "restore",
+      "at": 1793087928873,
+      "bodySha256": "2de7f6c20edffbbe3705c0eb7c96d0ba929a41f05fce977eaff112ef2895719c",
+      "failedAt": 1793087928877
+    }
+  ]
+}

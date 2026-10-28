@@ -1,0 +1,69 @@
+{
+  "accounts": [
+    {
+      "label": "H",
+      "devices": 6,
+      "backlog": 1024,
+      "archive": [
+        {
+          "name": "master.md",
+          "characters": 5000,
+          "bytes": 5000
+        },
+        {
+          "name": "days/2026-10-27.md",
+          "characters": 2465,
+          "bytes": 2465
+        }
+      ]
+    },
+    {
+      "label": "M",
+      "devices": 2,
+      "backlog": 256,
+      "archive": [
+        {
+          "name": "master.md",
+          "characters": 4157,
+          "bytes": 4157
+        },
+        {
+          "name": "days/2026-10-27.md",
+          "characters": 1037,
+          "bytes": 1037
+        }
+      ]
+    },
+    {
+      "label": "Q",
+      "devices": 2,
+      "backlog": 32,
+      "archive": [
+        {
+          "name": "master.md",
+          "characters": 1049,
+          "bytes": 1049
+        },
+        {
+          "name": "days/2026-10-27.md",
+          "characters": 487,
+          "bytes": 487
+        }
+      ]
+    }
+  ],
+  "preparedWriterNativeCensus": [
+    {
+      "stores": {
+        "content": 582,
+        "heads": 1031,
+        "meta": 1,
+        "outbound": 3
+      },
+      "counterVersion": 2
+    }
+  ],
+  "preparationAuthAndOriginalArchiveEqualityPassed": true,
+  "privateFixtureSha256": "a0dae92006ec40c01fcb525e25172f74fe4dc4f65aaf073f27247c6acbb3db50",
+  "preparedFixtureSha256": "29157cbeaf83a269104361a6a9ccd9cb10ce20033b72e52f0394c89b19354f9f"
+}

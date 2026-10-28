@@ -1,0 +1,9 @@
+{
+  "workloads": [
+    {
+      "mode": "late",
+      "allCandidateGates": true
+    }
+  ],
+  "accepted": true
+}

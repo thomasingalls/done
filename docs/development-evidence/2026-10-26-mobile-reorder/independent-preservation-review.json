@@ -1,0 +1,11 @@
+{
+  "oldBrowserCasesRetained": 24,
+  "newCases": 16,
+  "oldNamedDispositionsUnchanged": 23,
+  "newNamedPlatformDispositions": 8,
+  "onlyChangedCryptoCensusSourceHash": [
+    "src/ui/Card.tsx"
+  ],
+  "domainSitesUnchanged": true,
+  "oldBlocksRetained": true
+}

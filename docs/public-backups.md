@@ -41,10 +41,12 @@ must be HTTPS B2 hosts without credentials/ports/redirects. API error bodies, cr
 provider tokens are not logged or exposed through health.
 
 Each ciphertext gets a new name containing capture time, random ID and SHA-256. Upload includes B2's
-required length/SHA-1 transport checksum. Success requires reading that exact returned file version
-back and matching its length and SHA-256. Only then does that snapshot cover the observed database
-version. A lost response or failed readback preserves the dirty state and prevents pruning; retry
-uses a fresh name. Incomplete/uncertain remote copies may remain until a later successful cycle.
+required length/SHA-1 transport checksum. An acknowledged receipt records an **upload**, not a verified
+recovery point. Remote verification reads that exact file version and matches length/SHA-256 before
+crediting a **backup** or authorizing pruning. Failed readback retains the receipt and encrypted local
+copy, avoiding another upload. A lost upload reply retries the same name and encrypted bytes with
+backoff; uncertain remote versions may remain until a later safely verified retention cycle. Explicit
+maintenance `upload` still requires immediate exact-version readback; only routine `put` separates it.
 
 Retention obtains a bounded, complete version listing (up to 100 pages of 1000) and requires the exact
 verified anchor. Before deleting alternatives, it verifies unfamiliar versions chosen as hourly/daily
@@ -58,15 +60,31 @@ The worker starts with a fresh backup, then observes changes every 30 seconds. T
 work is running; they never overlap or queue. SQLite `data_version` is connection-local, so a restart
 always requires a fresh verified copy before any retention; it does not reuse a prior process's
 counter. Writes arriving after the snapshot remain pending for the next cycle. While unchanged,
-there is no upload; every five minutes the worker re-verifies its anchor and applies retention.
-Failures preserve the latest verified recovery set and retry at a later tick. Each attempt has a
+there is no upload. Routine remote verification and retention run **one cycle/hour**, starting with
+an immediate first cycle. Every cycle rechecks the latest exact version even if unchanged, plus any
+unfamiliar selected keepers. It does not separately download a familiar keeper again in that cycle.
+New uploads between cycles remain explicitly pending verification; the last verified recovery point
+can therefore lag new writing by an hour (or longer on failure). Local encrypted-copy size/SHA-256 is
+checked every five minutes. Capture still checks copied SQLite integrity and hashes its manifest;
+the local checksum is not decryption or a full restore check, because the recovery key stays off-cluster.
+
+Transient provider failures use30s exponential backoff capped at one hour. A bounded documented B2
+403 cap code pauses affected calls until the next UTC daily reset; a download-only cap pauses reads
+and pruning while allowing new encrypted uploads. Transaction/storage caps conservatively pause all
+provider work. Local checks continue and cannot clear a failed remote check. The cap is unchanged.
+Backoff/verification caches are process-local: a restart performs a fresh first verification, rather
+than trusting a prior process's authority/counter or carrying forward unverified pruning permission.
+Backblaze documents [daily counters resetting at00:00 GMT](https://www.backblaze.com/docs/en/cloud-storage-data-caps-and-alerts).
+Failures preserve the latest verified recovery set. Each attempt has a
 five-minute transfer/encryption deadline and individual HTTP requests have a two-minute deadline.
 SQLite copy completion is awaited before cleanup; the initial 1 GiB capture bound also limits that
 work. Slow/failed backups mean an older achieved recovery point, not a guaranteed 30-second RPO.
 
 Temporary plaintext lives only in the configured private workspace, excluded from the recovery set.
-Completed/failed attempts remove it; cleanup failure stays unhealthy and must be resolved before
-new work. A restarted owner reaps only owned `run-<32 hex>` directories in that dedicated workspace,
+Completed encryption removes plaintext immediately; one owned run-directory retains only the latest
+encrypted `payload.age` for local checking/retry. Replacement and orderly shutdown remove that copy.
+Failed capture/encryption attempts remove partial files after native operations settle; cleanup failure
+stays unhealthy and must be resolved before new work. A restarted owner reaps only owned `run-<32 hex>` directories in that dedicated workspace,
 refusing unclassified entries. Provision a dedicated ephemeral, size-bounded directory per service
 pod; never share it between independent state owners. Process-crash cleanup is not forensic erasure.
 
@@ -113,13 +131,18 @@ liveness: restarting healthy sync repeatedly during a B2 outage would not repair
 The existing app/API readiness probes are independent.
 
 Health reports stage, last failure stage/count, last observation/upload/prune times, snapshot capture
-age, snapshot size, latest/total verified-upload bytes and attempted-upload bytes. Attempted bytes are
-an upper estimate of wire bytes during uncertain failures; verified bytes do not include failed
-attempts. These counters reset on restart. `dirtySince` is the first observed outstanding change,
+age, snapshot size, latest/total acknowledged-upload bytes, uploads, verified backups and attempted
+upload bytes. A receipt increments uploads; only successful exact readback advances `lastSnapshotAt`
+and backups. Attempted bytes estimate uncertain transfers; acknowledged bytes exclude lost replies.
+`pendingVerification`, last local/remote check times, quota state and next retry times expose the
+separate states. These counters reset on restart. `dirtySince` is the first observed outstanding change,
 not a per-edit timestamp; detection waits for a tick, or for an already-running cycle to finish.
 More than 90 seconds of
 observed pending changes is unhealthy. A five-second worker heartbeat becomes stale after 15 seconds.
-An old snapshot can be healthy while unchanged, but its capture age remains visible. No row contents,
+Under the operator-selected policy, healthy requires an existing verified anchor, no failed operation,
+a local checksum within5min+90s and remote verification within1h+90s; uploads of observed pending
+changes must still meet90s. An upload pending its scheduled hourly check can be policy-healthy but
+is not represented as verified. An old snapshot can be healthy while unchanged; capture age remains visible. No row contents,
 credentials, object IDs or provider error payloads appear in this endpoint.
 
 Shutdown withdraws admission, drains admitted API operations, cancels/awaits the backup worker,

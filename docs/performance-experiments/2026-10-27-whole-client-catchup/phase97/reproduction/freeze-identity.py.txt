@@ -1,0 +1,16 @@
+"""Recreate provenance for a fresh disposable rerun; never reuse production profiles."""
+from pathlib import Path
+import sys,json,hashlib,subprocess,time,copy
+r=Path(__file__).parent;template=json.loads(Path(sys.argv[1]).read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();x=copy.deepcopy(template)
+for v in ['R','C']:
+ x['clients'][v]={str(p.relative_to(r/('source-'+v)/'dist')):sha(p)for p in(r/('source-'+v)/'dist').rglob('*')if p.is_file()}
+ assert x['clients'][v]==template['clients'][v],v+' rebuilt artifact differs: investigate instead of reusing old identity'
+for path,h in template['sharedServer'].items():assert sha(r/'source-C'/path)==h,path
+assert json.loads((r/'container-image.json').read_text())['Id']==x['imageId']
+x['protocolSha256']=sha(r/'protocol.md');assert x['protocolSha256']==template['protocolSha256']
+x['apparatus']={path:sha(r/path)for path in template['apparatus']}
+x['privateFixture']={'jsonSha256':sha(r/'private-fixture/fixture.json'),'serviceFiles':{str(p.relative_to(r/'seed-02/state')):sha(p)for p in(r/'seed-02/state').rglob('*')if p.is_file()}}
+x['serializer']['sha256']=sha(r/'playwright-storage-source.txt');assert x['serializer']==template['serializer']
+x['frozenAtEpochMs']=time.time_ns()//1000000
+# Carry no historical hardware/build/pilot observations into a new run.
+x['host']={'newRunRequiresRecordedHardwareAndFeatureFlags':True};x['buildChecks']={'newRunReceipts':'build-receipts.json'};x['restorationPilot']='pilot-restore-R2';(r/'measurement-identity.json').write_text(json.dumps(x,indent=2)+'\n')

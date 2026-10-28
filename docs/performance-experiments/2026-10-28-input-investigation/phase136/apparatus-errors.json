@@ -1,0 +1,7 @@
+[
+  {
+    "stage": "identity setup before any dispatch",
+    "error": "KeyError assets: prior117 identity is a flat asset map, current132 identity wraps assets",
+    "resolution": "Explicitly normalize both formats, then independently hash every asset; no timed run or omitted output."
+  }
+]

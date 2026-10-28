@@ -1,0 +1,15 @@
+import { readFileSync,writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import assert from 'node:assert/strict';
+import { census } from '/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-crypto-prep/census.mjs';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done',base='f55c6c4a0b2a4705d5c597285038f9149e5fd19c';
+const read=p=>JSON.parse(readFileSync(root+'/'+p)),old=p=>JSON.parse(execFileSync('git',['show',base+':'+p],{cwd:root}));
+const before=old('docs/account-crypto/census.json'),next=census(root),a=new Map(before.sources.map(s=>[s.path,s.sha256])),b=new Map(next.sources.map(s=>[s.path,s.sha256]));
+assert.deepEqual([...a.keys()].filter(p=>!b.has(p)),[]);assert.deepEqual([...a.keys()].filter(p=>a.get(p)!==b.get(p)),[]);
+assert.deepEqual([...b.keys()].filter(p=>!a.has(p)),['src/crdt/preparationValue.ts','src/crdt/retentionPreparation.ts']);
+assert.deepEqual(next.domains.filter(d=>d.label!=='done/local-preparation/draft-1'),before.domains);
+const document=read('docs/account-crypto/constructions.json'),previous=old('docs/account-crypto/constructions.json');
+assert.deepEqual(document.constructions.slice(0,-1),previous.constructions);assert.equal(document.constructions.at(-1).id,'account-local-preparation');assert.equal(document.constructions.at(-1).status,'open');
+for(const c of document.constructions)c.sourceSites=next.domains.filter(d=>c.labels.includes(d.label)).flatMap(d=>d.sites.map(s=>({...s,label:d.label,kind:d.kind})));
+writeFileSync(root+'/docs/account-crypto/constructions.json',JSON.stringify(document,null,2)+'\n');
+writeFileSync(root+'/docs/performance-experiments/2026-10-28-resumable-preparation/phase127/crypto-review.json',JSON.stringify({baseTree:base,previousSources:a.size,currentSources:b.size,addedSources:[...b.keys()].filter(p=>!a.has(p)),previousDomains:before.domains.length,currentDomains:next.domains.length,allPriorSourcesAndConstructionRecordsUnchanged:true,newOpenConstruction:'account-local-preparation'},null,2)+'\n');

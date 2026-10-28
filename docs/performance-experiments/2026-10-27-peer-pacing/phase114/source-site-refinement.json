@@ -1,0 +1,9 @@
+{
+  "sourceCommit": "1ee9c3514fdcf9fa131c25c8c03c3be2e7c95659",
+  "path": "src/crdt/accountReceive.ts",
+  "wholeFileSha256": "d9e6ca3eec37f71cbc2c9559113b5be1cbf97fef1e318f2f0a357cc2ec0f7ea1",
+  "prior113GroupLabelLine": 1631,
+  "priorLineIsActuallySinglePagePromotionAfterReadback": true,
+  "groupPromotionAfterReadbackLine": 1814,
+  "classification": "Source-site label/locator refinement; both paths retain commit/readback before promotion. No timing, mapping, verifier or gate change."
+}

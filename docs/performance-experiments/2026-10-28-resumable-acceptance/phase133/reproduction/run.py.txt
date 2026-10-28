@@ -1,0 +1,17 @@
+from pathlib import Path
+import subprocess,os,json,time,sys
+s=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';plan=json.loads((s/'run-plan.json').read_text());env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}
+for case in plan:
+ out=s/case['name'];out.mkdir(mode=0o700,exist_ok=False);e={**env,'FAIR_OUT':str(out),'FAIR_VARIANT':case['variant'],'FAIR_DIST':str(s/('source-'+case['variant'])/'dist'),'QUIET_WITHHOLD':'1'if case['withhold']else'0'};cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/'+case['config']];r={'case':case,'startedAt':time.time_ns()//1000000,'command':cmd}
+ with(out/'console.log').open('w')as f:p=subprocess.run(cmd,cwd=s/'harness',env=e,stdout=f,stderr=subprocess.STDOUT)
+ r.update(exit=p.returncode,finishedAt=time.time_ns()//1000000);(out/'runner-receipt.json').write_text(json.dumps(r,indent=2)+'\n');print(case['name'],'functional exit',p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
+ with(out/'analysis.log').open('w')as f:p=subprocess.run([sys.executable,str(s/'analyze-case.py'),json.dumps(case)],cwd=s,stdout=f,stderr=subprocess.STDOUT)
+ print(case['name'],'analysis exit',p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
+# Finish the paired nonregression check whose reference ran later in the fixed order.
+for case in plan:
+ if case['variant']=='C':
+  with(s/case['name']/'paired-final-analysis.log').open('w')as f:p=subprocess.run([sys.executable,str(s/'analyze-case.py'),json.dumps(case)],cwd=s,stdout=f,stderr=subprocess.STDOUT)
+  if p.returncode:raise SystemExit(p.returncode)
+print('All eight frozen journeys and gates pass.',flush=True)

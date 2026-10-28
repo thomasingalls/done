@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,math,copy
+s=Path(__file__).parent;identity=json.loads((s/'dispatch-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();assert all(sha(s/p)==h for p,h in identity['apparatus'].items());reports=[]
+for case in json.loads((s/'dispatch-plan.json').read_text()):
+ d=s/case['name'];x=json.loads((d/'result.json').read_text());claim=json.loads((d/'analysis.json').read_text());sensor=x['dispatch'];clocks=[v for g in x['clocks']for v in(g['rows'][1]if case['app']else g)];offset=max(v['renderer']-v['after']-1 for v in clocks)
+ offers=x['offers'];assert len([v for v in offers if v['kind']=='key'])==120;events=[v for v in sensor['events']if v['kind']=='beforeinput'and v['target']==x['target']and offers[0]['at']+offset-5<=v['at']<=offers[-1]['returnedAt']+5];assert len(events)==len(offers);assert all(v['trusted']and v['focused']and v['visible']=='visible'for v in events)
+ observed=[];queue=[];i=0
+ for position,(offer,event)in enumerate(zip(offers,events)):
+  if offer['kind']!='key':continue
+  i+=1;dom=sensor['plainRows'][position]['at']if x['target']=='plain'else min(v['at']for v in x['probes'][1]['counts']if v['count']>=x['baselines'][1]+i and v['at']>=offer['at']-5);observed.append(dom-offer['at']-offset);kd=max((v for v in sensor['events']if v['kind']=='keydown'and v['target']==x['target']and v['at']<=event['at']),key=lambda v:v['at']);queue.append(kd['at']-kd['stampEpoch'])
+ assert observed==[v['offerToDomUpperMs']for v in claim['rows']];assert queue==[v['keydownStampToHandlerMs']for v in claim['rows']]
+ def verify(c):
+  assert c['metrics']['offerToDomUpperMs']['p95']==sorted(observed)[113]
+  assert c['metrics']['keydownStampToHandlerMs']['p95']==sorted(queue)[113]
+ verify(claim);bad=copy.deepcopy(claim);bad['metrics']['offerToDomUpperMs']['p95']+=1
+ try:verify(bad);raise RuntimeError('wrong p95 accepted')
+ except AssertionError:pass
+ roots=x['roots']if case['app']else[x['root']];assert all(sha(Path(v['executable']))==v['sha256']for v in roots)
+ if case['app']:
+  assert len(set(v['pid']for v in roots))==2;assert all(v['workerSha256']==identity['client']['assets']['sw.js']for v in roots);container=json.loads((d/'container-identity.json').read_text());assert container['Image']==identity['image']['Id'];h=container['HostConfig'];assert[h[k]for k in['NanoCpus','Memory','MemorySwap','PidsLimit','ReadonlyRootfs']]==[1000000000,1073741824,1073741824,128,True];assert all(int(line.split()[1])==0 for line in x['metrics']['cgroupAfter']['memory.events'].splitlines()if line.split()[0]in['oom','oom_kill','max']);assert all(x['guards'].values());assert claim['keysDuringBacklog']>=60
+ reports.append({'name':case['name'],'all120BoundsAndQueueIntervalsReconstructed':True,'wrongQuantileControlRejected':True,'binaryWorkerResourceDataGuards':True,'localP95Ms':claim['metrics']['offerToDomUpperMs']['p95'],'nativeControlSensitivity':bool(claim.get('faultSensitivity'))})
+before=reports[1]['localP95Ms'];after=reports[4]['localP95Ms'];drift=abs(after-before);relative=drift/before;current=(s/'harness-D/test/account-continuation-lab/dispatch-probe.ts').read_text();old=Path('docs/performance-experiments/2026-10-21-dispatch-calibration/reproduction/browser/dispatch-probe.ts.txt').read_text();extract=lambda x:x[x.index('export function installDispatchProbe'):x.index('export async function browserIdentity')];assert extract(current)==extract(old);assert(s/'diagnostic/node-monitor.mjs').read_bytes()==Path('docs/performance-experiments/2026-10-21-dispatch-calibration/reproduction/node-monitor.mjs.txt').read_bytes()
+(s/'dispatch-independent-review.json').write_text(json.dumps({'kind':'independent audit of mechanism study; no activation credit','reports':reports,'staticBookendDriftMs':drift,'staticBookendDriftFraction':relative,'bookendInstabilityFlag':drift>3 and relative>.20,'existingBrowserSensorAndNodeMonitorByteExact':True,'limitations':'Native/app contrast bundles editor writes and induced work; flagged host drift blocks timing promotion; internal renderer intervals and separate source profiling are mechanism evidence only.'},indent=2)+'\n');print(json.dumps(reports,indent=2));print('bookend',drift,relative,'instability',drift>3 and relative>.20)

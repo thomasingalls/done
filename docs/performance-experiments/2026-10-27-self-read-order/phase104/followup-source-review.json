@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "sourceTree": "75d52e5454f645b6117b02a93e255ddcb19ab789",
+  "runtimeTestHelperAndDependencyFilesExactInCheckoutAndBuildExport": 1640,
+  "codeChangedAfterBuildFreeze": false,
+  "normalChecksPassed": 13,
+  "allObligationsAndBlocksRetained": {
+    "obligations": 912,
+    "unresolved": 367
+  }
+}

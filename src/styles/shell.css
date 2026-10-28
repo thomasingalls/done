@@ -449,7 +449,10 @@
   .goals-navigation .goals-breadcrumbs {
     inline-size: auto;
     flex: none;
-    min-block-size: 2.75rem;
+    min-block-size: 1.5rem;
+    block-size: 1.5rem;
+    padding-inline: 0.3rem;
+    margin-inline-start: -0.3rem;
   }
   .goals-navigation .goals-breadcrumb-trail {
     display: flex;
@@ -462,10 +465,19 @@
     align-items: center;
     flex: none;
   }
+  .goals-navigation .goals-breadcrumbs,
   .goals-crumb-label,
   .goals-crumb-menu {
-    min-block-size: 2.75rem;
-    border-radius: var(--radius-1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--radius-2);
+    background: transparent;
+  }
+  .goals-crumb-label,
+  .goals-crumb-menu {
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--color-text-dim);
@@ -480,7 +492,10 @@
   .goals-crumb-menu {
     display: grid;
     place-items: center;
-    min-inline-size: 1.75rem;
+    min-inline-size: 1.5rem;
+    inline-size: 1.5rem;
+    padding: 0;
+    flex: none;
   }
   .goals-crumb-menu svg {
     transition: rotate var(--duration-snap) var(--ease-snap);
@@ -488,11 +503,13 @@
   .goals-crumb-menu[aria-expanded='true'] svg {
     rotate: 90deg;
   }
+  .goals-breadcrumbs:hover,
   .goals-crumb-label:hover,
   .goals-crumb-menu:hover {
     background: var(--color-surface);
     color: var(--color-text);
   }
+  .goals-breadcrumbs:focus-visible,
   .goals-crumb-label:focus-visible,
   .goals-crumb-menu:focus-visible {
     outline: 2px solid var(--color-accent);
@@ -509,32 +526,6 @@
     color: var(--color-text-faint);
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .goals-outline-indicator {
-    display: grid;
-    place-items: center;
-    flex: none;
-    inline-size: 1.5rem;
-    block-size: 1.5rem;
-    border-radius: var(--radius-2);
-    background: var(--color-surface);
-    color: var(--color-text-dim);
-  }
-
-  .goals-outline-indicator svg {
-    display: block;
-    transition: rotate var(--duration-snap) var(--ease-snap);
-  }
-
-  .goals-breadcrumbs:hover .goals-outline-indicator,
-  .goals-breadcrumbs[aria-expanded='true'] .goals-outline-indicator {
-    background: var(--color-selection);
-    color: var(--color-text);
-  }
-
-  .goals-breadcrumbs[aria-expanded='true'] .goals-outline-indicator svg {
-    rotate: 180deg;
   }
 
   .panel-action,
@@ -899,6 +890,14 @@
     font-size: 0.8125rem;
     line-height: 1.6;
     overflow-wrap: anywhere;
+  }
+
+  .menu-history-progress {
+    display: block;
+    inline-size: 100%;
+    block-size: 0.3rem;
+    margin-block: var(--space-2);
+    accent-color: var(--color-accent);
   }
 
   .menu-metadata,

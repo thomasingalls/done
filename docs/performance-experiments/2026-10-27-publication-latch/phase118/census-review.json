@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "onlySourceHashChanged": [
+    [
+      {
+        "path": "src/crdt/accountReceive.ts",
+        "sha256": "d9e6ca3eec37f71cbc2c9559113b5be1cbf97fef1e318f2f0a357cc2ec0f7ea1"
+      },
+      {
+        "path": "src/crdt/accountReceive.ts",
+        "sha256": "78ae3685195e841011bc8bd4baa232c9ae851d9b57d65bd9964188371d1bc35e"
+      }
+    ]
+  ],
+  "allOtherSourceHashesExact": true,
+  "allNonSourceCensusFieldsExact": true,
+  "labels": 197,
+  "scope": "Reviewed constructor enablement; no change to classifications or qualification credit."
+}

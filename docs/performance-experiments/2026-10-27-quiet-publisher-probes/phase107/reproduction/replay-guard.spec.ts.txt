@@ -1,0 +1,18 @@
+import { test, expect, chromium } from '@playwright/test';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { restoreAuthenticator, openSaved } from './devices';
+import { root, card, exported, archiveIdentity, lock } from './common';
+test('the actual saved merge interrupts a literal needle but retains the full archive', async () => {
+  const f = JSON.parse(readFileSync(root + '/private-fixture/fixture.json', 'utf8'));
+  const a = f.accounts.find((v: any) => v.label === 'H');
+  const ctx = await chromium.launchPersistentContext(root + '/corrected-normal-1/private-profile-H1', { executablePath: process.env['CHROMIUM_PATH']!, baseURL: 'http://localhost:53781', offline: true, viewport: { width: 1440, height: 1000 } });
+  try {
+    const p = ctx.pages()[0] ?? await ctx.newPage(); await restoreAuthenticator(p, a.actors[1].credentials); await p.goto('/'); await openSaved(p, a.actors[1].code, true);
+    await p.getByLabel('Go to date', { exact: true }).fill(a.date);
+    const marker = ' Quiet peer arrival 20261027;';
+    const text = await card(p, 'H').textContent(); expect(text?.includes(marker)).toBe(true); expect(text?.includes(a.expected)).toBe(false); expect(text?.replace(marker, '').includes(a.expected)).toBe(true);
+    const files = await exported(p); const clean = Object.fromEntries(Object.entries(files).map(([k, v]) => [k, v.replace(marker, '')])); expect(Object.values(files).join('\n').split(marker)).toHaveLength(2); expect(clean).toEqual(a.archive);
+    const corrupted = structuredClone(clean); const name = Object.keys(corrupted).find(k => corrupted[k]!.includes(a.expected))!; expect(name).toBeTruthy(); corrupted[name] = corrupted[name]!.replace(a.expected, a.expected.slice(0, -1)); expect(corrupted).not.toEqual(a.archive);
+    await lock(p); writeFileSync(root + '/replay-guard-review.json', JSON.stringify({ status: 'passed-for-fixture-diagnosis-only', originalNeedleInterrupted: true, markerStrippedNeedlePresent: true, exactlyOneMarker: true, fullArchivePlusOnlyMarkerExact: true, corruptedOriginalRejected: true, sameSavedProfileOfflineNoReinjection: true, archive: archiveIdentity(files), noTimingCredit: true }, null, 2) + '\n');
+  } finally { await ctx.close(); }
+});

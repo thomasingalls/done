@@ -1,0 +1,16 @@
+{
+  "frozenAt": 1793114694348,
+  "guard": "at least16 actual unchanged-remote opportunities before hot cursor29; no timing credit",
+  "runs": [
+    {
+      "name": "default-before",
+      "source": "source-C",
+      "expectedExit": "nonzero: active candidate must fail disabled-default assertion"
+    },
+    {
+      "name": "default-after",
+      "source": "source-disabled",
+      "expectedExit": "zero"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "check": "debts",
+    "exit": 0
+  },
+  {
+    "check": "retention",
+    "exit": 0
+  },
+  {
+    "check": "status",
+    "exit": 0
+  },
+  {
+    "check": "limit",
+    "exit": 0
+  },
+  {
+    "check": "authority",
+    "exit": 1
+  },
+  {
+    "check": "yjs",
+    "exit": 0
+  },
+  {
+    "check": "wasm",
+    "exit": 0
+  },
+  {
+    "check": "crypto-census",
+    "exit": 0
+  },
+  {
+    "check": "inventory",
+    "exit": 0
+  },
+  {
+    "check": "manifest",
+    "exit": 0
+  },
+  {
+    "check": "budget",
+    "exit": 0
+  },
+  {
+    "check": "origin",
+    "exit": 0
+  }
+]

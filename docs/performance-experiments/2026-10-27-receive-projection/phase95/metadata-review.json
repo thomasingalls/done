@@ -1,0 +1,19 @@
+{
+  "baseTree": "a1ad3e3a81563a049e1d4b65aaff91dabe6516ba",
+  "runtimeSources": 410,
+  "domains": 197,
+  "runtimeHashChanges": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/inboundLedger.ts"
+  ],
+  "allOldDomainsAndSitePathsRetained": true,
+  "onlyRegistryEdit": "remaining-coordination-names/accountReceive diagnostic source line711\u2192712",
+  "allOldConstructionContractsStatusesBlockersExact": true,
+  "oldUnresolvedPreserved": 365,
+  "newUnresolved": [
+    "test:test/account-receive/read-projection.test.mjs",
+    "test:test/receiveReadProjection.test.ts"
+  ],
+  "unresolvedTotal": 367,
+  "oldTestFilesByteExact": 903
+}

@@ -1,0 +1,602 @@
+{
+  "status": "passed",
+  "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "proofs": [
+    {
+      "url": "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js",
+      "scriptSha256": "52299819a29b55be7b559eb8fb5f8559054fe8d2d202c31ef2ad73377e4fbf36",
+      "mapSha256": "852d3bb70be70e92bd17afd72886bedba7b5d66264033f3cb675d7baad564022",
+      "matchesRetainedPublishedArtifact": true
+    },
+    {
+      "url": "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js",
+      "scriptSha256": "7b78b8928a445eed5d8b1a4e1b2e383292b8ad19baa2b6d98dd1e95109858b70",
+      "mapSha256": "e4b9e54e98f80e8723b07d5457d3bd4ece9e96aeba3e7a03913a226f833dc23f",
+      "matchesRetainedPublishedArtifact": true
+    },
+    {
+      "url": "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js",
+      "scriptSha256": "31ca9f49b2e66199b569fc9c3870ce0ffb8acb08aad111aa32ed176d133a6f21",
+      "mapSha256": "5a12ff4af5eba641fd4cad5db18143553bc871b70e292dfef36d880f21f68d90",
+      "matchesRetainedPublishedArtifact": true
+    }
+  ],
+  "reads": [
+    {
+      "at": 57538.5,
+      "store": "content",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 57548.1,
+      "rows": 61,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 57538.7,
+      "store": "heads",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 57768.1,
+      "rows": 4618,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 57538.8,
+      "store": "outbound",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 57817.2,
+      "rows": 6318,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 88066.1,
+      "store": "content",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 88313.1,
+      "rows": 61,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 88066.3,
+      "store": "heads",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 88315.8,
+      "rows": 4618,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 88066.4,
+      "store": "outbound",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 88365.1,
+      "rows": 6318,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 92886.2,
+      "store": "content",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 93132.6,
+      "rows": 61,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 92886.3,
+      "store": "heads",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 93140.4,
+      "rows": 4618,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    },
+    {
+      "at": 92886.3,
+      "store": "outbound",
+      "frames": [
+        "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js:2:32498",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1889",
+        "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js:2:2859",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1427",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1696",
+        "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js:1:1309"
+      ],
+      "completedAt": 93228.5,
+      "rows": 6318,
+      "mapped": [
+        {
+          "source": "src/crdt/contentStore.ts",
+          "line": 247,
+          "column": 31,
+          "name": null,
+          "originalLine": "values = store.getAll(),",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 134,
+          "column": 6,
+          "name": null,
+          "originalLine": "body(",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/writeSession.ts",
+          "line": 152,
+          "column": 19,
+          "name": null,
+          "originalLine": "return effect();",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 100,
+          "column": 13,
+          "name": null,
+          "originalLine": "task.step(effect);",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 122,
+          "column": 4,
+          "name": null,
+          "originalLine": "guard(() => {",
+          "sourceExactToSignedDc53fecf": true
+        },
+        {
+          "source": "src/crdt/contentDatabase.ts",
+          "line": 88,
+          "column": 2,
+          "name": null,
+          "originalLine": "new Promise((resolve, reject) => {",
+          "sourceExactToSignedDc53fecf": true
+        }
+      ]
+    }
+  ]
+}

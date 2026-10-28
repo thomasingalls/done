@@ -1,0 +1,13 @@
+import { inspect } from './audit-lib.mjs';
+import { readFileSync,writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-quiet-publisher-probes-20261027';
+const fixture=JSON.parse(readFileSync(root+'/private-fixture/fixture.json')),seed=inspect(fixture.state+'/account.sqlite'),rows=[];
+for(const c of JSON.parse(readFileSync(root+'/run-plan.json'))){
+ const a=inspect(root+'/'+c.name+'/state/account.sqlite'),x=JSON.parse(readFileSync(root+'/'+c.name+'/result.json'));
+ for(const[id,proof]of Object.entries(seed.identities))assert.deepEqual(a.identities[id],proof);
+ const added=Object.keys(a.identities).filter(k=>!seed.identities[k]);assert.equal(added.length,1);assert.equal(added[0],`H:${x.publisherSha256}:2`);
+ for(let i=1;i<3;i++)assert.deepEqual(a.accounts[i],seed.accounts[i]);
+ rows.push({name:c.name,status:'passed',allOriginalEnvelopeAndPrefixIdentitiesExact:true,independentCiphertextEnvelopeWrapperHeadSignaturesAndPrefixes:true,exactlyOneNewTargetPublisherPosition:2,unrelatedAccountsUnchanged:true,databaseSha256:a.databaseSha256});
+}
+writeFileSync(root+'/native-review.json',JSON.stringify({status:'passed',runs:rows},null,2)+'\n');console.log(JSON.stringify(rows,null,2));

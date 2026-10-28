@@ -1,0 +1,12 @@
+from pathlib import Path
+import subprocess,json
+s=Path('/private/tmp/done-maintenance-continuation-20261027');root=Path.cwd();node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+cases=[('retry-reset','keeps retry escalation', 'history = answer;', 'history = answer; failures = 0;'),('waiting-action','parks a producer', "if (answer.pending === 'waiting' || answer.pending === 'stale')", "if (answer.pending === 'stale')")]
+rows=[]
+for name,title,needle,replacement in cases:
+ config=s/f'126-mutant-{name}.config.mjs'
+ config.write_text('export default '+json.dumps({'root':str(root),'test':{'include':['test/automaticServiceHistory.test.ts'],'environment':'node'}})[:-1]+',plugins:[{name:"deliberate-policy-fault",enforce:"pre",transform(code,id){if(!id.endsWith("/src/account/automaticHistoryMaintenance.ts"))return; const needle='+json.dumps(needle)+';if(code.split(needle).length!==2)throw Error("Mutation anchor missing");return code.replace(needle,'+json.dumps(replacement)+');}}]};\n')
+ with (s/f'126-mutant-{name}.log').open('wb')as f:r=subprocess.run([node,'node_modules/vitest/vitest.mjs','run','--config',str(config),'-t',title],stdout=f,stderr=subprocess.STDOUT,timeout=30)
+ text=(s/f'126-mutant-{name}.log').read_text();assert r.returncode==1 and 'AssertionError:' in text and title in text,(name,text)
+ rows.append({'fault':name,'discriminator':title,'exit':r.returncode,'isolatedAssertionFailure':True})
+(s/'126-mutation-results.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows))

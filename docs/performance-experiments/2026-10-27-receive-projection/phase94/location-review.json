@@ -1,0 +1,105 @@
+[
+  {
+    "id": "remaining-coordination-names",
+    "before": [
+      {
+        "path": "src/editor/textChannel.ts",
+        "line": 20,
+        "label": "done/accepted-text/v1/",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/workspaceChannel.ts",
+        "line": 24,
+        "label": "done/accepted-workspace/v1/",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/accountReceive.ts",
+        "line": 711,
+        "label": "done/account-ledger-reference-mismatch",
+        "kind": "literal"
+      },
+      {
+        "path": "src/account/setupMetadata.ts",
+        "line": 23,
+        "label": "done/setup-metadata/",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 217,
+        "label": "done/slot-lifecycle",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 299,
+        "label": "done/slot-lifecycle",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 307,
+        "label": "done/slot-lifecycle",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 37,
+        "label": "done/slot-writer/${JSON.stringify(slotId)}",
+        "kind": "template"
+      }
+    ],
+    "after": [
+      {
+        "path": "src/editor/textChannel.ts",
+        "line": 20,
+        "label": "done/accepted-text/v1/",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/workspaceChannel.ts",
+        "line": 24,
+        "label": "done/accepted-workspace/v1/",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/accountReceive.ts",
+        "line": 712,
+        "label": "done/account-ledger-reference-mismatch",
+        "kind": "literal"
+      },
+      {
+        "path": "src/account/setupMetadata.ts",
+        "line": 23,
+        "label": "done/setup-metadata/",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 217,
+        "label": "done/slot-lifecycle",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 299,
+        "label": "done/slot-lifecycle",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 307,
+        "label": "done/slot-lifecycle",
+        "kind": "literal"
+      },
+      {
+        "path": "src/crdt/writeSession.ts",
+        "line": 37,
+        "label": "done/slot-writer/${JSON.stringify(slotId)}",
+        "kind": "template"
+      }
+    ]
+  }
+]

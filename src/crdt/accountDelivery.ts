@@ -65,6 +65,11 @@ export interface DeliveryContext {
     owner: Owner,
     select: (state: Readonly<DeliveryState>) => T,
   ): Promise<T>;
+  /** Detached metadata from one freshly validated carrier selection; no raw-history handoff. */
+  loadState?(
+    task: SessionTask,
+    owner: Owner,
+  ): Promise<{ census: ReturnType<typeof inspectDelivery>; state: DeliveryState }>;
   /** Private speculative check. A successful proposal never installs a durable cached view. */
   verifyProposed?(
     records: readonly OpenedRecord[],
@@ -168,6 +173,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
     ) => Promise<T>,
   ) =>
     context.run(async (task, owner, route) => {
+      if (owner.carrier.canSelect && context.loadState) {
+        const selected = await context.loadState(task, owner);
+        await context.assertCurrent(task);
+        return operation(task, owner, route, selected.census, selected.state);
+      }
       const records = await owner.carrier.load(task);
       try {
         const c = inspect(records, route, context.authority()),

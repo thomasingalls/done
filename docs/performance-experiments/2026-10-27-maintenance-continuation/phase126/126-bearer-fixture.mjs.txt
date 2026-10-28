@@ -1,0 +1,131 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { build } from 'vite';
+import { resolve } from 'node:path';
+import {
+  native,
+  selected,
+  syncing,
+  settled,
+  edit,
+  close,
+  cold,
+  online,
+  configure,
+  waitPredicate,
+} from '../account-sync/fixtures.mjs';
+
+async function bundle(enabled) {
+  let hits = 0;
+  const result = await build({
+    configFile: false,
+    logLevel: 'error',
+    define: enabled ? { 'import.meta.env.VITE_ACCOUNT_HISTORY_AUTO': JSON.stringify('1') } : {},
+    plugins: enabled
+      ? [
+          {
+            name: 'automatic-service-growth-only',
+            enforce: 'pre',
+            transform(code, id) {
+              if (!id.endsWith('/src/account/automaticHistoryMaintenance.ts')) return;
+              const needle = 'SERVICE_HISTORY_MIN_RECORDS = 1024;';
+              assert.equal(code.split(needle).length, 2);
+              hits++;
+              return code.replace(needle, 'SERVICE_HISTORY_MIN_RECORDS = 1;');
+            },
+          },
+        ]
+      : [],
+    build: {
+      write: false,
+      minify: false,
+      lib: { entry: resolve('test/account-sync/browser.ts'), name: 'Harness', formats: ['iife'] },
+    },
+  });
+  assert.equal(hits, enabled ? 1 : 0);
+  return (Array.isArray(result) ? result[0] : result).output.find((x) => x.type === 'chunk').code;
+}
+const active = await bundle(true),
+  disabled = await bundle(false);
+test(
+  'opted-in native owner creates/adopts, reconciles manual work, prunes two snapshots and reopens with default off',
+  { timeout: 120000 },
+  async (t) => {
+    const f = await native(t),
+      previous = f.setup;
+    let script = active;
+    const requests = [];
+    f.page.on('request', (r) => {
+      if (r.url().endsWith('/account/history/v1/checkpoint'))
+        requests.push(r.postDataJSON().action);
+    });
+    f.setup = async (page) => {
+      await previous(page);
+      await page.evaluate(script);
+      await configure(page, f.testOperatorToken);
+    };
+    await f.setup(f.page);
+    const item = await selected(f, 'disposable-automatic-service-history');
+    await syncing(f.page, item);
+    await settled(f.page);
+    await edit(f.page, 0, 0, 'AUTOMATIC ');
+    await f.page.evaluate(() => editor.whenDurable());
+    await settled(f.page);
+    await waitPredicate(
+      f.page,
+      () => opened.devices.automaticHistory?.status.history?.sequence === 1,
+      45000,
+    );
+    assert.equal(await f.page.evaluate(() => opened.devices.automaticHistory.status.phase), 'idle');
+    const original = await f.page.evaluate(() => editor.read().master);
+    assert(requests.includes('publish'));
+    assert(requests.includes('admit'));
+    assert(!requests.includes('prune'), 'one snapshot never permits pruning');
+    await edit(f.page, 0, 0, 'SECOND ');
+    await f.page.evaluate(() => editor.whenDurable());
+    await settled(f.page);
+    assert.equal(
+      await f.page.evaluate(async () => (await opened.devices.history('create')).sequence),
+      2,
+    );
+    await waitPredicate(
+      f.page,
+      () => opened.devices.automaticHistory.status.history?.pruned === true,
+      45000,
+    );
+    assert(requests.includes('prune'));
+    assert(!requests.includes('discard'));
+    const after = await f.page.evaluate(() => editor.read().master);
+    assert.equal(after, 'SECOND ' + original);
+    await f.page.evaluate(async () => {
+      editor.undo();
+      await editor.whenDurable();
+    });
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await f.page.evaluate(async () => {
+      editor.redo();
+      await editor.whenDurable();
+    });
+    assert.equal(await f.page.evaluate(() => editor.read().master), after);
+    await close(f.page);
+    script = disabled;
+    await f.page.reload();
+    await f.setup(f.page);
+    await cold(f.page, item);
+    assert.equal(await f.page.evaluate(() => opened.devices.automaticHistory === undefined), true);
+    assert.equal(await f.page.evaluate(() => editor.read().master), after);
+    await close(f.page);
+    await online(f.page, false);
+    await cold(f.page, item);
+    assert.equal(await f.page.evaluate(() => editor.read().master), after);
+    console.log(
+      JSON.stringify({
+        actions: requests,
+        defaultDisabled: true,
+        writing: true,
+        undoRedo: true,
+        offlineReopen: true,
+      }),
+    );
+  },
+);

@@ -1,0 +1,1 @@
+journal seal: 28 checks pass — the published KAT, 4 composition vectors, authenticated open/tag refusal, disposal, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).

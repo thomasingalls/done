@@ -1,0 +1,74 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "nonoverlap-1-R",
+      "variant": "R",
+      "backlogPositions": 1024,
+      "forwardCatchupMs": 130289,
+      "reverseFreshCatchupMs": 820,
+      "forwardOfflineUnlockToEditMs": 1424,
+      "reverseOfflineUnlockToEditMs": 4334,
+      "sourceAlreadyAcceptedAndClosed": true,
+      "reverseUploadAcceptedThenWriterClosed": true,
+      "wholeArchivesExact": true,
+      "offlineColdSameProfileExact": true,
+      "workerHashes": [
+        "d6bc6b9836f576f84f7bfabb71ad01e3ffed1a487e03b3580cf6888dc26c8a6e",
+        "d6bc6b9836f576f84f7bfabb71ad01e3ffed1a487e03b3580cf6888dc26c8a6e"
+      ]
+    },
+    {
+      "name": "nonoverlap-2-C",
+      "variant": "C",
+      "backlogPositions": 1024,
+      "forwardCatchupMs": 79949,
+      "reverseFreshCatchupMs": 811,
+      "forwardOfflineUnlockToEditMs": 1283,
+      "reverseOfflineUnlockToEditMs": 4308,
+      "sourceAlreadyAcceptedAndClosed": true,
+      "reverseUploadAcceptedThenWriterClosed": true,
+      "wholeArchivesExact": true,
+      "offlineColdSameProfileExact": true,
+      "workerHashes": [
+        "cda38c5e8cb3e84c317ec80d66fc997372f265071ccd12df7c65a3efed6ff724",
+        "cda38c5e8cb3e84c317ec80d66fc997372f265071ccd12df7c65a3efed6ff724"
+      ]
+    },
+    {
+      "name": "nonoverlap-3-C",
+      "variant": "C",
+      "backlogPositions": 1024,
+      "forwardCatchupMs": 79486,
+      "reverseFreshCatchupMs": 830,
+      "forwardOfflineUnlockToEditMs": 1345,
+      "reverseOfflineUnlockToEditMs": 4427,
+      "sourceAlreadyAcceptedAndClosed": true,
+      "reverseUploadAcceptedThenWriterClosed": true,
+      "wholeArchivesExact": true,
+      "offlineColdSameProfileExact": true,
+      "workerHashes": [
+        "cda38c5e8cb3e84c317ec80d66fc997372f265071ccd12df7c65a3efed6ff724",
+        "cda38c5e8cb3e84c317ec80d66fc997372f265071ccd12df7c65a3efed6ff724"
+      ]
+    },
+    {
+      "name": "nonoverlap-4-R",
+      "variant": "R",
+      "backlogPositions": 1024,
+      "forwardCatchupMs": 130434,
+      "reverseFreshCatchupMs": 807,
+      "forwardOfflineUnlockToEditMs": 1330,
+      "reverseOfflineUnlockToEditMs": 4462,
+      "sourceAlreadyAcceptedAndClosed": true,
+      "reverseUploadAcceptedThenWriterClosed": true,
+      "wholeArchivesExact": true,
+      "offlineColdSameProfileExact": true,
+      "workerHashes": [
+        "d6bc6b9836f576f84f7bfabb71ad01e3ffed1a487e03b3580cf6888dc26c8a6e",
+        "d6bc6b9836f576f84f7bfabb71ad01e3ffed1a487e03b3580cf6888dc26c8a6e"
+      ]
+    }
+  ],
+  "scope": "No device-session overlap in either direction;1024 bulk backlog catch-up is reported separately from120-key heavy realtime2.5s gate."
+}

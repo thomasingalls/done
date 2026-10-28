@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,math,copy,hashlib
+s=Path(__file__).parent;old=Path('/private/tmp/done-quiet-budget-20261027');report=json.loads((s/'retained-attribution.json').read_text());native=json.loads((old/'late-native-review.json').read_text());rows=[]
+def verify(x,r):
+ pub=[q for q in x['network']if q['label']=='H2'and q['path']=='/account/delivery/submit'];cnt=next(v['contiguousNewPositionCount']for v in native['runs']if v['name']==r['name']);assert len(pub)==cnt and all(q.get('status')==200 for q in pub)
+ target=[q for q in x['network']if q['label']=='H1'and q.get('reads')and q['reads'][0]['publisherSha256']=='8181ac5cf6c34ce85d95880268649ffa1192c0e653e3c616992bf7c1eeb2b411'];spans=[]
+ for a,b in zip(target,target[1:]):
+  left=a['reads'][0]['after'];right=b['reads'][0]['after'];assert left<=right<=left+len(a['reads']);spans.extend(range(left+1,right+1))
+ assert spans==list(range(2,cnt+2));assert len(r['details']['keys'])==r['observations']==120
+ offers=[v for v in x['offers']if v['kind']=='key'];before=[v for g in x['clocks']for v in g['rows'][0]];low=max(v['renderer']-v['after']-1 for v in before);high=min(v['renderer']-v['before']+1 for v in before)
+ for i,(o,k)in enumerate(zip(offers,r['details']['keys']),1):
+  visible=min(v['at']for v in x['probes'][0]['counts']if v['count']>=x['baselines'][0]+i and v['at']>=o['at']-5);assert k['peerMs']==[visible-high-o['at'],visible-low-o['at']];assert not k['unresolved'];assert k['alternatives']
+  for alt in k['alternatives']:
+   p=pub[alt['position']-2];t=alt['timestamps'];assert p['at']==t['submitAt']and p['headersAt']==t['submitHeadersAt'];assert p['at']+1>=o['at'];assert t['readHeadersAt']<=visible-low+1
+   total=(p['at']-o['at'])+(p['headersAt']-p['at'])+(t['readAt']-p['headersAt'])+(t['readHeadersAt']-t['readAt'])+(visible-low-t['readHeadersAt']);assert abs(total-k['peerMs'][1])<.001
+  if k['peerMs'][1]>2500:
+   # Independent nearest-positive-response match is used only when quantum bounds do not overlap.
+   candidates=[(j,q)for j,q in enumerate(target[:-1])if q['headersAt']<=visible-high-1 and target[j+1]['at']>=visible-low+1 and target[j+1]['reads'][0]['after']>q['reads'][0]['after']]
+   assert len(candidates)==1;index,q=candidates[0];b=target[index+1];allowed=[n for n in range(q['reads'][0]['after']+1,b['reads'][0]['after']+1)if pub[n-2]['at']+1>=o['at']and pub[n-2]['at']-1<=q['headersAt']];assert allowed==[v['position']for v in k['alternatives']];assert len(allowed)==1
+ p95=sorted(k['peerMs'][1]for k in r['details']['keys'])[113];assert p95==r['peerP95UpperMs'];assert r['completePeerGateUnchanged']==(p95<=2500)
+ return True
+for r in report['runs']:
+ x=json.loads((old/r['name']/'result.json').read_text());verify(x,r)
+ bad=copy.deepcopy(r);bad['details']['keys'].pop()
+ try:verify(x,bad)
+ except AssertionError:pass
+ else:raise AssertionError('missing complete key accepted')
+ bad=copy.deepcopy(r);bad['completePeerGateUnchanged']=not r['completePeerGateUnchanged']
+ try:verify(x,bad)
+ except AssertionError:pass
+ else:raise AssertionError('false gate accepted')
+ rows.append({'name':r['name'],'all120KeyTotalsAndStageSumsIndependent':True,'allNativePositionsAccountedBothDirections':True,'everyTailHasOneUnambiguousAcceptedPosition':True,'missingKeyAndFalseGateControlsRefused':True,'originalRawSha256':hashlib.sha256((old/r['name']/'result.json').read_bytes()).hexdigest()})
+(s/'independent-review.json').write_text(json.dumps({'status':'passed','rows':rows,'noGateRelaxation':True},indent=2)+'\n');print('Independent480-key,33-tail,312-position reconstruction and omission controls pass.')

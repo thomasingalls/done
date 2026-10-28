@@ -1,0 +1,39 @@
+[
+  {
+    "name": "activation-units",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/vitest/vitest.mjs",
+      "run"
+    ],
+    "environment": {},
+    "startedAt": 1793122323124,
+    "completedAt": 1793122426535,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-types",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "environment": {},
+    "startedAt": 1793122426536,
+    "completedAt": 1793122427748,
+    "exitCode": 0
+  },
+  {
+    "name": "activation-lint",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/oxlint/bin/oxlint",
+      "--react-plugin"
+    ],
+    "environment": {},
+    "startedAt": 1793122427748,
+    "completedAt": 1793122428236,
+    "exitCode": 1
+  }
+]
