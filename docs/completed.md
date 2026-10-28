@@ -17123,3 +17123,15 @@ Retain both pre-execution configuration failures and successful diagnostics. Pol
 are byte-exact142; original profiles/data remain exact. No production/test or guarantee change.
 Original147 remains failed/incomplete; next target is missed-hint idle reconciliation and its
 capacity cost, not an assumed maintenance/publication defect. No activation or release.
+
+
+## 2026-10-28 — Phase151: bounded healthy idle reconciliation repair
+
+Reuse147/150 before evidence, change healthy idle checks60–65s→15–20s and retain5s unhealthy
+checks. Ten new scheduler/policy regressions plus26 existing cases pass; typecheck/lint/format
+pass. Independent byte comparison preserves scheduler/owner bodies except the declared policy
+helper/import/callback, including authority/backoff/flush/crypto/final commit. [Contract/evidence](performance-experiments/2026-10-28-idle-reconciliation/phase151/README.md).
+Accept up to four extra healthy idle passes/minute as the bounded cost; do not call a pass one
+network request. Actual-client after validation remains pending with all original16ms/2.5s/30s
+guards and no repeated before journeys. No old tests, formats, server limits or defaults change.
+No activation, computer use, signing or release.

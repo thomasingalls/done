@@ -129,7 +129,12 @@ import {
   requireSelfEnvelope,
   verifySyncState,
 } from './accountSyncState';
-import { createSyncScheduler, driveOutboundStep, type SyncStatus } from './accountSyncDriver';
+import {
+  createSyncScheduler,
+  driveOutboundStep,
+  idleReceiveInterval,
+  type SyncStatus,
+} from './accountSyncDriver';
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
@@ -3381,7 +3386,7 @@ async function openReceivingWorkspace(
             ? 'sign-in-required'
             : state;
         },
-        receiveInterval: () => (notificationHealthy ? 60000 + Math.random() * 5000 : 5000),
+        receiveInterval: () => idleReceiveInterval(notificationHealthy),
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         send: (beforeNewEnvelope) =>
           driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),

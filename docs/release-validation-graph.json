@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 570,
-    "requiredTestFiles": 564,
+    "testFiles": 571,
+    "requiredTestFiles": 565,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10748,6 +10748,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/idleSyncReconciliation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/idleSyncReconciliation.test.ts"
+        ]
+      },
+      "declarations": 7,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/incremental-ledger/controls.test.mjs",
       "status": "required",
       "invocation": {
@@ -15822,7 +15837,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "e19342710643d67fbed61e951c68becbf6960f3692ad3ef7da38403a096c8421"
+      "sha256": "ea2e586b06f4118e8439acec76ac1005ea1332bf4d49530936b7723e846520d2"
     },
     {
       "path": "package.json",
@@ -19315,6 +19330,10 @@
     {
       "path": "test/id.test.ts",
       "sha256": "fee1272940c3d6bd8e961edb75f7feee95afededffd2e982e85ac667068809b9"
+    },
+    {
+      "path": "test/idleSyncReconciliation.test.ts",
+      "sha256": "4c64d8c4c210bf4ad1122f51fdf1bc05cca35bc9d1d344acf40ab9332edc8c17"
     },
     {
       "path": "test/incremental-ledger/controls.test.mjs",

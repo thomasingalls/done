@@ -59,6 +59,9 @@ const clockDefault: DriverClock = {
   clear: (timer) => clearTimeout(timer as ReturnType<typeof setTimeout>),
 };
 const names: SyncLane[] = ['send', 'receive'];
+/** A live hint stream can still miss its last content hint. Bound idle reconciliation too. */
+export const idleReceiveInterval = (notificationHealthy: boolean): number =>
+  notificationHealthy ? 15000 + Math.random() * 5000 : 5000;
 export function createSyncScheduler(options: {
   signal: AbortSignal;
   gate(): SyncGate;

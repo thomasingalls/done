@@ -5880,3 +5880,13 @@ last hint. A healthy60–65s idle repair policy predates143; deterministic contr
 30s miss without maintenance. Do not claim an exact original live-state replay or silently
 reclassify the frozen failure as a fixture success. Preserve30s/16ms/2.5s gates while deciding a
 bounded reconciliation repair with an explicit network/capacity budget.
+
+
+## 2026-10-28 — Bound healthy idle reconciliation without changing hints or backoff
+
+Choose15–20s healthy idle checks to leave nominal10s for discovery/receive under the existing30s
+post-backlog peer guard; preserve jitter and the5s unhealthy path. Hints remain non-authoritative
+scheduling inputs. Accept3–4 idle passes/minute instead of~1, retaining per-operation authority
+checks, rate refusals and retry backoff. This does not promise idle2.5s delivery when all hints
+are lost, nor arbitrary server capacity. Reuse existing before failures; require actual after
+edit/undo/cold/native and unchanged16ms/2.5s gates before accepting the bounded repair.
