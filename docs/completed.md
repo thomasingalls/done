@@ -16927,3 +16927,7 @@ Application preparation now persists encrypted exact-input receipts through a on
 ## 2026-10-28 — Phase131: consistent inventory byte-budget representation
 
 Read-only and recording now measure their actual canonical saved snapshot against the same unchanged700000-byte limit. Full independent input/disposition agreement remains.13 focused/inherited tests pass, including oversized and drifted fault controls with unchanged repo bytes. Every prior test record survives; one new uncredited test adds931/385 blocked obligations. Initial failures retained. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase131/README.md). No runtime, crypto or gate change and no release preparation.
+
+## 2026-10-28 — Phase132: release scope and resumable build switches
+
+Read public frontend version dc53fecf and reconciled its recorded source with the whole cumulative branch (42signed commits plus13pending patches). Docker now forwards default-off resume/service switches; checked build definitions validate dependencies and keep service off independently.15 directed cases and types pass; original missing-argument failure and fixture errors retained. [Scope and evidence](performance-experiments/2026-10-28-resumable-acceptance/phase132/README.md). Resume activation contingent on unchanged2.5s gate. Operator defers phone test; no signing/publish/deploy.

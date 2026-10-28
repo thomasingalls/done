@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 568,
-    "requiredTestFiles": 562,
+    "testFiles": 569,
+    "requiredTestFiles": 563,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -13971,6 +13971,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "vite/preparationBuildFlags.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "vite/preparationBuildFlags.test.ts"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "vite/retentionPreparationIdentity.test.ts",
       "status": "required",
       "invocation": {
@@ -15771,7 +15786,8 @@
         "test/retentionPreparationReplay.test.ts",
         "test/retentionPreparationOwner.test.ts",
         "test/retentionPreparationScheduling.test.ts",
-        "test/local-baseline/preparation-owner.node.mjs"
+        "test/local-baseline/preparation-owner.node.mjs",
+        "vite/preparationBuildFlags.test.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -15791,7 +15807,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "ebda6b822d6a0b4dbaa19b030f19c9c2ca2ea37c5b81369bb58c712e8624d47f"
+      "sha256": "e19342710643d67fbed61e951c68becbf6960f3692ad3ef7da38403a096c8421"
     },
     {
       "path": "package.json",
@@ -20655,7 +20671,7 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "c07c7456d6f895c041b6da7eebdf3b47a3a9a0f3e2301cfee941ac8ea7466cd5"
+      "sha256": "832bb7f84dafa2b702c99b6d2ce945f201b1ae8af0cee9dd04a1907f0ef6596a"
     },
     {
       "path": "vite/accountRetentionFlags.test.ts",
@@ -20663,7 +20679,7 @@
     },
     {
       "path": "vite/accountRetentionFlags.ts",
-      "sha256": "4a34a7ca63b81980a076b9313b8daa897a8928aab7a52c1998e8f58fa932cba7"
+      "sha256": "a6b66b483e2851bf9e8ede962a88bb9724d5650a85ba4e168a72aa2b88e88655"
     },
     {
       "path": "vite/appUpgradeProperties.test.ts",
@@ -20676,6 +20692,10 @@
     {
       "path": "vite/precacheServiceWorker.ts",
       "sha256": "a3e0e68082d447ac4e238bd1d2e4a9982ca553411c642d285aa61906b3730bb7"
+    },
+    {
+      "path": "vite/preparationBuildFlags.test.ts",
+      "sha256": "5bfcbc3e873df18b9719d066d525028f4d9942f50874f491bd4d1ffdccc8d15f"
     },
     {
       "path": "vite/privateMigration.config.ts",

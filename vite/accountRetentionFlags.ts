@@ -23,3 +23,28 @@ export function accountRetentionFlags(environment: Readonly<Record<string, strin
     ]),
   );
 }
+
+/** Explicit experimental build switches; local automation never enables service work. */
+export function accountPreparationFlags(environment: Readonly<Record<string, string | undefined>>) {
+  const binary = (name: string) => {
+    const value = environment[name] || '0';
+    if (value !== '0' && value !== '1') throw Error(name + ' must be 0 or 1');
+    return value;
+  };
+  const resume = binary('VITE_ACCOUNT_RETENTION_RESUME');
+  const service = binary('VITE_ACCOUNT_HISTORY_AUTO');
+  const capabilities = accountRetentionFlags(environment);
+  if (
+    resume === '1' &&
+    ['VITE_ACCOUNT_BASELINE_READ', 'VITE_ACCOUNT_BASELINE_INSTALL', 'VITE_ACCOUNT_RETENTION'].some(
+      (k) => capabilities['import.meta.env.' + k] !== JSON.stringify('1'),
+    )
+  )
+    throw Error(
+      'Resumable preparation requires compatible reading, installation and retention writing.',
+    );
+  return {
+    'import.meta.env.VITE_ACCOUNT_RETENTION_RESUME': JSON.stringify(resume),
+    'import.meta.env.VITE_ACCOUNT_HISTORY_AUTO': JSON.stringify(service),
+  };
+}

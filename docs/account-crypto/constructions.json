@@ -7493,7 +7493,8 @@
         "test/retentionPreparationReplay.test.ts",
         "test/retentionPreparationOwner.test.ts",
         "test/retentionPreparationScheduling.test.ts",
-        "test/local-baseline/preparation-owner.node.mjs"
+        "test/local-baseline/preparation-owner.node.mjs",
+        "vite/preparationBuildFlags.test.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
