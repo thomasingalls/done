@@ -1,0 +1,56 @@
+{
+  "sourcesBefore": 410,
+  "sourcesAfter": 411,
+  "domains": 197,
+  "added": [
+    "src/account/automaticHistoryMaintenance.ts"
+  ],
+  "changed": [
+    "src/account/deviceRoster.ts",
+    "src/crdt/accountReceive.ts"
+  ],
+  "lineOnlyConstructionChanges": [
+    {
+      "id": "remaining-coordination-names",
+      "path": "src/crdt/accountReceive.ts",
+      "label": "done/account-ledger-reference-mismatch",
+      "before": 725,
+      "after": 729
+    }
+  ],
+  "allPriorDomainsSitesContractsAndDispositionsPreserved": true,
+  "manifestReview": {
+    "baseTree": "889f093f7919386d8175d71e748823d9b3b2001d",
+    "allPreviousRowsByteEquivalentAsJson": true,
+    "previousObligations": 916,
+    "currentObligations": 918,
+    "addedUncreditedRows": [
+      {
+        "id": "test:test/automaticServiceHistory.test.ts",
+        "kind": "test",
+        "path": "test/automaticServiceHistory.test.ts",
+        "invocation": {
+          "argv": [
+            "node",
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "test/automaticServiceHistory.test.ts"
+          ]
+        },
+        "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      },
+      {
+        "id": "test:test/packaged-account/automatic-history.spec.ts",
+        "kind": "test",
+        "path": "test/packaged-account/automatic-history.spec.ts",
+        "invocation": {
+          "config": "playwright.packaged-account.config.ts",
+          "packages": [
+            "test:packaged-account"
+          ]
+        },
+        "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+      }
+    ]
+  }
+}

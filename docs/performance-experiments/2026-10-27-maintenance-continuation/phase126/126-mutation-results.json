@@ -1,0 +1,14 @@
+[
+  {
+    "fault": "retry-reset",
+    "discriminator": "keeps retry escalation",
+    "exit": 1,
+    "isolatedAssertionFailure": true
+  },
+  {
+    "fault": "waiting-action",
+    "discriminator": "parks a producer",
+    "exit": 1,
+    "isolatedAssertionFailure": true
+  }
+]

@@ -16884,3 +16884,18 @@ falsifiers cover crash/lock, appended versus changed prefix, source obligations,
 compatibility and performance. It is a design, not durable resumability or a phone time bound.
 [Source evidence](performance-experiments/2026-10-27-maintenance-continuation/phase125/README.md).
 No runtime/old-test change, signing, push, release preparation or deployment; qualification paused.
+
+
+## 2026-10-27 — default-off automatic service-history policy (phase126)
+
+Scoped composed owners can schedule the existing history commands behind a separate experimental
+flag. Quiet/readiness/one-flight, event-driven inspection, saved-attempt reconciliation, independent
+peer admission and two-unchanged-snapshot pruning remain; waiting/stale work is not auto-discarded.
+New regressions catch missing growth-hint gating and custody invalidation; growth remains scheduling
+only. Sixteen policy cases, two effective fault controls and both real scoped/native walkthroughs
+pass. Full units pass178 files (2123 passed,1 existing skip);63 history and35 metadata cases pass.
+Type/lint/format/build pass. Failed apparatus, wiring, fixture/type/lint attempts are retained in
+[phase126](performance-experiments/2026-10-27-maintenance-continuation/phase126/README.md). No old
+test edited. Inventory918/373 retains earlier blocks and adds two uncredited required files. Heavy
+preparation/storage-tail contention and the offline-peer local-retirement pin still block activation.
+No phone/computer use, signing, push, preview/release preparation or deployment; qualification paused.

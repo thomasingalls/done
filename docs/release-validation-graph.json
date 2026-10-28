@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 554,
-    "requiredTestFiles": 548,
+    "testFiles": 556,
+    "requiredTestFiles": 550,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9858,6 +9858,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/automaticServiceHistory.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/automaticServiceHistory.test.ts"
+        ]
+      },
+      "declarations": 16,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/bootstrapHttp.test.ts",
       "status": "required",
       "invocation": {
@@ -11540,6 +11555,17 @@
         "packages": ["test:packaged-account"]
       },
       "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/automatic-history.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 2,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15569,7 +15595,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "d0376f2f2ad2334d6505b76d10634396086b630c34c658aa0eb75a4dc05b3668"
+      "sha256": "c2bd3699b27b9f532eb59c5bfba16ccb8419a89d3487d3a799a8a9adb2d6c79a"
     },
     {
       "path": "package.json",
@@ -18712,6 +18738,10 @@
       "sha256": "cd406855818a02152b6c63cfa178bc3d82a88382d9e1089af4f0a61dd897b59a"
     },
     {
+      "path": "test/automaticServiceHistory.test.ts",
+      "sha256": "b068865c55184799116627078e91a4890d3c84a4109f578d39843e9f99113bf4"
+    },
+    {
       "path": "test/bootstrapHttp.test.ts",
       "sha256": "801657665628e4f0fde21e40934ef6972c6e187834f2d925d2f3b1bc67a01a13"
     },
@@ -19530,6 +19560,10 @@
     {
       "path": "test/packaged-account/account-creation-entry.spec.ts",
       "sha256": "b3d2344ccdb91087ec4d194517d6f868c98602b12ee7d6bb5f0f80c2ebb67975"
+    },
+    {
+      "path": "test/packaged-account/automatic-history.spec.ts",
+      "sha256": "e0d1559eb8cf60ad98b95fb15f955cac7edfd913f87a514277e7ff9c5060532a"
     },
     {
       "path": "test/packaged-account/bootstrap-compatibility.spec.ts",

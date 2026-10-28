@@ -9,6 +9,9 @@ export interface DeviceRosterSnapshot {
   readonly devices: readonly Readonly<{ id: string; state: 'certified' | 'pending' }>[];
 }
 export interface DeviceRoster {
+  readonly automaticHistory?:
+    | import('./automaticHistoryMaintenance').AutomaticHistoryRuntime
+    | undefined;
   readonly localHistory?:
     | import('../crdt/automaticLocalRetention').LocalRetentionRuntime
     | undefined;

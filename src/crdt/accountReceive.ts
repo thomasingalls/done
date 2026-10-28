@@ -6,6 +6,10 @@ import {
   hasAutomaticLocalRetention,
 } from './localBaselineMode';
 import { createAutomaticLocalRetention, type LocalRetentionHint } from './automaticLocalRetention';
+import {
+  createAutomaticServiceHistory,
+  hasAutomaticServiceHistory,
+} from '../account/automaticHistoryMaintenance';
 import { createRetentionReads } from './retentionReads';
 import { RetiredHistoryRequired } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
@@ -513,7 +517,7 @@ async function openAccountReceiveOwner(
           );
           baselineReading = true;
           verifiedCounter = structuredClone(counter);
-          if (hasAutomaticLocalRetention())
+          if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
             localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
           sinceAudit = 0;
           auditDue = auditDeferred = false;
@@ -748,7 +752,7 @@ async function openAccountReceiveOwner(
         coverage.clear();
         throw e;
       }
-      if (hasAutomaticLocalRetention())
+      if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
         localRetentionHint = { revision: 0, records: records.length };
     },
     dispose() {
@@ -2864,6 +2868,8 @@ async function openReceivingWorkspace(
   let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
   let removingLocalHistory = false;
   let automaticRetention: ReturnType<typeof createAutomaticLocalRetention> | undefined;
+  let automaticHistory: ReturnType<typeof createAutomaticServiceHistory> | undefined;
+  let historyFlights = 0;
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
@@ -3068,6 +3074,23 @@ async function openReceivingWorkspace(
       void work.then(settled, settled);
       return work;
     };
+    const runHistory = async (
+      command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
+      automatic = false,
+    ) => {
+      historyFlights++;
+      try {
+        return await afterReceivedHandoffs(
+          () => workspace.whenDurable(),
+          () => devices.history!(command),
+        );
+      } finally {
+        historyFlights--;
+        automaticRetention?.refresh();
+        if (automatic) automaticHistory?.refresh();
+        else automaticHistory?.hint();
+      }
+    };
     const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
@@ -3076,6 +3099,9 @@ async function openReceivingWorkspace(
         get localHistory() {
           return automaticRetention;
         },
+        get automaticHistory() {
+          return automaticHistory;
+        },
         get transition() {
           return devices.transition;
         },
@@ -3083,11 +3109,7 @@ async function openReceivingWorkspace(
           ? {
               history: (
                 command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
-              ) =>
-                afterReceivedHandoffs(
-                  () => workspace.whenDurable(),
-                  () => devices.history!(command),
-                ),
+              ) => runHistory(command),
             }
           : {}),
       }),
@@ -3207,6 +3229,8 @@ async function openReceivingWorkspace(
         observe: () => ({
           ready:
             synchronizationQuiet &&
+            historyFlights === 0 &&
+            automaticHistory?.status.phase !== 'running' &&
             carrier.state === 'active' &&
             workspace.status.state === 'active' &&
             workspace.status.durable &&
@@ -3238,6 +3262,59 @@ async function openReceivingWorkspace(
       });
       maintenance.wake();
     }
+    // Separate default-off experiment: heavy history preparation still occupies the storage tail.
+    // Do not activate publicly until bounded/resumable preparation and the peer gate are proved.
+    if (
+      hasAutomaticServiceHistory() &&
+      outbound &&
+      access &&
+      devices.history &&
+      !account.detached
+    ) {
+      if (!carrier.beforeRelease)
+        throw Error('Missing automatic service history cleanup ownership');
+      const maintenance = createAutomaticServiceHistory({
+        signal: carrier.signal,
+        observe: () => ({
+          ready:
+            synchronizationQuiet &&
+            historyFlights === 0 &&
+            !removingLocalHistory &&
+            automaticRetention?.status.phase !== 'running' &&
+            gate() === 'ready' &&
+            !networkLoginNeedsPasskey(options.networkLogin?.getSnapshot()) &&
+            workspace.status.durable &&
+            workspace.status.pendingItems === 0 &&
+            globalThis.document?.visibilityState !== 'hidden',
+          hint: localRetentionHint(),
+        }),
+        run: (command) => runHistory(command, true),
+        retryable: (cause) =>
+          cause instanceof HistoryTransportUnavailable || cause instanceof HistoryReceivePending,
+      });
+      automaticHistory = maintenance;
+      const changed = workspace.subscribe(maintenance.activity);
+      const statusChanged = workspace.onStatus(maintenance.refresh);
+      const localChanged = automaticRetention?.onStatus(maintenance.refresh);
+      const serviceChanged = maintenance.onStatus(() => automaticRetention?.refresh());
+      const activity = maintenance.activity;
+      globalThis.document?.addEventListener('keydown', activity, true);
+      globalThis.document?.addEventListener('beforeinput', activity, true);
+      globalThis.document?.addEventListener('pointerdown', activity, true);
+      globalThis.document?.addEventListener('visibilitychange', activity);
+      carrier.beforeRelease(() => {
+        maintenance.dispose();
+        changed();
+        statusChanged();
+        localChanged?.();
+        serviceChanged();
+        globalThis.document?.removeEventListener('keydown', activity, true);
+        globalThis.document?.removeEventListener('beforeinput', activity, true);
+        globalThis.document?.removeEventListener('pointerdown', activity, true);
+        globalThis.document?.removeEventListener('visibilitychange', activity);
+      });
+      maintenance.refresh();
+    }
     if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
@@ -3259,6 +3336,7 @@ async function openReceivingWorkspace(
         if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
       };
       const online = () => {
+          automaticHistory?.hint();
           invalidateQuietReads();
           resetDiscovery();
           scheduler.wake('online');
@@ -3335,8 +3413,7 @@ async function openReceivingWorkspace(
           globalThis.removeEventListener?.('offline', offline);
         },
       });
-      if (automaticRetention) {
-        const maintenance = automaticRetention;
+      if (automaticRetention || automaticHistory) {
         const changed = (status: SyncStatus) => {
           const quiet = [status.send.phase, status.receive.phase].every(
             (phase) =>
@@ -3344,7 +3421,8 @@ async function openReceivingWorkspace(
           );
           if (quiet === synchronizationQuiet) return;
           synchronizationQuiet = quiet;
-          maintenance.refresh();
+          automaticRetention?.refresh();
+          automaticHistory?.refresh();
         };
         carrier.beforeRelease!(scheduler.runtime.onStatus(changed));
         changed(scheduler.runtime.status);
@@ -3352,6 +3430,7 @@ async function openReceivingWorkspace(
       try {
         let previousGate = gate();
         unsubscribeLogin = options.networkLogin?.subscribe(() => {
+          automaticHistory?.hint();
           invalidateQuietReads();
           // A completed login resumes work without requiring a subscription handshake or
           // clearing another lane's integrity halt. Login itself never prompts on this path.
@@ -3382,6 +3461,7 @@ async function openReceivingWorkspace(
             signal: carrier.signal,
             open: (signal) => access.openNotifications(signal),
             wake: (event) => {
+              if (event !== 'content') automaticHistory?.hint();
               invalidateQuietReads();
               if (event !== 'content') resetDiscovery();
               // A fresh subscription handshake proves renewed reachability. Content

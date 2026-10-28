@@ -1,0 +1,26 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+import { census } from '/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-crypto-prep/census.mjs';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const read=p=>JSON.parse(readFileSync(root+'/'+p,'utf8'));
+const before=read('docs/account-crypto/census.json'), next=census(root);
+const map=x=>new Map(x.sources.map(s=>[s.path,s.sha256]));
+const a=map(before),b=map(next);
+assert.deepEqual([...a.keys()].filter(x=>!b.has(x)),[]);
+assert.deepEqual([...b.keys()].filter(x=>!a.has(x)),['src/account/automaticHistoryMaintenance.ts']);
+const changed=[...a.keys()].filter(x=>a.get(x)!==b.get(x));
+assert.deepEqual(changed,['src/account/deviceRoster.ts','src/crdt/accountReceive.ts']);
+const noLines=x=>JSON.parse(JSON.stringify(x,(k,v)=>k==='line'?undefined:v));
+assert.deepEqual(noLines(before.domains),noLines(next.domains));
+const constructions=read('docs/account-crypto/constructions.json'), saved=structuredClone(constructions);
+const changes=[];
+for(const c of constructions.constructions){
+ const groups=new Map();
+ for(const site of c.sourceSites){const key=JSON.stringify([site.path,site.label,site.kind]);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(site);}
+ for(const [key,sites]of groups){const [path,label,kind]=JSON.parse(key);const found=next.domains.filter(d=>d.label===label&&d.kind===kind).flatMap(d=>d.sites.filter(s=>s.path===path));assert.equal(found.length,sites.length,key);sites.sort((a,b)=>a.line-b.line);found.sort((a,b)=>a.line-b.line);for(let i=0;i<sites.length;i++){const old=sites[i].line;sites[i].line=found[i].line;if(old!==sites[i].line)changes.push({id:c.id,path,label,before:old,after:sites[i].line});}}
+}
+assert.deepEqual(noLines(saved),noLines(constructions));
+writeFileSync(root+'/docs/account-crypto/constructions.json',JSON.stringify(constructions,null,2)+'\n');
+const report={sourcesBefore:a.size,sourcesAfter:b.size,domains:next.domains.length,added:['src/account/automaticHistoryMaintenance.ts'],changed,lineOnlyConstructionChanges:changes,allPriorDomainsSitesContractsAndDispositionsPreserved:true};
+writeFileSync(root+'/docs/performance-experiments/2026-10-27-maintenance-continuation/phase126/census-review.json',JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({sources:b.size,domains:next.domains.length,changed,lineFields:changes.length}));

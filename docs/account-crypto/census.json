@@ -520,6 +520,10 @@
       "sha256": "b62106503763a3d2a2e563bba873691169dc20bb8177de312589f3887fece381"
     },
     {
+      "path": "src/account/automaticHistoryMaintenance.ts",
+      "sha256": "a3cdeb041bc859597418b69df907c2352bc0377b55f8e0f4e752a8f688eef98a"
+    },
+    {
       "path": "src/account/bootstrapHttp.ts",
       "sha256": "3a47dafbf878477a7b81c38dfc932206c4d242d1a20b5ea72200b766678cf9fa"
     },
@@ -561,7 +565,7 @@
     },
     {
       "path": "src/account/deviceRoster.ts",
-      "sha256": "ba698869116818d3e48a76827e60c86330de1e41324249911317a5a9e3c912bb"
+      "sha256": "2eae4a0465fa39fe7959afc85b73f91596558b9d754ef4f7dd0336c0a79a3570"
     },
     {
       "path": "src/account/enrollmentChallenge.ts",
@@ -785,7 +789,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "24b48587f8799e4b905a9812d65f9687c466c73acc23bda67ed96ce55b90dd4a"
+      "sha256": "678a1e59f51a3da5823bbd0b3807f73643f3399a69268c4070357d07ba3c1e8f"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1821,7 +1825,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 725
+          "line": 729
         }
       ]
     },

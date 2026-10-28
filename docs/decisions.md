@@ -5790,3 +5790,14 @@ resumption slice. Fixed earlier cuts plus later chunk reservations need a separa
 representation; do not reinterpret v5 or persist a bare verification success. Keep normal factor
 unlock/erasure, fresh current authority, exact prefix evidence and final independent readback.
 Provisional slice/fence targets need implementation evidence; no phone bound is asserted.
+
+
+## 2026-10-27 — automate existing commands without enabling long unattended work (phase126)
+
+Keep service automation default-off until bounded/preemptible preparation and the unchanged2.5s
+peer gate permit activation. Choose1024 observed records and an hour between creations per lifetime
+as conservative policy, not measured optima or a durable global quota. Keep numeric scheduling debt
+across local cuts/custody refresh, with all real owner checks fresh. Preserve pending manual work: no
+automatic discard, no substituted second-device admission and no weakening the local retirement pin.
+Existing control events replace periodic catalog polling; network failures require events plus
+backoff and unknown/integrity failures halt. Phase125's durable resumption remains a design.
