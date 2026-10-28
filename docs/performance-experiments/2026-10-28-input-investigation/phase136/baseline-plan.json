@@ -1,0 +1,27 @@
+{
+  "primary": [
+    {
+      "name": "baseline-1-C-normal",
+      "variant": "C",
+      "withhold": false
+    },
+    {
+      "name": "baseline-2-C-withheld",
+      "variant": "C",
+      "withhold": true
+    }
+  ],
+  "conditionalPriorAsset": [
+    {
+      "name": "baseline-3-A-normal",
+      "variant": "A",
+      "withhold": false
+    },
+    {
+      "name": "baseline-4-A-withheld",
+      "variant": "A",
+      "withhold": true
+    }
+  ],
+  "conditionalRule": "Run A pair only if any C local16ms gate fails; all failures retained. No activation credit."
+}

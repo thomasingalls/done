@@ -16960,3 +16960,14 @@ and service automation default off. No signing, push, preview, registry or deplo
 Phase135 receipt addendum: the final trace recheck correctly rejects six receipts after the durable
 outcome changes their tree. Retain that failure and refresh ordinary executions against the final
 record before freezing the patch; no gate or receipt rule is changed.
+
+
+## 2026-10-28 — Phase136: freeze original-workload input investigation
+
+Current production paths equal132; measured C and older117 C asset bytes are independently exact.
+Freeze two current original-workload journeys, plus an old pair only if local16ms misses. Analyzer
+reconstructs both accepted117 bounds and rejects four controls; setup identity-shape error retained.
+[Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase136/README.md). No timing
+yet, no runtime/old-test/default/gate change. Phase134 failures and six unexecuted cases remain;
+phone deferred, service off, no signing/push/publication. Next bounded native/editor diagnostics
+will depend on these results. General qualification remains paused.
