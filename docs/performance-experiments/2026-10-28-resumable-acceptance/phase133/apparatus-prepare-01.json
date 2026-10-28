@@ -1,0 +1,30 @@
+{
+  "kind": "apparatus-only",
+  "outcome": "passed",
+  "census": [
+    {
+      "stores": {
+        "content": 582,
+        "heads": 1031,
+        "meta": 1,
+        "outbound": 3
+      },
+      "counterVersion": 2
+    }
+  ],
+  "archive": {
+    "sha256": "4cd0e5d6dfac986baa2dff6a3a85705605ca330232f1ade6a98b4ad129b63401",
+    "files": [
+      {
+        "name": "master.md",
+        "bytes": 5000,
+        "characters": 5000
+      },
+      {
+        "name": "days/2026-10-27.md",
+        "bytes": 2465,
+        "characters": 2465
+      }
+    ]
+  }
+}

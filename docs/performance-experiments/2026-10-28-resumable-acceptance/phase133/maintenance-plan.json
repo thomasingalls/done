@@ -1,0 +1,30 @@
+[
+  {
+    "name": "maintenance-1-R-normal",
+    "mode": "maintenance",
+    "variant": "R",
+    "withhold": false,
+    "config": "maintenance.config.ts"
+  },
+  {
+    "name": "maintenance-2-C-normal",
+    "mode": "maintenance",
+    "variant": "C",
+    "withhold": false,
+    "config": "maintenance.config.ts"
+  },
+  {
+    "name": "maintenance-3-C-withheld",
+    "mode": "maintenance",
+    "variant": "C",
+    "withhold": true,
+    "config": "maintenance.config.ts"
+  },
+  {
+    "name": "maintenance-4-R-withheld",
+    "mode": "maintenance",
+    "variant": "R",
+    "withhold": true,
+    "config": "maintenance.config.ts"
+  }
+]

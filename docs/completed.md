@@ -16931,3 +16931,7 @@ Read-only and recording now measure their actual canonical saved snapshot agains
 ## 2026-10-28 — Phase132: release scope and resumable build switches
 
 Read public frontend version dc53fecf and reconciled its recorded source with the whole cumulative branch (42signed commits plus13pending patches). Docker now forwards default-off resume/service switches; checked build definitions validate dependencies and keep service off independently.15 directed cases and types pass; original missing-argument failure and fixture errors retained. [Scope and evidence](performance-experiments/2026-10-28-resumable-acceptance/phase132/README.md). Resume activation contingent on unchanged2.5s gate. Operator defers phone test; no signing/publish/deploy.
+
+## 2026-10-28 — Phase133: freeze resumable preparation acceptance
+
+Both full132 client exports and numeric-only observation probe, source/worker inputs, eight ordered whole journeys and unchanged gates are frozen before dispatch. Fixture-only real catch-up produces a1616-row joined writer under native v2; candidate pilot confirms actual production-threshold preparation plus durable checkpoint. These are apparatus results, not acceptance. [Protocol and inputs](performance-experiments/2026-10-28-resumable-acceptance/phase133/README.md). Phone deferred by operator; source default/activation/service automation unchanged, no release publication.

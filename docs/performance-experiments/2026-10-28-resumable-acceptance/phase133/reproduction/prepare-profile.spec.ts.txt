@@ -1,0 +1,16 @@
+import {test,expect,chromium}from'@playwright/test';
+import{readFileSync,writeFileSync,mkdirSync,cpSync}from'node:fs';import{join}from'node:path';
+import{root,card,exported,archiveIdentity,lock}from'./common';
+import{start,stop}from'./runtime.mjs';import{seedProfile}from'./seed-profile';import{restoreAuthenticator,openSaved,credentials}from'./devices';
+const out=process.env['FAIR_OUT']!;
+test('fixture preparation: real joined device catches up fully with automation disabled',async()=>{
+ mkdirSync(out,{recursive:true,mode:0o700});const fixture=JSON.parse(readFileSync(root+'/private-fixture/fixture.json','utf8')),account=fixture.accounts.find((a:any)=>a.label==='H'),saved=account.actors[2];let ctx:any;const result:any={kind:'apparatus-only',outcome:'starting'};
+ try {
+ const state=join(out,'state');cpSync(fixture.state,state,{recursive:true,errorOnExist:true});await start(state,process.env['FAIR_DIST']!);
+ ctx=await chromium.launchPersistentContext(join(out,'private-profile'),{executablePath:process.env['CHROMIUM_PATH']!,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000}});await seedProfile(ctx,saved.storage);const p=ctx.pages()[0]??await ctx.newPage();const auth=await restoreAuthenticator(p,saved.credentials);await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await p.waitForFunction(()=>!!navigator.serviceWorker.controller);await openSaved(p,saved.code,true);await p.getByLabel('Go to date',{exact:true}).fill(account.date);await expect(card(p,'H')).toContainText(account.expected,{timeout:600000});expect(await exported(p)).toEqual(account.archive);
+ result.census=await p.evaluate(async()=>{const output=[];for(const info of await indexedDB.databases()){if(!/^done\.[0-9a-f]{32}$/.test(info.name??''))continue;const db=await new Promise<IDBDatabase>((yes,no)=>{const q=indexedDB.open(info.name!);q.onsuccess=()=>yes(q.result);q.onerror=()=>no(q.error);});try{const row:any={stores:{}};for(const name of db.objectStoreNames)row.stores[name]=await new Promise((yes,no)=>{const q=db.transaction(name).objectStore(name).count();q.onsuccess=()=>yes(q.result);q.onerror=()=>no(q.error);});row.counterVersion=await new Promise((yes,no)=>{const q=db.transaction('meta').objectStore('meta').get('counter');q.onsuccess=()=>yes(q.result.v);q.onerror=()=>no(q.error);});output.push(row);}finally{db.close();}}return output;});
+ expect(result.census).toHaveLength(1);expect(result.census[0].counterVersion).toBe(2);expect(Object.entries(result.census[0].stores).filter(([k])=>k!=='meta').reduce((n,[,v])=>n+Number(v),0)).toBeGreaterThanOrEqual(1024);
+ await lock(p);saved.storage=await ctx.storageState({indexedDB:true});saved.credentials=await credentials(auth);await ctx.close();ctx=undefined;await stop();
+ fixture.state=state;mkdirSync(root+'/prepared-fixture',{mode:0o700});writeFileSync(root+'/prepared-fixture/fixture.json',JSON.stringify(fixture),{mode:0o600});result.archive=archiveIdentity(account.archive);result.outcome='passed';
+ }catch(e){result.outcome='failed';result.error=String(e);throw e;}finally{await ctx?.close().catch(()=>{});writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');await stop();}
+});

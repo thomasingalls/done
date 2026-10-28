@@ -1,0 +1,25 @@
+from pathlib import Path
+import subprocess,shutil,json,os,hashlib
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');s=Path('/private/tmp/done-resumable-acceptance-20261028');prior=Path('/private/tmp/done-publication-latch-20261027');tree='fcb35a25a53f4360d689ae73b45c3219cbc28dd6'
+paths=['.dockerignore','Dockerfile','package.json','pnpm-lock.yaml','pnpm-workspace.yaml','index.html','local.html','vite.config.ts','src','account-service','account-protocol','private','public','vite','scripts','test','vendor-patches','wasm/journal-seal/seal.generated.ts','relay/src/auth.ts']
+paths += [p for p in subprocess.check_output(['git','ls-tree','--name-only',tree],cwd=r).decode().splitlines()if p.startswith(('tsconfig','playwright'))and p.endswith(('.json','.ts'))]
+for v in ['R','C']:
+ dest=s/('source-'+v);dest.mkdir(exist_ok=False);p=subprocess.Popen(['git','archive',tree,*paths],cwd=r,stdout=subprocess.PIPE);subprocess.run(['tar','-x','-C',str(dest)],stdin=p.stdout,check=True);assert p.wait()==0;(dest/'node_modules').symlink_to(r/'node_modules')
+for name in ['harness','read-request.mjs','read-request.d.mts','notification-probe.mjs','notification-probe.d.mts','container-service.mjs','observer.mjs','container-image.json','playwright-storage-source.txt','audit-lib.mjs']:
+ p=prior/name;q=s/name
+ if p.is_dir():shutil.copytree(p,q,ignore=shutil.ignore_patterns('node_modules','test-results'));(q/'node_modules').symlink_to(r/'node_modules')
+ else:shutil.copyfile(p,q)
+for p in [*(s/'harness').rglob('*.ts'),*(s/'harness').rglob('*.mjs'),s/'container-service.mjs']:
+ p.write_text(p.read_text().replace(str(prior),str(s)))
+# Exact established server source; backend/protocol bytes are identical to132. Reuse its immutable image.
+p=s/'harness/test/account-continuation-lab/runtime.mjs';p.write_text(p.read_text().replace("source=root+'/source-R'", "source='/private/tmp/done-publication-latch-20261027/source-R'"))
+# Frozen fixture is synthetic; never print/export credentials or writing. Reuse without modifying it.
+(s/'private-fixture').mkdir();shutil.copyfile(prior/'private-fixture/fixture.json',s/'private-fixture/fixture.json')
+manifest={}
+for folder in ['account-service','account-protocol']:
+ for p in (s/'source-R'/folder).rglob('*'):
+  if p.is_file():
+   assert p.read_bytes()==(prior/'source-R'/p.relative_to(s/'source-R')).read_bytes()
+   manifest[str(p.relative_to(s/'source-R'))]=hashlib.sha256(p.read_bytes()).hexdigest()
+(s/'server-source-equality.json').write_text(json.dumps({'tree':tree,'equalToEstablishedServer':True,'files':manifest},indent=2)+'\n')
+print('Prepared exact-source clients and immutable established server. Backend/protocol equal:',len(manifest))
