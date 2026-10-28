@@ -1,0 +1,31 @@
+{
+  "scope": "Ordered post-capture observations, no exact interval/timestamps retained; do not infer maintenance throughput or whether the same attempt remained active.",
+  "observations": [
+    {
+      "counterVersion": 2,
+      "baselinePresent": false,
+      "rows": {
+        "content": 83,
+        "heads": 4622,
+        "outbound": 6318
+      }
+    },
+    {
+      "status": "Checking and reducing technical history on this device\u2026"
+    },
+    {
+      "visibility": "visible",
+      "status": "Checking and reducing technical history on this device\u2026"
+    },
+    {
+      "counterVersion": 2,
+      "baselinePresent": false,
+      "rows": {
+        "content": 83,
+        "heads": 4622,
+        "outbound": 6318
+      }
+    }
+  ],
+  "completedReductionObserved": false
+}

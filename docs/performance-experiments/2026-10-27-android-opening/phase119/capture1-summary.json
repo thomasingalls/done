@@ -1,0 +1,47 @@
+{
+  "providerMs": 3053.7999999999884,
+  "postProviderToEditorMs": 71923.70000000001,
+  "postProviderSnapshotsAllVisible": true,
+  "longTasksPostProvider": [
+    {
+      "at": 75743.7,
+      "duration": 168
+    },
+    {
+      "at": 76175,
+      "duration": 71
+    },
+    {
+      "at": 76247,
+      "duration": 29145
+    },
+    {
+      "at": 105620.7,
+      "duration": 52
+    },
+    {
+      "at": 105673.2,
+      "duration": 4182
+    },
+    {
+      "at": 110144.6,
+      "duration": 57
+    },
+    {
+      "at": 110205.5,
+      "duration": 35731
+    },
+    {
+      "at": 146006.6,
+      "duration": 161
+    },
+    {
+      "at": 146422,
+      "duration": 811
+    }
+  ],
+  "cryptoDecryptCalls": 28980,
+  "cryptoVerifyCalls": 28909,
+  "getAllRows": 33045,
+  "getAllCalls": 9
+}

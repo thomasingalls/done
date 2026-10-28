@@ -1,0 +1,14 @@
+from pathlib import Path
+import json, urllib.request, hashlib, re
+s=Path(__file__).parent
+x=json.loads((s/'capture2.json').read_text())
+urls=sorted({f.rsplit(':',2)[0]for r in x['reads']for f in r['frames']})
+rows=[]
+for url in urls:
+    assert re.fullmatch(r'https://done\.oxidationlabs\.com/assets/[A-Za-z0-9_.-]+\.js',url)
+    for target in [url,url+'.map']:
+        with urllib.request.urlopen(target,timeout=30)as response:body=response.read(20000000)
+        path=s/'public-source'/target.rsplit('/',1)[1];path.parent.mkdir(exist_ok=True);path.write_bytes(body)
+        rows.append({'url':target,'path':str(path.relative_to(s)),'bytes':len(body),'sha256':hashlib.sha256(body).hexdigest()})
+(s/'public-source-identities.json').write_text(json.dumps(rows,indent=2)+'\n')
+print('Fetched',len(rows),'public script/map artifacts; no account requests.')

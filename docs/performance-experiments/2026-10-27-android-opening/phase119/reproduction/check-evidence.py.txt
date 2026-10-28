@@ -1,0 +1,54 @@
+from pathlib import Path
+import json, math, copy
+s=Path(__file__).parent
+allowed_metrics={'crypto.'+n for n in ['decrypt','encrypt','verify','sign','digest','deriveKey','deriveBits','importKey','unwrapKey']}|{'provider.get','idb.get','idb.getAll','idb.count','idb.openCursor','idb.transaction'}
+def numeric(v):
+    assert isinstance(v,(int,float))and not isinstance(v,bool)and math.isfinite(v)and v>=0
+def metrics(m):
+    assert set(m)<=allowed_metrics
+    for v in m.values():
+        assert set(v)=={'started','completed','failed','pending','totalMs','maxMs','rows'}
+        for n in v.values():numeric(n)
+def first(x):
+    assert set(x)=={'version','elapsedMs','active','phase','events','snapshots','stats','longTasks','scope'}
+    assert x['version']==1 and x['active']is False and x['phase']=='editor'
+    assert x['scope']=='Fixed labels and numbers only; no arguments, values, writing, identifiers, codes or keys.'
+    metrics(x['stats'])
+    for q in x['snapshots']:
+        assert set(q)=={'at','phase','visible','stats'}
+        assert q['phase']in['armed','provider','postProvider','editor']and isinstance(q['visible'],bool)
+        numeric(q['at']);metrics(q['stats'])
+def control(x):
+    import re
+    assert set(x)=={'version','active','elapsedMs','events','reads','longTasks','scope'}
+    assert x['version']==1 and x['active']is False
+    assert x['scope']=='No CPU sampling/per-crypto wrappers. Numeric rows and public script locations only; no values or arguments.'
+    for r in x['reads']:
+        assert set(r)=={'at','store','frames','completedAt','rows'}
+        assert r['store']in['content','heads','outbound','meta','other']
+        for name in['at','completedAt','rows']:numeric(r[name])
+        assert all(re.fullmatch(r'https://done\.oxidationlabs\.com/assets/[A-Za-z0-9_.-]+\.js:\d+:\d+',f)for f in r['frames'])
+rows=[]
+for i,verify in [(1,first),(2,control)]:
+    x=json.loads((s/f'capture{i}.json').read_text());verify(x)
+    for e in x['events']:
+        assert set(e)==({'kind','at'}if i==1 else{'kind','at','visible'})
+        assert e['kind']in['armed','providerRequested','providerReturned','providerRejected','timerDelayed','editorEditable','stoppedOnEditor','timedOut','manualStop','visibilityChanged']
+        numeric(e['at'])
+    for t in x['longTasks']:
+        assert set(t)=={'at','duration'};numeric(t['at']);numeric(t['duration'])
+    ev={e['kind']:e['at']for e in x['events']}
+    assert 'timedOut'not in ev and ev['providerRequested']<ev['providerReturned']<ev['editorEditable']
+    bad=copy.deepcopy(x);bad['unlockCode']='FAKE-SENTINEL'
+    try:verify(bad)
+    except AssertionError:pass
+    else:raise AssertionError('Private extra field accepted')
+    rows.append({'capture':i,'postProviderToEditorMs':ev['editorEditable']-ev['providerReturned'],'exactClosedSchema':True,'privateExtraFieldRejected':True})
+c=json.loads((s/'capture2.json').read_text())
+assert len(c['reads'])==9
+assert sum(r['rows']for r in c['reads'])==32991
+assert sum(r['rows']for r in c['reads'][:3])==10997
+for n in range(0,9,3):assert[(r['store'],r['rows'])for r in c['reads'][n:n+3]]==[('content',61),('heads',4618),('outbound',6318)]
+assert not any(e['kind']=='visibilityChanged'and e['at']>=next(v['at']for v in c['events']if v['kind']=='providerRequested')for e in c['events'])
+(s/'evidence-review.json').write_text(json.dumps({'status':'passed','captures':rows,'sameSizeThreeReadPassesConfirmed':True,'noControlVisibilityChangeDuringOpening':True,'scope':'Closed numeric/public-location schema and independent timing arithmetic; not population inference or full CPU attribution.'},indent=2)+'\n')
+print(json.dumps(rows))

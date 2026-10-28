@@ -1,0 +1,55 @@
+import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
+import assert from 'node:assert/strict';
+const script = readFileSync(new URL('./probe.js', import.meta.url), 'utf8');
+const sentinel = 'PRIVATE-SENTINEL-NOT-REAL-DATA';
+let ready = false, mutation, complete, clock = 0;
+const value = {writing: sentinel}, resolved = Promise.resolve(value), failure = Error(sentinel);
+const rejected = Promise.reject(failure); rejected.catch(() => {});
+const methods = Object.fromEntries(['decrypt','encrypt','verify','sign','digest','deriveKey','deriveBits','importKey','unwrapKey'].map(k => [k, () => resolved]));
+methods.verify = () => rejected;
+const provider = {get: () => resolved};
+class Request { constructor(){this.result = [value, value];this.handlers={};} addEventListener(n,f){this.handlers[n]=f;} }
+const request = new Request();
+class Store {get(){return request;}getAll(){return request;}count(){return request;}openCursor(){return request;}}
+class DB {transaction(){return request;}}
+const before = Store.prototype.getAll, oldCrypto = methods.decrypt, oldProvider = provider.get;
+const context = {performance:{now:()=>++clock},crypto:{subtle:methods},navigator:{credentials:provider},
+  document:{visibilityState:'visible',getElementById:()=>({}),querySelector:()=>ready?{}:null},
+  IDBObjectStore:Store,IDBDatabase:DB,
+  MutationObserver:class {constructor(f){mutation=f;}observe(){}disconnect(){}},
+  PerformanceObserver:class {observe(){}disconnect(){}},
+  setInterval:()=>1,clearInterval:()=>{},console:{profile(){},profileEnd(){}}};
+assert.match(runInNewContext(script,context),/armed/);
+assert.equal(methods.decrypt('ignored',value),resolved);
+assert.equal(methods.verify('ignored',value),rejected);
+assert.equal(provider.get({private:sentinel}),resolved);
+assert.equal(new Store().getAll(value),request);
+request.handlers.success();
+await Promise.resolve();await Promise.resolve();
+const report=context.__doneUnlockProbe.read();
+assert.equal(report.stats['idb.getAll'].rows,2);
+assert.equal(report.stats['crypto.verify'].failed,1);
+assert(!JSON.stringify(report).includes(sentinel));
+ready=true;mutation();
+assert.equal(context.__doneUnlockProbe.read().active,false);
+assert.equal(Store.prototype.getAll,before);
+assert.equal(methods.decrypt,oldCrypto);
+assert.equal(provider.get,oldProvider);
+assert(!JSON.stringify(context.__doneUnlockProbe.read()).includes(sentinel));
+console.log('Probe controls pass: original promises/requests/rejections, numeric row counts, no sentinel retention, editor stop and exact restoration.');
+ready=false;
+context.document.addEventListener=()=>{};
+context.document.removeEventListener=()=>{};
+assert.match(runInNewContext(readFileSync(new URL('./control.js',import.meta.url),'utf8'),context),/armed/);
+assert.equal(provider.get({private:sentinel}),resolved);
+assert.equal(new Store().getAll(value),request);
+request.handlers.success();
+await Promise.resolve();
+assert(!JSON.stringify(context.__doneOpeningControl.read()).includes(sentinel));
+assert.equal(context.__doneOpeningControl.read().reads[0].rows,2);
+ready=true;mutation();
+assert.equal(context.__doneOpeningControl.read().active,false);
+assert.equal(Store.prototype.getAll,before);
+assert.equal(provider.get,oldProvider);
+console.log('Light control passes: original API identities, no sentinel retention, editor stop and exact restoration.');

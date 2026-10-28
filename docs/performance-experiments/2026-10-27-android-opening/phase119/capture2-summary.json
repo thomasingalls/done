@@ -1,0 +1,63 @@
+{
+  "providerMs": 6339.5999999999985,
+  "postProviderToEditorMs": 76158.9,
+  "noVisibilityChangeAfterProviderRequest": true,
+  "threePassCounts": [
+    {
+      "at": 57538.5,
+      "content": 61,
+      "heads": 4618,
+      "outbound": 6318
+    },
+    {
+      "at": 88066.1,
+      "content": 61,
+      "heads": 4618,
+      "outbound": 6318
+    },
+    {
+      "at": 92886.2,
+      "content": 61,
+      "heads": 4618,
+      "outbound": 6318
+    }
+  ],
+  "longTasks": [
+    {
+      "at": 57337.2,
+      "duration": 155
+    },
+    {
+      "at": 57767.7,
+      "duration": 68
+    },
+    {
+      "at": 57836.5,
+      "duration": 30230
+    },
+    {
+      "at": 88315.5,
+      "duration": 71
+    },
+    {
+      "at": 88387.5,
+      "duration": 4454
+    },
+    {
+      "at": 93140.1,
+      "duration": 103
+    },
+    {
+      "at": 93251.9,
+      "duration": 38534
+    },
+    {
+      "at": 131866.2,
+      "duration": 141
+    },
+    {
+      "at": 132316.5,
+      "duration": 814
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+# Phase119 — Actual Android post-passkey opening attribution
+
+The six requested113–118 patches are signed in sequence, each tree and signature independently
+verified. Final signed head3ae028480fa988c694b01394a43fc6f0d5eddc43 has the prepared118 tree
+46dd9697a976cea5941d2bf8329f6415e53591ab, with a clean checkout before this new evidence phase.
+The signed mapping is in signed-source.json. No push, release artifact, preview update or rollout.
+
+## Physical-device observations
+
+Existing production account on Pixel9a/Chrome156.0.8078.47, protected normal profile, USB DevTools,
+screencast disabled. No storage clearing, copying writing to another origin, build change or new
+credential. The operator enters both factors directly. These are two unlocks, not whole-process
+cold starts or population samples. The first requests CPU sampling and per-API numeric observers;
+the second removes CPU sampling and all per-crypto observers, keeping only provider/read/DOM timing
+and long tasks. Both return original promises/requests, arguments and results unchanged. Neither
+starts an extra data read during the measured opening. Probes stop/restore automatically on editor.
+
+| Observation | First numeric/profile attempt | Lighter confirming run |
+| --- | ---: | ---: |
+| Passkey request to provider return | 3053.8ms | 6339.6ms |
+| Provider return to editable editor | 71923.7ms | 76158.9ms |
+| First large main-thread task | 29145ms | 30230ms |
+| Middle main-thread task | 4182ms | 4454ms |
+| Last large main-thread task | 35731ms | 38534ms |
+
+Every observed post-provider snapshot is visible in the first run; the confirming run records no
+visibility change after provider request. The operator independently confirms editor usability in
+both. Entry/provider/idle/export time is excluded from provider-to-editor arithmetic. Long tasks
+include promise microtasks; they do not establish one single synchronous function or pure CPU time.
+The lighter run reproduces the minute without the first probe's expensive observers. Order, warming,
+live sync and workload evolution prevent attributing the small timing difference to instrumentation.
+
+## Local work, rather than a minute inside the provider prompt
+
+The first run counts32728 key imports,28980 decrypts,28909 verifications and54482 digests. API elapsed
+times are not pure primitive CPU and can overlap. The confirming run identifies three full reads of
+the same-size carrier:61 content rows,4618 heads and6318 outbound rows each time,10997 per pass.
+The first run instead totals33045 returned rows across its three passes; the confirming run totals32991.
+The live carrier changed between runs, so do not treat them as matched workload repetitions.
+Nine getAll requests complete in roughly10–342ms each; the subsequent long tasks occupy most of
+the opening interval. Outbound store occupancy does not mean6318 unsent tasks or submissions.
+No record values, keys, codes, database/account identifiers or writing are retained in these reports.
+
+Public call locations map every read to contentStore.ts247, through contentDatabase.ts and the
+serialized writeSession boundary. All three public scripts are byte-exact to the retained dc53fecf
+release frontend; paired map hashes match its artifact manifest and all mapped source contents
+match signed dc53fecf. Public adjacent maps return404; the exact retained maps supply the mapping.
+
+Source explains a concrete repeated-work boundary. verifyAccountUnderPermit calls
+withRecoveryUnderPermit. That temporary custody owner's initialize validates a full load; its later
+loadAccount repeats the fresh physical read but may reuse verified/opened evidence within that owner.
+The temporary owner is then disposed, keys and recovery bytes erased. accountCapture subsequently
+constructs/initializes the live custody owner, performing full validation again. This is consistent
+with two large crypto/replay bursts surrounding a smaller repeated-read/recovery pass. Read counts
+alone do not prove byte equality, and source consistency is not per-function CPU attribution.
+
+## Why server pruning has not established the local benefit
+
+After both captures, two readonly metadata checks still find counterv2, no local baseline, and83
+content/4622 heads/6318 outbound rows. These later counts are not substituted for the opening counts.
+The fixed local-history UI reports “Checking and reducing technical history on this device…” during
+several later observations, including while visible. There is no observed atomic conversion to v5
+or completed local reduction, and no post-reduction timing. We do not infer that one attempt made
+continuous progress, that it is deadlocked, or that the source count itself identifies its refusal.
+Server-history pruning and local reduction are separate; server pruning did not establish a local
+baseline on this phone. The queued branch already contains maintenance-contention repairs, but
+this production observation does not verify their physical-device result.
+
+## Next bounded repairs and limits
+
+First make the local reduction's preparation/continuation diagnosable and verify an actual completed
+conversion, then measure the same device reopening after it. Independently scope safe transfer/reuse
+of authenticated startup evidence into live-owner initialization, retaining fresh native inventory,
+counter/witness/authority and lifetime checks. Do not simply omit the second validation. Use the
+existing cooperative budget pattern to let cancellation/rendering run during large traversals;
+awaiting already-resolved promises alone does not guarantee a browser-task yield. None of these
+repairs is implemented or accepted here, and no cold-open speedup is claimed for signed118.
+
+The failed/unusable CPU-export attempt, macOS UI stall, first folder-navigation attempt and map404
+remain qualified in attempts.json. No CPU flamegraph attribution is claimed. Late notification
+stream errors are recorded separately, not attributed as the measured pre-editor cause. Probe VM
+controls preserve original promise/request/error identities, reject sentinel retention and restore
+native APIs. Independent closed-schema review rejects added private fields and checks timing/read
+arithmetic. This is bounded numeric/public-source evidence, not universal DLP or security qualification.
+
+Both probes stopped, representative native API restoration checked, globals removed and the remote
+DevTools window closed without closing the phone app. Production and preview binaries unchanged.
+General qualification912 obligations/367 unresolved remains paused. No old test or product source
+changes. This new evidence-only119 follows signed118 and remains an unsigned sequential patch.
+Ordinary bookkeeping results are retained separately; no inferred aggregate qualification credit.

@@ -1,0 +1,13 @@
+{
+  "scope": "Read after both measured opens; not an initial snapshot. Readonly counter/counts, no content/keys/identifiers.",
+  "counterVersion": 2,
+  "baselinePresent": false,
+  "baselineRevision": null,
+  "history": null,
+  "rows": {
+    "content": 83,
+    "heads": 4622,
+    "outbound": 6318
+  },
+  "uiStatus": "Checking and reducing technical history on this device\u2026"
+}

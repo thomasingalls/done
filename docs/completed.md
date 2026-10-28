@@ -16770,3 +16770,29 @@ Phase118 normal-check follow-up: the initial loop refuses two stale runtime-cens
 activation; trace is not attempted. Explicit reviewed --record changes only accountReceive.ts hash,
 retaining every other entry/classification and obligation. Initial logs remain in118; rerun all normal
 gates on stable inputs rather than waiving the check.
+
+## 2026-10-27 — Signed113–118 and actual Android opening attribution (phase119)
+
+All six requested patches signed sequentially and independently signature/tree verified, ending
+3ae02848 with the exact118 tree and clean checkout before this new evidence. No push or publication.
+
+Actual protected production Pixel9a account: provider-to-editor71923.7ms, then76158.9ms with CPU
+sampling/per-crypto observers removed. Three identical-size native read passes each61 content,4618
+heads,6318 outbound rows. Long main-thread tasks dominate; first run counts28980 decrypts/28909
+verifications. Public script/map identities and signed-source mapping locate the full-store reader.
+Temporary startup recovery followed by live-owner initialization explains a concrete repeated-work
+boundary, without claiming per-function CPU attribution or removing either security boundary.
+
+Later readonly metadata stillv2/no local baseline; maintenance UI remains checking during observed
+visible periods. No local-reduction completion/post-baseline improvement observed. All observations,
+probe controls, source identities, macOS export stall/unusable CPU-profile attempt and limits are
+[retained here](performance-experiments/2026-10-27-android-opening/phase119/README.md). Probes restored
+and removed, debugger detached; no writing, codes, keys or account/database identifiers retained.
+Next diagnose/complete local reduction and scope safe reuse/cooperative yielding at startup, with
+fresh authority/counter/witness/lifetime checks. No product repair, old-test edit, candidate phone
+speedup, deployment or qualification claim. New evidence-only119 remains an unsigned patch.
+
+Phase119 final arithmetic review: the lighter run has10997 rows per pass (61+4618+6318),32991
+returned rows total. The first run instead reports33045 aggregate rows; live storage changed between
+opens. Correct a copied11015 doc total, preserve both raw reports and the superseded119 artifact,
+and make no between-run matched-workload or instrumentation-overhead estimate.

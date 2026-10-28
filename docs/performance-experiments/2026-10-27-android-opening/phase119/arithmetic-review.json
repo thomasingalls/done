@@ -1,0 +1,11 @@
+{
+  "firstRunAggregateRows": 33045,
+  "controlAggregateRows": 32991,
+  "controlPerPassRows": 10997,
+  "controlBreakdown": {
+    "content": 61,
+    "heads": 4618,
+    "outbound": 6318
+  },
+  "scope": "Final arithmetic review caught a doc total11015 copied from first run. Control raw rows sum10997 per pass. Reports/timings unchanged; first119 patch retained as superseded. No between-run identical-workload claim."
+}

@@ -1,0 +1,100 @@
+(() => {
+  if (globalThis.__doneUnlockProbe) return 'already armed';
+  const started = performance.now(), stats = Object.create(null), events = [], restore = [];
+  let active = true, timer, phase = 'armed', lastSample = started;
+  const snapshots = [], tasks = [], now = () => Math.round((performance.now() - started) * 10) / 10;
+  const safe = (fn) => { try { return fn(); } catch {} };
+  const event = (kind) => { if (active && events.length < 64) events.push({kind, at: now()}); };
+  const get = (label) => stats[label] ??= {started: 0, completed: 0, failed: 0, pending: 0, totalMs: 0, maxMs: 0, rows: 0};
+  const begin = (label) => {
+    const s = get(label), at = performance.now(); s.started++; s.pending++;
+    return (failed = false) => safe(() => {
+      const ms = performance.now() - at; s.completed++; s.pending--; s.failed += Number(failed);
+      s.totalMs += ms; s.maxMs = Math.max(s.maxMs, ms);
+    });
+  };
+  const wrap = (owner, name, label, kind) => safe(() => {
+    const original = owner[name]; if (typeof original !== 'function') return;
+    const prior = Object.getOwnPropertyDescriptor(owner, name);
+    const replacement = function (...args) {
+      if (!active) return Reflect.apply(original, this, args);
+      const finish = safe(() => begin(label)) ?? (() => {});
+      if (kind === 'provider') { phase = 'provider'; event('providerRequested'); }
+      let result;
+      try { result = Reflect.apply(original, this, args); }
+      catch (error) { finish(true); throw error; }
+      if (kind === 'request') safe(() => {
+        result.addEventListener('success', () => {
+          safe(() => { if (Array.isArray(result.result)) get(label).rows += result.result.length; });
+          finish();
+        }, {once: true});
+        result.addEventListener('error', () => finish(true), {once: true});
+      });
+      else if (kind === 'cursor') safe(() => {
+        result.addEventListener('success', () => safe(() => {
+          if (result.result) get(label).rows++;
+          else finish();
+        }));
+        result.addEventListener('error', () => finish(true), {once: true});
+      });
+      else if (kind === 'transaction') safe(() => {
+        result.addEventListener('complete', () => finish(), {once: true});
+        result.addEventListener('abort', () => finish(true), {once: true});
+      });
+      else safe(() => result.then(() => {
+        finish();
+        if (kind === 'provider') { phase = 'postProvider'; event('providerReturned'); snapshot(); }
+      }, () => {
+        finish(true);
+        if (kind === 'provider') event('providerRejected');
+      }));
+      return result;
+    };
+    Object.defineProperty(owner, name, {configurable: true, writable: true, value: replacement});
+    restore.push(() => {
+      if (owner[name] !== replacement) return;
+      if (prior) Object.defineProperty(owner, name, prior); else delete owner[name];
+    });
+  });
+  const snapshot = () => safe(() => {
+    if (snapshots.length < 301) snapshots.push({at: now(), phase, visible: document.visibilityState === 'visible', stats: JSON.parse(JSON.stringify(stats))});
+  });
+  for (const name of ['decrypt','encrypt','verify','sign','digest','deriveKey','deriveBits','importKey','unwrapKey'])
+    wrap(crypto.subtle, name, 'crypto.' + name, 'promise');
+  wrap(navigator.credentials, 'get', 'provider.get', 'provider');
+  for (const name of ['get','getAll','count']) wrap(IDBObjectStore.prototype, name, 'idb.' + name, 'request');
+  wrap(IDBObjectStore.prototype, 'openCursor', 'idb.openCursor', 'cursor');
+  wrap(IDBDatabase.prototype, 'transaction', 'idb.transaction', 'transaction');
+  let po;
+  safe(() => {
+    po = new PerformanceObserver((list) => {
+      for (const e of list.getEntries()) if (tasks.length < 256) tasks.push({at: Math.round((e.startTime - started) * 10) / 10, duration: Math.round(e.duration * 10) / 10});
+    });
+    po.observe({type: 'longtask', buffered: false});
+  });
+  const mo = new MutationObserver(() => safe(() => {
+    if (active && document.querySelector('.cm-content[contenteditable="true"]')) {
+      phase = 'editor'; event('editorEditable'); snapshot(); stop('editor');
+    }
+  }));
+  mo.observe(document.getElementById('root') ?? document.body, {childList: true, subtree: true, attributes: true, attributeFilter: ['contenteditable']});
+  const read = () => ({version: 1, elapsedMs: now(), active, phase, events, snapshots, stats, longTasks: tasks,
+    scope: 'Fixed labels and numbers only; no arguments, values, writing, identifiers, codes or keys.'});
+  function stop(reason = 'manual') {
+    if (!active) return read();
+    event(reason === 'editor' ? 'stoppedOnEditor' : reason === 'timeout' ? 'timedOut' : 'manualStop');
+    snapshot(); active = false; clearInterval(timer); mo.disconnect(); po?.disconnect();
+    for (const f of restore.reverse()) safe(f);
+    safe(() => console.profileEnd('done-unlock-numeric'));
+    return read();
+  }
+  globalThis.__doneUnlockProbe = Object.freeze({read, stop});
+  timer = setInterval(() => {
+    snapshot();
+    if (performance.now() - lastSample > 2500) event('timerDelayed');
+    lastSample = performance.now();
+    if (performance.now() - started >= 300000) stop('timeout');
+  }, 1000);
+  event('armed'); snapshot(); safe(() => console.profile('done-unlock-numeric'));
+  return 'Numeric unlock probe armed; five-minute maximum; original API results and arguments preserved.';
+})();

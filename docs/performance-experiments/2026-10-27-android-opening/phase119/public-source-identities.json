@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js",
+    "path": "public-source/contentCompaction-Bseal0c5.js",
+    "bytes": 102400,
+    "sha256": "7b78b8928a445eed5d8b1a4e1b2e383292b8ad19baa2b6d98dd1e95109858b70"
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js",
+    "path": "public-source/deviceDataRemoval-C94Je0_1.js",
+    "bytes": 96809,
+    "sha256": "52299819a29b55be7b559eb8fb5f8559054fe8d2d202c31ef2ad73377e4fbf36"
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js",
+    "path": "public-source/writeSession-CvSSRuWm.js",
+    "bytes": 7254,
+    "sha256": "31ca9f49b2e66199b569fc9c3870ce0ffb8acb08aad111aa32ed176d133a6f21"
+  }
+]

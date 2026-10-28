@@ -1,0 +1,12 @@
+{
+  "sha256": "2a008b7e09fae2657c775a6bbb4531285f10b01ebf4736825c5b1b5904f268e3",
+  "probeControlsExit": 0,
+  "firstConsoleCheck": {
+    "origin": "https://done.oxidationlabs.com",
+    "openHook": "undefined",
+    "ledgerHook": "undefined",
+    "workerControlled": true,
+    "visibility": "visible",
+    "editorCount": 0
+  }
+}
