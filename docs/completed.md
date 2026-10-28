@@ -16872,3 +16872,15 @@ test-cast error. No old tests edited; graph916/371 adds two uncredited required 
 all earlier blocks. [Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase124/README.md).
 Progress is volatile and not a cross-lock continuation proof. No computer use, signing, push,
 release preparation or deployment; general qualification remains paused.
+
+
+## 2026-10-27 — resumable preparation contract (phase125)
+
+Source review confirms v5 couples the verified cut and later chunk allocation; partial retirement
+cannot be enabled by loosening that equality. The [design](account-local-retention-resumption-design.md)
+selects preparation-only encrypted verifier checkpoints first, then a reader-first fixed-cut format,
+retaining originals, fresh authority and exact independent final checks. Explicit implementation
+falsifiers cover crash/lock, appended versus changed prefix, source obligations, nonce reservations,
+compatibility and performance. It is a design, not durable resumability or a phone time bound.
+[Source evidence](performance-experiments/2026-10-27-maintenance-continuation/phase125/README.md).
+No runtime/old-test change, signing, push, release preparation or deployment; qualification paused.

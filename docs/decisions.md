@@ -5781,3 +5781,12 @@ Show real local-maintenance stages and definite counts only for the record-readi
 Coalesce updates without adding polling; keep an indeterminate indicator for work with no honest
 total. Only the verified removal outcome may publish completion. Keep diagnostic attempt/stage
 facts volatile, separate from future authenticated resumable work, and preserve observer isolation.
+
+
+## 2026-10-27 — retain verified work before changing the retirement format (phase125)
+
+Choose closed authenticated preparation checkpoints with unchanged originals as the first durable
+resumption slice. Fixed earlier cuts plus later chunk reservations need a separate compatible
+representation; do not reinterpret v5 or persist a bare verification success. Keep normal factor
+unlock/erasure, fresh current authority, exact prefix evidence and final independent readback.
+Provisional slice/fence targets need implementation evidence; no phone bound is asserted.
