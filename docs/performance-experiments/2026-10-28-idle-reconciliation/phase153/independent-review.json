@@ -1,0 +1,33 @@
+{
+  "allCompletedBoundsIndependentlyExact": true,
+  "fixedStopObserved": true,
+  "onlyTwoRuntimeFilesAndOneNewTestChanged": true,
+  "allOldTestFilesUnchanged": true,
+  "rows": [
+    {
+      "name": "after-1-maintenance-C-withheld",
+      "state": "passed",
+      "localP95": 17.00927734375,
+      "peerP95": 2309.09423828125,
+      "markers": [
+        1734.458251953125,
+        1525.96044921875,
+        890.445068359375
+      ],
+      "accepted": false,
+      "all120BoundsExact": true,
+      "workerIdentityExact": true,
+      "allFunctionalGuards": true
+    },
+    {
+      "name": "after-2-late-C-normal",
+      "state": "unexecuted"
+    },
+    {
+      "name": "after-3-late-C-withheld",
+      "state": "unexecuted"
+    }
+  ],
+  "stopIndex": 0,
+  "activationAccepted": false
+}

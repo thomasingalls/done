@@ -17145,3 +17145,18 @@ fixture/serializer/probe identities. [After-only protocol](performance-experimen
 reuse147/150 before evidence, run withheld full-history then both late variants, keep16ms/2.5s/
 30s/all original guards and fixed stop rule. Four analyzer fault controls pass. No journeys yet.
 No old test changes or activation/release; general934/388 block remains.
+
+
+## 2026-10-28 — Phase153: after confirms missed-hint repair;16ms acceptance still blocked
+
+The exact withheld full-history after journey now passes its formerly failing30s edit delivery,
+Undo, complete data, maintenance, worker/resource and both offline cold/no-injection guards.
+Independent native/clock/old-proof/unrelated-account checks pass. Peer2309.094ms/all markers
+and backlog ratio1.01193 pass; local17.009ms fails16. Stop rule leaves both late after cases
+unexecuted. [Full before/after evidence and limits](performance-experiments/2026-10-28-idle-reconciliation/phase153/README.md).
+Actual requests during120keys600→615;429counts19→13 are descriptive, not capacity improvement.
+2200unit cases/1existing skip and91adapters pass. No old tests/default/server/backoff/crypto changes;
+no repeated before run. An import-shifted non-crypto source pin729→734 is refreshed after the
+authority check refuses it; keep the refusal and all statuses/contracts. Runtime remains151;
+final ordinary checks recorded here, general934/388
+block and all gates retained. No activation, signing, release preparation or deployment.

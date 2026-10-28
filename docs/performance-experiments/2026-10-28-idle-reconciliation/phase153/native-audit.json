@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "preparedSeedAcceptanceExact": true,
+  "rows": [
+    {
+      "name": "after-1-maintenance-C-withheld",
+      "nativeSignaturesAndCiphertextDigestsAndPrefixes": true,
+      "oldAcceptedProofsExact": true,
+      "onlyExpectedWriter": true,
+      "newContiguousPositions": 118,
+      "unrelatedAccountsUnchanged": true,
+      "databaseSha256": "4d4d0ab62efd6c3f7816a6edcb216463ba23069d55c5375a0ce93dc8f62b7349"
+    }
+  ]
+}
