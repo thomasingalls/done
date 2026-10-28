@@ -1042,6 +1042,8 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           ...(hasBaselineVerifier()
             ? {
                 ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
+                // The checked marker and its verifier-owned capabilities stay fixed during this recovery.
+                exactBaselineReuse: true as const,
                 baseline: async (
                   _task: SessionTask,
                   identity: import('./contentRecord').ContentIdentity,

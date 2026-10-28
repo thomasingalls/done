@@ -758,6 +758,7 @@ const prepareCustody = (
   selectiveLoads?: true,
   baseline?: ContentCrypto['baseline'],
   readBaseline?: true,
+  exactBaselineReuse?: true,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -900,6 +901,7 @@ const prepareCustody = (
             ...(validateRecords ? { validate: validateRecords } : {}),
             ...(allowSpoolCounter ? { allowSpoolCounter } : {}),
             ...(reuseOpened ? { reuseOpened } : {}),
+            ...(exactBaselineReuse ? { exactBaselineReuse } : {}),
             ...(warmLoads ? { warmLoads } : {}),
             ...(selectiveLoads ? { selectiveLoads } : {}),
             ...(baseline ? { baseline } : {}),
@@ -1094,7 +1096,12 @@ export const withRecoveryUnderPermit = async <T>(
   operation: (recovery: JournalRecovery, baseline?: AccountBaselineRead) => Promise<T>,
   validation?: Pick<
     ContentCrypto,
-    'validate' | 'allowSpoolCounter' | 'reuseOpened' | 'baseline' | 'readBaseline'
+    | 'validate'
+    | 'allowSpoolCounter'
+    | 'reuseOpened'
+    | 'baseline'
+    | 'readBaseline'
+    | 'exactBaselineReuse'
   >,
 ): Promise<T> => {
   let validatedView: object | undefined;
@@ -1125,6 +1132,7 @@ export const withRecoveryUnderPermit = async <T>(
     undefined,
     validation?.baseline,
     validation?.readBaseline,
+    validation?.exactBaselineReuse,
   );
   let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
   let logical: Awaited<ReturnType<typeof owner.carrier.loadAccount>> | undefined;

@@ -5754,3 +5754,13 @@ policy, limits and retry backoff retain their existing authority. Accept the com
 difference through exact-field inspection, without claiming all110 artifact files are byte-identical.
 Release preparation begins with signed-source identity and artifact checks; it is not accomplished
 by this unsigned comparison. Retain optional broad-lint archive failures outside this bounded repair.
+
+
+## 2026-10-27 — opt-in exact baseline reuse inside startup recovery (phase122)
+
+Reuse a completed v5 baseline proof only within the same carrier and after exact fresh physical
+evidence and verifier-owned authority checks. Require an explicit immutable-capability opt-in;
+original/joined startup hold that contract, other one-shot readers do not implicitly acquire it.
+Keep live warm reference audits and cross-owner initialization separate. This removes duplicated
+verification without adopting a scalar revision/hash as authority or retaining an expired task.
+[Contract and evidence](performance-experiments/2026-10-27-maintenance-continuation/phase122/README.md).

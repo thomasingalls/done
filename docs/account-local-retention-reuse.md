@@ -98,3 +98,12 @@ conversion is expensive: 14.09 s at 1,201 own positions, with a 12.0 s foregroun
 complete-history observation. Existing-baseline replacement after a fixed suffix is much cheaper.
 Initial-cut responsiveness is the next bounded work; these measurements do not authorize public
 conversion or establish phone, pending-heavy or catch-up-typing performance.
+
+
+## Follow-up2026-10-27 — exact one-shot startup reuse
+
+[Phase122](performance-experiments/2026-10-27-maintenance-continuation/phase122/README.md) adds a
+separate explicit immutable-authority opt-in for original/joined startup recovery. It compares all
+fresh sealed rows/chunks and authenticates current metadata/authority, then reuses only an exactly
+equal completed logical proof within that owner. Distinct reconstructed capabilities fall back.
+The live warm/audit policy above is unchanged. No startup proof is transferred into the live owner.

@@ -22,6 +22,7 @@ const workNames = [
   'loads',
   'warmLoads',
   'baselineFullReplays',
+  'baselineExactReuses',
   'baselineWarmReuses',
   'baselineIncrementalReuses',
   'selectedLoads',

@@ -769,7 +769,7 @@
     },
     {
       "path": "src/crdt/accountLedgerMetrics.ts",
-      "sha256": "27c6b563985d3944472063c6bc27fa4cbeca4b56ceb60ad862d298cba7d3ed2e"
+      "sha256": "2643afc21a77f521f428286861f5d9ca9c98038f0ca44084f8a4d32a54e1c2b8"
     },
     {
       "path": "src/crdt/accountLedgerMode.ts",
@@ -801,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountStartup.ts",
-      "sha256": "7c9e1dd5dd6bce36bf1bfcf5c5ca4e96b52f9e78c6edc820541881e669f9a3a4"
+      "sha256": "3960bc82d0aed4aa1364cd6f8253bf8120e4f60cdeab49a1d69ac345c71b98a7"
     },
     {
       "path": "src/crdt/accountSuccessor.ts",
@@ -901,7 +901,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "b947bd73c46a2df1c7172dd7c2f6d4e1ca81846cab1f494d71a6d0b9c15bf0ec"
+      "sha256": "98e09c7c493cb32a6a4d94b89399fbeeec192c750c5e17669b82f3d7ab32b703"
     },
     {
       "path": "src/crdt/cpuBudget.ts",
@@ -913,7 +913,7 @@
     },
     {
       "path": "src/crdt/custody.ts",
-      "sha256": "a708aeb75a6213a71f0ad1b9574705419f37d02839a706344fe8f1083f590416"
+      "sha256": "5b2cee96662026e21c5329b343197d5882c5b91a64ab69eb1292e5b3bb485cb3"
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
@@ -1005,7 +1005,7 @@
     },
     {
       "path": "src/crdt/joinedAccount.ts",
-      "sha256": "dbd300dcde81e2538f31aa3783e2da57fdd37c70ab02713f64e316c1bcd819aa"
+      "sha256": "7cbd69d3cda075a1411cb8b3d5a3c36d1c67276f23b0009e9f3c39864b2f0671"
     },
     {
       "path": "src/crdt/journalCodec.ts",
@@ -1105,7 +1105,7 @@
     },
     {
       "path": "src/crdt/localBaselineStorage.ts",
-      "sha256": "f4a7b4c651ac8a25be95ad63ad7f0290f42ef6b9819ccee442965561e73371ea"
+      "sha256": "2befdce0a55b627f3ffecabb01379c038def5b2b2241fa326df7279ba602ec43"
     },
     {
       "path": "src/crdt/localClear.ts",

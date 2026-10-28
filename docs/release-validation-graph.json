@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 550,
-    "requiredTestFiles": 544,
+    "testFiles": 551,
+    "requiredTestFiles": 545,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11178,6 +11178,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localBaselineExactReuse.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localBaselineExactReuse.test.ts"
+        ]
+      },
+      "declarations": 11,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/localBaselineLifecycle.test.ts",
       "status": "required",
       "invocation": {
@@ -19305,6 +19320,10 @@
       "sha256": "82898866e5a76d12497df7db69478bcfcd0a31fe99933f4274f17055c95b5ea9"
     },
     {
+      "path": "test/local-baseline/one-shot-fixture.ts",
+      "sha256": "313f6c8312a3f9af3574192de8e0fa5d1ed6c074a2766071a650628ed8a47253"
+    },
+    {
       "path": "test/local-baseline/owner.native.mjs",
       "sha256": "b3b743fd89efc46cf8348d48eade9621e8b8ed2575bd59380ae4d5d9e231793f"
     },
@@ -19359,6 +19378,10 @@
     {
       "path": "test/localBaselineAnchor.test.ts",
       "sha256": "23374b782e7d51fed8978b561b1136e6c9c547513ee3f13a54d594167921e56d"
+    },
+    {
+      "path": "test/localBaselineExactReuse.test.ts",
+      "sha256": "89d2625deb814f7465cf2717356503792d1c223183a5b02596d6758b2259e5ba"
     },
     {
       "path": "test/localBaselineLifecycle.test.ts",

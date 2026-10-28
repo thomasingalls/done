@@ -1,0 +1,5 @@
+authority map: 80 entries, 102 chains; every chain terminates at a permitted root for its guard, and every signature and AEAD construction in the 19 swept documents sits in a pinned section.
+  open at their own joint: 0
+  blocked through an open home: 0
+  This proves the rules resolve and their homes are pinned — not that the corpus implements them: each open entry flips only at its return, under that record's falsifiers. Account construction coverage is reported separately below.
+  Account constructions: 78 specified, 14 open, 4 inherited outside Account acceptance, 1 non-crypto exclusions. This is registration evidence, not a finding-closure decision. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit.

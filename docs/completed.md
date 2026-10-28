@@ -16824,3 +16824,21 @@ speedup is claimed. Next order: same-owner reuse, explicit cross-owner handoff, 
 reuse, retaining fresh snapshot/authority/lifecycle/commit and independent candidate/readback checks.
 [Evidence and limits](performance-experiments/2026-10-27-android-opening/phase121/README.md). No
 runtime/old-test edits, signing, push, release prep or deployment; qualification remains paused.
+
+
+## 2026-10-27 — same-owner baseline proof reuse (phase122)
+
+Original/joined startup explicitly opt into exact v5 proof reuse within one recovery owner. Full
+native row/chunk reads, fresh MAC/authority checks, invalidation, callback validation and detached
+results remain; distinct capabilities/reference/warm-audit/cold-owner paths keep full replay. The
+new discriminators fail on the predecessor. Ten new regressions plus affected suites pass95 cases;
+type/lint pass. Final disposable native opening performs2 full replays instead of3 while retaining
+all3 native snapshots, writing and offline reopening. No phone timing claim or computer use.
+The reviewed inventory preserves existing blocks and adds the required uncredited file:913/368;
+86 metadata cases pass. [Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase122/README.md).
+No signing, push, release preparation or deployment; general qualification remains paused.
+
+Phase122 final-review addendum: require the retained view to remain identical across reuse awaits.
+A new late-disposal regression brings new cases to11 and affected cases to96, all passing. Final
+native work counts, types/format and normal diagnostic build pass after this guard. The earlier
+21 native failure cases remain evidence for the version immediately before this guard.

@@ -259,6 +259,8 @@ export async function verifyAccountUnderPermit(
                 ...(marker.v === 9 && hasBaselineVerifier()
                   ? {
                       ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
+                      // This verification owns immutable inbound/key/installation evidence until recovery ends.
+                      exactBaselineReuse: true as const,
                       baseline: async (
                         _task: SessionTask,
                         identity: import('./contentRecord').ContentIdentity,
