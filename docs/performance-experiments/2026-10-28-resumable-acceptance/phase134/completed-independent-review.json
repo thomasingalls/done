@@ -1,0 +1,34 @@
+{
+  "status": "passed-audit-of-failed-acceptance",
+  "candidateAccepted": false,
+  "sourceAndApparatusExact": true,
+  "rows": [
+    {
+      "name": "maintenance-1-R-normal",
+      "all120TimingBoundsIndependentlyReconstructed": true,
+      "local16msFails": true,
+      "falseGateControlRejected": true,
+      "missingKeyControlRejected": true,
+      "workerResourceAndNoOomGuardsPassed": true,
+      "wholeDataAndColdGuardsPassed": true
+    },
+    {
+      "name": "maintenance-2-C-normal",
+      "all120TimingBoundsIndependentlyReconstructed": true,
+      "local16msFails": true,
+      "falseGateControlRejected": true,
+      "missingKeyControlRejected": true,
+      "workerResourceAndNoOomGuardsPassed": true,
+      "wholeDataAndColdGuardsPassed": true
+    }
+  ],
+  "unexecuted": [
+    "maintenance-3-C-withheld",
+    "maintenance-4-R-withheld",
+    "late-1-R-normal",
+    "late-2-C-normal",
+    "late-3-C-withheld",
+    "late-4-R-withheld"
+  ],
+  "stopReason": "candidate local typing p95 exceeds unchanged16ms; no withheld/two-receiver acceptance claim"
+}
