@@ -1,0 +1,177 @@
+{
+  "startedAt": 1793192985446.5918,
+  "lastOfferedKeyMs": 72599.25659179688,
+  "initialWritingDeliveredMs": 73476.21240234375,
+  "backlogCompletedMs": 90581.77734375,
+  "rows": [
+    {
+      "device": 1,
+      "requests": {
+        "/account/session/v1/begin": {
+          "count": 1,
+          "firstMs": -7023.779052734375,
+          "lastMs": -7023.779052734375,
+          "statusCodes": []
+        },
+        "/account/session/v1/acknowledge": {
+          "count": 4,
+          "firstMs": -6536.91796875,
+          "lastMs": 7.803466796875,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/session/v1/renew": {
+          "count": 1,
+          "firstMs": 46.0927734375,
+          "lastMs": 46.0927734375,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/grant/v1/begin": {
+          "count": 1,
+          "firstMs": 51.719970703125,
+          "lastMs": 51.719970703125,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/grant/v1/finish": {
+          "count": 1,
+          "firstMs": 273.760009765625,
+          "lastMs": 273.760009765625,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/notifications/v1/subscribe": {
+          "count": 1,
+          "firstMs": 281.171142578125,
+          "lastMs": 281.171142578125,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/membership/v2/discover": {
+          "count": 18,
+          "firstMs": 281.197509765625,
+          "lastMs": 88420.88452148438,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/history/v1/checkpoint": {
+          "count": 17,
+          "firstMs": 579.427978515625,
+          "lastMs": 88631.31982421875,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/delivery/read-v2": {
+          "count": 380,
+          "firstMs": 2535.397216796875,
+          "lastMs": 90405.25927734375,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/delivery/read-v2-batch": {
+          "count": 300,
+          "firstMs": 3811.287841796875,
+          "lastMs": 89984.98486328125,
+          "statusCodes": [
+            200,
+            429
+          ]
+        }
+      }
+    },
+    {
+      "device": 2,
+      "requests": {
+        "/account/session/v1/begin": {
+          "count": 1,
+          "firstMs": -3876.43603515625,
+          "lastMs": -3876.43603515625,
+          "statusCodes": []
+        },
+        "/account/session/v1/acknowledge": {
+          "count": 3,
+          "firstMs": -596.65771484375,
+          "lastMs": 7.88232421875,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/session/v1/renew": {
+          "count": 1,
+          "firstMs": 36.250732421875,
+          "lastMs": 36.250732421875,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/grant/v1/begin": {
+          "count": 1,
+          "firstMs": 49.150390625,
+          "lastMs": 49.150390625,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/grant/v1/finish": {
+          "count": 1,
+          "firstMs": 269.62109375,
+          "lastMs": 269.62109375,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/notifications/v1/subscribe": {
+          "count": 1,
+          "firstMs": 277.51904296875,
+          "lastMs": 277.51904296875,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/membership/v2/discover": {
+          "count": 3,
+          "firstMs": 277.9501953125,
+          "lastMs": 64732.472900390625,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/history/v1/checkpoint": {
+          "count": 2,
+          "firstMs": 569.489013671875,
+          "lastMs": 64827.810302734375,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/delivery/read-v2": {
+          "count": 18,
+          "firstMs": 2507.016357421875,
+          "lastMs": 65275.93212890625,
+          "statusCodes": [
+            200
+          ]
+        },
+        "/account/delivery/submit": {
+          "count": 120,
+          "firstMs": 13610.951171875,
+          "lastMs": 91184.17993164062,
+          "statusCodes": [
+            200
+          ]
+        }
+      }
+    }
+  ],
+  "finalMaintenancePhase": "idle",
+  "interpretation": "Last submit/read ordering only; original probe did not timestamp the followup offer or sample live scheduler after it."
+}

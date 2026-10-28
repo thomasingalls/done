@@ -1,0 +1,11 @@
+{
+  "actualSchedulerSha256": "fe0640d10222704ec0daf73ab880377b9600ec0fa99bde2720abf399df0737a5",
+  "schedulerByteExact142": true,
+  "cases": {
+    "lostHint": "no maintenance, server gains accepted work after first idle; no discovery by30s; discovery at60s",
+    "deliveredHint": "same fixture with explicit remote wake discovers immediately"
+  },
+  "fakeClock": true,
+  "notPerformanceAcceptance": true,
+  "newOldTestsModified": false
+}

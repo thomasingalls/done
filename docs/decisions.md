@@ -5870,3 +5870,13 @@ The145 candidate has an empty constant-offset clock intersection and cannot rece
 Keep its raw results and stop rule. Measure future driver offers/scheduling/brackets on a monotonic
 clock, test a controlled wall-clock step, and keep the original1ms bound and all performance gates.
 Use fresh profiles and a new frozen comparison; do not widen the allowance to fit an observed run.
+
+
+## 2026-10-28 — Separate accepted publication from peer discovery before blaming maintenance
+
+The147 follow-up is already in the server’s accepted history; copies discover it with no new
+submission and unchanged native proofs. Reframe the blocker as receiver discovery after a missed
+last hint. A healthy60–65s idle repair policy predates143; deterministic controls reproduce a
+30s miss without maintenance. Do not claim an exact original live-state replay or silently
+reclassify the frozen failure as a fixture success. Preserve30s/16ms/2.5s gates while deciding a
+bounded reconciliation repair with an explicit network/capacity budget.

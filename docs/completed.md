@@ -17109,3 +17109,17 @@ byte-exact143 assets. Sample authenticated owner metadata, then automatic delive
 explicit send retry if necessary; no new writing or storage reinjection. [Protocol/identities](performance-experiments/2026-10-28-post-maintenance-publication/phase149/README.md).
 No diagnostic dispatched yet. Cause/introduction remain unproven; old failures/gates/defaults
 and real data are preserved. No runtime/test change, phone/computer use, signing or release.
+
+
+## 2026-10-28 — Phase150: accepted edit missed receiver discovery
+
+Copied failed profiles reconnect and receive the missing edit at the5s observation, with no new
+submit or manual retry, unchanged sender prefix121 and byte-identical native server store/proofs.
+The sender had published successfully. Last original receive precedes the last submit; suppressed
+hint/content plus a healthy60–65s idle interval explains why a30s peer guard can fail. Two real-
+scheduler fake-clock controls reproduce that gap without maintenance and immediate discovery
+with a hint. [Evidence/causal limits](performance-experiments/2026-10-28-post-maintenance-publication/phase150/README.md).
+Retain both pre-execution configuration failures and successful diagnostics. Policy/scheduler
+are byte-exact142; original profiles/data remain exact. No production/test or guarantee change.
+Original147 remains failed/incomplete; next target is missed-hint idle reconciliation and its
+capacity cost, not an assumed maintenance/publication defect. No activation or release.
