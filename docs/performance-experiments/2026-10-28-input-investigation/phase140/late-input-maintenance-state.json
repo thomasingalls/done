@@ -1,0 +1,149 @@
+{
+  "kind": "observed policy state, not exclusive CPU attribution",
+  "tailsAfterFirst5Seconds": [
+    {
+      "index": 17,
+      "localUpperMs": 18.89990234375,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 29,
+      "localUpperMs": 16.199951171875,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 32,
+      "localUpperMs": 19.599853515625,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 37,
+      "localUpperMs": 16.599853515625,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 39,
+      "localUpperMs": 24.300048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 48,
+      "localUpperMs": 22.099853515625,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 51,
+      "localUpperMs": 16.5,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 53,
+      "localUpperMs": 17.39990234375,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 54,
+      "localUpperMs": 20.300048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 61,
+      "localUpperMs": 16.800048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 62,
+      "localUpperMs": 16.39990234375,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 63,
+      "localUpperMs": 19.800048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 64,
+      "localUpperMs": 20.599853515625,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 65,
+      "localUpperMs": 22.099853515625,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 66,
+      "localUpperMs": 17.199951171875,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 72,
+      "localUpperMs": 18.0,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 79,
+      "localUpperMs": 26.300048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 84,
+      "localUpperMs": 18.300048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 85,
+      "localUpperMs": 16.5,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 97,
+      "localUpperMs": 23.5,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 98,
+      "localUpperMs": 18.300048828125,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 112,
+      "localUpperMs": 17.89990234375,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 116,
+      "localUpperMs": 20.099853515625,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    },
+    {
+      "index": 117,
+      "localUpperMs": 21.199951171875,
+      "lastObservedMaintenancePhase": "idle",
+      "lastObservedAttempt": 2
+    }
+  ]
+}

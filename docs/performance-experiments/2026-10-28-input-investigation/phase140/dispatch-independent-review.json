@@ -1,0 +1,50 @@
+{
+  "kind": "independent audit of mechanism study; no activation credit",
+  "reports": [
+    {
+      "name": "dispatch-1-static-fault",
+      "all120BoundsAndQueueIntervalsReconstructed": true,
+      "wrongQuantileControlRejected": true,
+      "binaryWorkerResourceDataGuards": true,
+      "localP95Ms": 6.800048828125,
+      "nativeControlSensitivity": true
+    },
+    {
+      "name": "dispatch-2-static-before",
+      "all120BoundsAndQueueIntervalsReconstructed": true,
+      "wrongQuantileControlRejected": true,
+      "binaryWorkerResourceDataGuards": true,
+      "localP95Ms": 8.300048828125,
+      "nativeControlSensitivity": false
+    },
+    {
+      "name": "dispatch-3-app-native",
+      "all120BoundsAndQueueIntervalsReconstructed": true,
+      "wrongQuantileControlRejected": true,
+      "binaryWorkerResourceDataGuards": true,
+      "localP95Ms": 5.39990234375,
+      "nativeControlSensitivity": false
+    },
+    {
+      "name": "dispatch-4-app-editor",
+      "all120BoundsAndQueueIntervalsReconstructed": true,
+      "wrongQuantileControlRejected": true,
+      "binaryWorkerResourceDataGuards": true,
+      "localP95Ms": 20.599853515625,
+      "nativeControlSensitivity": false
+    },
+    {
+      "name": "dispatch-5-static-after",
+      "all120BoundsAndQueueIntervalsReconstructed": true,
+      "wrongQuantileControlRejected": true,
+      "binaryWorkerResourceDataGuards": true,
+      "localP95Ms": 5.2001953125,
+      "nativeControlSensitivity": false
+    }
+  ],
+  "staticBookendDriftMs": 3.099853515625,
+  "staticBookendDriftFraction": 0.37347413007030034,
+  "bookendInstabilityFlag": true,
+  "existingBrowserSensorAndNodeMonitorByteExact": true,
+  "limitations": "Native/app contrast bundles editor writes and induced work; flagged host drift blocks timing promotion; internal renderer intervals and separate source profiling are mechanism evidence only."
+}

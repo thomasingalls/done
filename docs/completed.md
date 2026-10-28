@@ -16999,3 +16999,14 @@ existing event/DOM/RAF/heartbeat/driver sensors; parser verifies retained contro
 faults. Fixture lint passes. Preserve original preparation exposure, data/undo/cold/native guards
 and16ms/2.5s gates. [Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase139/README.md).
 No timing yet or runtime/old-test/default/release change; qualification paused, service off.
+
+
+## 2026-10-28 — Phase140: input delay localizes to renderer queue under real full-history edits
+
+Five fixed diagnostic journeys finish; known80ms fault sensors and complete600-key independent
+reconstruction pass. Busy app native p955.4ms versus real card20.6ms; browser stamp→handler0.8/17.6ms,
+mutation0.5/0.7ms, driver/parent~2ms. Bookend8.3→5.2ms crosses declared3ms/20% instability flag: no
+timing promotion or causal claim.24slow inputs after5s last observe maintenance not running. Both
+app cases retain all data/undo/cold/native guards. [Evidence](performance-experiments/2026-10-28-input-investigation/phase140/README.md).
+Next separately profile middle-of-typing with maintenance explicitly idle/unchanged, to locate
+induced page work. Existing16ms/2.5s failures remain, defaults/service off, no runtime/test/release change.
