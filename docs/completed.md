@@ -17010,3 +17010,11 @@ timing promotion or causal claim.24slow inputs after5s last observe maintenance 
 app cases retain all data/undo/cold/native guards. [Evidence](performance-experiments/2026-10-28-input-investigation/phase140/README.md).
 Next separately profile middle-of-typing with maintenance explicitly idle/unchanged, to locate
 induced page work. Existing16ms/2.5s failures remain, defaults/service off, no runtime/test/release change.
+
+
+## 2026-10-28 — Phase141: freeze source profile with maintenance explicitly paused
+
+One middle-of-typing source-attribution journey frozen, preserving complete input/data/undo/cold/
+native checks and all failures. Require unchanged attempts/non-running maintenance across30s,
+full CPU sample denominator, mapped-code validation and no timing promotion. [Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase141/README.md).
+No profile dispatched yet, no runtime/old-test/default/qualification/release change.

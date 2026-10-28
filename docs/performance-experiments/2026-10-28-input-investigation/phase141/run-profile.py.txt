@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,os,json,time,hashlib
+s=Path(__file__).resolve().parents[1];identity=json.loads((s/'profile-identity.json').read_text());assert all(hashlib.sha256((s/p).read_bytes()).hexdigest()==h for p,h in identity['apparatus'].items());node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';out=s/'profile-1-full-history';out.mkdir(mode=0o700,exist_ok=False);env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','FAIR_OUT':str(out),'FAIR_VARIANT':'C','FAIR_DIST':str(s/'source-C/dist'),'QUIET_WITHHOLD':'0','DISPATCH_TARGET':'editor','DISPATCH_FAULT':'0','DISPATCH_MONITOR_DIR':str(out/'node-monitors'),'NODE_OPTIONS':os.environ.get('NODE_OPTIONS','')+' --import='+str(s/'diagnostic/node-monitor.mjs')};cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/profile.config.ts'];receipt={'startedAt':time.time_ns()//1000000,'command':cmd}
+with(out/'console.log').open('w')as f:p=subprocess.run(cmd,cwd=s/'harness-P',env=env,stdout=f,stderr=subprocess.STDOUT)
+receipt.update(exit=p.returncode,finishedAt=time.time_ns()//1000000);(out/'runner-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print('profile functional exit',p.returncode,flush=True)
+if p.returncode:raise SystemExit(p.returncode)
+with(s/'profile-analysis.log').open('w')as f:p=subprocess.run([node,str(s/'profile/analyze-profile.mjs')],stdout=f,stderr=subprocess.STDOUT)
+print('source profile analysis exit',p.returncode,flush=True);raise SystemExit(p.returncode)
