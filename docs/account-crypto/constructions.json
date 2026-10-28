@@ -7473,6 +7473,10 @@
         {
           "path": "src/crdt/retentionPreparationStorage.ts",
           "name": "savePreparationDelta"
+        },
+        {
+          "path": "src/crdt/contentStore.ts",
+          "name": "createContentOwner"
         }
       ],
       "homePins": [],
@@ -7485,7 +7489,11 @@
         "test/preparationBinding.test.ts",
         "test/preparationRemoval.test.ts",
         "vite/retentionPreparationIdentity.test.ts",
-        "test/local-baseline/preparation.node.mjs"
+        "test/local-baseline/preparation.node.mjs",
+        "test/retentionPreparationReplay.test.ts",
+        "test/retentionPreparationOwner.test.ts",
+        "test/retentionPreparationScheduling.test.ts",
+        "test/local-baseline/preparation-owner.node.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -7494,7 +7502,7 @@
         "native-lifecycle-qualification",
         "resumed-reference-equivalence"
       ],
-      "blocker": "Encrypted native persistence and source-closure binding have directed tests. Application verifier/scheduler adapters, composed resume and performance qualification remain open. No aggregate credit.",
+      "blocker": "Implemented encrypted native receipts, first-reference adapters and serialized account scheduling, with directed and native interruption/reopen proof. The unchanged2.5s whole-client contention gate and phone budgets remain unqualified; explicit resume flag defaults off. Service automation remains off. No aggregate credit.",
       "next": "Add native checkpoint/cleanup and guarded verifier/scheduler adapters, preserve originals and independent final replay, and qualify interruption/resume against the unchanged2.5s peer gate."
     }
   ],

@@ -1,0 +1,11 @@
+{
+  "changedSources": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/automaticLocalRetention.ts",
+    "src/crdt/contentStore.ts",
+    "src/crdt/localBaselineMode.ts"
+  ],
+  "allPriorDomainsAndSitesPreserved": true,
+  "onlyPriorLinePinsChanged": true,
+  "constructionStillOpen": true
+}

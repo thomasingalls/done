@@ -155,6 +155,11 @@ export function createAutomaticLocalRetention(options: {
         reason = undefined;
         notBefore = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
         again = true;
+      } else if (result.kind === 'preparation-saved') {
+        // Useful bounded work is durable. Yield before another slice; input/readiness still wins.
+        reason = 'preparation-saved';
+        notBefore = 0;
+        again = true;
       } else if (result.kind === 'skipped') {
         if (result.reason === 'activity-or-journal') interruptions++;
         reason = result.reason;

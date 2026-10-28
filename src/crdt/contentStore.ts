@@ -1,4 +1,23 @@
-import { hasBaselineInstaller, hasRetentionWriter } from './localBaselineMode';
+import {
+  PreparationPause,
+  createPreparationJournal,
+  type PreparationJournal,
+} from './retentionPreparation';
+import { preparationContext } from './retentionPreparationBinding';
+import {
+  loadPreparationCheckpoint,
+  importPreparationCheckpoint,
+  disposePreparationCheckpoint,
+  savePreparationDelta,
+  removePreparationCache,
+  type PreparationCheckpoint,
+  type PreparationStorageOwner,
+} from './retentionPreparationStorage';
+import {
+  hasBaselineInstaller,
+  hasRetentionWriter,
+  preparationVerifierIdentity,
+} from './localBaselineMode';
 import type { AccountBaselineRead } from './localBaselineShadow';
 import type { createBaselineReuse } from './localBaselineReuse';
 import { StorageCompatibilityError } from './storageCompatibility';
@@ -125,6 +144,8 @@ export const createContentOwner = (
   )
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
+  const pendingPreparations = new Set<() => void>();
+  let disposed = false;
   let witness!: ContentWitness;
   const allowReduced = crypt.readBaseline === true;
   const metadata = crypt.baseline ? createBaselineMetadata(scope, allowReduced) : undefined;
@@ -771,6 +792,60 @@ export const createContentOwner = (
       for (const bytes of plaintexts) bytes.fill(0);
     }
   };
+  const preparationStorage = (
+    implementation: string,
+    fresh: (task: SessionTask) => Promise<void>,
+    check: () => void,
+  ): PreparationStorageOwner => ({
+    name: db!.name,
+    crypt,
+    async capture(task) {
+      await fresh(task);
+      check();
+      const inventory = await retentionInventory(task);
+      let delivered = false;
+      try {
+        const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
+        const counter = parseCounter(raw, scope, witness.intent);
+        await verify(task, counterPayload(scope, counter), counter.mac);
+        if (counter.active_gen !== generation || disposed) throw new MaintenanceInterrupted();
+        const context = await crypt.baseline!(task, { ...scope }, counter);
+        const bound = await preparationContext(
+          context,
+          implementation,
+          witness.intent,
+          baselineAuth(task),
+        );
+        task.step(check);
+        delivered = true;
+        return { context: bound, inventory, counter };
+      } finally {
+        if (!delivered) eraseVerified(inventory);
+      }
+    },
+    async reserve(task, count) {
+      await fresh(task);
+      task.step(check);
+      for (;;) {
+        if (disposed) throw new MaintenanceInterrupted();
+        const before = await currentCounter(task);
+        let next = reserveCounter(before, count, generation);
+        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+        if (await compareAndWrite(task, before, next, [], check)) {
+          if (
+            crypt.warmLoads &&
+            warm &&
+            openedView &&
+            equalCounter(scope, openedView.counter, before)
+          )
+            task.step(() => {
+              openedView!.counter = structuredClone(next);
+            });
+          return { first: before.next_seq, generation };
+        }
+      }
+    },
+  });
   /** Read-only preparation may finish before final FIFO entry. No task/crypto callback escapes. */
   const prepareHistoryRemoval = async (
     task: SessionTask,
@@ -803,6 +878,9 @@ export const createContentOwner = (
     const inventory = await retentionInventory(task);
     let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
     let delivered = false;
+    let preparation: { journal: PreparationJournal; checkpoint: PreparationCheckpoint } | undefined;
+    let transferred = false;
+    const implementation = preparationVerifierIdentity();
     try {
       const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
       const counter = parseCounter(raw, scope, witness.intent);
@@ -843,6 +921,36 @@ export const createContentOwner = (
         binding,
         checkRetained,
         progress,
+        implementation
+          ? async (counter) => {
+              const bound = await preparationContext(
+                context,
+                implementation,
+                witness.intent,
+                baselineAuth(task),
+              );
+              const storage = preparationStorage(
+                implementation,
+                async () => assertCurrent(),
+                checkCommit,
+              );
+              const read = await loadPreparationCheckpoint(task, storage, {
+                context: bound,
+                inventory,
+                counter,
+              });
+              const journal = createPreparationJournal({
+                context: bound,
+                current: () => {
+                  task.step(checkCommit);
+                  context.assertCurrent();
+                },
+              });
+              preparation = { journal, checkpoint: read.checkpoint };
+              if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
+              return journal;
+            }
+          : undefined,
       );
       if (plan.kind === 'skipped') return plan;
       const prepared = plan;
@@ -933,6 +1041,7 @@ export const createContentOwner = (
           await fresh();
           check();
           measureLedgerWork('retentionEndAuthority', phase);
+          await removePreparationCache(currentTask, db!.name);
           return { kind: 'removed' as const, revision: report.revision, removed: report.rows };
         } finally {
           const cleanup = ledgerWorkStart();
@@ -953,13 +1062,54 @@ export const createContentOwner = (
         dispose,
         check: checkRetained,
       });
+    } catch (cause) {
+      if (!(cause instanceof PreparationPause) || !preparation || !implementation) throw cause;
+      // Only a still-live read task can authenticate the delta. No expired task callback escapes.
+      const delta = await preparation.journal.delta(baselineAuth(task));
+      const checkpoint = preparation.checkpoint;
+      preparation.journal.dispose();
+      let used = false;
+      const dispose = () => {
+        used = true;
+        eraseVerified(delta);
+        disposePreparationCheckpoint(checkpoint);
+        pendingPreparations.delete(dispose);
+      };
+      pendingPreparations.add(dispose);
+      transferred = true;
+      return Object.freeze({
+        kind: 'preparation-checkpoint' as const,
+        dispose,
+        async persist(
+          currentTask: SessionTask,
+          fresh: () => Promise<void>,
+          checkJournal: () => void,
+        ) {
+          if (used || disposed) throw new MaintenanceInterrupted();
+          used = true;
+          try {
+            return await savePreparationDelta(
+              currentTask,
+              preparationStorage(implementation, fresh, checkJournal),
+              checkpoint,
+              delta,
+            );
+          } finally {
+            dispose();
+          }
+        },
+      });
     } finally {
       if (!delivered && plan?.kind === 'local-retention-dry-run') disposeRetentionPlan(plan);
+      preparation?.journal.dispose();
+      if (preparation && !transferred) disposePreparationCheckpoint(preparation.checkpoint);
       eraseVerified(inventory);
     }
   };
   return {
     dispose() {
+      disposed = true;
+      for (const dispose of [...pendingPreparations]) dispose();
       clearView();
       db?.close();
       db = undefined;
@@ -1282,6 +1432,13 @@ export const createContentOwner = (
         expectedRevision,
         () => task.step(checkCommit),
       );
+      if (prepared.kind === 'preparation-checkpoint') {
+        try {
+          return await prepared.persist(task, assertCurrent, checkCommit);
+        } finally {
+          prepared.dispose();
+        }
+      }
       if (prepared.kind !== 'prepared-removal') return prepared;
       try {
         return await prepared.commit(task, assertCurrent, checkCommit, () => {});

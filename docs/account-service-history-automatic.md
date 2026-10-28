@@ -73,3 +73,8 @@ retains deterministic policy cases, deliberate-fault controls, actual scoped/nat
 failed attempts and ordinary source/inventory checks. The initial older bearer fixture is retained
 as a rejected test apparatus; granting it history access was not the repair. General qualification
 and release preparation remain paused. Nothing is signed, pushed or deployed by this phase.
+
+Phase130 follow-up: durable local preparation is implemented behind its own default-off
+`VITE_ACCOUNT_RETENTION_RESUME` experiment. This does not enable the service policy or clear its
+activation blocker: whole-client preparation/editing contention must still meet2.5s peer p95 and
+phone/session budgets must be established separately. See [the implemented boundary](account-local-retention-preparation-journal.md#implemented-boundary-phases128130).

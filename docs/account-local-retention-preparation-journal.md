@@ -84,3 +84,22 @@ abort at reservation, chunk write, manifest exchange and readback boundaries, ke
 and compare resumed versus uninterrupted/reference results. Changed/unknown prefix, appends,
 nonce burns, generation/authority/source changes, lock erasure, cleanup and offline reopen remain
 separate obligations. A tiny fixture or a passing model cannot establish phone bounds.
+
+## Implemented boundary, phases128–130
+
+Encrypted auxiliary native storage, exact prefix/source binding, source-closure identity, first-reference
+adapters and fresh serialized account handoff now exist. The read task authenticates and erases its
+receipt delta before settlement; a new serialized task repeats readiness, custody/authority, native
+prefix and delta authentication before allocating any sealing invocation. Owner disposal retires
+queued handoffs. A saved slice releases the task and permits the local policy to continue after an
+event-loop yield, with the existing input quiet/readiness and refusal clocks intact. Original rows
+stay until the unchanged final candidate/cut/readback proof succeeds. Credential-free device removal
+also deletes the derived auxiliary cache. A successful authenticated cut removes its stale cache.
+
+Activation is a separate boundary: `VITE_ACCOUNT_RETENTION_RESUME=1` plus all existing reader/writer
+gates, production (no HMR) and the generated verifier identity are required. The new opt-in defaults
+off. `VITE_ACCOUNT_HISTORY_AUTO` remains off. Functional/native tests do not establish the existing
+2.5s peer p95 gate under heavy preparation competing with editing. Prefix capture/load/hash/save,
+semantic reconstruction and final independent validation are outside the2s new-work target; one
+crypto/Yjs operation is not preempted. Phone short-session benefit and total slice bounds remain
+unmeasured; do not advertise2s whole-operation completion or activate service automation from this.

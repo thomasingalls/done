@@ -11,3 +11,13 @@ export const hasRetentionWriter = () =>
 /** Separate private policy opt-in; compatible reading alone must never schedule conversion. */
 export const hasAutomaticLocalRetention = () =>
   hasRetentionWriter() && import.meta.env?.['VITE_ACCOUNT_RETENTION_AUTO'] === '1';
+/** Durable receipt reuse is an explicit experiment; never survives HMR under a stale identity. */
+declare const __ACCOUNT_PREPARATION_VERIFIER__: string;
+export const preparationVerifierIdentity = () =>
+  hasRetentionWriter() &&
+  import.meta.env?.['VITE_ACCOUNT_RETENTION_RESUME'] === '1' &&
+  import.meta.env.PROD &&
+  typeof __ACCOUNT_PREPARATION_VERIFIER__ === 'string' &&
+  /^[0-9a-f]{64}$/.test(__ACCOUNT_PREPARATION_VERIFIER__)
+    ? __ACCOUNT_PREPARATION_VERIFIER__
+    : undefined;

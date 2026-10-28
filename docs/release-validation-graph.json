@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 564,
-    "requiredTestFiles": 558,
+    "testFiles": 567,
+    "requiredTestFiles": 561,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11093,6 +11093,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/local-baseline/preparation-owner.node.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/local-baseline/preparation-owner.node.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/local-baseline/preparation.node.mjs",
       "status": "required",
       "invocation": {
@@ -13165,6 +13180,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/retentionPreparationOwner.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/retentionPreparationOwner.test.ts"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/retentionPreparationOwnership.test.ts",
       "status": "required",
       "invocation": {
@@ -13188,6 +13218,21 @@
           "node_modules/vitest/vitest.mjs",
           "run",
           "test/retentionPreparationReplay.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/retentionPreparationScheduling.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/retentionPreparationScheduling.test.ts"
         ]
       },
       "declarations": 3,
@@ -15707,7 +15752,11 @@
         "test/preparationBinding.test.ts",
         "test/preparationRemoval.test.ts",
         "vite/retentionPreparationIdentity.test.ts",
-        "test/local-baseline/preparation.node.mjs"
+        "test/local-baseline/preparation.node.mjs",
+        "test/retentionPreparationReplay.test.ts",
+        "test/retentionPreparationOwner.test.ts",
+        "test/retentionPreparationScheduling.test.ts",
+        "test/local-baseline/preparation-owner.node.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -15727,7 +15776,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "738160feacbf49e4141aa6cd4ed57291b482b94f27e40dfea9fc50ed84af806a"
+      "sha256": "ebda6b822d6a0b4dbaa19b030f19c9c2ca2ea37c5b81369bb58c712e8624d47f"
     },
     {
       "path": "package.json",
@@ -19534,6 +19583,14 @@
       "sha256": "c2227b1cfddec42340a367f391fe8f20cfdd000dc50fa83d103cd7a326a0a68a"
     },
     {
+      "path": "test/local-baseline/preparation-owner-fixture.ts",
+      "sha256": "9b5aba584246a119b9a6b8a6cc7b8e1450d7daa89eab8f7d2dbe84b396d24542"
+    },
+    {
+      "path": "test/local-baseline/preparation-owner.node.mjs",
+      "sha256": "8304e444760aa6cbc5cec53776d01d7c16282402bce66e0a3310a9fdd13ac42f"
+    },
+    {
       "path": "test/local-baseline/preparation-protocol-fixture.ts",
       "sha256": "428e0cf1f56fea11bc5434548622fece90446dca5b26b76414895e0c4350a5c9"
     },
@@ -20138,12 +20195,20 @@
       "sha256": "17ffa33dbb2e99500296ef46a201935652a126c2cf614cbd5c47b5d3ef99ab3f"
     },
     {
+      "path": "test/retentionPreparationOwner.test.ts",
+      "sha256": "23948efad466edd58f534a622720bc62c111657356f9a9abc337576758d52641"
+    },
+    {
       "path": "test/retentionPreparationOwnership.test.ts",
       "sha256": "d8444b0b388d611648a1445149976ba5fbf547a50c736d9d9ea5b87df9100eb8"
     },
     {
       "path": "test/retentionPreparationReplay.test.ts",
       "sha256": "ef01f80835fae55bbedd889b3889a76eae52621b88d9302f4e158ca6cf4351b2"
+    },
+    {
+      "path": "test/retentionPreparationScheduling.test.ts",
+      "sha256": "116353c7269e89753479ab4c7217f7c39c1750f05d21932569e3cb04a1a44b0c"
     },
     {
       "path": "test/retentionPreparationStorage.test.ts",
@@ -20571,7 +20636,7 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "cc6f53e9176a4ecf8ab4f32118ac301e88bc9e29a58fdd5c543957211fdd9bb4"
+      "sha256": "c07c7456d6f895c041b6da7eebdf3b47a3a9a0f3e2301cfee941ac8ea7466cd5"
     },
     {
       "path": "vite/accountRetentionFlags.test.ts",

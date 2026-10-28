@@ -884,6 +884,17 @@ async function openAccountReceiveOwner(
       },
       true, // Read-only preparation yields to queued storage; final exchange below remains exclusive.
     );
+    if (prepared.kind === 'preparation-checkpoint') {
+      try {
+        return await runBaselineShadow(async (task, _owner, _route, checkJournal) => {
+          const refused = await retentionReady(task);
+          if (refused) return refused;
+          return prepared.persist(task, () => assertCurrent(task), checkJournal);
+        });
+      } finally {
+        prepared.dispose();
+      }
+    }
     if (prepared.kind !== 'prepared-removal') return prepared;
     return Object.freeze({
       kind: 'prepared-removal' as const,
@@ -3243,7 +3254,9 @@ async function openReceivingWorkspace(
       });
       automaticRetention = maintenance;
       const changed = workspace.subscribe(maintenance.wake);
-      const statusChanged = workspace.onStatus(maintenance.wake);
+      // A durability barrier also publishes status. It is readiness, not new writing;
+      // otherwise each saved slice would reset its own ten-second quiet window.
+      const statusChanged = workspace.onStatus(maintenance.refresh);
       // Input/selection can precede its durable publication. Defer the quiet window immediately;
       // the existing owner guard still interrupts preparation if activity races the attempt.
       const activity = maintenance.wake;

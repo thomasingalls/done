@@ -5815,3 +5815,9 @@ acceptance. The standalone model is not native durability or a time bound on ind
 ## 2026-10-28 — Preparation storage and handoff
 
 Derive an auxiliary database name from the existing canonical content name; preserve original stores and schemas. Reserve every encryption invocation in the existing authenticated main allocator before sealing, atomically append encrypted receipt chunks plus head, and check exact readback. An old read task may export only a MAC-protected delta; a fresh serialized task reauthenticates context/prefix/delta before allocation. Bind receipt reuse to conservative runtime/build-source closure so changed verifier code cannot inherit old acceptance. Unknown layouts refuse overwrite; interrupted saves retain the old head.
+
+## 2026-10-28 — Fresh serialized preparation saves; readiness is distinct from input
+
+A read preparation task may export only its locally authenticated delta before settlement. A new serialized task rechecks owner/context/prefix and authenticates the delta before allocating any seal; disposal expires the handoff. Cached individual checks do not confer deletion authority; final candidate and strict cut/readback stay independent. Useful persisted slices yield and continue, but no service automation is enabled.
+
+Native automatic testing found each whenDurable barrier reset the editing quiet clock through admission status observers. Treat those notifications as readiness refreshes, as the service policy already does. Actual accepted writing, keyboard/beforeinput/pointer activity and visibility still wake/reset quiet; pending/blocked/non-durable admission still refuses work. Preserve both failed deadlines and the passing discriminating run. Keep the new resume flag off until the existing2.5s peer p95/typing/catch-up contention gate is met; a2s new-work target and tiny native fixture do not establish phone wall-clock bounds.

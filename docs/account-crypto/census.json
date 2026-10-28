@@ -789,7 +789,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "678a1e59f51a3da5823bbd0b3807f73643f3399a69268c4070357d07ba3c1e8f"
+      "sha256": "d1460ac52db864a38336bcdfa6aabf2d9bb082a4cf9bd82755c8ac922dca2f8a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -861,7 +861,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "af0158e8b4b07466044e379075fa9a0037e40d3aedd8886b285f8b1873f39826"
+      "sha256": "bd25a0e89d0dd8ee78b0c43a1ff43f3a0ac9d70e73fad30621378ccee07c9a32"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -905,7 +905,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "ad59c99d17e39d32b9fd399048a4d696dca09f3d2c43248fe3de32db326d65e5"
+      "sha256": "b8ee4dd07761245328d4b6ed92726bf3f17b0c21dbbcd81033509aad398bf0e2"
     },
     {
       "path": "src/crdt/cpuBudget.ts",
@@ -1089,7 +1089,7 @@
     },
     {
       "path": "src/crdt/localBaselineMode.ts",
-      "sha256": "1d04bc42c4eee9d11852e288e1c5f51abb4326ba4b1eec334a80102cfa900159"
+      "sha256": "f105b787fad1cd23d0b48109578f87a3bdb6873b0fc5fd631ee676ab38a0b022"
     },
     {
       "path": "src/crdt/localBaselineRecord.ts",
