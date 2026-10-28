@@ -1,0 +1,36 @@
+{
+  "onlyRuntimeAndTestChangesSince142": [
+    "src/crdt/accountDelivery.ts",
+    "src/crdt/accountEnvelopePreparation.ts",
+    "src/crdt/accountReceive.ts",
+    "test/publicationMetadataSelection.test.ts"
+  ],
+  "allOldTestsUnchanged": true,
+  "allRuntimeAndTestsMatch143": true,
+  "comparedWorkingFilesDirectlyToGitBlobsInBothDirections": 1675,
+  "initialIndexBasedDiffRefusedUntrackedPredecessorFiles": true,
+  "cryptographicProposalWitnessReservedSequenceAndCoreOwnershipBoundaries": {
+    "baseTree": "e9e4081b644f3ce6a454f635f74512bb31e1b622",
+    "deliveryPersistAndReservedSequenceChecksByteExact": true,
+    "envelopeAppendAndWitnessChecksByteExact": true,
+    "asyncProposalVerifierByteExact": true,
+    "unchangedOwnershipSelectionAndStorageModules": [
+      "src/crdt/verifiedRecords.ts",
+      "src/crdt/verificationOwnership.ts",
+      "src/crdt/contentSelection.ts",
+      "src/crdt/contentStore.ts",
+      "src/crdt/warmContent.ts",
+      "src/crdt/contentRecord.ts",
+      "src/crdt/accountCapture.ts"
+    ],
+    "censusOnlyThreeSourceHashesChanged": [
+      "/sources/184/sha256",
+      "/sources/186/sha256",
+      "/sources/193/sha256"
+    ],
+    "noNewCryptoDomainsOrSourceClassification": true
+  },
+  "realIndexEmpty": true,
+  "signedHead": "3ae028480fa988c694b01394a43fc6f0d5eddc43",
+  "serviceAndResumeDefaultsUnchanged": true
+}

@@ -17086,3 +17086,16 @@ Native audit passes three stopped stores; all593 original evidence files remain 
 new read-only-audit SQLite sidecars explicitly retained. Do not dismiss the missing delivery as
 a fixture or accept its partial11.433ms/2390.760ms window. Next trace post-maintenance publication.
 All16ms/2.5s guarantees and prior failures remain; resume/service off, no release or deployment.
+
+
+## 2026-10-28 — Phase148: bounded repair checkpoint; acceptance remains blocked
+
+Guarded metadata selections, nine regressions and full2190pass/1skip units plus289 adapters are
+recorded in143/144. Retain145 invalid clock,146 isolated apparatus correction and147 durable
+sender-only follow-up failure; do not equate a passing timing window with whole-client acceptance.
+[Closure/source/default/ordinary checks](performance-experiments/2026-10-28-publication-selection/phase148/README.md).
+Runtime remains143; old tests and security-boundary functions remain142. Fresh ordinary build
+uses a separate output tree, with the bad CLI invocation preserved. Record final check outcomes
+before patch replay; general933/387 qualification block,16ms/2.5s gates, phone deferral and
+resume/service defaults0 remain. No signing, release preparation or deployment. Next bounded
+correctness discriminator: publication of durable writing after automatic baseline installation.
