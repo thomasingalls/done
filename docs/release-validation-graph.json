@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 551,
-    "requiredTestFiles": 545,
+    "testFiles": 552,
+    "requiredTestFiles": 546,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11314,6 +11314,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localRetentionSharedProof.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localRetentionSharedProof.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/localRetentionStatus.test.ts",
       "status": "required",
       "invocation": {
@@ -15529,7 +15544,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "29202d8c2b23fb358b49b7a0d367eb7ae4afd2a443c089c2933c7b97748d6476"
+      "sha256": "85d8880a64fc039120dfd311494d3879c722f69e3e01a0052ee7f3acc0ccaf4d"
     },
     {
       "path": "package.json",
@@ -19414,6 +19429,10 @@
     {
       "path": "test/localRecovery.test.ts",
       "sha256": "10df0654bd6107f0ef4b4fc5fd714b95970d2dadba8d3d5e1fdb58008691bddd"
+    },
+    {
+      "path": "test/localRetentionSharedProof.test.ts",
+      "sha256": "dca08f0db23ac562a149ba71a4ba46d8e5e6b1ad8a987c9d288d45148a56a54e"
     },
     {
       "path": "test/localRetentionStatus.test.ts",

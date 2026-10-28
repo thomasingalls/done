@@ -295,14 +295,42 @@ export async function prepareLocalBaseline(
   previous: BaselineAnchor | null = null,
   journalEra?: import('./journalEra').JournalEra,
 ): Promise<{ baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor }> {
+  const { candidate, reference } = await prepareLocalBaselineWithReference(
+    input,
+    context,
+    auth,
+    previous,
+    journalEra,
+  );
+  eraseVerified(reference);
+  return candidate;
+}
+/** Build and return the independently checked compact candidate together with its full reference.
+ * Verification happens inside this function; no caller-supplied "verified" result is accepted.
+ * The caller owns both detached results and must erase them. */
+export async function prepareLocalBaselineWithReference(
+  input: LocalReplayInput,
+  context: LocalBaselineContext,
+  auth: BaselineAuthentication,
+  previous: BaselineAnchor | null = null,
+  journalEra?: import('./journalEra').JournalEra,
+  // Reports a completed reference without exposing mutable evidence to candidate construction.
+  onReferenceReady?: () => void,
+) {
   const c = captureContext(context);
   previous = previous && { ...previous };
   journalEra = journalEra && { ...journalEra };
+  let reference: Awaited<ReturnType<typeof full>> | undefined;
+  let delivered = false;
   try {
     const captured = captureInput(input, c);
-    const verified = await full(captured, c);
-    return await summarizeBaseline(captured, verified, c, auth, previous, journalEra);
+    reference = await full(captured, c);
+    onReferenceReady?.();
+    const candidate = await summarizeBaseline(captured, reference, c, auth, previous, journalEra);
+    delivered = true;
+    return { candidate, reference };
   } finally {
+    if (!delivered) eraseVerified(reference);
     clearContext(c);
   }
 }

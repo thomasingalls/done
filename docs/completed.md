@@ -16842,3 +16842,20 @@ Phase122 final-review addendum: require the retained view to remain identical ac
 A new late-disposal regression brings new cases to11 and affected cases to96, all passing. Final
 native work counts, types/format and normal diagnostic build pass after this guard. The earlier
 21 native failure cases remain evidence for the version immediately before this guard.
+
+
+## 2026-10-27 — first-conversion full verification shared (phase123)
+
+A paired internal builder owns/captures input, verifies full history once and returns its independent
+compact candidate plus reference. Exact survivor/reference comparison and all final proof/transaction
+checks remain. The predecessor count discriminator fails; a second control catches and repairs
+misclassification of reference failures as candidate skips. Six new cases plus affected suites pass96
+cases; type/lint/build pass. The native diagnostic confirms full replay2→1 while all4 candidate/
+installed baseline replays remain, preserving writing and offline reopen. No phone timing inference.
+The reviewed graph retains all prior obligations and adds one uncredited required file:914/369.
+[Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase123/README.md). No old
+test edits, signing, push, release preparation or deployment; qualification remains paused.
+
+Phase123 bookkeeping addendum: authority checking catches four shifted source-site line pins in
+the planner. Independent joins preserve every site, label, contract and disposition; only four
+line fields change. All12 registry controls pass, with914/369 obligations/blocks unchanged.

@@ -1093,7 +1093,7 @@
     },
     {
       "path": "src/crdt/localBaselineReplay.ts",
-      "sha256": "93a7817448ad2ee33b438629f06a6cbd3035a64bfdd4c25aadab8cf61826bd2a"
+      "sha256": "96001c89d999461a130e4b2221ba4d6ecfcdc904e0d70f104b8bc6e3d6bd417b"
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
@@ -1145,7 +1145,7 @@
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "de43d07d36daccf1a07e40b33c600bb4000000459377b7299e30f84704af4977"
+      "sha256": "00ad885eb7b8dd59aaa456bfe16877760e81014caad98050eac3d624b43f15eb"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -1755,7 +1755,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 447
+          "line": 464
         }
       ]
     },
@@ -1801,7 +1801,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 448
+          "line": 465
         }
       ]
     },
@@ -1967,7 +1967,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 446
+          "line": 463
         },
         {
           "path": "src/crdt/spoolRecord.ts",
@@ -3777,7 +3777,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 440
+          "line": 457
         },
         {
           "path": "src/crdt/sourceCapture.ts",

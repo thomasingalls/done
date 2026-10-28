@@ -1,0 +1,9 @@
+{
+  "sources": 410,
+  "domains": 197,
+  "sourcePopulationAndDomainSitesUnchanged": true,
+  "changed": [
+    "src/crdt/localBaselineReplay.ts",
+    "src/crdt/localRetentionPlan.ts"
+  ]
+}

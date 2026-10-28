@@ -5764,3 +5764,12 @@ original/joined startup hold that contract, other one-shot readers do not implic
 Keep live warm reference audits and cross-owner initialization separate. This removes duplicated
 verification without adopting a scalar revision/hash as authority or retaining an expired task.
 [Contract and evidence](performance-experiments/2026-10-27-maintenance-continuation/phase122/README.md).
+
+
+## 2026-10-27 — one verifier owns first-conversion reference and candidate (phase123)
+
+Keep full input verification inside the paired builder instead of accepting caller-supplied
+preverified state. Share its owned reference with first-conversion planning while retaining the
+independent compact-candidate replay and exact survivor/reference comparison. Keep reference
+failures outside candidate refusal classification. The standalone builder erases its unused
+reference; no proof crosses owner lifetimes or authorizes a broader cut.

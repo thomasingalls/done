@@ -18,7 +18,7 @@ import {
 import { openEncryptedBaselineSnapshot } from './localBaselineStorage';
 import { decodeLocalBaseline, LocalBaselineCapacityError } from './localBaselineRecord';
 import {
-  prepareLocalBaseline,
+  prepareLocalBaselineWithReference,
   rebaseLocalBaseline,
   replayFullLocalHistory,
   replayLocalBaseline,
@@ -72,7 +72,7 @@ export interface RetentionBinding {
 export interface LocalRetentionPlan {
   readonly kind: 'local-retention-dry-run';
 }
-type Candidate = Awaited<ReturnType<typeof prepareLocalBaseline>>;
+type Candidate = Awaited<ReturnType<typeof prepareLocalBaselineWithReference>>['candidate'];
 interface HeldPlan {
   inventory: RetentionInventory;
   binding: RetentionBinding;
@@ -345,7 +345,7 @@ export async function planLocalRetention(
     records.sort((a, b) => a.seq - b.seq);
     const replay = { records, counter };
     // Integrity failures in existing evidence must never be reported as capacity/ineligibility.
-    if (stored.v !== 5) reference = await replayFullLocalHistory(replay, context);
+    if (stored.v !== 5 && previous) reference = await replayFullLocalHistory(replay, context);
     if (previous) {
       const old = decodeLocalBaseline(previous.baseline.payload);
       try {
@@ -380,6 +380,7 @@ export async function planLocalRetention(
       previous: pointer?.journalEra?.current ?? null,
       revision: (previous?.anchor.revision ?? 0) + 1,
     };
+    let buildingCandidate = Boolean(previous);
     try {
       if (previous) {
         const old = decodeLocalBaseline(previous.baseline.payload);
@@ -395,8 +396,24 @@ export async function planLocalRetention(
         } finally {
           eraseVerified(old);
         }
-      } else candidate = await prepareLocalBaseline(replay, context, crypt.auth, null, era);
+      } else {
+        const prepared = await prepareLocalBaselineWithReference(
+          replay,
+          context,
+          crypt.auth,
+          null,
+          era,
+          () => {
+            buildingCandidate = true;
+          },
+        );
+        candidate = prepared.candidate;
+        reference = prepared.reference;
+      }
     } catch (error) {
+      // Full-reference verification used to run outside candidate refusal handling. Keep failures
+      // from that boundary as failures even though the builder now returns both results together.
+      if (!buildingCandidate) throw error;
       if (error instanceof LocalBaselineCapacityError)
         return { kind: 'skipped', reason: 'capacity' };
       if (
