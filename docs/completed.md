@@ -17053,3 +17053,13 @@ fixed eight-case order frozen. Analyzer reconstructs retained passing bounds and
 fault controls. Restricted adapter18failures retained; permitted serial rerun289/289 passes with
 no fixture edits. [Protocol/input/evidence](performance-experiments/2026-10-28-publication-selection/phase144/README.md).
 No timing yet. Keep stop rule and16ms/2.5s gates, phone deferred, service/defaults off, no release.
+
+
+## 2026-10-28 — Phase145: reject inconsistent comparison clocks
+
+Both full-history journeys pass all functional/cold/native guards. Reference local20.9ms fails16;
+peer1740.9ms/markers pass. Candidate before/after wall-clock intersections miss by1.3/1.4ms, so
+the unchanged analyzer rejects timing and stops the sequence; six cases remain unexecuted.
+[Full retained results/independent/native review](performance-experiments/2026-10-28-publication-selection/phase145/README.md).
+No candidate speedup/gate claim. Select monotonic-driver apparatus repair with the same1ms
+intersection allowance/gates before a fresh comparison; application source remains143. No release.
