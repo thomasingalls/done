@@ -16971,3 +16971,11 @@ reconstructs both accepted117 bounds and rejects four controls; setup identity-s
 yet, no runtime/old-test/default/gate change. Phase134 failures and six unexecuted cases remain;
 phone deferred, service off, no signing/push/publication. Next bounded native/editor diagnostics
 will depend on these results. General qualification remains paused.
+
+
+## 2026-10-28 — Phase137: retain and repair missing lab serializer input
+
+First136 execution stops before any browser/timed work: omitted pinned Playwright serializer text
+raises ENOENT. Copy its exact133 bytes, extend the closed manifest, freeze new baseline-repair-*
+identities and preserve the failed directory/logs. No runtime, threshold, test assertion, source
+fixture or activation changes. [Evidence](performance-experiments/2026-10-28-input-investigation/phase137/README.md).
