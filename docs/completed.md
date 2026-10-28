@@ -17043,3 +17043,13 @@ proposal/witness/selection/storage boundary review. Census keeps classifications
 required test adds one unresolved general obligation (933/387). [Contract/evidence](performance-experiments/2026-10-28-publication-selection/phase143/README.md).
 Performance acceptance is still pending;16ms/2.5s gates and all previous failures remain. Cleanup
 traversal stays separate, defaults/service off, no computer use, signing, release or deployment.
+
+
+## 2026-10-28 — Phase144: freeze matched publication-selection comparison
+
+Both immutable clients rebuilt from142/143 with identical local-auto1/resume1/service-auto0; only
+three runtime paths differ. Both-direction Git/assets/probe/server/fixture/apparatus hashes and
+fixed eight-case order frozen. Analyzer reconstructs retained passing bounds and rejects four
+fault controls. Restricted adapter18failures retained; permitted serial rerun289/289 passes with
+no fixture edits. [Protocol/input/evidence](performance-experiments/2026-10-28-publication-selection/phase144/README.md).
+No timing yet. Keep stop rule and16ms/2.5s gates, phone deferred, service/defaults off, no release.
