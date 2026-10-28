@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "bundleInputCount": 241,
+  "allBundleInputHashesCurrent": true,
+  "sourceCore": [
+    {
+      "path": "src/crdt/localRetentionPlan.ts",
+      "sha256": "de43d07d36daccf1a07e40b33c600bb4000000459377b7299e30f84704af4977",
+      "matchesSignedProductionDc53fecf": true
+    },
+    {
+      "path": "src/crdt/localBaselineReplay.ts",
+      "sha256": "93a7817448ad2ee33b438629f06a6cbd3035a64bfdd4c25aadab8cf61826bd2a",
+      "matchesSignedProductionDc53fecf": true
+    },
+    {
+      "path": "src/crdt/localBaselineRecord.ts",
+      "sha256": "35786d675814d02aab35cba0b9570f957e761cde5e5f7bfaf3067c0bf3a37c1e",
+      "matchesSignedProductionDc53fecf": true
+    },
+    {
+      "path": "src/crdt/localBaselineStorage.ts",
+      "sha256": "f4a7b4c651ac8a25be95ad63ad7f0290f42ef6b9819ccee442965561e73371ea",
+      "matchesSignedProductionDc53fecf": true
+    },
+    {
+      "path": "src/crdt/localBaselineShadow.ts",
+      "sha256": "ac75aeb50b1c7e1877ea36e09bb029079b645d095174de3e451c06d736a67729",
+      "matchesSignedProductionDc53fecf": true
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "b947bd73c46a2df1c7172dd7c2f6d4e1ca81846cab1f494d71a6d0b9c15bf0ec",
+      "matchesSignedProductionDc53fecf": true
+    },
+    {
+      "path": "src/crdt/custody.ts",
+      "sha256": "a708aeb75a6213a71f0ad1b9574705419f37d02839a706344fe8f1083f590416",
+      "matchesSignedProductionDc53fecf": true
+    }
+  ],
+  "observedCountsIndependentlyChecked": true,
+  "beforeRows": 57,
+  "afterRows": 0,
+  "scope": "Counts, source identity and synthetic fixture integrity; not a phone timing estimate or safety qualification for a proposed optimisation."
+}

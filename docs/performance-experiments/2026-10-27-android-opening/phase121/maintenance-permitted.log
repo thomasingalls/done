@@ -1,0 +1,13 @@
+(node:12398) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12398) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+{"before":{"version":2,"revision":0,"baselineBytes":0,"rows":[22,9,26]},"after":{"version":5,"revision":1,"baselineBytes":8245,"rows":[0,0,0]},"maintenance":{"localRetentionPlan.ts:planLocalRetention":1,"localBaselineReplay.ts:full":2,"localBaselineReplay.ts:documentState":11,"localBaselineReplay.ts:prepareLocalBaseline":1,"localBaselineReplay.ts:summarizeBaseline":1,"localBaselineRecord.ts:decodeLocalBaseline":16,"localBaselineReplay.ts:replayLocalBaseline":4,"localBaselineStorage.ts:readEncryptedBaseline":1,"localBaselineStorage.ts:openEncryptedBaselineSnapshot":1,"localBaselineShadow.ts:verifyCompleteLocalBaseline":2},"reopen":{"localBaselineStorage.ts:readEncryptedBaseline":3,"localBaselineStorage.ts:openEncryptedBaselineSnapshot":3,"localBaselineRecord.ts:decodeLocalBaseline":15,"localBaselineShadow.ts:verifyCompleteLocalBaseline":3,"localBaselineReplay.ts:replayLocalBaseline":3,"localBaselineReplay.ts:documentState":6}}
+✔ diagnostic first reduction and reduced reopen retain writing with observed production functions (10349.79275ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13656.525

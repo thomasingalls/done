@@ -16809,3 +16809,18 @@ Same-owner proof reuse and startup/live-owner handoff remain separate, with fres
 lifecycle checks required. Real profile unchanged, probe removed and debugger detached. Evidence
 and limits: [phase120](performance-experiments/2026-10-27-android-opening/phase120/README.md).
 No runtime repair, old-test edit, signing, push, release prep or deployment; qualification paused.
+
+
+## 2026-10-27 — first local reduction call shape traced (phase121)
+
+A disposable real-service/Chromium/IndexedDB fixture converts57 v2 rows to a v5 baseline, keeps
+exact writing, and reopens offline. Entry observations confirm two full-history replays and four
+baseline replays during first conversion, plus three full baseline validations at reduced reopen.
+The seven core files match production dc53fecf;241 bundle inputs are pinned. The1/1 diagnostic
+passes after retained compiler-API and sandbox-listen apparatus failures. Phase121 distinguishes
+intended independent comparisons from opportunities to reuse an immutable completed proof. The
+phone's original maintenance attempt count/phase timings remain unmeasured; no exact cause or
+speedup is claimed. Next order: same-owner reuse, explicit cross-owner handoff, then first-conversion
+reuse, retaining fresh snapshot/authority/lifecycle/commit and independent candidate/readback checks.
+[Evidence and limits](performance-experiments/2026-10-27-android-opening/phase121/README.md). No
+runtime/old-test edits, signing, push, release prep or deployment; qualification remains paused.
