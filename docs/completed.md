@@ -17135,3 +17135,13 @@ Accept up to four extra healthy idle passes/minute as the bounded cost; do not c
 network request. Actual-client after validation remains pending with all original16ms/2.5s/30s
 guards and no repeated before journeys. No old tests, formats, server limits or defaults change.
 No activation, computer use, signing or release.
+
+
+## 2026-10-28 — Phase152: rebuilt after client and fixed confirmation scope
+
+Full190unit files/2200pass/1existing skip and91 affected metadata adapters pass. Rebuild151, verify
+1713 exported files/118 unchanged backend-protocol files, actual assets and closed apparatus/
+fixture/serializer/probe identities. [After-only protocol](performance-experiments/2026-10-28-idle-reconciliation/phase152/README.md):
+reuse147/150 before evidence, run withheld full-history then both late variants, keep16ms/2.5s/
+30s/all original guards and fixed stop rule. Four analyzer fault controls pass. No journeys yet.
+No old test changes or activation/release; general934/388 block remains.
