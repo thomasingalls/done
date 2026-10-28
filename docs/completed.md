@@ -16899,3 +16899,15 @@ Type/lint/format/build pass. Failed apparatus, wiring, fixture/type/lint attempt
 test edited. Inventory918/373 retains earlier blocks and adds two uncredited required files. Heavy
 preparation/storage-tail contention and the offline-peer local-retirement pin still block activation.
 No phone/computer use, signing, push, preview/release preparation or deployment; qualification paused.
+
+
+## 2026-10-28 — exact-input preparation receipt model (phase127)
+
+A closed binary result grammar and verifier-owned journal retain completed individual checks; only
+authenticated opaque deltas can seed a fresh journal. Scope/input/role mutation, bare pass bits,
+failed/late callbacks, invalidation, disposal and malformed encodings refuse.13 model cases and12
+registry controls pass; two injected faults are independently caught. Type/lint pass after retained
+initial type errors. The registry fixture adds only the new open obligation (14→15); specified78
+and all prior security assertions remain. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase127/README.md).
+No native persistence, app wiring, history cut or service automation is enabled; qualification and
+release preparation remain paused. No computer use, signing, push or deployment.

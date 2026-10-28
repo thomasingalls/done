@@ -1,0 +1,13 @@
+{
+  "baseTree": "f55c6c4a0b2a4705d5c597285038f9149e5fd19c",
+  "previousSources": 411,
+  "currentSources": 413,
+  "addedSources": [
+    "src/crdt/preparationValue.ts",
+    "src/crdt/retentionPreparation.ts"
+  ],
+  "previousDomains": 197,
+  "currentDomains": 198,
+  "allPriorSourcesAndConstructionRecordsUnchanged": true,
+  "newOpenConstruction": "account-local-preparation"
+}

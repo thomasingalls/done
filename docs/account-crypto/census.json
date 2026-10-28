@@ -1176,6 +1176,10 @@
       "sha256": "00a6aa0128231f8d8d6bd633bb1093f0638f3038c32d3091b90b76e6d5f3d8af"
     },
     {
+      "path": "src/crdt/preparationValue.ts",
+      "sha256": "b735e68be9279794aebdaccf665fd97c97bdcd5ae98ae0fe9e5f3a9b8b5990a1"
+    },
+    {
       "path": "src/crdt/promotionAdmission.ts",
       "sha256": "b63a9279b3761e41379ed1c2107c14e8cf5b5fbbdc48e050ab8e6c6314fb4f3f"
     },
@@ -1242,6 +1246,10 @@
     {
       "path": "src/crdt/retentionCheckpoint.ts",
       "sha256": "69cbfee6a163711d29103ab35ba6a20c0dd824aec58e15a7c82d8c72821f0b9b"
+    },
+    {
+      "path": "src/crdt/retentionPreparation.ts",
+      "sha256": "1c9d4e74814f99303182f89ac571095624d77ead5d24b186c64704a71f035249"
     },
     {
       "path": "src/crdt/retentionReads.ts",
@@ -3036,6 +3044,16 @@
         {
           "path": "src/crdt/localGenesisRecord.ts",
           "line": 177
+        }
+      ]
+    },
+    {
+      "label": "done/local-preparation/draft-1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "src/crdt/retentionPreparation.ts",
+          "line": 12
         }
       ]
     },

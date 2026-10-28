@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json
+s=Path('/private/tmp/done-resumable-preparation-20261028');root=Path.cwd();node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+cases=[('authentication','altered MAC','if (!valid) invalid();','void valid;',1),('revision','a failed or late callback',"if (at !== revision) throw Error('Preparation journal changed');",'void at;',2)]
+rows=[]
+for name,title,needle,replacement,count in cases:
+ config=s/f'127-mutant-{name}.config.mjs';config.write_text('export default '+json.dumps({'root':str(root),'test':{'include':['test/retentionPreparation.test.ts'],'environment':'node'}})[:-1]+',plugins:[{name:"deliberate-fault",enforce:"pre",transform(code,id){if(!id.endsWith("/src/crdt/retentionPreparation.ts"))return; const needle='+json.dumps(needle)+';if(code.split(needle).length!=='+str(count+1)+')throw Error("Mutation anchor missing");return code.replace(needle,'+json.dumps(replacement)+');}}]};\n')
+ with (s/f'127-mutant-{name}.log').open('wb')as f:r=subprocess.run([node,'node_modules/vitest/vitest.mjs','run','--config',str(config),'-t',title],cwd=root,stdout=f,stderr=subprocess.STDOUT,timeout=30)
+ text=(s/f'127-mutant-{name}.log').read_text();assert r.returncode==1 and 'AssertionError:'in text and title in text,(name,text)
+ rows.append({'fault':name,'discriminator':title,'exit':r.returncode,'isolatedAssertionFailure':True})
+(s/'127-mutation-results.json').write_text(json.dumps(rows,indent=2)+'\n');print(json.dumps(rows))

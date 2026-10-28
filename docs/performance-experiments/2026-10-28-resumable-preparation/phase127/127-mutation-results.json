@@ -1,0 +1,14 @@
+[
+  {
+    "fault": "authentication",
+    "discriminator": "altered MAC",
+    "exit": 1,
+    "isolatedAssertionFailure": true
+  },
+  {
+    "fault": "revision",
+    "discriminator": "a failed or late callback",
+    "exit": 1,
+    "isolatedAssertionFailure": true
+  }
+]

@@ -7430,6 +7430,53 @@
       ],
       "blocker": "The optional unsigned batch carrier retains existing signed per-page authority. Directed byte/authentication/browser regressions do not establish generalized transport or native lifecycle qualification.",
       "next": "Publish independent framing vectors and authority-map chains for every optional batch/fallback branch; qualify interruption, capacity, response size and mixed-version operation without changing inner v2 checks."
+    },
+    {
+      "id": "account-local-preparation",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "mac",
+        "digest",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/local-preparation/draft-1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/retentionPreparation.ts",
+          "line": 12,
+          "label": "done/local-preparation/draft-1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/retentionPreparation.ts",
+          "name": "authenticatePreparationReceipts"
+        },
+        {
+          "path": "src/crdt/retentionPreparation.ts",
+          "name": "createPreparationJournal"
+        }
+      ],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/retentionPreparation.test.ts"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification",
+        "resumed-reference-equivalence"
+      ],
+      "blocker": "Standalone receipt model only. Native encrypted persistence, verifier closure binding, lifecycle and cross-lock/performance proof remain unqualified. No aggregate credit.",
+      "next": "Add native checkpoint/cleanup and guarded verifier/scheduler adapters, preserve originals and independent final replay, and qualify interruption/resume against the unchanged2.5s peer gate."
     }
   ],
   "additionalCorpora": [

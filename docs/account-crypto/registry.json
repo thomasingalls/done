@@ -202,11 +202,11 @@
         "done/private-read/v1",
         "done/private-read/v2",
         "done/private-read-page/v1",
-      "done/private-read-page/v2",
-      "done/private-read-batch/v1\u0000",
-      "done/private-read-pages/v1\u0000"
+        "done/private-read-page/v2",
+        "done/private-read-batch/v1\u0000",
+        "done/private-read-pages/v1\u0000"
       ],
-    "note": "The v1 batch tags frame unsigned transport groups only; each unchanged v2 inner request/page supplies all signing and verification authority. See the optional batching amendment in docs/account-receive-transport.md. Qualification remains open."
+      "note": "The v1 batch tags frame unsigned transport groups only; each unchanged v2 inner request/page supplies all signing and verification authority. See the optional batching amendment in docs/account-receive-transport.md. Qualification remains open."
     },
     {
       "id": "submit-carrier",
@@ -549,6 +549,17 @@
         "done/local-protection/v1"
       ],
       "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "local-preparation",
+      "kind": "HMAC-SHA256, exact-input digest and encrypted preparation carrier",
+      "authority": "current unlocked metadata/store keys; completed verifier results only, never admission or deletion authority",
+      "home": "docs/account-local-retention-preparation-journal.md",
+      "next": "Implement owned encrypted native checkpoint lifecycle and qualify exact input/context/implementation invalidation, interruption and independent final checks",
+      "labels": [
+        "done/local-preparation/draft-1"
+      ],
+      "note": "Preparation-only work reuse; service automation remains off and all aggregate obligations remain open."
     }
   ],
   "templates": [

@@ -11,12 +11,12 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 556,
-    "requiredTestFiles": 550,
+    "testFiles": 557,
+    "requiredTestFiles": 551,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
-    "constructions": 97,
+    "constructions": 98,
     "vectorChainConsumers": 18
   },
   "packageDispositions": {
@@ -13115,6 +13115,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/retentionPreparation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/retentionPreparation.test.ts"
+        ]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/roundTrip.test.ts",
       "status": "required",
       "invocation": {
@@ -15586,6 +15601,20 @@
       ],
       "vectorFile": null,
       "vectorCases": []
+    },
+    {
+      "id": "account-local-preparation",
+      "status": "open",
+      "tests": ["test/retentionPreparation.test.ts"],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification",
+        "resumed-reference-equivalence"
+      ],
+      "vectorFile": null,
+      "vectorCases": []
     }
   ],
   "inputs": [
@@ -15595,7 +15624,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "c2bd3699b27b9f532eb59c5bfba16ccb8419a89d3487d3a799a8a9adb2d6c79a"
+      "sha256": "5dfb85b164b136f9ee8d88bc894051dd58a27dc78aacb88e9e4f6ef25ce5affb"
     },
     {
       "path": "package.json",
@@ -17391,7 +17420,7 @@
     },
     {
       "path": "test/account-first-authority/registry.test.mjs",
-      "sha256": "0a61099cc1ccea3ae17aa16a88874200e7fac818cfb29c586150eb88dc94518a"
+      "sha256": "63a4860506afdc0aadfeb2a16758114d297a258612f930628b38644003ac7d1f"
     },
     {
       "path": "test/account-genesis/browser.ts",
@@ -19980,6 +20009,10 @@
     {
       "path": "test/retentionFences.test.ts",
       "sha256": "48d546635f5c24c343294b20d50577607090d13e82770f24b1bae8c9d805f7be"
+    },
+    {
+      "path": "test/retentionPreparation.test.ts",
+      "sha256": "17ffa33dbb2e99500296ef46a201935652a126c2cf614cbd5c47b5d3ef99ab3f"
     },
     {
       "path": "test/roundTrip.test.ts",

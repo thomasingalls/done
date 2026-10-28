@@ -5801,3 +5801,13 @@ across local cuts/custody refresh, with all real owner checks fresh. Preserve pe
 automatic discard, no substituted second-device admission and no weakening the local retirement pin.
 Existing control events replace periodic catalog polling; network failures require events plus
 backoff and unknown/integrity failures halt. Phase125's durable resumption remains a design.
+
+
+## 2026-10-28 — derive the frontier again from exact completed evidence (phase127)
+
+Refine125's continuation design: preserve authenticated, exact-input verifier receipts and rebuild
+semantic ordering/authority/coverage frontiers on resume. Do not deserialize an accepted ledger or
+use a generic success flag. This uses the existing per-check memo seams while keeping independent
+candidate/readback paths separate. Native binding must include the verifier implementation closure,
+current keys/authority and an exact physical prefix; source upgrades cannot silently inherit old
+acceptance. The standalone model is not native durability or a time bound on indivisible work.

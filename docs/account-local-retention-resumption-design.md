@@ -139,3 +139,12 @@ the owner and completes across short sessions. A saved multi-device proposal may
 retirement while another device is offline. Report that wait rather than auto-discarding manual
 work or forging a second device's admission. Closing that cross-maintenance dependency needs its
 own retained-proof and native-reopen evidence.
+
+
+## Follow-up127 — exact checked evidence, fresh logical reconstruction
+
+The [implementation contract](account-local-retention-preparation-journal.md) chooses a receipt
+journal over serializing an entire partial ledger. Each completed verifier operation binds exact
+inputs/result to authenticated scope, with fresh semantic reduction on resume. The standalone model
+adds no native persistence or cut authority. Source-closure identity, prefix evidence, encrypted
+checkpoint lifecycle, adapters and native interruption/performance remain separate phases.
