@@ -761,7 +761,7 @@
     },
     {
       "path": "src/crdt/accountEnvelopePreparation.ts",
-      "sha256": "2b9b8bbbcc7209bd1f28baebb76c52e9d89c187d7491994fb88521fca229db5d"
+      "sha256": "6c902857fe885510c8caa727bc54f076211a335e9322bd44e06a35c37567147e"
     },
     {
       "path": "src/crdt/accountInbound.ts",
@@ -789,7 +789,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "858bdd8f9154eb382ef97179a4c45c0c69b934783d2dac57c2ef7c90a5d8ee73"
+      "sha256": "15593900d51f26e3408453c9ffa9ade8557371facfab927eb426c5f06ea45f49"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1297,7 +1297,7 @@
     },
     {
       "path": "src/crdt/spoolRecord.ts",
-      "sha256": "a32238b0e8795bf18e8085bd84937261ea2a37bba46226e0056b1b9ee995a3b1"
+      "sha256": "68392f54197c4f836bef3f430223c26bbc501717e48800b98ca0e6c810c89dc5"
     },
     {
       "path": "src/crdt/startupClassification.ts",

@@ -1,0 +1,27 @@
+{
+  "envelopePreparationAndAppendBodiesByteExact153": true,
+  "sourceSelectionBodyByteExact153": true,
+  "nextPositionOnlyTypeSignatureNarrowed": true,
+  "receiveOwnerOnlyImportAndProjectionCallbackChanged": true,
+  "unchangedGuardOwnershipStorageProposalModules": [
+    "src/crdt/verifiedRecords.ts",
+    "src/crdt/contentSelection.ts",
+    "src/crdt/verificationOwnership.ts",
+    "src/crdt/contentStore.ts",
+    "src/crdt/accountDelivery.ts",
+    "src/crdt/localBaselineReplay.ts"
+  ],
+  "projectedFields": [
+    "origin",
+    "sources",
+    "positions",
+    "attempts"
+  ],
+  "omittedUnusedFields": [
+    "sourceRecords",
+    "events"
+  ],
+  "counterAuthorityWitnessSealReservationAndFinalCommitChecksUnchanged": true,
+  "noStoredOrWireFormatChange": true,
+  "oldTestsUnchanged": true
+}

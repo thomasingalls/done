@@ -25,6 +25,15 @@ import { ContentError } from './contentRecord';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
 import type { CpuCheckpoint } from './cpuBudget';
+export type EnvelopePreparationState = Pick<
+  SpoolState,
+  'origin' | 'sources' | 'positions' | 'attempts'
+>;
+/** Project inside the private verified selection; its caller detaches these fields before await. */
+export function envelopePreparationState(state: Readonly<SpoolState>): EnvelopePreparationState {
+  const { origin, sources, positions, attempts } = state;
+  return { sources, positions, attempts, ...(origin ? { origin } : {}) };
+}
 export interface PersistedEnvelope {
   position: number;
   bytes: Bytes;
@@ -43,14 +52,14 @@ export interface EnvelopePreparationContext {
   ): Promise<void>;
   inspect(records: Awaited<ReturnType<Owner['carrier']['load']>>, route: CaptureRoute): SpoolState;
   /** Only the private carrier may select this detached, already-verified metadata. */
-  loadSelection?(task: SessionTask, owner: Owner): Promise<SpoolState>;
+  loadSelection?(task: SessionTask, owner: Owner): Promise<EnvelopePreparationState>;
   run<T>(
     operation: (task: SessionTask, owner: Owner, route: CaptureRoute) => Promise<T>,
   ): Promise<T>;
 }
 /** Select a bounded contiguous run of still-unallocated originals; never merge their bytes. */
 export async function selectEnvelopeSources(
-  state: SpoolState,
+  state: EnvelopePreparationState,
   route: CaptureRoute,
   batch: boolean,
   subtle: SubtleCrypto,

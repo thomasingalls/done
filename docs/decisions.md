@@ -5890,3 +5890,13 @@ scheduling inputs. Accept3–4 idle passes/minute instead of~1, retaining per-op
 checks, rate refusals and retry backoff. This does not promise idle2.5s delivery when all hints
 are lost, nor arbitrary server capacity. Reuse existing before failures; require actual after
 edit/undo/cold/native and unchanged16ms/2.5s gates before accepting the bounded repair.
+
+
+## 2026-10-28 — Omit unused envelope history at the existing projection boundary
+
+Keep the complete authenticated private view, but detach only the four envelope-preparation fields
+it reads. Do not spread/rest the full object, prolong a selection lease across await, omit fresh
+authority/native/witness checks or change erasure ownership. A narrowed type on nextSpoolPosition
+states its existing inputs without changing arithmetic. Keep reference readers and proposal
+verification independent; use measured zero-history traversal plus original actual-client gates
+rather than claiming speed from the field count alone.

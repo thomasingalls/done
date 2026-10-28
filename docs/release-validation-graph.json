@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 571,
-    "requiredTestFiles": 565,
+    "testFiles": 572,
+    "requiredTestFiles": 566,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10235,6 +10235,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/envelopePreparationProjection.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/envelopePreparationProjection.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/export.test.ts",
       "status": "required",
       "invocation": {
@@ -19138,6 +19153,10 @@
     {
       "path": "test/enrollmentStates.test.ts",
       "sha256": "fab1b4c8f504fcd1f35f7937ba8dcb5017c054a8bc7706ca809209d6139bc736"
+    },
+    {
+      "path": "test/envelopePreparationProjection.test.ts",
+      "sha256": "ef165748e3b28cc4390d08c1b66320ad460aadf09d1a56c0348b0e54c388a2ec"
     },
     {
       "path": "test/export.test.ts",

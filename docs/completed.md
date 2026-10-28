@@ -17160,3 +17160,15 @@ no repeated before run. An import-shifted non-crypto source pin729→734 is refr
 authority check refuses it; keep the refusal and all statuses/contracts. Runtime remains151;
 final ordinary checks recorded here, general934/388
 block and all gates retained. No activation, signing, release preparation or deployment.
+
+
+## 2026-10-28 — Phase154: narrow envelope projection without weakening its owner
+
+Project only origin/sources/positions/attempts; omit unused sourceRecords/events before the existing
+lease detaches data. Eleven new regressions +56existing cases pass:1MiB full-copy control→zero
+history visits, detachment/invalidation, actual original/witness/envelope/resumed-attempt behavior
+and reference/refusal paths. Type/lint/format pass; retain initial fixture/type failures. [Evidence](performance-experiments/2026-10-28-envelope-projection/phase154/README.md).
+Independent byte checks preserve envelope/append/selection bodies, six security/storage modules
+and the next-position expression. Census changes only3hashes, new test adds one uncredited
+obligation (935/389). Reuse before evidence; actual after/performance acceptance remains pending.
+No old tests, formats, defaults, async proposal/cleanup or service activation change; no release.

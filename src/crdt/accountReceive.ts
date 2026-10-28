@@ -120,7 +120,7 @@ import {
 } from './incrementalAccountLedger';
 import { countLedger, measureLedger } from './accountLedgerMetrics';
 import { createInboundCoverage } from './inboundLedger';
-import { createEnvelopePreparation } from './accountEnvelopePreparation';
+import { createEnvelopePreparation, envelopePreparationState } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
 import {
@@ -2610,7 +2610,7 @@ async function openAccountReceiveOwner(
         ...(incremental
           ? {
               loadSelection: (task, owner) =>
-                selectState(task, owner, (v) => v.census.delivery.spool),
+                selectState(task, owner, (v) => envelopePreparationState(v.census.delivery.spool)),
             }
           : {}),
         run: runCaptureTask,
