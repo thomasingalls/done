@@ -1,0 +1,64 @@
+from pathlib import Path
+import json, math, re, copy
+
+s = Path(__file__).parent
+r = json.loads((s / 'reduced-capture1.json').read_text())
+
+def number(v):
+    assert type(v) in (int, float) and math.isfinite(v) and v >= 0
+
+def closed(x):
+    assert set(x) == {'version', 'active', 'elapsedMs', 'events', 'reads', 'longTasks', 'scope'}
+    assert x['version'] == 2 and x['active'] is False
+    assert x['scope'] == 'Reduced account; numeric timings/row counts/ciphertext lengths and public script locations only. No CPU/per-crypto sampling, arguments, values, writing or identifiers.'
+    number(x['elapsedMs'])
+    for e in x['events']:
+        assert set(e) == {'kind', 'at', 'visible'}
+        assert e['kind'] in {'armed', 'providerRequested', 'providerReturned', 'providerRejected', 'editorEditable', 'stoppedOnEditor', 'timedOut', 'manualStop', 'visibilityChanged'}
+        number(e['at']); assert type(e['visible']) is bool
+    for t in x['longTasks']:
+        assert set(t) == {'at', 'duration'}
+        number(t['at']); number(t['duration'])
+    for q in x['reads']:
+        assert set(q) == ({'at', 'completedAt', 'method', 'store', 'kind', 'frames', 'rows', 'cipherBytes'} | ({'chunk'} if q['kind'] == 'baseline-chunk' else set()))
+        assert q['method'] in {'get', 'getAll'} and q['store'] in {'content', 'heads', 'outbound', 'meta', 'other'}
+        assert q['kind'] in {'counter', 'rows', 'baseline-chunk'}
+        for k in ['at', 'completedAt', 'rows', 'cipherBytes']: number(q[k])
+        assert q['completedAt'] >= q['at']
+        if q['kind'] == 'baseline-chunk': number(q['chunk'])
+        assert len(q['frames']) <= 30 and all(re.fullmatch(r'https://done\.oxidationlabs\.com/assets/[A-Za-z0-9_.-]+\.js:\d+:\d+', f) for f in q['frames'])
+
+closed(r)
+for mutate in [lambda x: x.update(unlockCode='FAKE-SENTINEL'), lambda x: x['reads'][0].update(value='FAKE-SENTINEL'), lambda x: x['reads'][0]['frames'].append('https://done.oxidationlabs.com/private?code=FAKE-SENTINEL')]:
+    bad = copy.deepcopy(r); mutate(bad)
+    try: closed(bad)
+    except AssertionError: pass
+    else: raise AssertionError('Private field/location accepted')
+events = {e['kind']: e['at'] for e in r['events']}
+start, end = events['providerReturned'], events['editorEditable']
+assert events['providerRequested'] < start < end and 'timedOut' not in events
+assert not any(e['kind'] == 'visibilityChanged' and e['at'] >= events['providerRequested'] for e in r['events'])
+assert len(r['reads']) == 36
+rows = [q for q in r['reads'] if q['kind'] == 'rows']
+assert [(q['store'], q['rows']) for q in rows] == [('content', 0), ('heads', 0), ('outbound', 0)] * 3
+mapped = json.loads((s / 'read-source-mapping.json').read_text())
+full = [q for q in mapped['reads'] if q['kind'] == 'baseline-chunk' and q['mapped'][0]['source'] == 'src/crdt/localBaselineStorage.ts']
+warm = [q for q in mapped['reads'] if q['kind'] == 'baseline-chunk' and q['mapped'][0]['source'] == 'src/crdt/warmContent.ts']
+assert [q['chunk'] for q in full] == [0, 1, 2, 3] * 3
+assert [q['cipherBytes'] for q in full] == [262526, 262526, 262526, 203234] * 3
+assert len(warm) == 3
+summary = {
+    'status': 'passed', 'closedSchemaAndThreeNegativeControls': True,
+    'providerMs': round(start-events['providerRequested'], 1),
+    'postProviderToEditorMs': round(end-start, 1),
+    'noVisibilityChangeDuringOpening': True,
+    'suffixReadPasses': 3, 'suffixRowsPerPass': 0,
+    'fullBaselineReadPasses': 3, 'chunksPerFullPass': 4,
+    'fullChunkRequestWindowMs': [round(max(q['completedAt'] for q in full[i:i+4])-min(q['at'] for q in full[i:i+4]), 1) for i in range(0, 12, 4)],
+    'warmChunkProbesBeforeEditor': len(warm),
+    'majorLongTaskMs': [t['duration'] for t in r['longTasks'] if start <= t['at'] < end and t['duration'] > 1000],
+    'postProviderLongTaskOverlapMs': round(sum(max(0, min(end, t['at']+t['duration'])-max(start, t['at'])) for t in r['longTasks']), 1),
+    'scope': 'One observed reduced warm lock/unlock, not a population estimate, clean cold-start benchmark or function-level CPU attribution.'
+}
+(s / 'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
+print(json.dumps(summary))

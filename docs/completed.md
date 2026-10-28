@@ -16796,3 +16796,16 @@ Phase119 final arithmetic review: the lighter run has10997 rows per pass (61+461
 returned rows total. The first run instead reports33045 aggregate rows; live storage changed between
 opens. Correct a copied11015 doc total, preserve both raw reports and the superseded119 artifact,
 and make no between-run matched-workload or instrumentation-overhead estimate.
+
+
+## 2026-10-27 — reduced Android opening confirmed (phase120)
+
+The production Pixel9a account now has v5 baseline revision1 (989,284 bytes), zero suffix rows,
+and a later light lock/unlock reaches editing6,172.4ms after provider return. Three full baseline
+reads remain, each followed by a large main-thread task; native chunk windows are8.2–10.2ms.
+This supports repeated processing as the next target without attributing CPU from read stacks.
+The six public scripts/maps match signed dc53fecf; numeric/schema/probe-restoration controls pass.
+Same-owner proof reuse and startup/live-owner handoff remain separate, with fresh security and
+lifecycle checks required. Real profile unchanged, probe removed and debugger detached. Evidence
+and limits: [phase120](performance-experiments/2026-10-27-android-opening/phase120/README.md).
+No runtime repair, old-test edit, signing, push, release prep or deployment; qualification paused.

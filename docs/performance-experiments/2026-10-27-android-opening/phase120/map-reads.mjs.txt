@@ -1,0 +1,29 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {TraceMap,originalPositionFor} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/dist/trace-mapping.mjs';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-reduced-opening-20261027',repo='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const prior='/private/tmp/done-release-2026-10-26/frontend';
+const known=JSON.parse(readFileSync('/private/tmp/done-release-2026-10-26/frontend-before.json'));
+const report=JSON.parse(readFileSync(root+'/reduced-capture1.json'));
+const maps=new Map(),proofs=[];
+for(const read of report.reads)for(const frame of read.frames){
+  const [url,line,column]=frame.match(/^(.*):(\d+):(\d+)$/).slice(1);
+  if(maps.has(url))continue;
+  const name=url.split('/').at(-1),js=readFileSync(root+'/public-source/'+name);
+  const mapBytes=readFileSync(prior+'/assets/'+name+'.map');
+  for(const [p,b]of [[name,js],[name+'.map',mapBytes]])assert.equal(createHash('sha256').update(b).digest('hex'),known.find(x=>x.path==='assets/'+p).sha256);
+  const raw=JSON.parse(mapBytes),map=new TraceMap(raw);maps.set(url,{map,raw});
+  proofs.push({url,scriptSha256:createHash('sha256').update(js).digest('hex'),mapSha256:createHash('sha256').update(mapBytes).digest('hex'),matchesRetainedPublishedArtifact:true});
+}
+const rows=report.reads.map(read=>({...read,mapped:read.frames.map(frame=>{
+  const [,url,line,column]=frame.match(/^(.*):(\d+):(\d+)$/),{map,raw}=maps.get(url);
+  const point=originalPositionFor(map,{line:Number(line),column:Number(column)-1});
+  assert(point.source);const path=point.source.replace(/^(?:\.\.\/)+/,'');
+  const content=raw.sourcesContent[raw.sources.indexOf(point.source)];
+  assert.equal(content,execFileSync('git',['show','dc53fecf:'+path],{cwd:repo,encoding:'utf8'}));
+  return {source:path,line:point.line,column:point.column,name:point.name,originalLine:content.split('\n')[point.line-1].trim(),sourceExactToSignedDc53fecf:true};
+})}));
+writeFileSync(root+'/read-source-mapping.json',JSON.stringify({status:'passed',source:'dc53fecf25ca341cb4b626a154e0df33a29728be',proofs,reads:rows},null,2)+'\n');
+console.log(JSON.stringify({status:'passed',reads:rows.length,publicAssets:proofs.length,exactReleasedSources:true}));

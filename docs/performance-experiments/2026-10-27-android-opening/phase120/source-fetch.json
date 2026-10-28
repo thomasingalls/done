@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://done.oxidationlabs.com/assets/AccountDevices-C4o6ktvU.js",
+    "sha256": "425ee1f094ab05c0f123e79d000f7226e54517a0abad5877dee7eec4b41e897f",
+    "bytes": 118685,
+    "method": "public HTTPS fetch",
+    "matchesRetainedRelease": true
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/contentCompaction-Bseal0c5.js",
+    "sha256": "7b78b8928a445eed5d8b1a4e1b2e383292b8ad19baa2b6d98dd1e95109858b70",
+    "bytes": 102400,
+    "method": "previous live fetch retained in phase119",
+    "matchesRetainedRelease": true
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/cpuBudget-BZY3L4Fm.js",
+    "sha256": "bed8ff24cd0fb3e05a06502fd6bef4c9bb3453f4f5aa59ffbcc17fdab56d723d",
+    "bytes": 411,
+    "method": "public HTTPS fetch",
+    "matchesRetainedRelease": true
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/deviceDataRemoval-C94Je0_1.js",
+    "sha256": "52299819a29b55be7b559eb8fb5f8559054fe8d2d202c31ef2ad73377e4fbf36",
+    "bytes": 96809,
+    "method": "previous live fetch retained in phase119",
+    "matchesRetainedRelease": true
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/localBaselineStorage-HPMtnjbK.js",
+    "sha256": "038f38d897e21cc9981e911bce01d0278628c1012889ff0b97718a62c0087797",
+    "bytes": 7740,
+    "method": "public HTTPS fetch",
+    "matchesRetainedRelease": true
+  },
+  {
+    "url": "https://done.oxidationlabs.com/assets/writeSession-CvSSRuWm.js",
+    "sha256": "31ca9f49b2e66199b569fc9c3870ce0ffb8acb08aad111aa32ed176d133a6f21",
+    "bytes": 7254,
+    "method": "previous live fetch retained in phase119",
+    "matchesRetainedRelease": true
+  }
+]
