@@ -17099,3 +17099,13 @@ uses a separate output tree, with the bad CLI invocation preserved. Record final
 before patch replay; general933/387 qualification block,16ms/2.5s gates, phone deferral and
 resume/service defaults0 remain. No signing, release preparation or deployment. Next bounded
 correctness discriminator: publication of durable writing after automatic baseline installation.
+
+
+## 2026-10-28 — Phase149: freeze retained-profile publication discriminator
+
+The next investigation addresses147’s acceptance blocker directly. Freeze an offline-open/online
+continuation diagnostic on detached copies of the failed sender/receiver and server state, using
+byte-exact143 assets. Sample authenticated owner metadata, then automatic delivery and one
+explicit send retry if necessary; no new writing or storage reinjection. [Protocol/identities](performance-experiments/2026-10-28-post-maintenance-publication/phase149/README.md).
+No diagnostic dispatched yet. Cause/introduction remain unproven; old failures/gates/defaults
+and real data are preserved. No runtime/test change, phone/computer use, signing or release.
