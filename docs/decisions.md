@@ -5838,3 +5838,17 @@ phone walkthrough. A stale14→15 open-construction fixture is repaired while in
 the new open construction and retaining the zero-open release block. Supplemental root/cache
 review runs variants in separate processes to avoid the inherited mutable-path shutdown timer;
 offline retry deferral and the failed attempts remain evidence rather than discarded results.
+
+
+## 2026-10-28 — Phase142: reduce repeated verified-view work before changing the byte kernel
+
+Current original-workload input11.9/7.6ms remains below16, while the full-history card condition
+reproduces20.6ms with17.6ms browser queueing and0.7ms mutation. Static drift blocks timing promotion;
+a separate paused-maintenance profile and concrete helper-code match select whole-record cache
+matching/projection and ownership traversal. The existing word comparator is already optimized.
+Prefer a bounded adoption of the existing synchronous ContentSelection/verified.select contract
+where fresh carrier authority already exists, after a discriminating call-count/ownership proof.
+Do not widen leases across awaits, treat a revision/hash as authority, remove exact fallback/audits,
+or change buffer erasure casually. Cleanup traversal is a separate mechanism. This records an
+investigation choice, not an implemented repair or passing acceptance; all failures/default holds
+and the operator's phone deferral remain. No publication or generalized qualification.

@@ -1,0 +1,16 @@
+{
+  "base135": "47c1b321b07a41761c35310acf47abad2367a5a6",
+  "through141": "44149dc126d0a99ec12021a52b42db4ce9247928",
+  "allListedTreesOrBlobsEqual": true,
+  "identities": {
+    "src": "cfd9277c9bf7d084df192445842a322915140f90",
+    "account-service": "4a0354c20cd3f03553487f464813f3ac38fcf0bc",
+    "account-protocol": "2257308528c602cdf0457d4fe145846d2c55f817",
+    "scripts": "27d3e5671fc16b29895766f1fc1aea0b86a25e04",
+    "test": "7bc6fd0d3e7682a8419967c2bf3ef1f837ef0fe6",
+    "vite": "3467d360ec70f65e4097e29a25a3183ba90e34d3",
+    "Dockerfile": "e49243418eb792ed3b7def2f42412cb4634873e4",
+    "vite.config.ts": "c73cc67b288b9db88a181502165cf60d82da4469"
+  },
+  "noRuntimeOrOldTestChangesInInvestigation": true
+}

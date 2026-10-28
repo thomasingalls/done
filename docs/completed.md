@@ -17018,3 +17018,16 @@ One middle-of-typing source-attribution journey frozen, preserving complete inpu
 native checks and all failures. Require unchanged attempts/non-running maintenance across30s,
 full CPU sample denominator, mapped-code validation and no timing promotion. [Protocol/inputs](performance-experiments/2026-10-28-input-investigation/phase141/README.md).
 No profile dispatched yet, no runtime/old-test/default/qualification/release change.
+
+
+## 2026-10-28 — Phase142: paused-maintenance profile selects repeated verified-view work
+
+A30s middle-of-typing profile completes with idle maintenance, unchanged attempt2 and all input/
+data/undo/cold/native/resource guards. Complete20,272samples retained; verifiedRecords contributes
+52.85% and ownership traversal7.22% of non-idle time-delta weight, not exclusive CPU. Independent
+sample/source-map/generated-code checks and two malformed-profile controls pass; native audit
+preserves old proofs/prefixes/unrelated accounts. [Evidence and next bounded repair](performance-experiments/2026-10-28-input-investigation/phase142/README.md).
+Select existing synchronous carrier/verified-view leases at redundant projection boundaries; first
+prove caller counts/lifetimes and retain detached async proposal inputs. Ownership traversal stays
+a separate follow-up. Runtime/tests equal135; full unit/native evidence is reused, final ordinary
+checks accompany the freeze. Bookend drift and16ms/2.5s failures remain; no activation/release.
