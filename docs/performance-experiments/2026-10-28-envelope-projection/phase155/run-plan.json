@@ -1,0 +1,30 @@
+[
+  {
+    "name": "after-1-maintenance-C-withheld",
+    "mode": "maintenance",
+    "variant": "C",
+    "withhold": true,
+    "config": "maintenance.config.ts"
+  },
+  {
+    "name": "after-2-late-C-normal",
+    "mode": "late",
+    "variant": "C",
+    "withhold": false,
+    "config": "late.config.ts"
+  },
+  {
+    "name": "after-3-late-C-withheld",
+    "mode": "late",
+    "variant": "C",
+    "withhold": true,
+    "config": "late.config.ts"
+  },
+  {
+    "name": "after-4-maintenance-C-normal",
+    "mode": "maintenance",
+    "variant": "C",
+    "withhold": false,
+    "config": "maintenance.config.ts"
+  }
+]

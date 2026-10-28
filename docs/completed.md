@@ -17172,3 +17172,13 @@ Independent byte checks preserve envelope/append/selection bodies, six security/
 and the next-position expression. Census changes only3hashes, new test adds one uncredited
 obligation (935/389). Reuse before evidence; actual after/performance acceptance remains pending.
 No old tests, formats, defaults, async proposal/cleanup or service activation change; no release.
+
+
+## 2026-10-28 — Phase155: rebuilt projection candidate; fixed after scope
+
+Full191unit files/2211pass/1existing skip and103affected metadata cases pass. Rebuild154 for both
+clients; immutable Git/assets/probe/serializer/fixture/image and118backend-protocol identities
+verified. [Four after-only cases frozen](performance-experiments/2026-10-28-envelope-projection/phase155/README.md):
+failed full-history withheld first, both late variants, normal full-history last. All16ms/2.5s/
+30s/data/native guards and failure stop rule retained. Four analyzer fault controls pass; no
+measurement yet. No before reruns, old-test changes, activation, computer use, signing or release.
