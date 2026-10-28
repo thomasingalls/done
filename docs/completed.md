@@ -17197,3 +17197,19 @@ This clears the measured candidate hold for explicit local-auto1/resume1/service
 signed-source artifact preparation. Keep the original failed/invalid attempts,16ms/2.5s/30s gates,
 source resume/service defaults0, phone deferral and general935/389 paused qualification block.
 No staging, signing, push, release image, preview update, publication or deployment.
+
+
+## 2026-10-28 — Phase157: sign the bounded series and test exact ARM64 release candidate
+
+All38 canonical119–156 patches are individually signed/verified through `b6f0160a`;
+every expected tree matches and checkout is clean before release evidence. Build the clean1,714-input
+archive as `done-public:b6f0160a`, index `sha256:f81bd4ba3621fc5c1fd28979d22c9605d522fd6ba5cf7b06eafde63cd2459872`,
+explicit local-auto1/resume1/service-auto0/coordinated-2000.38final-image cases,8container smoke checks,
+TLS controls, two-device exact-frontend upgrade/queued/offline/undo/conversion/rollback/return,
+7native source cases,40contract leaves and175metadata cases pass. Reuse source-equivalent2211unit
+cases/1existing skip and phase156 performance; no new phone/image performance claim.
+[Identities, evidence, limits and publication handoff](development-evidence/2026-10-28-resumable-sync-release/README.md).
+Current infrastructure main27369a8/offline checks and read-only live identity/PVC/readiness/backup
+health pass; historical backup failures1484 retained. Source defaults/service automation unchanged;
+general935/389 qualification paused. Final ordinary results recorded with the packet. No image
+publication, infrastructure change, merge, reconciliation or deployment in this preparation.

@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-28T16:05:34.331497+00:00",
+  "scope": "Read-only production metadata and backup health; no accounts, credentials, data contents or mutation",
+  "status": "observed",
+  "deploymentUid": "e25c1af5-0a8e-4e95-af49-569f62be2892",
+  "readyReplicas": 1,
+  "images": [
+    {
+      "name": "api",
+      "image": "ghcr.io/thomasingalls/done@sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+    },
+    {
+      "name": "app",
+      "image": "ghcr.io/thomasingalls/done@sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+    },
+    {
+      "name": "prepare-backup-workspace",
+      "image": "ghcr.io/thomasingalls/done@sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+    }
+  ],
+  "pvc": {
+    "uid": "3562362c-909b-4003-8829-e93412c47b23",
+    "phase": "Bound",
+    "volumeName": "pvc-3562362c-909b-4003-8829-e93412c47b23",
+    "storageClassName": "hcloud-volumes-retain",
+    "capacity": {
+      "storage": "10Gi"
+    }
+  },
+  "publicServicePin": {
+    "immutable": true,
+    "pin": {
+      "v": 1,
+      "serviceId": "f8d715e0f60edcbe5c59f677c4ee4dea",
+      "origin": "https://done.oxidationlabs.com",
+      "rpId": "done.oxidationlabs.com",
+      "authRoot": "02ffe2cf3937039be7579496a651b447b58a708507d6dc64cad6181ab54ebfa6"
+    }
+  },
+  "runtime": {
+    "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+    "node": "v24.18.0",
+    "uid": 65532,
+    "backup": {
+      "status": 200,
+      "health": {
+        "enabled": true,
+        "busy": false,
+        "stage": "idle",
+        "lastFailureStage": null,
+        "failures": 1484,
+        "lastCheckedAt": 1793203569045,
+        "lastSnapshotAt": 1793182328837,
+        "lastUploadedAt": 1793182330563,
+        "lastPrunedAt": 1793203449470,
+        "snapshotBytes": 13283795,
+        "uploadedBytes": 4149429,
+        "totalUploadedBytes": 362364552,
+        "attemptedUploadBytes": 6167578684,
+        "backups": 91,
+        "dirtySince": null,
+        "snapshotAgeMs": 21256373,
+        "unprotectedChangeAgeMs": 0,
+        "healthy": true,
+        "reportAgeMs": 2637
+      }
+    }
+  },
+  "infraMain": "27369a806d94ee88bb8c55405a3dec536f49cfbd",
+  "identityMatchesEstablishedPin": true,
+  "clusterMutated": false,
+  "accountContentsRead": false
+}

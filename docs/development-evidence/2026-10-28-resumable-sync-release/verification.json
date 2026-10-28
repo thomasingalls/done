@@ -1,0 +1,53 @@
+{
+  "phase": 157,
+  "candidate": "done-public:b6f0160a",
+  "signedSource": "b6f0160a8fe7251407a3606cb653632f10885c81",
+  "sourceTree": "66bbe1bd729570d80b6ed2752e0539a2a8207fd9",
+  "imageIndex": "sha256:f81bd4ba3621fc5c1fd28979d22c9605d522fd6ba5cf7b06eafde63cd2459872",
+  "runtimeManifest": "sha256:c82c05b3975dff745db8e0f8b280ec161b6bb277225d1c320242e2e357b1d7bf",
+  "sourceInputsMatched": 1714,
+  "explicitFlags": {
+    "VITE_ACCOUNT_RETENTION_AUTO": "1",
+    "VITE_ACCOUNT_RETENTION_RESUME": "1",
+    "VITE_ACCOUNT_HISTORY_AUTO": "0",
+    "VITE_ACCOUNT_BATCH": "coordinated-2000"
+  },
+  "sourceResumeAndServiceDefaultsStill0": true,
+  "releaseImageBuiltAndTested": true,
+  "finalImageCases": 38,
+  "containerSmoke": "passed8checks",
+  "tlsControls": "passeddefaultUntrustedRefusalExplicitDisposableCAAndHostResolvedPublicTrust",
+  "exactFrontendUpgradeRehearsal": "passed;twoDevices/serviceWorkerUpdate/queuedWriting/wrongCode/offline/Undo/lockReopen/automaticReduction/currentProductionFrontendRollback/returnToCandidate",
+  "freshNativeSourceCases": 7,
+  "freshContractCommands": 40,
+  "freshMetadataCases": 175,
+  "fullUnitsReused": {
+    "passed": 2211,
+    "existingSkips": 1,
+    "sourceEquivalent": true,
+    "newInImageRun": false
+  },
+  "performanceEvidence": "phase156 four fixed after journeys; local16ms/peer2.5s p95 AND every marker retained; source-equivalent, not remeasured in this image",
+  "phone": "deferred by operator",
+  "generalQualification": "paused;935 obligations/389 unresolved; no aggregate credit",
+  "applicationBase": "67288576b61185aa2eb316123794052b16f63da9",
+  "infraBase": "27369a806d94ee88bb8c55405a3dec536f49cfbd",
+  "clusterMutated": false,
+  "published": false,
+  "deployed": false,
+  "backups": {
+    "healthy": true,
+    "historicalFailures": 1484,
+    "readbackTriggeredByPreflight": false
+  },
+  "testedFrontendRollback": {
+    "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+    "imageIndex": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf"
+  },
+  "readerOnlyFallback": {
+    "source": "d8b3f22b0790770192a809aa8d83064fd42d9804",
+    "imageIndex": "sha256:6f1cb5d644cbee92d2b344d591d182d900ab059670ed5870acc01b556e82cacb",
+    "scope": "Retained previously tested reader-only fallback; not newly rehearsed in this packet"
+  },
+  "predecessorServerRollbackTested": false
+}

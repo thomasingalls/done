@@ -5911,3 +5911,14 @@ do not activate source defaults or service automation. The next release boundary
 identified ARM64 artifact with selected switches and its own tests. Keep prior failures as evidence,
 phone deferral and generalized qualification paused. No universal latency/capacity inference from
 these four journeys and no authorization to merge or deploy is inferred from this acceptance.
+
+
+## 2026-10-28 — Select the measured resumable profile for exact-artifact release preparation
+
+The operator authorizes signing the canonical bounded series and starting release preparation.
+Use explicit local-auto1/resume1/service-auto0/coordinated-2000, matching accepted phase156; leave
+ordinary source defaults and experimental service-history automation off. Preserve the exact tested
+ARM64 image rather than rebuilding after documentation. Reuse source-identical unit/performance
+runs as such; run exact-artifact functional/upgrade/rollback and fresh bounded native/contract checks.
+Phone testing remains deferred and general qualification paused. Both operator merge buttons and
+exact private-registry image approval remain separate later publication boundaries.

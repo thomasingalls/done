@@ -1,0 +1,26 @@
+{
+  "predecessor": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+  "candidate": "b6f0160a8fe7251407a3606cb653632f10885c81",
+  "historicalHelpers": [
+    {
+      "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77"
+    },
+    {
+      "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+      "path": "test/device-enrollment/helpers.ts",
+      "sha256": "78ec52dd123458f3c2ce75b29fd14ed990145cfbbe82d701b3c39510b6f3d071"
+    },
+    {
+      "source": "dc53fecf25ca341cb4b626a154e0df33a29728be",
+      "path": "test/geometry/openApp.ts",
+      "sha256": "d59d8b72e9ca7e02a3f53d07544d8cf33206cdc164c794c9254905e48306d83e"
+    }
+  ],
+  "priorProbeSha256": "7f8d60d84248a6bb225c5fe336c2c0196ddd2261cafc448c0de06c83e561236a",
+  "probeSha256": "14de0631e1248b74cdaf882285562bef125e2a447161e4c42d1f3d6adb12b508",
+  "changes": "Only predecessor/candidate identities and complete pinned predecessor helpers; every old assertion/deadline remains",
+  "backendBoundary": "Signed candidate backend throughout; frontend predecessor/candidate rollback, not predecessor-server rollback",
+  "phone": false
+}

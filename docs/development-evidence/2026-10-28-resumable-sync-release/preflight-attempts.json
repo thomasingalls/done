@@ -1,0 +1,7 @@
+{
+  "firstAndSecondCodebergSshFetches": "connection closed before authentication completed; retained temporary logs",
+  "anonymousHttpsRead": "refused because authenticated access is required",
+  "successfulCodebergRead": "IPv4, IdentitiesOnly and existing public-key identity; no global SSH/repository config change; current main verified",
+  "infraSourceChanged": false,
+  "clusterChanged": false
+}

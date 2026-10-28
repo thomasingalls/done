@@ -1,0 +1,344 @@
+[
+  {
+    "phase": 119,
+    "canonicalPhase": "119-v2",
+    "commit": "c0f096f61e4eb7e34b9204ee3cfdf3af315064cb",
+    "tree": "21ed4330eaf644df508222fd06035bb2b75452db",
+    "patchSha256": "cbe32f87394668d5be1ea13f2394fd6b22da4414bbf447ebc9899b339aaf1a25",
+    "signatureVerified": true,
+    "title": "docs: record Android opening baseline"
+  },
+  {
+    "phase": 120,
+    "canonicalPhase": 120,
+    "commit": "fc13546b5daca6a7927533332e46e4cb4bdc7cd4",
+    "tree": "ffe2e1ce8debd57a0a3e378bd76f1e52837283ab",
+    "patchSha256": "25d2add965b6073771dce7332bce2e09323f6865c5eb406e7e2bfd6bf33e7cc5",
+    "signatureVerified": true,
+    "title": "docs: record reduced Android opening trace"
+  },
+  {
+    "phase": 121,
+    "canonicalPhase": 121,
+    "commit": "f3b2de18b18b9633004d2713671d67e8ca309083",
+    "tree": "ccaba7e11f223819f935a932aa5e64dcb108658a",
+    "patchSha256": "a3533de03c62e226ed159e82b1102ece86988f680d55f45ace7db3c1a9817c4e",
+    "signatureVerified": true,
+    "title": "docs: attribute initial history conversion costs"
+  },
+  {
+    "phase": 122,
+    "canonicalPhase": 122,
+    "commit": "da5f2853004d35da7f71dd2088a4aca2026cb91a",
+    "tree": "55fb07000957147b480ba1fd1c178e9837961af6",
+    "patchSha256": "b9a73fc996168ea782dc54a404d0d9b22cf2253e883848b3722d25bdf2b3a2c0",
+    "signatureVerified": true,
+    "title": "perf: reuse same-owner baseline validation proof"
+  },
+  {
+    "phase": 123,
+    "canonicalPhase": 123,
+    "commit": "c7641db172cd62dd2289ef83ec540b6b8b249bed",
+    "tree": "f1a93887afd0d8628be32cee7fa2b38b48459baf",
+    "patchSha256": "6bed9bfdf10502edd6442806275245fc3c1c39d5aa30f0177878273ae1200784",
+    "signatureVerified": true,
+    "title": "perf: share first-conversion verification"
+  },
+  {
+    "phase": 124,
+    "canonicalPhase": 124,
+    "commit": "830dc9ae1e60cb319037ffb61c4fd3d7e49b9a41",
+    "tree": "a586de82a67f9a81eb8a387051800407d02042bc",
+    "patchSha256": "5f3a5a7cadce40ac51585e1b671445a9086841e989b926e3af1bc9afc2f17eae",
+    "signatureVerified": true,
+    "title": "feat: show bounded local maintenance progress"
+  },
+  {
+    "phase": 125,
+    "canonicalPhase": 125,
+    "commit": "3c2135444d14922b14e46ed91f8ec8202c0170f0",
+    "tree": "889f093f7919386d8175d71e748823d9b3b2001d",
+    "patchSha256": "4de2aea42a7179c530721b7d846c7848d34f23c81fa718f6622df7f8b5ba0b41",
+    "signatureVerified": true,
+    "title": "docs: design resumable history preparation"
+  },
+  {
+    "phase": 126,
+    "canonicalPhase": 126,
+    "commit": "0a6982792bd21122dc468a63356e99cafa1a2166",
+    "tree": "f55c6c4a0b2a4705d5c597285038f9149e5fd19c",
+    "patchSha256": "848d7d007187d874ccc08beb53ce0ea27d3ffdebb364392b7891ad4b3dc1b435",
+    "signatureVerified": true,
+    "title": "feat: gate automatic service history maintenance"
+  },
+  {
+    "phase": 127,
+    "canonicalPhase": 127,
+    "commit": "660c2eb3a2de5d1e72bb243e3d71c2fa765af9e7",
+    "tree": "1d5005b87e275a6cc646a8b81a42a15bf88e924c",
+    "patchSha256": "b451773133e295ada3004fc03bdcb5fa791176b8963bcb9a695a233a510348da",
+    "signatureVerified": true,
+    "title": "feat: model resumable preparation receipts"
+  },
+  {
+    "phase": 128,
+    "canonicalPhase": 128,
+    "commit": "8fc668e99cb43557cdc18ac46378c795be0b1067",
+    "tree": "7453b4050233cbed46ef8bb93eab34e86d1f7a51",
+    "patchSha256": "03860e4096f042b393f4cf8431b56d2c79c51417b9c732ae2e1c276185e708e6",
+    "signatureVerified": true,
+    "title": "feat: encrypt durable preparation state"
+  },
+  {
+    "phase": 129,
+    "canonicalPhase": 129,
+    "commit": "58d6319bcbfdd6c241b066319afda9c738ebad88",
+    "tree": "f9d6f8bf2df6e8cecaef07ec9f31e16a0c1b2493",
+    "patchSha256": "545454fc24ea65d9fba5ade77497539e79d809fbf38e3a23a94c993b14683c43",
+    "signatureVerified": true,
+    "title": "feat: adapt preparation reference receipts"
+  },
+  {
+    "phase": 130,
+    "canonicalPhase": 130,
+    "commit": "48a2841d484a825663236f24f98927d04232bf19",
+    "tree": "16bb0586b53945149eed56013bd2e2271066e3e7",
+    "patchSha256": "d4a40e1fb5ae0cb12205abd40c09cd9d315fc528fe6a52712782032fea479d3b",
+    "signatureVerified": true,
+    "title": "feat: resume owned local history preparation"
+  },
+  {
+    "phase": 131,
+    "canonicalPhase": 131,
+    "commit": "cb57d568d6413b920a0ea59729f6d332fa49833a",
+    "tree": "be1b6b7e34c3d89f96f1f59c2eaaf89c7b4092ce",
+    "patchSha256": "49249081c68cd4b0df94a909ea31329cadd19526e127d0a2dde6847413e851cc",
+    "signatureVerified": true,
+    "title": "test: inventory preparation and snapshot byte guards"
+  },
+  {
+    "phase": 132,
+    "canonicalPhase": 132,
+    "commit": "b37063cfb640dcea38c5d1ce326fc637415e05e3",
+    "tree": "fcb35a25a53f4360d689ae73b45c3219cbc28dd6",
+    "patchSha256": "60728cde4116b89ba5fcd280bdb59a57fdbcfa7f78821e79692b4671bdde11e8",
+    "signatureVerified": true,
+    "title": "build: expose explicit preparation release switches"
+  },
+  {
+    "phase": 133,
+    "canonicalPhase": 133,
+    "commit": "66aff972e96433be3bef2cec3f3be69c99d6363d",
+    "tree": "ce11a066c804755fcdf23477732c3e2b5057c1d3",
+    "patchSha256": "9ce1813a79bd5a4e198b42d4a176eb754780fa8dd4760874c59b3889c4e41d50",
+    "signatureVerified": true,
+    "title": "docs: freeze preparation contention protocol"
+  },
+  {
+    "phase": 134,
+    "canonicalPhase": 134,
+    "commit": "36aa3c450c4a984ea91fb444cb59a75b69cf5180",
+    "tree": "e157441c6c48f71129a88dcf34584169ff58d4c4",
+    "patchSha256": "74986c7d93580f7d19b47529ccae6f39df0d43534a34ef5c3eb4e5c12178861e",
+    "signatureVerified": true,
+    "title": "docs: retain failed preparation input acceptance"
+  },
+  {
+    "phase": 135,
+    "canonicalPhase": 135,
+    "commit": "7ba4c6ad30aa7f0c5125fd392d4a34acfac3f21c",
+    "tree": "47c1b321b07a41761c35310acf47abad2367a5a6",
+    "patchSha256": "473521fb28d85e07477bcd7385f50c4bea4c09b69a6d9ef2f9abc6fdfdc59876",
+    "signatureVerified": true,
+    "title": "docs: record preparation boundary checks"
+  },
+  {
+    "phase": 136,
+    "canonicalPhase": 136,
+    "commit": "c7f851c728caaf2eed5e25852b6090a4f08f44d5",
+    "tree": "94af01812431262ba141edb1913e65bc04e99e39",
+    "patchSha256": "938844b2f0b0367ca13c6e5027131f21f901d1c9db73ebe8b00bb55008249602",
+    "signatureVerified": true,
+    "title": "docs: freeze input baseline investigation"
+  },
+  {
+    "phase": 137,
+    "canonicalPhase": 137,
+    "commit": "e37bd8ec083ad0a9780b228a15e679facda7298f",
+    "tree": "6c5e39eab2cdcec3db0520d991043a74523919bf",
+    "patchSha256": "7a17a3de2642ea39738cb440a6d9a255d876ac9c80981c0051c28e6e65dba540",
+    "signatureVerified": true,
+    "title": "test: close baseline serializer source input"
+  },
+  {
+    "phase": 138,
+    "canonicalPhase": 138,
+    "commit": "edb5a67d33348713730950636e520b7cb91cd35c",
+    "tree": "2c652e37682db55debc96e4aa02307f9e02970a6",
+    "patchSha256": "e1f540d50140ff7d430c071258bcf81909ec302f079627d3e097e83c2f997001",
+    "signatureVerified": true,
+    "title": "docs: record original workload input baseline"
+  },
+  {
+    "phase": 139,
+    "canonicalPhase": 139,
+    "commit": "86b893f2553777462c9615f5b62ca47da0491525",
+    "tree": "c98880905947e721df672ce3b71a8f4b8144a0de",
+    "patchSha256": "e6a888df9d5188f2b86bcb832602c18aa54f7dc0b0bd12efe46089ecbd984415",
+    "signatureVerified": true,
+    "title": "docs: freeze full-history dispatch diagnostics"
+  },
+  {
+    "phase": 140,
+    "canonicalPhase": 140,
+    "commit": "912f46393b3c07f195241e5efce24bafa41b2ea5",
+    "tree": "ac16e7faa1640497df5db45f87299c199d52a431",
+    "patchSha256": "b92e41c8c73355ece371f022f953834ac5de465034913ea05574d6f80f90bdcc",
+    "signatureVerified": true,
+    "title": "docs: attribute full-history renderer queueing"
+  },
+  {
+    "phase": 141,
+    "canonicalPhase": 141,
+    "commit": "d4329f4970f02125e5c50c7d6e4ff5255caf3f52",
+    "tree": "44149dc126d0a99ec12021a52b42db4ce9247928",
+    "patchSha256": "4d813b6a28f242e342ad9b64464dd86275b10f4ad534e5b3ce1fa509a3beebe0",
+    "signatureVerified": true,
+    "title": "docs: freeze paused-maintenance source profile"
+  },
+  {
+    "phase": 142,
+    "canonicalPhase": 142,
+    "commit": "5a11876569217475fdb606f5b399ea5a20660b4a",
+    "tree": "e9e4081b644f3ce6a454f635f74512bb31e1b622",
+    "patchSha256": "02e58fefbd6f226f3a987b377238b19149e69fd6cc77da0dc3194e9fc64c7c7d",
+    "signatureVerified": true,
+    "title": "docs: attribute repeated verified-view work"
+  },
+  {
+    "phase": 143,
+    "canonicalPhase": 143,
+    "commit": "f98d857a7e98839eab75bf0c8030a177cfbe1586",
+    "tree": "b3521aea9258c9dd17e3f490b93903a27d9734b2",
+    "patchSha256": "82227256f7125c745a6654ba6d9e87b3f31e6dcabab0442f7fa201f734861a47",
+    "signatureVerified": true,
+    "title": "perf: select guarded publication metadata"
+  },
+  {
+    "phase": 144,
+    "canonicalPhase": 144,
+    "commit": "c45bbe6e4e32d947f3f672fee4ccee2f8321872b",
+    "tree": "82da8bd75fd8513a2e653ff7a8e30adbce1bcee3",
+    "patchSha256": "1ec26c5c5a90481055536b264709815c58db7f9252b99a8cb687404b40486173",
+    "signatureVerified": true,
+    "title": "docs: freeze publication selection comparison"
+  },
+  {
+    "phase": 145,
+    "canonicalPhase": 145,
+    "commit": "ebcd8a5402729920a6054e12b43cbc9993ef62e2",
+    "tree": "2057d4510b2f3602b6faed3abd8115b8fa9f89d5",
+    "patchSha256": "cfb11f8554abccb3ee9b26ad43eca1dc9c89c8ad89846fe76dd0d8caaa3006eb",
+    "signatureVerified": true,
+    "title": "docs: retain rejected wall-clock measurement"
+  },
+  {
+    "phase": 146,
+    "canonicalPhase": 146,
+    "commit": "fccf2917b77e0f0eb6255a62b92c11b28f2648ca",
+    "tree": "c2b125d87c753dc0e25a729eafacf99092f7999f",
+    "patchSha256": "38f727772712f3da20e61aa78ddaba7424c733225d7e658c7a90a18d6b5c4703",
+    "signatureVerified": true,
+    "title": "test: bind catch-up comparison to monotonic clock"
+  },
+  {
+    "phase": 147,
+    "canonicalPhase": 147,
+    "commit": "68cdfc34b339c03dda41e15357c8d50586b2be27",
+    "tree": "cd804c3ba1246e3e873e3b0bb8ca090ba6b8a619",
+    "patchSha256": "41275e827628e633c97190b1f6955acd555adbf7247f1eb45328491c18619e7b",
+    "signatureVerified": true,
+    "title": "docs: preserve late delivery acceptance failure"
+  },
+  {
+    "phase": 148,
+    "canonicalPhase": "148-v2",
+    "commit": "f825741b5e84050ecee678863f43b8c41c7bfa0a",
+    "tree": "2286c6df79fedb91d0138bfb645285a19b14af2b",
+    "patchSha256": "859cf33cebb06f6ca38fdc4856c72e0e6dad99945771d657e3ca72a6aa1d1659",
+    "signatureVerified": true,
+    "title": "docs: record bounded publication repair checkpoint"
+  },
+  {
+    "phase": 149,
+    "canonicalPhase": 149,
+    "commit": "3936cc6300c32c5f2cdf9ba1faef09caf402073b",
+    "tree": "5260b834bfaeb97bbc4a50a27b6e23f9bfdb22c1",
+    "patchSha256": "e12f13eb9315d08b4159205bfbda41b515ac4f7fd7d10a1eed9cbc8321df9ce7",
+    "signatureVerified": true,
+    "title": "docs: freeze retained-profile delivery diagnostic"
+  },
+  {
+    "phase": 150,
+    "canonicalPhase": 150,
+    "commit": "ebde52814f01039cfd472b22655f08008bfa12ba",
+    "tree": "74244a0369d66a67e276e6dcb71d1d28f7934b2d",
+    "patchSha256": "3610255bcf29a30c7e7d67f1244f51cc2b994f64ddff1a3d5b2f4a0f0deebb4b",
+    "signatureVerified": true,
+    "title": "docs: trace accepted edit missing idle discovery"
+  },
+  {
+    "phase": 151,
+    "canonicalPhase": "151-v2",
+    "commit": "5aef679ef6eea798f49c81056b1735a4f06e1849",
+    "tree": "6a7c07f51bbc87d9feaa9768b6074cdd740912bb",
+    "patchSha256": "a25c7af219f370688e39950f733d78c9e0975d2fcb86df4731bbd156485d72f5",
+    "signatureVerified": true,
+    "title": "fix: bound healthy idle reconciliation delay"
+  },
+  {
+    "phase": 152,
+    "canonicalPhase": "152-v2",
+    "commit": "0313f82be6853ae26951b718c96eaa63b020dbdb",
+    "tree": "11238fb42e593eab8e0c38c0f61af4a40fc776d8",
+    "patchSha256": "0ddbeac4e0ea37b281f94eefdf16a11720371a339edcf3f76b86fb6ac0c587be",
+    "signatureVerified": true,
+    "title": "docs: freeze rebuilt idle reconciliation comparison"
+  },
+  {
+    "phase": 153,
+    "canonicalPhase": 153,
+    "commit": "972b3b31287929b5c639fc0f6daaf3691f55e41f",
+    "tree": "200ff46017cbf0f5c854340739536227f3242bf5",
+    "patchSha256": "fff5e862f66657d5b6f161c37dda51a5c860b1b5540e5107daf747692c660ae4",
+    "signatureVerified": true,
+    "title": "docs: record idle delivery repair and input miss"
+  },
+  {
+    "phase": 154,
+    "canonicalPhase": 154,
+    "commit": "ea0c9bc7db8fc4eb4353808083cb5533ec1bc748",
+    "tree": "551991664565e96d336da66bd76171967246364c",
+    "patchSha256": "66c5d144b545c528230a271d68f14c44448cc64b412b43dedcd62d71b82c92df",
+    "signatureVerified": true,
+    "title": "perf: omit unused history from envelope selection"
+  },
+  {
+    "phase": 155,
+    "canonicalPhase": 155,
+    "commit": "3bd272992273977adaf470199308ee27f4bce2ab",
+    "tree": "07f88b6d9df32346629cf85d752ee7c65c3a92d8",
+    "patchSha256": "13bbf0d35b89bf6524b05595389ed2321cd361dbf6ad95eba9f381f7619ce8d6",
+    "signatureVerified": true,
+    "title": "docs: freeze rebuilt envelope projection comparison"
+  },
+  {
+    "phase": 156,
+    "canonicalPhase": 156,
+    "commit": "b6f0160a8fe7251407a3606cb653632f10885c81",
+    "tree": "66bbe1bd729570d80b6ed2752e0539a2a8207fd9",
+    "patchSha256": "765ef81ecf8f64a4adde333b7efcfafaabb343a670c3e970e3a6037e31a79c69",
+    "signatureVerified": true,
+    "title": "docs: record accepted projection candidate"
+  }
+]

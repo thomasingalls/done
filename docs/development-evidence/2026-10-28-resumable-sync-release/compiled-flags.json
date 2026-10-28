@@ -1,0 +1,61 @@
+{
+  "expected": {
+    "VITE_ACCOUNT_BASELINE_READ": "1",
+    "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+    "VITE_ACCOUNT_RETENTION": "1",
+    "VITE_ACCOUNT_RETENTION_AUTO": "1",
+    "VITE_ACCOUNT_RETENTION_RESUME": "1",
+    "VITE_ACCOUNT_HISTORY_AUTO": "0",
+    "VITE_ACCOUNT_BATCH": "coordinated-2000"
+  },
+  "compiledGateReads": [
+    {
+      "file": "deviceDataRemoval-B7rKmEu2.js",
+      "flags": {
+        "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+        "VITE_ACCOUNT_BASELINE_READ": "1",
+        "VITE_ACCOUNT_BATCH": "coordinated-2000",
+        "VITE_ACCOUNT_HISTORY_AUTO": "0",
+        "VITE_ACCOUNT_LEDGER": "incremental",
+        "VITE_ACCOUNT_RETENTION": "1",
+        "VITE_ACCOUNT_RETENTION_AUTO": "1",
+        "VITE_ACCOUNT_RETENTION_RESUME": "1",
+        "VITE_ACCOUNT_TEXT_ADMISSION": "direct"
+      }
+    }
+  ],
+  "verifierIdentity": {
+    "digest": "f3db8acde7d1452c5710732bf08c5f19dddb8209b49ce6179977d3155d413cfc",
+    "inputCount": 360,
+    "flags": [
+      [
+        "$mode",
+        "production"
+      ],
+      [
+        "VITE_ACCOUNT_BATCH",
+        "coordinated-2000"
+      ],
+      [
+        "VITE_ACCOUNT_HISTORY_AUTO",
+        "0"
+      ],
+      [
+        "VITE_ACCOUNT_LEDGER",
+        ""
+      ],
+      [
+        "VITE_ACCOUNT_RETENTION_AUTO",
+        "1"
+      ],
+      [
+        "VITE_ACCOUNT_RETENTION_RESUME",
+        "1"
+      ]
+    ],
+    "foundIn": [
+      "deviceDataRemoval-B7rKmEu2.js"
+    ]
+  },
+  "actualExtractedFrontend": true
+}
