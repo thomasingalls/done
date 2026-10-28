@@ -16979,3 +16979,14 @@ First136 execution stops before any browser/timed work: omitted pinned Playwrigh
 raises ENOENT. Copy its exact133 bytes, extend the closed manifest, freeze new baseline-repair-*
 identities and preserve the failed directory/logs. No runtime, threshold, test assertion, source
 fixture or activation changes. [Evidence](performance-experiments/2026-10-28-input-investigation/phase137/README.md).
+
+
+## 2026-10-28 — Phase138: current original-workload input baseline remains below16ms
+
+Both frozen current C journeys complete120keys/3markers, full data/cold/worker/resource guards and
+independent native proofs. Normal/withheld local p9511.9/7.6ms passes; peer p951883.7/2305.1ms
+passes, but withheld marker2578ms fails2500. Normal local max62.8ms remains. Independent full-bound
+reconstruction and false-marker control preserve the mixed result; audit syntax error retained.
+Old-asset conditional pair stays unexecuted by the frozen rule. [Evidence](performance-experiments/2026-10-28-input-investigation/phase138/README.md).
+The full-history condition remains the typing lead; no general regression/activation inference.
+Phase134 failures remain, defaults/service off, phone deferred, no runtime/old-test edits or release.

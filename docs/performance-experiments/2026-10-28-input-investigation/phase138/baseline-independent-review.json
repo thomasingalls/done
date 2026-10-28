@@ -1,0 +1,24 @@
+{
+  "kind": "audit of mixed diagnostic outcome, no acceptance credit",
+  "reports": [
+    {
+      "name": "baseline-repair-1-C-normal",
+      "all120BoundsAndThreeMarkersReconstructed": true,
+      "falseMarkerGateRejected": true,
+      "sourceWorkerBinaryResourcesExact": true,
+      "local16ms": true,
+      "everyMarker2500ms": true,
+      "maxPeerMarkerUpperMs": 897.5
+    },
+    {
+      "name": "baseline-repair-2-C-withheld",
+      "all120BoundsAndThreeMarkersReconstructed": true,
+      "falseMarkerGateRejected": true,
+      "sourceWorkerBinaryResourcesExact": true,
+      "local16ms": true,
+      "everyMarker2500ms": false,
+      "maxPeerMarkerUpperMs": 2578.0
+    }
+  ],
+  "oldAssetConditionalUnexecuted": true
+}

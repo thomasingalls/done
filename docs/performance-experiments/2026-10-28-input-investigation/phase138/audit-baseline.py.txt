@@ -1,0 +1,52 @@
+from pathlib import Path
+import json, hashlib, copy
+s = Path(__file__).parent
+identity = json.loads((s / 'baseline-identity.json').read_text())
+sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+assert all(sha(s / p) == h for p, h in identity['apparatus'].items())
+reports = []
+for case in json.loads((s / 'baseline-plan.json').read_text())['primary']:
+    d = s / case['name']
+    x = json.loads((d / 'result.json').read_text())
+    a = json.loads((d / 'analysis.json').read_text())
+    container = json.loads((d / 'container-identity.json').read_text())
+    h = container['HostConfig']
+    assert [h[k] for k in ['NanoCpus', 'Memory', 'MemorySwap', 'PidsLimit', 'ReadonlyRootfs']] == [1000000000, 1073741824, 1073741824, 128, True]
+    assert container['Image'] == identity['image']['Id']
+    assert len(set(v['pid'] for v in x['roots'])) == 2
+    assert all(sha(Path(v['executable'])) == v['sha256'] for v in x['roots'])
+    assert all(v['workerSha256'] == identity['clients'][case['variant']]['assets']['sw.js'] for v in x['roots'])
+    assert all(int(line.split()[1]) == 0 for line in x['metrics']['cgroupAfter']['memory.events'].splitlines() if line.split()[0] in ['oom', 'oom_kill', 'max'])
+    def verify(claim):
+        keys = [v for v in x['offers'] if v['kind'] == 'key']
+        assert [v['index'] for v in keys] == list(range(120))
+        assert all(x['guards'].values())
+        for device in range(2):
+            clocks = [v for group in x['clocks'] for v in group['rows'][device]]
+            lo = max(v['renderer'] - v['after'] - 1 for v in clocks)
+            hi = min(v['renderer'] - v['before'] + 1 for v in clocks)
+            assert lo <= hi
+            values = [min(v['at'] for v in x['probes'][device]['counts'] if v['count'] >= x['baselines'][device] + i and v['at'] >= o['at'] - 5) - o['at'] - lo for i, o in enumerate(keys, 1)]
+            assert values == claim['allKeyUpperMs'][device]
+            p95 = sorted(values)[113]
+            gate = 'peer2500ms' if device == 0 else 'local16ms'
+            assert claim['gates'][gate] == (p95 <= (2500 if device == 0 else 16))
+            markers = [v for v in x['offers'] if v['kind'] == 'marker']
+            assert len(markers) == 3
+            mv = [x['probes'][device]['markers'][i] - o['at'] - lo for i, o in enumerate(markers)]
+            if device == 0:
+                assert mv == claim['markerPeerUpperMs']
+                assert claim['gates']['everyMarker2500ms'] == (max(mv) <= 2500)
+        assert claim['accepted'] == all(claim['gates'].values())
+        assert claim['activationCredit'] is False
+    verify(a)
+    bad = copy.deepcopy(a)
+    bad['gates']['everyMarker2500ms'] = not bad['gates']['everyMarker2500ms']
+    try:
+        verify(bad)
+        raise RuntimeError('false marker gate accepted')
+    except AssertionError:
+        pass
+    reports.append({'name': case['name'], 'all120BoundsAndThreeMarkersReconstructed': True, 'falseMarkerGateRejected': True, 'sourceWorkerBinaryResourcesExact': True, 'local16ms': a['gates']['local16ms'], 'everyMarker2500ms': a['gates']['everyMarker2500ms'], 'maxPeerMarkerUpperMs': max(a['markerPeerUpperMs'])})
+(s / 'baseline-independent-review.json').write_text(json.dumps({'kind': 'audit of mixed diagnostic outcome, no acceptance credit', 'reports': reports, 'oldAssetConditionalUnexecuted': True}, indent=2) + '\n')
+print(json.dumps(reports, indent=2))
