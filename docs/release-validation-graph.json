@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 557,
-    "requiredTestFiles": 551,
+    "testFiles": 563,
+    "requiredTestFiles": 557,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11093,6 +11093,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/local-baseline/preparation.node.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/local-baseline/preparation.node.mjs"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/local-baseline/progress.node.mjs",
       "status": "required",
       "invocation": {
@@ -12052,6 +12067,26 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/preparationBinding.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/preparationBinding.test.ts"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/preparationRemoval.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/preparationRemoval.test.ts"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -13130,6 +13165,36 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/retentionPreparationOwnership.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/retentionPreparationOwnership.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/retentionPreparationStorage.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/retentionPreparationStorage.test.ts"
+        ]
+      },
+      "declarations": 17,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/roundTrip.test.ts",
       "status": "required",
       "invocation": {
@@ -13827,6 +13892,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "vite/precacheBuild.test.ts"]
       },
       "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "vite/retentionPreparationIdentity.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "vite/retentionPreparationIdentity.test.ts"
+        ]
+      },
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     }
@@ -15605,7 +15685,15 @@
     {
       "id": "account-local-preparation",
       "status": "open",
-      "tests": ["test/retentionPreparation.test.ts"],
+      "tests": [
+        "test/retentionPreparation.test.ts",
+        "test/retentionPreparationStorage.test.ts",
+        "test/retentionPreparationOwnership.test.ts",
+        "test/preparationBinding.test.ts",
+        "test/preparationRemoval.test.ts",
+        "vite/retentionPreparationIdentity.test.ts",
+        "test/local-baseline/preparation.node.mjs"
+      ],
       "requirements": [
         "exact-byte-contracts",
         "independent-runtime-bytes",
@@ -15624,7 +15712,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "5dfb85b164b136f9ee8d88bc894051dd58a27dc78aacb88e9e4f6ef25ce5affb"
+      "sha256": "7550dd50f11018d5535ae63d56d520d18e6625514531a2ee021bfdc9391f7a9a"
     },
     {
       "path": "package.json",
@@ -19427,6 +19515,14 @@
       "sha256": "b3b743fd89efc46cf8348d48eade9621e8b8ed2575bd59380ae4d5d9e231793f"
     },
     {
+      "path": "test/local-baseline/preparation-browser.ts",
+      "sha256": "c2227b1cfddec42340a367f391fe8f20cfdd000dc50fa83d103cd7a326a0a68a"
+    },
+    {
+      "path": "test/local-baseline/preparation.node.mjs",
+      "sha256": "6edff1a1cd2639152eff06d7c20dd07fc0c87ec7fdeea357ceea8ba8f92b491a"
+    },
+    {
       "path": "test/local-baseline/progress.node.mjs",
       "sha256": "b33d86648cb67408a96dc84dd7fd722efa9daedbfa1490eab07e39b318c9fc98"
     },
@@ -19771,6 +19867,14 @@
       "sha256": "a053ed685ae5507f51bf51dcd47adea620d72f561aac95fbab192a5ec64da505"
     },
     {
+      "path": "test/preparationBinding.test.ts",
+      "sha256": "37de02725905a9269170a3b22005f8f9e31eda16d004af274e8bf38a6e6da602"
+    },
+    {
+      "path": "test/preparationRemoval.test.ts",
+      "sha256": "5b618ecc72d0ad41ddaa3597200bf5d448c1f1e42d203431ed685f6684cf55e3"
+    },
+    {
       "path": "test/preparedCoverage.test.ts",
       "sha256": "66b4d1992fa9625f73c710e35532136f2890abb625c4b84d6296c314192549cd"
     },
@@ -20013,6 +20117,14 @@
     {
       "path": "test/retentionPreparation.test.ts",
       "sha256": "17ffa33dbb2e99500296ef46a201935652a126c2cf614cbd5c47b5d3ef99ab3f"
+    },
+    {
+      "path": "test/retentionPreparationOwnership.test.ts",
+      "sha256": "d8444b0b388d611648a1445149976ba5fbf547a50c736d9d9ea5b87df9100eb8"
+    },
+    {
+      "path": "test/retentionPreparationStorage.test.ts",
+      "sha256": "06fe5ec75f9fa7f1683326838ca1aa1e671cb220d443f3fb5885d6e86d733802"
     },
     {
       "path": "test/roundTrip.test.ts",
@@ -20461,6 +20573,14 @@
     {
       "path": "vite/privateMigration.config.ts",
       "sha256": "0ee17d6c995464201b48a26b9169a5c5f2f49dfda050f2d1b6a7efb848c79858"
+    },
+    {
+      "path": "vite/retentionPreparationIdentity.test.ts",
+      "sha256": "4a563726d779eee0cdc2d1b5ff104fe3fccf13da7093878305b04d31c3c3c1c7"
+    },
+    {
+      "path": "vite/retentionPreparationIdentity.ts",
+      "sha256": "ea4d54e4ba3462336573fcb76f04f8740fe0b0f5e86b1384eb70727dae8de5a0"
     }
   ]
 }

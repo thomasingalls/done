@@ -3,6 +3,7 @@ import { CUSTODY_DB, CUSTODY_STORE, identity, openCustodyDb } from './custodyRec
 import { contentTransaction } from './contentDatabase';
 import { probeDatabase, readScopedRows, readRow, legacyJournalCount } from './startupStorage';
 import { deriveStoreName } from './storeName';
+import { removePreparationCache } from './retentionPreparationDatabase';
 import { journalPrefix } from './journalCodec';
 import { retireSlotWriters, withDeviceRemovalSlot, type SessionTask } from './writeSession';
 import { stopStartup } from './startupState';
@@ -199,7 +200,10 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
         await task.wait(() => invalidateSetupEpoch(slotId));
         if (r.phase === 'content') {
           progress?.('Removing encrypted local data…');
-          for (const name of r.databases)
+          for (const name of r.databases) {
+            await removePreparationCache(task, name, () =>
+              progress?.('Close other tabs using this workspace to finish removal.'),
+            );
             await task.wait(
               () =>
                 new Promise<void>((resolve, reject) => {
@@ -210,6 +214,7 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
                   request.onerror = () => reject(request.error);
                 }),
             );
+          }
           r = { ...r, phase: 'journal' };
           await save(task, r);
         }

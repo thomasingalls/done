@@ -16911,3 +16911,7 @@ initial type errors. The registry fixture adds only the new open obligation (14â
 and all prior security assertions remain. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase127/README.md).
 No native persistence, app wiring, history cut or service automation is enabled; qualification and
 release preparation remain paused. No computer use, signing, push or deployment.
+
+## 2026-10-28 â€” Phase128: encrypted resumable-preparation storage
+
+Implemented exact native-prefix/context binding, append-only encrypted auxiliary checkpoints, burned allocation on failure, strict native exchange/readback, sealed task handoff and credential-free removal cleanup. 49 directed cases and4 actual Chromium interruption/reopen cases pass; typecheck passes. Initial apparatus failures retained. [Evidence](performance-experiments/2026-10-28-resumable-preparation/phase128/README.md). Application wiring and composed/performance proof remain next. Service automation off;2.5s gate unchanged. No release work.

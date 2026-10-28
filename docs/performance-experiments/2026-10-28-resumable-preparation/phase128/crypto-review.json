@@ -1,0 +1,16 @@
+{
+  "added": [
+    "src/crdt/retentionPreparationBinding.ts",
+    "src/crdt/retentionPreparationDatabase.ts",
+    "src/crdt/retentionPreparationStorage.ts"
+  ],
+  "changed": [
+    "src/crdt/deviceDataRemoval.ts",
+    "src/crdt/localBaselineReplay.ts",
+    "src/crdt/retentionPreparation.ts"
+  ],
+  "previousSources": 413,
+  "currentSources": 416,
+  "domainsUnchanged": true,
+  "priorContractsUnchanged": true
+}

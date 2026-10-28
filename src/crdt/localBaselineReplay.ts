@@ -104,7 +104,7 @@ const canonical = (value: unknown): unknown =>
             .map(([k, v]) => [k, canonical(v)]),
         )
       : value;
-function captureContext(c: LocalBaselineContext): LocalBaselineContext {
+export function captureLocalBaselineContext(c: LocalBaselineContext): LocalBaselineContext {
   c.assertCurrent();
   const b = c.inbound;
   // Joined custody keeps local IDs; its authenticated installation bridges them to the account.
@@ -149,7 +149,7 @@ function captureContext(c: LocalBaselineContext): LocalBaselineContext {
     },
   };
 }
-function clearContext(c: LocalBaselineContext) {
+export function clearLocalBaselineContext(c: LocalBaselineContext) {
   c.inbound.generationKey.fill(0);
   for (const k of c.inbound.retainedGenerationKeys?.values() ?? []) k.fill(0);
 }
@@ -280,11 +280,11 @@ export async function replayFullLocalHistory(
   input: LocalReplayInput,
   context: LocalBaselineContext,
 ) {
-  const c = captureContext(context);
+  const c = captureLocalBaselineContext(context);
   try {
     return await full(captureInput(input, c), c);
   } finally {
-    clearContext(c);
+    clearLocalBaselineContext(c);
   }
 }
 /** Only a settled cut is summarized. Unallocated sources survive; open positions stay in the suffix. */
@@ -317,7 +317,7 @@ export async function prepareLocalBaselineWithReference(
   // Reports a completed reference without exposing mutable evidence to candidate construction.
   onReferenceReady?: () => void,
 ) {
-  const c = captureContext(context);
+  const c = captureLocalBaselineContext(context);
   previous = previous && { ...previous };
   journalEra = journalEra && { ...journalEra };
   let reference: Awaited<ReturnType<typeof full>> | undefined;
@@ -331,7 +331,7 @@ export async function prepareLocalBaselineWithReference(
     return { candidate, reference };
   } finally {
     if (!delivered) eraseVerified(reference);
-    clearContext(c);
+    clearLocalBaselineContext(c);
   }
 }
 /** Rebuild exclusively from an authenticated predecessor and its physical suffix. No prefix rows
@@ -344,7 +344,7 @@ export async function rebaseLocalBaseline(
   auth: BaselineAuthentication,
   journalEra?: import('./journalEra').JournalEra,
 ): Promise<{ baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor }> {
-  const c = captureContext(context),
+  const c = captureLocalBaselineContext(context),
     held = { payload: stored.payload.slice(), mac: stored.mac.slice() },
     anchor = { ...previous },
     era = journalEra && { ...journalEra };
@@ -377,7 +377,7 @@ export async function rebaseLocalBaseline(
     eraseVerified(decoded);
     eraseVerified(verified);
     eraseVerified(captured);
-    clearContext(c);
+    clearLocalBaselineContext(c);
   }
 }
 async function summarizeBaseline(
@@ -579,7 +579,7 @@ export async function replayLocalBaseline(
   context: LocalBaselineContext,
   auth: Pick<BaselineAuthentication, 'verify'>,
 ) {
-  const c = captureContext(context);
+  const c = captureLocalBaselineContext(context);
   let payload: Bytes | undefined, mac: Bytes | undefined;
   try {
     payload = input.payload.slice();
@@ -751,6 +751,6 @@ export async function replayLocalBaseline(
   } finally {
     payload?.fill(0);
     mac?.fill(0);
-    clearContext(c);
+    clearLocalBaselineContext(c);
   }
 }

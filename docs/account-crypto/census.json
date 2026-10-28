@@ -937,7 +937,7 @@
     },
     {
       "path": "src/crdt/deviceDataRemoval.ts",
-      "sha256": "0b80da3966a8801efef35d93e413e6f4375ef339b77afeb12c99c9d8ac5ed750"
+      "sha256": "fe97fc69d2205d40892d976e2221a6aa2b59476f86e8def164fd47d676ce3468"
     },
     {
       "path": "src/crdt/doc.ts",
@@ -1097,7 +1097,7 @@
     },
     {
       "path": "src/crdt/localBaselineReplay.ts",
-      "sha256": "96001c89d999461a130e4b2221ba4d6ecfcdc904e0d70f104b8bc6e3d6bd417b"
+      "sha256": "51afed9b622fb1af155195a139fc15121cecc803b83489fa8874cf00ba703c8e"
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
@@ -1249,7 +1249,19 @@
     },
     {
       "path": "src/crdt/retentionPreparation.ts",
-      "sha256": "1c9d4e74814f99303182f89ac571095624d77ead5d24b186c64704a71f035249"
+      "sha256": "6820ba8a5135b4c792718e96988577a1435383530aeb4ee8fa047253241a3b2b"
+    },
+    {
+      "path": "src/crdt/retentionPreparationBinding.ts",
+      "sha256": "13593b2253e92b2fe3812729dbbe70841b925c93f7cbfc37bc623c4bd647f786"
+    },
+    {
+      "path": "src/crdt/retentionPreparationDatabase.ts",
+      "sha256": "06a2a995bcd0c9321fc0a600e9120df79162458ba0c4aac4b0c0ed94e3f138cb"
+    },
+    {
+      "path": "src/crdt/retentionPreparationStorage.ts",
+      "sha256": "e2f73dcd97e7dd51186dd5fc8aea319ae95ff30bf39958201f82f57d3e1f03fa"
     },
     {
       "path": "src/crdt/retentionReads.ts",

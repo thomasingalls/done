@@ -7,7 +7,7 @@ import {
 import { fields, hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import type { BaselineAuthentication } from './localBaselineReplay';
-import { eraseVerified } from './verifiedRecords';
+import { eraseVerified, sameBytes } from './verifiedRecords';
 
 const DOMAIN = 'done/local-preparation/draft-1';
 export const PREPARATION_SLICE_MS = 2000;
@@ -215,6 +215,11 @@ export async function authenticatePreparationReceipts(
     if (!delivered) eraseVerified(entries);
   }
 }
+export function preparationReceiptCount(proof: PreparationReceipts) {
+  const p = proofs.get(proof);
+  if (!p) return invalid();
+  return p.entries.length;
+}
 export function disposePreparationReceipts(proof: PreparationReceipts) {
   const held = proofs.get(proof);
   if (held) eraseVerified(held.entries);
@@ -265,53 +270,64 @@ export function createPreparationJournal(options: {
       assert();
       if (!validSlot(slot)) invalid();
       started = true;
-      const at = revision;
+      const at = revision,
+        captured = input.map((b) => new Uint8Array(b));
       const unchanged = () => {
         current();
         assert();
         if (at !== revision) throw Error('Preparation journal changed');
+        if (input.length !== captured.length || input.some((b, i) => !sameBytes(b, captured[i]!)))
+          throw Error('Preparation input changed');
       };
-      const captured = input.map((b) => new Uint8Array(b));
-      let frame: Bytes | undefined, digest: string;
+      let frame: Bytes | undefined;
       try {
         frame = encodePreparationValue([DOMAIN, 'input', options.context, slot, context, captured]);
-        digest = hex(new Uint8Array(await crypto.subtle.digest('SHA-256', frame)));
+        let digest: string;
+        try {
+          digest = hex(new Uint8Array(await crypto.subtle.digest('SHA-256', frame)));
+        } finally {
+          frame.fill(0);
+          frame = undefined;
+        }
+        unchanged();
+        const prior = entries.get(slot);
+        if (prior?.digest === digest) {
+          hits++;
+          return decodePreparationValue(prior.result) as T;
+        }
+        if (pending.size && now() - began >= slice) throw new PreparationPause();
+        const value = await verify();
+        let result: Bytes | undefined;
+        try {
+          unchanged();
+          result = encodePreparationValue(value);
+          validateResult(slot, result);
+          const nextBytes =
+            bytes -
+            (prior ? prior.result.length + prior.slot.length + 64 : 0) +
+            result.length +
+            slot.length +
+            64;
+          if (
+            (!prior && entries.size >= PREPARATION_ENTRIES) ||
+            nextBytes > PREPARATION_VALUE_BYTES
+          )
+            throw new PreparationCapacity();
+          prior?.result.fill(0);
+          const receipt = { slot, digest, result };
+          entries.set(slot, receipt);
+          pending.set(slot, receipt);
+          bytes = nextBytes;
+          misses++;
+          result = undefined;
+          return structuredClone(value);
+        } finally {
+          result?.fill(0);
+          eraseVerified(value);
+        }
       } finally {
         frame?.fill(0);
         eraseVerified(captured);
-      }
-      unchanged();
-      const prior = entries.get(slot);
-      if (prior?.digest === digest) {
-        hits++;
-        return decodePreparationValue(prior.result) as T;
-      }
-      if (pending.size && now() - began >= slice) throw new PreparationPause();
-      const value = await verify();
-      let result: Bytes | undefined;
-      try {
-        unchanged();
-        result = encodePreparationValue(value);
-        validateResult(slot, result);
-        const nextBytes =
-          bytes -
-          (prior ? prior.result.length + prior.slot.length + 64 : 0) +
-          result.length +
-          slot.length +
-          64;
-        if ((!prior && entries.size >= PREPARATION_ENTRIES) || nextBytes > PREPARATION_VALUE_BYTES)
-          throw new PreparationCapacity();
-        prior?.result.fill(0);
-        const receipt = { slot, digest, result };
-        entries.set(slot, receipt);
-        pending.set(slot, receipt);
-        bytes = nextBytes;
-        misses++;
-        result = undefined;
-        return structuredClone(value);
-      } finally {
-        result?.fill(0);
-        eraseVerified(value);
       }
     },
   };

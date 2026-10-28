@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1–D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
+  "status": "A/B/C/D1\u2013D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -7438,7 +7438,8 @@
       "roles": [
         "mac",
         "digest",
-        "carrier"
+        "carrier",
+        "aead"
       ],
       "signer": null,
       "labels": [
@@ -7460,13 +7461,31 @@
         {
           "path": "src/crdt/retentionPreparation.ts",
           "name": "createPreparationJournal"
+        },
+        {
+          "path": "src/crdt/retentionPreparationBinding.ts",
+          "name": "preparationContext"
+        },
+        {
+          "path": "src/crdt/retentionPreparationStorage.ts",
+          "name": "loadPreparationCheckpoint"
+        },
+        {
+          "path": "src/crdt/retentionPreparationStorage.ts",
+          "name": "savePreparationDelta"
         }
       ],
       "homePins": [],
       "mapEntries": [],
       "vectorCases": [],
       "tests": [
-        "test/retentionPreparation.test.ts"
+        "test/retentionPreparation.test.ts",
+        "test/retentionPreparationStorage.test.ts",
+        "test/retentionPreparationOwnership.test.ts",
+        "test/preparationBinding.test.ts",
+        "test/preparationRemoval.test.ts",
+        "vite/retentionPreparationIdentity.test.ts",
+        "test/local-baseline/preparation.node.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -7475,7 +7494,7 @@
         "native-lifecycle-qualification",
         "resumed-reference-equivalence"
       ],
-      "blocker": "Standalone receipt model only. Native encrypted persistence, verifier closure binding, lifecycle and cross-lock/performance proof remain unqualified. No aggregate credit.",
+      "blocker": "Encrypted native persistence and source-closure binding have directed tests. Application verifier/scheduler adapters, composed resume and performance qualification remain open. No aggregate credit.",
       "next": "Add native checkpoint/cleanup and guarded verifier/scheduler adapters, preserve originals and independent final replay, and qualify interruption/resume against the unchanged2.5s peer gate."
     }
   ],

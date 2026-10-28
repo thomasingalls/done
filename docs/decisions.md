@@ -5811,3 +5811,7 @@ use a generic success flag. This uses the existing per-check memo seams while ke
 candidate/readback paths separate. Native binding must include the verifier implementation closure,
 current keys/authority and an exact physical prefix; source upgrades cannot silently inherit old
 acceptance. The standalone model is not native durability or a time bound on indivisible work.
+
+## 2026-10-28 — Preparation storage and handoff
+
+Derive an auxiliary database name from the existing canonical content name; preserve original stores and schemas. Reserve every encryption invocation in the existing authenticated main allocator before sealing, atomically append encrypted receipt chunks plus head, and check exact readback. An old read task may export only a MAC-protected delta; a fresh serialized task reauthenticates context/prefix/delta before allocation. Bind receipt reuse to conservative runtime/build-source closure so changed verifier code cannot inherit old acceptance. Unknown layouts refuse overwrite; interrupted saves retain the old head.
