@@ -785,7 +785,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "78ae3685195e841011bc8bd4baa232c9ae851d9b57d65bd9964188371d1bc35e"
+      "sha256": "24b48587f8799e4b905a9812d65f9687c466c73acc23bda67ed96ce55b90dd4a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -857,7 +857,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "b8f2181244bd61801bb8bcde843a259f729b9b2a5b595cb6bce78c94687c9f64"
+      "sha256": "af0158e8b4b07466044e379075fa9a0037e40d3aedd8886b285f8b1873f39826"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -885,7 +885,7 @@
     },
     {
       "path": "src/crdt/contentMaintenance.ts",
-      "sha256": "a3bd509488589eb758baf9bce1016c309f59c7ad8fe6eae206af2e516e364929"
+      "sha256": "bcbe95666e0874c1a7ce01b869ef207e6bffe2f9babb6fbcabb1526079e26c9f"
     },
     {
       "path": "src/crdt/contentRecord.ts",
@@ -901,7 +901,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "98e09c7c493cb32a6a4d94b89399fbeeec192c750c5e17669b82f3d7ab32b703"
+      "sha256": "ad59c99d17e39d32b9fd399048a4d696dca09f3d2c43248fe3de32db326d65e5"
     },
     {
       "path": "src/crdt/cpuBudget.ts",
@@ -1145,7 +1145,7 @@
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "00ad885eb7b8dd59aaa456bfe16877760e81014caad98050eac3d624b43f15eb"
+      "sha256": "d49016ff91202d80733dab80a56160d58056cc2613378077a45c4379f019b7e2"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -1557,7 +1557,7 @@
     },
     {
       "path": "src/ui/LocalHistoryMaintenance.tsx",
-      "sha256": "15005ca77d56adca08830a91acf5141d3054c4a284f07dbbf18320510c012aee"
+      "sha256": "3f79b52b861543b90523ef057deda6c3e30d22e061c7d62d3f76c226520bdcaa"
     },
     {
       "path": "src/ui/LocalRecovery.tsx",
@@ -1755,7 +1755,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 464
+          "line": 485
         }
       ]
     },
@@ -1801,7 +1801,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 465
+          "line": 486
         }
       ]
     },
@@ -1821,7 +1821,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 720
+          "line": 725
         }
       ]
     },
@@ -1967,7 +1967,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 463
+          "line": 484
         },
         {
           "path": "src/crdt/spoolRecord.ts",
@@ -3777,7 +3777,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 457
+          "line": 478
         },
         {
           "path": "src/crdt/sourceCapture.ts",

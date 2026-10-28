@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 552,
-    "requiredTestFiles": 546,
+    "testFiles": 554,
+    "requiredTestFiles": 548,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11078,6 +11078,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/local-baseline/progress.node.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "--test", "--test-concurrency=1", "test/local-baseline/progress.node.mjs"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/local-baseline/reader-first.spec.ts",
       "status": "required",
       "invocation": {
@@ -11311,6 +11321,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/localRetentionProgress.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localRetentionProgress.test.ts"
+        ]
+      },
+      "declarations": 8,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -15544,7 +15569,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "85d8880a64fc039120dfd311494d3879c722f69e3e01a0052ee7f3acc0ccaf4d"
+      "sha256": "d0376f2f2ad2334d6505b76d10634396086b630c34c658aa0eb75a4dc05b3668"
     },
     {
       "path": "package.json",
@@ -19343,6 +19368,10 @@
       "sha256": "b3b743fd89efc46cf8348d48eade9621e8b8ed2575bd59380ae4d5d9e231793f"
     },
     {
+      "path": "test/local-baseline/progress.node.mjs",
+      "sha256": "b33d86648cb67408a96dc84dd7fd722efa9daedbfa1490eab07e39b318c9fc98"
+    },
+    {
       "path": "test/local-baseline/read-probe.mjs",
       "sha256": "58c16e3dbf236e75ddeacc354b9ef898765809ea9d6433521d1dc2198733f750"
     },
@@ -19429,6 +19458,10 @@
     {
       "path": "test/localRecovery.test.ts",
       "sha256": "10df0654bd6107f0ef4b4fc5fd714b95970d2dadba8d3d5e1fdb58008691bddd"
+    },
+    {
+      "path": "test/localRetentionProgress.test.ts",
+      "sha256": "854351473d05fb9af2d40f461960807f965d5adb3100805ab9dc924b7ca0ba62"
     },
     {
       "path": "test/localRetentionSharedProof.test.ts",

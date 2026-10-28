@@ -1,0 +1,506 @@
+{
+  "sources": 410,
+  "domains": 197,
+  "changed": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/automaticLocalRetention.ts",
+    "src/crdt/contentMaintenance.ts",
+    "src/crdt/contentStore.ts",
+    "src/crdt/localRetentionPlan.ts",
+    "src/ui/LocalHistoryMaintenance.tsx"
+  ],
+  "lineOnlyConstructionChanges": [
+    {
+      "id": "account-source-capsule",
+      "before": [
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 309,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 457,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 102,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 130,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 264,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 309,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 478,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 102,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 130,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 264,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-spool-capsule",
+      "before": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 177,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 209,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 463,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 164,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 177,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 209,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 484,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 164,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-delivery-capsule",
+      "before": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 104,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 131,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 177,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 210,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 345,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 464,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 104,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 131,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 177,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 210,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 345,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 485,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-inbound-capsule",
+      "before": [
+        {
+          "path": "src/crdt/accountMembership.ts",
+          "line": 80,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountSuccessor.ts",
+          "line": 181,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 120,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 138,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 74,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 96,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 206,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 259,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 325,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 465,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/accountMembership.ts",
+          "line": 80,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountSuccessor.ts",
+          "line": 181,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 120,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 138,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 74,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 96,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 206,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 259,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 325,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 486,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "remaining-coordination-names",
+      "before": [
+        {
+          "path": "src/editor/textChannel.ts",
+          "line": 20,
+          "label": "done/accepted-text/v1/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/workspaceChannel.ts",
+          "line": 24,
+          "label": "done/accepted-workspace/v1/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountReceive.ts",
+          "line": 720,
+          "label": "done/account-ledger-reference-mismatch",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/setupMetadata.ts",
+          "line": 23,
+          "label": "done/setup-metadata/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 217,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 299,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 307,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 37,
+          "label": "done/slot-writer/${JSON.stringify(slotId)}",
+          "kind": "template"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/editor/textChannel.ts",
+          "line": 20,
+          "label": "done/accepted-text/v1/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/workspaceChannel.ts",
+          "line": 24,
+          "label": "done/accepted-workspace/v1/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountReceive.ts",
+          "line": 725,
+          "label": "done/account-ledger-reference-mismatch",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/setupMetadata.ts",
+          "line": 23,
+          "label": "done/setup-metadata/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 217,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 299,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 307,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 37,
+          "label": "done/slot-writer/${JSON.stringify(slotId)}",
+          "kind": "template"
+        }
+      ]
+    }
+  ],
+  "allClassificationsContractsAndSitesPreserved": true
+}

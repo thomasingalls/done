@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1\u2013D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
+  "status": "A/B/C/D1–D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -3078,7 +3078,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 457,
+          "line": 478,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
@@ -3197,7 +3197,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 463,
+          "line": 484,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -3340,7 +3340,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 464,
+          "line": 485,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -3476,7 +3476,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 465,
+          "line": 486,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         }
@@ -5384,7 +5384,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 720,
+          "line": 725,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },

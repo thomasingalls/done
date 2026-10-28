@@ -5773,3 +5773,11 @@ preverified state. Share its owned reference with first-conversion planning whil
 independent compact-candidate replay and exact survivor/reference comparison. Keep reference
 failures outside candidate refusal classification. The standalone builder erases its unused
 reference; no proof crosses owner lifetimes or authorizes a broader cut.
+
+
+## 2026-10-27 — phase progress is presentation, not a retained proof (phase124)
+
+Show real local-maintenance stages and definite counts only for the record-reading subphase.
+Coalesce updates without adding polling; keep an indeterminate indicator for work with no honest
+total. Only the verified removal outcome may publish completion. Keep diagnostic attempt/stage
+facts volatile, separate from future authenticated resumable work, and preserve observer isolation.

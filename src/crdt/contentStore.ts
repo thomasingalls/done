@@ -6,7 +6,11 @@ import type { RetentionInventory } from './localRetentionPlan';
 import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
 import { createBaselineMetadata } from './localBaselineMetadata';
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
-import { MaintenanceInterrupted } from './contentMaintenance';
+import {
+  MaintenanceInterrupted,
+  reportRetentionProgress,
+  type RetentionProgressSink,
+} from './contentMaintenance';
 import { withContentSelection, type ContentSelection } from './contentSelection';
 import {
   countLedgerWork,
@@ -774,6 +778,7 @@ export const createContentOwner = (
     checkCommit: () => void,
     expectedRevision: number,
     checkRetained: () => void,
+    progress?: RetentionProgressSink,
   ) => {
     if (
       !hasRetentionWriter() ||
@@ -794,6 +799,7 @@ export const createContentOwner = (
       copyRetentionCandidate,
       matchesRetentionPlan,
     } = await task.wait(() => import('./localRetentionPlan'));
+    reportRetentionProgress(progress, { stage: 'reading' });
     const inventory = await retentionInventory(task);
     let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
     let delivered = false;
@@ -836,6 +842,7 @@ export const createContentOwner = (
         },
         binding,
         checkRetained,
+        progress,
       );
       if (plan.kind === 'skipped') return plan;
       const prepared = plan;
@@ -864,6 +871,7 @@ export const createContentOwner = (
         let candidate: ReturnType<typeof copyRetentionCandidate> | undefined;
         try {
           check();
+          reportRetentionProgress(progress, { stage: 'current' });
           let phase = ledgerWorkStart();
           await fresh();
           check();
@@ -884,6 +892,7 @@ export const createContentOwner = (
             () => import('./localRetentionStorage'),
           );
           beforeMutation();
+          reportRetentionProgress(progress, { stage: 'installing' });
           phase = ledgerWorkStart();
           expected = await removePlannedLocalHistory(
             currentTask,
@@ -895,6 +904,7 @@ export const createContentOwner = (
           clearView();
           metadata.replaced();
           eraseVerified(actual);
+          reportRetentionProgress(progress, { stage: 'readback' });
           phase = ledgerWorkStart();
           actual = await retentionInventory(currentTask);
           measureLedgerWork('retentionReadback', phase);

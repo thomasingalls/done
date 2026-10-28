@@ -892,6 +892,14 @@
     overflow-wrap: anywhere;
   }
 
+  .menu-history-progress {
+    display: block;
+    inline-size: 100%;
+    block-size: 0.3rem;
+    margin-block: var(--space-2);
+    accent-color: var(--color-accent);
+  }
+
   .menu-metadata,
   .menu-preferences {
     display: flex;

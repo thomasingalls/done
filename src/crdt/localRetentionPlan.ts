@@ -28,6 +28,7 @@ import {
 } from './localBaselineReplay';
 import { compareBaselineReplay } from './localBaselineShadow';
 import { createCpuBudget } from './cpuBudget';
+import { reportRetentionProgress, type RetentionProgressSink } from './contentMaintenance';
 import { createInboundCoverage } from './inboundLedger';
 import { isHistoryInstallTag } from './historyInstall';
 import { eraseVerified, sameBytes } from './verifiedRecords';
@@ -250,6 +251,7 @@ export async function planLocalRetention(
   // The composed owner can bind completed evidence to a lifetime/activity guard instead of an
   // expiring preparation task. Context/task checks still govern every preparation effect.
   retainCurrent: () => void = () => context.assertCurrent(),
+  progress?: RetentionProgressSink,
 ): Promise<
   LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
 > {
@@ -323,6 +325,11 @@ export async function planLocalRetention(
       counter = parseCounter({ ...allocation, v: 2 }, scope, stored.intent);
     } else counter = stored;
     const seen = new Set<number>();
+    reportRetentionProgress(progress, {
+      stage: 'opening',
+      completed: 0,
+      total: inventory.rows.length,
+    });
     for (const row of inventory.rows) {
       const pause = checkpoint();
       if (pause) await pause;
@@ -341,10 +348,17 @@ export async function planLocalRetention(
         corrupt('Retention row placement differs.');
       seen.add(r.seq);
       records.push({ seq: r.seq, kind: r.kind, gen: r.gen, bytes: await crypt.open(r) });
+      if (records.length % 32 === 0 || records.length === inventory.rows.length)
+        reportRetentionProgress(progress, {
+          stage: 'opening',
+          completed: records.length,
+          total: inventory.rows.length,
+        });
     }
     records.sort((a, b) => a.seq - b.seq);
     const replay = { records, counter };
     // Integrity failures in existing evidence must never be reported as capacity/ineligibility.
+    reportRetentionProgress(progress, { stage: 'verifying' });
     if (stored.v !== 5 && previous) reference = await replayFullLocalHistory(replay, context);
     if (previous) {
       const old = decodeLocalBaseline(previous.baseline.payload);
@@ -383,6 +397,7 @@ export async function planLocalRetention(
     let buildingCandidate = Boolean(previous);
     try {
       if (previous) {
+        reportRetentionProgress(progress, { stage: 'building' });
         const old = decodeLocalBaseline(previous.baseline.payload);
         try {
           candidate = await rebaseLocalBaseline(
@@ -405,6 +420,7 @@ export async function planLocalRetention(
           era,
           () => {
             buildingCandidate = true;
+            reportRetentionProgress(progress, { stage: 'building' });
           },
         );
         candidate = prepared.candidate;
@@ -441,6 +457,11 @@ export async function planLocalRetention(
     const bySequence = new Map(records.map((r) => [r.seq, r]));
     const deleteRows: DeleteRow[] = [];
     const dispositions: RetentionPlanReport['dispositions'] = {};
+    reportRetentionProgress(progress, {
+      stage: 'coverage',
+      completed: 0,
+      total: inventory.rows.length,
+    });
     for (const row of inventory.rows) {
       const pause = checkpoint();
       if (pause) await pause;
@@ -467,6 +488,12 @@ export async function planLocalRetention(
         else return corrupt('Unclassified retention row.');
       }
       deleteRows.push({ store: row.store, key: value.seq, value, disposition });
+      if (deleteRows.length % 32 === 0 || deleteRows.length === inventory.rows.length)
+        reportRetentionProgress(progress, {
+          stage: 'coverage',
+          completed: deleteRows.length,
+          total: inventory.rows.length,
+        });
       dispositions[disposition] = (dispositions[disposition] ?? 0) + 1;
     }
     // Execute the exact list only on detached arrays; never use a numeric range or a live store.
@@ -474,6 +501,7 @@ export async function planLocalRetention(
     const survivors = inventory.rows.filter((r) => !selected.has(r.store + ':' + String(r.key)));
     if (selected.size !== inventory.rows.length || survivors.length)
       corrupt('Retention inventory is not exhaustively covered.');
+    reportRetentionProgress(progress, { stage: 'coverage' });
     projected = await replayLocalBaseline(
       candidate.baseline,
       candidate.anchor,

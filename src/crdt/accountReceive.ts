@@ -16,7 +16,12 @@ import { authenticateJoinedAccountRows } from './joinedAccount';
 import { authenticatePromotionRows } from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
 import { accountTextMode } from './accountTextMode';
-import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
+import {
+  MaintenanceInterrupted,
+  isMaintenanceTask,
+  reportRetentionProgress,
+  type RetentionProgressSink,
+} from './contentMaintenance';
 import { createReceivePageTransport } from './receivePageTransport';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
@@ -850,7 +855,10 @@ async function openAccountReceiveOwner(
     await assertCurrent(task);
     return undefined;
   };
-  const prepareLocalRemoval = async (expectedRevision: number) => {
+  const prepareLocalRemoval = async (
+    expectedRevision: number,
+    progress?: RetentionProgressSink,
+  ) => {
     await carrier.flushJournal();
     const prepared = await runBaselineShadow(
       async (task, owner, _route, checkJournal, checkActivity) => {
@@ -867,6 +875,7 @@ async function openAccountReceiveOwner(
           checkJournal,
           expectedRevision,
           checkRetained,
+          progress,
         );
       },
       true, // Read-only preparation yields to queued storage; final exchange below remains exclusive.
@@ -3099,18 +3108,23 @@ async function openReceivingWorkspace(
               ? {
                   ...(hasRetentionWriter()
                     ? {
-                        removeLocalHistory: async (expectedRevision: number) => {
+                        removeLocalHistory: async (
+                          expectedRevision: number,
+                          progress?: RetentionProgressSink,
+                        ) => {
                           if (removingLocalHistory)
                             return { kind: 'skipped' as const, reason: 'already-preparing' };
                           removingLocalHistory = true;
                           try {
+                            reportRetentionProgress(progress, { stage: 'durability' });
                             await workspace.whenDurable();
                             // Settle the preparation storage task BEFORE joining admission. Input
                             // may journal/apply during preparation and invalidates its private guard.
                             const preparing = ledgerWorkStart();
-                            const prepared = await prepareLocalRemoval(expectedRevision).finally(
-                              () => measureLedgerWork('retentionPreparation', preparing),
-                            );
+                            const prepared = await prepareLocalRemoval(
+                              expectedRevision,
+                              progress,
+                            ).finally(() => measureLedgerWork('retentionPreparation', preparing));
                             if (prepared.kind !== 'prepared-removal') return prepared;
                             try {
                               return await enqueue(new Uint8Array([1]), async (_input, promote) => {

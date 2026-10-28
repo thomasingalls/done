@@ -16859,3 +16859,16 @@ test edits, signing, push, release preparation or deployment; qualification rema
 Phase123 bookkeeping addendum: authority checking catches four shifted source-site line pins in
 the planner. Independent joins preserve every site, label, contract and disposition; only four
 line fields change. All12 registry controls pass, with914/369 obligations/blocks unchanged.
+
+
+## 2026-10-27 — local maintenance stage/count and restart reporting (phase124)
+
+The actual automatic owner reports guarded numeric progress into a stable sidebar indicator and
+bounded lifetime-local diagnostics. Coalescing, stage/completion provenance, observer isolation and
+late/closed guards preserve scheduling and all storage/verification outcomes. Eight new unit cases
+plus existing affected suites pass70 cases; real native automatic reduction passes1/1, retaining
+writing, undo/redo and cold/offline reopen. Type/lint/build pass after a retained malformed-payload
+test-cast error. No old tests edited; graph916/371 adds two uncredited required files and preserves
+all earlier blocks. [Evidence](performance-experiments/2026-10-27-maintenance-continuation/phase124/README.md).
+Progress is volatile and not a cross-lock continuation proof. No computer use, signing, push,
+release preparation or deployment; general qualification remains paused.
