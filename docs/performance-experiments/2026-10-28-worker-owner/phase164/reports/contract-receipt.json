@@ -1,0 +1,434 @@
+[
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-suite-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557668,
+    "finishedAt": 1793221557727,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-record-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557728,
+    "finishedAt": 1793221557776,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-journal-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557776,
+    "finishedAt": 1793221557826,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-recovery-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557826,
+    "finishedAt": 1793221557880,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-device-lock-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557881,
+    "finishedAt": 1793221557942,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-finalization-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557943,
+    "finishedAt": 1793221557996,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-enrollment-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221557997,
+    "finishedAt": 1793221558074,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-envelope-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558074,
+    "finishedAt": 1793221558123,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-private-envelope-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558124,
+    "finishedAt": 1793221558170,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-head-discovery-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558170,
+    "finishedAt": 1793221558225,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-attribution-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558225,
+    "finishedAt": 1793221558274,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-checkpoint-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558275,
+    "finishedAt": 1793221558358,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-antireplay-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558358,
+    "finishedAt": 1793221558423,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-package-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558424,
+    "finishedAt": 1793221558514,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-account-credential-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558514,
+    "finishedAt": 1793221558576,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-transition-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558576,
+    "finishedAt": 1793221558643,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/generate-baseline-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558643,
+    "finishedAt": 1793221558690,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-admission-bounds/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558691,
+    "finishedAt": 1793221558805,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-first-authority/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221558806,
+    "finishedAt": 1793221559197,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-recovery-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221559198,
+    "finishedAt": 1793221559254,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-transport-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221559254,
+    "finishedAt": 1793221559346,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-service-custody/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221559346,
+    "finishedAt": 1793221559396,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-aad-coverage.mjs"
+    ],
+    "startedAt": 1793221559396,
+    "finishedAt": 1793221563381,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-promotion-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221563381,
+    "finishedAt": 1793221563792,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-ledger-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221563792,
+    "finishedAt": 1793221563850,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-counter-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221563851,
+    "finishedAt": 1793221563900,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-store-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221563900,
+    "finishedAt": 1793221563951,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-local-custody/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221563952,
+    "finishedAt": 1793221564010,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-checkpoint-contract/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221564010,
+    "finishedAt": 1793221564059,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-local-provenance/vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221564060,
+    "finishedAt": 1793221564114,
+    "exit": 0
+  },
+  {
+    "packageScript": "vectors:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/account-successor-vectors.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221564115,
+    "finishedAt": 1793221564169,
+    "exit": 0
+  },
+  {
+    "packageScript": "retention:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-retention.mjs"
+    ],
+    "startedAt": 1793221564170,
+    "finishedAt": 1793221564500,
+    "exit": 0
+  },
+  {
+    "packageScript": "status:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-selection-status.mjs"
+    ],
+    "startedAt": 1793221564501,
+    "finishedAt": 1793221564805,
+    "exit": 0
+  },
+  {
+    "packageScript": "limit:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-update-limit.mjs"
+    ],
+    "startedAt": 1793221564806,
+    "finishedAt": 1793221565142,
+    "exit": 0
+  },
+  {
+    "packageScript": "authority:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "startedAt": 1793221565143,
+    "finishedAt": 1793221566595,
+    "exit": 0
+  },
+  {
+    "packageScript": "recipient:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-recipient-authority.mjs"
+    ],
+    "startedAt": 1793221566596,
+    "finishedAt": 1793221566963,
+    "exit": 0
+  },
+  {
+    "packageScript": "admission:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-write-admission.mjs"
+    ],
+    "startedAt": 1793221566963,
+    "finishedAt": 1793221567351,
+    "exit": 0
+  },
+  {
+    "packageScript": "remediation:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/remediation-status.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221567352,
+    "finishedAt": 1793221567865,
+    "exit": 0
+  },
+  {
+    "packageScript": "debts:check",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-debts.mjs",
+      "--check"
+    ],
+    "startedAt": 1793221567866,
+    "finishedAt": 1793221568248,
+    "exit": 0
+  },
+  {
+    "packageScript": "wasm:verify",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "scripts/check-wasm-seal.mjs"
+    ],
+    "startedAt": 1793221568249,
+    "finishedAt": 1793221568896,
+    "exit": 0
+  }
+]

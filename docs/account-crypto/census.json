@@ -745,7 +745,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "b7807be5c7710a23a1b412b991156551de6ef3e14ddc4e2967d29120535a2713"
+      "sha256": "74e7a38c6879d8be0608619b52ac9387e6b4a7ec44da812dd738cdc876fcdf86"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -1021,7 +1021,7 @@
     },
     {
       "path": "src/crdt/journalStore.ts",
-      "sha256": "d37c044b02e675f13badb5d78f068574ec219389759c8eaafc8ee216754f56ac"
+      "sha256": "aab6c35b5a70b1b2eb87392898977df74d84c74d3855f7faf58a1264e0dc4943"
     },
     {
       "path": "src/crdt/legacyCleanup.ts",
@@ -1280,6 +1280,10 @@
       "sha256": "014e8d654f34dcf93c30458a2b13209ba2eb9d17009dd42f2b759539f6e2ff53"
     },
     {
+      "path": "src/crdt/runtimePorts.ts",
+      "sha256": "8ce2aa158708f31c0d4bb29555f512d30fc26dca2dd1b511fd296aec3e4d418d"
+    },
+    {
       "path": "src/crdt/selectionSnapshots.ts",
       "sha256": "e47b12b2797ac1df4f5c7bc06395a64d6ad09729b35ebadac57b97dbcebc9042"
     },
@@ -1353,7 +1357,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "eb122c05ac1d7322632b6a396686cc323a61a2e46e3f0184f79921cd5274022b"
+      "sha256": "f7699f641d0ebef246fb455a4e1b967ed5428f77bca7328d93d836f2ccc67574"
     },
     {
       "path": "src/crdt/yjs.ts",
@@ -3750,16 +3754,8 @@
       "kind": "literal",
       "sites": [
         {
-          "path": "src/crdt/writeSession.ts",
-          "line": 217
-        },
-        {
-          "path": "src/crdt/writeSession.ts",
-          "line": 299
-        },
-        {
-          "path": "src/crdt/writeSession.ts",
-          "line": 307
+          "path": "src/crdt/runtimePorts.ts",
+          "line": 27
         }
       ]
     },
@@ -3769,7 +3765,7 @@
       "sites": [
         {
           "path": "src/crdt/writeSession.ts",
-          "line": 37
+          "line": 38
         }
       ]
     },

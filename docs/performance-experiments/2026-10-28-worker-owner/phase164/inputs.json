@@ -1,0 +1,25 @@
+{
+  "baseCommit": "8d6d42c1c723f3dff7c7822b2358a813dc8c16e6",
+  "requiresPhase": 163,
+  "candidateRuntime": {
+    "src/crdt/runtimePorts.ts": "8ce2aa158708f31c0d4bb29555f512d30fc26dca2dd1b511fd296aec3e4d418d",
+    "src/crdt/accountCapture.ts": "74e7a38c6879d8be0608619b52ac9387e6b4a7ec44da812dd738cdc876fcdf86",
+    "src/crdt/writeSession.ts": "f7699f641d0ebef246fb455a4e1b967ed5428f77bca7328d93d836f2ccc67574",
+    "src/crdt/journalStore.ts": "aab6c35b5a70b1b2eb87392898977df74d84c74d3855f7faf58a1264e0dc4943",
+    "test/runtimePorts.test.ts": "93fb4816c5c7574b018fa6d6f9eba908a892aee18b702894a956f47f50ada3d3"
+  },
+  "nativeActivityCommand": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "--test-name-pattern=authority reuse authenticates on resume|exclusive warm loads avoid censuses|hidden-page batch close",
+    "test/account-sync/native.test.mjs"
+  ],
+  "nativeActivityEnvironment": {
+    "ACCOUNT_AUTHORITY_REUSE": "1",
+    "ACCOUNT_LEDGER_MODE": "incremental",
+    "ACCOUNT_BATCH_MODE": "coordinated-2000"
+  },
+  "runtime": "Node24.18.0; pinned installed Chromium1234; normal page execution; no CPU throttle.",
+  "scope": "Source-equivalent materialized disposable copy for native tests; exact runtime file hashes also occur in the native reports. No actual profiles or account factors retained."
+}

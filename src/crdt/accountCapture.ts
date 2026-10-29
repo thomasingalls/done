@@ -17,6 +17,7 @@ import {
   type ContentReceipt,
 } from './custody';
 import { openAccountWriteSession, openJoinedWriteSession, type SessionTask } from './writeSession';
+import { pageRuntimePorts } from './runtimePorts';
 import {
   verifyAccountUnderPermit,
   captureAccountOptions,
@@ -415,23 +416,23 @@ export async function openAccountCaptureOwner(
     const visible = () => {
       invalidateShadow();
       finalApply.invalidate();
-      if (document.visibilityState === 'visible') invalidate();
+      if (pageRuntimePorts.activity.visibilityState() === 'visible') invalidate();
     };
-    document.addEventListener('visibilitychange', visible);
+    const stopVisible = pageRuntimePorts.activity.onDocument('visibilitychange', visible);
     const freeze = () => {
       invalidateShadow();
       finalApply.invalidate();
     };
-    document.addEventListener('freeze', freeze);
-    document.addEventListener('resume', invalidate);
-    window.addEventListener('pageshow', invalidate);
+    const stopFreeze = pageRuntimePorts.activity.onDocument('freeze', freeze);
+    const stopResume = pageRuntimePorts.activity.onDocument('resume', invalidate);
+    const stopPageShow = pageRuntimePorts.activity.onPageShow(invalidate);
     const stop = () => {
       finalApply.invalidate();
       extension?.invalidateAuthority?.();
-      document.removeEventListener('visibilitychange', visible);
-      document.removeEventListener('freeze', freeze);
-      document.removeEventListener('resume', invalidate);
-      window.removeEventListener('pageshow', invalidate);
+      stopVisible();
+      stopFreeze();
+      stopResume();
+      stopPageShow();
     };
     live.signal.addEventListener('abort', stop, { once: true });
     cleanups.add(stop);

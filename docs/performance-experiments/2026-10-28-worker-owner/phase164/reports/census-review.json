@@ -1,0 +1,34 @@
+{
+  "beforeSources": 416,
+  "afterSources": 417,
+  "changed": [
+    "src/crdt/accountCapture.ts",
+    "src/crdt/journalStore.ts",
+    "src/crdt/runtimePorts.ts",
+    "src/crdt/writeSession.ts"
+  ],
+  "domainLabelsUnchanged": true,
+  "changedDomainSites": [
+    {
+      "label": "done/slot-lifecycle",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "src/crdt/runtimePorts.ts",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "label": "done/slot-writer/${JSON.stringify(slotId)}",
+      "kind": "template",
+      "sites": [
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 38
+        }
+      ]
+    }
+  ],
+  "classificationErrors": []
+}

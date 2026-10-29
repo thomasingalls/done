@@ -5395,26 +5395,14 @@
           "kind": "literal"
         },
         {
-          "path": "src/crdt/writeSession.ts",
-          "line": 217,
+          "path": "src/crdt/runtimePorts.ts",
+          "line": 27,
           "label": "done/slot-lifecycle",
           "kind": "literal"
         },
         {
           "path": "src/crdt/writeSession.ts",
-          "line": 299,
-          "label": "done/slot-lifecycle",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/writeSession.ts",
-          "line": 307,
-          "label": "done/slot-lifecycle",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/writeSession.ts",
-          "line": 37,
+          "line": 38,
           "label": "done/slot-writer/${JSON.stringify(slotId)}",
           "kind": "template"
         }

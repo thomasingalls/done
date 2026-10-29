@@ -5,6 +5,7 @@
  * cache cleanup. It cannot sandbox code that retains and uses raw keys itself.
  */
 import { checkStorageCompatibility } from './storageCompatibility';
+import { pageRuntimePorts } from './runtimePorts';
 
 export type WriteSessionState = 'opening' | 'active' | 'closing' | 'closed' | 'failed';
 export type WriteSessionRefusal =
@@ -95,9 +96,7 @@ async function acquire(
   const name = slotPermitName(slotId);
   let locks: LockManager;
   try {
-    if (globalThis.isSecureContext !== true || !globalThis.navigator?.locks)
-      throw new Error('Web Locks requires a supported secure context.');
-    locks = globalThis.navigator.locks;
+    locks = pageRuntimePorts.lifetime.requireLocks();
   } catch (cause) {
     throw new WriteSessionError('unsupported', 'This runtime cannot coordinate safe writes.', {
       cause,
@@ -175,8 +174,8 @@ async function acquire(
   };
   const detach = () => {
     signal?.removeEventListener('abort', cancel);
-    globalThis.removeEventListener?.('pagehide', cancel);
-    lifecycle?.close();
+    stopPageHide();
+    stopRetirement();
   };
   const close = (): Promise<void> => {
     if (closing) return closing;
@@ -212,14 +211,8 @@ async function acquire(
   const cancel = () => {
     void close().catch(() => {});
   };
-  const lifecycle =
-    mode === 'shared' && typeof window !== 'undefined' && typeof BroadcastChannel !== 'undefined'
-      ? new BroadcastChannel('done/slot-lifecycle')
-      : undefined;
-  if (lifecycle)
-    lifecycle.onmessage = (event) => {
-      if (event.data?.kind === 'retire' && event.data?.slotId === slotId) cancel();
-    };
+  const stopRetirement =
+    mode === 'shared' ? pageRuntimePorts.lifetime.onRetirement(slotId, cancel) : () => {};
   const session: WriteSession = {
     slotId,
     lockName: name,
@@ -245,7 +238,7 @@ async function acquire(
   signal?.addEventListener('abort', cancel, { once: true });
   // A BFCache restoration must reacquire and reload, never resurrect this capability.
   // Freeze alone is not pagehide: a frozen writer continues holding its permit.
-  globalThis.addEventListener?.('pagehide', cancel, { once: true });
+  const stopPageHide = pageRuntimePorts.lifetime.onPageHide(cancel);
   try {
     request = locks.request(name, { mode, signal: stopped.signal }, async () => {
       granted = true;
@@ -295,20 +288,12 @@ export const openWriteSession = (
 
 /** Ask participating tabs to close; never steal a permit or retire a frozen writer's keys. */
 export function retireSlotWriters(slotId: string) {
-  if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') return;
-  const channel = new BroadcastChannel('done/slot-lifecycle');
-  channel.postMessage({ kind: 'retire', slotId });
-  channel.close();
+  pageRuntimePorts.lifetime.requestRetirement(slotId);
 }
 
 /** Cooperative retirement also reaches coordinators which are between slot-owned operations. */
 export function onSlotRetirement(slotId: string, retire: () => void): () => void {
-  if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') return () => {};
-  const channel = new BroadcastChannel('done/slot-lifecycle');
-  channel.onmessage = (event) => {
-    if (event.data?.kind === 'retire' && event.data?.slotId === slotId) retire();
-  };
-  return () => channel.close();
+  return pageRuntimePorts.lifetime.onRetirement(slotId, retire);
 }
 
 /** Deletion needs coordination, never permission to decrypt or bypass an ordinary opening check. */

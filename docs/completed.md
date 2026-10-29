@@ -17276,3 +17276,26 @@ verified-durable/display queues in the contract. Explicit production ports, comp
 and admitted Window mirror remain the next integration boundary. No old tests/runtime,16ms/2.5s/30s
 gates, defaults or935/389 paused qualification obligations change. Freeze sequential patch163 after162;
 no real staging, signing, push, preview update, activation, release preparation or deployment.
+
+
+## 2026-10-28 — Phase164: fixed page runtime/lifetime ports with synchronous admission
+
+Extract activity, secure native lifetime/retirement and fresh journal environment into typed ports
+with a frozen internal page adapter. Rewire three owners; retain page execution, exclusive Account/
+joined modes, ordinary compatibility, guard/drain/disposal and synchronous sealed journal admission.
+No caller runtime override or worker/cohort activation. Independent reverse substitutions recover
+the exact remaining three files/public APIs;437 other prior inputs are unchanged.
+[Evidence, retained failures and contract](performance-experiments/2026-10-28-worker-owner/phase164/README.md).
+
+All2225unit cases/one existing skip,14new port regressions,13native lifetime and17journal cases with
+all11mutation controls detected,5native authority/cache/lifecycle cases and111metadata cases pass.
+Build/type/lint/format and package-defined security/vector checks pass. Preserve the initial new-test
+spy failure, read-only census syntax error, native external-dependency refusal, interrupted pnpm
+attempt and initial metadata source-site failure. Native campaigns use a verified materialized
+disposable source copy and retain original assertions/deadlines; both report groups drained.
+
+Review and update only the coordination exclusion's source sites and runtime census, with all crypto
+labels/statuses/contracts retained. Add the required new test without aggregate credit:936/390 now
+blocked; every prior manifest row is identical. No old tests/harnesses, formats, switches or16ms/2.5s/
+30s gates change. Append this outcome before advancing owned backlog status. Freeze patch164 after
+immutable161–163; real index stays empty. No signing, push, preview update, release prep or deployment.

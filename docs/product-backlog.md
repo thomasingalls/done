@@ -102,6 +102,15 @@ and bounded admitted Window mirror. Actual Goals/IME/peer gates, phone suspensio
 delta messaging remain untested; no speedup or16ms/2.5s acceptance claim. Independently progressing
 download/verification/display queues remain a separate subsequent slice.
 
+**Phase164 — explicit ports, existing page execution retained:**
+[Extraction/evidence](performance-experiments/2026-10-28-worker-owner/phase164/README.md) adds fixed
+internal activity, native lifetime/retirement and fresh synchronous journal endpoints. Remaining
+owner algorithms/public APIs are byte-exact under the declared substitutions. Full2225unit cases,
+35native cases,11detected native mutation controls and111metadata cases pass; all old tests remain.
+Worker/cohort execution and the admitted Window mirror are still ahead, with local synchronous
+acknowledgment, compatibility and all input/peer gates preserved. No performance claim or release
+preparation; general qualification stays paused with the new required test uncredited.
+
 ## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday

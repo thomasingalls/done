@@ -5922,3 +5922,19 @@ ARM64 image rather than rebuilding after documentation. Reuse source-identical u
 runs as such; run exact-artifact functional/upgrade/rollback and fresh bounded native/contract checks.
 Phone testing remains deferred and general qualification paused. Both operator merge buttons and
 exact private-registry image approval remain separate later publication boundaries.
+
+
+## 2026-10-28 — Extract fixed page environment endpoints before selecting worker execution
+
+Phase163 proves a native owner can execute in a worker, but its experimental shared-memory and
+cohort adaptations are not a production journal/admission integration. Extract activity, actual
+native lifetime/retirement and fresh journal storage/events into typed ports backed by a frozen
+internal page adapter. Leave execution, Account/joined exclusive modes, compatibility, SessionTask
+guards/drain and synchronous sealed local acknowledgment unchanged. Do not add an input option or
+global setter through which callers can replace coordination/storage authority.
+
+Accept one explicit cleanup improvement: activity unsubscribe closes over the original registration
+target. Do not capture journal contents/storage availability or cache lock authority. Require exact
+remaining owner bodies, original native mutation controls, authority/cache resume checks and ordinary
+bookkeeping. Future worker integration must implement the mixed-owner cohort/refusal and admitted
+Window mirror contract separately; this refactor alone earns no latency or qualification credit.

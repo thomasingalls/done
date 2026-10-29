@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 572,
-    "requiredTestFiles": 566,
+    "testFiles": 573,
+    "requiredTestFiles": 567,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -13360,6 +13360,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/runtimePorts.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/runtimePorts.test.ts"]
+      },
+      "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/seam.test.ts",
       "status": "required",
       "invocation": {
@@ -15852,7 +15862,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "ea2e586b06f4118e8439acec76ac1005ea1332bf4d49530936b7723e846520d2"
+      "sha256": "6bebb301c100e19c9937086c8168093eb45002ba4af6fff7d3448cc76571115a"
     },
     {
       "path": "package.json",
@@ -20317,6 +20327,10 @@
     {
       "path": "test/runtimeForkStrings.test.ts",
       "sha256": "829dea731d1218621a110da5cfacba7969547d73fe30e1f1e41861b91c416b2b"
+    },
+    {
+      "path": "test/runtimePorts.test.ts",
+      "sha256": "93fb4816c5c7574b018fa6d6f9eba908a892aee18b702894a956f47f50ada3d3"
     },
     {
       "path": "test/scheduler.ts",

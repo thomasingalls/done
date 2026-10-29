@@ -11,6 +11,7 @@ import {
 import type { ContentIdentity } from './contentRecord';
 import type { ContentReceipt } from './contentStore';
 import type { SessionTask } from './writeSession';
+import { pageRuntimePorts } from './runtimePorts';
 
 export type JournalAdmission =
   | { readonly status: 'journalled'; readonly key: string; readonly generation: number }
@@ -32,7 +33,7 @@ const unavailable = (cause: unknown) =>
   new JournalError('unavailable', 'Synchronous journal storage is unavailable.', { cause });
 const storage = (): Storage => {
   try {
-    return globalThis.localStorage;
+    return pageRuntimePorts.journal.storage();
   } catch (cause) {
     throw unavailable(cause);
   }
@@ -167,7 +168,7 @@ export const createJournalOwner = (
     )
       damaged = new JournalError('repair-required', 'An immutable journal entry was replaced.');
   };
-  globalThis.addEventListener?.('storage', onStorage);
+  const stopStorage = pageRuntimePorts.journal.onStorage(onStorage);
   const snapshot = (): ObservedEntry[] => {
     alive();
     const opened: ObservedEntry[] = [];
@@ -325,7 +326,7 @@ export const createJournalOwner = (
     },
     dispose() {
       disposed = true;
-      globalThis.removeEventListener?.('storage', onStorage);
+      stopStorage();
       for (const value of openers.values()) {
         value.codec.dispose();
         value.key.fill(0);

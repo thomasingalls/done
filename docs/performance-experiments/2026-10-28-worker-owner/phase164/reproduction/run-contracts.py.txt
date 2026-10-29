@@ -1,0 +1,18 @@
+from pathlib import Path
+import subprocess,os,json,shlex,time
+repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');out=Path(__file__).parent
+scripts=json.loads((repo/'package.json').read_text())['scripts'];node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+names=['vectors:check','retention:check','status:check','limit:check','authority:check','recipient:check','admission:check','remediation:check','debts:check','wasm:verify']
+def leaves(name):
+ for clause in scripts[name].split('&&'):
+  words=shlex.split(clause)
+  if words[0]=='pnpm':assert len(words)==2;yield from leaves(words[1])
+  else:assert words[0]=='node';yield [node,*words[1:]]
+receipt=[]
+for name in names:
+ with(out/(name.replace(':','-')+'-direct.log')).open('w')as log:
+  for command in leaves(name):
+   began=time.time_ns()//1000000;p=subprocess.run(command,cwd=repo,stdout=log,stderr=subprocess.STDOUT)
+   receipt.append({'packageScript':name,'command':command,'startedAt':began,'finishedAt':time.time_ns()//1000000,'exit':p.returncode});(out/'contract-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+   if p.returncode:raise SystemExit(p.returncode)
+ print(name,'passed',flush=True)
