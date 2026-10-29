@@ -745,3 +745,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase233:** Promotion-device retirement/detached continuation now verified end to end. Next narrow comprehensive expected-removal entry fixture and remaining joined/recovery/offline/mixed checks, then unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase233/README.md).
+
+
+**Phase234:** Comprehensive recovery branches pass. Existing compatibility checks found a live-provider cancellation message lost across the Worker boundary; repair next without weakening its offline/resume assertions, then remaining conversion validation/performance. [Packet](performance-experiments/2026-10-28-worker-owner/phase234/README.md).

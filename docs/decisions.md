@@ -6327,3 +6327,8 @@ Withhold the name form until original native inspection/idle complete. Keep genu
 ## 2026-10-29 — phase233: verified transition is display context only
 
 Use same-ticket native Account notice to preserve passkey-action wording, reset it on replacement and never infer an opening or authenticated workspace. Cleanup refusal remains blocked. [Evidence](performance-experiments/2026-10-28-worker-owner/phase233/README.md).
+
+
+## 2026-10-29 — phase234: expected removal need not expose an editor
+
+Keep default saved-editor entry strict. Only the call immediately asserting native removal waits for that refusal; preserve every subsequent security/data assertion and deadline. [Evidence](performance-experiments/2026-10-28-worker-owner/phase234/README.md).

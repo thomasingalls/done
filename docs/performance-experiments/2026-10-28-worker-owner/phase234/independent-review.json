@@ -1,0 +1,8 @@
+{
+  "runtimeChanges": [],
+  "buildExact233": true,
+  "oldRecoveryCaseChange": "one expected-removal invocation only",
+  "oldHelperChange": "default editing unchanged; expected removed awaits original verified notice under same15s",
+  "allOtherOldFixtureBytes": "exact233",
+  "formatting": "only pre-existing poll line differs in formatter copy; original left intact"
+}

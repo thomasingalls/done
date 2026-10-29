@@ -17971,3 +17971,8 @@ Six new cases;20 focused/99 metadata/type/lint/format and two clean name durabil
 ## 2026-10-29 — phase233: fresh detached continuation verified
 
 Three new cases/27 focused/99 metadata/type/lint pass. Clean full promotion-device retirement, NEW-factor detached reopen, local edit, cold durability and zero delivery/notification browser case passes24.3s. Unchanged comprehensive test remains blocked at stale transient-editor entry expectation; retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase233/README.md).
+
+
+## 2026-10-29 — phase234: comprehensive recovery compatibility
+
+Two-file narrow entry fixture, no runtime change. Comprehensive both-device detachment, local cold/no-network writing, later enrollment/rotation/recovery passes1.2minutes.99 metadata/type/lint pass; pre-existing formatter line deliberately retained. Invalid first harness copy/run preserved separately. [Packet](performance-experiments/2026-10-28-worker-owner/phase234/README.md).
