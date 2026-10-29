@@ -13,7 +13,7 @@ test.beforeAll(async () => {
               name: 'cohort-missing-anchor-control',
               enforce: 'pre',
               transform(code, id) {
-                if (!id.endsWith('/src/crdt/accountWorkerCohort.ts')) return;
+                if (!id.endsWith('/src/crdt/accountWorkerJoin.ts')) return;
                 const anchor = "      [n.anchor, 'exclusive'],\n";
                 if (code.split(anchor).length !== 2)
                   throw Error('Nonunique cohort mutation anchor');

@@ -132,8 +132,10 @@ adds the scoped asynchronous encrypted-journal endpoint and bounded bidirectiona
 the actual native Account worker without shared memory or source transforms:2289unit cases/one
 existing skip,26native runtime cases and eight actual-account cases pass. The long combined journal
 campaign retains unresolved observer timeouts, with scoped fault controls passing. Default app
-execution is still on the page. Next remove the runtime import cycle, then integrate actual
-receive/maintenance, fresh ceremony ownership and application routes.
+execution is still on the page. [Phase169](performance-experiments/2026-10-28-worker-owner/phase169/README.md) removes the runtime
+import cycle with unchanged native lifetime bodies and passing rebuilt native/account cases. Next
+bound lifecycle/activity delivery, then integrate actual receive/maintenance, fresh ceremony ownership
+and application routes.
 Raw messages/captures confer no verification authority; final changes retain the Window admission
 fence. This supersedes the original discussion-only status above; no release preparation.
 

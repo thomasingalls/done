@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 582,
-    "requiredTestFiles": 576,
+    "testFiles": 583,
+    "requiredTestFiles": 577,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14015,6 +14015,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workerRuntimeBoundary.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerRuntimeBoundary.test.ts"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workspaceAdmission.test.ts",
       "status": "required",
       "invocation": {
@@ -15984,7 +15999,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "ba61e047208582837b1c116b5985eeb5096504b4def292587168b8006c8d0c4a"
+      "sha256": "b11dfbbb41dbcd0edd1498179e4879a314e1e7ab081f20f3dbd9c980e85d8ed0"
     },
     {
       "path": "package.json",
@@ -19024,7 +19039,7 @@
     },
     {
       "path": "test/account-worker-cohort/cohort.spec.ts",
-      "sha256": "649de0d579480319f20afc52980880f23332694d6404a6ae89ab6320b5a3faea"
+      "sha256": "ef5693887b76b8e260618c83d602ac534b04185bdb2d37978f10106d38fb77ff"
     },
     {
       "path": "test/account-worker-cohort/member.ts",
@@ -20845,6 +20860,10 @@
     {
       "path": "test/workerChannel.test.ts",
       "sha256": "66313dbb7b37c3957c8b738727650133afa42e0184569d6fb167e2a86e765912"
+    },
+    {
+      "path": "test/workerRuntimeBoundary.test.ts",
+      "sha256": "1452bb78988d2f0c2ed0de1f3e2965bdb4146d999cade02ef3095c36b690bb58"
     },
     {
       "path": "test/workspace-admission/browser.mjs",

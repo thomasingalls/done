@@ -1,13 +1,9 @@
 /** Private coordination only. A joined worker must still perform ordinary Account authentication. */
-import { slotPermitName } from './writeSession';
+import { cohortNames, inactive, cancelled, type AccountWorkerTicket } from './nativeCoordination';
+export type { AccountWorkerTicket } from './nativeCoordination';
+export { createAccountWorkerJoin } from './accountWorkerJoin';
 import { pageRuntimePorts } from './runtimePorts';
 
-export interface AccountWorkerTicket {
-  readonly v: 1;
-  readonly slotId: string;
-  readonly incarnation: string;
-  readonly windowClient: string;
-}
 type Sync<T> = T extends PromiseLike<unknown> ? never : T;
 export interface WindowAccountCohort {
   readonly ticket: AccountWorkerTicket;
@@ -32,17 +28,6 @@ const deferred = <T>() => {
   });
   return { promise, resolve, reject };
 };
-const names = (slotId: string, incarnation: string) => {
-  const slot = slotPermitName(slotId);
-  return {
-    slot,
-    reservation: slot + '/worker-supervisor',
-    anchor: slot + '/worker-window/' + incarnation,
-    member: slot + '/worker-member/' + incarnation,
-  };
-};
-const inactive = () => new DOMException('Account worker cohort is inactive.', 'InvalidStateError');
-const cancelled = () => new DOMException('Account worker opening was cancelled.', 'AbortError');
 async function hold(locks: LockManager, name: string, mode: LockMode, signal: AbortSignal) {
   const ready = deferred<{ close(): Promise<void> }>(),
     release = deferred<void>();
@@ -73,7 +58,7 @@ export async function openWindowAccountCohort(
   const incarnation = [...crypto.getRandomValues(new Uint8Array(16))]
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
-  const n = names(slotId, incarnation),
+  const n = cohortNames(slotId, incarnation),
     opening = new AbortController(),
     stopped = new AbortController();
   const before = new Set<() => void | Promise<void>>(),
@@ -203,71 +188,4 @@ export async function openWindowAccountCohort(
     await reservation?.close();
     throw cause;
   }
-}
-
-function captureTicket(input: AccountWorkerTicket): AccountWorkerTicket {
-  if (!input || typeof input !== 'object') throw inactive();
-  const fields = Object.getOwnPropertyDescriptors(input);
-  if (
-    Reflect.ownKeys(fields).sort().join(',') !== 'incarnation,slotId,v,windowClient' ||
-    Object.values(fields).some((v) => !('value' in v))
-  )
-    throw inactive();
-  if (
-    input.v !== 1 ||
-    typeof input.slotId !== 'string' ||
-    !input.slotId ||
-    typeof input.incarnation !== 'string' ||
-    !/^[a-f0-9]{32}$/.test(input.incarnation) ||
-    typeof input.windowClient !== 'string' ||
-    !input.windowClient ||
-    input.windowClient.length > 256
-  )
-    throw inactive();
-  return Object.freeze({ ...input });
-}
-
-/** Internal dedicated-worker join strategy, not an Account verifier or an application API.
- * An exclusive per-incarnation member also refuses a replayed ticket in a second worker. */
-export function createAccountWorkerJoin(input: AccountWorkerTicket) {
-  if (typeof window !== 'undefined') throw inactive();
-  const ticket = captureTicket(input),
-    n = names(ticket.slotId, ticket.incarnation);
-  const locks = pageRuntimePorts.lifetime.requireLocks();
-  let used = false;
-  const check = async (signal?: AbortSignal) => {
-    if (signal?.aborted) throw cancelled();
-    const held = (await locks.query()).held ?? [];
-    for (const [name, mode] of [
-      [n.reservation, 'exclusive'],
-      [n.anchor, 'exclusive'],
-      [n.slot, 'shared'],
-    ] as const)
-      if (
-        !held.some((v) => v.name === name && v.mode === mode && v.clientId === ticket.windowClient)
-      )
-        throw inactive();
-    if (signal?.aborted) throw cancelled();
-  };
-  return Object.freeze({
-    async request<T>(
-      name: string,
-      options: { mode?: LockMode; signal?: AbortSignal },
-      callback: (lock: Lock) => T | PromiseLike<T>,
-    ): Promise<T> {
-      if (used || name !== n.slot || options.mode !== 'shared') throw inactive();
-      used = true;
-      await check(options.signal);
-      // ifAvailable cannot be combined with signal. Check cancellation explicitly before callback;
-      // the original WriteSession owns abort/drain once its real native callback starts.
-      return locks.request(n.member, { mode: 'exclusive', ifAvailable: true }, async (member) => {
-        if (!member) throw inactive();
-        return locks.request(n.slot, { mode: 'shared', ifAvailable: true }, async (slot) => {
-          if (!slot) throw inactive();
-          await check(options.signal);
-          return callback(slot);
-        });
-      });
-    },
-  });
 }

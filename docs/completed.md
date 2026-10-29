@@ -17388,3 +17388,18 @@ qualification obligations remain blocked, all prior rows identical and three new
 Default app execution stays on the page. Next fix the low-level runtime import cycle, then wire
 receive/maintenance/application routes and fresh ceremony ownership. No latency claim, gate change,
 service automation, real staging/signing/push, preview or release preparation. Append before status.
+
+
+## 2026-10-29 — Phase169: acyclic low-level worker runtime
+
+Extract unchanged native coordination primitives, dedicated-worker join and journal wire declarations
+into dependency-free homes. Remove low-level ports' cyclic dependency on Window account/storage
+ownership. Preserve old exports/error identity and actual native manager checks. Independent AST
+body comparison and before/after dependency falsifiers pass;63focused,26native Chromium/Firefox,
+98metadata and eight rebuilt actual-account cases pass, with both missing-anchor faults detected.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase169/README.md) retains initial new
+parser fixture/empty selection failures; the previous long journal observer failure stays unresolved.
+429sources retain198domain assignments; only slot-label source home changes. All old obligations
+remain identical, newtestuncredited:946/400blocked. Default app remains on page; continue lifecycle,
+receive/maintenance and ceremony integration before measuring. No gate, format, real-index, service
+automation, preview, signing/push or release change. Append before owned status.

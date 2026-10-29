@@ -5,22 +5,21 @@ import { deriveStoreName } from './storeName';
 import { journalPrefix, JournalError } from './journalCodec';
 import type { SessionTask } from './writeSession';
 
-export const RAW_JOURNAL_PAGE_CHARACTERS = 32 * 1024;
-export const RAW_JOURNAL_REMOVE_ITEMS = 16;
+import {
+  RAW_JOURNAL_PAGE_CHARACTERS,
+  RAW_JOURNAL_REMOVE_ITEMS,
+  type RawJournalPage,
+  type RawJournalRemoval,
+} from './workerJournalProtocol';
+export {
+  RAW_JOURNAL_PAGE_CHARACTERS,
+  RAW_JOURNAL_REMOVE_ITEMS,
+  type RawJournalSnapshot,
+  type RawJournalPage,
+  type RawJournalRemoval,
+} from './workerJournalProtocol';
 // Recovery bound only; the original 1MiB append watermark is unchanged. Refusal preserves all data.
 const MAX_RECOVERY_CHARACTERS = 16 * 1024 * 1024;
-export interface RawJournalSnapshot {
-  readonly entries: readonly (readonly [string, string])[];
-  readonly characters: number;
-}
-export interface RawJournalPage extends RawJournalSnapshot {
-  readonly done: boolean;
-}
-export interface RawJournalRemoval {
-  readonly removed: number;
-  readonly changed: number;
-  readonly retained: number;
-}
 const refuse = () =>
   new JournalError('repair-required', 'Worker journal scope or snapshot changed.');
 const pair = (v: unknown, prefix: string): v is readonly [string, string] => {

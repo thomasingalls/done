@@ -9,35 +9,8 @@ import { checkStorageCompatibility } from './storageCompatibility';
 import { pageRuntimePorts } from './runtimePorts';
 
 export type WriteSessionState = 'opening' | 'active' | 'closing' | 'closed' | 'failed';
-export type WriteSessionRefusal =
-  | 'invalid-slot'
-  | 'invalid-options'
-  | 'unsupported'
-  | 'cancelled'
-  | 'inactive'
-  | 'cleanup-failed';
-
-export class WriteSessionError extends Error {
-  override readonly name = 'WriteSessionError';
-  constructor(
-    readonly code: WriteSessionRefusal,
-    message: string,
-    options?: ErrorOptions,
-  ) {
-    super(message, options);
-  }
-}
-
-/** Coordination names are independent of content/custody format versions. */
-export const slotPermitName = (slotId: string): string => {
-  if (typeof slotId !== 'string' || slotId.length === 0)
-    throw new WriteSessionError(
-      'invalid-slot',
-      'A writer permit requires a nonempty slot identity.',
-    );
-  // JSON string encoding is injective over JS strings, including lone surrogates.
-  return `done/slot-writer/${JSON.stringify(slotId)}`;
-};
+export { WriteSessionError, slotPermitName, type WriteSessionRefusal } from './nativeCoordination';
+import { WriteSessionError, slotPermitName } from './nativeCoordination';
 
 type Synchronous<T> = T extends PromiseLike<unknown> ? never : T;
 

@@ -845,7 +845,11 @@
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
-      "sha256": "5c6db9bd4b2613ceb9a561bcbfa59826e71f652c90be2a36801b360bff6b83ad"
+      "sha256": "b00a8c8a08f6f016dcb8932b69e4f3ab893370925f134c9c7c39a2751375159c"
+    },
+    {
+      "path": "src/crdt/accountWorkerJoin.ts",
+      "sha256": "636b945430b693f0c2a4e6f201aef01c7ebca9f93de9556b3a567b1cf3a322ec"
     },
     {
       "path": "src/crdt/accountWorkerRecoveryStream.ts",
@@ -853,7 +857,7 @@
     },
     {
       "path": "src/crdt/accountWorkerRuntime.ts",
-      "sha256": "cc7d772d03d977bf72a798b5a3faacdb3e0260d88fa0eb039e4838eb9a71fb83"
+      "sha256": "b8cbfdc81f811433f197e4f2bb020b5f5d0984ae27f27c15169340843d7df736"
     },
     {
       "path": "src/crdt/accountWorkspace.ts",
@@ -1192,6 +1196,10 @@
       "sha256": "c923e9ff55163a2c56f64cfe5dba3dda99be3ab986f7bf84818835672369de83"
     },
     {
+      "path": "src/crdt/nativeCoordination.ts",
+      "sha256": "78950bed88e558d0d3f64e699138d1e2f250596c0ae413bc2ace762114cc58da"
+    },
+    {
       "path": "src/crdt/ownedStartup.ts",
       "sha256": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db"
     },
@@ -1305,7 +1313,7 @@
     },
     {
       "path": "src/crdt/runtimePorts.ts",
-      "sha256": "d9d757ff9dc2dc332c239225204e52564cd2a840bf116643d76d15c260126d02"
+      "sha256": "5722dcd5e73c112d7d2e5770a6e495bdc225f4897c155eb3b6016e64b84ed735"
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",
@@ -1373,11 +1381,15 @@
     },
     {
       "path": "src/crdt/windowJournalBridge.ts",
-      "sha256": "ab6f9c6795f932ef385c4414a48fdf5767ee870719e58877d1afd352ec3e1764"
+      "sha256": "7c50f76ef18fd634377db4d46f36109d1525b434e3f68417148995241ac5007c"
     },
     {
       "path": "src/crdt/workerChannel.ts",
       "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
+    },
+    {
+      "path": "src/crdt/workerJournalProtocol.ts",
+      "sha256": "08282642ea9c415acda0a4a35738da3a87a39b9909678cd58151ff67236bb893"
     },
     {
       "path": "src/crdt/workspaceChannel.ts",
@@ -1393,7 +1405,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "2806bd85b69952ad8059cad2acc944e4c456fe83e70ebeca2fe49b0703c9fca3"
+      "sha256": "56cc507bf6494dc92ce3494da745d8f1638f08d36129725e0238d1b88b3a74c1"
     },
     {
       "path": "src/crdt/yjs.ts",
@@ -3791,7 +3803,7 @@
       "sites": [
         {
           "path": "src/crdt/runtimePorts.ts",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -3800,8 +3812,8 @@
       "kind": "template",
       "sites": [
         {
-          "path": "src/crdt/writeSession.ts",
-          "line": 39
+          "path": "src/crdt/nativeCoordination.ts",
+          "line": 29
         }
       ]
     },

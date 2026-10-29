@@ -1,9 +1,14 @@
 /** Fixed dedicated-worker environment. No Window installer, lock-manager override or storage shim. */
-import { createAccountWorkerJoin, type AccountWorkerTicket } from './accountWorkerCohort';
+import { createAccountWorkerJoin } from './accountWorkerJoin';
+import type { AccountWorkerTicket } from './nativeCoordination';
 import type { WorkerChannel } from './workerChannel';
 import { WorkerChannelError } from './workerChannel';
-import type { RawJournalSnapshot, RawJournalPage, RawJournalRemoval } from './windowJournalBridge';
-import { RAW_JOURNAL_REMOVE_ITEMS } from './windowJournalBridge';
+import type {
+  RawJournalSnapshot,
+  RawJournalPage,
+  RawJournalRemoval,
+} from './workerJournalProtocol';
+import { RAW_JOURNAL_REMOVE_ITEMS } from './workerJournalProtocol';
 
 export interface WorkerActivity {
   readonly visibility: DocumentVisibilityState;

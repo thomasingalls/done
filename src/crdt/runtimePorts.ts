@@ -1,3 +1,4 @@
+import { requireNativeLocks } from './nativeCoordination';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
 /** Environment endpoints only: no keys, proofs, admission or configurable ownership policy. */
 export interface RuntimeActivityPort {
@@ -60,11 +61,7 @@ export const pageRuntimePorts: RuntimePorts = Object.freeze({
     },
   } satisfies RuntimeActivityPort),
   lifetime: Object.freeze({
-    requireLocks() {
-      if (globalThis.isSecureContext !== true || !globalThis.navigator?.locks)
-        throw new Error('Web Locks requires a supported secure context.');
-      return globalThis.navigator.locks;
-    },
+    requireLocks: requireNativeLocks,
     onPageHide(listener) {
       const target = accountWorkerRuntime()?.events ?? globalThis;
       target.addEventListener?.('pagehide', listener, { once: true });
