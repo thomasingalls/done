@@ -284,3 +284,9 @@ export function requireWindowCeremonyCohort(owner: WindowAccountCohort): void {
   requireWindowSupervisor(owner);
   if (owner.kind !== 'ceremony') throw inactive();
 }
+
+/** Native final-member barrier and complete Window disposal must already have succeeded. */
+export function requireClosedWindowCeremonyCohort(owner: WindowAccountCohort): void {
+  if (!windowOwners.has(owner) || owner.kind !== 'ceremony' || owner.state !== 'closed')
+    throw inactive();
+}

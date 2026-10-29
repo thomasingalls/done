@@ -3,11 +3,14 @@ import type { RawJournalSnapshot, RawJournalRemoval } from './workerJournalProto
 /** Fixed startup/ceremony environment. Original native slot operations and their tasks remain owners. */
 import {
   requireCeremonyWorkerLifetime,
+  requireClosedCeremonyWorkerLifetime,
   type openCeremonyWorkerLifetime,
 } from './ceremonyWorkerLifetime';
 import { WorkerChannelError, type WorkerChannel } from './workerChannel';
 import type { WorkerActivity } from './accountWorkerRuntime';
 let current: ReturnType<typeof installCeremonyEnvironment> | undefined;
+let reserved = false,
+  owner: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>> | undefined;
 export function ceremonyEnvironment() {
   return current;
 }
@@ -18,6 +21,7 @@ export function installCeremonyEnvironment(
 ) {
   requireCeremonyWorkerLifetime(root);
   if (
+    reserved ||
     current ||
     typeof window !== 'undefined' ||
     typeof globalThis.postMessage !== 'function' ||
@@ -26,6 +30,7 @@ export function installCeremonyEnvironment(
     typeof initial.online !== 'boolean'
   )
     throw new WorkerChannelError('worker-lifetime');
+  reserved = true;
   const events = new EventTarget(),
     activity = { ...initial };
   const live = () => {
@@ -65,6 +70,17 @@ export function installCeremonyEnvironment(
       return result;
     },
   });
+  owner = root;
   current = environment;
   return environment;
+}
+
+/** A retired environment is not permission for a new native owner. Account verifies its own join. */
+export function retireCeremonyEnvironment(
+  root: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>>,
+): void {
+  requireClosedCeremonyWorkerLifetime(root);
+  if (owner !== root || !current) throw new WorkerChannelError('worker-lifetime');
+  owner = undefined;
+  current = undefined;
 }

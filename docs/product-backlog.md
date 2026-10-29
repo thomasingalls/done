@@ -651,3 +651,9 @@ reader misses15s on candidate twice while204 predecessor passes; retain and reso
 
 **Phase206 —205 evidence closure:** corrected packaging recorded separately without replacing205.
 Same-realm handoff continues as207.205 cold-reader blocker remains open.
+
+
+**Phase207 — native lifetime handoff:** same Worker realm with fresh actual Account ownership passes
+both-browser functional/failure checks. Next genuine setup/recovery approvals, Account UI/credentials
+and offline/default activation, then unchanged gates;182/187/205 blockers remain.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase207/README.md).

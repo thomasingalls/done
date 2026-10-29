@@ -849,11 +849,11 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "c2ca86135bbd60e3c24527c60bb7f4602b7b0d54b3b1a045a026a98a3067b28b"
+      "sha256": "90a84a3bbb300d0a5c860631bcafce506c8d7a6e39d5178ba9c31fb4caa818de"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
-      "sha256": "398b19fee01eee89145304812df60cabe7660b9af9fe0d6054cf7ed072e04fb8"
+      "sha256": "4912df809b31f23717c9376958085e36f09bb7651d494cb59b9c328f5b886868"
     },
     {
       "path": "src/crdt/accountWorkerJoin.ts",
@@ -925,11 +925,11 @@
     },
     {
       "path": "src/crdt/ceremonyEnvironment.ts",
-      "sha256": "a5e589034d184bd195c2f7ca975cbda9f9c316a7db6746ba0df65bfe0f903caf"
+      "sha256": "b50862f7efb5d37f09909bf06c3232bd583a74afe9a3e2d778b6ed23ae2316ec"
     },
     {
       "path": "src/crdt/ceremonyWorkerLifetime.ts",
-      "sha256": "598c2b31a59868a323b9a2b379ffce3814d9086ec4252696121ded2d27cc1482"
+      "sha256": "48332f0208bdd071e38350b90ec58611214bf869c0032335dcdc39c98eacf8a4"
     },
     {
       "path": "src/crdt/compaction.ts",
@@ -1225,11 +1225,11 @@
     },
     {
       "path": "src/crdt/localStartup.worker.ts",
-      "sha256": "116cbe19c81a8bb120deea2d09e7b707522e6a5e8dd5ad71a2b56c14358c4631"
+      "sha256": "5e5a4f39c37732f3685480a69e4c69d289680862ccd3f815b3b0992fda948df6"
     },
     {
       "path": "src/crdt/localStartupClient.ts",
-      "sha256": "c325ac930c385d25339ab22f1049148ae384a214666a268a06b1c7005946a98f"
+      "sha256": "f97fe0be0a7b474078c05f2677ac01fb79871e1c6830cf2f1fc8c944e4a5f07c"
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
@@ -1301,7 +1301,7 @@
     },
     {
       "path": "src/crdt/protectionEnvironment.ts",
-      "sha256": "6844c661ac611a58c8a423570d64bcda8bce0796aaa2e2c6d2c803dd7d38bebf"
+      "sha256": "d44ed39f41f8ccff725b429c427e663d671647677de0bdfd98bfd2b55aab698d"
     },
     {
       "path": "src/crdt/receiveGroup.ts",
@@ -1444,6 +1444,10 @@
       "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac"
     },
     {
+      "path": "src/crdt/windowAccountHandoff.ts",
+      "sha256": "e1802b30647bcfa8321bb5511b72bd4991217b64f49b13682fc4836b8ec1a290"
+    },
+    {
       "path": "src/crdt/windowAccountMirror.ts",
       "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8"
     },
@@ -1478,6 +1482,10 @@
     {
       "path": "src/crdt/workerAccountComposition.ts",
       "sha256": "60d1c45758eaec575ebc58871d74cddfa2fedc8150b516a16c452f494d4123ef"
+    },
+    {
+      "path": "src/crdt/workerAccountHandoff.ts",
+      "sha256": "8238ccaf9bd7ec79570467ebea72b2ba68a47677dfece29d5e30156893fcd4d0"
     },
     {
       "path": "src/crdt/workerActivity.ts",

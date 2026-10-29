@@ -1,3 +1,4 @@
+import { takeWindowAccountHandoff, type WindowAccountHandoff } from './windowAccountHandoff';
 import { watchWindowWorkerLifetime } from './windowWorkerLifetime';
 import { forwardWorkerConfiguration } from './workerConfiguration';
 import { createAccountWorkerTerminalReceiver } from './workerTerminal';
@@ -54,6 +55,7 @@ export async function openAccountWorkerSession(
   input: AccountWorkspaceOptions,
   joined = false,
   connection: { networkSessions?: boolean; composed?: boolean } = {},
+  handoff?: WindowAccountHandoff,
 ) {
   if (input.networkLogin || input.promotionOpening || input.recoveryOpening)
     throw Error('This worker opening requires the coordinated ceremony adapter');
@@ -87,7 +89,11 @@ export async function openAccountWorkerSession(
   let session: ReturnType<typeof createWindowAccountSession> | undefined;
   let receiveSequence = 0;
   let receiving: WindowReceiveFlight | undefined;
-  let worker: Worker | undefined,
+  const adopted = handoff ? takeWindowAccountHandoff(handoff, slotId, signal) : undefined;
+  const ownershipSignal = adopted
+    ? AbortSignal.any([adopted.signal, ...(signal ? [signal] : [])])
+    : signal;
+  let worker: Worker | undefined = adopted?.worker,
     channel: ReturnType<typeof createWorkerChannel> | undefined,
     killed = false,
     nativeEnded = false,
@@ -115,8 +121,12 @@ export async function openAccountWorkerSession(
         if (closed === false) throw Error('Worker cleanup failed; refresh before reopening');
       }
     },
-    signal,
-  );
+    ownershipSignal,
+  ).catch((cause) => {
+    adopted?.cancel();
+    worker?.terminate();
+    throw cause;
+  });
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   cohort.disposeWith(() => eraseWorkerMessage(material));
   const workerIO = Object.freeze({
@@ -226,7 +236,7 @@ export async function openAccountWorkerSession(
   };
   try {
     const journal = await createWindowJournalBridge(cohort);
-    worker = new Worker(new URL('./accountOwner.worker.ts', import.meta.url), { type: 'module' });
+    worker ??= new Worker(new URL('./accountOwner.worker.ts', import.meta.url), { type: 'module' });
     const terminal = createAccountWorkerTerminalReceiver({
       owner: cohort.ticket.incarnation,
       accountId: () => nativeAccountId,
@@ -392,6 +402,7 @@ export async function openAccountWorkerSession(
             e.data.kind === 'accountBooted' &&
             e.data.owner === cohort.ticket.incarnation
           ) {
+            adopted?.complete();
             cohort.signal.removeEventListener('abort', abort);
             resolve();
           }
@@ -413,6 +424,7 @@ export async function openAccountWorkerSession(
       {
         v: 1,
         kind: 'accountBootstrap',
+        ...(adopted ? { handoffId: adopted.nonce } : {}),
         ticket: cohort.ticket,
         activity: activity(),
         port: ports.port2,

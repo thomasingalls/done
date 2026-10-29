@@ -8,6 +8,7 @@ import {
 } from './nativeCoordination';
 const claimed = new Set<string>();
 const roots = new WeakSet<object>();
+const closedRoots = new WeakSet<object>();
 const deferred = () => {
   let resolve!: () => void, reject!: (reason: unknown) => void;
   const promise = new Promise<void>((yes, no) => {
@@ -84,6 +85,7 @@ export async function openCeremonyWorkerLifetime(input: AccountWorkerTicket) {
         await member;
         cleanups.clear();
         state = 'closed';
+        closedRoots.add(root);
         done.resolve();
       } catch (cause) {
         state = 'failed';
@@ -149,4 +151,11 @@ export function requireCeremonyWorkerLifetime(
 ): void {
   if (!roots.has(root)) throw inactive();
   root.assertCurrent();
+}
+
+/** Only completed native cleanup, job drain and actual member release establish this fact. */
+export function requireClosedCeremonyWorkerLifetime(
+  root: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>>,
+): void {
+  if (!roots.has(root) || !closedRoots.has(root)) throw inactive();
 }

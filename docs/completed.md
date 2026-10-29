@@ -17823,3 +17823,11 @@ Corrected a packaging-only audit-wording assertion; saved all205 outcomes and bo
 packet after the implementation freezer ran despite the initial packaging failure. Original205 hash
 retained, current265 built source bodies exact, real index empty; no implementation/test changes.
 [Record](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+## 2026-10-29 — phase207 same physical Worker, fresh Account lifetime
+
+Actual complete ceremony drain, fixed same-realm bounded handoff and fresh native Account opening.
+72 focused/98 metadata/type/lint/format/audit checks pass. Chrome5/Firefox4 functional cases pass;
+exact cold writing/Undo, foreign bootstrap, abort, expiry and lost acknowledgment; nine containers
+absent. Existing blockers retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase207/README.md).

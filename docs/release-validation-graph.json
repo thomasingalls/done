@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 628,
-    "requiredTestFiles": 622,
+    "testFiles": 629,
+    "requiredTestFiles": 623,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14417,6 +14417,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workerAccountHandoff.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerAccountHandoff.test.ts"
+        ]
+      },
+      "declarations": 8,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerActivity.test.ts",
       "status": "required",
       "invocation": {
@@ -21587,6 +21602,10 @@
     {
       "path": "test/workerAccountComposition.test.ts",
       "sha256": "572449dbaca89c326009905bf2b3092098d2f13b5ec47b98a4e3921c9f17c28a"
+    },
+    {
+      "path": "test/workerAccountHandoff.test.ts",
+      "sha256": "c9621ec1386d2c7eca4b7979ba3bc62b7fd84da432674d0223df53affcc6595a"
     },
     {
       "path": "test/workerActivity.test.ts",

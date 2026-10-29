@@ -2,11 +2,14 @@
 import { requireExclusiveSessionTask, type SessionTask } from './writeSession';
 import {
   requireCeremonyWorkerLifetime,
+  requireClosedCeremonyWorkerLifetime,
   type openCeremonyWorkerLifetime,
 } from './ceremonyWorkerLifetime';
 import { RAW_JOURNAL_REMOVE_ITEMS, type RawJournalRemoval } from './workerJournalProtocol';
 import { WorkerChannelError, type WorkerChannel } from './workerChannel';
 let current: ReturnType<typeof installProtectionEnvironment> | undefined;
+let reserved = false,
+  owner: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>> | undefined;
 export const protectionEnvironment = () => current;
 export function installProtectionEnvironment(
   root: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>>,
@@ -14,6 +17,7 @@ export function installProtectionEnvironment(
 ) {
   requireCeremonyWorkerLifetime(root);
   if (
+    reserved ||
     current ||
     typeof window !== 'undefined' ||
     typeof globalThis.postMessage !== 'function' ||
@@ -21,6 +25,7 @@ export function installProtectionEnvironment(
     channel.closed
   )
     throw new WorkerChannelError('worker-lifetime');
+  reserved = true;
   const live = () => {
     root.assertCurrent();
     if (channel.closed) throw new WorkerChannelError('worker-lifetime');
@@ -78,6 +83,17 @@ export function installProtectionEnvironment(
       return total;
     },
   });
+  owner = root;
   current = environment;
   return environment;
+}
+
+/** A retired environment is not permission for a new native owner. Account verifies its own join. */
+export function retireProtectionEnvironment(
+  root: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>>,
+): void {
+  requireClosedCeremonyWorkerLifetime(root);
+  if (owner !== root || !current) throw new WorkerChannelError('worker-lifetime');
+  owner = undefined;
+  current = undefined;
 }

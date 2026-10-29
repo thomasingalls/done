@@ -6177,3 +6177,11 @@ Extract the original native Account body without changing checks, to allow futur
 Move protection effects above runtimePorts after the unchanged DAG guard found the203 cycle. Preserve
 the unexplained candidate old cold-reader timeout and its passing predecessor; do not infer acceptance
 from source equality. [Evidence](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+## 2026-10-29 — preserve Worker realm after complete ceremony retirement
+
+A private completed-native-root fact and original independent Window member barrier precede one-shot
+transport to a fresh Account lifetime. Keep bounded expiry through actual bootstrap and fresh native
+authentication; transport is not an opening capability. Native approvals stay in their original realm.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase207/README.md).

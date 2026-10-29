@@ -1,3 +1,4 @@
+import { createWindowAccountHandoff } from './windowAccountHandoff';
 import { createProtectionJournalRetirement } from './windowJournalMutation';
 import { createWindowJournalReader } from './windowJournalRead';
 /** Window endpoint for fixed native Local startup/enrollment commands; no factor/root persistence. */
@@ -15,6 +16,8 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
   let worker: Worker | undefined,
     channel: WorkerChannel | undefined,
     nativeEnded = false,
+    handingOff = false,
+    preserveWorker = false,
     acknowledged: (ok: boolean) => void = () => {};
   const stopped = new Promise<boolean>((resolve) => (acknowledged = resolve));
   const cohort = await openWindowCeremonyCohort(
@@ -22,6 +25,7 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
     async () => {
       if (!worker) return;
       channel?.close();
+      if (preserveWorker && !signal?.aborted) return;
       let timer: ReturnType<typeof setTimeout> | undefined;
       const result = nativeEnded
         ? true
@@ -96,7 +100,8 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
         }
         if (v.kind === 'startupClosed' && typeof v.ok === 'boolean') {
           acknowledged(v.ok);
-          if (cohort.state === 'active') void cohort.close().catch(() => {});
+          if (cohort.state === 'active' && (!handingOff || v.ok === false))
+            void cohort.close().catch(() => {});
         }
       });
       worker!.addEventListener(
@@ -121,6 +126,7 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
     await booted;
     await watchWindowWorkerLifetime(cohort, (released) => {
       nativeEnded ||= released;
+      if (handingOff && released) return;
       channel?.close();
       void cohort.close().catch(() => {});
     });
@@ -231,6 +237,37 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
             'automatic',
           ),
         ).code;
+      },
+      async handoffAccount() {
+        requireWindowCeremonyCohort(cohort);
+        if (handingOff) throw Error('Account handoff already requested');
+        handingOff = true;
+        const nonce = [...crypto.getRandomValues(new Uint8Array(16))]
+          .map((v) => v.toString(16).padStart(2, '0'))
+          .join('');
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        try {
+          const reply = await Promise.race([
+            channel!.request<{ nonce: string }>('prepareHandoff', { nonce }),
+            new Promise<never>((_yes, no) => {
+              timer = setTimeout(() => no(Error('Native handoff did not drain')), 5000);
+            }),
+          ]);
+          if (reply.nonce !== nonce) throw Error('Native handoff changed');
+          requireWindowCeremonyCohort(cohort);
+          preserveWorker = true;
+          await cohort.close();
+          signal?.throwIfAborted();
+          return createWindowAccountHandoff(worker!, cohort, nonce, signal);
+        } catch (cause) {
+          preserveWorker = false;
+          worker?.terminate();
+          await cohort.close();
+          throw cause;
+        } finally {
+          clearTimeout(timer);
+          handingOff = false;
+        }
       },
       close: () => cohort.close(),
     });

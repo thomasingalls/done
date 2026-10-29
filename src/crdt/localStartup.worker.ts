@@ -1,4 +1,5 @@
 /** Native Local startup/enrollment commands. Native protection; no clear, application doc or network owner. */
+import { createWorkerAccountHandoff } from './workerAccountHandoff';
 import { createWorkerChannel, eraseWorkerMessage, type WorkerChannel } from './workerChannel';
 import { openCeremonyWorkerLifetime } from './ceremonyWorkerLifetime';
 import { protectLocalWorkspace } from './localProtection';
@@ -14,8 +15,10 @@ import { startupRefusal } from './ownedStartup';
 import type { AccountWorkerTicket } from './nativeCoordination';
 import type { WorkerActivity } from './accountWorkerRuntime';
 let initialized = false;
+let handoff: ReturnType<typeof createWorkerAccountHandoff> | undefined;
 self.addEventListener('message', (event: MessageEvent) => {
   if (initialized) {
+    if (handoff?.accept(event.data)) return;
     eraseWorkerMessage(event.data);
     return;
   }
@@ -33,6 +36,7 @@ self.addEventListener('message', (event: MessageEvent) => {
     bootstrap: Promise<void> | undefined,
     closing: Promise<void> | undefined,
     busy = false,
+    preparingHandoff = false,
     genesis: ReturnType<typeof createWorkerLocalGenesis> | undefined;
   const live = () => {
     if (!root || closing) throw Error('Local startup Worker unavailable');
@@ -66,6 +70,20 @@ self.addEventListener('message', (event: MessageEvent) => {
     m.port,
     m.ticket.incarnation,
     {
+      prepareHandoff: async (input) => {
+        live();
+        const nonce = (input as { nonce: string })?.nonce;
+        if (busy || typeof nonce !== 'string' || !/^[a-f0-9]{32}$/.test(nonce))
+          throw Error('Startup handoff unavailable');
+        preparingHandoff = true;
+        try {
+          return await handoff!.prepare(nonce);
+        } catch (cause) {
+          preparingHandoff = false;
+          channel.close();
+          throw cause;
+        }
+      },
       inspect: () => run(() => inspectLocalStartup(m.ticket.slotId, { signal: root!.signal })),
       protect: (input) =>
         run(async () => {
@@ -138,7 +156,14 @@ self.addEventListener('message', (event: MessageEvent) => {
     installProtectionEnvironment(root, channel);
     genesis = createWorkerLocalGenesis(m.ticket.slotId, root.signal);
     root.beforeRelease(() => genesis!.close());
-    root.signal.addEventListener('abort', () => channel.close(), { once: true });
+    handoff = createWorkerAccountHandoff(root, channel);
+    root.signal.addEventListener(
+      'abort',
+      () => {
+        if (!preparingHandoff) channel.close();
+      },
+      { once: true },
+    );
     root.assertCurrent();
     self.postMessage({ v: 1, kind: 'startupBooted', owner: m.ticket.incarnation });
   })();
