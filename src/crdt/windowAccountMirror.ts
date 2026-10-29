@@ -37,6 +37,15 @@ export interface AccountMirrorWorker {
   appendBatch(input: readonly ContentInput[]): Promise<ContentReceipt>;
   flushJournal(): Promise<JournalFlushReceipt>;
 }
+const mirrorControllers = new WeakMap<object, WindowAccountCohort>();
+/** Trusted composition identity, not a native/account proof. Reject fake adapters before effects. */
+export function requireWindowAccountMirrorController(
+  controller: object,
+  cohort: WindowAccountCohort,
+): void {
+  if (mirrorControllers.get(controller) !== cohort) throw fail();
+  requireWindowAccountCohort(cohort);
+}
 type MirrorOptions = Pick<WorkspaceOptions, 'identity' | 'today' | 'deviceLabelId'>;
 
 /** Preserve the application surface: no receive, fence or rebinding capability escapes on it. */
@@ -288,7 +297,9 @@ export async function createWindowAccountMirrorController(
       }
     };
     opened = true;
-    return Object.freeze({ workspace, enqueue, prepare, journalFence, rebind });
+    const controller = Object.freeze({ workspace, enqueue, prepare, journalFence, rebind });
+    mirrorControllers.set(controller, cohort);
+    return controller;
   } catch (cause) {
     if (owned) {
       try {

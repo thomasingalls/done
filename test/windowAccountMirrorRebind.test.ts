@@ -248,3 +248,24 @@ it('only the original workspace surface is available to application UI', async (
   for (const name of ['rebind', 'enqueue', 'prepare', 'journalFence'])
     expect(name in f.w).toBe(false);
 });
+
+it('only a genuine controller for this actual root can start a composed operation', async () => {
+  const { requireWindowAccountMirrorController } = await import('../src/crdt/windowAccountMirror');
+  const f = await ready(),
+    touched = vi.fn();
+  expect(() =>
+    requireWindowAccountMirrorController(
+      {
+        get journalFence() {
+          touched();
+          return f.controller.journalFence;
+        },
+      },
+      f.cohort,
+    ),
+  ).toThrow('bound');
+  expect(touched).not.toHaveBeenCalled();
+  expect(() => requireWindowAccountMirrorController(f.controller, f.cohort)).not.toThrow();
+  await f.cohort.close();
+  expect(() => requireWindowAccountMirrorController(f.controller, f.cohort)).toThrow('inactive');
+});

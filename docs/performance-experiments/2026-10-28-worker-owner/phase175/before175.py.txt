@@ -1,0 +1,21 @@
+from pathlib import Path
+import shutil,subprocess,json,gzip,hashlib
+old=Path('/private/tmp/done-worker-conversion-20261028/native175');r=old.with_name('native175-before');r.mkdir();(r/'lab').mkdir();repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done')
+for f in(old/'lab').iterdir():
+ if f.name=='src':subprocess.run(['cp','-cR',str(repo/'src'),str(r/'lab/src')],check=True)
+ elif f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+prior=Path('/private/tmp/done-phase174-replay-5w1_4buh')
+for n in['accountWorkerClient','accountOwner.worker','accountWorkerRuntime','accountReceive','windowAccountMirror']:(r/'lab/src/crdt'/(n+'.ts')).write_bytes((prior/'src/crdt'/(n+'.ts')).read_bytes())
+(r/'lab/src/crdt/workerLocalBaseline.ts').unlink()
+census=json.loads((repo/'docs/account-crypto/census.json').read_text())
+# Current census is still the immutable174 census; every before source must match its exact pin.
+matched={}
+for row in census['sources']:
+ if row['path'].startswith('src/'):
+  p=r/'lab'/row['path'];h=hashlib.sha256(p.read_bytes()).hexdigest();assert h==row['sha256'],row['path'];matched[row['path']]=h
+(r.parent/'175-before-source-identities.json').write_text(json.dumps(matched,indent=2)+'\n')
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
+for name in['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in[r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))
+print(len(matched),'exact174 src preimages')

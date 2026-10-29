@@ -145,6 +145,7 @@ export function installAccountWorkerRuntime(
     },
     finishOpening() {
       live();
+      if (!opening || fence !== undefined) throw refused();
       opening = false;
       pinned.clear();
     },

@@ -17509,3 +17509,18 @@ transition integration remains next; controlled rebind cases do not claim that e
 952/406blocked. Existing16ms/2.5s/all-marker/30s targets unchanged/unmeasured. No default app activation,
 service automation, preview, real index/signing/push or release work. Append before owned status and
 freeze174 after173, then continue actual Worker maintenance, receive/sync and application integration.
+
+## 2026-10-29 — phase175: actual Worker local-history handoff
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase175/README.md). Brand the genuine
+Window controller/root; reserve its actual flushed admission head, perform original native baseline/
+era conversion and retain the Worker reservation until Window context rebinding acknowledges. Lost
+reply/cancel drains without revived input or leaked keys. Capture opening arguments before awaiting;
+ready is one-shot.17 rebuilt actual-account cases,36 native cohort cases,2336 unit cases/one existing
+skip and98 metadata cases pass. A matching test fails on all314 exact phase174 source preimages.
+Preserve that failure and the initial optional-binding type error. Independent AST audit retains old
+cases, rebind/I/O and native receive verification (Worker composed mode enabled).216 emitted source
+bodies match;19 owned containers absent.433sources/198domains,953 obligations/407 unresolved; new test
+uncredited. Default app remains Page; manual maintenance integration is not automatic/latency credit.
+Continue acknowledged receive/sync, resumable preparation, ceremonies and Local/app/offline ownership
+before unchanged16ms/2.5s/all-marker/30s measurements. No signing/push/preview/release or automation.

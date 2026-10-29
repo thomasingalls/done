@@ -6000,3 +6000,12 @@ and fresh authority checks; the fence and private32-byte subkey equality fingerp
 those proofs or authorize new account scope. Hashing only the journal subkey avoids retaining a raw
 JS key copy after WASM import; the hash stays private and is erased on close. Authorized mismatch
 aborts the root, with drain outside its own callback. [Phase174](performance-experiments/2026-10-28-worker-owner/phase174/README.md).
+
+## 2026-10-29 — keep Worker history mutation reserved through Window acknowledgment
+
+For the internal Worker owner, retain its actual final reservation until the same branded Window
+controller consumes and installs the freshly authenticated journal context. A monotone data message
+identifies a handoff but grants no native authority. An uncertain reply closes/drains the root, since
+resuming with the previous sealing context would be unsound. Explicit manual first conversion may
+occupy this fence; automatic preparation must retain its existing input-priority/resumable design.
+See [phase175](performance-experiments/2026-10-28-worker-owner/phase175/README.md).

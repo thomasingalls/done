@@ -1,0 +1,76 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountOwner.worker.ts');s=p.read_text();s="import { captureWorkerLocalBaselineCommand } from './workerLocalBaseline';\nimport { journalPrefix } from './journalCodec';\nimport type { AccountMirrorOpening } from './windowAccountMirror';\n"+s
+s=s.replace('let initialized = false;', '''const deferred = <T>() => {
+  let resolve!: (value: T | PromiseLike<T>) => void, reject!: (cause: unknown) => void;
+  const promise = new Promise<T>((yes, no) => { resolve = yes; reject = no; });
+  void promise.catch(() => {});
+  return { promise, resolve, reject };
+};
+type BaselineResult = Awaited<ReturnType<NonNullable<Owner['installLocalBaseline']>>>;
+type BaselineReply = { id: number; result: BaselineResult; opening: AccountMirrorOpening };
+type BaselineFlight = {
+  id: number;
+  phase: 'working' | 'waiting' | 'finishing';
+  ready: ReturnType<typeof deferred<BaselineReply>>;
+  ack: ReturnType<typeof deferred<void>>;
+  work: Promise<void>;
+  material?: AccountMirrorOpening;
+};
+let initialized = false;''')
+s=s.replace('  let channel!: WorkerChannel;', '  let channel!: WorkerChannel, prefix: string | undefined, baseline: BaselineFlight | undefined;\n  let baselineSequence = 0;')
+s=s.replace('      runtime.close();', '      const baselineWork = baseline?.work;\n      runtime.close();',1).replace('      await owner?.carrier.close();','      await baselineWork?.catch(() => {});\n      await owner?.carrier.close();',1)
+s=s.replace('          const material = await owner.copyMirrorOpening();','          const material = await owner.copyMirrorOpening();\n          prefix = journalPrefix(material.dbName);',1)
+a=s.index('      activity: (input) => {');s=s[:a]+'''      baselineStart: (input) => {
+        live();
+        if (!owner?.installLocalBaseline || !prefix || baseline || !input || typeof input !== 'object' || Object.keys(input).sort().join(',') !== 'command,id')
+          throw Error('Worker local-history operation unavailable');
+        const value = input as { id: number; command: unknown };
+        const command = captureWorkerLocalBaselineCommand(value.command);
+        if (!Number.isSafeInteger(value.id) || value.id !== baselineSequence + 1)
+          throw Error('Worker local-history operation changed');
+        const state: BaselineFlight = { id: value.id, phase: 'working', ready: deferred<BaselineReply>(), ack: deferred<void>(), work: Promise.resolve() };
+        baselineSequence = value.id;
+        baseline = state;
+        const cancel = () => { state.ready.reject(Error('Worker local-history operation closed')); state.ack.reject(Error('Worker local-history acknowledgment closed')); };
+        runtime.signal.addEventListener('abort', cancel, { once: true });
+        state.work = Promise.resolve().then(async () => {
+          try {
+            await runtime.withFence(state.id, prefix!, async () => {
+              live();
+              const result = await owner!.installLocalBaseline!(command.expectedRevision, command.kind === 'advance');
+              live();
+              // The actual install task has settled; this fresh owned task cannot deadlock it.
+              const opening = await owner!.copyMirrorOpening();
+              const material: AccountMirrorOpening = { ...opening, incarnation: m.ticket.incarnation };
+              state.material = material;
+              live();
+              state.phase = 'waiting';
+              state.ready.resolve({id: state.id, result, opening: material});
+              await state.ack.promise;
+              live();
+            });
+          } catch (cause) {
+            state.ready.reject(cause);
+            if (state.phase !== 'working') channel.close();
+            throw cause;
+          } finally {
+            runtime.signal.removeEventListener('abort', cancel);
+            eraseWorkerMessage(state.material);
+            if (baseline === state) baseline = undefined;
+          }
+        });
+        void state.work.catch(() => {});
+        return state.ready.promise;
+      },
+      baselineFinish: async (input) => {
+        live();
+        if (!input || typeof input !== 'object' || Object.keys(input).join(',') !== 'id' || !baseline || baseline.phase !== 'waiting' || (input as {id: number}).id !== baseline.id)
+          throw Error('Worker local-history acknowledgment changed');
+        const state = baseline;
+        state.phase = 'finishing';
+        state.ack.resolve();
+        await state.work;
+        live();
+      },
+'''+s[a:];p.write_text(s)
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountWorkerRuntime.ts');s=p.read_text().replace('    finishOpening() {\n      live();\n      opening = false;', '    finishOpening() {\n      live();\n      if (!opening || fence !== undefined) throw refused();\n      opening = false;');p.write_text(s)

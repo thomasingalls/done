@@ -2843,7 +2843,7 @@ export function openAccountWorkerStore(
   joined = false,
 ) {
   if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
-  return openAccountReceiveOwner(input, principalId, () => true, false, joined);
+  return openAccountReceiveOwner(input, principalId, () => true, true, joined);
 }
 
 /** Internal worker composition. Its workspace adapter retains the real Window queue; no UI caller

@@ -1,0 +1,30 @@
+from pathlib import Path
+import shutil
+old=Path('/private/tmp/done-worker-conversion-20261028/native174');r=old.with_name('native175');r.mkdir();(r/'lab').mkdir()
+for f in(old/'lab').iterdir():
+ if f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules'),target_is_directory=True)
+for name in['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in[r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))
+p=r/'build.mjs';s=p.read_text().replace("VITE_ACCOUNT_BASELINE_INSTALL':'\"0\"'","VITE_ACCOUNT_BASELINE_INSTALL':'\"1\"'").replace("VITE_ACCOUNT_RETENTION':'\"0\"'","VITE_ACCOUNT_RETENTION':'\"1\"'");p.write_text(s)
+p=r/'lab/main.mjs';s=p.read_text().replace("import{createWindowAccountMirror}from'./src/crdt/windowAccountMirror.ts';","import{createWindowAccountMirrorController}from'./src/crdt/windowAccountMirror.ts';")
+s=s.replace(' let session,workspace,free;', ' let session,workspace,controller,free;').replace('workspace=await createWindowAccountMirror(session.cohort,session.opening,session.worker,{identity:spec.identity});','controller=await createWindowAccountMirrorController(session.cohort,session.opening,session.worker,{identity:spec.identity});workspace=controller.workspace;')
+s=s.replace('await session.ready();return{master:', 'await Promise.all([session.ready(),session.ready()]);return{master:',1)
+s=s.replace('get workspace(){return workspace},release:', 'get workspace(){return workspace},get controller(){return controller},maintain:command=>session.maintainLocalHistory(controller,command),historyStatus:()=>session.localHistoryStatus(),release:',1);p.write_text(s)
+p=r/'harness/test/account-continuation-lab/worker-owner.spec.ts';s=p.read_text();s+='''
+test('real worker history conversion rebinds two journal eras before input and cold reopen',async()=>laboratory('worker-baseline',async(p,r)=>{
+ const ready=await opening(p);expect(Object.fromEntries(ready.entries.map((v:any)=>[v.path,v.content]))).toEqual(account.archive);await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>{});
+ r.input=await input(p,'\\nBefore actual era.');await p.evaluate(()=>(window as any).input.ticket.accepted);
+ r.before=await p.evaluate(()=>(window as any).b.historyStatus());
+ const beforeRevision=r.before?.revision??0;
+ r.first=await p.evaluate(revision=>(window as any).b.maintain({kind:'advance',...(revision>0?{expectedRevision:revision}:{})}),beforeRevision);
+ expect(['installed','replaced']).toContain(r.first.kind);expect(r.first.journalEraRevision).toBe(beforeRevision+1);r.guards.actualNativeFirstEra=true;
+ expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master+'\\nBefore actual era.');
+ await p.evaluate(()=>(window as any).b.workspace.command({kind:'undo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master);await p.evaluate(()=>(window as any).b.workspace.command({kind:'redo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master+'\\nBefore actual era.');r.guards.originalUndoSurvivesNativeEra=true;
+ r.afterFirst=await input(p,'\\nAfter actual era one.');expect(r.afterFirst.requestsDuringHandler).toBe(0);expect(r.afterFirst.journals).toBeGreaterThan(0);await p.evaluate(()=>(window as any).input.ticket.accepted);await p.evaluate(()=>(window as any).b.flush());r.guards.nativeReadOfReboundJournal=true;
+ r.second=await p.evaluate(revision=>(window as any).b.maintain({kind:'advance',expectedRevision:revision}),r.first.journalEraRevision);expect(r.second.kind).toBe('replaced');expect(r.second.journalEraRevision).toBe(r.first.journalEraRevision+1);r.guards.actualNativeSecondEra=true;
+ r.afterSecond=await input(p,'\\nAfter actual era two.');await p.evaluate(()=>(window as any).input.ticket.accepted);await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>(window as any).b.close());await empty(p);r.guards.allNativeLifetimesReleased=true;
+ await shipping(p,{...account.archive,'master.md':ready.master+'\\nBefore actual era.\\nAfter actual era one.\\nAfter actual era two.'},r);
+}));
+''';p.write_text(s)

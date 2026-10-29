@@ -126,16 +126,16 @@ large bootstrap and integrate actual Goals/joined/receive/maintenance paths befo
 input/peer acceptance. No reported-stall closure or performance credit; service automation stays off.
 
 **Authorized continuation,2026-10-29:** complete the worker conversion in bounded phases and sequential
-patches, then measure unchanged16ms input/2.5s peer/all-marker/30s targets. Through [174](performance-experiments/2026-10-28-worker-owner/phase174/README.md),
+patches, then measure unchanged16ms input/2.5s peer/all-marker/30s targets. Through [175](performance-experiments/2026-10-28-worker-owner/phase175/README.md),
 the actual authenticated dedicated-worker owner, scoped async journal transport, original admitted
 Window mirror, native lifetime fences, bounded advisory activity and safe hot context rebinding are
-implemented internally. Default application execution is still on the page. Full2331unit cases/one
-existing skip and11rebuilt real-account Worker/page cases pass; controlled rebind tests do not replace
-actual native maintenance integration, which is next. [173](performance-experiments/2026-10-28-worker-owner/phase173/README.md)
+implemented internally. Default application execution is still on the page. Full2336unit cases/one
+existing skip,36native cohort cases and17rebuilt real-account Worker/page cases pass, including actual
+native first/replacement eras, queued input, cancellation and lost reply with shipping cold reopen. [173](performance-experiments/2026-10-28-worker-owner/phase173/README.md)
 repairs state observation with unchanged original assertions/deadlines; complete admission/journal/
 lifetime campaigns and every fault control pass. Earlier failed attempts remain recorded.
 
-Next connect actual native maintenance to the Window fence/rebind, then async receive/sync, fresh
+Next acknowledged async receive/sync, resumable automatic preparation, fresh
 ceremony ownership, all application/Local routes and offline artifact integration. Only then run the
 original performance workloads. Data messages, queue fences and cached snapshots confer no native
 verification authority. Preserve synchronous sealed input, actual native final checks and security

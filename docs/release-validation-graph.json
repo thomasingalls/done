@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 589,
-    "requiredTestFiles": 583,
+    "testFiles": 590,
+    "requiredTestFiles": 584,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9479,7 +9479,7 @@
         "config": "playwright.account-worker-cohort.config.ts",
         "packages": []
       },
-      "declarations": 4,
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -14056,7 +14056,7 @@
           "test/windowAccountMirrorRebind.test.ts"
         ]
       },
-      "declarations": 13,
+      "declarations": 14,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -14092,6 +14092,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerChannel.test.ts"]
       },
       "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerLocalBaseline.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerLocalBaseline.test.ts"
+        ]
+      },
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -19144,7 +19159,7 @@
     },
     {
       "path": "test/account-worker-cohort/runtime.spec.ts",
-      "sha256": "273f756abf94aa36a7a9928a994c306bd848d25c6480723129127e614f9ed614"
+      "sha256": "b192dbd1a6878dc0d86462037992810f443d7fcf29bd7146304a9951c40afc5d"
     },
     {
       "path": "test/account-worker-cohort/runtimeMember.ts",
@@ -20964,7 +20979,7 @@
     },
     {
       "path": "test/windowAccountMirrorRebind.test.ts",
-      "sha256": "ed1d2d0c728a2f4eefad4ae1e9dbc12b81a1d2f73999136a1f4ae531fb5fd45b"
+      "sha256": "9a1bd9cecb59d7bf670d542de4d0adb7699e623dda3a0a5738fc48d9f0537c83"
     },
     {
       "path": "test/windowJournalBridge.test.ts",
@@ -20977,6 +20992,10 @@
     {
       "path": "test/workerChannel.test.ts",
       "sha256": "66313dbb7b37c3957c8b738727650133afa42e0184569d6fb167e2a86e765912"
+    },
+    {
+      "path": "test/workerLocalBaseline.test.ts",
+      "sha256": "89bec46a4ee7fab6124041593f51006afce34fa7c881045f9826224a62fc4f42"
     },
     {
       "path": "test/workerRuntimeBoundary.test.ts",

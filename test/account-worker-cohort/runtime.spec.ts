@@ -130,3 +130,19 @@ test('busy worker coalesces a long input burst while unrelated native work can s
   expect(trace.received.at(-1)).toMatchObject({ visibility: 'visible', online: true });
   await page.evaluate(() => (window as any).runtimeLab.close());
 });
+
+test('opening completion is one-shot and cannot clear a live final reservation', async ({
+  page,
+}) => {
+  await page.evaluate(() => (window as any).runtimeLab.ready());
+  await page.evaluate(() =>
+    (window as any).runtimeLab.data([['scoped.a', 'kept under real reservation']]),
+  );
+  await page.evaluate(() => (window as any).runtimeLab.fence());
+  await expect(page.evaluate(() => (window as any).runtimeLab.ready())).rejects.toThrow();
+  expect(await page.evaluate(() => (window as any).runtimeLab.peek())).toMatchObject({
+    entries: [['scoped.a', 'kept under real reservation']],
+  });
+  await page.evaluate(() => (window as any).runtimeLab.release());
+  await page.evaluate(() => (window as any).runtimeLab.close());
+});

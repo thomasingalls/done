@@ -1,3 +1,12 @@
+import { parseAuthorityPin } from '../../account-protocol/authority';
+import {
+  captureWorkerLocalBaselineCommand,
+  type WorkerLocalBaselineCommand,
+} from './workerLocalBaseline';
+import {
+  requireWindowAccountMirrorController,
+  type createWindowAccountMirrorController,
+} from './windowAccountMirror';
 /** Window endpoints for a dedicated account owner. No blocking wait or fake storage is involved. */
 import { createWorkerActivityForwarder, type WorkerActivityKind } from './workerActivity';
 import { openWindowAccountCohort } from './accountWorkerCohort';
@@ -11,10 +20,22 @@ import type { ContentReceipt } from './contentStore';
 import type { JournalFlushReceipt } from './journalStore';
 import type { LocalPasskeyRequest } from './accountAccess';
 
+type MirrorController = Awaited<ReturnType<typeof createWindowAccountMirrorController>>;
 type Opened = Awaited<ReturnType<(typeof import('./accountReceive'))['openAccountWorkerStore']>>;
 export async function openAccountWorkerSession(input: AccountWorkspaceOptions, joined = false) {
   if (input.networkLogin || input.promotionOpening || input.recoveryOpening)
     throw Error('This worker opening requires the coordinated ceremony adapter');
+  const slotId = input.slotId,
+    pin = parseAuthorityPin(input.pin),
+    identity = structuredClone(input.identity),
+    assertPasskey = input.assertPasskey,
+    signal = input.signal;
+  const continuation = input.membershipContinuation;
+  const membershipContinuation = typeof continuation === 'function' ? continuation() : continuation;
+  let code = input.code,
+    ready = false,
+    baselineSequence = 0;
+  let readyFlight: Promise<void> | undefined;
   let worker: Worker | undefined,
     channel: ReturnType<typeof createWorkerChannel> | undefined,
     killed = false,
@@ -22,7 +43,7 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
   let closedWorker: (ok: boolean) => void = () => {};
   const stoppedWorker = new Promise<boolean>((resolve) => (closedWorker = resolve));
   const cohort = await openWindowAccountCohort(
-    input.slotId,
+    slotId,
     async () => {
       if (worker) {
         channel?.close();
@@ -40,7 +61,7 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
         if (closed === false) throw Error('Worker cleanup failed; refresh before reopening');
       }
     },
-    input.signal,
+    signal,
   );
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   cohort.disposeWith(() => eraseWorkerMessage(material));
@@ -91,7 +112,7 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
         passkey: async (value) => {
           cohort.write(() => {});
           const request = value as LocalPasskeyRequest;
-          const assertion = await input.assertPasskey({ ...request, signal: cohort.signal });
+          const assertion = await assertPasskey({ ...request, signal: cohort.signal });
           cohort.write(() => {});
           return structuredClone(assertion);
         },
@@ -139,25 +160,20 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
       [ports.port2],
     );
     await booted;
-    const opened = await channel.request<{
+    const openingRequest = channel.request<{
       account: Opened['account'];
       deviceId: string;
       opening: AccountMirrorOpening;
     }>('open', {
-      slotId: input.slotId,
-      code: input.code,
-      pin: structuredClone(input.pin),
-      identity: structuredClone(input.identity),
+      slotId,
+      code,
+      pin,
+      identity,
       joined,
-      ...(input.membershipContinuation !== undefined
-        ? {
-            membershipContinuation:
-              typeof input.membershipContinuation === 'function'
-                ? input.membershipContinuation()
-                : input.membershipContinuation,
-          }
-        : {}),
+      ...(membershipContinuation !== undefined ? { membershipContinuation } : {}),
     });
+    code = '';
+    const opened = await openingRequest;
     material = opened.opening;
     cohort.write(() => {});
     for (const kind of [
@@ -209,11 +225,63 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
           channel!.request<ContentReceipt>('appendBatch', input),
         flushJournal: () => channel!.request<JournalFlushReceipt>('flushJournal'),
       }),
-      ready: () => channel!.request('ready'),
+      ready: () => {
+        cohort.write(() => {});
+        readyFlight ??= (async () => {
+          try {
+            await channel!.request('ready');
+            cohort.write(() => {});
+            ready = true;
+          } catch (cause) {
+            void cohort.close().catch(() => {});
+            throw cause;
+          }
+        })();
+        return readyFlight;
+      },
+      localHistoryStatus: () =>
+        channel!.request<{ revision: number; records: number } | null>('baselineStatus'),
+      maintainLocalHistory: (controller: MirrorController, input: WorkerLocalBaselineCommand) => {
+        requireWindowAccountMirrorController(controller, cohort);
+        const command = captureWorkerLocalBaselineCommand(input);
+        if (!ready) throw Error('Worker editor is not ready for history maintenance');
+        return controller.journalFence(async (fence) => {
+          requireWindowAccountMirrorController(controller, cohort);
+          const id = ++baselineSequence;
+          let reply:
+            | {
+                id: number;
+                result: Awaited<ReturnType<NonNullable<Opened['installLocalBaseline']>>>;
+                opening: AccountMirrorOpening;
+              }
+            | undefined;
+          try {
+            reply = await channel!.request('baselineStart', { id, command });
+            cohort.write(() => {});
+            if (reply!.id !== id) throw Error('Worker local-history operation changed');
+            await controller.rebind(fence, reply!.opening);
+            await channel!.request('baselineFinish', { id });
+            cohort.write(() => {});
+            const revision = reply!.opening.binding?.era.revision;
+            return {
+              ...reply!.result,
+              ...(revision !== undefined ? { journalEraRevision: revision } : {}),
+            };
+          } catch (cause) {
+            // A missing reply can follow a native commit. Abort now and let owned drain finish;
+            // waiting on our own queue head here would deadlock root cleanup.
+            void cohort.close().catch(() => {});
+            throw cause;
+          } finally {
+            eraseWorkerMessage(reply?.opening);
+          }
+        });
+      },
       status: () => channel!.request('status'),
       close: () => cohort.close(),
     });
   } catch (cause) {
+    code = '';
     eraseWorkerMessage(material);
     await cohort.close();
     throw cause;
