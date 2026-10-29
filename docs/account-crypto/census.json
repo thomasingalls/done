@@ -896,6 +896,10 @@
       "sha256": "0c1fb64f0358321163cf3bd60eecfb2e996a220bcb964a77ba5057e489906d62"
     },
     {
+      "path": "src/crdt/acknowledgedPresentation.ts",
+      "sha256": "bc1987e05c22662a13ea9873240b6582bb64bb286e73ee4f5e4eac8b429f7b32"
+    },
+    {
       "path": "src/crdt/acknowledgedReceive.ts",
       "sha256": "19566444ee9310b6e3e191a5b590f7d129df80ad3102229b11c1916bbcddcb86"
     },
@@ -1549,7 +1553,7 @@
     },
     {
       "path": "src/crdt/workerFirstDeviceSetup.ts",
-      "sha256": "8673a348992570d90049e84fc112f7f01409f3dcc39480a0ec0df9ec686ed72f"
+      "sha256": "21abb26c758e764bf51c50a484b83b03b71ec444358f2882f7aeaa0be35aec95"
     },
     {
       "path": "src/crdt/workerFrameStream.ts",
@@ -1893,7 +1897,7 @@
     },
     {
       "path": "src/ui/firstDeviceSetupWorker.ts",
-      "sha256": "6c884c1fa101b67b4d8c1b705da001acc2f9c84c81d06151d65d9ad38b1d8be7"
+      "sha256": "d84c8fc4843148f17a316ed1434dd669cfb322ab88a22b951903bd1c25a18fb7"
     },
     {
       "path": "src/ui/localStartup.ts",

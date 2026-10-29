@@ -697,3 +697,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase217:** complete native fresh and returning/cancel-retry flows verified; keep original initializer. Next lifetime edge cases, enrollment/recovery, PWA/offline/default activation, then unchanged measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase217/README.md).
+
+
+**Phase218:** bounded cancellable presentation transport verified; reuse for remaining native device/recovery hosts without sharing authority. Next those flows, offline/default activation, then unchanged measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase218/README.md).

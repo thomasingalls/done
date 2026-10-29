@@ -17891,3 +17891,8 @@ Before actual two-Window case fails; rebuilt same case and actual handoff pass.5
 ## 2026-10-29 — phase217 complete native fresh setup evidence
 
 Production485 bodies unchanged216. Actual fresh registration entry, cancelled-opening/fresh-Worker retry and full new-account approval/edit/original Page cold cases3 pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase217/README.md). Default activation and full conversion remain pending.
+
+
+## 2026-10-29 — phase218 acknowledged presentation lifetime
+
+Initial abort-before-send counterexample retained, final34 focused/99 metadata/type/lint/format/exact audit pass. Actual native creation/retry/provider-close3 pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase218/README.md). Full conversion/default activation still pending.

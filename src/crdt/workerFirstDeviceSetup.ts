@@ -1,3 +1,4 @@
+import { createAcknowledgedPresentation } from './acknowledgedPresentation';
 /** Native setup lifetime; original coordinator, Task owners and approval WeakMaps remain authoritative. */
 import { createFirstDeviceCoordinator } from '../account/firstDeviceSetup';
 import type { SetupConfig } from '../account/setupProgress';
@@ -51,6 +52,7 @@ export async function startWorkerFirstDeviceSetup(m: {
     display: WorkerSetupDisplay | undefined,
     lastName: string | undefined,
     opened = deferred<WorkerAccountComposition>(),
+    initial: string | undefined,
     closing: Promise<void> | undefined;
   let rootChannel!: ReturnType<typeof createWorkerChannel>,
     control!: ReturnType<typeof createWorkerChannel>;
@@ -62,6 +64,8 @@ export async function startWorkerFirstDeviceSetup(m: {
   };
   const withdraw = () => {
     stop.abort();
+    initial = undefined;
+    pending = undefined;
     opened.reject(Error('Native setup closed'));
     void user?.close().catch(() => {});
   };
@@ -75,66 +79,32 @@ export async function startWorkerFirstDeviceSetup(m: {
       await userClosing;
     }));
   };
-  let sequence = 0,
-    version = 0,
-    sent = 0,
-    sending = false,
-    latest: ReturnType<typeof snapshot> | undefined;
-  const waiters = new Set<{ version: number; done: ReturnType<typeof deferred<void>> }>();
-  function snapshot() {
-    return {
+  const presentation = createAcknowledgedPresentation({
+    signal: stop.signal,
+    send: ({
+      sequence,
+      value,
+    }: {
+      sequence: number;
+      value: {
+        state: ReturnType<typeof setupPresentation>;
+        visitable: string[];
+        recoveryDisplay: boolean;
+      };
+    }) => control.request('setupState', { sequence, ...value }),
+    failed: () => {
+      void close().catch(() => {});
+    },
+  });
+  const publish = () => {
+    if (stop.signal.aborted) return;
+    presentation.publish({
       state: setupPresentation(user.getSnapshot()),
       visitable: [...user.visitableSteps()],
       recoveryDisplay: user.hasRecoveryDisplay(),
-    };
-  }
-  const drain = () => {
-    if (sending || !latest || stop.signal.aborted || control.closed) return;
-    const next = latest,
-      target = version;
-    latest = undefined;
-    sending = true;
-    void control
-      .request('setupState', { sequence: ++sequence, ...next })
-      .then(
-        () => {
-          sent = target;
-          for (const w of waiters)
-            if (w.version <= sent) {
-              waiters.delete(w);
-              w.done.resolve();
-            }
-        },
-        () => {
-          void close();
-        },
-      )
-      .finally(() => {
-        sending = false;
-        drain();
-      });
+    });
   };
-  const publish = () => {
-    if (stop.signal.aborted) return;
-    latest = snapshot();
-    version++;
-    drain();
-  };
-  const flush = () => {
-    if (sent >= version) return Promise.resolve();
-    const done = deferred<void>();
-    waiters.add({ version, done });
-    return done.promise;
-  };
-  stop.signal.addEventListener(
-    'abort',
-    () => {
-      latest = undefined;
-      for (const w of waiters) w.done.reject(Error('Setup presentation closed'));
-      waiters.clear();
-    },
-    { once: true },
-  );
+  const flush = presentation.flush;
   const execution: SetupWorkspaceExecution<SetupWorkspacePort> = {
     async open(options) {
       live();
@@ -317,7 +287,7 @@ export async function startWorkerFirstDeviceSetup(m: {
   const browser = createWorkerCeremonyBrowser(control, stop.signal, live, () => {
     void close().catch(() => {});
   });
-  let initial = m.initialCode;
+  initial = m.initialCode;
   delete m.initialCode;
   const takeInitial = () => {
     const value = initial;

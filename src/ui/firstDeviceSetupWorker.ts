@@ -186,6 +186,7 @@ export function createWorkerFirstDeviceSetup(
           };
           const projected = setupPresentation(v.state);
           if (
+            !Number.isSafeInteger(v.sequence) ||
             v.sequence !== sequence + 1 ||
             !Array.isArray(v.visitable) ||
             v.visitable.length > 3 ||

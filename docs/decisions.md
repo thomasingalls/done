@@ -6247,3 +6247,8 @@ Use genuine tracked preparation plus same-realm fresh Account join and a separat
 ## 2026-10-29 — retain the original fresh setup initialization
 
 Actual native fresh creation and complete registration/recovery/approval/edit/cold flow pass unchanged. Do not introduce a parallel initializer on an unconfirmed hypothesis. Account entry is one-shot, so cancellation retry uses a fresh native owner after actual cleanup. [Evidence](performance-experiments/2026-10-28-worker-owner/phase217/README.md).
+
+
+## 2026-10-29 — acknowledge bounded UI presentation independently of native authority
+
+Coalesce display frames with one in flight, latest replacement and eight waiters. Abort refuses both queued sends and future flushes. Reuse this transport lifetime across native UI hosts while keeping original crypto/native authority owners separate. [Evidence](performance-experiments/2026-10-28-worker-owner/phase218/README.md).
