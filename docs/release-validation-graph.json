@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 604,
-    "requiredTestFiles": 598,
+    "testFiles": 605,
+    "requiredTestFiles": 599,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11578,6 +11578,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localRetentionRevisionHint.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/localRetentionRevisionHint.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/localRetentionSharedProof.test.ts",
       "status": "required",
       "invocation": {
@@ -20294,6 +20309,10 @@
     {
       "path": "test/localRetentionProgress.test.ts",
       "sha256": "854351473d05fb9af2d40f461960807f965d5adb3100805ab9dc924b7ca0ba62"
+    },
+    {
+      "path": "test/localRetentionRevisionHint.test.ts",
+      "sha256": "45bbce37d892feb76255422c2193972b296557a7c58bfbf28c87d6b69ab71d6b"
     },
     {
       "path": "test/localRetentionSharedProof.test.ts",

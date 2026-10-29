@@ -536,3 +536,11 @@ failure. Next repair: full-history validator still emits revision0 after a snaps
 predecessor to1, causing a correct native refusal on later maintenance. Then continue remaining Worker
 configuration/terminal/Local/ceremony/offline integration before timing acceptance.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase187/README.md).
+
+
+**Phase188 — stale maintenance predecessor repaired:** full-history scheduling now uses the
+existing metadata revision after validation, preserving the original wrong-predecessor refusal.
+Primary/joined Worker warm/cold and real resumable reduction checks pass. Continue configuration,
+terminal UI, Local/ceremony and offline/default integration. Separate catch-up outcomes remain open;
+no performance acceptance claim.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase188/README.md).

@@ -506,7 +506,7 @@ async function openAccountReceiveOwner(
       });
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
-    async validate(task, records, route, counter, view, baseline) {
+    async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
       localRetentionHint = undefined;
       if (baseline) {
         // The carrier has either fully replayed the authenticated origin or extended its private
@@ -763,7 +763,7 @@ async function openAccountReceiveOwner(
         throw e;
       }
       if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
-        localRetentionHint = { revision: 0, records: records.length };
+        localRetentionHint = { revision: localRetentionRevision ?? 0, records: records.length };
     },
     dispose() {
       baselineReading = false;

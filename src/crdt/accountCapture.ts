@@ -91,6 +91,7 @@ export interface CaptureExtension {
     counter: ContentCounter,
     view?: object,
     baseline?: AccountBaselineRead,
+    localRetentionRevision?: number,
   ): Promise<void>;
   invalidateAuthority?(): void;
   dispose(): void;
@@ -160,8 +161,16 @@ export async function openAccountCaptureOwner(
           owner = prepareAccountCustody(
             { ...scope, resolvePrincipal: () => scope.principalId },
             options.code,
-            (records, task, counter, view, baseline) =>
-              extension.validate(task, records, route, counter, view, baseline),
+            (records, task, counter, view, baseline, localRetentionRevision) =>
+              extension.validate(
+                task,
+                records,
+                route,
+                counter,
+                view,
+                baseline,
+                localRetentionRevision,
+              ),
             true,
             true,
             warmLoads,
@@ -220,9 +229,17 @@ export async function openAccountCaptureOwner(
             resolvePrincipal: () => route.principal,
           },
           options.code,
-          (records, task, counter, view, baseline) => {
+          (records, task, counter, view, baseline, localRetentionRevision) => {
             if (extension?.version !== 9) captureCatalog(sourceRecords(records), route);
-            return extension?.validate(task, records, route, counter, view, baseline);
+            return extension?.validate(
+              task,
+              records,
+              route,
+              counter,
+              view,
+              baseline,
+              localRetentionRevision,
+            );
           },
           extension ? true : undefined,
           extension?.version === 9 ? true : undefined,

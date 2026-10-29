@@ -1147,13 +1147,15 @@ export const withRecoveryUnderPermit = async <T>(
     true,
     false,
     validate && validation?.reuseOpened
-      ? async (rows, scope, counter, view, baseline) => {
+      ? async (rows, scope, counter, view, baseline, localRetentionRevision) => {
           scope.step(() => {});
           // The carrier supplies the same identity only after a fresh authenticated read
           // matches both its counter and every sealed row. Never share it across owners.
           if (view && view === validatedView) return;
           validatedView = undefined;
-          await scope.wait(() => validate(rows, scope, counter, view, baseline));
+          await scope.wait(() =>
+            validate(rows, scope, counter, view, baseline, localRetentionRevision),
+          );
           scope.step(() => {
             validatedView = view;
           });

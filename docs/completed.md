@@ -17657,3 +17657,12 @@ lint/format pass. Prior-module control refuses worker-lifetime; uninstrumented c
 cold resumes and removes7275 rows, then preserves input/Undo/old-reader exactness. Native retirement
 passes. Stale scheduling predecessor and separate30s catch-up failure retained, not claimed fixed.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase187/README.md).
+
+
+## 2026-10-29 — phase188 maintenance hint matches its native predecessor
+
+Derive the scheduling revision from the existing metadata home after original authenticated
+validation. Counterexample actual1/hint0 fails before; current primary/joined Worker warm/cold paths
+agree, and actual saved-slice/reduction/input/Undo/cold read still pass.72 unit/98 metadata/type/
+lint/format checks pass. Original parsing/crypto/storage/refusals retained; no format/policy change.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase188/README.md).

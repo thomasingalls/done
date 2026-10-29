@@ -23,6 +23,8 @@ export function createBaselineMetadata(scope: ContentIdentity, allowReduced = fa
   };
   return {
     active: () => !!pointer,
+    /** Scheduling only; callers publish this only after authenticating the selected counter. */
+    revision: () => pointer?.revision ?? 0,
     reduced: () => pointer?.history === 'baseline-plus-suffix',
     era: () => pointer?.journalEra && { ...pointer.journalEra },
     /** Only after our atomic replacement succeeds. The next full load authenticates the new pin. */

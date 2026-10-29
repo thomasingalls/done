@@ -105,6 +105,7 @@ export interface ContentCrypto {
     counter: ContentCounter,
     view?: object,
     baseline?: AccountBaselineRead,
+    localRetentionRevision?: number,
   ): void | Promise<void>;
   open(task: SessionTask, record: StoredRecord): Promise<Bytes>;
   seal(
@@ -517,7 +518,9 @@ export const createContentOwner = (
           }
         }
         if (crypt.validate)
-          await task.wait(() => crypt.validate!(opened, task, counter, id, logical));
+          await task.wait(() =>
+            crypt.validate!(opened, task, counter, id, logical, metadata?.revision() ?? 0),
+          );
         if (crypt.reuseOpened && (!reuse || metadata?.active()))
           task.step(() => {
             clearView();
@@ -634,6 +637,7 @@ export const createContentOwner = (
                   checked.counter,
                   openedView!.id,
                   openedView!.baseline,
+                  metadata?.revision() ?? 0,
                 ),
               );
             if (forceFullRead) {
