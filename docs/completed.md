@@ -17831,3 +17831,11 @@ Actual complete ceremony drain, fixed same-realm bounded handoff and fresh nativ
 72 focused/98 metadata/type/lint/format/audit checks pass. Chrome5/Firefox4 functional cases pass;
 exact cold writing/Undo, foreign bootstrap, abort, expiry and lost acknowledgment; nine containers
 absent. Existing blockers retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase207/README.md).
+
+
+## 2026-10-29 — phase208 genuine same-realm approval retention
+
+Native reference/scope/lifetime adapter, original one-use verification and NetworkLogin reuse.31
+focused/98 metadata/type/lint/format/audit checks pass. Chrome genuine approval with/without login
+uses one prompt and exact cold writing; copied approval refuses; unchanged default controls pass.
+Five containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase208/README.md).

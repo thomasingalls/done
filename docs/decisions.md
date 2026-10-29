@@ -6185,3 +6185,11 @@ A private completed-native-root fact and original independent Window member barr
 transport to a fresh Account lifetime. Keep bounded expiry through actual bootstrap and fresh native
 authentication; transport is not an opening capability. Native approvals stay in their original realm.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase207/README.md).
+
+
+## 2026-10-29 — transfer original native approvals by reference only
+
+Keep genuine promotion/recovery approvals and NetworkLogin in the same Worker realm across complete
+ceremony retirement. A routing adapter adds scope/lifetime checks but original private WeakMaps and
+native verification still authorize access. Clone control must fail; original approval cleanup follows
+the new role. [Evidence](performance-experiments/2026-10-28-worker-owner/phase208/README.md).

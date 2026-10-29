@@ -1,3 +1,4 @@
+import { holdWorkerCeremonyOpening, type WorkerCeremonyOpening } from './workerCeremonyOpening';
 import { createWorkerConfiguration } from './workerConfiguration';
 import { accountWorkerClosed } from './workerTerminal';
 import { createWorkerPasskey } from './workerPasskeyBridge';
@@ -51,14 +52,15 @@ export interface AccountOwnerBootstrap {
 let claimed = false;
 /** Same-realm native composition entry. Original runtime still authenticates its native holders.
  * This entry cannot be started twice, including after close, and grants no ceremony authority. */
-export function startAccountWorkerOwner(m: AccountOwnerBootstrap) {
+export function startAccountWorkerOwner(m: AccountOwnerBootstrap, fresh?: WorkerCeremonyOpening) {
   if (claimed || typeof window !== 'undefined' || !(m.port instanceof MessagePort))
     throw Error('Account Worker entry unavailable');
   claimed = true;
+  const nativeOpening = fresh ? holdWorkerCeremonyOpening(fresh) : undefined;
   let session: ReturnType<typeof publishAccountSession> | undefined;
   let nativeAccountId: string | undefined;
   let nativeLifetime: ReturnType<typeof followWorkerNativeLifetime> | undefined;
-  let login: NetworkLogin | undefined,
+  let login: NetworkLogin | undefined = nativeOpening?.login,
     composition: Composed | undefined,
     composedBridge: ReturnType<typeof createWorkerAccountComposition> | undefined;
   let owner: Owner | undefined,
@@ -81,6 +83,7 @@ export function startAccountWorkerOwner(m: AccountOwnerBootstrap) {
       session?.close();
       runtime.close();
       login?.close();
+      if (nativeOpening) await nativeOpening.close();
       stream?.close();
       stream = undefined;
       await opening?.catch(() => {});
@@ -298,7 +301,8 @@ export function startAccountWorkerOwner(m: AccountOwnerBootstrap) {
             throw Error('Invalid Worker composition mode');
           if (options.composed && !options.networkSessions)
             throw Error('Worker composition requires account sessions');
-          if (options.networkSessions) {
+          const ceremony = nativeOpening?.take(options);
+          if (options.networkSessions && !login) {
             const { NetworkLogin } = await import('../account/networkLogin');
             login = new NetworkLogin(options.pin, options.slotId);
           }
@@ -318,6 +322,7 @@ export function startAccountWorkerOwner(m: AccountOwnerBootstrap) {
             composition = await openAccountWorkerReceivingWorkspace(
               {
                 ...options,
+                ...ceremony,
                 assertPasskey: passkey,
                 membershipContinuation: () => configuration.value,
                 signal: runtime.signal,
@@ -344,6 +349,7 @@ export function startAccountWorkerOwner(m: AccountOwnerBootstrap) {
           owner = await openAccountWorkerStore(
             {
               ...options,
+              ...ceremony,
               assertPasskey: passkey,
               membershipContinuation: () => configuration.value,
               signal: runtime.signal,

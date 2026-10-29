@@ -861,7 +861,7 @@
     },
     {
       "path": "src/crdt/accountWorkerOwner.ts",
-      "sha256": "126f8eb4fef37782f46eadb77ba0f6b974a222342b8239decdb5c598563ba536"
+      "sha256": "478351f333cd8eb6ba901d5c57dd65a30557e5018484c267045e8e8436bfb3a6"
     },
     {
       "path": "src/crdt/accountWorkerReceive.ts",
@@ -1485,11 +1485,15 @@
     },
     {
       "path": "src/crdt/workerAccountHandoff.ts",
-      "sha256": "8238ccaf9bd7ec79570467ebea72b2ba68a47677dfece29d5e30156893fcd4d0"
+      "sha256": "8ce903e27180aaafcc89da81adcdaf199eefa30d60c63d9112a5ec4ad4c0b88e"
     },
     {
       "path": "src/crdt/workerActivity.ts",
       "sha256": "ff03e0a39ced9bc5ada6fdbd44237f64d08ea274db232186f51a4f0be1a5086e"
+    },
+    {
+      "path": "src/crdt/workerCeremonyOpening.ts",
+      "sha256": "89e65cc88e3396aa8cbbc09e9f0afa037962bacd0c99bb45d81945682ffa304a"
     },
     {
       "path": "src/crdt/workerChannel.ts",

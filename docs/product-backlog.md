@@ -657,3 +657,9 @@ Same-realm handoff continues as207.205 cold-reader blocker remains open.
 both-browser functional/failure checks. Next genuine setup/recovery approvals, Account UI/credentials
 and offline/default activation, then unchanged gates;182/187/205 blockers remain.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase207/README.md).
+
+
+**Phase208 — genuine native approvals:** same-realm handoff consumes original approvals without an
+extra prompt, reuses login and rejects a copied approval. Next actual wizard/browser/workspace ports
+and offline/default activation before measurements;182/187/205 failures remain open.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase208/README.md).
