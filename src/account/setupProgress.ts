@@ -15,10 +15,11 @@ import {
   SetupRetired,
 } from './setupMetadata';
 export { SETUP_DB } from './setupMetadata';
-export type SetupConfig = { pin: AuthorityPin; readonly membershipContinuation?: boolean } & (
-  | { networkSessions: true; token?: never }
-  | { networkSessions?: false; token: PrivateAccess }
-);
+export type SetupConfig = {
+  pin: AuthorityPin;
+  readonly membershipContinuation?: boolean;
+  readonly onMembershipContinuationChange?: (listener: () => void) => () => void;
+} & ({ networkSessions: true; token?: never } | { networkSessions?: false; token: PrivateAccess });
 export const isSetupSlot = (value: unknown): value is string =>
   value === 'local' || (typeof value === 'string' && /^account-[a-f0-9]{32}$/.test(value));
 export const progressKey = (slotId: string) => {

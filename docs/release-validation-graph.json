@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 606,
-    "requiredTestFiles": 600,
+    "testFiles": 608,
+    "requiredTestFiles": 602,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -12260,6 +12260,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packagedConfigSubscription.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/packagedConfigSubscription.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/passkeyResponse.test.ts",
       "status": "required",
       "invocation": {
@@ -14218,6 +14233,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerChannel.test.ts"]
       },
       "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerConfiguration.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerConfiguration.test.ts"
+        ]
+      },
+      "declarations": 8,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16306,7 +16336,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "8d9863d32508a8adb9e7a66c18f601e0897b0b488926af04856e4383dd92bd06"
+      "sha256": "3b8ad4e24992d2c929f6b8a850c8ad7aa98918bc1916ae2a45f57da5a07f4820"
     },
     {
       "path": "package.json",
@@ -20565,6 +20595,10 @@
       "sha256": "76f884e4b2cfc1e1a4bcab2a6d6067e33a3ceab459213268bd9b46d78b0df944"
     },
     {
+      "path": "test/packagedConfigSubscription.test.ts",
+      "sha256": "c5b0ed292636bbe21ff6730724541c195e9725091578b24b201e81f1afd424d8"
+    },
+    {
       "path": "test/passkeyResponse.test.ts",
       "sha256": "774f9bf0cccfac4a502119e15d62941ea7d98722621acc862fd9f1dc55ac93f9"
     },
@@ -21247,6 +21281,10 @@
     {
       "path": "test/workerChannel.test.ts",
       "sha256": "66313dbb7b37c3957c8b738727650133afa42e0184569d6fb167e2a86e765912"
+    },
+    {
+      "path": "test/workerConfiguration.test.ts",
+      "sha256": "00ee647b99e53e193dc0d921cb3ffa83f60b37e95deb3a69b885f05d036410b4"
     },
     {
       "path": "test/workerContextQueue.test.ts",

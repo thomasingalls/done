@@ -17676,3 +17676,13 @@ notice.36 unit/98 metadata/type/lint/format pass; six real native cases pass. Pr
 cleanly but loses the notice and fails the same5s check. No deletion success inferred from lost reply;
 original catalogue, native checks and key disposal retained. Default Page, no timing credit.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase189/README.md).
+
+
+## 2026-10-29 — phase190 live Worker capability observations
+
+Forward matching-pin observations through bounded lifecycle-owned callbacks. Actual live Worker
+discovery3->5/source5 passes; prior entry/client stays3 and fails. A late configuration refusal
+regression exposed draft raw-key ownership ordering; current source wipes actual incoming buffers
+and cold reads exactly.23 unit/98 metadata/type/lint/format and eight final native cases pass.
+Original crypto/authority/history/backoff checks retained. Default Page, no performance credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase190/README.md).

@@ -1,3 +1,4 @@
+import { createWorkerConfiguration } from './workerConfiguration';
 import { accountWorkerClosed } from './workerTerminal';
 import { createWorkerPasskey } from './workerPasskeyBridge';
 import { publishAccountSession, executeAccountSessionCommand } from './accountSessionBridge';
@@ -169,6 +170,10 @@ self.addEventListener('message', (event: MessageEvent) => {
     m.port,
     m.ticket.incarnation,
     {
+      configuration: (input) => {
+        live();
+        configuration.update(input);
+      },
       workspaceHint: (input) => {
         if (!composedBridge) throw Error('Worker workspace unavailable');
         return composedBridge.methods.workspaceHint(input);
@@ -284,6 +289,12 @@ self.addEventListener('message', (event: MessageEvent) => {
             'assertPasskey' | 'signal' | 'networkLogin' | 'today'
           > & { joined: boolean; networkSessions?: boolean; composed?: boolean };
           if (options.slotId !== m.ticket.slotId) throw Error('Account worker slot changed');
+          if (
+            options.membershipContinuation !== undefined &&
+            typeof options.membershipContinuation !== 'boolean'
+          )
+            throw Error('Invalid capability observation');
+          configuration.initialize(options.membershipContinuation === true);
           if (options.networkSessions !== undefined && typeof options.networkSessions !== 'boolean')
             throw Error('Invalid Worker connection mode');
           if (options.composed !== undefined && typeof options.composed !== 'boolean')
@@ -311,6 +322,7 @@ self.addEventListener('message', (event: MessageEvent) => {
               {
                 ...options,
                 assertPasskey: passkey,
+                membershipContinuation: () => configuration.value,
                 signal: runtime.signal,
                 ...(login ? { networkLogin: login } : {}),
               },
@@ -336,6 +348,7 @@ self.addEventListener('message', (event: MessageEvent) => {
             {
               ...options,
               assertPasskey: passkey,
+              membershipContinuation: () => configuration.value,
               signal: runtime.signal,
               ...(login ? { networkLogin: login } : {}),
             },
@@ -478,6 +491,7 @@ self.addEventListener('message', (event: MessageEvent) => {
   );
   const receives = createAccountWorkerReceive(() => owner, channel, live);
   const runtime = installAccountWorkerRuntime(m.ticket, channel, m.activity);
+  const configuration = createWorkerConfiguration(runtime.signal);
   const passkey = createWorkerPasskey(
     {
       get closed() {

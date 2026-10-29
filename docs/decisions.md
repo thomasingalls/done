@@ -6047,3 +6047,12 @@ original checks at the real Window head for progress save/removal; an old observ
 Heavy preparation stays outside input FIFO. A scheduling revision remains advisory: native validation
 correctly refused the stale0 hint after actual predecessor advanced to1; repair that hint separately.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase187/README.md).
+
+
+## 2026-10-29 — public capability changes are observations, not authority or retry commands
+
+Forward matching-pin config changes without waiting for optional persistence, polling or changing
+retry clocks. Original signed history/authority still decides work. Own every incoming raw opening
+key buffer before awaiting a second advisory acknowledgment, so late refusal remains inside the
+existing Root erasure boundary. Native draft-control failure/current pass retained.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase190/README.md).

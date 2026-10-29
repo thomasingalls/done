@@ -1,3 +1,4 @@
+import { forwardWorkerConfiguration } from './workerConfiguration';
 import { createAccountWorkerTerminalReceiver } from './workerTerminal';
 import {
   rememberAccountTransition,
@@ -70,7 +71,10 @@ export async function openAccountWorkerSession(
     identity = structuredClone(input.identity),
     assertPasskey = input.assertPasskey,
     signal = input.signal;
-  const continuation = input.membershipContinuation;
+  const continuation = input.membershipContinuation,
+    subscribeConfiguration = input.onMembershipContinuationChange;
+  if (subscribeConfiguration !== undefined && typeof subscribeConfiguration !== 'function')
+    throw Error('Invalid capability subscription');
   const membershipContinuation = typeof continuation === 'function' ? continuation() : continuation;
   let code = input.code,
     ready = false,
@@ -364,6 +368,16 @@ export async function openAccountWorkerSession(
       void cohort.close().catch(() => {});
     });
     cohort.disposeWith(session.close);
+    const configuration = forwardWorkerConfiguration({
+      signal: cohort.signal,
+      read: () => (typeof continuation === 'function' ? continuation() : continuation),
+      subscribe: subscribeConfiguration,
+      send: (value) => channel!.request('configuration', value),
+      failed: () => {
+        void cohort.close().catch(() => {});
+      },
+    });
+    cohort.disposeWith(configuration.close);
     const booted = new Promise<void>((resolve, reject) => {
       const abort = () => reject(Error('Worker opening canceled'));
       cohort.signal.addEventListener('abort', abort, { once: true });
@@ -418,6 +432,7 @@ export async function openAccountWorkerSession(
       ...(membershipContinuation !== undefined ? { membershipContinuation } : {}),
     });
     code = '';
+    configuration.start();
     const opened = await openingRequest;
     nativeAccountId = opened.account.accountId;
     if (composed) {
@@ -427,6 +442,9 @@ export async function openAccountWorkerSession(
       if (!opened.opening) throw Error('Worker omitted its opening');
       material = opened.opening;
     }
+    // Own every incoming key buffer before the additional advisory acknowledgment can await/fail.
+    cohort.write(() => {});
+    await configuration.ready;
     cohort.write(() => {});
     for (const kind of [
       'visibilitychange',

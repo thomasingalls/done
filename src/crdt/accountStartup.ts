@@ -46,6 +46,8 @@ export interface AccountStartupOptions {
   networkLogin?: NetworkLogin;
   /** Private continuation host capability; retained continuation custody also enables discovery. */
   membershipContinuation?: boolean | (() => boolean);
+  /** Public configuration observation, never signed authority or a retry command. */
+  onMembershipContinuationChange?: (listener: () => void) => () => void;
 }
 export const captureAccountOptions = (input: AccountStartupOptions): AccountStartupOptions => ({
   ...input,

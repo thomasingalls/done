@@ -420,6 +420,9 @@ export function createFirstDeviceSetup(
     const opened = await openOwnedSyncingAccountWorkspace(
       {
         membershipContinuation: () => input.membershipContinuation === true,
+        ...(input.onMembershipContinuationChange
+          ? { onMembershipContinuationChange: input.onMembershipContinuationChange }
+          : {}),
         slotId: slotId,
         code,
         pin,

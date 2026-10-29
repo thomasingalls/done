@@ -1,0 +1,12 @@
+{
+  "src/crdt/workerConfiguration.ts": "b31e366248739f909e9ab596b00f8b82969432f38467f2cd162716a0c9f8c705",
+  "src/account/setupProgress.ts": "db4d4afe53940fa4f8b692e98751ffa1fe07cf08486c116cb877f73a2885fd2b",
+  "src/account/packagedConfig.ts": "41b8c4ef1693e21312d2b1dcfccb4f38b52e498c3957ff864edbdc25de4b1fce",
+  "src/crdt/accountStartup.ts": "b22e0c89b9fff4c206d3d0a8a712c842d011f7f6aa6a52f375d9dde16cc1e913",
+  "src/account/firstDeviceSetup.ts": "693163bb3a27ffb38c9e178e9bfb26ee415a720d69719dfca518d1bd020233c0",
+  "src/account/deviceEnrollment.ts": "5942cc3b47733566bb4f514fcfd7be80a957b833a3f45e910186cc3187fbc8b0",
+  "src/crdt/accountOwner.worker.ts": "f8cb5bcbee9823d44996313eef7a79ab4ade4cacc7ab799b1fe761905f114da2",
+  "src/crdt/accountWorkerClient.ts": "f999dbacf3bacd13d230de383e021aeee54cb22183c3a4cab48bf310791b1885",
+  "test/workerConfiguration.test.ts": "00ee647b99e53e193dc0d921cb3ffa83f60b37e95deb3a69b885f05d036410b4",
+  "test/packagedConfigSubscription.test.ts": "c5b0ed292636bbe21ff6730724541c195e9725091578b24b201e81f1afd424d8"
+}

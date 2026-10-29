@@ -965,6 +965,9 @@ export function createDeviceEnrollment(
       {
         slotId,
         membershipContinuation: () => config.membershipContinuation === true,
+        ...(config.onMembershipContinuationChange
+          ? { onMembershipContinuationChange: config.onMembershipContinuationChange }
+          : {}),
         code,
         pin,
         assertPasskey: assertSlotPasskey(lifetime.signal),

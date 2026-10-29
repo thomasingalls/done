@@ -552,3 +552,10 @@ locked/unrelated accounts do not. Prior-control failure/six current native passe
 removal or cleanup-success inference. Continue live configuration, Local/ceremony and offline/default
 integration before timing gates.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase189/README.md).
+
+
+**Phase190 — live capability updates:** open Workers now observe matching-pin updates without
+polling/retry reset. Native discovery3->5/input/cold read and late-refusal key erasure regressions
+pass, with both failing controls retained. Continue Local/ceremony lifetime proofs and offline/default
+integration before measuring unchanged gates. Default Page and separate catch-up outcomes remain.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase190/README.md).
