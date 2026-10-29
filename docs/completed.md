@@ -17981,3 +17981,8 @@ Two-file narrow entry fixture, no runtime change. Comprehensive both-device deta
 ## 2026-10-29 — phase235: live credential cancellation
 
 Cancellation transport repaired: six new cases,36 focused,99 metadata/type/lint and all12 unchanged browser compatibility cases pass. Before failures preserved; no old test edits. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).
+
+
+## 2026-10-29 — phase236: packaged offline Worker assets
+
+Packaged precache exact bytes and both protected offline cold-write flows pass all three unchanged cases/deadlines after narrow filename fixture repair. Artifact exact235; before failure retained. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).

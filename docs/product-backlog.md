@@ -753,3 +753,8 @@ activation before measuring unchanged gates;182/187/205 remain open.
 ## 2026-10-29 — phase235: live credential cancellation
 
 Phase235 closes cancellation/offline/resume compatibility. Continue remaining Worker boundary/lifecycle checks and explicit older failure review, then unchanged performance gates. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).
+
+
+## 2026-10-29 — phase236: packaged offline Worker assets
+
+Phase236 packaged Worker chunks and protected offline writing verified. Continue original native compatibility outcomes and final boundary audit before performance measurements. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).

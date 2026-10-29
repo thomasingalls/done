@@ -1,0 +1,20 @@
+{
+  "runtimeChanges": [],
+  "artifactExact235": true,
+  "oldTests": "three original cases, all original file/body-byte/offline/protection checks and deadlines retained",
+  "exemptions": [
+    "hashed privateDeliveryHttp JavaScript",
+    "hashed recoveryOwner.worker JavaScript"
+  ],
+  "refusedExamples": [
+    "/private.html",
+    "/recovery.html",
+    "/migration.html",
+    "/assets/recoveryOwner.worker-A.js.map",
+    "/assets/privateDeliveryHttp-A.js.map",
+    "/assets/privateSomething-A.js",
+    "/assets/recoveryOwner.worker-A.json",
+    "/assets/other-binding-A.js"
+  ],
+  "newCases": 0
+}

@@ -6337,3 +6337,8 @@ Keep default saved-editor entry strict. Only the call immediately asserting nati
 ## 2026-10-29 — phase235: live credential cancellation
 
 Use a fixed cancellation code only for a live browser prompt; native lifetime withdrawal wins over late provider replies. Original credential verification and generic channel unchanged. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).
+
+
+## 2026-10-29 — phase236: packaged offline Worker assets
+
+Exempt only two exact hashed public JavaScript filename families from the old private-tooling substring check; keep pages/maps and unrelated private modules excluded. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).
