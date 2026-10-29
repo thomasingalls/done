@@ -17590,3 +17590,12 @@ Keep synchronous Window admission; coalesce scheduling hints without shipping fa
 durability. Actual barrier RPC and cancellation remain required.2400 unit cases/one skip,40 focused,
 98 metadata/type/lint/format pass; old native/scheduler AST and obligations retained. Controlled
 protocol evidence, not activation/performance credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase180/README.md).
+
+
+## 2026-10-29 — phase181 composed Worker final-queue handoffs
+
+Prepared native work settles before real Window FIFO; context mutations hold the genuine Window
+journal head through native final verification/rebind/ACK. Original frames, original Undo, no cloned
+proofs.11 new controlled cases/48 focused and98 metadata/type/lint/format pass; initial refusal
+deadlock preserved and repaired without changing deadlines. Native/Page bodies remain exact; default
+app still Page. [Evidence](performance-experiments/2026-10-28-worker-owner/phase181/README.md).

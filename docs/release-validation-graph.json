@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 596,
-    "requiredTestFiles": 590,
+    "testFiles": 597,
+    "requiredTestFiles": 591,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14187,6 +14187,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workerWorkspaceQueues.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerWorkspaceQueues.test.ts"
+        ]
+      },
+      "declarations": 11,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workspaceAdmission.test.ts",
       "status": "required",
       "invocation": {
@@ -21099,6 +21114,10 @@
     {
       "path": "test/workerRuntimeBoundary.test.ts",
       "sha256": "0b980eb79f2e114441378eb1e7490f4f8a4b903181b965bdb38dd2ba55201a25"
+    },
+    {
+      "path": "test/workerWorkspaceQueues.test.ts",
+      "sha256": "72febfa0e5f1e6b7866bce0342e27c5589edb953721e57e3f086d8059eddff82"
     },
     {
       "path": "test/workspace-admission/browser.mjs",

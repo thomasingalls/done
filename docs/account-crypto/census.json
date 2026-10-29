@@ -1400,6 +1400,10 @@
       "sha256": "7c50f76ef18fd634377db4d46f36109d1525b434e3f68417148995241ac5007c"
     },
     {
+      "path": "src/crdt/windowWorkspaceQueues.ts",
+      "sha256": "f5250ac61f6a844342238ff6c713e996868cdaed014fa8bae5770059eade3ae3"
+    },
+    {
       "path": "src/crdt/workerActivity.ts",
       "sha256": "ff03e0a39ced9bc5ada6fdbd44237f64d08ea274db232186f51a4f0be1a5086e"
     },
@@ -1418,6 +1422,10 @@
     {
       "path": "src/crdt/workerLocalBaseline.ts",
       "sha256": "541f077221f1f52bfccaffdebe9e0e10a69bc601038d652e21547cb1c88fbdec"
+    },
+    {
+      "path": "src/crdt/workerWorkspaceQueues.ts",
+      "sha256": "ed5713f4d2a9538d57af03d2081fa71329e6a01369e80cf78d312c281ec74761"
     },
     {
       "path": "src/crdt/workspaceBridge.ts",

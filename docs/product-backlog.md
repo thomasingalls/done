@@ -485,3 +485,9 @@ development state rather than current deployment status.
 RPC or fake update frames. Original barrier remains authoritative.2400 unit cases/one existing skip,
 40 focused and98 metadata pass; Page/native/scheduler logic retained. Composed Worker integration is
 next; default app still Page, unchanged performance gates pending. [Evidence](performance-experiments/2026-10-28-worker-owner/phase180/README.md).
+
+
+**Phase181 — composed final queues:** original prepared receive and fenced context mutation now
+have bounded Worker/Window data handoffs.48 controlled focused cases/98 metadata pass, including
+refusal retirement after a caught deadlock; no native/latency claim. Original runtime bodies exact,
+application still Page. Next connect original composition/bootstrap. [Packet](performance-experiments/2026-10-28-worker-owner/phase181/README.md).
