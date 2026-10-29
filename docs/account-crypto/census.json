@@ -1544,6 +1544,10 @@
       "sha256": "2cfbe745a1d26bbfeac416d296ae0b7e9db989078dfd513418d61416b2cd3a30"
     },
     {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "sha256": "5a0f01bc09204e4b49a5196944ada48d6396dcc1edb9625ba67cccc1db55d520"
+    },
+    {
       "path": "src/crdt/workerChannel.ts",
       "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
     },
@@ -1557,7 +1561,7 @@
     },
     {
       "path": "src/crdt/workerFirstDeviceSetup.ts",
-      "sha256": "21abb26c758e764bf51c50a484b83b03b71ec444358f2882f7aeaa0be35aec95"
+      "sha256": "fafbc122080ea108cf990c4e3083e1508d881753e9a066f3dbd1ab01668fa907"
     },
     {
       "path": "src/crdt/workerFrameStream.ts",

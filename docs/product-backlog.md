@@ -703,3 +703,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase219:** both original enrollment routes and selector have explicit workspace/browser ports with real Page evidence. Next common native UI/lifetime assembly, device flow/notifications, recovery, offline/default activation, then unchanged targets. [Packet](performance-experiments/2026-10-28-worker-owner/phase219/README.md).
+
+
+**Phase220:** shared genuine native UI lifetime verified with original first-device adapter. Next device connection/notifications and recovery, offline/mixed/default activation, then unchanged gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase220/README.md).

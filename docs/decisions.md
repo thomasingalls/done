@@ -6257,3 +6257,8 @@ Coalesce display frames with one in flight, latest replacement and eight waiters
 ## 2026-10-29 — enrollment execution ports preserve both authority routes
 
 Parameterize legacy and membership coordinators together, keeping the signed selector unchanged. Native UI receives minimal real workspace lifecycle and original provider effects; Page signatures remain. Keep challenge expiry before proof/sign/storage even when public response encoding crosses the browser port. [Evidence](performance-experiments/2026-10-28-worker-owner/phase219/README.md).
+
+
+## 2026-10-29 — share native UI lifetime without sharing authority policy
+
+Trusted fixed controller factories supply only display/command adapters to the same real native root/handoff assembly. Original coordinators own authority and select joined/promoted verification under fresh actual holds. Keep async initialization tracked as a command, not an unowned constructor. [Evidence](performance-experiments/2026-10-28-worker-owner/phase220/README.md).
