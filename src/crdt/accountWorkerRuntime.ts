@@ -1,5 +1,6 @@
 /** Fixed dedicated-worker environment. No Window installer, lock-manager override or storage shim. */
 import { workerActivityKinds } from './workerActivity';
+import { openLocalWorkerLifetime } from './localWorkerLifetime';
 import { createAccountWorkerJoin } from './accountWorkerJoin';
 import type { AccountWorkerTicket } from './nativeCoordination';
 import type { WorkerChannel } from './workerChannel';
@@ -15,15 +16,18 @@ export interface WorkerActivity {
   readonly visibility: DocumentVisibilityState;
   readonly online: boolean;
 }
-let current: ReturnType<typeof installAccountWorkerRuntime> | undefined;
+let current: ReturnType<typeof createWorkerRuntime> | undefined;
+let reserved = false;
 const refused = () => new WorkerChannelError('worker-lifetime');
 
 /** A module-private singleton in a real dedicated worker. Native join still authenticates holders;
  * the ordinary Account owner still authenticates factor, binding, authority and passkey. */
-export function installAccountWorkerRuntime(
+function createWorkerRuntime(
   ticket: AccountWorkerTicket,
   channel: WorkerChannel,
   initial: WorkerActivity,
+  join: ReturnType<typeof createAccountWorkerJoin>,
+  kind: 'account' | 'local',
 ) {
   if (
     typeof window !== 'undefined' ||
@@ -35,8 +39,7 @@ export function installAccountWorkerRuntime(
     !['visible', 'hidden'].includes(initial.visibility)
   )
     throw refused();
-  const join = createAccountWorkerJoin(ticket),
-    stop = new AbortController(),
+  const stop = new AbortController(),
     events = new EventTarget();
   let activity = { ...initial },
     opening = true,
@@ -123,6 +126,7 @@ export function installAccountWorkerRuntime(
     },
   };
   const runtime = Object.freeze({
+    kind,
     ticket: Object.freeze({ ...ticket }),
     join,
     signal: stop.signal,
@@ -177,4 +181,35 @@ export function accountWorkerRuntime(slotId?: string) {
   current.assertCurrent();
   if (slotId !== undefined && current.ticket.slotId !== slotId) throw refused();
   return current;
+}
+
+/** Account keeps its original one-shot native join. No Local phase policy is installed here. */
+export function installAccountWorkerRuntime(
+  ticket: AccountWorkerTicket,
+  channel: WorkerChannel,
+  initial: WorkerActivity,
+) {
+  if (reserved) throw refused();
+  reserved = true;
+  return createWorkerRuntime(ticket, channel, initial, createAccountWorkerJoin(ticket), 'account');
+}
+
+/** Fixed Local installer, never a caller-supplied lock manager or capability adapter. */
+export async function installLocalWorkerRuntime(
+  ticket: AccountWorkerTicket,
+  channel: WorkerChannel,
+  initial: WorkerActivity,
+) {
+  if (reserved || current || typeof window !== 'undefined' || channel.closed) throw refused();
+  reserved = true;
+  const root = await openLocalWorkerLifetime(ticket);
+  try {
+    const runtime = createWorkerRuntime(root.ticket, channel, initial, root, 'local');
+    root.signal.addEventListener('abort', () => runtime.close(), { once: true });
+    root.beforeRelease(async () => runtime.close());
+    return Object.freeze({ runtime, root });
+  } catch (cause) {
+    await root.close();
+    throw cause;
+  }
 }

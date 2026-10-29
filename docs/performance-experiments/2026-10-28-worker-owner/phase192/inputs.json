@@ -1,0 +1,13 @@
+{
+  "src/crdt/accountWorkerRuntime.ts": "322c12b020d09bb6ceec9d6740b3083ddb12cbda2aa16bf05ad04c044c4a1b20",
+  "src/crdt/writeSession.ts": "861365bcd692828943b365e1f77c6bed41d4cdc981674ec2286f80e6e8ee5cd8",
+  "src/crdt/custody.ts": "3a8cd0cad55499ef6eb8b0b2e2259214b557713755a447f89ac6cf059481d152",
+  "src/crdt/localGenesis.ts": "7548f4a9c0f6059c83fd33f4df462ab9d110d20e0e47640689b956fbe5f8e4d0",
+  "src/crdt/startupClassification.ts": "b2cbb8cd8ec70e7f392a7e02332eaab786cb28b26e5e3ec96229b7ff6c80853b",
+  "src/crdt/localWorkerStore.ts": "1ddcb5a30721a56ee64ebf00300b8f0491eab18e71531fe315bccf03c574d3c1",
+  "src/crdt/localWorkerClient.ts": "f1a6006fdb0e4f01cb2ec312330bb700228b1602382b6d2349857cb7c7ca83ba",
+  "src/crdt/localOwner.worker.ts": "eaff5c3f3fffdf45acbca3a6a0260a3305354fba9e56ca55ad8b4ffdc6e7dd0d",
+  "src/crdt/workerRecoveryOwner.ts": "a688267b8c5009b88ac13755c64ab4b5e6faadf8d8b0839795481f4d9719636f",
+  "test/localWorkerRuntime.test.ts": "c03236fd89be438a8ad94958d961041aa9681b961eebc7658b0f5fe61d677568",
+  "test/workerRecoveryOwner.test.ts": "a04f6c9e8c7327495a7bd45478cead350788567f97ea7d7d3ab1428834b38769"
+}

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 609,
-    "requiredTestFiles": 603,
+    "testFiles": 611,
+    "requiredTestFiles": 605,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11653,6 +11653,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localWorkerRuntime.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/localWorkerRuntime.test.ts"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/masterLineSelection.test.ts",
       "status": "required",
       "invocation": {
@@ -14328,6 +14338,21 @@
         ]
       },
       "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerRecoveryOwner.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerRecoveryOwner.test.ts"
+        ]
+      },
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -20386,6 +20411,10 @@
       "sha256": "f7133592d75fd5479700ae6c8c909a485750346c973049623dc26ee3809938fe"
     },
     {
+      "path": "test/localWorkerRuntime.test.ts",
+      "sha256": "c03236fd89be438a8ad94958d961041aa9681b961eebc7658b0f5fe61d677568"
+    },
+    {
       "path": "test/masterLineSelection.test.ts",
       "sha256": "65e3a09271907d777dfbcac88776c535f2584d31dad58886021ce000ad74bfeb"
     },
@@ -21324,6 +21353,10 @@
     {
       "path": "test/workerPasskeyBridge.test.ts",
       "sha256": "14f25c6a8ce7928a24fba2c898efcf5915c8bd532ecd9ff2078ab0218ce418d2"
+    },
+    {
+      "path": "test/workerRecoveryOwner.test.ts",
+      "sha256": "a04f6c9e8c7327495a7bd45478cead350788567f97ea7d7d3ab1428834b38769"
     },
     {
       "path": "test/workerRuntimeBoundary.test.ts",

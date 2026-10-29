@@ -17694,3 +17694,11 @@ Actual Local shared roots, Window pin, real per-phase permits, replay refusal an
 23 unit/98 metadata/type/lint/format, independent Account AST specialization and five final native cases
 pass, including original Account input/Undo/cold-read controls. Eight containers absent. Still Page default;
 no timing/qualification credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase191/README.md).
+
+
+## 2026-10-29 — phase192 retained Local Worker carriers
+
+Original claim/factor/census/crypto in native Worker, bounded raw recovery/subkey handoff, original
+refusal and cancellation, async recovery ownership.53 focused/98 metadata/type/lint/format and four
+final Local native cases pass; original Account control also passes.11 containers absent, Page default,
+conversion incomplete/no timing credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase192/README.md).

@@ -1,3 +1,5 @@
+import { openOwnedLocalWorkerJournal } from './localWorkerStore';
+import type { StartupAuthority } from './startupClassification';
 import { captureCreationSeed, eraseCreationSeed, type CreationSeed } from './creationSeed';
 /** Verified fresh Local creation. No account binding, caller-supplied principal, or implicit replacement. */
 import { generateDeviceCode, normalizeDeviceCode, random, hex } from './custodyCrypto';
@@ -237,11 +239,12 @@ export const inspectLocalStartup = async (
   }
 };
 
-export const openLocalWorkspace = async (
+const openLocalWith = async <T>(
   slotId: string,
   code: string,
   options: WorkspaceOptions,
-): Promise<WorkspaceStartupResult> => {
+  open: (authority: StartupAuthority, code: string, options: WorkspaceOptions) => Promise<T>,
+): Promise<T | StartupDisposition> => {
   let session;
   try {
     // Discovery cannot authorize the later open. The final resolver rereads and verifies under its own lifetime.
@@ -252,7 +255,7 @@ export const openLocalWorkspace = async (
     session = undefined;
     if (!claim) return { kind: 'identity-required', reason: 'local-claim-missing' };
     const scope = claimScope(claim);
-    return await openOwnedWorkspace(
+    return await open(
       {
         slotId,
         workspaceId: scope.workspaceId,
@@ -281,6 +284,16 @@ export const openLocalWorkspace = async (
     await session?.close();
   }
 };
+
+export const openLocalWorkspace = (
+  slotId: string,
+  code: string,
+  options: WorkspaceOptions,
+): Promise<WorkspaceStartupResult> => openLocalWith(slotId, code, options, openOwnedWorkspace);
+
+/** Same original discovery, factor verification and in-permit census, with native Worker carriers. */
+export const openLocalWorkerStore = (slotId: string, code: string, options: WorkspaceOptions) =>
+  openLocalWith(slotId, code, options, openOwnedLocalWorkerJournal);
 
 /** Authenticated, slot-scoped picker. Discovery never enumerates native database names. */
 export const listLocalWorkspaces = async (

@@ -68,6 +68,11 @@ async function acquire(
   compatibility = checkStorageCompatibility,
   workerJoin?: NonNullable<ReturnType<typeof accountWorkerRuntime>>['join'],
 ): Promise<WriteSession> {
+  if (mode === 'exclusive' && accountWorkerRuntime(slotId)?.kind === 'local')
+    throw new WriteSessionError(
+      'inactive',
+      'Close Local Worker ownership before an exclusive transition.',
+    );
   const name = slotPermitName(slotId);
   let locks: LockManager;
   try {
@@ -260,7 +265,14 @@ async function acquire(
 export const openWriteSession = (
   slotId: string,
   options: WriteSessionOptions = {},
-): Promise<WriteSession> => acquire(slotId, 'shared', options);
+): Promise<WriteSession> =>
+  acquire(
+    slotId,
+    'shared',
+    workerSessionOptions(slotId, options),
+    checkStorageCompatibility,
+    accountWorkerRuntime(slotId)?.kind === 'local' ? accountWorkerRuntime(slotId)!.join : undefined,
+  );
 
 /** Ask participating tabs to close; never steal a permit or retire a frozen writer's keys. */
 export function retireSlotWriters(slotId: string) {
@@ -341,6 +353,13 @@ const workerSessionOptions = (
     : options;
 };
 
+const accountMode = (slotId: string): LockMode => {
+  const runtime = accountWorkerRuntime(slotId);
+  if (runtime?.kind === 'local')
+    throw new WriteSessionError('inactive', 'Account opening needs a separate native owner.');
+  return runtime ? 'shared' : 'exclusive';
+};
+
 /** Internal Account lifetime: exclusive through activation, editing and disposal. The caller must
  * verify selected/active progress, pinned binding and fresh passkey inside initialize. */
 export const openAccountWriteSession = (
@@ -350,7 +369,7 @@ export const openAccountWriteSession = (
 ): Promise<WriteSession> =>
   acquire(
     slotId,
-    accountWorkerRuntime(slotId) ? 'shared' : 'exclusive',
+    accountMode(slotId),
     workerSessionOptions(slotId, options),
     async (task, slot) => {
       const { checkPromotionCompatibility, readPromotion } = await task.wait(
@@ -382,7 +401,7 @@ export const openJoinedWriteSession = (
 ): Promise<WriteSession> =>
   acquire(
     slotId,
-    accountWorkerRuntime(slotId) ? 'shared' : 'exclusive',
+    accountMode(slotId),
     workerSessionOptions(slotId, options),
     async (task, slot) => {
       const { readJoinedAccount } = await task.wait(() => import('./joinedAccount'));

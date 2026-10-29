@@ -565,3 +565,9 @@ integration before measuring unchanged gates. Default Page and separate catch-up
 real native phase permits and physical fences through cleanup. Native coexistence/exclusion/replay/failure
 and Account controls pass. Continue Local journal/mirror and ceremony/default/offline conversion before
 unchanged timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase191/README.md).
+
+
+**Phase192 — Local native carriers/recovery:** original factor/census/crypto and exact Page cold reads
+pass with cancellation, wrong-code preservation and single async recovery ownership. Continue Window
+Local admission/Undo, ceremonies/default/offline conversion before unchanged timing gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase192/README.md).

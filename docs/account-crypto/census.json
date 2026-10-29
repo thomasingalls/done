@@ -869,7 +869,7 @@
     },
     {
       "path": "src/crdt/accountWorkerRuntime.ts",
-      "sha256": "a6ce19fae3aefe2692091b3e66e47ab602130fc0ef92a9b3b58b6fb680777aa6"
+      "sha256": "322c12b020d09bb6ceec9d6740b3083ddb12cbda2aa16bf05ad04c044c4a1b20"
     },
     {
       "path": "src/crdt/accountWorkspace.ts",
@@ -965,7 +965,7 @@
     },
     {
       "path": "src/crdt/custody.ts",
-      "sha256": "f4771774a4a3ce611d4b652f9828daf5ea68500b4f6ae7ccf4b376bf9d9621a9"
+      "sha256": "3a8cd0cad55499ef6eb8b0b2e2259214b557713755a447f89ac6cf059481d152"
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
@@ -1177,7 +1177,7 @@
     },
     {
       "path": "src/crdt/localGenesis.ts",
-      "sha256": "32133fb2fe0302bddc0fdaaea56cff5e268021ad4f4d9489802d79788cb68eae"
+      "sha256": "7548f4a9c0f6059c83fd33f4df462ab9d110d20e0e47640689b956fbe5f8e4d0"
     },
     {
       "path": "src/crdt/localGenesisRecord.ts",
@@ -1186,6 +1186,10 @@
     {
       "path": "src/crdt/localGenesisStorage.ts",
       "sha256": "9bfd43d405fd18a360b9d26697c3ada18ffb377af19a7e60176fcf59811db2cf"
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "sha256": "eaff5c3f3fffdf45acbca3a6a0260a3305354fba9e56ca55ad8b4ffdc6e7dd0d"
     },
     {
       "path": "src/crdt/localProtection.ts",
@@ -1204,8 +1208,16 @@
       "sha256": "c31316b0686ee28ce6ad6dabd6e0a34a2a5583f80323fddcee44a3a66c9b78f9"
     },
     {
+      "path": "src/crdt/localWorkerClient.ts",
+      "sha256": "f1a6006fdb0e4f01cb2ec312330bb700228b1602382b6d2349857cb7c7ca83ba"
+    },
+    {
       "path": "src/crdt/localWorkerLifetime.ts",
       "sha256": "9e8dbe1fc776fa3a96c1e377a64a94815fb61c1db1e3f2366b95f244ea0fdae5"
+    },
+    {
+      "path": "src/crdt/localWorkerStore.ts",
+      "sha256": "1ddcb5a30721a56ee64ebf00300b8f0491eab18e71531fe315bccf03c574d3c1"
     },
     {
       "path": "src/crdt/membershipReading.ts",
@@ -1365,7 +1377,7 @@
     },
     {
       "path": "src/crdt/startupClassification.ts",
-      "sha256": "293b6406a7193ea1fd9dfea04e82441a8325dd237821909fbaa77c93bcbe40b3"
+      "sha256": "b2cbb8cd8ec70e7f392a7e02332eaab786cb28b26e5e3ec96229b7ff6c80853b"
     },
     {
       "path": "src/crdt/startupState.ts",
@@ -1456,6 +1468,10 @@
       "sha256": "f492f1ed881db2f31d3418b52ababd9733e511b428a997c90f7a14b5f56580aa"
     },
     {
+      "path": "src/crdt/workerRecoveryOwner.ts",
+      "sha256": "a688267b8c5009b88ac13755c64ab4b5e6faadf8d8b0839795481f4d9719636f"
+    },
+    {
       "path": "src/crdt/workerTerminal.ts",
       "sha256": "d0f34664aa64ec211a25b9d699b057b7e95cc1b872c0882525f3b8373b8630fc"
     },
@@ -1481,7 +1497,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "56cc507bf6494dc92ce3494da745d8f1638f08d36129725e0238d1b88b3a74c1"
+      "sha256": "861365bcd692828943b365e1f77c6bed41d4cdc981674ec2286f80e6e8ee5cd8"
     },
     {
       "path": "src/crdt/yjs.ts",

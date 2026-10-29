@@ -1279,11 +1279,11 @@ export interface JournalSession extends ContentSession {
   flushJournal(): Promise<JournalFlushReceipt>;
   readonly observedJournalCharacters: number;
 }
-export const openJournalSession = async (
+const openJournalOwner = async (
   input: CustodyAuthority,
   code: string,
   options: { signal?: AbortSignal } = {},
-): Promise<JournalSession> => {
+) => {
   const owner = prepareCustody(input, code, true, true);
   let live;
   try {
@@ -1295,7 +1295,31 @@ export const openJournalSession = async (
   } finally {
     owner.eraseFactor();
   }
+  return { owner, live };
+};
+export const openJournalSession = async (
+  input: CustodyAuthority,
+  code: string,
+  options: { signal?: AbortSignal } = {},
+): Promise<JournalSession> => {
+  const { owner, live } = await openJournalOwner(input, code, options);
   return attachJournal(owner, live);
+};
+
+/** Trusted Local Worker composition: identical native/factor initialization, journal subkeys only.
+ * Root/content/private credential keys and live tasks never leave this realm. */
+export const openLocalWorkerJournalSession = async (
+  input: CustodyAuthority,
+  code: string,
+  options: { signal?: AbortSignal } = {},
+) => {
+  if (accountWorkerRuntime(input.slotId)?.kind !== 'local')
+    throw Error('Local Worker journal composition required');
+  const { owner, live } = await openJournalOwner(input, code, options);
+  return Object.freeze({
+    journal: attachJournal(owner, live),
+    copyOpening: () => live.run((task) => owner.copyMirrorJournalOpening(task)),
+  });
 };
 export const attachJournal = (
   owner: ReturnType<typeof prepareCustody>,

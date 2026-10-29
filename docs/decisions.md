@@ -6064,3 +6064,11 @@ Local Worker and Window retain actual shared slot fences; Account retains origin
 actual native Worker client before key-owning phases, use real phase locks with nonqueueing refusal,
 and close both realms before exclusive transitions. No format or concurrent-writer product-policy change.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase191/README.md).
+
+
+## 2026-10-29 — Local Worker reuses native custody with a separate raw-update UI boundary
+
+Keep original Local discovery/final factor/census and Page path; a fixed Worker owner loads native
+carriers without a second application doc. Only journal subkeys cross to Window. Reserve asynchronous
+recovery ownership before awaiting native reads, retain until explicit finish, and erase late results.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase192/README.md).

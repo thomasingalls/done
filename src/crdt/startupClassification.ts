@@ -17,7 +17,7 @@ import {
   readRow,
   readScopedRows,
   checkLayout,
-  journalCount,
+  readJournalCount,
   legacyJournalCount,
 } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
@@ -222,7 +222,7 @@ export const classifyUnderPermit = async (
     }
   }
   const disk = await contentCensus(task, name);
-  const journal = journalCount(task, journalPrefix(name));
+  const journal = await readJournalCount(task, journalPrefix(name));
   if (!route) {
     if (rows.length || disk || journal)
       stopStartup('repair-required', 'retained-material-without-index');
