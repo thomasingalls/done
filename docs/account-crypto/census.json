@@ -581,7 +581,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "693163bb3a27ffb38c9e178e9bfb26ee415a720d69719dfca518d1bd020233c0"
+      "sha256": "45749a36bf147714ebb3a99b2ce07d1224370e021c585df8e5c02a393721b6e3"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -713,11 +713,15 @@
     },
     {
       "path": "src/account/setupProgress.ts",
-      "sha256": "db4d4afe53940fa4f8b692e98751ffa1fe07cf08486c116cb877f73a2885fd2b"
+      "sha256": "213f11fa5fec5fb4e7a5599138f6e1755d7914e014ea13a05a84e6e0c98b0b75"
     },
     {
       "path": "src/account/setupRecoveryMetadata.ts",
       "sha256": "6d2f6094b79818236f2de09e8ce0868f6e24eeaf69620836ce956184df09bfa4"
+    },
+    {
+      "path": "src/account/setupWorkspace.ts",
+      "sha256": "3bca85d4a756e12846baeaf1142edf9cdbadab56346723bd370dba118fd3ea51"
     },
     {
       "path": "src/account/slotUnlock.ts",

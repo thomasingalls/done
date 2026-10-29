@@ -668,3 +668,8 @@ and offline/default activation before measurements;182/187/205 failures remain o
 **Phase209 — avoid duplicate initialization mechanism:** original final Account journal/generation
 checks already cover native opening. Continue explicit wizard browser/workspace ports and same-realm
 handoff, retaining original final-owner boundary. [Packet](performance-experiments/2026-10-28-worker-owner/phase209/README.md).
+
+
+**Phase210 — minimal wizard workspace port:** Page behavior/native checks retained, async name reads
+and immediate shutdown supported. Next credential port/native coordinator/Account UI/offline/default
+activation before gates.182/187/205 remain open. [Packet](performance-experiments/2026-10-28-worker-owner/phase210/README.md).

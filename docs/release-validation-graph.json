@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 630,
-    "requiredTestFiles": 624,
+    "testFiles": 631,
+    "requiredTestFiles": 625,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10577,6 +10577,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/firstDeviceWorkspacePort.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/firstDeviceWorkspacePort.test.ts"
+        ]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/freeze.test.ts",
       "status": "required",
       "invocation": {
@@ -20057,6 +20072,10 @@
     {
       "path": "test/firstDeviceSetupAccess.test.ts",
       "sha256": "73a2b3ba507d21e66a6d7c37bacd3eb4c3065bb724cbff45a09711a5fc652247"
+    },
+    {
+      "path": "test/firstDeviceWorkspacePort.test.ts",
+      "sha256": "352cc75644d4f7bc8a8161c8082f91497d1c0d30a94ad524f69769a62b7399e6"
     },
     {
       "path": "test/fixtures/accountMirror.ts",

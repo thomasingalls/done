@@ -6201,3 +6201,11 @@ Trace the actual consumer before adding a ceremony observation path. The existin
 initialize callback already supplies the required checks; retain that boundary and require the future
 native wizard to hand off before opening. Exploratory fallback rejected without runtime adoption.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase209/README.md).
+
+
+## 2026-10-29 — setup gets an explicit minimal workspace port
+
+Keep the real canonical editor in its existing owner. Setup needs lifecycle/status plus display-name
+read/rename, with fresh guards after asynchronous UI data. Cosmetic close labels use a synchronous hint
+so locking never waits for a remote UI read; authority remains entirely in original native owners.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase210/README.md).

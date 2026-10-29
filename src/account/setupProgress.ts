@@ -57,7 +57,7 @@ export interface Retained {
   /** New empty workspace, created through the factor-confirmed Local genesis owner. */
   fresh?: true;
 }
-export type SetupState = (
+export type SetupState<W = AdmittedWorkspace> = (
   | {
       kind:
         | 'intro'
@@ -76,7 +76,7 @@ export type SetupState = (
   | { kind: 'storage-blocked'; disposition?: StartupDisposition; error?: string }
   | {
       kind: 'ready';
-      workspace: AdmittedWorkspace;
+      workspace: W;
       sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
       actorId: string;
       devices: import('./deviceRoster').DeviceRoster;
