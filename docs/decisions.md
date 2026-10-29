@@ -6267,3 +6267,8 @@ Trusted fixed controller factories supply only display/command adapters to the s
 ## 2026-10-29 — share Window supervision with fixed screen data adapters
 
 Retain actual member barriers/provider cancellation/journal/mirror adoption once; screens supply only fixed validated commands and presentation. Bound/capture untrusted bootstrap data before resources. Require the exact screen joined role while native verifiers remain authoritative. [Evidence](performance-experiments/2026-10-28-worker-owner/phase221/README.md).
+
+
+## 2026-10-29 — phase222: native device-connection controller
+
+Run the original enrollment selector and both protocols through fixed native commands. Initialize only inside the actual tracked phase; export display identities, never native workspace/login objects. Close joins active commands and retires late acquisitions. Notification and default activation follow separately. [Evidence](performance-experiments/2026-10-28-worker-owner/phase222/README.md).

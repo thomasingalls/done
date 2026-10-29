@@ -709,3 +709,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase221:** shared genuine Window supervisor and fixed first-device display verified. Next native device controller/notifications, recovery, offline/mixed/default activation, then unchanged targets. [Packet](performance-experiments/2026-10-28-worker-owner/phase221/README.md).
+
+
+**Phase222:** Native enrollment joined path verified; next notification ownership, complete recovery, default/offline/mixed activation, then unchanged16ms/2.5s/30s gates. No staging, signing, push, preview8443, release or deployment. [Packet](performance-experiments/2026-10-28-worker-owner/phase222/README.md).

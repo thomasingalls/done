@@ -580,6 +580,10 @@
       "sha256": "1a93487c4345866eff94d1b5cba6f744c167a1228dc7fef055120aa246685fcc"
     },
     {
+      "path": "src/account/enrollmentWorkerProtocol.ts",
+      "sha256": "23a19e0a54e1e4b4755fe9448b6da77fe5dee2993166f45a0b240a3874528bb4"
+    },
+    {
       "path": "src/account/es256Signature.ts",
       "sha256": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b"
     },
@@ -1030,6 +1034,10 @@
     {
       "path": "src/crdt/doc.ts",
       "sha256": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4"
+    },
+    {
+      "path": "src/crdt/enrollmentOwner.worker.ts",
+      "sha256": "7b27c11e37c5bf313c593b1fc02a22c64afb95acb041faec0eca2cb58cd248af"
     },
     {
       "path": "src/crdt/export.ts",
@@ -1560,6 +1568,10 @@
       "sha256": "963c6cb301e568251444b1375f8f960475637351faf0394fdfc0da127000123a"
     },
     {
+      "path": "src/crdt/workerEnrollment.ts",
+      "sha256": "7d8cb70797ccf7a973cea6b064eff9cb7b0a362ecbe576223acc97bd299dac21"
+    },
+    {
       "path": "src/crdt/workerFirstDeviceSetup.ts",
       "sha256": "fafbc122080ea108cf990c4e3083e1508d881753e9a066f3dbd1ab01668fa907"
     },
@@ -1898,6 +1910,10 @@
     {
       "path": "src/ui/WorkspaceBackdrop.tsx",
       "sha256": "590ed1c4da1bbc98ab2cf439b27ab51acfb3499915e8f7b778c1f89d71c9d7e3"
+    },
+    {
+      "path": "src/ui/accountEnrollmentWorker.ts",
+      "sha256": "ecf87bc793fce0bc07071695326f843c5df513752edfa3613ad6d248e7888c6d"
     },
     {
       "path": "src/ui/ceremonyNavigation.tsx",

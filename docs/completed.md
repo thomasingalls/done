@@ -17911,3 +17911,8 @@ Initial abort-before-send counterexample retained, final34 focused/99 metadata/t
 ## 2026-10-29 — phase221 shared Window ceremony UI
 
 Two before-allocation counterexamples retained; final42 focused/99 metadata/type/lint/format/resource AST audit pass. Actual native returning/full fresh/retry/provider-close4 pass;4 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase221/README.md). Default activation still pending.
+
+
+## 2026-10-29 — phase222: native device-connection controller
+
+Six new cases plus affected coverage:33 focused and99 metadata pass; type/lint/format and unchanged-runtime byte audit pass. Real Chrome joined verification/edit/exact original cold reopen passes. Initial lab initialization-order failure and close-before-completion counterexample retained. Two exact containers absent. New tests uncredited; qualification paused. [Packet](performance-experiments/2026-10-28-worker-owner/phase222/README.md).
