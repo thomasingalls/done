@@ -17524,3 +17524,15 @@ bodies match;19 owned containers absent.433sources/198domains,953 obligations/40
 uncredited. Default app remains Page; manual maintenance integration is not automatic/latency credit.
 Continue acknowledged receive/sync, resumable preparation, ceremonies and Local/app/offline ownership
 before unchanged16ms/2.5s/all-marker/30s measurements. No signing/push/preview/release or automation.
+
+## 2026-10-29 — phase176: acknowledged native receive finish
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase176/README.md). The internal Worker
+prepared receive re-enters the original fresh checking task, retains it through asynchronous Window
+apply acknowledgment, then rechecks context before clearing pending-promotion exclusion. Cancellation/
+lost acknowledgment closes for cold replay; one-shot finish prevents replay. Original Page/native
+receive AST is independently unchanged except the Worker-only branch. Seven new controlled cases,
+104 focused cases,42 native cohort cases and98 metadata cases pass; early-task-release control fails
+in both browsers. Preserve test-only rejection logs and distinguish the final isolated artifacts from
+earlier shared-directory attempts.434sources/198domains,955 obligations/409 unresolved; new tests
+uncredited. Actual receive transport/application integration is next, no performance/activation credit.

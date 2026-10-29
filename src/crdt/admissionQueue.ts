@@ -116,6 +116,8 @@ export type OwnedJournalFenceQueue = <T>(
 export interface PreparedReceiveFinish {
   (apply: () => void): Promise<void>;
   immediate?: (attempt: ImmediateReceiveAttempt) => Promise<boolean>;
+  /** Worker-only: retain the real native checking task until asynchronous apply acknowledgment. */
+  acknowledged?: import('./acknowledgedReceive').AcknowledgedReceiveFinish;
 }
 /** Private content-only preparation. stage transfers copies after durable readback; finish
  * rechecks owned authority inside the final FIFO job. It must not retain a storage task. */

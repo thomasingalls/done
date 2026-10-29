@@ -801,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "cf7243fd06201b8ec8a164a44e00bc51ac1a12913ed6a69c618f3c4a3f1011a7"
+      "sha256": "46c941cdf155285394bd1ff71a3da9279181ff74e9b8fa67d8182b1e43ddf0f4"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -872,6 +872,10 @@
       "sha256": "f4434923a0f69203a7817088c03e5518ff7ea01626654f7662b2ab37d8cf843e"
     },
     {
+      "path": "src/crdt/acknowledgedReceive.ts",
+      "sha256": "bf0bd0fad7a9ecd086043d35d9243357a4e907298277d6a571e161df85d62b8d"
+    },
+    {
       "path": "src/crdt/actors.ts",
       "sha256": "d06a8f9b6ddb72b6ce7e117733286479906a1e770e1ce299cde7415d5d082e98"
     },
@@ -885,7 +889,7 @@
     },
     {
       "path": "src/crdt/admissionQueue.ts",
-      "sha256": "cec76e9497c84367484112de8633399ff1cc3cefc7c78ea359d8786430661e59"
+      "sha256": "b9a56f30724569aa4fd80a32f0ad5ce536075fd45c6fdbacb4a6b67d1c4f535b"
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
@@ -1913,7 +1917,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 733
+          "line": 734
         }
       ]
     },

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 590,
-    "requiredTestFiles": 584,
+    "testFiles": 592,
+    "requiredTestFiles": 586,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9451,6 +9451,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-worker-cohort/acknowledged.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.account-worker-cohort.config.ts",
+        "packages": []
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-worker-cohort/cohort.spec.ts",
       "status": "required",
       "invocation": {
@@ -9832,6 +9843,21 @@
         ]
       },
       "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/acknowledgedReceive.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/acknowledgedReceive.test.ts"
+        ]
+      },
+      "declarations": 7,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16095,7 +16121,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "a3f1c62d12c66fb6f7fb7c0b281895b79a216d11e4f957cd9ea1b8cbbc640ff7"
+      "sha256": "b6d52ab4241aad80020562201b17129b030d79adf5e5f8369cd1b60bef0b5dcb"
     },
     {
       "path": "package.json",
@@ -19142,6 +19168,18 @@
       "sha256": "54ffd942e7094b81d05bf567feb0eb6ab2f2452637ca4d214145b09307ca2c76"
     },
     {
+      "path": "test/account-worker-cohort/acknowledged-main.ts",
+      "sha256": "ffdd426dfc60d2943c712b3d40b254810c1a9c9b2844a8195bf9dbc090686155"
+    },
+    {
+      "path": "test/account-worker-cohort/acknowledged-worker.ts",
+      "sha256": "5216df302b8f37c5cb7036e4b0d082617e128e1588ef2c6e2f9bad1908993df7"
+    },
+    {
+      "path": "test/account-worker-cohort/acknowledged.spec.ts",
+      "sha256": "848947205db6b646a74b8b595063bea6de4495b740a4e7b32457733726e9d1cd"
+    },
+    {
       "path": "test/account-worker-cohort/cohort.spec.ts",
       "sha256": "ef5693887b76b8e260618c83d602ac534b04185bdb2d37978f10106d38fb77ff"
     },
@@ -19252,6 +19290,10 @@
     {
       "path": "test/accountWorkspacePort.test.ts",
       "sha256": "ed36ad5a748583242b589bc50a03e7175d9a6f3f3936f40e8b3934ae653ecaf3"
+    },
+    {
+      "path": "test/acknowledgedReceive.test.ts",
+      "sha256": "76dedc2d94032ad67b7d805cf7ead97feb846d340905777ac06e38c927b4c362"
     },
     {
       "path": "test/admission/browser.mjs",

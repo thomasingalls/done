@@ -135,7 +135,9 @@ native first/replacement eras, queued input, cancellation and lost reply with sh
 repairs state observation with unchanged original assertions/deadlines; complete admission/journal/
 lifetime campaigns and every fault control pass. Earlier failed attempts remain recorded.
 
-Next acknowledged async receive/sync, resumable automatic preparation, fresh
+[176](performance-experiments/2026-10-28-worker-owner/phase176/README.md) adds a genuine task-held
+acknowledged receive finish, retaining the unchanged Page path;104 focused/42 native cases pass.
+Next actual async receive transport/sync, resumable automatic preparation, fresh
 ceremony ownership, all application/Local routes and offline artifact integration. Only then run the
 original performance workloads. Data messages, queue fences and cached snapshots confer no native
 verification authority. Preserve synchronous sealed input, actual native final checks and security

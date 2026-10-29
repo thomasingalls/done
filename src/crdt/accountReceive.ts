@@ -1,5 +1,6 @@
 import { pageRuntimePorts } from './runtimePorts';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
+import { createAcknowledgedReceiveFinish } from './acknowledgedReceive';
 import {
   hasBaselineReader,
   hasBaselineVerifier,
@@ -1708,6 +1709,16 @@ async function openAccountReceiveOwner(
         await check(task);
         task.step(() => applied(apply));
       });
+    if (accountWorkerRuntime(options.slotId))
+      finish.acknowledged = createAcknowledgedReceiveFinish(
+        runCaptureTask,
+        check,
+        assertContext,
+        () => applied(() => {}),
+        () => {
+          void carrier.close().catch(() => {});
+        },
+      );
     if (import.meta.env?.['VITE_ACCOUNT_IMMEDIATE_RECEIVE'] !== '0')
       finish.immediate = (attempt) =>
         checkFinalApply(check, assertContext, (permission) =>
