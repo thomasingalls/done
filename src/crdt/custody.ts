@@ -1319,6 +1319,57 @@ export const openLocalWorkerJournalSession = async (
   return Object.freeze({
     journal: attachJournal(owner, live),
     copyOpening: () => live.run((task) => owner.copyMirrorJournalOpening(task)),
+    compactContent: (
+      interrupt: AbortSignal,
+      commit: (
+        audited: import('./contentCompaction').DiskState,
+        covered: StoredRecord[],
+        observation: number,
+      ) => Promise<boolean>,
+    ) =>
+      live
+        .run(async (parent) => {
+          const task = maintenanceTask(parent, interrupt);
+          const checkJournal = async () => {
+            const snapshot = await owner.journal.readSnapshot(task);
+            try {
+              task.step(() => validateContentUpdates(snapshot.map((e) => e.bytes)));
+            } finally {
+              eraseJournalSnapshot(snapshot);
+            }
+          };
+          return owner.carrier.compact(
+            task,
+            () => {
+              throw Error('Local Worker compaction requires an authenticated journal observation');
+            },
+            {
+              checkJournal,
+              removeCovered: (audited, covered) =>
+                owner.journal.withObservation(task, async (id, entries) => {
+                  task.step(() => validateContentUpdates(entries.map((e) => e.bytes)));
+                  const result = await task.wait(() => commit(audited, covered, id));
+                  task.step(() => {});
+                  return result;
+                }),
+            },
+          );
+        })
+        .catch(async (cause: unknown) => {
+          if (cause instanceof ContentError && cause.code === 'missing-content')
+            cause = new ContentError(
+              'repair-required',
+              'Initialized content metadata is missing.',
+              { cause },
+            );
+          if (
+            cause instanceof Error &&
+            'code' in cause &&
+            (cause.code === 'repair-required' || cause.code === 'generation-changed')
+          )
+            await live.close();
+          throw cause;
+        }),
     withJournalObservation: <T>(
       operation: (
         id: number,

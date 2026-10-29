@@ -2,6 +2,7 @@
 import { createWorkerChannel, eraseWorkerMessage, type WorkerChannel } from './workerChannel';
 import { installLocalWorkerRuntime, type WorkerActivity } from './accountWorkerRuntime';
 import { createWorkerRecoveryOwner } from './workerRecoveryOwner';
+import { createWorkerLocalMaintenance } from './workerLocalTrim';
 import { followWorkerNativeLifetime } from './workerNativeLifetime';
 import type { AccountWorkerTicket } from './nativeCoordination';
 import type { WorkspaceActorIdentity } from './actors';
@@ -45,6 +46,7 @@ self.addEventListener('message', (event: MessageEvent) => {
     channel.close();
     native?.runtime.close();
     recovery.close();
+    maintenance.close();
     void (async () => {
       await bootstrap?.catch(() => {});
       await opening?.catch(() => {});
@@ -55,6 +57,15 @@ self.addEventListener('message', (event: MessageEvent) => {
     })().then(resolve, reject);
     return closing;
   };
+  const maintenance = createWorkerLocalMaintenance(
+    (signal, commit) => {
+      live();
+      if (!owner) throw Error('Local Worker not opened');
+      return owner.compactContent(signal, commit);
+    },
+    { request: (method, value) => channel.request(method, value) },
+    live,
+  );
   const recovery = createWorkerRecoveryOwner(async () => {
     live();
     if (!owner) throw Error('Local Worker not opened');
@@ -117,6 +128,8 @@ self.addEventListener('message', (event: MessageEvent) => {
         live();
         return result;
       },
+      compactContent: (input) => maintenance.run(input as { id: number }),
+      cancelCompact: (input) => maintenance.cancel(input as { id: number }),
       async flushJournal() {
         live();
         if (!owner) throw Error('Local Worker not opened');

@@ -6105,3 +6105,11 @@ Avoid starting with CPU-heavy cross-turn IDB keepalive; stage encrypted data bef
 Mint a carrier-bound live fence only inside original discretionary maintenance; preserve native task
 settlement and interruption. Borrowed ciphertext views are unverified data and never deletion authority.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase196/README.md).
+
+
+## 2026-10-29 — Local worker coverage finishes under the real Window maintenance head
+
+Keep crypto/CRDT/coverage/replacement in its original native Worker owner. Transfer ciphertext only
+for a final exact all-store Window census and synchronous scoped journal comparisons, aborting the
+transaction on change/interruption. No cross-turn keepalive/pending old-slot exclusive barrier.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase197/README.md).

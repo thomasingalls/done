@@ -17737,3 +17737,12 @@ Actual expiring queue-head fence and unverified borrowed ciphertext view preserv
 admission and native compaction.96 focused/98 metadata/type/lint/format/independent AST checks and original
 native automatic maintenance/cold exact checks in Chrome/Firefox pass; two containers absent. Worker
 maintenance/default conversion remain. [Packet](performance-experiments/2026-10-28-worker-owner/phase196/README.md).
+
+
+## 2026-10-29 — phase197 Local worker automatic compaction
+
+Original thresholds/crypto/coverage/readback with bounded encrypted census and actual Window final
+transaction, fresh journal equality and interruption/native drain.53 focused/98 metadata/type/lint/
+format/independent Page audit pass. Native Chrome/Firefox stale-journal refusal, fresh retry, foreground
+abort/retry and exact cold writing; original Page/Account controls pass, eight containers absent.
+Default conversion pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase197/README.md).

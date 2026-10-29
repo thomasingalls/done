@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 616,
-    "requiredTestFiles": 610,
+    "testFiles": 618,
+    "requiredTestFiles": 612,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14272,6 +14272,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/windowLocalTrim.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/windowLocalTrim.test.ts"]
+      },
+      "declarations": 11,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerAccountComposition.test.ts",
       "status": "required",
       "invocation": {
@@ -14368,6 +14378,16 @@
         ]
       },
       "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerLocalTrim.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerLocalTrim.test.ts"]
+      },
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -21395,6 +21415,10 @@
       "sha256": "bbfa8d1d44815f6e280a31a19315498ffee8975ce48be24b96a2c73634607fa4"
     },
     {
+      "path": "test/windowLocalTrim.test.ts",
+      "sha256": "5ba3f5e1565f038bc86b1f2e47022c4e465269a07e16b7cddab4af05ccdfd16a"
+    },
+    {
       "path": "test/workerAccountComposition.test.ts",
       "sha256": "572449dbaca89c326009905bf2b3092098d2f13b5ec47b98a4e3921c9f17c28a"
     },
@@ -21425,6 +21449,10 @@
     {
       "path": "test/workerLocalBaseline.test.ts",
       "sha256": "89bec46a4ee7fab6124041593f51006afce34fa7c881045f9826224a62fc4f42"
+    },
+    {
+      "path": "test/workerLocalTrim.test.ts",
+      "sha256": "f265335e990be33fab46da59bf0e69eeed2b5d9b3b2b861c2d14b331ebfa5c8b"
     },
     {
       "path": "test/workerNativeLifetime.test.ts",

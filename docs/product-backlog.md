@@ -595,3 +595,9 @@ timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase195/
 covered, original native automatic maintenance retained in Chrome/Firefox. Continue bounded encrypted
 census/final Window commit then remaining worker startup/ceremonies before unchanged timing gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase196/README.md).
+
+
+**Phase197 — Local worker automatic maintenance retained:** actual stale journal refuses deletion,
+fresh retry and foreground interruption preserve exact cold writing in Chrome/Firefox. Continue
+hard-death withdrawal, startup/ceremony/default/offline conversion before unchanged performance gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase197/README.md).

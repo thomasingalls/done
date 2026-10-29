@@ -10,6 +10,15 @@ import type { JournalFlushReceipt } from './journalStore';
 import type { Bytes } from './custodyCrypto';
 import type { StartupDisposition } from './startupState';
 import { StartupError } from './startupState';
+import { createWindowLocalTrim, type LocalTrimCensus } from './windowLocalTrim';
+import {
+  requireMaintenanceFence,
+  type AdmissionCarrier,
+  type MaintenanceFence,
+} from './admissionQueue';
+import { MaintenanceInterrupted } from './contentMaintenance';
+import type { LocalMaintenanceReply } from './workerLocalTrim';
+import type { WorkerFramePart } from './workerFrameStream';
 
 export interface LocalMirrorOpening {
   readonly incarnation: string;
@@ -30,6 +39,18 @@ export async function openLocalWorkerSession(
     channel: WorkerChannel | undefined,
     material: LocalMirrorOpening | undefined,
     acknowledged: (ok: boolean) => void = () => {};
+  let maintenance:
+      | { id: number; stop: AbortSignal; fence: MaintenanceFence; carrier: AdmissionCarrier }
+      | undefined,
+    trim: ReturnType<typeof createWindowLocalTrim> | undefined,
+    trimFlight: Promise<boolean> | undefined,
+    maintenanceSequence = 0;
+  const requireMaintenance = () => {
+    cohort.write(() => {});
+    if (!maintenance || !material) throw Error('Local maintenance is not active');
+    requireMaintenanceFence(maintenance.fence, maintenance.carrier);
+    return maintenance;
+  };
   const stopped = new Promise<boolean>((resolve) => (acknowledged = resolve));
   const cohort = await openWindowLocalCohort(
     slotId,
@@ -50,7 +71,13 @@ export async function openLocalWorkerSession(
     signal,
   );
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
-  cohort.disposeWith(() => eraseWorkerMessage(material));
+  cohort.beforeRelease(async () => {
+    await trimFlight?.catch(() => {});
+  });
+  cohort.disposeWith(() => {
+    trim?.close();
+    eraseWorkerMessage(material);
+  });
   try {
     const journal = await createWindowJournalBridge(cohort),
       ports = new MessageChannel();
@@ -60,6 +87,43 @@ export async function openLocalWorkerSession(
       cohort.ticket.incarnation,
       {
         localBind: () => cohort.bindLocalWorker(),
+        trimBegin(input) {
+          const current = requireMaintenance();
+          if (trim) throw Error('Local trim census already in progress');
+          trim = createWindowLocalTrim(
+            cohort,
+            current.carrier,
+            current.fence,
+            current.stop,
+            material!.scope,
+            material!.dbName,
+            material!.generation,
+            journal,
+          );
+          trim.begin(input as LocalTrimCensus);
+        },
+        trimRow(input) {
+          requireMaintenance();
+          if (!trim) throw Error('Local trim not started');
+          trim.row(input as Parameters<typeof trim.row>[0]);
+        },
+        trimPart(input) {
+          requireMaintenance();
+          if (!trim) throw Error('Local trim not started');
+          trim.part(input as WorkerFramePart);
+        },
+        async trimCommit(input) {
+          requireMaintenance();
+          if (!trim) throw Error('Local trim not started');
+          try {
+            trimFlight = trim.commit((input as { observation: number }).observation);
+            return await trimFlight;
+          } finally {
+            trim.close();
+            trim = undefined;
+            trimFlight = undefined;
+          }
+        },
         journalObservationBegin(input) {
           cohort.write(() => {});
           if ((input as { prefix: string }).prefix !== journal.prefix)
@@ -156,6 +220,39 @@ export async function openLocalWorkerSession(
           } finally {
             if (!channel!.closed)
               await channel!.request('finishRecovery', { id: read.id }).catch(() => {});
+          }
+        },
+        async compactContent(
+          interrupt: AbortSignal,
+          fence: MaintenanceFence,
+          carrier: AdmissionCarrier,
+        ) {
+          cohort.write(() => {});
+          requireMaintenanceFence(fence, carrier);
+          if (maintenance || maintenanceSequence === Number.MAX_SAFE_INTEGER)
+            throw Error('Local maintenance already active');
+          const flight = { id: ++maintenanceSequence, stop: interrupt, fence, carrier };
+          maintenance = flight;
+          const cancel = () => {
+            void channel!.request('cancelCompact', { id: flight.id }).catch(() => {});
+          };
+          try {
+            // Queue the run first, so cancellation cannot overtake its monotone owner ID.
+            const request = channel!.request<LocalMaintenanceReply>('compactContent', {
+              id: flight.id,
+            });
+            interrupt.addEventListener('abort', cancel, { once: true });
+            if (interrupt.aborted) cancel();
+            const reply = await request;
+            cohort.write(() => {});
+            if (reply.kind === 'interrupted') throw new MaintenanceInterrupted();
+            if (reply.kind !== 'complete') throw Error('Local maintenance reply changed');
+            return reply.receipt;
+          } finally {
+            interrupt.removeEventListener('abort', cancel);
+            trim?.close();
+            trim = undefined;
+            if (maintenance === flight) maintenance = undefined;
           }
         },
         appendBatch: (input: readonly ContentInput[]) =>

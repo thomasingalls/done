@@ -929,7 +929,7 @@
     },
     {
       "path": "src/crdt/contentCompaction.ts",
-      "sha256": "f0ea9f847c4b64b12d3af4b2594cb8eab1d18eba2d3a931a781a2310a959ed9b"
+      "sha256": "53249af17efaf4abcfccd71f6e413937e0699e0a3c81f117426d480d6e084d13"
     },
     {
       "path": "src/crdt/contentDatabase.ts",
@@ -953,7 +953,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "2f54719561c419b67236e90db1dba8fe8a034a9196bf8504b60fff5bcc608027"
+      "sha256": "8b27103cc5a78e864fc8ed503d5649d3c1fa6be1c77ccfc94a2c2c9e13b9076c"
     },
     {
       "path": "src/crdt/cpuBudget.ts",
@@ -965,7 +965,7 @@
     },
     {
       "path": "src/crdt/custody.ts",
-      "sha256": "5cadc7a58a7570a488c9aaa02db45a63c7ec7d91c6a9c3d5a45840fc32efc8fa"
+      "sha256": "9a7637aabb5ed2586a8ad2a86f7a605575e9dedb6cf91da1cd4c647fe23287fa"
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
@@ -1189,7 +1189,7 @@
     },
     {
       "path": "src/crdt/localOwner.worker.ts",
-      "sha256": "eaff5c3f3fffdf45acbca3a6a0260a3305354fba9e56ca55ad8b4ffdc6e7dd0d"
+      "sha256": "cb90c38acdb69845e49803aa81790d1933d75ccd068acdab56efa822d058fbf8"
     },
     {
       "path": "src/crdt/localProtection.ts",
@@ -1209,7 +1209,7 @@
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
-      "sha256": "b0b8e103c427f8d954b17819523df13c2e67ec8ec929028b8ee05c205659bdde"
+      "sha256": "e7d54c291844d4673ba34e9ae9f87fdf841f1869d68c56d41278be00eaeb0dd6"
     },
     {
       "path": "src/crdt/localWorkerLifetime.ts",
@@ -1425,7 +1425,11 @@
     },
     {
       "path": "src/crdt/windowLocalMirror.ts",
-      "sha256": "503eaeb535f3f74d2052a663c3ebe10be4fc154fbbcd14d64a87a6deb1734a70"
+      "sha256": "336c7a3d57adbaa56b086e0781c70bf4bb964b40e1073415b564d8d7f1ae9a51"
+    },
+    {
+      "path": "src/crdt/windowLocalTrim.ts",
+      "sha256": "bed72b9f81cfaa355db1fe80d918ea51c0f678af49bb2f490696ca803ff9c5a9"
     },
     {
       "path": "src/crdt/windowWorkspaceQueues.ts",
@@ -1466,6 +1470,10 @@
     {
       "path": "src/crdt/workerLocalBaseline.ts",
       "sha256": "541f077221f1f52bfccaffdebe9e0e10a69bc601038d652e21547cb1c88fbdec"
+    },
+    {
+      "path": "src/crdt/workerLocalTrim.ts",
+      "sha256": "b35b7f120aa28ccd1127d61a9b1c38d99a2c384f38feac3ca2bc5f4dcbccad92"
     },
     {
       "path": "src/crdt/workerNativeLifetime.ts",

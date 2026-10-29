@@ -38,7 +38,12 @@ import {
   measureLedgerWork,
   measureLedger,
 } from './accountLedgerMetrics';
-import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
+import {
+  compactContent,
+  equalStoredRecord,
+  type DiskState,
+  type WorkerCompactionCommit,
+} from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
 import {
   rotateContent,
@@ -1760,11 +1765,16 @@ export const createContentOwner = (
         sequences: Object.freeze(records.map((r) => r.seq)),
       });
     },
-    compact: async (task: SessionTask, checkJournal: () => void) => {
+    compact: async (
+      task: SessionTask,
+      checkJournal: () => void,
+      workerCommit?: WorkerCompactionCommit,
+    ) => {
       if (metadata?.active()) {
         const rows = await load(task);
         eraseVerified(rows);
-        checkJournal();
+        if (workerCommit) await task.wait(() => workerCommit.checkJournal());
+        else checkJournal();
         return {
           status: 'retained' as const,
           storeId: scope.storeId,
@@ -1786,6 +1796,7 @@ export const createContentOwner = (
           authenticate: (snapshot) => openSnapshot(task, snapshot),
           publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
           checkJournal,
+          ...(workerCommit ? { workerCommit } : {}),
         });
       } finally {
         warm = undefined;

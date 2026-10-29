@@ -137,6 +137,10 @@ export async function createWindowLocalMirror(
           for (const r of copied) r.bytes.fill(0);
         }
       },
+      compactContent: (interrupt, fence) => {
+        if (!interrupt || !fence) throw refused();
+        return worker.compactContent(interrupt, fence, carrier);
+      },
       async flushJournal() {
         cohort.write(() => {});
         const result = await io.flushJournal();
