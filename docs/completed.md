@@ -17996,3 +17996,8 @@ Runtime boundary mapped. Native matrix5pass/3fail; full units2731pass/3exact con
 ## 2026-10-29 — phase238: exact configuration fixture
 
 Four config expectations repaired in three old tests; every other byte/assertion retained.16 focused private-access/config/subscription/order cases pass. No runtime change. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).
+
+
+## 2026-10-29 — phase239: Worker placement complete, measure next
+
+Worker placement complete.2734unit cases pass/one existing skip;99metadata/type/lint/contracts/bundle/origin checks pass. Cold15s guard still fails but editor appears~21s with active durable canonical owner. Deep joined30s remains open. Begin unchanged performance measurements. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).

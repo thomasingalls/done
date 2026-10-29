@@ -6352,3 +6352,8 @@ Keep intentional Window canonical UI/journal/provider and explicit legacy compat
 ## 2026-10-29 — phase238: exact configuration fixture
 
 Keep exact returned-config shape assertions, adding the public subscription function rather than weakening them to partial matching. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).
+
+
+## 2026-10-29 — phase239: Worker placement complete, measure next
+
+Conversion completion means normal public heavy owners are in actual Workers, with intentional Window and explicit legacy boundaries documented; it does not imply latency acceptance. Main-only CDP throttling must not be reported as mobile hardware equivalence. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).

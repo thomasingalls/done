@@ -768,3 +768,8 @@ Phase237: public heavy owners execute in actual Workers. Cold public entry after
 ## 2026-10-29 — phase238: exact configuration fixture
 
 Phase238 resolves the three classified full-unit fixture failures; whole-suite rerun remains due after runtime closure. Post-baseline public cold entry trace next. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).
+
+
+## 2026-10-29 — phase239: Worker placement complete, measure next
+
+Phase239: conversion complete on normal public paths; remaining work is measured performance/latency debt. Cold public entry~21s misses15s and deep joined catch-up misses30s. Run seven-sentence Goals input and whole-client peer cases with unchanged gates; no release preparation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).
