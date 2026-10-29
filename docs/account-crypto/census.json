@@ -897,7 +897,7 @@
     },
     {
       "path": "src/crdt/admissionQueue.ts",
-      "sha256": "a2261f5020c84086b76b1c351264ac6337808b0860aa461f0f6f0aacea4467dc"
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0"
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
@@ -941,7 +941,7 @@
     },
     {
       "path": "src/crdt/contentRecord.ts",
-      "sha256": "84124d97e9194560c242482bd161c92c0b83ba91d5b5b0e98ffda700a720be2d"
+      "sha256": "4427c4baf2feaf942e53ee2eae92b40533697f14a8ab87828f5ddbb2c9fa1479"
     },
     {
       "path": "src/crdt/contentRotation.ts",
@@ -2357,7 +2357,7 @@
       "sites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 243
+          "line": 258
         }
       ]
     },
@@ -2367,7 +2367,7 @@
       "sites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 243
+          "line": 258
         }
       ]
     },
@@ -2431,7 +2431,7 @@
       "sites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 239
+          "line": 254
         }
       ]
     },
@@ -3991,7 +3991,7 @@
         },
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 122
+          "line": 137
         },
         {
           "path": "src/crdt/custody.ts",

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 614,
-    "requiredTestFiles": 608,
+    "testFiles": 616,
+    "requiredTestFiles": 610,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10233,6 +10233,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/contentRecordView.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/contentRecordView.test.ts"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/convergence.test.ts",
       "status": "required",
       "invocation": {
@@ -11659,6 +11669,16 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/localWorkerRuntime.test.ts"]
       },
       "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/maintenanceFence.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/maintenanceFence.test.ts"]
+      },
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16416,7 +16436,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "3b8ad4e24992d2c929f6b8a850c8ad7aa98918bc1916ae2a45f57da5a07f4820"
+      "sha256": "6599c9f581978ef053721c575421902013168af7e8fd7fd623b030cb61282415"
     },
     {
       "path": "package.json",
@@ -19723,6 +19743,10 @@
       "sha256": "04cc13f02dfa77f2a4a918a57e927f9481e21dad9be6d01da7e61ede4eb1545d"
     },
     {
+      "path": "test/contentRecordView.test.ts",
+      "sha256": "837b46d775565b7444ee4944dcc498160aa3dcae5de61ca1b34bdf110a7e970e"
+    },
+    {
       "path": "test/convergence.test.ts",
       "sha256": "81a81542fd48d6709b7c12bfb842bb93d44eb0b90d625863c57c5f4d56f3a312"
     },
@@ -20453,6 +20477,10 @@
     {
       "path": "test/localWorkerRuntime.test.ts",
       "sha256": "c03236fd89be438a8ad94958d961041aa9681b961eebc7658b0f5fe61d677568"
+    },
+    {
+      "path": "test/maintenanceFence.test.ts",
+      "sha256": "038c0bd3a6a06120a1be25ae1a7f4308b7101671f4bb5f44595e22401eaa1aa4"
     },
     {
       "path": "test/masterLineSelection.test.ts",

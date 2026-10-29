@@ -6098,3 +6098,10 @@ Window exact comparison, then expire it. Unrelated account writes do not invalid
 Observation reads do not install pinned permission; ordinary pin/finish ordering stays exact.
 Avoid starting with CPU-heavy cross-turn IDB keepalive; stage encrypted data before the final commit.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase195/README.md).
+
+
+## 2026-10-29 — maintenance final effects require the actual admission head
+
+Mint a carrier-bound live fence only inside original discretionary maintenance; preserve native task
+settlement and interruption. Borrowed ciphertext views are unverified data and never deletion authority.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase196/README.md).

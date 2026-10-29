@@ -589,3 +589,9 @@ remain pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase19
 refusal; fresh read matches, plaintext erases and IDs expire in Chrome/Firefox. Continue actual Local
 maintenance head/final native Window commit, ceremonies and offline/default conversion before unchanged
 timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase195/README.md).
+
+
+**Phase196 — Local maintenance foundations:** actual head expiry/interruption and owning parser are
+covered, original native automatic maintenance retained in Chrome/Firefox. Continue bounded encrypted
+census/final Window commit then remaining worker startup/ceremonies before unchanged timing gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase196/README.md).

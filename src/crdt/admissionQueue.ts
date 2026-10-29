@@ -87,8 +87,23 @@ export type AdmissionCarrier = Pick<
   | 'loadRecovery'
   | 'flushJournal'
   | 'observedJournalCharacters'
-> &
-  Partial<Pick<JournalSession, 'compactContent'>>;
+> & {
+  compactContent?: (
+    interrupt?: AbortSignal,
+    fence?: MaintenanceFence,
+  ) => ReturnType<JournalSession['compactContent']>;
+};
+/** Actual discretionary maintenance head only; not a native permit or crypto proof. */
+export interface MaintenanceFence {
+  check(): void;
+}
+const maintenanceFences = new WeakMap<MaintenanceFence, AdmissionCarrier>();
+export function requireMaintenanceFence(fence: MaintenanceFence, carrier: AdmissionCarrier): void {
+  if (maintenanceFences.get(fence) !== carrier)
+    throw new AdmissionError('inactive-session', 'Maintenance belongs to another admission owner.');
+  fence.check();
+}
+
 /** Internal composition only. The operation owns verification, persistence and synchronous promotion.
  * Neither this enqueue capability nor its promotion callback is exposed by an application workspace. */
 export type OwnedReceiveQueue = <T>(
@@ -841,10 +856,23 @@ export const createAdmissionOwner = async (
       busy = true;
       maintenance = 'running';
       notify();
+      let activeMaintenance = true;
+      const fence: MaintenanceFence = Object.freeze({
+        check() {
+          live();
+          if (!activeMaintenance || maintenanceStop !== stop || !busy || maintenance !== 'running')
+            throw new AdmissionError(
+              'inactive-session',
+              'Maintenance is no longer this queue head.',
+            );
+          if (stop.signal.aborted) throw new MaintenanceInterrupted();
+        },
+      });
+      maintenanceFences.set(fence, carrier);
       inFlight = Promise.resolve()
         .then(() => {
           live();
-          return carrier.compactContent!(stop.signal);
+          return carrier.compactContent!(stop.signal, fence);
         })
         .then((receipt) => {
           if (state !== 'active') return;
@@ -865,6 +893,8 @@ export const createAdmissionOwner = async (
           // New durable growth (or a fresh open) is required before another attempt.
         })
         .finally(() => {
+          activeMaintenance = false;
+          maintenanceFences.delete(fence);
           maintenanceStop = undefined;
           busy = false;
           inFlight = undefined;

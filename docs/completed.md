@@ -17729,3 +17729,11 @@ permission, exact scoped Window comparison and expiry/erasure.33 focused/98 meta
 AST checks and actual Chrome/Firefox observation plus Account/Local controls pass; five containers
 absent. No deletion or default activation, conversion/gates pending.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase195/README.md).
+
+
+## 2026-10-29 — phase196 Local maintenance commit foundations
+
+Actual expiring queue-head fence and unverified borrowed ciphertext view preserve original owning parser,
+admission and native compaction.96 focused/98 metadata/type/lint/format/independent AST checks and original
+native automatic maintenance/cold exact checks in Chrome/Firefox pass; two containers absent. Worker
+maintenance/default conversion remain. [Packet](performance-experiments/2026-10-28-worker-owner/phase196/README.md).

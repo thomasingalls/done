@@ -3743,7 +3743,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 239,
+          "line": 254,
           "label": "done/content-witness/v1",
           "kind": "literal"
         }
@@ -3816,7 +3816,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 243,
+          "line": 258,
           "label": "done/content-counter/v1",
           "kind": "literal"
         }
@@ -3897,7 +3897,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 243,
+          "line": 258,
           "label": "done/content-counter/v2",
           "kind": "literal"
         }
@@ -4043,7 +4043,7 @@
         },
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 122,
+          "line": 137,
           "label": "done/store/v1",
           "kind": "literal"
         },
