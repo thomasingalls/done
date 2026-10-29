@@ -1,3 +1,4 @@
+import { pageRuntimePorts } from '../crdt/runtimePorts';
 /** Hints carry no authority. Every ready/hint schedules the owner's authenticated catch-up. */
 export class NotificationFrames {
   #partial = '';
@@ -77,6 +78,7 @@ export function startNotifications(options: {
   let connection: AbortController | undefined;
   let flight: Promise<void> | undefined;
   let expedited = false;
+  const stopActivity: (() => void)[] = [];
   const health = (value: boolean) => {
     if (connected === value) return;
     connected = value;
@@ -120,8 +122,7 @@ export function startNotifications(options: {
     });
   };
   const resume = () => {
-    if (stopped || (typeof document !== 'undefined' && document.visibilityState === 'hidden'))
-      return;
+    if (stopped || pageRuntimePorts.activity.visibilityState() === 'hidden') return;
     options.wake('resume');
     if (connected) return;
     if (flight) {
@@ -136,14 +137,15 @@ export function startNotifications(options: {
     connection?.abort();
     health(false);
     options.signal.removeEventListener('abort', stop);
-    globalThis.removeEventListener?.('online', resume);
-    globalThis.document?.removeEventListener('visibilitychange', resume);
+    for (const stop of stopActivity.splice(0)) stop();
   };
   options.signal.addEventListener('abort', stop, { once: true });
   if (options.signal.aborted) stop();
   else {
-    globalThis.addEventListener?.('online', resume);
-    globalThis.document?.addEventListener('visibilitychange', resume);
+    stopActivity.push(
+      pageRuntimePorts.activity.onGlobal('online', resume),
+      pageRuntimePorts.activity.onDocument('visibilitychange', resume),
+    );
     schedule(0);
   }
   return {

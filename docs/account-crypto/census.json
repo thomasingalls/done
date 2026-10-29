@@ -649,7 +649,7 @@
     },
     {
       "path": "src/account/notifications.ts",
-      "sha256": "5c0fdd0aaa19c0257ef5cc36d295eba825cf147ee753af047726a60fcdd3ec2c"
+      "sha256": "8ffca11c8942577821c6dbd08bd42cba1d3933ec99b9e60b6ee67fff2b70ed0c"
     },
     {
       "path": "src/account/packagedConfig.ts",
@@ -797,7 +797,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "6a624330e7890d49afb4d03c065b5165e829febe30285ceae4518955cbabf1fc"
+      "sha256": "af8d1329835ab5d338e08fcb1323d47671749f4a8c81185a7d1a5690bbc7cd99"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -841,7 +841,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "5dda190388573e4210ff22e18466fe13dd5feb8bbd688f163dc3ca930ec87ab0"
+      "sha256": "065f699fcb8baf4ad94322b6a1117b9608bf361723543411a5a47f09ca0d3775"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -857,7 +857,7 @@
     },
     {
       "path": "src/crdt/accountWorkerRuntime.ts",
-      "sha256": "b8cbfdc81f811433f197e4f2bb020b5f5d0984ae27f27c15169340843d7df736"
+      "sha256": "9df4f0cff88a8b5762ca833633668d5b8382bfba38457c9e55b85ed99642f7cb"
     },
     {
       "path": "src/crdt/accountWorkspace.ts",
@@ -1313,7 +1313,7 @@
     },
     {
       "path": "src/crdt/runtimePorts.ts",
-      "sha256": "5722dcd5e73c112d7d2e5770a6e495bdc225f4897c155eb3b6016e64b84ed735"
+      "sha256": "7b30f1bcec7d7fd82490c29fd2b35aa6721ab3f3220efd51f7793b6e812f5137"
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",
@@ -1382,6 +1382,10 @@
     {
       "path": "src/crdt/windowJournalBridge.ts",
       "sha256": "7c50f76ef18fd634377db4d46f36109d1525b434e3f68417148995241ac5007c"
+    },
+    {
+      "path": "src/crdt/workerActivity.ts",
+      "sha256": "ff03e0a39ced9bc5ada6fdbd44237f64d08ea274db232186f51a4f0be1a5086e"
     },
     {
       "path": "src/crdt/workerChannel.ts",
@@ -1897,7 +1901,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 735
+          "line": 736
         }
       ]
     },

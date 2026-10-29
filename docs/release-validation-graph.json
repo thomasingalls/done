@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 583,
-    "requiredTestFiles": 577,
+    "testFiles": 584,
+    "requiredTestFiles": 578,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9468,7 +9468,7 @@
         "config": "playwright.account-worker-cohort.config.ts",
         "packages": []
       },
-      "declarations": 3,
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -14005,6 +14005,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workerActivity.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerActivity.test.ts"]
+      },
+      "declarations": 8,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerChannel.test.ts",
       "status": "required",
       "invocation": {
@@ -14025,7 +14035,7 @@
           "test/workerRuntimeBoundary.test.ts"
         ]
       },
-      "declarations": 1,
+      "declarations": 2,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15999,7 +16009,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "b11dfbbb41dbcd0edd1498179e4879a314e1e7ab081f20f3dbd9c980e85d8ed0"
+      "sha256": "ec61ae11e3873300f67ad8e09fb4274bf7cb9283ae2068428f99023f0fa09a8d"
     },
     {
       "path": "package.json",
@@ -19051,15 +19061,15 @@
     },
     {
       "path": "test/account-worker-cohort/runtime.spec.ts",
-      "sha256": "ebcd799d1483a0f710f36bc65b869134625adbbb52dd3977bf343c72b380397d"
+      "sha256": "273f756abf94aa36a7a9928a994c306bd848d25c6480723129127e614f9ed614"
     },
     {
       "path": "test/account-worker-cohort/runtimeMember.ts",
-      "sha256": "ee4a62c96a9ca681b1159c8a58e9d728c6fba88a78e0e75f0ceefb5e7ed6d536"
+      "sha256": "7317711a267e5cf03857ab0304e2acbc7dc9809b1608ff6f18fc0edffd31f981"
     },
     {
       "path": "test/account-worker-cohort/runtimePage.ts",
-      "sha256": "b3d823cb082e0ca164f488fd6382ab865dd89de41af66deacaac16c1ff617454"
+      "sha256": "848aa1cb4414465f5ee656b9a408d5537a50592a360d287f2447d3012ccf657e"
     },
     {
       "path": "test/accountAuthority.test.ts",
@@ -20858,12 +20868,16 @@
       "sha256": "2ee6e9fcc5e1900b53d30c060150fcb0d2b8d779c1b5bb7b2d94e36ecc258468"
     },
     {
+      "path": "test/workerActivity.test.ts",
+      "sha256": "dccdb0ba84c677495e83cc28251e0f1912635f978a5c45fe57c6d4e1d85493f5"
+    },
+    {
       "path": "test/workerChannel.test.ts",
       "sha256": "66313dbb7b37c3957c8b738727650133afa42e0184569d6fb167e2a86e765912"
     },
     {
       "path": "test/workerRuntimeBoundary.test.ts",
-      "sha256": "1452bb78988d2f0c2ed0de1f3e2965bdb4146d999cade02ef3095c36b690bb58"
+      "sha256": "0b980eb79f2e114441378eb1e7490f4f8a4b903181b965bdb38dd2ba55201a25"
     },
     {
       "path": "test/workspace-admission/browser.mjs",

@@ -1,4 +1,5 @@
 /** Window endpoints for a dedicated account owner. No blocking wait or fake storage is involved. */
+import { createWorkerActivityForwarder, type WorkerActivityKind } from './workerActivity';
 import { openWindowAccountCohort } from './accountWorkerCohort';
 import { createWindowJournalBridge } from './windowJournalBridge';
 import { createWorkerChannel, eraseWorkerMessage } from './workerChannel';
@@ -59,9 +60,17 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
       visibility: document.visibilityState,
       online: navigator.onLine !== false,
     });
-    const postActivity = (event: Event) => {
-      void channel?.request('activity', { ...activity(), kind: event.type }).catch(() => {});
-    };
+    const activityForwarder = createWorkerActivityForwarder({
+      signal: cohort.signal,
+      snapshot: activity,
+      send: (message) => channel!.request('activity', message),
+      failed: () => {
+        void cohort.close().catch(() => {});
+      },
+    });
+    cohort.disposeWith(activityForwarder.close);
+    const postActivity = (event: Event) =>
+      activityForwarder.notify(event.type as WorkerActivityKind);
     channel = createWorkerChannel(
       ports.port1,
       cohort.ticket.incarnation,

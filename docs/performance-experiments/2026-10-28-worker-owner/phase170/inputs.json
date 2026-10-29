@@ -1,0 +1,12 @@
+{
+  "src/crdt/workerActivity.ts": "ff03e0a39ced9bc5ada6fdbd44237f64d08ea274db232186f51a4f0be1a5086e",
+  "src/crdt/accountWorkerClient.ts": "065f699fcb8baf4ad94322b6a1117b9608bf361723543411a5a47f09ca0d3775",
+  "src/crdt/accountWorkerRuntime.ts": "9df4f0cff88a8b5762ca833633668d5b8382bfba38457c9e55b85ed99642f7cb",
+  "src/crdt/runtimePorts.ts": "7b30f1bcec7d7fd82490c29fd2b35aa6721ab3f3220efd51f7793b6e812f5137",
+  "src/crdt/accountReceive.ts": "af8d1329835ab5d338e08fcb1323d47671749f4a8c81185a7d1a5690bbc7cd99",
+  "src/account/notifications.ts": "8ffca11c8942577821c6dbd08bd42cba1d3933ec99b9e60b6ee67fff2b70ed0c",
+  "test/workerActivity.test.ts": "dccdb0ba84c677495e83cc28251e0f1912635f978a5c45fe57c6d4e1d85493f5",
+  "test/account-worker-cohort/runtimeMember.ts": "7317711a267e5cf03857ab0304e2acbc7dc9809b1608ff6f18fc0edffd31f981",
+  "test/account-worker-cohort/runtimePage.ts": "848aa1cb4414465f5ee656b9a408d5537a50592a360d287f2447d3012ccf657e",
+  "test/account-worker-cohort/runtime.spec.ts": "273f756abf94aa36a7a9928a994c306bd848d25c6480723129127e614f9ed614"
+}

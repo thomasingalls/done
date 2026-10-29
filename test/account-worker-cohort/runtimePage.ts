@@ -1,3 +1,7 @@
+import {
+  createWorkerActivityForwarder,
+  type WorkerActivityMessage,
+} from '../../src/crdt/workerActivity';
 import { openWindowAccountCohort } from '../../src/crdt/accountWorkerCohort';
 import { createWorkerChannel } from '../../src/crdt/workerChannel';
 import { installAccountWorkerRuntime } from '../../src/crdt/accountWorkerRuntime';
@@ -51,7 +55,35 @@ const ready = new Promise<void>((resolve) =>
 );
 member.postMessage({ kind: 'start', ticket: root.ticket, port: pair.port2 }, [pair.port2]);
 await ready;
+const activityState = { visibility: 'visible' as DocumentVisibilityState, online: true };
+const sentActivity: WorkerActivityMessage[] = [];
+const receivedActivity: unknown[] = [];
+const forwarder = createWorkerActivityForwarder({
+  signal: root.signal,
+  snapshot: () => activityState,
+  failed: () => {
+    void root.close();
+  },
+  send: async (message) => {
+    sentActivity.push(message);
+    receivedActivity.push(await channel.request('activity', message));
+  },
+});
 (window as any).runtimeLab = {
+  activityTrace: () => ({ sent: [...sentActivity], received: [...receivedActivity] }),
+  holdActivity: () => channel.request('holdActivity'),
+  releaseActivity: () => channel.request('releaseActivity'),
+  burstActivity() {
+    for (let i = 0; i < 10000; i++) forwarder.notify('beforeinput');
+    activityState.visibility = 'hidden';
+    forwarder.notify('visibilitychange');
+    activityState.online = false;
+    forwarder.notify('offline');
+    activityState.visibility = 'visible';
+    activityState.online = true;
+    forwarder.notify('resume');
+    forwarder.notify('beforeinput');
+  },
   read: () => channel.request('read'),
   peek: () => channel.request('peek'),
   ready: () => channel.request('ready'),

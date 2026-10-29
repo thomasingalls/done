@@ -102,3 +102,31 @@ test('worker activity uses the actual Window state while its native manager rema
     ),
   ).toBe(0);
 });
+
+// Advisory activity cannot use all request credits while the actual worker is occupied.
+test('busy worker coalesces a long input burst while unrelated native work can still proceed', async ({
+  page,
+}) => {
+  await page.evaluate(() => (window as any).runtimeLab.holdActivity());
+  await page.evaluate(() => (window as any).runtimeLab.burstActivity());
+  expect((await page.evaluate(() => (window as any).runtimeLab.activityTrace())).sent).toHaveLength(
+    1,
+  );
+  expect(await page.evaluate(() => (window as any).runtimeLab.read())).toMatchObject({
+    entries: [],
+  });
+  await page.evaluate(() => (window as any).runtimeLab.releaseActivity());
+  await page.waitForFunction(
+    () => (window as any).runtimeLab.activityTrace().received.length === 5,
+  );
+  const trace = await page.evaluate(() => (window as any).runtimeLab.activityTrace());
+  expect(trace.sent.map((m: any) => m.kind)).toEqual([
+    'beforeinput',
+    'visibilitychange',
+    'offline',
+    'resume',
+    'beforeinput',
+  ]);
+  expect(trace.received.at(-1)).toMatchObject({ visibility: 'visible', online: true });
+  await page.evaluate(() => (window as any).runtimeLab.close());
+});

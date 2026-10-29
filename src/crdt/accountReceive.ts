@@ -1,3 +1,4 @@
+import { pageRuntimePorts } from './runtimePorts';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
 import {
   hasBaselineReader,
@@ -2963,7 +2964,7 @@ async function openReceivingWorkspace(
         return 'closed';
       if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
         return 'local-storage';
-      return globalThis.navigator?.onLine === false ? 'offline' : 'ready';
+      return !pageRuntimePorts.activity.online() ? 'offline' : 'ready';
     };
     const receiveHistory = async () => {
       let bytes: Bytes | null = null;
@@ -3280,7 +3281,7 @@ async function openReceivingWorkspace(
             workspace.status.durable &&
             workspace.status.pendingItems === 0 &&
             workspace.status.pressure === null &&
-            globalThis.document?.visibilityState !== 'hidden',
+            pageRuntimePorts.activity.visibilityState() !== 'hidden',
           hint: localRetentionHint(),
         }),
         remove: result.removeLocalHistory,
@@ -3293,18 +3294,17 @@ async function openReceivingWorkspace(
       // Input/selection can precede its durable publication. Defer the quiet window immediately;
       // the existing owner guard still interrupts preparation if activity races the attempt.
       const activity = maintenance.wake;
-      globalThis.document?.addEventListener('keydown', activity, true);
-      globalThis.document?.addEventListener('beforeinput', activity, true);
-      globalThis.document?.addEventListener('pointerdown', activity, true);
-      globalThis.document?.addEventListener('visibilitychange', activity);
+      const stopActivity = [
+        pageRuntimePorts.activity.onDocument('keydown', activity, true),
+        pageRuntimePorts.activity.onDocument('beforeinput', activity, true),
+        pageRuntimePorts.activity.onDocument('pointerdown', activity, true),
+        pageRuntimePorts.activity.onDocument('visibilitychange', activity),
+      ];
       carrier.beforeRelease(() => {
         maintenance.dispose();
         changed();
         statusChanged();
-        globalThis.document?.removeEventListener('keydown', activity, true);
-        globalThis.document?.removeEventListener('beforeinput', activity, true);
-        globalThis.document?.removeEventListener('pointerdown', activity, true);
-        globalThis.document?.removeEventListener('visibilitychange', activity);
+        for (const stop of stopActivity) stop();
       });
       maintenance.wake();
     }
@@ -3331,7 +3331,7 @@ async function openReceivingWorkspace(
             !networkLoginNeedsPasskey(options.networkLogin?.getSnapshot()) &&
             workspace.status.durable &&
             workspace.status.pendingItems === 0 &&
-            globalThis.document?.visibilityState !== 'hidden',
+            pageRuntimePorts.activity.visibilityState() !== 'hidden',
           hint: localRetentionHint(),
         }),
         run: (command) => runHistory(command, true),
@@ -3344,20 +3344,19 @@ async function openReceivingWorkspace(
       const localChanged = automaticRetention?.onStatus(maintenance.refresh);
       const serviceChanged = maintenance.onStatus(() => automaticRetention?.refresh());
       const activity = maintenance.activity;
-      globalThis.document?.addEventListener('keydown', activity, true);
-      globalThis.document?.addEventListener('beforeinput', activity, true);
-      globalThis.document?.addEventListener('pointerdown', activity, true);
-      globalThis.document?.addEventListener('visibilitychange', activity);
+      const stopActivity = [
+        pageRuntimePorts.activity.onDocument('keydown', activity, true),
+        pageRuntimePorts.activity.onDocument('beforeinput', activity, true),
+        pageRuntimePorts.activity.onDocument('pointerdown', activity, true),
+        pageRuntimePorts.activity.onDocument('visibilitychange', activity),
+      ];
       carrier.beforeRelease(() => {
         maintenance.dispose();
         changed();
         statusChanged();
         localChanged?.();
         serviceChanged();
-        globalThis.document?.removeEventListener('keydown', activity, true);
-        globalThis.document?.removeEventListener('beforeinput', activity, true);
-        globalThis.document?.removeEventListener('pointerdown', activity, true);
-        globalThis.document?.removeEventListener('visibilitychange', activity);
+        for (const stop of stopActivity) stop();
       });
       maintenance.refresh();
     }
@@ -3366,6 +3365,7 @@ async function openReceivingWorkspace(
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
       let unsubscribeLogin: (() => void) | undefined;
+      const stopActivity: (() => void)[] = [];
       const flushOnHide = () => {
         if (carrier.signal.aborted) return;
         scheduler.wake('flush');
@@ -3379,7 +3379,7 @@ async function openReceivingWorkspace(
         );
       };
       const visibility = () => {
-        if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
+        if (pageRuntimePorts.activity.visibilityState() === 'hidden') flushOnHide();
       };
       const online = () => {
           automaticHistory?.hint();
@@ -3453,10 +3453,7 @@ async function openReceivingWorkspace(
           unsubscribe?.();
           unsubscribeLocal?.();
           unsubscribeLogin?.();
-          globalThis.document?.removeEventListener('visibilitychange', visibility);
-          globalThis.removeEventListener?.('pagehide', flushOnHide, true);
-          globalThis.removeEventListener?.('online', online);
-          globalThis.removeEventListener?.('offline', offline);
+          for (const stop of stopActivity.splice(0)) stop();
         },
       });
       if (automaticRetention || automaticHistory) {
@@ -3487,8 +3484,10 @@ async function openReceivingWorkspace(
           scheduler.wake('local');
         });
         if (batching.publication) {
-          globalThis.document?.addEventListener('visibilitychange', visibility);
-          globalThis.addEventListener?.('pagehide', flushOnHide, true);
+          stopActivity.push(
+            pageRuntimePorts.activity.onDocument('visibilitychange', visibility),
+            pageRuntimePorts.activity.onGlobal('pagehide', flushOnHide, true),
+          );
         }
         unsubscribe = workspace.onStatus(() => {
           const current = gate();
@@ -3498,8 +3497,10 @@ async function openReceivingWorkspace(
             scheduler.wake('gate');
           }
         });
-        globalThis.addEventListener?.('online', online);
-        globalThis.addEventListener?.('offline', offline);
+        stopActivity.push(
+          pageRuntimePorts.activity.onGlobal('online', online),
+          pageRuntimePorts.activity.onGlobal('offline', offline),
+        );
         if (!carrier.beforeRelease) throw Error('Missing composed driver cleanup ownership');
         carrier.beforeRelease(scheduler.dispose);
         if (access) {
@@ -3570,6 +3571,7 @@ async function openReceivingWorkspace(
         outbound: undefined,
       });
     let unsubscribe: (() => void) | undefined;
+    const stopActivity: (() => void)[] = [];
     const online = () => scheduler.wake('online'),
       offline = () => scheduler.wake('gate');
     const scheduler = createReceiveScheduler({
@@ -3579,8 +3581,7 @@ async function openReceivingWorkspace(
       detach() {
         operatorToken = undefined;
         unsubscribe?.();
-        globalThis.removeEventListener?.('online', online);
-        globalThis.removeEventListener?.('offline', offline);
+        for (const stop of stopActivity.splice(0)) stop();
       },
     });
     try {
@@ -3592,8 +3593,10 @@ async function openReceivingWorkspace(
           scheduler.wake('gate');
         }
       });
-      globalThis.addEventListener?.('online', online);
-      globalThis.addEventListener?.('offline', offline);
+      stopActivity.push(
+        pageRuntimePorts.activity.onGlobal('online', online),
+        pageRuntimePorts.activity.onGlobal('offline', offline),
+      );
       if (!carrier.beforeRelease) throw Error('Missing receive driver cleanup ownership');
       carrier.beforeRelease(scheduler.dispose);
       scheduler.wake('start');

@@ -1,4 +1,5 @@
 /** Fixed dedicated-worker environment. No Window installer, lock-manager override or storage shim. */
+import { workerActivityKinds } from './workerActivity';
 import { createAccountWorkerJoin } from './accountWorkerJoin';
 import type { AccountWorkerTicket } from './nativeCoordination';
 import type { WorkerChannel } from './workerChannel';
@@ -136,18 +137,7 @@ export function installAccountWorkerRuntime(
       if (
         typeof input.online !== 'boolean' ||
         !['visible', 'hidden'].includes(input.visibility) ||
-        ![
-          'visibilitychange',
-          'keydown',
-          'beforeinput',
-          'pointerdown',
-          'freeze',
-          'resume',
-          'online',
-          'offline',
-          'pageshow',
-          'pagehide',
-        ].includes(kind)
+        !(workerActivityKinds as readonly string[]).includes(kind)
       )
         throw refused();
       activity = { ...input };

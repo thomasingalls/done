@@ -42,22 +42,25 @@ const retirementChannel = 'done/slot-lifecycle';
  * Future worker execution needs a separately reviewed owner, not a substitute lock manager. */
 export const pageRuntimePorts: RuntimePorts = Object.freeze({
   activity: Object.freeze({
-    visibilityState: () => accountWorkerRuntime()?.activity.visibility ?? document.visibilityState,
+    visibilityState: () =>
+      accountWorkerRuntime()?.activity.visibility ??
+      globalThis.document?.visibilityState ??
+      'visible',
     online: () => accountWorkerRuntime()?.activity.online ?? globalThis.navigator?.onLine !== false,
     onGlobal(kind, listener, capture) {
       const target = accountWorkerRuntime()?.events ?? globalThis;
-      target.addEventListener(kind, listener, capture);
-      return () => target.removeEventListener(kind, listener, capture);
+      target?.addEventListener?.(kind, listener, capture);
+      return () => target?.removeEventListener?.(kind, listener, capture);
     },
     onDocument(kind, listener, capture) {
-      const target = accountWorkerRuntime()?.events ?? document;
-      target.addEventListener(kind, listener, capture);
-      return () => target.removeEventListener(kind, listener, capture);
+      const target = accountWorkerRuntime()?.events ?? globalThis.document;
+      target?.addEventListener?.(kind, listener, capture);
+      return () => target?.removeEventListener?.(kind, listener, capture);
     },
     onPageShow(listener) {
-      const target = accountWorkerRuntime()?.events ?? window;
-      target.addEventListener('pageshow', listener);
-      return () => target.removeEventListener('pageshow', listener);
+      const target = accountWorkerRuntime()?.events ?? globalThis.window;
+      target?.addEventListener?.('pageshow', listener);
+      return () => target?.removeEventListener?.('pageshow', listener);
     },
   } satisfies RuntimeActivityPort),
   lifetime: Object.freeze({

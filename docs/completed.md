@@ -17403,3 +17403,22 @@ parser fixture/empty selection failures; the previous long journal observer fail
 remain identical, newtestuncredited:946/400blocked. Default app remains on page; continue lifecycle,
 receive/maintenance and ceremony integration before measuring. No gate, format, real-index, service
 automation, preview, signing/push or release change. Append before owned status.
+
+
+## 2026-10-29 — Phase170: bounded Window activity and fixed worker lifecycle ports
+
+Coalesce advisory activity to one request plus bounded latest kind/state samples, preserving observed
+transition order and cancellation. Original100-event handler refused92calls; replacement admits a
+10,000-event burst while leaving seven native MessagePort credits free for owner work. Route existing
+sync/receive/maintenance/notification listeners through fixed runtime ports with owned cleanup; keep
+Node inert when document/listeners are absent. No permission, crypto or retry timing changes.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase170/README.md).
+
+Full2300unit cases/one existing skip,80focused,28native Chromium/Firefox cases,98metadata and six
+unchanged notification-server cases pass, alongside type/lint. Preserve sandbox loopback refusal
+and initial Node strip-only loading failure; authorized disposable listeners/transform-types pass.
+430sources retain198domain assignments; only source lines move. All old obligations remain exact,
+newtestrequired/uncredited:947/401blocked. Combined journal observer failure from168 remains open.
+Default app still runs on the page; continue actual admission/receive, maintenance and ceremonies.
+No performance measurement, gate change, service automation, preview, real index/signing/push or
+release preparation. Append before owned status and freeze sequential patch170 after169.

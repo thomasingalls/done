@@ -7,6 +7,7 @@ self.addEventListener('message', (event) => {
   let release!: () => void, releaseFence!: () => void;
   const done = new Promise<void>((r) => (release = r)),
     seen: string[] = [];
+  let activityHold: Promise<void> | undefined, releaseActivity: (() => void) | undefined;
   const channel = createWorkerChannel(
     m.port,
     m.ticket.incarnation,
@@ -14,7 +15,17 @@ self.addEventListener('message', (event) => {
       read: () => runtime.journal.read('scoped.'),
       peek: () => runtime.journal.pinned('scoped.'),
       ready: () => runtime.finishOpening(),
-      activity: (input) => {
+      holdActivity: () => {
+        activityHold = new Promise<void>((resolve) => {
+          releaseActivity = resolve;
+        });
+      },
+      releaseActivity: () => {
+        releaseActivity?.();
+        activityHold = undefined;
+      },
+      activity: async (input) => {
+        await activityHold;
         const { kind, ...state } = input as {
           kind: string;
           visibility: DocumentVisibilityState;
@@ -38,6 +49,7 @@ self.addEventListener('message', (event) => {
     () => {
       runtime.close();
       releaseFence?.();
+      releaseActivity?.();
       release();
     },
   );

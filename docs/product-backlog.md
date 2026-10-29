@@ -133,9 +133,10 @@ the actual native Account worker without shared memory or source transforms:2289
 existing skip,26native runtime cases and eight actual-account cases pass. The long combined journal
 campaign retains unresolved observer timeouts, with scoped fault controls passing. Default app
 execution is still on the page. [Phase169](performance-experiments/2026-10-28-worker-owner/phase169/README.md) removes the runtime
-import cycle with unchanged native lifetime bodies and passing rebuilt native/account cases. Next
-bound lifecycle/activity delivery, then integrate actual receive/maintenance, fresh ceremony ownership
-and application routes.
+import cycle with unchanged native lifetime bodies and passing rebuilt native/account cases. [Phase170](performance-experiments/2026-10-28-worker-owner/phase170/README.md) bounds activity
+delivery and routes existing lifecycle consumers through fixed worker-aware ports. Full2300unit cases/
+one existing skip and28native cases pass. Next integrate actual receive/admission/maintenance, fresh
+ceremony ownership and application routes.
 Raw messages/captures confer no verification authority; final changes retain the Window admission
 fence. This supersedes the original discussion-only status above; no release preparation.
 
