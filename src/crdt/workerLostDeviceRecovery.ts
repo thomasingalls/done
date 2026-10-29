@@ -214,6 +214,7 @@ export function createNativeLostRecoveryController(
               live();
               state = {
                 ...state,
+                ...(value.command === 'inspect' ? { step: 'unlock' as const } : {}),
                 error: (cause instanceof Error
                   ? cause.message
                   : 'Recovery could not finish. Retry the saved step.'

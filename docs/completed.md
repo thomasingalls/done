@@ -17941,3 +17941,8 @@ Five new preparation cases/29 focused and99 metadata/type/lint/format pass. Exac
 ## 2026-10-29 — phase227: default enrollment screens on native owners
 
 Five new runtime/error cases/25 focused and99 metadata/type/lint/format/audit pass. Actual rebuilt default two-device creation/enrollment/comparison/writing availability and two-way edits pass. Initial duplicate lab import prevented collection, retained; corrected import with unchanged source.1 exact container absent. Existing six native-controller tests retain assertions with error transport fixture fields. [Packet](performance-experiments/2026-10-28-worker-owner/phase227/README.md).
+
+
+## 2026-10-29 — phase228: default recovery screen on same-realm native owner
+
+Five new cases/25 focused and99 metadata/type/lint/format/audit pass. Final clean unmodified default recovery UI cards, Goals-only and empty accounts3 pass, including wrong code/back/review/one fresh passkey/new writing/cancelled reopen/new code entry/offline durability.10 exact containers absent. Stale first-submit test precondition and diagnostic/stale-build failures retained, without changing crypto or weakening refusals. [Packet](performance-experiments/2026-10-28-worker-owner/phase228/README.md).

@@ -6297,3 +6297,8 @@ Select genuine worker runtime at actual Local screen and worker coordinator at p
 ## 2026-10-29 — phase227: default enrollment screens on native owners
 
 Select Worker for public enrollment, dynamically load Page only for explicit old service compatibility, and never fall back on native failure. Drain protected pending preparation before enrollment owner. Keep existing screen/queue/poll behavior; native authorization/parser run behind closed advisory observations. Preserve original errors through bounded acknowledged presentation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase227/README.md).
+
+
+## 2026-10-29 — phase228: default recovery screen on same-realm native owner
+
+Keep original recovery UI copy and explicit disconnect review, execute crypto/retained factors/one-use approval only natively. Inspect-only fresh Worker reboot on a new unlock command retains no factor/approval. Read failure can offer authenticated unlock, never assume empty data. Confirm complete sender upload before recovery comparisons. [Evidence](performance-experiments/2026-10-28-worker-owner/phase228/README.md).

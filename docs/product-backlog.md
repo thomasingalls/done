@@ -727,3 +727,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase227:** Default Local/setup/enrollment native and verified. Next actual recovery screen, remaining caller/offline/mixed and final gate measurements. No release prep. [Packet](performance-experiments/2026-10-28-worker-owner/phase227/README.md).
+
+
+**Phase228:** All public Local/setup/enrollment/recovery screens use native owners. Next remaining Window boundary, mixed/offline/update and interrupted-source refusal review; then unchanged input/peer/delivery measurements. No release preparation. [Packet](performance-experiments/2026-10-28-worker-owner/phase228/README.md).

@@ -1,0 +1,24 @@
+import{createWorkerAccountRecovery}from'./src/ui/accountRecoveryWorker';
+import{openRecoveredWorkspace}from'./src/account/lostDeviceRecovery';
+export function registerNativeRecovery(){
+ window.__nativeRecoveryLab={
+  async writeSource(){const source=window.__nativeFreshOwner;if(source.getSnapshot().kind==='name')await source.saveName('Fictional recovery source');const ready=source.getSnapshot();if(ready.kind!=='ready')throw Error('Fresh source not ready');window.__recoverySendBefore=ready.sync.status.send.acceptedThrough;const field=ready.workspace.text({kind:'master'}),n=field.read().text.length;await field.input({name:'insert',text:'Uploaded before genuine native recovery.'},{ranges:[{anchor:n,head:n}],main:0}).accepted;await ready.workspace.whenDurable();window.__recoverySourceMaster=field.read().text;return true;},
+  uploaded(){const status=window.__nativeFreshOwner.getSnapshot().sync.status.send;return status.phase==='idle'&&status.acceptedThrough>window.__recoverySendBefore;},
+  async begin(){await window.__nativeFreshOwner.close();const slot='enrollment-'+Array.from(crypto.getRandomValues(new Uint8Array(16)),v=>v.toString(16).padStart(2,'0')).join('');window.__nativeRecoverySlot=slot;const owner=createWorkerAccountRecovery({pin:window.spec.pin,networkSessions:true,membershipContinuation:true},slot,window.__testStop.signal);window.__nativeRecoveryOwner=owner;await owner.command({command:'inspect'});return owner.command({command:'begin'});},
+  async prepare(){const owner=window.__nativeRecoveryOwner,state=await owner.command({command:'prepare',value:window.__nativeFreshRecovery});if(state.step!=='save-code')return state;window.__nativeRecoveryCode=state.generated;await owner.command({command:'savedCode'});const wrong=await owner.command({command:'confirm',value:'fictional-wrong-code'});if(!wrong.error||wrong.generated!==window.__nativeRecoveryCode)throw Error('Wrong confirmation lost same code');return owner.command({command:'confirm',value:window.__nativeRecoveryCode});},
+  finish:()=>window.__nativeRecoveryOwner.command({command:'recover'}),
+  state:()=>{const s=window.__nativeRecoveryOwner.getSnapshot();return{step:s.step,error:s.error};},
+  async cold(){const owner=window.__nativeRecoveryOwner,state=owner.getSnapshot();if(state.step!=='editing')throw Error('Recovery not editing: '+state.error);const workspace=state.editor.workspace,archive=workspace.exportEntries(),master=workspace.text({kind:'master'}).read().text;await owner.close();const result=await openRecoveredWorkspace({pin:window.spec.pin,networkSessions:true,membershipContinuation:true},window.__nativeRecoverySlot,window.__nativeRecoveryCode,new AbortController().signal);try{return{master,sourceMaster:window.__recoverySourceMaster,archive,cold:result.editor.workspace.exportEntries()};}finally{result.login.close();await result.editor.workspace.close();}},
+ };
+ window.__nativeRecoveryLab.prepareUiSource=async kind=>{
+  const owner=window.__nativeFreshOwner;if(owner.getSnapshot().kind==='name')await owner.saveName('Native recovery source');const ready=owner.getSnapshot();if(ready.kind!=='ready')throw Error('Native source not ready');
+  const text=kind==='cards'?'Uploaded before default native recovery.':kind==='goals'?'Accepted master-only recovery writing.':'';
+  if(kind==='cards'){
+   const date=new Date().toLocaleDateString('en-CA');await ready.workspace.command({kind:'compose',to:{date,section:'done'},text}).accepted;
+  }else if(kind==='empty'){await ready.workspace.command({kind:'actor',patch:{name:'Empty accepted source'}}).accepted;}else{const field=ready.workspace.text({kind:'master'}),n=field.read().text.length;await field.input({name:'insert',text},{ranges:[{anchor:n,head:n}],main:0}).accepted;}
+  await ready.workspace.whenDurable();const sync=ready.sync;
+  await new Promise((resolve,reject)=>{let worked=false;const timer=setTimeout(()=>{off();reject(Error('Confirmed upload cycle deadline'));},15000);const off=sync.onStatus(s=>{if(s.send.phase==='working')worked=true;if(worked&&s.send.phase==='idle'&&s.send.nextAttemptAt===null){clearTimeout(timer);off();resolve();}});sync.retry('send');});
+  await owner.close();return {text,recovery:window.__nativeFreshRecovery};
+ };
+
+}

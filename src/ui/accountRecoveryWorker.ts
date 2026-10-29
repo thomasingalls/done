@@ -53,6 +53,8 @@ export function createWorkerAccountRecovery(
     worker: () =>
       new Worker(new URL('../crdt/recoveryOwner.worker.ts', import.meta.url), { type: 'module' }),
     bootstrapKind: 'recoveryBootstrap',
+    // Reboot only when a new user-entered command supplies the factor; inspect stores none.
+    retryCommand: { command: 'inspect' },
     captureCommand: captureRecoveryCommand,
   });
   const abort = () => {
@@ -61,6 +63,18 @@ export function createWorkerAccountRecovery(
   signal.addEventListener('abort', abort, { once: true });
   if (signal.aborted) abort();
   return {
+    visit(value: string) {
+      const current = owner.getSnapshot().state;
+      if (
+        owner.busy ||
+        !current.generated ||
+        !['save-code', 'confirm-code'].includes(current.step) ||
+        !['save-code', 'confirm-code'].includes(value)
+      )
+        return false;
+      owner.send({ command: 'visit', value });
+      return true;
+    },
     getSnapshot: () => owner.getSnapshot().state,
     subscribe: owner.subscribe,
     registerEditor: owner.registerEditor,

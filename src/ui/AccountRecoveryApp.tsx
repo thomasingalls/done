@@ -1,13 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { SetupConfig } from '../account/setupProgress';
-import {
-  beginLostDeviceRecovery,
-  resumeLostDeviceRecovery,
-  finishLostDeviceRecovery,
-  openRecoveredWorkspace,
-} from '../account/lostDeviceRecovery';
-import type { RecoveryOpening } from '../account/recoveryOpening';
-import { inspectLocalStartup } from '../crdt/localGenesis';
+import { createWorkerAccountRecovery } from './accountRecoveryWorker';
 import { newConnectionHref } from '../account/connectionNavigation';
 import { newRecoveryHref } from '../account/lostRecoveryRoutes';
 import { useCeremonyNavigation } from './ceremonyNavigation';
@@ -17,7 +10,6 @@ import { WorkspaceUiProvider } from './workspaceUi';
 import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 import { AccountDevices } from './AccountDevices';
 import { App } from './App';
-
 type Step =
   | 'checking'
   | 'start'
@@ -38,46 +30,43 @@ export function AccountRecoveryApp({
   slotId: string;
   onNavigate: (href: string) => void;
 }) {
-  const [step, setStep] = useState<Step>('checking');
-  const [busy, setBusy] = useState('');
-  const [error, setError] = useState('');
-  const [typed, setTyped] = useState('');
-  const [generated, setGenerated] = useState('');
-  const [accountId, setAccountId] = useState('');
-  const [opened, setOpened] = useState<Awaited<ReturnType<typeof openRecoveredWorkspace>>>();
   const life = useRef(new AbortController());
-  const early = useRef<Awaited<ReturnType<typeof beginLostDeviceRecovery>> | undefined>(undefined);
-  const opening = useRef<RecoveryOpening | undefined>(undefined);
-  const heldCode = useRef('');
-  const liveEditor = useRef<typeof opened>(undefined);
-  const editors = useRef(new Set<() => void>());
-  const operating = useRef<Promise<void> | undefined>(undefined);
-  const closing = useRef<Promise<void> | undefined>(undefined);
-  const navigate = useRef(onNavigate);
+  const [owner] = useState(() => createWorkerAccountRecovery(config, slotId, life.current.signal));
+  const view = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
+  const [screen, setScreen] = useState<'editing' | 'devices'>('editing');
+  const step: Step = view.step === 'editing' ? screen : view.step,
+    generated = view.generated,
+    accountId = view.accountId;
+  const [busy, setBusy] = useState(''),
+    [localError, setError] = useState(''),
+    [typed, setTyped] = useState('');
+  const error = view.error || localError;
+  const opened = useMemo(
+    () =>
+      view.editor
+        ? {
+            editor: view.editor,
+            actorId: view.editor.actorId,
+            accountId: view.editor.accountId,
+            login: view.editor.networkLogin,
+          }
+        : undefined,
+    [view.editor],
+  );
+  const operating = useRef<Promise<void> | undefined>(undefined),
+    closing = useRef<Promise<void> | undefined>(undefined),
+    navigate = useRef(onNavigate);
   navigate.current = onNavigate;
   const close = useCallback(() => {
     if (closing.current) return closing.current;
     life.current.abort();
-    early.current?.close();
-    early.current = undefined;
-    opening.current = undefined;
-    heldCode.current = '';
-    for (const destroy of editors.current) {
-      try {
-        destroy();
-      } catch {
-        /* Storage still needs to close. */
-      }
-    }
-    editors.current.clear();
-    liveEditor.current?.login.close();
-    closing.current = (async () => {
+    setTyped('');
+    const nativeClosing = owner.close();
+    return (closing.current = (async () => {
       await operating.current;
-      await liveEditor.current?.editor.workspace.close();
-      liveEditor.current = undefined;
-    })();
-    return closing.current;
-  }, []);
+      await nativeClosing;
+    })());
+  }, [owner]);
   const run = useCallback((message: string, action: () => Promise<void>) => {
     if (operating.current || life.current.signal.aborted) return;
     setBusy(message);
@@ -99,14 +88,20 @@ export function AccountRecoveryApp({
     })();
     operating.current = work;
   }, []);
+  const setStep = (target: Step) => {
+    if (target === 'editing' || target === 'devices') setScreen(target);
+    else if (target === 'save-code' || target === 'confirm-code') owner.visit(target);
+  };
   const navigation = useCeremonyNavigation({
     base: '/recover/' + slotId,
     step: busy || step === 'checking' || life.current.signal.aborted ? null : step,
-    parent: heldCode.current || step === 'unlock' ? '/accounts' : '/connect/choose',
+    parent: ['unlock', 'review', 'installed', 'editing', 'devices'].includes(step)
+      ? '/accounts'
+      : '/connect/choose',
     visit: (target) => {
       if (busy) return false;
       if (opened && (target === 'editing' || target === 'devices')) {
-        setStep(target);
+        setScreen(target);
         return true;
       }
       if (
@@ -115,30 +110,22 @@ export function AccountRecoveryApp({
         ['save-code', 'confirm-code'].includes(target)
       ) {
         setTyped('');
-        setStep(target as Step);
-        return true;
+        return owner.visit(target);
       }
       return false;
     },
     close,
   });
   useEffect(() => {
-    void inspectLocalStartup(slotId, { signal: life.current.signal })
-      .then((state) => {
-        if (!life.current.signal.aborted) setStep(state.kind === 'fresh' ? 'start' : 'unlock');
-      })
-      .catch((cause) => {
-        if (!life.current.signal.aborted) {
-          setStep('unlock');
-          setError(String(cause));
-        }
-      });
+    void owner.command({ command: 'inspect' }).catch((cause) => {
+      if (!life.current.signal.aborted) setError(String(cause));
+    });
     const hide = () => {
-      void close();
-    };
-    const show = (event: PageTransitionEvent) => {
-      if (event.persisted) void close().then(() => navigate.current('/accounts'));
-    };
+        void close();
+      },
+      show = (event: PageTransitionEvent) => {
+        if (event.persisted) void close().then(() => navigate.current('/accounts'));
+      };
     window.addEventListener('pagehide', hide);
     window.addEventListener('pageshow', show);
     return () => {
@@ -146,7 +133,7 @@ export function AccountRecoveryApp({
       window.removeEventListener('pageshow', show);
       void close();
     };
-  }, [slotId, close]);
+  }, [owner, close]);
   useEffect(() => {
     if (!opened) return;
     return opened.editor.workspace.onStatus((status) => {
@@ -159,32 +146,9 @@ export function AccountRecoveryApp({
       void close().then(() => navigate.current('/accounts'));
     });
   }, [opened, close]);
-  const registerEditor = useCallback((destroy: () => void) => {
-    life.current.signal.throwIfAborted();
-    editors.current.add(destroy);
-    return () => {
-      editors.current.delete(destroy);
-    };
-  }, []);
+  const registerEditor = owner.registerEditor;
   const open = async () => {
-    const fresh = opening.current;
-    opening.current = undefined;
-    const result = await openRecoveredWorkspace(
-      config,
-      slotId,
-      heldCode.current,
-      life.current.signal,
-      fresh,
-    );
-    liveEditor.current = result;
-    if (life.current.signal.aborted) {
-      result.login.close();
-      await result.editor.workspace.close();
-      return;
-    }
-    setAccountId(result.accountId);
-    setOpened(result);
-    setStep('editing');
+    await owner.command({ command: 'openWriting' });
   };
   const leave = () => {
     void close().then(() => onNavigate('/accounts'));
@@ -202,7 +166,7 @@ export function AccountRecoveryApp({
         onShowDevices={() => setStep('devices')}
         accountWorkspace
         accountId={opened.accountId}
-        networkLogin={opened.login}
+        {...(opened.login ? { networkLogin: opened.login } : {})}
         registerEditor={registerEditor}
         onLock={leave}
         onSwitchAccount={leave}
@@ -256,13 +220,7 @@ export function AccountRecoveryApp({
               disabled={!!busy}
               onClick={() =>
                 run('Choose your existing account passkey…', async () => {
-                  const next = await beginLostDeviceRecovery(config, {
-                    slotId,
-                    signal: life.current.signal,
-                  });
-                  early.current = next;
-                  setAccountId(next.accountId);
-                  setStep('recovery-code');
+                  await owner.command({ command: 'begin' });
                 })
               }
             >
@@ -277,9 +235,7 @@ export function AccountRecoveryApp({
               submit(
                 e,
                 async (value) => {
-                  const code = await early.current!.prepare(value);
-                  setGenerated(code);
-                  setStep('save-code');
+                  await owner.command({ command: 'prepare', value });
                 },
                 'Verifying and recovering accepted writing…',
               )
@@ -309,7 +265,15 @@ export function AccountRecoveryApp({
             <pre className="local-generated-code" aria-label="Generated unlock code">
               {generated}
             </pre>
-            <button onClick={() => setStep('confirm-code')}>I saved my unlock code</button>
+            <button
+              onClick={() => {
+                void owner
+                  .command({ command: 'savedCode' })
+                  .catch((cause) => setError(String(cause)));
+              }}
+            >
+              I saved my unlock code
+            </button>
           </>
         )}
         {(step === 'confirm-code' || step === 'unlock') && (
@@ -319,23 +283,10 @@ export function AccountRecoveryApp({
               submit(
                 e,
                 async (value) => {
-                  if (step === 'confirm-code') {
-                    const result = await early.current!.confirm(value);
-                    opening.current = result.opening;
-                    heldCode.current = value;
-                    setGenerated('');
-                    setStep('review');
-                  } else {
-                    const result = await resumeLostDeviceRecovery(
-                      config,
-                      slotId,
-                      value,
-                      life.current.signal,
-                    );
-                    heldCode.current = value;
-                    if ('accountId' in result) setAccountId(result.accountId!);
-                    setStep(result.stage === 'installed' ? 'installed' : 'review');
-                  }
+                  await owner.command({
+                    command: step === 'confirm-code' ? 'confirm' : 'unlock',
+                    value,
+                  });
                 },
                 step === 'confirm-code'
                   ? 'Saving encrypted recovery progress…'
@@ -378,14 +329,7 @@ export function AccountRecoveryApp({
               disabled={!!busy}
               onClick={() =>
                 run('Recovering and opening your writing…', async () => {
-                  await finishLostDeviceRecovery(
-                    config,
-                    slotId,
-                    heldCode.current,
-                    life.current.signal,
-                  );
-                  setStep('installed');
-                  await open();
+                  await owner.command({ command: 'recover' });
                 })
               }
             >

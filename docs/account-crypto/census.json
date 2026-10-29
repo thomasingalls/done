@@ -1617,7 +1617,7 @@
     },
     {
       "path": "src/crdt/workerLostDeviceRecovery.ts",
-      "sha256": "337d609440abb0d4dfcf94ef90375d8f02ac81c3dfeabac8f46806c9ec02709c"
+      "sha256": "e18518ca4dfdf04e85e1b5083c9229d5f6820d746c18ca3b80944427cecd3c13"
     },
     {
       "path": "src/crdt/workerNativeLifetime.ts",
@@ -1809,7 +1809,7 @@
     },
     {
       "path": "src/ui/AccountRecoveryApp.tsx",
-      "sha256": "15b6fdb2c06249daea73be535b72b7bbadb754603ab26dfa5d98bee604c5f4e9"
+      "sha256": "b8ea02c9f470222fd4c75e25197d05b648d256014c6b249a453fdae8e51fcf26"
     },
     {
       "path": "src/ui/AccountSetupApp.tsx",
@@ -1945,7 +1945,7 @@
     },
     {
       "path": "src/ui/accountRecoveryWorker.ts",
-      "sha256": "a38cceb737f064ae388ceda617c04e0b19f82f984253c5b3d237d96f4bc13fc6"
+      "sha256": "f9aaa908274a9a807163e560cea25722ccc1973519d18457af0838acaf815298"
     },
     {
       "path": "src/ui/ceremonyNavigation.tsx",
