@@ -5989,3 +5989,14 @@ evidence. Rendering frames are also unrelated to lease/storage truth. Preserve o
 schedules, faults and source identities, including the executed observer helper. The separate frozen
 probe did not reproduce absent RAF; do not promote that hypothesis into a proved historical cause.
 Complete original admission/journal/lifetime campaigns pass after this change. [Phase173](performance-experiments/2026-10-28-worker-owner/phase173/README.md).
+
+
+## 2026-10-29 — Rebind Window journal context under its actual final admission head
+
+Worker ownership must not leave Window source-capture epoch or journal era fixed at opening. A genuine
+carrier-bound journal-flushed fence holds input through replacement; existing canonical/Undo stays
+owned by the original admission queue. Captured Worker material still requires native authentication
+and fresh authority checks; the fence and private32-byte subkey equality fingerprint do not replace
+those proofs or authorize new account scope. Hashing only the journal subkey avoids retaining a raw
+JS key copy after WASM import; the hash stays private and is erased on close. Authorized mismatch
+aborts the root, with drain outside its own callback. [Phase174](performance-experiments/2026-10-28-worker-owner/phase174/README.md).

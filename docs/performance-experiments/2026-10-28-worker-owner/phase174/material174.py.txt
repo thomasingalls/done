@@ -1,0 +1,45 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/windowAccountMirror.ts');s=p.read_text();types=s[s.index('export interface AccountMirrorOpening'):s.index('export interface AccountMirrorWorker')];helpers=s[s.index('const fail ='):s.index('/** Trusted composition seam')].replace('const fail =','export const mirrorOpeningError =').replace('throw fail()','throw mirrorOpeningError()').replace('function eraseIncoming(', 'export function eraseIncomingOpening(')
+a=s.index('    fields(\n      input,');b=s.index('    // Register erasure',a);capture=s[a:b].replace('    key = ordinaryKey(input.key);','    key = ordinaryKey(input.key);').replace('identity.id !== scope.principalId','principalId !== scope.principalId').replace('throw fail()','throw mirrorOpeningError()')
+a=s.index('    for (const pair of input.previous)');b=s.index('    eraseIncoming(input);',a);rest=s[a:b].replace('throw fail()','throw mirrorOpeningError()')
+text="""/** Consume only domain-separated journal subkeys from the actual authenticated Worker. */
+import type { ContentIdentity } from './contentRecord';
+import { parseJournalEra, type JournalBinding } from './journalEra';
+import type { CaptureRoute } from './sourceCapture';
+import { requireWindowAccountCohort, type WindowAccountCohort } from './accountWorkerCohort';
+import type { Bytes } from './custodyCrypto';
+
+"""+types+helpers+"""
+export interface AccountMirrorMaterial {
+  readonly scope: ContentIdentity;
+  readonly route: Omit<CaptureRoute, 'history'>;
+  readonly generation: number;
+  readonly dbName: string;
+  readonly key: Bytes;
+  readonly previous: Map<number, Bytes>;
+  readonly binding: JournalBinding | undefined;
+}
+export function eraseMirrorMaterial(value: AccountMirrorMaterial) {
+  value.key.fill(0);
+  for (const key of value.previous.values()) key.fill(0);
+  value.previous.clear();
+}
+/** Entirely synchronous capture before the caller's first await; no native verification credit. */
+export function takeAccountMirrorOpening(cohort: WindowAccountCohort, input: AccountMirrorOpening, principalId: string): AccountMirrorMaterial {
+  const retained = new Map<number, Bytes>();
+  let key: Bytes | undefined;
+  try {
+    requireWindowAccountCohort(cohort);
+"""+capture+rest+"""    cohort.write(() => {});
+    return { scope, route, generation, dbName, key, previous: retained, binding };
+  } catch (cause) {
+    key?.fill(0);
+    for (const previous of retained.values()) previous.fill(0);
+    retained.clear();
+    throw cause;
+  } finally {
+    eraseIncomingOpening(input);
+  }
+}
+"""
+Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountMirrorMaterial.ts').write_text(text)

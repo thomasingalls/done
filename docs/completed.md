@@ -17485,3 +17485,27 @@ recorded; this is new passing closure, not deletion of inconvenient evidence or 
 new files required/uncredited:951/405blocked. Return to mirror hot route/era rebinding, then real worker
 receive/maintenance and ceremony/application integration. No latency measurement, gate change, service
 automation, app activation, preview, real index/signing/push or release work. Append before owned status.
+
+
+## 2026-10-29 — Phase174: preserve Window admission through verified context rebinding
+
+Add an internal controller and synchronous closed-schema material capture. Rebind only under this
+carrier's live journal-flushed FIFO head, fixing scope/root/database/incarnation/credential and refusing
+regressing generation/epoch/era or missing bindings. Refresh budget and replace codec/context before
+input resumes, retaining the original canonical/Undo. Check same-generation subkey equality with a
+private hash, erase JS subkeys after WASM import, and abort/drain uncertain authorized transitions.
+Public workspace gains no internal capabilities; mirror publication batching matches the original.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase174/README.md).
+
+All original guarded I/O/task/schema/scope/key/binding checks and14old test/assertion bodies remain
+AST-identical; controlled fixture setup is shared.13new rebind cases pass, and deliberately retaining
+the old era binding fails the exact original pairing check. Full2331unit cases/one existing skip,
+98metadata, type/lint and11rebuilt real-account Worker/page walkthroughs pass.215built bodies match,
+no transforms/SAB; eleven owned containers absent. Retain new fixture unused-import and ES2024 API
+type errors, correcting fixtures without changing the ES2022 target. Actual native maintenance
+transition integration remains next; controlled rebind cases do not claim that evidence.
+
+432sources retain198domain assignments; all old obligations remain exact, newtestrequired/uncredited:
+952/406blocked. Existing16ms/2.5s/all-marker/30s targets unchanged/unmeasured. No default app activation,
+service automation, preview, real index/signing/push or release work. Append before owned status and
+freeze174 after173, then continue actual Worker maintenance, receive/sync and application integration.

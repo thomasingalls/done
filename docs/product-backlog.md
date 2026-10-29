@@ -126,23 +126,21 @@ large bootstrap and integrate actual Goals/joined/receive/maintenance paths befo
 input/peer acceptance. No reported-stall closure or performance credit; service automation stays off.
 
 **Authorized continuation,2026-10-29:** complete the worker conversion in bounded phases and sequential
-patches, then measure the unchanged performance targets. [Phase167](performance-experiments/2026-10-28-worker-owner/phase167/README.md)
-adds the scoped asynchronous encrypted-journal endpoint and bounded bidirectional channel (23new,
-51focused cases). [Phase168](performance-experiments/2026-10-28-worker-owner/phase168/README.md) connects
-the actual native Account worker without shared memory or source transforms:2289unit cases/one
-existing skip,26native runtime cases and eight actual-account cases pass. The long combined journal
-campaign retains unresolved observer timeouts, with scoped fault controls passing. Default app
-execution is still on the page. [Phase169](performance-experiments/2026-10-28-worker-owner/phase169/README.md) removes the runtime
-import cycle with unchanged native lifetime bodies and passing rebuilt native/account cases. [Phase170](performance-experiments/2026-10-28-worker-owner/phase170/README.md) bounds activity
-delivery and routes existing lifecycle consumers through fixed worker-aware ports. Full2300unit cases/
-one existing skip and28native cases pass. [Phase171](performance-experiments/2026-10-28-worker-owner/phase171/README.md) extracts the actual
-workspace port with unchanged original coordinator/factory bodies and passing real account/page
-checks. [Phase172](performance-experiments/2026-10-28-worker-owner/phase172/README.md) adds actual queue-head
-journal fences with83focused cases and deliberate fault sensitivity. Its full native admission run
-retains fixture-observer timeouts after15ordinary cases pass; isolate that observer issue next, then
-continue hot route/era rebinding, worker receive handoffs, fresh ceremony ownership and app routes.
-Raw messages/captures confer no verification authority; final changes retain the Window admission
-fence. This supersedes the original discussion-only status above; no release preparation.
+patches, then measure unchanged16ms input/2.5s peer/all-marker/30s targets. Through [174](performance-experiments/2026-10-28-worker-owner/phase174/README.md),
+the actual authenticated dedicated-worker owner, scoped async journal transport, original admitted
+Window mirror, native lifetime fences, bounded advisory activity and safe hot context rebinding are
+implemented internally. Default application execution is still on the page. Full2331unit cases/one
+existing skip and11rebuilt real-account Worker/page cases pass; controlled rebind tests do not replace
+actual native maintenance integration, which is next. [173](performance-experiments/2026-10-28-worker-owner/phase173/README.md)
+repairs state observation with unchanged original assertions/deadlines; complete admission/journal/
+lifetime campaigns and every fault control pass. Earlier failed attempts remain recorded.
+
+Next connect actual native maintenance to the Window fence/rebind, then async receive/sync, fresh
+ceremony ownership, all application/Local routes and offline artifact integration. Only then run the
+original performance workloads. Data messages, queue fences and cached snapshots confer no native
+verification authority. Preserve synchronous sealed input, actual native final checks and security
+boundaries. Service history automation stays off; no preview/commit/push/release work is authorized
+by this continuation. These implementation phases supersede the original discussion-only status.
 
 ## UX follow-ups and retained implementation context
 
