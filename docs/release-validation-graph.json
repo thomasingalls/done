@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 584,
-    "requiredTestFiles": 578,
+    "testFiles": 585,
+    "requiredTestFiles": 579,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9810,6 +9810,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/accountWorkspacePort.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountWorkspacePort.test.ts"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/admissionQueue.test.ts",
       "status": "required",
       "invocation": {
@@ -16009,7 +16024,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "ec61ae11e3873300f67ad8e09fb4274bf7cb9283ae2068428f99023f0fa09a8d"
+      "sha256": "a3f1c62d12c66fb6f7fb7c0b281895b79a216d11e4f957cd9ea1b8cbbc640ff7"
     },
     {
       "path": "package.json",
@@ -19150,6 +19165,10 @@
     {
       "path": "test/accountWorkerRecoveryStream.test.ts",
       "sha256": "47389641589ef6f55101ac7fe676fd73a9aa6cb6ef451b86bd412a701ae60b2c"
+    },
+    {
+      "path": "test/accountWorkspacePort.test.ts",
+      "sha256": "ed36ad5a748583242b589bc50a03e7175d9a6f3f3936f40e8b3934ae653ecaf3"
     },
     {
       "path": "test/admission/browser.mjs",

@@ -1,0 +1,64 @@
+from pathlib import Path
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=r/'src/crdt/accountReceive.ts';s=p.read_text();a=s.index('    const workspace = await createAdmittedWorkspace(');b=s.index("    if (options.signal?.aborted",a);block=s[a:b]
+# Move the original page factory intact, returning its actual internal queue capabilities.
+block=block.replace('    const workspace =','  const workspace =',1)
+new="""/** Internal composition port; native Account ownership and all verification stay outside the UI. */
+import { createAdmittedWorkspace, type AdmittedWorkspace } from './admittedWorkspace';
+import { createAdmissionOwner, type AdmissionCarrier, type OwnedReceiveQueue, type OwnedPreparedReceiveQueue } from './admissionQueue';
+import { accountBatchPolicy } from './accountBatchPolicy';
+import { accountLedgerMode } from './accountLedgerMode';
+import { accountTextMode } from './accountTextMode';
+import type { AccountWorkspaceOptions } from './accountWorkspace';
+
+export type AccountWorkspacePort = Pick<AdmittedWorkspace, 'status' | 'whenDurable' | 'subscribe' | 'onStatus' | 'outgoing' | 'close'>;
+export interface AccountWorkspaceQueues<W extends AccountWorkspacePort> {
+  readonly workspace: W;
+  readonly enqueue: OwnedReceiveQueue;
+  readonly prepare: OwnedPreparedReceiveQueue;
+}
+export type AccountWorkspaceFactory<W extends AccountWorkspacePort> = (
+  carrier: AdmissionCarrier,
+  deviceId: string,
+  options: AccountWorkspaceOptions,
+) => Promise<AccountWorkspaceQueues<W>>;
+
+/** Existing page composition. No dummy workspace, alternative canonical document or queue. */
+export const createPageAccountWorkspace: AccountWorkspaceFactory<AdmittedWorkspace> = async (carrier, deviceId, options) => {
+  let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
+  const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
+  const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
+"""+block+"""  return { workspace, enqueue, prepare };
+};
+"""
+(r/'src/crdt/accountWorkspacePort.ts').write_text(new)
+s=s[:a]+"    const { workspace, enqueue, prepare } = await createWorkspace(carrier, deviceId, options);\n"+s[b:]
+s=s.replace("import { createAdmittedWorkspace } from './admittedWorkspace';", "import { createPageAccountWorkspace, type AccountWorkspacePort, type AccountWorkspaceFactory } from './accountWorkspacePort';")
+s=s.replace("  createAdmissionOwner,\n",'').replace("  type OwnedReceiveQueue,\n",'').replace("  type OwnedPreparedReceiveQueue,\n",'').replace("  let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;\n",'')
+s=s.replace('async function openReceivingWorkspace(\n  input: AccountWorkspaceOptions,','async function composeReceivingWorkspace<W extends AccountWorkspacePort>(\n  input: AccountWorkspaceOptions,\n  createWorkspace: AccountWorkspaceFactory<W>,',1)
+pos=s.index('/** Storage-only surface retained')
+# The worker-only factory retains actual authentication and admits no substitute native manager.
+s=s[:pos]+"""/** Internal worker composition. Its workspace adapter retains the real Window queue; no UI caller
+ * can use this factory outside an installed, authenticated native worker lifetime. */
+export function openAccountWorkerReceivingWorkspace<W extends AccountWorkspacePort>(
+  input: AccountWorkspaceOptions,
+  factory: AccountWorkspaceFactory<W>,
+  joined = false,
+) {
+  if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
+  return composeReceivingWorkspace(input, factory, undefined, false, joined);
+}
+
+"""+s[pos:]
+pos=s.index('/** Private public-facing surfaces')if'/** Private public-facing surfaces'in s else s.index('export const openOwnedReceivingAccountWorkspace')
+# Keep old private wrapper/callers and concrete AdmittedWorkspace inference.
+s=s[:pos]+"""function openReceivingWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken?: AccountAccess,
+  composed = false,
+  joined = false,
+) {
+  return composeReceivingWorkspace(input, createPageAccountWorkspace, operatorToken, composed, joined);
+}
+
+"""+s[pos:]
+p.write_text(s)

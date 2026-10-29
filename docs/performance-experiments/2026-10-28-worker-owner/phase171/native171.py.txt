@@ -1,0 +1,31 @@
+from pathlib import Path
+import shutil
+old=Path('/private/tmp/done-worker-conversion-20261028/native169');r=old.with_name('native171');r.mkdir();(r/'lab').mkdir()
+for f in(old/'lab').iterdir():
+ if f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules'),target_is_directory=True)
+for name in ['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in [r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))
+p=r/'lab/main.mjs';s="import{openOwnedReceivingAccountWorkspace}from'./src/crdt/accountReceive.ts';\n"+p.read_text();s+='''
+function createPage(spec,fault='none'){
+ let workspace;const trace={pageFactory:true,passkeyStarted:false};
+ const opening=(async()=>{
+ const account=await openOwnedReceivingAccountWorkspace({...spec,signal:window.__testStop.signal,assertPasskey:async request=>{
+ trace.passkeyStarted=true;const id=Uint8Array.from(atob(request.credentialId.replaceAll('-','+').replaceAll('_','/')),v=>v.charCodeAt(0));const c=await navigator.credentials.get({publicKey:{rpId:request.rpId,challenge:request.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id}]},signal:request.signal});const q=c.response,signature=new Uint8Array(q.signature);if(fault==='bad-passkey')signature[0]^=1;return{credentialId:c.id,authenticatorData:new Uint8Array(q.authenticatorData),clientDataJSON:new Uint8Array(q.clientDataJSON),signature,userHandle:q.userHandle?new Uint8Array(q.userHandle):null};
+ }});workspace=account.workspace;return{master:workspace.text({kind:'master'}).read().text,entries:workspace.exportEntries()};})();
+ return {opening,trace,get workspace(){return workspace},read:()=>workspace.text({kind:'master'}).read().text,flush:()=>workspace.whenDurable(),close:()=>workspace.close(),input(text){const field=workspace.text({kind:'master'}),before=field.read().text,ticket=field.input({name:'insert',text},{ranges:[{anchor:before.length,head:before.length}],main:0});return{before,after:field.read().text,ticket}}};
+}
+window.__mirrorLab.createPage=createPage;
+''';p.write_text(s)
+p=r/'harness/test/account-continuation-lab/worker-owner.spec.ts';s=p.read_text();s+='''
+test('extracted page composition retains actual authentication, admission, Undo and shipping reopen',async()=>laboratory('page-composition',async(p,r)=>{
+ const ready=await p.evaluate(async()=>{(window as any).b=(window as any).__mirrorLab.createPage((window as any).spec);return(window as any).b.opening});expect(Object.fromEntries(ready.entries.map((v:any)=>[v.path,v.content]))).toEqual(account.archive);r.guards.originalAccountRecovery=true;
+ await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>{});r.input=await input(p,'\\nExtracted page factory.');expect(r.input.after).toBe(ready.master+'\\nExtracted page factory.');expect(r.input.journals).toBeGreaterThan(0);await p.evaluate(()=>(window as any).input.ticket.accepted);
+ await p.evaluate(()=>(window as any).b.workspace.command({kind:'undo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master);await p.evaluate(()=>(window as any).b.workspace.command({kind:'redo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(r.input.after);r.guards.originalAdmissionAndUndo=true;
+ await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>(window as any).b.close());await empty(p);r.guards.nativeLifetimeClosed=true;await shipping(p,{...account.archive,'master.md':r.input.after},r);
+}));
+for(const fault of['bad-passkey','wrong-code'])test('extracted page composition refuses '+fault,async()=>laboratory('page-'+fault,async(p,r)=>{
+ if(fault==='wrong-code')await p.evaluate(()=>(window as any).spec.code='incorrect-disposable-code');let refused=false;try{await p.evaluate(async fault=>{(window as any).b=(window as any).__mirrorLab.createPage((window as any).spec,fault);return(window as any).b.opening},fault)}catch{refused=true}expect(refused).toBe(true);await empty(p);r.guards.originalCredentialRefusal=true;await shipping(p,account.archive,r);
+}));
+''';p.write_text(s)

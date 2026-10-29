@@ -21,7 +21,6 @@ import { createAuthorityAuthentication } from './accountAuthority';
 import { authenticateJoinedAccountRows } from './joinedAccount';
 import { authenticatePromotionRows } from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
-import { accountTextMode } from './accountTextMode';
 import {
   MaintenanceInterrupted,
   isMaintenanceTask,
@@ -195,14 +194,12 @@ import {
 } from './sourceCapture';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
+import { AdmissionError, MAX_PENDING_BYTES } from './admissionQueue';
 import {
-  createAdmissionOwner,
-  AdmissionError,
-  MAX_PENDING_BYTES,
-  type OwnedReceiveQueue,
-  type OwnedPreparedReceiveQueue,
-} from './admissionQueue';
-import { createAdmittedWorkspace } from './admittedWorkspace';
+  createPageAccountWorkspace,
+  type AccountWorkspacePort,
+  type AccountWorkspaceFactory,
+} from './accountWorkspacePort';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
 const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
@@ -2849,6 +2846,17 @@ export function openAccountWorkerStore(
   return openAccountReceiveOwner(input, principalId, () => true, false, joined);
 }
 
+/** Internal worker composition. Its workspace adapter retains the real Window queue; no UI caller
+ * can use this factory outside an installed, authenticated native worker lifetime. */
+export function openAccountWorkerReceivingWorkspace<W extends AccountWorkspacePort>(
+  input: AccountWorkspaceOptions,
+  factory: AccountWorkspaceFactory<W>,
+  joined = false,
+) {
+  if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
+  return composeReceivingWorkspace(input, factory, undefined, false, joined);
+}
+
 /** Storage-only surface retained for independent conformance and preparation. */
 export async function openOwnedAccountReceiveStore(input: AccountStartupOptions) {
   const { api, prepareGroup, receiveGroup } = await openAccountReceiveOwner(input);
@@ -2861,8 +2869,9 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
   });
 }
 
-async function openReceivingWorkspace(
+async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
   input: AccountWorkspaceOptions,
+  createWorkspace: AccountWorkspaceFactory<W>,
   operatorToken?: AccountAccess,
   composed = false,
   joined = false,
@@ -2910,7 +2919,6 @@ async function openReceivingWorkspace(
   );
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
-  let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
   let removingLocalHistory = false;
   let automaticRetention: ReturnType<typeof createAutomaticLocalRetention> | undefined;
   let automaticHistory: ReturnType<typeof createAutomaticServiceHistory> | undefined;
@@ -2918,38 +2926,7 @@ async function openReceivingWorkspace(
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
-    const workspace = await createAdmittedWorkspace(
-      (config) =>
-        createAdmissionOwner(
-          carrier,
-          {
-            ...config,
-            ...(batching.localFlush ? { flushBatch: batching.localFlush } : {}),
-            ...(import.meta.env?.['VITE_ACCOUNT_BACKGROUND_FLUSH'] !== '0'
-              ? { backgroundFlush: true as const }
-              : {}),
-            ...(batching.publication ? { publishReceivePage: true } : {}),
-          },
-          (receive, prepared) => {
-            enqueue = receive;
-            prepare = prepared;
-          },
-        ),
-      {
-        identity: options.identity,
-        deviceLabelId: deviceId,
-        captureSources: true,
-        suppressEmptySources: true,
-        validateReceive: () => {
-          throw Error('Use the owned signed-page receiver');
-        },
-        ...(options.today ? { today: options.today } : {}),
-        ...(options.signal ? { signal: options.signal } : {}),
-      },
-      ledgerMode === 'incremental'
-        ? accountTextMode(import.meta.env?.['VITE_ACCOUNT_TEXT_ADMISSION'])
-        : 'reference',
-    );
+    const { workspace, enqueue, prepare } = await createWorkspace(carrier, deviceId, options);
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
       throw Error('Account opening was cancelled');
@@ -3623,6 +3600,21 @@ async function openReceivingWorkspace(
 }
 
 /** Private manual v9 editor/receive surface, without automatic network work. */
+function openReceivingWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken?: AccountAccess,
+  composed = false,
+  joined = false,
+) {
+  return composeReceivingWorkspace(
+    input,
+    createPageAccountWorkspace,
+    operatorToken,
+    composed,
+    joined,
+  );
+}
+
 export const openOwnedReceivingAccountWorkspace = (input: AccountWorkspaceOptions) =>
   openReceivingWorkspace(input);
 /** Private polling receiver. Raw request/page operations remain internal to this composition. */

@@ -17422,3 +17422,25 @@ newtestrequired/uncredited:947/401blocked. Combined journal observer failure fro
 Default app still runs on the page; continue actual admission/receive, maintenance and ceremonies.
 No performance measurement, gate change, service automation, preview, real index/signing/push or
 release preparation. Append before owned status and freeze sequential patch170 after169.
+
+
+## 2026-10-29 — Phase171: existing Account coordinator over a workspace port
+
+Extract the original admitted page factory and minimal workspace/status/durability port. Keep the
+entire coordinator body AST-identical except binding the factory result; the original factory call
+is identical and admissionQueue bytes stay unchanged. Add a worker-only composition seam behind
+actual runtime/native/account authentication, with default app execution still on the page.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase171/README.md).
+
+Four new/61focused cases and three real-account Chromium cases pass: actual code/passkey opening,
+sealed input/Undo/native close/exact shipping-reader reopen, corrupted genuine assertion refusal and
+wrong-code refusal.214built source bodies match, no transforms; three disposable containers absent.
+Type/lint/format and98metadata cases pass. Keep new fixture byte-type/wrapped-error expectations and
+unused-import failures. No old tests change.431sources retain198domain assignments; source-line
+references only. All old obligations stay exact; new testrequired/uncredited:948/402blocked.
+
+Next add actual queue-head journal fences before hot route/era rebind and worker receive handoffs.
+A previous external durability barrier can be overtaken by input; existing owned receive itself does
+not flush before its callback. Preserve original checks and synchronous admission. Prior journal
+observer failure remains unresolved. No performance claim, gate change, service automation, preview,
+real index/signing/push or release work. Append before owned status; freeze171 after170.
