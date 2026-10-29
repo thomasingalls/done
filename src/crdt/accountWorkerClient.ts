@@ -1,3 +1,4 @@
+import { createWindowPasskey } from './workerPasskeyBridge';
 import { createWindowAccountSession } from './accountSessionBridge';
 import { createWindowWorkspaceQueues } from './windowWorkspaceQueues';
 import { forwardWindowWorkspace, workspaceSchedulingStatus } from './workspaceBridge';
@@ -31,7 +32,6 @@ import type { AccountMirrorOpening } from './windowAccountMirror';
 import type { ContentInput } from './contentRecord';
 import type { ContentReceipt } from './contentStore';
 import type { JournalFlushReceipt } from './journalStore';
-import type { LocalPasskeyRequest } from './accountAccess';
 
 type WorkerReceiveReply = {
   id: number;
@@ -238,6 +238,8 @@ export async function openAccountWorkerSession(
     cohort.disposeWith(activityForwarder.close);
     const postActivity = (event: Event) =>
       activityForwarder.notify(event.type as WorkerActivityKind);
+    const prompts = createWindowPasskey(assertPasskey, cohort.signal, () => cohort.write(() => {}));
+    cohort.disposeWith(prompts.close);
     channel = createWorkerChannel(
       ports.port1,
       cohort.ticket.incarnation,
@@ -339,13 +341,8 @@ export async function openAccountWorkerSession(
           if (value.prefix !== journal.prefix) throw Error('Journal prefix changed');
           return journal.remove(value.entries);
         },
-        passkey: async (value) => {
-          cohort.write(() => {});
-          const request = value as LocalPasskeyRequest;
-          const assertion = await assertPasskey({ ...request, signal: cohort.signal });
-          cohort.write(() => {});
-          return structuredClone(assertion);
-        },
+        passkey: prompts.prompt,
+        passkeyCancel: prompts.cancel,
       },
       () => {
         if (cohort.state === 'active') void cohort.close().catch(() => {});

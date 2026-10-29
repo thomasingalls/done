@@ -520,3 +520,10 @@ controlled and five real Worker checks. Original jitter regression repaired in t
 native/security/scheduling checks remain. Continue cancellation, terminal outcomes, resumable work,
 Local/ceremony lifetimes and offline/default activation before performance acceptance.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase185/README.md).
+
+
+**Phase186 — scoped passkey cancellation:** independent reconnect cancellation no longer depends
+on closing the editor; late assertions are rejected and erased. Controlled fault sensitivity and six
+actual Worker checks pass. Original native verification retained. Continue remaining UI/configuration,
+resumable, Local/ceremony and offline/default boundaries before acceptance.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase186/README.md).

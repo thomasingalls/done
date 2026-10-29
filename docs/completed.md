@@ -17637,3 +17637,13 @@ format checks pass. Native checks caught fractional retry deadlines refused by t
 original-jitter regression fails before/pass after. Five actual Worker checks now pass including
 sign-out and original cold read; both native runs retained. Default Page, no acceptance claim.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase185/README.md).
+
+
+## 2026-10-29 — phase186 scoped Worker passkey cancellation
+
+Forward the original independent proof cancellation through one scoped Window prompt, rejecting
+late results and retaining original Worker nonce/signature verification.35 focused/98 metadata/
+type/lint/format pass; six native authentication/refusal/publication/session cases pass. A deliberate
+missing-cancel fault fails both targeted regressions. Fault-fixture failures retained and qualified.
+Default Page and all performance/security gates unchanged.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase186/README.md).

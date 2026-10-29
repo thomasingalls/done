@@ -1,3 +1,4 @@
+import { createWorkerPasskey } from './workerPasskeyBridge';
 import { publishAccountSession, executeAccountSessionCommand } from './accountSessionBridge';
 import { followWorkerNativeLifetime } from './workerNativeLifetime';
 import { createWorkerAccountComposition } from './workerAccountComposition';
@@ -13,10 +14,8 @@ import { installAccountWorkerRuntime, type WorkerActivity } from './accountWorke
 import type { AccountWorkerTicket } from './accountWorkerCohort';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 import type { ContentInput } from './contentRecord';
-import type { LocalPasskeyRequest } from './accountAccess';
 import { copyAccountMirrorRecovery } from './accountMirrorRecovery';
 import { createAccountRecoveryStream } from './accountWorkerRecoveryStream';
-import type { SlotAssertion } from '../account/slotUnlock';
 
 type Composed = Awaited<
   ReturnType<(typeof import('./accountReceive'))['openAccountWorkerReceivingWorkspace']>
@@ -107,16 +106,7 @@ self.addEventListener('message', (event: MessageEvent) => {
     );
     live();
   };
-  const passkey = async (request: LocalPasskeyRequest) => {
-    live();
-    const value = await channel.request<SlotAssertion>('passkey', {
-      rpId: request.rpId,
-      credentialId: request.credentialId,
-      challenge: request.challenge,
-    });
-    live();
-    return value;
-  };
+
   const startContext = (id: number, operation: () => Promise<ContextResult>) => {
     live();
     if (!owner || !prefix || baseline) throw Error('Worker context operation unavailable');
@@ -465,5 +455,16 @@ self.addEventListener('message', (event: MessageEvent) => {
   );
   const receives = createAccountWorkerReceive(() => owner, channel, live);
   const runtime = installAccountWorkerRuntime(m.ticket, channel, m.activity);
+  const passkey = createWorkerPasskey(
+    {
+      get closed() {
+        return channel.closed;
+      },
+      request: (method, value) => channel.request(method, value),
+    },
+    runtime.signal,
+    live,
+    () => channel.close(),
+  );
   self.postMessage({ v: 1, kind: 'accountBooted', owner: m.ticket.incarnation });
 });

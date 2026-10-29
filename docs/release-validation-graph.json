@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 602,
-    "requiredTestFiles": 596,
+    "testFiles": 603,
+    "requiredTestFiles": 597,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14242,6 +14242,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workerPasskeyBridge.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerPasskeyBridge.test.ts"
+        ]
+      },
+      "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerRuntimeBoundary.test.ts",
       "status": "required",
       "invocation": {
@@ -21200,6 +21215,10 @@
     {
       "path": "test/workerNativeLifetime.test.ts",
       "sha256": "b59aa8c8920ec985a19cf5ecc57d4907284f0fa704005c357343ee8d1d4c0298"
+    },
+    {
+      "path": "test/workerPasskeyBridge.test.ts",
+      "sha256": "14f25c6a8ce7928a24fba2c898efcf5915c8bd532ecd9ff2078ab0218ce418d2"
     },
     {
       "path": "test/workerRuntimeBoundary.test.ts",

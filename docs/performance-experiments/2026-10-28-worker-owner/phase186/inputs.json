@@ -1,0 +1,6 @@
+{
+  "src/crdt/workerPasskeyBridge.ts": "f492f1ed881db2f31d3418b52ababd9733e511b428a997c90f7a14b5f56580aa",
+  "src/crdt/accountOwner.worker.ts": "cdbb54b6954d89b4e19d2e5fda3a0b1445771e55640333e78a48e78a21596c5e",
+  "src/crdt/accountWorkerClient.ts": "6f6f9f8dfb6ec6dd2cd1a19de49e94df89d402ed8cde69ef9320058c441f8017",
+  "test/workerPasskeyBridge.test.ts": "14f25c6a8ce7928a24fba2c898efcf5915c8bd532ecd9ff2078ab0218ce418d2"
+}
