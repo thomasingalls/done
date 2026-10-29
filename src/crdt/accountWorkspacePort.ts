@@ -5,6 +5,7 @@ import {
   type AdmissionCarrier,
   type OwnedReceiveQueue,
   type OwnedPreparedReceiveQueue,
+  type OwnedJournalFenceQueue,
 } from './admissionQueue';
 import { accountBatchPolicy } from './accountBatchPolicy';
 import { accountLedgerMode } from './accountLedgerMode';
@@ -19,6 +20,7 @@ export interface AccountWorkspaceQueues<W extends AccountWorkspacePort> {
   readonly workspace: W;
   readonly enqueue: OwnedReceiveQueue;
   readonly prepare: OwnedPreparedReceiveQueue;
+  readonly journalFence: OwnedJournalFenceQueue;
 }
 export type AccountWorkspaceFactoryOptions = Pick<
   AccountWorkspaceOptions,
@@ -36,7 +38,9 @@ export const createPageAccountWorkspace: AccountWorkspaceFactory<AdmittedWorkspa
   deviceId,
   options,
 ) => {
-  let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
+  let enqueue!: OwnedReceiveQueue,
+    prepare!: OwnedPreparedReceiveQueue,
+    journalFence!: OwnedJournalFenceQueue;
   const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   const workspace = await createAdmittedWorkspace(
@@ -51,9 +55,10 @@ export const createPageAccountWorkspace: AccountWorkspaceFactory<AdmittedWorkspa
             : {}),
           ...(batching.publication ? { publishReceivePage: true } : {}),
         },
-        (receive, prepared) => {
+        (receive, prepared, fenced) => {
           enqueue = receive;
           prepare = prepared;
+          journalFence = fenced;
         },
       ),
     {
@@ -71,5 +76,5 @@ export const createPageAccountWorkspace: AccountWorkspaceFactory<AdmittedWorkspa
       ? accountTextMode(import.meta.env?.['VITE_ACCOUNT_TEXT_ADMISSION'])
       : 'reference',
   );
-  return { workspace, enqueue, prepare };
+  return { workspace, enqueue, prepare, journalFence };
 };

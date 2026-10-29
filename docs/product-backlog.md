@@ -137,8 +137,10 @@ import cycle with unchanged native lifetime bodies and passing rebuilt native/ac
 delivery and routes existing lifecycle consumers through fixed worker-aware ports. Full2300unit cases/
 one existing skip and28native cases pass. [Phase171](performance-experiments/2026-10-28-worker-owner/phase171/README.md) extracts the actual
 workspace port with unchanged original coordinator/factory bodies and passing real account/page
-checks. Next add queue-head journal fences, hot route/era rebinding and worker receive handoffs, then
-fresh ceremony ownership and application routes.
+checks. [Phase172](performance-experiments/2026-10-28-worker-owner/phase172/README.md) adds actual queue-head
+journal fences with83focused cases and deliberate fault sensitivity. Its full native admission run
+retains fixture-observer timeouts after15ordinary cases pass; isolate that observer issue next, then
+continue hot route/era rebinding, worker receive handoffs, fresh ceremony ownership and app routes.
 Raw messages/captures confer no verification authority; final changes retain the Window admission
 fence. This supersedes the original discussion-only status above; no release preparation.
 

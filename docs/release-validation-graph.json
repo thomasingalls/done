@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 585,
-    "requiredTestFiles": 579,
+    "testFiles": 586,
+    "requiredTestFiles": 580,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9825,6 +9825,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/admissionJournalFence.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/admissionJournalFence.test.ts"
+        ]
+      },
+      "declarations": 8,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/admissionQueue.test.ts",
       "status": "required",
       "invocation": {
@@ -19173,6 +19188,10 @@
     {
       "path": "test/admission/browser.mjs",
       "sha256": "80f02cff46167dbf5d46ae8e8caf2e3100461bab536dc632c2964f56fd5c6b4f"
+    },
+    {
+      "path": "test/admissionJournalFence.test.ts",
+      "sha256": "690f1a78975abbb3dc3539f1a0805329fce32939bbe1c968b60395d31e0948b9"
     },
     {
       "path": "test/admissionQueue.test.ts",

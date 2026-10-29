@@ -17444,3 +17444,23 @@ A previous external durability barrier can be overtaken by input; existing owned
 not flush before its callback. Preserve original checks and synchronous admission. Prior journal
 observer failure remains unresolved. No performance claim, gate change, service automation, preview,
 real index/signing/push or release work. Append before owned status; freeze171 after170.
+
+
+## 2026-10-29 — Phase172: genuine Window queue-head journal fence
+
+Add a private opaque capability bound to this live queue head/carrier after its actual journal flush.
+Preserve original admission/flush/receive logic; independent AST review confirms only a new internal
+closure and bind argument. Metadata-only effects use empty ordered handoff without publication.
+Eight new/83focused cases, type/lint and98metadata checks pass. Skip-only-final-flush fault fails the
+precise remaining-entry assertion. Retain earlier new-test timeouts: storage errors stay pending for
+retry; tests now verify that original contract and successful retry without early capability.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase172/README.md).
+
+Original native admission passes all15 ordinary cases and detects3faults; three later controls time
+out during initial fixture setup before assertions. Full combined campaign remains failed. Preserve
+all reports/deadlines; next isolate observer dependence on animation frames versus initialization
+failure, before relying on full native closure. Earlier journal observer errors remain open.
+431sources retain198domain assignments; only lines move. All old obligations stay exact, newtest
+required/uncredited:949/403blocked. No app activation, performance measurement/gate change, service
+automation, preview, real index/signing/push or release work. Continue mirror route/era rebinding and
+async worker handoffs after the observer slice; append before owned status and freeze172 after171.

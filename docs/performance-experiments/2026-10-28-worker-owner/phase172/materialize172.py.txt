@@ -1,0 +1,9 @@
+from pathlib import Path
+import subprocess,shutil,json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');dest=r/'native-source172';assert not dest.exists();subprocess.run(['cp','-cR',str(r/'native-source168'),str(dest)],check=True)
+files=subprocess.check_output(['git','ls-files','-c','--others','--exclude-standard','-z'],cwd=repo).decode().rstrip('\0').split('\0')
+for name in files:
+ p=repo/name
+ if p.is_file()and not p.is_symlink():
+  q=dest/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,q)
+receipt={str(p.relative_to(repo)):hashlib.sha256(p.read_bytes()).hexdigest()for p in(repo/'src').rglob('*')if p.is_file()};assert all(hashlib.sha256((dest/n).read_bytes()).hexdigest()==h for n,h in receipt.items());(r/'172-native-source-copy.json').write_text(json.dumps({'directory':str(dest),'sourceFiles':receipt},indent=2)+'\n');print(dest)
