@@ -115,20 +115,22 @@ self.addEventListener('message', (event: MessageEvent) => {
           live();
           const result = await operation();
           live();
-          // The actual install task has settled; this fresh owned task cannot deadlock it.
-          const opening = await owner!.copyMirrorOpening();
-          const { binding, ...parts } = opening;
-          const material: AccountMirrorOpening = {
-            ...parts,
-            ...(binding ? { binding } : {}),
-            incarnation: m.ticket.incarnation,
-          };
-          state.material = material;
-          live();
-          state.phase = 'waiting';
-          state.ready.resolve({ id: state.id, result, opening: material });
-          await state.ack.promise;
-          live();
+          // The mutation task has settled. Its fresh final task copies narrow context directly,
+          // never queues copyMirrorOpening behind itself, and stays held through Window rebinding.
+          const finish = owner!.preparedPromotion();
+          if (!finish.acknowledgedWithContext) throw Error('Worker context handoff unavailable');
+          await finish.acknowledgedWithContext(async (context) => {
+            const material: AccountMirrorOpening = {
+              ...context,
+              incarnation: m.ticket.incarnation,
+            };
+            state.material = material;
+            live();
+            state.phase = 'waiting';
+            state.ready.resolve({ id: state.id, result, opening: material });
+            await state.ack.promise;
+            live();
+          });
         });
       } catch (cause) {
         state.ready.reject(cause);

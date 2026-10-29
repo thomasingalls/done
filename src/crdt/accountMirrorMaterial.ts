@@ -16,6 +16,7 @@ export interface AccountMirrorOpening {
   readonly binding?: JournalBinding;
   readonly route: Omit<CaptureRoute, 'history'>;
 }
+export type AccountMirrorContext = Omit<AccountMirrorOpening, 'incarnation'>;
 export const mirrorOpeningError = () =>
   new Error('Worker mirror opening is not bound to this live account.');
 const fields = (v: unknown, expected: string) => {

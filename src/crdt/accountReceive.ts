@@ -1,3 +1,5 @@
+import type { AccountMirrorContext } from './accountMirrorMaterial';
+import { eraseWorkerMessage } from './workerChannel';
 import { pageRuntimePorts } from './runtimePorts';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
 import { createAcknowledgedReceiveFinish } from './acknowledgedReceive';
@@ -1709,16 +1711,36 @@ async function openAccountReceiveOwner(
         await check(task);
         task.step(() => applied(apply));
       });
-    if (accountWorkerRuntime(options.slotId))
-      finish.acknowledged = createAcknowledgedReceiveFinish(
-        runCaptureTask,
+    if (accountWorkerRuntime(options.slotId)) {
+      const acknowledged = createAcknowledgedReceiveFinish<AccountMirrorContext>(
+        (work) =>
+          runCaptureTask((task, owned, route) =>
+            work(task, async () => {
+              const { binding, ...material } = await owned.copyMirrorJournalOpening(task);
+              return {
+                ...material,
+                ...(binding ? { binding } : {}),
+                route: {
+                  workspace: route.workspace,
+                  principal: route.principal,
+                  credential: route.credential,
+                  epoch: route.epoch,
+                  generation: route.generation,
+                },
+              };
+            }),
+          ),
         check,
         assertContext,
         () => applied(() => {}),
         () => {
           void carrier.close().catch(() => {});
         },
+        { dispose: eraseWorkerMessage },
       );
+      finish.acknowledged = acknowledged;
+      finish.acknowledgedWithContext = acknowledged.withContext;
+    }
     if (import.meta.env?.['VITE_ACCOUNT_IMMEDIATE_RECEIVE'] !== '0')
       finish.immediate = (attempt) =>
         checkFinalApply(check, assertContext, (permission) =>

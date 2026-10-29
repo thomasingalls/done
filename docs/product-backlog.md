@@ -143,7 +143,9 @@ account cases,2375 units/one skip pass; default execution is still Page.
 [178](performance-experiments/2026-10-28-worker-owner/phase178/README.md) preserves joined physical
 custody/logical Account scopes through actual native admission, Undo, era handoff and cold reopen.
 21 native cases and2384 units/one skip pass.
-Next original sync/workspace composition and fresh context handoff, resumable automatic preparation, fresh
+[179](performance-experiments/2026-10-28-worker-owner/phase179/README.md) copies fresh journal context
+inside the actual final task held through Window rebinding, with shared one-use acknowledgment.
+Next original sync/workspace composition and bounded scheduling hints, resumable automatic preparation, fresh
 ceremony ownership, all application/Local routes and offline artifact integration. Only then run the
 original performance workloads. Data messages, queue fences and cached snapshots confer no native
 verification authority. Preserve synchronous sealed input, actual native final checks and security

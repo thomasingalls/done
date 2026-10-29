@@ -118,6 +118,10 @@ export interface PreparedReceiveFinish {
   immediate?: (attempt: ImmediateReceiveAttempt) => Promise<boolean>;
   /** Worker-only: retain the real native checking task until asynchronous apply acknowledgment. */
   acknowledged?: import('./acknowledgedReceive').AcknowledgedReceiveFinish;
+  /** Same one-shot handoff, with narrow journal data copied inside the already-held native task. */
+  acknowledgedWithContext?: (
+    apply: (context: import('./accountMirrorMaterial').AccountMirrorContext) => Promise<void>,
+  ) => Promise<void>;
 }
 /** Private content-only preparation. stage transfers copies after durable readback; finish
  * rechecks owned authority inside the final FIFO job. It must not retain a storage task. */

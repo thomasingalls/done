@@ -17567,3 +17567,18 @@ explicit distinct-ID/enrollment assertions and an independent local Page baselin
 25 owned containers absent;224 emitted source bodies match.436sources/198domains,958 obligations/412
 unresolved; new test uncredited. Next original workspace/sync composition and fresh context handoff,
 then resumable preparation/ceremonies/Local/offline integration before unchanged performance gates.
+
+## 2026-10-29 — phase179: contextual handoff inside the held final native task
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase179/README.md). Ordinary/contextual
+acknowledgments share a one-use guard. Copy narrow journal material directly inside the actual fresh
+checking task; retain it through Window rebind ACK, then guard/apply completion and erase all copies.
+Baseline/authority handoffs use this path without queueing copyMirrorOpening behind themselves. Five
+new controlled cases preserve all7 old cases;2389 units/one skip pass before eraser consolidation,
+final62focused/98metadata/type/lint/format and7 affected actual-account cases pass. Final rebuilt
+source reruns3 primary/joined era/cancel cases;6 original native task cases pass.224 emitted bodies
+match;10 owned containers absent. Retain optional-binding type and shifted construction-line failures;
+line-only repair independently preserves domain homes. Native receive/Page branches remain unchanged
+outside Worker handoff.436sources/198domains,958 obligations/412 blocks exact, no new aggregate credit.
+Continue actual original workspace/sync composition and bounded hints before remaining ownership and
+unchanged performance gates; default Page remains, no preview/staging/signing/push/release/automation.

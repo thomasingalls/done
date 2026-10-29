@@ -9872,7 +9872,7 @@
           "test/acknowledgedReceive.test.ts"
         ]
       },
-      "declarations": 7,
+      "declarations": 12,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16156,7 +16156,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "b6d52ab4241aad80020562201b17129b030d79adf5e5f8369cd1b60bef0b5dcb"
+      "sha256": "ec61ae11e3873300f67ad8e09fb4274bf7cb9283ae2068428f99023f0fa09a8d"
     },
     {
       "path": "package.json",
@@ -19332,7 +19332,7 @@
     },
     {
       "path": "test/acknowledgedReceive.test.ts",
-      "sha256": "76dedc2d94032ad67b7d805cf7ead97feb846d340905777ac06e38c927b4c362"
+      "sha256": "c27f6378342e67240a3515fd4da0924b1605e31a745f96ea256c15c5c107e77b"
     },
     {
       "path": "test/admission/browser.mjs",
