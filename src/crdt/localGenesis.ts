@@ -24,7 +24,7 @@ import {
 } from './localGenesisStorage';
 import { contentCensus } from './startupClassification';
 import { deriveStoreName } from './storeName';
-import { journalCount } from './startupStorage';
+import { readJournalCount } from './startupStorage';
 import { journalPrefix } from './journalCodec';
 import { openOwnedWorkspace, startupRefusal, type WorkspaceStartupResult } from './ownedStartup';
 import { stopStartup, type StartupDisposition } from './startupState';
@@ -160,7 +160,10 @@ export const beginLocalGenesis = (
                   const name = await task.wait(() =>
                     deriveStoreName(scope.principalId, scope.workspaceId),
                   );
-                  if ((await contentCensus(task, name)) || journalCount(task, journalPrefix(name)))
+                  if (
+                    (await contentCensus(task, name)) ||
+                    (await readJournalCount(task, journalPrefix(name)))
+                  )
                     stopStartup('repair-required', 'fresh-name-retains-content');
                 },
               },

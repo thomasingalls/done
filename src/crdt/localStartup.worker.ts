@@ -1,8 +1,10 @@
-/** Read-only Local startup commands. No genesis, protection, clear, application doc or network owner. */
+/** Native Local startup/enrollment commands. No protection, clear, application doc or network owner. */
 import { createWorkerChannel, eraseWorkerMessage, type WorkerChannel } from './workerChannel';
 import { openCeremonyWorkerLifetime } from './ceremonyWorkerLifetime';
 import { installCeremonyEnvironment } from './ceremonyEnvironment';
-import { inspectLocalStartup, listLocalWorkspaces } from './localGenesis';
+import { inspectLocalStartup, listLocalWorkspaces, resumeLocalGenesis } from './localGenesis';
+import { createWorkerLocalGenesis } from './workerLocalGenesis';
+import { StartupError } from './startupState';
 import { openWriteSession } from './writeSession';
 import { readLocalClaim } from './localGenesisRecord';
 import { automaticCode } from './automaticOpening';
@@ -28,7 +30,8 @@ self.addEventListener('message', (event: MessageEvent) => {
     root: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>> | undefined,
     bootstrap: Promise<void> | undefined,
     closing: Promise<void> | undefined,
-    busy = false;
+    busy = false,
+    genesis: ReturnType<typeof createWorkerLocalGenesis> | undefined;
   const live = () => {
     if (!root || closing) throw Error('Local startup Worker unavailable');
     root.assertCurrent();
@@ -62,6 +65,29 @@ self.addEventListener('message', (event: MessageEvent) => {
     m.ticket.incarnation,
     {
       inspect: () => run(() => inspectLocalStartup(m.ticket.slotId, { signal: root!.signal })),
+      beginGenesis: (input) =>
+        run(async () => genesis!.begin(input as { id: number; automatic: boolean })),
+      confirmGenesis: (input) =>
+        run(() => genesis!.confirm(input as { id: number; code: string })).catch(
+          (cause: unknown) => {
+            if (cause instanceof StartupError) return cause.disposition;
+            throw cause;
+          },
+        ),
+      // Cancellation must reach the original enrollment even while confirmation owns native work.
+      cancelGenesis: (input) => {
+        live();
+        genesis!.cancel(input as { id: number });
+      },
+      resumeGenesis: (input) =>
+        run(async () => {
+          const code = (input as { code: string }).code;
+          if (typeof code !== 'string') throw Error('Local factor missing');
+          return resumeLocalGenesis(m.ticket.slotId, code, { signal: root!.signal });
+        }).catch((cause: unknown) => {
+          if (cause instanceof StartupError) return cause.disposition;
+          throw cause;
+        }),
       list: (input) =>
         run(async () => {
           const code = (input as { code: string }).code;
@@ -95,6 +121,8 @@ self.addEventListener('message', (event: MessageEvent) => {
   bootstrap = (async () => {
     root = await openCeremonyWorkerLifetime(m.ticket);
     installCeremonyEnvironment(root, channel, m.activity);
+    genesis = createWorkerLocalGenesis(m.ticket.slotId, root.signal);
+    root.beforeRelease(() => genesis!.close());
     root.signal.addEventListener('abort', () => channel.close(), { once: true });
     root.assertCurrent();
     self.postMessage({ v: 1, kind: 'startupBooted', owner: m.ticket.incarnation });

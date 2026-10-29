@@ -613,3 +613,9 @@ default conversion before unchanged gates.
 preservation pass in Chrome/Firefox; supervisor cannot substitute for storage owner. Continue genesis/
 resumption/protection then account ceremony/default/offline conversion before unchanged timing gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase199/README.md).
+
+
+**Phase200 — Worker Local genesis/resumption:** original code/factor and one-winner creation survive
+physical interruption and retained protected custody stays protected. Continue Local protection with
+safe original exclusive journal cleanup, account ceremonies and app/offline/default conversion before
+unchanged timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase200/README.md).

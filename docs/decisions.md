@@ -6129,3 +6129,11 @@ Short-lived native startup commands retain original shared/exclusive slot operat
 only owns anchor/member lifetime; original storage guards explicitly reject it. Share read-only key
 census/legacy grammar from one home, never synthesize Storage or send native authority over a port.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase199/README.md).
+
+
+## 2026-10-29 — preserve native Local enrollment and resumption across the worker port
+
+Keep original one-shot enrollment in Worker, return only display code/result data, retain same wrong-
+confirmation state and scope cancellation by monotone identity. A receipt never replaces fresh native
+claim/factor/census checks on open. Native commands retain original exclusive ownership and cleanup.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase200/README.md).

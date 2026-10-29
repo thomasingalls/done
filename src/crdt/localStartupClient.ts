@@ -1,10 +1,14 @@
-/** Window endpoint for fixed read-only Local startup commands; no factor/root persistence here. */
+/** Window endpoint for fixed native Local startup/enrollment commands; no factor/root persistence. */
 import { openWindowCeremonyCohort, requireWindowCeremonyCohort } from './accountWorkerCohort';
 import { createWorkerChannel, type WorkerChannel } from './workerChannel';
 import { countJournalEntries, countLegacyJournalEntries } from './startupStorage';
 import { watchWindowWorkerLifetime } from './windowWorkerLifetime';
 import { StartupError, type StartupDisposition } from './startupState';
-import type { listLocalWorkspaces } from './localGenesis';
+import type {
+  listLocalWorkspaces,
+  LocalGenesisReceipt,
+  LocalGenesisEnrollment,
+} from './localGenesis';
 export async function openLocalStartupWorker(slotId: string, signal?: AbortSignal) {
   let worker: Worker | undefined,
     channel: WorkerChannel | undefined,
@@ -103,8 +107,71 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
       if (reply.kind !== 'ready') throw new StartupError(reply as StartupDisposition);
       return reply as T;
     };
+    let genesisSequence = 0;
+    const created = (reply: LocalGenesisReceipt | StartupDisposition): LocalGenesisReceipt => {
+      requireWindowCeremonyCohort(cohort);
+      if (reply.kind !== 'created') throw new StartupError(reply as StartupDisposition);
+      return reply;
+    };
     return Object.freeze({
       cohort,
+      async beginGenesis(automatic = false): Promise<LocalGenesisEnrollment> {
+        requireWindowCeremonyCohort(cohort);
+        if (genesisSequence === Number.MAX_SAFE_INTEGER)
+          throw Error('Local enrollment order exhausted');
+        const id = genesisSequence + 1;
+        const result = await channel!.request<{ code: string }>('beginGenesis', { id, automatic });
+        requireWindowCeremonyCohort(cohort);
+        if (typeof result.code !== 'string' || !result.code)
+          throw Error('Local enrollment did not issue a code');
+        genesisSequence = id;
+        let display: string | null = result.code;
+        const erase = () => {
+          display = null;
+          cohort.signal.removeEventListener('abort', erase);
+        };
+        cohort.signal.addEventListener('abort', erase, { once: true });
+        return Object.freeze({
+          get displayCode() {
+            return display;
+          },
+          async confirm(code: string) {
+            requireWindowCeremonyCohort(cohort);
+            try {
+              const receipt = created(
+                await channel!.request<LocalGenesisReceipt | StartupDisposition>('confirmGenesis', {
+                  id,
+                  code,
+                }),
+              );
+              erase();
+              return receipt;
+            } catch (cause) {
+              if (
+                !(
+                  cause instanceof Error &&
+                  'code' in cause &&
+                  cause.code === 'confirmation-required'
+                )
+              )
+                erase();
+              throw cause;
+            }
+          },
+          cancel() {
+            erase();
+            void channel!.request('cancelGenesis', { id }).catch(() => {});
+          },
+        });
+      },
+      async resumeGenesis(code: string) {
+        requireWindowCeremonyCohort(cohort);
+        return created(
+          await channel!.request<LocalGenesisReceipt | StartupDisposition>('resumeGenesis', {
+            code,
+          }),
+        );
+      },
       async inspect() {
         const value = await channel!.request<StartupDisposition>('inspect');
         requireWindowCeremonyCohort(cohort);

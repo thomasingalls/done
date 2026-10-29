@@ -1185,7 +1185,7 @@
     },
     {
       "path": "src/crdt/localGenesis.ts",
-      "sha256": "7548f4a9c0f6059c83fd33f4df462ab9d110d20e0e47640689b956fbe5f8e4d0"
+      "sha256": "9f381c1ae94fadcc32acddf5aac3b668dd66c8e0b8561cfbcb1edf9d867aaf42"
     },
     {
       "path": "src/crdt/localGenesisRecord.ts",
@@ -1217,11 +1217,11 @@
     },
     {
       "path": "src/crdt/localStartup.worker.ts",
-      "sha256": "83088cd098cecf04e6583bf597de7bba5381fcb6c5df510d889a0fd5cbf019d8"
+      "sha256": "10d096c9c3a8b7675742fe6c805868a3b2c21f8b0c996e26e91110fb579c5f7f"
     },
     {
       "path": "src/crdt/localStartupClient.ts",
-      "sha256": "912eba0a4cb5dda1780b0ccb49ddd31fd6f8b0929eddf94a44cde7d097df0328"
+      "sha256": "29f743e38157af033a00631ef434bd330cf2522d6c230af4fdbf91efa840182f"
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
@@ -1490,6 +1490,10 @@
     {
       "path": "src/crdt/workerLocalBaseline.ts",
       "sha256": "541f077221f1f52bfccaffdebe9e0e10a69bc601038d652e21547cb1c88fbdec"
+    },
+    {
+      "path": "src/crdt/workerLocalGenesis.ts",
+      "sha256": "2cdf0e81e806bdc96a00d67030b07b8a459633b531d1eefc3e6348564cd1a1f0"
     },
     {
       "path": "src/crdt/workerLocalTrim.ts",
