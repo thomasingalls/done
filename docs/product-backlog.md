@@ -636,3 +636,8 @@ protection matched cleanup/lost-reply/resume then account/UI/offline/default con
 **Phase203 — native Local protection:** exact covered cleanup and interruption/lost-reply/death/resume
 checks pass in both browsers. Continue actual Local UI, Account ceremony/handoff and offline/default
 conversion before measuring unchanged gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase203/README.md).
+
+
+**Phase204 — complete Local UI Worker adapter:** full original controller flows pass both browsers;
+Page remains default until Account same-realm ceremony/handoff and offline activation are ready.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase204/README.md).

@@ -1829,7 +1829,19 @@
     },
     {
       "path": "src/ui/localStartup.ts",
-      "sha256": "78d2b695cf4863924089afef3292e5eee4fbb936a7df6564184ee4c686fe600b"
+      "sha256": "fd8233d5b206ef4addcb02062959adff651921d85bc10fbbd8c30e3871b34e6d"
+    },
+    {
+      "path": "src/ui/localStartupPage.ts",
+      "sha256": "9f05149f795b4bc2f20f12df401090833a4af19f69c694f755481894e51e81f6"
+    },
+    {
+      "path": "src/ui/localStartupPort.ts",
+      "sha256": "d764a60dd5bbc92e460106819d96135e9a7f8887b3921d36cc95a6d37298374f"
+    },
+    {
+      "path": "src/ui/localStartupWorker.ts",
+      "sha256": "663bf7bae21d24ed85b7394da3f6bd7ba2a9c3da70fdf4abe421cccd4d365245"
     },
     {
       "path": "src/ui/privateMigration.ts",

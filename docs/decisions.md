@@ -6161,3 +6161,11 @@ Keep the fresh cold protected-copy rows alive through original source AEAD and e
 A private fixed-flight Window effect removes only matching key/value pairs; safety after lost replies
 or Worker death relies on durable represented writing, not a serialized native lease. Original task,
 zero census and retirement order remain. [Evidence](performance-experiments/2026-10-28-worker-owner/phase203/README.md).
+
+
+## 2026-10-29 — fixed Local Worker UI runtime port
+
+Keep UI observations and commands independent of storage execution. Drain the actual ceremony owner
+before opening native Local editing; preserve fresh factor/route verification and synchronous Window
+journal admission. Memoized close joins late startup acquisition. Page stays default until activation.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase204/README.md).

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 626,
-    "requiredTestFiles": 620,
+    "testFiles": 627,
+    "requiredTestFiles": 621,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11688,6 +11688,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/localStartupWorker.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/localStartupWorker.test.ts"]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/localWorkerLifetime.test.ts",
       "status": "required",
       "invocation": {
@@ -20606,6 +20616,10 @@
     {
       "path": "test/localRetentionStorage.test.ts",
       "sha256": "878eacd2e1bed0d7ac4722cc5340db35a97794a28e66c1335163648d637e3a13"
+    },
+    {
+      "path": "test/localStartupWorker.test.ts",
+      "sha256": "def34906e8fec28e50c78fc2b6bf354786e05daa1733bd255518db579ca97b99"
     },
     {
       "path": "test/localWorkerLifetime.test.ts",

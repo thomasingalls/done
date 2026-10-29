@@ -17799,3 +17799,11 @@ Original exclusive copy/readback, exact source coverage/matched cleanup, fresh z
 opener retirement.55 focused/98 metadata/type/lint/format/audit checks pass; Chrome/Firefox interruption,
 lost reply, physical death/uncopied seal and original maintenance/Account controls pass.10 containers
 absent. Default conversion pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase203/README.md).
+
+
+## 2026-10-29 — phase204 actual Local UI Worker adapter
+
+Original UI through native startup/creation/unlock/protection/editing; late-acquisition shutdown repair.
+37 focused/98 metadata/type/lint/format/audit checks pass. Chrome/Firefox full automatic/protected/retry/
+protection/Undo/cold-writing flows pass; six containers absent. Initial close race retained. Default
+activation pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase204/README.md).
