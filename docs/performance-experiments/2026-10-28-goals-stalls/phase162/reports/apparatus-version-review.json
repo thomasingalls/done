@@ -1,0 +1,92 @@
+[
+  {
+    "identityPacket": "input-identities-control.json",
+    "input": "protocol.md",
+    "sha256": "94de2fe5ec71cd0c2c9675542cc819111a7839f38273486b2b026a885434e59b",
+    "retainedVersion": "reproduction/versions/94de2fe5ec71cd0c2c9675542cc819111a7839f38273486b2b026a885434e59b-protocol.md.txt"
+  },
+  {
+    "identityPacket": "input-identities-control.json",
+    "input": "run.py",
+    "sha256": "d37d5cf7d74fba4b5e40fb9b1355f2d7475575deff0c91fd69b8b367c579067d",
+    "retainedVersion": "reproduction/versions/d37d5cf7d74fba4b5e40fb9b1355f2d7475575deff0c91fd69b8b367c579067d-run.py.txt"
+  },
+  {
+    "identityPacket": "input-identities-control.json",
+    "input": "harness/test/account-continuation-lab/stall.spec.ts",
+    "sha256": "85727b8adcd1e3c57dabb69792eb8b3061d6b6eacb1aa2146ab11a6eda919c71",
+    "retainedVersion": "reproduction/versions/85727b8adcd1e3c57dabb69792eb8b3061d6b6eacb1aa2146ab11a6eda919c71-stall.spec.ts.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile-corrected.json",
+    "input": "protocol.md",
+    "sha256": "76bb8ec2625eca5dcbb4198412cf8cd90514fe883d7fa19178172994a67aa6de",
+    "retainedVersion": "reproduction/versions/76bb8ec2625eca5dcbb4198412cf8cd90514fe883d7fa19178172994a67aa6de-protocol.md.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile-corrected.json",
+    "input": "run.py",
+    "sha256": "60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e",
+    "retainedVersion": "reproduction/versions/60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e-run.py.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile-corrected.json",
+    "input": "harness/test/account-continuation-lab/stall.spec.ts",
+    "sha256": "b5de991f75127a9f0837a443a7b0e715056de67200aef277b5000061266345cc",
+    "retainedVersion": "reproduction/versions/b5de991f75127a9f0837a443a7b0e715056de67200aef277b5000061266345cc-stall.spec.ts.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile-final.json",
+    "input": "protocol.md",
+    "sha256": "0d4d74cec7d0b11e6bcbad77b198231e9bbcc504dfa3a63a6d42c0b35901317f",
+    "retainedVersion": "reproduction/versions/0d4d74cec7d0b11e6bcbad77b198231e9bbcc504dfa3a63a6d42c0b35901317f-protocol.md.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile-final.json",
+    "input": "run.py",
+    "sha256": "60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e",
+    "retainedVersion": "reproduction/versions/60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e-run.py.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile-final.json",
+    "input": "harness/test/account-continuation-lab/stall.spec.ts",
+    "sha256": "39eaaeab31e5fba1e5ef993c33a7058f9d8a9e21c288a8199c0d7499e85197f8",
+    "retainedVersion": "reproduction/versions/39eaaeab31e5fba1e5ef993c33a7058f9d8a9e21c288a8199c0d7499e85197f8-stall.spec.ts.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile.json",
+    "input": "protocol.md",
+    "sha256": "80079b40f15e880cd06d756a759690ca2aa971b0ab09c8cbe6b7b11044924d75",
+    "retainedVersion": "reproduction/versions/80079b40f15e880cd06d756a759690ca2aa971b0ab09c8cbe6b7b11044924d75-protocol.md.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile.json",
+    "input": "run.py",
+    "sha256": "60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e",
+    "retainedVersion": "reproduction/versions/60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e-run.py.txt"
+  },
+  {
+    "identityPacket": "input-identities-mobile.json",
+    "input": "harness/test/account-continuation-lab/stall.spec.ts",
+    "sha256": "655c068b4719f822b003039f273eb51ca1f3a335413b6ea1cd72ee9558101a32",
+    "retainedVersion": "reproduction/versions/655c068b4719f822b003039f273eb51ca1f3a335413b6ea1cd72ee9558101a32-stall.spec.ts.txt"
+  },
+  {
+    "identityPacket": "input-identities.json",
+    "input": "protocol.md",
+    "sha256": "3e10a96a09f4d65dc36cb2d93a207e76797fe662c385174d20501ced5cd92d92",
+    "retainedVersion": "reproduction/versions/3e10a96a09f4d65dc36cb2d93a207e76797fe662c385174d20501ced5cd92d92-protocol.md.txt"
+  },
+  {
+    "identityPacket": "input-identities.json",
+    "input": "run.py",
+    "sha256": "60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e",
+    "retainedVersion": "reproduction/versions/60f4d2caf404b0f02746e088a4a9078ff53fed89d66d3878507a5b9ea54d955e-run.py.txt"
+  },
+  {
+    "identityPacket": "input-identities.json",
+    "input": "harness/test/account-continuation-lab/stall.spec.ts",
+    "sha256": "ded1a721c66670d4de8d75ad33e20e9eca93dcbf1574ad8bd71449f9f182d18d",
+    "retainedVersion": "reproduction/versions/ded1a721c66670d4de8d75ad33e20e9eca93dcbf1574ad8bd71449f9f182d18d-stall.spec.ts.txt"
+  }
+]

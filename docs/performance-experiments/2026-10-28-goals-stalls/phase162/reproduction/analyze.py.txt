@@ -1,0 +1,29 @@
+from pathlib import Path
+import json, math, sys
+r=Path(__file__).parent;d=r/sys.argv[1];x=json.loads((d/'result.json').read_text());o=x.get('observations') or x.get('finalObservation') or {}
+def stats(v):
+ if not v:return {'n':0}
+ s=sorted(v);return {'n':len(s),'p50':s[math.ceil(.5*len(s))-1],'p95':s[math.ceil(.95*len(s))-1],'p99':s[math.ceil(.99*len(s))-1],'max':s[-1],'over100ms':sum(a>=100 for a in s)}
+marks={a['phase']:a['at'] for a in o.get('marks',[])}
+tasks=o.get('tasks',[])
+def window(start,end):
+ return [t for t in tasks if t['at']<end and t['at']+t['ms']>start]
+rows=[q for q in o.get('rows',[]) if q['kind']=='beforeinput' and q['target']=='goals' and marks.get('typing-start',float('inf'))<=q['at']<marks.get('typing-end',-1)]
+offers=[q for q in x['offers'] if q['label']=='paragraph']
+allbrackets=[b for phase in x.get('clocks',[]) for b in phase['rows']]
+lo=max((b['renderer']-b['after']-1 for b in allbrackets),default=0);hi=min((b['renderer']-b['before']+1 for b in allbrackets),default=0)
+assert lo<=hi,('inconsistent clock bounds',lo,hi)
+matched=len(rows)==len(offers)
+latencies=[q['at']-p['offered']-lo for q,p in zip(rows,offers)] if matched else []
+localpaint=[q['rafAt']-p['offered']-lo for q,p in zip(rows,offers) if q['rafAt']] if matched else []
+phaseResults={}
+for name,start,end in [('paragraph',marks.get('typing-start'),marks.get('typing-end')),('idle',marks.get('foreground-idle-start'),marks.get('freeze-request')),('return',x.get('resumeOffered',0)+lo,marks.get('observations-end'))]:
+ if start is None or end is None:continue
+ hits=window(start,end);beats=[b['gap'] for b in o.get('beats',[]) if b['previous']>=start and b['at']<=end]
+ phaseResults[name]={'start':start,'end':end,'longTasks':stats([a['ms'] for a in hits]),'worstTasks':sorted(hits,key=lambda v:v['ms'],reverse=True)[:8],'heartbeatGapMs':stats(beats)}
+controls=[q for q in o.get('rows',[]) if q['kind']=='beforeinput' and q['target']=='control']
+controlTasks=window(marks.get('control-start',0),marks.get('control-end',0))
+result={'outcome':x['outcome'],'error':x.get('error'),'mobile4x':x['mobile'],'profiledAttributionOnly':x['profiled'],'inputDenominator':{'offered':len(offers),'observed':len(rows),'matched':matched,'allTrustedFocusedVisible':bool(rows) and all(q['trusted'] and q['focused'] and q['visible']=='visible' for q in rows)},'clockOffsetBoundsMs':[lo,hi],'driverLatenessMs':stats([a['offered']-a['planned'] for a in offers]),'offerToBeforeinputUpperMs':stats(latencies),'offerToRafUpperMs':stats(localpaint),'phases':phaseResults,'lifecycle':o.get('lifecycle'),'control':{'events':len(controls),'maxLongTaskMs':max([t['ms'] for t in controlTasks],default=0),'detected120msFault':any(t['ms']>=100 for t in controlTasks)},'guards':x['guards'],'pageErrors':x['errors'],'network':{'requests':len(x['network']),'statuses':{str(n):sum(q.get('status')==n for q in x['network']) for n in sorted(set(q.get('status') for q in x['network'] if q.get('status') is not None))}},'qualification':'Diagnostic only: key-to-rAF is not the existing mutation-observer local16ms measurement; no peer case here. Existing16ms/2.5s gates unchanged, no new acceptance credit.'}
+(d/'analysis.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({k:v for k,v in result.items() if k not in ['lifecycle','phases']},indent=2))
+for k,v in phaseResults.items():print(k,json.dumps({a:b for a,b in v.items() if a!='worstTasks'}))

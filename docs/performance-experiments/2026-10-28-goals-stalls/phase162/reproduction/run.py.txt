@@ -1,0 +1,16 @@
+from pathlib import Path
+import os,sys,json,subprocess,time
+r=Path(__file__).parent
+case=json.loads((r/'run-plan.json').read_text())[int(sys.argv[1])-1]
+out=r/case['name'];out.mkdir(mode=0o700,exist_ok=False)
+node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','FAIR_OUT':str(out),'STALL_OFFLINE':'1' if case.get('offline') else '0','STALL_MOBILE':'1' if case['mobile'] else '0','STALL_PROFILE':'1' if case['profile'] else '0'}
+cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/stall.config.ts']
+receipt={'case':case,'startedAt':time.time_ns()//1000000,'command':cmd}
+with (out/'console.log').open('w') as log:
+ p=subprocess.run(cmd,cwd=r/'harness',env=env,stdout=log,stderr=subprocess.STDOUT)
+receipt.update(exit=p.returncode,finishedAt=time.time_ns()//1000000)
+(out/'runner-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+print(case['name'],'exit',p.returncode,flush=True)
+print((out/'console.log').read_text()[-4500:],flush=True)
+raise SystemExit(p.returncode)

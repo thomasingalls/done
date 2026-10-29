@@ -1,0 +1,18 @@
+{
+  "case": {
+    "name": "04-mobile4x-offline-control",
+    "mobile": true,
+    "profile": false,
+    "offline": true
+  },
+  "startedAt": 1793212866802,
+  "command": [
+    "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "test/account-continuation-lab/stall.config.ts"
+  ],
+  "exit": 1,
+  "finishedAt": 1793213075882
+}

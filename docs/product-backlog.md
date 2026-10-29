@@ -68,6 +68,24 @@ establish that every account or physical phone is responsive.
 
 These reports lead the next discussion; the older list is not a newly selected implementation order.
 
+**Phase162 — bounded sustained-typing investigation:**
+[Evidence and preserved failures](performance-experiments/2026-10-28-goals-stalls/phase162/README.md)
+cover a seven-sentence paragraph at80 standardized typing wpm in the released frontend. Mobile CPU
+emulation observes120 long tasks during online typing and zero in a fresh offline control; desktop
+quiet time also has a922ms task. This implicates network-driven account work on the fixture without
+establishing every production cause. The largest mapped application CPU sample weights are private
+record comparison/projection and ownership cleanup. Physical Android hidden/suspended return remains
+unestablished; only an unlocked focus transition is observed. Preserve the mobile prefix-expectation
+failure and the offline control's15s same-context reopen failure alongside independent exact-writing/
+offline persisted-profile checks; this is no repair or acceptance result. The proposed worker boundary
+keeps the private account owner and state together with a small journal/UI/activity bridge.
+
+**Catch-up objective clarified by the operator:** starting the next download must not require the
+current chunk to finish verification and display. Treat downloaded/staged, verified-durable and
+displayed progress as separately bounded queues. The [ownership/queue map](performance-experiments/2026-10-28-goals-stalls/phase162/worker-boundary.md)
+records the current single-flight/request-cursor coupling and unresolved protocol obligations;
+no particular worker or staging implementation is selected yet.
+
 ## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday

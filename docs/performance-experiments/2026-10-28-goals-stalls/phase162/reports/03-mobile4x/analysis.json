@@ -1,0 +1,308 @@
+{
+  "outcome": "failed",
+  "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -132,6 +132,7 @@\u001b[39m\n\u001b[2m  - Review the notes and nested plans.\u001b[22m\n\u001b[2m  - Review the notes and nested plans.\u001b[22m\n\u001b[2m  - Review the notes and nested plans.\u001b[22m\n\u001b[2m  - Review the notes and nested plans.\u001b[22m\n\u001b[2m  - Review the notes and nested plans.\u001b[22m\n\u001b[32m- - Review the notes and nestedI want to write down a complete thought before deciding which part deserves attention today. The list should stay quiet while I explain the problem, consider a few alternatives, and remember the details that will matter tomorrow. Some sentences are longer because an unfinished idea needs room to develop without turning every clause into a separate task. When I return from another application, I expect the words and the cursor to be ready where I left them. My other device may have added useful notes while this one was away, and those notes should arrive without interrupting this sentence. I can then choose the next useful action, keep the supporting context nearby, and move on with the rest of the day. A simple writing tool should give me space to think at my own pace.\u001b[39m\n\u001b[31m+ - Review the notes and nested\u001b[39m\n\u001b[31m+ I want to write down a complete thought before deciding which part deserves attention today. The list should stay quiet while I explain the problem, consider a few alternatives, and remember the details that will matter tomorrow. Some sentences are longer because an unfinished idea needs room to develop without turning every clause into a separate task. When I return from another application, I expect the words and the cursor to be ready where I left them. My other device may have added useful notes while this one was away, and those notes should arrive without interrupting this sentence. I can then choose the next useful action, keep the supporting context nearby, and move on with the rest of the day. A simple writing tool should give me space to think at my own pace.\u001b[39m",
+  "mobile4x": true,
+  "profiledAttributionOnly": false,
+  "inputDenominator": {
+    "offered": 779,
+    "observed": 779,
+    "matched": true,
+    "allTrustedFocusedVisible": true
+  },
+  "clockOffsetBoundsMs": [
+    -1.259765625,
+    1.87060546875
+  ],
+  "driverLatenessMs": {
+    "n": 779,
+    "p50": 0.293701171875,
+    "p95": 1.128173828125,
+    "p99": 1.384765625,
+    "max": 4.64990234375,
+    "over100ms": 0
+  },
+  "offerToBeforeinputUpperMs": {
+    "n": 779,
+    "p50": 4.22412109375,
+    "p95": 39.04931640625,
+    "p99": 72.37744140625,
+    "max": 90.675048828125,
+    "over100ms": 0
+  },
+  "offerToRafUpperMs": {
+    "n": 779,
+    "p50": 20.093994140625,
+    "p95": 52.164794921875,
+    "p99": 85.37744140625,
+    "max": 124.875,
+    "over100ms": 1
+  },
+  "phases": {
+    "paragraph": {
+      "start": 1793212529888.5999,
+      "end": 1793212646616.2,
+      "longTasks": {
+        "n": 120,
+        "p50": 75,
+        "p95": 96,
+        "p99": 102,
+        "max": 108,
+        "over100ms": 2
+      },
+      "worstTasks": [
+        {
+          "at": 1793212642295.2,
+          "ms": 108
+        },
+        {
+          "at": 1793212595924.5999,
+          "ms": 102
+        },
+        {
+          "at": 1793212633219.4,
+          "ms": 99
+        },
+        {
+          "at": 1793212644862.5,
+          "ms": 98
+        },
+        {
+          "at": 1793212618910.0999,
+          "ms": 97
+        },
+        {
+          "at": 1793212621523.5,
+          "ms": 97
+        },
+        {
+          "at": 1793212581742.9,
+          "ms": 96
+        },
+        {
+          "at": 1793212633596.5,
+          "ms": 94
+        }
+      ],
+      "heartbeatGapMs": {
+        "n": 5724,
+        "p50": 16.099853515625,
+        "p95": 46.89990234375,
+        "p99": 98,
+        "max": 142.699951171875,
+        "over100ms": 52
+      }
+    }
+  },
+  "lifecycle": [
+    {
+      "kind": "pageshow",
+      "at": 1793212521136.7,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793212521142.2,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793212521210.0999,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793212521210.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793212521254.7,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793212521575.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793212521631.4,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793212521631.5,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793212521644.9,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793212525649.5,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212525914.5999,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212525915,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212525995,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212525995.5,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212525998,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212525998,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212526303.5,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212526304.4,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212526570.9,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212526571,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212526651.9,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212526652.5,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212526853.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212526854.4,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212529232.9,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212529421.2,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793212529672.2,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793212529673,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    }
+  ],
+  "control": {
+    "events": 16,
+    "maxLongTaskMs": 122,
+    "detected120msFault": true
+  },
+  "guards": {},
+  "pageErrors": [],
+  "network": {
+    "requests": 117,
+    "statuses": {
+      "200": 117
+    }
+  },
+  "qualification": "Diagnostic only: key-to-rAF is not the existing mutation-observer local16ms measurement; no peer case here. Existing16ms/2.5s gates unchanged, no new acceptance credit."
+}

@@ -17230,3 +17230,23 @@ lock/removal/ownership and input-priority constraints. Source inspection identif
 execution and grouped receive sequencing, not measured attribution. Documentation only; no product
 decision, runtime/test change, device access, performance experiment, activation or release action.
 Preserve this two-file change as sequential patch161; leave the real index and commits untouched.
+
+
+## 2026-10-28 — Phase162: sustained Goals paragraph and account-owner contention
+
+Use the exact released frontend and copied fictional synced account to offer779 trusted keys at
+150ms cadence independently of renderer acknowledgments. Desktop functional guards pass; mobile
+CPU4x online observes120 long tasks during typing versus zero in the fresh offline control. Desktop
+quiet time has a922ms task. [Evidence, source attribution and scope](performance-experiments/2026-10-28-goals-stalls/phase162/README.md).
+CPU sampling/source-map checks identify record comparisons/projections and private ownership cleanup
+as the largest mapped application weights, without attributing every stall or estimating a speedup.
+Keep the account owner/state together as the proposed worker boundary; record the operator's separate
+download/verified-durable/display queue objective. No runtime/thread/protocol repair is implemented.
+
+Preserve initial TS config/two overlay setup failures, ineffective lifecycle controls, mobile prefix
+guard failure and offline control's15s same-context reopen failure. Independent copied-profile checks
+confirm exact original+Enter+paragraph writing and a separate offline cold reopen; they do not erase
+the failed runs. Native unlocked blur/focus is observed, hidden/suspended Android return is not.
+New diagnostic reproducer/controls have no aggregate credit; old tests/runtime and16ms/2.5s/native
+guards remain unchanged. Freeze sequential patch162 after161; no real staging, signing, push,
+preview update, release preparation, merge, deployment or production-data access.

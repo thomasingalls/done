@@ -1,0 +1,29 @@
+# Phase162 — sustained Goals typing and unlocked return: diagnostic protocol
+
+2026-10-28. User reports new whole-app stalls in released b6f0160a during seven-sentence Goals typing at about80wpm and when returning to an unlocked phone app. Decision: identify blocking work and a defensible worker boundary before changing runtime behavior. Retain separate download, verified-durable and presentation queues as the agreed direction; this diagnostic does not implement them.
+
+## Design, units and measurements
+
+Mechanism-finding benchmark, not a population estimate or release-regression causal comparison. Use the exact retained production frontend b6f0160a, current byte-matching runtime modules, a copied fictional persistent synced H2 account and its real service/IndexedDB/virtual passkey owners. Existing private fixture has5,000-character Goals and retained history; never access production or real browser profiles. One independent copy per journey. Characters within a journey are correlated, not independent replications.
+
+Fixed order: desktop without CPU profiling; fresh desktop copy with CPU profiling; fresh mobile-emulated4x copy without CPU profiling. Each types the same seven-sentence paragraph by trusted CDP key events offered independently of renderer acknowledgments at150ms/character (80 standardized five-character words/minute). Do not speed up missed deadlines or skip characters. Record offered times, event counts/trust/focus/visibility, complete final text, per-input handler/paint delay, p95/p99/max, all long tasks,16ms heartbeat gaps, network method/path/status/timing without bodies, page errors and exact asset/source identities. Keep16ms local and2.5s peer acceptance gates unchanged; this single-device diagnostic cannot award the peer gate or release acceptance.
+
+Then allow20s foreground idle, freeze the unlocked target for20s through real CDP lifecycle, resume/bring it to front, offer one further character promptly and observe20s. Record actual visibility/lifecycle events; if the browser does not establish a hidden/frozen/visible transition, label that coverage unestablished. This approximates suspension/return, not physical Android background behavior or every simple focus transition. No synthetic dispatchEvent lifecycle substitutes.
+
+Profiled run is attribution only, excluded from timing acceptance. Use1ms CPU sampling with actual bundle maps; sample residence and long-task overlap identify suspects, not exact per-function exclusive runtime or a causal speedup. No production-value capture, command replacement, skipped verification or bypassed storage admission.
+
+## Decision and stop rules
+
+Retain all runs and apparatus failures. Stop a journey on lost/duplicate input, wrong final writing, storage/authority/owner failure or resource refusal. Run the three planned journeys once; add only an explicitly documented discriminating control after source attribution. A>=100ms task/input delay selects a candidate for trace/source analysis, not a new acceptance budget. A negative result narrows only this fixture. Resolve coarse timer/profiler overhead and validate event denominator before attributing. No inferential power claim: three diagnostic trajectories cannot estimate the frequency of users' stalls. Physical device, OS/keyboard and real account-shape differences remain limits.
+
+## Runbook and preserved contracts
+
+Fresh private directory/service state/profile for each run; server1CPU/1GiB with existing cgroup guards and unchanged real account protocol. Retain byte identities for frontend, source modules, helper closure, browser executable, observation code and workload. Never upload fixture storage/credentials/profile/service state. Verify exact final Goals, lock/reopen persistence and Undo after observations. Preserve main-thread journalling, all authority/history/witness/commit checks, local flushing/backoff, service automation0 and original finite acceptance evidence. No merge, deployment, release preparation, main-preview changes or computer use.
+
+## Apparatus limitation discovered before journey3
+
+Both desktop observations completed, but Playwright's default focus emulation and this Chrome configuration did not establish hidden/frozen state: timers continued. Retain those phases as foreground observations, not mobile lifecycle evidence. Four disposable blank-page pilots (headless, two tabs, windowed and native background flags) confirm visibility stays visible despite real focus loss/minimized bounds. Do not pretend the freeze command succeeded. Journey3 disables focus emulation and minimizes/restores only after the paragraph, recording actual native focus events; hidden/suspended-phone coverage remains unestablished. Fix its new mobile navigation locator to the actual Open Goals button before its first run. Initial and corrected diagnostic sources/identities are retained. This is an apparatus correction, not a product repair or a latency retry.
+
+Journey3 first fails before any paragraph input because the reused desktop export helper tries to open Menu underneath the mobile Goals scrim. Preserve the error, screenshot-free context and empty input denominator. The new diagnostic wrapper closes Goals through its real Close Goals button before invoking the unchanged export helper; Open Goals is scoped to the active day. Repeat only the not-yet-measured mobile journey after this setup correction.
+
+The next mobile setup also stops before paragraph input: the desktop Close menu trigger sits underneath the open mobile menu. Preserve it separately. Close through the existing Escape handler and assert data-menu=closed before opening Goals. This changes only new diagnostic navigation, with no force clicks, application dispatch, deadline increase or old-helper edit. No completed typing observation is rerun.

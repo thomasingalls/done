@@ -1,0 +1,15 @@
+import {chromium} from '@playwright/test';
+import {writeFileSync} from 'node:fs';
+const root='/private/tmp/done-goals-stall-20261028';
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:false,ignoreDefaultArgs:['--disable-background-timer-throttling','--disable-backgrounding-occluded-windows','--disable-renderer-backgrounding']});
+const ctx=await browser.newContext();const p=await ctx.newPage();const c=await ctx.newCDPSession(p);const rows=[];
+try{
+ await p.goto('data:text/html,<p>Disposable lifecycle control</p>');
+ await p.evaluate(()=>{window.events=[];window.beats=0;setInterval(()=>window.beats++,16);for(const kind of ['visibilitychange','freeze','resume'])document.addEventListener(kind,()=>window.events.push({kind,visible:document.visibilityState,at:performance.now()}));});
+ const sample=async(label)=>{rows.push({label,...await p.evaluate(()=>({visible:document.visibilityState,focus:document.hasFocus(),beats:window.beats,events:window.events}))});};
+ await sample('default');await c.send('Emulation.setFocusEmulationEnabled',{enabled:false});await sample('focus-emulation-disabled');
+ const {windowId}=await c.send('Browser.getWindowForTarget');await c.send('Browser.setWindowBounds',{windowId,bounds:{windowState:'minimized'}});await new Promise(r=>setTimeout(r,100));await sample('minimized');rows.push({label:'bounds',...(await c.send('Browser.getWindowBounds',{windowId}))});
+ await c.send('Page.setWebLifecycleState',{state:'frozen'});await new Promise(r=>setTimeout(r,500));await c.send('Page.setWebLifecycleState',{state:'active'});await sample('thawed');
+ await c.send('Browser.setWindowBounds',{windowId,bounds:{windowState:'normal'}});await p.bringToFront();await new Promise(r=>setTimeout(r,100));await sample('restored');
+ console.log(JSON.stringify(rows,null,2));writeFileSync(root+'/lifecycle-pilot-native-flags.json',JSON.stringify(rows,null,2)+'\n');
+}finally{await browser.close();}

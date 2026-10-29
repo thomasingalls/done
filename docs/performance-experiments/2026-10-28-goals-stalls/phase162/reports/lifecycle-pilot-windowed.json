@@ -1,0 +1,37 @@
+[
+  {
+    "label": "default",
+    "visible": "visible",
+    "focus": true,
+    "beats": 0,
+    "events": []
+  },
+  {
+    "label": "focus-emulation-disabled",
+    "visible": "visible",
+    "focus": false,
+    "beats": 0,
+    "events": []
+  },
+  {
+    "label": "minimized",
+    "visible": "visible",
+    "focus": false,
+    "beats": 44,
+    "events": []
+  },
+  {
+    "label": "thawed",
+    "visible": "visible",
+    "focus": false,
+    "beats": 76,
+    "events": []
+  },
+  {
+    "label": "restored",
+    "visible": "visible",
+    "focus": true,
+    "beats": 119,
+    "events": []
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "containers": [
+    {
+      "case": "01-desktop",
+      "containerId": "fd03ea09ff9100db4c779053f0ef720d047e58704301889949760547f98ed9f3",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "02-desktop-profile",
+      "containerId": "f4d9be91d4a26a7a6f61fc0a1a49bb0334fdc0928ef085bf845d64deb623948b",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "03-mobile4x",
+      "containerId": "49d63636583b5f96c481fe9261d280a5d73f9e0b67a1c6a2067439c509edd6a5",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "04-mobile4x-offline-control",
+      "containerId": "2befcbf75b911530ea45cd30c953a7d8f86aa0923494963021f72601d3da378e",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "mobile-persisted-check",
+      "containerId": "1b60778b64d36aafff4ec318259ab9dadf95a8ba847be1ed554acd7d81013592",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "offline-independent-reopen",
+      "containerId": "17e5d7d84e89547fbbffba8e00edd1d009b6f4b739dd74e87f9686aad5ed261a",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "setup-failure-02-mobile-export-navigation",
+      "containerId": "d55e17c0ff38e750d501609b1286f66199c30d788e8a927b0d989384c79ae59c",
+      "absentAfterOwnedStop": true,
+      "status": null
+    },
+    {
+      "case": "setup-failure-03-mobile-menu-close",
+      "containerId": "72a24f1734af9ed88a2467ca39f4882fc120dbad811ec5dfefea0196c8ff9c1f",
+      "absentAfterOwnedStop": true,
+      "status": null
+    }
+  ],
+  "onlyRecordedTestIdsInspected": true,
+  "unrelatedContainersUntouched": true
+}

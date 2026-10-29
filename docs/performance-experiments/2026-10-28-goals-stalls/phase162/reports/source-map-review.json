@@ -1,0 +1,68 @@
+[
+  {
+    "path": "src/crdt/verifiedRecords.ts",
+    "matchesActualCheckedOutSource": true,
+    "matches": [
+      {
+        "map": "verifiedRecords-Cq2EkUB3.js.map",
+        "source": "../../src/crdt/verifiedRecords.ts",
+        "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/verificationOwnership.ts",
+    "matchesActualCheckedOutSource": true,
+    "matches": [
+      {
+        "map": "verifiedRecords-Cq2EkUB3.js.map",
+        "source": "../../src/crdt/verificationOwnership.ts",
+        "sha256": "2189144ef4ab0f5cbc1ff8605d763a121ba949f91ed13edaecfe14eaea9ee3e4"
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/accountReceive.ts",
+    "matchesActualCheckedOutSource": true,
+    "matches": [
+      {
+        "map": "AccountDevices-BJCk5r9_.js.map",
+        "source": "../../src/crdt/accountReceive.ts",
+        "sha256": "15593900d51f26e3408453c9ffa9ade8557371facfab927eb426c5f06ea45f49"
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/accountDelivery.ts",
+    "matchesActualCheckedOutSource": true,
+    "matches": [
+      {
+        "map": "AccountDevices-BJCk5r9_.js.map",
+        "source": "../../src/crdt/accountDelivery.ts",
+        "sha256": "638d9d134846692d46390e7512dd8124eed91a4f6baf64dfa73f8563bf70c521"
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/accountCapture.ts",
+    "matchesActualCheckedOutSource": true,
+    "matches": [
+      {
+        "map": "AccountDevices-BJCk5r9_.js.map",
+        "source": "../../src/crdt/accountCapture.ts",
+        "sha256": "b7807be5c7710a23a1b412b991156551de6ef3e14ddc4e2967d29120535a2713"
+      }
+    ]
+  },
+  {
+    "path": "src/crdt/contentStore.ts",
+    "matchesActualCheckedOutSource": true,
+    "matches": [
+      {
+        "map": "deviceDataRemoval-B7rKmEu2.js.map",
+        "source": "../../src/crdt/contentStore.ts",
+        "sha256": "b8ee4dd07761245328d4b6ed92726bf3f17b0c21dbbcd81033509aad398bf0e2"
+      }
+    ]
+  }
+]
