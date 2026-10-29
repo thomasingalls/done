@@ -706,3 +706,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase220:** shared genuine native UI lifetime verified with original first-device adapter. Next device connection/notifications and recovery, offline/mixed/default activation, then unchanged gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase220/README.md).
+
+
+**Phase221:** shared genuine Window supervisor and fixed first-device display verified. Next native device controller/notifications, recovery, offline/mixed/default activation, then unchanged targets. [Packet](performance-experiments/2026-10-28-worker-owner/phase221/README.md).

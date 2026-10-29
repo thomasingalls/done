@@ -6262,3 +6262,8 @@ Parameterize legacy and membership coordinators together, keeping the signed sel
 ## 2026-10-29 — share native UI lifetime without sharing authority policy
 
 Trusted fixed controller factories supply only display/command adapters to the same real native root/handoff assembly. Original coordinators own authority and select joined/promoted verification under fresh actual holds. Keep async initialization tracked as a command, not an unowned constructor. [Evidence](performance-experiments/2026-10-28-worker-owner/phase220/README.md).
+
+
+## 2026-10-29 — share Window supervision with fixed screen data adapters
+
+Retain actual member barriers/provider cancellation/journal/mirror adoption once; screens supply only fixed validated commands and presentation. Bound/capture untrusted bootstrap data before resources. Require the exact screen joined role while native verifiers remain authoritative. [Evidence](performance-experiments/2026-10-28-worker-owner/phase221/README.md).
