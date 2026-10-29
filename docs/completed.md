@@ -18001,3 +18001,8 @@ Four config expectations repaired in three old tests; every other byte/assertion
 ## 2026-10-29 — phase239: Worker placement complete, measure next
 
 Worker placement complete.2734unit cases pass/one existing skip;99metadata/type/lint/contracts/bundle/origin checks pass. Cold15s guard still fails but editor appears~21s with active durable canonical owner. Deep joined30s remains open. Begin unchanged performance measurements. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).
+
+
+## 2026-10-29 — phase240: Worker measurements retain the acceptance block
+
+Completed Worker candidate measured. Two functional peer journeys and all archive/cold guards pass; localp958.317/4.904ms, peerp951710.721/2041.809ms, but normal final marker2835.760ms blocks acceptance. Full backlog203.610/195.437s versus earlier~100s remains a throughput concern. Both779-event Goals diagnostics preserve text/Undo/cold writing, zero paragraph long tasks but latency/return tails remain. Independent audit and exact-container cleanup preserved. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).

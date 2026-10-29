@@ -773,3 +773,8 @@ Phase238 resolves the three classified full-unit fixture failures; whole-suite r
 ## 2026-10-29 — phase239: Worker placement complete, measure next
 
 Phase239: conversion complete on normal public paths; remaining work is measured performance/latency debt. Cold public entry~21s misses15s and deep joined catch-up misses30s. Run seven-sentence Goals input and whole-client peer cases with unchanged gates; no release preparation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).
+
+
+## 2026-10-29 — phase240: Worker measurements retain the acceptance block
+
+Phase240 closes the requested conversion-and-measurement run. Normal public heavy owners are Workers; prepared sequential patches through240 remain uncommitted. Performance follow-ups: trace the normal final-marker2.836s failure and195–204s full catch-up; preserve16ms/2.5s/every-marker/30s gates. Cold post-maintenance~21s still misses15s; deep joined30s remains open. Strict no-catch-up driver and real-device suspension/throttle evidence are measurement gaps. No release preparation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).
