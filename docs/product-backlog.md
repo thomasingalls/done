@@ -736,3 +736,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase230:** Retirement replacement implemented/unit verified, full browser continuation pending. Next recovery closing-field transition, remembered-name observation, then detached reopening and unchanged old recovery cases. [Packet](performance-experiments/2026-10-28-worker-owner/phase230/README.md).
+
+
+**Phase231:** Recovered-account invitation transition repaired with original whole-case pass. Next isolate remembered-name overwrite, finish retirement and conversion compatibility checks, then unchanged performance measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase231/README.md).

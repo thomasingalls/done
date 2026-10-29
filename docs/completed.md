@@ -17956,3 +17956,8 @@ Two new counterexamples repaired;14 focused/99 metadata/type/lint/format pass. U
 ## 2026-10-29 — phase230: retirement continuation ports
 
 Five new cases/27 focused and99 metadata/type/lint pass. Native owner bodies unchanged229;395 clean built bodies exact. Browser detached-copy regression is added but blocked before target by driver startup race (corrected) and remembered-name observation (open). Broader recovery/invitation remains unclosed. [Packet](performance-experiments/2026-10-28-worker-owner/phase230/README.md).
+
+
+## 2026-10-29 — phase231: recovery-to-invitation form transition
+
+Two new counterexamples/21 focused/99 metadata/type/lint pass. Clean unchanged never-paired recovery, snapshot, pruning and new-device enrollment/writing case passes40.6s, retaining every old assertion/deadline. Separate new retirement case blocked earlier by remembered-name mismatch; retained open. [Packet](performance-experiments/2026-10-28-worker-owner/phase231/README.md).

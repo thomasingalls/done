@@ -73,3 +73,15 @@ it('aborting the screen immediately closes its owned native supervisor', async (
   await f.owner.close();
   expect(f.api.close).toHaveBeenCalledTimes(2);
 });
+it('shutdown clears factor/editor display and never presents a new unlock form', () => {
+  const f = fixture();
+  expect(f.options.closing).toEqual({
+    state: { step: 'checking', accountId: '', generated: '', error: '', closing: true },
+  });
+  expect(() =>
+    f.options.capture(
+      { state: { step: 'checking', accountId: '', generated: '', error: '', closing: true } },
+      undefined,
+    ),
+  ).toThrow();
+});

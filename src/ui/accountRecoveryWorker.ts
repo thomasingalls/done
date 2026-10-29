@@ -9,6 +9,8 @@ import type { WorkerEnrollmentView } from './accountEnrollmentWorker';
 import { createWindowCeremonyUi } from './windowCeremonyUi';
 export interface WorkerRecoveryView extends Omit<RecoveryPresentation, 'editor'> {
   editor?: NonNullable<WorkerEnrollmentView['editor']>;
+  /** Window-only shutdown display. Never accepted from a native recovery projection. */
+  closing?: true;
 }
 export function createWorkerAccountRecovery(
   config: SetupConfig,
@@ -18,7 +20,7 @@ export function createWorkerAccountRecovery(
   const blank: WorkerRecoveryView = { step: 'checking', accountId: '', generated: '', error: '' };
   const owner = createWindowCeremonyUi<{ state: WorkerRecoveryView }>(config, slotId, {
     initial: { state: blank },
-    closing: { state: { ...blank, step: 'unlock' } },
+    closing: { state: { ...blank, closing: true } },
     failure: (poisoned) => ({
       state: {
         ...blank,

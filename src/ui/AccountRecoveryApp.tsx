@@ -169,7 +169,7 @@ export function AccountRecoveryApp({
   const leave = () => {
     void close().then(() => onNavigate('/accounts'));
   };
-  if (navigation.leaving)
+  if (navigation.leaving || view.closing)
     return <p role="status">{navigation.error || 'Closing and finishing storage operations…'}</p>;
   if (opened && (step === 'editing' || step === 'devices'))
     return (

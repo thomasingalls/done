@@ -1809,7 +1809,7 @@
     },
     {
       "path": "src/ui/AccountRecoveryApp.tsx",
-      "sha256": "0b039292397476c214a8462c64b9f4cb4469a51c064c673654a093a21c491d40"
+      "sha256": "163ce381fc3f3edeb28f608f7f2da183b983c7e18d72ddfa9e4d43d1fe89898e"
     },
     {
       "path": "src/ui/AccountSetupApp.tsx",
@@ -1945,7 +1945,7 @@
     },
     {
       "path": "src/ui/accountRecoveryWorker.ts",
-      "sha256": "f9aaa908274a9a807163e560cea25722ccc1973519d18457af0838acaf815298"
+      "sha256": "6ad7ea4ca1adf5a8e4ca40b89db7b8565e96b796398f685e02c0fe176fd6fed7"
     },
     {
       "path": "src/ui/ceremonyNavigation.tsx",

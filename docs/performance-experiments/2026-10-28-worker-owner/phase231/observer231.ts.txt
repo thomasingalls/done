@@ -1,0 +1,7 @@
+import {test} from '@playwright/test';
+let timer:ReturnType<typeof setInterval>|undefined;
+test.beforeEach(async({browser,page})=>{
+ const observe=(p:any)=>p.on('console',(m:any)=>{const t=m.text();if(t.startsWith('D231:'))console.log('TRACE231',t);});observe(page);for(const c of browser.contexts())c.on('page',observe);browser.on('disconnected',()=>{});const previous=browser.newContext.bind(browser);browser.newContext=async(...a:any[])=>{const c=await previous(...a);c.on('page',observe);return c;};
+ timer=setInterval(()=>{for(const c of browser.contexts())for(const p of c.pages())void p.evaluate(()=>({path:location.pathname,queryKeys:[...new URLSearchParams(location.search).keys()],inputs:[...document.querySelectorAll('input')].map(e=>({id:e.id,type:e.type,length:e.value.length,valid:e.validity.valid})),buttons:[...document.querySelectorAll('button')].map(e=>({text:e.textContent,disabled:e.disabled})),states:[...document.querySelectorAll('[data-enrollment-state],[data-setup-state]')].map(e=>e.getAttribute('data-enrollment-state')??e.getAttribute('data-setup-state')),messages:[...document.querySelectorAll('[role=status],[role=alert],.local-error,h1')].map(e=>e.textContent?.slice(0,300))})).then(v=>console.log('STATE231',JSON.stringify(v))).catch(()=>{});},5000);
+});
+test.afterEach(()=>clearInterval(timer));

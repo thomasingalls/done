@@ -148,3 +148,32 @@ it('does not enable saved-code navigation while preparation is still awaiting it
     await act(async () => root.unmount());
   }
 });
+it('closing a recovery view cannot expose an outgoing unlock input for the next flow', async () => {
+  const view = { step: 'unlock', closing: true, generated: '', accountId: '', error: '' };
+  mocks.factory.mockReturnValue({
+    getSnapshot: () => view,
+    subscribe: () => () => {},
+    registerEditor: vi.fn(),
+    command: vi.fn(async () => {}),
+    close: vi.fn(async () => {}),
+  });
+  mocks.navigation.mockReturnValue({ leaving: false, error: '', enabled: true, back: vi.fn() });
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  try {
+    await act(async () =>
+      root.render(
+        <AccountRecoveryApp
+          config={{ networkSessions: true } as never}
+          slotId={'enrollment-' + '12'.repeat(16)}
+          onNavigate={() => {}}
+        />,
+      ),
+    );
+    expect(host.querySelector('input[type=password]')).toBeNull();
+    expect(host.textContent).toContain('Closing and finishing storage operations…');
+  } finally {
+    await act(async () => root.unmount());
+  }
+});

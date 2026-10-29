@@ -6312,3 +6312,8 @@ Keep save/confirm navigation in the Window while native confirmation/commit rema
 ## 2026-10-29 — phase230: replace a retired Worker only on explicit input
 
 Keep each supervisor incarnation one-shot. Successful existing drain can expose a new unlock screen, but only a new command starts an inspect-only fresh Worker. Initial handoff getter is consumed once; failed cleanup cannot reopen. [Evidence](performance-experiments/2026-10-28-worker-owner/phase230/README.md).
+
+
+## 2026-10-29 — phase231: separate recovery shutdown from unlock
+
+The outgoing screen must not accept a factor while its owner closes. Add a Window-only closing marker, refused by the native projection decoder, and retain the existing close status. [Evidence](performance-experiments/2026-10-28-worker-owner/phase231/README.md).
