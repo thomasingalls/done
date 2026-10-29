@@ -75,3 +75,9 @@ export function requireNativeLocks(): LockManager {
     throw new Error('Web Locks requires a supported secure context.');
   return globalThis.navigator.locks;
 }
+
+/** Scope a Local join to the actual native Worker client. A serialized ticket is not that proof. */
+export const localWorkerPinName = (ticket: AccountWorkerTicket, workerClient: string) =>
+  cohortNames(ticket.slotId, ticket.incarnation).member +
+  '/window-pin/' +
+  JSON.stringify(workerClient);

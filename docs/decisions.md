@@ -6056,3 +6056,11 @@ retry clocks. Original signed history/authority still decides work. Own every in
 key buffer before awaiting a second advisory acknowledgment, so late refusal remains inside the
 existing Root erasure boundary. Native draft-control failure/current pass retained.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase190/README.md).
+
+
+## 2026-10-29 — preserve SC-03 shared Local writers across worker conversion
+
+Local Worker and Window retain actual shared slot fences; Account retains original exclusion. Pin the
+actual native Worker client before key-owning phases, use real phase locks with nonqueueing refusal,
+and close both realms before exclusive transitions. No format or concurrent-writer product-policy change.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase191/README.md).

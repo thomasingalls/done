@@ -17686,3 +17686,11 @@ regression exposed draft raw-key ownership ordering; current source wipes actual
 and cold reads exactly.23 unit/98 metadata/type/lint/format and eight final native cases pass.
 Original crypto/authority/history/backoff checks retained. Default Page, no performance credit.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase190/README.md).
+
+
+## 2026-10-29 — phase191 Local native coordination
+
+Actual Local shared roots, Window pin, real per-phase permits, replay refusal and fail-closed cleanup.
+23 unit/98 metadata/type/lint/format, independent Account AST specialization and five final native cases
+pass, including original Account input/Undo/cold-read controls. Eight containers absent. Still Page default;
+no timing/qualification credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase191/README.md).

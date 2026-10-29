@@ -853,7 +853,7 @@
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
-      "sha256": "b00a8c8a08f6f016dcb8932b69e4f3ab893370925f134c9c7c39a2751375159c"
+      "sha256": "303f8a0268a3d1362adb4ce72a0239a93fadf4bfc29cbf59d118e7bdbb2ec851"
     },
     {
       "path": "src/crdt/accountWorkerJoin.ts",
@@ -1204,6 +1204,10 @@
       "sha256": "c31316b0686ee28ce6ad6dabd6e0a34a2a5583f80323fddcee44a3a66c9b78f9"
     },
     {
+      "path": "src/crdt/localWorkerLifetime.ts",
+      "sha256": "9e8dbe1fc776fa3a96c1e377a64a94815fb61c1db1e3f2366b95f244ea0fdae5"
+    },
+    {
       "path": "src/crdt/membershipReading.ts",
       "sha256": "fa823c6f7575a985def64b2dc69ac6daf7a8cb7a6f6df658bd609487fd50fc6b"
     },
@@ -1217,7 +1221,7 @@
     },
     {
       "path": "src/crdt/nativeCoordination.ts",
-      "sha256": "78950bed88e558d0d3f64e699138d1e2f250596c0ae413bc2ace762114cc58da"
+      "sha256": "93d24b531a1305f07cc19daa352fccf76950e288753ed4cfdb583301eb291ea2"
     },
     {
       "path": "src/crdt/ownedStartup.ts",

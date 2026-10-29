@@ -1,0 +1,6 @@
+{
+  "src/crdt/accountWorkerCohort.ts": "303f8a0268a3d1362adb4ce72a0239a93fadf4bfc29cbf59d118e7bdbb2ec851",
+  "src/crdt/nativeCoordination.ts": "93d24b531a1305f07cc19daa352fccf76950e288753ed4cfdb583301eb291ea2",
+  "src/crdt/localWorkerLifetime.ts": "9e8dbe1fc776fa3a96c1e377a64a94815fb61c1db1e3f2366b95f244ea0fdae5",
+  "test/localWorkerLifetime.test.ts": "f7133592d75fd5479700ae6c8c909a485750346c973049623dc26ee3809938fe"
+}

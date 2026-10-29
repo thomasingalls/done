@@ -559,3 +559,9 @@ polling/retry reset. Native discovery3->5/input/cold read and late-refusal key e
 pass, with both failing controls retained. Continue Local/ceremony lifetime proofs and offline/default
 integration before measuring unchanged gates. Default Page and separate catch-up outcomes remain.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase190/README.md).
+
+
+**Phase191 — Local ownership:** retain existing shared writers, independently pin actual Worker client,
+real native phase permits and physical fences through cleanup. Native coexistence/exclusion/replay/failure
+and Account controls pass. Continue Local journal/mirror and ceremony/default/offline conversion before
+unchanged timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase191/README.md).

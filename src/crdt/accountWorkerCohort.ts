@@ -1,5 +1,11 @@
 /** Private coordination only. A joined worker must still perform ordinary Account authentication. */
-import { cohortNames, inactive, cancelled, type AccountWorkerTicket } from './nativeCoordination';
+import {
+  cohortNames,
+  localWorkerPinName,
+  inactive,
+  cancelled,
+  type AccountWorkerTicket,
+} from './nativeCoordination';
 export type { AccountWorkerTicket } from './nativeCoordination';
 export { createAccountWorkerJoin } from './accountWorkerJoin';
 import { pageRuntimePorts } from './runtimePorts';
@@ -9,6 +15,8 @@ export interface WindowAccountCohort {
   readonly ticket: AccountWorkerTicket;
   readonly signal: AbortSignal;
   readonly state: 'active' | 'closing' | 'closed' | 'failed';
+  /** Local composition only: pin the actual native Worker client before it may initialize keys. */
+  bindLocalWorker(): Promise<void>;
   write<T>(effect: () => T & Sync<T>): T;
   beforeRelease(cleanup: () => void | Promise<void>): void;
   disposeWith(cleanup: () => void): void;
@@ -48,10 +56,11 @@ async function hold(locks: LockManager, name: string, mode: LockMode, signal: Ab
 
 /** No keys or decrypt permission. The callback must stop/drain the actual dedicated worker.
  * A failed callback/member census retains the endpoint and supervisor leases until context death. */
-export async function openWindowAccountCohort(
+async function openWindowCohort(
   slotId: string,
   stopWorker: () => Promise<void>,
   signal?: AbortSignal,
+  local = false,
 ): Promise<WindowAccountCohort> {
   if (typeof window === 'undefined' || typeof stopWorker !== 'function') throw inactive();
   const locks = pageRuntimePorts.lifetime.requireLocks();
@@ -65,7 +74,9 @@ export async function openWindowAccountCohort(
     disposers = new Set<() => void>();
   let reservation: Awaited<ReturnType<typeof hold>> | undefined,
     anchor: Awaited<ReturnType<typeof hold>> | undefined,
-    endpoint: Awaited<ReturnType<typeof hold>> | undefined;
+    endpoint: Awaited<ReturnType<typeof hold>> | undefined,
+    pin: Awaited<ReturnType<typeof hold>> | undefined;
+  let binding: Promise<void> | undefined;
   let state: WindowAccountCohort['state'] = 'active',
     closing: Promise<void> | undefined;
   let owner: WindowAccountCohort | undefined;
@@ -83,10 +94,12 @@ export async function openWindowAccountCohort(
   };
   if (signal?.aborted) cancel();
   try {
-    reservation = await hold(locks, n.reservation, 'exclusive', opening.signal);
+    reservation = await hold(locks, n.reservation, local ? 'shared' : 'exclusive', opening.signal);
     anchor = await hold(locks, n.anchor, 'exclusive', opening.signal);
-    const barrier = await hold(locks, n.slot, 'exclusive', opening.signal);
-    await barrier.close();
+    if (!local) {
+      const barrier = await hold(locks, n.slot, 'exclusive', opening.signal);
+      await barrier.close();
+    }
     endpoint = await hold(locks, n.slot, 'shared', opening.signal);
     const holders = (await locks.query()).held?.filter((v) => v.name === n.anchor);
     if (opening.signal.aborted || holders?.length !== 1 || !holders[0]?.clientId) throw cancelled();
@@ -104,6 +117,35 @@ export async function openWindowAccountCohort(
       signal: stopped.signal,
       get state() {
         return state;
+      },
+      bindLocalWorker() {
+        live();
+        if (!local) throw inactive();
+        if (binding) return binding;
+        binding = (async () => {
+          const held = (await locks.query()).held ?? [];
+          live();
+          const members = held.filter((v) => v.name === n.member);
+          const workerClient = members[0]?.clientId;
+          if (
+            members.length !== 1 ||
+            members[0]?.mode !== 'exclusive' ||
+            !workerClient ||
+            workerClient === ticket.windowClient ||
+            !held.some(
+              (v) => v.name === n.slot && v.mode === 'shared' && v.clientId === workerClient,
+            )
+          )
+            throw inactive();
+          pin = await hold(
+            locks,
+            localWorkerPinName(ticket, workerClient),
+            'exclusive',
+            opening.signal,
+          );
+          live();
+        })();
+        return binding;
       },
       write<T>(effect: () => T & Sync<T>): T {
         live();
@@ -130,6 +172,7 @@ export async function openWindowAccountCohort(
             // Withdraw joining permission first; retain the actual slot fence throughout drain.
             await anchor!.close();
             for (const cleanup of before) await cleanup();
+            await binding?.catch(() => {});
             await stopWorker();
             // A worker message and the browser's native release travel on different channels.
             // An actual barrier proves release; an early query/acknowledgment does not.
@@ -161,6 +204,7 @@ export async function openWindowAccountCohort(
             done.reject(failure);
             return;
           }
+          await pin?.close();
           await endpoint!.close();
           await reservation!.close();
           state = 'closed';
@@ -183,9 +227,25 @@ export async function openWindowAccountCohort(
     opening.abort();
     detach();
     if (owner?.state === 'failed') throw cause;
+    await pin?.close();
     await endpoint?.close();
     await anchor?.close();
     await reservation?.close();
     throw cause;
   }
 }
+
+/** Account still excludes all prior writers before publishing its Window endpoint. */
+export const openWindowAccountCohort = (
+  slotId: string,
+  stopWorker: () => Promise<void>,
+  signal?: AbortSignal,
+) => openWindowCohort(slotId, stopWorker, signal);
+
+/** Local preserves SC-03 shared writers, including old compatible Page owners. Both realms retain
+ * actual old-slot shared fences. Native exclusive transitions still wait for complete key disposal. */
+export const openWindowLocalCohort = (
+  slotId: string,
+  stopWorker: () => Promise<void>,
+  signal?: AbortSignal,
+) => openWindowCohort(slotId, stopWorker, signal, true);
