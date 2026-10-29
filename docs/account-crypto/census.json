@@ -857,7 +857,7 @@
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
-      "sha256": "4912df809b31f23717c9376958085e36f09bb7651d494cb59b9c328f5b886868"
+      "sha256": "4bb474c5973188095ed2c18970a04f80f3d18026e360d41dc2d59fe6a5d0ef00"
     },
     {
       "path": "src/crdt/accountWorkerJoin.ts",
@@ -937,7 +937,7 @@
     },
     {
       "path": "src/crdt/ceremonyWorkerLifetime.ts",
-      "sha256": "48332f0208bdd071e38350b90ec58611214bf869c0032335dcdc39c98eacf8a4"
+      "sha256": "3e33c038eaec7bbe3b3f54598bb956d3cd0b73e88b39f56d29ca4578d0ab4688"
     },
     {
       "path": "src/crdt/compaction.ts",
@@ -1265,7 +1265,7 @@
     },
     {
       "path": "src/crdt/nativeCoordination.ts",
-      "sha256": "93d24b531a1305f07cc19daa352fccf76950e288753ed4cfdb583301eb291ea2"
+      "sha256": "57bdc42780bc232426d1d2491d90f03ee36664bb86b68291434ff0dfd9162c9b"
     },
     {
       "path": "src/crdt/ownedCredentialPrompt.ts",

@@ -40,6 +40,7 @@ export const cohortNames = (slotId: string, incarnation: string) => {
   return {
     slot,
     reservation: slot + '/worker-supervisor',
+    ceremonyReservation: slot + '/worker-ceremony-supervisor',
     anchor: slot + '/worker-window/' + incarnation,
     member: slot + '/worker-member/' + incarnation,
   };

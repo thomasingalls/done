@@ -17861,3 +17861,8 @@ Shared provider lifecycle and fixed JSON/slot port.35 focused/98 metadata/type/l
 Initial/final Chrome5 verify original credentials/approval/clone/JSON service policy; final Firefox2
 controls pass. Twelve containers absent; async-wrapper correction retained.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase211/README.md).
+
+
+## 2026-10-29 — phase212 idle ceremony contention repair
+
+Before actual two-Window case fails; rebuilt same case and actual handoff pass.50 focused/98 metadata/type/lint/format/exact audit pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase212/README.md). Default remains Page; full conversion and unchanged gates pending.

@@ -112,7 +112,7 @@ async function openWindowCohort(
   try {
     reservation = await hold(
       locks,
-      n.reservation,
+      kind === 'ceremony' ? n.ceremonyReservation : n.reservation,
       kind === 'account' ? 'exclusive' : 'shared',
       opening.signal,
     );

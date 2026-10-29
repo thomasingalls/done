@@ -6217,3 +6217,8 @@ Use one monotone provider/cancel/late-erasure mechanism for slot assertions and 
 Keep original signed-byte verification and codecs; scope real browser effects to origin/RP and preserve
 service user handles. Inactive calls remain asynchronous rejections.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase211/README.md).
+
+
+## 2026-10-29 — idle ceremony supervision has a separate reservation
+
+Readonly setup roots hold no editing old-slot lease and use their own shared reservation. Account/Local native joins retain their original global reservations and actual task fencing. A real two-Window counterexample justifies this separation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase212/README.md).

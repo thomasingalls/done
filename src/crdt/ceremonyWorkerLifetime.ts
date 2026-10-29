@@ -40,7 +40,7 @@ export async function openCeremonyWorkerLifetime(input: AccountWorkerTicket) {
     const held = (await locks.query()).held ?? [];
     live();
     for (const [name, mode] of [
-      [names.reservation, 'shared'],
+      [names.ceremonyReservation, 'shared'],
       [names.anchor, 'exclusive'],
     ] as const)
       if (

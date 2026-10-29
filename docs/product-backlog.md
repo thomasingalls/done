@@ -679,3 +679,6 @@ activation before gates.182/187/205 remain open. [Packet](performance-experiment
 wire checks pass. Next idle ceremony reservation contention and native wizard wiring/offline/default
 activation before measuring unchanged gates;182/187/205 remain open.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase211/README.md).
+
+
+**Phase212:** idle setup no longer blocks unrelated fresh Account ownership; actual native slot-task fencing remains. Next native wizard/browser/workspace handoff, recovery/enrollment, offline/default activation, then unchanged measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase212/README.md).
