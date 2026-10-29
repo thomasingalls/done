@@ -499,3 +499,10 @@ real Window mirror/queues in the internal path.2417 unit cases/one skip,24 focus
 still over30s (continued progress and429 retained). No timing/activation credit. Next native-owner
 retirement propagation, automatic context changes and remaining application integration; default app
 still Page. [Evidence](performance-experiments/2026-10-28-worker-owner/phase182/README.md).
+
+
+**Phase183 — native retirement coupling:** both real before failures (native member gone but
+Window still active) repaired by direct carrier-signal retirement and reentrant-safe shutdown. Six
+affected native cases,50 focused and98 metadata pass; original native checks/drain/obligations remain.
+Default app still Page. Continue context/UI/resumable/Local/ceremony/offline conversion;182 deep
+joined late-marker continuation remains open. [Evidence](performance-experiments/2026-10-28-worker-owner/phase183/README.md).

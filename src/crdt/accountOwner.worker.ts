@@ -1,3 +1,4 @@
+import { followWorkerNativeLifetime } from './workerNativeLifetime';
 import { createWorkerAccountComposition } from './workerAccountComposition';
 import { eraseCapsule } from './sourceCapture';
 import type { NetworkLogin } from '../account/networkLogin';
@@ -55,6 +56,7 @@ self.addEventListener('message', (event: MessageEvent) => {
   };
   if (m?.v !== 1 || m.kind !== 'accountBootstrap' || !(m.port instanceof MessagePort)) return;
   initialized = true;
+  let nativeLifetime: ReturnType<typeof followWorkerNativeLifetime> | undefined;
   let login: NetworkLogin | undefined,
     composition: Composed | undefined,
     composedBridge: ReturnType<typeof createWorkerAccountComposition> | undefined;
@@ -68,8 +70,12 @@ self.addEventListener('message', (event: MessageEvent) => {
   let baselineSequence = 0;
   const close = () => {
     if (closing) return closing;
+    // Publish the memoized promise before abort/close can synchronously reenter this function.
+    const completion = deferred<void>();
+    closing = completion.promise;
     retiring = true;
-    closing = (async () => {
+    channel.close();
+    void (async () => {
       const baselineWork = baseline?.work;
       runtime.close();
       login?.close();
@@ -81,12 +87,22 @@ self.addEventListener('message', (event: MessageEvent) => {
       await composedBridge?.close();
       await owner?.carrier.close();
       owner = undefined;
-    })();
+      nativeLifetime?.close();
+    })().then(() => completion.resolve(undefined), completion.reject);
     return closing;
   };
   const live = () => {
     runtime.assertCurrent();
     if (retiring) throw Error('Account worker is closing');
+  };
+  const bindNativeOwner = (value: Owner) => {
+    live();
+    if (nativeLifetime || (owner && owner !== value)) throw Error('Worker native owner changed');
+    owner = value;
+    nativeLifetime = followWorkerNativeLifetime(value.carrier, runtime.signal, () =>
+      channel.close(),
+    );
+    live();
   };
   const passkey = async (request: LocalPasskeyRequest) => {
     live();
@@ -249,7 +265,7 @@ self.addEventListener('message', (event: MessageEvent) => {
               live,
               failed: () => channel.close(),
               owned: (value, journalPrefix) => {
-                owner = value;
+                bindNativeOwner(value);
                 prefix = journalPrefix;
               },
             });
@@ -280,6 +296,7 @@ self.addEventListener('message', (event: MessageEvent) => {
             options.joined,
           );
           live();
+          bindNativeOwner(owner);
           const material = await owner.copyMirrorOpening();
           prefix = journalPrefix(material.dbName);
           try {

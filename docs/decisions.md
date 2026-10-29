@@ -6029,3 +6029,11 @@ source route; the Window mirror must validate both and bind UI identity to the l
 physical equality no longer implicitly fixes logical route fields, rebind explicitly fixes workspace
 and principal. A targeted missing-guard control and actual joined native/cold-reader checks establish
 that boundary. [Phase178](performance-experiments/2026-10-28-worker-owner/phase178/README.md).
+
+
+## 2026-10-29 — follow native retirement independently of Window hints
+
+An active Worker mirror must withdraw input when its actual native owner withdraws, even if the
+Window never receives a retirement hint. Stop the channel synchronously, but drain and prove native
+release before releasing the Window fence. Establish the memoized close promise before abort dispatch
+can reenter it. Native permit and data/authority rules are unchanged. [Phase183](performance-experiments/2026-10-28-worker-owner/phase183/README.md).

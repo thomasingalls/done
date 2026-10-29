@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "68b8d06c52d4628720631d99304523071acf5955d37ab941fe54ef1090abc3ed"
+      "sha256": "d2621f8c46c88befd4ea025b62c62deaaea1eccaa0a959e70f8a325b430b98fc"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -1426,6 +1426,10 @@
     {
       "path": "src/crdt/workerLocalBaseline.ts",
       "sha256": "541f077221f1f52bfccaffdebe9e0e10a69bc601038d652e21547cb1c88fbdec"
+    },
+    {
+      "path": "src/crdt/workerNativeLifetime.ts",
+      "sha256": "019dc6da460ef4f45d0dfa8cb1b037f21ae3522e2291c7e9f9fddf63cfda5c71"
     },
     {
       "path": "src/crdt/workerWorkspaceQueues.ts",

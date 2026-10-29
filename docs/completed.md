@@ -17609,3 +17609,11 @@ queues.2417 unit cases/one skip,24 focused,98 metadata and34 session-client case
 Actual publication, primary sender-closed receive, context conversion and credential refusals pass.
 Old checks/obligations remain. Native retirement propagation, automatic context/lifecycle and remaining
 application integration precede activation/performance. [Packet](performance-experiments/2026-10-28-worker-owner/phase182/README.md).
+
+
+## 2026-10-29 — phase183 actual native withdrawal retires the Window mirror
+
+Two native before counterexamples show member released/Window still active with its own hint
+suppressed. Direct actual-owner withdrawal binding and reentrant-safe shutdown repair both; six
+affected native cases,50 unit and98 metadata/type/lint/format checks pass. Existing drain/fences/
+crypto and all prior obligations remain. [Packet](performance-experiments/2026-10-28-worker-owner/phase183/README.md).

@@ -1,0 +1,25 @@
+import{readFileSync,writeFileSync}from'node:fs';import{parseSync}from'/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@babel/core/lib/index.js';import assert from'node:assert/strict';const repo='/Users/thomasingalls/.codex/worktrees/7fda/done',root='/private/tmp/done-worker-conversion-20261028',prior=readFileSync(root+'/182-freeze.log','utf8').match(/Replay: (.+)/)[1];
+const clean=v=>Array.isArray(v)?v.map(clean):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!['start','end','loc','comments','leadingComments','trailingComments','innerComments','extra'].includes(k)).map(([k,v])=>[k,clean(v)])):v;
+const ast=r=>clean(parseSync(readFileSync(r+'/src/crdt/accountOwner.worker.ts','utf8'),{filename:'accountOwner.worker.ts',babelrc:false,configFile:false,parserOpts:{plugins:['typescript']}}).program.body);
+const walk=(v,fn)=>{if(!v||typeof v!=='object')return;fn(v);for(const x of Object.values(v))if(Array.isArray(x))x.forEach(y=>walk(y,fn));else if(x&&typeof x==='object')walk(x,fn);};
+const b=ast(prior),a=ast(repo);let oldClose,newClose;walk(b,n=>{if(n.type==='VariableDeclarator'&&n.id.name==='close')oldClose=n;});walk(a,n=>{if(n.type==='VariableDeclarator'&&n.id.name==='close')newClose=n;});assert(oldClose&&newClose);
+const oldAsync=oldClose.init.body.body.find(n=>n.type==='ExpressionStatement'&&n.expression.type==='AssignmentExpression'&&n.expression.left.name==='closing').expression.right.callee.body;
+const drain=newClose.init.body.body.find(n=>n.type==='ExpressionStatement'&&n.expression.type==='UnaryExpression'&&n.expression.argument.type==='CallExpression').expression.argument.callee.object.callee.body;
+assert.equal(drain.body.at(-1).expression.callee.object.name,'nativeLifetime');drain.body.pop();assert.deepEqual(drain,oldAsync);
+const effects=newClose.init.body.body;const assigned=effects.findIndex(n=>n.expression?.type==='AssignmentExpression'&&n.expression.left.name==='closing'),closing=effects.findIndex(n=>n.expression?.callee?.object?.name==='channel'&&n.expression.callee.property.name==='close');assert(assigned>=0&&closing>assigned);newClose.init=oldClose.init;
+let rawBind=0,composedBind=0,removedVars=0;
+walk(a,n=>{
+ if(Array.isArray(n.body))n.body=n.body.filter(s=>{
+  const v=s.type==='VariableDeclaration'&&s.declarations.length===1?s.declarations[0]:undefined;
+  if(v&&['nativeLifetime','bindNativeOwner'].includes(v.id.name)){removedVars++;return false;}
+  if(s.type==='ExpressionStatement'&&s.expression.callee?.name==='bindNativeOwner'&&s.expression.arguments[0]?.name==='owner'){rawBind++;return false;}
+  return true;
+ });
+ if(n.type==='ExpressionStatement'&&n.expression.callee?.name==='bindNativeOwner'&&n.expression.arguments[0]?.name==='value'){
+  n.expression={type:'AssignmentExpression',operator:'=',left:{type:'Identifier',name:'owner'},right:{type:'Identifier',name:'value'}};composedBind++;
+ }
+});assert.equal(rawBind,1);assert.equal(composedBind,1);assert.equal(removedVars,2);
+assert.deepEqual(a.filter(n=>n.type!=='ImportDeclaration'||n.source.value!=='./workerNativeLifetime'),b);
+for(const path of['src/crdt/accountReceive.ts','src/crdt/accountWorkerRuntime.ts','src/crdt/accountWorkerJoin.ts','src/crdt/accountWorkerCohort.ts','src/crdt/nativeCoordination.ts','src/crdt/admissionQueue.ts','src/crdt/windowAccountMirror.ts','src/crdt/workerAccountComposition.ts','src/account/networkLogin.ts','src/crdt/writeSession.ts'])assert(readFileSync(repo+'/'+path).equals(readFileSync(prior+'/'+path)),path);
+const read=p=>JSON.parse(readFileSync(p)),m=read(root+'/183-before-manifest.json'),n=read(repo+'/docs/release-validation-manifest.json');for(const row of m.rows)assert.deepEqual(n.rows.find(v=>v.id===row.id),row);for(const block of m.unresolved)assert(n.unresolved.some(v=>JSON.stringify(v)===JSON.stringify(block)));assert.equal(n.rows.length,m.rows.length+1);assert.equal(n.unresolved.length,m.unresolved.length+1);
+writeFileSync(root+'/183-boundary-audit.json',JSON.stringify({nativeAuthorityHistoryStorageAndMixedOwnerAlgorithmsByteIdentical:true,workerEntryAstIdenticalOutsideNativeLifetimeBindingAndReentrantShutdown:true,actualDrainBodyIdenticalExceptListenerCleanup:true,closingPromisePublishedBeforeAbortEffects:true,allPriorObligationsAndBlocksExact:true,newTestsRequiredUncredited:true},null,2)+'\n');
