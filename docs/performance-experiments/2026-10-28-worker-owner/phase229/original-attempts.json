@@ -1,0 +1,20 @@
+[
+  {
+    "log": "229-original-recovery.log",
+    "sha256": "c1f49fed15cde19c6a87d9d959f918da89aa4fa64f5a0750971894ee29266f8b",
+    "privateOriginalRetained": true,
+    "result": "collection blocked by missing disposable tsconfig; repaired harness"
+  },
+  {
+    "log": "229-original-recovery-second.log",
+    "sha256": "3041baa3a56f6550af052430986ac6b66d499a0362ee5d1f83bf32b56b399e0f",
+    "privateOriginalRetained": true,
+    "result": "Back/code assertion fails; independent next-device recovery case times out"
+  },
+  {
+    "log": "229-original-back-after.log",
+    "sha256": "70da52dfab168937f44be48fe442705c1d62d6b116ed66d19e0e6247af8a9e0e",
+    "privateOriginalRetained": true,
+    "result": "Back/code checks pass; later old-device retirement waits at devices.ts122/recovery.spec.ts128"
+  }
+]

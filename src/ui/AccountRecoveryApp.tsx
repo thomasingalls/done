@@ -34,7 +34,14 @@ export function AccountRecoveryApp({
   const [owner] = useState(() => createWorkerAccountRecovery(config, slotId, life.current.signal));
   const view = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const [screen, setScreen] = useState<'editing' | 'devices'>('editing');
-  const step: Step = view.step === 'editing' ? screen : view.step,
+  // This is display navigation only. Native confirmation and commit remain authoritative.
+  const [codeStep, setCodeStep] = useState<'save-code' | 'confirm-code' | null>(null);
+  const step: Step =
+      view.step === 'editing'
+        ? screen
+        : view.generated && ['save-code', 'confirm-code'].includes(view.step) && codeStep
+          ? codeStep
+          : view.step,
     generated = view.generated,
     accountId = view.accountId;
   const [busy, setBusy] = useState(''),
@@ -90,7 +97,12 @@ export function AccountRecoveryApp({
   }, []);
   const setStep = (target: Step) => {
     if (target === 'editing' || target === 'devices') setScreen(target);
-    else if (target === 'save-code' || target === 'confirm-code') owner.visit(target);
+    else if (target === 'save-code' || target === 'confirm-code') {
+      setCodeStep(target);
+      void owner
+        .command({ command: 'visit', value: target })
+        .catch((cause) => setError(String(cause)));
+    }
   };
   const navigation = useCeremonyNavigation({
     base: '/recover/' + slotId,
@@ -110,7 +122,11 @@ export function AccountRecoveryApp({
         ['save-code', 'confirm-code'].includes(target)
       ) {
         setTyped('');
-        return owner.visit(target);
+        setCodeStep(target as 'save-code' | 'confirm-code');
+        void owner
+          .command({ command: 'visit', value: target })
+          .catch((cause) => setError(String(cause)));
+        return true;
       }
       return false;
     },
@@ -266,7 +282,9 @@ export function AccountRecoveryApp({
               {generated}
             </pre>
             <button
+              disabled={!!busy}
               onClick={() => {
+                setCodeStep('confirm-code');
                 void owner
                   .command({ command: 'savedCode' })
                   .catch((cause) => setError(String(cause)));

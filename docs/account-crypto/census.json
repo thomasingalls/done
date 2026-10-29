@@ -1809,7 +1809,7 @@
     },
     {
       "path": "src/ui/AccountRecoveryApp.tsx",
-      "sha256": "b8ea02c9f470222fd4c75e25197d05b648d256014c6b249a453fdae8e51fcf26"
+      "sha256": "0b039292397476c214a8462c64b9f4cb4469a51c064c673654a093a21c491d40"
     },
     {
       "path": "src/ui/AccountSetupApp.tsx",

@@ -6302,3 +6302,8 @@ Select Worker for public enrollment, dynamically load Page only for explicit old
 ## 2026-10-29 — phase228: default recovery screen on same-realm native owner
 
 Keep original recovery UI copy and explicit disconnect review, execute crypto/retained factors/one-use approval only natively. Inspect-only fresh Worker reboot on a new unlock command retains no factor/approval. Read failure can offer authenticated unlock, never assume empty data. Confirm complete sender upload before recovery comparisons. [Evidence](performance-experiments/2026-10-28-worker-owner/phase228/README.md).
+
+
+## 2026-10-29 — phase229: synchronous recovery display navigation
+
+Keep save/confirm navigation in the Window while native confirmation/commit remain authoritative. Disable Saved until preceding preparation reply completes. No cached factor or native authority is introduced. [Evidence](performance-experiments/2026-10-28-worker-owner/phase229/README.md).

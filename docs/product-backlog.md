@@ -730,3 +730,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase228:** All public Local/setup/enrollment/recovery screens use native owners. Next remaining Window boundary, mixed/offline/update and interrupted-source refusal review; then unchanged input/peer/delivery measurements. No release preparation. [Packet](performance-experiments/2026-10-28-worker-owner/phase228/README.md).
+
+
+**Phase229:** Recovery Back repair recorded. Next retirement and recovered-device invitation blockers, then boundary validation and unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase229/README.md).
