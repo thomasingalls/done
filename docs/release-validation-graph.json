@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 627,
-    "requiredTestFiles": 621,
+    "testFiles": 628,
+    "requiredTestFiles": 622,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9828,6 +9828,21 @@
         ]
       },
       "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/accountWorkerOwnerEntry.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountWorkerOwnerEntry.test.ts"
+        ]
+      },
+      "declarations": 3,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -19736,6 +19751,10 @@
     {
       "path": "test/accountWorkerCohort.test.ts",
       "sha256": "345eac962157d06357072d77565176f7621ed8262b71a78ae2baa7b032d5fb84"
+    },
+    {
+      "path": "test/accountWorkerOwnerEntry.test.ts",
+      "sha256": "f63ada4384745344fb8d7413a0e9b927289daff46f155487eece4baac1ad90e4"
     },
     {
       "path": "test/accountWorkerReceive.test.ts",

@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "f8cb5bcbee9823d44996313eef7a79ab4ade4cacc7ab799b1fe761905f114da2"
+      "sha256": "1a8d3a4659ace03bcc47fce5d4153d27330abcefe2bf1090253fe4dce834a73a"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -860,6 +860,10 @@
       "sha256": "636b945430b693f0c2a4e6f201aef01c7ebca9f93de9556b3a567b1cf3a322ec"
     },
     {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "sha256": "126f8eb4fef37782f46eadb77ba0f6b974a222342b8239decdb5c598563ba536"
+    },
+    {
       "path": "src/crdt/accountWorkerReceive.ts",
       "sha256": "5e9756906e5efd218b4ca089f9d4334645e3a5bd1e12b58335b714fab012af29"
     },
@@ -921,7 +925,7 @@
     },
     {
       "path": "src/crdt/ceremonyEnvironment.ts",
-      "sha256": "ea316a39718aea1864ca5710feaeb0cca981be707ed34b4d905f532ba1c09279"
+      "sha256": "a5e589034d184bd195c2f7ca975cbda9f9c316a7db6746ba0df65bfe0f903caf"
     },
     {
       "path": "src/crdt/ceremonyWorkerLifetime.ts",
@@ -1205,7 +1209,7 @@
     },
     {
       "path": "src/crdt/localProtection.ts",
-      "sha256": "0f095534099bb91cac895f4eb598f4ffe3c0c687faf4fb4bb3c70d748f9c72bf"
+      "sha256": "a6570a732794dec401ff0d1cfbdd04ee685663276c1390b7265e6f2432b63e97"
     },
     {
       "path": "src/crdt/localRecovery.ts",
@@ -1221,7 +1225,7 @@
     },
     {
       "path": "src/crdt/localStartup.worker.ts",
-      "sha256": "42b31e35427428564d59c2264dd124522bb4fd0413ef2ab09db276aedd63cb78"
+      "sha256": "116cbe19c81a8bb120deea2d09e7b707522e6a5e8dd5ad71a2b56c14358c4631"
     },
     {
       "path": "src/crdt/localStartupClient.ts",
@@ -1294,6 +1298,10 @@
     {
       "path": "src/crdt/promotionRecord.ts",
       "sha256": "f2943f1024ef6290003a2853d792130ea09c99d1f75f44aa721042f9f688e7c9"
+    },
+    {
+      "path": "src/crdt/protectionEnvironment.ts",
+      "sha256": "6844c661ac611a58c8a423570d64bcda8bce0796aaa2e2c6d2c803dd7d38bebf"
     },
     {
       "path": "src/crdt/receiveGroup.ts",

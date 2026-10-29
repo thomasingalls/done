@@ -1,4 +1,4 @@
-import { ceremonyEnvironment } from './ceremonyEnvironment';
+import { protectionEnvironment } from './protectionEnvironment';
 import { assertCoveredLocalJournal } from './coveredLocalJournal';
 import { retirePageLocalJournal } from './windowJournalMutation';
 import { JournalError } from './journalCodec';
@@ -179,7 +179,7 @@ async function removeJournal(
     await assertCoveredLocalJournal(task, p.slotId, entries, verifiedTarget);
     const prefix = journalPrefix(name),
       pairs = entries.map((e) => [e.key, e.value] as const),
-      worker = ceremonyEnvironment();
+      worker = protectionEnvironment();
     if (worker) {
       const result = await worker.retireProtectedJournal(task, prefix, pairs);
       if (result.changed)

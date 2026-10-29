@@ -2,7 +2,8 @@
 import { createWorkerChannel, eraseWorkerMessage, type WorkerChannel } from './workerChannel';
 import { openCeremonyWorkerLifetime } from './ceremonyWorkerLifetime';
 import { protectLocalWorkspace } from './localProtection';
-import { ceremonyEnvironment, installCeremonyEnvironment } from './ceremonyEnvironment';
+import { installCeremonyEnvironment } from './ceremonyEnvironment';
+import { protectionEnvironment, installProtectionEnvironment } from './protectionEnvironment';
 import { inspectLocalStartup, listLocalWorkspaces, resumeLocalGenesis } from './localGenesis';
 import { createWorkerLocalGenesis } from './workerLocalGenesis';
 import { StartupError } from './startupState';
@@ -70,7 +71,7 @@ self.addEventListener('message', (event: MessageEvent) => {
         run(async () => {
           const value = input as { id: number; code: string };
           if (typeof value.code !== 'string') throw Error('Protection factor missing');
-          return ceremonyEnvironment()!.withProtection(value.id, async () => {
+          return protectionEnvironment()!.withProtection(value.id, async () => {
             await protectLocalWorkspace(m.ticket.slotId, value.code, { signal: root!.signal });
             return { kind: 'protected' };
           });
@@ -134,6 +135,7 @@ self.addEventListener('message', (event: MessageEvent) => {
   bootstrap = (async () => {
     root = await openCeremonyWorkerLifetime(m.ticket);
     installCeremonyEnvironment(root, channel, m.activity);
+    installProtectionEnvironment(root, channel);
     genesis = createWorkerLocalGenesis(m.ticket.slotId, root.signal);
     root.beforeRelease(() => genesis!.close());
     root.signal.addEventListener('abort', () => channel.close(), { once: true });
