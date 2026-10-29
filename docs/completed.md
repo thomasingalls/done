@@ -17746,3 +17746,12 @@ transaction, fresh journal equality and interruption/native drain.53 focused/98 
 format/independent Page audit pass. Native Chrome/Firefox stale-journal refusal, fresh retry, foreground
 abort/retry and exact cold writing; original Page/Account controls pass, eight containers absent.
 Default conversion pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase197/README.md).
+
+
+## 2026-10-29 — phase198 automatic Window withdrawal after Worker termination
+
+Actual member observer, cancellation/drain and physical-release distinction.41 focused/98 metadata/
+type/lint/format/independent client audit pass. Chrome Account/Local hard death automatically withdraws
+editing and preserves exact cold sealed replay; Firefox Local death/fresh reopen and normal controls
+pass. Six containers absent; default conversion pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase198/README.md).

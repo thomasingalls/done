@@ -1,3 +1,4 @@
+import { watchWindowWorkerLifetime } from './windowWorkerLifetime';
 import { forwardWorkerConfiguration } from './workerConfiguration';
 import { createAccountWorkerTerminalReceiver } from './workerTerminal';
 import {
@@ -89,6 +90,7 @@ export async function openAccountWorkerSession(
   let worker: Worker | undefined,
     channel: ReturnType<typeof createWorkerChannel> | undefined,
     killed = false,
+    nativeEnded = false,
     material: AccountMirrorOpening | undefined;
   let nativeAccountId: string | undefined;
   let closedWorker: (ok: boolean) => void = () => {};
@@ -99,14 +101,15 @@ export async function openAccountWorkerSession(
       if (worker) {
         channel?.close();
         let timer: ReturnType<typeof setTimeout> | undefined;
-        const closed = killed
-          ? true
-          : await Promise.race([
-              stoppedWorker,
-              new Promise<null>((resolve) => {
-                timer = setTimeout(() => resolve(null), 5000);
-              }),
-            ]);
+        const closed =
+          killed || nativeEnded
+            ? true
+            : await Promise.race([
+                stoppedWorker,
+                new Promise<null>((resolve) => {
+                  timer = setTimeout(() => resolve(null), 5000);
+                }),
+              ]);
         clearTimeout(timer);
         worker.terminate();
         if (closed === false) throw Error('Worker cleanup failed; refresh before reopening');
@@ -445,6 +448,12 @@ export async function openAccountWorkerSession(
     // Own every incoming key buffer before the additional advisory acknowledgment can await/fail.
     cohort.write(() => {});
     await configuration.ready;
+    cohort.write(() => {});
+    await watchWindowWorkerLifetime(cohort, (released) => {
+      nativeEnded ||= released;
+      channel?.close();
+      void cohort.close().catch(() => {});
+    });
     cohort.write(() => {});
     for (const kind of [
       'visibilitychange',

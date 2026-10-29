@@ -6113,3 +6113,11 @@ Keep crypto/CRDT/coverage/replacement in its original native Worker owner. Trans
 for a final exact all-store Window census and synchronous scoped journal comparisons, aborting the
 transaction on change/interruption. No cross-turn keepalive/pending old-slot exclusive barrier.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase197/README.md).
+
+
+## 2026-10-29 — observe native Worker member release rather than wait for port death
+
+One queued exclusive member request follows actual dedicated-worker lifetime, without old-slot reader
+group intent or polling. Actual grant withdraws Window admission and returns before independent Root
+drain/member barrier. A failed request never claims physical release.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase198/README.md).

@@ -10,6 +10,7 @@ import type { JournalFlushReceipt } from './journalStore';
 import type { Bytes } from './custodyCrypto';
 import type { StartupDisposition } from './startupState';
 import { StartupError } from './startupState';
+import { watchWindowWorkerLifetime } from './windowWorkerLifetime';
 import { createWindowLocalTrim, type LocalTrimCensus } from './windowLocalTrim';
 import {
   requireMaintenanceFence,
@@ -37,6 +38,7 @@ export async function openLocalWorkerSession(
   let code = input.code,
     worker: Worker | undefined,
     channel: WorkerChannel | undefined,
+    nativeEnded = false,
     material: LocalMirrorOpening | undefined,
     acknowledged: (ok: boolean) => void = () => {};
   let maintenance:
@@ -58,12 +60,14 @@ export async function openLocalWorkerSession(
       if (!worker) return;
       channel?.close();
       let timer: ReturnType<typeof setTimeout> | undefined;
-      const closed = await Promise.race([
-        stopped,
-        new Promise<null>((resolve) => {
-          timer = setTimeout(() => resolve(null), 5000);
-        }),
-      ]);
+      const closed = nativeEnded
+        ? true
+        : await Promise.race([
+            stopped,
+            new Promise<null>((resolve) => {
+              timer = setTimeout(() => resolve(null), 5000);
+            }),
+          ]);
       clearTimeout(timer);
       worker.terminate();
       if (closed === false) throw Error('Local Worker cleanup failed; refresh before reopening');
@@ -190,6 +194,12 @@ export async function openLocalWorkerSession(
     const reply = await request;
     if (reply.kind !== 'ready') throw new StartupError(reply);
     material = reply.opening;
+    cohort.write(() => {});
+    await watchWindowWorkerLifetime(cohort, (released) => {
+      nativeEnded ||= released;
+      channel?.close();
+      void cohort.close().catch(() => {});
+    });
     cohort.write(() => {});
     let ready = false,
       readyFlight: Promise<void> | undefined;

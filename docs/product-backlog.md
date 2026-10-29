@@ -601,3 +601,9 @@ census/final Window commit then remaining worker startup/ceremonies before uncha
 fresh retry and foreground interruption preserve exact cold writing in Chrome/Firefox. Continue
 hard-death withdrawal, startup/ceremony/default/offline conversion before unchanged performance gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase197/README.md).
+
+
+**Phase198 — native hard-death withdrawal:** Window automatically retires without port acknowledgement,
+sealed data cold-replays and fresh Worker opens without lock leak. Continue startup/ceremony/offline/
+default conversion before unchanged gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase198/README.md).

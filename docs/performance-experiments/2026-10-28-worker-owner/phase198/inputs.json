@@ -1,0 +1,6 @@
+{
+  "src/crdt/windowWorkerLifetime.ts": "378713751fe364cd0deb0e4b4a426c2f87156890bb2f7a2b80c8dd816e634591",
+  "src/crdt/localWorkerClient.ts": "73dcf037d425a7637ebbedce1f3d972198587e17ded55572a9e20d887f693f1b",
+  "src/crdt/accountWorkerClient.ts": "c2ca86135bbd60e3c24527c60bb7f4602b7b0d54b3b1a045a026a98a3067b28b",
+  "test/windowWorkerLifetime.test.ts": "1950b834cca4a09552885944f05f61b97058a447d3265b5d7630e381f6d4ea12"
+}

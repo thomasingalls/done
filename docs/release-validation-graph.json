@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 618,
-    "requiredTestFiles": 612,
+    "testFiles": 619,
+    "requiredTestFiles": 613,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14282,6 +14282,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/windowWorkerLifetime.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/windowWorkerLifetime.test.ts"
+        ]
+      },
+      "declarations": 7,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerAccountComposition.test.ts",
       "status": "required",
       "invocation": {
@@ -21417,6 +21432,10 @@
     {
       "path": "test/windowLocalTrim.test.ts",
       "sha256": "5ba3f5e1565f038bc86b1f2e47022c4e465269a07e16b7cddab4af05ccdfd16a"
+    },
+    {
+      "path": "test/windowWorkerLifetime.test.ts",
+      "sha256": "1950b834cca4a09552885944f05f61b97058a447d3265b5d7630e381f6d4ea12"
     },
     {
       "path": "test/workerAccountComposition.test.ts",
