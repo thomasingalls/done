@@ -1,0 +1,72 @@
+import {parseEnvelope}from'./channel.mjs';import{activity}from'./env.mjs';
+let owner,incarnation,life,abort,tail=Promise.resolve(),last=0,opening,storageId=0;
+let mainPort;const pendingPasskeys=new Map();const encode=v=>new TextEncoder().encode(JSON.stringify(v));
+const decode=b=>JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(b));
+const metrics={keyCleanups:0,rawKeyBuffers:0,nonzeroAfterCleanup:0,accepted:0,storageCalls:0};
+const current=()=>{if(!life||Atomics.load(life,0)!==1)throw new DOMException('Owner closed','AbortError')};
+globalThis.__workerCurrent=current;
+// A shared cohort join cannot queue behind an older exclusive request while its own Window lease is held.
+const nativeLocks=navigator.locks;
+globalThis.__workerLocks={request(name,options,callback){
+ if(options.mode!=='shared')throw Error('unexpected-worker-lock-mode');
+ if(options.signal?.aborted)return Promise.reject(new DOMException('Cancelled','AbortError'));
+ return nativeLocks.request(name,{mode:'shared',ifAvailable:true},lock=>{
+  if(!lock||options.signal?.aborted)throw new DOMException('Cohort unavailable','AbortError');
+  return callback(lock);
+ });
+}};
+globalThis.__workerKeyCleanup=m=>{metrics.keyCleanups++;metrics.rawKeyBuffers+=m.buffers;metrics.nonzeroAfterCleanup+=m.nonzero};
+function storageCall(op,args=[]){
+ current();const mailbox=new SharedArrayBuffer(1024*1024+12),header=new Int32Array(mailbox,0,3);metrics.storageCalls++;
+ mainPort.postMessage({kind:'storage',owner:incarnation,id:++storageId,op,args,mailbox});
+ if(Atomics.wait(header,0,0,5000)==='timed-out')throw Error('storage-bridge-timeout');
+ current();const length=Atomics.load(header,1);if(length<1||length>1024*1024)throw Error('storage-bridge-invalid');
+ const result=decode(new Uint8Array(mailbox,12,length).slice());new Uint8Array(mailbox,12,length).fill(0);
+ if(!result.ok)throw new DOMException('Storage endpoint refused',result.name??'InvalidStateError');return result.value;
+}
+const methods={getItem:k=>storageCall('get',[k]),setItem:(k,v)=>storageCall('set',[k,v]),removeItem:k=>storageCall('remove',[k]),key:i=>storageCall('key',[i])};
+const storage=new Proxy(Object.create(null),{get(_t,k){if(k==='length')return storageCall('length');if(k===Symbol.toStringTag)return'Storage';if(k in methods)return methods[k];return typeof k==='string'?methods.getItem(k):undefined},ownKeys(){return storageCall('keys')},getOwnPropertyDescriptor(){return{enumerable:true,configurable:true}},set(){throw Error('Storage property writes refused')}});
+Object.defineProperty(globalThis,'localStorage',{value:storage});
+function passkey(request){current();const id=++storageId;return new Promise((resolve,reject)=>{pendingPasskeys.set(id,{resolve,reject});mainPort.postMessage({kind:'passkey',owner:incarnation,id,request:{rpId:request.rpId,credentialId:request.credentialId,challenge:request.challenge}})})}
+async function snapshot(){current();const entries=owner.workspace.exportEntries();return{master:owner.workspace.text({kind:'master'}).read().text,entries:entries.map(v=>({path:v.path,content:v.content})),status:owner.workspace.status.state,metrics:{...metrics}}}
+function reply(request,kind,value){const bytes=value===undefined?new Uint8Array():encode(value);self.postMessage({...request,kind,bytes});}
+async function operation(request){
+ current();let input;try{input=request.bytes.length?decode(request.bytes):{}}finally{request.bytes.fill(0)}
+ if(request.operation==='open'){
+  const {openOwnedReceivingAccountWorkspace}=await import('./src/crdt/accountReceive.ts');current();
+  owner=await openOwnedReceivingAccountWorkspace({...input,signal:abort.signal,assertPasskey:passkey});current();return snapshot();
+ }
+ if(!owner)throw Error('owner-not-open');
+ if(request.operation==='snapshot')return snapshot();
+ if(request.operation==='append'){
+  if(typeof input.text!=='string'||input.text.length>4096)throw Error('invalid-append');
+  const text=owner.workspace.text({kind:'master'}),end=text.read().text.length;
+  const ticket=text.input({name:'insert',text:input.text},{ranges:[{anchor:end,head:end}],main:0});
+  await ticket.accepted;current();metrics.accepted++;return snapshot();
+ }
+ if(request.operation==='flush'){await owner.workspace.whenDurable();current();return snapshot()}
+ if(request.operation==='undo'||request.operation==='redo'){await owner.workspace.command({kind:request.operation}).accepted;current();return snapshot()}
+ if(request.operation==='probe'){
+  if(!Number.isInteger(input.count)||input.count<1||input.count>32)throw Error('invalid-probe');
+  const start=performance.now();for(let i=0;i<input.count;i++){current();await owner.receiveStatus()}return{loads:input.count,elapsedMs:performance.now()-start,metrics:{...metrics}};
+ }
+ throw Error('invalid-operation');
+}
+let closed=false;
+async function close(request){
+ if(closed)return;closed=true;abort.abort();for(const p of pendingPasskeys.values())p.reject(Error('owner-closed'));pendingPasskeys.clear();
+ try{await opening?.catch(()=>{});await owner?.workspace.close();await tail.catch(()=>{});owner=undefined;reply(request,'closed');self.postMessage({kind:'disposed',owner:incarnation,metrics:{...metrics}})}catch{self.postMessage({kind:'cleanup-failed',owner:incarnation})}
+}
+self.onmessage=event=>{
+ const m=event.data;
+ if(m?.kind==='bootstrap'){
+  if(incarnation||!m.life||!(m.life instanceof SharedArrayBuffer)||!/^[a-f0-9]{32}$/.test(m.owner)||!m.port)return;
+  incarnation=m.owner;life=new Int32Array(m.life);abort=new AbortController();mainPort=m.port;
+  mainPort.onmessage=event=>{const v=event.data;if(v?.owner!==incarnation)return;if(v.kind==='passkey-result'){const p=pendingPasskeys.get(v.id);if(!p)return;pendingPasskeys.delete(v.id);v.ok?p.resolve(v.assertion):p.reject(Error('passkey-refused'))}else if(v.kind==='activity'){activity(v.event,v.visibility)}};mainPort.start();self.postMessage({kind:'booted',owner:incarnation});return;
+ }
+ let request;try{request=parseEnvelope(m)}catch{return}
+ if(request.owner!==incarnation||request.id<=last)return;last=request.id;
+ if(request.operation==='close'){void close(request);return}
+ const work=tail.then(()=>operation(request));tail=work.then(()=>{},()=>{});if(request.operation==='open')opening=work;
+ void work.then(value=>reply(request,'result',value),cause=>{self.postMessage({kind:'diagnostic-fault',owner:incarnation,name:cause?.name,code:typeof cause?.code==='string'?cause.code:undefined,stack:typeof cause?.stack==='string'?cause.stack.split('\n').slice(1,7):[]});request.bytes.fill(0);reply(request,'refused',{reason:Atomics.load(life,0)===1?'operation-refused':'owner-closed'})});
+};

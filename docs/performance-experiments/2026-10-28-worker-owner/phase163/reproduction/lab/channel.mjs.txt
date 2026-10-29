@@ -1,0 +1,40 @@
+export const MAX_MESSAGE_BYTES=65536, MAX_PENDING=8;
+const operations=new Set(['open','snapshot','append','flush','probe','undo','redo','close']);
+const kinds=new Set(['result','refused','closed']);
+export function parseEnvelope(value,reply=false){
+ if(!value||typeof value!=='object')throw Error('invalid-envelope');
+ const d=Object.getOwnPropertyDescriptors(value),keys=Reflect.ownKeys(d).sort();
+ const expected=['bytes','id','operation','owner','version',...(reply?['kind']:[])].sort();
+ if(keys.length!==expected.length||keys.some((v,i)=>v!==expected[i])||Object.values(d).some(v=>!('value'in v)))throw Error('invalid-envelope');
+ if(value.version!==1||typeof value.owner!=='string'||!/^[a-f0-9]{32}$/.test(value.owner)||!Number.isSafeInteger(value.id)||value.id<1||!operations.has(value.operation)||!(value.bytes instanceof Uint8Array)||!(value.bytes.buffer instanceof ArrayBuffer)||value.bytes.byteLength>MAX_MESSAGE_BYTES||(reply&&!kinds.has(value.kind)))throw Error('invalid-envelope');
+ value.bytes.subarray(0,0); // A detached view is not an empty valid payload.
+ if(reply&&value.kind==='closed'&&value.operation!=='close')throw Error('invalid-terminal');
+ if((value.operation==='close')&&(value.bytes.length||(reply&&value.kind!=='closed')))throw Error('invalid-close');
+ return value;
+}
+export function createChannel(owner){
+ if(typeof owner!=='string'||!/^[a-f0-9]{32}$/.test(owner))throw Error('invalid-owner');
+ let phase='new',serial=0;const pending=new Map();
+ return {
+  get phase(){return phase},get pending(){return pending.size},
+  issue(operation,bytes=new Uint8Array()){
+   if(!operations.has(operation)||phase==='closed'||phase==='closing')throw Error('inactive-channel');
+   if(operation==='open'&&phase!=='new'||operation!=='open'&&operation!=='close'&&phase!=='ready')throw Error('invalid-phase');
+   if(operation!=='close'&&pending.size>=MAX_PENDING)throw Error('channel-capacity');
+   const envelope=parseEnvelope({version:1,owner,id:serial+1,operation,bytes});
+   if(operation==='close'){phase='closing';pending.clear()}else if(operation==='open')phase='opening';
+   serial++;pending.set(serial,operation);return {...envelope,bytes:bytes.slice()};
+  },
+  receive(input){
+   let envelope;try{envelope=parseEnvelope(input,true)}catch{return{kind:'invalid'}}
+   if(envelope.owner!==owner||!pending.has(envelope.id)||pending.get(envelope.id)!==envelope.operation)return{kind:'stale'};
+   if(phase==='closed'||phase==='closing'&&envelope.operation!=='close')return{kind:'stale'};
+   pending.delete(envelope.id);
+   if(envelope.kind==='closed'){phase='closed';pending.clear()}
+   else if(envelope.kind==='refused'){phase='failed';pending.clear()}
+   else if(envelope.operation==='open')phase='ready';
+   return{kind:'accepted',envelope};
+  },
+  invalidate(){phase='closed';pending.clear()},
+ };
+}

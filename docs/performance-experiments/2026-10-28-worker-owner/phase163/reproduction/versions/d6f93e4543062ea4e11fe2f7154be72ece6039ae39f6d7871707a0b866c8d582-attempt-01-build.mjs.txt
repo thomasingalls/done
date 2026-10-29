@@ -1,0 +1,19 @@
+import {build}from'/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/dist/node/index.js';
+import{readFileSync,writeFileSync,cpSync,mkdirSync,readdirSync,statSync}from'node:fs';import{createHash}from'node:crypto';import assert from'node:assert/strict';
+const root='/private/tmp/done-worker-owner-20261028',hits={activity:0,liveness:0,cleanup:0},transforms=[];
+const sha=b=>createHash('sha256').update(b).digest('hex');
+function ports(){return{name:'isolated-worker-owner-ports',enforce:'pre',transform(code,id){
+ const before=code;
+ if(id.endsWith('/src/crdt/accountCapture.ts')){code=`import {pageDocument as document,pageWindow as window} from '${root}/lab/env.mjs';\n`+code;hits.activity++;}
+ if(id.endsWith('/src/crdt/writeSession.ts')){const anchor='  const assertLive = (initializing = false): void => {';assert.equal(code.split(anchor).length,2);code=code.replace(anchor,anchor+'\n    (globalThis as any).__workerCurrent?.();');hits.liveness++;}
+ if(id.endsWith('/src/crdt/custody.ts')){
+  const a='const clearKeys = (keys: OwnedKeys) => {',b='  keys.signing = null;\n};';assert.equal(code.split(a).length,2);assert.equal(code.split(b).length,2);
+  code=code.replace(a,a+'\n  const observedRaw = [keys.journal,...(keys.previousJournals?.values() ?? [])].filter((b): b is Uint8Array => !!b);');
+  code=code.replace(b,'  keys.signing = null;\n  (globalThis as any).__workerKeyCleanup?.({buffers:observedRaw.length,nonzero:observedRaw.filter(b=>b.some(v=>v!==0)).length});\n};');hits.cleanup++;
+ }
+ if(code!==before){transforms.push({path:id,beforeSha256:sha(before),afterSha256:sha(code)});return code;}
+}}}
+await build({root:root+'/lab',base:'/worker-lab/',configFile:false,logLevel:'warn',plugins:[ports()],worker:{format:'es',plugins:()=>[ports()]},define:{__ACCOUNT_PREPARATION_VERIFIER__:JSON.stringify('0'.repeat(64)),'import.meta.env.VITE_ACCOUNT_BASELINE_READ':'"1"','import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL':'"0"','import.meta.env.VITE_ACCOUNT_RETENTION':'"0"','import.meta.env.VITE_ACCOUNT_RETENTION_AUTO':'"0"','import.meta.env.VITE_ACCOUNT_RETENTION_RESUME':'"0"','import.meta.env.VITE_ACCOUNT_HISTORY_AUTO':'"0"','import.meta.env.VITE_ACCOUNT_WARM_LOADS':'"0"','import.meta.env.VITE_ACCOUNT_LEDGER':'"incremental"','import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION':'"direct"','import.meta.env.VITE_ACCOUNT_BATCH':'"coordinated-2000"'},build:{outDir:root+'/worker-dist',sourcemap:true,target:'es2022',chunkSizeWarningLimit:1500}});
+assert.deepEqual(hits,{activity:1,liveness:1,cleanup:1});mkdirSync(root+'/combined-dist',{recursive:true});cpSync('/private/tmp/done-resumable-release-20261028/frontend',root+'/combined-dist',{recursive:true});cpSync(root+'/worker-dist',root+'/combined-dist/worker-lab',{recursive:true});
+const files={};for(const f of readdirSync(root+'/combined-dist',{recursive:true}))if(statSync(root+'/combined-dist/'+f).isFile())files[f]=sha(readFileSync(root+'/combined-dist/'+f));
+writeFileSync(root+'/build-identity.json',JSON.stringify({hits,transforms,files,scope:'Manual owner feasibility; live native storage and original verifiers; no production activation or full-client performance credit.'},null,2)+'\n');console.log(JSON.stringify({hits,assets:Object.keys(files).length}));

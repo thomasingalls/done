@@ -86,6 +86,22 @@ displayed progress as separately bounded queues. The [ownership/queue map](perfo
 records the current single-flight/request-cursor coupling and unresolved protocol obligations;
 no particular worker or staging implementation is selected yet.
 
+**Phase163 — ownership contract and native feasibility:**
+[Kernel and contract](performance-experiments/2026-10-28-worker-owner/phase163/README.md) run the actual
+first-device account owner in a worker, with original crypto/native storage and Window passkey/journal
+endpoints.14 browser and14 protocol cases pass, including exact writing through normal shipping-reader
+reopen, uncertain journal acknowledgments, cancellation and native mixed-owner fencing. The experiment
+catches exclusive-Account compatibility and a queued-cohort deadlock; both are preserved, with an
+explicit lab-only reservation/barrier/nonqueued-join protocol. Production remains unchanged.
+
+The kernel's shared-memory bridge/isolation headers and lock adaptations are not a selected product
+API. Keep local admitted mutation and sealed journal synchronous in the Window for the first
+integration; a worker RPC acknowledgment cannot replace that guarantee. Next extract explicit runtime
+environment/lifetime ports without changing page execution, then integrate a compatible cohort owner
+and bounded admitted Window mirror. Actual Goals/IME/peer gates, phone suspension and large-archive
+delta messaging remain untested; no speedup or16ms/2.5s acceptance claim. Independently progressing
+download/verification/display queues remain a separate subsequent slice.
+
 ## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday

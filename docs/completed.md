@@ -17250,3 +17250,29 @@ the failed runs. Native unlocked blur/focus is observed, hidden/suspended Androi
 New diagnostic reproducer/controls have no aggregate credit; old tests/runtime and16ms/2.5s/native
 guards remain unchanged. Freeze sequential patch162 after161; no real staging, signing, push,
 preview update, release preparation, merge, deployment or production-data access.
+
+
+## 2026-10-28 — Phase163: worker-owner contract and native feasibility
+
+Run the actual established first-device account owner in a dedicated worker against copied fictional
+native storage, original crypto/verifiers and real virtual-passkey assertions.14 native browser cases
+and14 new protocol cases pass: exact archive, actual sealed journal before reply, Undo/Redo, normal
+shipping-reader reopen, credential refusal, cancellation, lost acknowledgments, hard loss, quota,
+retirement/navigation, duplicate/queued supervisor and native orphan/mixed-owner fencing.
+[Contract, retained failures and evidence](performance-experiments/2026-10-28-worker-owner/phase163/README.md).
+
+Discover that private Account sessions are exclusive and generic shared Local sessions correctly
+refuse their markers. Keep production unchanged. The lab's explicit reservation/exclusive barrier/
+shared cohort needs a nonqueued native worker join: a retained before control demonstrates deadlock
+if an older exclusive owner queues between the two leases. Final refusal/drain control passes.
+Independently reconstruct all declared transforms;440 source and86 shipping frontend files remain
+exact. Four corrupted-evidence controls refuse; preserve three initial audit construction failures,
+all failed/invalid browser/build attempts and the teardown-timer defect. All65 owned containers removed.
+
+This is an isolated kernel, not a Goals adapter or performance repair. Its shared-memory mailbox,
+lab-only isolation headers, lock modes/port and full small-fixture snapshot replies are not shipping
+choices. Keep synchronous admitted Window journal semantics and separate bounded downloaded/
+verified-durable/display queues in the contract. Explicit production ports, compatible cohort owner
+and admitted Window mirror remain the next integration boundary. No old tests/runtime,16ms/2.5s/30s
+gates, defaults or935/389 paused qualification obligations change. Freeze sequential patch163 after162;
+no real staging, signing, push, preview update, activation, release preparation or deployment.

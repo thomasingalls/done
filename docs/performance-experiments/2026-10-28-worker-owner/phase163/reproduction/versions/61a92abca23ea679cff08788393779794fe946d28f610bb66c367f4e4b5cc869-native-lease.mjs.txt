@@ -1,0 +1,20 @@
+const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b});return{promise,resolve,reject}};
+async function hold(locks,name,mode,signal){
+ const ready=deferred(),release=deferred();let active=false,flight;
+ flight=locks.request(name,{mode,signal},async()=>{
+  const stop=()=>{active=false;release.resolve()};signal?.addEventListener('abort',stop,{once:true});active=true;
+  const lease={get state(){return active?'active':'closed'},write(effect){if(!active)throw Error('inactive-native-lease');return effect()},close(){stop();return flight}};
+  ready.resolve(lease);if(signal?.aborted)stop();try{await release.promise}finally{active=false;signal?.removeEventListener('abort',stop)};
+ });
+ void flight.catch(ready.reject);return ready.promise;
+}
+/** Lab-only topology: reservation serializes new supervisors; the exclusive old-name barrier drains old/orphan workers. */
+export async function acquireBridgeLease(locks,slotId,signal){
+ const name='done/slot-writer/'+JSON.stringify(slotId),reservationName='done/account-worker-reservation/'+JSON.stringify(slotId);
+ const reservation=await hold(locks,reservationName,'exclusive',signal);let barrier,bridge;
+ try{
+  barrier=await hold(locks,name,'exclusive',signal);await barrier.close();
+  bridge=await hold(locks,name,'shared',signal);
+  return{get state(){return bridge.state},write:effect=>bridge.write(effect),close:async()=>{await bridge.close();await reservation.close()}};
+ }catch(error){await bridge?.close();await barrier?.close();await reservation.close();throw error}
+}
