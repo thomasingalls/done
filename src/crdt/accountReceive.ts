@@ -200,6 +200,7 @@ import type { prepareAccountCustody } from './custody';
 import { AdmissionError, MAX_PENDING_BYTES } from './admissionQueue';
 import {
   createPageAccountWorkspace,
+  listenToLocalWorkspaceChanges,
   type AccountWorkspacePort,
   type AccountWorkspaceFactory,
 } from './accountWorkspacePort';
@@ -2928,6 +2929,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     api,
     account,
     carrier,
+    copyMirrorOpening,
     listCaptures,
     fetchPage,
     receiveGroup,
@@ -2959,7 +2961,11 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
-    const { workspace, enqueue, prepare } = await createWorkspace(carrier, deviceId, options);
+    const { workspace, enqueue, prepare } = await createWorkspace(carrier, deviceId, options, {
+      account,
+      copyMirrorOpening,
+      preparedPromotion,
+    });
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
       throw Error('Account opening was cancelled');
@@ -3489,8 +3495,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
           // clearing another lane's integrity halt. Login itself never prompts on this path.
           scheduler.wake(options.networkLogin?.getSnapshot() === 'remembered' ? 'online' : 'gate');
         });
-        unsubscribeLocal = workspace.outgoing((bytes) => {
-          bytes.fill(0);
+        unsubscribeLocal = listenToLocalWorkspaceChanges(workspace, () => {
           scheduler.wake('local');
         });
         if (batching.publication) {

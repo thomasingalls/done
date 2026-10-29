@@ -17582,3 +17582,11 @@ line-only repair independently preserves domain homes. Native receive/Page branc
 outside Worker handoff.436sources/198domains,958 obligations/412 blocks exact, no new aggregate credit.
 Continue actual original workspace/sync composition and bounded hints before remaining ownership and
 unchanged performance gates; default Page remains, no preview/staging/signing/push/release/automation.
+
+
+## 2026-10-29 — phase180 bounded Window-to-Worker workspace observations
+
+Keep synchronous Window admission; coalesce scheduling hints without shipping fake updates or lending
+durability. Actual barrier RPC and cancellation remain required.2400 unit cases/one skip,40 focused,
+98 metadata/type/lint/format pass; old native/scheduler AST and obligations retained. Controlled
+protocol evidence, not activation/performance credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase180/README.md).

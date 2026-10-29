@@ -14,8 +14,31 @@ import type { AccountWorkspaceOptions } from './accountWorkspace';
 
 export type AccountWorkspacePort = Pick<
   AdmittedWorkspace,
-  'status' | 'whenDurable' | 'subscribe' | 'onStatus' | 'outgoing' | 'close'
+  'status' | 'whenDurable' | 'subscribe' | 'onStatus' | 'close'
+> & {
+  /** Original Page surface, with owned bytes. Worker scheduling uses data-free localChanges. */
+  outgoing?: AdmittedWorkspace['outgoing'];
+  localChanges?: (listener: () => void) => () => void;
+};
+type NativeAccountOwner = Awaited<
+  ReturnType<(typeof import('./accountReceive'))['openAccountWorkerStore']>
 >;
+/** Only the trusted composition factory receives these real, already-authenticated owner closures. */
+export type AccountWorkspaceOwnerContext = Pick<
+  NativeAccountOwner,
+  'account' | 'copyMirrorOpening' | 'preparedPromotion'
+>;
+export function listenToLocalWorkspaceChanges(
+  workspace: AccountWorkspacePort,
+  listener: () => void,
+): () => void {
+  if (workspace.localChanges) return workspace.localChanges(listener);
+  if (!workspace.outgoing) throw Error('Workspace local-change subscription is unavailable');
+  return workspace.outgoing((bytes) => {
+    bytes.fill(0);
+    listener();
+  });
+}
 export interface AccountWorkspaceQueues<W extends AccountWorkspacePort> {
   readonly workspace: W;
   readonly enqueue: OwnedReceiveQueue;
@@ -30,6 +53,7 @@ export type AccountWorkspaceFactory<W extends AccountWorkspacePort> = (
   carrier: AdmissionCarrier,
   deviceId: string,
   options: AccountWorkspaceFactoryOptions,
+  owner?: AccountWorkspaceOwnerContext,
 ) => Promise<AccountWorkspaceQueues<W>>;
 
 /** Existing page composition. No dummy workspace, alternative canonical document or queue. */

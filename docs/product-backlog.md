@@ -479,3 +479,9 @@ development state rather than current deployment status.
   Earlier failures and scope limits remain recorded. The operator's new input-stall report and
   bulk catch-up question are open above; no service-only timing establishes these client outcomes.
   [Initial checkpoint](performance-experiments/2026-10-27-receive-projection/README.md).
+
+
+**Phase180 — scheduling bridge:** one outstanding observation plus latest state; no input-handler
+RPC or fake update frames. Original barrier remains authoritative.2400 unit cases/one existing skip,
+40 focused and98 metadata pass; Page/native/scheduler logic retained. Composed Worker integration is
+next; default app still Page, unchanged performance gates pending. [Evidence](performance-experiments/2026-10-28-worker-owner/phase180/README.md).

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 595,
-    "requiredTestFiles": 589,
+    "testFiles": 596,
+    "requiredTestFiles": 590,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14210,6 +14210,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workspaceBridge.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workspaceBridge.test.ts"]
+      },
+      "declarations": 11,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workspacePreparation.test.ts",
       "status": "required",
       "invocation": {
@@ -16156,7 +16166,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "ec61ae11e3873300f67ad8e09fb4274bf7cb9283ae2068428f99023f0fa09a8d"
+      "sha256": "9fa77301a708ad9245ca53c3883fe64992593477ab70d413e0ab732fcfe5fa02"
     },
     {
       "path": "package.json",
@@ -21101,6 +21111,10 @@
     {
       "path": "test/workspaceAdmission.test.ts",
       "sha256": "b4255d79126d789d42e69001c817e496e3d9e9e01d01dd20a670a004952eb6b2"
+    },
+    {
+      "path": "test/workspaceBridge.test.ts",
+      "sha256": "b89c1c1220d2ec6553a6670c2367bc1b30890a71ce740ba9daab80d42933c106"
     },
     {
       "path": "test/workspacePreparation.test.ts",
