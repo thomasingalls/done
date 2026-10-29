@@ -1,0 +1,8 @@
+{
+  "src/crdt/windowJournalRead.ts": "c33f731c7264bff4c6bb42cfd3bba0c4cc1e09868aaf4baf4f9d36bc44162257",
+  "src/crdt/windowJournalBridge.ts": "f316719c87d89a4f94ae16550aeeb3b0aabe92bad7634fb32dee116c418a3366",
+  "src/crdt/ceremonyEnvironment.ts": "a5e589034d184bd195c2f7ca975cbda9f9c316a7db6746ba0df65bfe0f903caf",
+  "src/crdt/journalStore.ts": "6019e2f86bee3fa5eed4d34c68f6f333c477ef818f3e5c956c0436a915a5c620",
+  "src/crdt/localStartupClient.ts": "76ede5a9e543fb37d63d9f4d2f49f218bcabc0c5d0613e231941ee6829a513bf",
+  "test/windowJournalRead.test.ts": "e39e5c3fd31470ccd385f12ae0fd4a2bcf1e735411e4ea798de41b0e2a56cf7a"
+}

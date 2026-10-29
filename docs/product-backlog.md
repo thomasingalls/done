@@ -619,3 +619,9 @@ resumption/protection then account ceremony/default/offline conversion before un
 physical interruption and retained protected custody stays protected. Continue Local protection with
 safe original exclusive journal cleanup, account ceremonies and app/offline/default conversion before
 unchanged timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase200/README.md).
+
+
+**Phase201 — read-only journal transport:** one scoped bounded implementation, actual Worker AEAD,
+no mutation/pinned permission for startup supervisor. Continue original protection with target coverage/
+retirement proof, then account ceremony/UI/offline/default conversion before unchanged gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase201/README.md).

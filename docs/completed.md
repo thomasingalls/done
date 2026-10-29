@@ -17773,3 +17773,12 @@ cancel and fresh count.32 focused/98 metadata/type/lint/format/independent audit
 wrong confirmation, one-winner race, protected-data refusal, lost reply and genuine partial creation
 resume preserve original cold writing.12 containers absent; Local protection/default conversion remain.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase200/README.md).
+
+
+## 2026-10-29 — phase201 shared read-only journal transport
+
+Original scoped census/pages/observations extracted with global credits and strict mutation guard
+retained. Ceremony fresh async AEAD with pinned/removal refusal.48 focused/98 metadata/type/lint/format/
+independent audits pass. Native Chrome/Firefox fresh writing/corrupt refusal and original maintenance/
+Account controls preserve cold writing; seven containers absent. Protection/default conversion pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase201/README.md).

@@ -6137,3 +6137,11 @@ Keep original one-shot enrollment in Worker, return only display code/result dat
 confirmation state and scope cancellation by monotone identity. A receipt never replaces fresh native
 claim/factor/census checks on open. Native commands retain original exclusive ownership and cleanup.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase200/README.md).
+
+
+## 2026-10-29 — share read-only journal observation without sharing mutation authority
+
+One scoped bounded data reader serves fixed-index slot owners and pre-index ceremony supervision.
+Original mutation factory still requires its actual old-slot guard. Ceremony reads authenticate in
+Worker, never install pinned permission and cannot remove. Data/observation IDs are not native permits.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase201/README.md).

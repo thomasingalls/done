@@ -1,3 +1,4 @@
+import { ceremonyEnvironment } from './ceremonyEnvironment';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
 import { wrapAccountJournal, unwrapAccountJournal, type JournalBinding } from './journalEra';
 import { hex, random, type Bytes } from './custodyCrypto';
@@ -76,7 +77,8 @@ export const createJournalOwner = (
   retainedKeys: ReadonlyMap<number, Bytes> = new Map(),
   binding: () => JournalBinding | undefined = () => undefined,
 ) => {
-  const asynchronous = accountWorkerRuntime(scope.slotId)?.journal;
+  const asynchronous =
+    accountWorkerRuntime(scope.slotId)?.journal ?? ceremonyEnvironment()?.journal;
   const prefix = journalPrefix(dbName),
     writer = hex(random(16));
   const openers = new Map<number, { key: Bytes; codec: ReturnType<typeof createJournalCodec> }>();

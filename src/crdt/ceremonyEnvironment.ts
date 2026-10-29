@@ -1,3 +1,5 @@
+import { createWorkerJournalReader } from './workerJournalRead';
+import type { RawJournalSnapshot, RawJournalRemoval } from './workerJournalProtocol';
 /** Fixed startup/ceremony environment. Original native slot operations and their tasks remain owners. */
 import {
   requireCeremonyWorkerLifetime,
@@ -32,9 +34,25 @@ export function installCeremonyEnvironment(
   };
   const close = () => events.dispatchEvent(new Event('pagehide'));
   root.signal.addEventListener('abort', close, { once: true });
+  const reader = createWorkerJournalReader(channel, live);
   const environment = Object.freeze({
     events,
     activity,
+    journal: Object.freeze({
+      read: reader.read,
+      observe: reader.observe,
+      pinned(_prefix: string): RawJournalSnapshot {
+        live();
+        throw new WorkerChannelError('worker-lifetime');
+      },
+      remove(
+        _prefix: string,
+        _entries: readonly (readonly [string, string])[],
+      ): Promise<RawJournalRemoval> {
+        live();
+        return Promise.reject(new WorkerChannelError('operation-refused'));
+      },
+    }),
     async countJournal(prefix: string, legacy = false) {
       live();
       const result = await channel.request<number>(

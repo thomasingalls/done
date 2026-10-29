@@ -921,7 +921,7 @@
     },
     {
       "path": "src/crdt/ceremonyEnvironment.ts",
-      "sha256": "82dddba608dc040aa101edd17b55aeee31725c3b562e624293a55133da9ee028"
+      "sha256": "a5e589034d184bd195c2f7ca975cbda9f9c316a7db6746ba0df65bfe0f903caf"
     },
     {
       "path": "src/crdt/ceremonyWorkerLifetime.ts",
@@ -1077,7 +1077,7 @@
     },
     {
       "path": "src/crdt/journalStore.ts",
-      "sha256": "c76cb60e02ae1f4cddb4110acf5a5dd16a7f0d7ecf1b0520119e3140e6449539"
+      "sha256": "6019e2f86bee3fa5eed4d34c68f6f333c477ef818f3e5c956c0436a915a5c620"
     },
     {
       "path": "src/crdt/legacyCleanup.ts",
@@ -1221,7 +1221,7 @@
     },
     {
       "path": "src/crdt/localStartupClient.ts",
-      "sha256": "29f743e38157af033a00631ef434bd330cf2522d6c230af4fdbf91efa840182f"
+      "sha256": "76ede5a9e543fb37d63d9f4d2f49f218bcabc0c5d0613e231941ee6829a513bf"
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
@@ -1437,7 +1437,11 @@
     },
     {
       "path": "src/crdt/windowJournalBridge.ts",
-      "sha256": "005415a23bb4bfb251e4127aa9e82187c8e58febe559b7daae1595234db6560f"
+      "sha256": "f316719c87d89a4f94ae16550aeeb3b0aabe92bad7634fb32dee116c418a3366"
+    },
+    {
+      "path": "src/crdt/windowJournalRead.ts",
+      "sha256": "c33f731c7264bff4c6bb42cfd3bba0c4cc1e09868aaf4baf4f9d36bc44162257"
     },
     {
       "path": "src/crdt/windowLocalMirror.ts",

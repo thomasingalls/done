@@ -1,3 +1,4 @@
+import { createWindowJournalReader } from './windowJournalRead';
 /** Window endpoint for fixed native Local startup/enrollment commands; no factor/root persistence. */
 import { openWindowCeremonyCohort, requireWindowCeremonyCohort } from './accountWorkerCohort';
 import { createWorkerChannel, type WorkerChannel } from './workerChannel';
@@ -37,12 +38,29 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
   );
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   try {
-    const ports = new MessageChannel();
+    const ports = new MessageChannel(),
+      journal = createWindowJournalReader(cohort);
     worker = new Worker(new URL('./localStartup.worker.ts', import.meta.url), { type: 'module' });
     channel = createWorkerChannel(
       ports.port1,
       cohort.ticket.incarnation,
       {
+        journalBegin(input) {
+          requireWindowCeremonyCohort(cohort);
+          return journal.begin((input as { prefix: string }).prefix);
+        },
+        journalObservationBegin(input) {
+          requireWindowCeremonyCohort(cohort);
+          return journal.beginObservation((input as { prefix: string }).prefix);
+        },
+        journalPage(input) {
+          requireWindowCeremonyCohort(cohort);
+          return journal.page((input as { id: number }).id);
+        },
+        journalFinish(input) {
+          requireWindowCeremonyCohort(cohort);
+          journal.finish((input as { id: number }).id);
+        },
         journalCount(input) {
           requireWindowCeremonyCohort(cohort);
           const prefix = (input as { prefix: string }).prefix;
