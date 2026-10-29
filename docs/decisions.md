@@ -6342,3 +6342,8 @@ Use a fixed cancellation code only for a live browser prompt; native lifetime wi
 ## 2026-10-29 — phase236: packaged offline Worker assets
 
 Exempt only two exact hashed public JavaScript filename families from the old private-tooling substring check; keep pages/maps and unrelated private modules excluded. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).
+
+
+## 2026-10-29 — phase237: Worker boundary and inconvenient results
+
+Keep intentional Window canonical UI/journal/provider and explicit legacy compatibility boundaries visible; distinguish completed placement from failed latency/cold-entry outcomes. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).

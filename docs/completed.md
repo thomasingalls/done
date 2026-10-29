@@ -17986,3 +17986,8 @@ Cancellation transport repaired: six new cases,36 focused,99 metadata/type/lint 
 ## 2026-10-29 — phase236: packaged offline Worker assets
 
 Packaged precache exact bytes and both protected offline cold-write flows pass all three unchanged cases/deadlines after narrow filename fixture repair. Artifact exact235; before failure retained. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).
+
+
+## 2026-10-29 — phase237: Worker boundary and inconvenient results
+
+Runtime boundary mapped. Native matrix5pass/3fail; full units2731pass/3exact config fixture failures/one existing skip. Preserve deep30s and post-maintenance15s cold-open failures; read-only diagnosis next. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).

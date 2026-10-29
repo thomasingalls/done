@@ -758,3 +758,8 @@ Phase235 closes cancellation/offline/resume compatibility. Continue remaining Wo
 ## 2026-10-29 — phase236: packaged offline Worker assets
 
 Phase236 packaged Worker chunks and protected offline writing verified. Continue original native compatibility outcomes and final boundary audit before performance measurements. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).
+
+
+## 2026-10-29 — phase237: Worker boundary and inconvenient results
+
+Phase237: public heavy owners execute in actual Workers. Cold public entry after native baseline/maintenance remains unresolved; repair three config-return expectations and diagnose cold boundary before performance acceptance. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).
