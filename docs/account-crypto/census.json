@@ -964,6 +964,10 @@
       "sha256": "8b27103cc5a78e864fc8ed503d5649d3c1fa6be1c77ccfc94a2c2c9e13b9076c"
     },
     {
+      "path": "src/crdt/coveredLocalJournal.ts",
+      "sha256": "8f1415d5177ddaa77b3443021129c254d905e6856f14e0678ca3e2152de38291"
+    },
+    {
       "path": "src/crdt/cpuBudget.ts",
       "sha256": "8d9932f2ffb5de59b5470627b585c92c1cd39e04f4218a29eff588afef066e9f"
     },
@@ -973,7 +977,7 @@
     },
     {
       "path": "src/crdt/custody.ts",
-      "sha256": "9a7637aabb5ed2586a8ad2a86f7a605575e9dedb6cf91da1cd4c647fe23287fa"
+      "sha256": "e39eaf5efdb163d1235d2a9912f42814844fd7e393339273fae15db388ca5f1e"
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
@@ -1541,7 +1545,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "861365bcd692828943b365e1f77c6bed41d4cdc981674ec2286f80e6e8ee5cd8"
+      "sha256": "73e092230cf0ba5e69c84ee5b9fa6aa4fd2712ee58ab5fb62f4b6675beacedc0"
     },
     {
       "path": "src/crdt/yjs.ts",
@@ -2437,7 +2441,7 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 265
+          "line": 266
         }
       ]
     },
@@ -4031,15 +4035,15 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 253
+          "line": 254
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 319
+          "line": 320
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 342
+          "line": 343
         }
       ]
     },

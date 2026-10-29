@@ -22,6 +22,15 @@ export interface SessionTask {
   wait<T>(start: () => T | PromiseLike<T>): Promise<T>;
 }
 
+/** Internal live original task identity. This proves only slot/mode/lifetime, never custody or coverage. */
+const nativeTasks = new WeakMap<SessionTask, { slotId: string; mode: LockMode; check(): void }>();
+export function requireExclusiveSessionTask(task: SessionTask, slotId: string): void {
+  const owned = nativeTasks.get(task);
+  if (!owned || owned.slotId !== slotId || owned.mode !== 'exclusive')
+    throw new WriteSessionError('inactive', 'An actual exclusive task for this slot is required.');
+  owned.check();
+}
+
 export interface WriteSession {
   readonly slotId: string;
   readonly lockName: string;
@@ -123,9 +132,10 @@ async function acquire(
       if (!live) throw inactive();
     };
     const result = track(async () => {
+      let scope: SessionTask | undefined;
       try {
         guard();
-        const value = await operation({
+        scope = {
           signal: stopped.signal,
           step: (effect) => {
             guard();
@@ -140,11 +150,14 @@ async function acquire(
               return value;
             });
           },
-        });
+        };
+        nativeTasks.set(scope, { slotId, mode, check: guard });
+        const value = await operation(scope);
         guard();
         return value;
       } finally {
         live = false;
+        if (scope) nativeTasks.delete(scope);
       }
     });
     return result;

@@ -6145,3 +6145,11 @@ One scoped bounded data reader serves fixed-index slot owners and pre-index cere
 Original mutation factory still requires its actual old-slot guard. Ceremony reads authenticate in
 Worker, never install pinned permission and cannot remove. Data/observation IDs are not native permits.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase201/README.md).
+
+
+## 2026-10-29 — native scope identity and exact already-represented journal data
+
+Attest only original task/slot/mode/lifetime in a private WeakMap, not a serialized native permit.
+Retired-source journal read still authenticates custody/AEAD; data coverage still requires independently
+verified target and full byte equality after candidate filtering. No mutation authority is returned.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase202/README.md).

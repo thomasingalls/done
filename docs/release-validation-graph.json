@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 623,
-    "requiredTestFiles": 617,
+    "testFiles": 625,
+    "requiredTestFiles": 619,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10268,6 +10268,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/coveredLocalJournal.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/coveredLocalJournal.test.ts"
+        ]
+      },
+      "declarations": 7,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/cpuBudget.test.ts",
       "status": "required",
       "invocation": {
@@ -10435,6 +10450,16 @@
         ]
       },
       "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/exclusiveTask.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/exclusiveTask.test.ts"]
+      },
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16521,7 +16546,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "014ebd67f00362d5f378d3534088f8cc35f6c612dfc8e29d135fd74ce4d2af78"
+      "sha256": "8774262861eb040de77f411ec1edca919805baa0c75843750ef4c3586643098b"
     },
     {
       "path": "package.json",
@@ -19848,6 +19873,10 @@
       "sha256": "41781a14259177d524886ae4a87a5b15e876a7729da2c24dc75e5e70e0e36933"
     },
     {
+      "path": "test/coveredLocalJournal.test.ts",
+      "sha256": "8e73fd83c4239364ca76b39b4f4b7c344c017388b39b0b3f10b7d8c5cbf18cab"
+    },
+    {
       "path": "test/cpuBudget.test.ts",
       "sha256": "e109593ff9cd12783e441110ac4faedc34ce3de067235f6ab41ba65213abeb30"
     },
@@ -19918,6 +19947,10 @@
     {
       "path": "test/envelopePreparationProjection.test.ts",
       "sha256": "ef165748e3b28cc4390d08c1b66320ad460aadf09d1a56c0348b0e54c388a2ec"
+    },
+    {
+      "path": "test/exclusiveTask.test.ts",
+      "sha256": "df2c07ec2f30d5dab6e4340128b3abd7474df9a7f3e8369ca4a04de57029a64b"
     },
     {
       "path": "test/export.test.ts",

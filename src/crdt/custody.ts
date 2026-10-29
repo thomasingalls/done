@@ -87,6 +87,7 @@ import {
   type CustodyScope,
 } from './custodyRecord';
 import {
+  requireExclusiveSessionTask,
   openWriteSession,
   type WriteSession,
   withExclusiveSlot,
@@ -1121,6 +1122,31 @@ export const withPreactiveContentUnderPermit = async <T>(
     owner.dispose();
   }
 };
+
+/** Local retirement-only data read, including after source content removal. No content initialization,
+ * inferred Account era, application permission or keys escape. Caller must verify target coverage. */
+export async function withLocalJournalUnderPermit<T>(
+  task: SessionTask,
+  input: CustodyAuthority,
+  code: string,
+  operation: (entries: readonly import('./journalStore').ObservedEntry[]) => Promise<T>,
+): Promise<T> {
+  const authority = captureAuthority(input);
+  requireExclusiveSessionTask(task, authority.slotId);
+  const owner = prepareCustody(authority, code, false, true);
+  let opened: import('./journalStore').ObservedEntry[] | undefined;
+  try {
+    await owner.initialize(task);
+    opened = await owner.journal.readSnapshot(task);
+    requireExclusiveSessionTask(task, authority.slotId);
+    const result = await task.wait(() => operation(opened!));
+    requireExclusiveSessionTask(task, authority.slotId);
+    return result;
+  } finally {
+    if (opened) eraseJournalSnapshot(opened);
+    owner.dispose();
+  }
+}
 
 /** Internal cold recovery under an already-held lifecycle permit. No writes or keys escape. */
 export const withRecoveryUnderPermit = async <T>(

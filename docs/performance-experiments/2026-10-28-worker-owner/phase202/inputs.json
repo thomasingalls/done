@@ -1,0 +1,7 @@
+{
+  "src/crdt/writeSession.ts": "73e092230cf0ba5e69c84ee5b9fa6aa4fd2712ee58ab5fb62f4b6675beacedc0",
+  "src/crdt/custody.ts": "e39eaf5efdb163d1235d2a9912f42814844fd7e393339273fae15db388ca5f1e",
+  "src/crdt/coveredLocalJournal.ts": "8f1415d5177ddaa77b3443021129c254d905e6856f14e0678ca3e2152de38291",
+  "test/exclusiveTask.test.ts": "df2c07ec2f30d5dab6e4340128b3abd7474df9a7f3e8369ca4a04de57029a64b",
+  "test/coveredLocalJournal.test.ts": "8e73fd83c4239364ca76b39b4f4b7c344c017388b39b0b3f10b7d8c5cbf18cab"
+}

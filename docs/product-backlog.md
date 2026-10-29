@@ -625,3 +625,9 @@ unchanged timing gates. [Packet](performance-experiments/2026-10-28-worker-owner
 no mutation/pinned permission for startup supervisor. Continue original protection with target coverage/
 retirement proof, then account ceremony/UI/offline/default conversion before unchanged gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase201/README.md).
+
+
+**Phase202 — represented journal preparation:** actual exclusive scope, original source/target crypto
+and full byte equality verified after content retirement; uncovered valid ciphertext remains. Continue
+protection matched cleanup/lost-reply/resume then account/UI/offline/default conversion before gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase202/README.md).

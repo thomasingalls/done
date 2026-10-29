@@ -3684,7 +3684,7 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 265,
+          "line": 266,
           "label": "done/content-metadata/v1",
           "kind": "literal"
         }
@@ -4049,19 +4049,19 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 253,
+          "line": 254,
           "label": "done/store/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 319,
+          "line": 320,
           "label": "done/store/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 342,
+          "line": 343,
           "label": "done/store/v1",
           "kind": "literal"
         }
