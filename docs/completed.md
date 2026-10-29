@@ -17976,3 +17976,8 @@ Three new cases/27 focused/99 metadata/type/lint pass. Clean full promotion-devi
 ## 2026-10-29 — phase234: comprehensive recovery compatibility
 
 Two-file narrow entry fixture, no runtime change. Comprehensive both-device detachment, local cold/no-network writing, later enrollment/rotation/recovery passes1.2minutes.99 metadata/type/lint pass; pre-existing formatter line deliberately retained. Invalid first harness copy/run preserved separately. [Packet](performance-experiments/2026-10-28-worker-owner/phase234/README.md).
+
+
+## 2026-10-29 — phase235: live credential cancellation
+
+Cancellation transport repaired: six new cases,36 focused,99 metadata/type/lint and all12 unchanged browser compatibility cases pass. Before failures preserved; no old test edits. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).

@@ -1305,7 +1305,7 @@
     },
     {
       "path": "src/crdt/ownedCredentialPrompt.ts",
-      "sha256": "1b4e7c02d247b764209df45aeabbe913ad95b6b5ab0728f4e13eab27318f6f9f"
+      "sha256": "eb5c774c586f86ab8924c0a69af7722574808fe3939d1eeafa37cb73b2f51a9b"
     },
     {
       "path": "src/crdt/ownedStartup.ts",

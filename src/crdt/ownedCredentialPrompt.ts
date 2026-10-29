@@ -1,6 +1,6 @@
 /** Shared provider lifetime/transport only. Original consumers still verify every credential. */
 import type { WorkerChannel } from './workerChannel';
-import { eraseWorkerMessage } from './workerChannel';
+import { eraseWorkerMessage, WorkerChannelError } from './workerChannel';
 export const credentialRefused = () => Error('Worker passkey prompt changed');
 export function credentialFields(v: unknown, keys: readonly string[]) {
   if (!v || typeof v !== 'object' || Object.getPrototypeOf(v) !== Object.prototype)
@@ -61,6 +61,15 @@ export function createWorkerCredentialPrompt(
       const value = result;
       result = undefined;
       return value;
+    } catch (cause) {
+      // Lifetime withdrawal wins over a late provider reply, including a coded cancellation.
+      live();
+      signal.throwIfAborted();
+      scope?.throwIfAborted();
+      if (canceled) throw credentialRefused();
+      if (cause instanceof WorkerChannelError && cause.code === 'credential-cancelled')
+        throw new DOMException('Passkey request cancelled', 'NotAllowedError');
+      throw cause;
     } finally {
       scope?.removeEventListener('abort', abort);
       signal.removeEventListener('abort', abort);
@@ -112,6 +121,19 @@ export function createWindowCredentialPrompt(signal: AbortSignal, live: () => vo
         state.stop.signal.throwIfAborted();
         if (active !== state) throw credentialRefused();
         return structuredClone(result);
+      } catch (cause) {
+        // A fixed code preserves user cancellation without serializing provider messages.
+        // Root shutdown and explicit native cancellation remain lifetime refusals.
+        if (
+          cause instanceof DOMException &&
+          ['NotAllowedError', 'AbortError'].includes(cause.name) &&
+          !signal.aborted &&
+          !closed &&
+          state &&
+          !state.stop.signal.aborted
+        )
+          throw new WorkerChannelError('credential-cancelled');
+        throw cause;
       } finally {
         eraseWorkerMessage(result);
         dispose();

@@ -6332,3 +6332,8 @@ Use same-ticket native Account notice to preserve passkey-action wording, reset 
 ## 2026-10-29 — phase234: expected removal need not expose an editor
 
 Keep default saved-editor entry strict. Only the call immediately asserting native removal waits for that refusal; preserve every subsequent security/data assertion and deadline. [Evidence](performance-experiments/2026-10-28-worker-owner/phase234/README.md).
+
+
+## 2026-10-29 — phase235: live credential cancellation
+
+Use a fixed cancellation code only for a live browser prompt; native lifetime withdrawal wins over late provider replies. Original credential verification and generic channel unchanged. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).

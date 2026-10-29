@@ -748,3 +748,8 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase234:** Comprehensive recovery branches pass. Existing compatibility checks found a live-provider cancellation message lost across the Worker boundary; repair next without weakening its offline/resume assertions, then remaining conversion validation/performance. [Packet](performance-experiments/2026-10-28-worker-owner/phase234/README.md).
+
+
+## 2026-10-29 — phase235: live credential cancellation
+
+Phase235 closes cancellation/offline/resume compatibility. Continue remaining Worker boundary/lifecycle checks and explicit older failure review, then unchanged performance gates. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).
