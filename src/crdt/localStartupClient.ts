@@ -1,10 +1,8 @@
 import { createWindowAccountHandoff } from './windowAccountHandoff';
-import { createProtectionJournalRetirement } from './windowJournalMutation';
-import { createWindowJournalReader } from './windowJournalRead';
+import { createWindowCeremonyJournal } from './windowCeremonyJournal';
 /** Window endpoint for fixed native Local startup/enrollment commands; no factor/root persistence. */
 import { openWindowCeremonyCohort, requireWindowCeremonyCohort } from './accountWorkerCohort';
 import { createWorkerChannel, type WorkerChannel } from './workerChannel';
-import { countJournalEntries, countLegacyJournalEntries } from './startupStorage';
 import { watchWindowWorkerLifetime } from './windowWorkerLifetime';
 import { StartupError, type StartupDisposition } from './startupState';
 import type {
@@ -44,50 +42,12 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   try {
     const ports = new MessageChannel(),
-      journal = createWindowJournalReader(cohort),
-      retirement = createProtectionJournalRetirement(cohort);
+      journal = createWindowCeremonyJournal(cohort),
+      retirement = journal.retirement;
     worker = new Worker(new URL('./localStartup.worker.ts', import.meta.url), { type: 'module' });
-    channel = createWorkerChannel(
-      ports.port1,
-      cohort.ticket.incarnation,
-      {
-        retireProtectedJournal: (input) =>
-          retirement.remove(input as Parameters<typeof retirement.remove>[0]),
-        journalBegin(input) {
-          requireWindowCeremonyCohort(cohort);
-          return journal.begin((input as { prefix: string }).prefix);
-        },
-        journalObservationBegin(input) {
-          requireWindowCeremonyCohort(cohort);
-          return journal.beginObservation((input as { prefix: string }).prefix);
-        },
-        journalPage(input) {
-          requireWindowCeremonyCohort(cohort);
-          return journal.page((input as { id: number }).id);
-        },
-        journalFinish(input) {
-          requireWindowCeremonyCohort(cohort);
-          journal.finish((input as { id: number }).id);
-        },
-        journalCount(input) {
-          requireWindowCeremonyCohort(cohort);
-          const prefix = (input as { prefix: string }).prefix;
-          if (
-            typeof prefix !== 'string' ||
-            !/^done\.pending-update\.done(?:\.[a-f0-9]{32})?\.$/u.test(prefix)
-          )
-            throw Error('Startup journal scope changed');
-          return cohort.write(() => countJournalEntries(prefix));
-        },
-        legacyJournalCount() {
-          requireWindowCeremonyCohort(cohort);
-          return cohort.write(countLegacyJournalEntries);
-        },
-      },
-      () => {
-        if (cohort.state === 'active') void cohort.close().catch(() => {});
-      },
-    );
+    channel = createWorkerChannel(ports.port1, cohort.ticket.incarnation, journal.methods, () => {
+      if (cohort.state === 'active') void cohort.close().catch(() => {});
+    });
     const booted = new Promise<void>((resolve, reject) => {
       const abort = () => reject(Error('Local startup cancelled'));
       cohort.signal.addEventListener('abort', abort, { once: true });

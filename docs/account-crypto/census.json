@@ -1032,6 +1032,10 @@
       "sha256": "ff15e6d9b0011dd1921a11e9655d620a00b645fc826aa1844674a512b1c1937d"
     },
     {
+      "path": "src/crdt/firstDeviceOwner.worker.ts",
+      "sha256": "6493d2e075ad41c10b6043d711c61b83c4c508ceac0850a80aa62d86511ad320"
+    },
+    {
       "path": "src/crdt/freeze.ts",
       "sha256": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f"
     },
@@ -1245,7 +1249,7 @@
     },
     {
       "path": "src/crdt/localStartupClient.ts",
-      "sha256": "f97fe0be0a7b474078c05f2677ac01fb79871e1c6830cf2f1fc8c944e4a5f07c"
+      "sha256": "2067da1d7db62f2ce99a1c9ad46d9ff1bfff2dc728e605408494d5fe2e16a83d"
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
@@ -1476,6 +1480,10 @@
       "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8"
     },
     {
+      "path": "src/crdt/windowCeremonyJournal.ts",
+      "sha256": "bb554b2e4c28aa23bf70d910ce30e4697daba4fc67082d22acd4ef54b98fbfb7"
+    },
+    {
       "path": "src/crdt/windowJournalBridge.ts",
       "sha256": "a8b594d0281c348eb60bbb87c1296e75d02b72bf098f28950fae6151a673c643"
     },
@@ -1513,7 +1521,7 @@
     },
     {
       "path": "src/crdt/workerAccountHandoff.ts",
-      "sha256": "a58b51c87791daae20f6bba6d6f0a33dcb6e58410c5446475d9f9e76da74356b"
+      "sha256": "eda09a66177762cc9359f22ceb4c4ced1103a72aa3acbab119558e597f695b85"
     },
     {
       "path": "src/crdt/workerActivity.ts",
@@ -1538,6 +1546,10 @@
     {
       "path": "src/crdt/workerContextQueue.ts",
       "sha256": "963c6cb301e568251444b1375f8f960475637351faf0394fdfc0da127000123a"
+    },
+    {
+      "path": "src/crdt/workerFirstDeviceSetup.ts",
+      "sha256": "8673a348992570d90049e84fc112f7f01409f3dcc39480a0ec0df9ec686ed72f"
     },
     {
       "path": "src/crdt/workerFrameStream.ts",
@@ -1878,6 +1890,10 @@
     {
       "path": "src/ui/ceremonyNavigation.tsx",
       "sha256": "273ffc4a8fa8cfaca4636647622dbb4f6588d712e826975cc312c1dc2fd47b69"
+    },
+    {
+      "path": "src/ui/firstDeviceSetupWorker.ts",
+      "sha256": "6c884c1fa101b67b4d8c1b705da001acc2f9c84c81d06151d65d9ad38b1d8be7"
     },
     {
       "path": "src/ui/localStartup.ts",

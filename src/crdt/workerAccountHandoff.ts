@@ -17,6 +17,7 @@ export function createWorkerAccountHandoff(
     take(): WorkerCeremonyOpening | undefined;
     context?(): WorkerAccountContext;
     close(): void;
+    started?(owner: ReturnType<typeof startAccountWorkerOwner>): void;
   },
 ) {
   requireCeremonyWorkerLifetime(root);
@@ -79,7 +80,8 @@ export function createWorkerAccountHandoff(
         ready = false;
         clearTimeout(timer);
         channel.close();
-        startAccountWorkerOwner(m, opening?.take(), opening?.context?.());
+        const owner = startAccountWorkerOwner(m, opening?.take(), opening?.context?.());
+        opening?.started?.(owner);
         return true;
       } catch {
         fail();

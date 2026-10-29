@@ -6237,3 +6237,8 @@ Keep genuine approvals in original WeakMaps. Bind same-realm callback/login rout
 ## 2026-10-29 — preparation yield is an internal final-opening boundary
 
 Track original setup commands in genuine Root.run, including asynchronous Start. Yield only at the trusted final opening hook and wait real root-job release. Ordinary results retain Root final-live refusal. UI receives explicit presentation data, never native references. [Evidence](performance-experiments/2026-10-28-worker-owner/phase215/README.md).
+
+
+## 2026-10-29 — original setup coordinator owns native work across role handoff
+
+Use genuine tracked preparation plus same-realm fresh Account join and a separate User presentation/provider channel. Keep exact original native verification and actual Window canonical admission. Preserve the independent Window slot-index journal binding; zero Window database opens is not a security contract or performance gate. [Evidence](performance-experiments/2026-10-28-worker-owner/phase216/README.md).

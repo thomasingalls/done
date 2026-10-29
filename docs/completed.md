@@ -17881,3 +17881,8 @@ Before actual two-Window case fails; rebuilt same case and actual handoff pass.5
 ## 2026-10-29 — phase215 preparation phase and UI data boundary
 
 24 focused/99 metadata/type/lint/format/exact audit pass. Root drain/yield and fixed presentation regressions added; original coordinator body preserved. Helper-only, native integration next. [Packet](performance-experiments/2026-10-28-worker-owner/phase215/README.md).
+
+
+## 2026-10-29 — phase216 original native returning-account setup
+
+39 focused/99 metadata/type/lint/format/exact audit pass. Final Chrome3 returning/edit/cold, wrong-code retry and provider close pass; Firefox2 Local controls pass. Ten containers absent. False zero-IDB expectation and both failed native attempts retained with exact slot-index attribution. [Packet](performance-experiments/2026-10-28-worker-owner/phase216/README.md). DefaultPage; fresh creation and full conversion still pending.

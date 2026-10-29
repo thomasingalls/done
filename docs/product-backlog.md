@@ -691,3 +691,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase215:** tracked ceremony phase and fixed command/display projection ready. Next stable native UI control and actual controller handoff; defaultPage and performance acceptance pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase215/README.md).
+
+
+**Phase216:** original returning setup runs in native Worker through actual canonical mirror. Next fresh creation/promotion and failed-opening retry, enrollment/recovery, offline/mixed/default activation, then unchanged targets. One independent Window slot-index lookup deliberately retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase216/README.md).
