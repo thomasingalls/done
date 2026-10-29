@@ -663,3 +663,8 @@ and offline/default activation, then unchanged gates;182/187/205 blockers remain
 extra prompt, reuses login and rejects a copied approval. Next actual wizard/browser/workspace ports
 and offline/default activation before measurements;182/187/205 failures remain open.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase208/README.md).
+
+
+**Phase209 — avoid duplicate initialization mechanism:** original final Account journal/generation
+checks already cover native opening. Continue explicit wizard browser/workspace ports and same-realm
+handoff, retaining original final-owner boundary. [Packet](performance-experiments/2026-10-28-worker-owner/phase209/README.md).

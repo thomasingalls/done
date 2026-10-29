@@ -6193,3 +6193,11 @@ Keep genuine promotion/recovery approvals and NetworkLogin in the same Worker re
 ceremony retirement. A routing adapter adds scope/lifetime checks but original private WeakMaps and
 native verification still authorize access. Clone control must fail; original approval cleanup follows
 the new role. [Evidence](performance-experiments/2026-10-28-worker-owner/phase208/README.md).
+
+
+## 2026-10-29 — keep initial generation activation in the final Account owner
+
+Trace the actual consumer before adding a ceremony observation path. The existing final joined Account
+initialize callback already supplies the required checks; retain that boundary and require the future
+native wizard to hand off before opening. Exploratory fallback rejected without runtime adoption.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase209/README.md).

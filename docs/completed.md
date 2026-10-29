@@ -17839,3 +17839,10 @@ Native reference/scope/lifetime adapter, original one-use verification and Netwo
 focused/98 metadata/type/lint/format/audit checks pass. Chrome genuine approval with/without login
 uses one prompt and exact cold writing; copied approval refuses; unchanged default controls pass.
 Five containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase208/README.md).
+
+
+## 2026-10-29 — phase209 final Account initialization boundary confirmed
+
+Independent consumer trace and268 unchanged built bodies;23 affected original checks pass. Rejected
+an unneeded ceremony journal fallback before adoption; original final commit checks remain.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase209/README.md).
