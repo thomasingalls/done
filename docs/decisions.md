@@ -6153,3 +6153,11 @@ Attest only original task/slot/mode/lifetime in a private WeakMap, not a seriali
 Retired-source journal read still authenticates custody/AEAD; data coverage still requires independently
 verified target and full byte equality after candidate filtering. No mutation authority is returned.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase202/README.md).
+
+
+## 2026-10-29 — Local protection retires only authenticated represented ciphertext
+
+Keep the fresh cold protected-copy rows alive through original source AEAD and exact byte coverage.
+A private fixed-flight Window effect removes only matching key/value pairs; safety after lost replies
+or Worker death relies on durable represented writing, not a serialized native lease. Original task,
+zero census and retirement order remain. [Evidence](performance-experiments/2026-10-28-worker-owner/phase203/README.md).

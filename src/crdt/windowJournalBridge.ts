@@ -1,16 +1,12 @@
+import { createSlotJournalRemover } from './windowJournalMutation';
 /** The worker can read encrypted journal pages and compare/remove committed entries. It cannot append. */
 import { requireWindowWorkerCohort, type WindowAccountCohort } from './accountWorkerCohort';
 import { readLocalSlot } from './localGenesisStorage';
 import { deriveStoreName } from './storeName';
 import { journalPrefix } from './journalCodec';
-import {
-  createWindowJournalReader,
-  journalPair as pair,
-  refuseJournalSnapshot as refuse,
-} from './windowJournalRead';
+import { createWindowJournalReader, refuseJournalSnapshot as refuse } from './windowJournalRead';
 import type { SessionTask } from './writeSession';
 
-import { RAW_JOURNAL_REMOVE_ITEMS, type RawJournalRemoval } from './workerJournalProtocol';
 export {
   RAW_JOURNAL_PAGE_CHARACTERS,
   RAW_JOURNAL_REMOVE_ITEMS,
@@ -41,7 +37,8 @@ export async function createWindowJournalBridge(cohort: WindowAccountCohort) {
   )
     throw refuse();
   const prefix = journalPrefix(selected.dbName);
-  const reader = createWindowJournalReader(cohort);
+  const reader = createWindowJournalReader(cohort),
+    remover = createSlotJournalRemover(cohort, prefix);
   return Object.freeze({
     prefix,
     begin: () => reader.begin(prefix),
@@ -49,36 +46,7 @@ export async function createWindowJournalBridge(cohort: WindowAccountCohort) {
     finish: reader.finish,
     beginObservation: () => reader.beginObservation(prefix),
     matchesObservation: reader.matchesObservation,
-    remove(input: readonly (readonly [string, string])[]): RawJournalRemoval {
-      return cohort.write(() => {
-        if (
-          !Array.isArray(input) ||
-          input.length > RAW_JOURNAL_REMOVE_ITEMS ||
-          input.some((v) => !pair(v, prefix)) ||
-          new Set(input.map((v) => v[0])).size !== input.length
-        )
-          throw refuse();
-        let removed = 0,
-          changed = 0,
-          retained = 0;
-        for (const [key, value] of input) {
-          try {
-            const storage = globalThis.localStorage,
-              current = storage.getItem(key);
-            if (current === null) continue;
-            if (current !== value) {
-              changed++;
-              continue;
-            }
-            storage.removeItem(key);
-            removed++;
-          } catch {
-            retained++;
-          }
-        }
-        return { removed, changed, retained };
-      });
-    },
+    remove: remover.remove,
   });
 }
 export type WindowJournalBridge = Awaited<ReturnType<typeof createWindowJournalBridge>>;

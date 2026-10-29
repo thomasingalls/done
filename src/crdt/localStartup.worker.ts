@@ -1,7 +1,8 @@
-/** Native Local startup/enrollment commands. No protection, clear, application doc or network owner. */
+/** Native Local startup/enrollment commands. Native protection; no clear, application doc or network owner. */
 import { createWorkerChannel, eraseWorkerMessage, type WorkerChannel } from './workerChannel';
 import { openCeremonyWorkerLifetime } from './ceremonyWorkerLifetime';
-import { installCeremonyEnvironment } from './ceremonyEnvironment';
+import { protectLocalWorkspace } from './localProtection';
+import { ceremonyEnvironment, installCeremonyEnvironment } from './ceremonyEnvironment';
 import { inspectLocalStartup, listLocalWorkspaces, resumeLocalGenesis } from './localGenesis';
 import { createWorkerLocalGenesis } from './workerLocalGenesis';
 import { StartupError } from './startupState';
@@ -65,6 +66,18 @@ self.addEventListener('message', (event: MessageEvent) => {
     m.ticket.incarnation,
     {
       inspect: () => run(() => inspectLocalStartup(m.ticket.slotId, { signal: root!.signal })),
+      protect: (input) =>
+        run(async () => {
+          const value = input as { id: number; code: string };
+          if (typeof value.code !== 'string') throw Error('Protection factor missing');
+          return ceremonyEnvironment()!.withProtection(value.id, async () => {
+            await protectLocalWorkspace(m.ticket.slotId, value.code, { signal: root!.signal });
+            return { kind: 'protected' };
+          });
+        }).catch((cause: unknown) => {
+          if (cause instanceof StartupError) return cause.disposition;
+          throw cause;
+        }),
       beginGenesis: (input) =>
         run(async () => genesis!.begin(input as { id: number; automatic: boolean })),
       confirmGenesis: (input) =>

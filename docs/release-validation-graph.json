@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 625,
-    "requiredTestFiles": 619,
+    "testFiles": 626,
+    "requiredTestFiles": 620,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14302,6 +14302,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/windowJournalMutation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/windowJournalMutation.test.ts"
+        ]
+      },
+      "declarations": 9,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/windowJournalObservation.test.ts",
       "status": "required",
       "invocation": {
@@ -16546,7 +16561,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "8774262861eb040de77f411ec1edca919805baa0c75843750ef4c3586643098b"
+      "sha256": "72b76b9d491da85b99278c2d33d3176e4f69e25dca9748b43ba2eaa299b0197b"
     },
     {
       "path": "package.json",
@@ -21511,6 +21526,10 @@
     {
       "path": "test/windowJournalBridge.test.ts",
       "sha256": "2ee6e9fcc5e1900b53d30c060150fcb0d2b8d779c1b5bb7b2d94e36ecc258468"
+    },
+    {
+      "path": "test/windowJournalMutation.test.ts",
+      "sha256": "3529f420dded9446f28f3384ae0e98d7b8a49fdf9c2e7e132bacb81a0e61d14c"
     },
     {
       "path": "test/windowJournalObservation.test.ts",

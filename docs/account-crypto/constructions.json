@@ -7342,7 +7342,7 @@
         },
         {
           "path": "src/crdt/localProtection.ts",
-          "line": 108,
+          "line": 119,
           "label": "done/local-protection/v1",
           "kind": "literal"
         }

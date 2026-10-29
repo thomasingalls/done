@@ -1,3 +1,4 @@
+import { createProtectionJournalRetirement } from './windowJournalMutation';
 import { createWindowJournalReader } from './windowJournalRead';
 /** Window endpoint for fixed native Local startup/enrollment commands; no factor/root persistence. */
 import { openWindowCeremonyCohort, requireWindowCeremonyCohort } from './accountWorkerCohort';
@@ -39,12 +40,15 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   try {
     const ports = new MessageChannel(),
-      journal = createWindowJournalReader(cohort);
+      journal = createWindowJournalReader(cohort),
+      retirement = createProtectionJournalRetirement(cohort);
     worker = new Worker(new URL('./localStartup.worker.ts', import.meta.url), { type: 'module' });
     channel = createWorkerChannel(
       ports.port1,
       cohort.ticket.incarnation,
       {
+        retireProtectedJournal: (input) =>
+          retirement.remove(input as Parameters<typeof retirement.remove>[0]),
         journalBegin(input) {
           requireWindowCeremonyCohort(cohort);
           return journal.begin((input as { prefix: string }).prefix);
@@ -125,7 +129,8 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
       if (reply.kind !== 'ready') throw new StartupError(reply as StartupDisposition);
       return reply as T;
     };
-    let genesisSequence = 0;
+    let genesisSequence = 0,
+      protectionSequence = 0;
     const created = (reply: LocalGenesisReceipt | StartupDisposition): LocalGenesisReceipt => {
       requireWindowCeremonyCohort(cohort);
       if (reply.kind !== 'created') throw new StartupError(reply as StartupDisposition);
@@ -133,6 +138,23 @@ export async function openLocalStartupWorker(slotId: string, signal?: AbortSigna
     };
     return Object.freeze({
       cohort,
+      async protect(code: string) {
+        requireWindowCeremonyCohort(cohort);
+        if (protectionSequence === Number.MAX_SAFE_INTEGER)
+          throw Error('Protection sequence exhausted');
+        const id = ++protectionSequence;
+        retirement.start(id);
+        try {
+          const reply = await channel!.request<{ kind: 'protected' } | StartupDisposition>(
+            'protect',
+            { id, code },
+          );
+          requireWindowCeremonyCohort(cohort);
+          if (reply.kind !== 'protected') throw new StartupError(reply as StartupDisposition);
+        } finally {
+          retirement.stop(id);
+        }
+      },
       async beginGenesis(automatic = false): Promise<LocalGenesisEnrollment> {
         requireWindowCeremonyCohort(cohort);
         if (genesisSequence === Number.MAX_SAFE_INTEGER)

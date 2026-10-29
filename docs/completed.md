@@ -17791,3 +17791,11 @@ with collision control/CPU checkpoints.63 focused/98 metadata/type/lint/format/i
 Final Chrome/Firefox covered/unrepresented data probes and original controls pass; initial test-buffer
 lifetime failure and qualified negative retained.10 containers absent. No deletion/default activation.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase202/README.md).
+
+
+## 2026-10-29 — phase203 Local protection in the native Worker
+
+Original exclusive copy/readback, exact source coverage/matched cleanup, fresh zero census and original
+opener retirement.55 focused/98 metadata/type/lint/format/audit checks pass; Chrome/Firefox interruption,
+lost reply, physical death/uncopied seal and original maintenance/Account controls pass.10 containers
+absent. Default conversion pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase203/README.md).

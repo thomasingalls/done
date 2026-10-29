@@ -631,3 +631,8 @@ retirement proof, then account ceremony/UI/offline/default conversion before unc
 and full byte equality verified after content retirement; uncovered valid ciphertext remains. Continue
 protection matched cleanup/lost-reply/resume then account/UI/offline/default conversion before gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase202/README.md).
+
+
+**Phase203 — native Local protection:** exact covered cleanup and interruption/lost-reply/death/resume
+checks pass in both browsers. Continue actual Local UI, Account ceremony/handoff and offline/default
+conversion before measuring unchanged gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase203/README.md).
