@@ -1,5 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import { retrySessionSignOut, type NetworkLogin, type LoginStatus } from '../account/networkLogin';
+import { retrySessionSignOut, type LoginStatus } from '../account/networkLogin';
+import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 import type { AuthorityPin } from '../../account-protocol/authority';
 
 const messages: Record<LoginStatus, string> = {
@@ -15,7 +16,13 @@ const messages: Record<LoginStatus, string> = {
     'Signed out here. Server sign-out is pending until a connection is available.',
   'signed-out': 'Signed out here.',
 };
-export function NetworkLoginNotice({ login, close }: { login: NetworkLogin; close: () => void }) {
+export function NetworkLoginNotice({
+  login,
+  close,
+}: {
+  login: NetworkLoginView;
+  close: () => void;
+}) {
   const status = useSyncExternalStore(login.subscribe, login.getSnapshot);
   const [error, setError] = useState(''),
     [busy, setBusy] = useState(false);

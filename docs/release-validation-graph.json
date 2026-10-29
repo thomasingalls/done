@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 601,
-    "requiredTestFiles": 595,
+    "testFiles": 602,
+    "requiredTestFiles": 596,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9758,6 +9758,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/accountSessionBridge.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountSessionBridge.test.ts"
+        ]
+      },
+      "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/accountSetupEntry.test.ts",
       "status": "required",
       "invocation": {
@@ -19381,6 +19396,10 @@
     {
       "path": "test/accountSelfReceive.test.ts",
       "sha256": "51182951faa12fcda7625625e0ab114f8aa8b990d3ddd0070a36ab389e0719fc"
+    },
+    {
+      "path": "test/accountSessionBridge.test.ts",
+      "sha256": "a74899e6d66bc11054e110499082505cda17f2c9bff5864d762bfe78d727cecc"
     },
     {
       "path": "test/accountSetupEntry.test.ts",

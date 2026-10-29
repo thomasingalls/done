@@ -1,3 +1,4 @@
+import { createWindowAccountSession } from './accountSessionBridge';
 import { createWindowWorkspaceQueues } from './windowWorkspaceQueues';
 import { forwardWindowWorkspace, workspaceSchedulingStatus } from './workspaceBridge';
 import { workspaceQueueFields } from './workerWorkspaceQueues';
@@ -73,6 +74,7 @@ export async function openAccountWorkerSession(
     composedController: MirrorController | undefined,
     composedQueues: ReturnType<typeof createWindowWorkspaceQueues> | undefined,
     observingWorkspace = false;
+  let session: ReturnType<typeof createWindowAccountSession> | undefined;
   let receiveSequence = 0;
   let receiving: WindowReceiveFlight | undefined;
   let worker: Worker | undefined,
@@ -240,6 +242,11 @@ export async function openAccountWorkerSession(
       ports.port1,
       cohort.ticket.incarnation,
       {
+        sessionStatus: (input) => {
+          cohort.write(() => {});
+          if (!composed || !session) throw Error('Worker session unavailable');
+          session.update(input);
+        },
         workspaceOpen: async (input) => {
           cohort.write(() => {});
           workspaceQueueFields(input, ['deviceId', 'opening']);
@@ -344,6 +351,10 @@ export async function openAccountWorkerSession(
         if (cohort.state === 'active') void cohort.close().catch(() => {});
       },
     );
+    session = createWindowAccountSession(channel, cohort.signal, () => {
+      void cohort.close().catch(() => {});
+    });
+    cohort.disposeWith(session.close);
     const booted = new Promise<void>((resolve, reject) => {
       const abort = () => reject(Error('Worker opening canceled'));
       cohort.signal.addEventListener('abort', abort, { once: true });
@@ -437,6 +448,7 @@ export async function openAccountWorkerSession(
       deviceId: opened.deviceId,
       opening: material,
       composedWorkspace: composedController?.workspace,
+      session: composed ? session.ports : undefined,
       compositionStatus: () => channel!.request('compositionStatus'),
       compositionRoster: () =>
         channel!.request<import('../account/deviceRoster').DeviceRosterSnapshot>(

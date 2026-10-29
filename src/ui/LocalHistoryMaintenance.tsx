@@ -1,9 +1,9 @@
 import { useSyncExternalStore } from 'react';
-import type { LocalRetentionRuntime, LocalRetentionStatus } from '../crdt/automaticLocalRetention';
+import type { LocalRetentionView, LocalRetentionStatus } from '../crdt/automaticLocalRetention';
 
 const absent = () => null;
 const noSubscription = () => () => {};
-export function useLocalHistoryStatus(runtime: LocalRetentionRuntime | undefined) {
+export function useLocalHistoryStatus(runtime: LocalRetentionView | undefined) {
   return useSyncExternalStore(
     runtime?.onStatus ?? noSubscription,
     runtime ? () => runtime.status : absent,
@@ -22,7 +22,7 @@ export function LocalHistoryMaintenance({
   runtime,
   status,
 }: {
-  runtime: LocalRetentionRuntime;
+  runtime: LocalRetentionView;
   status: LocalRetentionStatus;
 }) {
   if (status.phase === 'closed') return null;

@@ -1,3 +1,4 @@
+import { publishAccountSession, executeAccountSessionCommand } from './accountSessionBridge';
 import { followWorkerNativeLifetime } from './workerNativeLifetime';
 import { createWorkerAccountComposition } from './workerAccountComposition';
 import { eraseCapsule } from './sourceCapture';
@@ -56,6 +57,7 @@ self.addEventListener('message', (event: MessageEvent) => {
   };
   if (m?.v !== 1 || m.kind !== 'accountBootstrap' || !(m.port instanceof MessagePort)) return;
   initialized = true;
+  let session: ReturnType<typeof publishAccountSession> | undefined;
   let nativeLifetime: ReturnType<typeof followWorkerNativeLifetime> | undefined;
   let login: NetworkLogin | undefined,
     composition: Composed | undefined,
@@ -77,6 +79,7 @@ self.addEventListener('message', (event: MessageEvent) => {
     channel.close();
     void (async () => {
       const baselineWork = baseline?.work;
+      session?.close();
       runtime.close();
       login?.close();
       stream?.close();
@@ -211,6 +214,19 @@ self.addEventListener('message', (event: MessageEvent) => {
         live();
         return result;
       },
+      sessionCommand: async (input) => {
+        live();
+        if (!composition || !login) throw Error('Worker session unavailable');
+        try {
+          return await executeAccountSessionCommand(
+            { login, sync: composition.sync, devices: composition.devices },
+            input,
+            live,
+          );
+        } finally {
+          session?.observe();
+        }
+      },
       compositionRoster: async () => {
         live();
         if (!composition) throw Error('Worker composition unavailable');
@@ -286,6 +302,15 @@ self.addEventListener('message', (event: MessageEvent) => {
               composedBridge.factory,
               options.joined,
             );
+            live();
+            if (!login) throw Error('Worker session unavailable');
+            session = publishAccountSession(
+              { login, sync: composition.sync, devices: composition.devices },
+              runtime.signal,
+              (hint) => channel.request('sessionStatus', hint),
+              () => channel.close(),
+            );
+            await session.ready;
             live();
             return {
               account: { ...owner!.account },

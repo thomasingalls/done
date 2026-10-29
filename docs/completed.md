@@ -17627,3 +17627,13 @@ Input/flush during a real digest await also passes without message reordering.42
 type/lint/format and affected native checks pass; invalid reordering probe and setup failures retained.
 Original native/Page checks and obligations retained. Default app still Page;182 deep-backlog outcome
 remains open. [Packet](performance-experiments/2026-10-28-worker-owner/phase184/README.md).
+
+
+## 2026-10-29 — phase185 public Worker session/UI ports
+
+Explicit original login/sync/device/history actions and coalesced public status now have bounded
+ports, without moving authority or durability to cached UI state.33 focused/98 metadata/type/lint/
+format checks pass. Native checks caught fractional retry deadlines refused by the draft bridge;
+original-jitter regression fails before/pass after. Five actual Worker checks now pass including
+sign-out and original cold read; both native runs retained. Default Page, no acceptance claim.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase185/README.md).

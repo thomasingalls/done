@@ -1,6 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { SyncLane, SyncLaneStatus, SyncRuntime } from '../crdt/accountSyncDriver';
-import type { NetworkLogin } from '../account/networkLogin';
+import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 
 const noLoginSubscription = () => () => {};
 const noLoginSnapshot = () => undefined;
@@ -26,7 +26,7 @@ export function SyncNotice({
   details = false,
 }: {
   sync: SyncRuntime;
-  login?: NetworkLogin;
+  login?: NetworkLoginView;
   details?: boolean;
 }) {
   const status = useSyncExternalStore(sync.onStatus, () => sync.status);

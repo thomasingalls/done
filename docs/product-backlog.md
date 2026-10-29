@@ -513,3 +513,10 @@ Window source context before later input. The complete prior receive-source cont
 current captures5 and preserves commit/Undo/cold replay, including input/flush during proof checking.
 42 affected unit/98 metadata checks pass; old checks/blocks remain. Continue UI/resumable/Local/
 ceremony/offline integration before default activation and timing gates. [Evidence](performance-experiments/2026-10-28-worker-owner/phase184/README.md).
+
+
+**Phase185 — Worker session/UI ports:** bounded public status and explicit original actions pass
+controlled and five real Worker checks. Original jitter regression repaired in the bridge only; all
+native/security/scheduling checks remain. Continue cancellation, terminal outcomes, resumable work,
+Local/ceremony lifetimes and offline/default activation before performance acceptance.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase185/README.md).

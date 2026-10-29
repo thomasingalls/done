@@ -1,0 +1,12 @@
+{
+  "src/crdt/accountSessionBridge.ts": "c057b11c014a5e4ede6cada63dbb991e7bc963ddd5690761d09a50facee40af0",
+  "src/crdt/automaticLocalRetention.ts": "b65e5c9becce094497090d0d5e434bc3e92619dd54b69270f264cd37067ad29c",
+  "src/account/deviceRoster.ts": "2778752d5dd581e21d8854155f35f427c87ce5ad9bbd2ed3430ef019a69a24d2",
+  "src/ui/LocalHistoryMaintenance.tsx": "4afd1f44933c3874ad1bef6382f9e6a1d5eba0f83bac710dc67a1f05e797222e",
+  "src/ui/workspaceUi.tsx": "efd72297b73378554b7e25a2f1bf867f84be63e10266cf1f6cc9ff460f3171ba",
+  "src/ui/SyncNotice.tsx": "1b2b6105d819e2cc68ebf424e4b3fa1b026097cf44db641d610f8528f3af252e",
+  "src/ui/NetworkLoginNotice.tsx": "d2fb09a7014caeef475439abbb37350d186b78a2c297767086b9672ecc21d820",
+  "src/crdt/accountOwner.worker.ts": "3d4b5aa8f9455388ea90f5a71b0fba3527e3a18298c32b9bc68228e64a86d815",
+  "src/crdt/accountWorkerClient.ts": "479b3079bc4c82361cacbfb1622f72187b837981bc475986fb8098418a892fa6",
+  "test/accountSessionBridge.test.ts": "a74899e6d66bc11054e110499082505cda17f2c9bff5864d762bfe78d727cecc"
+}

@@ -18,16 +18,19 @@ export interface LocalRetentionStatus {
   readonly progress?: RetentionProgress & { readonly attempt: number; readonly elapsedMs: number };
 }
 /** Presentation/retry port: never exposes evidence, counters or a mutation capability. */
-export interface LocalRetentionRuntime {
+export interface LocalRetentionView {
   readonly status: LocalRetentionStatus;
   onStatus(listener: () => void): () => void;
-  retry(): boolean;
+  retry(): void;
   readonly diagnostics?: {
     readonly attempts: number;
     readonly interruptions: number;
     readonly completions: number;
     readonly events: readonly LocalRetentionStatus['progress'][];
   };
+}
+export interface LocalRetentionRuntime extends LocalRetentionView {
+  retry(): boolean;
 }
 type Outcome = { kind: string; reason?: string };
 export function createAutomaticLocalRetention(options: {
