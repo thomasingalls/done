@@ -607,3 +607,9 @@ hard-death withdrawal, startup/ceremony/default/offline conversion before unchan
 sealed data cold-replays and fresh Worker opens without lock leak. Continue startup/ceremony/offline/
 default conversion before unchanged gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase198/README.md).
+
+
+**Phase199 — read-only Local startup moved:** actual native protected/automatic routing and legacy
+preservation pass in Chrome/Firefox; supervisor cannot substitute for storage owner. Continue genesis/
+resumption/protection then account ceremony/default/offline conversion before unchanged timing gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase199/README.md).

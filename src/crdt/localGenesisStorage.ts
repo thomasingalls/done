@@ -9,7 +9,7 @@ import {
   checkLayout,
   readRow,
   readJournalCount,
-  legacyJournalCount,
+  readLegacyJournalCount,
 } from './startupStorage';
 import { journalPrefix } from './journalCodec';
 import { deriveStoreName } from './storeName';
@@ -56,7 +56,7 @@ export const requireFreshLocalSlot = async (task: SessionTask, slotId: string): 
       'done',
       async (db) => db.version !== 1 || db.objectStoreNames.length !== 0,
     )) ||
-    legacyJournalCount(task)
+    (await readLegacyJournalCount(task))
   )
     stopStartup('migration-required', 'unassigned-legacy-carrier');
 };

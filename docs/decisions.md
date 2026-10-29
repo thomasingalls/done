@@ -6121,3 +6121,11 @@ One queued exclusive member request follows actual dedicated-worker lifetime, wi
 group intent or polling. Actual grant withdraws Window admission and returns before independent Root
 drain/member barrier. A failed request never claims physical release.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase198/README.md).
+
+
+## 2026-10-29 — startup supervision does not imply an old-slot fence
+
+Short-lived native startup commands retain original shared/exclusive slot operations. Their supervisor
+only owns anchor/member lifetime; original storage guards explicitly reject it. Share read-only key
+census/legacy grammar from one home, never synthesize Storage or send native authority over a port.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase199/README.md).

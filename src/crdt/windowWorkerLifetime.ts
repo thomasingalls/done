@@ -1,18 +1,18 @@
 /** Native member release detects a killed dedicated Worker without port replies or polling. */
-import { requireWindowWorkerCohort, type WindowAccountCohort } from './accountWorkerCohort';
+import { requireWindowSupervisor, type WindowAccountCohort } from './accountWorkerCohort';
 import { cohortNames, inactive } from './nativeCoordination';
 import { pageRuntimePorts } from './runtimePorts';
 export async function watchWindowWorkerLifetime(
   cohort: WindowAccountCohort,
   retire: (released: boolean) => void,
 ) {
-  requireWindowWorkerCohort(cohort);
+  requireWindowSupervisor(cohort);
   if (typeof retire !== 'function') throw inactive();
   const locks = pageRuntimePorts.lifetime.requireLocks(),
     names = cohortNames(cohort.ticket.slotId, cohort.ticket.incarnation),
     cancel = new AbortController();
   const held = (await locks.query()).held ?? [];
-  requireWindowWorkerCohort(cohort);
+  requireWindowSupervisor(cohort);
   const members = held.filter((v) => v.name === names.member),
     client = members[0]?.clientId;
   if (
@@ -20,7 +20,8 @@ export async function watchWindowWorkerLifetime(
     members[0]?.mode !== 'exclusive' ||
     !client ||
     client === cohort.ticket.windowClient ||
-    !held.some((v) => v.name === names.slot && v.mode === 'shared' && v.clientId === client)
+    (cohort.kind !== 'ceremony' &&
+      !held.some((v) => v.name === names.slot && v.mode === 'shared' && v.clientId === client))
   )
     throw inactive();
   const close = () => cancel.abort();

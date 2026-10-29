@@ -1,3 +1,4 @@
+import { ceremonyEnvironment } from './ceremonyEnvironment';
 import { requireNativeLocks } from './nativeCoordination';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
 /** Environment endpoints only: no keys, proofs, admission or configurable ownership policy. */
@@ -44,21 +45,27 @@ export const pageRuntimePorts: RuntimePorts = Object.freeze({
   activity: Object.freeze({
     visibilityState: () =>
       accountWorkerRuntime()?.activity.visibility ??
+      ceremonyEnvironment()?.activity.visibility ??
       globalThis.document?.visibilityState ??
       'visible',
-    online: () => accountWorkerRuntime()?.activity.online ?? globalThis.navigator?.onLine !== false,
+    online: () =>
+      accountWorkerRuntime()?.activity.online ??
+      ceremonyEnvironment()?.activity.online ??
+      globalThis.navigator?.onLine !== false,
     onGlobal(kind, listener, capture) {
-      const target = accountWorkerRuntime()?.events ?? globalThis;
+      const target = accountWorkerRuntime()?.events ?? ceremonyEnvironment()?.events ?? globalThis;
       target?.addEventListener?.(kind, listener, capture);
       return () => target?.removeEventListener?.(kind, listener, capture);
     },
     onDocument(kind, listener, capture) {
-      const target = accountWorkerRuntime()?.events ?? globalThis.document;
+      const target =
+        accountWorkerRuntime()?.events ?? ceremonyEnvironment()?.events ?? globalThis.document;
       target?.addEventListener?.(kind, listener, capture);
       return () => target?.removeEventListener?.(kind, listener, capture);
     },
     onPageShow(listener) {
-      const target = accountWorkerRuntime()?.events ?? globalThis.window;
+      const target =
+        accountWorkerRuntime()?.events ?? ceremonyEnvironment()?.events ?? globalThis.window;
       target?.addEventListener?.('pageshow', listener);
       return () => target?.removeEventListener?.('pageshow', listener);
     },
@@ -66,13 +73,13 @@ export const pageRuntimePorts: RuntimePorts = Object.freeze({
   lifetime: Object.freeze({
     requireLocks: requireNativeLocks,
     onPageHide(listener) {
-      const target = accountWorkerRuntime()?.events ?? globalThis;
+      const target = accountWorkerRuntime()?.events ?? ceremonyEnvironment()?.events ?? globalThis;
       target.addEventListener?.('pagehide', listener, { once: true });
       return () => target.removeEventListener?.('pagehide', listener);
     },
     onRetirement(slotId, listener) {
       if (
-        (typeof window === 'undefined' && !accountWorkerRuntime()) ||
+        (typeof window === 'undefined' && !accountWorkerRuntime() && !ceremonyEnvironment()) ||
         typeof BroadcastChannel === 'undefined'
       )
         return () => {};
@@ -84,7 +91,7 @@ export const pageRuntimePorts: RuntimePorts = Object.freeze({
     },
     requestRetirement(slotId) {
       if (
-        (typeof window === 'undefined' && !accountWorkerRuntime()) ||
+        (typeof window === 'undefined' && !accountWorkerRuntime() && !ceremonyEnvironment()) ||
         typeof BroadcastChannel === 'undefined'
       )
         return;

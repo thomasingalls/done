@@ -853,7 +853,7 @@
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
-      "sha256": "7f39e8482eaf5af7a90e04bf76452a8775d8151c75abbe6df291053b59e8ee17"
+      "sha256": "398b19fee01eee89145304812df60cabe7660b9af9fe0d6054cf7ed072e04fb8"
     },
     {
       "path": "src/crdt/accountWorkerJoin.ts",
@@ -918,6 +918,14 @@
     {
       "path": "src/crdt/batchWindow.ts",
       "sha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535"
+    },
+    {
+      "path": "src/crdt/ceremonyEnvironment.ts",
+      "sha256": "82dddba608dc040aa101edd17b55aeee31725c3b562e624293a55133da9ee028"
+    },
+    {
+      "path": "src/crdt/ceremonyWorkerLifetime.ts",
+      "sha256": "598c2b31a59868a323b9a2b379ffce3814d9086ec4252696121ded2d27cc1482"
     },
     {
       "path": "src/crdt/compaction.ts",
@@ -1185,7 +1193,7 @@
     },
     {
       "path": "src/crdt/localGenesisStorage.ts",
-      "sha256": "9bfd43d405fd18a360b9d26697c3ada18ffb377af19a7e60176fcf59811db2cf"
+      "sha256": "84edc1539e073b5ba90f807e968773c1d228e28005f3a8c4968b7ea2c28c48b2"
     },
     {
       "path": "src/crdt/localOwner.worker.ts",
@@ -1206,6 +1214,14 @@
     {
       "path": "src/crdt/localRetentionStorage.ts",
       "sha256": "c31316b0686ee28ce6ad6dabd6e0a34a2a5583f80323fddcee44a3a66c9b78f9"
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "sha256": "83088cd098cecf04e6583bf597de7bba5381fcb6c5df510d889a0fd5cbf019d8"
+    },
+    {
+      "path": "src/crdt/localStartupClient.ts",
+      "sha256": "912eba0a4cb5dda1780b0ccb49ddd31fd6f8b0929eddf94a44cde7d097df0328"
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
@@ -1353,7 +1369,7 @@
     },
     {
       "path": "src/crdt/runtimePorts.ts",
-      "sha256": "7b30f1bcec7d7fd82490c29fd2b35aa6721ab3f3220efd51f7793b6e812f5137"
+      "sha256": "6df40138514581850a80cb49c009e73a3fab09deb4a150ab15602d52c63d94e0"
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",
@@ -1377,7 +1393,7 @@
     },
     {
       "path": "src/crdt/startupClassification.ts",
-      "sha256": "b2cbb8cd8ec70e7f392a7e02332eaab786cb28b26e5e3ec96229b7ff6c80853b"
+      "sha256": "31eff8bcf56d234b7b20dc1aea03331743329f825fc03988fee3a43066576952"
     },
     {
       "path": "src/crdt/startupState.ts",
@@ -1385,7 +1401,7 @@
     },
     {
       "path": "src/crdt/startupStorage.ts",
-      "sha256": "6292d632123974426ad00183216b171d0bd4cdffe80c40665d1f5772ae8015f2"
+      "sha256": "afb6ef5780c61d04040b7373e482e7cea25900e69e69417c9970a8062015b5a3"
     },
     {
       "path": "src/crdt/storageCompatibility.ts",
@@ -1433,7 +1449,7 @@
     },
     {
       "path": "src/crdt/windowWorkerLifetime.ts",
-      "sha256": "378713751fe364cd0deb0e4b4a426c2f87156890bb2f7a2b80c8dd816e634591"
+      "sha256": "08a7d279155a63ebd21419bcb4b62aa673f70f0568c262ff62e4211de4014818"
     },
     {
       "path": "src/crdt/windowWorkspaceQueues.ts",
@@ -3915,7 +3931,7 @@
       "sites": [
         {
           "path": "src/crdt/runtimePorts.ts",
-          "line": 39
+          "line": 40
         }
       ]
     },

@@ -1,3 +1,4 @@
+import { ceremonyEnvironment } from './ceremonyEnvironment';
 import { accountWorkerRuntime } from './accountWorkerRuntime';
 /** Known-name, read-only native probes. They never create or upgrade a database. */
 import type { SessionTask } from './writeSession';
@@ -160,36 +161,51 @@ export const readScopedRowsBulk = (
   );
 };
 
+/** Same scoped key census for Window native effects and the original Page task wrapper. */
+export const countJournalEntries = (
+  prefix: string,
+  exclude: (key: string) => boolean = () => false,
+): number => {
+  const storage = globalThis.localStorage;
+  const keys = Object.keys(storage)
+    .filter((key) => key.startsWith(prefix) && !exclude(key))
+    .sort();
+  for (const key of keys)
+    if (storage.getItem(key) === null) throw Error('Journal changed during startup.');
+  const after = Object.keys(storage)
+    .filter((key) => key.startsWith(prefix) && !exclude(key))
+    .sort();
+  if (keys.length !== after.length || keys.some((k, i) => k !== after[i]))
+    throw Error('Journal changed during startup.');
+  return keys.length;
+};
 export const journalCount = (
   task: SessionTask,
   prefix: string,
   exclude: (key: string) => boolean = () => false,
-): number =>
-  task.step(() => {
-    const storage = globalThis.localStorage;
-    const keys = Object.keys(storage)
-      .filter((key) => key.startsWith(prefix) && !exclude(key))
-      .sort();
-    for (const key of keys)
-      if (storage.getItem(key) === null) throw Error('Journal changed during startup.');
-    const after = Object.keys(storage)
-      .filter((key) => key.startsWith(prefix) && !exclude(key))
-      .sort();
-    if (keys.length !== after.length || keys.some((k, i) => k !== after[i]))
-      throw Error('Journal changed during startup.');
-    return keys.length;
-  });
+): number => task.step(() => countJournalEntries(prefix, exclude));
 
 /** Worker startup obtains a fresh bounded Window read; existing synchronous readers stay unchanged. */
 export async function readJournalCount(task: SessionTask, prefix: string): Promise<number> {
   const worker = accountWorkerRuntime();
-  if (!worker) return journalCount(task, prefix);
+  if (!worker) {
+    const ceremony = ceremonyEnvironment();
+    return ceremony ? task.wait(() => ceremony.countJournal(prefix)) : journalCount(task, prefix);
+  }
   const read = await task.wait(() => worker.journal.read(prefix));
   return task.step(() => read.entries.length);
 }
 
 /** The old `done` prefix contains modern `done.<hash>` prefixes. Their complete key grammars are disjoint. */
+const modernJournalKey = (key: string) =>
+  /^done\.pending-update\.done\.[0-9a-f]{32}\.[0-9a-f]{32}\.[0-9a-f]{32}\.[0-9]{16}$/u.test(key);
+export const countLegacyJournalEntries = () =>
+  countJournalEntries(journalPrefix('done'), modernJournalKey);
 export const legacyJournalCount = (task: SessionTask): number =>
-  journalCount(task, journalPrefix('done'), (key) =>
-    /^done\.pending-update\.done\.[0-9a-f]{32}\.[0-9a-f]{32}\.[0-9a-f]{32}\.[0-9]{16}$/u.test(key),
-  );
+  journalCount(task, journalPrefix('done'), modernJournalKey);
+export async function readLegacyJournalCount(task: SessionTask): Promise<number> {
+  const ceremony = ceremonyEnvironment();
+  return ceremony
+    ? task.wait(() => ceremony.countJournal(journalPrefix('done'), true))
+    : legacyJournalCount(task);
+}

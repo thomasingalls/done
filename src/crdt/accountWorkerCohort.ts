@@ -13,7 +13,7 @@ import { pageRuntimePorts } from './runtimePorts';
 type Sync<T> = T extends PromiseLike<unknown> ? never : T;
 export interface WindowAccountCohort {
   readonly ticket: AccountWorkerTicket;
-  readonly kind: 'account' | 'local';
+  readonly kind: 'account' | 'local' | 'ceremony';
   readonly signal: AbortSignal;
   readonly state: 'active' | 'closing' | 'closed' | 'failed';
   /** Local composition only: pin the actual native Worker client before it may initialize keys. */
@@ -26,9 +26,14 @@ export interface WindowAccountCohort {
 const windowOwners = new WeakSet<WindowAccountCohort>();
 const pinnedLocalOwners = new WeakSet<WindowAccountCohort>();
 /** Internal composition must use the actual coordinator, never a structurally similar object. */
-export function requireWindowWorkerCohort(owner: WindowAccountCohort): void {
+/** Supervision only: no old-slot fence is implied. */
+export function requireWindowSupervisor(owner: WindowAccountCohort): void {
   if (!windowOwners.has(owner)) throw inactive();
   owner.write(() => {});
+}
+export function requireWindowWorkerCohort(owner: WindowAccountCohort): void {
+  requireWindowSupervisor(owner);
+  if (owner.kind === 'ceremony') throw inactive();
 }
 export function requireWindowAccountCohort(owner: WindowAccountCohort): void {
   requireWindowWorkerCohort(owner);
@@ -70,7 +75,7 @@ async function openWindowCohort(
   slotId: string,
   stopWorker: () => Promise<void>,
   signal?: AbortSignal,
-  local = false,
+  kind: WindowAccountCohort['kind'] = 'account',
 ): Promise<WindowAccountCohort> {
   if (typeof window === 'undefined' || typeof stopWorker !== 'function') throw inactive();
   const locks = pageRuntimePorts.lifetime.requireLocks();
@@ -96,7 +101,8 @@ async function openWindowCohort(
   };
   signal?.addEventListener('abort', cancel, { once: true });
   const stopHide = pageRuntimePorts.lifetime.onPageHide(cancel);
-  const stopRetirement = pageRuntimePorts.lifetime.onRetirement(slotId, cancel);
+  const stopRetirement =
+    kind === 'ceremony' ? () => {} : pageRuntimePorts.lifetime.onRetirement(slotId, cancel);
   const detach = () => {
     signal?.removeEventListener('abort', cancel);
     stopHide();
@@ -104,13 +110,18 @@ async function openWindowCohort(
   };
   if (signal?.aborted) cancel();
   try {
-    reservation = await hold(locks, n.reservation, local ? 'shared' : 'exclusive', opening.signal);
+    reservation = await hold(
+      locks,
+      n.reservation,
+      kind === 'account' ? 'exclusive' : 'shared',
+      opening.signal,
+    );
     anchor = await hold(locks, n.anchor, 'exclusive', opening.signal);
-    if (!local) {
+    if (kind === 'account') {
       const barrier = await hold(locks, n.slot, 'exclusive', opening.signal);
       await barrier.close();
     }
-    endpoint = await hold(locks, n.slot, 'shared', opening.signal);
+    if (kind !== 'ceremony') endpoint = await hold(locks, n.slot, 'shared', opening.signal);
     const holders = (await locks.query()).held?.filter((v) => v.name === n.anchor);
     if (opening.signal.aborted || holders?.length !== 1 || !holders[0]?.clientId) throw cancelled();
     const ticket = Object.freeze({
@@ -124,14 +135,14 @@ async function openWindowCohort(
     };
     owner = Object.freeze({
       ticket,
-      kind: local ? 'local' : 'account',
+      kind,
       signal: stopped.signal,
       get state() {
         return state;
       },
       bindLocalWorker() {
         live();
-        if (!local) throw inactive();
+        if (kind !== 'local') throw inactive();
         if (binding) return binding;
         binding = (async () => {
           const held = (await locks.query()).held ?? [];
@@ -217,7 +228,7 @@ async function openWindowCohort(
             return;
           }
           await pin?.close();
-          await endpoint!.close();
+          await endpoint?.close();
           await reservation!.close();
           state = 'closed';
           done.resolve();
@@ -260,4 +271,16 @@ export const openWindowLocalCohort = (
   slotId: string,
   stopWorker: () => Promise<void>,
   signal?: AbortSignal,
-) => openWindowCohort(slotId, stopWorker, signal, true);
+) => openWindowCohort(slotId, stopWorker, signal, 'local');
+
+/** Short-lived startup/ceremony supervisor. No old-slot fence: each native operation still acquires
+ * its original actual shared/exclusive permit. This coordinator grants no storage/decryption authority. */
+export const openWindowCeremonyCohort = (
+  slotId: string,
+  stopWorker: () => Promise<void>,
+  signal?: AbortSignal,
+) => openWindowCohort(slotId, stopWorker, signal, 'ceremony');
+export function requireWindowCeremonyCohort(owner: WindowAccountCohort): void {
+  requireWindowSupervisor(owner);
+  if (owner.kind !== 'ceremony') throw inactive();
+}

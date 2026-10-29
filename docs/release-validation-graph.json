@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 619,
-    "requiredTestFiles": 613,
+    "testFiles": 621,
+    "requiredTestFiles": 615,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10142,6 +10142,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/ceremonyWorkerLifetime.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/ceremonyWorkerLifetime.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/commands.test.ts",
       "status": "required",
       "invocation": {
@@ -13814,6 +13829,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/startupJournalCount.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/startupJournalCount.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/staticRender.test.ts",
       "status": "required",
       "invocation": {
@@ -16471,7 +16501,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "6599c9f581978ef053721c575421902013168af7e8fd7fd623b030cb61282415"
+      "sha256": "014ebd67f00362d5f378d3534088f8cc35f6c612dfc8e29d135fd74ce4d2af78"
     },
     {
       "path": "package.json",
@@ -19738,6 +19768,10 @@
       "sha256": "b528c33d4c59a5891184e5417fb9f7fb04f74008cf0de68aa3c8a2419dd18a8a"
     },
     {
+      "path": "test/ceremonyWorkerLifetime.test.ts",
+      "sha256": "b8a05e81d8aa226da86cad472624e20cc70f3b3377f0a8adcfd379532ddb277d"
+    },
+    {
       "path": "test/commands.test.ts",
       "sha256": "de70742be0d8b63e3d3af6d84ae3671d8220d5cce35cd8c9b73cc5d2fd37303e"
     },
@@ -21116,6 +21150,10 @@
     {
       "path": "test/spoolRecord.test.ts",
       "sha256": "3b630e28ebebbc7e4a583e42bb1b23058badc0e04fbbe3275edba4b387d8a365"
+    },
+    {
+      "path": "test/startupJournalCount.test.ts",
+      "sha256": "617908bc9e067a71dfd04c430dc3d378774529fdc83572e2f9d207006ce07042"
     },
     {
       "path": "test/staticRender.test.ts",

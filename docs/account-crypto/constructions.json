@@ -5396,7 +5396,7 @@
         },
         {
           "path": "src/crdt/runtimePorts.ts",
-          "line": 39,
+          "line": 40,
           "label": "done/slot-lifecycle",
           "kind": "literal"
         },
