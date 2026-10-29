@@ -1,0 +1,5 @@
+{
+  "src/crdt/workerCeremonyPhase.ts": "2cfbe745a1d26bbfeac416d296ae0b7e9db989078dfd513418d61416b2cd3a30",
+  "src/account/setupWorkerProtocol.ts": "79602919618c11e2525bd230273184caf881f6b45b0f09782f4f2f061bb99348",
+  "src/account/firstDeviceSetup.ts": "fa5c82540a4b217b6f23f0661b3a1361e1887a5fd72f0e1f50d4929c507eff44"
+}

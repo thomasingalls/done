@@ -581,7 +581,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "23923a78cd74b527412df9445105646caa1f0f504f093da6b6b5603c5d43ef51"
+      "sha256": "fa5c82540a4b217b6f23f0661b3a1361e1887a5fd72f0e1f50d4929c507eff44"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -722,6 +722,10 @@
     {
       "path": "src/account/setupRecoveryMetadata.ts",
       "sha256": "6d2f6094b79818236f2de09e8ce0868f6e24eeaf69620836ce956184df09bfa4"
+    },
+    {
+      "path": "src/account/setupWorkerProtocol.ts",
+      "sha256": "79602919618c11e2525bd230273184caf881f6b45b0f09782f4f2f061bb99348"
     },
     {
       "path": "src/account/setupWorkspace.ts",
@@ -1518,6 +1522,10 @@
     {
       "path": "src/crdt/workerCeremonyOpening.ts",
       "sha256": "89e65cc88e3396aa8cbbc09e9f0afa037962bacd0c99bb45d81945682ffa304a"
+    },
+    {
+      "path": "src/crdt/workerCeremonyPhase.ts",
+      "sha256": "2cfbe745a1d26bbfeac416d296ae0b7e9db989078dfd513418d61416b2cd3a30"
     },
     {
       "path": "src/crdt/workerChannel.ts",

@@ -665,6 +665,18 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
       return networkLogin;
     },
     getSnapshot: () => state,
+    whenIdle: () => operation ?? Promise.resolve(),
+    visitableSteps(): readonly string[] {
+      if (lifetime.signal.aborted || operation) return [];
+      if (
+        deviceEnrollment?.displayCode &&
+        ['intro', 'save-device-code', 'confirm-device-code'].includes(state.kind)
+      )
+        return ['intro', 'save-device-code', 'confirm-device-code'];
+      if (recoveryDisplay && ['save-recovery', 'confirm-recovery'].includes(state.kind))
+        return ['save-recovery', 'confirm-recovery'];
+      return [];
+    },
     approvePasskey: () => approval?.invoke(),
     hasRecoveryDisplay: () => recoveryDisplay !== undefined,
     visit(step: string): boolean {

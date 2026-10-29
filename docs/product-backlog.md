@@ -688,3 +688,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase214:** same-realm setup refs plus canonical name effects verified. Next original native controller with stable UI control and quiescent handoff, enrollment/recovery/offline/default activation, then unchanged gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase214/README.md).
+
+
+**Phase215:** tracked ceremony phase and fixed command/display projection ready. Next stable native UI control and actual controller handoff; defaultPage and performance acceptance pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase215/README.md).

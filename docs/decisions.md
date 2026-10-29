@@ -6232,3 +6232,8 @@ Keep original Page credential statements behind an explicit factory for native s
 ## 2026-10-29 — native setup callback context is separate from approval authority
 
 Keep genuine approvals in original WeakMaps. Bind same-realm callback/login routing to exact opening input and User lifetime; publish genuine composition locally after verification. Name changes use actual Window canonical admitted commands. Avoid shutdown awaiting its own coordinator. [Evidence](performance-experiments/2026-10-28-worker-owner/phase214/README.md).
+
+
+## 2026-10-29 — preparation yield is an internal final-opening boundary
+
+Track original setup commands in genuine Root.run, including asynchronous Start. Yield only at the trusted final opening hook and wait real root-job release. Ordinary results retain Root final-live refusal. UI receives explicit presentation data, never native references. [Evidence](performance-experiments/2026-10-28-worker-owner/phase215/README.md).
