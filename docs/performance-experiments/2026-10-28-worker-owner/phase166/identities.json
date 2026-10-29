@@ -1,0 +1,39 @@
+{
+  "sourceBase": "8d6d42c1c723f3dff7c7822b2358a813dc8c16e6",
+  "requiresPatches": [
+    161,
+    162,
+    163,
+    164,
+    165
+  ],
+  "reproduction": {
+    "build.mjs": "reproduction/build.mjs.txt",
+    "run.py": "reproduction/run.py.txt",
+    "wire.test.mjs": "reproduction/wire.test.mjs.txt",
+    "review-built.py": "reproduction/review-built.py.txt",
+    "check166.py": "reproduction/check166.py.txt",
+    "review-source.mjs": "reproduction/review-source.mjs.txt",
+    "harness/test/account-continuation-lab/worker-owner.spec.ts": "reproduction/harness/test/account-continuation-lab/worker-owner.spec.ts.txt",
+    "harness/test/account-continuation-lab/worker-owner.config.ts": "reproduction/harness/test/account-continuation-lab/worker-owner.config.ts.txt",
+    "harness/test/account-continuation-lab/runtime.mjs": "reproduction/harness/test/account-continuation-lab/runtime.mjs.txt",
+    "harness/test/account-continuation-lab/devices.ts": "reproduction/harness/test/account-continuation-lab/devices.ts.txt",
+    "harness/test/account-continuation-lab/common.ts": "reproduction/harness/test/account-continuation-lab/common.ts.txt",
+    "harness/test/account-continuation-lab/seed-profile.ts": "reproduction/harness/test/account-continuation-lab/seed-profile.ts.txt",
+    "harness/scripts/lib/packaged-application.mjs": "reproduction/harness/scripts/lib/packaged-application.mjs.txt",
+    "lab/index.html": "reproduction/lab/index.html.txt",
+    "lab/wire.mjs": "reproduction/lab/wire.mjs.txt",
+    "lab/kernel.mjs": "reproduction/lab/kernel.mjs.txt",
+    "lab/main.mjs": "reproduction/lab/main.mjs.txt",
+    "lab/env.mjs": "reproduction/lab/env.mjs.txt"
+  },
+  "fixtureFileSha256": "29157cbeaf83a269104361a6a9ccd9cb10ce20033b72e52f0394c89b19354f9f",
+  "fixtureNote": "Fictional H first device, v9; private factors/virtual credentials/profile omitted.",
+  "labRoot": "/private/tmp/done-worker-mirror-20261028",
+  "frontend": "/private/tmp/done-resumable-release-20261028/frontend",
+  "finalRun": "native-mirror-03",
+  "earlierFailures": {
+    "native-mirror-01": "real opening succeeded; full recovery reply refused finite message bound",
+    "native-mirror-02": "positive proof passed with inline content projection; final run uses shared production helper plus seven failure controls"
+  }
+}

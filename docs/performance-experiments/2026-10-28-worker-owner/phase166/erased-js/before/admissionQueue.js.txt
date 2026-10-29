@@ -1,0 +1,988 @@
+import { accountTextPreparation, } from './accountTextPreparation';
+import { MaintenanceInterrupted } from './contentMaintenance';
+import { ledgerProfiling, ledgerWorkStart, countLedgerWork, measureLedgerWork, observeAdmissionQueue, } from './accountLedgerMetrics';
+import { createBatchWindow } from './batchWindow';
+import { applyUpdate, createDoc, encodeState, forkDoc, sameDocState } from './yjs';
+import { createWorkspacePreparation, localWorkspacePreparation, } from './workspacePreparation';
+import { MAX_JOURNAL_UPDATE } from './custody';
+import { cloneDocument, newWriterId, prepareIntent, replayRecovery, writerClock, } from './admissionDocument';
+export const MAX_PENDING_BYTES = 4 * 1024 * 1024;
+export const MAX_PENDING_ITEMS = 256;
+export const FLUSH_DELAY_MS = 250;
+export const CONTENT_MAINTENANCE_RECORDS = 128;
+export const CONTENT_MAINTENANCE_BYTES = 1024 * 1024;
+export const CONTENT_MAINTENANCE_IDLE_MS = 750;
+export class AdmissionError extends Error {
+    code;
+    name = 'AdmissionError';
+    constructor(code, message, options) {
+        super(message, options);
+        this.code = code;
+    }
+}
+const deferred = () => {
+    let resolve, reject;
+    const promise = new Promise((yes, no) => {
+        resolve = yes;
+        reject = no;
+    });
+    void promise.catch(() => { });
+    return { promise, resolve, reject };
+};
+const codeOf = (error) => error && typeof error === 'object' && 'code' in error ? String(error.code) : 'storage-failed';
+const erase = (job) => {
+    if (job.kind === 'flush')
+        return;
+    job.input.fill(0);
+    if (job.preparation)
+        return;
+    job.prepared?.update.fill(0);
+    job.prepared?.remaining?.fill(0);
+    job.prepared?.carrierBytes?.fill(0);
+    for (const source of job.prepared?.sources ?? [])
+        source.bytes.fill(0);
+};
+export const createAdmissionOwner = async (carrier, options, bindOwnedReceive) => {
+    const local = options[localWorkspacePreparation];
+    const text = options[accountTextPreparation];
+    if (text && (local || !carrier.captureLocal))
+        throw Error('Direct text requires an Account carrier');
+    if (local && carrier.captureLocal)
+        throw Error('Local preparation is not authorized for Account source capture');
+    const canonical = createDoc(), listeners = new Set(), statusListeners = new Set();
+    const queue = [];
+    const queuedAt = ledgerProfiling ? new WeakMap() : undefined;
+    const flushBatch = options.flushBatch
+        ? createBatchWindow(options.flushBatch, () => performance.now())
+        : undefined;
+    let state = 'active', revision = 0, nextId = 0, writer = newWriterId();
+    const preparation = local
+        ? createWorkspacePreparation({
+            head: () => {
+                const job = queue[0];
+                return state === 'active' && job && job.kind !== 'flush'
+                    ? { kind: job.kind, job, slice: job.slices, revision, writer }
+                    : undefined;
+            },
+            verifiedRevision: local.verifiedRevision,
+        })
+        : undefined;
+    let repairRequired = false;
+    let pressure = null, journalDirty = false, busy = false;
+    let timer, inFlight;
+    let backgroundFlush;
+    let journalRevision = 0;
+    let closing;
+    let maintenanceTimer;
+    let maintenanceStop;
+    let maintenance;
+    let contentChanges = 0, contentBytes = 0, journalBytes = 0;
+    const changedContent = (count, bytes) => {
+        contentChanges += count;
+        contentBytes += bytes;
+    };
+    const clearMaintenanceTimer = () => {
+        if (maintenanceTimer !== undefined)
+            clearTimeout(maintenanceTimer);
+        maintenanceTimer = undefined;
+    };
+    let preparedReceive;
+    let disposed = false;
+    const dispose = () => {
+        if (disposed)
+            return;
+        disposed = true;
+        canonical.destroy();
+        listeners.clear();
+    };
+    try {
+        carrier.beforeRelease?.(async () => {
+            await Promise.all([inFlight, backgroundFlush, preparedReceive?.catch(() => { })]);
+            await preparation?.close();
+            dispose();
+        });
+    }
+    catch (cause) {
+        dispose();
+        throw cause;
+    }
+    const live = () => {
+        if (state !== 'active' && state !== 'blocked')
+            throw new AdmissionError('inactive-session', 'This admission session is inactive.');
+        if (carrier.signal.aborted || carrier.state !== 'active')
+            throw new AdmissionError('inactive-session', 'The carrier session is inactive.');
+    };
+    const status = () => Object.freeze({
+        state,
+        revision,
+        pendingItems: queue.filter((j) => j.kind !== 'flush').length,
+        pendingBytes: queue.reduce((n, j) => n +
+            (j.kind === 'flush'
+                ? 0
+                : j.input.length +
+                    (j.prepared?.update.length ?? 0) +
+                    (j.prepared?.carrierBytes?.length ?? 0) +
+                    (j.prepared?.sources?.reduce((n, s) => n + s.bytes.length, 0) ?? 0) +
+                    (j.prepared?.remaining?.length ?? 0)), 0),
+        reservedBytes: queue.reduce((n, j) => n + (j.kind === 'flush' ? 0 : j.reservation), 0),
+        durable: state === 'active' &&
+            !queue.length &&
+            !journalDirty &&
+            !backgroundFlush &&
+            !preparedReceive &&
+            pressure === null,
+        pressure,
+        ...(maintenance ? { maintenance } : {}),
+    });
+    const notify = () => {
+        const value = status();
+        for (const listener of [...statusListeners]) {
+            try {
+                listener(value);
+            }
+            catch {
+            }
+        }
+    };
+    const clearTimer = () => {
+        if (timer !== undefined)
+            clearTimeout(timer);
+        timer = undefined;
+    };
+    const rejectBarriers = (error) => {
+        for (let i = queue.length - 1; i >= 0; i--)
+            if (queue[i].kind === 'flush') {
+                queue[i].completion.reject(error);
+                queue.splice(i, 1);
+            }
+    };
+    const block = (error) => {
+        if (state !== 'active')
+            return;
+        state = 'blocked';
+        clearTimer();
+        clearMaintenanceTimer();
+        repairRequired ||= codeOf(error) === 'repair-required';
+        pressure = Object.freeze({ code: codeOf(error) });
+        rejectBarriers(error);
+        notify();
+    };
+    const close = () => {
+        if (closing)
+            return closing;
+        const done = deferred();
+        closing = done.promise;
+        state = 'closing';
+        flushBatch?.clear();
+        clearTimer();
+        clearMaintenanceTimer();
+        carrier.signal.removeEventListener('abort', cancelled);
+        maintenanceStop?.abort();
+        const error = new AdmissionError('inactive-session', 'Admission closed before this input completed.');
+        const preparationStopped = preparation?.close();
+        for (const job of queue) {
+            job.completion.reject(error);
+            erase(job);
+        }
+        queue.length = 0;
+        notify();
+        const stopped = carrier.close();
+        void Promise.allSettled([
+            inFlight,
+            backgroundFlush,
+            preparedReceive?.catch(() => { }),
+            stopped,
+            preparationStopped,
+        ]).then((results) => {
+            dispose();
+            const failure = results.find((r) => r.status === 'rejected');
+            state = failure ? 'failed' : 'closed';
+            notify();
+            statusListeners.clear();
+            if (failure?.status === 'rejected')
+                done.reject(failure.reason);
+            else
+                done.resolve();
+        });
+        return closing;
+    };
+    const cancelled = () => {
+        void close().catch(() => { });
+    };
+    carrier.signal.addEventListener('abort', cancelled, { once: true });
+    try {
+        const recovery = await carrier.loadRecovery();
+        try {
+            live();
+            try {
+                replayRecovery(canonical, recovery);
+            }
+            catch (cause) {
+                throw new AdmissionError('repair-required', 'Persisted Yjs content cannot be replayed.', {
+                    cause,
+                });
+            }
+            live();
+            const content = recovery.records.filter((r) => r.kind === 'state' || r.kind === 'update');
+            if (content.length > 1)
+                changedContent(content.length, content.reduce((n, r) => n + r.bytes.length, 0));
+            journalBytes = recovery.journal.reduce((n, r) => n + r.bytes.length, 0);
+            journalDirty = recovery.journal.length > 0;
+            if (journalDirty)
+                flushBatch?.note();
+        }
+        finally {
+            for (const r of [...recovery.records, ...recovery.journal])
+                r.bytes.fill(0);
+        }
+    }
+    catch (error) {
+        await close();
+        throw error;
+    }
+    const validateRemote = (bytes) => {
+        const input = bytes.slice();
+        let probe;
+        try {
+            const result = options.validateReceive(input);
+            if (result && typeof result === 'object' && 'then' in result)
+                void Promise.resolve(result).catch(() => { });
+            if (result !== undefined)
+                throw Error('Receive validation must be synchronous and return void.');
+            if (input.length !== bytes.length || input.some((v, i) => v !== bytes[i]))
+                throw Error('Receive validation changed its input.');
+            probe = cloneDocument(canonical);
+            applyUpdate(probe, bytes);
+        }
+        catch (cause) {
+            throw new AdmissionError('receive-refused', 'Inbound update failed validation.', { cause });
+        }
+        finally {
+            input.fill(0);
+            probe?.destroy();
+        }
+    };
+    const promote = (job, update, publicationComplete = true) => {
+        live();
+        const publication = update.slice();
+        try {
+            const before = writerClock(canonical, writer);
+            applyUpdate(canonical, update);
+            if (job.kind === 'remote' && writerClock(canonical, writer) !== before)
+                writer = newWriterId();
+            revision++;
+            if (job.prepared?.text) {
+                try {
+                    job.prepared.text.accept(publication, revision);
+                }
+                catch (cause) {
+                    void close().catch(() => { });
+                    throw new AdmissionError('projection-mismatch', 'Direct text promotion failed.', {
+                        cause,
+                    });
+                }
+            }
+            if (job.preparation) {
+                try {
+                    const candidate = preparation.adopt(job.preparation, (prepared) => sameDocState(canonical, prepared.state.history.doc));
+                    const retired = local.accept(candidate, revision);
+                    if (retired)
+                        preparation.retire(retired);
+                }
+                catch (cause) {
+                    const error = new AdmissionError('projection-mismatch', 'Prepared workspace adoption failed.', { cause });
+                    try {
+                        local.fail(error);
+                    }
+                    finally {
+                        void close().catch(() => { });
+                    }
+                    throw error;
+                }
+            }
+            job.slices++;
+            for (const listener of [...listeners]) {
+                if (state !== 'active')
+                    break;
+                try {
+                    listener(Object.freeze({
+                        source: job.kind,
+                        revision,
+                        update: publication.slice(),
+                        ...(!publicationComplete ? { publicationComplete: false } : {}),
+                    }));
+                }
+                catch {
+                }
+            }
+        }
+        finally {
+            publication.fill(0);
+        }
+    };
+    const completeInput = (job) => {
+        live();
+        const rest = job.preparation ? job.prepared?.remaining?.slice() : job.prepared?.remaining;
+        if (job.preparation) {
+            preparation.finish(job.preparation);
+            job.preparation = undefined;
+            job.prepared = undefined;
+        }
+        if (rest) {
+            job.input.fill(0);
+            job.prepared?.update.fill(0);
+            job.prepared?.carrierBytes?.fill(0);
+            for (const source of job.prepared?.sources ?? [])
+                source.bytes.fill(0);
+            job.input = rest;
+            job.prepared = undefined;
+            job.sliced = true;
+            job.force = 'oversize';
+            job.reservation = 2 * rest.length + MAX_JOURNAL_UPDATE;
+        }
+        else {
+            if (queue[0] !== job)
+                throw new Error('Admission queue lost its head.');
+            queue.shift();
+            erase(job);
+            job.completion.resolve(Object.freeze({ id: job.id, source: job.kind, revision, slices: job.slices }));
+        }
+        pressure = null;
+        notify();
+    };
+    const flush = async (background = false) => {
+        live();
+        const startedRevision = journalRevision, startedBytes = journalBytes;
+        if (background)
+            flushBatch?.clear();
+        countLedgerWork('journalFlushes');
+        if (journalDirty)
+            countLedgerWork('dirtyJournalFlushes');
+        const receipt = await carrier.flushJournal();
+        live();
+        if (receipt.retained) {
+            const checked = await carrier.loadRecovery();
+            for (const r of [...checked.records, ...checked.journal])
+                r.bytes.fill(0);
+            live();
+            throw new AdmissionError('storage-failed', 'Content committed, but journal cleanup still needs retry.');
+        }
+        changedContent(receipt.removed ?? 0, startedBytes);
+        journalBytes -= startedBytes;
+        journalDirty = journalRevision !== startedRevision;
+        if (!journalDirty)
+            flushBatch?.clear();
+    };
+    const forceLocal = async (job) => {
+        if (backgroundFlush) {
+            await backgroundFlush;
+            if (state !== 'active')
+                throw new AdmissionError('storage-failed', 'Journal flush did not complete.');
+        }
+        await flush();
+        live();
+        const lease = job.preparation ? preparation.borrow(job.preparation) : undefined;
+        try {
+            await carrier.appendBatch([
+                { kind: 'update', bytes: job.prepared.carrierBytes ?? job.prepared.update },
+            ]);
+        }
+        finally {
+            lease?.release();
+        }
+        live();
+        changedContent(1, (job.prepared.carrierBytes ?? job.prepared.update).length);
+        promote(job, job.prepared.update);
+        completeInput(job);
+    };
+    const process = (job) => {
+        live();
+        if (job.kind === 'flush')
+            return flush().then(() => {
+                live();
+                queue.shift();
+                pressure = null;
+                job.completion.resolve();
+                notify();
+            });
+        if (job.kind === 'remote') {
+            if (job.commit) {
+                let promoted = false;
+                return job
+                    .commit(job.input, (updates) => {
+                    live();
+                    if (promoted)
+                        throw Error('Owned receive promoted twice');
+                    promoted = true;
+                    changedContent(updates.length, updates.reduce((n, b) => n + b.length, 0));
+                    for (let i = 0; i < updates.length; i++)
+                        promote(job, updates[i], !options.publishReceivePage || i === updates.length - 1);
+                })
+                    .then(() => {
+                    live();
+                    if (!promoted)
+                        throw Error('Owned receive omitted its ordered handoff');
+                    completeInput(job);
+                })
+                    .catch((error) => {
+                    if (codeOf(error) !== 'receive-refused')
+                        throw error;
+                    live();
+                    if (queue[0] !== job)
+                        throw Error('Owned receive lost its queue head');
+                    queue.shift();
+                    erase(job);
+                    job.completion.reject(error);
+                    notify();
+                });
+            }
+            try {
+                validateRemote(job.input);
+            }
+            catch (error) {
+                queue.shift();
+                erase(job);
+                job.completion.reject(error);
+                notify();
+                return;
+            }
+            live();
+            return carrier.appendBatch([{ kind: 'update', bytes: job.input }]).then(() => {
+                live();
+                changedContent(1, job.input.length);
+                promote(job, job.input);
+                completeInput(job);
+            });
+        }
+        if (!job.prepared) {
+            try {
+                if (preparation) {
+                    const context = preparation.issue();
+                    preparation.prepare(context, job.input, MAX_JOURNAL_UPDATE, local.command, (candidate) => {
+                        if (candidate.sources !== undefined)
+                            return false;
+                        return (!(candidate.update.length === 2 &&
+                            candidate.update[0] === 0 &&
+                            candidate.update[1] === 0) || sameDocState(canonical, candidate.state.history.doc));
+                    });
+                    job.preparation = context;
+                    const lease = preparation.borrow(context);
+                    try {
+                        job.prepared = lease.prepared;
+                    }
+                    finally {
+                        lease.release();
+                    }
+                }
+                else {
+                    const candidate = text?.prepare(job.input, Object.freeze({ writer, clock: writerClock(canonical, writer), revision }));
+                    if (candidate) {
+                        if (candidate.sources.length !== 1 ||
+                            candidate.sources[0].kind !== 'human' ||
+                            candidate.sources[0].bytes !== candidate.update) {
+                            candidate.update.fill(0);
+                            for (const source of candidate.sources)
+                                source.bytes.fill(0);
+                            throw Error('Direct text source must be its exact update');
+                        }
+                        job.prepared = {
+                            update: candidate.update,
+                            sources: candidate.sources,
+                            text: candidate,
+                        };
+                    }
+                    else
+                        job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);
+                }
+                if (carrier.captureLocal && job.prepared.sources?.length !== 0)
+                    job.prepared.carrierBytes = carrier.captureLocal(job.prepared.update, job.prepared.sources);
+                if (job.prepared.carrierBytes) {
+                    const extra = job.prepared.carrierBytes.length +
+                        (job.prepared.sources?.reduce((n, s) => n + s.bytes.length, 0) ?? 0);
+                    if (status().reservedBytes + extra > MAX_PENDING_BYTES)
+                        throw new AdmissionError('queue-full', 'Source capture exceeds pending capacity.');
+                    job.reservation += extra;
+                }
+            }
+            catch (cause) {
+                if (job.preparation) {
+                    preparation.discard(job.preparation);
+                    job.preparation = undefined;
+                }
+                job.prepared?.update.fill(0);
+                job.prepared?.remaining?.fill(0);
+                job.prepared?.carrierBytes?.fill(0);
+                for (const s of job.prepared?.sources ?? [])
+                    s.bytes.fill(0);
+                job.prepared = undefined;
+                throw new AdmissionError('prepare-failed', 'Local preparation failed; pending input retained.', { cause });
+            }
+            try {
+                live();
+            }
+            catch (error) {
+                erase(job);
+                throw error;
+            }
+            if (job.prepared.update.length > MAX_JOURNAL_UPDATE) {
+                job.prepared.update.fill(0);
+                job.prepared.remaining?.fill(0);
+                job.prepared.carrierBytes?.fill(0);
+                for (const s of job.prepared.sources ?? [])
+                    s.bytes.fill(0);
+                job.prepared = undefined;
+                job.reservation = 2 * job.input.length + MAX_JOURNAL_UPDATE;
+                throw new AdmissionError('slice-required', 'The command adapter must prepare a smaller slice.');
+            }
+        }
+        if (job.prepared.sources?.length === 0 &&
+            job.prepared.update.length === 2 &&
+            job.prepared.update[0] === 0 &&
+            job.prepared.update[1] === 0) {
+            promote(job, job.prepared.update);
+            completeInput(job);
+            return;
+        }
+        const lease = job.preparation ? preparation.borrow(job.preparation) : undefined;
+        let attempt;
+        try {
+            attempt =
+                job.force || job.sliced || job.prepared.remaining
+                    ? { status: 'refused', reason: job.force ?? 'oversize' }
+                    : carrier.appendLocal(job.prepared.carrierBytes ?? job.prepared.update);
+        }
+        finally {
+            lease?.release();
+        }
+        if (attempt.status === 'journalled') {
+            journalDirty = true;
+            journalRevision++;
+            flushBatch?.note();
+            journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
+            promote(job, job.prepared.update);
+            completeInput(job);
+            return;
+        }
+        job.force = attempt.reason;
+        pressure = Object.freeze({ code: 'content-pending', cause: attempt.reason });
+        notify();
+        live();
+        return forceLocal(job);
+    };
+    const scheduleMaintenance = () => {
+        if (maintenanceTimer !== undefined ||
+            !carrier.compactContent ||
+            state !== 'active' ||
+            busy ||
+            backgroundFlush ||
+            preparedReceive ||
+            queue.length ||
+            journalDirty)
+            return;
+        if (contentChanges < CONTENT_MAINTENANCE_RECORDS && contentBytes < CONTENT_MAINTENANCE_BYTES)
+            return;
+        maintenanceTimer = setTimeout(() => {
+            maintenanceTimer = undefined;
+            if (state !== 'active' ||
+                busy ||
+                backgroundFlush ||
+                preparedReceive ||
+                queue.length ||
+                journalDirty)
+                return;
+            const stop = new AbortController();
+            maintenanceStop = stop;
+            const attemptedChanges = contentChanges, attemptedBytes = contentBytes;
+            contentChanges = 0;
+            contentBytes = 0;
+            busy = true;
+            maintenance = 'running';
+            notify();
+            inFlight = Promise.resolve()
+                .then(() => {
+                live();
+                return carrier.compactContent(stop.signal);
+            })
+                .then((receipt) => {
+                if (state !== 'active')
+                    return;
+                maintenance = receipt.status === 'retained' ? 'retained' : undefined;
+            })
+                .catch((error) => {
+                if (state !== 'active')
+                    return;
+                maintenance = 'deferred';
+                if (error instanceof MaintenanceInterrupted) {
+                    contentChanges += attemptedChanges;
+                    contentBytes += attemptedBytes;
+                    return;
+                }
+                if (['repair-required', 'generation-changed'].includes(codeOf(error)))
+                    block(error);
+            })
+                .finally(() => {
+                maintenanceStop = undefined;
+                busy = false;
+                inFlight = undefined;
+                notify();
+                pump();
+            });
+        }, CONTENT_MAINTENANCE_IDLE_MS);
+    };
+    const schedule = () => {
+        scheduleMaintenance();
+        if (state !== 'active' || !journalDirty)
+            return;
+        if (options.backgroundFlush && (busy || backgroundFlush || queue.length))
+            return;
+        if (timer !== undefined) {
+            if (!flushBatch)
+                return;
+            clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+            timer = undefined;
+            if (state !== 'active')
+                return;
+            if (!options.backgroundFlush) {
+                void barrier().catch(() => { });
+                return;
+            }
+            if (busy || backgroundFlush || queue.length)
+                return;
+            const started = ledgerWorkStart();
+            backgroundFlush = Promise.resolve()
+                .then(() => flush(true))
+                .catch(block)
+                .finally(() => {
+                measureLedgerWork('admissionBackgroundFlush', started);
+                backgroundFlush = undefined;
+                notify();
+                pump();
+            });
+        }, flushBatch ? Math.max(0, flushBatch.due - performance.now()) : FLUSH_DELAY_MS);
+    };
+    const processMeasured = (job) => {
+        if (!ledgerProfiling)
+            return process(job);
+        const wait = queuedAt.get(job);
+        if (wait !== undefined) {
+            measureLedgerWork({ local: 'waitLocal', remote: 'waitRemote', flush: 'waitFlush' }[job.kind], wait);
+            queuedAt.delete(job);
+        }
+        const start = ledgerWorkStart();
+        const finish = () => measureLedgerWork({ local: 'admissionLocal', remote: 'admissionRemote', flush: 'admissionFlush' }[job.kind], start);
+        try {
+            const result = process(job);
+            if (result)
+                return result.finally(finish);
+            finish();
+        }
+        catch (error) {
+            finish();
+            throw error;
+        }
+    };
+    const recordQueue = (job) => {
+        if (!ledgerProfiling)
+            return;
+        queuedAt.set(job, ledgerWorkStart());
+        observeAdmissionQueue(queue);
+    };
+    const pump = () => {
+        if (busy || state !== 'active')
+            return;
+        busy = true;
+        try {
+            while (queue.length && state === 'active') {
+                if (backgroundFlush && queue[0].kind !== 'local')
+                    break;
+                const result = processMeasured(queue[0]);
+                if (result) {
+                    inFlight = result.then(undefined, block).finally(() => {
+                        busy = false;
+                        inFlight = undefined;
+                        pump();
+                        schedule();
+                    });
+                    return;
+                }
+            }
+        }
+        catch (error) {
+            block(error);
+        }
+        busy = false;
+        if (state === 'active' && queue.length && !backgroundFlush)
+            queueMicrotask(pump);
+        schedule();
+    };
+    const enqueue = (kind, bytes, commit) => {
+        live();
+        if (!(bytes instanceof Uint8Array) || !bytes.length)
+            throw new AdmissionError('invalid-input', 'A nonempty byte input is required.');
+        const reservation = kind === 'local' ? bytes.length * 2 + MAX_JOURNAL_UPDATE : bytes.length;
+        if (repairRequired)
+            throw new AdmissionError('repair-required', 'Reopen only after repairing persisted carriers.');
+        const current = status();
+        if (queue.length >= MAX_PENDING_ITEMS ||
+            current.reservedBytes + reservation > MAX_PENDING_BYTES)
+            throw new AdmissionError('queue-full', 'Pending input is full; wait, retry storage, or discard the pending suffix.');
+        const completion = deferred();
+        const job = {
+            kind,
+            id: ++nextId,
+            input: bytes.slice(),
+            reservation,
+            slices: 0,
+            sliced: false,
+            completion,
+            ...(commit ? { commit } : {}),
+        };
+        clearMaintenanceTimer();
+        maintenanceStop?.abort();
+        queue.push(job);
+        recordQueue(job);
+        pump();
+        notify();
+        return Object.freeze({ id: job.id, accepted: completion.promise });
+    };
+    const receiveOwned = (bytes, commit) => {
+        let value;
+        const ticket = enqueue('remote', bytes, async (input, promote) => {
+            value = (await commit(input, promote));
+        });
+        return ticket.accepted.then(() => value);
+    };
+    const prepareOwned = (bytes, prepare) => {
+        live();
+        if (preparedReceive)
+            throw new AdmissionError('receive-refused', 'Remote preparation is already pending.');
+        if (!(bytes instanceof Uint8Array) || !bytes.length || bytes.length > MAX_PENDING_BYTES)
+            throw new AdmissionError('receive-refused', 'Invalid remote preparation input.');
+        if (repairRequired)
+            throw new AdmissionError('repair-required', 'Workspace repair requires reopening.');
+        const input = bytes.slice();
+        let updates;
+        let finish;
+        clearMaintenanceTimer();
+        maintenanceStop?.abort();
+        const work = Promise.resolve().then(async () => {
+            try {
+                live();
+                const value = await prepare(input, (frames, promote) => {
+                    live();
+                    if (updates)
+                        throw Error('Remote preparation staged twice');
+                    if (frames.reduce((n, b) => n + b.length, 0) > MAX_PENDING_BYTES)
+                        throw Error('Remote preparation exceeded its bound');
+                    updates = frames.map((b) => b.slice());
+                    finish = promote;
+                });
+                live();
+                if (!updates || !finish)
+                    throw Error('Remote preparation omitted its durable handoff');
+                const eligible = () => state === 'active' &&
+                    !repairRequired &&
+                    !busy &&
+                    !backgroundFlush &&
+                    !queue.length &&
+                    preparedReceive === work;
+                if (finish.immediate && eligible()) {
+                    countLedgerWork('finalApplyEarlyChecks');
+                    const early = ledgerWorkStart();
+                    const applied = await finish.immediate((authorize) => {
+                        live();
+                        if (!eligible()) {
+                            countLedgerWork('finalApplyQueueMisses');
+                            return false;
+                        }
+                        busy = true;
+                        const job = {
+                            kind: 'remote',
+                            id: ++nextId,
+                            input: new Uint8Array([1]),
+                            reservation: 1,
+                            slices: 0,
+                            sliced: false,
+                            completion: deferred(),
+                        };
+                        try {
+                            const accepted = authorize(() => {
+                                queue.push(job);
+                                const began = ledgerWorkStart();
+                                try {
+                                    changedContent(updates.length, updates.reduce((n, b) => n + b.length, 0));
+                                    for (let i = 0; i < updates.length; i++)
+                                        promote(job, updates[i], !options.publishReceivePage || i === updates.length - 1);
+                                    completeInput(job);
+                                }
+                                finally {
+                                    measureLedgerWork('finalApplySynchronous', began);
+                                }
+                            });
+                            countLedgerWork(accepted ? 'finalApplyImmediate' : 'finalApplyActivityMisses');
+                            return accepted;
+                        }
+                        catch (error) {
+                            void close().catch(() => { });
+                            throw error;
+                        }
+                        finally {
+                            erase(job);
+                            busy = false;
+                            pump();
+                        }
+                    });
+                    measureLedgerWork('finalApplyEarly', early);
+                    if (applied)
+                        return value;
+                    countLedgerWork('finalApplyFallbacks');
+                }
+                else if (finish.immediate)
+                    countLedgerWork('finalApplySkipped');
+                await receiveOwned(new Uint8Array([1]), async (_input, promote) => {
+                    try {
+                        await finish(() => promote(updates));
+                    }
+                    catch (error) {
+                        void close().catch(() => { });
+                        throw error;
+                    }
+                });
+                return value;
+            }
+            catch (error) {
+                if (updates)
+                    void close().catch(() => { });
+                else if (codeOf(error) !== 'receive-refused')
+                    block(error);
+                throw error;
+            }
+            finally {
+                input.fill(0);
+                for (const b of updates ?? [])
+                    b.fill(0);
+            }
+        });
+        preparedReceive = work;
+        const settled = () => {
+            if (preparedReceive === work)
+                preparedReceive = undefined;
+            notify();
+            schedule();
+        };
+        void work.then(settled, settled);
+        notify();
+        return work;
+    };
+    bindOwnedReceive?.(receiveOwned, prepareOwned);
+    const barrier = () => {
+        try {
+            live();
+            if (state === 'blocked')
+                throw new AdmissionError('storage-failed', 'Retry or discard blocked pending input before requesting durability.');
+            if (preparedReceive)
+                return preparedReceive.then(() => barrier());
+            clearTimer();
+            const last = queue.at(-1);
+            if (last?.kind === 'flush')
+                return last.completion.promise;
+            if (queue.length >= MAX_PENDING_ITEMS)
+                throw new AdmissionError('queue-full', 'The admission queue has no room for a flush barrier.');
+            const completion = deferred();
+            clearMaintenanceTimer();
+            maintenanceStop?.abort();
+            const job = { kind: 'flush', completion };
+            queue.push(job);
+            recordQueue(job);
+            pump();
+            notify();
+            return completion.promise;
+        }
+        catch (cause) {
+            return Promise.reject(cause);
+        }
+    };
+    const api = Object.freeze({
+        get status() {
+            return status();
+        },
+        signal: carrier.signal,
+        ...(carrier.beforeRelease ? { beforeRelease: carrier.beforeRelease } : {}),
+        submit: (intent) => enqueue('local', intent),
+        receive: (update) => enqueue('remote', update),
+        snapshot: () => {
+            live();
+            if (repairRequired)
+                throw new AdmissionError('repair-required', 'Ordinary snapshots are disabled until repair.');
+            return new Uint8Array(encodeState(canonical));
+        },
+        fork: () => {
+            live();
+            if (repairRequired)
+                throw new AdmissionError('repair-required', 'Workspace repair is required.');
+            return forkDoc(canonical, false);
+        },
+        matches: (doc) => {
+            live();
+            if (repairRequired)
+                throw new AdmissionError('repair-required', 'Workspace repair is required.');
+            return sameDocState(canonical, doc);
+        },
+        subscribe: (listener) => {
+            live();
+            listeners.add(listener);
+            return () => {
+                listeners.delete(listener);
+            };
+        },
+        onStatus: (listener) => {
+            live();
+            statusListeners.add(listener);
+            return () => {
+                statusListeners.delete(listener);
+            };
+        },
+        whenDurable: barrier,
+        retry: () => {
+            live();
+            if (repairRequired)
+                throw new AdmissionError('repair-required', 'Repair requires a fresh session.');
+            if (state !== 'blocked')
+                return;
+            state = 'active';
+            pressure = null;
+            pump();
+            notify();
+        },
+        discardPending: () => {
+            live();
+            if (repairRequired)
+                throw new AdmissionError('repair-required', 'Pending discard cannot repair persisted carriers.');
+            if (state !== 'blocked' || busy || backgroundFlush)
+                throw new AdmissionError('invalid-input', 'Discard requires a blocked, settled queue.');
+            if (preparedReceive) {
+                void close().catch(() => { });
+                return;
+            }
+            const error = new AdmissionError('discarded', 'The unaccepted pending suffix was discarded.');
+            for (const job of queue) {
+                job.completion.reject(error);
+                if (job.kind !== 'flush' && job.preparation) {
+                    preparation.discard(job.preparation);
+                    job.preparation = undefined;
+                }
+                erase(job);
+            }
+            queue.length = 0;
+            state = 'active';
+            pressure = null;
+            notify();
+            schedule();
+        },
+        close,
+    });
+    schedule();
+    return api;
+};

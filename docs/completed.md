@@ -17316,3 +17316,33 @@ refusal. Replace the racy census with a native barrier whose5s deadline fails cl
 admission, format or existing-test changes. Both new tests remain uncredited:938/392 blocked; all
 prior rows and gates retained. Freeze165 before the Window mirror slice, keeping real index empty.
 No signing, push, preview change, activation, release preparation or deployment.
+
+
+## 2026-10-28 — Phase166: real admitted Window mirror with verified worker I/O
+
+Add an internal mirror using the original command/admission/Undo queue and synchronous journal codec,
+bound to the opaque native cohort. Only journal subkeys enter the Window, with early erasure hooks;
+actual verified worker recovery/content I/O stays behind guarded asynchronous calls. The queue's
+new structural carrier type emits byte-identical JavaScript. Project only original state/update and
+journal records after full authentication, preserving pending structs/deletions and record identity.
+[Contract, failed attempts and evidence](performance-experiments/2026-10-28-worker-owner/phase166/README.md).
+
+Eight isolated real-account/native Chromium cases pass: zero-RPC same-handler sealed admission with
+the worker held; original Undo/Redo; input during real verification; genuine credential refusal;
+stale incarnation; Window/worker loss; quota commit-first fallback; and lost commit acknowledgment
+with exactly-once unchanged-shipping-reader recovery. Graceful Window/WASM and worker journal-key
+cleanup is observed; hard kill earns no graceful worker-erasure credit. All10 owned containers are
+removed. Five lab-only worker transforms reconstruct exactly and200 built source identities reconcile.
+Full2256unit cases/one existing skip,45focused cases,98metadata cases and six diagnostic wire cases
+pass, alongside build/type/budget/origin-isolation/admission/authority/WASM/lint/format checks. Four
+corrupted-evidence audit controls refuse. Preserve initial test/type/format failures, the bounded
+bootstrap refusal, stale new-test hash and audit/packet construction failures; no old tests change.
+
+Default app execution remains on the page and Account/joined factories remain exclusive. The actual
+worker composition is still isolated lab code: its shared-memory bridge/headers/key getter are not
+shipping APIs or browser requirements. Ordinary async storage messaging, bounded large bootstrap,
+Goals/IME, joined routes, network/maintenance integration and full peer/input gates remain ahead.
+No latency or stall-fix claim.420source census retains all198 domains;940/394 obligations remain
+blocked, including both new tests uncredited, with every prior manifest row retained. Append this
+outcome before advancing owned backlog. Freeze166 after165; no real staging/signing/push, preview
+change, activation, release preparation or deployment.

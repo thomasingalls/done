@@ -73,6 +73,22 @@ export interface AdmissionOptions {
   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
   readonly validateReceive: (bytes: Bytes) => void;
 }
+/** Internal admission needs these carrier effects, not a native descriptor or raw record API.
+ * A Window mirror may supply verified worker I/O while retaining real synchronous local admission. */
+export type AdmissionCarrier = Pick<
+  JournalSession,
+  | 'state'
+  | 'signal'
+  | 'close'
+  | 'beforeRelease'
+  | 'captureLocal'
+  | 'appendLocal'
+  | 'appendBatch'
+  | 'loadRecovery'
+  | 'flushJournal'
+  | 'observedJournalCharacters'
+> &
+  Partial<Pick<JournalSession, 'compactContent'>>;
 /** Internal composition only. The operation owns verification, persistence and synchronous promotion.
  * Neither this enqueue capability nor its promotion callback is exposed by an application workspace. */
 export type OwnedReceiveQueue = <T>(
@@ -185,7 +201,7 @@ const erase = (job: Job) => {
 
 /** Internal seam for controlled tests. Production construction owns an actual JournalSession. */
 export const createAdmissionOwner = async (
-  carrier: JournalSession,
+  carrier: AdmissionCarrier,
   options: AdmissionOptions,
   bindOwnedReceive?: (enqueue: OwnedReceiveQueue, prepare: OwnedPreparedReceiveQueue) => void,
 ): Promise<AdmissionSession> => {
@@ -801,7 +817,7 @@ export const createAdmissionOwner = async (
       inFlight = Promise.resolve()
         .then(() => {
           live();
-          return carrier.compactContent(stop.signal);
+          return carrier.compactContent!(stop.signal);
         })
         .then((receipt) => {
           if (state !== 'active') return;

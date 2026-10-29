@@ -117,6 +117,14 @@ reject delayed/replayed joins; actual barriers retain exclusion through drain. E
 factories remain exclusive and application execution stays on the page. The admitted Window mirror
 and verified worker composition are still the next slice; no latency or release claim.
 
+**Phase166 — admitted Window mirror:** [implementation and isolated real-account composition](performance-experiments/2026-10-28-worker-owner/phase166/README.md)
+preserve the original command/Undo queue and synchronous sealed journal. Eight native account cases
+cover held/busy worker, credential/stale-handoff refusal, Window/worker loss, quota and lost commit
+reply, each reopening exact writing in the unchanged shipping app. Full2256unit cases/one existing
+skip pass. The default app still runs on the page: replace the lab-only storage bridge, bound/stream
+large bootstrap and integrate actual Goals/joined/receive/maintenance paths before activation and
+input/peer acceptance. No reported-stall closure or performance credit; service automation stays off.
+
 ## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday

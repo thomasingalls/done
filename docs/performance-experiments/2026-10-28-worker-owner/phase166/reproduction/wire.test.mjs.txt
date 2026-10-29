@@ -1,0 +1,7 @@
+import{test}from'node:test';import assert from'node:assert/strict';import{bounded,inspectWire}from'./lab/wire.mjs';
+test('ordinary content projection is bounded without inspecting forbidden getter',()=>{const x={records:[{kind:'state',seq:1,gen:1,bytes:new Uint8Array(50000)}],journal:[]};assert(bounded(x));assert.equal(inspectWire(x).bytes,50010)});
+test('rejects oversized download rather than increasing the cap',()=>assert.equal(inspectWire(new Uint8Array(4*1024*1024+1)).reason,'bytes'));
+test('rejects cyclic and repeated object aliases',()=>{const a={};a.self=a;assert(!bounded(a));assert(!bounded([a,a]))});
+test('does not invoke accessor',()=>{let called=false;assert(!bounded({get rootKey(){called=true;throw Error('read')}}));assert.equal(called,false)});
+test('shared memory is not permitted as ordinary message bytes',()=>assert(!bounded(new Uint8Array(new SharedArrayBuffer(8)))));
+test('detached and unusual prototype payloads are refused',()=>{const a=new Uint8Array(4);structuredClone(a,{transfer:[a.buffer]});assert(!bounded(a));assert(!bounded(new Map()))});

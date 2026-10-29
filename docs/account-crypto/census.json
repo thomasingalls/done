@@ -784,6 +784,10 @@
       "sha256": "238c3a4a5e02144cfdaa2f7c1347132f501d13ea278e2e658acb52da07578808"
     },
     {
+      "path": "src/crdt/accountMirrorRecovery.ts",
+      "sha256": "88dcdf46405756e69836a9597a53cb8ef264b5265707acafeb6c53c339d01055"
+    },
+    {
       "path": "src/crdt/accountProgressCustody.ts",
       "sha256": "0267912fc89f8c686188b787c573bbc7252a6daf546228a62f101ad855d512f0"
     },
@@ -853,7 +857,7 @@
     },
     {
       "path": "src/crdt/admissionQueue.ts",
-      "sha256": "4cac228235b0482e490b0b9f59a831721bd4c02994e7b47f2b14bc143f2d9f72"
+      "sha256": "878109aa73bdff455b6fb40c43e7e2f6d546a9a28d9387adc4de21bc383fd50a"
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
@@ -1346,6 +1350,10 @@
     {
       "path": "src/crdt/warmContent.ts",
       "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac"
+    },
+    {
+      "path": "src/crdt/windowAccountMirror.ts",
+      "sha256": "5047f436891252f5038cdc865e004231c8e636eebcc00631b7455bdea790bf1c"
     },
     {
       "path": "src/crdt/workspaceChannel.ts",

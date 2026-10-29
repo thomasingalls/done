@@ -1,0 +1,11 @@
+from pathlib import Path
+import subprocess,json,time
+root=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');out=Path(__file__).parent;node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+commands=[['scripts/check-yjs-patch.mjs'],['node_modules/typescript/bin/tsc','-b'],['node_modules/vite/bin/vite.js','build'],['scripts/check-budget.mjs'],['scripts/check-origin-isolation.mjs'],['scripts/check-write-admission.mjs'],['scripts/check-authority-map.mjs'],['scripts/check-wasm-seal.mjs'],['scripts/account-crypto-prep/run.mjs'],['scripts/release-validation/check.mjs'],['scripts/release-validation/plan.mjs']]
+receipt=[]
+for i,c in enumerate(commands):
+ start=time.time_ns()//1000000
+ with(out/f'phase166-check-{i:02}.log').open('w')as f:p=subprocess.run([node,*c],cwd=root,stdout=f,stderr=subprocess.STDOUT)
+ receipt.append(dict(command=[node,*c],startedAt=start,finishedAt=time.time_ns()//1000000,exit=p.returncode));(out/'phase166-checks.json').write_text(json.dumps(receipt,indent=2)+'\n')
+ if p.returncode:raise SystemExit(p.returncode)
+ print(c[0],'passed',flush=True)

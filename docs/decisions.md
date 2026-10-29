@@ -5948,3 +5948,20 @@ the initial Chromium control catches separate-channel ordering. After withdrawin
 draining, cross the actual member-release barrier before releasing the Window endpoint. A5s refusal
 deadline keeps the slot fence held on failure. Preserve the ordinary exclusive Account factories;
 the coordination primitive alone grants no decryption/admission authority or activation permission.
+
+
+## 2026-10-28 — Keep synchronous admission in the Window when native I/O moves to a worker
+
+For phase166, retain the existing admitted workspace/command/Undo pipeline and real journal codec in
+the Window. Accept locally only after its synchronous sealed append; a worker acknowledgment cannot
+replace it. Retain the original ordered commit-first fallback when the journal refuses. Share only
+necessary domain-separated journal subkeys, never root/content-generation/signing keys. Bind their
+trusted handoff to the actual live cohort and account scope, register cleanup before awaiting and
+erase incoming copies. Coordination tickets carry no cryptographic verification authority.
+
+Authenticate the entire native recovery in the worker before projecting original admission content;
+private ledger/outbound records remain there. Check full/projected replay including unresolved Yjs
+state. Use the original shipping reader as the recovery oracle across lost contexts/replies. The
+successful isolated proof does not select shared memory, require isolation headers or activate the
+product. Production-compatible storage messaging, large-message strategy and actual Goals/peer gates
+must precede activation. Keep all existing guards and16ms/2.5s/30s gates. No service automation.

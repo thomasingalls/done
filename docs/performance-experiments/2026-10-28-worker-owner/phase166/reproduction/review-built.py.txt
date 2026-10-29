@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');sha=lambda s:hashlib.sha256(s.encode()).hexdigest();ids=json.loads((r/'build-identity.json').read_text());trans={Path(v['path']).relative_to(repo).as_posix():v for v in ids['transforms']};checked={};skip=[]
+for p in(r/'combined-dist/worker-lab').rglob('*.map'):
+ m=json.loads(p.read_text())
+ for name,content in zip(m['sources'],m['sourcesContent']):
+  source=name.split('src/',1)[1]if'/src/'in name else None
+  rel='src/'+source if source is not None else ('account-protocol/'+name.split('account-protocol/',1)[1]if'account-protocol/'in name else None)
+  if not rel or not(repo/rel).is_file():skip.append(name);continue
+  h=sha(content);sourceSha=hashlib.sha256((repo/rel).read_bytes()).hexdigest();allowed={sourceSha}
+  if rel in trans:
+   assert sourceSha==trans[rel]['beforeSha256'];allowed.add(trans[rel]['afterSha256'])
+  assert h in allowed,(str(p),rel,h,allowed)
+  checked.setdefault(rel,set()).add(h)
+for n in['src/crdt/accountWorkerCohort.ts','src/crdt/windowAccountMirror.ts','src/crdt/accountMirrorRecovery.ts','src/crdt/admissionQueue.ts']:assert n in checked,n
+for rel,row in trans.items():
+ assert row['beforeSha256']in checked[rel]or row['afterSha256']in checked[rel]
+(r/'phase166-built-sources.json').write_text(json.dumps({'matchedBuiltSources':{k:sorted(v)for k,v in checked.items()},'nonRepositoryMapSources':sorted(set(skip)),'note':'Source maps retain original content for transformed worker modules; each included source matches this checkout or declared transformation. Transform reconstruction separately authenticates compiled adaptations. Not a compiler correctness proof.'},indent=2)+'\n');print('matched',len(checked),'sources')

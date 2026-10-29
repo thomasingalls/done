@@ -1,0 +1,54 @@
+import{test,expect,chromium}from'@playwright/test';import{readFileSync,writeFileSync,mkdirSync,cpSync}from'node:fs';import{join}from'node:path';
+import{start,stop}from'./runtime.mjs';import{seedProfile}from'./seed-profile';import{restoreAuthenticator,openSaved}from'./devices';import{exported,archiveIdentity}from'./common';
+const root='/private/tmp/done-worker-mirror-20261028',out=process.env['FAIR_OUT']!,fixture=JSON.parse(readFileSync('/private/tmp/done-envelope-projection-20261028/prepared-fixture/fixture.json','utf8')),account=fixture.accounts.find((v:any)=>v.label==='H'),saved=account.actors[0];
+async function laboratory(name:string,work:(p:any,r:any)=>Promise<void>){const d=join(out,name);mkdirSync(d,{recursive:true,mode:0o700});process.env['FAIR_OUT']=d;let ctx:any;const result:any={outcome:'starting',guards:{}};
+ try{cpSync(fixture.state,d+'/state',{recursive:true,errorOnExist:true});await start(d+'/state',root+'/combined-dist');ctx=await chromium.launchPersistentContext(d+'/private-profile',{executablePath:process.env['CHROMIUM_PATH']!,baseURL:'http://localhost:53781',viewport:{width:1400,height:1000},headless:true});await seedProfile(ctx,saved.storage);const p=ctx.pages()[0]??await ctx.newPage();await restoreAuthenticator(p,saved.credentials);
+ await p.addInitScript(()=>{const Original=WebAssembly.Instance;(window as any).__mirrorMemories=[];(WebAssembly as any).Instance=class extends Original{constructor(module:WebAssembly.Module,imports?:WebAssembly.Imports){super(module,imports);const memory=this.exports['memory'];if(memory instanceof WebAssembly.Memory)(window as any).__mirrorMemories.push(memory)}}});
+ await p.goto('/worker-lab/index.html');await p.waitForFunction(()=>(window as any).__mirrorLab);await p.evaluate(async code=>{(window as any).spec={...await(window as any).__mirrorLab.metadata(),code}},saved.code);await work(p,result);result.outcome='passed';
+ }catch(error){result.outcome='failed';result.error=String(error);throw error;}finally{if(ctx){result.trace=await ctx.pages()[0]?.evaluate(()=>(window as any).__mirrorLab?.all.map((b:any)=>b.trace)).catch(()=>null);await ctx.close().catch(()=>{})}writeFileSync(join(d,'result.json'),JSON.stringify(result,null,2)+'\n');await stop();process.env['FAIR_OUT']=out}}
+const opening=(p:any,fault='none')=>p.evaluate(async fault=>{const b=(window as any).__mirrorLab.create((window as any).spec,fault);(window as any).b=b;return b.opening},fault);
+const nativeEmpty=async(p:any)=>expect.poll(()=>p.evaluate(async()=>{const name='done/slot-writer/'+JSON.stringify((window as any).spec.slotId);return(await navigator.locks.query()).held?.filter(v=>v.name===name).length})).toBe(0);
+async function shipping(p:any,expected:any,r:any){r.mirrorTrace=await p.evaluate(()=>(window as any).b?.trace);await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await openSaved(p,saved.code);const archive=await exported(p);expect(archive).toEqual(expected);r.shippingArchive=archiveIdentity(archive);r.guards.unchangedShippingReaderExact=true;}
+
+test('verified worker owner plus real admitted Window mirror preserves synchronous journal, Undo and native reopen',async()=>laboratory('mirror-success',async(p,r)=>{
+ const ready=await opening(p);expect(Object.fromEntries(ready.entries.map((v:any)=>[v.path,v.content]))).toEqual(account.archive);r.guards.exactVerifiedStartup=true;
+ await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>{});
+ await p.evaluate(()=>{(window as any).held=(window as any).b.hold()});await p.waitForFunction(()=>(window as any).b.trace.held);
+ r.input=await p.evaluate(()=>{const b=(window as any).b,value=b.input('\nActual admitted Window mirror.');(window as any).input=value;return{before:value.before,after:value.after,requestsDuringHandler:value.requestsDuringHandler,journals:Object.keys(localStorage).filter(v=>v.startsWith('done.pending-update.')).length}});
+ expect(r.input.after).toBe(r.input.before+'\nActual admitted Window mirror.');expect(r.input.requestsDuringHandler).toBe(0);expect(r.input.journals).toBeGreaterThan(0);await p.evaluate(()=>(window as any).input.ticket.accepted);r.guards.sameHandlerSealedAdmissionWhileWorkerHeld=true;
+ await p.evaluate(()=>(window as any).b.release());await p.evaluate(()=>(window as any).held);await p.evaluate(()=>(window as any).b.flush());
+ await p.evaluate(()=>(window as any).b.workspace.command({kind:'undo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master);await p.evaluate(()=>(window as any).b.workspace.command({kind:'redo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(r.input.after);r.guards.originalUndoRedo=true;
+ await p.evaluate(()=>{(window as any).probe=(window as any).b.rpc('probe')});await p.waitForFunction(()=>(window as any).b.trace.working);r.probeInput=await p.evaluate(()=>{const value=(window as any).b.input(' More writing.');(window as any).more=value;return{before:value.before,after:value.after,requestsDuringHandler:value.requestsDuringHandler}});expect(r.probeInput.after).toBe(r.input.after+' More writing.');expect(r.probeInput.requestsDuringHandler).toBe(0);await p.evaluate(()=>(window as any).more.ticket.accepted);expect(await p.evaluate(()=>(window as any).probe)).toEqual({loads:16});r.guards.realVerificationDoesNotOwnInputAdmission=true;
+ await p.evaluate(()=>(window as any).b.flush());r.keysBeforeClose=await p.evaluate(()=>({packet:(window as any).b.trace.keyPacketZero,memories:(window as any).__mirrorMemories.length}));expect(r.keysBeforeClose.packet).toBe(true);expect(r.keysBeforeClose.memories).toBeGreaterThan(0);
+ await p.evaluate(()=>(window as any).b.close());await nativeEmpty(p);r.closed=await p.evaluate(()=>({worker:(window as any).b.trace.metrics,windowMemoriesZero:(window as any).__mirrorMemories.every((m:any)=>new Uint8Array(m.buffer).every(v=>v===0)),state:(window as any).b.cohort.state}));expect(r.closed.worker.rawKeyBuffers).toBeGreaterThan(0);expect(r.closed.worker.nonzeroAfterCleanup).toBe(0);expect(r.closed.windowMemoriesZero).toBe(true);expect(r.closed.state).toBe('closed');r.guards.keysAndNativeLifetimesDisposed=true;
+ await shipping(p,{...account.archive,'master.md':r.probeInput.after},r);
+}));
+
+for(const fault of ['bad-passkey','wrong-code','stale-opening'])test('verified mirror refuses '+fault+' without changing durable writing',async()=>laboratory('mirror-'+fault,async(p,r)=>{
+ if(fault==='wrong-code')await p.evaluate(()=>(window as any).spec.code='not-the-disposable-unlock-code');
+ let refused=false;try{await opening(p,fault)}catch{refused=true}expect(refused).toBe(true);await nativeEmpty(p);
+ const trace=await p.evaluate(()=>(window as any).b.trace);expect(trace.keysPackets).toBe(fault==='stale-opening'?1:0);if(fault==='stale-opening')expect(trace.keyPacketZero).toBe(true);
+ r.guards.realVerifierOrBoundIncarnationRefused=true;r.guards.noPermitLeak=true;
+ await shipping(p,account.archive,r);
+}));
+const hold=async(p:any)=>{await p.evaluate(()=>{(window as any).held=(window as any).b.hold();(window as any).held.catch(()=>{})});await p.waitForFunction(()=>(window as any).b.trace.held)};
+async function quota(p:any){await p.evaluate(()=>{const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(this===localStorage&&k.startsWith('done.pending-update.'))throw new DOMException('Disposable journal quota fault','QuotaExceededError');return original.call(this,k,v)}})}
+async function input(p:any,text:string){return p.evaluate(text=>{const v=(window as any).b.input(text);(window as any).input=v;v.ticket.accepted.catch(()=>{});return{before:v.before,after:v.after,requestsDuringHandler:v.requestsDuringHandler,journals:Object.keys(localStorage).filter(v=>v.startsWith('done.pending-update.')).length}},text)}
+for(const loss of ['worker','window'])test('same-handler sealed writing survives '+loss+' loss before worker commit',async()=>laboratory('mirror-loss-'+loss,async(p,r)=>{
+ const ready=await opening(p);await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>{});await hold(p);
+ r.input=await input(p,'\nDurable despite '+loss+' loss.');expect(r.input.after).toBe(ready.master+'\nDurable despite '+loss+' loss.');expect(r.input.requestsDuringHandler).toBe(0);expect(r.input.journals).toBeGreaterThan(0);await p.evaluate(()=>(window as any).input.ticket.accepted);r.guards.sameHandlerSealedBeforeLoss=true;
+ if(loss==='worker'){await p.evaluate(()=>(window as any).b.kill());await nativeEmpty(p);expect(await p.evaluate(()=>(window as any).b.trace.metrics)).toBe(null);expect(await p.evaluate(()=>(window as any).__mirrorMemories.every((m:any)=>new Uint8Array(m.buffer).every(v=>v===0)))).toBe(true);r.guards.windowKeyCleanup=true;}
+ await shipping(p,{...account.archive,'master.md':r.input.after},r);r.guards.exactOnceUncertainRecovery=true;
+}));
+test('native quota fallback keeps text pending until actual worker commit',async()=>laboratory('mirror-quota',async(p,r)=>{
+ const ready=await opening(p);await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>{});await hold(p);await quota(p);
+ r.input=await input(p,'\nQuota fallback committed once.');expect(r.input.after).toBe(ready.master);expect(r.input.journals).toBe(0);r.guards.noFalseAcceptedText=true;
+ await p.evaluate(()=>(window as any).b.release());await p.evaluate(()=>(window as any).held);await p.evaluate(()=>(window as any).input.ticket.accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master+'\nQuota fallback committed once.');await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>(window as any).b.close());await nativeEmpty(p);r.guards.commitFirstPromotion=true;
+ await shipping(p,{...account.archive,'master.md':ready.master+'\nQuota fallback committed once.'},r);
+}));
+test('committed fallback with lost worker acknowledgment stays pending and reopens exactly once',async()=>laboratory('mirror-lost-reply',async(p,r)=>{
+ const ready=await opening(p,'hold-commit-reply');await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>{});await quota(p);
+ r.input=await input(p,'\nLost committed reply recovered once.');expect(r.input.after).toBe(ready.master);expect(r.input.journals).toBe(0);await p.waitForFunction(()=>(window as any).b.trace.committed);
+ expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master);r.guards.noPromotionWithoutCommitReply=true;await p.evaluate(()=>(window as any).b.kill());await nativeEmpty(p);r.guards.failedWorkerFenceReleasedNatively=true;
+ await shipping(p,{...account.archive,'master.md':ready.master+'\nLost committed reply recovered once.'},r);r.guards.exactOnceUncertainRecovery=true;
+}));

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 575,
-    "requiredTestFiles": 569,
+    "testFiles": 577,
+    "requiredTestFiles": 571,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9632,6 +9632,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/accountMirrorRecovery.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountMirrorRecovery.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/accountNotifications.test.ts",
       "status": "required",
       "invocation": {
@@ -13916,6 +13931,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/windowAccountMirror.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/windowAccountMirror.test.ts"
+        ]
+      },
+      "declarations": 14,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -18979,6 +19009,10 @@
       "sha256": "253f5f995924074eee16f96b1e690df76a9b38ce80728c66e77043a40cf4e201"
     },
     {
+      "path": "test/accountMirrorRecovery.test.ts",
+      "sha256": "a78b99eed6451f3698f8a4ea7caafafbb08e92ca7a2499bdef50d165ab41bb75"
+    },
+    {
       "path": "test/accountNotifications.test.ts",
       "sha256": "550d6aad9ab3e7e6870d3a45e53d182e0b3d14172785ba3152bd27ef0564c047"
     },
@@ -20713,6 +20747,10 @@
     {
       "path": "test/warmContent.test.ts",
       "sha256": "8d59c0dc236e8bc8fea0bc426ad287643e33b8f4037dd88f3389b8eea0bb6dab"
+    },
+    {
+      "path": "test/windowAccountMirror.test.ts",
+      "sha256": "7ab8cd8cabfecbd444df731ac3fc44d22d07b71eb44cba96d2fb69fc9497728f"
     },
     {
       "path": "test/workspace-admission/browser.mjs",
