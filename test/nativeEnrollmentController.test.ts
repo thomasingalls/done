@@ -48,7 +48,14 @@ function fixture() {
   } as unknown as NativeCeremonyUiContext;
   const controller = createNativeEnrollmentController(context);
   const invoke = (command: string, value?: string) =>
-    controller.command(value === undefined ? { command } : { command, value }).run();
+    (async () => {
+      const result = await controller
+        .command(value === undefined ? { command } : { command, value })
+        .run();
+      const error = controller.snapshot()['error'];
+      if (error) throw Error(String(error));
+      return result;
+    })();
   return { stop, user, context, controller, invoke };
 }
 it('does not begin native initialization outside the tracked command', async () => {
@@ -95,6 +102,7 @@ it('exports only display identities and never exports native workspace login or 
   expect(f.user.compare).toHaveBeenCalledWith('ABCDE');
   expect(f.controller.snapshot()).toEqual({
     state: { kind: 'approved', message: 'Approved' },
+    error: '',
     progress: null,
     notifications: { generation: 0, connected: false, event: null },
   });
@@ -171,6 +179,7 @@ it('close joins active work and retires a late workspace instead of returning ea
   expect(f.user.close.mock.calls.length).toBeGreaterThanOrEqual(2);
   expect(f.controller.snapshot()).toEqual({
     state: { kind: 'locked', message: expect.any(String) },
+    error: '',
     progress: null,
     notifications: { generation: 0, connected: false, event: null },
   });

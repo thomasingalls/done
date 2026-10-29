@@ -16,9 +16,8 @@ import { hasJoinedAccount } from '../crdt/joinedAccount';
 import type { SetupConfig } from './setupProgress';
 import type { NetworkLogin } from './networkLogin';
 
-export const isConnectionSlot = (value: unknown): value is string =>
-  typeof value === 'string' &&
-  /^(?:local|account-[a-f0-9]{32}|enrollment-[a-f0-9]{32})$/.test(value);
+export { isConnectionSlot } from './deviceConnectionRoutes';
+import { isConnectionSlot } from './deviceConnectionRoutes';
 
 export async function createAccountEnrollmentCoordinator<W extends SetupWorkspacePort>(
   execution: EnrollmentWorkspaceExecution<W>,

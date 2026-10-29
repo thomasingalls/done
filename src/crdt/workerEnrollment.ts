@@ -26,6 +26,7 @@ export function createNativeEnrollmentController(
       | Awaited<ReturnType<typeof createAccountEnrollmentCoordinator<SetupWorkspacePort>>>
       | undefined,
     initialization: Promise<void> | undefined,
+    error = '',
     closed = false,
     closing: Promise<void> | undefined,
     login: NetworkLogin | undefined,
@@ -91,6 +92,7 @@ export function createNativeEnrollmentController(
     if (closing) return closing;
     closed = true;
     progress = null;
+    error = '';
     state = { kind: 'locked', message: enrollmentMessages.locked };
     login?.close();
     const immediate = owner?.close();
@@ -113,6 +115,7 @@ export function createNativeEnrollmentController(
   return {
     snapshot: () => ({
       state: enrollmentPresentation(state),
+      error,
       progress: enrollmentProgressPresentation(progress),
       notifications: notifications.snapshot(),
     }),
@@ -133,15 +136,25 @@ export function createNativeEnrollmentController(
         run: () => {
           const work = (async () => {
             live();
-            if (command === 'initialize') {
-              await initialize();
-              return;
+            error = '';
+            try {
+              if (command === 'initialize') {
+                await initialize();
+                return;
+              }
+              if (!owner) throw Error('Enrollment not initialized');
+              const result =
+                command === 'compare' ? await owner.compare(value.value!) : await owner[command]();
+              live();
+              state = result;
+            } catch (cause) {
+              live();
+              error = (
+                cause instanceof Error
+                  ? cause.message
+                  : 'This step did not complete. Resume with your saved code.'
+              ).slice(0, 4096);
             }
-            if (!owner) throw Error('Enrollment not initialized');
-            const result =
-              command === 'compare' ? await owner.compare(value.value!) : await owner[command]();
-            live();
-            state = result;
           })();
           actions.add(work);
           return work.finally(() => actions.delete(work));

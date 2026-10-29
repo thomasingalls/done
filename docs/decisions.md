@@ -6292,3 +6292,8 @@ Keep genuine fresh recovery approval and retained confirmed factor only in nativ
 ## 2026-10-29 — phase226: default Local and public setup worker activation
 
 Select genuine worker runtime at actual Local screen and worker coordinator at public Setup screen. Keep Page only for explicit networkSessions=false compatibility, never as a Worker failure fallback. Pending-device preparation retains original refusal copy and native endpoints; screen integration follows. [Evidence](performance-experiments/2026-10-28-worker-owner/phase226/README.md).
+
+
+## 2026-10-29 — phase227: default enrollment screens on native owners
+
+Select Worker for public enrollment, dynamically load Page only for explicit old service compatibility, and never fall back on native failure. Drain protected pending preparation before enrollment owner. Keep existing screen/queue/poll behavior; native authorization/parser run behind closed advisory observations. Preserve original errors through bounded acknowledged presentation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase227/README.md).

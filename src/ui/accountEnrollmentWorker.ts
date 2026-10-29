@@ -10,7 +10,10 @@ import {
   enrollmentNotificationPresentation,
   type EnrollmentBootstrapData,
 } from '../account/enrollmentWorkerProtocol';
-import type { EnrollmentProgressListener } from '../lib/enrollmentProgress';
+import {
+  reportEnrollmentProgress,
+  type EnrollmentProgressListener,
+} from '../lib/enrollmentProgress';
 import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 import { createWindowCeremonyUi } from './windowCeremonyUi';
 export type WorkerEnrollmentView = Omit<EnrollmentView, 'editor'> & {
@@ -33,11 +36,12 @@ export async function createWorkerAccountEnrollment(
   const emptyNotifications = { generation: 0, connected: false, event: null };
   const owner = createWindowCeremonyUi<{
     state: WorkerEnrollmentView;
+    error: string;
     progress: ReturnType<typeof enrollmentProgressPresentation>;
     notifications: ReturnType<typeof enrollmentNotificationPresentation>;
   }>(config, slotId, {
-    initial: { state: locked, progress: null, notifications: emptyNotifications },
-    closing: { state: locked, progress: null, notifications: emptyNotifications },
+    initial: { state: locked, error: '', progress: null, notifications: emptyNotifications },
+    closing: { state: locked, error: '', progress: null, notifications: emptyNotifications },
     failure: (poisoned) => ({
       state: {
         kind: 'locked',
@@ -45,17 +49,25 @@ export async function createWorkerAccountEnrollment(
           ? 'Native cleanup could not finish. Refresh before reopening. Your writing has been kept.'
           : 'Unlock this workspace again to continue. Your writing and saved connection have been kept.',
       },
+      error: '',
       progress: null,
       notifications: emptyNotifications,
     }),
-    fields: ['state', 'progress', 'notifications'],
+    fields: ['state', 'error', 'progress', 'notifications'],
     expectedJoined: captured.role === 'new',
     capture(input, session) {
-      const v = input as { state: unknown; progress: unknown; notifications: unknown },
+      const v = input as {
+          state: unknown;
+          error: unknown;
+          progress: unknown;
+          notifications: unknown;
+        },
         projected = enrollmentPresentation(v.state),
         progress = enrollmentProgressPresentation(v.progress);
       if (JSON.stringify(projected) !== JSON.stringify(v.state))
         throw Error('Enrollment display changed');
+      if (typeof v.error !== 'string' || v.error.length > 4096)
+        throw Error('Enrollment error changed');
       let state: WorkerEnrollmentView;
       if (projected.editor) {
         if (!session?.composedWorkspace || !session.session)
@@ -73,6 +85,7 @@ export async function createWorkerAccountEnrollment(
       } else state = projected as WorkerEnrollmentView;
       return {
         state,
+        error: v.error,
         progress,
         notifications: enrollmentNotificationPresentation(v.notifications),
       };
@@ -100,9 +113,12 @@ export async function createWorkerAccountEnrollment(
   };
   signal.addEventListener('abort', abort, { once: true });
   if (signal.aborted) abort();
-  const off = owner.subscribe(() => onProgress?.(owner.getSnapshot().progress));
+  const off = owner.subscribe(() =>
+    reportEnrollmentProgress(onProgress, owner.getSnapshot().progress),
+  );
   try {
     await owner.command({ command: 'initialize' });
+    if (owner.getSnapshot().error) throw Error(owner.getSnapshot().error);
     signal.throwIfAborted();
   } catch (cause) {
     await close();
@@ -112,6 +128,7 @@ export async function createWorkerAccountEnrollment(
   }
   const run = async (command: string, value?: string) => {
     await owner.command({ command, ...(value === undefined ? {} : { value }) });
+    if (owner.getSnapshot().error) throw Error(owner.getSnapshot().error);
     return owner.getSnapshot().state;
   };
   return {

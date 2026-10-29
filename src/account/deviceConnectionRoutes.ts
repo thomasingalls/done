@@ -35,3 +35,7 @@ export function deviceConnectionUrl(workspaceId: string) {
   slotKey(workspaceId);
   return '/private/account-enrollment.html?workspace=' + workspaceId;
 }
+
+export const isConnectionSlot = (value: unknown): value is string =>
+  typeof value === 'string' &&
+  /^(?:local|account-[a-f0-9]{32}|enrollment-[a-f0-9]{32})$/.test(value);

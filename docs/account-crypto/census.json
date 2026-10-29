@@ -489,7 +489,7 @@
     },
     {
       "path": "src/account/accountEnrollment.ts",
-      "sha256": "906afbc1d438f1e90295669c5b0af1bc9580cb28777c67240f39277f1963e898"
+      "sha256": "5a049c267058eddbeace31b319827bc77a72d9309e17d115d5f07d78e9c7c052"
     },
     {
       "path": "src/account/accountHttp.ts",
@@ -545,7 +545,7 @@
     },
     {
       "path": "src/account/deviceConnectionRoutes.ts",
-      "sha256": "1de8d2065526e8ec3ff51b374f3e40d071d41a10d3091660098d8b5f1735195b"
+      "sha256": "1550d2d74f0e16505bcb637e768e2277c403ae5254bfe87c7d7f61a377405d42"
     },
     {
       "path": "src/account/deviceEnrollment.ts",
@@ -1581,7 +1581,7 @@
     },
     {
       "path": "src/crdt/workerEnrollment.ts",
-      "sha256": "0a6198cecddcf34e8ce7d88bd03f8b3f88e95f963b264ea6a689b887ba03a336"
+      "sha256": "1cdb280aae5e68803b23a61186ba6460223b4f6667702ef3db39d1a62c1b92ce"
     },
     {
       "path": "src/crdt/workerEnrollmentNotifications.ts",
@@ -1793,7 +1793,7 @@
     },
     {
       "path": "src/ui/AccountEnrollmentApp.tsx",
-      "sha256": "5828e14bbbb8a48e2fd8112c184ad78f818fe3834e7c7429ea8eac708882335e"
+      "sha256": "aef442d95b4ac0a3c748823d8524ca19190599d520036d9d1a5ce73241595209"
     },
     {
       "path": "src/ui/AccountHistory.tsx",
@@ -1932,8 +1932,16 @@
       "sha256": "590ed1c4da1bbc98ab2cf439b27ab51acfb3499915e8f7b778c1f89d71c9d7e3"
     },
     {
+      "path": "src/ui/accountEnrollmentPage.ts",
+      "sha256": "ea484178ebd47c8399fc941907d725dd4068834cd3998f0bf2bd44fc18e4a6dd"
+    },
+    {
+      "path": "src/ui/accountEnrollmentRuntime.ts",
+      "sha256": "e5c18868a2e6a26a53d8d9c992deaba820fa814584e6a6668b423e41e3e45e16"
+    },
+    {
       "path": "src/ui/accountEnrollmentWorker.ts",
-      "sha256": "b54304c91af1c093cfb06ccd452bf9cfcfce6ed2d46333b8aaabdcdb6afbbec7"
+      "sha256": "68b69ddb243c13cef5ec34db9495619f0e31756294c27cd7be96d5d760e5a6c6"
     },
     {
       "path": "src/ui/accountRecoveryWorker.ts",

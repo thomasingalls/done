@@ -724,3 +724,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase226:** Default Local/public Setup native. Next enrollment/recovery screen activation and pending-session drain, remaining caller/offline/mixed checks, then unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase226/README.md).
+
+
+**Phase227:** Default Local/setup/enrollment native and verified. Next actual recovery screen, remaining caller/offline/mixed and final gate measurements. No release prep. [Packet](performance-experiments/2026-10-28-worker-owner/phase227/README.md).

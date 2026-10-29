@@ -17936,3 +17936,8 @@ Seven new cases/33 focused and99 metadata/type/lint/format pass. All old runtime
 ## 2026-10-29 — phase226: default Local and public setup worker activation
 
 Five new preparation cases/29 focused and99 metadata/type/lint/format pass. Exact screen-specialization/class/body audit pass. Full current frontend built; actual default account opening/Undo/cold and fresh default Local online/offline Worker reopen2 pass;2 exact containers absent. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase226/README.md).
+
+
+## 2026-10-29 — phase227: default enrollment screens on native owners
+
+Five new runtime/error cases/25 focused and99 metadata/type/lint/format/audit pass. Actual rebuilt default two-device creation/enrollment/comparison/writing availability and two-way edits pass. Initial duplicate lab import prevented collection, retained; corrected import with unchanged source.1 exact container absent. Existing six native-controller tests retain assertions with error transport fixture fields. [Packet](performance-experiments/2026-10-28-worker-owner/phase227/README.md).
