@@ -17213,3 +17213,20 @@ Current infrastructure main27369a8/offline checks and read-only live identity/PV
 health pass; historical backup failures1484 retained. Source defaults/service automation unchanged;
 general935/389 qualification paused. Final ordinary results recorded with the packet. No image
 publication, infrastructure change, merge, reconciliation or deployment in this preparation.
+
+
+## 2026-10-28 — Phase161: refresh the product backlog after release and record new stalls
+
+Update [product follow-ups](product-backlog.md) against released b6f0160a: distinguish shipped UX,
+local reduction/resumption and backup/catch-up repairs from open product ambitions and disabled
+service-history automation. Preserve the earlier version/check acknowledgment and infrastructure
+PR38's pending documentation review. Record the operator's qualitative startup/sync improvement
+separately from new mobile open/refocus and desktop sustained-typing stalls; no cause or timing is
+established, and finite p95 acceptance does not exclude this report.
+
+Record worker-owned account-runtime and decoupled bounded download/verification/presentation as
+discussion candidates, including synchronous encrypted-journal admission, fresh authority/expiry,
+lock/removal/ownership and input-priority constraints. Source inspection identifies existing page
+execution and grouped receive sequencing, not measured attribution. Documentation only; no product
+decision, runtime/test change, device access, performance experiment, activation or release action.
+Preserve this two-file change as sequential patch161; leave the real index and commits untouched.

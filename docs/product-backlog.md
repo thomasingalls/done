@@ -6,10 +6,73 @@ implementation plan. The [PRD](./PRD.md) and [TRD](./TRD.md) remain the requirem
 get a bounded scope and evidence before implementation. General release qualification remains
 [paused](./private-release-validation-prep.md).
 
-## Newly reported
+## Current position — 2026-10-28
+
+Production now serves **b6f0160a**. The [signed release packet](development-evidence/2026-10-28-resumable-sync-release/README.md)
+records the tested source/artifact; the rollout and operator walkthrough are recorded in
+[infrastructure PR38](https://codeberg.org/oxidationlabs/ol-infra/pulls/38), awaiting the operator's
+later review. The operator confirmed the version and ordinary walkthrough checks, then reported
+the sustained-use problems below. Preserve both observations; the earlier acknowledgment does not
+close the new reports. Startup feels faster and sync slightly faster to the operator, **without
+timed evidence or attribution**.
+
+Released work includes sidebar organization/presentation and User vocabulary; the whole date-picker
+target; the specified macOS editing bindings and whole-line Cut; the concrete split/merge focus-trap
+repair; Duplicate to Scheduled; Gentle context and breadcrumb menus/full outline; optional card
+heading breadcrumbs; mobile reorder/handle repairs; Done dimming with interaction restoration; and
+the later Goals breadcrumb menu behavior. These entries remain below as historical/product context,
+not a request to implement them again. Gboard's intermittent invisible quick entry, continuous phone
+deletion smoothness and saving-status layout movement remain open.
+
+Automatic **local** history reduction and durable preparation resumption are enabled in the released
+image. Automatic **service** snapshot/admission/pruning remains off. Backup readback cadence/backoff,
+opening proof reuse and the catch-up/publication repairs are released; their finite tests do not
+establish that every account or physical phone is responsive.
+
+## Immediate post-release reports and architecture discussion — 2026-10-28
+
+- **PERF-STALL — New long input stalls after the release.** The operator reports long pauses on
+  mobile open/refocus, and occasional complete desktop input stalls, especially during a long
+  sentence. Reported as new in the latest release; no isolated reproduction, duration or cause is
+  established yet. Keep this distinct from the earlier pre-edit opening delay and held-backspace
+  report. The four accepted scripted journeys passed the unchanged 16ms input and 2.5s peer gates,
+  but their p95 measurements do not exclude infrequent long stalls or establish sustained typing/
+  focus-return behavior. Reuse existing evidence and investigate these missing paths, including
+  longest blocking operations, rather than repeating the entire old baseline.
+- **ARCH-WORKER — Keep input/rendering free of account-runtime work.** Requested for discussion,
+  not an authorized redesign. Consider moving heavy verification/recovery, history preparation,
+  serialization, document replay and their coordination into a browser worker, leaving the page
+  responsible for the editor/DOM and a small explicit bridge. Browser account work currently runs
+  in the page context; cooperative checkpoints cannot interrupt a single synchronous operation.
+  Evaluate a dedicated worker as the active runtime owner separately from service-worker wake/
+  suspension behavior. Preserve encrypted local admission before claiming accepted writing:
+  the current synchronous journal uses Window localStorage, so fully moving admission requires a
+  deliberate acknowledgment/lifetime protocol, not merely replacing a call with postMessage.
+  Bound message copying and worker queues; preserve local input priority, undo, key lifetime,
+  lock/removal cancellation, stale-message rejection and multi-tab ownership. No worker split or
+  changed durability contract is selected. Related: PERF-STALL and UX-18.
+- **SYNC-BULK — Catch up to a known frontier without visibly replaying each edit.** The operator
+  wants everything available since the last sync fetched promptly on return, rather than waiting
+  through successive visible increments. Current reads request one publisher position at a time,
+  grouped up to four; the next receive pass waits for the current group's verification/admission.
+  Investigate separating a bounded download/staging cursor from the verified durable cursor and
+  coalescing UI updates. A finite per-publisher target, streaming or encrypted staging can express
+  one logical catch-up without an unbounded in-memory response or delaying all application until
+  download completes. Downloaded bytes are not accepted/synchronized writing. Keep ordered proofs,
+  fresh authority/witness/commit checks, request expiry, revocation/rotation handling, interruption,
+  storage limits and fairness with local editing and other accounts. Existing read requests expire
+  after 30s; deferred verification needs an explicit valid-context/revalidation design. Consider an
+  admitted snapshot plus tail for deep backlog. No bulk protocol, staging format, worker mechanism
+  or service automation is selected; source inspection identifies coupling, not its share of the
+  operator's current delay.
+
+These reports lead the next discussion; the older list is not a newly selected implementation order.
+
+## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday
   navigation alongside identity/preferences, installation, local protection and sync setup.
+  **Released organization/presentation repairs;** further polish needs concrete follow-up observations.
 - **UX-02 — Account wizard presentation.** Polish the setup, connection and recovery screens. Review
   spacing, typography, hierarchy, credential explanations and indications of progress together, while
   preserving the agreed security steps and restart/retry behavior.
@@ -18,7 +81,9 @@ get a bounded scope and evidence before implementation. General release qualific
   friendliness and visual quiet both matter.
 - **UX-04 — macOS editor shortcuts.** Identify the specific broken or awkward shortcuts and reproduce
   them on Mac. Check native editing expectations, browser conflicts, selection and undo behavior before
-  changing bindings. The exact shortcuts still need to be collected.
+  changing bindings. **Released:** native Option-Backspace, Cmd-] indentation, disabled Cmd-Enter
+  checkbox cycling, Enter finishing card editing, Shift-Enter newline and three-Shift-Enter splitting;
+  whole-line Cmd-X is covered by UX-17. Further conflicts need a specific report.
 - **UX-05 — Mobile formatting controls.** Explore a small extension above the on-screen keyboard with
   one-tap heading and list formatting, especially in Goals. Evaluate keyboard/viewport behavior,
   selection, focus and available writing space on actual phones.
@@ -34,18 +99,22 @@ get a bounded scope and evidence before implementation. General release qualific
   after the sync release, the operator reports improvement but periodic pauses remain during held
   deletion on a phone; longer pauses also show the syncing warning. Native-input smoothness is not
   established. This UX patch series records the observation without claiming a performance repair.
-  **2026-10-26:** Goals-only slowdown partly improves with Gentle context off. Unsigned82 adds
+  **2026-10-26:** Goals-only slowdown partly improves with Gentle context off. Later released82 adds
   numeric interval reuse/no-op effect suppression;83–84 prioritize sync over local-history preparation.
-  Native phone smoothness and the16ms gate remain open. Long synthetic backspace probes also fail
+  Long synthetic backspace probes also fail
   final-text checks on both released/candidate builds; capture focus, selection, admitted operations
   and actual final text before attributing that failure. [Evidence](performance-experiments/2026-10-26-goals-context/README.md).
+  **2026-10-28:** the final four desktop journeys pass the16ms gate
+  ([scoped results](performance-experiments/2026-10-28-envelope-projection/phase156/README.md)); native
+  phone deletion smoothness remains unestablished. PERF-STALL records the new sustained-use report.
 - **UX-07 — Saving-status layout movement.** “Still saving” warnings currently move the text around.
   They make remaining latency visible during debugging, but this movement is unacceptable in the user
   experience. Keep save state truthful while making status changes preserve editor layout, selection,
   focus and scroll position. Treat the underlying delay and its presentation as separate problems.
 - **UX-08 — Goals to day view.** Explore a more intuitive, inline or contextual way to bring material
   from Goals into the day view than the buttons at the bottom of the screen. Compare interactions on
-  desktop and mobile; decide the interaction before changing movement/copying semantics.
+  desktop and mobile; decide the interaction before changing movement/copying semantics. **Parked:**
+  the operator retained footer controls after comparing nearby alternatives; see UX-20.
 - **UX-09 — Day-card Markdown fit.** Reopen the discussion about whether the underlying Markdown format
   fits the day-card view. First clarify the concern: authoring, rendering, card boundaries, storage or
   export. No replacement format is selected. Consider existing writing, import/export fidelity and
@@ -61,8 +130,8 @@ get a bounded scope and evidence before implementation. General release qualific
   For example, `Plan the trip` with children `Book trains` and `Find somewhere to stay` becomes one
   card titled `Plan the trip` with those children as a Markdown list in its body; any grandchildren
   stay nested beneath their parent. This adds transfer semantics alongside UX-08's separate question
-  about where the controls belong. Multiline cards remain essential, and the existing three-Enter
-  split stays for now. No new content format or replacement split gesture is selected.
+  about where the controls belong. Multiline cards remain essential. The later released keyboard
+  changes use three **Shift-Enters** to split; Enter finishes editing. No new content format is selected.
 - **UX-11 — Goals lenses for scanning and gathering.** The operator primarily scans Goals to gather
   possible work, rather than sending items across while writing. As the document grows, surveying it
   becomes burdensome. Explore low-effort ways to bring relevant writing into focus without requiring
@@ -86,18 +155,19 @@ get a bounded scope and evidence before implementation. General release qualific
   formatted editor and caret reveal. Scroll-opening and the reading rail are parked after review;
   a fixed viewport/percentage boundary does not establish the operator's attention. See the
   [selection and remaining details](product-design/2026-10-23-goals-context/selection-2026-10-25.md).
-  No app implementation is authorized or claimed by this design selection.
+  That design selection alone did not authorize implementation; subsequent authorization did.
 
-  **Implemented in unsigned phases66–68, 2026-10-25:** subsequent operator authorization includes
+  **Implemented in phases66–68, subsequently released:** operator authorization includes
   the offscreen-caret fallback. Gentle context defaults on, has an immediate browser setting, and
   per-heading menus complement the full outline in the same formatted editor. Bounded unit/browser
   evidence and remaining limits are in the [implementation record](development-evidence/2026-10-25-goals-navigation/phase68/README.md).
-  No source commit, preview8443 update or deployment has occurred.
+  Later released changes refine context performance and root/child menu navigation. The full outline
+  remains available; scroll-opening, the reading rail and gather tray remain parked.
 
 - **UX-12 — Card focus trap.** Reported 2026-10-23 after an unknown desktop Tab/modifier
   sequence. Patch42 reproduces a concrete trap after split/merge: outside blur leaves a saved
   focus request, reopening the editor and stealing later input. Regression checks cover outside
-  click and action Tab navigation. This explains one path, not every possible focus defect.
+  click and action Tab navigation. **Released.** This explains one path, not every possible focus defect.
 - **UX-13 — Intermittent invisible mobile quick entry.** Android with Gboard: the Today add-item
   field sometimes shows no text and Add stays disabled while keyboard suggestions follow typing.
   The operator does not recall a reliable trigger; suggestion taps have also worked normally.
@@ -106,27 +176,27 @@ get a bounded scope and evidence before implementation. General release qualific
   IME confirmation being mistaken for submission; the intermittent phone symptom stays open.
 - **UX-14 — Duplicate cards to Scheduled.** Add a Duplicate control in Next, Done and Scheduled,
   retaining the source and copying its whole multiline body into a new Scheduled card. Preserve
-  writable-day and durability rules; do not turn duplication into movement out of Done.
+  writable-day and durability rules; do not turn duplication into movement out of Done. **Released.**
 
-- **UX-15 — Sidebar presentation and user-facing vocabulary.** Queued 2026-10-23 for after
-  the current work. Revisit styling, spacing, vertical rhythm and visual balance in Account
+- **UX-15 — Sidebar presentation and user-facing vocabulary.** Requested 2026-10-23, **released**
+  in the sidebar repair series. The request covered styling, spacing, vertical rhythm and visual balance in Account
   and the other sidebar sections. The operator’s [Account screenshot](product-references/2026-10-23-sidebar-account.png)
   is the visual reference: form rows are crowded while section/action spacing and control
   alignment feel uneven. Prefer **User** to **Actor** in the visible identity label; this is
   wording for the interface, not a change to internal actor identity or authorization.
-  Related to UX-01/UX-03; no redesign or implementation is selected by this queue entry.
-- **UX-16 — Whole date control opens the native picker.** Queued 2026-10-23. The operator
-  reports that only the calendar icon currently opens the picker. Make the displayed date
-  and calendar icon one complete click/tap target, retaining native date selection and
-  keyboard access. Reproduce on the current preview, including Firefox/macOS, before repair;
-  the earlier overlay implementation is not evidence that every browser opens from its full area.
-- **UX-17 — macOS whole-line Cut.** Queued 2026-10-23. Cmd-X currently appears to do nothing
+  Related to UX-01/UX-03; broader stylistic exploration remains separate from this completed repair.
+- **UX-16 — Whole date control opens the native picker.** Requested 2026-10-23, **released**.
+  The original report was that only the calendar icon opened the picker. The repair makes the
+  displayed date and calendar icon one complete click/tap target, retaining native date selection
+  and keyboard access. The earlier overlay implementation alone did not establish full-area opening
+  in every browser; bounded evidence for the repair is recorded below.
+- **UX-17 — macOS whole-line Cut.** Requested 2026-10-23, **released**. Cmd-X originally appeared to do nothing
   when the operator expects the current whole line to be cut. With no text selected, copy
   the whole line to the clipboard and delete it; retain ordinary cutting of a selection.
-  Reproduce in Goals and card editors before choosing the repair. Check clipboard success/
-  refusal, native user-gesture permissions, storage admission, undo and line/EOF boundaries
+  Preserve clipboard success/refusal, native user-gesture permissions, storage admission,
+  undo and line/EOF boundaries
   without deleting writing that was not successfully copied. Extends UX-04; implementation
-  and regression tests are deferred until after the current work.
+  and bounded regression evidence are recorded below.
 
 - **UX-18 — Background sync and ready-on-return feasibility.** Queued 2026-10-23 as a
   design investigation, **not implementation**. The operator wants an unfocused PWA to keep
@@ -169,12 +239,11 @@ behavior is unchanged; physical-device lifecycle evidence is still needed before
 
 - **UX-19 — Automatic card context from Goals headings.** Requested 2026-10-23 for specification
   before coding. [Study61](product-design/2026-10-23-goals-context/README.md) mocks a captured heading
-  breadcrumb and compact-label alternative. Proposed opt-in captures context on new transfers;
-  snapshot/live behavior, encrypted metadata and export/import policy remain product/format decisions.
-  The user did not request a settings mock. No automatic tagging has been implemented.
+  breadcrumb and compact-label alternative. The initial study left capture, snapshot/live behavior,
+  encryption and export/import policy open; the implementation below resolves those choices.
   Browser feedback approves breadcrumb placement only: preserve existing card styles/chrome.
   [Revision64](product-design/2026-10-23-goals-context/editor-study.md) reuses the current renderer/CSS.
-  **Implemented in unsigned phases69–72, 2026-10-25:** card transfers keep advisory heading
+  **Implemented in phases69–72, subsequently released:** card transfers keep advisory heading
   snapshots in encrypted workspace content. Paths appear beneath existing card writing with no
   leading icon. Account → Editor has a default-on, browser-local display switch; hiding does not
   erase context or stop capture. Optional export sidecars preserve Markdown. Mixed old clients may
@@ -243,8 +312,8 @@ Confirm current behavior and subsequent decisions before promoting one into an a
   between navigation, temporary focus and changing text.
 - **Card splitting:** whether three consecutive returns is discoverable and the right threshold.
   [PRD §4.8](./PRD.md#48-editing-experience) and §11 question 6 retain this as a tunable interaction.
-  Discussion on 2026-10-17 confirms multiline cards matter and deliberately retains three-Enter
-  splitting for now; UX-10 is the agreed improvement to add next to this open design question.
+  Discussion on 2026-10-17 confirms multiline cards matter. Later released keyboard changes retain
+  splitting on three Shift-Enters while Enter finishes editing; UX-10 is still unimplemented.
 - **Done ordering after concurrent day creation:** observe whether reconstructed ordering is visibly
   wrong in real use. [TRD §10.8](./TRD.md#108-a-days-collections-are-containers-created-concurrently--deferred)
   records the mitigation, root-type alternative, migration costs and triggers for reopening it.
@@ -263,25 +332,27 @@ There may be other older conversation-only items. This recovery pass checked the
 questions, decision/completion records and the available conversation; it is not an exhaustive
 reconstruction of every past session. Add newly recalled items here with their source and status.
 
-## 2026-10-26 — Automatic history maintenance
+## Automatic history maintenance — reported 2026-10-26, status updated 2026-10-28
 
 Growing-account open/sync delay is reported, without attributing the current account's cause.
 [Private scheduling73](./account-local-retention-automatic.md) reuses the earlier depth and preparation
-studies and adds automatic calls to the existing local removal owner. Public conversion remains off.
-Next work: capacity/refusal presentation and activation/rollback policy; physical-device behavior;
-separately consider automatic server snapshot/admission/pruning without weakening the two-snapshot or
-multi-device rules. No user-visible writing is selected for age-based deletion. Do not repeat the
-already completed preparation-task optimization as though it were still outstanding.
+studies and adds automatic calls to the existing local removal owner. Capacity/refusal presentation,
+activation/rollback policy and durable resumable preparation are implemented. The released image
+enables local reduction and resumption; source defaults and image activation are distinct. Physical
+phone responsiveness remains a concern, including PERF-STALL. Separately consider automatic server
+snapshot/admission/pruning without weakening the two-snapshot or multi-device rules; it remains off.
+No user-visible writing is selected for age-based deletion. Do not repeat the already completed
+preparation-task optimization as though it were still outstanding.
 
 **Follow-up74–75:** local capacity/refusal presentation and paced explicit retry are implemented, with
 quiet ordinary deferrals and a collapsed Data marker for persistent issues. The coherent automatic
-release profile and compatible reader rollback are implemented/tested; ordinary builds remain reader-
-only until an activated image is selected. The [runbook](./account-local-retention-activation.md) covers
-build-time flags and cached-client adoption. Automatic service snapshots/admission/pruning remain
-separate. No real-profile conversion or production release occurred in these unsigned phases.
+release profile and compatible reader rollback were implemented/tested before activation. The
+[runbook](./account-local-retention-activation.md) covers build-time flags and cached-client adoption.
+Later production releases activated local reduction, most recently with durable resumption in
+b6f0160a. Automatic service snapshots/admission/pruning remain separate and disabled.
 
 
-## Startup and backup follow-ups — 2026-10-26
+## Startup and backup follow-ups — reported 2026-10-26, status updated 2026-10-28
 
 - **PERF-OPEN — Active synced account takes about a minute before editing.** Reported on the phone
   after the operator confirms covered service history was pruned. Service pruning and device-local
@@ -290,28 +361,37 @@ separate. No real-profile conversion or production release occurred in these uns
   reuse existing depth evidence rather than repeat a broad sweep. Preserve all authority/lifetime
   and replay guarantees. The operator locates the wait after code/passkey entry, under a stale
   passkey title. Phase91 fixes that presentation and adds opt-in numeric census/opening timings;
-  Back aborts/drains rather than removing data. No actual slow-phone trace is captured yet.
-  A minute remains an unresolved defect, not the promised effect of pruning.
-- **OPS-B2 — Implemented in development, not deployed (phase90).** The operator selects one remote
+  Back aborts/drains rather than removing data. Later [Android traces119–120](performance-experiments/2026-10-27-android-opening/phase120/README.md)
+  capture the slow opening and confirm a reduced local baseline after maintenance; the operator then
+  reports opening around7s. [First-conversion investigation121](performance-experiments/2026-10-27-android-opening/phase121/README.md)
+  identifies repeated validation, without establishing how the phone's entire maintenance wait was
+  spent. Same-owner/first-conversion proof reuse and resumable preparation are now released. The
+  latest report describes improved startup qualitatively and new open/refocus stalls (PERF-STALL);
+  it is not a timed phone confirmation of the remaining opening cost.
+- **OPS-B2 — Released (phase90 and subsequent evidence).** The operator selects one remote
   verification cycle/hour, including unfamiliar retained keepers, and five-minute local encrypted
   checksums. New uploads stay prompt; receipts remain distinct from verified recovery-point credit.
   Quota circuits/backoff and retained exact-version receipts stop unchanged reuploads and redundant
   readback. A download cap pauses reads/pruning until UTC reset while allowing new uploads. Exact
   readback still gates anchor/keeper/prune credit. The cap is unchanged. New uploads can remain
-  unverified for an hour; local checksum is not decryption/restore proof. New cadence-file aggregate
-  execution credit remains blocked until separate adapter review.
+  unverified for an hour; local checksum is not decryption/restore proof. Release checks do not
+  grant aggregate qualification credit; general qualification remains paused.
 
 [Discussion, source evidence and boundaries](development-evidence/2026-10-26-account-startup-and-backup-cadence/README.md).
-Release preparation waits for the operator's explicit instruction; these are development follow-ups.
+These follow-ups were included in the later b6f0160a release; the linked packet records their earlier
+development state rather than current deployment status.
 
 
 ## Catch-up performance — 2026-10-27
 
-- **PERF-RECEIVE-COPY — Implemented in unsigned94.** Read preparation/status were copying all inbound
+- **PERF-RECEIVE-COPY — Released, initially implemented in94.** Read preparation/status were copying all inbound
   receipt histories before selecting a publisher or scalar result. Project cursor metadata inside the
   existing verified owner before detached copying. Real encrypted receiver regressions observe zero
   retained payload copies while preserving old-position replay, conflicts and cold/reduced-baseline
   behavior; all old tests remain byte-exact. Synthetic copy timings support the mechanism, not total
-  catch-up latency. Next: matched whole-client comparison with both clients rebuilt and original
-  responsiveness/durability/fairness gates intact. Do not reuse service-only fixed-client timings as
-  evidence of this client optimization. [Checkpoint](performance-experiments/2026-10-27-receive-projection/README.md).
+  catch-up latency. Later matched whole-client work rebuilt both clients with the original
+  responsiveness/durability/fairness gates intact, culminating in the four passing
+  [phase156 journeys](performance-experiments/2026-10-28-envelope-projection/phase156/README.md).
+  Earlier failures and scope limits remain recorded. The operator's new input-stall report and
+  bulk catch-up question are open above; no service-only timing establishes these client outcomes.
+  [Initial checkpoint](performance-experiments/2026-10-27-receive-projection/README.md).
