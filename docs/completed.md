@@ -17720,3 +17720,12 @@ Complete candidate/source/driver identities, failures and mocks retained. All136
 metadata homes restored exactly to193;36 focused/98 metadata pass, nine containers absent. Maintenance
 and conversion still pending, no performance credit.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase194/README.md).
+
+
+## 2026-10-29 — phase195 authenticated journal observation boundary
+
+Bounded retained ciphertext, actual native Worker journal authentication/task scope, no pinned
+permission, exact scoped Window comparison and expiry/erasure.33 focused/98 metadata/type/lint/format/
+AST checks and actual Chrome/Firefox observation plus Account/Local controls pass; five containers
+absent. No deletion or default activation, conversion/gates pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase195/README.md).

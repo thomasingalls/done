@@ -1,3 +1,4 @@
+import { createWorkerJournalReader } from './workerJournalRead';
 /** Fixed dedicated-worker environment. No Window installer, lock-manager override or storage shim. */
 import { workerActivityKinds } from './workerActivity';
 import { openLocalWorkerLifetime } from './localWorkerLifetime';
@@ -5,11 +6,7 @@ import { createAccountWorkerJoin } from './accountWorkerJoin';
 import type { AccountWorkerTicket } from './nativeCoordination';
 import type { WorkerChannel } from './workerChannel';
 import { WorkerChannelError } from './workerChannel';
-import type {
-  RawJournalSnapshot,
-  RawJournalPage,
-  RawJournalRemoval,
-} from './workerJournalProtocol';
+import type { RawJournalSnapshot, RawJournalRemoval } from './workerJournalProtocol';
 import { RAW_JOURNAL_REMOVE_ITEMS } from './workerJournalProtocol';
 
 export interface WorkerActivity {
@@ -48,48 +45,13 @@ function createWorkerRuntime(
   const live = () => {
     if (stop.signal.aborted || channel.closed) throw refused();
   };
+  const reader = createWorkerJournalReader(channel, live, (prefix, value) => {
+    if (opening || fence !== undefined) pinned.set(prefix, value);
+  });
   const journal = {
-    async read(prefix: string): Promise<RawJournalSnapshot> {
-      live();
-      const id = await channel.request<number>('journalBegin', { prefix });
-      const entries: [string, string][] = [];
-      let characters = 0,
-        retainedCharacters = 0;
-      try {
-        for (;;) {
-          live();
-          const page = await channel.request<RawJournalPage>('journalPage', { id });
-          live();
-          if (
-            !Array.isArray(page.entries) ||
-            typeof page.done !== 'boolean' ||
-            !Number.isSafeInteger(page.characters) ||
-            page.characters < 0
-          )
-            throw refused();
-          for (const pair of page.entries) {
-            if (
-              !Array.isArray(pair) ||
-              pair.length !== 2 ||
-              typeof pair[0] !== 'string' ||
-              !pair[0].startsWith(prefix) ||
-              typeof pair[1] !== 'string'
-            )
-              throw refused();
-            entries.push([pair[0], pair[1]]);
-            retainedCharacters += pair[0].length + pair[1].length;
-          }
-          if (entries.length > 65536 || retainedCharacters > 16 * 1024 * 1024) throw refused();
-          characters = page.characters;
-          if (page.done) break;
-        }
-        const value = { entries, characters };
-        if (opening || fence !== undefined) pinned.set(prefix, value);
-        return value;
-      } finally {
-        if (!channel.closed) await channel.request('journalFinish', { id }).catch(() => {});
-      }
-    },
+    read: reader.read,
+    // Never installs a pinned view: the captured ciphertext observation expires with this call.
+    observe: reader.observe,
     /** Synchronous checks require this incarnation's current opening or Window FIFO reservation.
      * A snapshot retained after that reservation ends cannot authorize a later effect. */
     pinned(prefix: string): RawJournalSnapshot {

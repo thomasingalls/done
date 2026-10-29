@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 612,
-    "requiredTestFiles": 606,
+    "testFiles": 614,
+    "requiredTestFiles": 608,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14227,6 +14227,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/windowJournalObservation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/windowJournalObservation.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/windowLocalMirror.test.ts",
       "status": "required",
       "invocation": {
@@ -14303,6 +14318,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerFrameStream.test.ts"]
       },
       "declarations": 9,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerJournalObservation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerJournalObservation.test.ts"
+        ]
+      },
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -21329,6 +21359,10 @@
       "sha256": "2ee6e9fcc5e1900b53d30c060150fcb0d2b8d779c1b5bb7b2d94e36ecc258468"
     },
     {
+      "path": "test/windowJournalObservation.test.ts",
+      "sha256": "9bf1e576ba060126be0dd999699d5d64cc7301fb91ff4a7bd8498d9972c9b96b"
+    },
+    {
       "path": "test/windowLocalMirror.test.ts",
       "sha256": "bbfa8d1d44815f6e280a31a19315498ffee8975ce48be24b96a2c73634607fa4"
     },
@@ -21355,6 +21389,10 @@
     {
       "path": "test/workerFrameStream.test.ts",
       "sha256": "0d615e5848f6fb0d80148ed2afde43888c4b8d43a488799a513d84be97d9f65b"
+    },
+    {
+      "path": "test/workerJournalObservation.test.ts",
+      "sha256": "97f9818574bfdbc876b7cbca7ed0c892028476aacb5820a546358d18e1f31297"
     },
     {
       "path": "test/workerLocalBaseline.test.ts",

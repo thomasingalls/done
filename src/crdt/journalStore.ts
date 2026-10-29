@@ -232,6 +232,26 @@ export const createJournalOwner = (
   return {
     asynchronous: !!asynchronous,
     snapshot,
+    /** Native Worker task only. Authenticate ciphertext while its Window observation is retained;
+     * no synchronous journal permission survives this scope or is inferred from its data ID. */
+    async withObservation<T>(
+      task: SessionTask,
+      operation: (id: number, entries: readonly ObservedEntry[]) => Promise<T>,
+    ): Promise<T> {
+      if (!asynchronous)
+        throw new JournalError('unavailable', 'Worker journal observation required.');
+      return task.wait(() =>
+        asynchronous.observe(prefix, async (raw, id) => {
+          let opened: ObservedEntry[] | undefined;
+          try {
+            opened = task.step(() => openRaw(raw));
+            return await operation(id, opened);
+          } finally {
+            if (opened) eraseJournalSnapshot(opened);
+          }
+        }),
+      );
+    },
     /** Read-only attempts only. The optional first failure is the synchronous invocation capture. */
     async readSnapshot(task: SessionTask, firstFailure?: JournalError): Promise<ObservedEntry[]> {
       if (firstFailure && !isJournalChanged(firstFailure)) throw firstFailure;

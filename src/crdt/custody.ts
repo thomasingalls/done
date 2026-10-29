@@ -1319,6 +1319,16 @@ export const openLocalWorkerJournalSession = async (
   return Object.freeze({
     journal: attachJournal(owner, live),
     copyOpening: () => live.run((task) => owner.copyMirrorJournalOpening(task)),
+    withJournalObservation: <T>(
+      operation: (
+        id: number,
+        entries: readonly import('./journalStore').ObservedEntry[],
+        task: SessionTask,
+      ) => Promise<T>,
+    ) =>
+      live.run((task) =>
+        owner.journal.withObservation(task, (id, entries) => operation(id, entries, task)),
+      ),
   });
 };
 export const attachJournal = (

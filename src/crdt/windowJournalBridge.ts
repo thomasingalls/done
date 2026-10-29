@@ -62,7 +62,7 @@ export async function createWindowJournalBridge(cohort: WindowAccountCohort) {
   let sequence = 0;
   const snapshots = new Map<
     number,
-    { rows: [string, string][]; index: number; characters: number }
+    { rows: [string, string][]; index: number; characters: number; retained?: true }
   >();
   cohort.disposeWith(() => snapshots.clear());
   const read = () =>
@@ -126,12 +126,41 @@ export async function createWindowJournalBridge(cohort: WindowAccountCohort) {
           snapshot.index++;
         }
         const done = snapshot.index === snapshot.rows.length;
-        if (done) snapshots.delete(id);
+        if (done && !snapshot.retained) snapshots.delete(id);
         return { entries, characters: snapshot.characters, done };
       });
     },
     finish(id: number) {
       cohort.write(() => snapshots.delete(id));
+    },
+    /** A bounded ciphertext observation only. The native Worker must authenticate every page;
+     * this number is not permission, a verification receipt or a native task. */
+    beginObservation() {
+      return cohort.write(() => {
+        if (
+          snapshots.size >= 2 ||
+          [...snapshots.values()].some((v) => v.retained) ||
+          sequence === Number.MAX_SAFE_INTEGER
+        )
+          throw refuse();
+        const snapshot = read(),
+          id = ++sequence;
+        snapshots.set(id, { ...snapshot, retained: true });
+        return id;
+      });
+    },
+    matchesObservation(id: number): boolean {
+      return cohort.write(() => {
+        const observed = snapshots.get(id);
+        if (!observed?.retained || observed.index !== observed.rows.length) throw refuse();
+        const current = read();
+        return (
+          current.rows.length === observed.rows.length &&
+          current.rows.every(
+            ([key, value], i) => key === observed.rows[i]![0] && value === observed.rows[i]![1],
+          )
+        );
+      });
     },
     remove(input: readonly (readonly [string, string])[]): RawJournalRemoval {
       return cohort.write(() => {

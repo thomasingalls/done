@@ -869,7 +869,7 @@
     },
     {
       "path": "src/crdt/accountWorkerRuntime.ts",
-      "sha256": "322c12b020d09bb6ceec9d6740b3083ddb12cbda2aa16bf05ad04c044c4a1b20"
+      "sha256": "823a18ef20fbb34118e030177a4a892beac12477abf6f9cb143182231a2890f0"
     },
     {
       "path": "src/crdt/accountWorkspace.ts",
@@ -965,7 +965,7 @@
     },
     {
       "path": "src/crdt/custody.ts",
-      "sha256": "3a8cd0cad55499ef6eb8b0b2e2259214b557713755a447f89ac6cf059481d152"
+      "sha256": "5cadc7a58a7570a488c9aaa02db45a63c7ec7d91c6a9c3d5a45840fc32efc8fa"
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
@@ -1069,7 +1069,7 @@
     },
     {
       "path": "src/crdt/journalStore.ts",
-      "sha256": "63a03d1b955791f7ef05d2b5ac085461cc13c4df20938d2b2d0455bbbe04119b"
+      "sha256": "c76cb60e02ae1f4cddb4110acf5a5dd16a7f0d7ecf1b0520119e3140e6449539"
     },
     {
       "path": "src/crdt/legacyCleanup.ts",
@@ -1209,7 +1209,7 @@
     },
     {
       "path": "src/crdt/localWorkerClient.ts",
-      "sha256": "f1a6006fdb0e4f01cb2ec312330bb700228b1602382b6d2349857cb7c7ca83ba"
+      "sha256": "b0b8e103c427f8d954b17819523df13c2e67ec8ec929028b8ee05c205659bdde"
     },
     {
       "path": "src/crdt/localWorkerLifetime.ts",
@@ -1421,7 +1421,7 @@
     },
     {
       "path": "src/crdt/windowJournalBridge.ts",
-      "sha256": "58def28ff1d0951c7fe1065aa7c90d2a7d10d6a876134c133c5e95ad544c990d"
+      "sha256": "005415a23bb4bfb251e4127aa9e82187c8e58febe559b7daae1595234db6560f"
     },
     {
       "path": "src/crdt/windowLocalMirror.ts",
@@ -1458,6 +1458,10 @@
     {
       "path": "src/crdt/workerJournalProtocol.ts",
       "sha256": "08282642ea9c415acda0a4a35738da3a87a39b9909678cd58151ff67236bb893"
+    },
+    {
+      "path": "src/crdt/workerJournalRead.ts",
+      "sha256": "0c2861f93005d89d7a79500b84bce84429e5f5aa1e30774d978dda13c166925f"
     },
     {
       "path": "src/crdt/workerLocalBaseline.ts",

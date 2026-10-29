@@ -60,6 +60,12 @@ export async function openLocalWorkerSession(
       cohort.ticket.incarnation,
       {
         localBind: () => cohort.bindLocalWorker(),
+        journalObservationBegin(input) {
+          cohort.write(() => {});
+          if ((input as { prefix: string }).prefix !== journal.prefix)
+            throw Error('Local journal changed');
+          return journal.beginObservation();
+        },
         journalBegin(input) {
           cohort.write(() => {});
           if ((input as { prefix: string }).prefix !== journal.prefix)

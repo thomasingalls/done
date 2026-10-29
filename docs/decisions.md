@@ -6089,3 +6089,12 @@ request/release wakes failed, while Firefox resumed the same direct probe. Prese
 restore193 source/tests/metadata exactly. Keep heavy validation/preparation Worker-owned; investigate a
 small Window final commit that preserves the synchronous fresh journal check. No security gate relaxed.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase194/README.md).
+
+
+## 2026-10-29 — observation IDs refer to ciphertext, never verified authority
+
+Retain scoped Window ciphertext long enough for actual native Worker authentication and a final
+Window exact comparison, then expire it. Unrelated account writes do not invalidate that scope.
+Observation reads do not install pinned permission; ordinary pin/finish ordering stays exact.
+Avoid starting with CPU-heavy cross-turn IDB keepalive; stage encrypted data before the final commit.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase195/README.md).

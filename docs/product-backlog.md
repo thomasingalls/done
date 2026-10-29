@@ -583,3 +583,9 @@ offline/default activation and unchanged timing gates.
 no candidate runtime retained. Continue with Worker heavy verification/preparation plus a narrowly owned
 Window final commit preserving fresh synchronous journal validation. Default Page; conversion/gates
 remain pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase194/README.md).
+
+
+**Phase195 — authenticated journal observations:** actual old shared writer causes stale comparison
+refusal; fresh read matches, plaintext erases and IDs expire in Chrome/Firefox. Continue actual Local
+maintenance head/final native Window commit, ceremonies and offline/default conversion before unchanged
+timing gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase195/README.md).

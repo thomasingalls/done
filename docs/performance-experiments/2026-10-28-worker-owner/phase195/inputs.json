@@ -1,0 +1,10 @@
+{
+  "src/crdt/windowJournalBridge.ts": "005415a23bb4bfb251e4127aa9e82187c8e58febe559b7daae1595234db6560f",
+  "src/crdt/workerJournalRead.ts": "0c2861f93005d89d7a79500b84bce84429e5f5aa1e30774d978dda13c166925f",
+  "src/crdt/accountWorkerRuntime.ts": "823a18ef20fbb34118e030177a4a892beac12477abf6f9cb143182231a2890f0",
+  "src/crdt/journalStore.ts": "c76cb60e02ae1f4cddb4110acf5a5dd16a7f0d7ecf1b0520119e3140e6449539",
+  "src/crdt/localWorkerClient.ts": "b0b8e103c427f8d954b17819523df13c2e67ec8ec929028b8ee05c205659bdde",
+  "src/crdt/custody.ts": "5cadc7a58a7570a488c9aaa02db45a63c7ec7d91c6a9c3d5a45840fc32efc8fa",
+  "test/windowJournalObservation.test.ts": "9bf1e576ba060126be0dd999699d5d64cc7301fb91ff4a7bd8498d9972c9b96b",
+  "test/workerJournalObservation.test.ts": "97f9818574bfdbc876b7cbca7ed0c892028476aacb5820a546358d18e1f31297"
+}
