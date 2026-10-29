@@ -17363,3 +17363,28 @@ New422-source census retains198 domains;942/396 qualification obligations stay b
 files uncredited and every prior row retained. Actual browser worker/native owner, admission/receive,
 maintenance and application conversion remain following bounded phases. No latency claim or gate,
 format, activation, preview, real-index, signing/push or release change. Append before owned status.
+
+
+## 2026-10-29 — Phase168: native Account worker without shared-memory shims
+
+Add the actual dedicated-worker entry/client/runtime and bounded exact-record recovery stream.
+Use genuine native cohort leases and original factor/passkey/authority/storage checks. Async scoped
+encrypted journal reads and compare-removal replace the isolated SAB shim; no source transforms.
+Window keeps synchronous sealed admission and original Undo. Lifetime cancellation drains/terminates
+then proves native release; narrow journal subkeys are erased on close. Exact original records,
+including historical states larger than today's append limit, reopen in the shipping reader.
+[Evidence and limitations](performance-experiments/2026-10-28-worker-owner/phase168/README.md).
+
+2289 unit cases/one existing skip,26 native Chromium/Firefox cases,two stale-reservation fault
+controls,eight actual-account Chromium cases,98 metadata checks and affected build/type/security
+checks pass. Full native lifetime campaign13+5 passes. Combined journal campaign passes17 cases but
+four later mutation observers time out; scoped unchanged runs detect all remaining controls. Keep
+that combined failure unresolved, alongside earlier import/type/read-bound and concurrent observer
+failures. One old config fixture waits for intentional deferred persistence; a new gated regression
+proves that ordering without production config changes.17 disposable containers are absent.
+
+426 sources retain198 domain labels/owners; construction references move lines only.945/399
+qualification obligations remain blocked, all prior rows identical and three new files uncredited.
+Default app execution stays on the page. Next fix the low-level runtime import cycle, then wire
+receive/maintenance/application routes and fresh ceremony ownership. No latency claim, gate change,
+service automation, real staging/signing/push, preview or release preparation. Append before status.

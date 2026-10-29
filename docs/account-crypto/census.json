@@ -745,7 +745,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "74e7a38c6879d8be0608619b52ac9387e6b4a7ec44da812dd738cdc876fcdf86"
+      "sha256": "5ac4e66b3e63fca9c48faf2956769a82cea2f4d9b13a3d0b354a0a1154b405aa"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -788,12 +788,16 @@
       "sha256": "88dcdf46405756e69836a9597a53cb8ef264b5265707acafeb6c53c339d01055"
     },
     {
+      "path": "src/crdt/accountOwner.worker.ts",
+      "sha256": "a496ad85bbaeebd32ac17adad44e887373f2cea62efa3d9a75779acc313ad28e"
+    },
+    {
       "path": "src/crdt/accountProgressCustody.ts",
       "sha256": "0267912fc89f8c686188b787c573bbc7252a6daf546228a62f101ad855d512f0"
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "15593900d51f26e3408453c9ffa9ade8557371facfab927eb426c5f06ea45f49"
+      "sha256": "6a624330e7890d49afb4d03c065b5165e829febe30285ceae4518955cbabf1fc"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -836,8 +840,20 @@
       "sha256": "8e40635b78c7488ac885f336d6afd069e10c905081ef003586c0a310731c5d83"
     },
     {
+      "path": "src/crdt/accountWorkerClient.ts",
+      "sha256": "5dda190388573e4210ff22e18466fe13dd5feb8bbd688f163dc3ca930ec87ab0"
+    },
+    {
       "path": "src/crdt/accountWorkerCohort.ts",
       "sha256": "5c6db9bd4b2613ceb9a561bcbfa59826e71f652c90be2a36801b360bff6b83ad"
+    },
+    {
+      "path": "src/crdt/accountWorkerRecoveryStream.ts",
+      "sha256": "c656302eb69b2a043b5cd45fb4de87ba7f4d85347e518f5296a93f07220d2051"
+    },
+    {
+      "path": "src/crdt/accountWorkerRuntime.ts",
+      "sha256": "cc7d772d03d977bf72a798b5a3faacdb3e0260d88fa0eb039e4838eb9a71fb83"
     },
     {
       "path": "src/crdt/accountWorkspace.ts",
@@ -925,7 +941,7 @@
     },
     {
       "path": "src/crdt/custody.ts",
-      "sha256": "5b2cee96662026e21c5329b343197d5882c5b91a64ab69eb1292e5b3bb485cb3"
+      "sha256": "fdfaf5a8531d3451dab488cceaa56adc582d3aae685be92c94d23064ee0b3ecd"
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
@@ -1029,7 +1045,7 @@
     },
     {
       "path": "src/crdt/journalStore.ts",
-      "sha256": "aab6c35b5a70b1b2eb87392898977df74d84c74d3855f7faf58a1264e0dc4943"
+      "sha256": "63a03d1b955791f7ef05d2b5ac085461cc13c4df20938d2b2d0455bbbe04119b"
     },
     {
       "path": "src/crdt/legacyCleanup.ts",
@@ -1145,7 +1161,7 @@
     },
     {
       "path": "src/crdt/localGenesisStorage.ts",
-      "sha256": "2e2d76497283adc16a42f24e851d795c35bcdf9bfce930a6be33749d115da402"
+      "sha256": "9bfd43d405fd18a360b9d26697c3ada18ffb377af19a7e60176fcf59811db2cf"
     },
     {
       "path": "src/crdt/localProtection.ts",
@@ -1289,7 +1305,7 @@
     },
     {
       "path": "src/crdt/runtimePorts.ts",
-      "sha256": "8ce2aa158708f31c0d4bb29555f512d30fc26dca2dd1b511fd296aec3e4d418d"
+      "sha256": "d9d757ff9dc2dc332c239225204e52564cd2a840bf116643d76d15c260126d02"
     },
     {
       "path": "src/crdt/selectionSnapshots.ts",
@@ -1321,7 +1337,7 @@
     },
     {
       "path": "src/crdt/startupStorage.ts",
-      "sha256": "856ad79ed81f42d3ac6203771883ff2bf51ba7b610d3548b98dea4218f6ddefb"
+      "sha256": "6292d632123974426ad00183216b171d0bd4cdffe80c40665d1f5772ae8015f2"
     },
     {
       "path": "src/crdt/storageCompatibility.ts",
@@ -1377,7 +1393,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "f7699f641d0ebef246fb455a4e1b967ed5428f77bca7328d93d836f2ccc67574"
+      "sha256": "2806bd85b69952ad8059cad2acc944e4c456fe83e70ebeca2fe49b0703c9fca3"
     },
     {
       "path": "src/crdt/yjs.ts",
@@ -1869,7 +1885,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 734
+          "line": 735
         }
       ]
     },
@@ -2273,7 +2289,7 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 264
+          "line": 265
         }
       ]
     },
@@ -3775,7 +3791,7 @@
       "sites": [
         {
           "path": "src/crdt/runtimePorts.ts",
-          "line": 27
+          "line": 38
         }
       ]
     },
@@ -3785,7 +3801,7 @@
       "sites": [
         {
           "path": "src/crdt/writeSession.ts",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -3867,15 +3883,15 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 252
+          "line": 253
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 318
+          "line": 319
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 341
+          "line": 342
         }
       ]
     },

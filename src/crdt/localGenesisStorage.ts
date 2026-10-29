@@ -8,7 +8,7 @@ import {
   probeDatabase,
   checkLayout,
   readRow,
-  journalCount,
+  readJournalCount,
   legacyJournalCount,
 } from './startupStorage';
 import { journalPrefix } from './journalCodec';
@@ -143,7 +143,7 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
         )
       : undefined;
   const disk = await contentCensus(task, name, !!baseline),
-    journal = journalCount(task, journalPrefix(name));
+    journal = await readJournalCount(task, journalPrefix(name));
   const content = witnessPresent ? parseWitness(witness) : null;
   if (claim.stage === 'custody' && content)
     stopStartup('repair-required', 'content-before-local-progress');

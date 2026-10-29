@@ -3684,7 +3684,7 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 264,
+          "line": 265,
           "label": "done/content-metadata/v1",
           "kind": "literal"
         }
@@ -4049,19 +4049,19 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 252,
+          "line": 253,
           "label": "done/store/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 318,
+          "line": 319,
           "label": "done/store/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 341,
+          "line": 342,
           "label": "done/store/v1",
           "kind": "literal"
         }
@@ -5384,7 +5384,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 734,
+          "line": 735,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },
@@ -5396,13 +5396,13 @@
         },
         {
           "path": "src/crdt/runtimePorts.ts",
-          "line": 27,
+          "line": 38,
           "label": "done/slot-lifecycle",
           "kind": "literal"
         },
         {
           "path": "src/crdt/writeSession.ts",
-          "line": 38,
+          "line": 39,
           "label": "done/slot-writer/${JSON.stringify(slotId)}",
           "kind": "template"
         }

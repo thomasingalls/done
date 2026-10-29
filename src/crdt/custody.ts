@@ -1,3 +1,4 @@
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 import { eraseVerified } from './verifiedRecords';
 import type { AccountBaselineRead } from './localBaselineShadow';
 import { maintenanceTask } from './contentMaintenance';
@@ -801,6 +802,25 @@ const prepareCustody = (
       factor.fill(0);
     },
     describe: () => ({ ...descriptor(scope, record), generation: keys.generation ?? 1 }),
+    /** Internal worker composition only. Export journal subkeys, never root/content/signing keys. */
+    async copyMirrorJournalOpening(task: SessionTask) {
+      if (!accountWorkerRuntime(authority.slotId))
+        throw Error('Worker journal composition required');
+      const dbName = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
+      return task.step(() => {
+        if (!keys.journal || !journal || !carrier) throw Error('Journal owner is not initialized');
+        return {
+          scope: { ...scope, storeId: record.store_id, rootId: record.root_id },
+          dbName,
+          generation: keys.generation ?? 1,
+          key: keys.journal.slice(),
+          previous: [...(keys.previousJournals ?? [])].map(([g, k]) => [g, k.slice()] as const),
+          ...(carrier.journalBinding()
+            ? { binding: structuredClone(carrier.journalBinding()) }
+            : {}),
+        };
+      });
+    },
     get journal() {
       return journal!;
     },
@@ -933,6 +953,14 @@ const prepareCustody = (
               task.wait(() => crypto.subtle.verify('HMAC', keys.metadata!, mac, payload)),
           },
         );
+        const initialJournal =
+          initialAccount && accountWorkerRuntime(authority.slotId)
+            ? await task.wait(() =>
+                accountWorkerRuntime(authority.slotId)!.journal.read(
+                  journalPrefix(nameForInitial!),
+                ),
+              )
+            : undefined;
         await carrier.initialize(
           task,
           creation,
@@ -941,6 +969,12 @@ const prepareCustody = (
                 if (!record.initial_account || record.active_rotation || !withJournal || creation)
                   throw Error('Initial account generation is not selected');
                 const prefix = journalPrefix(nameForInitial!);
+                if (initialJournal) {
+                  const fresh = accountWorkerRuntime(authority.slotId)!.journal.pinned(prefix);
+                  if (fresh.entries.length)
+                    throw Error('Unfinished device installation has journalled edits');
+                  return;
+                }
                 for (let i = 0; i < localStorage.length; i++)
                   if (localStorage.key(i)?.startsWith(prefix))
                     throw Error('Unfinished device installation has journalled edits');
@@ -1275,7 +1309,7 @@ export const attachJournal = (
     let firstFailure: JournalError | undefined;
     try {
       // Preserve the existing invocation-time fast path, including the exact captured entry set.
-      snapshot = live.write(() => owner.journal.snapshot());
+      if (!owner.journal.asynchronous) snapshot = live.write(() => owner.journal.snapshot());
     } catch (cause) {
       if (!isJournalChanged(cause)) return Promise.reject(cause);
       firstFailure = cause;

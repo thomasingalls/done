@@ -128,8 +128,12 @@ input/peer acceptance. No reported-stall closure or performance credit; service 
 **Authorized continuation,2026-10-29:** complete the worker conversion in bounded phases and sequential
 patches, then measure the unchanged performance targets. [Phase167](performance-experiments/2026-10-28-worker-owner/phase167/README.md)
 adds the scoped asynchronous encrypted-journal endpoint and bounded bidirectional channel (23new,
-51focused cases). Existing runtime execution is still unchanged. Next connect the actual worker
-native owner without shared-memory/build transforms, then receive/maintenance and application routes.
+51focused cases). [Phase168](performance-experiments/2026-10-28-worker-owner/phase168/README.md) connects
+the actual native Account worker without shared memory or source transforms:2289unit cases/one
+existing skip,26native runtime cases and eight actual-account cases pass. The long combined journal
+campaign retains unresolved observer timeouts, with scoped fault controls passing. Default app
+execution is still on the page. Next remove the runtime import cycle, then integrate actual
+receive/maintenance, fresh ceremony ownership and application routes.
 Raw messages/captures confer no verification authority; final changes retain the Window admission
 fence. This supersedes the original discussion-only status above; no release preparation.
 

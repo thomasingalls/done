@@ -1,3 +1,4 @@
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 /** Known-name, read-only native probes. They never create or upgrade a database. */
 import type { SessionTask } from './writeSession';
 import { contentTransaction } from './contentDatabase';
@@ -178,6 +179,14 @@ export const journalCount = (
       throw Error('Journal changed during startup.');
     return keys.length;
   });
+
+/** Worker startup obtains a fresh bounded Window read; existing synchronous readers stay unchanged. */
+export async function readJournalCount(task: SessionTask, prefix: string): Promise<number> {
+  const worker = accountWorkerRuntime();
+  if (!worker) return journalCount(task, prefix);
+  const read = await task.wait(() => worker.journal.read(prefix));
+  return task.step(() => read.entries.length);
+}
 
 /** The old `done` prefix contains modern `done.<hash>` prefixes. Their complete key grammars are disjoint. */
 export const legacyJournalCount = (task: SessionTask): number =>

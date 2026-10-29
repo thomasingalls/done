@@ -1,0 +1,63 @@
+/** Bounded data stream of already authenticated recovery. No proof or custody receipt is serialized. */
+import type { JournalRecovery } from './custody';
+import type { Bytes } from './custodyCrypto';
+import { MAX_BATCH_BYTES } from './contentRecord';
+export const RECOVERY_PAGE_BYTES=128*1024;
+type Header = {kind:'content';recordKind:'state'|'update';gen:number;seq:number} | {kind:'journal';key:string;generation:number};
+export interface RecoveryPart {readonly index:number;readonly header:Header;readonly total:number;readonly offset:number;readonly bytes:Bytes}
+export interface RecoveryPage {readonly parts:readonly RecoveryPart[];readonly done:boolean}
+const refuse=()=>Error('Worker recovery stream changed or exceeded its bound.');
+/** Takes ownership of the projected recovery and erases each source after its final copied fragment. */
+export function createAccountRecoveryStream(recovery:JournalRecovery){
+ const entries:{header:Header;bytes:Bytes}[]=[...recovery.records.map(r=>{
+  if(r.kind!=='state'&&r.kind!=='update')throw refuse();
+  return{header:{kind:'content' as const,recordKind:r.kind,gen:r.gen,seq:r.seq},bytes:r.bytes};
+ }),...recovery.journal.map(r=>({header:{kind:'journal' as const,key:r.key,generation:r.generation},bytes:r.bytes}))];
+ let index=0,offset=0,closed=false;
+ return Object.freeze({
+  counts:{records:recovery.records.length,journal:recovery.journal.length},
+  next():RecoveryPage{
+   if(closed)throw refuse();const parts:RecoveryPart[]=[];let size=0;
+   while(index<entries.length&&parts.length<128){
+    const entry=entries[index]!;
+    if(entry.bytes.length>MAX_BATCH_BYTES||entry.bytes.length===0)throw refuse();
+    const available=Math.min(64*1024,RECOVERY_PAGE_BYTES-size-1024);if(available<=0)break;
+    const length=Math.min(available,entry.bytes.length-offset);parts.push({index,header:{...entry.header},total:entry.bytes.length,offset,bytes:entry.bytes.slice(offset,offset+length)});offset+=length;size+=length+1024;
+    if(offset===entry.bytes.length){entry.bytes.fill(0);index++;offset=0;}
+   }
+   const done=index===entries.length;if(done)closed=true;return{parts,done};
+  },
+  close(){closed=true;for(const e of entries)e.bytes.fill(0);},
+ });
+}
+export async function readAccountRecoveryStream(counts:{records:number;journal:number},next:()=>Promise<RecoveryPage>,live:()=>void):Promise<JournalRecovery>{
+ const result:JournalRecovery={records:[],journal:[]};let pending:{header:Header;bytes:Bytes;offset:number}|undefined,index=0;
+ if(!Number.isSafeInteger(counts.records)||counts.records<0||!Number.isSafeInteger(counts.journal)||counts.journal<0)throw refuse();
+ try{
+  for(;;){
+   live();const page=await next();
+   try{
+    live();
+    if(!Array.isArray(page.parts)||page.parts.length>128||typeof page.done!=='boolean'||!page.done&&!page.parts.length)throw refuse();
+    for(const part of page.parts){
+     live();
+     if(!Number.isSafeInteger(part.index)||part.index!==index||!Number.isSafeInteger(part.total)||part.total<1||part.total>MAX_BATCH_BYTES||!Number.isSafeInteger(part.offset)||part.offset<0||!(part.bytes instanceof Uint8Array)||!part.bytes.length||part.bytes.length>64*1024||part.offset+part.bytes.length>part.total)throw refuse();
+     const h=part.header;
+     if(index<counts.records){
+      if(h.kind!=='content'||!['state','update'].includes(h.recordKind)||!Number.isSafeInteger(h.gen)||h.gen<1||!Number.isSafeInteger(h.seq)||h.seq<1||Object.keys(h).sort().join()!=='gen,kind,recordKind,seq')throw refuse();
+     }else if(h.kind!=='journal'||typeof h.key!=='string'||h.key.length>512||!Number.isSafeInteger(h.generation)||h.generation<1||Object.keys(h).sort().join()!=='generation,key,kind')throw refuse();
+     if(!pending){if(part.offset!==0||index>=counts.records+counts.journal)throw refuse();pending={header:{...h},bytes:new Uint8Array(part.total),offset:0};}
+     if(JSON.stringify(h)!==JSON.stringify(pending.header)||pending.bytes.length!==part.total||part.offset!==pending.offset)throw refuse();
+     pending.bytes.set(part.bytes,pending.offset);pending.offset+=part.bytes.length;
+     if(pending.offset===pending.bytes.length){
+      const {header,bytes}=pending;
+      if(header.kind==='content')result.records.push({kind:header.recordKind,gen:header.gen,seq:header.seq,bytes});
+      else result.journal.push({key:header.key,generation:header.generation,bytes});
+      pending=undefined;index++;
+     }
+    }
+    if(page.done){if(pending||index!==counts.records+counts.journal)throw refuse();return result;}
+   }finally{for(const part of page.parts??[])part.bytes?.fill(0);}
+  }
+ }catch(cause){pending?.bytes.fill(0);for(const r of[...result.records,...result.journal])r.bytes.fill(0);throw cause;}
+}

@@ -1,3 +1,4 @@
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 import { wrapAccountJournal, unwrapAccountJournal, type JournalBinding } from './journalEra';
 import { hex, random, type Bytes } from './custodyCrypto';
 import {
@@ -75,6 +76,7 @@ export const createJournalOwner = (
   retainedKeys: ReadonlyMap<number, Bytes> = new Map(),
   binding: () => JournalBinding | undefined = () => undefined,
 ) => {
+  const asynchronous = accountWorkerRuntime(scope.slotId)?.journal;
   const prefix = journalPrefix(dbName),
     writer = hex(random(16));
   const openers = new Map<number, { key: Bytes; codec: ReturnType<typeof createJournalCodec> }>();
@@ -169,8 +171,26 @@ export const createJournalOwner = (
       damaged = new JournalError('repair-required', 'An immutable journal entry was replaced.');
   };
   const stopStorage = pageRuntimePorts.journal.onStorage(onStorage);
+  const openRaw = (raw: import('./windowJournalBridge').RawJournalSnapshot): ObservedEntry[] => {
+    alive();
+    const opened: ObservedEntry[] = [];
+    try {
+      const keys = new Set<string>();
+      for (const [key, value] of raw.entries) {
+        if (!key.startsWith(prefix) || keys.has(key)) throw changed();
+        keys.add(key);
+        opened.push({ key, value, ...open(key, value) });
+      }
+      observedCharacters = raw.characters;
+      return opened;
+    } catch (cause) {
+      eraseJournalSnapshot(opened);
+      throw cause;
+    }
+  };
   const snapshot = (): ObservedEntry[] => {
     alive();
+    if (asynchronous) return openRaw(asynchronous.pinned(prefix));
     const opened: ObservedEntry[] = [];
     try {
       const s = storage(),
@@ -210,6 +230,7 @@ export const createJournalOwner = (
     }
   };
   return {
+    asynchronous: !!asynchronous,
     snapshot,
     /** Read-only attempts only. The optional first failure is the synchronous invocation capture. */
     async readSnapshot(task: SessionTask, firstFailure?: JournalError): Promise<ObservedEntry[]> {
@@ -218,6 +239,25 @@ export const createJournalOwner = (
       for (let attempt = firstFailure ? 1 : 0; attempt < JOURNAL_SNAPSHOT_ATTEMPTS; attempt++) {
         if (changed) await retrySnapshotAfter(task, attempt === 1 ? 0 : 8);
         try {
+          if (asynchronous) {
+            let raw;
+            try {
+              raw = await task.wait(() => asynchronous.read(prefix));
+            } catch (cause) {
+              if (
+                cause &&
+                typeof cause === 'object' &&
+                'code' in cause &&
+                cause.code === 'journal-changed'
+              )
+                throw new JournalError(
+                  'journal-changed',
+                  'Journal changed during asynchronous capture.',
+                );
+              throw cause;
+            }
+            return task.step(() => openRaw(raw));
+          }
           return task.step(snapshot);
         } catch (cause) {
           if (!isJournalChanged(cause)) throw cause;
@@ -238,6 +278,7 @@ export const createJournalOwner = (
     },
     append(update: Bytes): JournalAdmission {
       alive();
+      if (asynchronous) return { status: 'refused', reason: 'unavailable' };
       if (!(update instanceof Uint8Array))
         throw new JournalError('invalid-input', 'A local update must be bytes.');
       const pair = binding();
@@ -295,6 +336,24 @@ export const createJournalOwner = (
             batch.map((e) => e.bytes),
           ),
         );
+        if (asynchronous) {
+          const receipt = await task.wait(() =>
+            asynchronous.remove(
+              prefix,
+              batch.map((e) => [e.key, e.value] as const),
+            ),
+          );
+          task.step(() => {
+            removed.count += receipt.removed;
+            retained.count += receipt.retained + receipt.changed;
+            if (receipt.changed)
+              damaged = new JournalError(
+                'repair-required',
+                'A journal entry changed before cleanup.',
+              );
+          });
+          continue;
+        }
         task.step(() => {
           for (const entry of batch) {
             try {

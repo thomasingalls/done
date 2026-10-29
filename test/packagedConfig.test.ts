@@ -44,7 +44,7 @@ it('cached account opens before the service responds and its protocol hint can r
   expect(config?.membershipContinuation).toBe(false);
   finish(response({ v: 2, pin, networkSessions: true, membershipContinuation: true }));
   await vi.waitFor(() => expect(config?.membershipContinuation).toBe(true));
-  expect(values.get('done.account-service.membership.v2')).toBe('1');
+  await vi.waitFor(() => expect(values.get('done.account-service.membership.v2')).toBe('1'));
 });
 it('offline or wrong-pin configuration cannot erase or replace the retained capability', async () => {
   const values = storage();

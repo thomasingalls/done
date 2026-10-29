@@ -1,3 +1,4 @@
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 import {
   hasBaselineReader,
   hasBaselineVerifier,
@@ -797,6 +798,7 @@ async function openAccountReceiveOwner(
     invalidateFinalApply,
     checkFinalApply,
     runBaselineShadow,
+    copyMirrorOpening,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
   invalidateFinalPermission = invalidateFinalApply;
   const checkLocalBaseline: (() => Promise<BaselineShadowResult>) | undefined =
@@ -2801,6 +2803,7 @@ async function openAccountReceiveOwner(
     api,
     account,
     carrier,
+    copyMirrorOpening,
     listCaptures,
     fetchPage,
     checkLocalBaseline,
@@ -2833,6 +2836,16 @@ async function openAccountReceiveOwner(
       historyDue = 0;
     },
   };
+}
+
+/** Internal worker factory; ordinary compatibility/factor/passkey and native checks still run. */
+export function openAccountWorkerStore(
+  input: AccountStartupOptions,
+  principalId: string,
+  joined = false,
+) {
+  if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
+  return openAccountReceiveOwner(input, principalId, () => true, false, joined);
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */

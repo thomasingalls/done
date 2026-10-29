@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 579,
-    "requiredTestFiles": 573,
+    "testFiles": 582,
+    "requiredTestFiles": 576,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9462,6 +9462,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-worker-cohort/runtime.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.account-worker-cohort.config.ts",
+        "packages": []
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/accountAuthority.test.ts",
       "status": "required",
       "invocation": {
@@ -9780,6 +9791,21 @@
         ]
       },
       "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/accountWorkerRecoveryStream.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountWorkerRecoveryStream.test.ts"
+        ]
+      },
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -12073,6 +12099,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/packagedConfig.test.ts"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packagedConfigRefreshOrder.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/packagedConfigRefreshOrder.test.ts"
+        ]
+      },
+      "declarations": 1,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15943,7 +15984,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "6bebb301c100e19c9937086c8168093eb45002ba4af6fff7d3448cc76571115a"
+      "sha256": "ba61e047208582837b1c116b5985eeb5096504b4def292587168b8006c8d0c4a"
     },
     {
       "path": "package.json",
@@ -18994,6 +19035,18 @@
       "sha256": "365b1aca979b3900f7ea25ee241ffe0ece61c0d9f5c76836d459cb1c71f8d9a0"
     },
     {
+      "path": "test/account-worker-cohort/runtime.spec.ts",
+      "sha256": "ebcd799d1483a0f710f36bc65b869134625adbbb52dd3977bf343c72b380397d"
+    },
+    {
+      "path": "test/account-worker-cohort/runtimeMember.ts",
+      "sha256": "ee4a62c96a9ca681b1159c8a58e9d728c6fba88a78e0e75f0ceefb5e7ed6d536"
+    },
+    {
+      "path": "test/account-worker-cohort/runtimePage.ts",
+      "sha256": "b3d823cb082e0ca164f488fd6382ab865dd89de41af66deacaac16c1ff617454"
+    },
+    {
       "path": "test/accountAuthority.test.ts",
       "sha256": "9f817c1b533d4d9706fdad070e44b7dbf61e1e2abd14a7eaa66f9b4f05f9d220"
     },
@@ -19068,6 +19121,10 @@
     {
       "path": "test/accountWorkerCohort.test.ts",
       "sha256": "345eac962157d06357072d77565176f7621ed8262b71a78ae2baa7b032d5fb84"
+    },
+    {
+      "path": "test/accountWorkerRecoveryStream.test.ts",
+      "sha256": "47389641589ef6f55101ac7fe676fd73a9aa6cb6ef451b86bd412a701ae60b2c"
     },
     {
       "path": "test/admission/browser.mjs",
@@ -20119,7 +20176,11 @@
     },
     {
       "path": "test/packagedConfig.test.ts",
-      "sha256": "a05745e51354e4b31eff8feb3e30dd8d0e182cb58cbef544bb83391e3cd7265e"
+      "sha256": "14a0e29124a90d9282ed9d612c44c1c9aa2c7bbdec2d13feb9739d4d2efdeb44"
+    },
+    {
+      "path": "test/packagedConfigRefreshOrder.test.ts",
+      "sha256": "76f884e4b2cfc1e1a4bcab2a6d6067e33a3ceab459213268bd9b46d78b0df944"
     },
     {
       "path": "test/passkeyResponse.test.ts",

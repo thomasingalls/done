@@ -1,0 +1,24 @@
+{
+  "baseCommit": "8d6d42c1c723f3dff7c7822b2358a813dc8c16e6",
+  "requiresPhase": 167,
+  "labRoot": "/private/tmp/done-worker-conversion-20261028/native168",
+  "reproduction": {
+    "build.mjs": "reproduction/build.mjs.txt",
+    "run.py": "reproduction/run.py.txt",
+    "container-service.mjs": "reproduction/container-service.mjs.txt",
+    "observer.mjs": "reproduction/observer.mjs.txt",
+    "lab/main.mjs": "reproduction/lab/main.mjs.txt",
+    "lab/index.html": "reproduction/lab/index.html.txt",
+    "harness/test/account-continuation-lab/runtime.mjs": "reproduction/harness/test/account-continuation-lab/runtime.mjs.txt",
+    "harness/test/account-continuation-lab/worker-owner.spec.ts": "reproduction/harness/test/account-continuation-lab/worker-owner.spec.ts.txt",
+    "harness/test/account-continuation-lab/worker-owner.config.ts": "reproduction/harness/test/account-continuation-lab/worker-owner.config.ts.txt",
+    "harness/test/account-continuation-lab/devices.ts": "reproduction/harness/test/account-continuation-lab/devices.ts.txt",
+    "harness/test/account-continuation-lab/common.ts": "reproduction/harness/test/account-continuation-lab/common.ts.txt",
+    "harness/test/account-continuation-lab/seed-profile.ts": "reproduction/harness/test/account-continuation-lab/seed-profile.ts.txt",
+    "harness/scripts/lib/packaged-application.mjs": "reproduction/harness/scripts/lib/packaged-application.mjs.txt"
+  },
+  "build": "build-identity.json.gz",
+  "noSourceTransforms": true,
+  "privateFixture": "fictional H first device v9 from phases155/162; factors and credentials omitted",
+  "originalConfigSourceCommit": "6eeb7d5f"
+}

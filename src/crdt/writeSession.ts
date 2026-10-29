@@ -1,3 +1,4 @@
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 /**
  * SC-03's slot-wide writer lifetime. This is a coordination capability, not
  * custody, admission, or a retirement census. Participating callers must keep
@@ -92,6 +93,7 @@ async function acquire(
   mode: LockMode,
   options: WriteSessionOptions,
   compatibility = checkStorageCompatibility,
+  workerJoin?: NonNullable<ReturnType<typeof accountWorkerRuntime>>['join'],
 ): Promise<WriteSession> {
   const name = slotPermitName(slotId);
   let locks: LockManager;
@@ -118,6 +120,7 @@ async function acquire(
   let request: Promise<unknown>;
 
   const assertLive = (initializing = false): void => {
+    if (workerJoin) accountWorkerRuntime(slotId)!.assertCurrent();
     if (state !== 'active' && !(initializing && state === 'opening')) throw inactive();
   };
 
@@ -240,7 +243,7 @@ async function acquire(
   // Freeze alone is not pagehide: a frozen writer continues holding its permit.
   const stopPageHide = pageRuntimePorts.lifetime.onPageHide(cancel);
   try {
-    request = locks.request(name, { mode, signal: stopped.signal }, async () => {
+    request = (workerJoin ?? locks).request(name, { mode, signal: stopped.signal }, async () => {
       granted = true;
       try {
         await task(async (scope) => {
@@ -352,6 +355,19 @@ export const withPromotionSlot = async <T>(
   }
 };
 
+const workerSessionOptions = (
+  slotId: string,
+  options: WriteSessionOptions,
+): WriteSessionOptions => {
+  const worker = accountWorkerRuntime(slotId);
+  return worker
+    ? {
+        ...options,
+        signal: options.signal ? AbortSignal.any([options.signal, worker.signal]) : worker.signal,
+      }
+    : options;
+};
+
 /** Internal Account lifetime: exclusive through activation, editing and disposal. The caller must
  * verify selected/active progress, pinned binding and fresh passkey inside initialize. */
 export const openAccountWriteSession = (
@@ -359,25 +375,31 @@ export const openAccountWriteSession = (
   code: string,
   options: WriteSessionOptions & { initialize: NonNullable<WriteSessionOptions['initialize']> },
 ): Promise<WriteSession> =>
-  acquire(slotId, 'exclusive', options, async (task, slot) => {
-    const { checkPromotionCompatibility, readPromotion } = await task.wait(
-      () => import('./promotionRecord'),
-    );
-    await checkPromotionCompatibility(task, slot, code);
-    const { marker } = await readPromotion(task, slot, code);
-    if (
-      !marker ||
-      !(
-        (marker.v === 4 && marker.stage === 'handoff-selected') ||
-        (marker.v === 5 && marker.stage === 'account-active') ||
-        (marker.v === 6 && marker.stage === 'account-capturing') ||
-        (marker.v === 7 && marker.stage === 'account-spooling') ||
-        (marker.v === 8 && marker.stage === 'account-delivering') ||
-        (marker.v === 9 && marker.stage === 'account-receiving')
+  acquire(
+    slotId,
+    accountWorkerRuntime(slotId) ? 'shared' : 'exclusive',
+    workerSessionOptions(slotId, options),
+    async (task, slot) => {
+      const { checkPromotionCompatibility, readPromotion } = await task.wait(
+        () => import('./promotionRecord'),
+      );
+      await checkPromotionCompatibility(task, slot, code);
+      const { marker } = await readPromotion(task, slot, code);
+      if (
+        !marker ||
+        !(
+          (marker.v === 4 && marker.stage === 'handoff-selected') ||
+          (marker.v === 5 && marker.stage === 'account-active') ||
+          (marker.v === 6 && marker.stage === 'account-capturing') ||
+          (marker.v === 7 && marker.stage === 'account-spooling') ||
+          (marker.v === 8 && marker.stage === 'account-delivering') ||
+          (marker.v === 9 && marker.stage === 'account-receiving')
+        )
       )
-    )
-      throw Error('Account handoff needs resumption');
-  });
+        throw Error('Account handoff needs resumption');
+    },
+    accountWorkerRuntime(slotId)?.join,
+  );
 
 /** Private joined-device lifetime. The new interlock refuses every older writer. */
 export const openJoinedWriteSession = (
@@ -385,10 +407,16 @@ export const openJoinedWriteSession = (
   code: string,
   options: WriteSessionOptions,
 ): Promise<WriteSession> =>
-  acquire(slotId, 'exclusive', options, async (task, slot) => {
-    const { readJoinedAccount } = await task.wait(() => import('./joinedAccount'));
-    await readJoinedAccount(task, slot, code);
-  });
+  acquire(
+    slotId,
+    accountWorkerRuntime(slotId) ? 'shared' : 'exclusive',
+    workerSessionOptions(slotId, options),
+    async (task, slot) => {
+      const { readJoinedAccount } = await task.wait(() => import('./joinedAccount'));
+      await readJoinedAccount(task, slot, code);
+    },
+    accountWorkerRuntime(slotId)?.join,
+  );
 export async function withJoinedSlot<T>(
   slotId: string,
   code: string,

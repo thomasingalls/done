@@ -628,6 +628,17 @@ export async function openAccountCaptureOwner(
       }),
   });
   return {
+    copyMirrorOpening: () =>
+      run(async (task) => ({
+        ...(await owner!.copyMirrorJournalOpening(task)),
+        route: {
+          workspace: route.workspace,
+          principal: route.principal,
+          credential: route.credential,
+          epoch: route.epoch,
+          generation: route.generation,
+        },
+      })),
     account,
     carrier,
     // Synchronous admission barrier. Retention still owns the permit and serialized storage tail.
