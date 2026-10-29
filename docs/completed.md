@@ -17346,3 +17346,20 @@ No latency or stall-fix claim.420source census retains all198 domains;940/394 ob
 blocked, including both new tests uncredited, with every prior manifest row retained. Append this
 outcome before advancing owned backlog. Freeze166 after165; no real staging/signing/push, preview
 change, activation, release preparation or deployment.
+
+
+## 2026-10-29 — Phase167: bounded asynchronous Window journal transport
+
+Continue the authorized conversion with a scoped raw encrypted-journal endpoint and bidirectional
+MessagePort channel, replacing neither the existing synchronous append nor any runtime yet. Check
+the actual cohort/index-derived database; page stable ciphertext and compare/remove exact committed
+values in16-entry calls. There is no worker append, decryption or arbitrary storage authority. Bound
+messages/backing allocations, requests, snapshot credits, schema/sequence/incarnation and lifetime;
+erase owned binary replies and refuse stale completions. [Evidence](performance-experiments/2026-10-28-worker-owner/phase167/README.md).
+
+23new/51focused cases,98metadata cases, type/lint/format pass. Preserve the new fixture's generic
+SessionTask type and sparse-array lint refusals; all420 old runtime sources and old tests stay exact.
+New422-source census retains198 domains;942/396 qualification obligations stay blocked, both new
+files uncredited and every prior row retained. Actual browser worker/native owner, admission/receive,
+maintenance and application conversion remain following bounded phases. No latency claim or gate,
+format, activation, preview, real-index, signing/push or release change. Append before owned status.

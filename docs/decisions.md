@@ -5965,3 +5965,16 @@ state. Use the original shipping reader as the recovery oracle across lost conte
 successful isolated proof does not select shared memory, require isolation headers or activate the
 product. Production-compatible storage messaging, large-message strategy and actual Goals/peer gates
 must precede activation. Keep all existing guards and16ms/2.5s/30s gates. No service automation.
+
+
+## 2026-10-29 — Complete the worker conversion before measuring acceptance
+
+The operator authorizes continuing bounded phases/sequential patches through the actual conversion,
+then measuring the unchanged performance targets. Replace the experimental shared-memory storage
+mailbox with bounded asynchronous ciphertext paging and exact cleanup. Keep sealed local acceptance
+and command/Undo ownership in Window; keep account authority, native history/verification, scheduler
+and maintenance together in the worker. A raw capture or message identifier grants no proof authority.
+Final native changes must retain the actual Window admission fence where synchronous journal/route
+checks require it; cached storage or serialized verification success cannot replace that fence.
+Preserve page-bound passkey/lifecycle endpoints, compatibility, cancellation and uncertain recovery.
+Service automation remains off, general qualification paused, no release or publication authorized.

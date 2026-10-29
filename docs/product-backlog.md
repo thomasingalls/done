@@ -125,6 +125,14 @@ skip pass. The default app still runs on the page: replace the lab-only storage 
 large bootstrap and integrate actual Goals/joined/receive/maintenance paths before activation and
 input/peer acceptance. No reported-stall closure or performance credit; service automation stays off.
 
+**Authorized continuation,2026-10-29:** complete the worker conversion in bounded phases and sequential
+patches, then measure the unchanged performance targets. [Phase167](performance-experiments/2026-10-28-worker-owner/phase167/README.md)
+adds the scoped asynchronous encrypted-journal endpoint and bounded bidirectional channel (23new,
+51focused cases). Existing runtime execution is still unchanged. Next connect the actual worker
+native owner without shared-memory/build transforms, then receive/maintenance and application routes.
+Raw messages/captures confer no verification authority; final changes retain the Window admission
+fence. This supersedes the original discussion-only status above; no release preparation.
+
 ## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday

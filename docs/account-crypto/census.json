@@ -1356,6 +1356,14 @@
       "sha256": "5047f436891252f5038cdc865e004231c8e636eebcc00631b7455bdea790bf1c"
     },
     {
+      "path": "src/crdt/windowJournalBridge.ts",
+      "sha256": "ab6f9c6795f932ef385c4414a48fdf5767ee870719e58877d1afd352ec3e1764"
+    },
+    {
+      "path": "src/crdt/workerChannel.ts",
+      "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
+    },
+    {
       "path": "src/crdt/workspaceChannel.ts",
       "sha256": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2"
     },
