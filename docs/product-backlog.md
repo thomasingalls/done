@@ -763,3 +763,8 @@ Phase236 packaged Worker chunks and protected offline writing verified. Continue
 ## 2026-10-29 — phase237: Worker boundary and inconvenient results
 
 Phase237: public heavy owners execute in actual Workers. Cold public entry after native baseline/maintenance remains unresolved; repair three config-return expectations and diagnose cold boundary before performance acceptance. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).
+
+
+## 2026-10-29 — phase238: exact configuration fixture
+
+Phase238 resolves the three classified full-unit fixture failures; whole-suite rerun remains due after runtime closure. Post-baseline public cold entry trace next. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).

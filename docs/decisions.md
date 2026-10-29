@@ -6347,3 +6347,8 @@ Exempt only two exact hashed public JavaScript filename families from the old pr
 ## 2026-10-29 — phase237: Worker boundary and inconvenient results
 
 Keep intentional Window canonical UI/journal/provider and explicit legacy compatibility boundaries visible; distinguish completed placement from failed latency/cold-entry outcomes. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).
+
+
+## 2026-10-29 — phase238: exact configuration fixture
+
+Keep exact returned-config shape assertions, adding the public subscription function rather than weakening them to partial matching. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).

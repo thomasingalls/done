@@ -17991,3 +17991,8 @@ Packaged precache exact bytes and both protected offline cold-write flows pass a
 ## 2026-10-29 — phase237: Worker boundary and inconvenient results
 
 Runtime boundary mapped. Native matrix5pass/3fail; full units2731pass/3exact config fixture failures/one existing skip. Preserve deep30s and post-maintenance15s cold-open failures; read-only diagnosis next. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).
+
+
+## 2026-10-29 — phase238: exact configuration fixture
+
+Four config expectations repaired in three old tests; every other byte/assertion retained.16 focused private-access/config/subscription/order cases pass. No runtime change. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).

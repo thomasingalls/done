@@ -2193,7 +2193,7 @@
     {"path":"test/preparationRemoval.test.ts","sha256":"5b618ecc72d0ad41ddaa3597200bf5d448c1f1e42d203431ed685f6684cf55e3"},
     {"path":"test/preparedCoverage.test.ts","sha256":"66b4d1992fa9625f73c710e35532136f2890abb625c4b84d6296c314192549cd"},
     {"path":"test/private-migration/rehearsal.spec.ts","sha256":"ef329efe77bd3f630a9996c550b495af70f91740b87a54241c8390e6d06a362f"},
-    {"path":"test/privateAccess.test.ts","sha256":"2533dc7d899e06753e1206d6d1ac28489e63c2422ef1c8fef003db09223c33bb"},
+    {"path":"test/privateAccess.test.ts","sha256":"63095d90252c14b8a76a76c784d5477c97a967d95a91de36da77e44848d3ede3"},
     {"path":"test/privateDeliveryHttp.test.ts","sha256":"087a992b1fba4c922698504b0812a499868a75a00f521f62d6a4b8c76167c402"},
     {"path":"test/privateDiscoveryHttp.test.ts","sha256":"d1369cf98fb64ee589c855ae4b7a81434fca8737ad06d5a9bed0481ace242839"},
     {"path":"test/privateMigration.test.ts","sha256":"4f520923ff571eb7f57720a57ee10d18047064d75144eede1dd13b05f8f15411"},
