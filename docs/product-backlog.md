@@ -682,3 +682,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase212:** idle setup no longer blocks unrelated fresh Account ownership; actual native slot-task fencing remains. Next native wizard/browser/workspace handoff, recovery/enrollment, offline/default activation, then unchanged measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase212/README.md).
+
+
+**Phase213:** original setup browser effects isolated; compact planning snapshot retains all obligations and limit. Next native setup composition/context and stable controller channel; defaultPage, unchanged gates pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase213/README.md).

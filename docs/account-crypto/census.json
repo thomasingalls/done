@@ -581,7 +581,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "45749a36bf147714ebb3a99b2ce07d1224370e021c585df8e5c02a393721b6e3"
+      "sha256": "23923a78cd74b527412df9445105646caa1f0f504f093da6b6b5603c5d43ef51"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -706,6 +706,10 @@
     {
       "path": "src/account/sessionVault.ts",
       "sha256": "b3dd572235b741fd1c32e707fb28163cc810bda1a7d6a800eece97d66bd3ee55"
+    },
+    {
+      "path": "src/account/setupBrowser.ts",
+      "sha256": "7edc8e9a3bdb6223a80ac29b279c34e260d5cd3e98897c1364f20bb8ecd0f601"
     },
     {
       "path": "src/account/setupMetadata.ts",

@@ -30,12 +30,11 @@ import { readLocalClaim } from '../crdt/localGenesisRecord';
 import type { StartupDisposition } from '../crdt/startupState';
 import { readPromotion } from '../crdt/promotionRecord';
 import { hex } from '../crdt/custodyCrypto';
-import type { LocalPasskey } from '../crdt/accountAccess';
 import { withRecoveryOwner } from './recoveryOwner';
 import { verifyPendingProof } from '../../account-protocol/preparation';
 import type { PromotionOpening } from './promotionOpening';
 import { SetupRetired } from './setupMetadata';
-import { registrationResponse, authenticationResponse } from './passkeyResponse';
+import { createPageSetupBrowser, type SetupBrowserFactory } from './setupBrowser';
 
 import {
   SETUP_DB,
@@ -66,6 +65,7 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
   slotId: string,
   takeInitialCode: (() => string | undefined) | undefined,
   execution: SetupWorkspaceExecution<W>,
+  browserFactory: SetupBrowserFactory = createPageSetupBrowser,
 ) {
   progressKey(slotId);
   const progress = createSetupProgress(slotId);
@@ -203,51 +203,9 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
     abandon: (body: unknown) => request('preparation/abandon', body),
   };
   const proveAuthority = (body: unknown) => request('authority/prove', body);
-  const assert = async (options: unknown) => {
-    guard();
-    const credential = (await navigator.credentials.get({
-      publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
-        options as PublicKeyCredentialRequestOptionsJSON,
-      ),
-      signal: lifetime.signal,
-    })) as PublicKeyCredential | null;
-    guard();
-    if (!credential) throw Error('Passkey request cancelled');
-    return authenticationResponse(credential);
-  };
-  const assertPasskey: LocalPasskey = async ({
-    rpId,
-    credentialId,
-    challenge,
-    signal: ceremonySignal,
-  }) => {
-    const credential = (await navigator.credentials.get({
-      publicKey: {
-        rpId,
-        challenge: new Uint8Array(challenge),
-        userVerification: 'required',
-        allowCredentials: [
-          {
-            id: Uint8Array.from(atob(credentialId.replaceAll('-', '+').replaceAll('_', '/')), (c) =>
-              c.charCodeAt(0),
-            ),
-            type: 'public-key',
-          },
-        ],
-      },
-      signal: ceremonySignal ? AbortSignal.any([lifetime.signal, ceremonySignal]) : lifetime.signal,
-    })) as PublicKeyCredential | null;
-    guard();
-    if (!credential) throw Error('Passkey request cancelled');
-    const response = credential.response as AuthenticatorAssertionResponse;
-    return {
-      credentialId: credential.id,
-      authenticatorData: new Uint8Array(response.authenticatorData),
-      clientDataJSON: new Uint8Array(response.clientDataJSON),
-      signature: new Uint8Array(response.signature),
-      userHandle: response.userHandle ? new Uint8Array(response.userHandle) : null,
-    };
-  };
+  const browser = browserFactory(lifetime.signal, guard);
+  const assert = (options: unknown) => browser.authenticate(options, lifetime.signal);
+  const assertPasskey = browser.assertSlot;
   const checkedSaved = (value: Retained | null) => {
     if (
       value &&
@@ -901,25 +859,9 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
           const view = saved.view;
           let response: unknown;
           if (view.operation === 'register') {
-            const options = PublicKeyCredential.parseCreationOptionsFromJSON(
-              view.options as PublicKeyCredentialCreationOptionsJSON,
-            );
-            if (saved.requestedName)
-              options.user = {
-                ...options.user,
-                // The generated account ID disambiguates matching personal names in
-                // credential details. Never change the service-issued user handle.
-                name: (view.options as PublicKeyCredentialCreationOptionsJSON).user.id,
-                displayName: `${saved.requestedName} · ${(view.options as PublicKeyCredentialCreationOptionsJSON).user.id}`,
-              };
-            const credential = (await navigator.credentials.create({
-              publicKey: options,
-              signal: lifetime.signal,
-            })) as PublicKeyCredential | null;
-            guard();
-            if (!credential) throw Error('Passkey request cancelled');
-            response = registrationResponse(credential);
+            response = await browser.register(view.options, saved.requestedName, lifetime.signal);
           } else response = await assert(view.options);
+          guard();
           saved = {
             ...saved,
             proof: {

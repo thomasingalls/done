@@ -6222,3 +6222,8 @@ service user handles. Inactive calls remain asynchronous rejections.
 ## 2026-10-29 — idle ceremony supervision has a separate reservation
 
 Readonly setup roots hold no editing old-slot lease and use their own shared reservation. Account/Local native joins retain their original global reservations and actual task fencing. A real two-Window counterexample justifies this separation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase212/README.md).
+
+
+## 2026-10-29 — setup browser effects and compact planning values
+
+Keep original Page credential statements behind an explicit factory for native setup ownership. Preserve service user handles and original verifiers. Preserve the700k planning limit using lossless per-entry JSON, with independent digest/drift checks. [Evidence](performance-experiments/2026-10-28-worker-owner/phase213/README.md).
