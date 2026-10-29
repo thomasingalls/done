@@ -1,3 +1,4 @@
+import type { WorkerAccountContext } from './workerAccountContext';
 import type { WorkerCeremonyOpening } from './workerCeremonyOpening';
 /** A same-realm transition only after actual ceremony cleanup. No opening capability is serialized. */
 import {
@@ -12,7 +13,11 @@ import type { WorkerChannel } from './workerChannel';
 export function createWorkerAccountHandoff(
   root: Awaited<ReturnType<typeof openCeremonyWorkerLifetime>>,
   channel: WorkerChannel,
-  opening?: { take(): WorkerCeremonyOpening; close(): void },
+  opening?: {
+    take(): WorkerCeremonyOpening | undefined;
+    context?(): WorkerAccountContext;
+    close(): void;
+  },
 ) {
   requireCeremonyWorkerLifetime(root);
   root.assertCurrent();
@@ -74,7 +79,7 @@ export function createWorkerAccountHandoff(
         ready = false;
         clearTimeout(timer);
         channel.close();
-        startAccountWorkerOwner(m, opening?.take());
+        startAccountWorkerOwner(m, opening?.take(), opening?.context?.());
         return true;
       } catch {
         fail();

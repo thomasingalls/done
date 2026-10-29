@@ -1,3 +1,4 @@
+import { createWindowSetupActorBridge } from './setupActorBridge';
 import { takeWindowAccountHandoff, type WindowAccountHandoff } from './windowAccountHandoff';
 import { watchWindowWorkerLifetime } from './windowWorkerLifetime';
 import { forwardWorkerConfiguration } from './workerConfiguration';
@@ -85,6 +86,7 @@ export async function openAccountWorkerSession(
   let readyFlight: Promise<void> | undefined,
     composedController: MirrorController | undefined,
     composedQueues: ReturnType<typeof createWindowWorkspaceQueues> | undefined,
+    setupActor: ReturnType<typeof createWindowSetupActorBridge> | undefined,
     observingWorkspace = false;
   let session: ReturnType<typeof createWindowAccountSession> | undefined;
   let receiveSequence = 0;
@@ -303,6 +305,7 @@ export async function openAccountWorkerSession(
           );
           cohort.write(() => {});
           composedQueues = createWindowWorkspaceQueues(composedController, cohort, channel!);
+          setupActor = createWindowSetupActorBridge(composedController, cohort, identity.id);
           return workspaceSchedulingStatus(composedController.workspace.status);
         },
         workspaceObserve: () => {
@@ -319,6 +322,14 @@ export async function openAccountWorkerSession(
             },
           );
           cohort.disposeWith(forwarder.close);
+        },
+        setupActorName: (input) => {
+          if (!setupActor) throw Error('Window setup actor unavailable');
+          return setupActor.actorName(input);
+        },
+        setupActorRename: (input) => {
+          if (!setupActor) throw Error('Window setup actor unavailable');
+          return setupActor.rename(input);
         },
         workspaceDurable: async () => {
           cohort.write(() => {});

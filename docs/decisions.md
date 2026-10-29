@@ -6227,3 +6227,8 @@ Readonly setup roots hold no editing old-slot lease and use their own shared res
 ## 2026-10-29 — setup browser effects and compact planning values
 
 Keep original Page credential statements behind an explicit factory for native setup ownership. Preserve service user handles and original verifiers. Preserve the700k planning limit using lossless per-entry JSON, with independent digest/drift checks. [Evidence](performance-experiments/2026-10-28-worker-owner/phase213/README.md).
+
+
+## 2026-10-29 — native setup callback context is separate from approval authority
+
+Keep genuine approvals in original WeakMaps. Bind same-realm callback/login routing to exact opening input and User lifetime; publish genuine composition locally after verification. Name changes use actual Window canonical admitted commands. Avoid shutdown awaiting its own coordinator. [Evidence](performance-experiments/2026-10-28-worker-owner/phase214/README.md).

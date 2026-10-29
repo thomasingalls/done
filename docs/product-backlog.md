@@ -685,3 +685,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase213:** original setup browser effects isolated; compact planning snapshot retains all obligations and limit. Next native setup composition/context and stable controller channel; defaultPage, unchanged gates pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase213/README.md).
+
+
+**Phase214:** same-realm setup refs plus canonical name effects verified. Next original native controller with stable UI control and quiescent handoff, enrollment/recovery/offline/default activation, then unchanged gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase214/README.md).

@@ -857,7 +857,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "90a84a3bbb300d0a5c860631bcafce506c8d7a6e39d5178ba9c31fb4caa818de"
+      "sha256": "df01c829c54ba67f5c42d6c2546e759482f48f1b621bb6371ab272727a2d2375"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -869,7 +869,7 @@
     },
     {
       "path": "src/crdt/accountWorkerOwner.ts",
-      "sha256": "478351f333cd8eb6ba901d5c57dd65a30557e5018484c267045e8e8436bfb3a6"
+      "sha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44"
     },
     {
       "path": "src/crdt/accountWorkerReceive.ts",
@@ -1408,6 +1408,10 @@
       "sha256": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2"
     },
     {
+      "path": "src/crdt/setupActorBridge.ts",
+      "sha256": "1126a76b3a3cad525083c51cc7008c22fdc79a2436cfe27ff6bd2c25cb2aa29a"
+    },
+    {
       "path": "src/crdt/slotIndex.ts",
       "sha256": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6"
     },
@@ -1500,8 +1504,12 @@
       "sha256": "60d1c45758eaec575ebc58871d74cddfa2fedc8150b516a16c452f494d4123ef"
     },
     {
+      "path": "src/crdt/workerAccountContext.ts",
+      "sha256": "d401077575f1bfcf659ea9b0ee588ddfa29c32562d5b6598eb77909b18b5a138"
+    },
+    {
       "path": "src/crdt/workerAccountHandoff.ts",
-      "sha256": "8ce903e27180aaafcc89da81adcdaf199eefa30d60c63d9112a5ec4ad4c0b88e"
+      "sha256": "a58b51c87791daae20f6bba6d6f0a33dcb6e58410c5446475d9f9e76da74356b"
     },
     {
       "path": "src/crdt/workerActivity.ts",
