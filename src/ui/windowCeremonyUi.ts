@@ -195,6 +195,7 @@ function createWindowCeremonyIncarnation<T>(
     preserve = false;
     handingOff = false;
     ended = false;
+    terminalTransition = undefined;
     sequence = 0;
     const stopped = new Promise<boolean>((resolve) => (acknowledged = resolve));
     cohort = await openWindowCeremonyCohort(
@@ -353,7 +354,7 @@ function createWindowCeremonyIncarnation<T>(
             worker?.terminate();
             if (!closed) {
               retire();
-              state = options.failure(!!poisoned);
+              state = options.failure(!!poisoned, terminalTransition);
               changed();
             }
             throw cause;

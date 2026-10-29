@@ -1953,7 +1953,7 @@
     },
     {
       "path": "src/ui/firstDeviceSetupWorker.ts",
-      "sha256": "1dedf40dae54cd3f6645fcb7650b4db91a27728b2bb3727dc095f5b6490bf0a9"
+      "sha256": "894ae5d73d5f7ddd22fc9e2f5116c132eae2be90b1568ef0421672fa43b00211"
     },
     {
       "path": "src/ui/localStartup.ts",
@@ -2021,7 +2021,7 @@
     },
     {
       "path": "src/ui/windowCeremonyUi.ts",
-      "sha256": "2a44cd1ef995c5b2456473cac4be35b533e1f91156cb8906f8adab793e36d275"
+      "sha256": "ab0075e479808eaf301a9e99a26f480f692c70b55b604914cf35e3d240893d22"
     },
     {
       "path": "src/ui/workspaceUi.tsx",

@@ -742,3 +742,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase232:** First-name entry race repaired; native actor algorithm unchanged. Next preserve account transition display and complete detached-copy checks, then remaining conversion validation and unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase232/README.md).
+
+
+**Phase233:** Promotion-device retirement/detached continuation now verified end to end. Next narrow comprehensive expected-removal entry fixture and remaining joined/recovery/offline/mixed checks, then unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase233/README.md).

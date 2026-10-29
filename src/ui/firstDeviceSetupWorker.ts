@@ -76,6 +76,7 @@ export function createWorkerFirstDeviceSetup(
           }
         : {
             kind: 'unlock',
+            ...(transition ? { returning: true } : {}),
             error:
               transition ??
               'The passkey step could not finish. Try unlocking again. Your saved setup and writing have been kept.',

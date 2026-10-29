@@ -6322,3 +6322,8 @@ The outgoing screen must not accept a factor while its owner closes. Add a Windo
 ## 2026-10-29 — phase232: constructor intro is not completed inspection
 
 Withhold the name form until original native inspection/idle complete. Keep genuine in-flight passkey approval available. This repairs lost form input without changing metadata or crypto algorithms. [Evidence](performance-experiments/2026-10-28-worker-owner/phase232/README.md).
+
+
+## 2026-10-29 — phase233: verified transition is display context only
+
+Use same-ticket native Account notice to preserve passkey-action wording, reset it on replacement and never infer an opening or authenticated workspace. Cleanup refusal remains blocked. [Evidence](performance-experiments/2026-10-28-worker-owner/phase233/README.md).

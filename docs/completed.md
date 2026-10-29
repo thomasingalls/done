@@ -17966,3 +17966,8 @@ Two new counterexamples/21 focused/99 metadata/type/lint pass. Clean unchanged n
 ## 2026-10-29 — phase232: initial name form lifetime
 
 Six new cases;20 focused/99 metadata/type/lint/format and two clean name durability browser cases pass. One old constructor snapshot fixture updated, refusal assertions retained. Separate retirement case advances to lost returning-account action wording, left open.395 clean source bodies exact. [Packet](performance-experiments/2026-10-28-worker-owner/phase232/README.md).
+
+
+## 2026-10-29 — phase233: fresh detached continuation verified
+
+Three new cases/27 focused/99 metadata/type/lint pass. Clean full promotion-device retirement, NEW-factor detached reopen, local edit, cold durability and zero delivery/notification browser case passes24.3s. Unchanged comprehensive test remains blocked at stale transient-editor entry expectation; retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase233/README.md).
