@@ -1,5 +1,5 @@
 /** The worker can read encrypted journal pages and compare/remove committed entries. It cannot append. */
-import { requireWindowAccountCohort, type WindowAccountCohort } from './accountWorkerCohort';
+import { requireWindowWorkerCohort, type WindowAccountCohort } from './accountWorkerCohort';
 import { readLocalSlot } from './localGenesisStorage';
 import { deriveStoreName } from './storeName';
 import { journalPrefix, JournalError } from './journalCodec';
@@ -37,7 +37,7 @@ const pair = (v: unknown, prefix: string): v is readonly [string, string] => {
 };
 
 export async function createWindowJournalBridge(cohort: WindowAccountCohort) {
-  requireWindowAccountCohort(cohort);
+  requireWindowWorkerCohort(cohort);
   const task: SessionTask = {
     signal: cohort.signal,
     step<T>(effect: () => T & (T extends PromiseLike<unknown> ? never : T)): T {

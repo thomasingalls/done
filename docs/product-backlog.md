@@ -571,3 +571,9 @@ unchanged timing gates. [Packet](performance-experiments/2026-10-28-worker-owner
 pass with cancellation, wrong-code preservation and single async recovery ownership. Continue Window
 Local admission/Undo, ceremonies/default/offline conversion before unchanged timing gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase192/README.md).
+
+
+**Phase193 — Local Window admission/Undo:** busy Worker zero-RPC sealed input, quota fallback, native
+loss recovery and old/new-writer CRDT union pass. Carry over Local maintenance before startup/ceremony/
+offline/default activation and unchanged timing gates.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase193/README.md).

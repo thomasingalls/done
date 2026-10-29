@@ -13,6 +13,7 @@ import { pageRuntimePorts } from './runtimePorts';
 type Sync<T> = T extends PromiseLike<unknown> ? never : T;
 export interface WindowAccountCohort {
   readonly ticket: AccountWorkerTicket;
+  readonly kind: 'account' | 'local';
   readonly signal: AbortSignal;
   readonly state: 'active' | 'closing' | 'closed' | 'failed';
   /** Local composition only: pin the actual native Worker client before it may initialize keys. */
@@ -23,10 +24,19 @@ export interface WindowAccountCohort {
   close(): Promise<void>;
 }
 const windowOwners = new WeakSet<WindowAccountCohort>();
+const pinnedLocalOwners = new WeakSet<WindowAccountCohort>();
 /** Internal composition must use the actual coordinator, never a structurally similar object. */
-export function requireWindowAccountCohort(owner: WindowAccountCohort): void {
+export function requireWindowWorkerCohort(owner: WindowAccountCohort): void {
   if (!windowOwners.has(owner)) throw inactive();
   owner.write(() => {});
+}
+export function requireWindowAccountCohort(owner: WindowAccountCohort): void {
+  requireWindowWorkerCohort(owner);
+  if (owner.kind !== 'account') throw inactive();
+}
+export function requireWindowLocalCohort(owner: WindowAccountCohort): void {
+  requireWindowWorkerCohort(owner);
+  if (owner.kind !== 'local' || !pinnedLocalOwners.has(owner)) throw inactive();
 }
 const deferred = <T>() => {
   let resolve!: (value: T | PromiseLike<T>) => void, reject!: (cause: unknown) => void;
@@ -114,6 +124,7 @@ async function openWindowCohort(
     };
     owner = Object.freeze({
       ticket,
+      kind: local ? 'local' : 'account',
       signal: stopped.signal,
       get state() {
         return state;
@@ -144,6 +155,7 @@ async function openWindowCohort(
             opening.signal,
           );
           live();
+          pinnedLocalOwners.add(owner!);
         })();
         return binding;
       },

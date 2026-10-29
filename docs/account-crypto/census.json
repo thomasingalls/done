@@ -853,7 +853,7 @@
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
-      "sha256": "303f8a0268a3d1362adb4ce72a0239a93fadf4bfc29cbf59d118e7bdbb2ec851"
+      "sha256": "7f39e8482eaf5af7a90e04bf76452a8775d8151c75abbe6df291053b59e8ee17"
     },
     {
       "path": "src/crdt/accountWorkerJoin.ts",
@@ -1421,7 +1421,11 @@
     },
     {
       "path": "src/crdt/windowJournalBridge.ts",
-      "sha256": "7c50f76ef18fd634377db4d46f36109d1525b434e3f68417148995241ac5007c"
+      "sha256": "58def28ff1d0951c7fe1065aa7c90d2a7d10d6a876134c133c5e95ad544c990d"
+    },
+    {
+      "path": "src/crdt/windowLocalMirror.ts",
+      "sha256": "503eaeb535f3f74d2052a663c3ebe10be4fc154fbbcd14d64a87a6deb1734a70"
     },
     {
       "path": "src/crdt/windowWorkspaceQueues.ts",

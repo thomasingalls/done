@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 611,
-    "requiredTestFiles": 605,
+    "testFiles": 612,
+    "requiredTestFiles": 606,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14227,6 +14227,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/windowLocalMirror.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/windowLocalMirror.test.ts"]
+      },
+      "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerAccountComposition.test.ts",
       "status": "required",
       "invocation": {
@@ -21317,6 +21327,10 @@
     {
       "path": "test/windowJournalBridge.test.ts",
       "sha256": "2ee6e9fcc5e1900b53d30c060150fcb0d2b8d779c1b5bb7b2d94e36ecc258468"
+    },
+    {
+      "path": "test/windowLocalMirror.test.ts",
+      "sha256": "bbfa8d1d44815f6e280a31a19315498ffee8975ce48be24b96a2c73634607fa4"
     },
     {
       "path": "test/workerAccountComposition.test.ts",

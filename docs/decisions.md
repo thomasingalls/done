@@ -6072,3 +6072,11 @@ Keep original Local discovery/final factor/census and Page path; a fixed Worker 
 carriers without a second application doc. Only journal subkeys cross to Window. Reserve asynchronous
 recovery ownership before awaiting native reads, retain until explicit finish, and erase late results.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase192/README.md).
+
+
+## 2026-10-29 — keep Local raw admission/Undo in the original Window owner
+
+Native Worker owns custody/content; Window owns only journal subkeys, original synchronous admission
+and human Undo. Local/Account mirror factories require distinct genuine owner kinds; the encrypted
+read/compare-remove bridge alone is shared. Preserve original Page shared-writer CRDT union.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase193/README.md).

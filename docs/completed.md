@@ -17702,3 +17702,12 @@ Original claim/factor/census/crypto in native Worker, bounded raw recovery/subke
 refusal and cancellation, async recovery ownership.53 focused/98 metadata/type/lint/format and four
 final Local native cases pass; original Account control also passes.11 containers absent, Page default,
 conversion incomplete/no timing credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase192/README.md).
+
+
+## 2026-10-29 — phase193 Local Window mirror
+
+Original raw Local admission/Undo with synchronous sealing, native Worker durability and strict owner
+kind separation.36 focused/98 metadata/type/lint/format and five final native cases pass, including
+worker loss and independent old/new-writer CRDT union. Seven containers absent. Default Page, maintenance
+and remaining conversion still pending; no timing credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase193/README.md).
