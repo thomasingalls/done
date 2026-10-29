@@ -641,3 +641,13 @@ conversion before measuring unchanged gates. [Packet](performance-experiments/20
 **Phase204 — complete Local UI Worker adapter:** full original controller flows pass both browsers;
 Page remains default until Account same-realm ceremony/handoff and offline activation are ready.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase204/README.md).
+
+
+**Phase205 — Account entry foundation:** extracted original owner and fixed203 runtime dependency cycle.
+Continue same-realm ceremony/UI/default conversion. OPEN: composed history-rebind old packaged cold
+reader misses15s on candidate twice while204 predecessor passes; retain and resolve before acceptance.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+**Phase206 —205 evidence closure:** corrected packaging recorded separately without replacing205.
+Same-realm handoff continues as207.205 cold-reader blocker remains open.

@@ -17807,3 +17807,19 @@ Original UI through native startup/creation/unlock/protection/editing; late-acqu
 37 focused/98 metadata/type/lint/format/audit checks pass. Chrome/Firefox full automatic/protected/retry/
 protection/Undo/cold-writing flows pass; six containers absent. Initial close race retained. Default
 activation pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase204/README.md).
+
+
+## 2026-10-29 — phase205 reusable Account entry and dependency-cycle repair
+
+Original owner body/imports AST exact, one-shot entry guards and high-level protection environment.
+59 focused/98 metadata/type/lint/format/audit checks pass; Chrome7 and Firefox2 controls pass. Candidate
+old packaged cold-reader timeout remains OPEN after isolated repeat; predecessor passes. Eleven candidate
+and one predecessor containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+## 2026-10-29 — phase206 evidence closure for frozen205 implementation
+
+Corrected a packaging-only audit-wording assertion; saved all205 outcomes and bookkeeping in the next
+packet after the implementation freezer ran despite the initial packaging failure. Original205 hash
+retained, current265 built source bodies exact, real index empty; no implementation/test changes.
+[Record](performance-experiments/2026-10-28-worker-owner/phase205/README.md).

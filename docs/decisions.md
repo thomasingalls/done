@@ -6169,3 +6169,11 @@ Keep UI observations and commands independent of storage execution. Drain the ac
 before opening native Local editing; preserve fresh factor/route verification and synchronous Window
 journal admission. Memoized close joins late startup acquisition. Page stays default until activation.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase204/README.md).
+
+
+## 2026-10-29 — reusable Account owner and low-level protection boundary
+
+Extract the original native Account body without changing checks, to allow future same-realm handoff.
+Move protection effects above runtimePorts after the unchanged DAG guard found the203 cycle. Preserve
+the unexplained candidate old cold-reader timeout and its passing predecessor; do not infer acceptance
+from source equality. [Evidence](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
