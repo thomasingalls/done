@@ -6307,3 +6307,8 @@ Keep original recovery UI copy and explicit disconnect review, execute crypto/re
 ## 2026-10-29 — phase229: synchronous recovery display navigation
 
 Keep save/confirm navigation in the Window while native confirmation/commit remain authoritative. Disable Saved until preceding preparation reply completes. No cached factor or native authority is introduced. [Evidence](performance-experiments/2026-10-28-worker-owner/phase229/README.md).
+
+
+## 2026-10-29 — phase230: replace a retired Worker only on explicit input
+
+Keep each supervisor incarnation one-shot. Successful existing drain can expose a new unlock screen, but only a new command starts an inspect-only fresh Worker. Initial handoff getter is consumed once; failed cleanup cannot reopen. [Evidence](performance-experiments/2026-10-28-worker-owner/phase230/README.md).

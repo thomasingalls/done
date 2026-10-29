@@ -733,3 +733,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase229:** Recovery Back repair recorded. Next retirement and recovered-device invitation blockers, then boundary validation and unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase229/README.md).
+
+
+**Phase230:** Retirement replacement implemented/unit verified, full browser continuation pending. Next recovery closing-field transition, remembered-name observation, then detached reopening and unchanged old recovery cases. [Packet](performance-experiments/2026-10-28-worker-owner/phase230/README.md).

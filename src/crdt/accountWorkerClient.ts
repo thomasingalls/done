@@ -57,6 +57,7 @@ export async function openAccountWorkerSession(
   joined = false,
   connection: { networkSessions?: boolean; composed?: boolean } = {},
   handoff?: WindowAccountHandoff,
+  onTransition?: (message: string) => void,
 ) {
   if (input.networkLogin || input.promotionOpening || input.recoveryOpening)
     throw Error('This worker opening requires the coordinated ceremony adapter');
@@ -247,7 +248,8 @@ export async function openAccountWorkerSession(
         void cohort.close().catch(() => {});
       },
       present: (notice) => {
-        rememberAccountTransition(notice.accountId, notice.kind);
+        const message = rememberAccountTransition(notice.accountId, notice.kind);
+        onTransition?.(message);
       },
     });
     worker.addEventListener('message', (e) => {

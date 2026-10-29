@@ -1,4 +1,5 @@
 /** Window presentation/provider/canonical-mirror adapter for the original native setup coordinator. */
+import { renewCeremonyOnCommand } from './renewableCeremony';
 import { rememberRecoveryRoute, type RecoveryRoute } from '../account/lostRecoveryRoutes';
 import type { SetupConfig } from '../account/setupProgress';
 import type { NetworkLoginView } from '../crdt/accountSessionBridge';
@@ -20,7 +21,7 @@ export type WindowCeremonySession = Session;
 export interface WindowCeremonyUiOptions<T> {
   initial: T;
   closing: T;
-  failure(poisoned: boolean): T;
+  failure(poisoned: boolean, transition?: string): T;
   fields: readonly string[];
   capture(input: unknown, session: Session | undefined): T;
   editing(state: T): boolean;
@@ -34,6 +35,46 @@ export interface WindowCeremonyUiOptions<T> {
 }
 /** Trusted fixed UI composition only. Native joins and verification remain original. */
 export function createWindowCeremonyUi<T>(
+  config: SetupConfig,
+  slotId: string,
+  options: WindowCeremonyUiOptions<T>,
+) {
+  const { takeInitialCode, ...reusable } = options;
+  let initial = takeInitialCode;
+  const renewed = renewCeremonyOnCommand<T, ReturnType<typeof createWindowCeremonyIncarnation<T>>>(
+    (first) => {
+      const take = first ? initial : undefined;
+      initial = undefined;
+      return createWindowCeremonyIncarnation(config, slotId, {
+        ...reusable,
+        ...(take ? { takeInitialCode: take } : {}),
+      });
+    },
+    options.retryCommand,
+  );
+  return {
+    get networkLogin() {
+      return renewed.current.networkLogin;
+    },
+    get session() {
+      return renewed.current.session;
+    },
+    get busy() {
+      return renewed.current.busy;
+    },
+    get requiresUnlock() {
+      return renewed.current.requiresUnlock || renewed.current.failed;
+    },
+    getSnapshot: renewed.getSnapshot,
+    subscribe: renewed.subscribe,
+    registerEditor: (destroy: () => void) => renewed.current.registerEditor(destroy),
+    whenIdle: () => renewed.current.whenIdle(),
+    command: renewed.command,
+    send: renewed.send,
+    close: renewed.close,
+  };
+}
+function createWindowCeremonyIncarnation<T>(
   config: SetupConfig,
   slotId: string,
   options: WindowCeremonyUiOptions<T>,
@@ -62,6 +103,9 @@ export function createWindowCeremonyUi<T>(
     handingOff = false,
     ended = false,
     closed = false,
+    explicitlyClosed = false,
+    failed = false,
+    terminalTransition: string | undefined,
     needsReboot = false,
     sequence = 0,
     poisoned: unknown,
@@ -87,7 +131,7 @@ export function createWindowCeremonyUi<T>(
     if (closed) throw Error('Setup closed');
     if (poisoned) throw poisoned;
   };
-  const close = () => {
+  const drain = () => {
     if (closing) return closing;
     let lastName: string | undefined;
     try {
@@ -125,8 +169,26 @@ export function createWindowCeremonyUi<T>(
       }
     }));
   };
+  const close = () => {
+    explicitlyClosed = true;
+    return drain();
+  };
   const fail = () => {
-    if (!closed && !needsReboot && !poisoned) void close().catch(() => {});
+    if (closed || needsReboot || poisoned) return;
+    void drain().then(
+      () => {
+        if (explicitlyClosed) return;
+        failed = true;
+        state = options.failure(false, terminalTransition);
+        changed();
+      },
+      (cause) => {
+        if (explicitlyClosed) return;
+        poisoned = cause;
+        state = options.failure(true);
+        changed();
+      },
+    );
   };
   const start = async () => {
     live();
@@ -259,6 +321,9 @@ export function createWindowCeremonyUi<T>(
               v.joined === true,
               { networkSessions: true, composed: true },
               transfer,
+              (transition) => {
+                terminalTransition = transition;
+              },
             );
             session = await rawSession;
             activeActorId = v.identity.id;
@@ -434,6 +499,9 @@ export function createWindowCeremonyUi<T>(
     },
     get busy() {
       return commands.size > 0;
+    },
+    get failed() {
+      return failed;
     },
     get requiresUnlock() {
       return needsReboot;

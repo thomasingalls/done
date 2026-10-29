@@ -63,7 +63,7 @@ export function createWorkerFirstDeviceSetup(
       visitable: [],
       recoveryDisplay: false,
     },
-    failure: (poisoned) => ({
+    failure: (poisoned, transition) => ({
       state: poisoned
         ? {
             kind: 'storage-blocked',
@@ -73,6 +73,7 @@ export function createWorkerFirstDeviceSetup(
         : {
             kind: 'unlock',
             error:
+              transition ??
               'The passkey step could not finish. Try unlocking again. Your saved setup and writing have been kept.',
           },
       visitable: [],

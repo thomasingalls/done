@@ -877,7 +877,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "df01c829c54ba67f5c42d6c2546e759482f48f1b621bb6371ab272727a2d2375"
+      "sha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -1953,7 +1953,7 @@
     },
     {
       "path": "src/ui/firstDeviceSetupWorker.ts",
-      "sha256": "d9de054a1aa04e151838e267528e2ac6ff6ea74624a7ca053aefd9c77987b36a"
+      "sha256": "6769d72cfc1ef48ef1acdaa55e9404ede31dd6496d8c910146198078567095f7"
     },
     {
       "path": "src/ui/localStartup.ts",
@@ -1978,6 +1978,10 @@
     {
       "path": "src/ui/privateMigration.ts",
       "sha256": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50"
+    },
+    {
+      "path": "src/ui/renewableCeremony.ts",
+      "sha256": "e3176bd19a0f71fb0bb685cbbdfdaf4ecec82ee7b68ab6dbcb83e152dc5e567f"
     },
     {
       "path": "src/ui/useBreakpoint.ts",
@@ -2017,7 +2021,7 @@
     },
     {
       "path": "src/ui/windowCeremonyUi.ts",
-      "sha256": "a7949d120be82a0a5574a49f757585f7b19c19eada095d5d6561d2f62a7904ee"
+      "sha256": "2a44cd1ef995c5b2456473cac4be35b533e1f91156cb8906f8adab793e36d275"
     },
     {
       "path": "src/ui/workspaceUi.tsx",

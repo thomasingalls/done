@@ -17951,3 +17951,8 @@ Five new cases/25 focused and99 metadata/type/lint/format/audit pass. Final clea
 ## 2026-10-29 — phase229: recovery reply/navigation race
 
 Two new counterexamples repaired;14 focused/99 metadata/type/lint/format pass. Unchanged browser test passes its former Back guard but exposes later retirement stall; second recovered-device invitation stall remains open. All other runtime bodies exact228. [Packet](performance-experiments/2026-10-28-worker-owner/phase229/README.md).
+
+
+## 2026-10-29 — phase230: retirement continuation ports
+
+Five new cases/27 focused and99 metadata/type/lint pass. Native owner bodies unchanged229;395 clean built bodies exact. Browser detached-copy regression is added but blocked before target by driver startup race (corrected) and remembered-name observation (open). Broader recovery/invitation remains unclosed. [Packet](performance-experiments/2026-10-28-worker-owner/phase230/README.md).
