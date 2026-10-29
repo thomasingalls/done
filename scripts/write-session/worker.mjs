@@ -69,6 +69,7 @@ const recordedFiles = [
       .map((n) => dir + '/' + n),
   ),
   'scripts/storage-conformance/report.mjs',
+  'scripts/storage-conformance/observe.mjs',
   'docs/storage-contract.md',
   'pnpm-lock.yaml',
   ...['scripts/write-session', 'test/write-session'].flatMap((dir) =>

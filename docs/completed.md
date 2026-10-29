@@ -17464,3 +17464,24 @@ failure, before relying on full native closure. Earlier journal observer errors 
 required/uncredited:949/403blocked. No app activation, performance measurement/gate change, service
 automation, preview, real index/signing/push or release work. Continue mirror route/era rebinding and
 async worker handoffs after the observer slice; append before owned status and freeze172 after171.
+
+
+## 2026-10-29 — Phase173: sound native state observation and full campaign closure
+
+Replace17 coordination/storage observer waits with one bounded host-side helper that awaits actual
+async predicate results and does not depend on page rendering/timers. Retain every original predicate,
+assertion, schedule, fault and8s/10s deadline; independent AST reconstruction verifies all scenario
+statements. Three runners hash the newly executed helper. No production/runtime changes.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase173/README.md).
+
+The frozen-page probe does not reproduce absent RAF, so historical timeout causes remain qualified.
+Installed Playwright and both browsers do reproduce false-Promise success; corrected observer rejects
+it and bounds unresolved evaluations/late results. Six new/89focused cases,34native Chromium/Firefox
+cases,98metadata and12adapter cases pass, alongside type/lint. Complete original campaigns now pass:
+admission15+6fault controls, journal17+6, lifetime13+5. Earlier168/172failed combined attempts remain
+recorded; this is new passing closure, not deletion of inconvenient evidence or performance credit.
+
+431runtime sources and198domain assignments remain exact. All prior obligations stay identical; both
+new files required/uncredited:951/405blocked. Return to mirror hot route/era rebinding, then real worker
+receive/maintenance and ceremony/application integration. No latency measurement, gate change, service
+automation, app activation, preview, real index/signing/push or release work. Append before owned status.

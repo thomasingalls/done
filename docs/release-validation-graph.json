@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 586,
-    "requiredTestFiles": 580,
+    "testFiles": 588,
+    "requiredTestFiles": 582,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9462,6 +9462,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-worker-cohort/observer.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.account-worker-cohort.config.ts",
+        "packages": []
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-worker-cohort/runtime.spec.ts",
       "status": "required",
       "invocation": {
@@ -11637,6 +11648,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/multiDevice.test.ts"]
       },
       "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/nativeStateObserver.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/nativeStateObserver.test.ts"
+        ]
+      },
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -16379,11 +16405,11 @@
     },
     {
       "path": "scripts/admission/scenarios.mjs",
-      "sha256": "fdb90b4b68da2b2bc6bbea64be35f5e64155f55ac2a0ef7aee7eae3ded1652e0"
+      "sha256": "1ef941900b0d743cdf059bb02ad13eba02c4eeef5a4ed2b7fd16dc6854da8fb8"
     },
     {
       "path": "scripts/admission/worker.mjs",
-      "sha256": "2d20f6f35d0f0aba0374954e4f2dca1df3b8f07875f13ee4c5bb556a58eca63e"
+      "sha256": "6d60524f00330b984f2ec16de7668bd0549e4dc8bd62ff60617cdc9443445ae8"
     },
     {
       "path": "scripts/app-upgrades/fixture-owner.mjs",
@@ -16643,11 +16669,11 @@
     },
     {
       "path": "scripts/journal/scenarios.mjs",
-      "sha256": "315efe0c61067f903afef57ab8b98788046cd2bfecf61f69e471f2f05e366251"
+      "sha256": "24d465299a561f80718ea9d8b4326a86eaf754091e2cc5ca79cf490a04031f93"
     },
     {
       "path": "scripts/journal/worker.mjs",
-      "sha256": "e644987fc7cb8051006f6c445dfc64222c22a398a5ee2526990c1c79ea228af2"
+      "sha256": "a4a69c0654047a24fc0d6f0bd47a6bd20222d04235eae2b6057d41f61b34f2f5"
     },
     {
       "path": "scripts/legacy-cleanup/campaign.mjs",
@@ -17242,6 +17268,14 @@
       "sha256": "d8fbb520ab5dfc788d07948a088731f8d9adc2bfb6a9d59bd35b7286614ca5a6"
     },
     {
+      "path": "scripts/storage-conformance/observe.d.mts",
+      "sha256": "42147474d753cd5348f7eb80f8d4f2751908f0cbf87b8651cea15c2093cfa777"
+    },
+    {
+      "path": "scripts/storage-conformance/observe.mjs",
+      "sha256": "4e8ea5450223e203c77fe5b1a77c94797b34505f7dda6fec87a82dfcbdba7457"
+    },
+    {
       "path": "scripts/storage-conformance/report.d.mts",
       "sha256": "04e80ffc6e6cbf7e65c1507245243a728974fc56f0ca1682c0701dce18dfb6bb"
     },
@@ -17315,11 +17349,11 @@
     },
     {
       "path": "scripts/write-session/scenarios.mjs",
-      "sha256": "11009751ed52c98cd23cdeec21404d41a665968efde72930e05fcc2444bf4917"
+      "sha256": "b7e3eefb8e7b5bfe28f21f728698640665d12402ba7112fa047bb803d7da72bf"
     },
     {
       "path": "scripts/write-session/worker.mjs",
-      "sha256": "326e83e6f2461e6050df2bfeca5aa563b34c1e463a2465d80cf66acc1464800a"
+      "sha256": "578a8cc6fc1f7ad82822892118a7d638fc3535cd132ef7060c0c2ff5d34b6a32"
     },
     {
       "path": "scripts/yjs-delivery/campaign.mjs",
@@ -19086,6 +19120,10 @@
       "sha256": "124bd7c186250cbf66c81cb72ea29e382d0c3261aeefbd710cfc15c5a6cf1c73"
     },
     {
+      "path": "test/account-worker-cohort/observer.spec.ts",
+      "sha256": "7588bed61cf3bea4ceb3d20973394ba39878ea19448bba482adef69a64706b7a"
+    },
+    {
       "path": "test/account-worker-cohort/page.ts",
       "sha256": "365b1aca979b3900f7ea25ee241ffe0ece61c0d9f5c76836d459cb1c71f8d9a0"
     },
@@ -20048,6 +20086,10 @@
     {
       "path": "test/multiDevice.test.ts",
       "sha256": "10527797858a7d93e6c5c91caf318339f1fae10902b9e2e9c94bd5c5543775e1"
+    },
+    {
+      "path": "test/nativeStateObserver.test.ts",
+      "sha256": "4cfab9a26172bb33f0106caa9bc25bac26ad963c687f1d406695b84b86ae506f"
     },
     {
       "path": "test/networkEnvelope.test.ts",

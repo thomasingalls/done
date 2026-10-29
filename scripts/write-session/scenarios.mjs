@@ -1,3 +1,5 @@
+import { waitForState } from '../storage-conformance/observe.mjs';
+const OBSERVATION_TIMEOUT_MS = 8000;
 import { isDeepStrictEqual } from 'node:util';
 import { setTimeout as delay } from 'node:timers/promises';
 
@@ -35,19 +37,21 @@ export async function runCase(definition, env) {
     const p = await context.newPage();
     p.on('pageerror', (error) => pageErrors.push(error.message));
     pages.push(p);
-    p.setDefaultTimeout(8000);
+    p.setDefaultTimeout(OBSERVATION_TIMEOUT_MS);
     await p.goto(env.url);
-    await p.waitForFunction(() => Boolean(window.lifecycle));
+    await waitForState(p, () => Boolean(window.lifecycle), undefined, OBSERVATION_TIMEOUT_MS);
     return p;
   };
   const state = async (p, id) => (await call(p, 'snapshot')).entries[id];
   const settled = async (p, id, operation) => {
-    await p.waitForFunction(
+    await waitForState(
+      p,
       ({ id, operation }) => {
         const status = window.lifecycle.snapshot().entries[id]?.operations[operation]?.status;
         return status && status !== 'pending';
       },
       { id, operation },
+      OBSERVATION_TIMEOUT_MS,
     );
     return (await state(p, id)).operations[operation];
   };
@@ -66,9 +70,19 @@ export async function runCase(definition, env) {
     await done(p, id, 'close');
   };
   const gate = async (p, name) =>
-    p.waitForFunction((name) => window.lifecycle.snapshot().gates.includes(name), name);
+    waitForState(
+      p,
+      (name) => window.lifecycle.snapshot().gates.includes(name),
+      name,
+      OBSERVATION_TIMEOUT_MS,
+    );
   const entered = async (p, id) =>
-    p.waitForFunction((id) => window.lifecycle.snapshot().entries[id]?.entered, id);
+    waitForState(
+      p,
+      (id) => window.lifecycle.snapshot().entries[id]?.entered,
+      id,
+      OBSERVATION_TIMEOUT_MS,
+    );
   // Await the predicate itself. A Promise returned inside Playwright's page
   // polling callback can be truthy before the native query has returned false.
   const until = async (predicate) => {
@@ -177,10 +191,15 @@ export async function runCase(definition, env) {
         await call(a, 'release', 'a:work');
         await settled(a, 'a', 'work');
         // The cleanup-removal mutant skips the gate; observe either gate or completed close.
-        await a.waitForFunction(() => {
-          const s = window.lifecycle.snapshot();
-          return s.gates.includes('a:dispose') || s.entries.a.state === 'closed';
-        });
+        await waitForState(
+          a,
+          () => {
+            const s = window.lifecycle.snapshot();
+            return s.gates.includes('a:dispose') || s.entries.a.state === 'closed';
+          },
+          undefined,
+          OBSERVATION_TIMEOUT_MS,
+        );
         check('closing-callback-cannot-write', (await call(a, 'snapshot')).writes, []);
         if ((await call(a, 'snapshot')).gates.includes('a:dispose')) {
           check('cleanup-blocks-exclusive', (await state(b, 'x')).entered, false);
@@ -404,11 +423,11 @@ export async function runCase(definition, env) {
         await open(a, 'old');
         await call(a, 'save', 'old');
         await a.goto(env.url + '?away');
-        await a.waitForFunction(() => Boolean(window.lifecycle));
+        await waitForState(a, () => Boolean(window.lifecycle), undefined, OBSERVATION_TIMEOUT_MS);
         // A BFCache restore commits navigation without a new load event. Wait for
         // that boundary, then verify the restored/new document and its capability below.
         await a.goBack({ waitUntil: 'commit' });
-        await a.waitForFunction(() => Boolean(window.lifecycle));
+        await waitForState(a, () => Boolean(window.lifecycle), undefined, OBSERVATION_TIMEOUT_MS);
         const restored = (await call(a, 'snapshot')).entries.old;
         check(
           'navigation-does-not-revive-session',

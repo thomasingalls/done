@@ -5978,3 +5978,14 @@ Final native changes must retain the actual Window admission fence where synchro
 checks require it; cached storage or serialized verification success cannot replace that fence.
 Preserve page-bound passkey/lifecycle endpoints, compatibility, cancellation and uncertain recovery.
 Service automation remains off, general qualification paused, no release or publication authorized.
+
+
+## 2026-10-29 — Observe native state independently of rendering and await actual predicates
+
+Native coordination/storage campaigns use a bounded host-side evaluation loop, preserving their
+existing observation deadlines. The installed waitForFunction implementation accepts a truthy Promise
+before a false async predicate settles; state observation must not credit that as successful native
+evidence. Rendering frames are also unrelated to lease/storage truth. Preserve original assertions,
+schedules, faults and source identities, including the executed observer helper. The separate frozen
+probe did not reproduce absent RAF; do not promote that hypothesis into a proved historical cause.
+Complete original admission/journal/lifetime campaigns pass after this change. [Phase173](performance-experiments/2026-10-28-worker-owner/phase173/README.md).

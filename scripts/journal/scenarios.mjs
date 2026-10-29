@@ -1,3 +1,5 @@
+import { waitForState } from '../storage-conformance/observe.mjs';
+const OBSERVATION_TIMEOUT_MS = 10000;
 import { isDeepStrictEqual } from 'node:util';
 export async function runCase(definition, env) {
   const assertions = [],
@@ -20,20 +22,22 @@ export async function runCase(definition, env) {
     p.evaluate(({ method, args }) => window.journal.base[method](...args), { method, args });
   const page = async () => {
     const p = await context.newPage();
-    p.setDefaultTimeout(10000);
+    p.setDefaultTimeout(OBSERVATION_TIMEOUT_MS);
     p.on('pageerror', (e) => pageErrors.push(e.message));
     await p.goto(env.url);
-    await p.waitForFunction(() => window.journal);
+    await waitForState(p, () => window.journal, undefined, OBSERVATION_TIMEOUT_MS);
     return p;
   };
   const snapshot = (p) => call(p, 'snapshot');
   const settled = async (p, id, isBase = false) => {
-    await p.waitForFunction(
+    await waitForState(
+      p,
       ({ id, isBase }) =>
         ['resolved', 'rejected'].includes(
           (isBase ? window.journal.base : window.journal).snapshot().entries[id]?.status,
         ),
       { id, isBase },
+      OBSERVATION_TIMEOUT_MS,
     );
     return (isBase ? await base(p, 'snapshot') : await snapshot(p)).entries[id];
   };
@@ -48,10 +52,12 @@ export async function runCase(definition, env) {
     await done(p, id);
   };
   const gate = (p, name, isBase = false) =>
-    p.waitForFunction(
+    waitForState(
+      p,
       ({ name, isBase }) =>
         (isBase ? window.journal.base : window.journal).snapshot().gates.includes(name),
       { name, isBase },
+      OBSERVATION_TIMEOUT_MS,
     );
   const recover = async (p) => {
     await call(p, 'recover', 'recovery');
@@ -356,8 +362,11 @@ export async function runCase(definition, env) {
         await call(a, 'close', 'closing');
         const b = await page();
         await base(b, 'exclusive', 'exclusive');
-        await b.waitForFunction(async () =>
-          (await navigator.locks.query()).pending.some((l) => l.mode === 'exclusive'),
+        await waitForState(
+          b,
+          async () => (await navigator.locks.query()).pending.some((l) => l.mode === 'exclusive'),
+          undefined,
+          OBSERVATION_TIMEOUT_MS,
         );
         check(
           'close-holds-permit-during-flush',
@@ -384,8 +393,11 @@ export async function runCase(definition, env) {
           cdp = await context.newCDPSession(a);
         await cdp.send('Page.setWebLifecycleState', { state: 'frozen' });
         await base(b, 'exclusive', 'exclusive');
-        await b.waitForFunction(async () =>
-          (await navigator.locks.query()).pending.some((l) => l.mode === 'exclusive'),
+        await waitForState(
+          b,
+          async () => (await navigator.locks.query()).pending.some((l) => l.mode === 'exclusive'),
+          undefined,
+          OBSERVATION_TIMEOUT_MS,
         );
         check(
           'frozen-writer-blocks-exclusive',
