@@ -1,3 +1,4 @@
+import { createWorkerContextQueue, type WorkerContextQueue } from './workerContextQueue';
 import type { AccountMirrorContext } from './accountMirrorMaterial';
 import { eraseWorkerMessage } from './workerChannel';
 import { pageRuntimePorts } from './runtimePorts';
@@ -224,6 +225,7 @@ async function openAccountReceiveOwner(
   canReceive: () => boolean = () => true,
   composed = false,
   joined = false,
+  contextQueue?: WorkerContextQueue,
 ) {
   const options = captureAccountOptions(input);
   const incremental = ledgerMode === 'incremental';
@@ -2220,8 +2222,30 @@ async function openAccountReceiveOwner(
       }
     });
   };
+  // Discovery fetch/proof checking remains outside the Window FIFO. Only an actual route change
+  // joins the real final head; native installation keeps its original stamp/expiry/authority checks.
+  const applyMembership = (
+    input: unknown,
+    checkCommit?: () => void,
+    prepared?: DiscoveryHandoff,
+  ) => {
+    if (
+      !contextQueue ||
+      (prepared &&
+        prepared.history.current.tip === base.authority.tip &&
+        prepared.history.current.head === base.authority.head)
+    )
+      return installMembership(input, checkCommit, prepared);
+    const captured = prepared ? prepared.proofs : parseMembershipChain(input);
+    return contextQueue.run(() => installMembership(captured, checkCommit, prepared));
+  };
+  const applySuccessor = (input: unknown, checkCommit?: () => void) => {
+    if (!contextQueue) return adoptSuccessor(input, checkCommit);
+    const captured = parseSuccessor(input);
+    return contextQueue.run(() => adoptSuccessor(captured, checkCommit));
+  };
   const adoptMembership = (input: unknown, checkCommit?: () => void) =>
-    installMembership(input, checkCommit);
+    applyMembership(input, checkCommit);
   let discoveryDue = 0,
     discoveryRevision = 0;
   let discoveryFlight:
@@ -2268,7 +2292,7 @@ async function openAccountReceiveOwner(
           membershipWork(network, prepared.context, prepared.payload),
         ),
       );
-      await installMembership(
+      await applyMembership(
         verified.proofs,
         () => {
           network.step(() => {});
@@ -2362,7 +2386,7 @@ async function openAccountReceiveOwner(
               membershipWork(network, prepared.context, prepared.payload),
             ),
           );
-          const result = await installMembership(
+          const result = await applyMembership(
             answer.response.proofs,
             () => {
               network.step(() => {});
@@ -2443,7 +2467,7 @@ async function openAccountReceiveOwner(
             );
         };
         if (answer.successor) {
-          await adoptSuccessor(answer.successor, checkCommit);
+          await applySuccessor(answer.successor, checkCommit);
           return { kind: 'adopted' as const };
         }
         await runCaptureTask(async (task) => {
@@ -2859,7 +2883,7 @@ async function openAccountReceiveOwner(
     fetchHistory,
     installHistory,
     createOutbound,
-    adoptSuccessor,
+    adoptSuccessor: applySuccessor,
     adoptMembership,
     refreshAuthority,
     resetDiscovery: () => {
@@ -2887,14 +2911,22 @@ export function openAccountWorkerReceivingWorkspace<W extends AccountWorkspacePo
   factory: AccountWorkspaceFactory<W>,
   joined = false,
 ) {
-  if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
+  const runtime = accountWorkerRuntime(input.slotId);
+  if (!runtime) throw Error('Dedicated worker owner required');
   if (!input.networkLogin) throw Error('Composed Worker requires its own account session');
   // Same refusing legacy adapter as the session host. Only the authenticated scoped access below
   // can drive network work; no private development bearer is available in this runtime.
   const refusePrivateAccess: AccountAccess = async () => {
     throw Error('Private transport is disabled for this account service.');
   };
-  return composeReceivingWorkspace(input, factory, refusePrivateAccess, true, joined);
+  return composeReceivingWorkspace(
+    input,
+    factory,
+    refusePrivateAccess,
+    true,
+    joined,
+    createWorkerContextQueue(runtime.signal),
+  );
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -2915,6 +2947,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
   operatorToken?: AccountAccess,
   composed = false,
   joined = false,
+  contextQueue?: WorkerContextQueue,
 ) {
   const driven = operatorToken !== undefined;
   if (driven && !isAccountAccess(operatorToken)) throw Error('Invalid private operator token');
@@ -2930,6 +2963,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     () => !driven || gate() === 'ready',
     composed,
     joined,
+    contextQueue,
   );
   const {
     access,
@@ -2973,6 +3007,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
       options,
       nativeOwner,
     );
+    contextQueue?.bind(enqueue);
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
       throw Error('Account opening was cancelled');

@@ -438,6 +438,10 @@ export async function openAccountWorkerSession(
       opening: material,
       composedWorkspace: composedController?.workspace,
       compositionStatus: () => channel!.request('compositionStatus'),
+      compositionRoster: () =>
+        channel!.request<import('../account/deviceRoster').DeviceRosterSnapshot>(
+          'compositionRoster',
+        ),
       compositionLocalHistory: (input: WorkerLocalBaselineCommand) =>
         channel!.request('compositionLocalHistory', captureWorkerLocalBaselineCommand(input)),
       worker: workerIO,

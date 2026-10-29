@@ -211,6 +211,13 @@ self.addEventListener('message', (event: MessageEvent) => {
         live();
         return result;
       },
+      compositionRoster: async () => {
+        live();
+        if (!composition) throw Error('Worker composition unavailable');
+        const roster = await composition.devices.read();
+        live();
+        return roster;
+      },
       compositionStatus: async () => {
         live();
         if (!composition) throw Error('Worker composition unavailable');

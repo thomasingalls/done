@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "d2621f8c46c88befd4ea025b62c62deaaea1eccaa0a959e70f8a325b430b98fc"
+      "sha256": "93918f68a3c34ac734625cdb502b8fb76fdcb4f44491a013dacb8dc9f802bfb0"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -801,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "57b321daa1d25beb641b2179fee0f41d043d5caa98d69686c3708a52bfc3ca3b"
+      "sha256": "ef76797053cde453cafb2c20ce18e3e0d78bf34bc636841faac21c5c1c94077a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -845,7 +845,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "c94e5653aae9127e26b54cf035561146436b75eaaca63589149d94a85a539649"
+      "sha256": "2b325a28dd365d8f88d7e01381ab64e8b7f0bf90eb205162520d1c7baa0dbae4"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -1416,6 +1416,10 @@
       "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
     },
     {
+      "path": "src/crdt/workerContextQueue.ts",
+      "sha256": "963c6cb301e568251444b1375f8f960475637351faf0394fdfc0da127000123a"
+    },
+    {
       "path": "src/crdt/workerFrameStream.ts",
       "sha256": "c22fad4ad96e0dc90b70d5e952b039ab98babb6dd6f53279524ee550a0936941"
     },
@@ -1945,7 +1949,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 737
+          "line": 739
         }
       ]
     },

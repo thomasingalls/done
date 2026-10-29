@@ -17617,3 +17617,13 @@ Two native before counterexamples show member released/Window still active with 
 suppressed. Direct actual-owner withdrawal binding and reentrant-safe shutdown repair both; six
 affected native cases,50 unit and98 metadata/type/lint/format checks pass. Existing drain/fences/
 crypto and all prior obligations remain. [Packet](performance-experiments/2026-10-28-worker-owner/phase183/README.md).
+
+
+## 2026-10-29 — phase184 automatic authority/context changes join the real Window head
+
+Discovery/proof checks stay outside FIFO; actual changes use original native install and task-held
+context ACK. Genuine certification3->5 captures source5; prior-source control captures3 and fails.
+Input/flush during a real digest await also passes without message reordering.42 focused/98 metadata/
+type/lint/format and affected native checks pass; invalid reordering probe and setup failures retained.
+Original native/Page checks and obligations retained. Default app still Page;182 deep-backlog outcome
+remains open. [Packet](performance-experiments/2026-10-28-worker-owner/phase184/README.md).

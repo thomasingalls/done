@@ -506,3 +506,10 @@ Window still active) repaired by direct carrier-signal retirement and reentrant-
 affected native cases,50 focused and98 metadata pass; original native checks/drain/obligations remain.
 Default app still Page. Continue context/UI/resumable/Local/ceremony/offline conversion;182 deep
 joined late-marker continuation remains open. [Evidence](performance-experiments/2026-10-28-worker-owner/phase183/README.md).
+
+
+**Phase184 — automatic context coherence:** genuinely certified epoch3->5 now refreshes the
+Window source context before later input. The complete prior receive-source control still captures3;
+current captures5 and preserves commit/Undo/cold replay, including input/flush during proof checking.
+42 affected unit/98 metadata checks pass; old checks/blocks remain. Continue UI/resumable/Local/
+ceremony/offline integration before default activation and timing gates. [Evidence](performance-experiments/2026-10-28-worker-owner/phase184/README.md).
