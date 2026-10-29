@@ -6277,3 +6277,8 @@ Run the original enrollment selector and both protocols through fixed native com
 ## 2026-10-29 — phase223: native enrollment notification ownership
 
 Retain the original notification parser, retries and resume behavior in the native owner. Track authorization/header I/O in the actual Root; cancel and join the original stream before trusted final Account opening. Send only bounded monotone advisory wake and health observations to Window. [Evidence](performance-experiments/2026-10-28-worker-owner/phase223/README.md).
+
+
+## 2026-10-29 — phase224: recovery browser/workspace/routing effect boundaries
+
+Keep original recovery crypto, private one-use approval and commit/installation bodies. Extract only execution and browser effects; await the fixed Window route-hint callback before the original confirmation and check cancellation again afterward. [Evidence](performance-experiments/2026-10-28-worker-owner/phase224/README.md).

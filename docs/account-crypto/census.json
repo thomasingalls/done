@@ -609,7 +609,7 @@
     },
     {
       "path": "src/account/lostDeviceRecovery.ts",
-      "sha256": "691fe605dd50cbd93b4950df281b1d0dc3327859c116b68b6463401690df5566"
+      "sha256": "daf4d03c9b1700a5ba55c92ca4bcc68b7f133f08b0c41ef31f396c03a0156d11"
     },
     {
       "path": "src/account/lostRecoveryProgress.ts",
@@ -1553,7 +1553,7 @@
     },
     {
       "path": "src/crdt/workerCeremonyUi.ts",
-      "sha256": "ac6fb6c1a59c826c6c2cb258f3a9ac02779daef781133d347f1c697a9b55fc14"
+      "sha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233"
     },
     {
       "path": "src/crdt/workerChannel.ts",
@@ -1985,7 +1985,7 @@
     },
     {
       "path": "src/ui/windowCeremonyUi.ts",
-      "sha256": "76b20572d102a15fc56b6c09f4a7ca9737f613addfa484afe3dc24eacd2ee347"
+      "sha256": "a7949d120be82a0a5574a49f757585f7b19c19eada095d5d6561d2f62a7904ee"
     },
     {
       "path": "src/ui/workspaceUi.tsx",

@@ -715,3 +715,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase223:** Notifications native and verified. Next complete recovery, remaining screen entry/default activation, offline and mixed-owner checks; then unchanged16ms/2.5s/30s measurements. No release preparation. [Packet](performance-experiments/2026-10-28-worker-owner/phase223/README.md).
+
+
+**Phase224:** Recovery effect boundaries ready; next same-realm native recovery controller and Window presentation, then remaining UI/default/offline/mixed activation and unchanged performance targets. [Packet](performance-experiments/2026-10-28-worker-owner/phase224/README.md).

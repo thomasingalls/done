@@ -17921,3 +17921,8 @@ Six new cases plus affected coverage:33 focused and99 metadata pass; type/lint/f
 ## 2026-10-29 — phase223: native enrollment notification ownership
 
 Four new cases/25 focused and99 metadata pass. Type/lint/format and independent common-lifetime AST audit pass. Actual Chrome joined edit/cold and service-authorized native notification/cleanup2 pass;2 exact containers absent. Existing controller fixtures add exact notification fields and real compiled-port wiring, retaining all six assertions. [Packet](performance-experiments/2026-10-28-worker-owner/phase223/README.md).
+
+
+## 2026-10-29 — phase224: recovery browser/workspace/routing effect boundaries
+
+Three new port cases/29 focused and99 metadata pass; two unchanged real-browser recovery regressions pass, including lost-commit browser death. Native setup/enrollment controls2 pass;2 containers absent. Type/lint/format and original-body AST/unchanged-boundary audit pass. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase224/README.md).

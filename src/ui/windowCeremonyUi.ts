@@ -1,4 +1,5 @@
 /** Window presentation/provider/canonical-mirror adapter for the original native setup coordinator. */
+import { rememberRecoveryRoute, type RecoveryRoute } from '../account/lostRecoveryRoutes';
 import type { SetupConfig } from '../account/setupProgress';
 import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 import { createWindowCeremonyBrowser } from '../crdt/ceremonyBrowser';
@@ -180,6 +181,15 @@ export function createWindowCeremonyUi<T>(
       uiPorts.port1,
       current.ticket.incarnation,
       {
+        recoveryRoute(input) {
+          live();
+          requireWindowCeremonyCohort(current);
+          credentialFields(input, ['slotId', 'accountId', 'workspaceId', 'pin']);
+          const v = input as RecoveryRoute;
+          if (v.slotId !== slotId || hex(pinBytes(parseAuthorityPin(v.pin))) !== hex(pinBytes(pin)))
+            throw Error('Recovery route scope changed');
+          rememberRecoveryRoute(v);
+        },
         credential: (input) => browser.prompt(input),
         credentialCancel: (input) => browser.cancel(input),
         setupState(input) {

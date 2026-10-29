@@ -29,10 +29,12 @@ import { hex, random, type Bytes } from '../crdt/custodyCrypto';
 import { withCeremonyVault, type CeremonyVault } from './ceremonyVault';
 import { NetworkLogin, postSession } from './networkLogin';
 import { NetworkSignInRequired } from './scopedTransport';
-import { rememberRecoveryRoute, isRecoverySlot } from './lostRecoveryRoutes';
+import { rememberRecoveryRoute, isRecoverySlot, type RecoveryRoute } from './lostRecoveryRoutes';
+import { pageEnrollmentWorkspace, type EnrollmentWorkspaceExecution } from './enrollmentExecution';
+import type { SetupWorkspacePort } from './setupWorkspace';
+import type { LocalPasskey } from '../crdt/accountAccess';
 import { generationInfo } from '../../account-protocol/genesis';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
-import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import { assertSlotPasskey } from './assertSlotPasskey';
 import type { SlotAssertion } from './slotUnlock';
 export type RecoveryTransport = (
@@ -132,6 +134,7 @@ export async function beginLostDeviceRecovery(
     signal: AbortSignal;
     slotId?: string;
     transport?: RecoveryTransport;
+    rememberRoute?: (route: RecoveryRoute) => void | Promise<void>;
     assert?: (
       options: PublicKeyCredentialRequestOptionsJSON,
       signal: AbortSignal,
@@ -290,12 +293,13 @@ export async function beginLostDeviceRecovery(
         if (busy || !enrollment) throw Error('Save the new device-lock code first');
         busy = true;
         try {
-          rememberRecoveryRoute({
+          await (options.rememberRoute ?? rememberRecoveryRoute)({
             slotId,
             accountId: checked.prepared.accountId,
             workspaceId: checked.prepared.base.request.candidate.workspaceId,
             pin,
           });
+          guard();
           await enrollment.confirm(code);
           guard();
           for (const c of credentials) c.privateBytes.fill(0);
@@ -413,7 +417,9 @@ export async function finishLostDeviceRecovery(
     await v.installRecoveryWriting(authority!, reading, p.key!);
   });
 }
-export async function openRecoveredWorkspace(
+export async function openRecoveredWorkspaceWithExecution<W extends SetupWorkspacePort>(
+  execution: EnrollmentWorkspaceExecution<W>,
+  assertSlot: (signal: AbortSignal) => LocalPasskey,
   config: SetupConfig,
   slotId: string,
   code: string,
@@ -424,7 +430,7 @@ export async function openRecoveredWorkspace(
   if (!installed) throw Error('Recovery installation is incomplete');
   const login = new NetworkLogin(config.pin, slotId);
   try {
-    const editor = await openOwnedSyncingAccountWorkspace(
+    const editor = await execution.open(
       {
         slotId,
         code,
@@ -432,7 +438,7 @@ export async function openRecoveredWorkspace(
         networkLogin: login,
         signal,
         membershipContinuation: true,
-        assertPasskey: assertSlotPasskey(signal),
+        assertPasskey: assertSlot(signal),
         ...(opening ? { recoveryOpening: opening } : {}),
         identity: {
           id: installed.principalId,
@@ -448,4 +454,23 @@ export async function openRecoveredWorkspace(
     login.close();
     throw error;
   }
+}
+
+/** Original Page entry retains its signature and exact native verifier/factory. */
+export function openRecoveredWorkspace(
+  config: SetupConfig,
+  slotId: string,
+  code: string,
+  signal: AbortSignal,
+  opening?: RecoveryOpening,
+) {
+  return openRecoveredWorkspaceWithExecution(
+    pageEnrollmentWorkspace,
+    assertSlotPasskey,
+    config,
+    slotId,
+    code,
+    signal,
+    opening,
+  );
 }

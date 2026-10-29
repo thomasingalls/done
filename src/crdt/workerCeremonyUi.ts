@@ -1,3 +1,4 @@
+import type { RecoveryRoute } from '../account/lostRecoveryRoutes';
 import { createAcknowledgedPresentation } from './acknowledgedPresentation';
 /** Native setup lifetime; original coordinator, Task owners and approval WeakMaps remain authoritative. */
 import type { SetupConfig } from '../account/setupProgress';
@@ -66,6 +67,7 @@ export interface NativeCeremonyUiContext {
   /** Trusted compiled I/O only; no endpoint accepts an executable operation. */
   runBackground<T>(operation: () => Promise<T>): Promise<T>;
   beforeAccountOpen(cleanup: () => Promise<void>): void;
+  saveRecoveryRoute(route: RecoveryRoute): Promise<void>;
   data: unknown;
 }
 /** Trusted composition only. Commands/projections belong to fixed native factories, never messages. */
@@ -303,6 +305,11 @@ export async function startWorkerCeremonyUi(
     beforeAccountOpen: (cleanup) => {
       live();
       beforeOpening.add(cleanup);
+    },
+    saveRecoveryRoute: async (route) => {
+      live();
+      await control.request('recoveryRoute', route);
+      live();
     },
     data: m.data,
   });
