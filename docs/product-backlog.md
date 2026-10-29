@@ -527,3 +527,12 @@ on closing the editor; late assertions are rejected and erased. Controlled fault
 actual Worker checks pass. Original native verification retained. Continue remaining UI/configuration,
 resumable, Local/ceremony and offline/default boundaries before acceptance.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase186/README.md).
+
+
+**Phase187 — Worker resumable local maintenance:** isolated read-only observation cannot authorize
+mutation; progress save/removal retain fresh final head checks. Actual saved-slice/cold-resume/7275-row
+reduction/input/Undo/original-read passes with network scheduling parked. Preserve separate30s catch-up
+failure. Next repair: full-history validator still emits revision0 after a snapshot advances actual
+predecessor to1, causing a correct native refusal on later maintenance. Then continue remaining Worker
+configuration/terminal/Local/ceremony/offline integration before timing acceptance.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase187/README.md).

@@ -182,6 +182,28 @@ self.addEventListener('message', (event: MessageEvent) => {
         if (!composedBridge) throw Error('Worker workspace unavailable');
         return composedBridge.methods.workspaceCommit(input);
       },
+      compositionRemoveLocalHistory: async (input) => {
+        live();
+        if (
+          !composition?.removeLocalHistory ||
+          !input ||
+          typeof input !== 'object' ||
+          Object.getPrototypeOf(input) !== Object.prototype ||
+          Object.keys(input).join(',') !== 'expectedRevision'
+        )
+          throw Error('Worker local history unavailable');
+        const descriptor = Object.getOwnPropertyDescriptor(input, 'expectedRevision');
+        if (
+          !descriptor ||
+          !('value' in descriptor) ||
+          !Number.isSafeInteger(descriptor.value) ||
+          descriptor.value < 0
+        )
+          throw Error('Worker local history revision changed');
+        const result = await composition.removeLocalHistory(descriptor.value);
+        live();
+        return result;
+      },
       compositionLocalHistory: async (input) => {
         live();
         if (!composition) throw Error('Worker composition unavailable');

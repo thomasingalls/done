@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 603,
-    "requiredTestFiles": 597,
+    "testFiles": 604,
+    "requiredTestFiles": 598,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -12334,6 +12334,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/preparationJournalObservation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/preparationJournalObservation.test.ts"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/preparationRemoval.test.ts",
       "status": "required",
       "invocation": {
@@ -20543,6 +20558,10 @@
     {
       "path": "test/preparationBinding.test.ts",
       "sha256": "37de02725905a9269170a3b22005f8f9e31eda16d004af274e8bf38a6e6da602"
+    },
+    {
+      "path": "test/preparationJournalObservation.test.ts",
+      "sha256": "872d5b18f3bff34fa12c5d0c77e877ee227a9f1938a264813edd278ad2a8a0b9"
     },
     {
       "path": "test/preparationRemoval.test.ts",

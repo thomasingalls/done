@@ -897,11 +897,13 @@ async function openAccountReceiveOwner(
     );
     if (prepared.kind === 'preparation-checkpoint') {
       try {
-        return await runBaselineShadow(async (task, _owner, _route, checkJournal) => {
-          const refused = await retentionReady(task);
-          if (refused) return refused;
-          return prepared.persist(task, () => assertCurrent(task), checkJournal);
-        });
+        const persist = () =>
+          runBaselineShadow(async (task, _owner, _route, checkJournal) => {
+            const refused = await retentionReady(task);
+            if (refused) return refused;
+            return prepared.persist(task, () => assertCurrent(task), checkJournal);
+          });
+        return await (contextQueue ? contextQueue.run(persist) : persist());
       } finally {
         prepared.dispose();
       }

@@ -745,7 +745,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "5ac4e66b3e63fca9c48faf2956769a82cea2f4d9b13a3d0b354a0a1154b405aa"
+      "sha256": "d095437c7d7f194268997401103f2fa531bbe7e3074a9546590cc98a709d9d7f"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "cdbb54b6954d89b4e19d2e5fda3a0b1445771e55640333e78a48e78a21596c5e"
+      "sha256": "4ab6940243d1dfe37d1645fe2381f4e78845a09a16e94f6792a7edcfe25d2f28"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -801,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "ef76797053cde453cafb2c20ce18e3e0d78bf34bc636841faac21c5c1c94077a"
+      "sha256": "d5aa8e2b2ca20013dcea65fa777dea3285932988dac42a9f8a7e5810f4f9de3d"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -849,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "6f6f9f8dfb6ec6dd2cd1a19de49e94df89d402ed8cde69ef9320058c441f8017"
+      "sha256": "ee5ab4b80374d732e2e41f564900205acabcec0cb14fc209cba83c05899060bf"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -1226,6 +1226,10 @@
     {
       "path": "src/crdt/persistence.ts",
       "sha256": "00a6aa0128231f8d8d6bd633bb1093f0638f3038c32d3091b90b76e6d5f3d8af"
+    },
+    {
+      "path": "src/crdt/preparationJournalObservation.ts",
+      "sha256": "564ebf83fb5066ae538a5c66007f33d5443a838dcbd7ff1a1ab1ef5b7afa7c80"
     },
     {
       "path": "src/crdt/preparationValue.ts",

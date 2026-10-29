@@ -451,6 +451,8 @@ export async function openAccountWorkerSession(
         channel!.request<import('../account/deviceRoster').DeviceRosterSnapshot>(
           'compositionRoster',
         ),
+      compositionRemoveLocalHistory: (expectedRevision: number) =>
+        channel!.request('compositionRemoveLocalHistory', { expectedRevision }),
       compositionLocalHistory: (input: WorkerLocalBaselineCommand) =>
         channel!.request('compositionLocalHistory', captureWorkerLocalBaselineCommand(input)),
       worker: workerIO,

@@ -1,3 +1,4 @@
+import { withPreparationJournalObservation } from './preparationJournalObservation';
 import { hasBaselineVerifier } from './localBaselineMode';
 import { eraseVerified } from './verifiedRecords';
 import type { AccountBaselineRead } from './localBaselineShadow';
@@ -751,6 +752,17 @@ export async function openAccountCaptureOwner(
             }
           });
         try {
+          if (preparation && owner!.journal.asynchronous)
+            return await withPreparationJournalObservation(
+              task,
+              owner!.journal,
+              async (observe) => {
+                // Only isolated read work sees this captured observation. It cannot populate pinned()
+                // or survive this task. Final save/removal still reads at its real Window FIFO head.
+                observe();
+                return operation(task, owner!, route, observe, check);
+              },
+            );
           checkJournal();
           return await operation(task, owner!, route, checkJournal, check);
         } finally {

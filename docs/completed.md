@@ -17647,3 +17647,13 @@ type/lint/format pass; six native authentication/refusal/publication/session cas
 missing-cancel fault fails both targeted regressions. Fault-fixture failures retained and qualified.
 Default Page and all performance/security gates unchanged.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase186/README.md).
+
+
+## 2026-10-29 — phase187 scoped read-only preparation and final progress save
+
+Observe authenticated journal reads without lending pinned write permission. Progress save uses
+actual Window head and original fresh checks/ACK.55 focused/original unit cases,98 metadata/type/
+lint/format pass. Prior-module control refuses worker-lifetime; uninstrumented current Worker saves,
+cold resumes and removes7275 rows, then preserves input/Undo/old-reader exactness. Native retirement
+passes. Stale scheduling predecessor and separate30s catch-up failure retained, not claimed fixed.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase187/README.md).

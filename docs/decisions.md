@@ -6037,3 +6037,13 @@ An active Worker mirror must withdraw input when its actual native owner withdra
 Window never receives a retirement hint. Stop the channel synchronously, but drain and prove native
 release before releasing the Window fence. Establish the memoized close promise before abort dispatch
 can reenter it. Native permit and data/authority rules are unchanged. [Phase183](performance-experiments/2026-10-28-worker-owner/phase183/README.md).
+
+
+## 2026-10-29 — Worker preparation observations cannot become mutation permission (phase187)
+
+Allow explicitly scoped asynchronous read-only journal observations only for isolated preparation.
+Do not broaden runtime.pinned outside opening/final head. Retained preparation data must pass fresh
+original checks at the real Window head for progress save/removal; an old observation callback expires.
+Heavy preparation stays outside input FIFO. A scheduling revision remains advisory: native validation
+correctly refused the stale0 hint after actual predecessor advanced to1; repair that hint separately.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase187/README.md).
