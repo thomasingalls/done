@@ -17916,3 +17916,8 @@ Two before-allocation counterexamples retained; final42 focused/99 metadata/type
 ## 2026-10-29 — phase222: native device-connection controller
 
 Six new cases plus affected coverage:33 focused and99 metadata pass; type/lint/format and unchanged-runtime byte audit pass. Real Chrome joined verification/edit/exact original cold reopen passes. Initial lab initialization-order failure and close-before-completion counterexample retained. Two exact containers absent. New tests uncredited; qualification paused. [Packet](performance-experiments/2026-10-28-worker-owner/phase222/README.md).
+
+
+## 2026-10-29 — phase223: native enrollment notification ownership
+
+Four new cases/25 focused and99 metadata pass. Type/lint/format and independent common-lifetime AST audit pass. Actual Chrome joined edit/cold and service-authorized native notification/cleanup2 pass;2 exact containers absent. Existing controller fixtures add exact notification fields and real compiled-port wiring, retaining all six assertions. [Packet](performance-experiments/2026-10-28-worker-owner/phase223/README.md).

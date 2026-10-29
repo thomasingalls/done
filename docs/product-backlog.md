@@ -712,3 +712,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase222:** Native enrollment joined path verified; next notification ownership, complete recovery, default/offline/mixed activation, then unchanged16ms/2.5s/30s gates. No staging, signing, push, preview8443, release or deployment. [Packet](performance-experiments/2026-10-28-worker-owner/phase222/README.md).
+
+
+**Phase223:** Notifications native and verified. Next complete recovery, remaining screen entry/default activation, offline and mixed-owner checks; then unchanged16ms/2.5s/30s measurements. No release preparation. [Packet](performance-experiments/2026-10-28-worker-owner/phase223/README.md).

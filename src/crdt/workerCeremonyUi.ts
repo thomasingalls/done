@@ -63,6 +63,9 @@ export interface NativeCeremonyUiContext {
   browser: CeremonyBrowser;
   execution: NativeCeremonyWorkspaceExecution;
   publish(): void;
+  /** Trusted compiled I/O only; no endpoint accepts an executable operation. */
+  runBackground<T>(operation: () => Promise<T>): Promise<T>;
+  beforeAccountOpen(cleanup: () => Promise<void>): void;
   data: unknown;
 }
 /** Trusted composition only. Commands/projections belong to fixed native factories, never messages. */
@@ -125,11 +128,14 @@ export async function startWorkerCeremonyUi(
     presentation.publish(user.snapshot());
   };
   const flush = presentation.flush;
+  const beforeOpening = new Set<() => Promise<void>>();
   const execution: NativeCeremonyWorkspaceExecution = {
     async open(options, _access, joined = false) {
       live();
       if (pending || accountRole) throw Error('Native setup opening already requested');
       if (typeof joined !== 'boolean') throw Error('Native account role changed');
+      for (const cleanup of beforeOpening) await cleanup();
+      live();
       pendingJoined = joined;
       pending = options;
       await phase.yieldToAccount();
@@ -293,6 +299,11 @@ export async function startWorkerCeremonyUi(
     execution,
     browser,
     publish,
+    runBackground: (operation) => root.run(operation),
+    beforeAccountOpen: (cleanup) => {
+      live();
+      beforeOpening.add(cleanup);
+    },
     data: m.data,
   });
   root.beforeRelease(async () => {

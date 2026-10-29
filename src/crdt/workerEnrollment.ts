@@ -7,6 +7,7 @@ import {
   enrollmentPresentation,
   enrollmentProgressPresentation,
 } from '../account/enrollmentWorkerProtocol';
+import { createWorkerEnrollmentNotifications } from './workerEnrollmentNotifications';
 import { NetworkLogin } from '../account/networkLogin';
 import type { SetupWorkspacePort } from '../account/setupWorkspace';
 import type { EnrollmentProgress } from '../lib/enrollmentProgress';
@@ -37,6 +38,11 @@ export function createNativeEnrollmentController(
     context.signal.throwIfAborted();
     if (closed) throw Error('Enrollment closed');
   };
+  const notifications = createWorkerEnrollmentNotifications(context, (signal) => {
+    live();
+    if (!owner) throw Error('Enrollment not initialized');
+    return owner.openNotifications(signal);
+  });
   const initialize = async () => {
     live();
     if (initialization) throw Error('Enrollment already initialized');
@@ -89,6 +95,7 @@ export function createNativeEnrollmentController(
     login?.close();
     const immediate = owner?.close();
     return (closing = (async () => {
+      await notifications.stop();
       await initialization?.catch(() => {});
       await Promise.allSettled([...actions]);
       await immediate;
@@ -107,23 +114,32 @@ export function createNativeEnrollmentController(
     snapshot: () => ({
       state: enrollmentPresentation(state),
       progress: enrollmentProgressPresentation(progress),
+      notifications: notifications.snapshot(),
     }),
     command(input) {
       const value = captureEnrollmentCommand(input);
+      if (value.command === 'notificationsStart' || value.command === 'notificationsStop')
+        return {
+          outOfBand: true,
+          run: () => {
+            live();
+            if (value.command === 'notificationsStart') notifications.start();
+            else void notifications.stop();
+          },
+        };
+      const command = value.command;
       return {
         outOfBand: false,
         run: () => {
           const work = (async () => {
             live();
-            if (value.command === 'initialize') {
+            if (command === 'initialize') {
               await initialize();
               return;
             }
             if (!owner) throw Error('Enrollment not initialized');
             const result =
-              value.command === 'compare'
-                ? await owner.compare(value.value!)
-                : await owner[value.command]();
+              command === 'compare' ? await owner.compare(value.value!) : await owner[command]();
             live();
             state = result;
           })();

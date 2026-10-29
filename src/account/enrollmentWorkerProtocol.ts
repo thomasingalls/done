@@ -23,6 +23,8 @@ export function captureEnrollmentBootstrap(input: unknown): EnrollmentBootstrapD
   return structuredClone(v);
 }
 const commands = [
+  'notificationsStart',
+  'notificationsStop',
   'initialize',
   'refresh',
   'enroll',
@@ -150,5 +152,27 @@ export function enrollmentProgressPresentation(input: unknown): EnrollmentProgre
     )
       throw Error('Enrollment counters changed');
   }
+  return Object.freeze(structuredClone(v));
+}
+
+export interface EnrollmentNotificationPresentation {
+  generation: number;
+  connected: boolean;
+  event: 'ready' | 'hint' | 'content' | 'resume' | null;
+}
+export function enrollmentNotificationPresentation(
+  input: unknown,
+): EnrollmentNotificationPresentation {
+  workerMessageBytes(input);
+  credentialFields(input, ['generation', 'connected', 'event']);
+  const v = input as EnrollmentNotificationPresentation;
+  if (
+    !Number.isSafeInteger(v.generation) ||
+    v.generation < 0 ||
+    typeof v.connected !== 'boolean' ||
+    ![null, 'ready', 'hint', 'content', 'resume'].includes(v.event) ||
+    (v.generation === 0) !== (v.event === null)
+  )
+    throw Error('Enrollment notification changed');
   return Object.freeze(structuredClone(v));
 }

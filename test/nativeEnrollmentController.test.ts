@@ -43,6 +43,8 @@ function fixture() {
     browser: {},
     execution: {},
     publish: vi.fn(),
+    runBackground: (operation: () => Promise<unknown>) => operation(),
+    beforeAccountOpen: vi.fn(),
   } as unknown as NativeCeremonyUiContext;
   const controller = createNativeEnrollmentController(context);
   const invoke = (command: string, value?: string) =>
@@ -94,6 +96,7 @@ it('exports only display identities and never exports native workspace login or 
   expect(f.controller.snapshot()).toEqual({
     state: { kind: 'approved', message: 'Approved' },
     progress: null,
+    notifications: { generation: 0, connected: false, event: null },
   });
 });
 it('rejects accessor/extended commands and bootstrap data before invoking a native owner', () => {
@@ -169,5 +172,6 @@ it('close joins active work and retires a late workspace instead of returning ea
   expect(f.controller.snapshot()).toEqual({
     state: { kind: 'locked', message: expect.any(String) },
     progress: null,
+    notifications: { generation: 0, connected: false, event: null },
   });
 });

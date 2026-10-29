@@ -7,6 +7,7 @@ import {
   captureEnrollmentCommand,
   enrollmentPresentation,
   enrollmentProgressPresentation,
+  enrollmentNotificationPresentation,
   type EnrollmentBootstrapData,
 } from '../account/enrollmentWorkerProtocol';
 import type { EnrollmentProgressListener } from '../lib/enrollmentProgress';
@@ -29,12 +30,14 @@ export async function createWorkerAccountEnrollment(
   let initial: string | undefined = code;
   code = '';
   const locked: WorkerEnrollmentView = { kind: 'locked', message: enrollmentMessages.locked };
+  const emptyNotifications = { generation: 0, connected: false, event: null };
   const owner = createWindowCeremonyUi<{
     state: WorkerEnrollmentView;
     progress: ReturnType<typeof enrollmentProgressPresentation>;
+    notifications: ReturnType<typeof enrollmentNotificationPresentation>;
   }>(config, slotId, {
-    initial: { state: locked, progress: null },
-    closing: { state: locked, progress: null },
+    initial: { state: locked, progress: null, notifications: emptyNotifications },
+    closing: { state: locked, progress: null, notifications: emptyNotifications },
     failure: (poisoned) => ({
       state: {
         kind: 'locked',
@@ -43,11 +46,12 @@ export async function createWorkerAccountEnrollment(
           : 'Unlock this workspace again to continue. Your writing and saved connection have been kept.',
       },
       progress: null,
+      notifications: emptyNotifications,
     }),
-    fields: ['state', 'progress'],
+    fields: ['state', 'progress', 'notifications'],
     expectedJoined: captured.role === 'new',
     capture(input, session) {
-      const v = input as { state: unknown; progress: unknown },
+      const v = input as { state: unknown; progress: unknown; notifications: unknown },
         projected = enrollmentPresentation(v.state),
         progress = enrollmentProgressPresentation(v.progress);
       if (JSON.stringify(projected) !== JSON.stringify(v.state))
@@ -67,7 +71,11 @@ export async function createWorkerAccountEnrollment(
           },
         };
       } else state = projected as WorkerEnrollmentView;
-      return { state, progress };
+      return {
+        state,
+        progress,
+        notifications: enrollmentNotificationPresentation(v.notifications),
+      };
     },
     editing: (v) => v.state.kind === 'editing',
     worker: () =>
@@ -81,7 +89,9 @@ export async function createWorkerAccountEnrollment(
       return value;
     },
   });
+  const notificationStops = new Set<() => void>();
   const close = () => {
+    for (const stop of [...notificationStops]) stop();
     initial = undefined;
     return owner.close();
   };
@@ -111,6 +121,45 @@ export async function createWorkerAccountEnrollment(
     compare: (value: string) => run('compare', value),
     cancel: () => run('cancel'),
     openWriting: () => run('openWriting'),
+    startNotifications(options: {
+      signal: AbortSignal;
+      wake(event: 'ready' | 'hint' | 'content' | 'resume'): void;
+      health(connected: boolean): void;
+    }) {
+      let generation = owner.getSnapshot().notifications.generation,
+        connected = false,
+        stopped = false;
+      const update = () => {
+        if (stopped) return;
+        const next = owner.getSnapshot().notifications;
+        if (next.connected !== connected) {
+          connected = next.connected;
+          options.health(connected);
+        }
+        if (next.generation > generation) {
+          generation = next.generation;
+          if (next.event) options.wake(next.event);
+        }
+      };
+      const off = owner.subscribe(update);
+      const stop = () => {
+        if (stopped) return;
+        stopped = true;
+        notificationStops.delete(stop);
+        off();
+        options.signal.removeEventListener('abort', stop);
+        owner.send({ command: 'notificationsStop' });
+        options.health(false);
+      };
+      notificationStops.add(stop);
+      options.signal.addEventListener('abort', stop, { once: true });
+      if (options.signal.aborted) stop();
+      else {
+        owner.send({ command: 'notificationsStart' });
+        update();
+      }
+      return { close: stop };
+    },
     getSnapshot: () => owner.getSnapshot().state,
     subscribe: owner.subscribe,
     registerEditor: owner.registerEditor,
