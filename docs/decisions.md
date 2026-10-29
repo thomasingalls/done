@@ -6009,3 +6009,14 @@ identifies a handoff but grants no native authority. An uncertain reply closes/d
 resuming with the previous sealing context would be unsound. Explicit manual first conversion may
 occupy this fence; automatic preparation must retain its existing input-priority/resumable design.
 See [phase175](performance-experiments/2026-10-28-worker-owner/phase175/README.md).
+
+## 2026-10-29 — keep Worker receive data separate from native authority
+
+The native owner retains actual prepared-promotion capability and its fresh checking task through
+Window apply acknowledgment; only bounded original update bytes and lifecycle identifiers cross the
+port. Construct original NetworkLogin inside the Worker, fulfilling its signed passkey challenge on
+the Window without exporting its session/grant state. Reuse the existing actual context fence/rebind
+protocol for manual authority refresh and baseline conversion. This is an internal functional bridge;
+it does not activate a new scheduler or claim input latency. The sender-closed regression must prove
+acceptance of every source in the specific new edit: idle can also mean publication batching.
+[Evidence and limitations](performance-experiments/2026-10-28-worker-owner/phase177/README.md).

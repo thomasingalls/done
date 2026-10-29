@@ -1,0 +1,37 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountWorkerClient.ts');s=p.read_text();a='''  try {
+    const journal = await createWindowJournalBridge(cohort);''';b='''  const receiveOwned = (controller: MirrorController, acquire: (id: number) => Promise<WorkerReceiveReply>, cleanup: () => void = () => {}) => {
+    requireWindowAccountMirrorController(controller, cohort);
+    if (!ready || receiving) throw Error('Window receive unavailable');
+    const state: WindowReceiveFlight = { id: ++receiveSequence, applied: false }; receiving = state;
+    return Promise.resolve().then(() => controller.prepare(new Uint8Array([1]), async (_input, stage) => {
+      let updates: Bytes[] | undefined;
+      try {
+        const reply = await acquire(state.id); cohort.write(() => {});
+        if (reply.id !== state.id) throw Error('Worker receive changed');
+        updates = await readWorkerFrameStream(reply.counts, MAX_PENDING_BYTES, () => channel!.request<WorkerFramePart>('receiveOutput', { id: state.id }), () => cohort.write(() => {}));
+        stage(updates, async apply => {
+          cohort.write(() => {}); if (receiving !== state || state.apply) throw Error('Window receive changed'); state.apply = apply;
+          await channel!.request('receiveFinish', { id: state.id }); cohort.write(() => {});
+          if (!state.applied) throw Error('Worker omitted Window application');
+        });
+        return reply.result;
+      } finally { for (const bytes of updates ?? []) bytes.fill(0); }
+    })).catch(cause => { void cohort.close().catch(() => {}); throw cause; }).finally(() => { cleanup(); if (receiving === state) receiving = undefined; });
+  };
+  try {
+    const journal = await createWindowJournalBridge(cohort);''';assert a in s;s=s.replace(a,b)
+start=s.index('''      receiveNext: (controller:''');end=s.index('''      localHistoryStatus:''',start)
+s=s[:start]+'''      receiveNext: (controller: MirrorController) => receiveOwned(controller, id => channel!.request<WorkerReceiveReply>('receiveFetch', { id })),
+      prepareRead: () => channel!.request<Uint8Array>('receiveRequest'),
+      receivePage: (controller: MirrorController, page: Uint8Array, request: Uint8Array) => {
+        requireWindowAccountMirrorController(controller, cohort);
+        if (!ready || receiving || !(page instanceof Uint8Array) || !page.length || page.length > READ_PAGE_LIMIT || !(request instanceof Uint8Array) || !request.length || request.length > READ_REQUEST_LIMIT) throw Error('Window receive unavailable');
+        const source = createWorkerFrameStream([page.slice()], READ_PAGE_LIMIT), expected = request.slice();
+        return receiveOwned(controller, async id => {
+          await channel!.request('receiveBegin', { id, counts: source.counts, request: expected });
+          for (;;) { const part = source.next(); try { await channel!.request('receiveInput', { id, part }); } finally { part.bytes.fill(0); } if (part.done) break; }
+          return channel!.request<WorkerReceiveReply>('receiveVerify', { id });
+        }, () => { source.close(); expected.fill(0); });
+      },
+'''+s[end:];p.write_text(s)

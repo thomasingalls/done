@@ -1,3 +1,5 @@
+import type { NetworkLogin } from '../account/networkLogin';
+import { createAccountWorkerReceive } from './accountWorkerReceive';
 import { captureWorkerLocalBaselineCommand } from './workerLocalBaseline';
 import { journalPrefix } from './journalCodec';
 import type { AccountMirrorOpening } from './windowAccountMirror';
@@ -23,7 +25,8 @@ const deferred = <T>() => {
   return { promise, resolve, reject };
 };
 type BaselineResult = Awaited<ReturnType<NonNullable<Owner['installLocalBaseline']>>>;
-type BaselineReply = { id: number; result: BaselineResult; opening: AccountMirrorOpening };
+type ContextResult = BaselineResult | Awaited<ReturnType<Owner['refreshAuthority']>>;
+type BaselineReply = { id: number; result: ContextResult; opening: AccountMirrorOpening };
 type BaselineFlight = {
   id: number;
   phase: 'working' | 'waiting' | 'finishing';
@@ -47,6 +50,7 @@ self.addEventListener('message', (event: MessageEvent) => {
   };
   if (m?.v !== 1 || m.kind !== 'accountBootstrap' || !(m.port instanceof MessagePort)) return;
   initialized = true;
+  let login: NetworkLogin | undefined;
   let owner: Owner | undefined,
     opening: Promise<unknown> | undefined,
     retiring = false,
@@ -61,10 +65,12 @@ self.addEventListener('message', (event: MessageEvent) => {
     closing = (async () => {
       const baselineWork = baseline?.work;
       runtime.close();
+      login?.close();
       stream?.close();
       stream = undefined;
       await opening?.catch(() => {});
       await baselineWork?.catch(() => {});
+      await receives.close();
       await owner?.carrier.close();
       owner = undefined;
     })();
@@ -84,21 +90,92 @@ self.addEventListener('message', (event: MessageEvent) => {
     live();
     return value;
   };
+  const startContext = (id: number, operation: () => Promise<ContextResult>) => {
+    live();
+    if (!owner || !prefix || baseline) throw Error('Worker context operation unavailable');
+    if (!Number.isSafeInteger(id) || id !== baselineSequence + 1)
+      throw Error('Worker local-history operation changed');
+    const state: BaselineFlight = {
+      id: id,
+      phase: 'working',
+      ready: deferred<BaselineReply>(),
+      ack: deferred<void>(),
+      work: Promise.resolve(),
+    };
+    baselineSequence = id;
+    baseline = state;
+    const cancel = () => {
+      state.ready.reject(Error('Worker local-history operation closed'));
+      state.ack.reject(Error('Worker local-history acknowledgment closed'));
+    };
+    runtime.signal.addEventListener('abort', cancel, { once: true });
+    state.work = Promise.resolve().then(async () => {
+      try {
+        await runtime.withFence(state.id, prefix!, async () => {
+          live();
+          const result = await operation();
+          live();
+          // The actual install task has settled; this fresh owned task cannot deadlock it.
+          const opening = await owner!.copyMirrorOpening();
+          const { binding, ...parts } = opening;
+          const material: AccountMirrorOpening = {
+            ...parts,
+            ...(binding ? { binding } : {}),
+            incarnation: m.ticket.incarnation,
+          };
+          state.material = material;
+          live();
+          state.phase = 'waiting';
+          state.ready.resolve({ id: state.id, result, opening: material });
+          await state.ack.promise;
+          live();
+        });
+      } catch (cause) {
+        state.ready.reject(cause);
+        if (state.phase !== 'working') channel.close();
+        throw cause;
+      } finally {
+        runtime.signal.removeEventListener('abort', cancel);
+        eraseWorkerMessage(state.material);
+        if (baseline === state) baseline = undefined;
+      }
+    });
+    void state.work.catch(() => {});
+    return state.ready.promise;
+  };
   channel = createWorkerChannel(
     m.port,
     m.ticket.incarnation,
     {
+      receiveRequest: () => receives.methods.receiveRequest(),
+      receiveFetch: (input) => receives.methods.receiveFetch(input),
+      receiveBegin: (input) => receives.methods.receiveBegin(input),
+      receiveInput: (input) => receives.methods.receiveInput(input),
+      receiveVerify: (input) => receives.methods.receiveVerify(input),
+      receiveOutput: (input) => receives.methods.receiveOutput(input),
+      receiveFinish: (input) => receives.methods.receiveFinish(input),
       open: (input) => {
         if (opening) throw Error('Account worker already opened');
         opening = (async () => {
           const options = input as Omit<
             AccountWorkspaceOptions,
             'assertPasskey' | 'signal' | 'networkLogin' | 'today'
-          > & { joined: boolean };
+          > & { joined: boolean; networkSessions?: boolean };
           if (options.slotId !== m.ticket.slotId) throw Error('Account worker slot changed');
+          if (options.networkSessions !== undefined && typeof options.networkSessions !== 'boolean')
+            throw Error('Invalid Worker connection mode');
+          if (options.networkSessions) {
+            const { NetworkLogin } = await import('../account/networkLogin');
+            login = new NetworkLogin(options.pin, options.slotId);
+          }
           const { openAccountWorkerStore } = await import('./accountReceive');
           owner = await openAccountWorkerStore(
-            { ...options, assertPasskey: passkey, signal: runtime.signal },
+            {
+              ...options,
+              assertPasskey: passkey,
+              signal: runtime.signal,
+              ...(login ? { networkLogin: login } : {}),
+            },
             options.identity.id,
             options.joined,
           );
@@ -185,58 +262,22 @@ self.addEventListener('message', (event: MessageEvent) => {
           throw Error('Worker local-history operation unavailable');
         const value = input as { id: number; command: unknown };
         const command = captureWorkerLocalBaselineCommand(value.command);
-        if (!Number.isSafeInteger(value.id) || value.id !== baselineSequence + 1)
-          throw Error('Worker local-history operation changed');
-        const state: BaselineFlight = {
-          id: value.id,
-          phase: 'working',
-          ready: deferred<BaselineReply>(),
-          ack: deferred<void>(),
-          work: Promise.resolve(),
-        };
-        baselineSequence = value.id;
-        baseline = state;
-        const cancel = () => {
-          state.ready.reject(Error('Worker local-history operation closed'));
-          state.ack.reject(Error('Worker local-history acknowledgment closed'));
-        };
-        runtime.signal.addEventListener('abort', cancel, { once: true });
-        state.work = Promise.resolve().then(async () => {
-          try {
-            await runtime.withFence(state.id, prefix!, async () => {
-              live();
-              const result = await owner!.installLocalBaseline!(
-                command.expectedRevision,
-                command.kind === 'advance',
-              );
-              live();
-              // The actual install task has settled; this fresh owned task cannot deadlock it.
-              const opening = await owner!.copyMirrorOpening();
-              const { binding, ...parts } = opening;
-              const material: AccountMirrorOpening = {
-                ...parts,
-                ...(binding ? { binding } : {}),
-                incarnation: m.ticket.incarnation,
-              };
-              state.material = material;
-              live();
-              state.phase = 'waiting';
-              state.ready.resolve({ id: state.id, result, opening: material });
-              await state.ack.promise;
-              live();
-            });
-          } catch (cause) {
-            state.ready.reject(cause);
-            if (state.phase !== 'working') channel.close();
-            throw cause;
-          } finally {
-            runtime.signal.removeEventListener('abort', cancel);
-            eraseWorkerMessage(state.material);
-            if (baseline === state) baseline = undefined;
-          }
-        });
-        void state.work.catch(() => {});
-        return state.ready.promise;
+        return startContext(value.id, () =>
+          owner!.installLocalBaseline!(command.expectedRevision, command.kind === 'advance'),
+        );
+      },
+      authorityStart: (input) => {
+        live();
+        if (
+          !owner?.access ||
+          !input ||
+          typeof input !== 'object' ||
+          Object.keys(input).join(',') !== 'id'
+        )
+          throw Error('Worker authority refresh unavailable');
+        return startContext((input as { id: number }).id, () =>
+          owner!.refreshAuthority(owner!.access!),
+        );
       },
       baselineFinish: async (input) => {
         live();
@@ -271,6 +312,7 @@ self.addEventListener('message', (event: MessageEvent) => {
       );
     },
   );
+  const receives = createAccountWorkerReceive(() => owner, channel, live);
   const runtime = installAccountWorkerRuntime(m.ticket, channel, m.activity);
   self.postMessage({ v: 1, kind: 'accountBooted', owner: m.ticket.incarnation });
 });

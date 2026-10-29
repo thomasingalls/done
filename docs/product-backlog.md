@@ -137,7 +137,10 @@ lifetime campaigns and every fault control pass. Earlier failed attempts remain 
 
 [176](performance-experiments/2026-10-28-worker-owner/phase176/README.md) adds a genuine task-held
 acknowledged receive finish, retaining the unchanged Page path;104 focused/42 native cases pass.
-Next actual async receive transport/sync, resumable automatic preparation, fresh
+[177](performance-experiments/2026-10-28-worker-owner/phase177/README.md) adds actual Worker-owned
+network login/signed receive, bounded original-frame transport and acknowledged final apply.20 native
+account cases,2375 units/one skip pass; default execution is still Page.
+Next joined physical/logical mirror scopes, original sync/workspace composition, resumable automatic preparation, fresh
 ceremony ownership, all application/Local routes and offline artifact integration. Only then run the
 original performance workloads. Data messages, queue fences and cached snapshots confer no native
 verification authority. Preserve synchronous sealed input, actual native final checks and security

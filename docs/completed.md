@@ -17536,3 +17536,19 @@ receive AST is independently unchanged except the Worker-only branch. Seven new 
 in both browsers. Preserve test-only rejection logs and distinguish the final isolated artifacts from
 earlier shared-directory attempts.434sources/198domains,955 obligations/409 unresolved; new tests
 uncredited. Actual receive transport/application integration is next, no performance/activation credit.
+
+## 2026-10-29 — phase177: actual Worker receiving and original network sessions
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase177/README.md). Original network login,
+signed read verification and native persistence now run inside the internal Worker. Bounded original
+frame transport feeds the real Window prepared queue; a genuine fresh native task remains held
+through final apply acknowledgment. Baseline/manual authority refresh share the existing actual
+fence/rebind/ACK protocol. No session/grant secrets or native permission leave the Worker. Full2375
+unit cases/one existing skip,81 focused,98 metadata/type/lint/format and20 rebuilt real-account cases
+pass, including all17 old cases plus sender-closed peer receive/Undo/cold reopen, confirmed signature
+mutation refusal and lost-apply native drain/exact cold replay.32 owned containers absent;224 emitted
+source bodies match. Preserve failed tests and the correction from ambiguous idle/batching upload
+checks to exact SourceCapsule coverage by accepted native positions. No default activation/performance
+credit.436sources/198domains;957 obligations/411 unresolved, new tests uncredited. Next address joined
+physical/logical mirror scopes, then complete original sync/workspace/maintenance/ceremony/Local/
+offline composition. No preview/staging/signing/push/release/service automation.

@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "ebae2e85bc104f809dc8434967e6ed7a3c01885af48ec3ec31d5bcb3c86ac592"
+      "sha256": "688a74e6d7035350560ffef264c523b88f1bb634c495b010d7ca4e5122fd40f1"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -845,7 +845,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "1b12e0e912c9c51549142341a348a5cf64dd9425a3b25f61c61095833a5549c0"
+      "sha256": "450ba29fc1a6550519dce08315162dbb36a9cd3a9d98f734446963aaf98061ac"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -854,6 +854,10 @@
     {
       "path": "src/crdt/accountWorkerJoin.ts",
       "sha256": "636b945430b693f0c2a4e6f201aef01c7ebca9f93de9556b3a567b1cf3a322ec"
+    },
+    {
+      "path": "src/crdt/accountWorkerReceive.ts",
+      "sha256": "5e9756906e5efd218b4ca089f9d4334645e3a5bd1e12b58335b714fab012af29"
     },
     {
       "path": "src/crdt/accountWorkerRecoveryStream.ts",
@@ -1402,6 +1406,10 @@
     {
       "path": "src/crdt/workerChannel.ts",
       "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
+    },
+    {
+      "path": "src/crdt/workerFrameStream.ts",
+      "sha256": "c22fad4ad96e0dc90b70d5e952b039ab98babb6dd6f53279524ee550a0936941"
     },
     {
       "path": "src/crdt/workerJournalProtocol.ts",

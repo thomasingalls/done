@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 592,
-    "requiredTestFiles": 586,
+    "testFiles": 594,
+    "requiredTestFiles": 588,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9817,6 +9817,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/accountWorkerReceive.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountWorkerReceive.test.ts"
+        ]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/accountWorkerRecoveryStream.test.ts",
       "status": "required",
       "invocation": {
@@ -14118,6 +14133,16 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerChannel.test.ts"]
       },
       "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerFrameStream.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerFrameStream.test.ts"]
+      },
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -19284,6 +19309,10 @@
       "sha256": "345eac962157d06357072d77565176f7621ed8262b71a78ae2baa7b032d5fb84"
     },
     {
+      "path": "test/accountWorkerReceive.test.ts",
+      "sha256": "ee9965194db9fda17b7beabffb852cd5dba7827f8acf45b7e8ac9d040192e9df"
+    },
+    {
       "path": "test/accountWorkerRecoveryStream.test.ts",
       "sha256": "47389641589ef6f55101ac7fe676fd73a9aa6cb6ef451b86bd412a701ae60b2c"
     },
@@ -21034,6 +21063,10 @@
     {
       "path": "test/workerChannel.test.ts",
       "sha256": "66313dbb7b37c3957c8b738727650133afa42e0184569d6fb167e2a86e765912"
+    },
+    {
+      "path": "test/workerFrameStream.test.ts",
+      "sha256": "0d615e5848f6fb0d80148ed2afde43888c4b8d43a488799a513d84be97d9f65b"
     },
     {
       "path": "test/workerLocalBaseline.test.ts",

@@ -1,3 +1,12 @@
+import type { Bytes } from './custodyCrypto';
+import { MAX_PENDING_BYTES } from './admissionQueue';
+import { READ_PAGE_LIMIT, READ_REQUEST_LIMIT } from '../../account-protocol/deliveryTransport';
+import {
+  createWorkerFrameStream,
+  readWorkerFrameStream,
+  type WorkerFrameCounts,
+  type WorkerFramePart,
+} from './workerFrameStream';
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import {
   captureWorkerLocalBaselineCommand,
@@ -20,11 +29,27 @@ import type { ContentReceipt } from './contentStore';
 import type { JournalFlushReceipt } from './journalStore';
 import type { LocalPasskeyRequest } from './accountAccess';
 
+type WorkerReceiveReply = {
+  id: number;
+  counts: WorkerFrameCounts;
+  result:
+    | Awaited<ReturnType<Opened['api']['receivePage']>>
+    | { kind: 'unknown'; recorded: false; status: Awaited<ReturnType<Opened['api']['status']>> };
+};
+type WindowReceiveFlight = { id: number; apply?: () => void; applied: boolean };
 type MirrorController = Awaited<ReturnType<typeof createWindowAccountMirrorController>>;
 type Opened = Awaited<ReturnType<(typeof import('./accountReceive'))['openAccountWorkerStore']>>;
-export async function openAccountWorkerSession(input: AccountWorkspaceOptions, joined = false) {
+export async function openAccountWorkerSession(
+  input: AccountWorkspaceOptions,
+  joined = false,
+  connection: { networkSessions?: boolean } = {},
+) {
   if (input.networkLogin || input.promotionOpening || input.recoveryOpening)
     throw Error('This worker opening requires the coordinated ceremony adapter');
+  const requestedSessions = connection.networkSessions;
+  const networkSessions = requestedSessions === true;
+  if (requestedSessions !== undefined && typeof requestedSessions !== 'boolean')
+    throw Error('Invalid Worker connection mode');
   const slotId = input.slotId,
     pin = parseAuthorityPin(input.pin),
     identity = structuredClone(input.identity),
@@ -36,6 +61,8 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
     ready = false,
     baselineSequence = 0;
   let readyFlight: Promise<void> | undefined;
+  let receiveSequence = 0;
+  let receiving: WindowReceiveFlight | undefined;
   let worker: Worker | undefined,
     channel: ReturnType<typeof createWorkerChannel> | undefined,
     killed = false,
@@ -65,6 +92,91 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
   );
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   cohort.disposeWith(() => eraseWorkerMessage(material));
+  const changeContext = <T extends object>(
+    controller: MirrorController,
+    method: 'baselineStart' | 'authorityStart',
+    command?: WorkerLocalBaselineCommand,
+  ) => {
+    requireWindowAccountMirrorController(controller, cohort);
+    if (!ready || receiving) throw Error('Worker context change is not ready');
+    return controller.journalFence(async (fence) => {
+      requireWindowAccountMirrorController(controller, cohort);
+      const id = ++baselineSequence;
+      let reply:
+        | {
+            id: number;
+            result: T;
+            opening: AccountMirrorOpening;
+          }
+        | undefined;
+      try {
+        reply = await channel!.request(method, { id, ...(command ? { command } : {}) });
+        cohort.write(() => {});
+        if (reply!.id !== id) throw Error('Worker local-history operation changed');
+        await controller.rebind(fence, reply!.opening);
+        await channel!.request('baselineFinish', { id });
+        cohort.write(() => {});
+        const revision = reply!.opening.binding?.era.revision;
+        return {
+          ...reply!.result,
+          ...(revision !== undefined ? { journalEraRevision: revision } : {}),
+        };
+      } catch (cause) {
+        // A missing reply can follow a native commit. Abort now and let owned drain finish;
+        // waiting on our own queue head here would deadlock root cleanup.
+        void cohort.close().catch(() => {});
+        throw cause;
+      } finally {
+        eraseWorkerMessage(reply?.opening);
+      }
+    });
+  };
+  const receiveOwned = (
+    controller: MirrorController,
+    acquire: (id: number) => Promise<WorkerReceiveReply>,
+    cleanup: () => void = () => {},
+  ) => {
+    requireWindowAccountMirrorController(controller, cohort);
+    if (!ready || receiving) throw Error('Window receive unavailable');
+    const state: WindowReceiveFlight = { id: ++receiveSequence, applied: false };
+    receiving = state;
+    return Promise.resolve()
+      .then(() =>
+        controller.prepare(new Uint8Array([1]), async (_input, stage) => {
+          let updates: Bytes[] | undefined;
+          try {
+            const reply = await acquire(state.id);
+            cohort.write(() => {});
+            if (reply.id !== state.id) throw Error('Worker receive changed');
+            updates = await readWorkerFrameStream(
+              reply.counts,
+              MAX_PENDING_BYTES,
+              () => channel!.request<WorkerFramePart>('receiveOutput', { id: state.id }),
+              () => cohort.write(() => {}),
+            );
+            stage(updates, async (apply) => {
+              cohort.write(() => {});
+              if (receiving !== state || state.apply) throw Error('Window receive changed');
+              state.apply = apply;
+              await channel!.request('receiveFinish', { id: state.id });
+              cohort.write(() => {});
+              if (!state.applied) throw Error('Worker omitted Window application');
+            });
+            return reply.result;
+          } finally {
+            for (const bytes of updates ?? []) bytes.fill(0);
+          }
+        }),
+      )
+      .catch((cause) => {
+        void cohort.close().catch(() => {});
+        throw cause;
+      })
+      .finally(() => {
+        cleanup();
+        if (receiving === state) receiving = undefined;
+      });
+  };
   try {
     const journal = await createWindowJournalBridge(cohort);
     worker = new Worker(new URL('./accountOwner.worker.ts', import.meta.url), { type: 'module' });
@@ -96,6 +208,21 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
       ports.port1,
       cohort.ticket.incarnation,
       {
+        receiveApply: (input) => {
+          cohort.write(() => {});
+          if (
+            !input ||
+            typeof input !== 'object' ||
+            Object.keys(input).join(',') !== 'id' ||
+            !receiving ||
+            (input as { id: number }).id !== receiving.id ||
+            !receiving.apply ||
+            receiving.applied
+          )
+            throw Error('Window receive handoff changed');
+          receiving.applied = true;
+          receiving.apply();
+        },
         journalBegin: (input) => {
           cohort.write(() => {});
           if ((input as { prefix: string }).prefix !== journal.prefix)
@@ -170,6 +297,7 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
       pin,
       identity,
       joined,
+      networkSessions,
       ...(membershipContinuation !== undefined ? { membershipContinuation } : {}),
     });
     code = '';
@@ -239,44 +367,64 @@ export async function openAccountWorkerSession(input: AccountWorkspaceOptions, j
         })();
         return readyFlight;
       },
+      receiveNext: (controller: MirrorController) =>
+        receiveOwned(controller, (id) =>
+          channel!.request<WorkerReceiveReply>('receiveFetch', { id }),
+        ),
+      prepareRead: () => channel!.request<Uint8Array>('receiveRequest'),
+      receivePage: (controller: MirrorController, page: Uint8Array, request: Uint8Array) => {
+        requireWindowAccountMirrorController(controller, cohort);
+        if (
+          !ready ||
+          receiving ||
+          !(page instanceof Uint8Array) ||
+          !page.length ||
+          page.length > READ_PAGE_LIMIT ||
+          !(request instanceof Uint8Array) ||
+          !request.length ||
+          request.length > READ_REQUEST_LIMIT
+        )
+          throw Error('Window receive unavailable');
+        const source = createWorkerFrameStream([page.slice()], READ_PAGE_LIMIT),
+          expected = request.slice();
+        return receiveOwned(
+          controller,
+          async (id) => {
+            await channel!.request('receiveBegin', {
+              id,
+              counts: source.counts,
+              request: expected,
+            });
+            for (;;) {
+              const part = source.next();
+              try {
+                await channel!.request('receiveInput', { id, part });
+              } finally {
+                part.bytes.fill(0);
+              }
+              if (part.done) break;
+            }
+            return channel!.request<WorkerReceiveReply>('receiveVerify', { id });
+          },
+          () => {
+            source.close();
+            expected.fill(0);
+          },
+        );
+      },
       localHistoryStatus: () =>
         channel!.request<{ revision: number; records: number } | null>('baselineStatus'),
-      maintainLocalHistory: (controller: MirrorController, input: WorkerLocalBaselineCommand) => {
-        requireWindowAccountMirrorController(controller, cohort);
-        const command = captureWorkerLocalBaselineCommand(input);
-        if (!ready) throw Error('Worker editor is not ready for history maintenance');
-        return controller.journalFence(async (fence) => {
-          requireWindowAccountMirrorController(controller, cohort);
-          const id = ++baselineSequence;
-          let reply:
-            | {
-                id: number;
-                result: Awaited<ReturnType<NonNullable<Opened['installLocalBaseline']>>>;
-                opening: AccountMirrorOpening;
-              }
-            | undefined;
-          try {
-            reply = await channel!.request('baselineStart', { id, command });
-            cohort.write(() => {});
-            if (reply!.id !== id) throw Error('Worker local-history operation changed');
-            await controller.rebind(fence, reply!.opening);
-            await channel!.request('baselineFinish', { id });
-            cohort.write(() => {});
-            const revision = reply!.opening.binding?.era.revision;
-            return {
-              ...reply!.result,
-              ...(revision !== undefined ? { journalEraRevision: revision } : {}),
-            };
-          } catch (cause) {
-            // A missing reply can follow a native commit. Abort now and let owned drain finish;
-            // waiting on our own queue head here would deadlock root cleanup.
-            void cohort.close().catch(() => {});
-            throw cause;
-          } finally {
-            eraseWorkerMessage(reply?.opening);
-          }
-        });
-      },
+      maintainLocalHistory: (controller: MirrorController, input: WorkerLocalBaselineCommand) =>
+        changeContext<Awaited<ReturnType<NonNullable<Opened['installLocalBaseline']>>>>(
+          controller,
+          'baselineStart',
+          captureWorkerLocalBaselineCommand(input),
+        ),
+      refreshAuthority: (controller: MirrorController) =>
+        changeContext<Awaited<ReturnType<Opened['refreshAuthority']>>>(
+          controller,
+          'authorityStart',
+        ),
       status: () => channel!.request('status'),
       close: () => cohort.close(),
     });

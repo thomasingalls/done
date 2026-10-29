@@ -1,0 +1,36 @@
+from pathlib import Path
+import shutil
+old=Path('/private/tmp/done-worker-conversion-20261028/native175');r=old.with_name('native177');r.mkdir();(r/'lab').mkdir()
+for f in(old/'lab').iterdir():
+ if f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules'),target_is_directory=True)
+for name in['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in[r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))
+p=r/'container-service.mjs';p.write_text(p.read_text().replace('networkSessions:true','networkSessions:false'))
+p=r/'lab/main.mjs';s=p.read_text();s="import {privateDeliveryPost} from './src/account/privateDeliveryHttp.ts';\nimport {openOwnedSyncingAccountWorkspace} from './src/crdt/accountReceive.ts';\n"+s
+s=s.replace('get session(){return session}', '''async readPage(){const request=await session.prepareRead();const response=await fetch('/__account-setup/access',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});const access=await response.json();const page=await privateDeliveryPost(spec.pin,access.token,'read-v2',request,10*1024*1024,window.__testStop.signal);if(!page)throw Error('No signed test read');return{page,request};},receive:async function(){const {page,request}=await this.readPage();try{return await session.receivePage(controller,page,request)}finally{page.fill(0);request.fill(0)}},get session(){return session}''')
+# This additional fictional publisher uses the original Page sync composition and private test bearer.
+publisher=s[s.index('function createPage(spec'):s.index('window.__mirrorLab.createPage=')].replace('function createPage(spec', 'function createPublisher(spec').replace('openOwnedReceivingAccountWorkspace({...spec','openOwnedSyncingAccountWorkspace({...spec').replace(''' }});workspace=account.workspace;''',''' }},(await(await fetch('/__account-setup/access',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).json()).token,true);workspace=account.workspace;''')
+assert publisher!=s[s.index('function createPage(spec'):s.index('window.__mirrorLab.createPage=')];s+='\n'+publisher+'\nwindow.__mirrorLab.createPublisher=createPublisher;\n';p.write_text(s)
+# Keep old private cases as reproduction sources; run only new receive cases in this adapter mode.
+p=r/'harness/test/account-continuation-lab/worker-owner.spec.ts';s=p.read_text();s+='''
+async function peerPublisher(p:any){const context=await p.context().browser()!.newContext();const actor=account.actors[1];await seedProfile(context,actor.storage);const peer=await context.newPage();await restoreAuthenticator(peer,actor.credentials);await peer.goto('/worker-app/index.html');await peer.waitForFunction(()=>(window as any).__mirrorLab);await peer.evaluate(async code=>{(window as any).spec={...await(window as any).__mirrorLab.metadata(),code};(window as any).b=(window as any).__mirrorLab.createPublisher((window as any).spec);await(window as any).b.opening;},actor.code);return{context,peer};}
+test('actual worker receives peer signed writing through acknowledged Window FIFO and preserves local Undo',async()=>laboratory('worker-receive-peer',async(p,r)=>{
+ const ready=await opening(p);const {context,peer}=await peerPublisher(p);try{
+ const marker='\\nA genuine peer receive through the worker.';await input(peer,marker);await peer.evaluate(()=>(window as any).b.flush());
+ // Confirm the original sender's accepted publication before closing that independent device.
+ await expect.poll(()=>peer.evaluate(async()=>{const s=await(window as any).b.workspace.status;return s.durable;})).toBe(true);
+ await peer.waitForTimeout(2500);await context.close();r.guards.independentSenderClosed=true;
+ r.input=await input(p,'\\nA local Undo entry.');await p.evaluate(()=>(window as any).input.ticket.accepted);await p.evaluate(()=>(window as any).b.flush());
+ const results=[];for(let i=0;i<12;i++){results.push(await p.evaluate(()=>(window as any).b.receive()));if((await p.evaluate(()=>(window as any).b.read())).includes(marker))break;}
+ r.received=results.map(v=>({kind:v.kind,recorded:v.recorded}));expect(await p.evaluate(()=>(window as any).b.read())).toContain(marker);expect(results.some(v=>v.recorded&&v.kind==='received')).toBe(true);r.guards.actualSignatureCommitAndAcknowledgedApply=true;
+ await p.evaluate(()=>(window as any).b.workspace.command({kind:'undo'}).accepted);const text=await p.evaluate(()=>(window as any).b.read());expect(text).toContain(marker);expect(text).not.toContain('A local Undo entry.');r.guards.peerNotInLocalUndo=true;
+ await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>(window as any).b.close());await empty(p);await p.evaluate(async()=>{(window as any).b=(window as any).__mirrorLab.createPage((window as any).spec);await(window as any).b.opening;});expect(await p.evaluate(()=>(window as any).b.read())).toBe(text);r.guards.actualPageColdReopenExact=true;await p.evaluate(()=>(window as any).b.close());
+ }finally{await context.close().catch(()=>{});}
+}));
+test('actual worker rejects a modified signed read without publishing it',async()=>laboratory('worker-receive-invalid',async(p,r)=>{
+ const ready=await opening(p);await p.evaluate(()=>{(window as any).badReceive=(async()=>{const v=await(window as any).b.readPage();v.page[v.page.length-3]^=1;return(window as any).b.session.receivePage((window as any).b.controller,v.page,v.request)})();(window as any).badReceive.catch(()=>{});});await expect(p.evaluate(()=>(window as any).badReceive)).rejects.toThrow();await p.evaluate(()=>(window as any).b.close());await empty(p);r.guards.originalSignatureRefusalAndDrain=true;
+ await p.evaluate(async()=>{(window as any).b=(window as any).__mirrorLab.createPage((window as any).spec);await(window as any).b.opening;});expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master);r.guards.refusedReadLeavesWritingExact=true;await p.evaluate(()=>(window as any).b.close());
+}));
+''';p.write_text(s)
