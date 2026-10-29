@@ -1,3 +1,4 @@
+import { createWorkerLocalStartupRuntime } from './localStartupWorker';
 import { useEffect, useRef, useState } from 'react';
 import { createLocalStartup, type LocalStartup, type LocalStartupState } from './localStartup';
 import type { StartupKind } from '../crdt/startupState';
@@ -150,7 +151,7 @@ export const LocalApp = ({
     preserveEntry: beginOnFresh,
   });
   useEffect(() => {
-    const current = createLocalStartup(automaticFirstRun);
+    const current = createLocalStartup(automaticFirstRun, createWorkerLocalStartupRuntime);
     setOwner(current);
     setState(current.getSnapshot());
     const unsubscribe = current.subscribe(() => setState(current.getSnapshot()));

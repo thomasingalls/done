@@ -6287,3 +6287,8 @@ Keep original recovery crypto, private one-use approval and commit/installation 
 ## 2026-10-29 — phase225: same-realm native lost-device recovery controller
 
 Keep genuine fresh recovery approval and retained confirmed factor only in native realm. Fixed commands retain explicit disconnect review and original begin/prepare/confirm/finish/open semantics. Window receives bounded display plus genuine canonical ports, with code re-entry after failed one-shot opening. [Evidence](performance-experiments/2026-10-28-worker-owner/phase225/README.md).
+
+
+## 2026-10-29 — phase226: default Local and public setup worker activation
+
+Select genuine worker runtime at actual Local screen and worker coordinator at public Setup screen. Keep Page only for explicit networkSessions=false compatibility, never as a Worker failure fallback. Pending-device preparation retains original refusal copy and native endpoints; screen integration follows. [Evidence](performance-experiments/2026-10-28-worker-owner/phase226/README.md).

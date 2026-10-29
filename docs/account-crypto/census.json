@@ -549,7 +549,11 @@
     },
     {
       "path": "src/account/deviceEnrollment.ts",
-      "sha256": "93baa6d824030a47df4ddb6b8291f27f0809a22c058ac61bd3ca67b8efa7bf53"
+      "sha256": "cf78d973e2b0b46706e36cb6f333f358c1b337cf9e959d1dcad9668f0d1cabb4"
+    },
+    {
+      "path": "src/account/devicePreparationError.ts",
+      "sha256": "250c5df0da36f55aab16215c8a75b9b9922b5eae901ed5f646fbb178995bd151"
     },
     {
       "path": "src/account/deviceRemoval.ts",
@@ -1809,7 +1813,7 @@
     },
     {
       "path": "src/ui/AccountSetupApp.tsx",
-      "sha256": "af14a3b0b70c2832ad8a52caab909d595a68f524781f17e1401fc75758846d3e"
+      "sha256": "99123a3bb4b5f4cd998858aa78cf5617cb2584753dbfb2cf91aadab3e5fb288d"
     },
     {
       "path": "src/ui/AccountSignIn.tsx",
@@ -1873,7 +1877,7 @@
     },
     {
       "path": "src/ui/LocalApp.tsx",
-      "sha256": "38e892894dafc5f8a910c103a54019bc21b2233386908ede33d741efe38858b4"
+      "sha256": "d0d2fa7980bad4f6bd93e32386b2b0cc4119a9e75a11664920304d1a2c63caf9"
     },
     {
       "path": "src/ui/LocalEntry.tsx",
@@ -1958,6 +1962,10 @@
     {
       "path": "src/ui/localStartupWorker.ts",
       "sha256": "663bf7bae21d24ed85b7394da3f6bd7ba2a9c3da70fdf4abe421cccd4d365245"
+    },
+    {
+      "path": "src/ui/pendingDeviceWorker.ts",
+      "sha256": "9e9ca6f2de369c46cd06f17a686001f44745d831213d39d8965e4e919cbb420e"
     },
     {
       "path": "src/ui/privateMigration.ts",

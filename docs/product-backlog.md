@@ -721,3 +721,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase225:** Native recovery complete and verified. Next wire app screens, native pending-device preparation, remaining Window custody callers/default activation, offline/mixed-owner checks; then unchanged16ms/2.5s/30s measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase225/README.md).
+
+
+**Phase226:** Default Local/public Setup native. Next enrollment/recovery screen activation and pending-session drain, remaining caller/offline/mixed checks, then unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase226/README.md).
