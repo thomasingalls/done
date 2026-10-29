@@ -6020,3 +6020,12 @@ protocol for manual authority refresh and baseline conversion. This is an intern
 it does not activate a new scheduler or claim input latency. The sender-closed regression must prove
 acceptance of every source in the specific new edit: idle can also mean publication batching.
 [Evidence and limitations](performance-experiments/2026-10-28-worker-owner/phase177/README.md).
+
+## 2026-10-29 — joined coordination preserves both physical and logical namespaces
+
+A joined device's physical Local custody identity differs from its logical Account capture identity.
+Retain original native verification, physical journal keys/database/era bindings and logical certified
+source route; the Window mirror must validate both and bind UI identity to the logical actor. Because
+physical equality no longer implicitly fixes logical route fields, rebind explicitly fixes workspace
+and principal. A targeted missing-guard control and actual joined native/cold-reader checks establish
+that boundary. [Phase178](performance-experiments/2026-10-28-worker-owner/phase178/README.md).

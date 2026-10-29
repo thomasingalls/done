@@ -235,6 +235,8 @@ export async function createWindowAccountMirrorController(
           Object.keys(scope).some(
             (k) => scope[k as keyof typeof scope] !== material!.scope[k as keyof typeof scope],
           ) ||
+          material.route.workspace !== route.workspace ||
+          material.route.principal !== route.principal ||
           material.route.credential !== route.credential ||
           material.generation < generation ||
           material.route.epoch < route.epoch ||

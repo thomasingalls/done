@@ -1,0 +1,6 @@
+{
+  "src/crdt/accountMirrorMaterial.ts": "699805cbb82d1a44379dee5b42fe26c8f91784909d1ccd9e7d65d8f548743db6",
+  "src/crdt/windowAccountMirror.ts": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8",
+  "test/fixtures/accountMirror.ts": "e18512717dbe34a8869813dbddc9d64edd6d8ed6b3abe387bf0ed4f87a76d762",
+  "test/windowJoinedMirror.test.ts": "a4315e25d07dac7c921daa90cfe20f1b17dba7afe756a1d9c1ba92f05f829793"
+}

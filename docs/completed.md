@@ -17552,3 +17552,18 @@ checks to exact SourceCapsule coverage by accepted native positions. No default 
 credit.436sources/198domains;957 obligations/411 unresolved, new tests uncredited. Next address joined
 physical/logical mirror scopes, then complete original sync/workspace/maintenance/ceremony/Local/
 offline composition. No preview/staging/signing/push/release/service automation.
+
+## 2026-10-29 — phase178: joined mirror physical/logical identity separation
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase178/README.md). Validate logical
+Account route/actor independently from physical Local custody scope and preserve physical database/
+era bindings. Explicitly fix both logical route fields during rebind. Nine new cases cover legitimate
+distinct scopes and spoofed/malformed/swapped contexts; four fail before repair, and removing only
+the fixed workspace guard makes its test fail. Native verifiers and all old mirror/rebind cases stay
+unchanged. Full2384units/one skip,68 focused,98 metadata/type/lint/format and21 rebuilt native cases
+pass, including the genuinely joined profile's same-handler journal/native readback, Undo, actual era
+handoff and original joined Page cold reopen. Preserve wrong-seed and wrong-archive fixture attempts;
+explicit distinct-ID/enrollment assertions and an independent local Page baseline correct them.
+25 owned containers absent;224 emitted source bodies match.436sources/198domains,958 obligations/412
+unresolved; new test uncredited. Next original workspace/sync composition and fresh context handoff,
+then resumable preparation/ceremonies/Local/offline integration before unchanged performance gates.

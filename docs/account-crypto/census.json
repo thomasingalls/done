@@ -785,7 +785,7 @@
     },
     {
       "path": "src/crdt/accountMirrorMaterial.ts",
-      "sha256": "7c67100cc4885a0eab94b3dfc499a4da9048cfbcebce8b3275d287c309171b29"
+      "sha256": "699805cbb82d1a44379dee5b42fe26c8f91784909d1ccd9e7d65d8f548743db6"
     },
     {
       "path": "src/crdt/accountMirrorRecovery.ts",
@@ -1393,7 +1393,7 @@
     },
     {
       "path": "src/crdt/windowAccountMirror.ts",
-      "sha256": "6f0adadd39e12604662dc0ccaa98f09298a6f0d75a9c91774432ee0f7830cc79"
+      "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8"
     },
     {
       "path": "src/crdt/windowJournalBridge.ts",

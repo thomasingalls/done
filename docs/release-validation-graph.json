@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 594,
-    "requiredTestFiles": 588,
+    "testFiles": 595,
+    "requiredTestFiles": 589,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14102,6 +14102,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/windowJoinedMirror.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/windowJoinedMirror.test.ts"]
+      },
+      "declarations": 7,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/windowJournalBridge.test.ts",
       "status": "required",
       "invocation": {
@@ -19566,7 +19576,7 @@
     },
     {
       "path": "test/fixtures/accountMirror.ts",
-      "sha256": "1cf7226e76ecc7f0e2bd3b9f88d0e7337481aeebf11e0acf41afd28f17057658"
+      "sha256": "e18512717dbe34a8869813dbddc9d64edd6d8ed6b3abe387bf0ed4f87a76d762"
     },
     {
       "path": "test/freeze.test.ts",
@@ -21051,6 +21061,10 @@
     {
       "path": "test/windowAccountMirrorRebind.test.ts",
       "sha256": "9a1bd9cecb59d7bf670d542de4d0adb7699e623dda3a0a5738fc48d9f0537c83"
+    },
+    {
+      "path": "test/windowJoinedMirror.test.ts",
+      "sha256": "a4315e25d07dac7c921daa90cfe20f1b17dba7afe756a1d9c1ba92f05f829793"
     },
     {
       "path": "test/windowJournalBridge.test.ts",

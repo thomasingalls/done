@@ -94,14 +94,14 @@ function nativeModel() {
   vi.stubGlobal('navigator', { locks });
   return held;
 }
-export async function fixture() {
+export async function fixture(logicalRoute: CaptureRoute = route) {
   const held = nativeModel(),
     storage = new StorageMap();
   vi.stubGlobal('localStorage', storage);
   const dbName = await deriveStoreName(scope.principalId, scope.workspaceId),
     key = new Uint8Array(32).fill(7);
   let workerBinding: JournalBinding | undefined,
-    workerRoute = { ...route };
+    workerRoute = { ...logicalRoute };
   const workerJournal = createJournalOwner(scope, dbName, 1, key, new Map(), () => workerBinding);
   const initial = createDoc(),
     records: OpenedRecord[] = [
@@ -191,7 +191,10 @@ export async function fixture() {
     ...(workerBinding ? { binding: structuredClone(workerBinding) } : {}),
   });
   const material = opening(),
-    options = { identity: structuredClone(identity), today: () => '2026-10-28' as const };
+    options = {
+      identity: structuredClone({ ...identity, id: logicalRoute.principal }),
+      today: () => '2026-10-28' as const,
+    };
   const open = () => createWindowAccountMirror(cohort, material, worker, options);
   const openController = () =>
     createWindowAccountMirrorController(cohort, material, worker, options);

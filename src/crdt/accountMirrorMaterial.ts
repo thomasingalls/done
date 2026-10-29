@@ -99,12 +99,16 @@ export function takeAccountMirrorOpening(
     if (
       input.incarnation !== cohort.ticket.incarnation ||
       scope.slotId !== cohort.ticket.slotId ||
-      [scope.principalId, scope.workspaceId, scope.storeId, scope.rootId, route.credential].some(
-        (v) => typeof v !== 'string' || !/^[a-f0-9]{32}$/.test(v),
-      ) ||
-      route.workspace !== scope.workspaceId ||
-      route.principal !== scope.principalId ||
-      principalId !== scope.principalId ||
+      [
+        scope.principalId,
+        scope.workspaceId,
+        scope.storeId,
+        scope.rootId,
+        route.credential,
+        route.principal,
+        route.workspace,
+      ].some((v) => typeof v !== 'string' || !/^[a-f0-9]{32}$/.test(v)) ||
+      principalId !== route.principal ||
       !Number.isSafeInteger(generation) ||
       generation < 1 ||
       generation > 0xffffffff ||

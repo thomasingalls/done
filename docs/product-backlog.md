@@ -140,7 +140,10 @@ acknowledged receive finish, retaining the unchanged Page path;104 focused/42 na
 [177](performance-experiments/2026-10-28-worker-owner/phase177/README.md) adds actual Worker-owned
 network login/signed receive, bounded original-frame transport and acknowledged final apply.20 native
 account cases,2375 units/one skip pass; default execution is still Page.
-Next joined physical/logical mirror scopes, original sync/workspace composition, resumable automatic preparation, fresh
+[178](performance-experiments/2026-10-28-worker-owner/phase178/README.md) preserves joined physical
+custody/logical Account scopes through actual native admission, Undo, era handoff and cold reopen.
+21 native cases and2384 units/one skip pass.
+Next original sync/workspace composition and fresh context handoff, resumable automatic preparation, fresh
 ceremony ownership, all application/Local routes and offline artifact integration. Only then run the
 original performance workloads. Data messages, queue fences and cached snapshots confer no native
 verification authority. Preserve synchronous sealed input, actual native final checks and security
