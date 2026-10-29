@@ -489,7 +489,7 @@
     },
     {
       "path": "src/account/accountEnrollment.ts",
-      "sha256": "04e1a4f3f5f6684208ca7e67df683a35bc6f35c74f8fa77aad8f25fd5d1e0b37"
+      "sha256": "906afbc1d438f1e90295669c5b0af1bc9580cb28777c67240f39277f1963e898"
     },
     {
       "path": "src/account/accountHttp.ts",
@@ -549,7 +549,7 @@
     },
     {
       "path": "src/account/deviceEnrollment.ts",
-      "sha256": "5942cc3b47733566bb4f514fcfd7be80a957b833a3f45e910186cc3187fbc8b0"
+      "sha256": "93baa6d824030a47df4ddb6b8291f27f0809a22c058ac61bd3ca67b8efa7bf53"
     },
     {
       "path": "src/account/deviceRemoval.ts",
@@ -570,6 +570,10 @@
     {
       "path": "src/account/enrollmentChallenge.ts",
       "sha256": "63f3a80ceb3e5fbd1261005d3db721d6caf7bd8a3025d3a6ebea21752fa40640"
+    },
+    {
+      "path": "src/account/enrollmentExecution.ts",
+      "sha256": "c998c298d1b512912cc45b8a524cdfb6bd644f11d1dca5a77fa5f8613fb7faaf"
     },
     {
       "path": "src/account/enrollmentLogin.ts",
@@ -621,7 +625,7 @@
     },
     {
       "path": "src/account/membershipEnrollment.ts",
-      "sha256": "2dcfd293ab211ca4b2ff278311f0e674182c48620b70e8b361bc8cf1adb5c359"
+      "sha256": "fd5093222ad04a9ad6a7458189abab6287625eb81713118dd0d2090d959879e3"
     },
     {
       "path": "src/account/membershipHandoff.ts",

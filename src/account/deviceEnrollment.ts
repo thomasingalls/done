@@ -1,4 +1,11 @@
-import { authenticationResponse } from './passkeyResponse';
+import {
+  pageEnrollmentWorkspace,
+  createPageDeviceEnrollmentBrowser,
+  type EnrollmentWorkspaceExecution,
+  type EnrollmentWorkspaceOpened,
+  type EnrollmentBrowserFactory,
+} from './enrollmentExecution';
+import type { SetupWorkspacePort } from './setupWorkspace';
 import { defaultDeviceName } from '../lib/browser';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import {
@@ -10,12 +17,10 @@ import {
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import { checkEnrollmentLogin, completeEnrollmentLogin } from './enrollmentLogin';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
-import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 /** Private two-device approval and certified key-installation coordinator. */
 import { continueContentHandoff, type ContentHandoffState } from './contentHandoff';
 import { openApprovedWriting, type ContentReaderState } from './contentReader';
-import { assertSlotPasskey } from './assertSlotPasskey';
 import {
   parseCertificationSuccessor,
   verifyCertificationSuccessor,
@@ -111,7 +116,7 @@ interface Progress {
   reading?: ContentReaderState;
   terminal: 'expired' | 'restart-required' | 'cancelled' | null;
 }
-export interface EnrollmentView {
+export interface EnrollmentView<W = AdmittedWorkspace> {
   /** Retry retained progress soon even when the notification stream is healthy. */
   retryPending?: boolean;
   /** A disabled continuation action must not claim to remove pending membership. */
@@ -137,7 +142,7 @@ export interface EnrollmentView {
   code?: string;
   message: string;
   editor?: {
-    workspace: AdmittedWorkspace;
+    workspace: W;
     sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
     devices: import('./deviceRoster').DeviceRoster;
     actorId: string;
@@ -215,7 +220,9 @@ export const enrollmentMessages: Record<EnrollmentView['kind'], string> = {
   cancelled: 'This attempt was cancelled.',
 };
 const messages = enrollmentMessages;
-export function createDeviceEnrollment(
+export function createDeviceEnrollmentCoordinator<W extends SetupWorkspacePort>(
+  execution: EnrollmentWorkspaceExecution<W>,
+  browserFactory: EnrollmentBrowserFactory,
   config: SetupConfig,
   slotId: string,
   code: string,
@@ -236,16 +243,17 @@ export function createDeviceEnrollment(
     | { scope: GrantScope; identity: { accountId: string; credentialId: string } }
     | undefined;
   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
-  let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
+  let opened: EnrollmentWorkspaceOpened<W> | undefined;
   const editors = new Set<() => void>();
   let running = false,
-    last: EnrollmentView = { kind: 'locked', message: messages.locked };
+    last: EnrollmentView<W> = { kind: 'locked', message: messages.locked };
   // The link is a signed invitation, not a freshness challenge. Keep it stable for
   // this unlocked owner; bootstrap still uses a fresh nonce and verifies authority.
   let existingInvitation: ReturnType<typeof parseCeremonyInvitation> | null = null;
-  const view = (kind: EnrollmentView['kind'], extra: Partial<EnrollmentView> = {}) =>
+  const view = (kind: EnrollmentView<W>['kind'], extra: Partial<EnrollmentView<W>> = {}) =>
     (last = { kind, message: messages[kind], ...extra });
   const guard = () => lifetime.signal.throwIfAborted();
+  const browser = browserFactory(lifetime.signal, guard);
   const bootstrapRequest = async (route: string, body: unknown): Promise<any> => {
     guard();
     if (
@@ -316,7 +324,7 @@ export function createDeviceEnrollment(
     cancel?: true;
     read?: true;
     reconnect?: true;
-  }): Promise<EnrollmentView> => {
+  }): Promise<EnrollmentView<W>> => {
     if (running) return last;
     running = true;
     try {
@@ -534,14 +542,11 @@ export function createDeviceEnrollment(
                 if (en.loginRetryKey)
                   await checkEnrollmentLogin(challenge.context, en.loginRetryKey, loginIdentity);
                 en.challenge = challenge.context;
-                const credential = (await navigator.credentials.get({
-                  publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
-                    await enrollmentOptions(challenge.context),
-                  ),
-                  signal: lifetime.signal,
-                })) as PublicKeyCredential | null;
+                const response = await browser.authenticate(
+                  await enrollmentOptions(challenge.context),
+                  lifetime.signal,
+                );
                 guard();
-                if (!credential) throw Error('Passkey cancelled');
                 if (Date.now() >= challenge.context.expiresAt)
                   throw Error(
                     'The passkey step expired. Use the account passkey again to renew it.',
@@ -549,7 +554,7 @@ export function createDeviceEnrollment(
                 en.proof = {
                   retryKey: en.retryKey,
                   attemptId: challenge.context.attemptId,
-                  response: authenticationResponse(credential),
+                  response,
                   possession: await owner.sign(enrollmentPossessionMessage(challenge.context)),
                   ...(en.loginRetryKey ? { loginRetryKey: en.loginRetryKey } : {}),
                 };
@@ -686,7 +691,7 @@ export function createDeviceEnrollment(
             owner,
             { base: boot.base, successor, certification },
             {
-              assert: assertSlotPasskey(lifetime.signal),
+              assert: browser.assertSlot,
               token: readingAccess(),
               historyAvailable: () => config.membershipContinuation === true,
               signal: lifetime.signal,
@@ -961,7 +966,7 @@ export function createDeviceEnrollment(
     if (!joined) return null;
     if (workspaceInput !== joined.workspaceId)
       throw Error('Saved workspace differs from this connection');
-    opened = await openOwnedSyncingAccountWorkspace(
+    opened = await execution.open(
       {
         slotId,
         membershipContinuation: () => config.membershipContinuation === true,
@@ -970,7 +975,7 @@ export function createDeviceEnrollment(
           : {}),
         code,
         pin,
-        assertPasskey: assertSlotPasskey(lifetime.signal),
+        assertPasskey: browser.assertSlot,
         signal: lifetime.signal,
         ...(networkLogin ? { networkLogin } : {}),
         identity: {
@@ -1056,4 +1061,26 @@ export function createDeviceEnrollment(
       return running;
     },
   };
+}
+
+export function createDeviceEnrollment(
+  config: SetupConfig,
+  slotId: string,
+  code: string,
+  role: CeremonyRole,
+  workspaceInput?: string,
+  invitationInput?: unknown,
+  networkLogin?: NetworkLogin,
+) {
+  return createDeviceEnrollmentCoordinator(
+    pageEnrollmentWorkspace,
+    createPageDeviceEnrollmentBrowser,
+    config,
+    slotId,
+    code,
+    role,
+    workspaceInput,
+    invitationInput,
+    networkLogin,
+  );
 }

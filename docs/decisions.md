@@ -6252,3 +6252,8 @@ Actual native fresh creation and complete registration/recovery/approval/edit/co
 ## 2026-10-29 — acknowledge bounded UI presentation independently of native authority
 
 Coalesce display frames with one in flight, latest replacement and eight waiters. Abort refuses both queued sends and future flushes. Reuse this transport lifetime across native UI hosts while keeping original crypto/native authority owners separate. [Evidence](performance-experiments/2026-10-28-worker-owner/phase218/README.md).
+
+
+## 2026-10-29 — enrollment execution ports preserve both authority routes
+
+Parameterize legacy and membership coordinators together, keeping the signed selector unchanged. Native UI receives minimal real workspace lifecycle and original provider effects; Page signatures remain. Keep challenge expiry before proof/sign/storage even when public response encoding crosses the browser port. [Evidence](performance-experiments/2026-10-28-worker-owner/phase219/README.md).

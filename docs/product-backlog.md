@@ -700,3 +700,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase218:** bounded cancellable presentation transport verified; reuse for remaining native device/recovery hosts without sharing authority. Next those flows, offline/default activation, then unchanged measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase218/README.md).
+
+
+**Phase219:** both original enrollment routes and selector have explicit workspace/browser ports with real Page evidence. Next common native UI/lifetime assembly, device flow/notifications, recovery, offline/default activation, then unchanged targets. [Packet](performance-experiments/2026-10-28-worker-owner/phase219/README.md).

@@ -1,8 +1,16 @@
+import {
+  pageEnrollmentWorkspace,
+  createPageDeviceEnrollmentBrowser,
+  createPageMembershipEnrollmentBrowser,
+  type EnrollmentWorkspaceExecution,
+  type EnrollmentBrowserFactory,
+} from './enrollmentExecution';
+import type { SetupWorkspacePort } from './setupWorkspace';
 import type { EnrollmentProgressListener } from '../lib/enrollmentProgress';
 /** Route hints choose a coordinator; the native owner and signed chain still choose authority. */
 import { parseMembershipInvitation } from '../../account-protocol/membershipLocator';
-import { createDeviceEnrollment } from './deviceEnrollment';
-import { createMembershipEnrollment } from './membershipEnrollment';
+import { createDeviceEnrollmentCoordinator } from './deviceEnrollment';
+import { createMembershipEnrollmentCoordinator } from './membershipEnrollment';
 import { withMembershipVault } from './membershipVault';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
 import type { SetupConfig } from './setupProgress';
@@ -12,7 +20,10 @@ export const isConnectionSlot = (value: unknown): value is string =>
   typeof value === 'string' &&
   /^(?:local|account-[a-f0-9]{32}|enrollment-[a-f0-9]{32})$/.test(value);
 
-export async function createAccountEnrollment(
+export async function createAccountEnrollmentCoordinator<W extends SetupWorkspacePort>(
+  execution: EnrollmentWorkspaceExecution<W>,
+  deviceBrowser: EnrollmentBrowserFactory,
+  membershipBrowser: EnrollmentBrowserFactory,
   config: SetupConfig,
   slotId: string,
   code: string,
@@ -45,7 +56,9 @@ export async function createAccountEnrollment(
   }
   signal.throwIfAborted();
   return continuation
-    ? createMembershipEnrollment(
+    ? createMembershipEnrollmentCoordinator(
+        execution,
+        membershipBrowser,
         config,
         slotId,
         code,
@@ -56,5 +69,44 @@ export async function createAccountEnrollment(
         begin,
         onProgress,
       )
-    : createDeviceEnrollment(config, slotId, code, role, workspaceId, invitation, login);
+    : createDeviceEnrollmentCoordinator(
+        execution,
+        deviceBrowser,
+        config,
+        slotId,
+        code,
+        role,
+        workspaceId,
+        invitation,
+        login,
+      );
+}
+
+export async function createAccountEnrollment(
+  config: SetupConfig,
+  slotId: string,
+  code: string,
+  role: 'existing' | 'new',
+  workspaceId?: string,
+  invitation?: unknown,
+  login?: NetworkLogin,
+  signal: AbortSignal = new AbortController().signal,
+  begin?: string,
+  onProgress?: EnrollmentProgressListener,
+) {
+  return createAccountEnrollmentCoordinator(
+    pageEnrollmentWorkspace,
+    createPageDeviceEnrollmentBrowser,
+    createPageMembershipEnrollmentBrowser,
+    config,
+    slotId,
+    code,
+    role,
+    workspaceId,
+    invitation,
+    login,
+    signal,
+    begin,
+    onProgress,
+  );
 }
