@@ -17,6 +17,12 @@ const messages: Record<AccountTransition, string> = {
   'removal-committed':
     'The device was removed. Unlock this account again to finish updating its local keys. Existing copies on the removed device cannot be erased.',
 };
+/** One message catalogue for Page and Worker terminal presentation; never a stored authority. */
+export const isAccountTransition = (value: unknown): value is AccountTransition =>
+  typeof value === 'string' && Object.hasOwn(messages, value);
+export function accountTransitionKind(message: string): AccountTransition | undefined {
+  return (Object.keys(messages) as AccountTransition[]).find((kind) => messages[kind] === message);
+}
 let notice: Readonly<{ accountId: string; message: string }> | null = null;
 const listeners = new Set<() => void>();
 export const getAccountTransitionNotice = () => notice;

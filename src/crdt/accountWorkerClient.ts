@@ -1,3 +1,8 @@
+import { createAccountWorkerTerminalReceiver } from './workerTerminal';
+import {
+  rememberAccountTransition,
+  clearAccountTransition,
+} from '../account/accountTransitionNotice';
 import { createWindowPasskey } from './workerPasskeyBridge';
 import { createWindowAccountSession } from './accountSessionBridge';
 import { createWindowWorkspaceQueues } from './windowWorkspaceQueues';
@@ -81,6 +86,7 @@ export async function openAccountWorkerSession(
     channel: ReturnType<typeof createWorkerChannel> | undefined,
     killed = false,
     material: AccountMirrorOpening | undefined;
+  let nativeAccountId: string | undefined;
   let closedWorker: (ok: boolean) => void = () => {};
   const stoppedWorker = new Promise<boolean>((resolve) => (closedWorker = resolve));
   const cohort = await openWindowAccountCohort(
@@ -214,13 +220,19 @@ export async function openAccountWorkerSession(
   try {
     const journal = await createWindowJournalBridge(cohort);
     worker = new Worker(new URL('./accountOwner.worker.ts', import.meta.url), { type: 'module' });
+    const terminal = createAccountWorkerTerminalReceiver({
+      owner: cohort.ticket.incarnation,
+      accountId: () => nativeAccountId,
+      complete: closedWorker,
+      retire: () => {
+        void cohort.close().catch(() => {});
+      },
+      present: (notice) => {
+        rememberAccountTransition(notice.accountId, notice.kind);
+      },
+    });
     worker.addEventListener('message', (e) => {
-      if (
-        e.data?.v === 1 &&
-        e.data.kind === 'accountClosed' &&
-        e.data.owner === cohort.ticket.incarnation
-      )
-        closedWorker(e.data.ok === true);
+      terminal(e.data);
     });
     const ports = new MessageChannel();
     const activity = () => ({
@@ -407,6 +419,7 @@ export async function openAccountWorkerSession(
     });
     code = '';
     const opened = await openingRequest;
+    nativeAccountId = opened.account.accountId;
     if (composed) {
       if (!composedController || !material || opened.opening)
         throw Error('Worker workspace omitted its handoff');
@@ -461,6 +474,8 @@ export async function openAccountWorkerSession(
         readyFlight ??= (async () => {
           try {
             await channel!.request('ready');
+            cohort.write(() => {});
+            if (nativeAccountId) clearAccountTransition(nativeAccountId);
             cohort.write(() => {});
             ready = true;
           } catch (cause) {

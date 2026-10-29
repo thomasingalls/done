@@ -17666,3 +17666,13 @@ validation. Counterexample actual1/hint0 fails before; current primary/joined Wo
 agree, and actual saved-slice/reduction/input/Undo/cold read still pass.72 unit/98 metadata/type/
 lint/format checks pass. Original parsing/crypto/storage/refusals retained; no format/policy change.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase188/README.md).
+
+
+## 2026-10-29 — phase189 post-drain Worker transition presentation
+
+Forward actual native terminal kinds to the existing Window notice store, retaining immediate
+input withdrawal and real cleanup barriers. Fresh authenticated readiness clears only its matching
+notice.36 unit/98 metadata/type/lint/format pass; six real native cases pass. Prior entry/client closes
+cleanly but loses the notice and fails the same5s check. No deletion success inferred from lost reply;
+original catalogue, native checks and key disposal retained. Default Page, no timing credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase189/README.md).

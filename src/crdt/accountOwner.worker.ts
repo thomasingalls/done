@@ -1,3 +1,4 @@
+import { accountWorkerClosed } from './workerTerminal';
 import { createWorkerPasskey } from './workerPasskeyBridge';
 import { publishAccountSession, executeAccountSessionCommand } from './accountSessionBridge';
 import { followWorkerNativeLifetime } from './workerNativeLifetime';
@@ -57,6 +58,7 @@ self.addEventListener('message', (event: MessageEvent) => {
   if (m?.v !== 1 || m.kind !== 'accountBootstrap' || !(m.port instanceof MessagePort)) return;
   initialized = true;
   let session: ReturnType<typeof publishAccountSession> | undefined;
+  let nativeAccountId: string | undefined;
   let nativeLifetime: ReturnType<typeof followWorkerNativeLifetime> | undefined;
   let login: NetworkLogin | undefined,
     composition: Composed | undefined,
@@ -101,6 +103,7 @@ self.addEventListener('message', (event: MessageEvent) => {
     live();
     if (nativeLifetime || (owner && owner !== value)) throw Error('Worker native owner changed');
     owner = value;
+    nativeAccountId = value.account.accountId;
     nativeLifetime = followWorkerNativeLifetime(value.carrier, runtime.signal, () =>
       channel.close(),
     );
@@ -468,10 +471,8 @@ self.addEventListener('message', (event: MessageEvent) => {
     },
     () => {
       void close().then(
-        () =>
-          self.postMessage({ v: 1, kind: 'accountClosed', owner: m.ticket.incarnation, ok: true }),
-        () =>
-          self.postMessage({ v: 1, kind: 'accountClosed', owner: m.ticket.incarnation, ok: false }),
+        () => self.postMessage(accountWorkerClosed(m.ticket.incarnation, true, nativeAccountId)),
+        () => self.postMessage(accountWorkerClosed(m.ticket.incarnation, false, nativeAccountId)),
       );
     },
   );

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 605,
-    "requiredTestFiles": 599,
+    "testFiles": 606,
+    "requiredTestFiles": 600,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -14302,6 +14302,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/workerTerminal.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/workerTerminal.test.ts"]
+      },
+      "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/workerWorkspaceQueues.test.ts",
       "status": "required",
       "invocation": {
@@ -21261,6 +21271,10 @@
     {
       "path": "test/workerRuntimeBoundary.test.ts",
       "sha256": "0b980eb79f2e114441378eb1e7490f4f8a4b903181b965bdb38dd2ba55201a25"
+    },
+    {
+      "path": "test/workerTerminal.test.ts",
+      "sha256": "85f4b50ee6430af522654b9179b62fa1670382da9198ec9ab99d81c9651a2615"
     },
     {
       "path": "test/workerWorkspaceQueues.test.ts",

@@ -505,7 +505,7 @@
     },
     {
       "path": "src/account/accountTransitionNotice.ts",
-      "sha256": "e61eff1162118429bad400df4cb8d75935e9a7c46153a278faa2fdfcc0e6e61a"
+      "sha256": "3d1ac3303f8dbb5c2ec56f74c361d417ad18b5f2e696bfa950f0511c5fa8a696"
     },
     {
       "path": "src/account/approvalProgress.ts",
@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "4ab6940243d1dfe37d1645fe2381f4e78845a09a16e94f6792a7edcfe25d2f28"
+      "sha256": "012395942361279bd875baa7a1e5bf36ff82b35ce5ee023620d764ff73576597"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -849,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "ee5ab4b80374d732e2e41f564900205acabcec0cb14fc209cba83c05899060bf"
+      "sha256": "6416d9f6d75531e5fd8314b648ba8137f79fd1e96f42547c0f63c1272a7287c2"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -1446,6 +1446,10 @@
     {
       "path": "src/crdt/workerPasskeyBridge.ts",
       "sha256": "f492f1ed881db2f31d3418b52ababd9733e511b428a997c90f7a14b5f56580aa"
+    },
+    {
+      "path": "src/crdt/workerTerminal.ts",
+      "sha256": "d0f34664aa64ec211a25b9d699b057b7e95cc1b872c0882525f3b8373b8630fc"
     },
     {
       "path": "src/crdt/workerWorkspaceQueues.ts",

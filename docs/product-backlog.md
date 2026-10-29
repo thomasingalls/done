@@ -544,3 +544,11 @@ Primary/joined Worker warm/cold and real resumable reduction checks pass. Contin
 terminal UI, Local/ceremony and offline/default integration. Separate catch-up outcomes remain open;
 no performance acceptance claim.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase188/README.md).
+
+
+**Phase189 — Worker retirement notices:** actual native removal now keeps its original Window
+explanation after the command channel closes. Fresh verified readiness clears its matching notice;
+locked/unrelated accounts do not. Prior-control failure/six current native passes retained; no false
+removal or cleanup-success inference. Continue live configuration, Local/ceremony and offline/default
+integration before timing gates.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase189/README.md).
