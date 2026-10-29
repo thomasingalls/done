@@ -17599,3 +17599,13 @@ journal head through native final verification/rebind/ACK. Original frames, orig
 proofs.11 new controlled cases/48 focused and98 metadata/type/lint/format pass; initial refusal
 deadlock preserved and repaired without changing deadlines. Native/Page bodies remain exact; default
 app still Page. [Evidence](performance-experiments/2026-10-28-worker-owner/phase181/README.md).
+
+
+## 2026-10-29 — phase182 original composed Account runtime in Worker, default still Page
+
+Use actual authenticated native factory context, original scheduler/access and real Window admission
+queues.2417 unit cases/one skip,24 focused,98 metadata and34 session-client cases pass. Native matrix
+27/28: preserve unresolved joined deep-backlog30s failure and diagnostic verified progress/429.
+Actual publication, primary sender-closed receive, context conversion and credential refusals pass.
+Old checks/obligations remain. Native retirement propagation, automatic context/lifecycle and remaining
+application integration precede activation/performance. [Packet](performance-experiments/2026-10-28-worker-owner/phase182/README.md).

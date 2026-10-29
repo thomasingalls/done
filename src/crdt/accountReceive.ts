@@ -2888,7 +2888,13 @@ export function openAccountWorkerReceivingWorkspace<W extends AccountWorkspacePo
   joined = false,
 ) {
   if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
-  return composeReceivingWorkspace(input, factory, undefined, false, joined);
+  if (!input.networkLogin) throw Error('Composed Worker requires its own account session');
+  // Same refusing legacy adapter as the session host. Only the authenticated scoped access below
+  // can drive network work; no private development bearer is available in this runtime.
+  const refusePrivateAccess: AccountAccess = async () => {
+    throw Error('Private transport is disabled for this account service.');
+  };
+  return composeReceivingWorkspace(input, factory, refusePrivateAccess, true, joined);
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -2918,6 +2924,13 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     identity: structuredClone(input.identity),
     today: input.today,
   };
+  const nativeOwner = await openAccountReceiveOwner(
+    options,
+    options.identity.id,
+    () => !driven || gate() === 'ready',
+    composed,
+    joined,
+  );
   const {
     access,
     devices,
@@ -2929,7 +2942,6 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     api,
     account,
     carrier,
-    copyMirrorOpening,
     listCaptures,
     fetchPage,
     receiveGroup,
@@ -2945,13 +2957,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     installLocalBaseline,
     prepareLocalRemoval,
     localRetentionHint,
-  } = await openAccountReceiveOwner(
-    options,
-    options.identity.id,
-    () => !driven || gate() === 'ready',
-    composed,
-    joined,
-  );
+  } = nativeOwner;
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
   let removingLocalHistory = false;
@@ -2961,11 +2967,12 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
-    const { workspace, enqueue, prepare } = await createWorkspace(carrier, deviceId, options, {
-      account,
-      copyMirrorOpening,
-      preparedPromotion,
-    });
+    const { workspace, enqueue, prepare } = await createWorkspace(
+      carrier,
+      deviceId,
+      options,
+      nativeOwner,
+    );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
       throw Error('Account opening was cancelled');

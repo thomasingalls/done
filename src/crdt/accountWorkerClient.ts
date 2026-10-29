@@ -1,3 +1,6 @@
+import { createWindowWorkspaceQueues } from './windowWorkspaceQueues';
+import { forwardWindowWorkspace, workspaceSchedulingStatus } from './workspaceBridge';
+import { workspaceQueueFields } from './workerWorkspaceQueues';
 import type { Bytes } from './custodyCrypto';
 import { MAX_PENDING_BYTES } from './admissionQueue';
 import { READ_PAGE_LIMIT, READ_REQUEST_LIMIT } from '../../account-protocol/deliveryTransport';
@@ -14,7 +17,7 @@ import {
 } from './workerLocalBaseline';
 import {
   requireWindowAccountMirrorController,
-  type createWindowAccountMirrorController,
+  createWindowAccountMirrorController,
 } from './windowAccountMirror';
 /** Window endpoints for a dedicated account owner. No blocking wait or fake storage is involved. */
 import { createWorkerActivityForwarder, type WorkerActivityKind } from './workerActivity';
@@ -42,10 +45,16 @@ type Opened = Awaited<ReturnType<(typeof import('./accountReceive'))['openAccoun
 export async function openAccountWorkerSession(
   input: AccountWorkspaceOptions,
   joined = false,
-  connection: { networkSessions?: boolean } = {},
+  connection: { networkSessions?: boolean; composed?: boolean } = {},
 ) {
   if (input.networkLogin || input.promotionOpening || input.recoveryOpening)
     throw Error('This worker opening requires the coordinated ceremony adapter');
+  const composed = connection.composed === true;
+  if (connection.composed !== undefined && typeof connection.composed !== 'boolean')
+    throw Error('Invalid Worker composition mode');
+  if (composed && connection.networkSessions !== true)
+    throw Error('Worker composition requires account sessions');
+  const mirrorToday = input.today;
   const requestedSessions = connection.networkSessions;
   const networkSessions = requestedSessions === true;
   if (requestedSessions !== undefined && typeof requestedSessions !== 'boolean')
@@ -60,7 +69,10 @@ export async function openAccountWorkerSession(
   let code = input.code,
     ready = false,
     baselineSequence = 0;
-  let readyFlight: Promise<void> | undefined;
+  let readyFlight: Promise<void> | undefined,
+    composedController: MirrorController | undefined,
+    composedQueues: ReturnType<typeof createWindowWorkspaceQueues> | undefined,
+    observingWorkspace = false;
   let receiveSequence = 0;
   let receiving: WindowReceiveFlight | undefined;
   let worker: Worker | undefined,
@@ -92,6 +104,26 @@ export async function openAccountWorkerSession(
   );
   cohort.signal.addEventListener('abort', () => channel?.close(), { once: true });
   cohort.disposeWith(() => eraseWorkerMessage(material));
+  const workerIO = Object.freeze({
+    async loadRecovery() {
+      const read = await channel!.request<{ id: number; records: number; journal: number }>(
+        'beginRecovery',
+      );
+      try {
+        return await readAccountRecoveryStream(
+          read,
+          () => channel!.request<RecoveryPage>('recoveryPage', { id: read.id }),
+          () => cohort.write(() => {}),
+        );
+      } finally {
+        if (!channel!.closed)
+          await channel!.request('finishRecovery', { id: read.id }).catch(() => {});
+      }
+    },
+    appendBatch: (input: readonly ContentInput[]) =>
+      channel!.request<ContentReceipt>('appendBatch', input),
+    flushJournal: () => channel!.request<JournalFlushReceipt>('flushJournal'),
+  });
   const changeContext = <T extends object>(
     controller: MirrorController,
     method: 'baselineStart' | 'authorityStart',
@@ -208,6 +240,70 @@ export async function openAccountWorkerSession(
       ports.port1,
       cohort.ticket.incarnation,
       {
+        workspaceOpen: async (input) => {
+          cohort.write(() => {});
+          workspaceQueueFields(input, ['deviceId', 'opening']);
+          if (!composed || composedController || material)
+            throw Error('Window workspace already opened');
+          const value = input as { deviceId: string; opening: AccountMirrorOpening };
+          if (
+            typeof value.deviceId !== 'string' ||
+            !value.deviceId.length ||
+            value.deviceId.length > 256
+          )
+            throw Error('Worker device label changed');
+          material = value.opening;
+          composedController = await createWindowAccountMirrorController(
+            cohort,
+            material,
+            workerIO,
+            {
+              identity,
+              deviceLabelId: value.deviceId,
+              ...(mirrorToday ? { today: mirrorToday } : {}),
+            },
+          );
+          cohort.write(() => {});
+          composedQueues = createWindowWorkspaceQueues(composedController, cohort, channel!);
+          return workspaceSchedulingStatus(composedController.workspace.status);
+        },
+        workspaceObserve: () => {
+          cohort.write(() => {});
+          if (!composedController || observingWorkspace)
+            throw Error('Window workspace observation changed');
+          observingWorkspace = true;
+          const forwarder = forwardWindowWorkspace(
+            composedController.workspace,
+            cohort.signal,
+            (h) => channel!.request('workspaceHint', h),
+            () => {
+              void cohort.close().catch(() => {});
+            },
+          );
+          cohort.disposeWith(forwarder.close);
+        },
+        workspaceDurable: async () => {
+          cohort.write(() => {});
+          if (!composedController) throw Error('Window workspace unavailable');
+          await composedController.workspace.whenDurable();
+          cohort.write(() => {});
+        },
+        workspacePrepare: (input) => {
+          if (!composedQueues) throw Error('Window workspace unavailable');
+          return composedQueues.workspacePrepare(input);
+        },
+        workspaceApply: (input) => {
+          if (!composedQueues) throw Error('Window workspace unavailable');
+          return composedQueues.workspaceApply(input);
+        },
+        workspaceFence: (input) => {
+          if (!composedQueues) throw Error('Window workspace unavailable');
+          return composedQueues.workspaceFence(input);
+        },
+        workspaceContext: (input) => {
+          if (!composedQueues) throw Error('Window workspace unavailable');
+          return composedQueues.workspaceContext(input);
+        },
         receiveApply: (input) => {
           cohort.write(() => {});
           if (
@@ -290,7 +386,7 @@ export async function openAccountWorkerSession(
     const openingRequest = channel.request<{
       account: Opened['account'];
       deviceId: string;
-      opening: AccountMirrorOpening;
+      opening?: AccountMirrorOpening;
     }>('open', {
       slotId,
       code,
@@ -298,11 +394,18 @@ export async function openAccountWorkerSession(
       identity,
       joined,
       networkSessions,
+      composed,
       ...(membershipContinuation !== undefined ? { membershipContinuation } : {}),
     });
     code = '';
     const opened = await openingRequest;
-    material = opened.opening;
+    if (composed) {
+      if (!composedController || !material || opened.opening)
+        throw Error('Worker workspace omitted its handoff');
+    } else {
+      if (!opened.opening) throw Error('Worker omitted its opening');
+      material = opened.opening;
+    }
     cohort.write(() => {});
     for (const kind of [
       'visibilitychange',
@@ -332,27 +435,12 @@ export async function openAccountWorkerSession(
       cohort,
       account: opened.account,
       deviceId: opened.deviceId,
-      opening: opened.opening,
-      worker: Object.freeze({
-        async loadRecovery() {
-          const read = await channel!.request<{ id: number; records: number; journal: number }>(
-            'beginRecovery',
-          );
-          try {
-            return await readAccountRecoveryStream(
-              read,
-              () => channel!.request<RecoveryPage>('recoveryPage', { id: read.id }),
-              () => cohort.write(() => {}),
-            );
-          } finally {
-            if (!channel!.closed)
-              await channel!.request('finishRecovery', { id: read.id }).catch(() => {});
-          }
-        },
-        appendBatch: (input: readonly ContentInput[]) =>
-          channel!.request<ContentReceipt>('appendBatch', input),
-        flushJournal: () => channel!.request<JournalFlushReceipt>('flushJournal'),
-      }),
+      opening: material,
+      composedWorkspace: composedController?.workspace,
+      compositionStatus: () => channel!.request('compositionStatus'),
+      compositionLocalHistory: (input: WorkerLocalBaselineCommand) =>
+        channel!.request('compositionLocalHistory', captureWorkerLocalBaselineCommand(input)),
+      worker: workerIO,
       ready: () => {
         cohort.write(() => {});
         readyFlight ??= (async () => {

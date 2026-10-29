@@ -645,7 +645,7 @@
     },
     {
       "path": "src/account/networkLogin.ts",
-      "sha256": "8fe6372238634d22f78585d9c6ed07335e3c1347c784b43fdaefcca31ed8d031"
+      "sha256": "7d92ea3af6f9ac28f4e389a6f8b37419fdb33cf2225cc4d76f9afdf4fe2aa0aa"
     },
     {
       "path": "src/account/notifications.ts",
@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountOwner.worker.ts",
-      "sha256": "a94bec6da29d9206f97686715eca72efe380620645ab01cbb94bfda37f56edac"
+      "sha256": "68b8d06c52d4628720631d99304523071acf5955d37ab941fe54ef1090abc3ed"
     },
     {
       "path": "src/crdt/accountProgressCustody.ts",
@@ -801,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "1e96fd78ae7edc478a31513aacefd9074a5e44edc48fa950e8beaecd68c9b66a"
+      "sha256": "57b321daa1d25beb641b2179fee0f41d043d5caa98d69686c3708a52bfc3ca3b"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -845,7 +845,7 @@
     },
     {
       "path": "src/crdt/accountWorkerClient.ts",
-      "sha256": "450ba29fc1a6550519dce08315162dbb36a9cd3a9d98f734446963aaf98061ac"
+      "sha256": "c94e5653aae9127e26b54cf035561146436b75eaaca63589149d94a85a539649"
     },
     {
       "path": "src/crdt/accountWorkerCohort.ts",
@@ -873,7 +873,7 @@
     },
     {
       "path": "src/crdt/accountWorkspacePort.ts",
-      "sha256": "051b72c01ee7827538ae5aba3aeae49a75f400373bb62d3428cc62d81f190109"
+      "sha256": "0c1fb64f0358321163cf3bd60eecfb2e996a220bcb964a77ba5057e489906d62"
     },
     {
       "path": "src/crdt/acknowledgedReceive.ts",
@@ -1402,6 +1402,10 @@
     {
       "path": "src/crdt/windowWorkspaceQueues.ts",
       "sha256": "f5250ac61f6a844342238ff6c713e996868cdaed014fa8bae5770059eade3ae3"
+    },
+    {
+      "path": "src/crdt/workerAccountComposition.ts",
+      "sha256": "60d1c45758eaec575ebc58871d74cddfa2fedc8150b516a16c452f494d4123ef"
     },
     {
       "path": "src/crdt/workerActivity.ts",

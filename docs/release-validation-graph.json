@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 597,
-    "requiredTestFiles": 591,
+    "testFiles": 599,
+    "requiredTestFiles": 593,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11727,6 +11727,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/networkLoginActivityPort.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/networkLoginActivityPort.test.ts"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/onboardingStorage.test.ts",
       "status": "required",
       "invocation": {
@@ -14123,6 +14138,21 @@
         ]
       },
       "declarations": 9,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/workerAccountComposition.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/workerAccountComposition.test.ts"
+        ]
+      },
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -20236,6 +20266,10 @@
       "sha256": "0acc65c2f4ded755d806c05085ee2bf6413ed92f2dc75f4f0a69405cc2277f9a"
     },
     {
+      "path": "test/networkLoginActivityPort.test.ts",
+      "sha256": "93abafea9a1461964e6443c617ca6cc4d4e46525b94e1c25849e2940b8fba9ba"
+    },
+    {
       "path": "test/onboardingStorage.test.ts",
       "sha256": "1c25802a3be421aa2d15c64d38fbc4717fb3a412ac8c23062206c4b12c3e0d97"
     },
@@ -21094,6 +21128,10 @@
     {
       "path": "test/windowJournalBridge.test.ts",
       "sha256": "2ee6e9fcc5e1900b53d30c060150fcb0d2b8d779c1b5bb7b2d94e36ecc258468"
+    },
+    {
+      "path": "test/workerAccountComposition.test.ts",
+      "sha256": "572449dbaca89c326009905bf2b3092098d2f13b5ec47b98a4e3921c9f17c28a"
     },
     {
       "path": "test/workerActivity.test.ts",

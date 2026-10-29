@@ -24,10 +24,7 @@ type NativeAccountOwner = Awaited<
   ReturnType<(typeof import('./accountReceive'))['openAccountWorkerStore']>
 >;
 /** Only the trusted composition factory receives these real, already-authenticated owner closures. */
-export type AccountWorkspaceOwnerContext = Pick<
-  NativeAccountOwner,
-  'account' | 'copyMirrorOpening' | 'preparedPromotion'
->;
+export type AccountWorkspaceOwnerContext = NativeAccountOwner;
 export function listenToLocalWorkspaceChanges(
   workspace: AccountWorkspacePort,
   listener: () => void,
@@ -43,7 +40,7 @@ export interface AccountWorkspaceQueues<W extends AccountWorkspacePort> {
   readonly workspace: W;
   readonly enqueue: OwnedReceiveQueue;
   readonly prepare: OwnedPreparedReceiveQueue;
-  readonly journalFence: OwnedJournalFenceQueue;
+  readonly journalFence?: OwnedJournalFenceQueue;
 }
 export type AccountWorkspaceFactoryOptions = Pick<
   AccountWorkspaceOptions,

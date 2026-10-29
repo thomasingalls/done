@@ -1,0 +1,31 @@
+import{readFileSync,writeFileSync,existsSync}from'node:fs';import{execFileSync}from'node:child_process';import{parseSync}from'/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@babel/core/lib/index.js';import assert from'node:assert/strict';
+const repo='/Users/thomasingalls/.codex/worktrees/7fda/done',root='/private/tmp/done-worker-conversion-20261028',prior=readFileSync(root+'/181-freeze.log','utf8').match(/Replay: (.+)/)[1];
+const bytes=(r,p)=>existsSync(r+'/'+p)?readFileSync(r+'/'+p):execFileSync('git',['show','8d6d42c1:'+p],{cwd:repo});
+const clean=v=>Array.isArray(v)?v.map(clean):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!['start','end','loc','comments','leadingComments','trailingComments','innerComments','extra'].includes(k)).map(([k,v])=>[k,clean(v)])):v;
+const ast=(r,p)=>clean(parseSync(bytes(r,p).toString(),{filename:p,babelrc:false,configFile:false,parserOpts:{plugins:['typescript']}}).program.body);
+const walk=(v,fn)=>{if(!v||typeof v!=='object')return;fn(v);for(const x of Object.values(v))if(Array.isArray(x))x.forEach(y=>walk(y,fn));else if(x&&typeof x==='object')walk(x,fn);};
+const before=ast(prior,'src/crdt/accountReceive.ts'),after=ast(repo,'src/crdt/accountReceive.ts'),find=(t,name)=>t.find(n=>n.type==='FunctionDeclaration'&&n.id.name===name);
+const b=find(before,'composeReceivingWorkspace'),a=find(after,'composeReceivingWorkspace');
+const declaration=t=>t.body.body.find(n=>n.type==='VariableDeclaration'&&n.declarations[0].id.type==='ObjectPattern'&&n.declarations[0].id.properties.some(p=>p.key?.name==='access')).declarations[0];
+const original=declaration(b),actual=declaration(a),named=a.body.body.find(n=>n.type==='VariableDeclaration'&&n.declarations[0].id.name==='nativeOwner');
+assert.deepEqual(named.declarations[0].init,original.init);assert.equal(actual.init.name,'nativeOwner');assert.deepEqual(actual.id.properties,original.id.properties.filter(p=>p.key?.name!=='copyMirrorOpening'));actual.id=original.id;actual.init=original.init;a.body.body=a.body.body.filter(n=>n!==named);
+let calls=0;walk(a,n=>{if(n.type==='CallExpression'&&n.callee?.name==='createWorkspace'){assert.equal(n.arguments.length,4);assert.deepEqual(n.arguments[3],{type:'Identifier',name:'nativeOwner'});walk(b,old=>{if(old.type==='CallExpression'&&old.callee?.name==='createWorkspace')n.arguments[3]=old.arguments[3];});calls++;}});assert.equal(calls,1);
+assert.deepEqual(after.filter(n=>(n.id??n.declaration?.id)?.name!=='openAccountWorkerReceivingWorkspace'),before.filter(n=>(n.id??n.declaration?.id)?.name!=='openAccountWorkerReceivingWorkspace'));
+const page=r=>ast(r,'src/crdt/accountWorkspacePort.ts').find(n=>n.type==='ExportNamedDeclaration'&&n.declaration?.declarations?.[0]?.id?.name==='createPageAccountWorkspace');assert.deepEqual(page(repo),page(prior));
+for(const p of ['src/crdt/accountCapture.ts','src/crdt/accountStartup.ts','src/crdt/accountWorkerRuntime.ts','src/crdt/accountWorkerJoin.ts','src/crdt/accountWorkerCohort.ts','src/crdt/nativeCoordination.ts','src/crdt/admissionQueue.ts','src/crdt/windowAccountMirror.ts','src/crdt/workerWorkspaceQueues.ts','src/crdt/windowWorkspaceQueues.ts','src/crdt/acknowledgedReceive.ts'])assert(bytes(repo,p).equals(bytes(prior,p)),p);
+const oldLogin=ast(prior,'src/account/networkLogin.ts'),newLogin=ast(repo,'src/account/networkLogin.ts'),classOf=t=>t.find(n=>n.type==='ExportNamedDeclaration'&&n.declaration?.type==='ClassDeclaration'&&n.declaration.id.name==='NetworkLogin').declaration;
+const oldClass=classOf(oldLogin),newClass=classOf(newLogin);newClass.body.body=newClass.body.body.filter(n=>n.key?.id?.name!=='stopOnline');
+for(const name of ['activate','close']){
+ const old=oldClass.body.body.find(n=>n.key?.name===name),now=newClass.body.body.find(n=>n.key?.name===name);
+ if(name==='activate'){
+  const index=now.body.body.findIndex(n=>n.expression?.operator==='??=');assert(index>=0);const updated=now.body.body[index].expression;
+  assert.equal(updated.left.property.id.name,'stopOnline');assert.equal(updated.right.callee.object.object.name,'pageRuntimePorts');assert.equal(updated.right.callee.object.property.name,'activity');assert.equal(updated.right.callee.property.name,'onGlobal');
+  const oldSub=old.body.body.find(n=>n.expression?.callee?.property?.name==='addEventListener'&&n.expression?.callee?.object?.name==='globalThis');assert.deepEqual(updated.right.arguments,oldSub.expression.arguments);now.body.body[index]=oldSub;
+ }else{
+  const index=now.body.body.findIndex(n=>n.expression?.callee?.property?.id?.name==='stopOnline');assert(index>=0);const clear=now.body.body[index+1].expression;assert.equal(clear.left.property.id.name,'stopOnline');assert.equal(clear.right.name,'undefined');
+  const oldStop=old.body.body.find(n=>n.expression?.callee?.property?.name==='removeEventListener');now.body.body.splice(index,2,oldStop);
+ }
+}
+assert.deepEqual(newLogin.filter(n=>n.type!=='ImportDeclaration'||n.source.value!=='../crdt/runtimePorts'),oldLogin);
+const read=p=>JSON.parse(readFileSync(p)),m=read(root+'/182-before-manifest.json'),n=read(repo+'/docs/release-validation-manifest.json');for(const row of m.rows)assert.deepEqual(n.rows.find(v=>v.id===row.id),row);for(const block of m.unresolved)assert(n.unresolved.some(v=>JSON.stringify(v)===JSON.stringify(block)));assert.equal(n.rows.length,m.rows.length+2);assert.equal(n.unresolved.length,m.unresolved.length+2);
+writeFileSync(root+'/182-boundary-audit.json',JSON.stringify({allNativeAndPageReceiveChecksIdentical:true,originalPageFactoryRuntimeAstIdentical:true,existingNativeOwnershipAndOriginalFinalQueuesByteIdentical:true,allOriginalNetworkLoginAuthorityAndCryptoAstIdenticalExceptRuntimeOnlineEndpoint:true,allPriorObligationsAndBlocksExact:true,twoNewTestSourcesRequiredUncredited:true},null,2)+'\n');

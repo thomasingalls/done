@@ -1,3 +1,5 @@
+import { createWorkerAccountComposition } from './workerAccountComposition';
+import { eraseCapsule } from './sourceCapture';
 import type { NetworkLogin } from '../account/networkLogin';
 import { createAccountWorkerReceive } from './accountWorkerReceive';
 import { captureWorkerLocalBaselineCommand } from './workerLocalBaseline';
@@ -14,6 +16,9 @@ import { copyAccountMirrorRecovery } from './accountMirrorRecovery';
 import { createAccountRecoveryStream } from './accountWorkerRecoveryStream';
 import type { SlotAssertion } from '../account/slotUnlock';
 
+type Composed = Awaited<
+  ReturnType<(typeof import('./accountReceive'))['openAccountWorkerReceivingWorkspace']>
+>;
 type Owner = Awaited<ReturnType<(typeof import('./accountReceive'))['openAccountWorkerStore']>>;
 const deferred = <T>() => {
   let resolve!: (value: T | PromiseLike<T>) => void, reject!: (cause: unknown) => void;
@@ -50,7 +55,9 @@ self.addEventListener('message', (event: MessageEvent) => {
   };
   if (m?.v !== 1 || m.kind !== 'accountBootstrap' || !(m.port instanceof MessagePort)) return;
   initialized = true;
-  let login: NetworkLogin | undefined;
+  let login: NetworkLogin | undefined,
+    composition: Composed | undefined,
+    composedBridge: ReturnType<typeof createWorkerAccountComposition> | undefined;
   let owner: Owner | undefined,
     opening: Promise<unknown> | undefined,
     retiring = false,
@@ -71,6 +78,7 @@ self.addEventListener('message', (event: MessageEvent) => {
       await opening?.catch(() => {});
       await baselineWork?.catch(() => {});
       await receives.close();
+      await composedBridge?.close();
       await owner?.carrier.close();
       owner = undefined;
     })();
@@ -149,6 +157,64 @@ self.addEventListener('message', (event: MessageEvent) => {
     m.port,
     m.ticket.incarnation,
     {
+      workspaceHint: (input) => {
+        if (!composedBridge) throw Error('Worker workspace unavailable');
+        return composedBridge.methods.workspaceHint(input);
+      },
+      workspaceFrames: (input) => {
+        if (!composedBridge) throw Error('Worker workspace unavailable');
+        return composedBridge.methods.workspaceFrames(input);
+      },
+      workspaceFinish: (input) => {
+        if (!composedBridge) throw Error('Worker workspace unavailable');
+        return composedBridge.methods.workspaceFinish(input);
+      },
+      workspaceCommit: (input) => {
+        if (!composedBridge) throw Error('Worker workspace unavailable');
+        return composedBridge.methods.workspaceCommit(input);
+      },
+      compositionLocalHistory: async (input) => {
+        live();
+        if (!composition) throw Error('Worker composition unavailable');
+        const command = captureWorkerLocalBaselineCommand(input);
+        const operation =
+          command.expectedRevision === undefined
+            ? composition.installLocalBaseline
+            : command.kind === 'advance'
+              ? () => composition!.advanceLocalRetention!(command.expectedRevision!)
+              : () => composition!.replaceLocalBaseline!(command.expectedRevision!);
+        if (
+          !operation ||
+          (command.expectedRevision !== undefined &&
+            (command.kind === 'advance'
+              ? !composition.advanceLocalRetention
+              : !composition.replaceLocalBaseline))
+        )
+          throw Error('Local history operation unavailable');
+        const result = await operation();
+        live();
+        return result;
+      },
+      compositionStatus: async () => {
+        live();
+        if (!composition) throw Error('Worker composition unavailable');
+        const outbound = composition.outbound,
+          captures = await composition.listCaptures();
+        try {
+          const delivery = outbound ? await outbound.deliveryStatus() : null;
+          const spool = outbound ? await outbound.spoolStatus() : null;
+          live();
+          return {
+            sync: composition.sync?.status ?? null,
+            login: login?.getSnapshot() ?? 'closed',
+            delivery,
+            spool,
+            captures: captures.map((c) => ({ id: c.id, count: c.sources.length })),
+          };
+        } finally {
+          for (const c of captures) eraseCapsule(c);
+        }
+      },
       receiveRequest: () => receives.methods.receiveRequest(),
       receiveFetch: (input) => receives.methods.receiveFetch(input),
       receiveBegin: (input) => receives.methods.receiveBegin(input),
@@ -162,15 +228,47 @@ self.addEventListener('message', (event: MessageEvent) => {
           const options = input as Omit<
             AccountWorkspaceOptions,
             'assertPasskey' | 'signal' | 'networkLogin' | 'today'
-          > & { joined: boolean; networkSessions?: boolean };
+          > & { joined: boolean; networkSessions?: boolean; composed?: boolean };
           if (options.slotId !== m.ticket.slotId) throw Error('Account worker slot changed');
           if (options.networkSessions !== undefined && typeof options.networkSessions !== 'boolean')
             throw Error('Invalid Worker connection mode');
+          if (options.composed !== undefined && typeof options.composed !== 'boolean')
+            throw Error('Invalid Worker composition mode');
+          if (options.composed && !options.networkSessions)
+            throw Error('Worker composition requires account sessions');
           if (options.networkSessions) {
             const { NetworkLogin } = await import('../account/networkLogin');
             login = new NetworkLogin(options.pin, options.slotId);
           }
-          const { openAccountWorkerStore } = await import('./accountReceive');
+          const { openAccountWorkerStore, openAccountWorkerReceivingWorkspace } =
+            await import('./accountReceive');
+          if (options.composed) {
+            composedBridge = createWorkerAccountComposition({
+              channel,
+              runtime,
+              live,
+              failed: () => channel.close(),
+              owned: (value, journalPrefix) => {
+                owner = value;
+                prefix = journalPrefix;
+              },
+            });
+            composition = await openAccountWorkerReceivingWorkspace(
+              {
+                ...options,
+                assertPasskey: passkey,
+                signal: runtime.signal,
+                ...(login ? { networkLogin: login } : {}),
+              },
+              composedBridge.factory,
+              options.joined,
+            );
+            live();
+            return {
+              account: { ...owner!.account },
+              deviceId: owner!.deviceId,
+            };
+          }
           owner = await openAccountWorkerStore(
             {
               ...options,
@@ -302,7 +400,9 @@ self.addEventListener('message', (event: MessageEvent) => {
         const { kind, ...activity } = input as WorkerActivity & { kind: string };
         runtime.update(activity, kind);
       },
-      ready: () => runtime.finishOpening(),
+      ready: () => {
+        if (!composedBridge?.ready) runtime.finishOpening();
+      },
       close,
     },
     () => {

@@ -491,3 +491,11 @@ next; default app still Page, unchanged performance gates pending. [Evidence](pe
 have bounded Worker/Window data handoffs.48 controlled focused cases/98 metadata pass, including
 refusal retirement after a caught deadlock; no native/latency claim. Original runtime bodies exact,
 application still Page. Next connect original composition/bootstrap. [Packet](performance-experiments/2026-10-28-worker-owner/phase181/README.md).
+
+
+**Phase182 — actual composed Account Worker:** original scheduler/native operations now use the
+real Window mirror/queues in the internal path.2417 unit cases/one skip,24 focused,98 metadata,
+34 existing session-client cases pass;27/28 real native matrix, with joined late-marker deep catch-up
+still over30s (continued progress and429 retained). No timing/activation credit. Next native-owner
+retirement propagation, automatic context changes and remaining application integration; default app
+still Page. [Evidence](performance-experiments/2026-10-28-worker-owner/phase182/README.md).

@@ -1,0 +1,10 @@
+{
+  "src/crdt/workerAccountComposition.ts": "60d1c45758eaec575ebc58871d74cddfa2fedc8150b516a16c452f494d4123ef",
+  "src/crdt/accountReceive.ts": "57b321daa1d25beb641b2179fee0f41d043d5caa98d69686c3708a52bfc3ca3b",
+  "src/crdt/accountWorkspacePort.ts": "0c1fb64f0358321163cf3bd60eecfb2e996a220bcb964a77ba5057e489906d62",
+  "src/crdt/accountOwner.worker.ts": "68b8d06c52d4628720631d99304523071acf5955d37ab941fe54ef1090abc3ed",
+  "src/crdt/accountWorkerClient.ts": "c94e5653aae9127e26b54cf035561146436b75eaaca63589149d94a85a539649",
+  "src/account/networkLogin.ts": "7d92ea3af6f9ac28f4e389a6f8b37419fdb33cf2225cc4d76f9afdf4fe2aa0aa",
+  "test/workerAccountComposition.test.ts": "572449dbaca89c326009905bf2b3092098d2f13b5ec47b98a4e3921c9f17c28a",
+  "test/networkLoginActivityPort.test.ts": "93abafea9a1461964e6443c617ca6cc4d4e46525b94e1c25849e2940b8fba9ba"
+}
