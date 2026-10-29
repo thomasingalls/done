@@ -739,3 +739,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase231:** Recovered-account invitation transition repaired with original whole-case pass. Next isolate remembered-name overwrite, finish retirement and conversion compatibility checks, then unchanged performance measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase231/README.md).
+
+
+**Phase232:** First-name entry race repaired; native actor algorithm unchanged. Next preserve account transition display and complete detached-copy checks, then remaining conversion validation and unchanged performance gates. [Packet](performance-experiments/2026-10-28-worker-owner/phase232/README.md).

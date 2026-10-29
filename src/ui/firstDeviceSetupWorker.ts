@@ -57,7 +57,11 @@ export function createWorkerFirstDeviceSetup(
   takeInitialCode?: () => string | undefined,
 ): UiSetup {
   const owner = createWindowCeremonyUi<Display>(config, slotId, {
-    initial: { state: { kind: 'intro' }, visitable: [], recoveryDisplay: false },
+    initial: {
+      state: { kind: 'working', message: 'Checking saved setup…' },
+      visitable: [],
+      recoveryDisplay: false,
+    },
     closing: {
       state: { kind: 'working', message: 'Locking and finishing storage operations…' },
       visitable: [],

@@ -18,12 +18,19 @@ export function createNativeFirstDeviceController(
     () => context.browser,
   );
   user.subscribe(context.publish);
+  let inspected = false;
   return {
-    snapshot: () => ({
-      state: setupPresentation(user.getSnapshot()),
-      visitable: [...user.visitableSteps()],
-      recoveryDisplay: user.hasRecoveryDisplay(),
-    }),
+    snapshot: () => {
+      const state = setupPresentation(user.getSnapshot());
+      // Initial intro is a constructor default, not a completed classification. Publishing it
+      // can expose a name form that inspection immediately destroys, losing the user's input.
+      const checking = !inspected && state.kind === 'intro';
+      return {
+        state: checking ? { kind: 'working', message: 'Checking saved setup…' } : state,
+        visitable: checking ? [] : [...user.visitableSteps()],
+        recoveryDisplay: user.hasRecoveryDisplay(),
+      };
+    },
     command(input) {
       const value = captureSetupCommand(input);
       if (value.command === 'approvePasskey') return { outOfBand: true, run: user.approvePasskey };
@@ -70,6 +77,7 @@ export function createNativeFirstDeviceController(
               throw Error('Out-of-band setup action');
           }
           await user.whenIdle();
+          if (value.command === 'inspect') inspected = true;
         },
       };
     },

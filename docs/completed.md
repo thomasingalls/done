@@ -17961,3 +17961,8 @@ Five new cases/27 focused and99 metadata/type/lint pass. Native owner bodies unc
 ## 2026-10-29 — phase231: recovery-to-invitation form transition
 
 Two new counterexamples/21 focused/99 metadata/type/lint pass. Clean unchanged never-paired recovery, snapshot, pruning and new-device enrollment/writing case passes40.6s, retaining every old assertion/deadline. Separate new retirement case blocked earlier by remembered-name mismatch; retained open. [Packet](performance-experiments/2026-10-28-worker-owner/phase231/README.md).
+
+
+## 2026-10-29 — phase232: initial name form lifetime
+
+Six new cases;20 focused/99 metadata/type/lint/format and two clean name durability browser cases pass. One old constructor snapshot fixture updated, refusal assertions retained. Separate retirement case advances to lost returning-account action wording, left open.395 clean source bodies exact. [Packet](performance-experiments/2026-10-28-worker-owner/phase232/README.md).

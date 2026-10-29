@@ -6317,3 +6317,8 @@ Keep each supervisor incarnation one-shot. Successful existing drain can expose 
 ## 2026-10-29 — phase231: separate recovery shutdown from unlock
 
 The outgoing screen must not accept a factor while its owner closes. Add a Window-only closing marker, refused by the native projection decoder, and retain the existing close status. [Evidence](performance-experiments/2026-10-28-worker-owner/phase231/README.md).
+
+
+## 2026-10-29 — phase232: constructor intro is not completed inspection
+
+Withhold the name form until original native inspection/idle complete. Keep genuine in-flight passkey approval available. This repairs lost form input without changing metadata or crypto algorithms. [Evidence](performance-experiments/2026-10-28-worker-owner/phase232/README.md).

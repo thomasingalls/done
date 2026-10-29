@@ -1589,7 +1589,7 @@
     },
     {
       "path": "src/crdt/workerFirstDeviceSetup.ts",
-      "sha256": "fafbc122080ea108cf990c4e3083e1508d881753e9a066f3dbd1ab01668fa907"
+      "sha256": "507c386943b7043e524bee52687c9c11eede9c5456629e0ce27d3778b4a41f03"
     },
     {
       "path": "src/crdt/workerFrameStream.ts",
@@ -1953,7 +1953,7 @@
     },
     {
       "path": "src/ui/firstDeviceSetupWorker.ts",
-      "sha256": "6769d72cfc1ef48ef1acdaa55e9404ede31dd6496d8c910146198078567095f7"
+      "sha256": "1dedf40dae54cd3f6645fcb7650b4db91a27728b2bb3727dc095f5b6490bf0a9"
     },
     {
       "path": "src/ui/localStartup.ts",

@@ -96,7 +96,7 @@ it('unknown or accessor commands cannot invoke an original action', () => {
   expect(get).not.toHaveBeenCalled();
   expect(f.user.unlock).not.toHaveBeenCalled();
   expect(f.controller.snapshot()).toEqual({
-    state: { kind: 'intro' },
+    state: { kind: 'working', message: 'Checking saved setup…' },
     visitable: [],
     recoveryDisplay: false,
   });
