@@ -708,6 +708,10 @@
       "sha256": "4bfa5e6208a6a80a2005468df186db53c0d489695074a1f7c481e9f3acb15125"
     },
     {
+      "path": "src/account/recoveryWorkerProtocol.ts",
+      "sha256": "829f121e700f40e2e17515619e1c08407a78f0e8e1d5de1a4ee4f94b679e028f"
+    },
+    {
       "path": "src/account/scopedTransport.ts",
       "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7"
     },
@@ -1360,6 +1364,10 @@
       "sha256": "9c9850467782e9f88df09af447d3855079c663edba3a31c6037c598261380828"
     },
     {
+      "path": "src/crdt/recoveryOwner.worker.ts",
+      "sha256": "fd6aba2119882bfd82f252d9afeed5957723b5d5050c9b809745f0913aa42fe6"
+    },
+    {
       "path": "src/crdt/recoveryReading.ts",
       "sha256": "3b8ce124beec6c8c5089b4333a57446363a0db8d5056aff4c75b00864f91e3cb"
     },
@@ -1602,6 +1610,10 @@
     {
       "path": "src/crdt/workerLocalTrim.ts",
       "sha256": "b35b7f120aa28ccd1127d61a9b1c38d99a2c384f38feac3ca2bc5f4dcbccad92"
+    },
+    {
+      "path": "src/crdt/workerLostDeviceRecovery.ts",
+      "sha256": "337d609440abb0d4dfcf94ef90375d8f02ac81c3dfeabac8f46806c9ec02709c"
     },
     {
       "path": "src/crdt/workerNativeLifetime.ts",
@@ -1918,6 +1930,10 @@
     {
       "path": "src/ui/accountEnrollmentWorker.ts",
       "sha256": "b54304c91af1c093cfb06ccd452bf9cfcfce6ed2d46333b8aaabdcdb6afbbec7"
+    },
+    {
+      "path": "src/ui/accountRecoveryWorker.ts",
+      "sha256": "a38cceb737f064ae388ceda617c04e0b19f82f984253c5b3d237d96f4bc13fc6"
     },
     {
       "path": "src/ui/ceremonyNavigation.tsx",

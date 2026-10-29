@@ -6282,3 +6282,8 @@ Retain the original notification parser, retries and resume behavior in the nati
 ## 2026-10-29 — phase224: recovery browser/workspace/routing effect boundaries
 
 Keep original recovery crypto, private one-use approval and commit/installation bodies. Extract only execution and browser effects; await the fixed Window route-hint callback before the original confirmation and check cancellation again afterward. [Evidence](performance-experiments/2026-10-28-worker-owner/phase224/README.md).
+
+
+## 2026-10-29 — phase225: same-realm native lost-device recovery controller
+
+Keep genuine fresh recovery approval and retained confirmed factor only in native realm. Fixed commands retain explicit disconnect review and original begin/prepare/confirm/finish/open semantics. Window receives bounded display plus genuine canonical ports, with code re-entry after failed one-shot opening. [Evidence](performance-experiments/2026-10-28-worker-owner/phase225/README.md).

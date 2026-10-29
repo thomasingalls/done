@@ -17926,3 +17926,8 @@ Four new cases/25 focused and99 metadata pass. Type/lint/format and independent 
 ## 2026-10-29 — phase224: recovery browser/workspace/routing effect boundaries
 
 Three new port cases/29 focused and99 metadata pass; two unchanged real-browser recovery regressions pass, including lost-commit browser death. Native setup/enrollment controls2 pass;2 containers absent. Type/lint/format and original-body AST/unchanged-boundary audit pass. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase224/README.md).
+
+
+## 2026-10-29 — phase225: same-realm native lost-device recovery controller
+
+Seven new cases/33 focused and99 metadata/type/lint/format pass. All old runtime bytes exact224. Actual Chrome full new-account/upload/native recovery/wrong-code/review/one-passkey/open/original cold check passes;1 exact container absent. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase225/README.md).

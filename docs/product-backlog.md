@@ -718,3 +718,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase224:** Recovery effect boundaries ready; next same-realm native recovery controller and Window presentation, then remaining UI/default/offline/mixed activation and unchanged performance targets. [Packet](performance-experiments/2026-10-28-worker-owner/phase224/README.md).
+
+
+**Phase225:** Native recovery complete and verified. Next wire app screens, native pending-device preparation, remaining Window custody callers/default activation, offline/mixed-owner checks; then unchanged16ms/2.5s/30s measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase225/README.md).
