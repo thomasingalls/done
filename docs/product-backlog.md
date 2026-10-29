@@ -577,3 +577,9 @@ Local admission/Undo, ceremonies/default/offline conversion before unchanged tim
 loss recovery and old/new-writer CRDT union pass. Carry over Local maintenance before startup/ceremony/
 offline/default activation and unchanged timing gates.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase193/README.md).
+
+
+**Phase194 — maintenance boundary:** pending-native-lock alternative rejected by browser falsifiers;
+no candidate runtime retained. Continue with Worker heavy verification/preparation plus a narrowly owned
+Window final commit preserving fresh synchronous journal validation. Default Page; conversion/gates
+remain pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase194/README.md).

@@ -17711,3 +17711,12 @@ kind separation.36 focused/98 metadata/type/lint/format and five final native ca
 worker loss and independent old/new-writer CRDT union. Seven containers absent. Default Page, maintenance
 and remaining conversion still pending; no timing credit.
 [Packet](performance-experiments/2026-10-28-worker-owner/phase193/README.md).
+
+
+## 2026-10-29 — phase194 maintenance boundary falsifier
+
+Rejected a pending-lock barrier after actual Chrome continuation failures and Firefox comparison.
+Complete candidate/source/driver identities, failures and mocks retained. All1368 source/test files and
+metadata homes restored exactly to193;36 focused/98 metadata pass, nine containers absent. Maintenance
+and conversion still pending, no performance credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase194/README.md).

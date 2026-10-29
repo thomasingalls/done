@@ -1,0 +1,184 @@
+// @vitest-environment node
+import { afterEach, expect, it, vi } from 'vitest';
+import { openLocalWorkerLifetime } from '../src/crdt/localWorkerLifetime';
+import {
+  cohortNames,
+  localWorkerPinName,
+  type AccountWorkerTicket,
+} from '../src/crdt/nativeCoordination';
+afterEach(() => vi.unstubAllGlobals());
+function deferred<T>() {
+  let resolve!: (v: T) => void;
+  const promise = new Promise<T>((yes) => (resolve = yes));
+  return { promise, resolve };
+}
+async function environment() {
+  const ticket: AccountWorkerTicket = {
+      v: 1,
+      slotId: 'sole-writer',
+      incarnation: crypto.randomUUID().replaceAll('-', ''),
+      windowClient: 'window',
+    },
+    n = cohortNames(ticket.slotId, ticket.incarnation),
+    held: LockInfo[] = [
+      { name: n.reservation, mode: 'shared', clientId: 'window' },
+      { name: n.anchor, mode: 'exclusive', clientId: 'window' },
+      { name: n.slot, mode: 'shared', clientId: 'window' },
+    ],
+    pending: LockInfo[] = [];
+  let grantUnexpected = false;
+  const request = vi.fn(
+    async (name: string, options: LockOptions, callback: (lock: Lock | null) => unknown) => {
+      if (name === n.slot && options.mode === 'exclusive' && !options.ifAvailable) {
+        if (grantUnexpected) return callback({ name, mode: 'exclusive' } as Lock);
+        const row: LockInfo = { name, mode: 'exclusive', clientId: 'worker' };
+        pending.push(row);
+        try {
+          return await new Promise((_, reject) => {
+            options.signal!.addEventListener(
+              'abort',
+              () => reject(new DOMException('aborted', 'AbortError')),
+              { once: true },
+            );
+          });
+        } finally {
+          pending.splice(pending.indexOf(row), 1);
+        }
+      }
+      if (
+        name === n.slot &&
+        options.mode === 'shared' &&
+        pending.some((v) => v.name === name && v.mode === 'exclusive')
+      )
+        return callback(null);
+      const row: LockInfo = { name, mode: options.mode ?? 'exclusive', clientId: 'worker' };
+      held.push(row);
+      try {
+        return await callback({ name, mode: row.mode! } as Lock);
+      } finally {
+        held.splice(held.indexOf(row), 1);
+      }
+    },
+  );
+  vi.stubGlobal('window', undefined);
+  vi.stubGlobal('isSecureContext', true);
+  vi.stubGlobal('navigator', {
+    locks: { request, query: async () => ({ held: [...held], pending: [...pending] }) },
+  });
+  const root = await openLocalWorkerLifetime(ticket);
+  held.push({ name: localWorkerPinName(ticket, 'worker'), mode: 'exclusive', clientId: 'window' });
+  const release = deferred<void>(),
+    started = deferred<void>(),
+    phase = root.request(n.slot, { mode: 'shared' }, async () => {
+      started.resolve();
+      await release.promise;
+    });
+  await started.promise;
+  root.beforeRelease(async () => {
+    release.resolve();
+    await phase;
+  });
+  return {
+    root,
+    held,
+    pending,
+    n,
+    unexpected() {
+      grantUnexpected = true;
+    },
+  };
+}
+it('only actual root+active-phase+Window holders enter, pending exclusive lasts through owned work', async () => {
+  const e = await environment(),
+    work = deferred<void>(),
+    entered = deferred<void>();
+  const result = e.root.withSoleWriterFence(async () => {
+    expect(e.pending).toHaveLength(1);
+    entered.resolve();
+    await work.promise;
+    return 8;
+  });
+  await entered.promise;
+  expect(e.held.filter((v) => v.name === e.n.slot)).toHaveLength(3);
+  expect(e.pending).toHaveLength(1);
+  work.resolve();
+  expect(await result).toBe(8);
+  expect(e.pending).toHaveLength(0);
+  await e.root.close();
+});
+it('an old shared writer causes deferral before operation, without retiring that writer', async () => {
+  const e = await environment(),
+    old: LockInfo = { name: e.n.slot, mode: 'shared', clientId: 'old-page' };
+  e.held.push(old);
+  const work = vi.fn();
+  await expect(e.root.withSoleWriterFence(work)).rejects.toThrow('another writer');
+  expect(work).not.toHaveBeenCalled();
+  expect(e.pending).toHaveLength(0);
+  expect(e.held).toContain(old);
+  await e.root.close();
+});
+it('same-client duplicate phase and ambiguous exclusive request cannot substitute for the exact held census', async () => {
+  const e = await environment(),
+    work = vi.fn();
+  e.held.push({ name: e.n.slot, mode: 'shared', clientId: 'worker' });
+  await expect(e.root.withSoleWriterFence(work)).rejects.toThrow('another writer');
+  e.held.pop();
+  e.pending.push({ name: e.n.slot, mode: 'exclusive', clientId: 'worker' });
+  await expect(e.root.withSoleWriterFence(work)).rejects.toThrow('another writer');
+  expect(work).not.toHaveBeenCalled();
+  e.pending.length = 0;
+  await e.root.close();
+});
+it('no nested phase or second maintenance can queue behind its own pending barrier', async () => {
+  const e = await environment(),
+    work = deferred<void>(),
+    entered = deferred<void>(),
+    result = e.root.withSoleWriterFence(async () => {
+      entered.resolve();
+      await work.promise;
+    });
+  await entered.promise;
+  await expect(e.root.request(e.n.slot, { mode: 'shared' }, () => {})).rejects.toThrow('inactive');
+  await expect(e.root.withSoleWriterFence(async () => {})).rejects.toThrow('another writer');
+  work.resolve();
+  await result;
+  await e.root.close();
+});
+it('unexpected exclusive grant never runs operation and fails closed', async () => {
+  const e = await environment(),
+    work = vi.fn();
+  e.unexpected();
+  await expect(e.root.withSoleWriterFence(work)).rejects.toThrow('inactive');
+  expect(work).not.toHaveBeenCalled();
+  await e.root.close();
+});
+it('root abort keeps pending exclusion until real work settles, then drain releases native root', async () => {
+  const e = await environment(),
+    work = deferred<void>(),
+    entered = deferred<void>(),
+    result = e.root.withSoleWriterFence(async () => {
+      entered.resolve();
+      await work.promise;
+    });
+  await entered.promise;
+  const closing = e.root.close();
+  expect(e.root.signal.aborted).toBe(true);
+  await Promise.resolve();
+  expect(e.pending).toHaveLength(1);
+  work.resolve();
+  await result;
+  await closing;
+  expect(e.pending).toHaveLength(0);
+  expect(e.held.some((v) => v.clientId === 'worker')).toBe(false);
+});
+it('an interrupted operation cancels only its pending intent and leaves root available for a later attempt', async () => {
+  const e = await environment();
+  await expect(
+    e.root.withSoleWriterFence(async () => {
+      throw Error('foreground interrupt');
+    }),
+  ).rejects.toThrow('foreground interrupt');
+  expect(e.pending).toHaveLength(0);
+  expect(await e.root.withSoleWriterFence(async () => 7)).toBe(7);
+  await e.root.close();
+});

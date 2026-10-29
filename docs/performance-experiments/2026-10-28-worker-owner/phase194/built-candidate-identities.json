@@ -1,0 +1,986 @@
+{
+  "src/crdt/contentMaintenance.ts": {
+    "sha256": "bcbe95666e0874c1a7ce01b869ef207e6bffe2f9babb6fbcabb1526079e26c9f",
+    "state": "unchanged actual source"
+  },
+  "src/account/approvalVault.ts": {
+    "sha256": "5e08c3ce1d870f7499e4c898afe2640c6d55cb14e266fdc60fe3e44086871999",
+    "state": "unchanged actual source"
+  },
+  "src/account/recoveryDetachment.ts": {
+    "sha256": "76484c78d900562f40782189fea497c956e76696397434e63e484e55ff74f5eb",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/rotationKeys.ts": {
+    "sha256": "8fd9ed853b35e0836f183cf8835728e47d17162861cbc73bf5354e4dcb6045e5",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/startupState.ts": {
+    "sha256": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/startupStorage.ts": {
+    "sha256": "6292d632123974426ad00183216b171d0bd4cdffe80c40665d1f5772ae8015f2",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/storeName.ts": {
+    "sha256": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionPreparationDatabase.ts": {
+    "sha256": "06a2a995bcd0c9321fc0a600e9120df79162458ba0c4aac4b0c0ed94e3f138cb",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/writeSession.ts": {
+    "sha256": "861365bcd692828943b365e1f77c6bed41d4cdc981674ec2286f80e6e8ee5cd8",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/legacyCleanupEncoding.ts": {
+    "sha256": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/legacyImportState.ts": {
+    "sha256": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/automaticOpening.ts": {
+    "sha256": "630d0cfacdf3e374c33dc42b04a19366bd7e48d9abbee04516fb9fdb605859d7",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/startupClassification.ts": {
+    "sha256": "b2cbb8cd8ec70e7f392a7e02332eaab786cb28b26e5e3ec96229b7ff6c80853b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineMode.ts": {
+    "sha256": "f105b787fad1cd23d0b48109578f87a3bdb6873b0fc5fd631ee676ab38a0b022",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineMetadata.ts": {
+    "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localGenesisStorage.ts": {
+    "sha256": "9bfd43d405fd18a360b9d26697c3ada18ffb377af19a7e60176fcf59811db2cf",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localProtection.ts": {
+    "sha256": "c0ab7a7f84bce725884404e14e70b38b78fec44c147c2144ec258b50bac7298b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/legacyCleanupRecord.ts": {
+    "sha256": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localGenesisRecord.ts": {
+    "sha256": "1d5c88ce57abeeca5c8a366d079b3d16812fab9363112242e79cc4f1d6815894",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/deviceDataRemoval.ts": {
+    "sha256": "fe97fc69d2205d40892d976e2221a6aa2b59476f86e8def164fd47d676ce3468",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localClearState.ts": {
+    "sha256": "fea6a443ed8a7c92963e8886d2e64c79574af85510ae8ba61d0d55212443bda3",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/journalStore.ts": {
+    "sha256": "63a03d1b955791f7ef05d2b5ac085461cc13c4df20938d2b2d0455bbbe04119b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/preparationValue.ts": {
+    "sha256": "b735e68be9279794aebdaccf665fd97c97bdcd5ae98ae0fe9e5f3a9b8b5990a1",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionPreparation.ts": {
+    "sha256": "6820ba8a5135b4c792718e96988577a1435383530aeb4ee8fa047253241a3b2b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/inboundRecord.ts": {
+    "sha256": "31972ea04d567109310d1b1596c7ccc36ecbb5eeb3c27a5a7189ffd109c31c23",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountMembership.ts": {
+    "sha256": "238c3a4a5e02144cfdaa2f7c1347132f501d13ea278e2e658acb52da07578808",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountSuccessor.ts": {
+    "sha256": "ec1645a73beaaa0f0b359e8640d2155db5a0fbdc14ec8d9c3754f5de4d7af5cb",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineAuthority.ts": {
+    "sha256": "42ae6387576ca27838cbb1f6b8029ba08d4a17268859eca67e588193a3dba1a5",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountInbound.ts": {
+    "sha256": "5e31847620e83cc21b031018b35ad379eea5407ae9522f8026576dae55d7c9e4",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/cpuBudget.ts": {
+    "sha256": "8d9932f2ffb5de59b5470627b585c92c1cd39e04f4218a29eff588afef066e9f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/deliveryRecord.ts": {
+    "sha256": "0c2f94c1449390b7ea124da60751fb351c04eaf504408324805a2615c56adfdc",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/admissionDocument.ts": {
+    "sha256": "0d740492fa38335be4f07abef58512e5bed62c5e74ca19171f32866a4ea0a157",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountAuthorityInventory.ts": {
+    "sha256": "ee8c96b34d6d16d3e62ea1285a007a6082b71a6b76c0782d03c106d5cc84d729",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/handoffRecord.ts": {
+    "sha256": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/promotionRecord.ts": {
+    "sha256": "f2943f1024ef6290003a2853d792130ea09c99d1f75f44aa721042f9f688e7c9",
+    "state": "unchanged actual source"
+  },
+  "src/lib/temporal.ts": {
+    "sha256": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/days.ts": {
+    "sha256": "a19a2aae98499694fbb31c4ec284c2bdf5ab73701c7df91de5960a87ac47c105",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/promotionGenesis.ts": {
+    "sha256": "7df694616b0ea9230fdde15ca5fa7a1df6e322ca03c56c386a2153416a648ea7",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/historyCheckpoint.ts": {
+    "sha256": "6e75160c2f4f01a867f432822042ad0da9d71b942f707e636e900f6ff20088a0",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/historyInstall.ts": {
+    "sha256": "e43091dee57c97f9f40f2d161b9275eedbbf508ec4835ee8c1c4a1a61189ac01",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/inboundLedger.ts": {
+    "sha256": "d7aa02ef2c7975b4ca5111561879218fa6205bc5c14644d2b7a75ae30df23de0",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineReplay.ts": {
+    "sha256": "d23dccbe0209999830ae188b6f674056256a10081da65ce89fa10c8b6c2ce90f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionPreparationBinding.ts": {
+    "sha256": "13593b2253e92b2fe3812729dbbe70841b925c93f7cbfc37bc623c4bd647f786",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountEnvelopePreparation.ts": {
+    "sha256": "6c902857fe885510c8caa727bc54f076211a335e9322bd44e06a35c37567147e",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineShadow.ts": {
+    "sha256": "ac75aeb50b1c7e1877ea36e09bb029079b645d095174de3e451c06d736a67729",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localRetentionPlan.ts": {
+    "sha256": "110aab59ecd6a4b4e4c9a734ba3a2eb87f0f9fc108e28b17bab613eb9c044c4a",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionPreparationStorage.ts": {
+    "sha256": "e2f73dcd97e7dd51186dd5fc8aea319ae95ff30bf39958201f82f57d3e1f03fa",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/warmContent.ts": {
+    "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentRotation.ts": {
+    "sha256": "93392474b736d2f06e4c8455a37fc5f302df42b33cf6ae1ad2d1d5707fc27953",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentStore.ts": {
+    "sha256": "2f54719561c419b67236e90db1dba8fe8a034a9196bf8504b60fff5bcc608027",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/custody.ts": {
+    "sha256": "3a8cd0cad55499ef6eb8b0b2e2259214b557713755a447f89ac6cf059481d152",
+    "state": "unchanged actual source"
+  },
+  "src/account/historyMaintenance.ts": {
+    "sha256": "9ff10bef78498eb8175bc5a4aa239e118e0e38f0b1314e767b36054742623333",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineAnchor.ts": {
+    "sha256": "f5e33ae4892c76123db3187e7a903045e017e6ae2dbbb017bbea6101f95c7314",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineStorage.ts": {
+    "sha256": "2befdce0a55b627f3ffecabb01379c038def5b2b2241fa326df7279ba602ec43",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountLedgerMetrics.ts": {
+    "sha256": "2643afc21a77f521f428286861f5d9ca9c98038f0ca44084f8a4d32a54e1c2b8",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/storageCompatibility.ts": {
+    "sha256": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentRecord.ts": {
+    "sha256": "84124d97e9194560c242482bd161c92c0b83ba91d5b5b0e98ffda700a720be2d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/verificationOwnership.ts": {
+    "sha256": "2189144ef4ab0f5cbc1ff8605d763a121ba949f91ed13edaecfe14eaea9ee3e4",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentSelection.ts": {
+    "sha256": "4138c2425deb05bb50b745b53f79589b5a86cccc901e9050b259428d99c152f8",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/verifiedRecords.ts": {
+    "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6",
+    "state": "unchanged actual source"
+  },
+  "src/lib/zip.ts": {
+    "sha256": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+    "state": "unchanged actual source"
+  },
+  "src/editor/commands.ts": {
+    "sha256": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+    "state": "unchanged actual source"
+  },
+  "src/editor/keymap.ts": {
+    "sha256": "b43cc2222f0fde536d7ec2a4ed6d11815a9d48656e9352ddc02044b3edefa79e",
+    "state": "unchanged actual source"
+  },
+  "src/editor/admittedCommands.ts": {
+    "sha256": "22708f50093e0683c74c0fc68582824361251251c8cd96ae5be1527de5ab2423",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/ownedStartup.ts": {
+    "sha256": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localWorkerStore.ts": {
+    "sha256": "1ddcb5a30721a56ee64ebf00300b8f0491eab18e71531fe315bccf03c574d3c1",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localGenesis.ts": {
+    "sha256": "7548f4a9c0f6059c83fd33f4df462ab9d110d20e0e47640689b956fbe5f8e4d0",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/verificationMemo.ts": {
+    "sha256": "915c0dfac0b0b4fbcb7093a4be5292ba893d0675f7ba7ebada7a0f07eae02dc1",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/incrementalAccountLedger.ts": {
+    "sha256": "794d207fc9988cafa666556b1a84d0c44cf905b92473a5bf690d6cba7c92030d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountProgressCustody.ts": {
+    "sha256": "0267912fc89f8c686188b787c573bbc7252a6daf546228a62f101ad855d512f0",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retainedHistory.ts": {
+    "sha256": "aca36538cfe4865d45d29665556f81a9a02bfe49d439d3f960e5d5f5902e73ae",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/sourceCapture.ts": {
+    "sha256": "8da959ec924d1914acc9ecf0f5d2ff4cdb6e144af276a436e07bef1994ce17a9",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/generationKeys.ts": {
+    "sha256": "6d1de04e6a7140a9236c65df8e4ffe426bfb13a2094a5a5d85e290c144ab47e7",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/spoolRecord.ts": {
+    "sha256": "68392f54197c4f836bef3f430223c26bbc501717e48800b98ca0e6c810c89dc5",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountSyncState.ts": {
+    "sha256": "36c95d3b21fcf69cc1b8553e999d8543aeacb4e0b7da6b7257c909d3aa9f139c",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localRetentionStorage.ts": {
+    "sha256": "c31316b0686ee28ce6ad6dabd6e0a34a2a5583f80323fddcee44a3a66c9b78f9",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerActivity.ts": {
+    "sha256": "ff03e0a39ced9bc5ada6fdbd44237f64d08ea274db232186f51a4f0be1a5086e",
+    "state": "unchanged actual source"
+  },
+  "src/account/bootstrapHttp.ts": {
+    "sha256": "3a47dafbf878477a7b81c38dfc932206c4d242d1a20b5ea72200b766678cf9fa",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/acknowledgedReceive.ts": {
+    "sha256": "19566444ee9310b6e3e191a5b590f7d129df80ad3102229b11c1916bbcddcb86",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/automaticLocalRetention.ts": {
+    "sha256": "b65e5c9becce094497090d0d5e434bc3e92619dd54b69270f264cd37067ad29c",
+    "state": "unchanged actual source"
+  },
+  "src/account/automaticHistoryMaintenance.ts": {
+    "sha256": "a3cdeb041bc859597418b69df907c2352bc0377b55f8e0f4e752a8f688eef98a",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionReads.ts": {
+    "sha256": "1d2cc7b0ab991e836062dbb91d5d28911116be60330cd3182159bb9c1163df8f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountAuthority.ts": {
+    "sha256": "88923c875ea9f6ec38274e9ed85c53170dbb42eac905554879abd4ec5b5ce7a2",
+    "state": "unchanged actual source"
+  },
+  "src/account/accountIdentity.ts": {
+    "sha256": "7ff0faf9a4f260affef40beca3d01c264d7d694ad4580613391f882e0840ff13",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountTextPreparation.ts": {
+    "sha256": "cd1cf6580cbf08b29d1cbfb22136975f957cc6856a4bf59fec69734626834c44",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/batchWindow.ts": {
+    "sha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workspacePreparation.ts": {
+    "sha256": "e6cca82eb2b86a42e31e190a32b88b6c66ce9565e6058a33fbf203c72f3103f3",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/admissionQueue.ts": {
+    "sha256": "a2261f5020c84086b76b1c351264ac6337808b0860aa461f0f6f0aacea4467dc",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/receiveGroup.ts": {
+    "sha256": "95e6aa774513d5423849093aaab5bf08623ef1947d06403b494736578efb0485",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/receivePrefetch.ts": {
+    "sha256": "bb89aa9ae1ad800d52ad896279ad9a95d8fb02269702f18865dd0c461e4b0499",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/inboundBatch.ts": {
+    "sha256": "32becf116d8c1ace6ccc917024f677fd507a1fd315b43024092b717befe388df",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/receivePageTransport.ts": {
+    "sha256": "0220310d33c18dfa6f17000d0f9d74054739802a2f22c50eaaf479c81770362d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountReceiveDriver.ts": {
+    "sha256": "122943e31783821655bfaf99008d22a94f26304e55381cace85871a309198efd",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/receiveSelection.ts": {
+    "sha256": "9c9850467782e9f88df09af447d3855079c663edba3a31c6037c598261380828",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountLedgerMode.ts": {
+    "sha256": "9a133d21490e8ac8cc05243baddc172a93cf7da9fdded9750f097ab6bc6b7a30",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountBatchPolicy.ts": {
+    "sha256": "32e7a6b7ca0ae995126a329086a36a86e61df3e920768a3f0ba4a63f4259f8ca",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/historyReceiveFence.ts": {
+    "sha256": "0c0607a4ddec58222484fbce0c60119be36f3362cfb59db76d6728067e560a14",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/removalDiscovery.ts": {
+    "sha256": "73dd369562b6273d2d433a70a68ae25b11bbdcbbd62998b6bef58ddae3091e65",
+    "state": "unchanged actual source"
+  },
+  "src/account/privateDiscoveryHttp.ts": {
+    "sha256": "a707816a44d8af8c6cc9cfd3783c548d3c063070e6f2d3755e9f3eb32bdccd95",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountDelivery.ts": {
+    "sha256": "638d9d134846692d46390e7512dd8124eed91a4f6baf64dfa73f8563bf70c521",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountSyncDriver.ts": {
+    "sha256": "b54682c7edc958ed03341297bfdea90eaaa92379b5eca3fc72d2359e794f9958",
+    "state": "unchanged actual source"
+  },
+  "src/account/notifications.ts": {
+    "sha256": "8ffca11c8942577821c6dbd08bd42cba1d3933ec99b9e60b6ee67fff2b70ed0c",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/preparationJournalObservation.ts": {
+    "sha256": "564ebf83fb5066ae538a5c66007f33d5443a838dcbd7ff1a1ab1ef5b7afa7c80",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/finalApplyGate.ts": {
+    "sha256": "ff15e6d9b0011dd1921a11e9655d620a00b645fc826aa1844674a512b1c1937d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountStartup.ts": {
+    "sha256": "b22e0c89b9fff4c206d3d0a8a712c842d011f7f6aa6a52f375d9dde16cc1e913",
+    "state": "unchanged actual source"
+  },
+  "src/lib/marks.ts": {
+    "sha256": "2f0f6ddc945a78cbf49048058de529097ff225ce275a7ba8740082f6b0f24484",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/admission.ts": {
+    "sha256": "9cdedad44a27e60e0a0e9321f8a88da2a1b3c2e98cbf1d9564008ae5e5508f3f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/actors.ts": {
+    "sha256": "d06a8f9b6ddb72b6ce7e117733286479906a1e770e1ce299cde7415d5d082e98",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/doc.ts": {
+    "sha256": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/archiveProjection.ts": {
+    "sha256": "7bf20a357eac8ae4b8b9479ef130da04d452478e508694411c67059cac435040",
+    "state": "unchanged actual source"
+  },
+  "src/editor/masterLineSelection.ts": {
+    "sha256": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+    "state": "unchanged actual source"
+  },
+  "src/lib/masterLineBody.ts": {
+    "sha256": "8cf1987dcda4154e988159e9a15315675b5b7088806a421f09dbc06fa6f4d82c",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/freeze.ts": {
+    "sha256": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/moves.ts": {
+    "sha256": "c923e9ff55163a2c56f64cfe5dba3dda99be3ab986f7bf84818835672369de83",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workspaceCommands.ts": {
+    "sha256": "eb8ac9ec6563a8b82956543e2b2786725ba15c838cf1c4a669ed6976570a0baa",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/admittedWorkspace.ts": {
+    "sha256": "8c7e4e28a7a1c33d22930beccc4377c9b163c1482e0f785ee31362dce77d07e5",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountUploadActivation.ts": {
+    "sha256": "8e40635b78c7488ac885f336d6afd069e10c905081ef003586c0a310731c5d83",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountCapture.ts": {
+    "sha256": "88f35d41937457f3e36512d9dbee69be90deec73ed49fd4e621ddcd79f3ca163",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountTextMode.ts": {
+    "sha256": "016ccbc236bd44f938ad1032eb547f3e59f1f2c24c2978f5a4a14c99b2ab8c8e",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkspacePort.ts": {
+    "sha256": "0c1fb64f0358321163cf3bd60eecfb2e996a220bcb964a77ba5057e489906d62",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountReceive.ts": {
+    "sha256": "e8199735171d39631786eecc15b3320c424612ca6bf4efae0d8c02b0c3965fe1",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerConfiguration.ts": {
+    "sha256": "b31e366248739f909e9ab596b00f8b82969432f38467f2cd162716a0c9f8c705",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerTerminal.ts": {
+    "sha256": "d0f34664aa64ec211a25b9d699b057b7e95cc1b872c0882525f3b8373b8630fc",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerPasskeyBridge.ts": {
+    "sha256": "f492f1ed881db2f31d3418b52ababd9733e511b428a997c90f7a14b5f56580aa",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountSessionBridge.ts": {
+    "sha256": "c057b11c014a5e4ede6cada63dbb991e7bc963ddd5690761d09a50facee40af0",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkerCohort.ts": {
+    "sha256": "7f39e8482eaf5af7a90e04bf76452a8775d8151c75abbe6df291053b59e8ee17",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountMirrorMaterial.ts": {
+    "sha256": "5749ec153a11780e2687be06c57806b2dc7491d49d5ed1cb119a2978ade26ac0",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/windowAccountMirror.ts": {
+    "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerFrameStream.ts": {
+    "sha256": "c22fad4ad96e0dc90b70d5e952b039ab98babb6dd6f53279524ee550a0936941",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerWorkspaceQueues.ts": {
+    "sha256": "ed5713f4d2a9538d57af03d2081fa71329e6a01369e80cf78d312c281ec74761",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/windowWorkspaceQueues.ts": {
+    "sha256": "f5250ac61f6a844342238ff6c713e996868cdaed014fa8bae5770059eade3ae3",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workspaceBridge.ts": {
+    "sha256": "f7bd65ea88a17abf246b5918e0dacbeb0a1cc6d98a1c7501a992b2e04a0570fd",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerLocalBaseline.ts": {
+    "sha256": "541f077221f1f52bfccaffdebe9e0e10a69bc601038d652e21547cb1c88fbdec",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/windowJournalBridge.ts": {
+    "sha256": "58def28ff1d0951c7fe1065aa7c90d2a7d10d6a876134c133c5e95ad544c990d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkerRecoveryStream.ts": {
+    "sha256": "c656302eb69b2a043b5cd45fb4de87ba7f4d85347e518f5296a93f07220d2051",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkerClient.ts": {
+    "sha256": "f999dbacf3bacd13d230de383e021aeee54cb22183c3a4cab48bf310791b1885",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localWorkerClient.ts": {
+    "sha256": "f1a6006fdb0e4f01cb2ec312330bb700228b1602382b6d2349857cb7c7ca83ba",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/windowLocalMirror.ts": {
+    "sha256": "503eaeb535f3f74d2052a663c3ebe10be4fc154fbbcd14d64a87a6deb1734a70",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineReuse.ts": {
+    "sha256": "96ab0557a54235a8279a5d08658f33d0218aad67b459047c05432398af185707",
+    "state": "unchanged actual source"
+  },
+  "src/account/accountTransitionNotice.ts": {
+    "sha256": "3d1ac3303f8dbb5c2ec56f74c361d417ad18b5f2e696bfa950f0511c5fa8a696",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/creationSeed.ts": {
+    "sha256": "62792dfb14ee167b0009440dd09da2ca38f652bcb3a43565c0362806522b3fd9",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/historyExchange.ts": {
+    "sha256": "09f01805cf2a4295722c0af754d74f1f932106d69158aac0f292fcce889afbe3",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/custodyRecord.ts": {
+    "sha256": "9ee9599ca7375d47c020dace263ddc0c7a160cd56c5c50f5961d6fc248424a95",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/journalCodec.ts": {
+    "sha256": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/submission.ts": {
+    "sha256": "c87f6e0b24104382bb14aa9629fb25db50b10d0c2b3038008ed5b6ad64453846",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/deliveryTransport.ts": {
+    "sha256": "408cdbf44daf186131108849308e6e1886bd143b92531fa375c6e0b63c81141b",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/inboundTransport.ts": {
+    "sha256": "60e67b703bd788444b574e739ee115b5428b7e96c5b0f8a9dc9c3dded8ed2969",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/journalEra.ts": {
+    "sha256": "269d5e0c5cdb1b4db731d08e300b7c6948d921547d1517eae0873dc5d88ebe18",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localBaselineRecord.ts": {
+    "sha256": "35786d675814d02aab35cba0b9570f957e761cde5e5f7bfaf3067c0bf3a37c1e",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/selectionSnapshots.ts": {
+    "sha256": "e47b12b2797ac1df4f5c7bc06395a64d6ad09729b35ebadac57b97dbcebc9042",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/yjs.ts": {
+    "sha256": "be4bb25ed3e7a6d34ca92c4499e25b47941f84b24136ed848d8c5978e8abc88d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentDatabase.ts": {
+    "sha256": "d42d487e9b232af4fa980506123f825e5478fbaf3a8c388ebae16823b2da272d",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentCompaction.ts": {
+    "sha256": "f0ea9f847c4b64b12d3af4b2594cb8eab1d18eba2d3a931a781a2310a959ed9b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerNativeLifetime.ts": {
+    "sha256": "019dc6da460ef4f45d0dfa8cb1b037f21ae3522e2291c7e9f9fddf63cfda5c71",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerAccountComposition.ts": {
+    "sha256": "60d1c45758eaec575ebc58871d74cddfa2fedc8150b516a16c452f494d4123ef",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkerReceive.ts": {
+    "sha256": "5e9756906e5efd218b4ca089f9d4334645e3a5bd1e12b58335b714fab012af29",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountMirrorRecovery.ts": {
+    "sha256": "88dcdf46405756e69836a9597a53cb8ef264b5265707acafeb6c53c339d01055",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountOwner.worker.ts": {
+    "sha256": "f8cb5bcbee9823d44996313eef7a79ab4ade4cacc7ab799b1fe761905f114da2",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/checkpointTimeline.ts": {
+    "sha256": "ede51565b6127685197777038fcfc9d2eee818c75eada8ecedaa422af40f4101",
+    "state": "unchanged actual source"
+  },
+  "src/lib/enrollmentProgress.ts": {
+    "sha256": "036765f8b91576714df6c4f3c4e0ee8dab4e22b25775b31d6cccb675597c3bd3",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/historySource.ts": {
+    "sha256": "c701b4714adf48eb2013d349274a8b1cccc2470e650ae7cee910fcdcb572b8cb",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/membershipSource.ts": {
+    "sha256": "9341811cef65e87c01b8d4a45501235e3ffe4d85ea66202a4d296422360e84b8",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/historyCustody.ts": {
+    "sha256": "9f124d433659252fdb1402a895a2395ed61f94aacf0132307bfbb0473493aba2",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/historyOwner.ts": {
+    "sha256": "feeec25034261fb2cf7f14575f4710575083ed47f3abc0080589e12a629e744c",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/rotationObservation.ts": {
+    "sha256": "014e8d654f34dcf93c30458a2b13209ba2eb9d17009dd42f2b759539f6e2ff53",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/slot.ts": {
+    "sha256": "88357c10b904b7ef41806c628d8df23d30b5d13e33cbe2b22e1534eaf6e04054",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/contentCheckpoint.ts": {
+    "sha256": "b296563ec69f34adc6065065dc8394484ccf3eaee98dd74120cb6e963652e460",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/replacementCheckpoint.ts": {
+    "sha256": "01774c323da9eee9d83cfff0b7ef83bcab76cb7e3bde4eb6753eb1e152e2e17c",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/recoveryCommit.ts": {
+    "sha256": "d1d1be5064ef630ad5c3e63b36a1a381cfe22070a4140d1ca1b0628faa88ff09",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/historySources.ts": {
+    "sha256": "4796129211591f7aa03afd5509b48073243b70de648743ba36388d4cb4d81bba",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/historyCheckpoint.ts": {
+    "sha256": "3faeddc6131064a109d613d49f629b5471e08cc46a9dbafd3765a5b01ee98cf3",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/rotationCapture.ts": {
+    "sha256": "0d69b89faade83d8a24fe00c5efd2bd7124f499bb74403932dd2a6a5ec9995e6",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountRotation.ts": {
+    "sha256": "214d84cbca37a63cbfbe66bc2b78d47e17d9a55b9434966fa93ec2e9c41b5628",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/custodyCrypto.ts": {
+    "sha256": "64863f2836e51a9e5b7a46d19efb1e847a404ddb4cd1d3afd8f6242ec8834212",
+    "state": "unchanged actual source"
+  },
+  "src/account/privateAccess.ts": {
+    "sha256": "1ddd65636ca4ec93f1eace398967228c9ba27f17b1d0830cebf5819291826e00",
+    "state": "unchanged actual source"
+  },
+  "src/account/accountHttp.ts": {
+    "sha256": "e0252dbdd86d0929da8558d77091057216237a3cb2238827a39d2468bb449b13",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/diagnostics.ts": {
+    "sha256": "f93658a96adad49a0f8dd4cc7ad64ffef2712f3c4f1bbaeb0c1ee2029e8cab15",
+    "state": "unchanged actual source"
+  },
+  "src/account/privateDeliveryHttp.ts": {
+    "sha256": "a9d3e25464123357a3af42d8ca552ba78eab50ffedbf4b34278a850c405d9e21",
+    "state": "unchanged actual source"
+  },
+  "src/account/historyHttp.ts": {
+    "sha256": "db4511ce5bc9a1fc4baf6706d40727ac58baba1f7e57cafe9fa9ae8c9f0cd358",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/recovery.ts": {
+    "sha256": "671acdb07184eb89963a2becae47ea8d44131de5a797e5a0e409a4684b91a3ae",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/authority.ts": {
+    "sha256": "2520519072ab0765ef8cc3ea82393fd1f03c8c3a8605736d52597a833d10e011",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/preparation.ts": {
+    "sha256": "a85f78c4df1480ed9efddd98db40fb110dfd041c76a637a5718b393f988d9859",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/proofWork.ts": {
+    "sha256": "b43f56c8ffe0927c8018b7d94435192f7098d96746f927134c704e94512644be",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/activation.ts": {
+    "sha256": "9f6472cb099f361cded0f3a9a9ac34d274491e82d7f3ebe2d9644a322ca8ef55",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/genesis.ts": {
+    "sha256": "6f57534b3e3c8b7257f9768a62938939c6630e6fbf46cb4ae31a87131faf0ff8",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/admission.ts": {
+    "sha256": "164cfb760acfe267b763027a2815192ffa25fd73be70be6f217df3f36a60b0cf",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/recoveryBootstrap.ts": {
+    "sha256": "4575372caf0e70ede5c5a3f93575fe5b7aefe7cd728de6f0a1a92d54443ca16a",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/session.ts": {
+    "sha256": "dec966a7116a614abab3f856af5d751b2a0e70c8117a3658aa4c9f6a8f04fe47",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/enrollment.ts": {
+    "sha256": "bdc9e083eecc61cdb6407fb7059d7c0e6e507392228f464cce1c48494fafb5fc",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/successor.ts": {
+    "sha256": "27d051db0ea7e5228be7d8b65becd0d0e6e4a6d19dbe51659f55804ed73af09d",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/ceremony.ts": {
+    "sha256": "4a90a2bd5575dd0643ac2d023e1cc50ad2c0bd165c8c4fcb5a54d581cca0ece4",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/ceremonyExchange.ts": {
+    "sha256": "e6f4a5530b90c6f4d74e77d1af21e7c5ce2dce97c992a4b7e3ba67d94fc8ee4f",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/ceremonyRelay.ts": {
+    "sha256": "692db34b35fbfaf18bfd0b20f0d969e2ab2ef6fa36e76377a0b269341713b7bf",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/contentDelivery.ts": {
+    "sha256": "76e73c5bdcae464b7e265be86eac00d546d4c5400ba4a3d04e6ae37b3ab81946",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/replacementAcknowledgement.ts": {
+    "sha256": "ff4dba2ef2277fa8a5e05578ae417c3fc458b57ea51d87f0a458757a1073b056",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/membershipDelivery.ts": {
+    "sha256": "b8a57312afbc3dd7487fa70687539f272cd093e3742c74fef1086aa47fda82f1",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/membership.ts": {
+    "sha256": "ffc585af6e2b14f76dbf4c213cdf59c67518ef7d5a50e0d8a79013a3c9942f4e",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/rotation.ts": {
+    "sha256": "1e44d8339c13fbf2c0bd2c729b68772c3bfe57f349045d246c37c92e5921dc4e",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/historySourceRefs.ts": {
+    "sha256": "2623c81f510907746e46a80f9fb5bb0d4a8dcf539fa1854986ee9fd0869feff8",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/recoveryTransition.ts": {
+    "sha256": "c12ed4504a9ef6d1354764b0832ab9a9433559bc7e949b4ed480c8234db6eae8",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/positionDecision.ts": {
+    "sha256": "112882b58d06a521cd2918ad073f74af652d3e125a4089f8daa23dc05a13df2c",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/envelope.ts": {
+    "sha256": "d03639083738d1841c1202f328900fc07e0807a499b8de2322e7b59eed1a14da",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/admissionHistory.ts": {
+    "sha256": "37d2961c41be794a834399a7b5878d5066f952930dcc0e69592a4f8e1bb15d19",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerChannel.ts": {
+    "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/nativeCoordination.ts": {
+    "sha256": "93d24b531a1305f07cc19daa352fccf76950e288753ed4cfdb583301eb291ea2",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkerJoin.ts": {
+    "sha256": "636b945430b693f0c2a4e6f201aef01c7ebca9f93de9556b3a567b1cf3a322ec",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountWorkerRuntime.ts": {
+    "sha256": "322c12b020d09bb6ceec9d6740b3083ddb12cbda2aa16bf05ad04c044c4a1b20",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/runtimePorts.ts": {
+    "sha256": "7b30f1bcec7d7fd82490c29fd2b35aa6721ab3f3220efd51f7793b6e812f5137",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localWorkerLifetime.ts": {
+    "sha256": "2c81065d34c7e231c10e623b3990a60c36c8e070612df32f3920c6b0bae36bd8",
+    "state": "REJECTED candidate"
+  },
+  "src/crdt/workerRecoveryOwner.ts": {
+    "sha256": "a688267b8c5009b88ac13755c64ab4b5e6faadf8d8b0839795481f4d9719636f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/localOwner.worker.ts": {
+    "sha256": "eaff5c3f3fffdf45acbca3a6a0260a3305354fba9e56ca55ad8b4ffdc6e7dd0d",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/membershipLocator.ts": {
+    "sha256": "6b5363c297a27f48f50cf5ba34016ff416b7769c1bd16e7782c2b1809baad70e",
+    "state": "unchanged actual source"
+  },
+  "src/account/generationWrap.ts": {
+    "sha256": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+    "state": "unchanged actual source"
+  },
+  "src/account/deviceRemoval.ts": {
+    "sha256": "c6f157096156c3bba8b7b296dba6cd6a847c9cfeaf2cb605b336932c8f77db4a",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/scopedGrant.ts": {
+    "sha256": "b00614a10cf776998a0a09173e3cfcf2b8757a1df3c384025701e97a990540d6",
+    "state": "unchanged actual source"
+  },
+  "src/account/scopedTransport.ts": {
+    "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7",
+    "state": "unchanged actual source"
+  },
+  "src/account/deviceRemovalHttp.ts": {
+    "sha256": "e7e21be9d16ec9ef26feaebb8d820c7aef5f0fcf2d2d93932ce615fbff7948c4",
+    "state": "unchanged actual source"
+  },
+  "src/account/deviceRemovalVault.ts": {
+    "sha256": "bb20e65c5cdeac878c49f7b76aeedd8519972575f0d017b00a16625b69bd7cae",
+    "state": "unchanged actual source"
+  },
+  "src/account/passkeyResponse.ts": {
+    "sha256": "8c6ec847e20869d48b3f4cf4ed3450464aae8ade5c8a5449901ee5f27a9b6666",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/sessionUnlock.ts": {
+    "sha256": "40750ede5f8cb1cae7ee60cf1720164b83dc0bca125b4809157d49a7a37965e3",
+    "state": "unchanged actual source"
+  },
+  "src/account/es256Signature.ts": {
+    "sha256": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+    "state": "unchanged actual source"
+  },
+  "src/account/slotUnlock.ts": {
+    "sha256": "501e7da1c7c3a3bc2d2b1c7f91589d35a4d3f66fd03ee6ee4e6cbedde78cd1a6",
+    "state": "unchanged actual source"
+  },
+  "src/account/recoveryOpening.ts": {
+    "sha256": "575fffe0f430a34e6373a4fc22bd857357f31c2371af89730b417d5a00164388",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/accountAccess.ts": {
+    "sha256": "233580b27edbc23062ef40b1102b92ab815466ce22eaa3e9e535b6ee2d4b21f6",
+    "state": "unchanged actual source"
+  },
+  "src/account/sessionVault.ts": {
+    "sha256": "b3dd572235b741fd1c32e707fb28163cc810bda1a7d6a800eece97d66bd3ee55",
+    "state": "unchanged actual source"
+  },
+  "src/account/networkLogin.ts": {
+    "sha256": "7d92ea3af6f9ac28f4e389a6f8b37419fdb33cf2225cc4d76f9afdf4fe2aa0aa",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/handoffHistory.ts": {
+    "sha256": "38463b7bb47a0f80acab045f641cdc3d7a38e5c022fa3b4517d59a0787104f7e",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/recoveryReading.ts": {
+    "sha256": "3b8ce124beec6c8c5089b4333a57446363a0db8d5056aff4c75b00864f91e3cb",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/membershipCheckpoint.ts": {
+    "sha256": "8904ba9035a8c92b5b5deee16b6a0d1413b530cff49fe337284f2a22328a7a0b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/contentCheckpoint.ts": {
+    "sha256": "93257f1080d2016e162dd56d9ad97b9b6959562d5de68decb04791a42d26ef68",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/replacementCheckpoint.ts": {
+    "sha256": "962c67f664083cf737c988248bf7b7a8efe7a71d83e7fdb30f0ff998245f735f",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/membershipReading.ts": {
+    "sha256": "fa823c6f7575a985def64b2dc69ac6daf7a8cb7a6f6df658bd609487fd50fc6b",
+    "state": "unchanged actual source"
+  },
+  "src/account/promotionOpening.ts": {
+    "sha256": "1c24327e68aca839c8c37dc56ffae92a248a83ed9c2d1c7ae87298d8b8ad87f7",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/promotionHandoff.ts": {
+    "sha256": "8cf48f1ff96a76724b00a54fbfb25bcfbf93490dda5e3d78a340dd00192fb2e8",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/joinedAccount.ts": {
+    "sha256": "7cbd69d3cda075a1411cb8b3d5a3c36d1c67276f23b0009e9f3c39864b2f0671",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionCheckpoint.ts": {
+    "sha256": "69cbfee6a163711d29103ab35ba6a20c0dd824aec58e15a7c82d8c72821f0b9b",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/serialize.ts": {
+    "sha256": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/export.ts": {
+    "sha256": "aa308b8336473367cf9c2cab9f98a9814832d6db82a201e06225e044806e96da",
+    "state": "unchanged actual source"
+  },
+  "src/account/approvalProgress.ts": {
+    "sha256": "13a7fa5aae8cf20b87c7ec7de1900acd387accb61bd0e9ee9a1da38cbca04768",
+    "state": "unchanged actual source"
+  },
+  "src/account/membershipInvitation.ts": {
+    "sha256": "0a294465151319f5246dbd975383cb4c92d98b45835323d8a1d2c4c2d12ebd90",
+    "state": "unchanged actual source"
+  },
+  "account-protocol/replacementTransfer.ts": {
+    "sha256": "ab7e4f921445d06d58a3c6f37157bb6178bad838156c308535167b757b226a63",
+    "state": "unchanged actual source"
+  },
+  "src/account/membershipConnection.ts": {
+    "sha256": "fd9d3be97da9ee543946dda37c28937a87a97b9f5c50dc085d2404dda2b680a1",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/retentionAttempts.ts": {
+    "sha256": "c352a74892570b8a95f350822c4384775431f4c01675eaa025e1d3cd3d925793",
+    "state": "unchanged actual source"
+  },
+  "src/lib/id.ts": {
+    "sha256": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+    "state": "unchanged actual source"
+  },
+  "src/lib/date.ts": {
+    "sha256": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+    "state": "unchanged actual source"
+  },
+  "src/crdt/workerContextQueue.ts": {
+    "sha256": "963c6cb301e568251444b1375f8f960475637351faf0394fdfc0da127000123a",
+    "state": "unchanged actual source"
+  }
+}

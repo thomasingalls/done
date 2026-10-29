@@ -6080,3 +6080,12 @@ Native Worker owns custody/content; Window owns only journal subkeys, original s
 and human Undo. Local/Account mirror factories require distinct genuine owner kinds; the encrypted
 read/compare-remove bridge alone is shared. Preserve original Page shared-writer CRDT union.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase193/README.md).
+
+
+## 2026-10-29 — reject the Local pending-lock maintenance barrier
+
+Controlled tests passed, actual Chrome left a later shared writer queued after cancellation; effect-free
+request/release wakes failed, while Firefox resumed the same direct probe. Preserve failed controls and
+restore193 source/tests/metadata exactly. Keep heavy validation/preparation Worker-owned; investigate a
+small Window final commit that preserves the synchronous fresh journal check. No security gate relaxed.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase194/README.md).
