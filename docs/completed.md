@@ -17299,3 +17299,20 @@ labels/statuses/contracts retained. Add the required new test without aggregate 
 blocked; every prior manifest row is identical. No old tests/harnesses, formats, switches or16ms/2.5s/
 30s gates change. Append this outcome before advancing owned backlog status. Freeze patch164 after
 immutable161–163; real index stays empty. No signing, push, preview update, release prep or deployment.
+
+
+## 2026-10-28 — Phase165: native Window/worker cohort with stale-incarnation refusal
+
+Add a coordination-only internal cohort; existing417 runtime sources stay exact and default Account/
+joined factories stay exclusive. A Window reservation/unique anchor/legacy-name barrier and endpoint
+join one nonqueued native worker member. Replayed tickets, same-Window stale incarnations, mixed
+older exclusive ordering and orphaned workers are fenced. Withdraw joins before close; retain native
+exclusion through drain/cleanup and refuse failed physical release. [Evidence](performance-experiments/2026-10-28-worker-owner/phase165/README.md).
+
+14new plus21existing focused unit cases,20native cases across Chromium/Firefox and98metadata cases
+pass; two missing-anchor mutation controls fail at the intended stale-ticket assertion. Preserve
+the original native release-census race, two new fixture type errors and missing-family inventory
+refusal. Replace the racy census with a native barrier whose5s deadline fails closed. No crypto key,
+admission, format or existing-test changes. Both new tests remain uncredited:938/392 blocked; all
+prior rows and gates retained. Freeze165 before the Window mirror slice, keeping real index empty.
+No signing, push, preview change, activation, release preparation or deployment.

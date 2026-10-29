@@ -5938,3 +5938,13 @@ target. Do not capture journal contents/storage availability or cache lock autho
 remaining owner bodies, original native mutation controls, authority/cache resume checks and ordinary
 bookkeeping. Future worker integration must implement the mixed-owner cohort/refusal and admitted
 Window mirror contract separately; this refactor alone earns no latency or qualification credit.
+
+
+## 2026-10-28 — Prove worker release through a native barrier, not its message
+
+The mixed-owner cohort needs distinct supervisor, incarnation and single-member leases while
+retaining the existing slot lock domain. A completed worker message is not a native release proof:
+the initial Chromium control catches separate-channel ordering. After withdrawing new joins and
+draining, cross the actual member-release barrier before releasing the Window endpoint. A5s refusal
+deadline keeps the slot fence held on failure. Preserve the ordinary exclusive Account factories;
+the coordination primitive alone grants no decryption/admission authority or activation permission.

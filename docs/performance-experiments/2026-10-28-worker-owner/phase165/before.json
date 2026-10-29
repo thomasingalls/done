@@ -1,0 +1,18 @@
+{
+  "baseCommit": "8d6d42c1c723f3dff7c7822b2358a813dc8c16e6",
+  "afterPhase": 164,
+  "files": {
+    "docs/account-crypto/census.json": "767f8adeca5cc1a8bbbaff73dbe2a331558d77a954031d42499697d27a6d598d",
+    "docs/account-crypto/constructions.json": "6bebb301c100e19c9937086c8168093eb45002ba4af6fff7d3448cc76571115a",
+    "docs/completed.md": "e914f9f61a6423f795d5c6deffced08f575d9b14d9e9fd38884c29f12d284435",
+    "docs/decisions.md": "9d9a9ee16217cfbc7c977bbe669728d6c85a007dcf4793688705230cb1842d09",
+    "docs/product-backlog.md": "56d5614e9271f62b74c6086dbad4cdfea977cbcf1a049120bdd179d5148e3373",
+    "docs/release-validation-graph.json": "84981f73b9597cac2e77c9c0ffec71e859c51c5ed882fc5fa210d382dcb9ac1e",
+    "docs/release-validation-manifest.json": "be51c52cbc350830f06f9ee5c83fcbe6d9b252f5b570e966deb883da22938536",
+    "src/crdt/accountCapture.ts": "74e7a38c6879d8be0608619b52ac9387e6b4a7ec44da812dd738cdc876fcdf86",
+    "src/crdt/journalStore.ts": "aab6c35b5a70b1b2eb87392898977df74d84c74d3855f7faf58a1264e0dc4943",
+    "src/crdt/writeSession.ts": "f7699f641d0ebef246fb455a4e1b967ed5428f77bca7328d93d836f2ccc67574",
+    "src/crdt/runtimePorts.ts": "8ce2aa158708f31c0d4bb29555f512d30fc26dca2dd1b511fd296aec3e4d418d",
+    "test/runtimePorts.test.ts": "93fb4816c5c7574b018fa6d6f9eba908a892aee18b702894a956f47f50ada3d3"
+  }
+}

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 573,
-    "requiredTestFiles": 567,
+    "testFiles": 575,
+    "requiredTestFiles": 569,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9451,6 +9451,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-worker-cohort/cohort.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.account-worker-cohort.config.ts",
+        "packages": []
+      },
+      "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/accountAuthority.test.ts",
       "status": "required",
       "invocation": {
@@ -9739,6 +9750,21 @@
         ]
       },
       "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/accountWorkerCohort.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountWorkerCohort.test.ts"
+        ]
+      },
+      "declarations": 14,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15877,6 +15903,10 @@
       "sha256": "f638f6123dc27423cce81ef46732d5f5695dc3fad151edfe08d6516acfd99327"
     },
     {
+      "path": "playwright.account-worker-cohort.config.ts",
+      "sha256": "a830406dd935f13876f254560be8bf2a6e1bc7a29cc32e557d8b2bf07eee3637"
+    },
+    {
       "path": "playwright.app-upgrades.config.ts",
       "sha256": "3c4b223e1f0dc9deaf8fece9e0ecc061a8b1bf5fb31364066e1aa4e326ecdcac"
     },
@@ -16974,7 +17004,7 @@
     },
     {
       "path": "scripts/release-validation/policy.json",
-      "sha256": "60fc2b3da18ee4f7ffdff931d583f83f598368146f5075e825df430d4f6e1b47"
+      "sha256": "b7322c4d1858871b6bb828bcfa6c26dc915fe65df428940952f54e0dfd765369"
     },
     {
       "path": "scripts/release-validation/process-group.mjs",
@@ -18897,6 +18927,18 @@
       "sha256": "54ffd942e7094b81d05bf567feb0eb6ab2f2452637ca4d214145b09307ca2c76"
     },
     {
+      "path": "test/account-worker-cohort/cohort.spec.ts",
+      "sha256": "649de0d579480319f20afc52980880f23332694d6404a6ae89ab6320b5a3faea"
+    },
+    {
+      "path": "test/account-worker-cohort/member.ts",
+      "sha256": "124bd7c186250cbf66c81cb72ea29e382d0c3261aeefbd710cfc15c5a6cf1c73"
+    },
+    {
+      "path": "test/account-worker-cohort/page.ts",
+      "sha256": "365b1aca979b3900f7ea25ee241ffe0ece61c0d9f5c76836d459cb1c71f8d9a0"
+    },
+    {
       "path": "test/accountAuthority.test.ts",
       "sha256": "9f817c1b533d4d9706fdad070e44b7dbf61e1e2abd14a7eaa66f9b4f05f9d220"
     },
@@ -18963,6 +19005,10 @@
     {
       "path": "test/accountTransportContract.test.ts",
       "sha256": "242ad24fc155b97cb7f1cb1e114a7f4f3a01d716737595327c8edc60aa7b9c80"
+    },
+    {
+      "path": "test/accountWorkerCohort.test.ts",
+      "sha256": "345eac962157d06357072d77565176f7621ed8262b71a78ae2baa7b032d5fb84"
     },
     {
       "path": "test/admission/browser.mjs",

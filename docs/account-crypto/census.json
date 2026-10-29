@@ -832,6 +832,10 @@
       "sha256": "8e40635b78c7488ac885f336d6afd069e10c905081ef003586c0a310731c5d83"
     },
     {
+      "path": "src/crdt/accountWorkerCohort.ts",
+      "sha256": "5c6db9bd4b2613ceb9a561bcbfa59826e71f652c90be2a36801b360bff6b83ad"
+    },
+    {
       "path": "src/crdt/accountWorkspace.ts",
       "sha256": "2da217c57e55a9514c4fd64cf00bac661181fd9d32c7fe3f790b16eac670e339"
     },

@@ -1,0 +1,9 @@
+{
+  "src/crdt/accountWorkerCohort.ts": "5c6db9bd4b2613ceb9a561bcbfa59826e71f652c90be2a36801b360bff6b83ad",
+  "test/accountWorkerCohort.test.ts": "345eac962157d06357072d77565176f7621ed8262b71a78ae2baa7b032d5fb84",
+  "playwright.account-worker-cohort.config.ts": "a830406dd935f13876f254560be8bf2a6e1bc7a29cc32e557d8b2bf07eee3637",
+  "test/account-worker-cohort/index.html": "8a256c364813d2552239c25551f248ea3c2237b76f8a01eebabe35f1e56ce5a0",
+  "test/account-worker-cohort/page.ts": "365b1aca979b3900f7ea25ee241ffe0ece61c0d9f5c76836d459cb1c71f8d9a0",
+  "test/account-worker-cohort/member.ts": "124bd7c186250cbf66c81cb72ea29e382d0c3261aeefbd710cfc15c5a6cf1c73",
+  "test/account-worker-cohort/cohort.spec.ts": "649de0d579480319f20afc52980880f23332694d6404a6ae89ab6320b5a3faea"
+}

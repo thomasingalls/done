@@ -111,6 +111,12 @@ Worker/cohort execution and the admitted Window mirror are still ahead, with loc
 acknowledgment, compatibility and all input/peer gates preserved. No performance claim or release
 preparation; general qualification stays paused with the new required test uncredited.
 
+**Phase165 — mixed-owner native fencing:** the [internal cohort](performance-experiments/2026-10-28-worker-owner/phase165/README.md)
+passes20 Chromium/Firefox native cases and14 new unit cases. Unique incarnation and member leases
+reject delayed/replayed joins; actual barriers retain exclusion through drain. Existing Account
+factories remain exclusive and application execution stays on the page. The admitted Window mirror
+and verified worker composition are still the next slice; no latency or release claim.
+
 ## UX follow-ups and retained implementation context
 
 - **UX-01 — Left sidebar.** Rework its organization, hierarchy and interactions. Review everyday
