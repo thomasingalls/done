@@ -694,3 +694,6 @@ activation before measuring unchanged gates;182/187/205 remain open.
 
 
 **Phase216:** original returning setup runs in native Worker through actual canonical mirror. Next fresh creation/promotion and failed-opening retry, enrollment/recovery, offline/mixed/default activation, then unchanged targets. One independent Window slot-index lookup deliberately retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase216/README.md).
+
+
+**Phase217:** complete native fresh and returning/cancel-retry flows verified; keep original initializer. Next lifetime edge cases, enrollment/recovery, PWA/offline/default activation, then unchanged measurements. [Packet](performance-experiments/2026-10-28-worker-owner/phase217/README.md).

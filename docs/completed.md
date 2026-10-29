@@ -17886,3 +17886,8 @@ Before actual two-Window case fails; rebuilt same case and actual handoff pass.5
 ## 2026-10-29 — phase216 original native returning-account setup
 
 39 focused/99 metadata/type/lint/format/exact audit pass. Final Chrome3 returning/edit/cold, wrong-code retry and provider close pass; Firefox2 Local controls pass. Ten containers absent. False zero-IDB expectation and both failed native attempts retained with exact slot-index attribution. [Packet](performance-experiments/2026-10-28-worker-owner/phase216/README.md). DefaultPage; fresh creation and full conversion still pending.
+
+
+## 2026-10-29 — phase217 complete native fresh setup evidence
+
+Production485 bodies unchanged216. Actual fresh registration entry, cancelled-opening/fresh-Worker retry and full new-account approval/edit/original Page cold cases3 pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase217/README.md). Default activation and full conversion remain pending.

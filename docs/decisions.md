@@ -6242,3 +6242,8 @@ Track original setup commands in genuine Root.run, including asynchronous Start.
 ## 2026-10-29 — original setup coordinator owns native work across role handoff
 
 Use genuine tracked preparation plus same-realm fresh Account join and a separate User presentation/provider channel. Keep exact original native verification and actual Window canonical admission. Preserve the independent Window slot-index journal binding; zero Window database opens is not a security contract or performance gate. [Evidence](performance-experiments/2026-10-28-worker-owner/phase216/README.md).
+
+
+## 2026-10-29 — retain the original fresh setup initialization
+
+Actual native fresh creation and complete registration/recovery/approval/edit/cold flow pass unchanged. Do not introduce a parallel initializer on an unconfirmed hypothesis. Account entry is one-shot, so cancellation retry uses a fresh native owner after actual cleanup. [Evidence](performance-experiments/2026-10-28-worker-owner/phase217/README.md).
