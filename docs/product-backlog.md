@@ -673,3 +673,9 @@ handoff, retaining original final-owner boundary. [Packet](performance-experimen
 **Phase210 — minimal wizard workspace port:** Page behavior/native checks retained, async name reads
 and immediate shutdown supported. Next credential port/native coordinator/Account UI/offline/default
 activation before gates.182/187/205 remain open. [Packet](performance-experiments/2026-10-28-worker-owner/phase210/README.md).
+
+
+**Phase211 — credential effect port:** one provider lifetime, original verification and JSON/slot
+wire checks pass. Next idle ceremony reservation contention and native wizard wiring/offline/default
+activation before measuring unchanged gates;182/187/205 remain open.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase211/README.md).

@@ -6209,3 +6209,11 @@ Keep the real canonical editor in its existing owner. Setup needs lifecycle/stat
 read/rename, with fresh guards after asynchronous UI data. Cosmetic close labels use a synchronous hint
 so locking never waits for a remote UI read; authority remains entirely in original native owners.
 [Evidence](performance-experiments/2026-10-28-worker-owner/phase210/README.md).
+
+
+## 2026-10-29 — share provider lifetime across fixed credential kinds
+
+Use one monotone provider/cancel/late-erasure mechanism for slot assertions and setup JSON calls.
+Keep original signed-byte verification and codecs; scope real browser effects to origin/RP and preserve
+service user handles. Inactive calls remain asynchronous rejections.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase211/README.md).

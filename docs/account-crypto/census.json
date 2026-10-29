@@ -928,6 +928,10 @@
       "sha256": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535"
     },
     {
+      "path": "src/crdt/ceremonyBrowser.ts",
+      "sha256": "ca91bce2732d52844ac56efe24e6089bb761cad6abe8b394d8811f10dd67c329"
+    },
+    {
       "path": "src/crdt/ceremonyEnvironment.ts",
       "sha256": "b50862f7efb5d37f09909bf06c3232bd583a74afe9a3e2d778b6ed23ae2316ec"
     },
@@ -1264,6 +1268,10 @@
       "sha256": "93d24b531a1305f07cc19daa352fccf76950e288753ed4cfdb583301eb291ea2"
     },
     {
+      "path": "src/crdt/ownedCredentialPrompt.ts",
+      "sha256": "1b4e7c02d247b764209df45aeabbe913ad95b6b5ab0728f4e13eab27318f6f9f"
+    },
+    {
       "path": "src/crdt/ownedStartup.ts",
       "sha256": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db"
     },
@@ -1541,7 +1549,7 @@
     },
     {
       "path": "src/crdt/workerPasskeyBridge.ts",
-      "sha256": "f492f1ed881db2f31d3418b52ababd9733e511b428a997c90f7a14b5f56580aa"
+      "sha256": "39b70ecff5e463d832ca0ece195843bcedf1c5de44551ad234f076c65e2d044e"
     },
     {
       "path": "src/crdt/workerRecoveryOwner.ts",

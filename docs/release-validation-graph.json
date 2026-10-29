@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 631,
-    "requiredTestFiles": 625,
+    "testFiles": 632,
+    "requiredTestFiles": 626,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10157,6 +10157,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/ceremonyBrowser.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/ceremonyBrowser.test.ts"]
+      },
+      "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/ceremonyWorkerLifetime.test.ts",
       "status": "required",
       "invocation": {
@@ -19900,6 +19910,10 @@
     {
       "path": "test/cardGoalsContextSource.test.ts",
       "sha256": "b528c33d4c59a5891184e5417fb9f7fb04f74008cf0de68aa3c8a2419dd18a8a"
+    },
+    {
+      "path": "test/ceremonyBrowser.test.ts",
+      "sha256": "d5d89ff6f58d0dd018aaca465a39b659b3ac58e302f9bddaf2e18111a503e8bd"
     },
     {
       "path": "test/ceremonyWorkerLifetime.test.ts",
