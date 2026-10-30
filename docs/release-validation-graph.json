@@ -17040,7 +17040,7 @@
     },
     {
       "path": "scripts/smoke-public-container.mjs",
-      "sha256": "cb143aa95e31c2ccfdcec24dab3c1d384a0bca8ff284bcc8a4a7b870c83c5ab0"
+      "sha256": "b94da8d9350149d9cd8e5d0d0b85c274744d1999c8c8ad32ddf5750efcfd7198"
     },
     {
       "path": "scripts/storage-conformance/catalog.d.mts",
@@ -17084,7 +17084,7 @@
     },
     {
       "path": "scripts/test-runtime-image.mjs",
-      "sha256": "474e0473e2d9c01c52b789cc615e625e8f8f29a5bf137a91e5d283a2cbef93e8"
+      "sha256": "f60db946b86d248dd2ce576435b88bf21e157303cb534f1b3aebae780f9f6f34"
     },
     {
       "path": "scripts/upgrade-account-setup.mjs",
