@@ -1,5 +1,5 @@
 # The multi-platform index includes linux/arm64 for the initial ol-infra host.
-FROM node:24.18.0-bookworm-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d AS dependencies
+FROM node:24.22.1-bookworm-slim@sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c AS dependencies
 WORKDIR /app
 RUN apt-get update && apt-get install --no-install-recommends -y age=1.1.1-1+b3 ca-certificates && rm -rf /var/lib/apt/lists/*
 RUN npm install --global pnpm@11.20.0 --ignore-scripts --no-audit --no-fund
