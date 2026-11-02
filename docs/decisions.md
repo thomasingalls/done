@@ -6387,3 +6387,8 @@ Classify midnight diagnostic invalid: actual three-day freeze crossed during run
 ## 2026-10-30 — phase245: corrected diagnostic apparatus
 
 Correct only diagnostic civil timezone toUTCdate29, keeping real protocol clocks and same effective fixture age as valid matched cases. Add explicit editable guards, finally-safe capture and actual Worker clock brackets; keep every old assertion/deadline and failed midnight trajectory. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).
+
+
+## 2026-10-30 — phase246: late-marker attribution closed
+
+Choose cooperative yield at verified publisher boundaries as next bounded repair, preserving receive continuation/fairness and due-publication/backoff/local-flush policies. Trace also exposes repeated receiveStatus/native validation for later owner-bound proof reuse. Keep unmodified2.5s misses authoritative; diagnostic2070ms receives no promotion credit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).

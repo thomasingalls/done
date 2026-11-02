@@ -18031,3 +18031,8 @@ Phase243 diagnostic fails original30s final-delivery; both backlog checks comple
 ## 2026-10-30 — phase245: corrected diagnostic apparatus
 
 Prepared separate phase245 diagnostic with unchanged source/assets. Apparatus correction addsUTC civil calendar, pre-marker freeze/editing guards and failure-safe metadata capture; no gate outcome yet, no credit from this instrumented run. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).
+
+
+## 2026-10-30 — phase246: late-marker attribution closed
+
+Completed matched-first then marker attribution. Corrected diagnostic passes all original functional/archive/offline-cold guards,123 trusted inputs and zero trace overflow; sender starts265ms late, envelope/submission383/200ms, receiver hint→writer selection560ms. Midnight invalid trajectory and two analysis-assumption failures retained. No runtime/test edits, source0ab9cbc8 intact; exact lab resources absent. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).

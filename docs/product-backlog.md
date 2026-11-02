@@ -803,3 +803,8 @@ Phase244: original matched latency misses remain. Detailed attribution pending c
 ## 2026-10-30 — phase245: corrected diagnostic apparatus
 
 Phase245: finish late-marker attribution with corrected calendar/collector; original every-marker gate remains blocked. No product repair or release preparation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).
+
+
+## 2026-10-30 — phase246: late-marker attribution closed
+
+Phase246: next cooperative receive-sweep yield for due sending, with regression tests and original two-receiver2.5s gate; follow with repeated receiveStatus proof-reuse investigation. Matched current catch-up overhead3–4%, historical2x not reproduced. Aggregate acceptance remains blocked; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).
