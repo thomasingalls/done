@@ -1083,3 +1083,8 @@ Missing signed0abwithheld baseline nowpasses. Next matched248-onlywithheld, then
 ### 2026-10-30 — Worker catch-up phase301
 
 Next run pinned-browser cohort in fixed source order; do not pair across the old/new binary break. Preserve ordinary/deep/compatibility and release blocks. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase302
+
+Next fixed248-onlywithheld, then current291normal and fairness under301. Input miss, deep failures and v2compatibility remain open. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).

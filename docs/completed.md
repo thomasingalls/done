@@ -18311,3 +18311,8 @@ Phase300: signed0abwithheld passes all original gates/native/archive/offline-col
 ### 2026-10-30 — Worker catch-up phase301
 
 Phase301: browser preflight refused before timing; same digest restored after absent-image smoke failure, fresh smoke passes. Pinned382browser files/6symlinks and nine analyzer sensitivity controls checked. No runtime change or timing claim. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase302
+
+Phase302: native/archive/offline-cold pass, independent inputp9518.749ms fails16ms; peerp952269.683ms/allmarkers pass, backlog184.013s. Original and compressed raw evidence retained. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).

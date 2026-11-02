@@ -6667,3 +6667,8 @@ Retain individual tails while recording the passing missing signed0abwithheld ba
 ### 2026-10-30 — Worker catch-up phase301
 
 Preserve the original passing baseline across browser identity change; start a separately frozen matched cohort with an isolated pinned app bundle. Retain original fairness per-case analysis and explicit single-case coverage, never an empty aggregate. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase302
+
+Retain the pinned-browser S0input miss and old-browser pass separately; proceed only to the fixed matched yield cell. No causal attribution or favorable rerun. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).
