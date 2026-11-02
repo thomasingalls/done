@@ -18266,3 +18266,8 @@ Phase291: turn-aligned bulk width.2new cases red→green, one detected alignment
 ### 2026-10-30 — Worker catch-up phase292
 
 Phase292: final8comparison source/build/observer inputs frozen.398compiled bodies/125frontend assets,6observer contracts and isolated service smoke checked. No timed result yet. See [phase292](./performance-experiments/2026-10-29-worker-catchup/phase292/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase293
+
+Phase293: deep8failed30s at719/zero receive failures.236reads versus4range331, but4made747progress. Complete at/headersAt/extent trace retained, no429; downstream marker/Undo/cold guards not reached. No acceptance credit. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).

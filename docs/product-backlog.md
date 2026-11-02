@@ -1038,3 +1038,8 @@ Phase291 closes partial-turn alignment. Execute rebuilt291deep8at original30s/de
 ### 2026-10-30 — Worker catch-up phase292
 
 Execute frozen deep8cell next; record actual native progress/failure and traffic before Page64and remaining held gates. See [phase292](./performance-experiments/2026-10-29-worker-catchup/phase292/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase293
+
+Deep4and8both fail30s. Next real Page syncing joined deep at lab64, then fixture recipe/withheld/normal gates. Preserve native range fallback/fairness and stale-tab/rollback obligations; no release work. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).

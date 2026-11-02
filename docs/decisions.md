@@ -6622,3 +6622,8 @@ Finish the initial partial publisher turn before downloading8, so a full page is
 ### 2026-10-30 — Worker catch-up phase292
 
 Freeze both291client roles at production flags/default budgets for one original deep8cell, retaining30s/native assertions and at/headersAt observer. Do not rerun a failed cell into a favorable result or claim normal acceptance. See [phase292](./performance-experiments/2026-10-29-worker-catchup/phase292/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase293
+
+Do not adopt8on traffic reduction: deep8also fails30s. Follow the requested Page64diagnostic before attributing residual work to native verification, storage or Window coordination; all production limits and gates remain. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).
