@@ -968,3 +968,8 @@ Phase 277 closes item1 cold same-carrier reuse at the original native gates. Nex
 ## 2026-10-30 — phase278: deep traffic attribution protocol
 
 Phase 278: run original deep joined case with traffic timing/extent next. Then design multi-entry verifier and durable replay with byte/record limits and position-weighted fairness preserved. Page deep64 and recipe/withheld/normal gates follow; normal comparison held, no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).
+
+
+## 2026-10-30 — phase279: deep request trace outcome
+
+Phase279: deep request cadence/extent recorded. Next implement and test bounded multi-entry receive including durable receipt replay, safe large-entry fallback and four-position fairness; then actual deep/fairness checks. Page deep64 and reproducible fixture/withheld/normal gates follow. Normal comparison held, no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).

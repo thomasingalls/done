@@ -18196,3 +18196,8 @@ Both original native cold after-checks pass without diagnostic hooks or raised l
 ## 2026-10-30 — phase278: deep traffic attribution protocol
 
 Prepared exact-client deep traffic observer with at/headersAt, decoded after/limit for individual and batch requests, explicit bounds and six passing contracts. One-case discovery and actual container readiness/shutdown pass; original deep timing result pending. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).
+
+
+## 2026-10-30 — phase279: deep request trace outcome
+
+Original deep joined trace fails30s at451received/zero receive failures. Captured249HTTPrequests/589signed single-entry reads,10batch429s, at/headersAt and request extents with zero dropped/malformed. Both own containers/browsers absent; raw outcome and before failure retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).
