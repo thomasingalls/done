@@ -6442,3 +6442,8 @@ Use balanced native delivery crossover within one identical loaded journey,60Pla
 ## 2026-10-30 — phase256: keyboard crossover result
 
 Do not adopt CDP delivery as a latency fix: balanced crossover fails16ms and CDPprecreationp95 is2.41xPlaywright, not>=50%faster. Keep backend-subset timing diagnostic only; reorient to verified production flags/quiet-host baseline from supplied brief. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).
+
+
+## 2026-10-30 — phase257: baseline scope correction
+
+Correct baseline scope: released b6 warm loads are default-on,241/native237explicit0. Rebuild signed Page/Worker with exact release flags before new mechanisms; retain prior failures as conditional lab evidence. Outside work reported for25201/02and25304 is contamination, not measured causal attribution. Quiet host now coordinated. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).

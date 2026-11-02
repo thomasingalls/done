@@ -858,3 +858,8 @@ Phase255: measure delivery API versus other pre-event scheduling, then repair on
 ## 2026-10-30 — phase256: keyboard crossover result
 
 Phase256: stop delivery-API repair hypothesis. Verify/record production-flag mismatch and reported outside-load overlap, then correct Page/Worker baseline before further mechanism. All gates/failures unchanged; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).
+
+
+## 2026-10-30 — phase257: baseline scope correction
+
+Phase257: previous warm-off3–4%overhead and public/deep deadline failures do not establish production-default behavior. Rebaseline Page8d/Worker0ab with warm flag unset on coordinated quiet host; original gates/failures remain. Attribute before new repair; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).

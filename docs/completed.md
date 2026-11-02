@@ -18086,3 +18086,8 @@ Prepared/discovered1same-source native delivery crossover, deterministic paired 
 ## 2026-10-30 — phase256: keyboard crossover result
 
 255crossover completes full native/archive/offline guards; all120inputp9531.828ms fails16. Playwright60keyp9519.503 versusCDP43.923, no API-fix signal. Exact resources absent; source248unchanged. Host quiet confirmed after this run. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).
+
+
+## 2026-10-30 — phase257: baseline scope correction
+
+Verified released warm default using source, Dockerfile and compiled flag evidence; recorded reported host-work windows against runner epochs. Original results/failed deadlines retained. No product or old-test changes; corrected production-flag ABBA and public/deep cases are next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).
