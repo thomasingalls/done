@@ -6672,3 +6672,8 @@ Preserve the original passing baseline across browser identity change; start a s
 ### 2026-10-30 — Worker catch-up phase302
 
 Retain the pinned-browser S0input miss and old-browser pass separately; proceed only to the fixed matched yield cell. No causal attribution or favorable rerun. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase303
+
+The single exact matched yield pair supports248with its tails and original old-browser pass retained. Do not generalize its effect size or credit291range changes from this pair. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).

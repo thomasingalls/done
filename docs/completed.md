@@ -18316,3 +18316,8 @@ Phase301: browser preflight refused before timing; same digest restored after ab
 ### 2026-10-30 — Worker catch-up phase302
 
 Phase302: native/archive/offline-cold pass, independent inputp9518.749ms fails16ms; peerp952269.683ms/allmarkers pass, backlog184.013s. Original and compressed raw evidence retained. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase303
+
+Phase303: matched248withheld all gates/native/cold pass; inputp9512.728ms, peer2181.561ms, worstmarker1793.272ms, backlog143.973s versus302184.013s. Raw and one-pair descriptive analysis retained. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).
