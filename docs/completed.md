@@ -18206,3 +18206,8 @@ Original deep joined trace fails30s at451received/zero receive failures. Capture
 ## 2026-10-30 — phase280: multi-entry reader contract
 
 Recorded25-case independent real-crypto range red evidence:7fail/18pass at existing one-entry/codec boundaries. Archived the superseded aggregate sketch and exact indexed test bytes before product change; no old test/runtime edit or failing executable test added. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).
+
+
+## 2026-10-30 — phase281: diagnostic work-count protocol
+
+Prepared requested diagnostic work-count/live-publish artifact:396source bodies/125public assets, sole profile flag exception verified, four observer contracts/two-case discovery/container readiness and shutdown pass. No timed result or code change yet; normal comparison held. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).

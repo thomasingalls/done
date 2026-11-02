@@ -6562,3 +6562,8 @@ Use the complete bounded deep trace as the before observation: all589signed read
 ## 2026-10-30 — phase280: multi-entry reader contract
 
 Use reader-first indexed v2 receipts preserving original signed request/page and independently replayed per-position cuts, rather than an aggregate event crossing a cut. Keep byte-exact v1/API, all security and limits. Width2 later bounds evidence duplication; no live range writes before reader/regression/bookkeeping checks. Register new label as open, retaining all prior contracts. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).
+
+
+## 2026-10-30 — phase281: diagnostic work-count protocol
+
+Run one exact275 diagnostic build with only numeric profiling enabled, no acceptance credit. Report frozen editor counts against2full/3exact hypothesis, then measure one actual unreduced post-commit publish at the original30s deadline with source acceptance and counter-version checks. Record polling overhead. V2 development-only; add all tag readers, range4/8 and stale-tab/rollback requirements before release work. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).
