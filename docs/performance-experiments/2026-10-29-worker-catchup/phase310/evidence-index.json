@@ -1,0 +1,319 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "sourceRootRetained": "/private/tmp/done-reader-syp-lab-20261031",
+  "applicationJourneys": 2,
+  "excludes": "No experimental app/service implementation, built assets, profiles, fixture credentials or databases enter patch",
+  "runtimeTransformRetainedOnlyInLab": {
+    "path": "/private/tmp/done-reader-syp-lab-20261031/prepare-s.py",
+    "sha256": "7089a19962d7be2d21e6f6aa48ad72ec2a8e9784d4f324471eacefe08e4d1ddd"
+  },
+  "files": [
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-inputs.json",
+      "artifact": "evidence/reader-inputs.json.gz",
+      "sourceSha256": "088296a56193832017fe35073ffd0decf7e313f05ad80ce8ab580aa463626c64",
+      "artifactSha256": "c65a14ee9d445c583f529dc53669c2d8f0bac81286c75fb2a2012e797647db69"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/build-identity.json",
+      "artifact": "evidence/build-identity.json.gz",
+      "sourceSha256": "1e567169f76f8860d9f058a3151e0723cba938f363515a47b87d7a4e1c32639b",
+      "artifactSha256": "6f5d8f64c8bf098746acf744fc47e98e30127a039d2d06669c4f54b5e611057a"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-analysis.json",
+      "artifact": "evidence/reader-analysis.json.gz",
+      "sourceSha256": "59f99002f3258d16f850e4834d8bb68b2e620d012e2c19045c53a2c26061745e",
+      "artifactSha256": "913fc08110cec749e6e9ae9f4567bd5cbfcfb176426f762e05ff1ed6aba87c35"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-attempts.csv",
+      "artifact": "evidence/reader-attempts.csv.gz",
+      "sourceSha256": "bc063f0499424f457adb845421c203a7b029e4d856ecfc7d9308070c585a4b19",
+      "artifactSha256": "fe8d004a35327672bd724bc92e7b0b432721589397cbed66703e7ca44e0b5c49"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/release-flags.json",
+      "artifact": "evidence/release-flags.json.gz",
+      "sourceSha256": "87d55e97ad4d3ecf145b227dc651b11e9b925d7d7499644a464ccdcaa24bf6b9",
+      "artifactSha256": "01a437feb9c4f22b711c8f2b0960680cd30a1731feaca43c4b91d68f08b59409"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/lab-build.log",
+      "artifact": "evidence/lab-build.log.gz",
+      "sourceSha256": "436d09fa0a48c4634be260617acb167d3f7e4d609619e854ee8d13368264a842",
+      "artifactSha256": "e167aaa41200bb6c8e0b16ecba231706ced9de710727e8d283fd28b8662fffcb"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-results.json",
+      "artifact": "evidence/reader-results.json.gz",
+      "sourceSha256": "6e30c453d0b742ca3cf4b85d713377b4f386a2c0ce0ef31fee84e59dfc51956a",
+      "artifactSha256": "e40769efd5708eddd99f3bc275ee89d9d71d50f277a71f04c88687d4333ee1d3"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/build-flags.json",
+      "artifact": "evidence/build-flags.json.gz",
+      "sourceSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "artifactSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-plan.json",
+      "artifact": "evidence/reader-plan.json.gz",
+      "sourceSha256": "e3cd238d128eff581e438ffff2b64ab63d291f3ef1cf0b87e13fe1a4a2e0f7c7",
+      "artifactSha256": "16411881e9252b648506f8c0d8829498fd95e7c2d4e16678ca3ef593064826cd"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/canonical-start.json",
+      "artifact": "evidence/canonical-start.json.gz",
+      "sourceSha256": "d6509d064fc00704cad3f0567dae164d360c3c8b4d7d8476f0cccd7739fac4e9",
+      "artifactSha256": "4b116cd7165b3a8a96ff6081c84373e47e2472df9552e5cd047ad2e4d909b3e2"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/S-contract.json",
+      "artifact": "evidence/S-contract.json.gz",
+      "sourceSha256": "f4dd9634e0a70938ec28b4478eaeeb4a033536592596e06f3e930c0a539a3aae",
+      "artifactSha256": "3371905000ce6cd8bc9db5488a1706af91ff697c709e21249eacbae42cf4bccd"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/frontend-build.log",
+      "artifact": "evidence/frontend-build.log.gz",
+      "sourceSha256": "c29d77dcf4cef3ca3dda70c725eeae13d858b8d795b090506b188c4dcef9b66b",
+      "artifactSha256": "b4dd855b2e0c315ccf51b5f7f90e9c2f3e6b5ebb2ad2866dfddbf45eb1067ec9"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/container-image.json",
+      "artifact": "evidence/container-image.json.gz",
+      "sourceSha256": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+      "artifactSha256": "ead75b01a977e5c739f82fee2002c50e4704076ab8b16209b3fc47168378dd00"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/PROTOCOL.md",
+      "artifact": "evidence/PROTOCOL.md.gz",
+      "sourceSha256": "91781ed9a7ee51c7f507883212c419ba58f5f87fa85d639b5c2e78edfbb11f55",
+      "artifactSha256": "37cad25939abcc31b81d30c13a441a4440e300a50ebd97c9bbb94a7610527c65"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/result.json",
+      "artifact": "evidence/reader-idle-B-S1/result.json.gz",
+      "sourceSha256": "cce81a51fb2c485e20dc917fad29e0b924a5bb63e8b685751cccd49de6905718",
+      "artifactSha256": "c99ddc27d33108bb2d52d96bd34c209200e3e355d455d5773c4fb7afaa3fa142"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/docker-command.json",
+      "artifact": "evidence/reader-idle-B-S1/docker-command.json.gz",
+      "sourceSha256": "e2e672cf862c8b0b690e7a96575111ae3320acf58f806828641ea248571b06a8",
+      "artifactSha256": "f1d91c7c12dc3ea5a9750a8792f17c38f7db71b682dfb648535ec4acf4d2018f"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/console.log",
+      "artifact": "evidence/reader-idle-B-S1/console.log.gz",
+      "sourceSha256": "4be71dff289cc9dd43f7ba05683a5b66aba316e35fc448a74c5e1d0e91302bf8",
+      "artifactSha256": "959303c4f4c0628ed425f7870eba59549e97f4e760cfda81fe608596bdb54a58"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/container-identity.json",
+      "artifact": "evidence/reader-idle-B-S1/container-identity.json.gz",
+      "sourceSha256": "bf6e26a90dfeba4ba56cd4a1fe32faa8a05dda235530e43024c16871aab852a2",
+      "artifactSha256": "164d2061e0fea1a4ef42cb8105d6d81ace33b495960c0ef58b55869934a9455a"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/services.log",
+      "artifact": "evidence/reader-idle-B-S1/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/list.log",
+      "artifact": "evidence/reader-idle-B-S1/list.log.gz",
+      "sourceSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "artifactSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/host-load.jsonl",
+      "artifact": "evidence/reader-idle-B-S1/host-load.jsonl.gz",
+      "sourceSha256": "2e70751d746956e6b8adb9ee7151bc13dc255ff568816d7ea0cbd0974e9c2587",
+      "artifactSha256": "7d5cbb9128e9f9a9ebe533371f942a6f1ac25d8d25ef863c5044137a4c0f99ee"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-B-S1/receipt.json",
+      "artifact": "evidence/reader-idle-B-S1/receipt.json.gz",
+      "sourceSha256": "cf6ca6c180a875f602b25326557d87faa19fc965a735a66a180f365c6586b780",
+      "artifactSha256": "c158da8c51281994b0d328d11c824a247f2f273ec2f4085ea39f1bf89b75310b"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/result.json",
+      "artifact": "evidence/reader-idle-A-S0/result.json.gz",
+      "sourceSha256": "034643220a46a91265aec67a58c3778cbe57a8f3a6775aa75c96cc86611f7074",
+      "artifactSha256": "ea0fc6cf0993b4430fc1f9a3e9d56bf7e2dc56c10afabd4a7532006a03cc24c6"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/docker-command.json",
+      "artifact": "evidence/reader-idle-A-S0/docker-command.json.gz",
+      "sourceSha256": "e7ca33cd203268e38958a779b10bdaa55395bea370d753b7fa116c0e0753bd98",
+      "artifactSha256": "a2cb57984402a579428d1b5215323ae6b9add466477bfd8d6045c46d219e9581"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/console.log",
+      "artifact": "evidence/reader-idle-A-S0/console.log.gz",
+      "sourceSha256": "8cb2ce27fb6fb917731f23ca1ec57d4524d44e020afc3791dfdfd3cceea3f6d2",
+      "artifactSha256": "60ffc44009d8b3eaf6da8880ab5468db246d725394d9e95ca3d7740972354c4b"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/container-identity.json",
+      "artifact": "evidence/reader-idle-A-S0/container-identity.json.gz",
+      "sourceSha256": "7ed340a34b33494a9278c03c1abb7fd939302ca0e9a1378d6a6ffb9b62ddaf99",
+      "artifactSha256": "ca14bd5e5698326311d4cdb4678878184359a925f90b100d858dd194f4a9c754"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/services.log",
+      "artifact": "evidence/reader-idle-A-S0/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/list.log",
+      "artifact": "evidence/reader-idle-A-S0/list.log.gz",
+      "sourceSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "artifactSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/host-load.jsonl",
+      "artifact": "evidence/reader-idle-A-S0/host-load.jsonl.gz",
+      "sourceSha256": "5b401d461cba34d52f0c8270b5d5ae7b1391cec7ae12891ad5ce41ac2abe4e08",
+      "artifactSha256": "03e00b732e2d67d1271900bb987a8d4c917da1ea3463cb8099d65e28f7ca892e"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-idle-A-S0/receipt.json",
+      "artifact": "evidence/reader-idle-A-S0/receipt.json.gz",
+      "sourceSha256": "c28c6c73799cf3cb822a6893aee364cd840aab2e8ff3a723d01f1c151bc884e1",
+      "artifactSha256": "29e5ee1cf66b704f8b4c542d8df286c0b1328206b1f614dea19ad1557adddf4a"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/host_load.py",
+      "artifact": "apparatus/host_load.py.gz",
+      "sourceSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "artifactSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/run-reader.py",
+      "artifact": "apparatus/run-reader.py.gz",
+      "sourceSha256": "8df8e15c89e1696cd46ac13c59b2a48004de21523af816125ae228d4c60003da",
+      "artifactSha256": "f55021f07a8812764eba296e4cf9423f0686b73d348b858040b05e7459352708",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-analysis.py",
+      "artifact": "apparatus/reader-analysis.py.gz",
+      "sourceSha256": "61a711c8dfb240c40534d58e97bed0d8a3e50c455ad4a738317378ecbbfa4511",
+      "artifactSha256": "c2c69763ada956bb78f45b131fc72db8bbf93fbaa28ce2f9f55ce008100f331a",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/reader-analysis-syntax-attempt1.py",
+      "artifact": "apparatus/reader-analysis-syntax-attempt1.py.gz",
+      "sourceSha256": "5ed26d3addc4e13e9122a673d0c21cdd856e8759fcf11b08731349d16cbb79dc",
+      "artifactSha256": "ac8426ce1d56b976d6a3cf3981d4baa73d558efb3e8662cddf965a2ce60cfa50",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/lab-context.mjs",
+      "artifact": "apparatus/lab-context.mjs.gz",
+      "sourceSha256": "9a32a31bd600c2e570553320008aed0685bb91454527718e5acc99aa45073a0b",
+      "artifactSha256": "2339b7196a429470fc7e764f5dc3750466dd4c7e9860fe906a5fc98dd93570fc",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/notification-probe.mjs",
+      "artifact": "apparatus/notification-probe.mjs.gz",
+      "sourceSha256": "179a77f2ed0debbfe257821c61411a4b0b67d32e80bab7333e1f39125bc604f0",
+      "artifactSha256": "53e3b9fea547061617e7f9c6ba2317e0afe36bb4ff4b8532b2193b5ce6756d8a",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/read-request.mjs",
+      "artifact": "apparatus/read-request.mjs.gz",
+      "sourceSha256": "dddcdf4c98fcc778cc1b8e9dcc7dad09934a747b52c009f7a211519eb10960cc",
+      "artifactSha256": "b528a80f6c6ac5179b5efac4c54509ed8542e087aa025396f66abe3cc200d1bd",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/fixture-roles.mjs",
+      "artifact": "apparatus/fixture-roles.mjs.gz",
+      "sourceSha256": "9a7c96ce6d15f7ddb3bc0c0edf290efa58bad57e295cf86a20fda683ac2417e4",
+      "artifactSha256": "fe5abeb0a308f1b9a82add52bcb08ebb7fc57e7733976b06f5a757fde2f2eec3",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/container-service.mjs",
+      "artifact": "apparatus/container-service.mjs.gz",
+      "sourceSha256": "06d8f0564368390850bd50d4e9d32242847e767ef83b21a4f88abc8d225897d1",
+      "artifactSha256": "a33df1225ca57db1a4dad59228e5c156318b4f37bd5773e34ed75f0f0908bb1c",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/scripts/lib/account-gateway.mjs",
+      "artifact": "apparatus/harness/scripts/lib/account-gateway.mjs.gz",
+      "sourceSha256": "0188189dbd7406fda58facd8098b574686c316a2592bff429a5eb84df385401c",
+      "artifactSha256": "ef61d7f5137e11f72188898d74111d811644fe6faff472e63898820a18d55b60",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "sourceSha256": "0b8d9c21cf8c98865a4599b0295059947a188e077a964cc0bf3f5c05566e970c",
+      "artifactSha256": "3bc698e25612ee9f56aaccf6abf75a4e4d92700e229bab77a548f0e3b221279f",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "sourceSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "artifactSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/capture-maintenance-trace.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/capture-maintenance-trace.ts.gz",
+      "sourceSha256": "32e0d1836fd0e499f0415b3e452a763e30ff5803147c7d45c68f7464c01b4107",
+      "artifactSha256": "fabde8cf16c32cb6f63a5c23596f1d528d2615bf3c518b2b75c73371a134cc6c",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/common.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "sourceSha256": "1aa55bb75b9af2e1c9bb4101aca929d6367e0f787a84ecc72ce34ac55bbd17d7",
+      "artifactSha256": "5d87a539ab213b778276c3b8a87d9cb818ca9a9166b7a870b7b0880f9719b976",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/seed-profile.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "sourceSha256": "72513e3f5743c63c579eb29edc9e70c6898c7e996457453c6626c53183774342",
+      "artifactSha256": "6fcb6e160cf51e4bed0b571fda12d36ef27bc6eb11bfebe40f92163368d613ea",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/devices.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "sourceSha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77",
+      "artifactSha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/dispatch-probe.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "sourceSha256": "801dd1c895d29b673e54331760455d173e8d22e5f65cb7eeb1f50b5b2748ae64",
+      "artifactSha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-reader-syp-lab-20261031/harness/test/account-continuation-lab/runtime.mjs",
+      "artifact": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "sourceSha256": "e86b7b54196176a305662cdf29801b10d90d45a247e5fe280e9c1389d940ddca",
+      "artifactSha256": "1484daca9154c6fd06a3b335b7922f500144a20c8e208a4c9c3bff26040d22ac",
+      "kind": "Non-executing diagnostic apparatus"
+    }
+  ]
+}

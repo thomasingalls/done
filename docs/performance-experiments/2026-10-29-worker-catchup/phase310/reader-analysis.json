@@ -1,0 +1,148 @@
+[
+  {
+    "name": "reader-idle-A-S0",
+    "config": "reader-idle",
+    "withhold": false,
+    "idlePause": true,
+    "SY": "00",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/reader-idle.config.ts"
+    ],
+    "childExitCode": 0,
+    "startedAt": 1793446682.887682,
+    "finishedAt": 1793446927.915791,
+    "outcome": "maintenance-timeout",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "rawHarnessOutcome": "maintenance-timeout",
+    "classification": "120s-timeout",
+    "maintenanceStatus": {
+      "phase": "running",
+      "reason": "preparation-saved",
+      "progress": {
+        "stage": "opening",
+        "completed": 3488,
+        "total": 4149,
+        "attempt": 32,
+        "elapsedMs": 884
+      }
+    },
+    "attempts": 32,
+    "completedAttempts": 31,
+    "furthestStage": "verifying",
+    "lastFirstMisses": [
+      2346.2999992370605,
+      2307,
+      2312.8999996185303,
+      2314.6000003814697,
+      2322.1000003814697,
+      2334.699998855591,
+      null
+    ],
+    "lastNewEntries": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "maxJournalMapBytes": 28660915,
+    "durableSavedBytes": 28713000,
+    "durableDeltas": 31,
+    "durableChunks": 139,
+    "cap": 33554432,
+    "capacityEvents": [],
+    "newStartsDuringDrain": [],
+    "firstAttemptAfterDrainMs": 10042.314208984375,
+    "observationMs": 120006.74267578125,
+    "drainMs": 103490.19848632812,
+    "cold": "not reached",
+    "settings": [
+      {
+        "S": false,
+        "Y": false,
+        "idlePollPause": true
+      }
+    ],
+    "hostBusyMedian": 48.354965030722155,
+    "hostBusyMax": 63.48068498606133,
+    "loadSamples": 48
+  },
+  {
+    "name": "reader-idle-B-S1",
+    "config": "reader-idle",
+    "withhold": false,
+    "idlePause": true,
+    "SY": "10",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/reader-idle.config.ts"
+    ],
+    "childExitCode": 0,
+    "startedAt": 1793446928.9317188,
+    "finishedAt": 1793447100.145201,
+    "outcome": "maintenance-timeout",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "rawHarnessOutcome": "maintenance-timeout",
+    "classification": "capacity-halt",
+    "maintenanceStatus": {
+      "phase": "halted",
+      "reason": "owner-error",
+      "progress": {
+        "stage": "verifying",
+        "attempt": 2,
+        "elapsedMs": 1111
+      }
+    },
+    "attempts": 2,
+    "completedAttempts": 2,
+    "furthestStage": "verifying",
+    "lastFirstMisses": [
+      0.7999992370605469,
+      1912.7000007629395
+    ],
+    "lastNewEntries": [
+      4149,
+      2793
+    ],
+    "maxJournalMapBytes": 33542882,
+    "durableSavedBytes": 28212732,
+    "durableDeltas": 1,
+    "durableChunks": 108,
+    "cap": 33554432,
+    "capacityEvents": [
+      {
+        "kind": "PreparationCapacity",
+        "attempt": 2,
+        "at": 1793447097749
+      }
+    ],
+    "newStartsDuringDrain": [],
+    "firstAttemptAfterDrainMs": 10051.880615234375,
+    "observationMs": 9100.04736328125,
+    "drainMs": 144744.71484375,
+    "cold": "not reached",
+    "settings": [
+      {
+        "S": true,
+        "Y": false,
+        "idlePollPause": true
+      }
+    ],
+    "hostBusyMedian": 67.98804780876495,
+    "hostBusyMax": 93.35185552689026,
+    "loadSamples": 33
+  }
+]

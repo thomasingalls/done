@@ -1153,3 +1153,14 @@ for S/Y/G/R/D/P are separate in the report; no hardening is started. Keep V out 
 all security checks/gates/deadlines,750msquiet/defaultoff writer/service automationoff, and the
 frozen phase308lab intact. See
 [phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase310
+
+Next SxYnormal/withheld once per arm, original writer-only120swait and >=60keys unchanged;
+report every reader's completion/journal/capacity and best-arm reader-idle with polls on.
+Reader S0paused confirms one-entry slice cliff; S1progresses rapidly then capacity-halts before
+cold. Pmay remove duplicated-page pressure but is unbuilt. Keep all later P/V/R/index/D/gate
+screens, reader diagnostics in every grown/index case, all security/compatibility holds and
+no-hardening rule. See
+[phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).

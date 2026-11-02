@@ -18395,3 +18395,13 @@ originals plus phase308source/assets match. Seven repository contracts and evide
 pass; real index empty. No guard, deadline, format, manifest, runtime or old test changes, no
 qualification/landing credit and no hardening. See
 [phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase310
+
+Reader-only paused-poll cases close the309scope gap. A,Soff,misses120swith late first misses
+2.307–2.346s/one new entry each; B,Son,completes2793new checks in its second attempt then
+hits PreparationCapacity. Durable bytes28.713/28.213MB; B transient map33.543MBagainst33.554MBcap.
+Both reach verifying, neither reaches cold. All34attempt records and host-contended runs retained;
+no acceptance or hardening. Canonical inputs unchanged; evidence/docs only. See
+[phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).

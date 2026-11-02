@@ -6737,3 +6737,13 @@ not a selected format. G/R/D and all later screens remain unclosed. Range writer
 750msquiet budget, all gates/deadlines and disabled service automation stay unchanged. No
 hardening begins without the operator's decision. See
 [phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase310
+
+The reader cliff supports S; its capacity refusal is a finding, not a stop. Continue the declared
+SxYscreen and Pexploration. Apply the operator-approved Ypolicy to pure queue-priority conditions
+without a typing classifier: retain max(quietUntil,notBefore),60sfor all other interruptions,
+and demonstrate zero new starts during typing/drain. This supersedes309's classifier proposal.
+No format/limit/guard relaxation or hardening; every original deadline remains. See
+[phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).
