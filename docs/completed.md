@@ -18146,3 +18146,8 @@ Two original cold diagnostics finish1pass/1fail, allpartialresultsretained. Actu
 ## 2026-10-30 — phase268: actual cold owner/error protocol
 
 Frozen correctedowner/errortrace with397actualvariantmappedbodies and125frontendassets. Original16/session64/process verified, fivecontracts/discovery/readiness/shutdown pass. No timedresult or repositoryruntime/testchange;267partialattempt preserved. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).
+
+
+## 2026-10-30 — phase269: cold CPU and recovery compatibility target
+
+Correctedtwo-case diagnostic finishes1pass/1fail. FirstactualWorkerCPU/sourcemapattribution retained; secondearlyclose preventsprofilebut enum/locations isolate recoveryheaderguard. Three owncontainers/browsersabsent. No productfixoroldtestedit yet; originalgatefailuresallretained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).

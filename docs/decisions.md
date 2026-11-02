@@ -6502,3 +6502,8 @@ Retain partialcoldtrace: numericfirstDeviceOwner metrics show5fullbaselinereplay
 ## 2026-10-30 — phase268: actual cold owner/error protocol
 
 Correct physicalfirstDeviceOwner profile and isolate publicmaintenance opening failure with bounded enum/location-onlycatchobservers. Same originalcasebodies/nativechecks; log-onlyisolatedsourcevariantidentified, originalthrowobjects/failuregatespreserved. No nativeerror masking or productrepair before cause. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).
+
+
+## 2026-10-30 — phase269: cold CPU and recovery compatibility target
+
+ActualfirstDeviceOwnerCPU now captured10622samples; nested verifier/recorddecode costs support repeatedwork but no trust-window change. Maintenanceopening fails at Workerrecoveryheaderguard; native baseline emitsleadingstate seq0 whereas readerdemandspositive. Demonstrate/fixthatnarrowcompatibilitybeforemoreperf; keepallnative/disk/securitychecks. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).

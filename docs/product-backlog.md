@@ -918,3 +918,8 @@ Phase267: repeatedbaseline candidate now measured5replaysbeforeeditor; actualWor
 ## 2026-10-30 — phase268: actual cold owner/error protocol
 
 Phase268: diagnoseactualcoldopeningfallback andcollectcorrectWorkerCPU next; repeatedbaselinecountsvalid butCPUcausepending. Preserve265partialbudgetresult and originalgates/failures. No performanceortrustmechanism/releaseprep selected. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).
+
+
+## 2026-10-30 — phase269: cold CPU and recovery compatibility target
+
+Phase269: next boundedregression/repair targets authenticatedbaseline state0 through Workerrecovery, preserving strictlypositive diskrecords and all authority/history/journal/fencing. Then rerunoriginalmaintenancecold. Repeatedbaselineperf and labbudgetPageWorkercompare remain pending; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).
