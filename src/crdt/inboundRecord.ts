@@ -22,6 +22,9 @@ export const INBOUND_RECORD_LIMIT = MAX_BATCH_BYTES;
 export const INBOUND_ENVELOPE_LIMIT = ADMITTED_ENVELOPE_WIRE_LIMIT;
 export const INBOUND_UPDATE_LIMIT = ADMITTED_ENVELOPE_UPDATE_LIMIT;
 export const INBOUND_UPDATE_BYTES = ADMITTED_ENVELOPE_UPDATE_BYTES;
+/** Closed plaintext receipt versions; this predicate grants no verification or authority. */
+export const isInboundRecordTag = (tag: unknown): boolean =>
+  tag === 'done/account-inbound/v1' || tag === 'done/account-inbound/v2';
 export interface InboundRecord {
   baseline: string;
   lineage: string;
@@ -34,6 +37,8 @@ export interface InboundRecord {
   link: string;
   request: Bytes;
   page: Bytes;
+  /** v2 only: selected position inside the complete original signed wider page. */
+  entry?: number;
 }
 const invalid = (): never => {
   throw Error('Invalid inbound record');
@@ -41,21 +46,23 @@ const invalid = (): never => {
 function validatedFields(e: InboundRecord) {
   if (e.kind !== 'received' && e.kind !== 'conflict') invalid();
   const r = decodeInboundRequest(e.request),
-    p = decodeInboundPage(e.page);
+    p = decodeInboundPage(e.page),
+    index = e.entry === undefined ? 0 : inboundInteger(e.entry);
   checkInboundExtent(p, r);
+  if (index >= p.entries.length) invalid();
   if (
-    r.limit !== 1 ||
-    p.entries.length !== 1 ||
-    p.entries[0]!.envelope.length > INBOUND_ENVELOPE_LIMIT ||
+    (e.entry === undefined
+      ? r.limit !== 1 || p.entries.length !== 1 || p.next !== e.position
+      : r.limit < 2 || e.kind !== 'received' || r.after + index + 1 !== e.position) ||
+    p.entries[index]!.envelope.length > INBOUND_ENVELOPE_LIMIT ||
     r.lineage !== e.lineage ||
     r.head !== e.head ||
     r.reader !== e.reader ||
-    r.publisher !== e.publisher ||
-    p.next !== e.position
+    r.publisher !== e.publisher
   )
     invalid();
-  const envelope = decodeNetworkEnvelope(p.entries[0]!.envelope),
-    proof = decodePositionResponse(p.entries[0]!.proof);
+  const envelope = decodeNetworkEnvelope(p.entries[index]!.envelope),
+    proof = decodePositionResponse(p.entries[index]!.proof);
   if (
     envelope.v !== 2 ||
     envelope.workspace_id !== r.workspace ||
@@ -71,8 +78,8 @@ function validatedFields(e: InboundRecord) {
   )
     invalid();
   return [
-    'done/account-inbound/v1',
-    1,
+    e.entry === undefined ? 'done/account-inbound/v1' : 'done/account-inbound/v2',
+    e.entry === undefined ? 1 : 2,
     inboundHex(e.baseline, 32),
     inboundHex(e.lineage, 32),
     inboundHex(e.head, 32),
@@ -86,14 +93,23 @@ function validatedFields(e: InboundRecord) {
 }
 export function encodeInboundRecord(e: InboundRecord): Bytes {
   const bytes = new TextEncoder().encode(
-    JSON.stringify([...validatedFields(e), hex(e.request), hex(e.page)]),
+    JSON.stringify([
+      ...validatedFields(e),
+      hex(e.request),
+      hex(e.page),
+      ...(e.entry === undefined ? [] : [e.entry]),
+    ]),
   );
   if (bytes.length > INBOUND_RECORD_LIMIT) invalid();
   return bytes;
 }
 export function decodeInboundRecord(bytes: Bytes): InboundRecord {
   const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
-  if (v.length !== 13 || v[0] !== 'done/account-inbound/v1' || v[1] !== 1) invalid();
+  const indexed = v[0] === 'done/account-inbound/v2' && v[1] === 2;
+  if (
+    indexed ? v.length !== 14 : v.length !== 13 || v[0] !== 'done/account-inbound/v1' || v[1] !== 1
+  )
+    invalid();
   const e = {
     baseline: v[2],
     lineage: v[3],
@@ -106,6 +122,7 @@ export function decodeInboundRecord(bytes: Bytes): InboundRecord {
     link: v[10],
     request: inboundBytes(v[11], READ_REQUEST_LIMIT),
     page: inboundBytes(v[12], READ_PAGE_LIMIT),
+    ...(indexed ? { entry: v[13] } : {}),
   } as InboundRecord;
   // parseInboundArray already checked byte length and exact canonical JSON. The binary
   // fields were decoded from canonical hex above; re-encoding them adds no validation.

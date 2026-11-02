@@ -275,6 +275,10 @@ async function authenticateInboundWire(
     inboundPageMessage(p),
   );
   if (!pageVerified) fail('unverified');
+  assertInboundPagePrefix(c, r, p);
+}
+function assertInboundPagePrefix(c: InboundContext, r: InboundReadRequest, p: InboundReadPage) {
+  const a = c.authority;
   if (p.through < c.prefix.observedThrough || r.after > c.prefix.position) fail('prefix');
   if (c.history) {
     // A stored page is bounded by its own authenticated epoch. Later membership cuts cannot
@@ -365,6 +369,10 @@ async function verify(
   pageInput: Bytes,
   lifetime: InboundLifetime,
   stored?: Bytes,
+  selection?: {
+    index: number;
+    authenticate: typeof authenticateInboundWire;
+  },
 ): Promise<InboundResult> {
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     now = lifetime.now ? lifetime.now.bind(lifetime) : Date.now;
@@ -385,7 +393,16 @@ async function verify(
       p = decodeInboundPage(pageBytes),
       a = c.authority;
     assertInboundScope(c, r);
-    if (r.limit !== 1) fail('unsupported');
+    if (!selection) {
+      if (r.limit !== 1) fail('unsupported');
+    } else if (
+      r.limit < 2 ||
+      !Number.isSafeInteger(selection.index) ||
+      selection.index < 0 ||
+      (p.entries.length > 0 && selection.index >= p.entries.length) ||
+      r.after + selection.index !== c.prefix.position
+    )
+      fail('prefix');
     checkInboundExtent(p, r);
     const current = () => {
       guard();
@@ -396,14 +413,15 @@ async function verify(
       }
     };
     current();
-    await authenticateInboundWire(c, r, p, request, subtle);
+    await (selection?.authenticate ?? authenticateInboundWire)(c, r, p, request, subtle);
     if (!p.entries.length) {
       if (r.after !== c.prefix.position || expectedRecord) fail('record');
       current();
       return Object.freeze({ kind: 'empty', through: p.through, position: c.prefix.position });
     }
-    const entry = p.entries[0]!,
-      position = r.after + 1,
+    const index = selection?.index ?? 0,
+      entry = p.entries[index]!,
+      position = r.after + index + 1,
       old = position <= c.prefix.position,
       previous = old ? c.retained?.previous : c.prefix.link;
     if (!previous || (position === 1 && previous !== ZERO_REFUSAL)) fail('prefix');
@@ -441,6 +459,7 @@ async function verify(
       link: proof.head.link,
       request,
       page: pageBytes,
+      ...(selection ? { entry: index } : {}),
     };
     const record = encodeInboundRecord(event);
     if (record.length + (kind === 'received' ? updateBytes : 0) > MAX_BATCH_BYTES) fail('size');
@@ -470,6 +489,85 @@ export const verifyInboundPage = (
   page: Bytes,
   lifetime: InboundLifetime,
 ): Promise<InboundResult> => verify(context, request, page, lifetime);
+/** One bounded forward range. Header crypto is shared only within this call's owned snapshots;
+ * each position, link, envelope, actor and lifetime still verifies before any result escapes.
+ * No native progress or persisted trust is produced here. */
+export async function verifyInboundRange(
+  input: InboundContext,
+  requestInput: Bytes,
+  pageInput: Bytes,
+  lifetime: InboundLifetime,
+): Promise<readonly InboundResult[]> {
+  const assertCurrent = lifetime.assertCurrent.bind(lifetime),
+    guard = () => {
+      const result: unknown = assertCurrent();
+      if (result !== undefined) fail('authority');
+    };
+  guard();
+  const request = captureBytes(requestInput, READ_REQUEST_LIMIT),
+    page = captureBytes(pageInput, READ_PAGE_LIMIT),
+    context = captureContext(input),
+    ownedLifetime = {
+      assertCurrent: guard,
+      ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
+    },
+    results: InboundResult[] = [];
+  let transferred = false,
+    authenticated = false,
+    bytes = 0,
+    records = 0;
+  try {
+    const r = decodeInboundRequest(request),
+      p = decodeInboundPage(page);
+    if (r.after !== context.prefix.position || context.retained) fail('prefix');
+    // These bytes and authority were captured once above and never leave this call. Prefix and
+    // lifetime checks still run for every entry, including after the two wire signatures reuse.
+    const authenticate: typeof authenticateInboundWire = async (...args) => {
+      guard();
+      if (!authenticated) {
+        await authenticateInboundWire(...args);
+        guard();
+        authenticated = true;
+      } else assertInboundPagePrefix(args[0], args[1], args[2]);
+    };
+    for (let index = 0; index < Math.max(1, p.entries.length); index++) {
+      const result = await verify(
+        context,
+        request,
+        page,
+        ownedLifetime,
+        undefined,
+        r.limit > 1 ? { index, authenticate } : undefined,
+      );
+      // Own plaintext before a final guard or aggregate bound can reject it.
+      results.push(result);
+      if (result.kind === 'received') {
+        bytes += result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
+        records += result.updates.length + 1;
+        if (bytes > MAX_BATCH_BYTES || records > MAX_BATCH_RECORDS) fail('size');
+        context.prefix = {
+          position: result.position,
+          link: result.link,
+          observedThrough: result.through,
+        };
+      } else if (result.kind !== 'empty') fail('prefix');
+      guard();
+    }
+    guard();
+    transferred = true;
+    return Object.freeze(results);
+  } finally {
+    request.fill(0);
+    page.fill(0);
+    context.generationKey.fill(0);
+    for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
+    if (!transferred)
+      for (const result of results) {
+        if ('record' in result) result.record.fill(0);
+        if (result.kind === 'received') for (const update of result.updates) update.fill(0);
+      }
+  }
+}
 /** Recheck original signatures/bytes after request expiry using the independently replayed pre-event prefix.
  * This verifies one record only; the future owner must verify witness completeness and content coverage.
  */
@@ -480,7 +578,16 @@ export async function verifyStoredInbound(
 ): Promise<InboundResult> {
   const captured = captureBytes(bytes, INBOUND_RECORD_LIMIT),
     event = decodeInboundRecord(captured);
-  return verify(context, event.request, event.page, lifetime, captured);
+  return verify(
+    context,
+    event.request,
+    event.page,
+    lifetime,
+    captured,
+    event.entry === undefined
+      ? undefined
+      : { index: event.entry, authenticate: authenticateInboundWire },
+  );
 }
 
 /** Transient history reconstruction only. No durable inbound record or authority is produced.

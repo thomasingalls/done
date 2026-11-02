@@ -291,7 +291,7 @@ test('registered Account source sites, exact homes and evidence join the existin
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
   assert.equal(result.specified, 78);
-  assert.equal(result.open, 15);
+  assert.equal(result.open, 16);
   assert.deepEqual(
     baseline()
       .document.constructions.filter((r) => r.status === 'open')
@@ -312,6 +312,7 @@ test('registered Account source sites, exact homes and evidence join the existin
       'automatic-local-protection',
       'transport-read-batching',
       'account-local-preparation',
+      'account-inbound-range-capsule',
     ],
   );
   assert.equal(result.excluded, 1);

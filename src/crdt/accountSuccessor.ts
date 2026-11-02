@@ -18,7 +18,7 @@ import type { PromotionRecord } from './promotionRecord';
 import { captureRoute, captureError, type CaptureRoute } from './sourceCapture';
 import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './contentRecord';
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
-import { decodeInboundRecord } from './inboundRecord';
+import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
 import {
   installedMembershipHistory,
@@ -177,10 +177,9 @@ export async function verifyInstalledSuccessor(
   let certifiedWitness = witness;
   for (const [index, bytes] of spool.events.entries()) {
     const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
-    const epoch =
-      v[0] === 'done/account-inbound/v1'
-        ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
-        : v[5];
+    const epoch = isInboundRecordTag(v[0])
+      ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
+      : v[5];
     if (
       epoch !==
       (index < cut.events

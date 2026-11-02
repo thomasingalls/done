@@ -17,7 +17,7 @@ import type { SuccessorBase } from '../../account-protocol/successor';
 import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './contentRecord';
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
-import { decodeInboundRecord } from './inboundRecord';
+import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
 import type { Bytes } from './custodyCrypto';
 
@@ -77,7 +77,7 @@ export async function installedMembershipHistory(
 }
 export const membershipEventEpoch = (bytes: Bytes): number => {
   const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
-  return v[0] === 'done/account-inbound/v1'
+  return isInboundRecordTag(v[0])
     ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
     : v[5];
 };

@@ -40,7 +40,7 @@ import {
 import { historyMinimumGeneration } from '../../account-protocol/admissionHistory';
 import { captureRouteAt } from './sourceCapture';
 import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
-import { decodeInboundRecord } from './inboundRecord';
+import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
 import { isHistoryInstallTag } from './historyInstall';
 import { hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
@@ -203,7 +203,7 @@ export async function indexVerifiedLedger(
   for (const row of records)
     if (!content(row)) {
       const f = fields(row);
-      if (f[0] === 'done/account-inbound/v1')
+      if (isInboundRecordTag(f[0]))
         epoch = decodeInboundRequest(decodeInboundRecord(row.bytes).request).epoch;
       else if (
         f[0] === 'done/account-spool/v1' ||
@@ -256,7 +256,7 @@ export async function extendAccountLedger(
   for (const row of added)
     if (!content(row)) {
       const tag = fields(row)[0];
-      if (tag === 'done/account-inbound/v1') {
+      if (isInboundRecordTag(tag)) {
         if (
           decodeInboundRequest(decodeInboundRecord(row.bytes).request).publisher ===
           base.publisher.id
@@ -321,8 +321,7 @@ export async function extendAccountLedger(
       }
       continue;
     }
-    const inboundEvent =
-      tag === 'done/account-inbound/v1' ? decodeInboundRecord(row.bytes) : undefined;
+    const inboundEvent = isInboundRecordTag(tag) ? decodeInboundRecord(row.bytes) : undefined;
     const epoch = inboundEvent
       ? decodeInboundRequest(inboundEvent.request).epoch
       : (f[5] as number);

@@ -1,3 +1,4 @@
+import { isInboundRecordTag } from './inboundRecord';
 /** Private dry run. No database handle, allocator, sealing callback, write, or deletion operation. */
 import { type DiskRow } from './contentCompaction';
 import {
@@ -497,7 +498,7 @@ export async function planLocalRetention(
             : 'source-consumed';
         } else if (tag === 'done/account-spool/v1') disposition = 'spool-settled';
         else if (tag === 'done/account-delivery/v1') disposition = 'delivery-settled';
-        else if (tag === 'done/account-inbound/v1') disposition = 'receive-frontier';
+        else if (isInboundRecordTag(tag)) disposition = 'receive-frontier';
         else if (isHistoryInstallTag(tag)) disposition = 'history-frontier';
         else return corrupt('Unclassified retention row.');
       }

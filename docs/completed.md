@@ -18221,3 +18221,8 @@ Requested diagnostic confirms2full/3exact at both editor milestones; original ca
 ## 2026-10-30 — phase283: range and reader coverage contract
 
 Extended reader-first red evidence to33cases:15fail/18pass. Reproduced reader-ID-as-epoch, delivery fallthrough and incremental fallback; real prior fixtures/indexing succeed. Added real4/8 ranges, native retention and cold/full/incremental consumer tests. Exact source/tag inventory and test bytes archived; old tests/runtime untouched. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).
+
+
+## 2026-10-30 — phase284: development range reader
+
+Development range reader/all consumers implemented;36new tests,12sensitive fault controls, final2825unitpass/oneexisting skip,119metadata units,7contracts/types/lint/format pass. Preserve failed self-step fixture and initially survived cold-index fault; stronger fixture detects it. Only old test edit is exact open15→16/list addition; all old assertions remain. Writer disabled, no latency/compatibility/release qualification. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase284/README.md).

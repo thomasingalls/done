@@ -3078,7 +3078,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 492,
+          "line": 493,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
@@ -3197,7 +3197,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 498,
+          "line": 499,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -3334,13 +3334,13 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 345,
+          "line": 344,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 499,
+          "line": 500,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -3421,62 +3421,20 @@
       ],
       "sourceSites": [
         {
-          "path": "src/crdt/accountMembership.ts",
-          "line": 80,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/accountSuccessor.ts",
-          "line": 181,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/inboundLedger.ts",
-          "line": 120,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/inboundLedger.ts",
-          "line": 138,
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 27,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 74,
+          "line": 81,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 96,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 206,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 259,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 325,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/localRetentionPlan.ts",
-          "line": 500,
+          "line": 110,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         }
@@ -7493,6 +7451,76 @@
       ],
       "blocker": "Implemented encrypted native receipts, first-reference adapters and serialized account scheduling, with directed and native interruption/reopen proof. The unchanged2.5s whole-client contention gate and phone budgets remain unqualified; explicit resume flag defaults off. Service automation remains off. No aggregate credit.",
       "next": "Add native checkpoint/cleanup and guarded verifier/scheduler adapters, preserve originals and independent final replay, and qualify interruption/resume against the unchanged2.5s peer gate."
+    },
+    {
+      "id": "account-inbound-range-capsule",
+      "phase": "D3",
+      "status": "open",
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
+      "signer": null,
+      "labels": [
+        "done/account-inbound/v2"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 27,
+          "label": "done/account-inbound/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 81,
+          "label": "done/account-inbound/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 108,
+          "label": "done/account-inbound/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "encodeInboundRecord"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "decodeInboundRecord"
+        },
+        {
+          "path": "src/crdt/accountInbound.ts",
+          "name": "verifyInboundRange"
+        },
+        {
+          "path": "src/crdt/accountInbound.ts",
+          "name": "verifyStoredInbound"
+        }
+      ],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/multiEntryInbound.test.ts",
+        "test/multiEntryInboundReaders.test.ts"
+      ],
+      "requirements": [
+        "closed-indexed-plaintext",
+        "independent-runtime-bytes",
+        "original-request-page-binding",
+        "current-native-prefix",
+        "complete-witness-and-coverage",
+        "all-reader-version-routing",
+        "bounded-range-fairness",
+        "stale-tab-rollback"
+      ],
+      "blocker": "Development-only indexed v2 receipt reader; no application writer activation or aggregate credit. Published vector/map qualification, wider-range cost/fairness, stale-tab and rollback remain open. Existing specified v1 contracts are unchanged.",
+      "next": "Qualify the indexed record and every consumer against independent originals, native mixed-owner/rollback evidence and unchanged performance/security gates before any release work."
     }
   ],
   "additionalCorpora": [

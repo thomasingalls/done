@@ -24,7 +24,7 @@ import { captureError, type CaptureRoute } from './sourceCapture';
 import { inspectDelivery, inspectDeliverySteps, expectedPosition } from './deliveryRecord';
 import { acceptanceLink, decodePositionResponse } from '../../account-protocol/positionDecision';
 import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
-import { decodeInboundRecord } from './inboundRecord';
+import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
 import {
   Y,
@@ -117,7 +117,7 @@ function* inspectInboundSteps(
     if (isHistoryInstallTag(tag)) {
       if (record.kind !== 'heads') captureError('History installation misplaced');
       installations.push({ record, event: decodeHistoryInstall(record.bytes) });
-    } else if (tag === 'done/account-inbound/v1') {
+    } else if (isInboundRecordTag(tag)) {
       if (record.kind !== 'heads') captureError('Inbound record misplaced');
       entries.push({ record, event: decodeInboundRecord(record.bytes) });
     } else prior.push(record);
@@ -134,10 +134,9 @@ function* inspectInboundSteps(
     for (const row of ledger) {
       yield;
       const v = JSON.parse(new TextDecoder().decode(row.bytes));
-      const at =
-        v[0] === 'done/account-inbound/v1'
-          ? decodeInboundRequest(decodeInboundRecord(row.bytes).request).epoch
-          : v[5];
+      const at = isInboundRecordTag(v[0])
+        ? decodeInboundRequest(decodeInboundRecord(row.bytes).request).epoch
+        : v[5];
       if (at < epoch) captureError('Account ledger authority regressed');
       epoch = at;
     }
@@ -651,7 +650,7 @@ export async function verifyInboundLedger(
           link: result.link,
           observedThrough: result.through,
         };
-        const entry = decodeInboundPage(event.page).entries[0]!;
+        const entry = decodeInboundPage(event.page).entries[event.entry ?? 0]!;
         state.retained.set(result.position, {
           previous: event.previous,
           envelope: entry.envelope,

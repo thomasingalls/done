@@ -242,7 +242,8 @@
         "done/account-spool/v1",
         "done/account-spool-chain/v1\u0000",
         "done/account-delivery/v1",
-        "done/account-inbound/v1"
+        "done/account-inbound/v1",
+        "done/account-inbound/v2"
       ],
       "note": "Spool chain domain ends in a literal NUL and uses binary u32be length, not LP. Carrier labels do not themselves authenticate records."
     },

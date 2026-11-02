@@ -6577,3 +6577,8 @@ Treat cold work-count gain and unreduced mutation cost separately. Real frozen e
 ## 2026-10-30 — phase283: range and reader coverage contract
 
 Use one receipt-tag home across every literal/indirect reader, including membership/successor boundaries, full and incremental census, selected entry, retention and handoff. Add real range4/8 and consumer regressions before enabling v2 writes. Development-only approval does not establish stale-tab/rollback behavior; record/test those before release work. All limits/gates/security retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).
+
+
+## 2026-10-30 — phase284: development range reader
+
+Implement only the development reader before range writer activation. Share tag recognition and per-entry verification, retain exact signed originals, independent selected-position replay and all old v1 semantics. Keep new v2 construction open and all78specified contracts. Wider-range duplication/fairness and native stale-tab/rollback remain adoption obligations; no persisted/cross-owner trust. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase284/README.md).
