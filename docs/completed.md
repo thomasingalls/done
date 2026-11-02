@@ -18106,3 +18106,8 @@ Four fixed production-flag normal-hint journeys pass all480keys/12markers/archiv
 ## 2026-10-30 — phase260: production cold compatibility apparatus
 
 Prepared original4case productionflag compatibility rerun.396source bodies/125shipping assets exact; release compiledflag parity, pinned helper closure,4case discovery and readiness/shutdown smoke pass. Failed setup searches/listings retained; no timed result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).
+
+
+## 2026-10-30 — phase261: production cold compatibility outcomes
+
+Original4case productionflag rerun finishes1pass/3fail, no retry. Native maintenance completes/removes7275 entries/revision2 and preserves input/Undo, then original15s publiccold fails. Deepjoined reaches447at30s with0receivefailures. Five owncontainers/browsers absent; no runtime/oldtest changes. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).

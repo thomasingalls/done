@@ -878,3 +878,8 @@ Phase259: corrected baseline all absolute gates pass; repeatable>10%Worker slowd
 ## 2026-10-30 — phase260: production cold compatibility apparatus
 
 Phase260: original publiccold/deepjoined checks ready at actual release settings. Run unchanged deadlines/guards, then sourcebound work/input attribution. No repair selected from brief estimates; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).
+
+
+## 2026-10-30 — phase261: production cold compatibility outcomes
+
+Phase261:182/205/187fullcase deadline blockers persist at production flags; intermediate maintenance is sound in this run but publiccold remains slow. Keep every original failure/deadline; no releaseprep. Next quiet withheldinput control and measured native/Window/commit work, not another speculative mechanism. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).
