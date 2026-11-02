@@ -1,0 +1,65 @@
+{
+  "baseFixtureSha256": "d10347e30137dcd4b37154be0c86e6cd6d945a1b88ef73ba5d5b489d7740c4be",
+  "grownFixtureSha256": "bfdf84845055582b7e5789eb8a64c0e081bfcf3836078e163cbd2961d2782828",
+  "winningFixtureSha256": "b66437d9e7fdcafc07be06c3a0ca303333744490a6dc9e0c42ab95936d2d3b29",
+  "addedAcceptedPositions": 1024,
+  "onlyTargetArchiveChanged": true,
+  "otherAccountsAndUnaffectedActorsUnchanged": true,
+  "winningArchiveExact": true,
+  "dates": [
+    "2026-11-01",
+    "2026-11-01",
+    "2026-11-01"
+  ],
+  "actualArchives": [
+    {
+      "label": "H",
+      "requestedGoals": 13000,
+      "files": [
+        {
+          "name": "master.md",
+          "characters": 5000,
+          "bytes": 5000
+        },
+        {
+          "name": "days/2026-11-01.md",
+          "characters": 2465,
+          "bytes": 2465
+        }
+      ]
+    },
+    {
+      "label": "M",
+      "requestedGoals": 4000,
+      "files": [
+        {
+          "name": "master.md",
+          "characters": 4157,
+          "bytes": 4157
+        },
+        {
+          "name": "days/2026-11-01.md",
+          "characters": 1037,
+          "bytes": 1037
+        }
+      ]
+    },
+    {
+      "label": "Q",
+      "requestedGoals": 1000,
+      "files": [
+        {
+          "name": "master.md",
+          "characters": 1049,
+          "bytes": 1049
+        },
+        {
+          "name": "days/2026-11-01.md",
+          "characters": 487,
+          "bytes": 487
+        }
+      ]
+    }
+  ],
+  "credentialsProfilesDatabasesNotEmitted": true
+}

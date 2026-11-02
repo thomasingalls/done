@@ -1212,3 +1212,7 @@ Operator amendment effective from321: >=60typing/catch-up overlap applies only t
 ### 2026-11-01 — Catch-up serialization lab stopped at phase322
 
 Resolve the profiled diagnostic's cold WebAuthn failure before further lab runs, under the no-Fcold stop rule. Then run75msbaseline and compare batched/concurrent/both starting from main's bounded receivePrefetch; evaluate transferred ordinary handoff separately from mandatory rotation/maintenance fences, then timing ablations with actual live/maintenance exposure. Current0/50msdata show serial-latency sensitivity and mostly idle Window, not a complete explanation of remaining4.0–4.4s. No candidate built, no hardening or release credit. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase322/README.md).
+
+### 2026-11-01 — Phase 323: review before any hardening
+
+Review idle-check coalescing/read-ahead as a network-latency tradeoff, with 0 ms regression and wider-page index amplification retained. Choose P’s durable-format contracts before landing; rerun beyond the index limit and multi-account fairness for B8. Review zero-extra-priority-retry latency versus replay/CPU/battery cost; preserve every authority/journal/handoff guard and fix the separate capacity→owner-error mapping only in an authorized bounded repair. Audit actual fixture document sizes before claiming nominal 13 k Goals coverage. No hardening/release work begun. [Results and separate landing requirements](./performance-experiments/2026-10-29-worker-catchup/phase323/README.md).

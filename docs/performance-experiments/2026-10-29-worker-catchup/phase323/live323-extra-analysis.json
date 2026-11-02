@@ -1,0 +1,428 @@
+[
+  {
+    "run": "live323-r1-E0B0",
+    "arm": "00",
+    "replicate": 1,
+    "childExit": 0,
+    "coldFailure": false,
+    "coldExact": true,
+    "qualification": "Lab only; no credit. Window totals are before typing through delivery; not full maintenance lifetime. Server-epoch budget interval retains clock-boundary uncertainty. One journey is one unit.",
+    "peerMs": {
+      "n": 120,
+      "p50": 597.5107421875,
+      "p95": 766.371826171875,
+      "max": 874.08154296875
+    },
+    "keysAfterDrain": 52,
+    "postDrainMs": {
+      "n": 52,
+      "p50": 577.3671875,
+      "p95": 699.167724609375,
+      "max": 755.43798828125
+    },
+    "postDrainExposed": true,
+    "drainMs": 39084.41650390625,
+    "tokensTypingWindow": 1498,
+    "tokensThroughDelivery": 1513,
+    "budgetRefusals": [],
+    "roleCounters": [
+      {
+        "role": "reader",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 654,
+        "contentHints": 120,
+        "namedHints": 0
+      },
+      {
+        "role": "writer",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 158,
+        "contentHints": 0,
+        "namedHints": 0
+      }
+    ],
+    "messages": 27350,
+    "chargedBytes": 7179025,
+    "channelDeltaComplete": true,
+    "httpStatusesFullObservation": {
+      "pending": 5,
+      "200": 1342
+    },
+    "doseUrls": [
+      "http://localhost:53781/assets/enrollmentOwner.worker-B4FE47t3.js?lab=10101&labEB=00&labRepairMs=1000&labSY=11"
+    ],
+    "runtimeModes": [
+      {
+        "lab": [
+          "10101"
+        ],
+        "labEB": [
+          "00"
+        ],
+        "labRepairMs": [
+          "1000"
+        ],
+        "labSY": [
+          "11"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "live323-r1-E1B1",
+    "arm": "11",
+    "replicate": 1,
+    "childExit": 0,
+    "coldFailure": false,
+    "coldExact": true,
+    "qualification": "Lab only; no credit. Window totals are before typing through delivery; not full maintenance lifetime. Server-epoch budget interval retains clock-boundary uncertainty. One journey is one unit.",
+    "peerMs": {
+      "n": 120,
+      "p50": 609.4765625,
+      "p95": 789.306640625,
+      "max": 897.376953125
+    },
+    "keysAfterDrain": 59,
+    "postDrainMs": {
+      "n": 59,
+      "p50": 582.705322265625,
+      "p95": 681.860107421875,
+      "max": 713.444091796875
+    },
+    "postDrainExposed": true,
+    "drainMs": 35559.053466796875,
+    "tokensTypingWindow": 1284,
+    "tokensThroughDelivery": 1297,
+    "budgetRefusals": [],
+    "roleCounters": [
+      {
+        "role": "reader",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 658,
+        "contentHints": 118,
+        "namedHints": 0
+      },
+      {
+        "role": "writer",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 177,
+        "contentHints": 0,
+        "namedHints": 0
+      }
+    ],
+    "messages": 27775,
+    "chargedBytes": 7296385,
+    "channelDeltaComplete": true,
+    "httpStatusesFullObservation": {
+      "pending": 5,
+      "200": 862
+    },
+    "doseUrls": [
+      "http://localhost:53781/assets/enrollmentOwner.worker-B4FE47t3.js?lab=10101&labEB=11&labRepairMs=1000&labSY=11"
+    ],
+    "runtimeModes": [
+      {
+        "lab": [
+          "10101"
+        ],
+        "labEB": [
+          "11"
+        ],
+        "labRepairMs": [
+          "1000"
+        ],
+        "labSY": [
+          "11"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "live323-r2-E1B1",
+    "arm": "11",
+    "replicate": 2,
+    "childExit": 0,
+    "coldFailure": false,
+    "coldExact": true,
+    "qualification": "Lab only; no credit. Window totals are before typing through delivery; not full maintenance lifetime. Server-epoch budget interval retains clock-boundary uncertainty. One journey is one unit.",
+    "peerMs": {
+      "n": 120,
+      "p50": 615.294921875,
+      "p95": 835.155029296875,
+      "max": 934.867431640625
+    },
+    "keysAfterDrain": 56,
+    "postDrainMs": {
+      "n": 56,
+      "p50": 581.0439453125,
+      "p95": 716.7041015625,
+      "max": 929.92919921875
+    },
+    "postDrainExposed": true,
+    "drainMs": 37096.334716796875,
+    "tokensTypingWindow": 1287,
+    "tokensThroughDelivery": 1302,
+    "budgetRefusals": [],
+    "roleCounters": [
+      {
+        "role": "reader",
+        "repairActivations": 2,
+        "repairIntervals": 14,
+        "quietReads": 648,
+        "contentHints": 117,
+        "namedHints": 0
+      },
+      {
+        "role": "writer",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 193,
+        "contentHints": 0,
+        "namedHints": 0
+      }
+    ],
+    "messages": 27824,
+    "chargedBytes": 7301025,
+    "channelDeltaComplete": true,
+    "httpStatusesFullObservation": {
+      "pending": 5,
+      "200": 839
+    },
+    "doseUrls": [
+      "http://localhost:53781/assets/enrollmentOwner.worker-B4FE47t3.js?lab=10101&labEB=11&labRepairMs=1000&labSY=11"
+    ],
+    "runtimeModes": [
+      {
+        "lab": [
+          "10101"
+        ],
+        "labEB": [
+          "11"
+        ],
+        "labRepairMs": [
+          "1000"
+        ],
+        "labSY": [
+          "11"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "live323-r2-E0B0",
+    "arm": "00",
+    "replicate": 2,
+    "childExit": 0,
+    "coldFailure": false,
+    "coldExact": true,
+    "qualification": "Lab only; no credit. Window totals are before typing through delivery; not full maintenance lifetime. Server-epoch budget interval retains clock-boundary uncertainty. One journey is one unit.",
+    "peerMs": {
+      "n": 120,
+      "p50": 597.0341796875,
+      "p95": 763.618896484375,
+      "max": 882.82373046875
+    },
+    "keysAfterDrain": 48,
+    "postDrainMs": {
+      "n": 48,
+      "p50": 580.729248046875,
+      "p95": 738.69921875,
+      "max": 870.683349609375
+    },
+    "postDrainExposed": true,
+    "drainMs": 40632.749755859375,
+    "tokensTypingWindow": 1499,
+    "tokensThroughDelivery": 1513,
+    "budgetRefusals": [],
+    "roleCounters": [
+      {
+        "role": "reader",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 653,
+        "contentHints": 120,
+        "namedHints": 0
+      },
+      {
+        "role": "writer",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 156,
+        "contentHints": 0,
+        "namedHints": 0
+      }
+    ],
+    "messages": 27360,
+    "chargedBytes": 7181411,
+    "channelDeltaComplete": true,
+    "httpStatusesFullObservation": {
+      "pending": 5,
+      "200": 1337
+    },
+    "doseUrls": [
+      "http://localhost:53781/assets/enrollmentOwner.worker-B4FE47t3.js?lab=10101&labEB=00&labRepairMs=1000&labSY=11"
+    ],
+    "runtimeModes": [
+      {
+        "lab": [
+          "10101"
+        ],
+        "labEB": [
+          "00"
+        ],
+        "labRepairMs": [
+          "1000"
+        ],
+        "labSY": [
+          "11"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "live323-r3-E0B0",
+    "arm": "00",
+    "replicate": 3,
+    "childExit": 0,
+    "coldFailure": false,
+    "coldExact": true,
+    "qualification": "Lab only; no credit. Window totals are before typing through delivery; not full maintenance lifetime. Server-epoch budget interval retains clock-boundary uncertainty. One journey is one unit.",
+    "peerMs": {
+      "n": 120,
+      "p50": 594.278564453125,
+      "p95": 779.2587890625,
+      "max": 937.599365234375
+    },
+    "keysAfterDrain": 52,
+    "postDrainMs": {
+      "n": 52,
+      "p50": 572.4501953125,
+      "p95": 663.676513671875,
+      "max": 746.32421875
+    },
+    "postDrainExposed": true,
+    "drainMs": 39085.439697265625,
+    "tokensTypingWindow": 1489,
+    "tokensThroughDelivery": 1503,
+    "budgetRefusals": [],
+    "roleCounters": [
+      {
+        "role": "reader",
+        "repairActivations": 1,
+        "repairIntervals": 53,
+        "quietReads": 651,
+        "contentHints": 120,
+        "namedHints": 0
+      },
+      {
+        "role": "writer",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 154,
+        "contentHints": 0,
+        "namedHints": 0
+      }
+    ],
+    "messages": 27214,
+    "chargedBytes": 7145633,
+    "channelDeltaComplete": true,
+    "httpStatusesFullObservation": {
+      "pending": 5,
+      "200": 1338
+    },
+    "doseUrls": [
+      "http://localhost:53781/assets/enrollmentOwner.worker-B4FE47t3.js?lab=10101&labEB=00&labRepairMs=1000&labSY=11"
+    ],
+    "runtimeModes": [
+      {
+        "lab": [
+          "10101"
+        ],
+        "labEB": [
+          "00"
+        ],
+        "labRepairMs": [
+          "1000"
+        ],
+        "labSY": [
+          "11"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "live323-r3-E1B1",
+    "arm": "11",
+    "replicate": 3,
+    "childExit": 0,
+    "coldFailure": false,
+    "coldExact": true,
+    "qualification": "Lab only; no credit. Window totals are before typing through delivery; not full maintenance lifetime. Server-epoch budget interval retains clock-boundary uncertainty. One journey is one unit.",
+    "peerMs": {
+      "n": 120,
+      "p50": 577.415283203125,
+      "p95": 781.5498046875,
+      "max": 830.420166015625
+    },
+    "keysAfterDrain": 61,
+    "postDrainMs": {
+      "n": 61,
+      "p50": 551.68505859375,
+      "p95": 653.8427734375,
+      "max": 698.3017578125
+    },
+    "postDrainExposed": true,
+    "drainMs": 34561.80908203125,
+    "tokensTypingWindow": 1290,
+    "tokensThroughDelivery": 1304,
+    "budgetRefusals": [],
+    "roleCounters": [
+      {
+        "role": "reader",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 668,
+        "contentHints": 119,
+        "namedHints": 0
+      },
+      {
+        "role": "writer",
+        "repairActivations": 0,
+        "repairIntervals": 0,
+        "quietReads": 172,
+        "contentHints": 0,
+        "namedHints": 0
+      }
+    ],
+    "messages": 27911,
+    "chargedBytes": 7333057,
+    "channelDeltaComplete": true,
+    "httpStatusesFullObservation": {
+      "pending": 5,
+      "200": 868
+    },
+    "doseUrls": [
+      "http://localhost:53781/assets/enrollmentOwner.worker-B4FE47t3.js?lab=10101&labEB=11&labRepairMs=1000&labSY=11"
+    ],
+    "runtimeModes": [
+      {
+        "lab": [
+          "10101"
+        ],
+        "labEB": [
+          "11"
+        ],
+        "labRepairMs": [
+          "1000"
+        ],
+        "labSY": [
+          "11"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "eb": "00",
+    "n": 3,
+    "functionalPass": true,
+    "medianDrainMs": 45606.900146484375,
+    "drainsMs": [
+      44778.699951171875,
+      45684.699951171875,
+      45606.900146484375
+    ],
+    "gatePass": null,
+    "diagnostic50": true
+  },
+  {
+    "eb": "01",
+    "n": 3,
+    "functionalPass": true,
+    "medianDrainMs": 28979,
+    "drainsMs": [
+      28947.300048828125,
+      28979,
+      29903.2001953125
+    ],
+    "gatePass": null,
+    "diagnostic50": true
+  },
+  {
+    "eb": "10",
+    "n": 3,
+    "functionalPass": true,
+    "medianDrainMs": 33389.39990234375,
+    "drainsMs": [
+      33387.89990234375,
+      33755.800048828125,
+      33389.39990234375
+    ],
+    "gatePass": null,
+    "diagnostic50": true
+  },
+  {
+    "eb": "11",
+    "n": 3,
+    "functionalPass": true,
+    "medianDrainMs": 25252.5,
+    "drainsMs": [
+      24798.89990234375,
+      25252.5,
+      25824.89990234375
+    ],
+    "gatePass": null,
+    "diagnostic50": true
+  }
+]

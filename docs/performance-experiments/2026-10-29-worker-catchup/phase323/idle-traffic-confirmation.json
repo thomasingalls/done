@@ -1,0 +1,260 @@
+[
+  {
+    "fullObservation": {
+      "singleRequests": 210,
+      "singleHeadersSumMs": 16521.24267578125,
+      "batchRequests": 128,
+      "batchHeadersSumMs": 12286.041748046875
+    },
+    "run": "baseline-retry-02-rtt50",
+    "drainMs": 49441.099853515625,
+    "singleRequests": 207,
+    "singleHeadersSumMs": 14176.287109375,
+    "batchRequests": 128,
+    "batchHeadersSumMs": 12286.041748046875,
+    "byPublisher": [
+      {
+        "publisher": "2e2c37e7772711105d04d5285f1c220d",
+        "productivePublisher": false,
+        "requests": 9,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          2
+        ],
+        "headersElapsedSumMs": 581.08154296875,
+        "headersElapsedMedianMs": 62.89599609375
+      },
+      {
+        "publisher": "39c9964898976fbda3a0896ebd9dc314",
+        "productivePublisher": false,
+        "requests": 50,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3424.1259765625,
+        "headersElapsedMedianMs": 68.1373291015625
+      },
+      {
+        "publisher": "42683dd303b40bd87633f1248552c1fc",
+        "productivePublisher": false,
+        "requests": 50,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3307.733642578125,
+        "headersElapsedMedianMs": 66.1092529296875
+      },
+      {
+        "publisher": "77060d3ceab8b06d56cdedd0dbbd3c8a",
+        "productivePublisher": false,
+        "requests": 49,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3345.439208984375,
+        "headersElapsedMedianMs": 67.92626953125
+      },
+      {
+        "publisher": "c46c4a574c51c8e30052ef52211e9cef",
+        "productivePublisher": false,
+        "requests": 47,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3383.14013671875,
+        "headersElapsedMedianMs": 68.723388671875
+      },
+      {
+        "publisher": "d4ec5e7be81d9f52c50ea26a7bcf6362",
+        "productivePublisher": true,
+        "requests": 2,
+        "cursorDistinctCount": 2,
+        "cursors": [
+          5,
+          1029
+        ],
+        "headersElapsedSumMs": 134.7666015625,
+        "headersElapsedMedianMs": 67.38330078125
+      }
+    ],
+    "malformed": 0,
+    "dropped": 0,
+    "qualification": "Time to response headers, same Node clock per row. Filter through actual final commit using near-aligned Worker epoch; excludes post-drain polls. Sums are not CPU attribution."
+  },
+  {
+    "fullObservation": {
+      "singleRequests": 222,
+      "singleHeadersSumMs": 17733.2607421875,
+      "batchRequests": 128,
+      "batchHeadersSumMs": 11296.70654296875
+    },
+    "run": "baseline-retry-03-rtt50",
+    "drainMs": 52993.39990234375,
+    "singleRequests": 217,
+    "singleHeadersSumMs": 15159.974609375,
+    "batchRequests": 128,
+    "batchHeadersSumMs": 11296.70654296875,
+    "byPublisher": [
+      {
+        "publisher": "2e2c37e7772711105d04d5285f1c220d",
+        "productivePublisher": false,
+        "requests": 10,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          2
+        ],
+        "headersElapsedSumMs": 639.88232421875,
+        "headersElapsedMedianMs": 62.2484130859375
+      },
+      {
+        "publisher": "39c9964898976fbda3a0896ebd9dc314",
+        "productivePublisher": false,
+        "requests": 52,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3630.982177734375,
+        "headersElapsedMedianMs": 68.964599609375
+      },
+      {
+        "publisher": "42683dd303b40bd87633f1248552c1fc",
+        "productivePublisher": false,
+        "requests": 51,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3520.747314453125,
+        "headersElapsedMedianMs": 67.31103515625
+      },
+      {
+        "publisher": "77060d3ceab8b06d56cdedd0dbbd3c8a",
+        "productivePublisher": false,
+        "requests": 51,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3567.413818359375,
+        "headersElapsedMedianMs": 67.5263671875
+      },
+      {
+        "publisher": "c46c4a574c51c8e30052ef52211e9cef",
+        "productivePublisher": false,
+        "requests": 51,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3665.600341796875,
+        "headersElapsedMedianMs": 69.778076171875
+      },
+      {
+        "publisher": "d4ec5e7be81d9f52c50ea26a7bcf6362",
+        "productivePublisher": true,
+        "requests": 2,
+        "cursorDistinctCount": 2,
+        "cursors": [
+          5,
+          1029
+        ],
+        "headersElapsedSumMs": 135.3486328125,
+        "headersElapsedMedianMs": 67.67431640625
+      }
+    ],
+    "malformed": 0,
+    "dropped": 0,
+    "qualification": "Time to response headers, same Node clock per row. Filter through actual final commit using near-aligned Worker epoch; excludes post-drain polls. Sums are not CPU attribution."
+  },
+  {
+    "fullObservation": {
+      "singleRequests": 207,
+      "singleHeadersSumMs": 16468.77392578125,
+      "batchRequests": 128,
+      "batchHeadersSumMs": 11357.83251953125
+    },
+    "run": "baseline-retry-06-rtt50",
+    "drainMs": 49957.10009765625,
+    "singleRequests": 202,
+    "singleHeadersSumMs": 14012.772216796875,
+    "batchRequests": 128,
+    "batchHeadersSumMs": 11357.83251953125,
+    "byPublisher": [
+      {
+        "publisher": "2e2c37e7772711105d04d5285f1c220d",
+        "productivePublisher": false,
+        "requests": 10,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          2
+        ],
+        "headersElapsedSumMs": 634.707763671875,
+        "headersElapsedMedianMs": 63.0250244140625
+      },
+      {
+        "publisher": "39c9964898976fbda3a0896ebd9dc314",
+        "productivePublisher": false,
+        "requests": 48,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3285.43017578125,
+        "headersElapsedMedianMs": 67.5135498046875
+      },
+      {
+        "publisher": "42683dd303b40bd87633f1248552c1fc",
+        "productivePublisher": false,
+        "requests": 48,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3317.818359375,
+        "headersElapsedMedianMs": 66.522705078125
+      },
+      {
+        "publisher": "77060d3ceab8b06d56cdedd0dbbd3c8a",
+        "productivePublisher": false,
+        "requests": 47,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3335.930419921875,
+        "headersElapsedMedianMs": 68.107421875
+      },
+      {
+        "publisher": "c46c4a574c51c8e30052ef52211e9cef",
+        "productivePublisher": false,
+        "requests": 47,
+        "cursorDistinctCount": 1,
+        "cursors": [
+          1
+        ],
+        "headersElapsedSumMs": 3304.937255859375,
+        "headersElapsedMedianMs": 68.11669921875
+      },
+      {
+        "publisher": "d4ec5e7be81d9f52c50ea26a7bcf6362",
+        "productivePublisher": true,
+        "requests": 2,
+        "cursorDistinctCount": 2,
+        "cursors": [
+          5,
+          1029
+        ],
+        "headersElapsedSumMs": 133.9482421875,
+        "headersElapsedMedianMs": 66.97412109375
+      }
+    ],
+    "malformed": 0,
+    "dropped": 0,
+    "qualification": "Time to response headers, same Node clock per row. Filter through actual final commit using near-aligned Worker epoch; excludes post-drain polls. Sums are not CPU attribution."
+  }
+]
