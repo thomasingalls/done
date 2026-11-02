@@ -6557,3 +6557,8 @@ Attribute deep request cadence/extent with bounded Node-side timestamps and orig
 ## 2026-10-30 — phase279: deep request trace outcome
 
 Use the complete bounded deep trace as the before observation: all589signed reads are limit1; batching does not remove per-entry request work. Keep default budgets, original30s and all guarantees. Multi-entry requires explicit durable replay support, unchanged aggregate byte/record bounds and position-weighted fairness. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).
+
+
+## 2026-10-30 — phase280: multi-entry reader contract
+
+Use reader-first indexed v2 receipts preserving original signed request/page and independently replayed per-position cuts, rather than an aggregate event crossing a cut. Keep byte-exact v1/API, all security and limits. Width2 later bounds evidence duplication; no live range writes before reader/regression/bookkeeping checks. Register new label as open, retaining all prior contracts. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).

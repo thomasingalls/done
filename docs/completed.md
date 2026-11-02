@@ -18201,3 +18201,8 @@ Prepared exact-client deep traffic observer with at/headersAt, decoded after/lim
 ## 2026-10-30 — phase279: deep request trace outcome
 
 Original deep joined trace fails30s at451received/zero receive failures. Captured249HTTPrequests/589signed single-entry reads,10batch429s, at/headersAt and request extents with zero dropped/malformed. Both own containers/browsers absent; raw outcome and before failure retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).
+
+
+## 2026-10-30 — phase280: multi-entry reader contract
+
+Recorded25-case independent real-crypto range red evidence:7fail/18pass at existing one-entry/codec boundaries. Archived the superseded aggregate sketch and exact indexed test bytes before product change; no old test/runtime edit or failing executable test added. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).

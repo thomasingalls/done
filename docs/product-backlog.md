@@ -973,3 +973,8 @@ Phase 278: run original deep joined case with traffic timing/extent next. Then d
 ## 2026-10-30 — phase279: deep request trace outcome
 
 Phase279: deep request cadence/extent recorded. Next implement and test bounded multi-entry receive including durable receipt replay, safe large-entry fallback and four-position fairness; then actual deep/fairness checks. Page deep64 and reproducible fixture/withheld/normal gates follow. Normal comparison held, no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).
+
+
+## 2026-10-30 — phase280: multi-entry reader contract
+
+Phase280: implement reader-first bounded multi-entry verification and indexed v2 replay across all tag consumers, with unchanged v1 and interior-cut semantics. Then separate planner/large-entry/fairness phase and deep rerun, Page deep64, fixture recipe/withheld/normal gates. Normal comparison held; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).
