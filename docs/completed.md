@@ -18286,3 +18286,8 @@ Phase295: actual Page syncing/no owner Worker confirmed; lab64deepfailed30s at70
 ### 2026-10-30 — Worker catch-up phase296
 
 Phase296: rerunnable fresh-root civil-day recipe and original generator/helpers frozen. Positive preflight passes; overwrite/short-window controls refuse. No fresh fixture generated yet. Old measurement gates/assertions retained; no source/old test edits. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase297
+
+Phase297: real fresh-day H6/M2/Q2fixture with1024/256/32accepted backlogs generated in17.2min. App guards pass; outer empty-file assertion failed, corrected in isolated verifier.4verifier controls pass; unchanged output independently verified with source/assets/native policy hashes. No performance credit. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).

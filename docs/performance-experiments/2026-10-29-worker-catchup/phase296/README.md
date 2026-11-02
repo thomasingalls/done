@@ -43,3 +43,9 @@ No new product source or old repository test changes; only copied/new apparatus.
 600s/15s/native/900sgates remain. Normal Page/Worker comparison stays held until fresh setup passes;
 v2 remains development-only, with native range size/fairness and stale-tab/rollback still pending.
 No release prep, service automation, signing/push/deploy, preview, computer use or personal profiles.
+
+Phase297 repairs the final file-hash check to allow exact empty evidence files, adds independent
+file-set/asset/native-policy verification and --verify-existing for completed disposable output.
+That mode writes only its identity receipt; account state/profiles are never rewritten or re-seeded.
+Original seeding passed in17.2minutes; the first postcheck failure and all raw source identities
+remain. See phase297for independent verification and the actual fixture identity.

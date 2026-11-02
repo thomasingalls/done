@@ -6642,3 +6642,8 @@ Retain failed real Page64deep. It weakens a Worker-only or session-budget-only e
 ### 2026-10-30 — Worker catch-up phase296
 
 Regenerate the dated workload from signed0ab through actual app setup/early editable cards, then original unequal backlogs. UTC controls calendar interpretation only; epoch/auth clocks remain real. Seed-only discretionary reduction stays off, with no measurement credit and exact production service budgets. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase297
+
+Repair the fixture postcheck only: canonical empty files are valid exact hash evidence. Independently verify the successful real-app output in both directions rather than regenerate or edit data; retain the failed outer attempt and original passing seeding run. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).

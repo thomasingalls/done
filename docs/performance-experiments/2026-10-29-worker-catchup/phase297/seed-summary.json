@@ -1,0 +1,37 @@
+{
+  "outcome": "passed",
+  "startedAt": 1793379950942,
+  "completedAt": 1793380982322,
+  "accounts": [
+    {
+      "label": "H",
+      "devices": 6,
+      "backlog": 1024,
+      "cards": 24,
+      "goals": 13000,
+      "before": 5,
+      "after": 1029,
+      "acceptedDelta": 1024
+    },
+    {
+      "label": "M",
+      "devices": 2,
+      "backlog": 256,
+      "cards": 12,
+      "goals": 4000,
+      "before": 5,
+      "after": 261,
+      "acceptedDelta": 256
+    },
+    {
+      "label": "Q",
+      "devices": 2,
+      "backlog": 32,
+      "cards": 6,
+      "goals": 1000,
+      "before": 5,
+      "after": 37,
+      "acceptedDelta": 32
+    }
+  ]
+}

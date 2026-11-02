@@ -1,0 +1,12 @@
+{
+  "fixtureSha256": "2e0d95a19fc54c46c9faf518710aecbe5dc70eeb014e7a2ee15f127c478ac6e2",
+  "seedCheckSha256": "76b7bc1a90d9845cb3b4df6994a0450d559cb4cacdd729abc8c9e33127c21dee",
+  "sourceSha256": "758400c1ba5847038d8228742f30f6597694dd5e874ad47eff34546d0f5b0c6e",
+  "buildAssetsSha256": "5add8324e50fa891aeebe93fc092f15ee9d6d462659f20d48d5bd69e07bd324c",
+  "verificationToolSha256": "3b5f73e2256e05cd0e8dbc92dde5e7f08f3a8e4e8c99f121d713526a27dadbad",
+  "date": "2026-10-30",
+  "sourceFiles": 37615,
+  "emptySourceFilesAccepted": 377,
+  "checkedCases": "real setup/certification, exact device counts, baseline exports, exact accepted backlog deltas, current unfrozen cards; independent file sets/hashes and actual native policy",
+  "noAcceptanceCredit": true
+}

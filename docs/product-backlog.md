@@ -1058,3 +1058,8 @@ Next rerunnable civil-date fixture generation with early editable cards and unch
 ### 2026-10-30 — Worker catch-up phase296
 
 Run the phase296recipe, retain generation failures/success identities, then fresh civil preflight before withheld signed0ab/yield cell and normal gates. Do not append late cards after old backlogs or bypass freeze logic. V2 compatibility/fairness obligations remain. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase297
+
+Fresh civil fixture is now verified. Next signed0abwithheld/default flags, then normal cases with original gates and per-case editability preflight. V2 remains development-only; preserve all deep failures and compatibility obligations. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).
