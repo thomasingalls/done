@@ -6417,3 +6417,8 @@ Retain yield latency/throughput tradeoff: peerp95 better in both modes, uploads~
 ## 2026-10-30 — phase251: existing verified-selection control
 
 Control same248source with existing WARM_LOADS0vs1 path, preserve all checks/defaults and old0failures. Reuse completed250disabled references, then fixed enabled normal/withheld and disabled normal drift control. Native warm/resume/audit/authority refusal cohort must pass before timing. >=20% against both normal references plus withheld is engineering signal only. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).
+
+
+## 2026-10-30 — phase252: verified-selection control outcomes
+
+Existing guarded selection materially reduces catch-up on same248source, but retain19.1% disabled drift, failed15s cold control and enabled-withheld38.222ms input failure. No profile-switch gate waiver/default edit. Raw delay precedes beforeinput; distinguish renderer queueing from driver/CDP delay before a repair. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).

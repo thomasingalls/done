@@ -18061,3 +18061,8 @@ Four matched249 journeys complete with full writing/archive/offline-cold guards.
 ## 2026-10-30 — phase251: existing verified-selection control
 
 Five original native guard cases pass without changes/skips, including authority inventory tamper/resume/audit refusal/cold preservation. Same-source1artifact built and maps/assets checked; exact0artifact/references retained, signed fixed server and readiness/discovery pass. Three new control journeys frozen; no timed result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).
+
+
+## 2026-10-30 — phase252: verified-selection control outcomes
+
+Same-source control enabled156.551/145.927s versus disabled236.067/244.416s, later disabled timed281.117s then15s cold-opening guard fails. Enabled withheld peer/markers/cold pass but localp9538.222ms fails16. All raw failures retained; actual beforeinput→DOMp950.8ms narrows attribution only. Exact resources absent; no source change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).

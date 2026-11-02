@@ -833,3 +833,8 @@ Phase250: yielding improves peerp95 but not aggregate acceptance; throughput cos
 ## 2026-10-30 — phase251: existing verified-selection control
 
 Phase251: measure existing guarded verified-selection path before writing new reuse. Product source remains248; all2.5s/16ms/throughput concerns and prior failures retained. Clear next repair follows actual control results; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).
+
+
+## 2026-10-30 — phase252: verified-selection control outcomes
+
+Phase252: next bounded input-delay attribution with event/longtask/driver timing, original16ms/2.5s unchanged. Existing verified path is useful; all earlier disabled gate/throughput/cold concerns remain. No release prep or acceptance claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).
