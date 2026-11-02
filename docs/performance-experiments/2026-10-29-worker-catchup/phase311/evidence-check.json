@@ -1,0 +1,16 @@
+{
+  "rawCopiesMatch": 124,
+  "journeys": 9,
+  "screenOwners": 16,
+  "readerConfirmOwners": 1,
+  "canonicalInputsUnchanged": 1552,
+  "newStartsDuringTypingOrDrain": 0,
+  "coldJourneys": 3,
+  "coldProfilesExact": 6,
+  "coldFailures": 0,
+  "writerCompletionFailures": 5,
+  "readerCapacityConfirmation": true,
+  "selectedSY": "11",
+  "labOnly": true,
+  "acceptanceCredit": false
+}

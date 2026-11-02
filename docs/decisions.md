@@ -6747,3 +6747,13 @@ without a typing classifier: retain max(quietUntil,notBefore),60sfor all other i
 and demonstrate zero new starts during typing/drain. This supersedes309's classifier proposal.
 No format/limit/guard relaxation or hardening; every original deadline remains. See
 [phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase311
+
+Choose S1Y1exploratorily under the predeclared rule: only arm with normal+withheldwriter/cold
+passes. Keep every failure, originalwriter-only120sgate, readerdiagnostics, zero-startquiet
+checks and capacity cap. Continue Pwithout weakeningchecks; capacitydoesnotstop, actualnoFcold
+failuredoes. The unused native labbundle retains308source links; retargetin a NEWProot before
+native/Ptests, never claim exposure from unused assets. No hardening or release authorization.
+See [phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).

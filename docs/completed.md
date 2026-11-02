@@ -18405,3 +18405,15 @@ hits PreparationCapacity. Durable bytes28.713/28.213MB; B transient map33.543MBa
 Both reach verifying, neither reaches cold. All34attempt records and host-contended runs retained;
 no acceptance or hardening. Canonical inputs unchanged; evidence/docs only. See
 [phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase311
+
+Eight SxYgrown journeys plus selected-arm reader-idle/polls-on retained. S1Y1alone completes
+writer/cold in both normal+withheld; S1Y0passeswithheld/failsnormal, otherarmsfailwriter120s.
+Three journeys/six profiles pass actualofflinecold; five fail beforecold. Every16owner is
+reported, zero NEWstarts duringtyping/readerdraindetected. Readerconfirmationcapacity-halts
+at33.543MBmap,28.213MBdurable; no reader completes in observed windows. Alloriginalabsolute
+latency/overlap/backlog predicates pass, no qualification/oldrelative credit. Evidence/docs
+only; no hardening. See
+[phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).

@@ -1,0 +1,25 @@
+{
+  "rawOutcome": "maintenance-halted",
+  "role": "reader",
+  "attempts": 3,
+  "completions": 0,
+  "status": {
+    "phase": "halted",
+    "reason": "owner-error",
+    "progress": {
+      "stage": "verifying",
+      "attempt": 3,
+      "elapsedMs": 1050
+    }
+  },
+  "capacityRefusals": 1,
+  "durableLatestBytes": 28212732,
+  "durablePeakBytes": 28212732,
+  "durableDeltas": 1,
+  "maxMapBytes": 33542882,
+  "byteCap": 33554432,
+  "startsBeforeDrain": 0,
+  "cold": "not reached",
+  "drainMs": 102407.00048828125,
+  "observeMs": 20049.678955078125
+}

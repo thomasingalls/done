@@ -1,0 +1,773 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "sourceRootRetained": "/private/tmp/done-sy-screen-lab-20261031",
+  "applicationJourneys": 9,
+  "excludes": "No experimental app/service source, built assets, profiles, fixture secrets or databases enter patch",
+  "files": [
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/screen-analysis.json",
+      "artifact": "evidence/screen-analysis.json.gz",
+      "sourceSha256": "66e6194ca13d50a1bef81c93a843b6a270e6f1ec33fff3425e274339647c2cc4",
+      "artifactSha256": "6cd3d49397efdb22053706ee32449cc92b9347e2ce564e9df89b96e73c07ef48"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/screen-plan.json",
+      "artifact": "evidence/screen-plan.json.gz",
+      "sourceSha256": "e7ce301068be2f66fb07b07f81fd61fd98d5a440954f1c41d1df37e88a2bc6d3",
+      "artifactSha256": "f5a551a4c24a22499e4ea724cf4f0f49054aff8c0901fffd801f42ee301c650f"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-confirm-analysis.json",
+      "artifact": "evidence/reader-confirm-analysis.json.gz",
+      "sourceSha256": "ef830d2770da5a4426fd286e57ccd09a24ccdd758369de3ea38329b5e3417808",
+      "artifactSha256": "38e42f390d24d7433c915b3b8cbdf00b7078c7e42761c05d603af217553ee8bf"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/host-preflight.jsonl",
+      "artifact": "evidence/host-preflight.jsonl.gz",
+      "sourceSha256": "082f0c7ac4d5ff1551b297e5128790881ae324cea907ce4ab7a60d034bd06dd3",
+      "artifactSha256": "6147fb84403ecc57f14c183bbc8b106cf52f9336d41aabfd99ecd8cfeb8a6674"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/screen-inputs.json",
+      "artifact": "evidence/screen-inputs.json.gz",
+      "sourceSha256": "0f766ca95c6b946d02658969e80d764c815899438dad56d62443ed45a6500f6a",
+      "artifactSha256": "f7e5a5a2e96c272cfc2c4e78b5c7d5fd2dd3450233990ffb1ecbe49d1803e1c1"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/build-identity.json",
+      "artifact": "evidence/build-identity.json.gz",
+      "sourceSha256": "8a3a2af88be2b8fe836e9f88d3e534a288f8fd7bb804d94c090d9f5d5d2c5fc1",
+      "artifactSha256": "02ebc6f140fe55ca48eecfac2bc57e4c5b830ccc337dae35d87317de1a098709"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-confirm-plan.json",
+      "artifact": "evidence/reader-confirm-plan.json.gz",
+      "sourceSha256": "2771dd92873bc0151f392022fb7ccd0a6e44a29bf9c7202b1d655132fc950e57",
+      "artifactSha256": "95b2c35702c838c95c92adf60438eeeef72ad1bfb22b48902d5a54c8b7451ee1"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/P-IMPLEMENTATION-PLAN.md",
+      "artifact": "evidence/P-IMPLEMENTATION-PLAN.md.gz",
+      "sourceSha256": "4ef16a256b28e5fb8a34fcf60391e60e4cb6cd39b8d15a36a8408fad9caaf3f5",
+      "artifactSha256": "801cc7b97c982f7f399e75ed4abd1f2dfb472807e4e153bbe8d6cd5fb72187f6"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/screen-results.json",
+      "artifact": "evidence/screen-results.json.gz",
+      "sourceSha256": "2cc2bf980a21dfdf1fab16a3805a3e5284c6d255b1333567b948c9c097928fd6",
+      "artifactSha256": "7a7f8ec0ed0beb6b647481c1ca46ac6fdab4525883a799eeb1b0116e1492e556"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/Y-contract.json",
+      "artifact": "evidence/Y-contract.json.gz",
+      "sourceSha256": "b515630956733b8a04e36cd90c52592316f70ba537ca366d61854d9200ff010d",
+      "artifactSha256": "52d0648d99de6b10f0d7ae746ed1aecb5d10570e7cadce02ef4bde66dc34ed71"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/release-flags.json",
+      "artifact": "evidence/release-flags.json.gz",
+      "sourceSha256": "87d55e97ad4d3ecf145b227dc651b11e9b925d7d7499644a464ccdcaa24bf6b9",
+      "artifactSha256": "01a437feb9c4f22b711c8f2b0960680cd30a1731feaca43c4b91d68f08b59409"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/lab-build.log",
+      "artifact": "evidence/lab-build.log.gz",
+      "sourceSha256": "89805529378a81eb74095f355b4e5398e410f438416ec7293edc8498e9338369",
+      "artifactSha256": "9b95d23bac9207f750f0fa25c72ca7fec34b6c86e8a8ba70f270299cf2516eb2"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/build-flags.json",
+      "artifact": "evidence/build-flags.json.gz",
+      "sourceSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "artifactSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/selection.json",
+      "artifact": "evidence/selection.json.gz",
+      "sourceSha256": "5b4e08ea3b82a97d8ff43b514aaecb63cada936baf0b33f22f510b5c3a92fbf6",
+      "artifactSha256": "c362af0bfd70d34b3f1d7e14ac7ba4d54617dd387e5469b3e3ebc1f547475194"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/canonical-start.json",
+      "artifact": "evidence/canonical-start.json.gz",
+      "sourceSha256": "78abfbfa44c6e837f9dd1da9a9ea40f7305a82c6a28414360c760244d5e6ca06",
+      "artifactSha256": "c7de518f78098a59333ffb481964911670885604bcc1549b3881468d52231d82"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/screen-attempts.csv",
+      "artifact": "evidence/screen-attempts.csv.gz",
+      "sourceSha256": "a1fed52191d0e400a78d9005a9476c7e7e3ab79a9688e489134a1bfb9ee20f95",
+      "artifactSha256": "8d374cefa998b84f31816c208ba76bdae71d40c0c5e3ca7072306e88f6308026"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/analysis-console.log",
+      "artifact": "evidence/analysis-console.log.gz",
+      "sourceSha256": "f272f145015d547eb7b19b0a7e2b19eedc0c63c020a4291fb1c36cef7da18519",
+      "artifactSha256": "050a3459b02c6cc34ce33f6d5d6b9de5b5c9bfce3405705b564a317b9f177815"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-confirm-results.json",
+      "artifact": "evidence/reader-confirm-results.json.gz",
+      "sourceSha256": "f137a0173add75a88f5945ae3be48bf14e305e5d5cf01f6e54e657a8c3260d1f",
+      "artifactSha256": "dd30e2379c15bf942dd7f6795f3b26c6ea576cdfa078e9a256e48dc913f8cc90"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/unused-native-bundle-source-identity.json",
+      "artifact": "evidence/unused-native-bundle-source-identity.json.gz",
+      "sourceSha256": "8451d16b04fbb72db7682e06d14e8e9d97a913e0c7db67187a4fa28b60c0478f",
+      "artifactSha256": "90892f9ec81daa2fc4a2385b0abf1ec8d80566c2695fb781c8aacd97967a12e5"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/frontend-build.log",
+      "artifact": "evidence/frontend-build.log.gz",
+      "sourceSha256": "accb926c8e892c6191cd116ed20541a8d99d367eb1a019813f32d71a35c72e4c",
+      "artifactSha256": "18e7d72aa7efd8f26f24efe11ea1252ff71571f53ce729c639277862ee02f796"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-confirm-inputs.json",
+      "artifact": "evidence/reader-confirm-inputs.json.gz",
+      "sourceSha256": "c572a7c73336dc82e263583f7d04e399b550efe993e1531022fe4c08c111a8df",
+      "artifactSha256": "e151e9aa47000d2617c78761923025468a25406da8080e39f02183d380ebd4b7"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/container-image.json",
+      "artifact": "evidence/container-image.json.gz",
+      "sourceSha256": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+      "artifactSha256": "ead75b01a977e5c739f82fee2002c50e4704076ab8b16209b3fc47168378dd00"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/host-conditions.json",
+      "artifact": "evidence/host-conditions.json.gz",
+      "sourceSha256": "003c251f91f53c28f88f3ee401bbb48178877f83ca651740967ae9396a2f784d",
+      "artifactSha256": "ab31c19b0c29783b4cf28cc82f09aca857dc5332d78c25569dd1d7ba31d8ad7b"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/PROTOCOL.md",
+      "artifact": "evidence/PROTOCOL.md.gz",
+      "sourceSha256": "6594694b76b23078b5f79a51d563b8d180e3d4c611328e6520c07552b88f052d",
+      "artifactSha256": "c9b6aaa1ad5268e7e628b689fa392f8629dd428d33fdd7e87ed1030c6e92984a"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/result.json",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/result.json.gz",
+      "sourceSha256": "003802638db073ad600389552410f18398349892828babb686b0beedaa4ff5fa",
+      "artifactSha256": "8aa0cab93f3476278aa98264f1c5ede5fb5b5c53194c102823c91638d4744020"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/docker-command.json",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/docker-command.json.gz",
+      "sourceSha256": "3baa50515f6832e1c44440198727fce0246014ac1162171eb7871772a7c7a0d5",
+      "artifactSha256": "17e0b9f286a38113c0844b6b10fe48a5e540e035e440a9838dd81ec5d3801b40"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/console.log",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/console.log.gz",
+      "sourceSha256": "38963c0132f2b9370c5df61ada1a80a81e035e9c94d1e2e556f2d3c01f669eaa",
+      "artifactSha256": "b5fa808ae2d0e641dbd859200fa79a06e5a3ca620a8776c88bb328b7911ce22f"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/container-identity.json",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/container-identity.json.gz",
+      "sourceSha256": "de459a43b3fbff622072c3b78de0fe97345058a3d39a3fc8f24578970aec72cc",
+      "artifactSha256": "8f109fc3f3828a231e10cfc0e79b2e964ac99b37663a8c2252a1724dadc36ffb"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/services.log",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/list.log",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/list.log.gz",
+      "sourceSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "artifactSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/host-load.jsonl",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/host-load.jsonl.gz",
+      "sourceSha256": "f02185dce64cb347bb14424af727c3ad627a8fe0489ffa6caaa4fe8131abc025",
+      "artifactSha256": "42cbdfc5041eded3c53d6d6e7f637840d700e7a7ed5b8e6eac2f76cd5dbb9136"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/reader-idle-S1Y1-polls-on/receipt.json",
+      "artifact": "evidence/reader-idle-S1Y1-polls-on/receipt.json.gz",
+      "sourceSha256": "7719f0d448f5849664f709cd15a1ae37679b5e2077307fcae10a0e6c755c69c9",
+      "artifactSha256": "46456ff5d7312e32be6d08be9d71b2bf77e882a0e089aa86d0f00825ab9a5ec4"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/partial-result.json",
+      "artifact": "evidence/sy-8-S0Y0-withheld/partial-result.json.gz",
+      "sourceSha256": "95ae73feca3b5922c19b0a99ea7a6bf98e1baadf6df72788d751fe73950cdfc5",
+      "artifactSha256": "8edb252c035ac4b7fa78e3ddfc132e35841b6c3f0be2d7b062c63f5e609cf7af"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/result.json",
+      "artifact": "evidence/sy-8-S0Y0-withheld/result.json.gz",
+      "sourceSha256": "4b7bfe687167cf07145aef6615d402146fc8778b6700521545c5d797bfd89d59",
+      "artifactSha256": "329e85085815ecb8f16343477a83c2674fa53866a1b54c39ec5a949aacb2a710"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/docker-command.json",
+      "artifact": "evidence/sy-8-S0Y0-withheld/docker-command.json.gz",
+      "sourceSha256": "a37ff2f39a71186a556bafc624f6325a5440c1d8ddcb2bb5b633dcd0bc8fc67b",
+      "artifactSha256": "fe0d72862d9aef2e70d2eb5082b8c53cb950d758c63a56fb60a0f398e5e33bae"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/console.log",
+      "artifact": "evidence/sy-8-S0Y0-withheld/console.log.gz",
+      "sourceSha256": "ac422a0cd46bff181ed1dcd723b2f559973ea218f5cb3b7947ec39e6e4279110",
+      "artifactSha256": "880a59e10cabe08bf01dcc91fa16c08986174f3f0a01224a4dd1ae8333e6a636"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/container-identity.json",
+      "artifact": "evidence/sy-8-S0Y0-withheld/container-identity.json.gz",
+      "sourceSha256": "9737d4b64f69505f6340da15ad306752d026ef4997bc675e549c82a1c95022a7",
+      "artifactSha256": "61dd31d824c2c79e377340530400f2e325aebeebb7866e0f9d1ac03f5d0def00"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/services.log",
+      "artifact": "evidence/sy-8-S0Y0-withheld/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/list.log",
+      "artifact": "evidence/sy-8-S0Y0-withheld/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/host-load.jsonl",
+      "artifact": "evidence/sy-8-S0Y0-withheld/host-load.jsonl.gz",
+      "sourceSha256": "87b1b835b878c42e2f9f632dd5d3d5bcf082739cacced9a7b96f7081f5a822a8",
+      "artifactSha256": "5729ec98932dfd4463e996ec81de367f656a910cc8f618325e1b1a776b2b80c4"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-8-S0Y0-withheld/receipt.json",
+      "artifact": "evidence/sy-8-S0Y0-withheld/receipt.json.gz",
+      "sourceSha256": "5d7bdb826aa98fd5135d3ea333f17eeea86207cf2193712f1636cf5858339cb3",
+      "artifactSha256": "608b0337a612c260ecdc9a5ede1fded8a4f3852a9639bc2864c070afd8c39974"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/partial-result.json",
+      "artifact": "evidence/sy-7-S1Y1-normal/partial-result.json.gz",
+      "sourceSha256": "3f08b97f80bec5a5e6e7bf6a4ec605db9a0327424563a2b6caa9d1e9eaae9fba",
+      "artifactSha256": "de7354e079381dd5a72425d3bc0f5ded3f5ddc685542f5e176ef5c00dd6e3a04"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/result.json",
+      "artifact": "evidence/sy-7-S1Y1-normal/result.json.gz",
+      "sourceSha256": "3011f047c89b5f5ed875ce2aebac7c9ce4ec1f7bc2d61d2e68a37d0a51097c34",
+      "artifactSha256": "7f2e4ce23ed53cf107c5295e1778706ed924abc4a95ce66b69c5a09fac7406b4"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/docker-command.json",
+      "artifact": "evidence/sy-7-S1Y1-normal/docker-command.json.gz",
+      "sourceSha256": "3100964b33b70b2e2d73c8af27512b58e8e8132c8a2ee1534f56fc5d33699ec1",
+      "artifactSha256": "d262b9fd3e62df7b647357f9ee4a2e0602cba6409107aa83cd648d85361a1b81"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/console.log",
+      "artifact": "evidence/sy-7-S1Y1-normal/console.log.gz",
+      "sourceSha256": "c4c72892a4608fbe01ce40f7d5c5786d0db892b5eb434dd21e04b6dc06a1cbb1",
+      "artifactSha256": "7a738170ec46c3cfe0cc527759dfc1a04479502ba439a911fcfdf01f480b0fbc"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/container-identity.json",
+      "artifact": "evidence/sy-7-S1Y1-normal/container-identity.json.gz",
+      "sourceSha256": "ce939cf64c66716fd012536d2af52fae497af87e8023433d9d46e068c416820f",
+      "artifactSha256": "8477343927a942e5a4cdc6df8917ace79d90918486f96474db2eddc8aaefbaab"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/services.log",
+      "artifact": "evidence/sy-7-S1Y1-normal/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/list.log",
+      "artifact": "evidence/sy-7-S1Y1-normal/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/host-load.jsonl",
+      "artifact": "evidence/sy-7-S1Y1-normal/host-load.jsonl.gz",
+      "sourceSha256": "af4e4ac6f4b473feeb7e46eabd360147c39f0e0292cb65784b0caa5213394991",
+      "artifactSha256": "05f2a6fbc9e1c4420ef9b6b2f01508ca4cf51cfaf8bb9c9d3ed839c86ef0ac64"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-7-S1Y1-normal/receipt.json",
+      "artifact": "evidence/sy-7-S1Y1-normal/receipt.json.gz",
+      "sourceSha256": "49cc2106735712870e1d069fed401cf59bc023dc7332c35cfa3b33aaea19bc27",
+      "artifactSha256": "c3cd5da3af1f9698c4a17a92c66c33ab5edc13cde8aa40f660845145f41f054a"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/partial-result.json",
+      "artifact": "evidence/sy-2-S1Y1-withheld/partial-result.json.gz",
+      "sourceSha256": "a4de457908fc34d9360cb70904fc8c4200e46a8b5c70c9c3271cf6d0021f4fe1",
+      "artifactSha256": "9a03a93d90e098039239b99ec0f8d7cefa8e809aaf2ac935df06da4c1a03a577"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/result.json",
+      "artifact": "evidence/sy-2-S1Y1-withheld/result.json.gz",
+      "sourceSha256": "48881d4ebb7664df99c21d82900bf8d5d5b350517c0967367eb3d564c4ac9506",
+      "artifactSha256": "5a999ae5d42154c8cd273022abe8b3ee042a913b4a82a8680eebdfc73839b05d"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/docker-command.json",
+      "artifact": "evidence/sy-2-S1Y1-withheld/docker-command.json.gz",
+      "sourceSha256": "bc7afb043d5b8d83502c9adaf675e63eae5a277b810d0a56acfba35fcd1d15cd",
+      "artifactSha256": "4be7968b2af1315dddad2a99509e1c46e387938e509fa175dad6e6febaa90d2d"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/console.log",
+      "artifact": "evidence/sy-2-S1Y1-withheld/console.log.gz",
+      "sourceSha256": "49f644d5fd540ff914fa222bb61fba26f5ff0778a364b737b7878e17b69f0137",
+      "artifactSha256": "ec5e7acf30449a9177ad532186cec90bb3ba17c249458fa43fbda3de404471cc"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/container-identity.json",
+      "artifact": "evidence/sy-2-S1Y1-withheld/container-identity.json.gz",
+      "sourceSha256": "993a67364e60cdb4a86b944066e0aa98e2e236c7234206e9169a0c7fa42b49cc",
+      "artifactSha256": "91cc52351cf55e545d8728fcca9d7619ce74ff773017bf8182b06fd9c6acf034"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/services.log",
+      "artifact": "evidence/sy-2-S1Y1-withheld/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/list.log",
+      "artifact": "evidence/sy-2-S1Y1-withheld/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/host-load.jsonl",
+      "artifact": "evidence/sy-2-S1Y1-withheld/host-load.jsonl.gz",
+      "sourceSha256": "e26ee92d356835404ec1f8c06b6bb94bb7d5d957b1228eb6a5c14b296ba276b0",
+      "artifactSha256": "157333bb730877577bc1a422f3dc504f969b3c6c7611cf9f87fd92085e0d6915"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-2-S1Y1-withheld/receipt.json",
+      "artifact": "evidence/sy-2-S1Y1-withheld/receipt.json.gz",
+      "sourceSha256": "13d4728b781960a217bbc15cf5a6348a6dccce468b6637a9cffe577194c5cf2f",
+      "artifactSha256": "346a3389f3c683f455733c46c5e5654902271a4279a38c0b9784e8990caab168"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/partial-result.json",
+      "artifact": "evidence/sy-4-S1Y0-normal/partial-result.json.gz",
+      "sourceSha256": "a59fec4f06dbdad086aec3a86347afcf7f56d0a1f1afddc27da22c642bd1d0d6",
+      "artifactSha256": "14beee5cb25cfa6b123a99f8ea354a11e6ccd02893a84bb836022aefe5efc4d7"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/result.json",
+      "artifact": "evidence/sy-4-S1Y0-normal/result.json.gz",
+      "sourceSha256": "b084be513791b28722c9bf726c42cd6f89d686a9b602ca4a4c39430c1a01b277",
+      "artifactSha256": "93e7d8bb86edb619a3cbc88038f6c14fecf15add2c7e1960ee95bf5ced26291e"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/docker-command.json",
+      "artifact": "evidence/sy-4-S1Y0-normal/docker-command.json.gz",
+      "sourceSha256": "fbd86a8db6e4a229b94943886c6424b63a7338ec469cd07f3b15d3171980ed88",
+      "artifactSha256": "745ce5c84179b207332ee890f457439226de3dd9a7d2eb5fd276db6b9db9a052"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/console.log",
+      "artifact": "evidence/sy-4-S1Y0-normal/console.log.gz",
+      "sourceSha256": "207ba20f047224a7d27ea42b90df587fc5f595ecc07eff03e0cc2832b25e7a72",
+      "artifactSha256": "412d5420d4303ab1858486e69e89bab9eea35743d10b3d2433a20fe4a0ebbf51"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/container-identity.json",
+      "artifact": "evidence/sy-4-S1Y0-normal/container-identity.json.gz",
+      "sourceSha256": "424657cc05013055cc8356ba7818949acdd070d9e9f0d2eabb2447d946506ea3",
+      "artifactSha256": "73b5feb83d80c8dd31f238419bc09344b98efe744c445fabcb071977ab0fa6bc"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/services.log",
+      "artifact": "evidence/sy-4-S1Y0-normal/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/list.log",
+      "artifact": "evidence/sy-4-S1Y0-normal/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/host-load.jsonl",
+      "artifact": "evidence/sy-4-S1Y0-normal/host-load.jsonl.gz",
+      "sourceSha256": "df7d9e3b5a8a1528a722e9f3a1d60ac7dca40ec11844dc2425cf34b93679deaf",
+      "artifactSha256": "86ae8d2f167ee4159cb98c277a4ba1fa5a8dc19f9eafc1186f03abea93877c99"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-4-S1Y0-normal/receipt.json",
+      "artifact": "evidence/sy-4-S1Y0-normal/receipt.json.gz",
+      "sourceSha256": "4bce5dca80108dd777a8619a5ce9b1fb39e54a9d8f47c67636db42ed0625de1b",
+      "artifactSha256": "a62304bddfe14d9382c9889a59bb911eb792d51fee766337fefcac7ca4f7f594"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/partial-result.json",
+      "artifact": "evidence/sy-1-S0Y0-normal/partial-result.json.gz",
+      "sourceSha256": "b47bb0ab5d0dc8e99a1fb04de5ef6fdad516d58829d7474f606befab81f45a44",
+      "artifactSha256": "5f69b3b287cd432189f6134158ba2373de7c4451769704df4e25b1cda2a21cf4"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/result.json",
+      "artifact": "evidence/sy-1-S0Y0-normal/result.json.gz",
+      "sourceSha256": "b5e405852512b8b3387fe6bca1c84abdfaf2dc7f055a7026fbe3c1b5b4486d0f",
+      "artifactSha256": "2cb1cee78781c3513757121e8179ffb8c4f5d8e9d9000e0f36388719e0b95099"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/docker-command.json",
+      "artifact": "evidence/sy-1-S0Y0-normal/docker-command.json.gz",
+      "sourceSha256": "b28127a6abca80cfe82828622089e0902e932111ea92ba49495d565dab9a3fac",
+      "artifactSha256": "a1a950a3216f0059941d1b2a432c165ee10b4b9b191d276dba0b2dce8b98dbab"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/console.log",
+      "artifact": "evidence/sy-1-S0Y0-normal/console.log.gz",
+      "sourceSha256": "d2691e5d069ffd4223173beccf3b86e2de4022af2d428599f6281ad634a1bd84",
+      "artifactSha256": "739525b0f23f4fb3713ab4980d8da967c2a1c857bdf8bac6c6539ca3efe3473d"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/container-identity.json",
+      "artifact": "evidence/sy-1-S0Y0-normal/container-identity.json.gz",
+      "sourceSha256": "6030e8be07e36d923f8a9b54598fa52398bac0d432e8b58548f54fad98a92585",
+      "artifactSha256": "0bcc50be27ff4017545a0a47eea28ecaa87d3a2b1ccd5a3efc853d94c3cd4649"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/services.log",
+      "artifact": "evidence/sy-1-S0Y0-normal/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/list.log",
+      "artifact": "evidence/sy-1-S0Y0-normal/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/host-load.jsonl",
+      "artifact": "evidence/sy-1-S0Y0-normal/host-load.jsonl.gz",
+      "sourceSha256": "43c5b966993f22b7ceb97c85fc82e1a649d9d1a11149ca3ab54135a4b3921cf8",
+      "artifactSha256": "e884faf2580c8f97ba313ef82d66259a1c29854c096e59e28411e820c75baabf"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-1-S0Y0-normal/receipt.json",
+      "artifact": "evidence/sy-1-S0Y0-normal/receipt.json.gz",
+      "sourceSha256": "97bf1e82b5b1d93cc21b50576e356072bb5203b4f8b7cda778561acd46f1ae83",
+      "artifactSha256": "e108b602ec21ad9efeb4b0811d92f5fae9a6f64a1d9fae4fea78e15f379a5f3a"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/partial-result.json",
+      "artifact": "evidence/sy-5-S1Y0-withheld/partial-result.json.gz",
+      "sourceSha256": "c4dffe06df9ce77db825304ce3e3742b21237599e3f1c5c3be278e97b227003e",
+      "artifactSha256": "14110b8d469e83a740942ad9faf9010b04eb17c342f5a7acb8a4f16765ff3d35"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/result.json",
+      "artifact": "evidence/sy-5-S1Y0-withheld/result.json.gz",
+      "sourceSha256": "90a46e2bfd43b5037943770e003dad5018d17733d9de819aced880bcafa5be7b",
+      "artifactSha256": "5b78742e5bfe409ea088bfe7def442c0e48504fa3262a359324f833220bb7e54"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/docker-command.json",
+      "artifact": "evidence/sy-5-S1Y0-withheld/docker-command.json.gz",
+      "sourceSha256": "73efffaf1e571fcfaa25b57249bc3d385c6a0804d33e1fb9008e66c5c76bac31",
+      "artifactSha256": "6aa52862dc20ace10fd2d82205e0a47515da89596dcd8c1a745727975d04f92a"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/console.log",
+      "artifact": "evidence/sy-5-S1Y0-withheld/console.log.gz",
+      "sourceSha256": "59356aaedec91aecdfb04f3471e45dd08d06f83ad8232743b3ae940a92e3b73b",
+      "artifactSha256": "7bc2562b25b2d2591b27e4dde8695f24366e1b4ba8acb799ea7a904fab301dce"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/container-identity.json",
+      "artifact": "evidence/sy-5-S1Y0-withheld/container-identity.json.gz",
+      "sourceSha256": "92b26f5b9d160a1ae74c969b432313ab9513886ca5f66790a4654e1349d07d26",
+      "artifactSha256": "49c5d71efdff42c993d31037d64f6391686989e143a1b0c6ba596fb3e6cc7acc"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/services.log",
+      "artifact": "evidence/sy-5-S1Y0-withheld/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/list.log",
+      "artifact": "evidence/sy-5-S1Y0-withheld/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/host-load.jsonl",
+      "artifact": "evidence/sy-5-S1Y0-withheld/host-load.jsonl.gz",
+      "sourceSha256": "9326b1644a936e7dc0d6174348d0d7df07feb0c866affd6f218b4ec1df3a8474",
+      "artifactSha256": "4d38106cbda6fcb57a59f7a54e47d72f08bed242e633cc7d209b650e1e58ea8b"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-5-S1Y0-withheld/receipt.json",
+      "artifact": "evidence/sy-5-S1Y0-withheld/receipt.json.gz",
+      "sourceSha256": "6990a7225a5e0c211af351e30a96dc3cf4e92bdfd33d5f4bf5dfffa0ca5a6695",
+      "artifactSha256": "f197bee379ccdd0e16d21022a30e2cffa63e903f0180a2d982608bc700555954"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/partial-result.json",
+      "artifact": "evidence/sy-6-S0Y1-normal/partial-result.json.gz",
+      "sourceSha256": "2ccdd572ec62e2f88c941148b4686d77d6601fe82306d4282fcb4f650c4847f1",
+      "artifactSha256": "ca4cd44883f42c18c022dd3d5914014515dad45e79cd16c0e427155d8355fa25"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/result.json",
+      "artifact": "evidence/sy-6-S0Y1-normal/result.json.gz",
+      "sourceSha256": "5c040d88d4186a0c1051357bd04ff5b5e3c82f3d0d9b0822a3ddcce8a00f86d0",
+      "artifactSha256": "e476bf34f7534782498723ebc51d7ee59b7143f788610977dfa9bf9dbce4bc05"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/docker-command.json",
+      "artifact": "evidence/sy-6-S0Y1-normal/docker-command.json.gz",
+      "sourceSha256": "fe62a40ab3b16ad586967f3eaece992606691a92e545022849d3f48cf43787df",
+      "artifactSha256": "56f04d0fba0c9d98bd38117f830571b1617eff7c0453618975c6770598dd9c38"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/console.log",
+      "artifact": "evidence/sy-6-S0Y1-normal/console.log.gz",
+      "sourceSha256": "b14eb986e05712fe51da8dc1b30063789c57c8a731a53f80e88431e2ad5eb1e8",
+      "artifactSha256": "13ceb754276e25659bde77a4b39a13688bd875dad538b887a9cf86292d2a3bd0"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/container-identity.json",
+      "artifact": "evidence/sy-6-S0Y1-normal/container-identity.json.gz",
+      "sourceSha256": "9494ada56e2ebe91f7d07c7ab13d871a3f5d5ba30bb1090b536c2c1110bcfa33",
+      "artifactSha256": "9058ef8bdb02de9a525584e7d31abec3c43be9a42869225fab1123ef42fbe75d"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/services.log",
+      "artifact": "evidence/sy-6-S0Y1-normal/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/list.log",
+      "artifact": "evidence/sy-6-S0Y1-normal/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/host-load.jsonl",
+      "artifact": "evidence/sy-6-S0Y1-normal/host-load.jsonl.gz",
+      "sourceSha256": "952ba01f24ce47e5fc317082b18d531b2bdf96456c289852edb3f881ab5915cf",
+      "artifactSha256": "6a225f3c4edd5f3ed267bd962e2ac859704585b3badd0894a73e154bf516e942"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-6-S0Y1-normal/receipt.json",
+      "artifact": "evidence/sy-6-S0Y1-normal/receipt.json.gz",
+      "sourceSha256": "ae939d9fe402a208ea80f5ffc381b3a02dde3634a0a79fe4b0ea6ca1c62b20db",
+      "artifactSha256": "4ecb082aacd367c921406f48b8324ae30fea44969919fba96418cefb17d06a58"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/partial-result.json",
+      "artifact": "evidence/sy-3-S0Y1-withheld/partial-result.json.gz",
+      "sourceSha256": "a8026c3fc248042874e1fd2366e21f00b22b7ec32b13bea3d266930bd5172a49",
+      "artifactSha256": "1d4cba4c103379ab7f8399883fedf012c8130f539e0b489e657e6dd71988fdc9"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/result.json",
+      "artifact": "evidence/sy-3-S0Y1-withheld/result.json.gz",
+      "sourceSha256": "8f812346d242979494adf2e449e340bcb8266620b7459ec7912b27dd279452ac",
+      "artifactSha256": "c203c3074c795f5c0587442ebf87afbbed5427900f9577387879e191f493cfbe"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/docker-command.json",
+      "artifact": "evidence/sy-3-S0Y1-withheld/docker-command.json.gz",
+      "sourceSha256": "d08fba5715ca525b3cde3f770ff7b736018fc331baaa14b874697c5605ba3ad3",
+      "artifactSha256": "6d7dc46b00b16bc5ada3f61388ca8633587adf3a29cc9cb03f6a9bfdaa2ec135"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/console.log",
+      "artifact": "evidence/sy-3-S0Y1-withheld/console.log.gz",
+      "sourceSha256": "94a45808746bf4b7ae9e836fdab8443f1c2232358f98c75110ffe855a97cd40d",
+      "artifactSha256": "40691fe9af25cde921bd3d98c670f427aa23775fcb4677730cadf94cfb7f4168"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/container-identity.json",
+      "artifact": "evidence/sy-3-S0Y1-withheld/container-identity.json.gz",
+      "sourceSha256": "14e0e4ce61316855b854ae3ad98c5c9349de757c4f65c7a53f2d71c59ab537b2",
+      "artifactSha256": "c4eb2aa4a22ae444686835291d89e59578ec0ca94c7f8680e962272cdb116cb0"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/services.log",
+      "artifact": "evidence/sy-3-S0Y1-withheld/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/list.log",
+      "artifact": "evidence/sy-3-S0Y1-withheld/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/host-load.jsonl",
+      "artifact": "evidence/sy-3-S0Y1-withheld/host-load.jsonl.gz",
+      "sourceSha256": "7205e4ee44096067010ea59825d4f796745ceac2f92b75903f84767df9c9c129",
+      "artifactSha256": "aed310eace8b93111617b1bcb4e48bcca26a1c36e4fbfc60baa6bcd73bdc745c"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/sy-3-S0Y1-withheld/receipt.json",
+      "artifact": "evidence/sy-3-S0Y1-withheld/receipt.json.gz",
+      "sourceSha256": "e01e7664047b7c3d90995b334dae41526995b17db39734d2306955da64322c77",
+      "artifactSha256": "50ff7b3ea991df2ee03edbc0f5f7e6b95a57060ad687cbe6f8c4e3bc72f40c0a"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/host_load.py",
+      "artifact": "apparatus/host_load.py.gz",
+      "sourceSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "artifactSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/run-screen.py",
+      "artifact": "apparatus/run-screen.py.gz",
+      "sourceSha256": "b6fac7468f1eacb4e9214ad3528ad6aa7d0788e2829461028581d70cf2f01d65",
+      "artifactSha256": "0d42726a82acb73cc61602bd7f876924c4782fea61a435423a1b1a2ff7af2e9c",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/run-reader-confirm.py",
+      "artifact": "apparatus/run-reader-confirm.py.gz",
+      "sourceSha256": "9cac402c00f1efa5f7a7acf9fa0f9a5b11dbb55ce38f51beba18436ac5ee2427",
+      "artifactSha256": "46e3a9c2c534f2b126d1e0c1834ca101223cacb64416fa1013f3cda6a257ebbd",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/analyze-screen.py",
+      "artifact": "apparatus/analyze-screen.py.gz",
+      "sourceSha256": "9cf254bb2ef3b2ad544144ea86f5fa38f6351dc84e5a8dca3672cc8454c46c10",
+      "artifactSha256": "1cd65e9ed141dd28fca430037bf777051cd9e76f4ab791c0fa2d15aaace0b916",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/lab-context.mjs",
+      "artifact": "apparatus/lab-context.mjs.gz",
+      "sourceSha256": "9a32a31bd600c2e570553320008aed0685bb91454527718e5acc99aa45073a0b",
+      "artifactSha256": "2339b7196a429470fc7e764f5dc3750466dd4c7e9860fe906a5fc98dd93570fc",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/notification-probe.mjs",
+      "artifact": "apparatus/notification-probe.mjs.gz",
+      "sourceSha256": "179a77f2ed0debbfe257821c61411a4b0b67d32e80bab7333e1f39125bc604f0",
+      "artifactSha256": "53e3b9fea547061617e7f9c6ba2317e0afe36bb4ff4b8532b2193b5ce6756d8a",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/read-request.mjs",
+      "artifact": "apparatus/read-request.mjs.gz",
+      "sourceSha256": "dddcdf4c98fcc778cc1b8e9dcc7dad09934a747b52c009f7a211519eb10960cc",
+      "artifactSha256": "b528a80f6c6ac5179b5efac4c54509ed8542e087aa025396f66abe3cc200d1bd",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/fixture-roles.mjs",
+      "artifact": "apparatus/fixture-roles.mjs.gz",
+      "sourceSha256": "9a7c96ce6d15f7ddb3bc0c0edf290efa58bad57e295cf86a20fda683ac2417e4",
+      "artifactSha256": "fe5abeb0a308f1b9a82add52bcb08ebb7fc57e7733976b06f5a757fde2f2eec3",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/container-service.mjs",
+      "artifact": "apparatus/container-service.mjs.gz",
+      "sourceSha256": "06d8f0564368390850bd50d4e9d32242847e767ef83b21a4f88abc8d225897d1",
+      "artifactSha256": "a33df1225ca57db1a4dad59228e5c156318b4f37bd5773e34ed75f0f0908bb1c",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/scripts/lib/account-gateway.mjs",
+      "artifact": "apparatus/harness/scripts/lib/account-gateway.mjs.gz",
+      "sourceSha256": "0188189dbd7406fda58facd8098b574686c316a2592bff429a5eb84df385401c",
+      "artifactSha256": "ef61d7f5137e11f72188898d74111d811644fe6faff472e63898820a18d55b60",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/grown-maintenance.spec.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/grown-maintenance.spec.ts.gz",
+      "sourceSha256": "363d6df5d254adef16c79dc86dce46a416c60b8308589d5ea7b73c22b0d547c2",
+      "artifactSha256": "0c3431cb15bcfcd1ec5b58ca6ea1e14060dc289a2a55e8171abb461fa4c5e390",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/grown-maintenance.config.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/grown-maintenance.config.ts.gz",
+      "sourceSha256": "45909a9e9b43e1507a96f8eb463ef30fe898cfdb4bd1bc4d2033619c368d66a7",
+      "artifactSha256": "a67a7cb28aa9dd3f18be236525397378b889a12ac1621b789bee115fb56704fa",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "sourceSha256": "0a3993fe1400b5d3291596dee8bdc649da007b33224310494a0b3cd7356b3014",
+      "artifactSha256": "ef1db4ed17195c3e75ad9ebf2456145435969b908b129b62e7d65b6dbaafbf5c",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "sourceSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "artifactSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/capture-maintenance-trace.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/capture-maintenance-trace.ts.gz",
+      "sourceSha256": "32e0d1836fd0e499f0415b3e452a763e30ff5803147c7d45c68f7464c01b4107",
+      "artifactSha256": "fabde8cf16c32cb6f63a5c23596f1d528d2615bf3c518b2b75c73371a134cc6c",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/common.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "sourceSha256": "b5d77db57d2f5db74501483b4cae8eebb47c7e21fd0c6ff6094f75d0a7d49879",
+      "artifactSha256": "7d60ae6fb6ca53f652eb47dfd217aaa267a471e7b30167c90e25cdd4e47db80e",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/seed-profile.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "sourceSha256": "7b18d7d855f06a771a1e3a19359129df82b39cd3d8f9c627f3da88ae7cc8a0fa",
+      "artifactSha256": "01b4e3fc0608083cb1b07e48a587dbba61f8c9d3150fb807c3879e10064d02e0",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/devices.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "sourceSha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77",
+      "artifactSha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/dispatch-probe.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "sourceSha256": "801dd1c895d29b673e54331760455d173e8d22e5f65cb7eeb1f50b5b2748ae64",
+      "artifactSha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415",
+      "kind": "Non-executing diagnostic apparatus"
+    },
+    {
+      "source": "/private/tmp/done-sy-screen-lab-20261031/harness/test/account-continuation-lab/runtime.mjs",
+      "artifact": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "sourceSha256": "3b6d166c2306f07ce91a58feaca07b1eccc766ee2c6f97aaf009e756a2f2c66f",
+      "artifactSha256": "91483753579d853784379af08a9622fbd4ea603444a2ed3214c8ca530401cf47",
+      "kind": "Non-executing diagnostic apparatus"
+    }
+  ]
+}

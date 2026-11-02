@@ -1164,3 +1164,13 @@ cold. Pmay remove duplicated-page pressure but is unbuilt. Keep all later P/V/R/
 screens, reader diagnostics in every grown/index case, all security/compatibility holds and
 no-hardening rule. See
 [phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase311
+
+Next isolated Pdense-receipt build and interior-page-cut/cold probe, then P/Vandremainingordered
+screens using S1Y1. Writer completion now passes both hint conditions in that arm, while reader
+capacity remains. Include reader completion/journal/capacity in every grown/index case and
+preparation bytes in Pcomparison. All originalgates/limits,3replicates/anyfailure rule,Vcomparison
+only,defaultoffwriter/serviceautomationoff remain; no hardening. See
+[phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).

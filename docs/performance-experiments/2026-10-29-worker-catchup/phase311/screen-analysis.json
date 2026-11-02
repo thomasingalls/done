@@ -1,0 +1,1259 @@
+[
+  {
+    "name": "sy-1-S0Y0-normal",
+    "config": "grown-maintenance",
+    "withhold": false,
+    "idlePause": false,
+    "SY": "00",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 1,
+    "startedAt": 1793447543.952517,
+    "finishedAt": 1793447835.404856,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 14,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 29039857,
+        "durableBytes": 29094383,
+        "durablePeakBytes": 29094383,
+        "durableDeltas": 12,
+        "durableChunks": 121,
+        "byteCap": 33554432,
+        "lastStage": "reading",
+        "lastOutcome": null,
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793447724220,
+            "notBefore": 1793447830479,
+            "attempt": 12,
+            "at": 1793447770487.8
+          }
+        ],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 17,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 20319164,
+        "durableBytes": 20555829,
+        "durablePeakBytes": 20555829,
+        "durableDeltas": 13,
+        "durableChunks": 84,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793447586620,
+            "notBefore": 1793447636699,
+            "attempt": 2,
+            "at": 1793447576700.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793447645893,
+            "notBefore": 1793447725114,
+            "attempt": 8,
+            "at": 1793447665118.9
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793447724599,
+            "notBefore": 1793447799662,
+            "attempt": 13,
+            "at": 1793447739668.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793447724599,
+            "notBefore": 1793447870990,
+            "attempt": 17,
+            "at": 1793447810999.5999
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "not reached",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "error": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "peerP95Ms": 1430.779296875,
+    "peerWorstMarkerMs": 1370.359619140625,
+    "inputP95Ms": 4.313232421875,
+    "inputWorstMarkerMs": 6.239501953125,
+    "overlapKeys": 120,
+    "backlogMs": 150312.73803710938,
+    "finalNewDeliveryMs": 1876.046875,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": false,
+      "bothColdExact": false
+    },
+    "hostBusyMedian": 47.458640621885586,
+    "hostBusyMax": 74.26177174780527
+  },
+  {
+    "name": "sy-2-S1Y1-withheld",
+    "config": "grown-maintenance",
+    "withhold": true,
+    "idlePause": false,
+    "SY": "11",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 0,
+    "startedAt": 1793447836.2772238,
+    "finishedAt": 1793448017.956351,
+    "outcome": "passed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 2,
+        "completions": 0,
+        "capacityRefusals": 1,
+        "maxMapBytes": 33551105,
+        "durableBytes": 28709079,
+        "durablePeakBytes": 28709079,
+        "durableDeltas": 1,
+        "durableChunks": 110,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "threw",
+          "name": "Error"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 7,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 22410014,
+        "durableBytes": 19021581,
+        "durablePeakBytes": 19021581,
+        "durableDeltas": 3,
+        "durableChunks": 74,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 46602.89013671875,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793447877043,
+            "notBefore": 1793447877055,
+            "attempt": 2,
+            "at": 1793447867056.2998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793447936257,
+            "notBefore": 1793447946894,
+            "attempt": 3,
+            "at": 1793447936898.2998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793447936257,
+            "notBefore": 1793447966523,
+            "attempt": 6,
+            "at": 1793447956527.9
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 1743.176025390625,
+    "peerWorstMarkerMs": 1434.46435546875,
+    "inputP95Ms": 3.55224609375,
+    "inputWorstMarkerMs": 3.261474609375,
+    "overlapKeys": 120,
+    "backlogMs": 127006.41870117188,
+    "finalNewDeliveryMs": 1870.285400390625,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 47.57823400438509,
+    "hostBusyMax": 60.10733452593918
+  },
+  {
+    "name": "sy-3-S0Y1-withheld",
+    "config": "grown-maintenance",
+    "withhold": true,
+    "idlePause": false,
+    "SY": "01",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 1,
+    "startedAt": 1793448018.8670259,
+    "finishedAt": 1793448311.1619751,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 18,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 29019219,
+        "durableBytes": 29073675,
+        "durablePeakBytes": 29073675,
+        "durableDeltas": 11,
+        "durableChunks": 120,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448178469,
+            "notBefore": 1793448196221,
+            "attempt": 2,
+            "at": 1793448186227.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199433,
+            "notBefore": 1793448211809,
+            "attempt": 3,
+            "at": 1793448201815.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199433,
+            "notBefore": 1793448222322,
+            "attempt": 4,
+            "at": 1793448212132.4
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199433,
+            "notBefore": 1793448249118,
+            "attempt": 8,
+            "at": 1793448238927.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199433,
+            "notBefore": 1793448266475,
+            "attempt": 10,
+            "at": 1793448256284.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199433,
+            "notBefore": 1793448303260,
+            "attempt": 16,
+            "at": 1793448293068.9
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199433,
+            "notBefore": 1793448319727,
+            "attempt": 18,
+            "at": 1793448309535.8
+          }
+        ],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 36,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 20381697,
+        "durableBytes": 20913950,
+        "durablePeakBytes": 20913950,
+        "durableDeltas": 28,
+        "durableChunks": 99,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": null,
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448120391,
+            "notBefore": 1793448148597,
+            "attempt": 8,
+            "at": 1793448138601.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448120391,
+            "notBefore": 1793448165563,
+            "attempt": 11,
+            "at": 1793448155568.1
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448197028,
+            "notBefore": 1793448197330,
+            "attempt": 15,
+            "at": 1793448187336.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199834,
+            "notBefore": 1793448225047,
+            "attempt": 20,
+            "at": 1793448214857.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199834,
+            "notBefore": 1793448265932,
+            "attempt": 28,
+            "at": 1793448255741.1
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199834,
+            "notBefore": 1793448284968,
+            "attempt": 31,
+            "at": 1793448274777.4001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448199834,
+            "notBefore": 1793448304779,
+            "attempt": 34,
+            "at": 1793448294588.1
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "not reached",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "error": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "peerP95Ms": 1784.96826171875,
+    "peerWorstMarkerMs": 1906.4697265625,
+    "inputP95Ms": 3.732177734375,
+    "inputWorstMarkerMs": 3.7001953125,
+    "overlapKeys": 120,
+    "backlogMs": 133088.314453125,
+    "finalNewDeliveryMs": 1877.698974609375,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": false,
+      "bothColdExact": false
+    },
+    "hostBusyMedian": 55.9735841504903,
+    "hostBusyMax": 93.3941198362486
+  },
+  {
+    "name": "sy-4-S1Y0-normal",
+    "config": "grown-maintenance",
+    "withhold": false,
+    "idlePause": false,
+    "SY": "10",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 1,
+    "startedAt": 1793448312.257164,
+    "finishedAt": 1793448600.314187,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 3,
+        "completions": 0,
+        "capacityRefusals": 1,
+        "maxMapBytes": 33553160,
+        "durableBytes": 28670542,
+        "durablePeakBytes": 28670542,
+        "durableDeltas": 1,
+        "durableChunks": 110,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "threw",
+          "name": "Error"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448489163,
+            "notBefore": 1793448557349,
+            "attempt": 2,
+            "at": 1793448497347.9001
+          }
+        ],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 6,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 12534279,
+        "durableBytes": 12602109,
+        "durablePeakBytes": 12602109,
+        "durableDeltas": 2,
+        "durableChunks": 49,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448356243,
+            "notBefore": 1793448406358,
+            "attempt": 2,
+            "at": 1793448346358.4
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448415529,
+            "notBefore": 1793448476191,
+            "attempt": 3,
+            "at": 1793448416190.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448486995,
+            "notBefore": 1793448537300,
+            "attempt": 4,
+            "at": 1793448477298.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448489581,
+            "notBefore": 1793448602277,
+            "attempt": 6,
+            "at": 1793448542275
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "not reached",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "error": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "peerP95Ms": 1689.51171875,
+    "peerWorstMarkerMs": 1289.774169921875,
+    "inputP95Ms": 7.275634765625,
+    "inputWorstMarkerMs": 3.973876953125,
+    "overlapKeys": 120,
+    "backlogMs": 145781.041015625,
+    "finalNewDeliveryMs": 1870.25341796875,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": false,
+      "bothColdExact": false
+    },
+    "hostBusyMedian": 45.00444724389948,
+    "hostBusyMax": 81.28724672228844
+  },
+  {
+    "name": "sy-5-S1Y0-withheld",
+    "config": "grown-maintenance",
+    "withhold": true,
+    "idlePause": false,
+    "SY": "10",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 0,
+    "startedAt": 1793448601.1805902,
+    "finishedAt": 1793448787.887842,
+    "outcome": "passed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 2,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 29017003,
+        "durableBytes": 28699335,
+        "durablePeakBytes": 28699335,
+        "durableDeltas": 1,
+        "durableChunks": 110,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448757815,
+            "notBefore": 1793448826355,
+            "attempt": 2,
+            "at": 1793448766353.5
+          }
+        ],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 5,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 22398136,
+        "durableBytes": 19036436,
+        "durablePeakBytes": 19036436,
+        "durableDeltas": 3,
+        "durableChunks": 74,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 24140.987548828125,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793448642516,
+            "notBefore": 1793448692630,
+            "attempt": 2,
+            "at": 1793448632630
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 1822.447021484375,
+    "peerWorstMarkerMs": 1992.58154296875,
+    "inputP95Ms": 3.75732421875,
+    "inputWorstMarkerMs": 3.57470703125,
+    "overlapKeys": 120,
+    "backlogMs": 130218.83374023438,
+    "finalNewDeliveryMs": 1871.5888671875,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 44.321700164868645,
+    "hostBusyMax": 68.28978622327791
+  },
+  {
+    "name": "sy-6-S0Y1-normal",
+    "config": "grown-maintenance",
+    "withhold": false,
+    "idlePause": false,
+    "SY": "01",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 1,
+    "startedAt": 1793448788.799403,
+    "finishedAt": 1793449097.163855,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 16,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 28994212,
+        "durableBytes": 29048591,
+        "durablePeakBytes": 29048591,
+        "durableDeltas": 11,
+        "durableChunks": 120,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448985854,
+            "notBefore": 1793449001928,
+            "attempt": 2,
+            "at": 1793448991926.1
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448985854,
+            "notBefore": 1793449022078,
+            "attempt": 5,
+            "at": 1793449012075.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448985854,
+            "notBefore": 1793449038767,
+            "attempt": 7,
+            "at": 1793449028765.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448985854,
+            "notBefore": 1793449057880,
+            "attempt": 9,
+            "at": 1793449047877.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448985854,
+            "notBefore": 1793449098678,
+            "attempt": 16,
+            "at": 1793449088675.1
+          }
+        ],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 37,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 20576618,
+        "durableBytes": 20862978,
+        "durablePeakBytes": 20862978,
+        "durableDeltas": 26,
+        "durableChunks": 95,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": null,
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448831411,
+            "notBefore": 1793448831531,
+            "attempt": 2,
+            "at": 1793448821531.2998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448890709,
+            "notBefore": 1793448901776,
+            "attempt": 3,
+            "at": 1793448891775.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448890709,
+            "notBefore": 1793448922184,
+            "attempt": 7,
+            "at": 1793448912182.7998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448890709,
+            "notBefore": 1793448941009,
+            "attempt": 10,
+            "at": 1793448931008.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448890709,
+            "notBefore": 1793448977948,
+            "attempt": 18,
+            "at": 1793448967946.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448986245,
+            "notBefore": 1793448996508,
+            "attempt": 19,
+            "at": 1793448986506.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448986245,
+            "notBefore": 1793449015014,
+            "attempt": 22,
+            "at": 1793449005011.7998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448986245,
+            "notBefore": 1793449054809,
+            "attempt": 30,
+            "at": 1793449044807.0999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448986245,
+            "notBefore": 1793449074754,
+            "attempt": 33,
+            "at": 1793449064751
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793448986245,
+            "notBefore": 1793449091170,
+            "attempt": 35,
+            "at": 1793449081167.5
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "not reached",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "error": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "peerP95Ms": 1635.672607421875,
+    "peerWorstMarkerMs": 1569.016845703125,
+    "inputP95Ms": 7.695068359375,
+    "inputWorstMarkerMs": 3.5859375,
+    "overlapKeys": 120,
+    "backlogMs": 166711.09008789062,
+    "finalNewDeliveryMs": 1881.23046875,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": false,
+      "bothColdExact": false
+    },
+    "hostBusyMedian": 62.77778057727969,
+    "hostBusyMax": 79.10625620655412
+  },
+  {
+    "name": "sy-7-S1Y1-normal",
+    "config": "grown-maintenance",
+    "withhold": false,
+    "idlePause": false,
+    "SY": "11",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 0,
+    "startedAt": 1793449098.033231,
+    "finishedAt": 1793449303.850715,
+    "outcome": "passed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 0,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": null,
+        "durableBytes": null,
+        "durablePeakBytes": null,
+        "durableDeltas": 0,
+        "durableChunks": null,
+        "byteCap": 33554432,
+        "lastStage": null,
+        "lastOutcome": null,
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [],
+        "traceOverflow": 0,
+        "statusAtCapture": {
+          "phase": "idle"
+        },
+        "diagnostic": "No attempt in observed window; reader diagnostics censored at original cold step"
+      },
+      {
+        "role": "writer",
+        "attempts": 7,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 22338746,
+        "durableBytes": 17849060,
+        "durablePeakBytes": 17849060,
+        "durableDeltas": 3,
+        "durableChunks": 69,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 48935.80419921875,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793449141664,
+            "notBefore": 1793449141734,
+            "attempt": 2,
+            "at": 1793449131734.4
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793449200942,
+            "notBefore": 1793449212634,
+            "attempt": 3,
+            "at": 1793449202633.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793449200942,
+            "notBefore": 1793449232598,
+            "attempt": 6,
+            "at": 1793449222597.3
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 1580.060791015625,
+    "peerWorstMarkerMs": 1487.801025390625,
+    "inputP95Ms": 6.72412109375,
+    "inputWorstMarkerMs": 7.047607421875,
+    "overlapKeys": 120,
+    "backlogMs": 166429.38403320312,
+    "finalNewDeliveryMs": 879.587158203125,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 62.1565036115187,
+    "hostBusyMax": 84.76692022625318
+  },
+  {
+    "name": "sy-8-S0Y0-withheld",
+    "config": "grown-maintenance",
+    "withhold": true,
+    "idlePause": false,
+    "SY": "00",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExitCode": 1,
+    "startedAt": 1793449304.881536,
+    "finishedAt": 1793449607.955925,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 8,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 28920103,
+        "durableBytes": 28971156,
+        "durablePeakBytes": 28971156,
+        "durableDeltas": 6,
+        "durableChunks": 115,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793449496449,
+            "notBefore": 1793449557527,
+            "attempt": 3,
+            "at": 1793449497525.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793449496449,
+            "notBefore": 1793449635260,
+            "attempt": 8,
+            "at": 1793449575257.7
+          }
+        ],
+        "traceOverflow": 0
+      },
+      {
+        "role": "writer",
+        "attempts": 15,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 17565710,
+        "durableBytes": 17749898,
+        "durablePeakBytes": 17749898,
+        "durableDeltas": 11,
+        "durableChunks": 73,
+        "byteCap": 33554432,
+        "lastStage": "reading",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793449347084,
+            "notBefore": 1793449397392,
+            "attempt": 2,
+            "at": 1793449337392.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793449406574,
+            "notBefore": 1793449471079,
+            "attempt": 4,
+            "at": 1793449411078.9001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793449496779,
+            "notBefore": 1793449566381,
+            "attempt": 10,
+            "at": 1793449506379
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": false,
+            "retryMs": 60000,
+            "quietUntil": 1793449496779,
+            "notBefore": 1793449640929,
+            "attempt": 15,
+            "at": 1793449580926
+          }
+        ],
+        "traceOverflow": 0
+      }
+    ],
+    "cold": "not reached",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "error": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "peerP95Ms": 1941.304931640625,
+    "peerWorstMarkerMs": 1724.56005859375,
+    "inputP95Ms": 5.943359375,
+    "inputWorstMarkerMs": 3.42431640625,
+    "overlapKeys": 120,
+    "backlogMs": 141380.73364257812,
+    "finalNewDeliveryMs": 1874.889892578125,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": false,
+      "bothColdExact": false
+    },
+    "hostBusyMedian": 60.083698684734955,
+    "hostBusyMax": 78.82587064676616
+  }
+]
