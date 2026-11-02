@@ -838,3 +838,8 @@ Phase251: measure existing guarded verified-selection path before writing new re
 ## 2026-10-30 — phase252: verified-selection control outcomes
 
 Phase252: next bounded input-delay attribution with event/longtask/driver timing, original16ms/2.5s unchanged. Existing verified path is useful; all earlier disabled gate/throughput/cold concerns remain. No release prep or acceptance claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).
+
+
+## 2026-10-30 — phase253: input-delay attribution protocol
+
+Phase253: attribute pre-beforeinput stall before any product repair. Preserve38ms input failure, disabled2526ms marker failure and15s cold control failure. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).

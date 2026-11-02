@@ -18066,3 +18066,8 @@ Five original native guard cases pass without changes/skips, including authority
 ## 2026-10-30 — phase252: verified-selection control outcomes
 
 Same-source control enabled156.551/145.927s versus disabled236.067/244.416s, later disabled timed281.117s then15s cold-opening guard fails. Enabled withheld peer/markers/cold pass but localp9538.222ms fails16. All raw failures retained; actual beforeinput→DOMp950.8ms narrows attribution only. Exact resources absent; no source change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).
+
+
+## 2026-10-30 — phase253: input-delay attribution protocol
+
+Prepared and discovered1 metadata-only input diagnostic, armed after fictional unlock. Original gates/deadlines retained, finally-safe bounded metadata and no factors/writing/proofs recorded. Source stays248 and warm1artifact251; no diagnostic result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).

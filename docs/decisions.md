@@ -6422,3 +6422,8 @@ Control same248source with existing WARM_LOADS0vs1 path, preserve all checks/def
 ## 2026-10-30 — phase252: verified-selection control outcomes
 
 Existing guarded selection materially reduces catch-up on same248source, but retain19.1% disabled drift, failed15s cold control and enabled-withheld38.222ms input failure. No profile-switch gate waiver/default edit. Raw delay precedes beforeinput; distinguish renderer queueing from driver/CDP delay before a repair. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).
+
+
+## 2026-10-30 — phase253: input-delay attribution protocol
+
+Distinguish renderer queueing from driver/CDP delay using actual browser event creation/processing, Long Tasks/frame gaps and driver heartbeat; do not replace failed16ms gate with fast beforeinput handler time. One metadata-only isolated withheld diagnostic, actual source/assets unchanged, no acceptance credit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).
