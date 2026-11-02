@@ -18021,3 +18021,8 @@ Four matched ABBA functional/cold/archive journeys pass. Worker backlog+4.03%/+3
 ## 2026-10-29 — phase243: late-marker attribution protocol
 
 Matched results frozen242 before attribution. Coarse raw timeline identifies publication plus receiver sweep wait. Prepared isolated trace build: reverse edits recover863 exact signed inputs,397 source-map bodies match; workload/assertions unchanged. Two guarded source-preparation anchor failures retained before any diagnostic journey. No diagnostic outcome yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).
+
+
+## 2026-10-30 — phase244: invalid midnight diagnostic retained
+
+Phase243 diagnostic fails original30s final-delivery; both backlog checks complete but archive/cold not reached. Observed frozen card after real midnight explains calendar-invalid fixture; detailed collector was after failed assertion and lost events. Exact container absent. Failure and limitations retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).

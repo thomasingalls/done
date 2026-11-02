@@ -6377,3 +6377,8 @@ Treat dated100s and200s trajectories as unmatched. Under fixed current condition
 ## 2026-10-29 — phase243: late-marker attribution protocol
 
 Separate latency attribution from matched performance: timestamp-only diagnostic copy, no behavior/check/deadline change and no acceptance credit. One fresh two-receiver journey, retain all original misses and diagnostic overhead limitations. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).
+
+
+## 2026-10-30 — phase244: invalid midnight diagnostic retained
+
+Classify midnight diagnostic invalid: actual three-day freeze crossed during run, frozen DOM observed, late attempt never submitted. Preserve original30s failure and lost post-assertion trace; no security bypass or performance credit. Correct civil-calendar apparatus and failure-safe capture separately. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).

@@ -793,3 +793,8 @@ Phase242: apparent2x Worker catch-up slowdown not reproduced under matched curre
 ## 2026-10-29 — phase243: late-marker attribution protocol
 
 Phase243: trace scheduler send wait/prelude and receiver quiet-stream sweep on separately identified diagnostic. Keep2.5s gate blocked and security checks unchanged; do not lower publication timing or prioritize an unauthenticated publisher hint. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).
+
+
+## 2026-10-30 — phase244: invalid midnight diagnostic retained
+
+Phase244: original matched latency misses remain. Detailed attribution pending corrected civil-date fixture and finally-safe trace collector; do not infer upload/authority failure from a keyboard attempt against a frozen card. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).
