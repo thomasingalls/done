@@ -1252,3 +1252,7 @@ Device1single500all3policies and repaireddeep0nowfunctionally/coldexact; no acce
 ### 2026-11-01 — Phase332: checkpoint comparison measured; idle-audit arm next
 
 Matched checkpoint cuts return visibility18.939→2.363s/26.243→2.760s at0/50ms on1024corpus, all primaryarchive/Undo/cold exact. Loadedproducer/admitterinputp95under16ms inthislab; install itself n0/1unexposed. Keep unresolvedone-offdownloadobservationtimeout visible, no browser20limit claim. Automatic service history remains off; no default/format/trust changes. Proceed idle-warm-audit arm with full oracle/guards/hardrowbound, same329fixture. [Allattempts](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md).
+
+### 2026-11-01 — Phase333: idle-audit evidence available, no candidate promoted
+
+Twelve declared paired journeys and per-audit/read-turn/native-queue observations preserved, functional maintenance/cold exact. Consult every directional predicate before selecting further work; no default/hardening/landing or release preparation. The reference-policy input outlier remains unresolved by this two-policy screen. [Results](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md).

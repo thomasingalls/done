@@ -1,0 +1,1844 @@
+[
+  {
+    "policy": "coordinated-2000",
+    "workload": "paired150",
+    "rtt": 0,
+    "n": 3,
+    "functionalPasses": 3,
+    "coldExact": 3,
+    "allMeasuredPasses": 0,
+    "cellPass": false,
+    "runs": [
+      {
+        "name": "paired333-r1-d0-coordinated-2000-attempt2",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 327,
+        "writeAttempts": 44,
+        "quietReadsDelta": [
+          135,
+          146
+        ],
+        "admittedBudget": {
+          "acquired": 403,
+          "refunded": 0,
+          "netUnits": 403,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 327,
+            "/account/delivery/submit": 44,
+            "/account/history/v1/checkpoint": 16,
+            "/account/membership/v2/discover": 16
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.997314453125,
+              "p95": 153.65234375,
+              "max": 169.056396484375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.364990234375,
+              "p95": 6.540771484375,
+              "max": 22.2744140625
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.18603515625,
+                "p95": 8.270751953125,
+                "max": 11.79248046875
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1612.107666015625,
+                "p95": 2552.1064453125,
+                "max": 2776.35888671875
+              }
+            },
+            "markerLatency": {
+              "local": [
+                7.947998046875,
+                4.25439453125,
+                3.3271484375
+              ],
+              "peer": [
+                2796.01904296875,
+                1013.82568359375,
+                894.598388671875
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.35888671875,
+              1.208251953125
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.630126953125,
+              0.97802734375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.037353515625,
+              "p95": 153.171142578125,
+              "max": 166.271728515625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.41552734375,
+              "p95": 5.735107421875,
+              "max": 20.25439453125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1819.2080078125,
+                "p95": 2816.537353515625,
+                "max": 6953.777099609375
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.23095703125,
+                "p95": 8.3291015625,
+                "max": 13.912109375
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3004.693115234375,
+                1214.466064453125,
+                6054.455078125
+              ],
+              "local": [
+                7.264404296875,
+                12.437255859375,
+                2.826416015625
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.35888671875,
+              1.208251953125
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.630126953125,
+              0.97802734375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ]
+      },
+      {
+        "name": "paired333-r2-d0-coordinated-2000",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 319,
+        "writeAttempts": 44,
+        "quietReadsDelta": [
+          135,
+          144
+        ],
+        "admittedBudget": {
+          "acquired": 395,
+          "refunded": 0,
+          "netUnits": 395,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 319,
+            "/account/delivery/submit": 44,
+            "/account/history/v1/checkpoint": 16,
+            "/account/membership/v2/discover": 16
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.020751953125,
+              "p95": 153.673828125,
+              "max": 157.211181640625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.395263671875,
+              "p95": 6.67822265625,
+              "max": 17.96875
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.35498046875,
+                "p95": 8.430419921875,
+                "max": 13.212890625
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1612.987060546875,
+                "p95": 2565.790283203125,
+                "max": 2789.234375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.65087890625,
+                3.510009765625,
+                4.357421875
+              ],
+              "peer": [
+                2804.351806640625,
+                1226.810791015625,
+                918.558349609375
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.3994140625,
+              1.487548828125
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.200439453125,
+              1.54150390625
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.09619140625,
+              "p95": 153.78564453125,
+              "max": 157.09375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.363037109375,
+              "p95": 6.271484375,
+              "max": 13.14306640625
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1832.721923828125,
+                "p95": 2810.15380859375,
+                "max": 6890.611083984375
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.304931640625,
+                "p95": 8.70703125,
+                "max": 12.0078125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3036.99462890625,
+                1232.893310546875,
+                6143.124267578125
+              ],
+              "local": [
+                2.695556640625,
+                2.89404296875,
+                3.625244140625
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.3994140625,
+              1.487548828125
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.200439453125,
+              1.54150390625
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ]
+      },
+      {
+        "name": "paired333-r3-d0-coordinated-2000",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 319,
+        "writeAttempts": 44,
+        "quietReadsDelta": [
+          135,
+          144
+        ],
+        "admittedBudget": {
+          "acquired": 393,
+          "refunded": 0,
+          "netUnits": 393,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 319,
+            "/account/delivery/submit": 44,
+            "/account/history/v1/checkpoint": 15,
+            "/account/membership/v2/discover": 15
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.861572265625,
+              "p95": 153.89599609375,
+              "max": 165.8212890625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.446533203125,
+              "p95": 6.85400390625,
+              "max": 19.17578125
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.322509765625,
+                "p95": 9.034912109375,
+                "max": 19.706298828125
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1621.524658203125,
+                "p95": 2564.54248046875,
+                "max": 2801.2763671875
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.3701171875,
+                5.568359375,
+                2.736083984375
+              ],
+              "peer": [
+                2812.846435546875,
+                1188.144775390625,
+                889.51220703125
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.14501953125,
+              1.603271484375
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.121337890625,
+              1.4033203125
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.871826171875,
+              "p95": 153.78125,
+              "max": 165.359619140625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.3193359375,
+              "p95": 6.940673828125,
+              "max": 17.521240234375
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1786.407958984375,
+                "p95": 2740.89111328125,
+                "max": 3031.6796875
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.233154296875,
+                "p95": 9.107177734375,
+                "max": 17.834228515625
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3041.00634765625,
+                1216.7333984375,
+                1258.46875
+              ],
+              "local": [
+                2.58251953125,
+                8.40966796875,
+                3.14501953125
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.14501953125,
+              1.603271484375
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.121337890625,
+              1.4033203125
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "policy": "immediate-inflight",
+    "workload": "paired150",
+    "rtt": 50,
+    "n": 3,
+    "functionalPasses": 3,
+    "coldExact": 3,
+    "allMeasuredPasses": 0,
+    "cellPass": false,
+    "runs": [
+      {
+        "name": "paired333-r1-d50-immediate-inflight",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 292,
+        "writeAttempts": 123,
+        "quietReadsDelta": [
+          35,
+          82
+        ],
+        "admittedBudget": {
+          "acquired": 451,
+          "refunded": 0,
+          "netUnits": 451,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 101,
+            "/account/delivery/read-v2-batch": 191,
+            "/account/delivery/submit": 123,
+            "/account/history/v1/checkpoint": 18,
+            "/account/membership/v2/discover": 18
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.04541015625,
+              "p95": 151.89453125,
+              "max": 159.49267578125
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.19873046875,
+              "p95": 3.448974609375,
+              "max": 20.08349609375
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.102783203125,
+                "p95": 3.782470703125,
+                "max": 6.177001953125
+              },
+              "peer": {
+                "n": 300,
+                "p50": 2317.86279296875,
+                "p95": 4615.082763671875,
+                "max": 5344.849365234375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                10.265625,
+                2.500732421875,
+                3.49951171875
+              ],
+              "peer": [
+                1565.771484375,
+                3699.40673828125,
+                1006.605224609375
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.293701171875,
+              1.4951171875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.399658203125,
+              1.3544921875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 46,
+            "positionsPer100Keys": 15.333333333333334,
+            "positionsPer100InputCommands": 15.181518151815181,
+            "acceptedRowDelta": 46
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.945068359375,
+              "p95": 152.58349609375,
+              "max": 158.713134765625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.385498046875,
+              "p95": 3.764892578125,
+              "max": 18.96533203125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 10633.0888671875,
+                "p95": 17251.163818359375,
+                "max": 19501.54736328125
+              },
+              "local": {
+                "n": 300,
+                "p50": 2.788330078125,
+                "p95": 3.696044921875,
+                "max": 11.3798828125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3430.971923828125,
+                14641.781005859375,
+                6808.546875
+              ],
+              "local": [
+                9.477783203125,
+                2.98681640625,
+                2.7529296875
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.293701171875,
+              1.4951171875
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.399658203125,
+              1.3544921875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 77,
+            "positionsPer100Keys": 25.666666666666668,
+            "positionsPer100InputCommands": 25.41254125412541,
+            "acceptedRowDelta": 77
+          }
+        ]
+      },
+      {
+        "name": "paired333-r2-d50-immediate-inflight",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 305,
+        "writeAttempts": 124,
+        "quietReadsDelta": [
+          38,
+          77
+        ],
+        "admittedBudget": {
+          "acquired": 465,
+          "refunded": 0,
+          "netUnits": 465,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 98,
+            "/account/delivery/read-v2-batch": 207,
+            "/account/delivery/submit": 124,
+            "/account/history/v1/checkpoint": 18,
+            "/account/membership/v2/discover": 18
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.059326171875,
+              "p95": 152.83251953125,
+              "max": 155.456787109375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.147216796875,
+              "p95": 3.855712890625,
+              "max": 13.80419921875
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.001220703125,
+                "p95": 4.067626953125,
+                "max": 9.452392578125
+              },
+              "peer": {
+                "n": 300,
+                "p50": 2457.09814453125,
+                "p95": 4720.63671875,
+                "max": 5353.400146484375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.629150390625,
+                2.97265625,
+                2.60986328125
+              ],
+              "peer": [
+                2087.574951171875,
+                4870.318359375,
+                1430.0556640625
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.3134765625,
+              1.4169921875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.359130859375,
+              1.3076171875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 46,
+            "positionsPer100Keys": 15.333333333333334,
+            "positionsPer100InputCommands": 15.181518151815181,
+            "acceptedRowDelta": 46
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.0302734375,
+              "p95": 152.550048828125,
+              "max": 167.6640625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.2216796875,
+              "p95": 3.75927734375,
+              "max": 20.789306640625
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 10707.58203125,
+                "p95": 17530.802734375,
+                "max": 19779.907470703125
+              },
+              "local": {
+                "n": 300,
+                "p50": 2.935546875,
+                "p95": 3.723876953125,
+                "max": 19.1708984375
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3516.504150390625,
+                14785.982666015625,
+                7101.885009765625
+              ],
+              "local": [
+                3.149658203125,
+                2.5283203125,
+                3.230712890625
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.3134765625,
+              1.4169921875
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.359130859375,
+              1.3076171875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 78,
+            "positionsPer100Keys": 26.0,
+            "positionsPer100InputCommands": 25.742574257425744,
+            "acceptedRowDelta": 78
+          }
+        ]
+      },
+      {
+        "name": "paired333-r3-d50-immediate-inflight",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 290,
+        "writeAttempts": 124,
+        "quietReadsDelta": [
+          37,
+          75
+        ],
+        "admittedBudget": {
+          "acquired": 450,
+          "refunded": 0,
+          "netUnits": 450,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 97,
+            "/account/delivery/read-v2-batch": 193,
+            "/account/delivery/submit": 124,
+            "/account/history/v1/checkpoint": 18,
+            "/account/membership/v2/discover": 18
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.97119140625,
+              "p95": 152.2109375,
+              "max": 158.156005859375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.228759765625,
+              "p95": 3.742431640625,
+              "max": 14.19677734375
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 2.98291015625,
+                "p95": 4.02197265625,
+                "max": 9.39794921875
+              },
+              "peer": {
+                "n": 300,
+                "p50": 2730.2802734375,
+                "p95": 5043.253662109375,
+                "max": 6640.700927734375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.41259765625,
+                3.13720703125,
+                2.359130859375
+              ],
+              "peer": [
+                1641.560302734375,
+                1691.18505859375,
+                5434.007080078125
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.165771484375,
+              1.46337890625
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.3134765625,
+              1.24169921875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 46,
+            "positionsPer100Keys": 15.333333333333334,
+            "positionsPer100InputCommands": 15.181518151815181,
+            "acceptedRowDelta": 46
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.900146484375,
+              "p95": 153.225830078125,
+              "max": 158.70654296875
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.301025390625,
+              "p95": 4.203857421875,
+              "max": 13.273193359375
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 10875.009521484375,
+                "p95": 17226.55908203125,
+                "max": 19476.601318359375
+              },
+              "local": {
+                "n": 300,
+                "p50": 2.855712890625,
+                "p95": 3.60986328125,
+                "max": 20.97705078125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3615.649658203125,
+                14692.241455078125,
+                6618.114501953125
+              ],
+              "local": [
+                2.69775390625,
+                2.389404296875,
+                3.16259765625
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.165771484375,
+              1.46337890625
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.3134765625,
+              1.24169921875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 78,
+            "positionsPer100Keys": 26.0,
+            "positionsPer100InputCommands": 25.742574257425744,
+            "acceptedRowDelta": 78
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "policy": "immediate-inflight",
+    "workload": "paired150",
+    "rtt": 0,
+    "n": 3,
+    "functionalPasses": 3,
+    "coldExact": 3,
+    "allMeasuredPasses": 0,
+    "cellPass": false,
+    "runs": [
+      {
+        "name": "paired333-r1-d0-immediate-inflight",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 355,
+        "writeAttempts": 148,
+        "quietReadsDelta": [
+          46,
+          98
+        ],
+        "admittedBudget": {
+          "acquired": 541,
+          "refunded": 0,
+          "netUnits": 541,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 127,
+            "/account/delivery/read-v2-batch": 228,
+            "/account/delivery/submit": 148,
+            "/account/history/v1/checkpoint": 19,
+            "/account/membership/v2/discover": 19
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.06640625,
+              "p95": 152.418701171875,
+              "max": 160.272705078125
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.138916015625,
+              "p95": 3.7177734375,
+              "max": 12.677734375
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 2.856689453125,
+                "p95": 3.574951171875,
+                "max": 8.345947265625
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1985.473388671875,
+                "p95": 3700.212158203125,
+                "max": 4162.210693359375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.452392578125,
+                2.832763671875,
+                2.549560546875
+              ],
+              "peer": [
+                1254.229248046875,
+                2217.109619140625,
+                1004.726318359375
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.05224609375,
+              1.563232421875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.329345703125,
+              1.2392578125
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 52,
+            "positionsPer100Keys": 17.333333333333332,
+            "positionsPer100InputCommands": 17.16171617161716,
+            "acceptedRowDelta": 52
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.047607421875,
+              "p95": 152.63232421875,
+              "max": 158.6220703125
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.143798828125,
+              "p95": 3.810546875,
+              "max": 11.608642578125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 10263.462158203125,
+                "p95": 17241.354736328125,
+                "max": 19015.31640625
+              },
+              "local": {
+                "n": 300,
+                "p50": 2.83740234375,
+                "p95": 3.731201171875,
+                "max": 7.7021484375
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                2930.750732421875,
+                15237.745849609375,
+                7260.249755859375
+              ],
+              "local": [
+                2.62744140625,
+                2.32275390625,
+                3.226806640625
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.05224609375,
+              1.563232421875
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.329345703125,
+              1.2392578125
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 96,
+            "positionsPer100Keys": 32.0,
+            "positionsPer100InputCommands": 31.683168316831683,
+            "acceptedRowDelta": 96
+          }
+        ]
+      },
+      {
+        "name": "paired333-r2-d0-immediate-inflight",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 359,
+        "writeAttempts": 149,
+        "quietReadsDelta": [
+          44,
+          103
+        ],
+        "admittedBudget": {
+          "acquired": 547,
+          "refunded": 0,
+          "netUnits": 547,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 125,
+            "/account/delivery/read-v2-batch": 234,
+            "/account/delivery/submit": 149,
+            "/account/history/v1/checkpoint": 20,
+            "/account/membership/v2/discover": 19
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.99755859375,
+              "p95": 152.58154296875,
+              "max": 156.261474609375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.3466796875,
+              "p95": 3.7587890625,
+              "max": 11.764892578125
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 2.89599609375,
+                "p95": 3.9853515625,
+                "max": 11.17919921875
+              },
+              "peer": {
+                "n": 300,
+                "p50": 2214.846435546875,
+                "p95": 3744.22509765625,
+                "max": 4271.2607421875
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.276123046875,
+                2.629150390625,
+                3.40625
+              ],
+              "peer": [
+                926.99267578125,
+                3969.345703125,
+                1112.922607421875
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.263427734375,
+              1.421142578125
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.27978515625,
+              1.5185546875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 52,
+            "positionsPer100Keys": 17.333333333333332,
+            "positionsPer100InputCommands": 17.16171617161716,
+            "acceptedRowDelta": 52
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.995361328125,
+              "p95": 152.688720703125,
+              "max": 155.792724609375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.262451171875,
+              "p95": 3.70751953125,
+              "max": 10.884033203125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 10486.565673828125,
+                "p95": 17589.48291015625,
+                "max": 19389.47607421875
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.008056640625,
+                "p95": 3.647705078125,
+                "max": 8.063232421875
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3029.354248046875,
+                15438.464111328125,
+                7607.43115234375
+              ],
+              "local": [
+                2.670654296875,
+                3.1806640625,
+                2.647705078125
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.263427734375,
+              1.421142578125
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.27978515625,
+              1.5185546875
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 97,
+            "positionsPer100Keys": 32.333333333333336,
+            "positionsPer100InputCommands": 32.01320132013201,
+            "acceptedRowDelta": 97
+          }
+        ]
+      },
+      {
+        "name": "paired333-r3-d0-immediate-inflight",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 350,
+        "writeAttempts": 148,
+        "quietReadsDelta": [
+          48,
+          103
+        ],
+        "admittedBudget": {
+          "acquired": 537,
+          "refunded": 0,
+          "netUnits": 537,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 124,
+            "/account/delivery/read-v2-batch": 226,
+            "/account/delivery/submit": 148,
+            "/account/history/v1/checkpoint": 19,
+            "/account/membership/v2/discover": 20
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.047607421875,
+              "p95": 152.107666015625,
+              "max": 157.9384765625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.181396484375,
+              "p95": 3.711669921875,
+              "max": 13.126220703125
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 2.912841796875,
+                "p95": 4.11083984375,
+                "max": 7.011962890625
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1935.120361328125,
+                "p95": 3678.7373046875,
+                "max": 4369.547119140625
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.346923828125,
+                3.056884765625,
+                3.253173828125
+              ],
+              "peer": [
+                892.07470703125,
+                1611.484619140625,
+                860.281005859375
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.34375,
+              1.38916015625
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.271484375,
+              1.490478515625
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 52,
+            "positionsPer100Keys": 17.333333333333332,
+            "positionsPer100InputCommands": 17.16171617161716,
+            "acceptedRowDelta": 52
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.990234375,
+              "p95": 152.340576171875,
+              "max": 160.167236328125
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.222412109375,
+              "p95": 3.8203125,
+              "max": 12.063720703125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 11918.02783203125,
+                "p95": 20038.123291015625,
+                "max": 22289.397216796875
+              },
+              "local": {
+                "n": 300,
+                "p50": 2.96923828125,
+                "p95": 3.8486328125,
+                "max": 7.17236328125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                2934.892578125,
+                14981.357666015625,
+                7108.96533203125
+              ],
+              "local": [
+                2.72021484375,
+                2.485595703125,
+                2.593017578125
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.34375,
+              1.38916015625
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.271484375,
+              1.490478515625
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 96,
+            "positionsPer100Keys": 32.0,
+            "positionsPer100InputCommands": 31.683168316831683,
+            "acceptedRowDelta": 96
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "policy": "coordinated-2000",
+    "workload": "paired150",
+    "rtt": 50,
+    "n": 3,
+    "functionalPasses": 3,
+    "coldExact": 3,
+    "allMeasuredPasses": 0,
+    "cellPass": false,
+    "runs": [
+      {
+        "name": "paired333-r1-d50-coordinated-2000",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 321,
+        "writeAttempts": 44,
+        "quietReadsDelta": [
+          132,
+          146
+        ],
+        "admittedBudget": {
+          "acquired": 395,
+          "refunded": 0,
+          "netUnits": 395,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 321,
+            "/account/delivery/submit": 44,
+            "/account/history/v1/checkpoint": 15,
+            "/account/membership/v2/discover": 15
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.99365234375,
+              "p95": 152.82568359375,
+              "max": 158.4677734375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.240478515625,
+              "p95": 4.785400390625,
+              "max": 23.018798828125
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.13427734375,
+                "p95": 8.53857421875,
+                "max": 12.153076171875
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1711.4072265625,
+                "p95": 2695.44970703125,
+                "max": 3115.457763671875
+              }
+            },
+            "markerLatency": {
+              "local": [
+                13.341064453125,
+                3.450927734375,
+                2.62646484375
+              ],
+              "peer": [
+                3136.593994140625,
+                1225.603759765625,
+                1241.87939453125
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.276123046875,
+              1.39306640625
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.22900390625,
+              1.421630859375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.140869140625,
+              "p95": 152.74560546875,
+              "max": 156.6591796875
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.3525390625,
+              "p95": 5.101806640625,
+              "max": 19.061279296875
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1970.06201171875,
+                "p95": 3016.634521484375,
+                "max": 7498.7041015625
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.0166015625,
+                "p95": 6.460693359375,
+                "max": 12.714599609375
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3434.5634765625,
+                1301.0751953125,
+                6750.714111328125
+              ],
+              "local": [
+                9.916259765625,
+                2.6279296875,
+                3.06689453125
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.276123046875,
+              1.39306640625
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.22900390625,
+              1.421630859375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ]
+      },
+      {
+        "name": "paired333-r2-d50-coordinated-2000",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 322,
+        "writeAttempts": 44,
+        "quietReadsDelta": [
+          132,
+          146
+        ],
+        "admittedBudget": {
+          "acquired": 397,
+          "refunded": 0,
+          "netUnits": 397,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 322,
+            "/account/delivery/submit": 44,
+            "/account/history/v1/checkpoint": 15,
+            "/account/membership/v2/discover": 16
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.957763671875,
+              "p95": 153.197265625,
+              "max": 161.708740234375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.211181640625,
+              "p95": 5.6103515625,
+              "max": 17.569580078125
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.041015625,
+                "p95": 6.291748046875,
+                "max": 11.2744140625
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1696.375244140625,
+                "p95": 2658.171630859375,
+                "max": 3068.189208984375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.483642578125,
+                3.044677734375,
+                3.5791015625
+              ],
+              "peer": [
+                3083.98876953125,
+                1220.749755859375,
+                1226.88427734375
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.181640625,
+              1.4169921875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.286865234375,
+              1.400390625
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.0546875,
+              "p95": 152.837158203125,
+              "max": 163.680908203125
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.1728515625,
+              "p95": 4.97216796875,
+              "max": 15.961669921875
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1951.665283203125,
+                "p95": 2967.18212890625,
+                "max": 7491.828857421875
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.033935546875,
+                "p95": 7.227783203125,
+                "max": 10.05419921875
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3359.19482421875,
+                1290.97998046875,
+                6741.957275390625
+              ],
+              "local": [
+                2.7998046875,
+                2.485107421875,
+                2.762451171875
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.181640625,
+              1.4169921875
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.286865234375,
+              1.400390625
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ]
+      },
+      {
+        "name": "paired333-r3-d50-coordinated-2000",
+        "functional": true,
+        "coldExact": true,
+        "allMeasuredPredicates": false,
+        "ownerClosedAtMs": [
+          null,
+          null
+        ],
+        "requestedLogicalReadUnits": 321,
+        "writeAttempts": 44,
+        "quietReadsDelta": [
+          132,
+          146
+        ],
+        "admittedBudget": {
+          "acquired": 395,
+          "refunded": 0,
+          "netUnits": 395,
+          "refusals": 0,
+          "refusalQualification": "event counter is not exhaustive; HTTP 429/503 and refusal replies remain separately visible",
+          "byRoute": {
+            "/account/delivery/read-v2": 321,
+            "/account/delivery/submit": 44,
+            "/account/history/v1/checkpoint": 15,
+            "/account/membership/v2/discover": 15
+          }
+        },
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.054931640625,
+              "p95": 152.7451171875,
+              "max": 156.70458984375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.27783203125,
+              "p95": 4.668701171875,
+              "max": 20.85888671875
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.261474609375,
+                "p95": 8.50341796875,
+                "max": 17.981689453125
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1692.4775390625,
+                "p95": 2647.936767578125,
+                "max": 3071.61328125
+              }
+            },
+            "markerLatency": {
+              "local": [
+                9.03369140625,
+                3.30908203125,
+                2.5712890625
+              ],
+              "peer": [
+                3092.065673828125,
+                1238.841064453125,
+                1244.803466796875
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.388916015625,
+              1.41748046875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.12109375,
+              1.671630859375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.9931640625,
+              "p95": 153.1005859375,
+              "max": 160.560302734375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.327880859375,
+              "p95": 5.971435546875,
+              "max": 16.947265625
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1954.519775390625,
+                "p95": 2945.802734375,
+                "max": 7507.298095703125
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.08837890625,
+                "p95": 7.75146484375,
+                "max": 15.13427734375
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                3368.782958984375,
+                1310.044189453125,
+                6758.94287109375
+              ],
+              "local": [
+                8.215087890625,
+                2.47607421875,
+                3.074951171875
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.388916015625,
+              1.41748046875
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.12109375,
+              1.671630859375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ]
+      }
+    ]
+  }
+]

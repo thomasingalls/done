@@ -6845,3 +6845,7 @@ Preserve329/330asrecorded. New declared negative controls are expected to fail; 
 ### 2026-11-01 — Phase332: matched service state and explicit observation boundaries
 
 Control and checkpoint preparations have identical A/Cnormal-sync steps, onlyCreate/Verifyadded; Busespreparedcontrolstate. Full accepted-row families independently checked, not onlypublisherrows. Keep harness8Undoerror (proved by offline45key remainder), download timeout and metadata-parser corrections. ObserveactualnativeZIPforper-keyarchivecheckswithoutchanging app URL/click/revoke, retainnaturaldownloadseparately and noqualificationclaim. Install n0/1notpassedinputgate. All crypto/authority/commit guards/defaults unchanged; no hardening/landing. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md).
+
+### 2026-11-01 — Phase333: observe idle scheduling without weakening audit
+
+Private lab choice:1000ms input quiet plus no pending foreground jobs,1024new physical rows forces an attempt; existing full comparison/audit/interruption guards stay. No trust/format/default change, no landing. Functional failures stop, latency failures keep cell failed and continue; a pre-app harness list failure was retained/repaired. The original reference1.422s miss was not directly retested. Operator decides any hardening next. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md).

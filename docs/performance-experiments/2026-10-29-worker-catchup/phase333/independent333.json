@@ -1,0 +1,23 @@
+{
+  "canonicalInputsUnchanged": 1552,
+  "realIndexEmpty": true,
+  "frozenStageMapsVerified": 3,
+  "journeys": 12,
+  "bothMaintenance120s": true,
+  "allArchiveUndoColdExact": true,
+  "allBuffersZeroOverflow": true,
+  "privateChangedFiles": [
+    "test/labAuditIdle333.test.ts",
+    "src/crdt/contentStore.ts",
+    "src/crdt/localBaselineReuse.ts",
+    "src/crdt/accountSyncDriver.ts",
+    "src/crdt/accountReceive.ts",
+    "src/crdt/warmContent.ts",
+    "src/crdt/accountCapture.ts",
+    "src/crdt/auditLab333.ts"
+  ],
+  "noRuntimeApplicationPatch": true,
+  "noTrustFormatDefaultLimitOrGateChange": true,
+  "sourceRoot": "/private/tmp/done-idle-warm-audit-lab-20261101/source",
+  "acceptanceCredit": false
+}

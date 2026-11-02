@@ -18503,3 +18503,7 @@ All3Device1single500policy controls preserve full writing/Undo/both offlinecold;
 ### 2026-11-01 — Phase332: matched admitted checkpoint return
 
 Both native preparations normally catch C up and preserve1334accepted rows byte-for-byte. All12Breturn and6loaded primary journeys preserve archives/Undo/24cold owners. Unlock→visible medians18.939→2.363s(0ms),26.243→2.760s(50ms); snapshot17,741cipherbytes. Install input n0/1unexposed. Loaded Create/Verify tail input38–94samples,p955.597–8.294ms. Two harness/download-observation failures, offline diagnostic and accounting corrections retained; no20download-limit claim or export-delivery qualification.23attempts, allfrozeninputs/1552canonical unchanged,indexempty,noapp/default/hardening/credit. [Phase332](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase333: idle-start warm-audit lab screen
+
+Completed12declared paired journeys on329fixture; all complete writing/Undo/both automatic maintenance120s and24offlinecoldowners exact. Full semantic audit during typing observed 1times; every latency predicate/marker/cell remains separately recorded, no acceptance credit.45focusedtests and stricttypecheck pass; failed preflight/typecheck retained.1552canonicalinputs unchanged,indexempty; no runtime patch/default/format/gate change. [Phase333](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md). Outcome recorded before queue advance.
