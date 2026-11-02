@@ -1,0 +1,13 @@
+{
+  "summary.json": "d139baedf442e6329c3ed5a84740c5b44c7e7ca37ba542d413ae92ec1d05d814",
+  "numeric-observation-01/receipt.json": "6d86759e61281ae1da274d85e9e79b3831b88e57e5be7a19785712c4938c5c81",
+  "numeric-observation-01/console.log": "3705f7215cbec76f834165ded6939adb9d2b6072e568a0741deb0577cf34ccff",
+  "numeric-observation-01/composed-context/result.json": "fcfc2848c07b08d075e32a9834e33c088fd080f901e9a8ea9634edbd99863887",
+  "numeric-observation-01/composed-context/container-identity.json": "6421bf91a6fbbb3d7b815811f3fdf1f4f1cb161e22338329f598b4a89a2e556c",
+  "numeric-observation-01/composed-context/docker-command.json": "069fab5de1ffff38a2340b41e43ecdefb75a1201a6d6f79ad8714c5fe257f289",
+  "numeric-observation-01/composed-context/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+  "numeric-observation-01/unreduced-live-publish/result.json": "aae5813ee534ed44834b4528483a4064e62b976f52740b31e55ed1947994c5ed",
+  "numeric-observation-01/unreduced-live-publish/container-identity.json": "02828c82ae3735c140493cc17591351e894e8fb7358897e9789bbd687e742251",
+  "numeric-observation-01/unreduced-live-publish/docker-command.json": "c968078702079360c7c5cb1be94bfe400e4cf645f0774874091e8db283c3dd8c",
+  "numeric-observation-01/unreduced-live-publish/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b"
+}

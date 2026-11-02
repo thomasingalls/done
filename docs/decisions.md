@@ -6567,3 +6567,8 @@ Use reader-first indexed v2 receipts preserving original signed request/page and
 ## 2026-10-30 — phase281: diagnostic work-count protocol
 
 Run one exact275 diagnostic build with only numeric profiling enabled, no acceptance credit. Report frozen editor counts against2full/3exact hypothesis, then measure one actual unreduced post-commit publish at the original30s deadline with source acceptance and counter-version checks. Record polling overhead. V2 development-only; add all tag readers, range4/8 and stale-tab/rollback requirements before release work. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).
+
+
+## 2026-10-30 — phase282: diagnostic work-count outcome
+
+Treat cold work-count gain and unreduced mutation cost separately. Real frozen editor reports2full/3exact as hypothesized; no acceptance credit from diagnostic build. One unreduced publish takes22.378s with10full/17exact additional loads including3status polls. Retain that limitation; no proof reuse for changed evidence/commits without a separate bounded contract. V2 stays development-only. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).

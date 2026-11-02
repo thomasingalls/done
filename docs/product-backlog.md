@@ -983,3 +983,8 @@ Phase280: implement reader-first bounded multi-entry verification and indexed v2
 ## 2026-10-30 — phase281: diagnostic work-count protocol
 
 Phase281 adds cold editor work-count and unreduced live-publish observations before continuing multi-entry implementation. V2 remains development-only; cover all v1 tag readers, range4/8, stale tabs and rollback. Then deep/fairness, Page deep64 and fixture recipe/withheld/normal gates; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).
+
+
+## 2026-10-30 — phase282: diagnostic work-count outcome
+
+Phase282 confirms cold exact reuse is exercised, but opens explicit unreduced post-commit cost:one source22.378s/+10full replays, observer-inclusive. Preserve exact-evidence boundaries. Continue multi-entry reader/planner with all tag readers, ranges4/8, stale-tab/rollback record; then deep/fairness, Page deep64 and fixture/withheld/normal gates. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).

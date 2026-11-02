@@ -18211,3 +18211,8 @@ Recorded25-case independent real-crypto range red evidence:7fail/18pass at exist
 ## 2026-10-30 — phase281: diagnostic work-count protocol
 
 Prepared requested diagnostic work-count/live-publish artifact:396source bodies/125public assets, sole profile flag exception verified, four observer contracts/two-case discovery/container readiness and shutdown pass. No timed result or code change yet; normal comparison held. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).
+
+
+## 2026-10-30 — phase282: diagnostic work-count outcome
+
+Requested diagnostic confirms2full/3exact at both editor milestones; original case started-to-editor7.420s (8.150s Worker-clock milestone). One actual unreduced v3 source publishes in22.378s, admission17ms/flush154ms, +10full/+17exact with3status polls included. Full archive guards pass;3own containers/browsers absent. No acceptance or steady-state gain claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).
