@@ -1,0 +1,8 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/7fda/done
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  19:54:53
+   Duration  2.76s (transform 1.56s, setup 71ms, import 1.98s, tests 582ms, environment 0ms)

@@ -91,3 +91,15 @@ fences erase or refuse stale originals. Its reservation coexists only with one n
 fetch; legacy multi-request collection evicts first. This is not cross-owner proof reuse.
 A no-result size refusal settles preparation cleanly and narrows fresh work; invalid selected
 evidence still fails. Actual composed fallback/fairness/deep8 and stale-tab/rollback are pending.
+
+## Default-off writer and measurement qualification (phase306)
+
+New indexed writes now require the exact VITE_ACCOUNT_RANGE_RECEIVE=1build opt-in. Without it,
+the planner retains grouped single-entry reads and native admission refuses wider originals.
+Current stored readers remain v1/v2capable regardless of this writer flag; historical stale-tab/
+rollback behavior is still unqualified. Do not enable the flag in release work from lab results.
+
+The282unreduced22.378spublication was a v3state reached by explicit lab installLocalBaseline.
+No shipped caller is established; retention uses v5. Treat that result as lab-state cost until
+reachability is shown, and measure a genuine v5publication separately. The approved isolated
+seven-factor screen earns no credit and never lands. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).

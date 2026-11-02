@@ -4,6 +4,18 @@ import type { InboundReadCursor } from './inboundLedger';
 import { RECEIVE_GROUP_LIMIT } from './receiveGroup';
 import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 
+/** New indexed receipts are development-only until explicitly enabled in a build. */
+export const receiveRangeWriterEnabled = (value: unknown): boolean => value === '1';
+
+/** Disabled range writing retains the existing grouped single-entry requests. */
+export function receivePageWidths(
+  rangeWriter: boolean,
+  positions: number,
+  backlog: number,
+): readonly number[] {
+  return rangeWriter ? [receiveDownloadWidth(positions, backlog)] : receiveReadWidths(positions, 1);
+}
+
 /** Align a partial native turn first; a full turn may download two turns of raw originals. */
 export function receiveDownloadWidth(
   positions: number,

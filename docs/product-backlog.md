@@ -1103,3 +1103,8 @@ Finish frozen fairness, then approved lab-only Worker CPU profile/factorial4rang
 ### 2026-10-30 — Worker catch-up phase305
 
 Next default-off range writer, realv5livepublish and approved isolated7factor range4lab screen/profile/ablations. Current normalmarker/fairness/deep and stale-tab/rollback blocks stay open. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase306
+
+Begin fictional-only range4Worker CPU profile and seven-toggle8run+2plain lab screen, then contributor ablations and one frozen original-gate stack. Measure realv5publication; v3lab result is not established production cost. Writer stays default off; full-red attempt and marker/fairness/deep/compatibility blocks remain. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).

@@ -42,8 +42,8 @@ import {
 } from './receiveGroup';
 import {
   createReceiveSelection,
-  receiveReadWidths,
-  receiveDownloadWidth,
+  receiveRangeWriterEnabled,
+  receivePageWidths,
   hasPeerBacklog,
   unresolvedSelfSubmission,
 } from './receiveSelection';
@@ -171,7 +171,7 @@ import {
   recordPrivateReceiveExpiry,
   recordPrivateTransportDiagnostic,
 } from '../account/privateDeliveryHttp';
-import { READ_PAGE_LIMIT, READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
   hex,
   openCredential,
@@ -237,6 +237,7 @@ async function openAccountReceiveOwner(
   contextQueue?: WorkerContextQueue,
 ) {
   const options = captureAccountOptions(input);
+  const rangeWrites = receiveRangeWriterEnabled(import.meta.env?.['VITE_ACCOUNT_RANGE_RECEIVE']);
   const incremental = ledgerMode === 'incremental';
   const verified = createVerifiedRecords<AccountLedgerView>({
     ...(incremental && import.meta.env?.['VITE_ACCOUNT_RECORD_OWNERSHIP'] !== '0'
@@ -1180,15 +1181,14 @@ async function openAccountReceiveOwner(
     const requests: Bytes[] = [];
     try {
       const peerRange =
+        rangeWrites &&
         grouped &&
         composed &&
         publisher !== base.publisher.id &&
         receivePages.entryLimit(publisher) > 1;
       const previous =
         peerRange && cached ? rangeTail?.take(base.authority, publisher, cursor) : undefined;
-      const widths = peerRange
-        ? [receiveDownloadWidth(count, s.prefix.observedThrough - cursor, READ_COUNT_LIMIT)]
-        : receiveReadWidths(count, 1);
+      const widths = receivePageWidths(peerRange, count, s.prefix.observedThrough - cursor);
       let offset = 0;
       if (previous) {
         requests.push(previous.request);
@@ -1848,6 +1848,16 @@ async function openAccountReceiveOwner(
           return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
       } catch {
         return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+      }
+    }
+    if (!rangeWrites) {
+      try {
+        if (expected.some((request) => decodeInboundRequest(request).limit > 1))
+          return Promise.reject(new AdmissionError('receive-refused', 'Range writing is disabled'));
+      } catch (cause) {
+        return Promise.reject(
+          new AdmissionError('receive-refused', 'Invalid receive group', { cause }),
+        );
       }
     }
     const pages = inputs.map((b) => b.slice()),

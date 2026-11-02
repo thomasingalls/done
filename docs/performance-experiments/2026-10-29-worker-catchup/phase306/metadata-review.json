@@ -1,0 +1,18 @@
+{
+  "runtimeSources": 505,
+  "changedSourceRecords": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/receiveSelection.ts"
+  ],
+  "domainsUnchanged": 199,
+  "specifiedContractsRetained": 78,
+  "openConstructionsUnchanged": 16,
+  "priorManifestRowsRetained": 1034,
+  "newRequiredUncreditedTest": [
+    "test:test/rangeWriterPolicy.test.ts"
+  ],
+  "rowsAfter": 1035,
+  "unresolvedBefore": 487,
+  "unresolvedAfter": 488,
+  "nativeFourPositionAllowanceUnchanged": true
+}

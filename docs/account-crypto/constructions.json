@@ -5342,7 +5342,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 751,
+          "line": 752,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },
@@ -7519,7 +7519,8 @@
         "test/multiEntryReceiveScheduling.test.ts",
         "test/boundedInboundPreparation.test.ts",
         "test/receiveRangeTail.test.ts",
-        "test/receiveDownloadWidth.test.ts"
+        "test/receiveDownloadWidth.test.ts",
+        "test/rangeWriterPolicy.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",

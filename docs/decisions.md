@@ -6687,3 +6687,8 @@ Retain the current marker failure despite good p95. Finish frozen fairness befor
 ### 2026-10-30 — Worker catch-up phase305
 
 Keep every frozen result; durable pending writing is distinct from performance acceptance. Begin the explicitly approved uncredited fictional-only lab lane after the four cells, with default-off range writer and realv5publication check. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase306
+
+New range writer requires exact explicit build opt-in, default off, with native admission refusal and retained v2readers. Correct v3publication interpretation to lab state absent a shipped caller; measure actual v5next. Separate approved exploratory lab builds never land. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).

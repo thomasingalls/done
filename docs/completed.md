@@ -18331,3 +18331,8 @@ Phase304: current291normal native/archive/cold pass; input11.715ms/peer1583.005m
 ### 2026-10-30 — Worker catch-up phase305
 
 Phase305: genuine10device fairness functional/durability/Undo/isolation/cold checks pass; inputp9528.400ms, peer6460.400ms and five large600sbacklogs fail. Frozen cohort complete, raw evidence preserved; no acceptance. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase306
+
+Phase306: default-off guard,4new cases/66affected units/2detected faults/11native cases/98metadata/7contracts/types/lint/format pass. Full run2853pass/2storage-compatibility failures/oneexisting skip retained; unchanged7cases pass alone afterward. No full-suite acceptance claim. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).
