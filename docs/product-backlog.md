@@ -883,3 +883,8 @@ Phase260: original publiccold/deepjoined checks ready at actual release settings
 ## 2026-10-30 — phase261: production cold compatibility outcomes
 
 Phase261:182/205/187fullcase deadline blockers persist at production flags; intermediate maintenance is sound in this run but publiccold remains slow. Keep every original failure/deadline; no releaseprep. Next quiet withheldinput control and measured native/Window/commit work, not another speculative mechanism. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).
+
+
+## 2026-10-30 — phase262: quiet-host input protocol
+
+Phase262: quiet-host withheld original/diagnostic controls ready. Preserve261cold/deep failures and all gates; next count actual request/commit/Window work and profileWorker before adopting brief mechanism hypotheses. No releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).

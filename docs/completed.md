@@ -18111,3 +18111,8 @@ Prepared original4case productionflag compatibility rerun.396source bodies/125sh
 ## 2026-10-30 — phase261: production cold compatibility outcomes
 
 Original4case productionflag rerun finishes1pass/3fail, no retry. Native maintenance completes/removes7275 entries/revision2 and preserves input/Undo, then original15s publiccold fails. Deepjoined reaches447at30s with0receivefailures. Five owncontainers/browsers absent; no runtime/oldtest changes. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).
+
+
+## 2026-10-30 — phase262: quiet-host input protocol
+
+Both248source profiles rebuilt396mapped bodies, releaseflag parity with named warm0exception and original diagnostic closure checked. Discovery/readiness/shutdown pass; fixed3journey protocol/hash frozen before timing. No runtime/test change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).

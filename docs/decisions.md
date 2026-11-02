@@ -6467,3 +6467,8 @@ Re-run original237senderclosed/deepjoined/publiccold cases with exact signed0ab 
 ## 2026-10-30 — phase261: production cold compatibility outcomes
 
 Retain corrected productionflag failures: original deepjoined30s (progress447/receivefailures0), publiccold15s after journal rebind, publiccold15s after completed resumable maintenance. Do not promote intermediate successes or259different offlinecold guards to full closure; cause still needs attribution. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).
+
+
+## 2026-10-30 — phase262: quiet-host input protocol
+
+Finish clean withheld inputcontrol with frozen3journeys: original warmdefault, then warm0/default bounded metadata diagnostics. All same248source/fixed0abserver; named flag exception explicit and independently checked. Use end-to-end input gate, retain missing/censored timing, no diagnostic acceptance or causal population claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).
