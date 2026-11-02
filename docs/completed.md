@@ -18276,3 +18276,8 @@ Phase293: deep8failed30s at719/zero receive failures.236reads versus4range331, b
 ### 2026-10-30 — Worker catch-up phase294
 
 Phase294: Page64diagnostic inputs frozen. Exact291runtime/398compiled bodies/125frontend assets, one-line lab policy and actual64startup limits,6observer contracts/service smoke checked. No timed result yet. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase295
+
+Phase295: actual Page syncing/no owner Worker confirmed; lab64deepfailed30s at707/zero receive failures.233reads all200, no429, complete at/headersAt trace. Marker/Undo/cold guards not reached; no normal/default acceptance credit. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).

@@ -1,0 +1,69 @@
+{
+  "outcome": "failed",
+  "gateMs": 30000,
+  "observedWaitMs": 30011.027587890625,
+  "receivedThrough": 707,
+  "receiveFailures": 0,
+  "httpRequests": 252,
+  "readHttp": 233,
+  "signedReads": 233,
+  "rangeLimits": {
+    "1": 145,
+    "3": 1,
+    "8": 87
+  },
+  "perWidth": {
+    "1": {
+      "headersWallMs": {
+        "n": 145,
+        "p50": 14.1884765625,
+        "p95": 22.252197265625
+      },
+      "http": 145,
+      "statuses": {
+        "200": 145
+      }
+    },
+    "3": {
+      "headersWallMs": {
+        "n": 1,
+        "p50": 15.1005859375,
+        "p95": 15.1005859375
+      },
+      "http": 1,
+      "statuses": {
+        "200": 1
+      }
+    },
+    "8": {
+      "headersWallMs": {
+        "n": 87,
+        "p50": 24.0595703125,
+        "p95": 33.364501953125
+      },
+      "http": 87,
+      "statuses": {
+        "200": 87
+      }
+    }
+  },
+  "dropped": 0,
+  "malformed": 0,
+  "sourceAcceptedBeforeClose": true,
+  "markerUndoColdGuardsReached": false,
+  "rawResultSha256": "8bd1cf513baf60b38f6a836ffd5dcb326f88afdabf29d7b2abd1e30776b20b00",
+  "before279ReceivedThroughAtFailure": 451,
+  "before279ActualWaitStartRecorded": false,
+  "four287ReceivedThroughAtFailure": 747,
+  "four287ReadHttp": 331,
+  "candidatePhase": 291,
+  "execution": "genuine Page syncing",
+  "actualPageGuard": true,
+  "eightProgressProvesSpeedup": false,
+  "labOnlyLimits": {
+    "session": 64,
+    "process": 64
+  },
+  "profiling": false,
+  "acceptance": false
+}

@@ -1048,3 +1048,8 @@ Deep4and8both fail30s. Next real Page syncing joined deep at lab64, then fixture
 ### 2026-10-30 — Worker catch-up phase294
 
 Run frozen joined Page64deep once next; preserve actual outcome before fixture recipe and withheld/normal gates. No normal comparison/release activation. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase295
+
+Next rerunnable civil-date fixture generation with early editable cards and unchanged history/device asymmetry; then withheld yield cell/normal gates. Bulk4/8and Page64all fail30s; preserve proof/evidence-cost investigation and native compatibility obligations. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).
