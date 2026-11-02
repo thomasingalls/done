@@ -18161,3 +18161,8 @@ Captured exact red regression/sourcehash before repair:9cases,2expectedvalidbase
 ## 2026-10-30 — phase271: baseline recovery compatibility repair
 
 Implementednarrowrecoverycompatibility/new9cases.65focused/full2766unitpass(oneexisting skip),145metadataunits/sevencontracts/types/scopedlint/formatpass. Independentmetadata503sources/all1025oldrowsintact/newrequireduncreditedtestaddsblocked480. Oldtestsuntouched. Nativeafterwalkthroughstillpending, no fullfix/releaseclaim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).
+
+
+## 2026-10-30 — phase272: repaired native walkthrough protocol
+
+Prepared actualcandidate afterwalkthrough:sourcebytes396maps/125frontendassets exact, releaseflags/defaultlimitsverified, fourcase discovery/readiness/shutdown pass. No timedafteroutcome yet. Allbeforeevidence preserved; no oldtest/productsourcechange beyond271. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).

@@ -933,3 +933,8 @@ Phase270: implement narrowfirststatezero transportcompatibility, retain allnativ
 ## 2026-10-30 — phase271: baseline recovery compatibility repair
 
 Phase271: narrowbaselineprojectionrepair passes affected/fullunit/bookkeepingchecks. Next exactcumulativecandidate at originalnativecold/deepgates withoutdiagnostics. Keepsecurity/freshchecks/oldfailures; repeatedbaselineperformance and budget/fixture/yield followups stillopen. No releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).
+
+
+## 2026-10-30 — phase272: repaired native walkthrough protocol
+
+Phase272: originalnative aftercases next, then closecompatibilityrepair onlyifactual coveredhistoryremoval/coldarchive/Undo passes. Remainingstartupcost/budgetnormal/yieldquestions separate; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).

@@ -6517,3 +6517,8 @@ Bound recoverycompatibilityrepair to leadinglogicalstate seq0 from authenticated
 ## 2026-10-30 — phase271: baseline recovery compatibility repair
 
 Acceptonlyfirstlogicalstate seq0after nativeauthenticatedbaseline; diskpositive rule and allfragment/shape/lifetime/freshcrypto/journal/fencing remain. No recordrenumber/store/wirewriterchange. Add9regressions/twofaultcontrols; actualnativecold aftertestrequired before workflowclosure. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).
+
+
+## 2026-10-30 — phase272: repaired native walkthrough protocol
+
+Run originalfournative cases on exact cumulative271candidate, no diagnosticflags/hooks and unchangedproduction16/session64/process. Fullmaintenancecold exactarchive mustpassbefore repairclosure. Retain anydeep30s/rebind15smiss; originalbody/assertions/deadlinesunchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).
