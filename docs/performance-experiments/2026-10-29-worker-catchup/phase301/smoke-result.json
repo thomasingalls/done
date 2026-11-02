@@ -1,0 +1,65 @@
+{
+  "requestLimits": {
+    "sessionBurst": 120,
+    "sessionPerSecond": 16,
+    "processBurst": 480,
+    "processPerSecond": 64,
+    "active": 16,
+    "sessionActive": 4,
+    "sessions": 1024
+  },
+  "htmlStatus": 200,
+  "exactHtml": true,
+  "missingOriginRefused": true,
+  "config": {
+    "status": 200,
+    "v": 2,
+    "networkSessions": true,
+    "membershipContinuation": true
+  },
+  "metrics": {
+    "requests": 0,
+    "statuses": {},
+    "cpu": {
+      "user": 711,
+      "system": 0
+    },
+    "elapsedMs": 1.6968749999999773,
+    "eventLoopUtilization": {
+      "idle": 0.9996660000000048,
+      "active": 0.6228339999976669,
+      "utilization": 0.38387303543825
+    },
+    "loopDelayMs": {
+      "p50": 0.000511,
+      "p95": 0.000511,
+      "p99": 0.000511,
+      "max": 0
+    },
+    "rssStart": 129589248,
+    "rssEnd": 129589248,
+    "rssSampledPeak": 129589248,
+    "rssSamples": 1,
+    "cgroupBefore": {
+      "cpu.max": "100000 100000",
+      "cpu.stat": "usage_usec 717815\nuser_usec 594790\nsystem_usec 123025\nnice_usec 0\nnr_periods 9\nnr_throttled 5\nthrottled_usec 192680\nnr_bursts 0\nburst_usec 0",
+      "memory.max": "1073741824",
+      "memory.swap.max": "0",
+      "memory.current": "78282752",
+      "memory.peak": "78282752",
+      "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "pids.max": "128"
+    },
+    "cgroupAfter": {
+      "cpu.max": "100000 100000",
+      "cpu.stat": "usage_usec 718522\nuser_usec 595376\nsystem_usec 123146\nnice_usec 0\nnr_periods 9\nnr_throttled 5\nthrottled_usec 192680\nnr_bursts 0\nburst_usec 0",
+      "memory.max": "1073741824",
+      "memory.swap.max": "0",
+      "memory.current": "78282752",
+      "memory.peak": "78282752",
+      "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "pids.max": "128"
+    }
+  },
+  "ok": true
+}

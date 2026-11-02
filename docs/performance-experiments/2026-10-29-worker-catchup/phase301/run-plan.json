@@ -1,0 +1,34 @@
+[
+  {
+    "name": "01-signed-withheld",
+    "variant": "S0",
+    "withhold": true,
+    "mode": "late",
+    "config": "late.config.ts",
+    "timeoutMs": 900000
+  },
+  {
+    "name": "02-yield-withheld",
+    "variant": "Y248",
+    "withhold": true,
+    "mode": "late",
+    "config": "late.config.ts",
+    "timeoutMs": 900000
+  },
+  {
+    "name": "03-current-normal",
+    "variant": "C291",
+    "withhold": false,
+    "mode": "late",
+    "config": "late.config.ts",
+    "timeoutMs": 900000
+  },
+  {
+    "name": "04-current-fairness",
+    "variant": "C291",
+    "withhold": false,
+    "mode": "fairness",
+    "config": "playwright.config.ts",
+    "timeoutMs": 1200000
+  }
+]

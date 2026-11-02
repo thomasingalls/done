@@ -6662,3 +6662,8 @@ Freeze signed0abwithheld, exact248-onlywithheld, current291normal and original m
 ### 2026-10-30 — Worker catch-up phase300
 
 Retain individual tails while recording the passing missing signed0abwithheld baseline. Do not infer yield necessity or credit291from one older-source pass; run the fixed matched248-onlycell next. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase301
+
+Preserve the original passing baseline across browser identity change; start a separately frozen matched cohort with an isolated pinned app bundle. Retain original fairness per-case analysis and explicit single-case coverage, never an empty aggregate. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).

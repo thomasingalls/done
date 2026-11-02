@@ -18306,3 +18306,8 @@ Phase299: three exact client closures/compiled flags and fresh-fixture adapters 
 ### 2026-10-30 — Worker catch-up phase300
 
 Phase300: signed0abwithheld passes all original gates/native/archive/offline-cold checks. Inputp9511.687ms/max69.953, peerp952142.820ms/max2855.742, worstmarker1767.582ms, backlog150.757s. Fault exercised/120keys/3markers and zero backendOOM confirmed; raw compressed evidence retained. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase301
+
+Phase301: browser preflight refused before timing; same digest restored after absent-image smoke failure, fresh smoke passes. Pinned382browser files/6symlinks and nine analyzer sensitivity controls checked. No runtime change or timing claim. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).

@@ -1078,3 +1078,8 @@ Execute missing signed0abwithheld first under299, record functional and independ
 ### 2026-10-30 — Worker catch-up phase300
 
 Missing signed0abwithheld baseline nowpasses. Next matched248-onlywithheld, then current291normal/multi-account fairness. Preserve tails, all deep failures and v2compatibility/release blocks. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase301
+
+Next run pinned-browser cohort in fixed source order; do not pair across the old/new binary break. Preserve ordinary/deep/compatibility and release blocks. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).
