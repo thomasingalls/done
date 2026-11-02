@@ -1,0 +1,999 @@
+{
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "canonicalFilesUnchanged": 1552,
+  "realIndexEmpty": true,
+  "stageChecks": [
+    {
+      "stage": "cut326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": []
+    },
+    {
+      "stage": "focusSender326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "ee9994ef69f36017b192ba497085886abd24ed4f8636c00b173d6350650c3628",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "inspectSender326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "ee9994ef69f36017b192ba497085886abd24ed4f8636c00b173d6350650c3628",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "later326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": []
+    },
+    {
+      "stage": "prepareSender326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:sender-source": 445,
+        "assetRoots:sender-coordinated-2000/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "6491a5cfa38fc3e6d59b4405f1881a9b476cbf235a726ec62acd3a5bbe14d1eb",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "prepareSender326-ready-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-coordinated-2000/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "33d640f24c446695f11b79c26b3ba3f1e37c4e122af8778bb73360d1c027e711",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "prepareShort326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-coordinated-2000/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/prepare-short326.spec.ts",
+          "expected": "ba0ea61a91ba740c2a9b4f521c1622de663acb0704fd06cc1069d8539f6094a1",
+          "current": "65e75463e0eb13e7f0c682739839eab755facd910ea44fa4b0e5d716f674984c",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        },
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "fa423aac001af284db55370a2d56588f71bb7ade13b32c4544db556487782d88",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "prepareShortReady326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-coordinated-2000/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "fa423aac001af284db55370a2d56588f71bb7ade13b32c4544db556487782d88",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "screen326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": []
+    },
+    {
+      "stage": "sender326-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-coordinated-2000/combined-dist": 606,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-immediate-inflight/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "33d640f24c446695f11b79c26b3ba3f1e37c4e122af8778bb73360d1c027e711",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "senderFirst326b-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "ee9994ef69f36017b192ba497085886abd24ed4f8636c00b173d6350650c3628",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "senderFirst326c-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": []
+    },
+    {
+      "stage": "senderRest326b-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-coordinated-2000/combined-dist": 606,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-immediate-inflight/combined-dist": 606,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": [
+        {
+          "file": "harness/test/account-continuation-lab/sender326.spec.ts",
+          "expected": "fa423aac001af284db55370a2d56588f71bb7ade13b32c4544db556487782d88",
+          "current": "9aa0a9992ad304422a24b6e04c088f354abc437e0e0b28a2a7b762d9dbf7afd3",
+          "interpretation": "apparatus changed between declared stages; recorded stage identity is retained, not equated with latest harness"
+        }
+      ]
+    },
+    {
+      "stage": "senderRest326c-inputs.json",
+      "sourceAndAssetRoots": {
+        "sourceRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-source": 445,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-coordinated-2000/combined-dist": 606,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-immediate-inflight/combined-dist": 606,
+        "assetRoots:/private/tmp/done-page-reuse-repair-lab-20261101/sender-reference/combined-dist": 606
+      },
+      "serverInputs": 829,
+      "fixtureHashesMatch": true,
+      "apparatusRevisions": []
+    }
+  ],
+  "cases": {
+    "cut326-P1-aged": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 8,
+      "hostBusyMedian": 15.217589419319722,
+      "hostBusyMax": 40.619554695062924,
+      "hostLogComplete": true,
+      "seconds": 41.59625291824341
+    },
+    "sender326-focus-diagnostic": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 3,
+      "hostBusyMedian": 53.34128878281623,
+      "hostBusyMax": 54.60513228565745,
+      "hostLogComplete": true,
+      "seconds": 17.783558130264282
+    },
+    "grown326-withheld-r1": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 23,
+      "hostBusyMedian": 34.57352068078369,
+      "hostBusyMax": 52.80318091451292,
+      "hostLogComplete": true,
+      "seconds": 118.5365378856659
+    },
+    "grown326-withheld-r2": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 23,
+      "hostBusyMedian": 43.067435846429284,
+      "hostBusyMax": 53.98651328837763,
+      "hostLogComplete": true,
+      "seconds": 120.26108479499817
+    },
+    "grown326-withheld-r3": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 23,
+      "hostBusyMedian": 45.41650059784775,
+      "hostBusyMax": 56.00713719270421,
+      "hostLogComplete": true,
+      "seconds": 118.99485397338867
+    },
+    "sender326b-readback-diagnostic": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 45.75878352479066,
+      "hostBusyMax": 47.65687053216839,
+      "hostLogComplete": true,
+      "seconds": 14.745582818984985
+    },
+    "profile326-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 26.11702766879891,
+      "hostBusyMax": 38.72958980485862,
+      "hostLogComplete": true,
+      "seconds": 52.412469148635864
+    },
+    "profile326-winner": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 25.251727541954594,
+      "hostBusyMax": 41.0568295114656,
+      "hostLogComplete": true,
+      "seconds": 49.70450711250305
+    },
+    "live326-r1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 36.46474677259186,
+      "hostBusyMax": 54.42027539413291,
+      "hostLogComplete": true,
+      "seconds": 91.239816904068
+    },
+    "live326-r2": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 37.53428179364755,
+      "hostBusyMax": 54.3324143363529,
+      "hostLogComplete": true,
+      "seconds": 92.59866309165955
+    },
+    "live326-r3": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 35.37848605577689,
+      "hostBusyMax": 50.74895146794488,
+      "hostLogComplete": true,
+      "seconds": 90.8106780052185
+    },
+    "sender326-fixture-prepare-ready": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 15,
+      "hostBusyMedian": 38.04499303205256,
+      "hostBusyMax": 47.94683594524896,
+      "hostLogComplete": true,
+      "seconds": 79.16809606552124
+    },
+    "sender326-fixture-prepare": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 0,
+      "hostBusyMedian": null,
+      "hostBusyMax": null,
+      "hostLogComplete": true,
+      "seconds": 0.7106208801269531
+    },
+    "sender326-short-card-prepare-ready": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 4,
+      "hostBusyMedian": 64.01398017293668,
+      "hostBusyMax": 98.30240821160679,
+      "hostLogComplete": true,
+      "seconds": 21.794888019561768
+    },
+    "screen326-r1-d0-E0B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 24.990079365079367,
+      "hostBusyMax": 38.38504375497216,
+      "hostLogComplete": true,
+      "seconds": 53.58108329772949
+    },
+    "screen326-r1-d50-E1B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 21.904135856234042,
+      "hostBusyMax": 40.00796178343949,
+      "hostLogComplete": true,
+      "seconds": 53.68956899642944
+    },
+    "screen326-r1-d50-E1B0P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 23.811289144364125,
+      "hostBusyMax": 40.430193188607845,
+      "hostLogComplete": true,
+      "seconds": 51.46857500076294
+    },
+    "screen326-r1-d50-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 11,
+      "hostBusyMedian": 23.31688055281343,
+      "hostBusyMax": 38.72509960159363,
+      "hostLogComplete": true,
+      "seconds": 56.18213415145874
+    },
+    "screen326-r1-d0-E1B1P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 24.250843421313746,
+      "hostBusyMax": 39.848876516206005,
+      "hostLogComplete": true,
+      "seconds": 49.43468999862671
+    },
+    "screen326-r1-d0-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 25.154087341214876,
+      "hostBusyMax": 41.61872644316604,
+      "hostLogComplete": true,
+      "seconds": 51.669029712677
+    },
+    "screen326-r1-d0-E1B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 27.54329888779872,
+      "hostBusyMax": 41.58692185007975,
+      "hostLogComplete": true,
+      "seconds": 53.371358156204224
+    },
+    "screen326-r1-d50-E1B1P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 23.131813676907825,
+      "hostBusyMax": 40.807799442896936,
+      "hostLogComplete": true,
+      "seconds": 49.271462202072144
+    },
+    "screen326-r1-d0-E1B0P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 24.836212030970813,
+      "hostBusyMax": 45.54514650189356,
+      "hostLogComplete": true,
+      "seconds": 50.07443404197693
+    },
+    "screen326-r2-d0-E1B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 24.15807328019693,
+      "hostBusyMax": 42.527363184079604,
+      "hostLogComplete": true,
+      "seconds": 53.30165195465088
+    },
+    "screen326-r2-d0-E1B1P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 24.40617577197149,
+      "hostBusyMax": 40.59701492537314,
+      "hostLogComplete": true,
+      "seconds": 49.5961389541626
+    },
+    "screen326-r2-d50-E1B1P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 24.234592445328033,
+      "hostBusyMax": 40.96601073345259,
+      "hostLogComplete": true,
+      "seconds": 50.28933501243591
+    },
+    "screen326-r2-d0-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 26.697769197769198,
+      "hostBusyMax": 43.27171536473862,
+      "hostLogComplete": true,
+      "seconds": 51.83352613449097
+    },
+    "screen326-r2-d0-E1B0P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 26.632165605095537,
+      "hostBusyMax": 41.766109785202865,
+      "hostLogComplete": true,
+      "seconds": 50.09002113342285
+    },
+    "screen326-r2-d50-E1B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 23.63315675815469,
+      "hostBusyMax": 40.48566878980892,
+      "hostLogComplete": true,
+      "seconds": 54.10708284378052
+    },
+    "screen326-r2-d0-E0B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 26.46369273498162,
+      "hostBusyMax": 41.26194267515923,
+      "hostLogComplete": true,
+      "seconds": 53.154284715652466
+    },
+    "screen326-r2-d50-E1B0P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 24.51972061311536,
+      "hostBusyMax": 44.75468687674511,
+      "hostLogComplete": true,
+      "seconds": 51.741798877716064
+    },
+    "screen326-r2-d50-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 11,
+      "hostBusyMedian": 23.145754623185525,
+      "hostBusyMax": 41.192842942345926,
+      "hostLogComplete": true,
+      "seconds": 57.21695613861084
+    },
+    "screen326-r3-d0-E1B1P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 25.263157894736835,
+      "hostBusyMax": 41.2291169451074,
+      "hostLogComplete": true,
+      "seconds": 49.815348863601685
+    },
+    "screen326-r3-d50-E1B1P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 24.76171564733916,
+      "hostBusyMax": 42.45376814476039,
+      "hostLogComplete": true,
+      "seconds": 49.98652219772339
+    },
+    "screen326-r3-d50-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 11,
+      "hostBusyMedian": 23.518922131959584,
+      "hostBusyMax": 43.122009569377994,
+      "hostLogComplete": true,
+      "seconds": 56.73039889335632
+    },
+    "screen326-r3-d0-E1B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 26.246051040080502,
+      "hostBusyMax": 41.65671047391478,
+      "hostLogComplete": true,
+      "seconds": 53.538920879364014
+    },
+    "screen326-r3-d0-E1B0P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 25.98651596272061,
+      "hostBusyMax": 40.74368661761782,
+      "hostLogComplete": true,
+      "seconds": 51.70416498184204
+    },
+    "screen326-r3-d0-E0B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 26.169941173980263,
+      "hostBusyMax": 41.92391953794065,
+      "hostLogComplete": true,
+      "seconds": 53.31782817840576
+    },
+    "screen326-r3-d50-E1B1P0": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 22.591824363194455,
+      "hostBusyMax": 39.67337183827923,
+      "hostLogComplete": true,
+      "seconds": 53.94208002090454
+    },
+    "screen326-r3-d0-E1B0P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 9,
+      "hostBusyMedian": 25.932539682539684,
+      "hostBusyMax": 39.662027833001986,
+      "hostLogComplete": true,
+      "seconds": 49.70334506034851
+    },
+    "screen326-r3-d50-E1B0P1": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 10,
+      "hostBusyMedian": 22.563977787809932,
+      "hostBusyMax": 40.0318661621191,
+      "hostLogComplete": true,
+      "seconds": 51.53933501243591
+    },
+    "sender326-r1-paired150-d50-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 3,
+      "hostBusyMedian": 55.058636453985294,
+      "hostBusyMax": 56.98903290129611,
+      "hostLogComplete": true,
+      "seconds": 17.83688974380493
+    },
+    "sender326-r1-single500-d0-coordinated-2000": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 53.9028496059499,
+      "hostBusyMax": 60.303211649710754,
+      "hostLogComplete": true,
+      "seconds": 14.505882024765015
+    },
+    "sender326-r1-single500-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 51.29535257201529,
+      "hostBusyMax": 54.899622341482804,
+      "hostLogComplete": true,
+      "seconds": 13.774864196777344
+    },
+    "sender326-r1-paired150-d50-coordinated-2000": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 50.65169933040332,
+      "hostBusyMax": 55.29503712387651,
+      "hostLogComplete": true,
+      "seconds": 13.876015901565552
+    },
+    "sender326-r1-paired150-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 54.3254621568382,
+      "hostBusyMax": 59.925824712082765,
+      "hostLogComplete": true,
+      "seconds": 14.20421314239502
+    },
+    "sender326-r1-paired150-d0-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 52.982501250497315,
+      "hostBusyMax": 58.68358445678033,
+      "hostLogComplete": true,
+      "seconds": 14.14779806137085
+    },
+    "sender326-r1-paired150-d50-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 51.59712140204764,
+      "hostBusyMax": 57.01285855588526,
+      "hostLogComplete": true,
+      "seconds": 14.381633758544922
+    },
+    "sender326-r1-single500-d0-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 52.86843535719974,
+      "hostBusyMax": 55.53822152886116,
+      "hostLogComplete": true,
+      "seconds": 13.972782135009766
+    },
+    "sender326-r1-paired150-d0-coordinated-2000": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 58.23831666199714,
+      "hostBusyMax": 65.38232373386296,
+      "hostLogComplete": true,
+      "seconds": 14.562538146972656
+    },
+    "sender326-r2-single500-d0-coordinated-2000": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 52.638351726710766,
+      "hostBusyMax": 57.905138339920946,
+      "hostLogComplete": true,
+      "seconds": 14.350358009338379
+    },
+    "sender326-r2-paired150-d50-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 2,
+      "hostBusyMedian": 51.612897660183975,
+      "hostBusyMax": 57.438831886345696,
+      "hostLogComplete": true,
+      "seconds": 14.443083047866821
+    },
+    "sender326b-r1-paired150-d50-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 41.03633114949375,
+      "hostBusyMax": 65.79888712241653,
+      "hostLogComplete": true,
+      "seconds": 90.7778799533844
+    },
+    "sender326c-r1-paired150-d50-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 38.18042531157755,
+      "hostBusyMax": 60.88170756034311,
+      "hostLogComplete": true,
+      "seconds": 95.41731524467468
+    },
+    "sender326b-r1-single500-d0-coordinated-2000": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 22,
+      "hostBusyMedian": 44.7530194546901,
+      "hostBusyMax": 60.02785515320334,
+      "hostLogComplete": true,
+      "seconds": 112.13878607749939
+    },
+    "sender326b-r1-single500-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 21,
+      "hostBusyMedian": 47.79485132708042,
+      "hostBusyMax": 62.298307752853205,
+      "hostLogComplete": true,
+      "seconds": 111.68569922447205
+    },
+    "sender326b-r1-paired150-d50-coordinated-2000": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 19,
+      "hostBusyMedian": 48.097502972651604,
+      "hostBusyMax": 63.039176889592405,
+      "hostLogComplete": true,
+      "seconds": 96.709153175354
+    },
+    "sender326b-r1-paired150-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 44.34640328340757,
+      "hostBusyMax": 66.46086436964748,
+      "hostLogComplete": true,
+      "seconds": 94.96976900100708
+    },
+    "sender326b-r1-paired150-d0-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 43.22364401219498,
+      "hostBusyMax": 66.70646766169153,
+      "hostLogComplete": true,
+      "seconds": 94.69885897636414
+    },
+    "sender326b-r1-paired150-d50-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 43.429969682968775,
+      "hostBusyMax": 62.872361412507395,
+      "hostLogComplete": true,
+      "seconds": 94.99794697761536
+    },
+    "sender326c-r1-single500-d0-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 19,
+      "hostBusyMedian": 47.41877616105242,
+      "hostBusyMax": 64.18650793650794,
+      "hostLogComplete": true,
+      "seconds": 96.73213696479797
+    },
+    "sender326c-r1-single500-d0-immediate-inflight": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 47.942737059360844,
+      "hostBusyMax": 58.593596542918874,
+      "hostLogComplete": true,
+      "seconds": 95.27433109283447
+    },
+    "sender326c-r1-paired150-d50-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 16,
+      "hostBusyMedian": 41.03956043348097,
+      "hostBusyMax": 60.75523922499011,
+      "hostLogComplete": true,
+      "seconds": 86.43749237060547
+    },
+    "sender326c-r1-paired150-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 42.09951002152371,
+      "hostBusyMax": 63.89052963181729,
+      "hostLogComplete": true,
+      "seconds": 95.53955221176147
+    },
+    "sender326c-r1-paired150-d0-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 35.879498101375546,
+      "hostBusyMax": 60.657370517928285,
+      "hostLogComplete": true,
+      "seconds": 94.85258269309998
+    },
+    "sender326c-r1-paired150-d50-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 35.1333140183389,
+      "hostBusyMax": 65.40818343546155,
+      "hostLogComplete": true,
+      "seconds": 95.16914296150208
+    },
+    "sender326c-r1-single500-d0-reference": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 19,
+      "hostBusyMedian": 49.91048338969564,
+      "hostBusyMax": 62.437761402111136,
+      "hostLogComplete": true,
+      "seconds": 96.9960298538208
+    },
+    "sender326c-r1-paired150-d0-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 41.2909632571996,
+      "hostBusyMax": 59.598967639467936,
+      "hostLogComplete": true,
+      "seconds": 86.95138502120972
+    },
+    "sender326c-r2-single500-d0-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 45.86901484151086,
+      "hostBusyMax": 60.09445100354191,
+      "hostLogComplete": true,
+      "seconds": 95.85400891304016
+    },
+    "sender326c-r2-paired150-d50-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 34.313793377229175,
+      "hostBusyMax": 61.427174975562075,
+      "hostLogComplete": true,
+      "seconds": 95.24104189872742
+    },
+    "sender326c-r2-paired150-d50-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 41.45273631840796,
+      "hostBusyMax": 62.63801261829653,
+      "hostLogComplete": true,
+      "seconds": 87.14469790458679
+    },
+    "sender326c-r2-single500-d0-immediate-inflight": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 50.52778164148262,
+      "hostBusyMax": 62.80135485156406,
+      "hostLogComplete": true,
+      "seconds": 95.76700806617737
+    },
+    "sender326c-r2-paired150-d0-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 41.46778042959427,
+      "hostBusyMax": 72.09763842032149,
+      "hostLogComplete": true,
+      "seconds": 96.13365387916565
+    },
+    "sender326c-r2-paired150-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 42.163785355338405,
+      "hostBusyMax": 72.1556886227545,
+      "hostLogComplete": true,
+      "seconds": 96.25086283683777
+    },
+    "sender326c-r2-paired150-d50-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 41.07121998943319,
+      "hostBusyMax": 65.92505854800936,
+      "hostLogComplete": true,
+      "seconds": 96.18167686462402
+    },
+    "sender326c-r2-single500-d0-reference": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 48.55444809013805,
+      "hostBusyMax": 63.09405448399284,
+      "hostLogComplete": true,
+      "seconds": 95.85656714439392
+    },
+    "sender326c-r2-paired150-d0-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 41.65506266162721,
+      "hostBusyMax": 62.75368085953044,
+      "hostLogComplete": true,
+      "seconds": 86.48418688774109
+    },
+    "sender326c-r3-single500-d0-immediate-inflight": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 19,
+      "hostBusyMedian": 55.90629342862815,
+      "hostBusyMax": 64.17229059150456,
+      "hostLogComplete": true,
+      "seconds": 97.13241505622864
+    },
+    "sender326c-r3-paired150-d0-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 40.33534229639932,
+      "hostBusyMax": 69.77663569875469,
+      "hostLogComplete": true,
+      "seconds": 96.22126197814941
+    },
+    "sender326c-r3-paired150-d0-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 37.75934949582924,
+      "hostBusyMax": 68.72770511296076,
+      "hostLogComplete": true,
+      "seconds": 95.88529992103577
+    },
+    "sender326c-r3-single500-d0-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 19,
+      "hostBusyMedian": 48.213216210820526,
+      "hostBusyMax": 78.30207305034551,
+      "hostLogComplete": true,
+      "seconds": 97.12280011177063
+    },
+    "sender326c-r3-single500-d0-reference": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 48.595055769444315,
+      "hostBusyMax": 58.75594294770206,
+      "hostLogComplete": true,
+      "seconds": 95.73501586914062
+    },
+    "sender326c-r3-paired150-d50-immediate-inflight": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 35.78858232642718,
+      "hostBusyMax": 59.44819372766971,
+      "hostLogComplete": true,
+      "seconds": 95.76172208786011
+    },
+    "sender326c-r3-paired150-d0-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 42.292411601112434,
+      "hostBusyMax": 61.883052527254705,
+      "hostLogComplete": true,
+      "seconds": 86.89411687850952
+    },
+    "sender326c-r3-paired150-d50-coordinated-2000": {
+      "childExit": 0,
+      "coldFailure": false,
+      "hostSamples": 17,
+      "hostBusyMedian": 41.763891635356934,
+      "hostBusyMax": 67.69964243146603,
+      "hostLogComplete": true,
+      "seconds": 87.96422815322876
+    },
+    "sender326c-r3-paired150-d50-reference": {
+      "childExit": 1,
+      "coldFailure": false,
+      "hostSamples": 18,
+      "hostBusyMedian": 35.04390296716166,
+      "hostBusyMax": 64.0371688414393,
+      "hostLogComplete": true,
+      "seconds": 95.37463808059692
+    }
+  },
+  "noLandingOrCredit": true
+}
