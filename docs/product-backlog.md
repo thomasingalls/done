@@ -828,3 +828,8 @@ Phase249: run four fixed serial native before/after normal/withheld journeys; or
 ## 2026-10-30 — phase250: due-send comparison outcomes
 
 Phase250: yielding improves peerp95 but not aggregate acceptance; throughput cost requires investigation. Next same-source verified warm/selection0vs1 configuration control with native security guards, then follow clear evidence. Original2.5s/16ms gates and all old failures stay; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).
+
+
+## 2026-10-30 — phase251: existing verified-selection control
+
+Phase251: measure existing guarded verified-selection path before writing new reuse. Product source remains248; all2.5s/16ms/throughput concerns and prior failures retained. Clear next repair follows actual control results; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).

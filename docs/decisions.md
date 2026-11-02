@@ -6412,3 +6412,8 @@ Freeze before/after normal and after/before withheld native Worker journeys, bot
 ## 2026-10-30 — phase250: due-send comparison outcomes
 
 Retain yield latency/throughput tradeoff: peerp95 better in both modes, uploads~60% more, backlog+15.0%/+8.2%, withheld late2526.722ms still fails2.5s. Do not waive near-miss or hide raw input tails. Compare pre-existing verified selection path before designing another reuse mechanism; completed0 references remain authoritative. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).
+
+
+## 2026-10-30 — phase251: existing verified-selection control
+
+Control same248source with existing WARM_LOADS0vs1 path, preserve all checks/defaults and old0failures. Reuse completed250disabled references, then fixed enabled normal/withheld and disabled normal drift control. Native warm/resume/audit/authority refusal cohort must pass before timing. >=20% against both normal references plus withheld is engineering signal only. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).
