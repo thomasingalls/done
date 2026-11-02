@@ -1216,3 +1216,7 @@ Resolve the profiled diagnostic's cold WebAuthn failure before further lab runs,
 ### 2026-11-01 — Phase 323: review before any hardening
 
 Review idle-check coalescing/read-ahead as a network-latency tradeoff, with 0 ms regression and wider-page index amplification retained. Choose P’s durable-format contracts before landing; rerun beyond the index limit and multi-account fairness for B8. Review zero-extra-priority-retry latency versus replay/CPU/battery cost; preserve every authority/journal/handoff guard and fix the separate capacity→owner-error mapping only in an authorized bounded repair. Audit actual fixture document sizes before claiming nominal 13 k Goals coverage. No hardening/release work begun. [Results and separate landing requirements](./performance-experiments/2026-10-29-worker-catchup/phase323/README.md).
+
+### 2026-11-01 — Phase 324: stopped parsed-page reuse experiment
+
+Before resuming the lab, repair the prototype's dense stored-replay mode only in a new bounded phase, reviewing all expectedRecord branches and adding expired-historical versus expired-live, tuple/duplicate and erasure controls. Preserve the failed cold journey. Then revisit the remaining mixed B×P screen, profiles, live/grown checks, cap prediction, sender wait study and read-only signed multi-publisher-tip contract. No winner or production/default decision yet. [Stopped evidence](./performance-experiments/2026-10-29-worker-catchup/phase324/README.md).

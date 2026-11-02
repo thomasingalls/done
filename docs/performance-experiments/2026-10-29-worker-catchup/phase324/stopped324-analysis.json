@@ -1,0 +1,87 @@
+{
+  "run": "screen324-r1-d0-E1B0P1",
+  "rtt": 0,
+  "E": 1,
+  "B": 0,
+  "P": 1,
+  "SY": "1N",
+  "drainMs": 17422.5,
+  "time700Ms": 10984.199951171875,
+  "positionsAt30": 1025,
+  "drainPredicateOnly": true,
+  "functionalCellPass": false,
+  "cold": "FAILED: historical replay expired",
+  "error": "Error: page.evaluate: el: Inbound verification refused: expired\n    at q (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:99855)\n    at d (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:104726)\n    at cl (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:104744)\n    at fl (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:108026)\n    at g (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:213260)\n    at kS (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:213499)\n    at async validate (http://localhost:53781/worker-app/assets/joinedAccount-DkTZMBXJ.js:2:60730)\n    at async http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:32392",
+  "clientValidationInclusiveElapsedSumMs": 2195.2000007629395,
+  "clientValidationSpans": 1260,
+  "clientValidationIsNotCPU": true,
+  "indexPeakChargedBytes": 4332766,
+  "lastObservedIndex": {
+    "kind": "indexBudget",
+    "densePositions": 1023,
+    "rows": 1347,
+    "logical": 2114,
+    "chargedBytes": 4332766,
+    "physicalBytes": 1898306,
+    "lastSeq": 1347,
+    "fits": true,
+    "maxRows": 32768,
+    "maxBytes": 33554432,
+    "at": 1793531567939.5999
+  },
+  "indexChargeIsNotHeap": true,
+  "codecCountersAtObservedDrain": {
+    "codecFullPageDecodes": 1635,
+    "codecPageMessageEncodes": 631,
+    "codecReceiptPageHexEncodes": 4
+  },
+  "eventOverflow": 0,
+  "tokensThroughDrain": 388,
+  "budgetByRouteAndEvent": {
+    "/account/grant/v1/begin": {
+      "refund": 0
+    },
+    "/account/grant/v1/finish": {
+      "acquire": 1,
+      "refund": 0
+    },
+    "/account/membership/v2/discover": {
+      "acquire": 5,
+      "refund": 0
+    },
+    "/account/history/v1/checkpoint": {
+      "acquire": 4,
+      "refund": 0
+    },
+    "/account/delivery/read-v2": {
+      "acquire": 7,
+      "refund": 0
+    },
+    "/account/delivery/submit": {
+      "acquire": 1,
+      "refund": 0
+    },
+    "/account/delivery/read-v2-batch": {
+      "acquire": 131,
+      "reserve": 239,
+      "refund": 0
+    }
+  },
+  "budgetRefusals": [],
+  "hostBusyMedian": 27.066772655007952,
+  "hostBusyMax": 39.13130105598725,
+  "hostLoadSamples": 9,
+  "inputP95": null,
+  "peerP95": null,
+  "typingExposed": false,
+  "cellReplicatesReached": 1,
+  "cellReplicatesDeclared": 3,
+  "declaredDeepJourneys": 27,
+  "reachedDeepJourneys": 1,
+  "remainingDeepJourneysNotRun": 26,
+  "winner": null,
+  "capPrediction": null,
+  "profilesLiveGrownSenderNotRun": true,
+  "labOnly": true,
+  "acceptanceCredit": false
+}

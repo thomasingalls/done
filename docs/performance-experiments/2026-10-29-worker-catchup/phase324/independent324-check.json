@@ -1,0 +1,82 @@
+{
+  "canonicalSourceInputsUnchanged": 1552,
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "stages": [
+    {
+      "stage": "cut324",
+      "checked": {
+        "sources": 445,
+        "serverSources": 829,
+        "assets": 606
+      },
+      "apparatusCurrentExact": true,
+      "apparatusNote": null,
+      "fixtureHashes": 1,
+      "declared": 1,
+      "reached": 0
+    },
+    {
+      "stage": "cut324-run",
+      "checked": {
+        "sources": 445,
+        "serverSources": 829,
+        "assets": 606
+      },
+      "apparatusCurrentExact": true,
+      "apparatusNote": null,
+      "fixtureHashes": 1,
+      "declared": 1,
+      "reached": 0
+    },
+    {
+      "stage": "cut324-ready",
+      "checked": {
+        "sources": 445,
+        "serverSources": 829,
+        "assets": 606
+      },
+      "apparatusCurrentExact": true,
+      "apparatusNote": null,
+      "fixtureHashes": 1,
+      "declared": 1,
+      "reached": 1
+    },
+    {
+      "stage": "cut324-complete",
+      "checked": {
+        "sources": 445,
+        "serverSources": 829,
+        "assets": 606
+      },
+      "apparatusCurrentExact": true,
+      "apparatusNote": null,
+      "fixtureHashes": 1,
+      "declared": 1,
+      "reached": 1
+    },
+    {
+      "stage": "screen324",
+      "checked": {
+        "sources": 445,
+        "serverSources": 829,
+        "assets": 606
+      },
+      "apparatusCurrentExact": true,
+      "apparatusNote": null,
+      "fixtureHashes": 1,
+      "declared": 27,
+      "reached": 1
+    }
+  ],
+  "independentCommittedPositionSum": 1025,
+  "independentDrainMs": 17422.5,
+  "independentPositions30": 1025,
+  "interiorCutColdExact": true,
+  "actualDeepColdFailure": true,
+  "stoppedAfterFirstDeepJourney": true,
+  "timedRunsAfterStop": 0,
+  "allRetainedHostLogsParse": true,
+  "labOnly": true,
+  "acceptanceCredit": false
+}
