@@ -18226,3 +18226,8 @@ Extended reader-first red evidence to33cases:15fail/18pass. Reproduced reader-ID
 ## 2026-10-30 — phase284: development range reader
 
 Development range reader/all consumers implemented;36new tests,12sensitive fault controls, final2825unitpass/oneexisting skip,119metadata units,7contracts/types/lint/format pass. Preserve failed self-step fixture and initially survived cold-index fault; stronger fixture detects it. Only old test edit is exact open15→16/list addition; all old assertions remain. Writer disabled, no latency/compatibility/release qualification. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase284/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase285
+
+Phase285: bounded composed peer range writer. Seven new cases, three detected faults,159focused/2832full Vitest passes plus oneexisting skip,11unchanged native group cases,119metadata and7contracts pass. All78specified obligations retained; new test is required/uncredited. Actual deep4/8 and stale/rollback behavior pending; no release work. See [phase285](./performance-experiments/2026-10-29-worker-catchup/phase285/README.md).

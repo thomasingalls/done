@@ -6582,3 +6582,8 @@ Use one receipt-tag home across every literal/indirect reader, including members
 ## 2026-10-30 — phase284: development range reader
 
 Implement only the development reader before range writer activation. Share tag recognition and per-entry verification, retain exact signed originals, independent selected-position replay and all old v1 semantics. Keep new v2 construction open and all78specified contracts. Wider-range duplication/fairness and native stale-tab/rollback remain adoption obligations; no persisted/cross-owner trust. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase284/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase285
+
+Use the existing atomic receive owner for development peer ranges; count verified positions within four, and treat per-publisher size narrowing as scheduling only. Network8 requires separate bounded continuation; v2 remains development-only. See [phase285](./performance-experiments/2026-10-29-worker-catchup/phase285/README.md).

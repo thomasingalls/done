@@ -1,7 +1,6 @@
 # Indexed inbound range receipts — development contract
 
-2026-10-30. **Development-only**, explicitly approved by the operator. The reader phase does not
-enable application range writes. Existing performance gates, production budgets, authority/history
+2026-10-30. **Development-only**, explicitly approved by the operator. Phase285 enables only bounded composed-peer development range writes. Existing performance gates, production budgets, authority/history
 checks, synchronous journal admission and mixed-owner fencing remain. Release preparation is held.
 
 ## Closed bytes and authority
@@ -48,7 +47,7 @@ Large supported originals require a safe per-publisher single-entry fallback in 
 ## Stale tabs and rollback
 
 Established in the reader phase: v1 bytes/API remain exact, v2 uses a distinct closed tag/version,
-and current readers verify its selected evidence. No application v2 writer is enabled yet.
+and current readers verify its selected evidence. Phase285 enables composed-peer writes within the unchanged four-position allowance; other reads remain single-entry.
 
 **Not yet established:** an actual stale v1 tab sharing an origin with a v2 writer, or an older
 application reopening a carrier containing v2. Before release work, exercise both against immutable
@@ -63,3 +62,12 @@ older client open. A reader-preserving rollback artifact or separately proven re
 would be needed before promising rollback across that boundary. No such artifact or migration is
 claimed here. The new construction remains an open qualification obligation; existing specified
 contracts and release blocks remain.
+
+## Bounded development writer (phase285)
+
+Known peer backlog can use one wider signed request. Actual fitting verified positions, not HTTP
+count, consume the existing four-position publisher turn. Fresh single-entry fallback is scoped
+to a publisher whose wider response/evidence exceeds bounds; optional batching remains separate.
+All original native authority, commit/readback, witness and Window acknowledgement checks remain.
+Functional/native legacy checks pass; wider deep, contention and stale/rollback behavior remain
+unqualified. This is development activation only, with no aggregate release credit.

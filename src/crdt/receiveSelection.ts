@@ -1,6 +1,28 @@
 import { publicationState, type DeliveryState } from './deliveryRecord';
 import { RECEIVE_POLL_MS } from './accountReceiveDriver';
 import type { InboundReadCursor } from './inboundLedger';
+import { RECEIVE_GROUP_LIMIT } from './receiveGroup';
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+
+/** A network width cannot multiply the caller's existing verified-position allowance. */
+export function receiveReadWidths(positions: number, width: number): readonly number[] {
+  if (
+    !Number.isSafeInteger(positions) ||
+    positions < 1 ||
+    positions > RECEIVE_GROUP_LIMIT ||
+    !Number.isSafeInteger(width) ||
+    width < 1 ||
+    width > READ_COUNT_LIMIT
+  )
+    throw Error('Invalid receive range plan');
+  const result: number[] = [];
+  for (let remaining = positions; remaining > 0;) {
+    const count = Math.min(remaining, width);
+    result.push(count);
+    remaining -= count;
+  }
+  return Object.freeze(result);
+}
 
 /** Called only on verified delivery state; allocation alone is not evidence of a sent request. */
 export function unresolvedSelfSubmission(s: Readonly<DeliveryState>): boolean {
@@ -107,7 +129,7 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       checkedOwn = undefined;
     },
     capacity(publisher: string) {
-      return previous === publisher ? 4 - streak : 4;
+      return previous === publisher ? RECEIVE_GROUP_LIMIT - streak : RECEIVE_GROUP_LIMIT;
     },
     next(
       publishers: readonly string[],
@@ -161,17 +183,28 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       publisher: string,
       progress: boolean,
       verifiedOwn = false,
+      positions = 1,
     ) {
       const index = publishers.indexOf(publisher);
       if (index < 0) return;
+      if (
+        !Number.isSafeInteger(positions) ||
+        positions < 0 ||
+        positions > RECEIVE_GROUP_LIMIT ||
+        (progress &&
+          (positions < 1 ||
+            positions >
+              (previous === publisher ? RECEIVE_GROUP_LIMIT - streak : RECEIVE_GROUP_LIMIT)))
+      )
+        throw Error('Invalid receive position credit');
       if (quietBudget && progress) quiet.delete(publisher);
       if (verifiedOwn) checkedOwn = { publisher, at: now() };
-      streak = progress ? (previous === publisher ? streak + 1 : 1) : 0;
+      streak = progress ? (previous === publisher ? streak + positions : positions) : 0;
       previous = publisher;
       productive = progress;
-      // Four useful pages, then let other publishers reconcile. Groups consume this
-      // same allowance; the outer scheduler yields to input and due sending between groups.
-      if (progress && streak < 4) next = index;
+      // Four verified positions, then let other publishers reconcile. Network pages and ranges
+      // consume the same allowance; input and due sending still get their existing group yield.
+      if (progress && streak < RECEIVE_GROUP_LIMIT) next = index;
       else {
         next = index + 1;
         streak = 0;

@@ -3,7 +3,7 @@ import { collectReceivePages, RECEIVE_SINGLE_PAGE_BYTES } from './receivePrefetc
 import { MAX_PENDING_BYTES } from './admissionQueue';
 import { RECEIVE_GROUP_LIMIT } from './receiveGroup';
 import { PRIVATE_DELIVERY_TIMEOUT_MS } from '../account/privateDeliveryHttp';
-import { READ_REQUEST_LIMIT } from '../../account-protocol/deliveryTransport';
+import { READ_REQUEST_LIMIT, READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
   INBOUND_BATCH_COUNT,
   INBOUND_BATCH_PAGE_LIMIT,
@@ -30,10 +30,17 @@ export interface ReceivePageIO {
 
 /** Transport only. Every returned original page still needs the receive owner's verifier. */
 export function createReceivePageTransport() {
-  const oversized = new Set<string>();
+  const oversized = new Set<string>(),
+    singleEntry = new Set<string>();
+  const remember = (hints: Set<string>, publisher: string) => {
+    if (!/^[0-9a-f]{32}$/.test(publisher)) throw Error('Invalid receive publisher hint');
+    if (!hints.has(publisher) && hints.size >= MAX_SIZE_HINTS)
+      hints.delete(hints.values().next().value!);
+    hints.add(publisher);
+  };
   let available = true,
     active = false;
-  return async (
+  const readPages = async (
     requests: readonly Bytes[],
     signal: AbortSignal,
     io: ReceivePageIO,
@@ -89,9 +96,7 @@ export function createReceivePageTransport() {
       // and shares the original logical deadline. Invalid individual evidence still refuses.
       reply = await io.batch(body, stopped, limit, async (reason) => {
         if (reason === 'aggregate-limit' && publisher !== undefined) {
-          if (!oversized.has(publisher) && oversized.size >= MAX_SIZE_HINTS)
-            oversized.delete(oversized.values().next().value!);
-          oversized.add(publisher);
+          remember(oversized, publisher);
         } else available = false;
         unsupported = true;
         return null;
@@ -123,4 +128,14 @@ export function createReceivePageTransport() {
       active = false;
     }
   };
+  return Object.assign(readPages, {
+    /** Scheduling only: a smaller fresh signed request still needs the whole verifier. */
+    entryLimit(publisher: string) {
+      if (!/^[0-9a-f]{32}$/.test(publisher)) throw Error('Invalid receive publisher hint');
+      return singleEntry.has(publisher) ? 1 : READ_COUNT_LIMIT;
+    },
+    narrow(publisher: string) {
+      remember(singleEntry, publisher);
+    },
+  });
 }

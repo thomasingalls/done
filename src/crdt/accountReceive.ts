@@ -41,6 +41,7 @@ import {
 } from './receiveGroup';
 import {
   createReceiveSelection,
+  receiveReadWidths,
   hasPeerBacklog,
   unresolvedSelfSubmission,
 } from './receiveSelection';
@@ -177,7 +178,12 @@ import {
   random,
   type Bytes,
 } from './custodyCrypto';
-import { verifyInboundPage, InboundError, type InboundContext } from './accountInbound';
+import {
+  verifyInboundPage,
+  verifyInboundRange,
+  InboundError,
+  type InboundContext,
+} from './accountInbound';
 import {
   applyHistoryReceiveCuts,
   heldInboundContext,
@@ -1165,8 +1171,21 @@ async function openAccountReceiveOwner(
         : undefined;
     const requests: Bytes[] = [];
     try {
-      for (let i = 0; i < count; i++) {
-        const next = { ...r, after: cursor + i, nonce: hex(task.step(() => random(32))) };
+      const widths = receiveReadWidths(
+        count,
+        grouped && composed && publisher !== base.publisher.id
+          ? receivePages.entryLimit(publisher)
+          : 1,
+      );
+      let offset = 0;
+      for (const width of widths) {
+        const next = {
+          ...r,
+          after: cursor + offset,
+          limit: width,
+          nonce: hex(task.step(() => random(32))),
+        };
+        offset += width;
         next.signature = hex(
           new Uint8Array(
             await task.wait(() =>
@@ -1548,6 +1567,13 @@ async function openAccountReceiveOwner(
       if (account.detached) return Promise.reject(Error('This local copy is detached from sync'));
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
         return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive page'));
+      if (outstanding && decodeInboundRequest(outstanding).limit > 1) {
+        if (selfOnly)
+          return Promise.reject(
+            new AdmissionError('receive-refused', 'Self receipt requires the owned publisher'),
+          );
+        return receiveGroup([input], [expectedRequest ?? outstanding], promote);
+      }
       const page = input.slice();
       return runCaptureTask(async (task, owner, route) => {
         const s = await state(task, owner, route);
@@ -1761,7 +1787,7 @@ async function openAccountReceiveOwner(
   ) => {
     if (
       account.detached ||
-      inputs.length < 2 ||
+      inputs.length < 1 ||
       inputs.length > RECEIVE_GROUP_LIMIT ||
       expected.length !== inputs.length ||
       inputs.some((b) => !(b instanceof Uint8Array) || !b.length) ||
@@ -1769,11 +1795,20 @@ async function openAccountReceiveOwner(
       expected.some((b) => !(b instanceof Uint8Array) || !b.length || b.length > 4096)
     )
       return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+    if (inputs.length === 1) {
+      try {
+        if (decodeInboundRequest(expected[0]!).limit === 1)
+          return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+      } catch {
+        return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+      }
+    }
     const pages = inputs.map((b) => b.slice()),
       requests = expected.map((b) => b.slice());
     return runCaptureTask(async (task, owner, route) => {
       const s = await state(task, owner, route);
       const first = decodeInboundRequest(requests[0]!);
+      const wide = requests.some((request) => decodeInboundRequest(request).limit > 1);
       if (first.epoch < base.authority.tip) throw new ReceiveAuthorityChanged();
       if (composed && first.publisher === base.publisher.id)
         throw new AdmissionError('receive-refused', 'Own reconciliation must remain single-entry');
@@ -1782,6 +1817,7 @@ async function openAccountReceiveOwner(
         throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
       const stamp = outstandingStamp;
       if (!stamp) throw new ReceiveAuthorityChanged();
+      let expectedAfter = first.after;
       for (let i = 0; i < requests.length; i++) {
         if (
           !outstandingGroup[i] ||
@@ -1791,62 +1827,86 @@ async function openAccountReceiveOwner(
           throw new ReceiveAuthorityChanged();
         stamp.check();
         const r = decodeInboundRequest(requests[i]!);
-        if (
-          r.publisher !== first.publisher ||
-          r.epoch !== first.epoch ||
-          r.after !== first.after + i
-        )
+        if (r.publisher !== first.publisher || r.epoch !== first.epoch || r.after !== expectedAfter)
           throw new AdmissionError('receive-refused', 'Receive group is not contiguous');
+        expectedAfter += r.limit;
       }
       const context = { ...publisherContext(base, first.publisher), prefix: { ...peer.prefix } };
       const results: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
+      const prepared: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
+      const kinds: string[] = [],
+        counts: number[] = [],
+        verifiedRequests: Bytes[] = [];
       const writes: import('./contentRecord').ContentInput[] = [];
       const updates: Bytes[] = [];
       let committed = false,
         bytes = 0;
       try {
-        for (let i = 0; i < pages.length; i++) {
-          let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
+        pageLoop: for (let i = 0; i < pages.length; i++) {
+          let pageResults: readonly Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
           try {
             await task.wait(async () => {
-              result = await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task));
+              pageResults =
+                decodeInboundRequest(requests[i]!).limit > 1
+                  ? await verifyInboundRange(context, requests[i]!, pages[i]!, lifetime(task))
+                  : [await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task))];
               // Retain ownership before the final lifetime check can reject.
-              results.push(result);
+              prepared.push(...pageResults);
             });
           } catch (cause) {
             task.step(() => {});
             throw new AdmissionError('receive-refused', String(cause), { cause });
           }
-          if (!result) throw Error('Missing inbound verification result');
-          if (result.kind === 'empty') break;
-          if (result.kind !== 'received')
-            throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
-          const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
-          if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
-            // The single-receipt verifier has already enforced its individual bounds.
-            // Keep only the fitting prefix; this valid tail is fetched again later.
-            result.record.fill(0);
-            for (const update of result.updates) update.fill(0);
-            results.pop();
-            break;
+          if (!pageResults.length) throw Error('Missing inbound verification result');
+          verifiedRequests.push(requests[i]!);
+          for (const [entry, result] of pageResults.entries()) {
+            if (result.kind === 'empty') {
+              kinds.push(result.kind);
+              counts.push(0);
+              break pageLoop;
+            }
+            if (result.kind !== 'received')
+              throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
+            const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
+            if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
+              // The single-receipt verifier has already enforced its individual bounds.
+              // Keep only the fitting prefix; this valid tail is fetched again later.
+              if (counts[i] === undefined) verifiedRequests.pop();
+              for (const unused of pageResults.slice(entry)) {
+                if ('record' in unused) unused.record.fill(0);
+                if (unused.kind === 'received') for (const update of unused.updates) update.fill(0);
+              }
+              break pageLoop;
+            }
+            results.push(result);
+            if (counts[i] === undefined) {
+              kinds.push(result.kind);
+              counts.push(0);
+            }
+            counts[i] = counts[i]! + 1;
+            bytes += size;
+            writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
+              kind: 'heads',
+              bytes: result.record,
+            });
+            updates.push(...result.updates);
+            context.prefix = {
+              position: result.position,
+              link: result.link,
+              observedThrough: result.through,
+            };
           }
-          bytes += size;
-          writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
-            kind: 'heads',
-            bytes: result.record,
-          });
-          updates.push(...result.updates);
-          context.prefix = {
-            position: result.position,
-            link: result.link,
-            observedThrough: result.through,
-          };
         }
-        const kinds = results.map((r) => r.kind);
         if (!writes.length)
           return task.step(() => {
             promote([]);
-            return { kind: 'empty' as const, recorded: false, status: describe(s), kinds };
+            return {
+              kind: 'empty' as const,
+              recorded: false,
+              status: describe(s),
+              kinds,
+              ...(wide ? { counts, positions: 0 } : {}),
+            };
           });
         const before = await owner.carrier.spoolWitness(task);
         let after = before;
@@ -1860,11 +1920,7 @@ async function openAccountReceiveOwner(
           after,
           checkCommit: () => {
             stamp.check();
-            if (
-              requests
-                .slice(0, results.length)
-                .some((r) => decodeInboundRequest(r).expires <= Date.now())
-            )
+            if (verifiedRequests.some((r) => decodeInboundRequest(r).expires <= Date.now()))
               throw new ReceiveRequestExpired();
           },
           beforeCommit: async () => {
@@ -1880,13 +1936,19 @@ async function openAccountReceiveOwner(
         return task.step(() => {
           stamp.check();
           promote(updates);
-          return { kind: 'received' as const, recorded: true, status: describe(saved), kinds };
+          return {
+            kind: 'received' as const,
+            recorded: true,
+            status: describe(saved),
+            kinds,
+            ...(wide ? { counts, positions: results.length } : {}),
+          };
         });
       } catch (cause) {
         if (committed) void carrier.close().catch(() => {});
         throw cause;
       } finally {
-        for (const result of results) {
+        for (const result of prepared) {
           if ('record' in result) result.record.fill(0);
           if (result.kind === 'received') for (const b of result.updates) b.fill(0);
         }
@@ -2874,15 +2936,27 @@ async function openAccountReceiveOwner(
     receiveGroup,
     preparedPromotion,
     invalidateQuietReads: receiveSelection.invalidateQuiet,
-    completedRead: (request: Bytes, kind: string, quiet?: object) => {
+    completedRead: (request: Bytes, kind: string, quiet?: object, positions?: number) => {
       receiveSelection.completedQuiet(quiet, kind);
-      const publisher = decodeInboundRequest(request).publisher;
+      const read = decodeInboundRequest(request),
+        publisher = read.publisher;
+      if (kind === 'received' && read.limit > 1 && positions === undefined)
+        throw Error('Missing verified range position count');
+      if (positions !== undefined && positions > read.limit)
+        throw Error('Receive credit exceeds the owned request');
       receiveSelection.completed(
         base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
         publisher,
         kind === 'received',
         composed && publisher === base.publisher.id && (kind === 'received' || kind === 'empty'),
+        positions ?? 1,
       );
+    },
+    narrowRead: (request: Bytes) => {
+      const r = decodeInboundRequest(request);
+      if (!composed || r.publisher === base.publisher.id || r.limit === 1) return false;
+      receivePages.narrow(r.publisher);
+      return true;
     },
     fetchHistory,
     installHistory,
@@ -2977,6 +3051,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     sweepContext,
     invalidateQuietReads,
     completedRead,
+    narrowRead,
     isSelfRequest,
     api,
     account,
@@ -3071,6 +3146,8 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
+          if (oversized && narrowRead(request))
+            return { kind: 'unknown' as const, recorded: false };
           if (oversized)
             return {
               kind: 'rejected' as const,
@@ -3123,14 +3200,21 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                       ),
                     );
                 for (let i = 0; i < received.kinds.length; i++)
-                  completedRead(requests[i]!, received.kinds[i]!, quiet);
+                  completedRead(requests[i]!, received.kinds[i]!, quiet, received.counts?.[i]);
                 return received;
               } finally {
                 packed.fill(0);
               }
             }
             const received = await receivePage(page, request);
-            completedRead(request, received.kind, quiet);
+            completedRead(
+              request,
+              received.kind,
+              quiet,
+              'positions' in received && typeof received.positions === 'number'
+                ? received.positions
+                : undefined,
+            );
             return received;
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
@@ -3158,6 +3242,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                 phase: 'verify',
                 code: 'inbound-size',
               });
+              if (narrowRead(request)) return { kind: 'unknown' as const, recorded: false };
               return {
                 kind: 'rejected' as const,
                 reason: 'inbound-size' as const,

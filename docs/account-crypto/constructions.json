@@ -5342,7 +5342,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 740,
+          "line": 746,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },
@@ -7500,6 +7500,10 @@
         {
           "path": "src/crdt/accountInbound.ts",
           "name": "verifyStoredInbound"
+        },
+        {
+          "path": "src/crdt/accountReceive.ts",
+          "name": "openOwnedSyncingAccountWorkspace"
         }
       ],
       "homePins": [],
@@ -7507,7 +7511,8 @@
       "vectorCases": [],
       "tests": [
         "test/multiEntryInbound.test.ts",
-        "test/multiEntryInboundReaders.test.ts"
+        "test/multiEntryInboundReaders.test.ts",
+        "test/multiEntryReceiveScheduling.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -7519,7 +7524,7 @@
         "bounded-range-fairness",
         "stale-tab-rollback"
       ],
-      "blocker": "Development-only indexed v2 receipt reader; no application writer activation or aggregate credit. Published vector/map qualification, wider-range cost/fairness, stale-tab and rollback remain open. Existing specified v1 contracts are unchanged.",
+      "blocker": "Development-only indexed v2 reader and bounded four-position composed-peer writer; no aggregate credit. Published vector/map qualification, native wider-range cost/fairness, stale-tab and rollback remain open. Existing specified v1 contracts are unchanged.",
       "next": "Qualify the indexed record and every consumer against independent originals, native mixed-owner/rollback evidence and unchanged performance/security gates before any release work."
     }
   ],

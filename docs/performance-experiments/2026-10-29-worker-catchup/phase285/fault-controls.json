@@ -1,0 +1,14 @@
+[
+  {
+    "fault": "credit-http-not-positions",
+    "exactNamedCaseFails": true
+  },
+  {
+    "fault": "ignore-remaining-width",
+    "exactNamedCaseFails": true
+  },
+  {
+    "fault": "narrow-all-publishers",
+    "exactNamedCaseFails": true
+  }
+]
