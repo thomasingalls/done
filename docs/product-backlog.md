@@ -1013,3 +1013,8 @@ Phase286: execute the frozen original deep4 cell; preserve the complete outcome 
 ### 2026-10-30 — Worker catch-up phase287
 
 Deep4 improves deadline progress but still fails30s. Next bounded8download/unverified-tail/four-position fairness and clean oversized-range Worker fallback, then actual8deep and Page64. Normal comparison/release remain held. See [phase287](./performance-experiments/2026-10-29-worker-catchup/phase287/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase288
+
+Implement bounded preparation from phase288 before raw-tail/planner8. Preserve full-range all-or-nothing contract, four-position native turns and clean size fallback; all native/performance/rollback obligations stay open. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).

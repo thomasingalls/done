@@ -18241,3 +18241,8 @@ Phase286 freezes the exact285runtime deep comparison inputs. QA matches396source
 ### 2026-10-30 — Worker catch-up phase287
 
 Phase287: rebuilt default-budget deep4 failed30s at position747/zero native receive failures, versus before451.349HTTP/331reads, all200; limit4used183times. Full at/headersAt/extent trace retained. No completion/Undo/cold or acceptance credit; no rate-limit increase justified. See [phase287](./performance-experiments/2026-10-29-worker-catchup/phase287/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase288
+
+Phase288:8new bounded-preparation regression cases,7expected failures/1pass against existing full-range behavior. Old strict range cases retained. No implementation or acceptance claim; type-only fixture corrections retained in raw attempts. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).
