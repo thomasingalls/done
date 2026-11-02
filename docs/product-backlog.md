@@ -963,3 +963,8 @@ Phase 276: run the frozen unreduced/reduced cold after-check next, retaining all
 ## 2026-10-30 — phase277: native cold after-check outcome
 
 Phase 277 closes item1 cold same-carrier reuse at the original native gates. Next item2 deep traffic start/header timestamps and read extents, then multi-entry verification/read repair and fairness. Item3 Page deep64 and item4 fixture recipe/withheld/normal gates follow. Normal comparison held; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).
+
+
+## 2026-10-30 — phase278: deep traffic attribution protocol
+
+Phase 278: run original deep joined case with traffic timing/extent next. Then design multi-entry verifier and durable replay with byte/record limits and position-weighted fairness preserved. Page deep64 and recipe/withheld/normal gates follow; normal comparison held, no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).

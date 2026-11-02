@@ -18191,3 +18191,8 @@ Rebuilt and checked 396 source bodies/125 public assets, compiled release flag p
 ## 2026-10-30 — phase277: native cold after-check outcome
 
 Both original native cold after-checks pass without diagnostic hooks or raised limits: previously failing context/rebind and full resumable removal7275/revision2/input/Undo/exact archive. Three own containers/browsers absent. Original failures retained; no exact cold-time or phone claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).
+
+
+## 2026-10-30 — phase278: deep traffic attribution protocol
+
+Prepared exact-client deep traffic observer with at/headersAt, decoded after/limit for individual and batch requests, explicit bounds and six passing contracts. One-case discovery and actual container readiness/shutdown pass; original deep timing result pending. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).

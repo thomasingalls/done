@@ -6547,3 +6547,8 @@ Run original two cold cases once on exact cumulative275 source, released flags a
 ## 2026-10-30 — phase277: native cold after-check outcome
 
 Close the same-carrier unreduced cold repair against original real native cases: both original15s public-cold gates and native journal/rebind/Undo/archive/resumable reduction checks pass. Do not infer exact cold latency or native replay count from whole-case duration; retain before failure and new-carrier independence. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).
+
+
+## 2026-10-30 — phase278: deep traffic attribution protocol
+
+Attribute deep request cadence/extent with bounded Node-side timestamps and original signed request metadata only, no response/writing capture. Preserve exact phase275 client artifacts, original30s/default limits and all functional guards. Multi-entry needs verifier/durable replay support, not a request-limit-only edit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).
