@@ -1,0 +1,16 @@
+{
+  "baseCommit": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "candidate": "exact cumulative285runtime, including development v2 reader and four-position range writer",
+  "flags": {
+    "VITE_ACCOUNT_BASELINE_READ": "1",
+    "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+    "VITE_ACCOUNT_RETENTION": "1",
+    "VITE_ACCOUNT_RETENTION_AUTO": "1",
+    "VITE_ACCOUNT_RETENTION_RESUME": "1",
+    "VITE_ACCOUNT_HISTORY_AUTO": "0",
+    "VITE_ACCOUNT_BATCH": "coordinated-2000"
+  },
+  "diagnosticHooks": false,
+  "startedAt": 1793376571331,
+  "finishedAt": 1793376584727
+}

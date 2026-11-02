@@ -18231,3 +18231,8 @@ Development range reader/all consumers implemented;36new tests,12sensitive fault
 ### 2026-10-30 — Worker catch-up phase285
 
 Phase285: bounded composed peer range writer. Seven new cases, three detected faults,159focused/2832full Vitest passes plus oneexisting skip,11unchanged native group cases,119metadata and7contracts pass. All78specified obligations retained; new test is required/uncredited. Actual deep4/8 and stale/rollback behavior pending; no release work. See [phase285](./performance-experiments/2026-10-29-worker-catchup/phase285/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase286
+
+Phase286 freezes the exact285runtime deep comparison inputs. QA matches396source bodies/125frontend assets; six observer contracts and actual-service smoke pass. No timed result yet; all gates remain. See [phase286](./performance-experiments/2026-10-29-worker-catchup/phase286/README.md).
