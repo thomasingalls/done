@@ -6617,3 +6617,8 @@ Download width8 is independent of native position allowance4. Carry only one bou
 ### 2026-10-30 — Worker catch-up phase291
 
 Finish the initial partial publisher turn before downloading8, so a full page is consumed in two4position turns rather than3+4+1. This is a scheduling change only; native allowance, fresh verification and all gates remain. See [phase291](./performance-experiments/2026-10-29-worker-catchup/phase291/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase292
+
+Freeze both291client roles at production flags/default budgets for one original deep8cell, retaining30s/native assertions and at/headersAt observer. Do not rerun a failed cell into a favorable result or claim normal acceptance. See [phase292](./performance-experiments/2026-10-29-worker-catchup/phase292/README.md).
