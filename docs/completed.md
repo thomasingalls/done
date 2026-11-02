@@ -18026,3 +18026,8 @@ Matched results frozen242 before attribution. Coarse raw timeline identifies pub
 ## 2026-10-30 — phase244: invalid midnight diagnostic retained
 
 Phase243 diagnostic fails original30s final-delivery; both backlog checks complete but archive/cold not reached. Observed frozen card after real midnight explains calendar-invalid fixture; detailed collector was after failed assertion and lost events. Exact container absent. Failure and limitations retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).
+
+
+## 2026-10-30 — phase245: corrected diagnostic apparatus
+
+Prepared separate phase245 diagnostic with unchanged source/assets. Apparatus correction addsUTC civil calendar, pre-marker freeze/editing guards and failure-safe metadata capture; no gate outcome yet, no credit from this instrumented run. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).

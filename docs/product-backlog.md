@@ -798,3 +798,8 @@ Phase243: trace scheduler send wait/prelude and receiver quiet-stream sweep on s
 ## 2026-10-30 — phase244: invalid midnight diagnostic retained
 
 Phase244: original matched latency misses remain. Detailed attribution pending corrected civil-date fixture and finally-safe trace collector; do not infer upload/authority failure from a keyboard attempt against a frozen card. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).
+
+
+## 2026-10-30 — phase245: corrected diagnostic apparatus
+
+Phase245: finish late-marker attribution with corrected calendar/collector; original every-marker gate remains blocked. No product repair or release preparation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).

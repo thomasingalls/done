@@ -6382,3 +6382,8 @@ Separate latency attribution from matched performance: timestamp-only diagnostic
 ## 2026-10-30 — phase244: invalid midnight diagnostic retained
 
 Classify midnight diagnostic invalid: actual three-day freeze crossed during run, frozen DOM observed, late attempt never submitted. Preserve original30s failure and lost post-assertion trace; no security bypass or performance credit. Correct civil-calendar apparatus and failure-safe capture separately. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).
+
+
+## 2026-10-30 — phase245: corrected diagnostic apparatus
+
+Correct only diagnostic civil timezone toUTCdate29, keeping real protocol clocks and same effective fixture age as valid matched cases. Add explicit editable guards, finally-safe capture and actual Worker clock brackets; keep every old assertion/deadline and failed midnight trajectory. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).
