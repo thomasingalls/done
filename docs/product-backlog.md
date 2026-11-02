@@ -1098,3 +1098,8 @@ Next fixed current291normal then multi-account fairness. Yield withheld gap is f
 ### 2026-10-30 — Worker catch-up phase304
 
 Finish frozen fairness, then approved lab-only Worker CPU profile/factorial4range screen; default-off writer and realv5publish before any landing. Deep/marker/compatibility blocks remain. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase305
+
+Next default-off range writer, realv5livepublish and approved isolated7factor range4lab screen/profile/ablations. Current normalmarker/fairness/deep and stale-tab/rollback blocks stay open. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).

@@ -6682,3 +6682,8 @@ The single exact matched yield pair supports248with its tails and original old-b
 ### 2026-10-30 — Worker catch-up phase304
 
 Retain the current marker failure despite good p95. Finish frozen fairness before the approved isolated lab screen; do not infer a range-only effect across differing hint conditions. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase305
+
+Keep every frozen result; durable pending writing is distinct from performance acceptance. Begin the explicitly approved uncredited fictional-only lab lane after the four cells, with default-off range writer and realv5publication check. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).
