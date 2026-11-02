@@ -6447,3 +6447,8 @@ Do not adopt CDP delivery as a latency fix: balanced crossover fails16ms and CDP
 ## 2026-10-30 — phase257: baseline scope correction
 
 Correct baseline scope: released b6 warm loads are default-on,241/native237explicit0. Rebuild signed Page/Worker with exact release flags before new mechanisms; retain prior failures as conditional lab evidence. Outside work reported for25201/02and25304 is contamination, not measured causal attribution. Quiet host now coordinated. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).
+
+
+## 2026-10-30 — phase258: production baseline apparatus
+
+Freeze corrected production-flag normal ABBA: signed Page8d/Worker0ab, fixed0abserver, no248yield, warmunset. Independent emitted-flag equality guards release parity. Same original workload/security/archive/cold/gates; paired>1.10investigation signal, no favorable reruns. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).

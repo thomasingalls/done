@@ -18091,3 +18091,8 @@ Prepared/discovered1same-source native delivery crossover, deterministic paired 
 ## 2026-10-30 — phase257: baseline scope correction
 
 Verified released warm default using source, Dockerfile and compiled flag evidence; recorded reported host-work windows against runner epochs. Original results/failed deadlines retained. No product or old-test changes; corrected production-flag ABBA and public/deep cases are next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).
+
+
+## 2026-10-30 — phase258: production baseline apparatus
+
+Both exact signed clients rebuilt310/396mapped bodies and86/125assets; release flag parity, source/assets, discovery and isolated readiness/shutdown smoke pass. Protocol/input hashes frozen before timing. Original full comparison still pending, no acceptance claim. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).

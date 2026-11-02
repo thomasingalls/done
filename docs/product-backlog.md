@@ -863,3 +863,8 @@ Phase256: stop delivery-API repair hypothesis. Verify/record production-flag mis
 ## 2026-10-30 — phase257: baseline scope correction
 
 Phase257: previous warm-off3–4%overhead and public/deep deadline failures do not establish production-default behavior. Rebaseline Page8d/Worker0ab with warm flag unset on coordinated quiet host; original gates/failures remain. Attribute before new repair; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).
+
+
+## 2026-10-30 — phase258: production baseline apparatus
+
+Phase258: production-flag Page/Worker ABBA now prepared. Use coordinated quiet host and no concurrent heavy work; retain every gate/failure. Original publiccold/deepjoined reruns follow separately. No new mechanism or release prep. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).
