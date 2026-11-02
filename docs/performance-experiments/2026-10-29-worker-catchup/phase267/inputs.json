@@ -1,0 +1,14 @@
+{
+  "summary-partial.json": "6ee183a8c58e728ab274e4acb8f340a8464fcc3c3e28b70a6c98216a8d28b687",
+  "run.log": "b56333173b8c3c69c5a8d87db6c8cb48eabb7d1c84fd353359c44da402b54222",
+  "public-cold-profile-01/receipt.json": "e26978bac40d2f7b6788cb0e4e6d678d3fd07da17107e5fec36d355f28b7a741",
+  "public-cold-profile-01/console.log": "bde0c5e8e23e8c1ac634a8c29e53a479bc4f206a50553f3b85cd30caf4d9b956",
+  "public-cold-profile-01/composed-context/result.json": "75c3375c78bfabc584579458c9b1158fe9ae40fc643c75e4542f94171ed616eb",
+  "public-cold-profile-01/composed-context/container-identity.json": "f7e1daddacab5ff2bf0e3f57be59c6c71d010846f0fc0f55532dcd5dfb39940d",
+  "public-cold-profile-01/composed-context/docker-command.json": "747e849177460df820eb3bb40775927c8e65e923945db56271a1200b7bb4323a",
+  "public-cold-profile-01/composed-context/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+  "public-cold-profile-01/worker-resumable-history/result.json": "19f8fae1669a0efb80e23584bde7159cbea2971463987036257edfb3c67dc95c",
+  "public-cold-profile-01/worker-resumable-history/container-identity.json": "e84725969701e3cbf7ad52d6e3c973c702fb68bd14f8b77b37552d70aa7b0139",
+  "public-cold-profile-01/worker-resumable-history/docker-command.json": "511de0fe1f3e5462046f852ce9036f7730b758cec40a99cae1ab7875bd9145a6",
+  "public-cold-profile-01/worker-resumable-history/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b"
+}

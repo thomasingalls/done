@@ -908,3 +908,8 @@ Phase265: budget contributes but deepjoinedstillblocked30s; retain447/703failure
 ## 2026-10-30 — phase266: public cold-open attribution protocol
 
 Phase266: trace repeatedbaseline/nativecost in both originalpubliccold failures next. Keep265partialbudgetresult and normalfixturecalendarrefresh pending; allgates/security/sourcecandidateunchanged. No releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).
+
+
+## 2026-10-30 — phase267: partial public cold-open attribution
+
+Phase267: repeatedbaseline candidate now measured5replaysbeforeeditor; actualWorkerCPU stillneeded. Prioritize actual maintenanceopening failure/errorboundary before treatingsecond15smissasperformance. Correcttarget/errorenumtrace next; no newtrustwindow/securityrelaxation/releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).

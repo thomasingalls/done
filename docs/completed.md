@@ -18136,3 +18136,8 @@ Frozen budgetprobe runs once and retains original30sfailure at703positions,0rece
 ## 2026-10-30 — phase266: public cold-open attribution protocol
 
 Frozen two-case coldprofile apparatus,396exactsourcebodies/125frontendassets, original16/session64/processverified. Two observercontracttests and actualWorkerbusy-loopCPU smoke pass; swallowed-gatefaultdetected. Discovery/readiness/shutdown pass. No timedcoldoutcome or productchange. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).
+
+
+## 2026-10-30 — phase267: partial public cold-open attribution
+
+Two original cold diagnostics finish1pass/1fail, allpartialresultsretained. ActualfirstDeviceOwnermetrics valid; CPUprofilemissing duewrongtarget. Secondmaintenance/reduction/Undo succeeds then15sfails and90scensored withfixedpublicfallback. Three owncontainers/browsersabsent. No product/oldtestchange. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).

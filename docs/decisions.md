@@ -6492,3 +6492,8 @@ Lab64/session increases original30sdeep progress447→703(+57.3%)but stillfails;
 ## 2026-10-30 — phase266: public cold-open attribution protocol
 
 Trace both original baselinepubliccold cases with exact0abdefaultpolicy and namedLEDGER_PROFILE1; bounded numeric all-live-realm metrics and actualWorkerCPU, no fakeauthclock/check/cachechanges. Keep15sfailure/180scase evenif.shelllater; gate-wrapperfaulttestdetectsswallowedfailure. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).
+
+
+## 2026-10-30 — phase267: partial public cold-open attribution
+
+Retain partialcoldtrace: numericfirstDeviceOwner metrics show5fullbaselinereplaysbeforeeditor14.68s; no CPUcoverage because wrongfilename selected. Maintenancecold endsfixedpasskeyfallback/noWorker, not provenpurelatency. Correct sampler/error trace before repair; original261failures remain, diagnosticpass earnsnoacceptance. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).
