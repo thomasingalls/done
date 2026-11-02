@@ -18041,3 +18041,8 @@ Completed matched-first then marker attribution. Corrected diagnostic passes all
 ## 2026-10-30 — phase247: due-send yield contract
 
 Demonstrated old scheduler misses due send between completed publisher checks: only[0] sends at300ms instead of[0,300]. Own new test cleanup first masked failure with timeout; retained and repaired cleanup, precise assertion then fails. No old test or product edit. Contract/proposed regression and fixed benchmark plan archived. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).
+
+
+## 2026-10-30 — phase248: due-send publisher-check yield
+
+Implemented bounded due-send yielding in two runtime files;23 new/95 focused,2757 full unit cases pass with one existing skip;108 metadata/types/lint/format/seven contracts pass. Four deliberate faults detected and isolated sources restored. All1024 old manifest rows unchanged, new test required/uncredited. Timer/review/formatter construction mistakes retained. Browser comparison next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).

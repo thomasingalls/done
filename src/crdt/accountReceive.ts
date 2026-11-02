@@ -136,6 +136,7 @@ import {
 } from './accountSyncState';
 import {
   createSyncScheduler,
+  createReceiveSweep,
   driveOutboundStep,
   idleReceiveInterval,
   type SyncStatus,
@@ -2856,6 +2857,7 @@ async function openAccountReceiveOwner(
         }),
     }) satisfies DeviceRoster,
     publisherCount: () => base.history?.readers.length ?? 1,
+    sweepContext: (): object => base.authority,
     isSelfRequest: (request: Bytes) =>
       composed && decodeInboundRequest(request).publisher === base.publisher.id,
     api,
@@ -2972,6 +2974,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     devices,
     deviceId,
     publisherCount,
+    sweepContext,
     invalidateQuietReads,
     completedRead,
     isSelfRequest,
@@ -3421,6 +3424,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
       maintenance.refresh();
     }
     if (outbound) {
+      const receiveSweep = createReceiveSweep();
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
@@ -3463,19 +3467,28 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         send: (beforeNewEnvelope) =>
           driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
-        receive: async () => {
-          const authority = await refreshAuthority(operatorToken ?? '');
-          if (authority.kind === 'adopted') scheduler.wake('authority');
+        receive: async (sendDue) => {
+          const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
+            receiveSweep.reset();
+            throw cause;
+          });
+          if (authority.kind === 'adopted') {
+            receiveSweep.reset();
+            scheduler.wake('authority');
+          }
           if (authority.kind === 'unknown' || authority.kind === 'paused') {
+            receiveSweep.reset();
             const state = await api.status();
             return { kind: authority.kind, receivedThrough: state.receivedThrough };
           }
           try {
             if (await receiveHistory()) {
+              receiveSweep.reset();
               const state = await api.status();
               return { kind: 'progress', receivedThrough: state.receivedThrough };
             }
           } catch (cause) {
+            receiveSweep.reset();
             if (
               cause instanceof HistoryInstallSizeError ||
               (cause instanceof AdmissionError && cause.cause instanceof HistoryInstallSizeError)
@@ -3499,13 +3512,12 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
           }
           // One hint concerns the workspace, not a particular publisher. Sweep every
           // eligible stream before choosing the slow idle repair interval.
-          for (let remaining = publisherCount(); ; remaining--) {
-            const step = await driveReceiveStep(result, operatorToken ?? '', gate);
-            if (step.kind !== 'idle') return step;
-            if (remaining <= 1) {
-              return step;
-            }
-          }
+          return receiveSweep.run(
+            sweepContext(),
+            publisherCount(),
+            () => driveReceiveStep(result, operatorToken ?? '', gate),
+            sendDue,
+          );
         },
         detach() {
           notifications?.close();

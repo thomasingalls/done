@@ -6397,3 +6397,8 @@ Choose cooperative yield at verified publisher boundaries as next bounded repair
 ## 2026-10-30 — phase247: due-send yield contract
 
 Use pass-scoped due-send predicate and explicit yielded receive result after full verified checks. Preserve remaining sweep budget scoped to authority/count; no progress lie, proof reuse, backoff change or partial commit. Freeze four before/after normal/withheld journeys, original gates and independent civil-date guards. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).
+
+
+## 2026-10-30 — phase248: due-send publisher-check yield
+
+Yield only between complete verified empty publisher checks; hold native-context/count-scoped remaining sweep, use exact active-turn send eligibility and retain dirty/expedite hints across pause. Explicit yielded outcome claims no progress and preserves failure evidence. Keep batching/local flush/backoff and all authority/fence/commit checks. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).
