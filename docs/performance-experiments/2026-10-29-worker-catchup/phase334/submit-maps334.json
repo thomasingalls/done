@@ -1,0 +1,5762 @@
+[
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-coordinated-2000-attempt2",
+    "device": 1,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793567514314.3289,
+        "replyAt": 1793567514330.9617
+      },
+      {
+        "position": 57,
+        "sentAt": 1793567516398.1792,
+        "replyAt": 1793567516413.5117
+      },
+      {
+        "position": 58,
+        "sentAt": 1793567518501.5615,
+        "replyAt": 1793567518517.1404
+      },
+      {
+        "position": 59,
+        "sentAt": 1793567520617.7253,
+        "replyAt": 1793567520638.7244
+      },
+      {
+        "position": 60,
+        "sentAt": 1793567522708.6724,
+        "replyAt": 1793567522725.5513
+      },
+      {
+        "position": 61,
+        "sentAt": 1793567524832.2217,
+        "replyAt": 1793567524849.373
+      },
+      {
+        "position": 62,
+        "sentAt": 1793567526929.5615,
+        "replyAt": 1793567526944.767
+      },
+      {
+        "position": 63,
+        "sentAt": 1793567529012.6482,
+        "replyAt": 1793567529034.9185
+      },
+      {
+        "position": 64,
+        "sentAt": 1793567531129.882,
+        "replyAt": 1793567531146.8076
+      },
+      {
+        "position": 65,
+        "sentAt": 1793567533244.966,
+        "replyAt": 1793567533266.5483
+      },
+      {
+        "position": 66,
+        "sentAt": 1793567535338.699,
+        "replyAt": 1793567535354.7878
+      },
+      {
+        "position": 67,
+        "sentAt": 1793567537464.0994,
+        "replyAt": 1793567537477.9375
+      },
+      {
+        "position": 68,
+        "sentAt": 1793567539546.0923,
+        "replyAt": 1793567539561.2783
+      },
+      {
+        "position": 69,
+        "sentAt": 1793567541657.8462,
+        "replyAt": 1793567541672.3042
+      },
+      {
+        "position": 70,
+        "sentAt": 1793567543765.0364,
+        "replyAt": 1793567543779.984
+      },
+      {
+        "position": 71,
+        "sentAt": 1793567545849.8389,
+        "replyAt": 1793567545867.7292
+      },
+      {
+        "position": 72,
+        "sentAt": 1793567547979.541,
+        "replyAt": 1793567548001.3906
+      },
+      {
+        "position": 73,
+        "sentAt": 1793567549982.4028,
+        "replyAt": 1793567549997.782
+      },
+      {
+        "position": 74,
+        "sentAt": 1793567552037.1375,
+        "replyAt": 1793567552056.559
+      },
+      {
+        "position": 75,
+        "sentAt": 1793567554114.1614,
+        "replyAt": 1793567554132.5066
+      },
+      {
+        "position": 76,
+        "sentAt": 1793567556248.2737,
+        "replyAt": 1793567556267.9744
+      },
+      {
+        "position": 77,
+        "sentAt": 1793567557551.9163,
+        "replyAt": 1793567557567.264
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-coordinated-2000-attempt2",
+    "device": 2,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793567514194.4202,
+        "replyAt": 1793567514212.732
+      },
+      {
+        "position": 4,
+        "sentAt": 1793567516259.4646,
+        "replyAt": 1793567516275.912
+      },
+      {
+        "position": 5,
+        "sentAt": 1793567518355.5073,
+        "replyAt": 1793567518373.3777
+      },
+      {
+        "position": 6,
+        "sentAt": 1793567520470.1438,
+        "replyAt": 1793567520487.27
+      },
+      {
+        "position": 7,
+        "sentAt": 1793567522570.2935,
+        "replyAt": 1793567522587.7834
+      },
+      {
+        "position": 8,
+        "sentAt": 1793567524680.7427,
+        "replyAt": 1793567524695.074
+      },
+      {
+        "position": 9,
+        "sentAt": 1793567526766.4978,
+        "replyAt": 1793567526780.935
+      },
+      {
+        "position": 10,
+        "sentAt": 1793567528856.314,
+        "replyAt": 1793567528873.2358
+      },
+      {
+        "position": 11,
+        "sentAt": 1793567530961.6985,
+        "replyAt": 1793567530979.3596
+      },
+      {
+        "position": 12,
+        "sentAt": 1793567533075.5837,
+        "replyAt": 1793567533097.007
+      },
+      {
+        "position": 13,
+        "sentAt": 1793567535171.6394,
+        "replyAt": 1793567535193.4563
+      },
+      {
+        "position": 14,
+        "sentAt": 1793567537300.8394,
+        "replyAt": 1793567537316.967
+      },
+      {
+        "position": 15,
+        "sentAt": 1793567539364.9587,
+        "replyAt": 1793567539383.986
+      },
+      {
+        "position": 16,
+        "sentAt": 1793567541484.8235,
+        "replyAt": 1793567541501.3086
+      },
+      {
+        "position": 17,
+        "sentAt": 1793567543594.2178,
+        "replyAt": 1793567543609.406
+      },
+      {
+        "position": 18,
+        "sentAt": 1793567545664.7073,
+        "replyAt": 1793567545686.126
+      },
+      {
+        "position": 19,
+        "sentAt": 1793567547786.3137,
+        "replyAt": 1793567547802.8435
+      },
+      {
+        "position": 20,
+        "sentAt": 1793567549814.608,
+        "replyAt": 1793567549832.044
+      },
+      {
+        "position": 21,
+        "sentAt": 1793567551849.0212,
+        "replyAt": 1793567551866.0217
+      },
+      {
+        "position": 22,
+        "sentAt": 1793567553928.593,
+        "replyAt": 1793567553947.0066
+      },
+      {
+        "position": 23,
+        "sentAt": 1793567556035.424,
+        "replyAt": 1793567556052.9492
+      },
+      {
+        "position": 24,
+        "sentAt": 1793567557345.8662,
+        "replyAt": 1793567557363.4653
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-immediate-inflight",
+    "device": 1,
+    "calls": 46,
+    "acceptedTipDelta": 46,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793567665833.529,
+        "replyAt": 1793567665904.4888
+      },
+      {
+        "position": 57,
+        "sentAt": 1793567666849.6245,
+        "replyAt": 1793567666912.7317
+      },
+      {
+        "position": 58,
+        "sentAt": 1793567667609.5127,
+        "replyAt": 1793567667675.996
+      },
+      {
+        "position": 59,
+        "sentAt": 1793567668375.5764,
+        "replyAt": 1793567668442.466
+      },
+      {
+        "position": 60,
+        "sentAt": 1793567669263.5808,
+        "replyAt": 1793567669329.6997
+      },
+      {
+        "position": 61,
+        "sentAt": 1793567670152.5383,
+        "replyAt": 1793567670220.78
+      },
+      {
+        "position": 62,
+        "sentAt": 1793567671020.7234,
+        "replyAt": 1793567671090.1626
+      },
+      {
+        "position": 63,
+        "sentAt": 1793567672181.4246,
+        "replyAt": 1793567672249.3655
+      },
+      {
+        "position": 64,
+        "sentAt": 1793567673010.9126,
+        "replyAt": 1793567673077.3914
+      },
+      {
+        "position": 65,
+        "sentAt": 1793567673811.6538,
+        "replyAt": 1793567673878.7415
+      },
+      {
+        "position": 66,
+        "sentAt": 1793567674665.719,
+        "replyAt": 1793567674738.2617
+      },
+      {
+        "position": 67,
+        "sentAt": 1793567675545.4363,
+        "replyAt": 1793567675616.9875
+      },
+      {
+        "position": 68,
+        "sentAt": 1793567676426.696,
+        "replyAt": 1793567676496.053
+      },
+      {
+        "position": 69,
+        "sentAt": 1793567677739.7266,
+        "replyAt": 1793567677812.2668
+      },
+      {
+        "position": 70,
+        "sentAt": 1793567678607.945,
+        "replyAt": 1793567678680.9614
+      },
+      {
+        "position": 71,
+        "sentAt": 1793567679490.1792,
+        "replyAt": 1793567679556.8198
+      },
+      {
+        "position": 72,
+        "sentAt": 1793567680373.864,
+        "replyAt": 1793567680443.576
+      },
+      {
+        "position": 73,
+        "sentAt": 1793567681326.1162,
+        "replyAt": 1793567681390.122
+      },
+      {
+        "position": 74,
+        "sentAt": 1793567682216.833,
+        "replyAt": 1793567682287.0103
+      },
+      {
+        "position": 75,
+        "sentAt": 1793567683583.765,
+        "replyAt": 1793567683647.0188
+      },
+      {
+        "position": 76,
+        "sentAt": 1793567684576.7598,
+        "replyAt": 1793567684639.2932
+      },
+      {
+        "position": 77,
+        "sentAt": 1793567685442.5835,
+        "replyAt": 1793567685506.3425
+      },
+      {
+        "position": 78,
+        "sentAt": 1793567686329.7104,
+        "replyAt": 1793567686395.8296
+      },
+      {
+        "position": 79,
+        "sentAt": 1793567687238.558,
+        "replyAt": 1793567687302.0835
+      },
+      {
+        "position": 80,
+        "sentAt": 1793567688228.866,
+        "replyAt": 1793567688296.3025
+      },
+      {
+        "position": 81,
+        "sentAt": 1793567689484.8347,
+        "replyAt": 1793567689550.4421
+      },
+      {
+        "position": 82,
+        "sentAt": 1793567690514.2197,
+        "replyAt": 1793567690586.1614
+      },
+      {
+        "position": 83,
+        "sentAt": 1793567691435.7139,
+        "replyAt": 1793567691507.7292
+      },
+      {
+        "position": 84,
+        "sentAt": 1793567692320.4023,
+        "replyAt": 1793567692388.4106
+      },
+      {
+        "position": 85,
+        "sentAt": 1793567693244.2817,
+        "replyAt": 1793567693308.0837
+      },
+      {
+        "position": 86,
+        "sentAt": 1793567694184.5273,
+        "replyAt": 1793567694253.9324
+      },
+      {
+        "position": 87,
+        "sentAt": 1793567695512.7424,
+        "replyAt": 1793567695577.5823
+      },
+      {
+        "position": 88,
+        "sentAt": 1793567696638.614,
+        "replyAt": 1793567696705.1277
+      },
+      {
+        "position": 89,
+        "sentAt": 1793567697594.9653,
+        "replyAt": 1793567697666.0842
+      },
+      {
+        "position": 90,
+        "sentAt": 1793567698524.6401,
+        "replyAt": 1793567698595.9097
+      },
+      {
+        "position": 91,
+        "sentAt": 1793567699548.7358,
+        "replyAt": 1793567699611.6953
+      },
+      {
+        "position": 92,
+        "sentAt": 1793567700925.4448,
+        "replyAt": 1793567700994.7417
+      },
+      {
+        "position": 93,
+        "sentAt": 1793567701935.333,
+        "replyAt": 1793567702002.8257
+      },
+      {
+        "position": 94,
+        "sentAt": 1793567703054.5015,
+        "replyAt": 1793567703122.6887
+      },
+      {
+        "position": 95,
+        "sentAt": 1793567704059.469,
+        "replyAt": 1793567704124.7412
+      },
+      {
+        "position": 96,
+        "sentAt": 1793567705079.1921,
+        "replyAt": 1793567705143.0103
+      },
+      {
+        "position": 97,
+        "sentAt": 1793567706421.419,
+        "replyAt": 1793567706489.0232
+      },
+      {
+        "position": 98,
+        "sentAt": 1793567707476.968,
+        "replyAt": 1793567707549.785
+      },
+      {
+        "position": 99,
+        "sentAt": 1793567708557.669,
+        "replyAt": 1793567708625.3032
+      },
+      {
+        "position": 100,
+        "sentAt": 1793567709758.204,
+        "replyAt": 1793567709828.1765
+      },
+      {
+        "position": 101,
+        "sentAt": 1793567710825.5183,
+        "replyAt": 1793567710896.9846
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-immediate-inflight",
+    "device": 2,
+    "calls": 77,
+    "acceptedTipDelta": 77,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793567665682.6194,
+        "replyAt": 1793567665752.9333
+      },
+      {
+        "position": 4,
+        "sentAt": 1793567666145.286,
+        "replyAt": 1793567666208.3362
+      },
+      {
+        "position": 5,
+        "sentAt": 1793567666644.4563,
+        "replyAt": 1793567666713.2524
+      },
+      {
+        "position": 6,
+        "sentAt": 1793567667164.1003,
+        "replyAt": 1793567667228.8953
+      },
+      {
+        "position": 7,
+        "sentAt": 1793567667707.4854,
+        "replyAt": 1793567667775.5227
+      },
+      {
+        "position": 8,
+        "sentAt": 1793567668227.4622,
+        "replyAt": 1793567668299.1147
+      },
+      {
+        "position": 9,
+        "sentAt": 1793567668800.5015,
+        "replyAt": 1793567668870.6143
+      },
+      {
+        "position": 10,
+        "sentAt": 1793567669287.575,
+        "replyAt": 1793567669352.5186
+      },
+      {
+        "position": 11,
+        "sentAt": 1793567669902.994,
+        "replyAt": 1793567669977.3308
+      },
+      {
+        "position": 12,
+        "sentAt": 1793567670401.8838,
+        "replyAt": 1793567670471.418
+      },
+      {
+        "position": 13,
+        "sentAt": 1793567671047.9463,
+        "replyAt": 1793567671113.0369
+      },
+      {
+        "position": 14,
+        "sentAt": 1793567671552.9717,
+        "replyAt": 1793567671665.97
+      },
+      {
+        "position": 15,
+        "sentAt": 1793567672083.178,
+        "replyAt": 1793567672153.1038
+      },
+      {
+        "position": 16,
+        "sentAt": 1793567672609.5977,
+        "replyAt": 1793567672677.9346
+      },
+      {
+        "position": 17,
+        "sentAt": 1793567673182.895,
+        "replyAt": 1793567673252.0034
+      },
+      {
+        "position": 18,
+        "sentAt": 1793567673736.126,
+        "replyAt": 1793567673805.3997
+      },
+      {
+        "position": 19,
+        "sentAt": 1793567674304.9321,
+        "replyAt": 1793567674370.317
+      },
+      {
+        "position": 20,
+        "sentAt": 1793567674794.9905,
+        "replyAt": 1793567674866.1392
+      },
+      {
+        "position": 21,
+        "sentAt": 1793567675455.4082,
+        "replyAt": 1793567675528.4722
+      },
+      {
+        "position": 22,
+        "sentAt": 1793567675977.4282,
+        "replyAt": 1793567676040.0332
+      },
+      {
+        "position": 23,
+        "sentAt": 1793567676595.6,
+        "replyAt": 1793567676663.4097
+      },
+      {
+        "position": 24,
+        "sentAt": 1793567677070.261,
+        "replyAt": 1793567677148.9326
+      },
+      {
+        "position": 25,
+        "sentAt": 1793567677594.3494,
+        "replyAt": 1793567677663.5247
+      },
+      {
+        "position": 26,
+        "sentAt": 1793567678148.1736,
+        "replyAt": 1793567678217.8337
+      },
+      {
+        "position": 27,
+        "sentAt": 1793567678761.8372,
+        "replyAt": 1793567678833.162
+      },
+      {
+        "position": 28,
+        "sentAt": 1793567679341.6335,
+        "replyAt": 1793567679415.7263
+      },
+      {
+        "position": 29,
+        "sentAt": 1793567679929.8616,
+        "replyAt": 1793567679998.4397
+      },
+      {
+        "position": 30,
+        "sentAt": 1793567680481.159,
+        "replyAt": 1793567680552.6987
+      },
+      {
+        "position": 31,
+        "sentAt": 1793567681128.8467,
+        "replyAt": 1793567681197.2805
+      },
+      {
+        "position": 32,
+        "sentAt": 1793567681747.4546,
+        "replyAt": 1793567681817.6272
+      },
+      {
+        "position": 33,
+        "sentAt": 1793567682292.5085,
+        "replyAt": 1793567682359.8308
+      },
+      {
+        "position": 34,
+        "sentAt": 1793567682766.2913,
+        "replyAt": 1793567682836.9507
+      },
+      {
+        "position": 35,
+        "sentAt": 1793567683300.193,
+        "replyAt": 1793567683367.3088
+      },
+      {
+        "position": 36,
+        "sentAt": 1793567683890.642,
+        "replyAt": 1793567683961.042
+      },
+      {
+        "position": 37,
+        "sentAt": 1793567684491.9617,
+        "replyAt": 1793567684563.6113
+      },
+      {
+        "position": 38,
+        "sentAt": 1793567685092.7166,
+        "replyAt": 1793567685169.2158
+      },
+      {
+        "position": 39,
+        "sentAt": 1793567685742.4019,
+        "replyAt": 1793567685812.7312
+      },
+      {
+        "position": 40,
+        "sentAt": 1793567686469.208,
+        "replyAt": 1793567686533.118
+      },
+      {
+        "position": 41,
+        "sentAt": 1793567687216.1982,
+        "replyAt": 1793567687281.4412
+      },
+      {
+        "position": 42,
+        "sentAt": 1793567687795.1333,
+        "replyAt": 1793567687865.5771
+      },
+      {
+        "position": 43,
+        "sentAt": 1793567688307.983,
+        "replyAt": 1793567688376.2798
+      },
+      {
+        "position": 44,
+        "sentAt": 1793567688846.7727,
+        "replyAt": 1793567688913.8826
+      },
+      {
+        "position": 45,
+        "sentAt": 1793567689355.3562,
+        "replyAt": 1793567689427.6128
+      },
+      {
+        "position": 46,
+        "sentAt": 1793567689854.2468,
+        "replyAt": 1793567689918.994
+      },
+      {
+        "position": 47,
+        "sentAt": 1793567690416.4985,
+        "replyAt": 1793567690483.268
+      },
+      {
+        "position": 48,
+        "sentAt": 1793567691034.9695,
+        "replyAt": 1793567691102.9229
+      },
+      {
+        "position": 49,
+        "sentAt": 1793567691844.132,
+        "replyAt": 1793567691911.7935
+      },
+      {
+        "position": 50,
+        "sentAt": 1793567692559.1182,
+        "replyAt": 1793567692631.239
+      },
+      {
+        "position": 51,
+        "sentAt": 1793567693210.1584,
+        "replyAt": 1793567693276.5864
+      },
+      {
+        "position": 52,
+        "sentAt": 1793567693796.5254,
+        "replyAt": 1793567693883.2395
+      },
+      {
+        "position": 53,
+        "sentAt": 1793567694333.7266,
+        "replyAt": 1793567694407.1816
+      },
+      {
+        "position": 54,
+        "sentAt": 1793567694905.5317,
+        "replyAt": 1793567694998.4836
+      },
+      {
+        "position": 55,
+        "sentAt": 1793567695485.3044,
+        "replyAt": 1793567695555.364
+      },
+      {
+        "position": 56,
+        "sentAt": 1793567696013.966,
+        "replyAt": 1793567696079.0364
+      },
+      {
+        "position": 57,
+        "sentAt": 1793567696579.2607,
+        "replyAt": 1793567696653.457
+      },
+      {
+        "position": 58,
+        "sentAt": 1793567697266.6062,
+        "replyAt": 1793567697335.2307
+      },
+      {
+        "position": 59,
+        "sentAt": 1793567698044.579,
+        "replyAt": 1793567698115.4114
+      },
+      {
+        "position": 60,
+        "sentAt": 1793567698671.345,
+        "replyAt": 1793567698743.786
+      },
+      {
+        "position": 61,
+        "sentAt": 1793567699302.491,
+        "replyAt": 1793567699380.9688
+      },
+      {
+        "position": 62,
+        "sentAt": 1793567699874.464,
+        "replyAt": 1793567699956.7966
+      },
+      {
+        "position": 63,
+        "sentAt": 1793567700482.0603,
+        "replyAt": 1793567700547.7314
+      },
+      {
+        "position": 64,
+        "sentAt": 1793567701047.9707,
+        "replyAt": 1793567701117.5205
+      },
+      {
+        "position": 65,
+        "sentAt": 1793567701602.0447,
+        "replyAt": 1793567701670.901
+      },
+      {
+        "position": 66,
+        "sentAt": 1793567702211.4607,
+        "replyAt": 1793567702282.2478
+      },
+      {
+        "position": 67,
+        "sentAt": 1793567702948.996,
+        "replyAt": 1793567703019.6357
+      },
+      {
+        "position": 68,
+        "sentAt": 1793567703717.4392,
+        "replyAt": 1793567703787.7268
+      },
+      {
+        "position": 69,
+        "sentAt": 1793567704379.9094,
+        "replyAt": 1793567704447.7202
+      },
+      {
+        "position": 70,
+        "sentAt": 1793567705018.1882,
+        "replyAt": 1793567705094.1895
+      },
+      {
+        "position": 71,
+        "sentAt": 1793567705661.9294,
+        "replyAt": 1793567705740.3552
+      },
+      {
+        "position": 72,
+        "sentAt": 1793567706249.7458,
+        "replyAt": 1793567706318.7473
+      },
+      {
+        "position": 73,
+        "sentAt": 1793567706802.902,
+        "replyAt": 1793567706884.4844
+      },
+      {
+        "position": 74,
+        "sentAt": 1793567707379.0884,
+        "replyAt": 1793567707452.5552
+      },
+      {
+        "position": 75,
+        "sentAt": 1793567708124.0063,
+        "replyAt": 1793567708188.321
+      },
+      {
+        "position": 76,
+        "sentAt": 1793567708817.9998,
+        "replyAt": 1793567708885.2427
+      },
+      {
+        "position": 77,
+        "sentAt": 1793567709408.8787,
+        "replyAt": 1793567709473.2048
+      },
+      {
+        "position": 78,
+        "sentAt": 1793567710034.0088,
+        "replyAt": 1793567710107.7322
+      },
+      {
+        "position": 79,
+        "sentAt": 1793567710672.631,
+        "replyAt": 1793567710750.2332
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-immediate-inflight",
+    "device": 1,
+    "calls": 52,
+    "acceptedTipDelta": 52,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793567788583.4612,
+        "replyAt": 1793567788600.5054
+      },
+      {
+        "position": 57,
+        "sentAt": 1793567789430.2126,
+        "replyAt": 1793567789447.694
+      },
+      {
+        "position": 58,
+        "sentAt": 1793567790061.3552,
+        "replyAt": 1793567790083.5264
+      },
+      {
+        "position": 59,
+        "sentAt": 1793567790726.393,
+        "replyAt": 1793567790746.3433
+      },
+      {
+        "position": 60,
+        "sentAt": 1793567791481.1855,
+        "replyAt": 1793567791497.2798
+      },
+      {
+        "position": 61,
+        "sentAt": 1793567792340.4514,
+        "replyAt": 1793567792361.192
+      },
+      {
+        "position": 62,
+        "sentAt": 1793567793116.692,
+        "replyAt": 1793567793131.5964
+      },
+      {
+        "position": 63,
+        "sentAt": 1793567793817.2114,
+        "replyAt": 1793567793832.4238
+      },
+      {
+        "position": 64,
+        "sentAt": 1793567794714.9744,
+        "replyAt": 1793567794727.9868
+      },
+      {
+        "position": 65,
+        "sentAt": 1793567795475.7195,
+        "replyAt": 1793567795487.8076
+      },
+      {
+        "position": 66,
+        "sentAt": 1793567796232.0994,
+        "replyAt": 1793567796259.92
+      },
+      {
+        "position": 67,
+        "sentAt": 1793567796892.0303,
+        "replyAt": 1793567796906.329
+      },
+      {
+        "position": 68,
+        "sentAt": 1793567797728.1917,
+        "replyAt": 1793567797752.046
+      },
+      {
+        "position": 69,
+        "sentAt": 1793567798544.866,
+        "replyAt": 1793567798560.4768
+      },
+      {
+        "position": 70,
+        "sentAt": 1793567799296.268,
+        "replyAt": 1793567799308.4011
+      },
+      {
+        "position": 71,
+        "sentAt": 1793567800212.8557,
+        "replyAt": 1793567800229.7874
+      },
+      {
+        "position": 72,
+        "sentAt": 1793567801067.3237,
+        "replyAt": 1793567801084.6545
+      },
+      {
+        "position": 73,
+        "sentAt": 1793567801872.1985,
+        "replyAt": 1793567801888.078
+      },
+      {
+        "position": 74,
+        "sentAt": 1793567802649.423,
+        "replyAt": 1793567802666.6975
+      },
+      {
+        "position": 75,
+        "sentAt": 1793567803516.6487,
+        "replyAt": 1793567803535.414
+      },
+      {
+        "position": 76,
+        "sentAt": 1793567804419.5872,
+        "replyAt": 1793567804432.407
+      },
+      {
+        "position": 77,
+        "sentAt": 1793567805450.0154,
+        "replyAt": 1793567805464.017
+      },
+      {
+        "position": 78,
+        "sentAt": 1793567806188.8835,
+        "replyAt": 1793567806202.4187
+      },
+      {
+        "position": 79,
+        "sentAt": 1793567807060.723,
+        "replyAt": 1793567807073.684
+      },
+      {
+        "position": 80,
+        "sentAt": 1793567807855.336,
+        "replyAt": 1793567807868.5874
+      },
+      {
+        "position": 81,
+        "sentAt": 1793567808714.1538,
+        "replyAt": 1793567808732.8477
+      },
+      {
+        "position": 82,
+        "sentAt": 1793567809689.4478,
+        "replyAt": 1793567809702.881
+      },
+      {
+        "position": 83,
+        "sentAt": 1793567810714.859,
+        "replyAt": 1793567810730.2095
+      },
+      {
+        "position": 84,
+        "sentAt": 1793567811498.4949,
+        "replyAt": 1793567811512.8904
+      },
+      {
+        "position": 85,
+        "sentAt": 1793567812356.8572,
+        "replyAt": 1793567812372.3538
+      },
+      {
+        "position": 86,
+        "sentAt": 1793567813164.4795,
+        "replyAt": 1793567813176.0906
+      },
+      {
+        "position": 87,
+        "sentAt": 1793567813993.4526,
+        "replyAt": 1793567814009.6794
+      },
+      {
+        "position": 88,
+        "sentAt": 1793567814969.6948,
+        "replyAt": 1793567814982.9878
+      },
+      {
+        "position": 89,
+        "sentAt": 1793567816083.2515,
+        "replyAt": 1793567816098.2295
+      },
+      {
+        "position": 90,
+        "sentAt": 1793567816919.21,
+        "replyAt": 1793567816933.8477
+      },
+      {
+        "position": 91,
+        "sentAt": 1793567817759.19,
+        "replyAt": 1793567817773.191
+      },
+      {
+        "position": 92,
+        "sentAt": 1793567818665.404,
+        "replyAt": 1793567818680.1772
+      },
+      {
+        "position": 93,
+        "sentAt": 1793567819570.9297,
+        "replyAt": 1793567819585.5078
+      },
+      {
+        "position": 94,
+        "sentAt": 1793567820621.0054,
+        "replyAt": 1793567820633.0823
+      },
+      {
+        "position": 95,
+        "sentAt": 1793567821721.579,
+        "replyAt": 1793567821737.4082
+      },
+      {
+        "position": 96,
+        "sentAt": 1793567822578.4692,
+        "replyAt": 1793567822595.3176
+      },
+      {
+        "position": 97,
+        "sentAt": 1793567823481.1223,
+        "replyAt": 1793567823499.7568
+      },
+      {
+        "position": 98,
+        "sentAt": 1793567824421.5117,
+        "replyAt": 1793567824437.0552
+      },
+      {
+        "position": 99,
+        "sentAt": 1793567825360.6802,
+        "replyAt": 1793567825379.7224
+      },
+      {
+        "position": 100,
+        "sentAt": 1793567826423.322,
+        "replyAt": 1793567826441.6006
+      },
+      {
+        "position": 101,
+        "sentAt": 1793567827606.5374,
+        "replyAt": 1793567827618.2363
+      },
+      {
+        "position": 102,
+        "sentAt": 1793567828535.5754,
+        "replyAt": 1793567828547.3926
+      },
+      {
+        "position": 103,
+        "sentAt": 1793567829517.1814,
+        "replyAt": 1793567829536.3381
+      },
+      {
+        "position": 104,
+        "sentAt": 1793567830425.342,
+        "replyAt": 1793567830444.887
+      },
+      {
+        "position": 105,
+        "sentAt": 1793567831406.1753,
+        "replyAt": 1793567831418.6702
+      },
+      {
+        "position": 106,
+        "sentAt": 1793567832527.8347,
+        "replyAt": 1793567832549.999
+      },
+      {
+        "position": 107,
+        "sentAt": 1793567833635.6038,
+        "replyAt": 1793567833655.0552
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-immediate-inflight",
+    "device": 2,
+    "calls": 96,
+    "acceptedTipDelta": 96,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793567788445.7139,
+        "replyAt": 1793567788464.5056
+      },
+      {
+        "position": 4,
+        "sentAt": 1793567788832.7817,
+        "replyAt": 1793567788847.1912
+      },
+      {
+        "position": 5,
+        "sentAt": 1793567789186.3772,
+        "replyAt": 1793567789200.4517
+      },
+      {
+        "position": 6,
+        "sentAt": 1793567789606.123,
+        "replyAt": 1793567789622.4924
+      },
+      {
+        "position": 7,
+        "sentAt": 1793567790058.9836,
+        "replyAt": 1793567790091.9795
+      },
+      {
+        "position": 8,
+        "sentAt": 1793567790493.042,
+        "replyAt": 1793567790509.371
+      },
+      {
+        "position": 9,
+        "sentAt": 1793567790871.694,
+        "replyAt": 1793567790888.7336
+      },
+      {
+        "position": 10,
+        "sentAt": 1793567791245.244,
+        "replyAt": 1793567791264.0723
+      },
+      {
+        "position": 11,
+        "sentAt": 1793567791648.4468,
+        "replyAt": 1793567791667.8079
+      },
+      {
+        "position": 12,
+        "sentAt": 1793567792058.3652,
+        "replyAt": 1793567792074.8145
+      },
+      {
+        "position": 13,
+        "sentAt": 1793567792422.0435,
+        "replyAt": 1793567792434.0173
+      },
+      {
+        "position": 14,
+        "sentAt": 1793567792789.1453,
+        "replyAt": 1793567792803.872
+      },
+      {
+        "position": 15,
+        "sentAt": 1793567793228.9346,
+        "replyAt": 1793567793245.0342
+      },
+      {
+        "position": 16,
+        "sentAt": 1793567793940.4182,
+        "replyAt": 1793567793956.5718
+      },
+      {
+        "position": 17,
+        "sentAt": 1793567794384.1816,
+        "replyAt": 1793567794397.0527
+      },
+      {
+        "position": 18,
+        "sentAt": 1793567794847.9282,
+        "replyAt": 1793567794864.1223
+      },
+      {
+        "position": 19,
+        "sentAt": 1793567795319.7454,
+        "replyAt": 1793567795336.4138
+      },
+      {
+        "position": 20,
+        "sentAt": 1793567795715.0598,
+        "replyAt": 1793567795731.78
+      },
+      {
+        "position": 21,
+        "sentAt": 1793567796089.4565,
+        "replyAt": 1793567796107.1187
+      },
+      {
+        "position": 22,
+        "sentAt": 1793567796491.7559,
+        "replyAt": 1793567796508.3303
+      },
+      {
+        "position": 23,
+        "sentAt": 1793567796853.8574,
+        "replyAt": 1793567796870.9963
+      },
+      {
+        "position": 24,
+        "sentAt": 1793567797266.811,
+        "replyAt": 1793567797279.4775
+      },
+      {
+        "position": 25,
+        "sentAt": 1793567797665.4207,
+        "replyAt": 1793567797681.89
+      },
+      {
+        "position": 26,
+        "sentAt": 1793567798116.469,
+        "replyAt": 1793567798129.2312
+      },
+      {
+        "position": 27,
+        "sentAt": 1793567798587.9878,
+        "replyAt": 1793567798601.2344
+      },
+      {
+        "position": 28,
+        "sentAt": 1793567799249.7932,
+        "replyAt": 1793567799265.822
+      },
+      {
+        "position": 29,
+        "sentAt": 1793567799701.5444,
+        "replyAt": 1793567799713.4014
+      },
+      {
+        "position": 30,
+        "sentAt": 1793567800098.8025,
+        "replyAt": 1793567800115.0188
+      },
+      {
+        "position": 31,
+        "sentAt": 1793567800548.174,
+        "replyAt": 1793567800564.7927
+      },
+      {
+        "position": 32,
+        "sentAt": 1793567800966.322,
+        "replyAt": 1793567800982.5027
+      },
+      {
+        "position": 33,
+        "sentAt": 1793567801364.0903,
+        "replyAt": 1793567801391.6816
+      },
+      {
+        "position": 34,
+        "sentAt": 1793567801763.9038,
+        "replyAt": 1793567801785.8604
+      },
+      {
+        "position": 35,
+        "sentAt": 1793567802191.47,
+        "replyAt": 1793567802212.2852
+      },
+      {
+        "position": 36,
+        "sentAt": 1793567802664.379,
+        "replyAt": 1793567802682.0916
+      },
+      {
+        "position": 37,
+        "sentAt": 1793567803153.9153,
+        "replyAt": 1793567803166.706
+      },
+      {
+        "position": 38,
+        "sentAt": 1793567803605.4587,
+        "replyAt": 1793567803623.8745
+      },
+      {
+        "position": 39,
+        "sentAt": 1793567804124.2004,
+        "replyAt": 1793567804141.1072
+      },
+      {
+        "position": 40,
+        "sentAt": 1793567804765.3667,
+        "replyAt": 1793567804789.3733
+      },
+      {
+        "position": 41,
+        "sentAt": 1793567805200.7505,
+        "replyAt": 1793567805217.501
+      },
+      {
+        "position": 42,
+        "sentAt": 1793567805623.922,
+        "replyAt": 1793567805648.528
+      },
+      {
+        "position": 43,
+        "sentAt": 1793567806018.8584,
+        "replyAt": 1793567806034.7332
+      },
+      {
+        "position": 44,
+        "sentAt": 1793567806452.1714,
+        "replyAt": 1793567806471.1775
+      },
+      {
+        "position": 45,
+        "sentAt": 1793567806859.9292,
+        "replyAt": 1793567806876.0522
+      },
+      {
+        "position": 46,
+        "sentAt": 1793567807281.8948,
+        "replyAt": 1793567807304.714
+      },
+      {
+        "position": 47,
+        "sentAt": 1793567807769.4355,
+        "replyAt": 1793567807788.9937
+      },
+      {
+        "position": 48,
+        "sentAt": 1793567808311.101,
+        "replyAt": 1793567808325.0444
+      },
+      {
+        "position": 49,
+        "sentAt": 1793567808802.0493,
+        "replyAt": 1793567808816.7332
+      },
+      {
+        "position": 50,
+        "sentAt": 1793567809295.4092,
+        "replyAt": 1793567809309.1511
+      },
+      {
+        "position": 51,
+        "sentAt": 1793567809949.599,
+        "replyAt": 1793567809968.1204
+      },
+      {
+        "position": 52,
+        "sentAt": 1793567810355.769,
+        "replyAt": 1793567810374.713
+      },
+      {
+        "position": 53,
+        "sentAt": 1793567810778.507,
+        "replyAt": 1793567810791.2537
+      },
+      {
+        "position": 54,
+        "sentAt": 1793567811206.8484,
+        "replyAt": 1793567811225.7146
+      },
+      {
+        "position": 55,
+        "sentAt": 1793567811654.5444,
+        "replyAt": 1793567811671.338
+      },
+      {
+        "position": 56,
+        "sentAt": 1793567812103.1406,
+        "replyAt": 1793567812116.0264
+      },
+      {
+        "position": 57,
+        "sentAt": 1793567812602.9036,
+        "replyAt": 1793567812619.9539
+      },
+      {
+        "position": 58,
+        "sentAt": 1793567813119.511,
+        "replyAt": 1793567813137.8757
+      },
+      {
+        "position": 59,
+        "sentAt": 1793567813629.608,
+        "replyAt": 1793567813649.1199
+      },
+      {
+        "position": 60,
+        "sentAt": 1793567814147.6172,
+        "replyAt": 1793567814163.3542
+      },
+      {
+        "position": 61,
+        "sentAt": 1793567814638.6719,
+        "replyAt": 1793567814654.5295
+      },
+      {
+        "position": 62,
+        "sentAt": 1793567815239.4714,
+        "replyAt": 1793567815255.2317
+      },
+      {
+        "position": 63,
+        "sentAt": 1793567815679.4539,
+        "replyAt": 1793567815692.2336
+      },
+      {
+        "position": 64,
+        "sentAt": 1793567816140.074,
+        "replyAt": 1793567816153.0361
+      },
+      {
+        "position": 65,
+        "sentAt": 1793567816572.2476,
+        "replyAt": 1793567816590.1804
+      },
+      {
+        "position": 66,
+        "sentAt": 1793567817011.202,
+        "replyAt": 1793567817028.5479
+      },
+      {
+        "position": 67,
+        "sentAt": 1793567817454.6753,
+        "replyAt": 1793567817470.9302
+      },
+      {
+        "position": 68,
+        "sentAt": 1793567817973.9863,
+        "replyAt": 1793567817989.8564
+      },
+      {
+        "position": 69,
+        "sentAt": 1793567818515.4448,
+        "replyAt": 1793567818531.096
+      },
+      {
+        "position": 70,
+        "sentAt": 1793567819034.7852,
+        "replyAt": 1793567819049.5215
+      },
+      {
+        "position": 71,
+        "sentAt": 1793567819598.9348,
+        "replyAt": 1793567819614.1113
+      },
+      {
+        "position": 72,
+        "sentAt": 1793567820103.322,
+        "replyAt": 1793567820121.9556
+      },
+      {
+        "position": 73,
+        "sentAt": 1793567820749.6765,
+        "replyAt": 1793567820767.3506
+      },
+      {
+        "position": 74,
+        "sentAt": 1793567821234.1458,
+        "replyAt": 1793567821253.6462
+      },
+      {
+        "position": 75,
+        "sentAt": 1793567821705.5994,
+        "replyAt": 1793567821747.1372
+      },
+      {
+        "position": 76,
+        "sentAt": 1793567822178.082,
+        "replyAt": 1793567822194.844
+      },
+      {
+        "position": 77,
+        "sentAt": 1793567822653.221,
+        "replyAt": 1793567822668.7627
+      },
+      {
+        "position": 78,
+        "sentAt": 1793567823113.8464,
+        "replyAt": 1793567823133.185
+      },
+      {
+        "position": 79,
+        "sentAt": 1793567823624.1462,
+        "replyAt": 1793567823644.8726
+      },
+      {
+        "position": 80,
+        "sentAt": 1793567824211.487,
+        "replyAt": 1793567824229.9175
+      },
+      {
+        "position": 81,
+        "sentAt": 1793567824756.7048,
+        "replyAt": 1793567824784.1404
+      },
+      {
+        "position": 82,
+        "sentAt": 1793567825294.6543,
+        "replyAt": 1793567825312.5037
+      },
+      {
+        "position": 83,
+        "sentAt": 1793567826026.9119,
+        "replyAt": 1793567826043.1855
+      },
+      {
+        "position": 84,
+        "sentAt": 1793567826479.247,
+        "replyAt": 1793567826494.9534
+      },
+      {
+        "position": 85,
+        "sentAt": 1793567826966.1897,
+        "replyAt": 1793567826977.694
+      },
+      {
+        "position": 86,
+        "sentAt": 1793567827422.0078,
+        "replyAt": 1793567827451.6646
+      },
+      {
+        "position": 87,
+        "sentAt": 1793567827920.212,
+        "replyAt": 1793567827934.23
+      },
+      {
+        "position": 88,
+        "sentAt": 1793567828353.517,
+        "replyAt": 1793567828370.734
+      },
+      {
+        "position": 89,
+        "sentAt": 1793567828802.8286,
+        "replyAt": 1793567828819.1584
+      },
+      {
+        "position": 90,
+        "sentAt": 1793567829343.1387,
+        "replyAt": 1793567829359.9314
+      },
+      {
+        "position": 91,
+        "sentAt": 1793567829921.3633,
+        "replyAt": 1793567829935.5774
+      },
+      {
+        "position": 92,
+        "sentAt": 1793567830443.1199,
+        "replyAt": 1793567830463.9202
+      },
+      {
+        "position": 93,
+        "sentAt": 1793567831165.6184,
+        "replyAt": 1793567831184.292
+      },
+      {
+        "position": 94,
+        "sentAt": 1793567831650.8428,
+        "replyAt": 1793567831668.9358
+      },
+      {
+        "position": 95,
+        "sentAt": 1793567832151.4534,
+        "replyAt": 1793567832167.2007
+      },
+      {
+        "position": 96,
+        "sentAt": 1793567832628.4746,
+        "replyAt": 1793567832641.125
+      },
+      {
+        "position": 97,
+        "sentAt": 1793567833105.7935,
+        "replyAt": 1793567833120.4045
+      },
+      {
+        "position": 98,
+        "sentAt": 1793567833516.6006,
+        "replyAt": 1793567833537.801
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-coordinated-2000",
+    "device": 1,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793567921188.9412,
+        "replyAt": 1793567921259.256
+      },
+      {
+        "position": 57,
+        "sentAt": 1793567923275.312,
+        "replyAt": 1793567923341.0269
+      },
+      {
+        "position": 58,
+        "sentAt": 1793567925350.6562,
+        "replyAt": 1793567925422.3662
+      },
+      {
+        "position": 59,
+        "sentAt": 1793567927456.3616,
+        "replyAt": 1793567927522.867
+      },
+      {
+        "position": 60,
+        "sentAt": 1793567929592.9348,
+        "replyAt": 1793567929660.5942
+      },
+      {
+        "position": 61,
+        "sentAt": 1793567931693.7332,
+        "replyAt": 1793567931761.5127
+      },
+      {
+        "position": 62,
+        "sentAt": 1793567933762.6375,
+        "replyAt": 1793567933829.036
+      },
+      {
+        "position": 63,
+        "sentAt": 1793567935884.703,
+        "replyAt": 1793567935949.9822
+      },
+      {
+        "position": 64,
+        "sentAt": 1793567937983.5527,
+        "replyAt": 1793567938051.8286
+      },
+      {
+        "position": 65,
+        "sentAt": 1793567940124.9104,
+        "replyAt": 1793567940199.3337
+      },
+      {
+        "position": 66,
+        "sentAt": 1793567942185.8887,
+        "replyAt": 1793567942255.5544
+      },
+      {
+        "position": 67,
+        "sentAt": 1793567944269.8113,
+        "replyAt": 1793567944336.8098
+      },
+      {
+        "position": 68,
+        "sentAt": 1793567946396.763,
+        "replyAt": 1793567946462.706
+      },
+      {
+        "position": 69,
+        "sentAt": 1793567948519.554,
+        "replyAt": 1793567948584.8984
+      },
+      {
+        "position": 70,
+        "sentAt": 1793567950612.8093,
+        "replyAt": 1793567950680.7168
+      },
+      {
+        "position": 71,
+        "sentAt": 1793567952711.6074,
+        "replyAt": 1793567952776.3862
+      },
+      {
+        "position": 72,
+        "sentAt": 1793567954830.0266,
+        "replyAt": 1793567954900.7883
+      },
+      {
+        "position": 73,
+        "sentAt": 1793567956928.4653,
+        "replyAt": 1793567956993.1646
+      },
+      {
+        "position": 74,
+        "sentAt": 1793567959027.0186,
+        "replyAt": 1793567959093.627
+      },
+      {
+        "position": 75,
+        "sentAt": 1793567961139.9883,
+        "replyAt": 1793567961246.7979
+      },
+      {
+        "position": 76,
+        "sentAt": 1793567963243.437,
+        "replyAt": 1793567963307.8667
+      },
+      {
+        "position": 77,
+        "sentAt": 1793567964497.4775,
+        "replyAt": 1793567964559.5654
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-coordinated-2000",
+    "device": 2,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793567921019.342,
+        "replyAt": 1793567921091.8384
+      },
+      {
+        "position": 4,
+        "sentAt": 1793567923112.204,
+        "replyAt": 1793567923182.8438
+      },
+      {
+        "position": 5,
+        "sentAt": 1793567925199.2754,
+        "replyAt": 1793567925265.153
+      },
+      {
+        "position": 6,
+        "sentAt": 1793567927304.961,
+        "replyAt": 1793567927373.7097
+      },
+      {
+        "position": 7,
+        "sentAt": 1793567929415.2964,
+        "replyAt": 1793567929493.1284
+      },
+      {
+        "position": 8,
+        "sentAt": 1793567931513.9287,
+        "replyAt": 1793567931581.6633
+      },
+      {
+        "position": 9,
+        "sentAt": 1793567933601.5918,
+        "replyAt": 1793567933668.6506
+      },
+      {
+        "position": 10,
+        "sentAt": 1793567935710.0994,
+        "replyAt": 1793567935776.6362
+      },
+      {
+        "position": 11,
+        "sentAt": 1793567937808.4282,
+        "replyAt": 1793567937877.25
+      },
+      {
+        "position": 12,
+        "sentAt": 1793567939925.001,
+        "replyAt": 1793567939993.971
+      },
+      {
+        "position": 13,
+        "sentAt": 1793567942006.808,
+        "replyAt": 1793567942079.2998
+      },
+      {
+        "position": 14,
+        "sentAt": 1793567944104.7375,
+        "replyAt": 1793567944169.426
+      },
+      {
+        "position": 15,
+        "sentAt": 1793567946215.4226,
+        "replyAt": 1793567946291.8762
+      },
+      {
+        "position": 16,
+        "sentAt": 1793567948320.402,
+        "replyAt": 1793567948391.7778
+      },
+      {
+        "position": 17,
+        "sentAt": 1793567950420.236,
+        "replyAt": 1793567950497.6702
+      },
+      {
+        "position": 18,
+        "sentAt": 1793567952522.1658,
+        "replyAt": 1793567952603.211
+      },
+      {
+        "position": 19,
+        "sentAt": 1793567954626.185,
+        "replyAt": 1793567954696.9302
+      },
+      {
+        "position": 20,
+        "sentAt": 1793567956724.0244,
+        "replyAt": 1793567956793.3533
+      },
+      {
+        "position": 21,
+        "sentAt": 1793567958842.3147,
+        "replyAt": 1793567958909.6619
+      },
+      {
+        "position": 22,
+        "sentAt": 1793567960942.9873,
+        "replyAt": 1793567961009.4316
+      },
+      {
+        "position": 23,
+        "sentAt": 1793567963044.7432,
+        "replyAt": 1793567963116.085
+      },
+      {
+        "position": 24,
+        "sentAt": 1793567964281.4487,
+        "replyAt": 1793567964348.499
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-immediate-inflight",
+    "device": 1,
+    "calls": 52,
+    "acceptedTipDelta": 52,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568050907.474,
+        "replyAt": 1793568050920.9011
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568051849.4233,
+        "replyAt": 1793568051867.5947
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568052525.2666,
+        "replyAt": 1793568052552.6074
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568053165.385,
+        "replyAt": 1793568053181.881
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568053919.5193,
+        "replyAt": 1793568053943.7197
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568054725.1223,
+        "replyAt": 1793568054737.8193
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568055534.5747,
+        "replyAt": 1793568055551.1914
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568056290.6147,
+        "replyAt": 1793568056322.3992
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568057185.8545,
+        "replyAt": 1793568057208.26
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568057965.9067,
+        "replyAt": 1793568057980.126
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568058704.0764,
+        "replyAt": 1793568058715.6511
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568059379.5469,
+        "replyAt": 1793568059390.6868
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568060266.6055,
+        "replyAt": 1793568060284.5354
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568061172.174,
+        "replyAt": 1793568061191.604
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568061948.4946,
+        "replyAt": 1793568061967.1443
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568062858.0903,
+        "replyAt": 1793568062882.8281
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568063679.8357,
+        "replyAt": 1793568063699.3416
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568064446.1877,
+        "replyAt": 1793568064462.1902
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568065228.1501,
+        "replyAt": 1793568065249.311
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568066090.8115,
+        "replyAt": 1793568066106.6372
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568066937.1152,
+        "replyAt": 1793568066954.106
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568067799.3884,
+        "replyAt": 1793568067829.4524
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568068828.4902,
+        "replyAt": 1793568068848.919
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568069645.455,
+        "replyAt": 1793568069663.6973
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568070472.3887,
+        "replyAt": 1793568070485.1775
+      },
+      {
+        "position": 81,
+        "sentAt": 1793568071265.9314,
+        "replyAt": 1793568071284.5547
+      },
+      {
+        "position": 82,
+        "sentAt": 1793568072188.513,
+        "replyAt": 1793568072208.6191
+      },
+      {
+        "position": 83,
+        "sentAt": 1793568073054.768,
+        "replyAt": 1793568073074.5854
+      },
+      {
+        "position": 84,
+        "sentAt": 1793568074099.3948,
+        "replyAt": 1793568074115.1091
+      },
+      {
+        "position": 85,
+        "sentAt": 1793568074981.253,
+        "replyAt": 1793568074995.6958
+      },
+      {
+        "position": 86,
+        "sentAt": 1793568075818.49,
+        "replyAt": 1793568075830.6064
+      },
+      {
+        "position": 87,
+        "sentAt": 1793568076652.2507,
+        "replyAt": 1793568076674.7905
+      },
+      {
+        "position": 88,
+        "sentAt": 1793568077632.385,
+        "replyAt": 1793568077652.7092
+      },
+      {
+        "position": 89,
+        "sentAt": 1793568078509.6538,
+        "replyAt": 1793568078523.9707
+      },
+      {
+        "position": 90,
+        "sentAt": 1793568079501.8818,
+        "replyAt": 1793568079518.4297
+      },
+      {
+        "position": 91,
+        "sentAt": 1793568080413.9941,
+        "replyAt": 1793568080429.149
+      },
+      {
+        "position": 92,
+        "sentAt": 1793568081315.082,
+        "replyAt": 1793568081330.204
+      },
+      {
+        "position": 93,
+        "sentAt": 1793568082212.914,
+        "replyAt": 1793568082224.2375
+      },
+      {
+        "position": 94,
+        "sentAt": 1793568083253.2537,
+        "replyAt": 1793568083264.6108
+      },
+      {
+        "position": 95,
+        "sentAt": 1793568084184.9307,
+        "replyAt": 1793568084196.6853
+      },
+      {
+        "position": 96,
+        "sentAt": 1793568085211.4512,
+        "replyAt": 1793568085224.5198
+      },
+      {
+        "position": 97,
+        "sentAt": 1793568086098.2168,
+        "replyAt": 1793568086109.4924
+      },
+      {
+        "position": 98,
+        "sentAt": 1793568087045.5706,
+        "replyAt": 1793568087057.2817
+      },
+      {
+        "position": 99,
+        "sentAt": 1793568087941.1802,
+        "replyAt": 1793568087957.0059
+      },
+      {
+        "position": 100,
+        "sentAt": 1793568088989.1897,
+        "replyAt": 1793568089005.3137
+      },
+      {
+        "position": 101,
+        "sentAt": 1793568089901.0142,
+        "replyAt": 1793568089915.4124
+      },
+      {
+        "position": 102,
+        "sentAt": 1793568090986.398,
+        "replyAt": 1793568090997.9314
+      },
+      {
+        "position": 103,
+        "sentAt": 1793568092003.5427,
+        "replyAt": 1793568092019.5828
+      },
+      {
+        "position": 104,
+        "sentAt": 1793568092940.5227,
+        "replyAt": 1793568092954.0422
+      },
+      {
+        "position": 105,
+        "sentAt": 1793568093954.5269,
+        "replyAt": 1793568093967.2776
+      },
+      {
+        "position": 106,
+        "sentAt": 1793568095043.6003,
+        "replyAt": 1793568095061.1118
+      },
+      {
+        "position": 107,
+        "sentAt": 1793568096167.4102,
+        "replyAt": 1793568096180.273
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-immediate-inflight",
+    "device": 2,
+    "calls": 97,
+    "acceptedTipDelta": 97,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568050763.2527,
+        "replyAt": 1793568050787.7214
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568051182.0198,
+        "replyAt": 1793568051196.5151
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568051642.1184,
+        "replyAt": 1793568051657.5647
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568052045.8037,
+        "replyAt": 1793568052061.847
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568052412.5095,
+        "replyAt": 1793568052430.691
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568052785.6575,
+        "replyAt": 1793568052800.5483
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568053140.9988,
+        "replyAt": 1793568053159.7837
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568053492.0432,
+        "replyAt": 1793568053505.435
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568053860.963,
+        "replyAt": 1793568053881.3223
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568054433.7686,
+        "replyAt": 1793568054445.5347
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568054961.176,
+        "replyAt": 1793568054986.454
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568055381.8906,
+        "replyAt": 1793568055402.0042
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568055782.967,
+        "replyAt": 1793568055825.1792
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568056174.4285,
+        "replyAt": 1793568056191.064
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568056565.251,
+        "replyAt": 1793568056580.326
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568056942.0837,
+        "replyAt": 1793568056961.1902
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568057320.1736,
+        "replyAt": 1793568057334.63
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568057754.6448,
+        "replyAt": 1793568057771.9658
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568058198.789,
+        "replyAt": 1793568058216.2217
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568058693.9253,
+        "replyAt": 1793568058732.7078
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568059194.796,
+        "replyAt": 1793568059211.9963
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568059755.5542,
+        "replyAt": 1793568059772.0823
+      },
+      {
+        "position": 25,
+        "sentAt": 1793568060348.3547,
+        "replyAt": 1793568060362.21
+      },
+      {
+        "position": 26,
+        "sentAt": 1793568060853.0715,
+        "replyAt": 1793568060869.5955
+      },
+      {
+        "position": 27,
+        "sentAt": 1793568061245.1711,
+        "replyAt": 1793568061260.3118
+      },
+      {
+        "position": 28,
+        "sentAt": 1793568061646.8694,
+        "replyAt": 1793568061665.1067
+      },
+      {
+        "position": 29,
+        "sentAt": 1793568062050.9736,
+        "replyAt": 1793568062071.4434
+      },
+      {
+        "position": 30,
+        "sentAt": 1793568062443.1584,
+        "replyAt": 1793568062462.388
+      },
+      {
+        "position": 31,
+        "sentAt": 1793568062855.457,
+        "replyAt": 1793568062876.2585
+      },
+      {
+        "position": 32,
+        "sentAt": 1793568063254.3806,
+        "replyAt": 1793568063271.9224
+      },
+      {
+        "position": 33,
+        "sentAt": 1793568063705.4521,
+        "replyAt": 1793568063719.0955
+      },
+      {
+        "position": 34,
+        "sentAt": 1793568064194.8384,
+        "replyAt": 1793568064210.607
+      },
+      {
+        "position": 35,
+        "sentAt": 1793568064670.671,
+        "replyAt": 1793568064690.9
+      },
+      {
+        "position": 36,
+        "sentAt": 1793568065235.7744,
+        "replyAt": 1793568065259.8347
+      },
+      {
+        "position": 37,
+        "sentAt": 1793568065752.657,
+        "replyAt": 1793568065768.637
+      },
+      {
+        "position": 38,
+        "sentAt": 1793568066169.535,
+        "replyAt": 1793568066185.7007
+      },
+      {
+        "position": 39,
+        "sentAt": 1793568066587.4434,
+        "replyAt": 1793568066605.2388
+      },
+      {
+        "position": 40,
+        "sentAt": 1793568066964.9048,
+        "replyAt": 1793568066978.8438
+      },
+      {
+        "position": 41,
+        "sentAt": 1793568067390.8823,
+        "replyAt": 1793568067404.167
+      },
+      {
+        "position": 42,
+        "sentAt": 1793568067800.6692,
+        "replyAt": 1793568067821.7095
+      },
+      {
+        "position": 43,
+        "sentAt": 1793568068200.0857,
+        "replyAt": 1793568068212.6152
+      },
+      {
+        "position": 44,
+        "sentAt": 1793568068680.1948,
+        "replyAt": 1793568068694.9932
+      },
+      {
+        "position": 45,
+        "sentAt": 1793568069190.7312,
+        "replyAt": 1793568069204.766
+      },
+      {
+        "position": 46,
+        "sentAt": 1793568069644.9565,
+        "replyAt": 1793568069671.088
+      },
+      {
+        "position": 47,
+        "sentAt": 1793568070124.4502,
+        "replyAt": 1793568070142.0671
+      },
+      {
+        "position": 48,
+        "sentAt": 1793568070660.2253,
+        "replyAt": 1793568070676.2395
+      },
+      {
+        "position": 49,
+        "sentAt": 1793568071150.7178,
+        "replyAt": 1793568071165.765
+      },
+      {
+        "position": 50,
+        "sentAt": 1793568071606.152,
+        "replyAt": 1793568071619.2244
+      },
+      {
+        "position": 51,
+        "sentAt": 1793568072051.9355,
+        "replyAt": 1793568072067.5632
+      },
+      {
+        "position": 52,
+        "sentAt": 1793568072481.558,
+        "replyAt": 1793568072496.8357
+      },
+      {
+        "position": 53,
+        "sentAt": 1793568072911.8628,
+        "replyAt": 1793568072929.621
+      },
+      {
+        "position": 54,
+        "sentAt": 1793568073403.7659,
+        "replyAt": 1793568073436.4077
+      },
+      {
+        "position": 55,
+        "sentAt": 1793568073952.8157,
+        "replyAt": 1793568073970.5627
+      },
+      {
+        "position": 56,
+        "sentAt": 1793568074386.9287,
+        "replyAt": 1793568074403.0298
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568074800.0889,
+        "replyAt": 1793568074817.0452
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568075211.8586,
+        "replyAt": 1793568075235.5496
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568075746.6792,
+        "replyAt": 1793568075773.1565
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568076187.7576,
+        "replyAt": 1793568076199.5967
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568076696.5247,
+        "replyAt": 1793568076707.9988
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568077196.4893,
+        "replyAt": 1793568077222.754
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568077717.4075,
+        "replyAt": 1793568077730.5833
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568078232.481,
+        "replyAt": 1793568078249.2388
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568078648.7952,
+        "replyAt": 1793568078664.6687
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568079084.3196,
+        "replyAt": 1793568079105.4978
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568079522.853,
+        "replyAt": 1793568079539.8916
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568079990.7168,
+        "replyAt": 1793568080007.3308
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568080440.8489,
+        "replyAt": 1793568080451.2605
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568081006.5544,
+        "replyAt": 1793568081021.9731
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568081512.9883,
+        "replyAt": 1793568081529.2922
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568082123.6614,
+        "replyAt": 1793568082142.483
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568082660.1384,
+        "replyAt": 1793568082673.4143
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568083186.6572,
+        "replyAt": 1793568083204.7405
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568083713.8645,
+        "replyAt": 1793568083727.6318
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568084152.102,
+        "replyAt": 1793568084175.7126
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568084603.7427,
+        "replyAt": 1793568084615.8875
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568085056.2947,
+        "replyAt": 1793568085074.965
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568085544.598,
+        "replyAt": 1793568085560.7913
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568086048.5273,
+        "replyAt": 1793568086064.9214
+      },
+      {
+        "position": 81,
+        "sentAt": 1793568086504.3032,
+        "replyAt": 1793568086530.9624
+      },
+      {
+        "position": 82,
+        "sentAt": 1793568087018.7441,
+        "replyAt": 1793568087035.7908
+      },
+      {
+        "position": 83,
+        "sentAt": 1793568087620.2258,
+        "replyAt": 1793568087636.481
+      },
+      {
+        "position": 84,
+        "sentAt": 1793568088125.8057,
+        "replyAt": 1793568088146.5728
+      },
+      {
+        "position": 85,
+        "sentAt": 1793568088661.007,
+        "replyAt": 1793568088675.0664
+      },
+      {
+        "position": 86,
+        "sentAt": 1793568089108.4666,
+        "replyAt": 1793568089129.7354
+      },
+      {
+        "position": 87,
+        "sentAt": 1793568089568.15,
+        "replyAt": 1793568089586.8792
+      },
+      {
+        "position": 88,
+        "sentAt": 1793568090044.789,
+        "replyAt": 1793568090059.9392
+      },
+      {
+        "position": 89,
+        "sentAt": 1793568090504.9229,
+        "replyAt": 1793568090517.361
+      },
+      {
+        "position": 90,
+        "sentAt": 1793568090967.067,
+        "replyAt": 1793568090978.7317
+      },
+      {
+        "position": 91,
+        "sentAt": 1793568091559.326,
+        "replyAt": 1793568091571.7312
+      },
+      {
+        "position": 92,
+        "sentAt": 1793568092061.5605,
+        "replyAt": 1793568092080.2888
+      },
+      {
+        "position": 93,
+        "sentAt": 1793568092632.95,
+        "replyAt": 1793568092650.2173
+      },
+      {
+        "position": 94,
+        "sentAt": 1793568093257.573,
+        "replyAt": 1793568093273.8992
+      },
+      {
+        "position": 95,
+        "sentAt": 1793568093782.0195,
+        "replyAt": 1793568093798.7314
+      },
+      {
+        "position": 96,
+        "sentAt": 1793568094251.4873,
+        "replyAt": 1793568094269.542
+      },
+      {
+        "position": 97,
+        "sentAt": 1793568094717.526,
+        "replyAt": 1793568094734.249
+      },
+      {
+        "position": 98,
+        "sentAt": 1793568095190.4858,
+        "replyAt": 1793568095206.352
+      },
+      {
+        "position": 99,
+        "sentAt": 1793568095684.6184,
+        "replyAt": 1793568095697.5925
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-immediate-inflight",
+    "device": 1,
+    "calls": 46,
+    "acceptedTipDelta": 46,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568176597.1914,
+        "replyAt": 1793568176672.3271
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568177632.1711,
+        "replyAt": 1793568177694.9087
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568178386.4421,
+        "replyAt": 1793568178462.645
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568179238.159,
+        "replyAt": 1793568179305.4949
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568180082.9895,
+        "replyAt": 1793568180151.7095
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568181044.0476,
+        "replyAt": 1793568181106.5996
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568181902.4016,
+        "replyAt": 1793568181970.0532
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568183043.4053,
+        "replyAt": 1793568183112.6301
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568183822.2795,
+        "replyAt": 1793568183887.0464
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568184696.2166,
+        "replyAt": 1793568184762.4207
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568185506.0269,
+        "replyAt": 1793568185569.3008
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568186362.5674,
+        "replyAt": 1793568186435.599
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568187271.675,
+        "replyAt": 1793568187337.2205
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568188607.2332,
+        "replyAt": 1793568188669.8838
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568189511.017,
+        "replyAt": 1793568189584.634
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568190339.5576,
+        "replyAt": 1793568190403.2449
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568191208.888,
+        "replyAt": 1793568191277.7788
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568192075.662,
+        "replyAt": 1793568192140.3672
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568192980.9578,
+        "replyAt": 1793568193044.3481
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568194365.8992,
+        "replyAt": 1793568194437.4072
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568195350.915,
+        "replyAt": 1793568195420.519
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568196291.4783,
+        "replyAt": 1793568196358.7805
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568197218.462,
+        "replyAt": 1793568197295.45
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568198135.5137,
+        "replyAt": 1793568198197.8535
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568199011.3464,
+        "replyAt": 1793568199079.877
+      },
+      {
+        "position": 81,
+        "sentAt": 1793568200244.493,
+        "replyAt": 1793568200313.2534
+      },
+      {
+        "position": 82,
+        "sentAt": 1793568201304.361,
+        "replyAt": 1793568201373.3684
+      },
+      {
+        "position": 83,
+        "sentAt": 1793568202266.9082,
+        "replyAt": 1793568202331.3413
+      },
+      {
+        "position": 84,
+        "sentAt": 1793568203217.3496,
+        "replyAt": 1793568203283.1655
+      },
+      {
+        "position": 85,
+        "sentAt": 1793568204113.524,
+        "replyAt": 1793568204176.1445
+      },
+      {
+        "position": 86,
+        "sentAt": 1793568205039.3765,
+        "replyAt": 1793568205115.8657
+      },
+      {
+        "position": 87,
+        "sentAt": 1793568206327.6785,
+        "replyAt": 1793568206410.1582
+      },
+      {
+        "position": 88,
+        "sentAt": 1793568207473.4268,
+        "replyAt": 1793568207539.4988
+      },
+      {
+        "position": 89,
+        "sentAt": 1793568208477.3315,
+        "replyAt": 1793568208547.987
+      },
+      {
+        "position": 90,
+        "sentAt": 1793568209398.318,
+        "replyAt": 1793568209464.9915
+      },
+      {
+        "position": 91,
+        "sentAt": 1793568210328.9722,
+        "replyAt": 1793568210409.8218
+      },
+      {
+        "position": 92,
+        "sentAt": 1793568211741.1895,
+        "replyAt": 1793568211805.8325
+      },
+      {
+        "position": 93,
+        "sentAt": 1793568212758.7014,
+        "replyAt": 1793568212824.7073
+      },
+      {
+        "position": 94,
+        "sentAt": 1793568213947.4702,
+        "replyAt": 1793568214013.701
+      },
+      {
+        "position": 95,
+        "sentAt": 1793568214986.386,
+        "replyAt": 1793568215059.3147
+      },
+      {
+        "position": 96,
+        "sentAt": 1793568216017.722,
+        "replyAt": 1793568216098.4905
+      },
+      {
+        "position": 97,
+        "sentAt": 1793568217498.1863,
+        "replyAt": 1793568217560.3333
+      },
+      {
+        "position": 98,
+        "sentAt": 1793568218580.509,
+        "replyAt": 1793568218650.6396
+      },
+      {
+        "position": 99,
+        "sentAt": 1793568219651.7134,
+        "replyAt": 1793568219728.9324
+      },
+      {
+        "position": 100,
+        "sentAt": 1793568220857.5923,
+        "replyAt": 1793568220920.9563
+      },
+      {
+        "position": 101,
+        "sentAt": 1793568221839.0684,
+        "replyAt": 1793568221907.321
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-immediate-inflight",
+    "device": 2,
+    "calls": 78,
+    "acceptedTipDelta": 78,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568176462.2742,
+        "replyAt": 1793568176529.2937
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568176969.7178,
+        "replyAt": 1793568177033.342
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568177445.8862,
+        "replyAt": 1793568177515.0244
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568177902.554,
+        "replyAt": 1793568177984.6504
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568178483.0254,
+        "replyAt": 1793568178557.4832
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568179108.912,
+        "replyAt": 1793568179176.6042
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568179654.0176,
+        "replyAt": 1793568179721.2773
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568180211.1423,
+        "replyAt": 1793568180292.168
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568180945.6465,
+        "replyAt": 1793568181014.6262
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568181464.4932,
+        "replyAt": 1793568181530.3647
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568182088.336,
+        "replyAt": 1793568182164.2566
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568182585.244,
+        "replyAt": 1793568182649.6052
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568183071.3782,
+        "replyAt": 1793568183140.0464
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568183583.064,
+        "replyAt": 1793568183657.9863
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568184080.4114,
+        "replyAt": 1793568184151.7937
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568184570.3364,
+        "replyAt": 1793568184638.67
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568185126.857,
+        "replyAt": 1793568185190.632
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568185702.1846,
+        "replyAt": 1793568185773.0835
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568186359.826,
+        "replyAt": 1793568186428.9102
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568186936.021,
+        "replyAt": 1793568187005.7427
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568187546.9072,
+        "replyAt": 1793568187615.125
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568188097.7527,
+        "replyAt": 1793568188164.8245
+      },
+      {
+        "position": 25,
+        "sentAt": 1793568188584.9473,
+        "replyAt": 1793568188662.0679
+      },
+      {
+        "position": 26,
+        "sentAt": 1793568189076.1475,
+        "replyAt": 1793568189142.2927
+      },
+      {
+        "position": 27,
+        "sentAt": 1793568189598.6897,
+        "replyAt": 1793568189662.082
+      },
+      {
+        "position": 28,
+        "sentAt": 1793568190114.7642,
+        "replyAt": 1793568190183.0964
+      },
+      {
+        "position": 29,
+        "sentAt": 1793568190691.0261,
+        "replyAt": 1793568190755.1714
+      },
+      {
+        "position": 30,
+        "sentAt": 1793568191292.1335,
+        "replyAt": 1793568191365.297
+      },
+      {
+        "position": 31,
+        "sentAt": 1793568192020.7053,
+        "replyAt": 1793568192090.3784
+      },
+      {
+        "position": 32,
+        "sentAt": 1793568192608.5054,
+        "replyAt": 1793568192678.7886
+      },
+      {
+        "position": 33,
+        "sentAt": 1793568193351.693,
+        "replyAt": 1793568193417.0066
+      },
+      {
+        "position": 34,
+        "sentAt": 1793568193922.407,
+        "replyAt": 1793568193987.2627
+      },
+      {
+        "position": 35,
+        "sentAt": 1793568194438.9526,
+        "replyAt": 1793568194502.7888
+      },
+      {
+        "position": 36,
+        "sentAt": 1793568194960.0095,
+        "replyAt": 1793568195026.1716
+      },
+      {
+        "position": 37,
+        "sentAt": 1793568195458.7378,
+        "replyAt": 1793568195525.2654
+      },
+      {
+        "position": 38,
+        "sentAt": 1793568195950.6218,
+        "replyAt": 1793568196022.8198
+      },
+      {
+        "position": 39,
+        "sentAt": 1793568196492.2043,
+        "replyAt": 1793568196561.0122
+      },
+      {
+        "position": 40,
+        "sentAt": 1793568197208.0347,
+        "replyAt": 1793568197291.6482
+      },
+      {
+        "position": 41,
+        "sentAt": 1793568197832.9565,
+        "replyAt": 1793568197900.8333
+      },
+      {
+        "position": 42,
+        "sentAt": 1793568198591.9304,
+        "replyAt": 1793568198660.671
+      },
+      {
+        "position": 43,
+        "sentAt": 1793568199203.247,
+        "replyAt": 1793568199271.447
+      },
+      {
+        "position": 44,
+        "sentAt": 1793568199756.064,
+        "replyAt": 1793568199820.1443
+      },
+      {
+        "position": 45,
+        "sentAt": 1793568200266.9788,
+        "replyAt": 1793568200331.7822
+      },
+      {
+        "position": 46,
+        "sentAt": 1793568200780.5618,
+        "replyAt": 1793568200851.0693
+      },
+      {
+        "position": 47,
+        "sentAt": 1793568201324.4038,
+        "replyAt": 1793568201391.4985
+      },
+      {
+        "position": 48,
+        "sentAt": 1793568201828.9355,
+        "replyAt": 1793568201900.9583
+      },
+      {
+        "position": 49,
+        "sentAt": 1793568202532.0332,
+        "replyAt": 1793568202599.418
+      },
+      {
+        "position": 50,
+        "sentAt": 1793568203025.9692,
+        "replyAt": 1793568203094.1335
+      },
+      {
+        "position": 51,
+        "sentAt": 1793568203768.6274,
+        "replyAt": 1793568203842.5515
+      },
+      {
+        "position": 52,
+        "sentAt": 1793568204433.9143,
+        "replyAt": 1793568204515.0142
+      },
+      {
+        "position": 53,
+        "sentAt": 1793568205025.853,
+        "replyAt": 1793568205095.429
+      },
+      {
+        "position": 54,
+        "sentAt": 1793568205617.3862,
+        "replyAt": 1793568205682.6013
+      },
+      {
+        "position": 55,
+        "sentAt": 1793568206151.7874,
+        "replyAt": 1793568206226.7483
+      },
+      {
+        "position": 56,
+        "sentAt": 1793568206701.2961,
+        "replyAt": 1793568206779.2886
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568207212.3523,
+        "replyAt": 1793568207285.4885
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568208028.404,
+        "replyAt": 1793568208095.3928
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568208566.713,
+        "replyAt": 1793568208634.1025
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568209266.7517,
+        "replyAt": 1793568209335.4949
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568209883.9507,
+        "replyAt": 1793568209951.8076
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568210508.9595,
+        "replyAt": 1793568210579.7393
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568211157.913,
+        "replyAt": 1793568211220.923
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568211754.7852,
+        "replyAt": 1793568211817.49
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568212310.831,
+        "replyAt": 1793568212381.006
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568212907.5806,
+        "replyAt": 1793568212976.9114
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568213615.5115,
+        "replyAt": 1793568213684.7632
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568214172.7993,
+        "replyAt": 1793568214240.9858
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568214873.3071,
+        "replyAt": 1793568214939.0073
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568215541.9202,
+        "replyAt": 1793568215611.4036
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568216210.6616,
+        "replyAt": 1793568216281.3386
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568216859.9146,
+        "replyAt": 1793568216921.9883
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568217427.9949,
+        "replyAt": 1793568217500.582
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568218028.3508,
+        "replyAt": 1793568218092.8657
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568218592.396,
+        "replyAt": 1793568218661.408
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568219317.1204,
+        "replyAt": 1793568219385.5933
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568220033.1296,
+        "replyAt": 1793568220105.3342
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568220584.2886,
+        "replyAt": 1793568220649.2983
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568221226.4902,
+        "replyAt": 1793568221311.2253
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568221859.735,
+        "replyAt": 1793568221924.86
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-coordinated-2000",
+    "device": 1,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568310233.5886,
+        "replyAt": 1793568310254.4172
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568312313.464,
+        "replyAt": 1793568312335.0352
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568314425.7686,
+        "replyAt": 1793568314447.428
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568316527.7678,
+        "replyAt": 1793568316549.5474
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568318643.704,
+        "replyAt": 1793568318664.007
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568320737.7388,
+        "replyAt": 1793568320756.0796
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568322843.8594,
+        "replyAt": 1793568322859.0725
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568324929.392,
+        "replyAt": 1793568324950.3481
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568327042.2258,
+        "replyAt": 1793568327058.7676
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568329144.2307,
+        "replyAt": 1793568329159.5684
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568331262.2512,
+        "replyAt": 1793568331276.8882
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568333363.8223,
+        "replyAt": 1793568333380.7207
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568335468.7397,
+        "replyAt": 1793568335489.3127
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568337573.7249,
+        "replyAt": 1793568337589.0618
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568339665.4075,
+        "replyAt": 1793568339683.6934
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568341790.9775,
+        "replyAt": 1793568341806.9436
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568343887.335,
+        "replyAt": 1793568343902.836
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568346004.1228,
+        "replyAt": 1793568346020.546
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568348133.563,
+        "replyAt": 1793568348152.2812
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568350215.9675,
+        "replyAt": 1793568350238.7834
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568352319.3833,
+        "replyAt": 1793568352341.6345
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568353483.8677,
+        "replyAt": 1793568353500.095
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-coordinated-2000",
+    "device": 2,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568310084.7993,
+        "replyAt": 1793568310105.61
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568312180.9006,
+        "replyAt": 1793568312195.4185
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568314271.665,
+        "replyAt": 1793568314292.6917
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568316373.6375,
+        "replyAt": 1793568316389.96
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568318473.6873,
+        "replyAt": 1793568318491.526
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568320569.5884,
+        "replyAt": 1793568320593.5151
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568322687.361,
+        "replyAt": 1793568322705.8748
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568324774.5881,
+        "replyAt": 1793568324789.3137
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568326882.3975,
+        "replyAt": 1793568326898.7927
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568328997.3364,
+        "replyAt": 1793568329015.0164
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568331084.3225,
+        "replyAt": 1793568331104.2517
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568333188.191,
+        "replyAt": 1793568333206.2275
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568335300.1697,
+        "replyAt": 1793568335316.6362
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568337393.2776,
+        "replyAt": 1793568337417.734
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568339491.1301,
+        "replyAt": 1793568339509.2317
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568341594.0696,
+        "replyAt": 1793568341612.1438
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568343689.7815,
+        "replyAt": 1793568343708.1643
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568345814.4045,
+        "replyAt": 1793568345831.918
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568347919.7402,
+        "replyAt": 1793568347937.5176
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568350028.8855,
+        "replyAt": 1793568350046.6282
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568352133.862,
+        "replyAt": 1793568352150.4968
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568353247.4075,
+        "replyAt": 1793568353262.6138
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-coordinated-2000",
+    "device": 1,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568441744.2234,
+        "replyAt": 1793568441812.2102
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568443825.986,
+        "replyAt": 1793568443928.985
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568445947.3809,
+        "replyAt": 1793568446017.6667
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568448050.9023,
+        "replyAt": 1793568448117.8684
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568450149.221,
+        "replyAt": 1793568450213.6873
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568452269.8684,
+        "replyAt": 1793568452338.0815
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568454375.0496,
+        "replyAt": 1793568454443.1116
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568456487.9863,
+        "replyAt": 1793568456554.2627
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568458574.5051,
+        "replyAt": 1793568458639.4456
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568460701.0981,
+        "replyAt": 1793568460768.769
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568462786.9849,
+        "replyAt": 1793568462856.8032
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568464919.008,
+        "replyAt": 1793568464985.2256
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568466975.6748,
+        "replyAt": 1793568467041.0906
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568469099.834,
+        "replyAt": 1793568469167.75
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568471225.4456,
+        "replyAt": 1793568471291.9673
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568473318.8164,
+        "replyAt": 1793568473385.9177
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568475397.8547,
+        "replyAt": 1793568475466.6497
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568477548.1838,
+        "replyAt": 1793568477616.3542
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568479615.4329,
+        "replyAt": 1793568479686.3179
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568481712.4714,
+        "replyAt": 1793568481777.4407
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568483818.113,
+        "replyAt": 1793568483886.877
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568485072.1453,
+        "replyAt": 1793568485136.0066
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-coordinated-2000",
+    "device": 2,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568441610.3174,
+        "replyAt": 1793568441681.12
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568443704.1255,
+        "replyAt": 1793568443771.226
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568445799.7754,
+        "replyAt": 1793568445869.56
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568447896.8186,
+        "replyAt": 1793568447964.2256
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568449989.21,
+        "replyAt": 1793568450055.547
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568452113.2405,
+        "replyAt": 1793568452184.2822
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568454239.9336,
+        "replyAt": 1793568454311.6255
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568456301.14,
+        "replyAt": 1793568456374.221
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568458400.8005,
+        "replyAt": 1793568458469.4932
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568460543.7278,
+        "replyAt": 1793568460617.4954
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568462614.344,
+        "replyAt": 1793568462685.9758
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568464736.6758,
+        "replyAt": 1793568464806.598
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568466810.9385,
+        "replyAt": 1793568466877.047
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568468921.6716,
+        "replyAt": 1793568468987.7927
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568471033.1638,
+        "replyAt": 1793568471113.5518
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568473135.4924,
+        "replyAt": 1793568473212.3618
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568475221.6687,
+        "replyAt": 1793568475291.822
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568477353.134,
+        "replyAt": 1793568477425.6067
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568479423.953,
+        "replyAt": 1793568479492.0789
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568481533.5547,
+        "replyAt": 1793568481603.0046
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568483622.0002,
+        "replyAt": 1793568483690.6624
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568484871.4146,
+        "replyAt": 1793568484937.905
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-coordinated-2000",
+    "device": 1,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568572955.226,
+        "replyAt": 1793568573024.2651
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568575016.4133,
+        "replyAt": 1793568575082.7717
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568577125.7769,
+        "replyAt": 1793568577191.799
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568579242.6392,
+        "replyAt": 1793568579308.6697
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568581351.5283,
+        "replyAt": 1793568581417.0425
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568583446.3132,
+        "replyAt": 1793568583518.3247
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568585570.968,
+        "replyAt": 1793568585635.2224
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568587683.9553,
+        "replyAt": 1793568587751.977
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568589756.2588,
+        "replyAt": 1793568589825.1316
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568591859.1372,
+        "replyAt": 1793568591924.0154
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568593984.2766,
+        "replyAt": 1793568594053.6853
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568596082.3586,
+        "replyAt": 1793568596150.2036
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568598182.4985,
+        "replyAt": 1793568598250.0752
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568600298.4702,
+        "replyAt": 1793568600362.6921
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568602394.2593,
+        "replyAt": 1793568602464.7544
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568604503.1245,
+        "replyAt": 1793568604572.588
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568606602.0962,
+        "replyAt": 1793568606703.213
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568608700.347,
+        "replyAt": 1793568608767.1887
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568610809.668,
+        "replyAt": 1793568610874.9502
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568612917.719,
+        "replyAt": 1793568612983.8984
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568615021.1914,
+        "replyAt": 1793568615086.1562
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568616259.7869,
+        "replyAt": 1793568616321.8013
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-coordinated-2000",
+    "device": 2,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568572810.27,
+        "replyAt": 1793568572883.2107
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568574886.6416,
+        "replyAt": 1793568574955.074
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568576977.9124,
+        "replyAt": 1793568577046.81
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568579092.1338,
+        "replyAt": 1793568579162.8477
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568581187.5225,
+        "replyAt": 1793568581254.8457
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568583290.5571,
+        "replyAt": 1793568583358.7034
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568585425.64,
+        "replyAt": 1793568585492.0496
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568587497.4158,
+        "replyAt": 1793568587568.75
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568589586.0718,
+        "replyAt": 1793568589657.0576
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568591702.7861,
+        "replyAt": 1793568591769.9758
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568593811.5928,
+        "replyAt": 1793568593886.3503
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568595913.2034,
+        "replyAt": 1793568595979.4744
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568598000.3157,
+        "replyAt": 1793568598072.6245
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568600121.5576,
+        "replyAt": 1793568600200.488
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568602207.434,
+        "replyAt": 1793568602275.7053
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568604299.394,
+        "replyAt": 1793568604369.1826
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568606418.1519,
+        "replyAt": 1793568606487.1794
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568608513.4402,
+        "replyAt": 1793568608586.3267
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568610610.954,
+        "replyAt": 1793568610680.5437
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568612738.215,
+        "replyAt": 1793568612807.084
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568614830.708,
+        "replyAt": 1793568614899.0142
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568616063.7114,
+        "replyAt": 1793568616131.8762
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-immediate-inflight",
+    "device": 1,
+    "calls": 46,
+    "acceptedTipDelta": 46,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568701922.2878,
+        "replyAt": 1793568701995.996
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568703029.3242,
+        "replyAt": 1793568703097.1128
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568703836.6367,
+        "replyAt": 1793568703901.6194
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568704588.4834,
+        "replyAt": 1793568704669.0125
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568705513.8352,
+        "replyAt": 1793568705611.0107
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568706416.6912,
+        "replyAt": 1793568706485.871
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568707287.845,
+        "replyAt": 1793568707352.199
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568708404.7202,
+        "replyAt": 1793568708465.938
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568709180.1248,
+        "replyAt": 1793568709249.7046
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568710033.8787,
+        "replyAt": 1793568710106.1387
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568710930.0332,
+        "replyAt": 1793568710999.6536
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568711787.7026,
+        "replyAt": 1793568711855.6462
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568712710.282,
+        "replyAt": 1793568712780.1428
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568713997.7017,
+        "replyAt": 1793568714060.4146
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568714864.2131,
+        "replyAt": 1793568714927.3733
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568715743.7537,
+        "replyAt": 1793568715814.2598
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568716631.2773,
+        "replyAt": 1793568716735.5586
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568717574.719,
+        "replyAt": 1793568717646.1116
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568718500.5935,
+        "replyAt": 1793568718565.251
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568719837.007,
+        "replyAt": 1793568719904.4294
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568720794.5217,
+        "replyAt": 1793568720867.5073
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568721685.7424,
+        "replyAt": 1793568721762.8752
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568722652.545,
+        "replyAt": 1793568722718.4546
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568723617.6946,
+        "replyAt": 1793568723686.3708
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568724516.6467,
+        "replyAt": 1793568724584.604
+      },
+      {
+        "position": 81,
+        "sentAt": 1793568725719.3083,
+        "replyAt": 1793568725788.1514
+      },
+      {
+        "position": 82,
+        "sentAt": 1793568726789.5544,
+        "replyAt": 1793568726860.5298
+      },
+      {
+        "position": 83,
+        "sentAt": 1793568727701.9438,
+        "replyAt": 1793568727770.5662
+      },
+      {
+        "position": 84,
+        "sentAt": 1793568728622.1526,
+        "replyAt": 1793568728685.4695
+      },
+      {
+        "position": 85,
+        "sentAt": 1793568729580.7268,
+        "replyAt": 1793568729647.801
+      },
+      {
+        "position": 86,
+        "sentAt": 1793568730493.2346,
+        "replyAt": 1793568730562.2144
+      },
+      {
+        "position": 87,
+        "sentAt": 1793568731714.9624,
+        "replyAt": 1793568731789.92
+      },
+      {
+        "position": 88,
+        "sentAt": 1793568732808.9382,
+        "replyAt": 1793568732872.2825
+      },
+      {
+        "position": 89,
+        "sentAt": 1793568733799.9878,
+        "replyAt": 1793568733868.9077
+      },
+      {
+        "position": 90,
+        "sentAt": 1793568734712.1516,
+        "replyAt": 1793568734783.278
+      },
+      {
+        "position": 91,
+        "sentAt": 1793568735751.0786,
+        "replyAt": 1793568735820.203
+      },
+      {
+        "position": 92,
+        "sentAt": 1793568737034.526,
+        "replyAt": 1793568737099.728
+      },
+      {
+        "position": 93,
+        "sentAt": 1793568738037.64,
+        "replyAt": 1793568738105.0295
+      },
+      {
+        "position": 94,
+        "sentAt": 1793568739195.0605,
+        "replyAt": 1793568739261.3755
+      },
+      {
+        "position": 95,
+        "sentAt": 1793568740176.483,
+        "replyAt": 1793568740244.4255
+      },
+      {
+        "position": 96,
+        "sentAt": 1793568741209.035,
+        "replyAt": 1793568741272.0532
+      },
+      {
+        "position": 97,
+        "sentAt": 1793568742576.1199,
+        "replyAt": 1793568742644.9888
+      },
+      {
+        "position": 98,
+        "sentAt": 1793568743612.3445,
+        "replyAt": 1793568743681.7288
+      },
+      {
+        "position": 99,
+        "sentAt": 1793568744688.2727,
+        "replyAt": 1793568744750.6736
+      },
+      {
+        "position": 100,
+        "sentAt": 1793568750376.5156,
+        "replyAt": 1793568750451.5115
+      },
+      {
+        "position": 101,
+        "sentAt": 1793568751515.2544,
+        "replyAt": 1793568751582.2007
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-immediate-inflight",
+    "device": 2,
+    "calls": 78,
+    "acceptedTipDelta": 78,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568701736.6367,
+        "replyAt": 1793568701811.5874
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568702292.7158,
+        "replyAt": 1793568702361.081
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568702809.4175,
+        "replyAt": 1793568702881.5654
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568703334.6587,
+        "replyAt": 1793568703406.2034
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568703866.5818,
+        "replyAt": 1793568703930.9956
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568704390.541,
+        "replyAt": 1793568704462.6794
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568704899.3062,
+        "replyAt": 1793568704970.793
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568705375.9973,
+        "replyAt": 1793568705443.9878
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568705976.6416,
+        "replyAt": 1793568706040.6357
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568706441.388,
+        "replyAt": 1793568706509.0037
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568707096.3342,
+        "replyAt": 1793568707165.137
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568707567.738,
+        "replyAt": 1793568707644.6013
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568708162.8672,
+        "replyAt": 1793568708226.277
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568708735.5623,
+        "replyAt": 1793568708799.5283
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568709285.2136,
+        "replyAt": 1793568709351.9497
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568709857.894,
+        "replyAt": 1793568709931.188
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568710332.8767,
+        "replyAt": 1793568710406.3323
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568710851.2134,
+        "replyAt": 1793568710922.6165
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568711507.6177,
+        "replyAt": 1793568711579.5994
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568711981.75,
+        "replyAt": 1793568712049.1309
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568712582.4963,
+        "replyAt": 1793568712652.1155
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568713117.5647,
+        "replyAt": 1793568713185.2327
+      },
+      {
+        "position": 25,
+        "sentAt": 1793568713684.2817,
+        "replyAt": 1793568713752.9258
+      },
+      {
+        "position": 26,
+        "sentAt": 1793568714286.6985,
+        "replyAt": 1793568714357.8833
+      },
+      {
+        "position": 27,
+        "sentAt": 1793568714831.9656,
+        "replyAt": 1793568714902.8638
+      },
+      {
+        "position": 28,
+        "sentAt": 1793568715386.7068,
+        "replyAt": 1793568715458.0476
+      },
+      {
+        "position": 29,
+        "sentAt": 1793568715897.0183,
+        "replyAt": 1793568715965.3076
+      },
+      {
+        "position": 30,
+        "sentAt": 1793568716405.4375,
+        "replyAt": 1793568716473.3672
+      },
+      {
+        "position": 31,
+        "sentAt": 1793568717055.3792,
+        "replyAt": 1793568717122.142
+      },
+      {
+        "position": 32,
+        "sentAt": 1793568717577.4363,
+        "replyAt": 1793568717651.6316
+      },
+      {
+        "position": 33,
+        "sentAt": 1793568718246.8494,
+        "replyAt": 1793568718319.3142
+      },
+      {
+        "position": 34,
+        "sentAt": 1793568718741.5771,
+        "replyAt": 1793568718811.9583
+      },
+      {
+        "position": 35,
+        "sentAt": 1793568719317.1604,
+        "replyAt": 1793568719383.6404
+      },
+      {
+        "position": 36,
+        "sentAt": 1793568719926.648,
+        "replyAt": 1793568719997.7288
+      },
+      {
+        "position": 37,
+        "sentAt": 1793568720526.5688,
+        "replyAt": 1793568720597.7278
+      },
+      {
+        "position": 38,
+        "sentAt": 1793568721061.6296,
+        "replyAt": 1793568721132.4788
+      },
+      {
+        "position": 39,
+        "sentAt": 1793568721558.8,
+        "replyAt": 1793568721626.6897
+      },
+      {
+        "position": 40,
+        "sentAt": 1793568722336.3564,
+        "replyAt": 1793568722418.7485
+      },
+      {
+        "position": 41,
+        "sentAt": 1793568722920.8008,
+        "replyAt": 1793568722994.2014
+      },
+      {
+        "position": 42,
+        "sentAt": 1793568723540.4624,
+        "replyAt": 1793568723610.7205
+      },
+      {
+        "position": 43,
+        "sentAt": 1793568724085.1821,
+        "replyAt": 1793568724150.3645
+      },
+      {
+        "position": 44,
+        "sentAt": 1793568724660.135,
+        "replyAt": 1793568724734.449
+      },
+      {
+        "position": 45,
+        "sentAt": 1793568725302.674,
+        "replyAt": 1793568725366.4927
+      },
+      {
+        "position": 46,
+        "sentAt": 1793568725912.7969,
+        "replyAt": 1793568725984.3594
+      },
+      {
+        "position": 47,
+        "sentAt": 1793568726509.5996,
+        "replyAt": 1793568726581.4734
+      },
+      {
+        "position": 48,
+        "sentAt": 1793568727041.5232,
+        "replyAt": 1793568727110.2935
+      },
+      {
+        "position": 49,
+        "sentAt": 1793568727718.1826,
+        "replyAt": 1793568727782.434
+      },
+      {
+        "position": 50,
+        "sentAt": 1793568728282.7227,
+        "replyAt": 1793568728355.3743
+      },
+      {
+        "position": 51,
+        "sentAt": 1793568728915.303,
+        "replyAt": 1793568728985.2324
+      },
+      {
+        "position": 52,
+        "sentAt": 1793568729441.2544,
+        "replyAt": 1793568729511.9536
+      },
+      {
+        "position": 53,
+        "sentAt": 1793568729975.1592,
+        "replyAt": 1793568730039.4502
+      },
+      {
+        "position": 54,
+        "sentAt": 1793568730572.129,
+        "replyAt": 1793568730643.681
+      },
+      {
+        "position": 55,
+        "sentAt": 1793568731194.1719,
+        "replyAt": 1793568731258.7922
+      },
+      {
+        "position": 56,
+        "sentAt": 1793568731792.4067,
+        "replyAt": 1793568731860.7222
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568732444.775,
+        "replyAt": 1793568732513.5166
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568733122.4724,
+        "replyAt": 1793568733193.7034
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568733667.385,
+        "replyAt": 1793568733736.4456
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568734346.832,
+        "replyAt": 1793568734414.9858
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568734888.704,
+        "replyAt": 1793568734958.4421
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568735440.8572,
+        "replyAt": 1793568735511.4019
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568735997.4456,
+        "replyAt": 1793568736068.7817
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568736644.4624,
+        "replyAt": 1793568736707.8984
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568737316.3425,
+        "replyAt": 1793568737384.273
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568737933.343,
+        "replyAt": 1793568738003.2021
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568738732.4436,
+        "replyAt": 1793568738805.8672
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568739268.5942,
+        "replyAt": 1793568739341.8984
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568739969.6426,
+        "replyAt": 1793568740042.6335
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568740563.4219,
+        "replyAt": 1793568740632.0984
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568741135.3572,
+        "replyAt": 1793568741206.0645
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568741670.7356,
+        "replyAt": 1793568741767.1912
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568742298.8435,
+        "replyAt": 1793568742366.432
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568742952.7593,
+        "replyAt": 1793568743022.8477
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568743616.9832,
+        "replyAt": 1793568743690.746
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568744461.271,
+        "replyAt": 1793568744533.0776
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568745271.2417,
+        "replyAt": 1793568745336.691
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568745897.8176,
+        "replyAt": 1793568745968.8533
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568746482.0881,
+        "replyAt": 1793568746548.425
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568746978.409,
+        "replyAt": 1793568747047.4626
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-immediate-inflight",
+    "device": 1,
+    "calls": 52,
+    "acceptedTipDelta": 52,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568827435.7815,
+        "replyAt": 1793568827453.6147
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568828277.3035,
+        "replyAt": 1793568828294.3384
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568828911.6934,
+        "replyAt": 1793568828925.207
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568829602.358,
+        "replyAt": 1793568829620.1938
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568830330.4995,
+        "replyAt": 1793568830348.568
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568831165.3203,
+        "replyAt": 1793568831178.0688
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568831941.148,
+        "replyAt": 1793568831953.4902
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568832643.5066,
+        "replyAt": 1793568832660.0552
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568833522.22,
+        "replyAt": 1793568833535.1687
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568834217.923,
+        "replyAt": 1793568834237.46
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568834859.8018,
+        "replyAt": 1793568834880.557
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568835579.4226,
+        "replyAt": 1793568835592.0793
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568836355.2375,
+        "replyAt": 1793568836368.5283
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568837175.7097,
+        "replyAt": 1793568837187.4583
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568837956.7878,
+        "replyAt": 1793568837973.129
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568838865.8696,
+        "replyAt": 1793568838893.2002
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568839677.4102,
+        "replyAt": 1793568839694.0398
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568840443.7395,
+        "replyAt": 1793568840459.8503
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568841245.2217,
+        "replyAt": 1793568841259.9854
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568842178.0872,
+        "replyAt": 1793568842195.1628
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568843113.0923,
+        "replyAt": 1793568843125.5679
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568844136.6995,
+        "replyAt": 1793568844152.2644
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568844917.8447,
+        "replyAt": 1793568844930.3203
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568845676.9463,
+        "replyAt": 1793568845688.5261
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568846534.7117,
+        "replyAt": 1793568846547.273
+      },
+      {
+        "position": 81,
+        "sentAt": 1793568847344.7874,
+        "replyAt": 1793568847355.8833
+      },
+      {
+        "position": 82,
+        "sentAt": 1793568848247.9092,
+        "replyAt": 1793568848260.9148
+      },
+      {
+        "position": 83,
+        "sentAt": 1793568849280.3328,
+        "replyAt": 1793568849295.1064
+      },
+      {
+        "position": 84,
+        "sentAt": 1793568850140.283,
+        "replyAt": 1793568850160.0002
+      },
+      {
+        "position": 85,
+        "sentAt": 1793568851025.6052,
+        "replyAt": 1793568851042.5437
+      },
+      {
+        "position": 86,
+        "sentAt": 1793568851855.1099,
+        "replyAt": 1793568851872.3179
+      },
+      {
+        "position": 87,
+        "sentAt": 1793568852685.7246,
+        "replyAt": 1793568852698.672
+      },
+      {
+        "position": 88,
+        "sentAt": 1793568853693.2388,
+        "replyAt": 1793568853715.4077
+      },
+      {
+        "position": 89,
+        "sentAt": 1793568854766.3882,
+        "replyAt": 1793568854779.0083
+      },
+      {
+        "position": 90,
+        "sentAt": 1793568855584.0693,
+        "replyAt": 1793568855610.1306
+      },
+      {
+        "position": 91,
+        "sentAt": 1793568856479.3022,
+        "replyAt": 1793568856491.3706
+      },
+      {
+        "position": 92,
+        "sentAt": 1793568857388.6396,
+        "replyAt": 1793568857408.3755
+      },
+      {
+        "position": 93,
+        "sentAt": 1793568858312.0867,
+        "replyAt": 1793568858328.3145
+      },
+      {
+        "position": 94,
+        "sentAt": 1793568859318.5256,
+        "replyAt": 1793568859334.7927
+      },
+      {
+        "position": 95,
+        "sentAt": 1793568860416.2249,
+        "replyAt": 1793568860431.6248
+      },
+      {
+        "position": 96,
+        "sentAt": 1793568861276.0806,
+        "replyAt": 1793568861297.8276
+      },
+      {
+        "position": 97,
+        "sentAt": 1793568862199.3735,
+        "replyAt": 1793568862219.5295
+      },
+      {
+        "position": 98,
+        "sentAt": 1793568863139.9055,
+        "replyAt": 1793568863154.8936
+      },
+      {
+        "position": 99,
+        "sentAt": 1793568864011.9133,
+        "replyAt": 1793568864028.9004
+      },
+      {
+        "position": 100,
+        "sentAt": 1793568865044.2048,
+        "replyAt": 1793568865060.9048
+      },
+      {
+        "position": 101,
+        "sentAt": 1793568866161.7344,
+        "replyAt": 1793568866183.1343
+      },
+      {
+        "position": 102,
+        "sentAt": 1793568867155.8696,
+        "replyAt": 1793568867182.0864
+      },
+      {
+        "position": 103,
+        "sentAt": 1793568868084.798,
+        "replyAt": 1793568868101.6892
+      },
+      {
+        "position": 104,
+        "sentAt": 1793568869031.6724,
+        "replyAt": 1793568869048.3005
+      },
+      {
+        "position": 105,
+        "sentAt": 1793568870063.99,
+        "replyAt": 1793568870080.7388
+      },
+      {
+        "position": 106,
+        "sentAt": 1793568871230.776,
+        "replyAt": 1793568871243.6956
+      },
+      {
+        "position": 107,
+        "sentAt": 1793568872387.7847,
+        "replyAt": 1793568872407.283
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-immediate-inflight",
+    "device": 2,
+    "calls": 96,
+    "acceptedTipDelta": 96,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568827272.5608,
+        "replyAt": 1793568827296.431
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568827681.9126,
+        "replyAt": 1793568827694.4634
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568828115.9543,
+        "replyAt": 1793568828133.0813
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568828490.3533,
+        "replyAt": 1793568828518.458
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568828868.152,
+        "replyAt": 1793568828888.6497
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568829245.8452,
+        "replyAt": 1793568829265.1504
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568829638.3792,
+        "replyAt": 1793568829654.5476
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568829991.4507,
+        "replyAt": 1793568830015.6484
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568830382.1526,
+        "replyAt": 1793568830395.0476
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568830895.7908,
+        "replyAt": 1793568830915.1443
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568831462.445,
+        "replyAt": 1793568831474.2788
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568831885.0923,
+        "replyAt": 1793568831902.6316
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568832318.0835,
+        "replyAt": 1793568832349.7607
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568832705.6814,
+        "replyAt": 1793568832717.9016
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568833067.526,
+        "replyAt": 1793568833097.0547
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568833466.6936,
+        "replyAt": 1793568833485.0994
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568833839.514,
+        "replyAt": 1793568833855.3765
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568834226.5818,
+        "replyAt": 1793568834243.5488
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568834601.9338,
+        "replyAt": 1793568834618.171
+      },
+      {
+        "position": 22,
+        "sentAt": 1793568835062.9148,
+        "replyAt": 1793568835079.0337
+      },
+      {
+        "position": 23,
+        "sentAt": 1793568835530.1829,
+        "replyAt": 1793568835546.905
+      },
+      {
+        "position": 24,
+        "sentAt": 1793568836094.1765,
+        "replyAt": 1793568836111.2148
+      },
+      {
+        "position": 25,
+        "sentAt": 1793568836679.6562,
+        "replyAt": 1793568836691.9675
+      },
+      {
+        "position": 26,
+        "sentAt": 1793568837130.252,
+        "replyAt": 1793568837148.9453
+      },
+      {
+        "position": 27,
+        "sentAt": 1793568837577.1848,
+        "replyAt": 1793568837590.918
+      },
+      {
+        "position": 28,
+        "sentAt": 1793568837967.3274,
+        "replyAt": 1793568837986.136
+      },
+      {
+        "position": 29,
+        "sentAt": 1793568838352.2134,
+        "replyAt": 1793568838379.126
+      },
+      {
+        "position": 30,
+        "sentAt": 1793568838764.1062,
+        "replyAt": 1793568838785.7212
+      },
+      {
+        "position": 31,
+        "sentAt": 1793568839166.9243,
+        "replyAt": 1793568839195.1646
+      },
+      {
+        "position": 32,
+        "sentAt": 1793568839551.0647,
+        "replyAt": 1793568839566.5122
+      },
+      {
+        "position": 33,
+        "sentAt": 1793568839984.475,
+        "replyAt": 1793568839998.8938
+      },
+      {
+        "position": 34,
+        "sentAt": 1793568840481.254,
+        "replyAt": 1793568840494.6375
+      },
+      {
+        "position": 35,
+        "sentAt": 1793568840966.2207,
+        "replyAt": 1793568840984.253
+      },
+      {
+        "position": 36,
+        "sentAt": 1793568841528.2642,
+        "replyAt": 1793568841560.9473
+      },
+      {
+        "position": 37,
+        "sentAt": 1793568842119.3186,
+        "replyAt": 1793568842135.441
+      },
+      {
+        "position": 38,
+        "sentAt": 1793568842599.022,
+        "replyAt": 1793568842612.7842
+      },
+      {
+        "position": 39,
+        "sentAt": 1793568843025.3372,
+        "replyAt": 1793568843042.229
+      },
+      {
+        "position": 40,
+        "sentAt": 1793568843440.1833,
+        "replyAt": 1793568843493.4194
+      },
+      {
+        "position": 41,
+        "sentAt": 1793568843885.2603,
+        "replyAt": 1793568843901.749
+      },
+      {
+        "position": 42,
+        "sentAt": 1793568844271.8972,
+        "replyAt": 1793568844291.6494
+      },
+      {
+        "position": 43,
+        "sentAt": 1793568844707.9622,
+        "replyAt": 1793568844723.7183
+      },
+      {
+        "position": 44,
+        "sentAt": 1793568845117.9172,
+        "replyAt": 1793568845134.6406
+      },
+      {
+        "position": 45,
+        "sentAt": 1793568845592.6245,
+        "replyAt": 1793568845612.8381
+      },
+      {
+        "position": 46,
+        "sentAt": 1793568846130.2822,
+        "replyAt": 1793568846143.289
+      },
+      {
+        "position": 47,
+        "sentAt": 1793568846725.1504,
+        "replyAt": 1793568846740.9878
+      },
+      {
+        "position": 48,
+        "sentAt": 1793568847311.418,
+        "replyAt": 1793568847325.9653
+      },
+      {
+        "position": 49,
+        "sentAt": 1793568847762.2031,
+        "replyAt": 1793568847773.7349
+      },
+      {
+        "position": 50,
+        "sentAt": 1793568848164.2932,
+        "replyAt": 1793568848181.6025
+      },
+      {
+        "position": 51,
+        "sentAt": 1793568848583.2246,
+        "replyAt": 1793568848596.2742
+      },
+      {
+        "position": 52,
+        "sentAt": 1793568849019.9016,
+        "replyAt": 1793568849036.6396
+      },
+      {
+        "position": 53,
+        "sentAt": 1793568849440.0647,
+        "replyAt": 1793568849458.3904
+      },
+      {
+        "position": 54,
+        "sentAt": 1793568849872.1326,
+        "replyAt": 1793568849888.8206
+      },
+      {
+        "position": 55,
+        "sentAt": 1793568850323.4175,
+        "replyAt": 1793568850339.9424
+      },
+      {
+        "position": 56,
+        "sentAt": 1793568850839.449,
+        "replyAt": 1793568850857.066
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568851376.8582,
+        "replyAt": 1793568851391.2266
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568851963.9111,
+        "replyAt": 1793568851978.6519
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568852509.9502,
+        "replyAt": 1793568852529.4385
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568852947.3738,
+        "replyAt": 1793568852969.8252
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568853391.4463,
+        "replyAt": 1793568853430.0288
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568853858.262,
+        "replyAt": 1793568853875.3286
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568854298.4167,
+        "replyAt": 1793568854315.8486
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568854748.7373,
+        "replyAt": 1793568854765.0947
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568855202.5193,
+        "replyAt": 1793568855219.301
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568855722.2842,
+        "replyAt": 1793568855738.3533
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568856262.8213,
+        "replyAt": 1793568856279.8643
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568856771.8438,
+        "replyAt": 1793568856811.6821
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568857404.1895,
+        "replyAt": 1793568857420.5835
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568857993.4517,
+        "replyAt": 1793568858009.3965
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568858484.496,
+        "replyAt": 1793568858506.0134
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568858937.817,
+        "replyAt": 1793568858958.272
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568859381.9749,
+        "replyAt": 1793568859393.886
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568859865.7056,
+        "replyAt": 1793568859902.1394
+      },
+      {
+        "position": 75,
+        "sentAt": 1793568860318.2354,
+        "replyAt": 1793568860337.715
+      },
+      {
+        "position": 76,
+        "sentAt": 1793568860758.068,
+        "replyAt": 1793568860771.519
+      },
+      {
+        "position": 77,
+        "sentAt": 1793568861280.684,
+        "replyAt": 1793568861312.9543
+      },
+      {
+        "position": 78,
+        "sentAt": 1793568861827.5742,
+        "replyAt": 1793568861843.6094
+      },
+      {
+        "position": 79,
+        "sentAt": 1793568862353.524,
+        "replyAt": 1793568862372.638
+      },
+      {
+        "position": 80,
+        "sentAt": 1793568863075.9854,
+        "replyAt": 1793568863093.0913
+      },
+      {
+        "position": 81,
+        "sentAt": 1793568863672.4307,
+        "replyAt": 1793568863688.5464
+      },
+      {
+        "position": 82,
+        "sentAt": 1793568864134.8762,
+        "replyAt": 1793568864151.4177
+      },
+      {
+        "position": 83,
+        "sentAt": 1793568864580.3499,
+        "replyAt": 1793568864594.2632
+      },
+      {
+        "position": 84,
+        "sentAt": 1793568865026.6257,
+        "replyAt": 1793568865044.7307
+      },
+      {
+        "position": 85,
+        "sentAt": 1793568865516.353,
+        "replyAt": 1793568865549.1997
+      },
+      {
+        "position": 86,
+        "sentAt": 1793568865990.855,
+        "replyAt": 1793568866012.5154
+      },
+      {
+        "position": 87,
+        "sentAt": 1793568866458.226,
+        "replyAt": 1793568866476.7527
+      },
+      {
+        "position": 88,
+        "sentAt": 1793568866984.7668,
+        "replyAt": 1793568867003.7708
+      },
+      {
+        "position": 89,
+        "sentAt": 1793568867586.4082,
+        "replyAt": 1793568867599.7388
+      },
+      {
+        "position": 90,
+        "sentAt": 1793568868189.854,
+        "replyAt": 1793568868205.0752
+      },
+      {
+        "position": 91,
+        "sentAt": 1793568868821.5923,
+        "replyAt": 1793568868845.1094
+      },
+      {
+        "position": 92,
+        "sentAt": 1793568869308.4045,
+        "replyAt": 1793568869327.3215
+      },
+      {
+        "position": 93,
+        "sentAt": 1793568869760.8276,
+        "replyAt": 1793568869779.4092
+      },
+      {
+        "position": 94,
+        "sentAt": 1793568870216.2405,
+        "replyAt": 1793568870233.1565
+      },
+      {
+        "position": 95,
+        "sentAt": 1793568870714.076,
+        "replyAt": 1793568870730.1687
+      },
+      {
+        "position": 96,
+        "sentAt": 1793568871179.8477,
+        "replyAt": 1793568871196.3064
+      },
+      {
+        "position": 97,
+        "sentAt": 1793568871696.2114,
+        "replyAt": 1793568871752.2214
+      },
+      {
+        "position": 98,
+        "sentAt": 1793568872271.1,
+        "replyAt": 1793568872288.308
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-coordinated-2000",
+    "device": 1,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 56,
+        "sentAt": 1793568960397.335,
+        "replyAt": 1793568960413.348
+      },
+      {
+        "position": 57,
+        "sentAt": 1793568962496.8875,
+        "replyAt": 1793568962515.6877
+      },
+      {
+        "position": 58,
+        "sentAt": 1793568964592.7346,
+        "replyAt": 1793568964609.1277
+      },
+      {
+        "position": 59,
+        "sentAt": 1793568966659.5967,
+        "replyAt": 1793568966674.2256
+      },
+      {
+        "position": 60,
+        "sentAt": 1793568968789.615,
+        "replyAt": 1793568968803.0796
+      },
+      {
+        "position": 61,
+        "sentAt": 1793568970885.0852,
+        "replyAt": 1793568970906.225
+      },
+      {
+        "position": 62,
+        "sentAt": 1793568972997.2805,
+        "replyAt": 1793568973012.8943
+      },
+      {
+        "position": 63,
+        "sentAt": 1793568975109.2195,
+        "replyAt": 1793568975127.7136
+      },
+      {
+        "position": 64,
+        "sentAt": 1793568977196.6746,
+        "replyAt": 1793568977213.8894
+      },
+      {
+        "position": 65,
+        "sentAt": 1793568979316.5342,
+        "replyAt": 1793568979340.8926
+      },
+      {
+        "position": 66,
+        "sentAt": 1793568981423.0376,
+        "replyAt": 1793568981441.2668
+      },
+      {
+        "position": 67,
+        "sentAt": 1793568983514.956,
+        "replyAt": 1793568983530.338
+      },
+      {
+        "position": 68,
+        "sentAt": 1793568985625.856,
+        "replyAt": 1793568985641.3635
+      },
+      {
+        "position": 69,
+        "sentAt": 1793568987724.879,
+        "replyAt": 1793568987740.7734
+      },
+      {
+        "position": 70,
+        "sentAt": 1793568989816.7563,
+        "replyAt": 1793568989831.6501
+      },
+      {
+        "position": 71,
+        "sentAt": 1793568991948.1948,
+        "replyAt": 1793568991965.31
+      },
+      {
+        "position": 72,
+        "sentAt": 1793568994039.702,
+        "replyAt": 1793568994056.2463
+      },
+      {
+        "position": 73,
+        "sentAt": 1793568996149.8052,
+        "replyAt": 1793568996165.749
+      },
+      {
+        "position": 74,
+        "sentAt": 1793568998243.2388,
+        "replyAt": 1793568998260.625
+      },
+      {
+        "position": 75,
+        "sentAt": 1793569000352.6292,
+        "replyAt": 1793569000368.9155
+      },
+      {
+        "position": 76,
+        "sentAt": 1793569002443.765,
+        "replyAt": 1793569002458.1753
+      },
+      {
+        "position": 77,
+        "sentAt": 1793569003614.5676,
+        "replyAt": 1793569003630.798
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-coordinated-2000",
+    "device": 2,
+    "calls": 22,
+    "acceptedTipDelta": 22,
+    "reconciles": true,
+    "positionTimes": [
+      {
+        "position": 3,
+        "sentAt": 1793568960236.3372,
+        "replyAt": 1793568960258.2734
+      },
+      {
+        "position": 4,
+        "sentAt": 1793568962348.8413,
+        "replyAt": 1793568962368.9734
+      },
+      {
+        "position": 5,
+        "sentAt": 1793568964459.9495,
+        "replyAt": 1793568964480.5476
+      },
+      {
+        "position": 6,
+        "sentAt": 1793568966523.7747,
+        "replyAt": 1793568966539.1707
+      },
+      {
+        "position": 7,
+        "sentAt": 1793568968633.1987,
+        "replyAt": 1793568968653.4375
+      },
+      {
+        "position": 8,
+        "sentAt": 1793568970727.233,
+        "replyAt": 1793568970743.2097
+      },
+      {
+        "position": 9,
+        "sentAt": 1793568972852.9353,
+        "replyAt": 1793568972868.2356
+      },
+      {
+        "position": 10,
+        "sentAt": 1793568974939.9194,
+        "replyAt": 1793568974957.4346
+      },
+      {
+        "position": 11,
+        "sentAt": 1793568977033.7007,
+        "replyAt": 1793568977050.4358
+      },
+      {
+        "position": 12,
+        "sentAt": 1793568979136.1846,
+        "replyAt": 1793568979155.8489
+      },
+      {
+        "position": 13,
+        "sentAt": 1793568981245.4045,
+        "replyAt": 1793568981263.614
+      },
+      {
+        "position": 14,
+        "sentAt": 1793568983339.1362,
+        "replyAt": 1793568983355.5742
+      },
+      {
+        "position": 15,
+        "sentAt": 1793568985439.1067,
+        "replyAt": 1793568985458.6167
+      },
+      {
+        "position": 16,
+        "sentAt": 1793568987547.8809,
+        "replyAt": 1793568987565.5789
+      },
+      {
+        "position": 17,
+        "sentAt": 1793568989626.8677,
+        "replyAt": 1793568989642.894
+      },
+      {
+        "position": 18,
+        "sentAt": 1793568991757.9639,
+        "replyAt": 1793568991775.304
+      },
+      {
+        "position": 19,
+        "sentAt": 1793568993852.019,
+        "replyAt": 1793568993868.6404
+      },
+      {
+        "position": 20,
+        "sentAt": 1793568995950.6592,
+        "replyAt": 1793568995967.6877
+      },
+      {
+        "position": 21,
+        "sentAt": 1793568998049.0872,
+        "replyAt": 1793568998073.2134
+      },
+      {
+        "position": 22,
+        "sentAt": 1793569000175.0872,
+        "replyAt": 1793569000192.4343
+      },
+      {
+        "position": 23,
+        "sentAt": 1793569002255.4875,
+        "replyAt": 1793569002273.6785
+      },
+      {
+        "position": 24,
+        "sentAt": 1793569003390.3801,
+        "replyAt": 1793569003407.1313
+      }
+    ],
+    "meaning": "ordinal inference under checked single-flight monotonic sender and no external writer;200 alone is not acceptance proof"
+  }
+]

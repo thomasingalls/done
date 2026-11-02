@@ -1,0 +1,6788 @@
+[
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-coordinated-2000-attempt2",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44866.63525390625,
+    "driverSendMs": 12277.89990234375,
+    "driverReceiveMs": 11696.431640625,
+    "driverUnoccupiedMs": 20892.3037109375,
+    "sendStarts": 21,
+    "receiveStarts": 42,
+    "driverAlternationCount": 41,
+    "readTurns": 147,
+    "primaryCounts": {
+      "other": 84,
+      "activePeer": 42,
+      "self": 21
+    },
+    "quietTokenReads": 126,
+    "emptyReads": 126,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 42,
+      "sum": 43114.39990234375,
+      "p50": 167.199951171875,
+      "p95": 2143.60009765625,
+      "max": 2182.699951171875
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 8532.198974609375,
+      "p50": 347.9560546875,
+      "p95": 556.67822265625,
+      "max": 631.168212890625
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 41933.94482421875,
+      "p50": 2097.33984375,
+      "p95": 2129.7021484375,
+      "max": 2134.1123046875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 365.662353515625,
+      "p50": 16.87890625,
+      "p95": 21.849609375,
+      "max": 22.270263671875
+    },
+    "networkReadHttpCalls": 147,
+    "networkReadRequestToHeadersMs": {
+      "n": 147,
+      "sum": 1895.697998046875,
+      "p50": 11.8583984375,
+      "p95": 18.821044921875,
+      "max": 28.189697265625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 44.7998046875,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 3555.400634765625,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 293,
+        "operationMs": 3033.596435546875,
+        "queueWaitMsSum": 2.499998092651367
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 147,
+        "operationMs": 1928.499267578125,
+        "queueWaitMsSum": 1.2999992370605469
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 21.799560546875,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 147,
+        "operationMs": 2843.932373046875,
+        "queueWaitMsSum": 2.1999969482421875
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 68.1005859375,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 6833.800048828125,
+        "queueWaitMsSum": 0.3000011444091797
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 41,
+        "operationMs": 534.80126953125,
+        "queueWaitMsSum": 1.1999988555908203
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 884.699462890625,
+        "queueWaitMsSum": 390.0000057220459
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 126,
+        "operationMs": 480.701416015625,
+        "queueWaitMsSum": 1.2000007629394531
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 195.0,
+        "queueWaitMsSum": 0.2999992370605469
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-coordinated-2000-attempt2",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51823.684326171875,
+    "driverSendMs": 12992.60009765625,
+    "driverReceiveMs": 17447.19970703125,
+    "driverUnoccupiedMs": 21383.884521484375,
+    "sendStarts": 23,
+    "receiveStarts": 44,
+    "driverAlternationCount": 45,
+    "readTurns": 157,
+    "primaryCounts": {
+      "other": 91,
+      "activePeer": 44,
+      "self": 22
+    },
+    "quietTokenReads": 135,
+    "emptyReads": 135,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 48211.7998046875,
+      "p50": 1366.5,
+      "p95": 2158.599853515625,
+      "max": 5097.39990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 9127.03369140625,
+      "p50": 347.9560546875,
+      "p95": 594.834716796875,
+      "max": 631.168212890625
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43237.58740234375,
+      "p50": 2097.33984375,
+      "p95": 2129.7021484375,
+      "max": 2134.1123046875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 381.010009765625,
+      "p50": 16.6328125,
+      "p95": 21.849609375,
+      "max": 22.270263671875
+    },
+    "networkReadHttpCalls": 157,
+    "networkReadRequestToHeadersMs": {
+      "n": 157,
+      "sum": 2011.003173828125,
+      "p50": 11.680419921875,
+      "p95": 18.821044921875,
+      "max": 28.189697265625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 55.199951171875,
+        "queueWaitMsSum": 2.3000011444091797
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 3784.30078125,
+        "queueWaitMsSum": 1.5
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 314,
+        "operationMs": 3270.796875,
+        "queueWaitMsSum": 4.100000381469727
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 157,
+        "operationMs": 2040.29931640625,
+        "queueWaitMsSum": 5.899999618530273
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 27.599609375,
+        "queueWaitMsSum": 0.8000011444091797
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 157,
+        "operationMs": 3018.900634765625,
+        "queueWaitMsSum": 4748.799997329712
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 86.40087890625,
+        "queueWaitMsSum": 1.8999996185302734
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 7204.0,
+        "queueWaitMsSum": 4.8000030517578125
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 78,
+        "operationMs": 4938.69873046875,
+        "queueWaitMsSum": 650.8000030517578
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 44,
+        "operationMs": 554.701416015625,
+        "queueWaitMsSum": 2.8999977111816406
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 936.69970703125,
+        "queueWaitMsSum": 413.00000762939453
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 135,
+        "operationMs": 510.401123046875,
+        "queueWaitMsSum": 1.2000007629394531
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 210.10009765625,
+        "queueWaitMsSum": 0.2999992370605469
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-coordinated-2000-attempt2",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44866.63525390625,
+    "driverSendMs": 6849.800537109375,
+    "driverReceiveMs": 12010.835205078125,
+    "driverUnoccupiedMs": 26005.99951171875,
+    "sendStarts": 21,
+    "receiveStarts": 43,
+    "driverAlternationCount": 42,
+    "readTurns": 160,
+    "primaryCounts": {
+      "other": 93,
+      "self": 23,
+      "activePeer": 44
+    },
+    "quietTokenReads": 137,
+    "emptyReads": 139,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 45428.2998046875,
+      "p50": 313.89990234375,
+      "p95": 2166.89990234375,
+      "max": 2173.300048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 1586.363525390625,
+      "p50": 12.6708984375,
+      "p95": 172.15966796875,
+      "max": 300.73828125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 41841.00390625,
+      "p50": 2096.0556640625,
+      "p95": 2121.6064453125,
+      "max": 2129.199951171875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 368.98974609375,
+      "p50": 17.43603515625,
+      "p95": 21.42333984375,
+      "max": 21.81689453125
+    },
+    "networkReadHttpCalls": 161,
+    "networkReadRequestToHeadersMs": {
+      "n": 161,
+      "sum": 2220.821044921875,
+      "p50": 12.440673828125,
+      "p95": 20.825927734375,
+      "max": 28.061279296875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 40.999755859375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 161,
+        "operationMs": 1893.401611328125,
+        "queueWaitMsSum": 0.7999973297119141
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 320,
+        "operationMs": 2864.10009765625,
+        "queueWaitMsSum": 3.2999916076660156
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 2167.69970703125,
+        "queueWaitMsSum": 0.2999992370605469
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 24.999755859375,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 161,
+        "operationMs": 3057.89892578125,
+        "queueWaitMsSum": 2.400003433227539
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 84.500244140625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 3192.899169921875,
+        "queueWaitMsSum": 0.6000003814697266
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 41,
+        "operationMs": 491.4990234375,
+        "queueWaitMsSum": 0.7999954223632812
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 546.600341796875,
+        "queueWaitMsSum": 359.1999931335449
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 138,
+        "operationMs": 551.332275390625,
+        "queueWaitMsSum": 1.4999942779541016
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 160.199951171875,
+        "queueWaitMsSum": 0.20000076293945312
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-coordinated-2000-attempt2",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51823.684326171875,
+    "driverSendMs": 7219.300537109375,
+    "driverReceiveMs": 12695.9033203125,
+    "driverUnoccupiedMs": 31908.48046875,
+    "sendStarts": 23,
+    "receiveStarts": 45,
+    "driverAlternationCount": 44,
+    "readTurns": 169,
+    "primaryCounts": {
+      "other": 98,
+      "self": 25,
+      "activePeer": 46
+    },
+    "quietTokenReads": 144,
+    "emptyReads": 147,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 45,
+      "sum": 45542.199951171875,
+      "p50": 313.89990234375,
+      "p95": 2166.89990234375,
+      "max": 2173.300048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 1598.299560546875,
+      "p50": 12.193359375,
+      "p95": 172.15966796875,
+      "max": 300.73828125
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43151.446044921875,
+      "p50": 2096.0556640625,
+      "p95": 2121.6064453125,
+      "max": 2129.199951171875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 386.5888671875,
+      "p50": 17.43603515625,
+      "p95": 21.42333984375,
+      "max": 21.81689453125
+    },
+    "networkReadHttpCalls": 170,
+    "networkReadRequestToHeadersMs": {
+      "n": 170,
+      "sum": 2386.233642578125,
+      "p50": 12.4697265625,
+      "p95": 22.0029296875,
+      "max": 44.896728515625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 40.999755859375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 170,
+        "operationMs": 2000.401611328125,
+        "queueWaitMsSum": 0.7999973297119141
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 339,
+        "operationMs": 3051.900390625,
+        "queueWaitMsSum": 3.499990463256836
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 2296.299560546875,
+        "queueWaitMsSum": 0.2999992370605469
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 24.999755859375,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 170,
+        "operationMs": 3228.298828125,
+        "queueWaitMsSum": 2.5000038146972656
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 84.500244140625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 3353.09912109375,
+        "queueWaitMsSum": 0.7000007629394531
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 44,
+        "operationMs": 506.4990234375,
+        "queueWaitMsSum": 0.7999954223632812
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 577.400390625,
+        "queueWaitMsSum": 373.5999927520752
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 145,
+        "operationMs": 588.900146484375,
+        "queueWaitMsSum": 1.6999950408935547
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 176.0,
+        "queueWaitMsSum": 0.20000076293945312
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-immediate-inflight",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44866.391357421875,
+    "driverSendMs": 33366.599853515625,
+    "driverReceiveMs": 11449.103515625,
+    "driverUnoccupiedMs": 50.68798828125,
+    "sendStarts": 45,
+    "receiveStarts": 45,
+    "driverAlternationCount": 89,
+    "readTurns": 45,
+    "primaryCounts": {
+      "other": 28,
+      "activePeer": 11,
+      "self": 6
+    },
+    "quietTokenReads": 29,
+    "emptyReads": 34,
+    "peerProductiveCommits": 11,
+    "peerPositions": 56,
+    "peerCommitWidth": {
+      "n": 11,
+      "sum": 56,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 11,
+      "sum": 47661.5,
+      "p50": 5805.400146484375,
+      "p95": 7399.5,
+      "max": 7399.5
+    },
+    "peerBacklogLowerBoundMax": 26,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 11,
+      "sum": 87290.66918945312,
+      "p50": 6262.17529296875,
+      "p95": 15631.113525390625,
+      "max": 15631.113525390625
+    },
+    "submitCalls": 45,
+    "submitStatuses": {
+      "200": 45
+    },
+    "submitStartIntervals": {
+      "n": 44,
+      "sum": 43924.675048828125,
+      "p50": 940.24560546875,
+      "p95": 1342.226806640625,
+      "max": 1376.708984375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 45,
+      "sum": 3048.493896484375,
+      "p50": 67.604248046875,
+      "p95": 72.542724609375,
+      "max": 73.016357421875
+    },
+    "networkReadHttpCalls": 45,
+    "networkReadRequestToHeadersMs": {
+      "n": 45,
+      "sum": 4116.79150390625,
+      "p50": 93.281005859375,
+      "p95": 122.51806640625,
+      "max": 127.054443359375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 46.700439453125,
+        "queueWaitMsSum": 48.700002670288086
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 45,
+        "operationMs": 7712.4990234375,
+        "queueWaitMsSum": 2.1000003814697266
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 89,
+        "operationMs": 1467.7998046875,
+        "queueWaitMsSum": 172.2000026702881
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 45,
+        "operationMs": 741.000244140625,
+        "queueWaitMsSum": 78.70000457763672
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 38.600341796875,
+        "queueWaitMsSum": 113.99999809265137
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 34,
+        "operationMs": 1081.39990234375,
+        "queueWaitMsSum": 34.20000457763672
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 290.0,
+        "queueWaitMsSum": 33.10000038146973
+      },
+      "untagged": {
+        "n": 135,
+        "operationMs": 18179.4013671875,
+        "queueWaitMsSum": 1293.5000095367432
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 68,
+        "operationMs": 140.599609375,
+        "queueWaitMsSum": 927.1999988555908
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 345,
+        "operationMs": 3807.203857421875,
+        "queueWaitMsSum": 14718.499994277954
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 10,
+        "operationMs": 952.200927734375,
+        "queueWaitMsSum": 8.000001907348633
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 90,
+        "operationMs": 1773.301025390625,
+        "queueWaitMsSum": 712.7999992370605
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 38,
+        "operationMs": 135.30029296875,
+        "queueWaitMsSum": 1.1999988555908203
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 45,
+        "operationMs": 429.698974609375,
+        "queueWaitMsSum": 46.099998474121094
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-immediate-inflight",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51809.11474609375,
+    "driverSendMs": 34157.99951171875,
+    "driverReceiveMs": 17597.52685546875,
+    "driverUnoccupiedMs": 53.58837890625,
+    "sendStarts": 47,
+    "receiveStarts": 51,
+    "driverAlternationCount": 93,
+    "readTurns": 56,
+    "primaryCounts": {
+      "other": 33,
+      "activePeer": 16,
+      "self": 7
+    },
+    "quietTokenReads": 35,
+    "emptyReads": 41,
+    "peerProductiveCommits": 15,
+    "peerPositions": 77,
+    "peerCommitWidth": {
+      "n": 15,
+      "sum": 77,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 15,
+      "sum": 48418.5,
+      "p50": 1225.099853515625,
+      "p95": 7399.5,
+      "max": 7399.5
+    },
+    "peerBacklogLowerBoundMax": 26,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 15,
+      "sum": 135006.49560546875,
+      "p50": 8488.18310546875,
+      "p95": 18191.78857421875,
+      "max": 18191.78857421875
+    },
+    "submitCalls": 46,
+    "submitStatuses": {
+      "200": 46
+    },
+    "submitStartIntervals": {
+      "n": 45,
+      "sum": 44991.9892578125,
+      "p50": 952.252197265625,
+      "p95": 1342.226806640625,
+      "max": 1376.708984375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 46,
+      "sum": 3119.960205078125,
+      "p50": 67.604248046875,
+      "p95": 72.542724609375,
+      "max": 73.016357421875
+    },
+    "networkReadHttpCalls": 51,
+    "networkReadRequestToHeadersMs": {
+      "n": 51,
+      "sum": 4693.17236328125,
+      "p50": 93.258544921875,
+      "p95": 126.208251953125,
+      "max": 156.701416015625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 51.600341796875,
+        "queueWaitMsSum": 55.40000343322754
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 47,
+        "operationMs": 7942.798828125,
+        "queueWaitMsSum": 4.5
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 111,
+        "operationMs": 1699.69921875,
+        "queueWaitMsSum": 173.90000343322754
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 56,
+        "operationMs": 870.800537109375,
+        "queueWaitMsSum": 78.80000495910645
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 46.200439453125,
+        "queueWaitMsSum": 195.89999771118164
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 41,
+        "operationMs": 1180.7998046875,
+        "queueWaitMsSum": 54.50000190734863
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 335.300048828125,
+        "queueWaitMsSum": 33.20000076293945
+      },
+      "untagged": {
+        "n": 138,
+        "operationMs": 18588.701416015625,
+        "queueWaitMsSum": 1322.0000095367432
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 136,
+        "operationMs": 4897.199462890625,
+        "queueWaitMsSum": 1666.399995803833
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 348,
+        "operationMs": 3864.801025390625,
+        "queueWaitMsSum": 14722.699995040894
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 14,
+        "operationMs": 1263.6005859375,
+        "queueWaitMsSum": 8.000001907348633
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 93,
+        "operationMs": 1795.30126953125,
+        "queueWaitMsSum": 717.4999980926514
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 48,
+        "operationMs": 174.599853515625,
+        "queueWaitMsSum": 3.3999996185302734
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 47,
+        "operationMs": 443.998779296875,
+        "queueWaitMsSum": 48.099998474121094
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-immediate-inflight",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44866.391357421875,
+    "driverSendMs": 30544.9990234375,
+    "driverReceiveMs": 14295.291015625,
+    "driverUnoccupiedMs": 26.101318359375,
+    "sendStarts": 76,
+    "receiveStarts": 76,
+    "driverAlternationCount": 152,
+    "readTurns": 76,
+    "primaryCounts": {
+      "self": 8,
+      "other": 29,
+      "activePeer": 39
+    },
+    "quietTokenReads": 59,
+    "emptyReads": 43,
+    "peerProductiveCommits": 33,
+    "peerPositions": 44,
+    "peerCommitWidth": {
+      "n": 33,
+      "sum": 44,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 39,
+      "sum": 44045.0,
+      "p50": 629.800048828125,
+      "p95": 3729.0,
+      "max": 3743.099853515625
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 31,
+      "sum": 46012.105224609375,
+      "p50": 899.51123046875,
+      "p95": 3334.36767578125,
+      "max": 3654.20458984375
+    },
+    "submitCalls": 76,
+    "submitStatuses": {
+      "200": 76
+    },
+    "submitStartIntervals": {
+      "n": 75,
+      "sum": 44351.389404296875,
+      "p50": 578.93505859375,
+      "p95": 746.990234375,
+      "max": 809.16259765625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 76,
+      "sum": 5395.7255859375,
+      "p50": 69.66015625,
+      "p95": 82.33251953125,
+      "max": 112.998291015625
+    },
+    "networkReadHttpCalls": 76,
+    "networkReadRequestToHeadersMs": {
+      "n": 76,
+      "sum": 5416.689697265625,
+      "p50": 67.51123046875,
+      "p95": 99.527099609375,
+      "max": 115.53662109375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 50.89990234375,
+        "queueWaitMsSum": 0
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 76,
+        "operationMs": 7919.599853515625,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 152,
+        "operationMs": 1810.698974609375,
+        "queueWaitMsSum": 92.89999580383301
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 76,
+        "operationMs": 1013.400390625,
+        "queueWaitMsSum": 66.69999885559082
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 25.800048828125,
+        "queueWaitMsSum": 14.0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 70,
+        "operationMs": 2577.400634765625,
+        "queueWaitMsSum": 44.00000190734863
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 130.5,
+        "queueWaitMsSum": 23.700000762939453
+      },
+      "untagged": {
+        "n": 228,
+        "operationMs": 13530.099853515625,
+        "queueWaitMsSum": 1163.8000011444092
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 377,
+        "operationMs": 3586.5009765625,
+        "queueWaitMsSum": 6962.300001144409
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 6,
+        "operationMs": 415.00048828125,
+        "queueWaitMsSum": 3.200000762939453
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 152,
+        "operationMs": 1361.298828125,
+        "queueWaitMsSum": 443.2999897003174
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 68,
+        "operationMs": 281.1005859375,
+        "queueWaitMsSum": 1.3000030517578125
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 76,
+        "operationMs": 490.698974609375,
+        "queueWaitMsSum": 0.3999977111816406
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-immediate-inflight",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51809.11474609375,
+    "driverSendMs": 30989.39892578125,
+    "driverReceiveMs": 17737.28857421875,
+    "driverUnoccupiedMs": 3082.42724609375,
+    "sendStarts": 78,
+    "receiveStarts": 82,
+    "driverAlternationCount": 156,
+    "readTurns": 102,
+    "primaryCounts": {
+      "self": 12,
+      "other": 45,
+      "activePeer": 45
+    },
+    "quietTokenReads": 79,
+    "emptyReads": 67,
+    "peerProductiveCommits": 35,
+    "peerPositions": 46,
+    "peerCommitWidth": {
+      "n": 35,
+      "sum": 46,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 49668.699951171875,
+      "p50": 629.800048828125,
+      "p95": 3597.900146484375,
+      "max": 3743.099853515625
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 33,
+      "sum": 47198.244140625,
+      "p50": 899.51123046875,
+      "p95": 3334.36767578125,
+      "max": 3654.20458984375
+    },
+    "submitCalls": 77,
+    "submitStatuses": {
+      "200": 77
+    },
+    "submitStartIntervals": {
+      "n": 76,
+      "sum": 44990.01171875,
+      "p50": 578.93505859375,
+      "p95": 746.990234375,
+      "max": 809.16259765625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 77,
+      "sum": 5473.32763671875,
+      "p50": 69.92578125,
+      "p95": 82.33251953125,
+      "max": 112.998291015625
+    },
+    "networkReadHttpCalls": 99,
+    "networkReadRequestToHeadersMs": {
+      "n": 99,
+      "sum": 6970.938720703125,
+      "p50": 67.400146484375,
+      "p95": 96.129638671875,
+      "max": 115.53662109375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 56.69970703125,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 78,
+        "operationMs": 8056.099853515625,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 205,
+        "operationMs": 2339.79833984375,
+        "queueWaitMsSum": 93.19999313354492
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 102,
+        "operationMs": 1339.600830078125,
+        "queueWaitMsSum": 66.79999923706055
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 28.699951171875,
+        "queueWaitMsSum": 14.0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 96,
+        "operationMs": 3040.100830078125,
+        "queueWaitMsSum": 44.50000190734863
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 144.800048828125,
+        "queueWaitMsSum": 23.700000762939453
+      },
+      "untagged": {
+        "n": 231,
+        "operationMs": 13723.399658203125,
+        "queueWaitMsSum": 1163.900001525879
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 380,
+        "operationMs": 3619.498779296875,
+        "queueWaitMsSum": 6962.300001144409
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 7,
+        "operationMs": 492.400634765625,
+        "queueWaitMsSum": 3.200000762939453
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 155,
+        "operationMs": 1382.298583984375,
+        "queueWaitMsSum": 443.2999897003174
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 91,
+        "operationMs": 377.901123046875,
+        "queueWaitMsSum": 1.5000019073486328
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 78,
+        "operationMs": 504.598876953125,
+        "queueWaitMsSum": 0.5999984741210938
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-immediate-inflight",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44865.06640625,
+    "driverSendMs": 35737.100830078125,
+    "driverReceiveMs": 9082.87451171875,
+    "driverUnoccupiedMs": 45.091064453125,
+    "sendStarts": 51,
+    "receiveStarts": 51,
+    "driverAlternationCount": 101,
+    "readTurns": 50,
+    "primaryCounts": {
+      "other": 31,
+      "activePeer": 12,
+      "self": 7
+    },
+    "quietTokenReads": 32,
+    "emptyReads": 38,
+    "peerProductiveCommits": 12,
+    "peerPositions": 64,
+    "peerCommitWidth": {
+      "n": 12,
+      "sum": 64,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 12,
+      "sum": 43320.699951171875,
+      "p50": 4562.0,
+      "p95": 6009.199951171875,
+      "max": 6009.199951171875
+    },
+    "peerBacklogLowerBoundMax": 36,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 12,
+      "sum": 100601.81176757812,
+      "p50": 5626.86865234375,
+      "p95": 18071.97998046875,
+      "max": 18071.97998046875
+    },
+    "submitCalls": 51,
+    "submitStatuses": {
+      "200": 51
+    },
+    "submitStartIntervals": {
+      "n": 50,
+      "sum": 43944.37353515625,
+      "p50": 858.81787109375,
+      "p95": 1113.556640625,
+      "max": 1183.21533203125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 51,
+      "sum": 819.7666015625,
+      "p50": 15.49658203125,
+      "p95": 22.171142578125,
+      "max": 27.820556640625
+    },
+    "networkReadHttpCalls": 49,
+    "networkReadRequestToHeadersMs": {
+      "n": 49,
+      "sum": 1912.641357421875,
+      "p50": 39.332763671875,
+      "p95": 63.13232421875,
+      "max": 69.147705078125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 48.599609375,
+        "queueWaitMsSum": 56.299997329711914
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 51,
+        "operationMs": 9013.400634765625,
+        "queueWaitMsSum": 1.5
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 100,
+        "operationMs": 1840.799560546875,
+        "queueWaitMsSum": 207.1999969482422
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 50,
+        "operationMs": 934.89892578125,
+        "queueWaitMsSum": 126.0999984741211
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 28.099853515625,
+        "queueWaitMsSum": 22.80000114440918
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 41,
+        "operationMs": 1031.80029296875,
+        "queueWaitMsSum": 15.200000762939453
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 277.600341796875,
+        "queueWaitMsSum": 1.8999996185302734
+      },
+      "untagged": {
+        "n": 153,
+        "operationMs": 20809.401611328125,
+        "queueWaitMsSum": 1487.8000049591064
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 46,
+        "operationMs": 144.100341796875,
+        "queueWaitMsSum": 972.5000019073486
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 351,
+        "operationMs": 3745.57373046875,
+        "queueWaitMsSum": 19114.799997329712
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 789.500244140625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 102,
+        "operationMs": 2037.599609375,
+        "queueWaitMsSum": 851.5
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 43,
+        "operationMs": 151.00048828125,
+        "queueWaitMsSum": 2.5999984741210938
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 51,
+        "operationMs": 469.10107421875,
+        "queueWaitMsSum": 28.700000762939453
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-immediate-inflight",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 52821.832763671875,
+    "driverSendMs": 36483.701171875,
+    "driverReceiveMs": 16104.500244140625,
+    "driverUnoccupiedMs": 233.63134765625,
+    "sendStarts": 53,
+    "receiveStarts": 58,
+    "driverAlternationCount": 105,
+    "readTurns": 71,
+    "primaryCounts": {
+      "other": 44,
+      "activePeer": 18,
+      "self": 9
+    },
+    "quietTokenReads": 46,
+    "emptyReads": 54,
+    "peerProductiveCommits": 17,
+    "peerPositions": 96,
+    "peerCommitWidth": {
+      "n": 17,
+      "sum": 96,
+      "p50": 7,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 17,
+      "sum": 49785.300048828125,
+      "p50": 2546.699951171875,
+      "p95": 6009.199951171875,
+      "max": 6009.199951171875
+    },
+    "peerBacklogLowerBoundMax": 36,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 17,
+      "sum": 146985.48022460938,
+      "p50": 7585.2861328125,
+      "p95": 18071.97998046875,
+      "max": 18071.97998046875
+    },
+    "submitCalls": 52,
+    "submitStatuses": {
+      "200": 52
+    },
+    "submitStartIntervals": {
+      "n": 51,
+      "sum": 45052.142578125,
+      "p50": 859.265869140625,
+      "p95": 1113.556640625,
+      "max": 1183.21533203125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 52,
+      "sum": 839.218017578125,
+      "p50": 15.49658203125,
+      "p95": 22.171142578125,
+      "max": 27.820556640625
+    },
+    "networkReadHttpCalls": 61,
+    "networkReadRequestToHeadersMs": {
+      "n": 61,
+      "sum": 2241.661376953125,
+      "p50": 38.4541015625,
+      "p95": 63.13232421875,
+      "max": 84.89208984375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 10,
+        "operationMs": 53.999755859375,
+        "queueWaitMsSum": 56.299997329711914
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 53,
+        "operationMs": 9240.80078125,
+        "queueWaitMsSum": 5.19999885559082
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 142,
+        "operationMs": 2277.199462890625,
+        "queueWaitMsSum": 256.6999912261963
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 71,
+        "operationMs": 1217.39892578125,
+        "queueWaitMsSum": 172.69999504089355
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 10,
+        "operationMs": 30.89990234375,
+        "queueWaitMsSum": 22.80000114440918
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 57,
+        "operationMs": 1205.400146484375,
+        "queueWaitMsSum": 31.39999771118164
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 10,
+        "operationMs": 286.50048828125,
+        "queueWaitMsSum": 1.8999996185302734
+      },
+      "untagged": {
+        "n": 156,
+        "operationMs": 21241.801513671875,
+        "queueWaitMsSum": 1494.5000038146973
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 266,
+        "operationMs": 5566.000732421875,
+        "queueWaitMsSum": 2687.000015258789
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 354,
+        "operationMs": 3769.19921875,
+        "queueWaitMsSum": 19120.39999771118
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 14,
+        "operationMs": 1208.500244140625,
+        "queueWaitMsSum": 4917.999996185303
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 105,
+        "operationMs": 2061.399658203125,
+        "queueWaitMsSum": 859.7999973297119
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 62,
+        "operationMs": 209.700439453125,
+        "queueWaitMsSum": 25.399993896484375
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 53,
+        "operationMs": 483.90087890625,
+        "queueWaitMsSum": 32.80000114440918
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-immediate-inflight",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44865.06640625,
+    "driverSendMs": 33384.273681640625,
+    "driverReceiveMs": 11432.792724609375,
+    "driverUnoccupiedMs": 48.0,
+    "sendStarts": 95,
+    "receiveStarts": 94,
+    "driverAlternationCount": 189,
+    "readTurns": 94,
+    "primaryCounts": {
+      "self": 9,
+      "other": 36,
+      "activePeer": 49
+    },
+    "quietTokenReads": 68,
+    "emptyReads": 54,
+    "peerProductiveCommits": 40,
+    "peerPositions": 49,
+    "peerCommitWidth": {
+      "n": 40,
+      "sum": 49,
+      "p50": 1,
+      "p95": 2,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 49,
+      "sum": 44455.60009765625,
+      "p50": 534.5,
+      "p95": 2673.89990234375,
+      "max": 2819.2001953125
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 39,
+      "sum": 44532.52099609375,
+      "p50": 845.7431640625,
+      "p95": 2614.31787109375,
+      "max": 2616.01220703125
+    },
+    "submitCalls": 94,
+    "submitStatuses": {
+      "200": 94
+    },
+    "submitStartIntervals": {
+      "n": 93,
+      "sum": 44182.7607421875,
+      "p50": 455.818115234375,
+      "p95": 654.18994140625,
+      "max": 732.257568359375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 94,
+      "sum": 1637.6357421875,
+      "p50": 16.574462890625,
+      "p95": 27.435546875,
+      "max": 41.537841796875
+    },
+    "networkReadHttpCalls": 95,
+    "networkReadRequestToHeadersMs": {
+      "n": 95,
+      "sum": 1935.56201171875,
+      "p50": 16.598876953125,
+      "p95": 43.6142578125,
+      "max": 56.469970703125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 45.10009765625,
+        "queueWaitMsSum": 12.399999618530273
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 95,
+        "operationMs": 1180.994140625,
+        "queueWaitMsSum": 18.299997329711914
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 189,
+        "operationMs": 2328.10205078125,
+        "queueWaitMsSum": 173.60000038146973
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 95,
+        "operationMs": 10076.60107421875,
+        "queueWaitMsSum": 0.3000011444091797
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 28.400390625,
+        "queueWaitMsSum": 45.599998474121094
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 87,
+        "operationMs": 2781.400146484375,
+        "queueWaitMsSum": 31.4999942779541
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 168.699951171875,
+        "queueWaitMsSum": 12.199996948242188
+      },
+      "untagged": {
+        "n": 283,
+        "operationMs": 16815.1708984375,
+        "queueWaitMsSum": 1502.5999813079834
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 395,
+        "operationMs": 3669.2001953125,
+        "queueWaitMsSum": 8843.800008773804
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 8,
+        "operationMs": 542.400146484375,
+        "queueWaitMsSum": 21.200000762939453
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 189,
+        "operationMs": 1787.997314453125,
+        "queueWaitMsSum": 621.3000087738037
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 86,
+        "operationMs": 304.799560546875,
+        "queueWaitMsSum": 0.8999958038330078
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 95,
+        "operationMs": 637.700927734375,
+        "queueWaitMsSum": 22.799999237060547
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d0-immediate-inflight",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 52821.832763671875,
+    "driverSendMs": 33978.19970703125,
+    "driverReceiveMs": 13936.0927734375,
+    "driverUnoccupiedMs": 4907.540283203125,
+    "sendStarts": 97,
+    "receiveStarts": 103,
+    "driverAlternationCount": 194,
+    "readTurns": 128,
+    "primaryCounts": {
+      "self": 15,
+      "other": 57,
+      "activePeer": 56
+    },
+    "quietTokenReads": 95,
+    "emptyReads": 86,
+    "peerProductiveCommits": 42,
+    "peerPositions": 52,
+    "peerCommitWidth": {
+      "n": 42,
+      "sum": 52,
+      "p50": 1,
+      "p95": 2,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 55,
+      "sum": 50446.10009765625,
+      "p50": 538.599853515625,
+      "p95": 2673.89990234375,
+      "max": 2819.2001953125
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 41,
+      "sum": 48177.15185546875,
+      "p50": 874.509033203125,
+      "p95": 2539.01904296875,
+      "max": 2616.01220703125
+    },
+    "submitCalls": 96,
+    "submitStatuses": {
+      "200": 96
+    },
+    "submitStartIntervals": {
+      "n": 95,
+      "sum": 45070.88671875,
+      "p50": 455.818115234375,
+      "p95": 654.18994140625,
+      "max": 732.257568359375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 96,
+      "sum": 1673.447265625,
+      "p50": 16.574462890625,
+      "p95": 27.435546875,
+      "max": 41.537841796875
+    },
+    "networkReadHttpCalls": 126,
+    "networkReadRequestToHeadersMs": {
+      "n": 126,
+      "sum": 2367.12255859375,
+      "p50": 15.2939453125,
+      "p95": 42.057373046875,
+      "max": 56.469970703125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 50.800048828125,
+        "queueWaitMsSum": 12.399999618530273
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 129,
+        "operationMs": 1645.093505859375,
+        "queueWaitMsSum": 18.39999771118164
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 257,
+        "operationMs": 3034.303466796875,
+        "queueWaitMsSum": 173.70000076293945
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 97,
+        "operationMs": 10215.60107421875,
+        "queueWaitMsSum": 0.3000011444091797
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 38.700439453125,
+        "queueWaitMsSum": 45.599998474121094
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 120,
+        "operationMs": 3303.6005859375,
+        "queueWaitMsSum": 31.699995040893555
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 181.800048828125,
+        "queueWaitMsSum": 12.199996948242188
+      },
+      "untagged": {
+        "n": 288,
+        "operationMs": 17175.197021484375,
+        "queueWaitMsSum": 1514.899980545044
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 399,
+        "operationMs": 3682.60009765625,
+        "queueWaitMsSum": 8939.600008010864
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 605.300048828125,
+        "queueWaitMsSum": 21.200000762939453
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 193,
+        "operationMs": 1816.997314453125,
+        "queueWaitMsSum": 621.3000087738037
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 114,
+        "operationMs": 405.199951171875,
+        "queueWaitMsSum": 1.0999946594238281
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 97,
+        "operationMs": 651.500732421875,
+        "queueWaitMsSum": 22.799999237060547
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-coordinated-2000",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44875.33154296875,
+    "driverSendMs": 13523.200927734375,
+    "driverReceiveMs": 19738.283447265625,
+    "driverUnoccupiedMs": 11613.84716796875,
+    "sendStarts": 21,
+    "receiveStarts": 41,
+    "driverAlternationCount": 41,
+    "readTurns": 144,
+    "primaryCounts": {
+      "other": 83,
+      "activePeer": 41,
+      "self": 20
+    },
+    "quietTokenReads": 124,
+    "emptyReads": 123,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 41,
+      "sum": 41641.89990234375,
+      "p50": 197.7998046875,
+      "p95": 2191.800048828125,
+      "max": 2287.300048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 9696.933349609375,
+      "p50": 385.746826171875,
+      "p95": 683.22900390625,
+      "max": 967.66162109375
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42054.495849609375,
+      "p50": 2098.849853515625,
+      "p95": 2136.5732421875,
+      "max": 2141.357666015625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 1458.0078125,
+      "p50": 66.99853515625,
+      "p95": 74.42333984375,
+      "max": 106.8095703125
+    },
+    "networkReadHttpCalls": 144,
+    "networkReadRequestToHeadersMs": {
+      "n": 144,
+      "sum": 9383.379638671875,
+      "p50": 64.203369140625,
+      "p95": 71.515625,
+      "max": 77.61376953125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 44.799560546875,
+        "queueWaitMsSum": 0
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 3605.60009765625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 287,
+        "operationMs": 3016.2021484375,
+        "queueWaitMsSum": 2.199991226196289
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 144,
+        "operationMs": 1845.198974609375,
+        "queueWaitMsSum": 0.9000015258789062
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 21.30029296875,
+        "queueWaitMsSum": 0.1999988555908203
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 144,
+        "operationMs": 2888.4853515625,
+        "queueWaitMsSum": 13.000001907348633
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 66.60009765625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 6993.201171875,
+        "queueWaitMsSum": 0.2999992370605469
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 521.39990234375,
+        "queueWaitMsSum": 13.800004959106445
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 878.0009765625,
+        "queueWaitMsSum": 318.7999973297119
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 123,
+        "operationMs": 485.797119140625,
+        "queueWaitMsSum": 1.700002670288086
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 208.400146484375,
+        "queueWaitMsSum": 21.69999885559082
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-coordinated-2000",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51817.23876953125,
+    "driverSendMs": 14249.801025390625,
+    "driverReceiveMs": 25952.090576171875,
+    "driverUnoccupiedMs": 11615.34716796875,
+    "sendStarts": 23,
+    "receiveStarts": 46,
+    "driverAlternationCount": 45,
+    "readTurns": 153,
+    "primaryCounts": {
+      "other": 88,
+      "activePeer": 44,
+      "self": 21
+    },
+    "quietTokenReads": 132,
+    "emptyReads": 131,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 48336.199951171875,
+      "p50": 197.7998046875,
+      "p95": 2215.39990234375,
+      "max": 6499.2001953125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 15549.034423828125,
+      "p50": 385.746826171875,
+      "p95": 967.66162109375,
+      "max": 5852.10107421875
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43308.536376953125,
+      "p50": 2098.849853515625,
+      "p95": 2136.5732421875,
+      "max": 2141.357666015625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 1520.095703125,
+      "p50": 66.6083984375,
+      "p95": 74.42333984375,
+      "max": 106.8095703125
+    },
+    "networkReadHttpCalls": 153,
+    "networkReadRequestToHeadersMs": {
+      "n": 153,
+      "sum": 9987.28564453125,
+      "p50": 64.406005859375,
+      "p95": 74.402099609375,
+      "max": 77.61376953125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 49.69970703125,
+        "queueWaitMsSum": 1.7999992370605469
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 3826.2001953125,
+        "queueWaitMsSum": 2.0
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 305,
+        "operationMs": 3218.30126953125,
+        "queueWaitMsSum": 3.999990463256836
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 153,
+        "operationMs": 1978.899169921875,
+        "queueWaitMsSum": 19.10000228881836
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 24.2001953125,
+        "queueWaitMsSum": 80.69999885559082
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 152,
+        "operationMs": 3096.00146484375,
+        "queueWaitMsSum": 13.400001525878906
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 75.7001953125,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 7367.0009765625,
+        "queueWaitMsSum": 9.5
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 94,
+        "operationMs": 4990.50048828125,
+        "queueWaitMsSum": 609.1999988555908
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 540.2001953125,
+        "queueWaitMsSum": 18.300004959106445
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 900.100830078125,
+        "queueWaitMsSum": 322.89999771118164
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 131,
+        "operationMs": 514.49755859375,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 233.000244140625,
+        "queueWaitMsSum": 24.299999237060547
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-coordinated-2000",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44875.33154296875,
+    "driverSendMs": 8062.80029296875,
+    "driverReceiveMs": 20599.33203125,
+    "driverUnoccupiedMs": 16213.19921875,
+    "sendStarts": 21,
+    "receiveStarts": 43,
+    "driverAlternationCount": 42,
+    "readTurns": 156,
+    "primaryCounts": {
+      "self": 23,
+      "other": 89,
+      "activePeer": 44
+    },
+    "quietTokenReads": 133,
+    "emptyReads": 135,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 45648.0,
+      "p50": 666.39990234375,
+      "p95": 2103.699951171875,
+      "max": 2121.400146484375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 15,
+      "sum": 1764.3359375,
+      "p50": 96.590087890625,
+      "p95": 516.0439453125,
+      "max": 516.0439453125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42025.401123046875,
+      "p50": 2100.672607421875,
+      "p95": 2116.57275390625,
+      "max": 2118.290283203125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 1483.41259765625,
+      "p50": 69.328857421875,
+      "p95": 77.83203125,
+      "max": 81.045166015625
+    },
+    "networkReadHttpCalls": 156,
+    "networkReadRequestToHeadersMs": {
+      "n": 156,
+      "sum": 10297.30712890625,
+      "p50": 64.6044921875,
+      "p95": 78.7470703125,
+      "max": 94.90185546875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 42.200439453125,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 156,
+        "operationMs": 1792.100341796875,
+        "queueWaitMsSum": 0.9999980926513672
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 312,
+        "operationMs": 2780.80029296875,
+        "queueWaitMsSum": 2.299997329711914
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 2158.199462890625,
+        "queueWaitMsSum": 0.1999988555908203
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 27.499755859375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 157,
+        "operationMs": 3004.38427734375,
+        "queueWaitMsSum": 1.3000011444091797
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 90.099609375,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 3252.300048828125,
+        "queueWaitMsSum": 0.5999984741210938
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 496.000732421875,
+        "queueWaitMsSum": 0.6000003814697266
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 584.100830078125,
+        "queueWaitMsSum": 394.49999809265137
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 133,
+        "operationMs": 515.999267578125,
+        "queueWaitMsSum": 2.3000030517578125
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 154.100341796875,
+        "queueWaitMsSum": 0.1999988555908203
+      }
+    }
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 1,
+    "phase": 333,
+    "runName": "paired333-r1-d50-coordinated-2000",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51817.23876953125,
+    "driverSendMs": 8484.400146484375,
+    "driverReceiveMs": 22090.0478515625,
+    "driverUnoccupiedMs": 21242.790771484375,
+    "sendStarts": 23,
+    "receiveStarts": 47,
+    "driverAlternationCount": 46,
+    "readTurns": 168,
+    "primaryCounts": {
+      "self": 25,
+      "other": 97,
+      "activePeer": 46
+    },
+    "quietTokenReads": 143,
+    "emptyReads": 146,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 45,
+      "sum": 45824.7998046875,
+      "p50": 666.39990234375,
+      "p95": 2103.699951171875,
+      "max": 2121.400146484375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 16,
+      "sum": 1914.070556640625,
+      "p50": 96.590087890625,
+      "p95": 516.0439453125,
+      "max": 516.0439453125
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43262.106689453125,
+      "p50": 2100.672607421875,
+      "p95": 2116.57275390625,
+      "max": 2118.290283203125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 1550.462890625,
+      "p50": 68.969970703125,
+      "p95": 77.83203125,
+      "max": 81.045166015625
+    },
+    "networkReadHttpCalls": 168,
+    "networkReadRequestToHeadersMs": {
+      "n": 168,
+      "sum": 11095.99755859375,
+      "p50": 64.613525390625,
+      "p95": 78.7470703125,
+      "max": 94.90185546875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 42.200439453125,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 168,
+        "operationMs": 1931.50048828125,
+        "queueWaitMsSum": 0.9999980926513672
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 337,
+        "operationMs": 3015.000244140625,
+        "queueWaitMsSum": 2.6999969482421875
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 2309.099365234375,
+        "queueWaitMsSum": 0.1999988555908203
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 27.499755859375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 169,
+        "operationMs": 3262.800048828125,
+        "queueWaitMsSum": 1.3000011444091797
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 90.099609375,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 3417.5,
+        "queueWaitMsSum": 0.7999973297119141
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 511.80078125,
+        "queueWaitMsSum": 0.7000007629394531
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 606.301025390625,
+        "queueWaitMsSum": 394.5999984741211
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 144,
+        "operationMs": 554.099609375,
+        "queueWaitMsSum": 2.3000030517578125
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 167.50048828125,
+        "queueWaitMsSum": 0.1999988555908203
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-immediate-inflight",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44866.05322265625,
+    "driverSendMs": 35874.936767578125,
+    "driverReceiveMs": 8949.000244140625,
+    "driverUnoccupiedMs": 42.1162109375,
+    "sendStarts": 51,
+    "receiveStarts": 50,
+    "driverAlternationCount": 100,
+    "readTurns": 50,
+    "primaryCounts": {
+      "other": 31,
+      "activePeer": 12,
+      "self": 7
+    },
+    "quietTokenReads": 32,
+    "emptyReads": 38,
+    "peerProductiveCommits": 12,
+    "peerPositions": 64,
+    "peerCommitWidth": {
+      "n": 12,
+      "sum": 64,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 12,
+      "sum": 43383.7001953125,
+      "p50": 4629.89990234375,
+      "p95": 6008.099853515625,
+      "max": 6008.099853515625
+    },
+    "peerBacklogLowerBoundMax": 37,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 12,
+      "sum": 102926.93017578125,
+      "p50": 5699.377685546875,
+      "p95": 18461.54345703125,
+      "max": 18461.54345703125
+    },
+    "submitCalls": 51,
+    "submitStatuses": {
+      "200": 51
+    },
+    "submitStartIntervals": {
+      "n": 50,
+      "sum": 44136.126220703125,
+      "p50": 886.765625,
+      "p95": 1048.009521484375,
+      "max": 1089.073486328125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 51,
+      "sum": 864.849853515625,
+      "p50": 16.0400390625,
+      "p95": 27.3408203125,
+      "max": 31.784423828125
+    },
+    "networkReadHttpCalls": 49,
+    "networkReadRequestToHeadersMs": {
+      "n": 49,
+      "sum": 1904.983642578125,
+      "p50": 40.6083984375,
+      "p95": 58.81298828125,
+      "max": 75.94677734375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 56.499755859375,
+        "queueWaitMsSum": 71.0
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 51,
+        "operationMs": 8926.300048828125,
+        "queueWaitMsSum": 1.9999961853027344
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 100,
+        "operationMs": 1951.50048828125,
+        "queueWaitMsSum": 258.7999897003174
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 50,
+        "operationMs": 825.099609375,
+        "queueWaitMsSum": 57.599998474121094
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 24.900146484375,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 41,
+        "operationMs": 911.29931640625,
+        "queueWaitMsSum": 13.100000381469727
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 227.800048828125,
+        "queueWaitMsSum": 14.5
+      },
+      "untagged": {
+        "n": 153,
+        "operationMs": 20788.29833984375,
+        "queueWaitMsSum": 1443.6000022888184
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 11,
+        "operationMs": 26.89990234375,
+        "queueWaitMsSum": 836.3000030517578
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 349,
+        "operationMs": 3702.897705078125,
+        "queueWaitMsSum": 18183.300033569336
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 897.6005859375,
+        "queueWaitMsSum": 21.89999771118164
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 102,
+        "operationMs": 2004.83642578125,
+        "queueWaitMsSum": 762.9999980926514
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 43,
+        "operationMs": 191.5009765625,
+        "queueWaitMsSum": 2.500001907348633
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 51,
+        "operationMs": 682.699462890625,
+        "queueWaitMsSum": 185.80000114440918
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-immediate-inflight",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 52814.0693359375,
+    "driverSendMs": 36639.00048828125,
+    "driverReceiveMs": 16127.152587890625,
+    "driverUnoccupiedMs": 47.916259765625,
+    "sendStarts": 53,
+    "receiveStarts": 59,
+    "driverAlternationCount": 105,
+    "readTurns": 69,
+    "primaryCounts": {
+      "other": 41,
+      "activePeer": 19,
+      "self": 9
+    },
+    "quietTokenReads": 43,
+    "emptyReads": 51,
+    "peerProductiveCommits": 18,
+    "peerPositions": 97,
+    "peerCommitWidth": {
+      "n": 18,
+      "sum": 97,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 18,
+      "sum": 49747.10009765625,
+      "p50": 931.199951171875,
+      "p95": 6008.099853515625,
+      "max": 6008.099853515625
+    },
+    "peerBacklogLowerBoundMax": 37,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 18,
+      "sum": 158500.35302734375,
+      "p50": 7134.007568359375,
+      "p95": 18461.54345703125,
+      "max": 18461.54345703125
+    },
+    "submitCalls": 52,
+    "submitStatuses": {
+      "200": 52
+    },
+    "submitStartIntervals": {
+      "n": 51,
+      "sum": 45259.93603515625,
+      "p50": 887.05859375,
+      "p95": 1085.3837890625,
+      "max": 1123.809814453125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 52,
+      "sum": 877.712646484375,
+      "p50": 16.00244140625,
+      "p95": 27.3408203125,
+      "max": 31.784423828125
+    },
+    "networkReadHttpCalls": 58,
+    "networkReadRequestToHeadersMs": {
+      "n": 58,
+      "sum": 2195.47509765625,
+      "p50": 40.018798828125,
+      "p95": 70.402099609375,
+      "max": 75.94677734375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 10,
+        "operationMs": 69.7998046875,
+        "queueWaitMsSum": 88.5
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 53,
+        "operationMs": 9158.900146484375,
+        "queueWaitMsSum": 6.099996566772461
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 137,
+        "operationMs": 2350.899658203125,
+        "queueWaitMsSum": 310.0999984741211
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 69,
+        "operationMs": 1100.29931640625,
+        "queueWaitMsSum": 5063.499998092651
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 10,
+        "operationMs": 31.800048828125,
+        "queueWaitMsSum": 1.0000019073486328
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 55,
+        "operationMs": 1122.3515625,
+        "queueWaitMsSum": 24.599998474121094
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 10,
+        "operationMs": 290.699951171875,
+        "queueWaitMsSum": 16.399999618530273
+      },
+      "untagged": {
+        "n": 156,
+        "operationMs": 21229.8984375,
+        "queueWaitMsSum": 1454.700002670288
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 270,
+        "operationMs": 5583.5,
+        "queueWaitMsSum": 2627.3999938964844
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 353,
+        "operationMs": 3722.09765625,
+        "queueWaitMsSum": 18232.700037002563
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 14,
+        "operationMs": 1283.6005859375,
+        "queueWaitMsSum": 27.599998474121094
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 105,
+        "operationMs": 2030.600341796875,
+        "queueWaitMsSum": 772.6999969482422
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 60,
+        "operationMs": 249.500732421875,
+        "queueWaitMsSum": 22.0
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 53,
+        "operationMs": 698.79931640625,
+        "queueWaitMsSum": 190.10000038146973
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-immediate-inflight",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44866.05322265625,
+    "driverSendMs": 33627.29931640625,
+    "driverReceiveMs": 11195.653076171875,
+    "driverUnoccupiedMs": 43.100830078125,
+    "sendStarts": 96,
+    "receiveStarts": 96,
+    "driverAlternationCount": 192,
+    "readTurns": 96,
+    "primaryCounts": {
+      "self": 10,
+      "other": 39,
+      "activePeer": 47
+    },
+    "quietTokenReads": 69,
+    "emptyReads": 59,
+    "peerProductiveCommits": 37,
+    "peerPositions": 49,
+    "peerCommitWidth": {
+      "n": 37,
+      "sum": 49,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 47,
+      "sum": 44679.0,
+      "p50": 525.5,
+      "p95": 2784.900146484375,
+      "max": 2899.800048828125
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 37,
+      "sum": 49424.995849609375,
+      "p50": 918.995849609375,
+      "p95": 2683.186279296875,
+      "max": 2718.0908203125
+    },
+    "submitCalls": 96,
+    "submitStatuses": {
+      "200": 96
+    },
+    "submitStartIntervals": {
+      "n": 95,
+      "sum": 44427.233154296875,
+      "p50": 460.0986328125,
+      "p95": 592.259033203125,
+      "max": 624.623046875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 96,
+      "sum": 1702.631103515625,
+      "p50": 16.614013671875,
+      "p95": 26.477294921875,
+      "max": 42.212158203125
+    },
+    "networkReadHttpCalls": 96,
+    "networkReadRequestToHeadersMs": {
+      "n": 96,
+      "sum": 1879.433837890625,
+      "p50": 15.794921875,
+      "p95": 42.0390625,
+      "max": 51.59326171875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 52.10009765625,
+        "queueWaitMsSum": 14.099998474121094
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 96,
+        "operationMs": 1242.7998046875,
+        "queueWaitMsSum": 83.30000114440918
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 194,
+        "operationMs": 2349.63671875,
+        "queueWaitMsSum": 167.69999885559082
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 96,
+        "operationMs": 10176.60009765625,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 22.5,
+        "queueWaitMsSum": 34.30000114440918
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 87,
+        "operationMs": 2586.100341796875,
+        "queueWaitMsSum": 21.89999771118164
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 112.89990234375,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 288,
+        "operationMs": 16760.20068359375,
+        "queueWaitMsSum": 1514.0999908447266
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 393,
+        "operationMs": 3648.301025390625,
+        "queueWaitMsSum": 9256.200021743774
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 604.599853515625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 192,
+        "operationMs": 1773.699951171875,
+        "queueWaitMsSum": 615.9999980926514
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 87,
+        "operationMs": 317.518310546875,
+        "queueWaitMsSum": 1.400003433227539
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 96,
+        "operationMs": 648.698974609375,
+        "queueWaitMsSum": 21.10000228881836
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-immediate-inflight",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 52814.0693359375,
+    "driverSendMs": 34015.49951171875,
+    "driverReceiveMs": 13981.0166015625,
+    "driverUnoccupiedMs": 4817.55322265625,
+    "sendStarts": 98,
+    "receiveStarts": 106,
+    "driverAlternationCount": 196,
+    "readTurns": 132,
+    "primaryCounts": {
+      "self": 16,
+      "other": 61,
+      "activePeer": 55
+    },
+    "quietTokenReads": 98,
+    "emptyReads": 92,
+    "peerProductiveCommits": 40,
+    "peerPositions": 52,
+    "peerCommitWidth": {
+      "n": 40,
+      "sum": 52,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 54,
+      "sum": 50869.89990234375,
+      "p50": 525.5,
+      "p95": 2784.900146484375,
+      "max": 2899.800048828125
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 40,
+      "sum": 52600.93359375,
+      "p50": 918.995849609375,
+      "p95": 2609.929443359375,
+      "max": 2718.0908203125
+    },
+    "submitCalls": 97,
+    "submitStatuses": {
+      "200": 97
+    },
+    "submitStartIntervals": {
+      "n": 96,
+      "sum": 44921.36572265625,
+      "p50": 460.0986328125,
+      "p95": 592.259033203125,
+      "max": 624.623046875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 97,
+      "sum": 1715.605224609375,
+      "p50": 16.614013671875,
+      "p95": 26.477294921875,
+      "max": 42.212158203125
+    },
+    "networkReadHttpCalls": 129,
+    "networkReadRequestToHeadersMs": {
+      "n": 129,
+      "sum": 2324.28662109375,
+      "p50": 14.87060546875,
+      "p95": 39.30322265625,
+      "max": 51.59326171875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 58.10009765625,
+        "queueWaitMsSum": 14.099998474121094
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 132,
+        "operationMs": 1694.800048828125,
+        "queueWaitMsSum": 83.4000015258789
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 265,
+        "operationMs": 3061.999755859375,
+        "queueWaitMsSum": 168.1999969482422
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 98,
+        "operationMs": 10322.7001953125,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 25.199951171875,
+        "queueWaitMsSum": 34.30000114440918
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 123,
+        "operationMs": 3281.700439453125,
+        "queueWaitMsSum": 22.199995040893555
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 10,
+        "operationMs": 140.500244140625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 291,
+        "operationMs": 16951.800537109375,
+        "queueWaitMsSum": 1514.1999893188477
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 396,
+        "operationMs": 3661.401123046875,
+        "queueWaitMsSum": 9266.900022506714
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 604.599853515625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 195,
+        "operationMs": 1794.199951171875,
+        "queueWaitMsSum": 615.9999980926514
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 117,
+        "operationMs": 448.116943359375,
+        "queueWaitMsSum": 1.5000038146972656
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 98,
+        "operationMs": 663.4990234375,
+        "queueWaitMsSum": 21.10000228881836
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-immediate-inflight",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44882.05126953125,
+    "driverSendMs": 33269.87890625,
+    "driverReceiveMs": 11565.300537109375,
+    "driverUnoccupiedMs": 46.871826171875,
+    "sendStarts": 45,
+    "receiveStarts": 44,
+    "driverAlternationCount": 88,
+    "readTurns": 44,
+    "primaryCounts": {
+      "other": 27,
+      "activePeer": 11,
+      "self": 6
+    },
+    "quietTokenReads": 28,
+    "emptyReads": 33,
+    "peerProductiveCommits": 11,
+    "peerPositions": 56,
+    "peerCommitWidth": {
+      "n": 11,
+      "sum": 56,
+      "p50": 5,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 11,
+      "sum": 47829.7998046875,
+      "p50": 5809.5,
+      "p95": 7310.0,
+      "max": 7310.0
+    },
+    "peerBacklogLowerBoundMax": 26,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 11,
+      "sum": 87940.56982421875,
+      "p50": 6502.87548828125,
+      "p95": 16181.348388671875,
+      "max": 16181.348388671875
+    },
+    "submitCalls": 45,
+    "submitStatuses": {
+      "200": 45
+    },
+    "submitStartIntervals": {
+      "n": 44,
+      "sum": 44260.40087890625,
+      "p50": 940.563232421875,
+      "p95": 1384.94140625,
+      "max": 1480.46435546875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 45,
+      "sum": 3092.890869140625,
+      "p50": 67.3359375,
+      "p95": 80.7685546875,
+      "max": 82.479736328125
+    },
+    "networkReadHttpCalls": 44,
+    "networkReadRequestToHeadersMs": {
+      "n": 44,
+      "sum": 4088.704345703125,
+      "p50": 92.40478515625,
+      "p95": 121.71923828125,
+      "max": 138.35009765625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 45.80029296875,
+        "queueWaitMsSum": 52.900001525878906
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 45,
+        "operationMs": 7722.900146484375,
+        "queueWaitMsSum": 2.200000762939453
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 88,
+        "operationMs": 1524.79931640625,
+        "queueWaitMsSum": 83.5999984741211
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 44,
+        "operationMs": 742.7998046875,
+        "queueWaitMsSum": 101.00000190734863
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 22.80029296875,
+        "queueWaitMsSum": 109.10000038146973
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 35,
+        "operationMs": 1188.899169921875,
+        "queueWaitMsSum": 16.399999618530273
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 250.69970703125,
+        "queueWaitMsSum": 36.69999885559082
+      },
+      "untagged": {
+        "n": 135,
+        "operationMs": 18081.578857421875,
+        "queueWaitMsSum": 1272.200008392334
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 34,
+        "operationMs": 81.600830078125,
+        "queueWaitMsSum": 562.399995803833
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 344,
+        "operationMs": 3836.59765625,
+        "queueWaitMsSum": 15692.999996185303
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 920.30029296875,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 89,
+        "operationMs": 1700.09912109375,
+        "queueWaitMsSum": 759.6999950408936
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 38,
+        "operationMs": 194.30029296875,
+        "queueWaitMsSum": 2.5000038146972656
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 45,
+        "operationMs": 412.800048828125,
+        "queueWaitMsSum": 29.999998092651367
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-immediate-inflight",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 52850.75,
+    "driverSendMs": 34268.49951171875,
+    "driverReceiveMs": 18107.100830078125,
+    "driverUnoccupiedMs": 475.149658203125,
+    "sendStarts": 47,
+    "receiveStarts": 51,
+    "driverAlternationCount": 93,
+    "readTurns": 60,
+    "primaryCounts": {
+      "other": 36,
+      "activePeer": 16,
+      "self": 8
+    },
+    "quietTokenReads": 38,
+    "emptyReads": 45,
+    "peerProductiveCommits": 15,
+    "peerPositions": 78,
+    "peerCommitWidth": {
+      "n": 15,
+      "sum": 78,
+      "p50": 5,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 15,
+      "sum": 48633.599853515625,
+      "p50": 1219.900146484375,
+      "p95": 7310.0,
+      "max": 7310.0
+    },
+    "peerBacklogLowerBoundMax": 26,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 15,
+      "sum": 136950.69775390625,
+      "p50": 8483.968017578125,
+      "p95": 18699.79736328125,
+      "max": 18699.79736328125
+    },
+    "submitCalls": 46,
+    "submitStatuses": {
+      "200": 46
+    },
+    "submitStartIntervals": {
+      "n": 45,
+      "sum": 45241.876953125,
+      "p50": 950.44140625,
+      "p95": 1384.94140625,
+      "max": 1480.46435546875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 46,
+      "sum": 3161.1435546875,
+      "p50": 67.3359375,
+      "p95": 80.7685546875,
+      "max": 82.479736328125
+    },
+    "networkReadHttpCalls": 52,
+    "networkReadRequestToHeadersMs": {
+      "n": 52,
+      "sum": 4738.816162109375,
+      "p50": 91.515380859375,
+      "p95": 121.71923828125,
+      "max": 138.35009765625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 51.80029296875,
+        "queueWaitMsSum": 55.60000228881836
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 47,
+        "operationMs": 7964.500244140625,
+        "queueWaitMsSum": 4.100002288818359
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 120,
+        "operationMs": 1857.6005859375,
+        "queueWaitMsSum": 88.29999732971191
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 60,
+        "operationMs": 937.499755859375,
+        "queueWaitMsSum": 103.20000267028809
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 25.500244140625,
+        "queueWaitMsSum": 204.60000038146973
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 47,
+        "operationMs": 1315.099365234375,
+        "queueWaitMsSum": 19.099998474121094
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 272.799560546875,
+        "queueWaitMsSum": 36.69999885559082
+      },
+      "untagged": {
+        "n": 138,
+        "operationMs": 18628.999755859375,
+        "queueWaitMsSum": 1287.800006866455
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 151,
+        "operationMs": 4927.001220703125,
+        "queueWaitMsSum": 1573.6999988555908
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 348,
+        "operationMs": 3849.097412109375,
+        "queueWaitMsSum": 15773.699996948242
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 13,
+        "operationMs": 1257.2001953125,
+        "queueWaitMsSum": 0.1999988555908203
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 93,
+        "operationMs": 1777.89892578125,
+        "queueWaitMsSum": 778.8999938964844
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 52,
+        "operationMs": 244.5,
+        "queueWaitMsSum": 4.3000030517578125
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 47,
+        "operationMs": 427.900146484375,
+        "queueWaitMsSum": 31.89999771118164
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-immediate-inflight",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44882.05126953125,
+    "driverSendMs": 30348.3798828125,
+    "driverReceiveMs": 14500.17333984375,
+    "driverUnoccupiedMs": 33.498046875,
+    "sendStarts": 77,
+    "receiveStarts": 76,
+    "driverAlternationCount": 153,
+    "readTurns": 76,
+    "primaryCounts": {
+      "other": 30,
+      "self": 8,
+      "activePeer": 38
+    },
+    "quietTokenReads": 55,
+    "emptyReads": 45,
+    "peerProductiveCommits": 31,
+    "peerPositions": 42,
+    "peerCommitWidth": {
+      "n": 31,
+      "sum": 42,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 38,
+      "sum": 43329.39990234375,
+      "p50": 638.199951171875,
+      "p95": 3713.5,
+      "max": 3728.699951171875
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 30,
+      "sum": 46308.256103515625,
+      "p50": 966.391357421875,
+      "p95": 3216.066650390625,
+      "max": 3261.767333984375
+    },
+    "submitCalls": 76,
+    "submitStatuses": {
+      "200": 76
+    },
+    "submitStartIntervals": {
+      "n": 75,
+      "sum": 44122.014404296875,
+      "p50": 570.7138671875,
+      "p95": 742.658203125,
+      "max": 816.0517578125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 76,
+      "sum": 5262.025390625,
+      "p50": 68.472900390625,
+      "p95": 81.025634765625,
+      "max": 83.613525390625
+    },
+    "networkReadHttpCalls": 76,
+    "networkReadRequestToHeadersMs": {
+      "n": 76,
+      "sum": 5468.165771484375,
+      "p50": 67.2998046875,
+      "p95": 97.65234375,
+      "max": 118.4111328125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 44.0,
+        "queueWaitMsSum": 23.700000762939453
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 77,
+        "operationMs": 7954.578125,
+        "queueWaitMsSum": 0.3000011444091797
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 153,
+        "operationMs": 1837.2998046875,
+        "queueWaitMsSum": 161.99999618530273
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 76,
+        "operationMs": 960.59912109375,
+        "queueWaitMsSum": 0.39999961853027344
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 27.700439453125,
+        "queueWaitMsSum": 11.5
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 71,
+        "operationMs": 2518.899658203125,
+        "queueWaitMsSum": 44.20000076293945
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 133.7998046875,
+        "queueWaitMsSum": 36.00000190734863
+      },
+      "untagged": {
+        "n": 228,
+        "operationMs": 13604.60009765625,
+        "queueWaitMsSum": 1076.0
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 377,
+        "operationMs": 3560.197509765625,
+        "queueWaitMsSum": 6113.100004196167
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 6,
+        "operationMs": 444.400146484375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 153,
+        "operationMs": 1306.49951171875,
+        "queueWaitMsSum": 401.70000648498535
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 69,
+        "operationMs": 251.299560546875,
+        "queueWaitMsSum": 1.1999988555908203
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 77,
+        "operationMs": 494.300537109375,
+        "queueWaitMsSum": 0.8000030517578125
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-immediate-inflight",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 52850.75,
+    "driverSendMs": 31144.100341796875,
+    "driverReceiveMs": 18031.87353515625,
+    "driverUnoccupiedMs": 3674.776123046875,
+    "sendStarts": 79,
+    "receiveStarts": 83,
+    "driverAlternationCount": 158,
+    "readTurns": 103,
+    "primaryCounts": {
+      "other": 46,
+      "self": 12,
+      "activePeer": 45
+    },
+    "quietTokenReads": 75,
+    "emptyReads": 69,
+    "peerProductiveCommits": 34,
+    "peerPositions": 46,
+    "peerCommitWidth": {
+      "n": 34,
+      "sum": 46,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 49584.10009765625,
+      "p50": 638.199951171875,
+      "p95": 3639.800048828125,
+      "max": 3728.699951171875
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 33,
+      "sum": 50508.0390625,
+      "p50": 1099.84375,
+      "p95": 3216.066650390625,
+      "max": 3261.767333984375
+    },
+    "submitCalls": 78,
+    "submitStatuses": {
+      "200": 78
+    },
+    "submitStartIntervals": {
+      "n": 77,
+      "sum": 45397.4609375,
+      "p50": 575.32763671875,
+      "p95": 742.658203125,
+      "max": 816.0517578125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 78,
+      "sum": 5411.885498046875,
+      "p50": 68.472900390625,
+      "p95": 81.099853515625,
+      "max": 84.735107421875
+    },
+    "networkReadHttpCalls": 100,
+    "networkReadRequestToHeadersMs": {
+      "n": 100,
+      "sum": 7145.7001953125,
+      "p50": 67.006103515625,
+      "p95": 96.408447265625,
+      "max": 118.4111328125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 54.2001953125,
+        "queueWaitMsSum": 23.700000762939453
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 79,
+        "operationMs": 8174.99853515625,
+        "queueWaitMsSum": 0.3000011444091797
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 207,
+        "operationMs": 2367.900634765625,
+        "queueWaitMsSum": 162.39999771118164
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 103,
+        "operationMs": 1316.49951171875,
+        "queueWaitMsSum": 0.6999988555908203
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 30.900390625,
+        "queueWaitMsSum": 11.5
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 97,
+        "operationMs": 3015.400634765625,
+        "queueWaitMsSum": 44.89999580383301
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 149.499755859375,
+        "queueWaitMsSum": 36.00000190734863
+      },
+      "untagged": {
+        "n": 234,
+        "operationMs": 13971.50048828125,
+        "queueWaitMsSum": 1087.8999996185303
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 381,
+        "operationMs": 3572.4970703125,
+        "queueWaitMsSum": 6304.100004196167
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 7,
+        "operationMs": 505.500244140625,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 157,
+        "operationMs": 1334.899169921875,
+        "queueWaitMsSum": 401.70000648498535
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 92,
+        "operationMs": 341.4990234375,
+        "queueWaitMsSum": 1.6999988555908203
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 79,
+        "operationMs": 508.900634765625,
+        "queueWaitMsSum": 0.8000030517578125
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-coordinated-2000",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44866.793212890625,
+    "driverSendMs": 12470.500244140625,
+    "driverReceiveMs": 11482.790771484375,
+    "driverUnoccupiedMs": 20913.502197265625,
+    "sendStarts": 21,
+    "receiveStarts": 42,
+    "driverAlternationCount": 41,
+    "readTurns": 145,
+    "primaryCounts": {
+      "other": 83,
+      "activePeer": 42,
+      "self": 20
+    },
+    "quietTokenReads": 125,
+    "emptyReads": 124,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 42,
+      "sum": 47979.0,
+      "p50": 164.699951171875,
+      "p95": 2154.300048828125,
+      "max": 6032.800048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 8696.531982421875,
+      "p50": 386.735595703125,
+      "p95": 562.482421875,
+      "max": 644.889892578125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42085.794677734375,
+      "p50": 2103.415771484375,
+      "p95": 2125.570068359375,
+      "max": 2129.440185546875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 389.937744140625,
+      "p50": 18.3408203125,
+      "p95": 22.251220703125,
+      "max": 22.81591796875
+    },
+    "networkReadHttpCalls": 144,
+    "networkReadRequestToHeadersMs": {
+      "n": 144,
+      "sum": 1891.373291015625,
+      "p50": 12.13671875,
+      "p95": 19.22021484375,
+      "max": 30.539794921875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 43.400146484375,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 3612.300537109375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 289,
+        "operationMs": 3007.20263671875,
+        "queueWaitMsSum": 2.1000003814697266
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 145,
+        "operationMs": 1839.59033203125,
+        "queueWaitMsSum": 0.8999977111816406
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 45.60009765625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 144,
+        "operationMs": 2875.101806640625,
+        "queueWaitMsSum": 1.3999996185302734
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 71.60009765625,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 6887.099853515625,
+        "queueWaitMsSum": 1.1000003814697266
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 503.101318359375,
+        "queueWaitMsSum": 0.8000011444091797
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 943.80078125,
+        "queueWaitMsSum": 401.4000015258789
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 124,
+        "operationMs": 404.49755859375,
+        "queueWaitMsSum": 1.1000022888183594
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 199.10107421875,
+        "queueWaitMsSum": 0.1999988555908203
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-coordinated-2000",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51837.28857421875,
+    "driverSendMs": 13164.200439453125,
+    "driverReceiveMs": 17425.600341796875,
+    "driverUnoccupiedMs": 21247.48779296875,
+    "sendStarts": 23,
+    "receiveStarts": 45,
+    "driverAlternationCount": 45,
+    "readTurns": 157,
+    "primaryCounts": {
+      "other": 91,
+      "activePeer": 44,
+      "self": 22
+    },
+    "quietTokenReads": 135,
+    "emptyReads": 135,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 48261.60009765625,
+      "p50": 282.60009765625,
+      "p95": 2154.300048828125,
+      "max": 6032.800048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 14163.418212890625,
+      "p50": 386.735595703125,
+      "p95": 644.889892578125,
+      "max": 5466.88623046875
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43250.279052734375,
+      "p50": 2103.415771484375,
+      "p95": 2125.570068359375,
+      "max": 2129.440185546875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 406.1650390625,
+      "p50": 18.285888671875,
+      "p95": 22.251220703125,
+      "max": 22.81591796875
+    },
+    "networkReadHttpCalls": 157,
+    "networkReadRequestToHeadersMs": {
+      "n": 157,
+      "sum": 2081.031005859375,
+      "p50": 12.13671875,
+      "p95": 20.938720703125,
+      "max": 30.539794921875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 58.000244140625,
+        "queueWaitMsSum": 7.69999885559082
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 3838.200439453125,
+        "queueWaitMsSum": 1.2000007629394531
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 314,
+        "operationMs": 3252.102783203125,
+        "queueWaitMsSum": 4.500001907348633
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 157,
+        "operationMs": 1988.2001953125,
+        "queueWaitMsSum": 3.3999996185302734
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 51.10009765625,
+        "queueWaitMsSum": 1.2000007629394531
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 157,
+        "operationMs": 3107.901611328125,
+        "queueWaitMsSum": 4680.099998474121
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 91.30029296875,
+        "queueWaitMsSum": 2.1000003814697266
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 7282.999755859375,
+        "queueWaitMsSum": 9.799999237060547
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 83,
+        "operationMs": 4890.800048828125,
+        "queueWaitMsSum": 668.0999984741211
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 519.201416015625,
+        "queueWaitMsSum": 2.3000011444091797
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 964.80078125,
+        "queueWaitMsSum": 405.3000011444092
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 135,
+        "operationMs": 441.197265625,
+        "queueWaitMsSum": 17.500003814697266
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 214.401123046875,
+        "queueWaitMsSum": 2.0999984741210938
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-coordinated-2000",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44866.793212890625,
+    "driverSendMs": 6980.50048828125,
+    "driverReceiveMs": 11800.593017578125,
+    "driverUnoccupiedMs": 26085.69970703125,
+    "sendStarts": 21,
+    "receiveStarts": 42,
+    "driverAlternationCount": 42,
+    "readTurns": 153,
+    "primaryCounts": {
+      "self": 22,
+      "other": 88,
+      "activePeer": 43
+    },
+    "quietTokenReads": 131,
+    "emptyReads": 132,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 45550.5,
+      "p50": 1040.89990234375,
+      "p95": 2153.800048828125,
+      "max": 2594.400146484375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 1675.42626953125,
+      "p50": 13.171875,
+      "p95": 199.311767578125,
+      "max": 303.3828125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42049.062744140625,
+      "p50": 2101.972412109375,
+      "p95": 2117.772705078125,
+      "max": 2124.623046875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 384.873046875,
+      "p50": 17.838623046875,
+      "p95": 23.9267578125,
+      "max": 24.456298828125
+    },
+    "networkReadHttpCalls": 153,
+    "networkReadRequestToHeadersMs": {
+      "n": 153,
+      "sum": 2173.618408203125,
+      "p50": 12.4228515625,
+      "p95": 21.62353515625,
+      "max": 48.850830078125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 42.199951171875,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 153,
+        "operationMs": 1830.59765625,
+        "queueWaitMsSum": 0.8999977111816406
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 305,
+        "operationMs": 2815.604248046875,
+        "queueWaitMsSum": 1.3999977111816406
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 2212.7001953125,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 23.5,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 153,
+        "operationMs": 2891.502685546875,
+        "queueWaitMsSum": 1.6000003814697266
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 104.000244140625,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 3222.0,
+        "queueWaitMsSum": 0.5000019073486328
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 471.60009765625,
+        "queueWaitMsSum": 0.6999969482421875
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 552.900634765625,
+        "queueWaitMsSum": 408.0000057220459
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 130,
+        "operationMs": 587.99951171875,
+        "queueWaitMsSum": 1.6999969482421875
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 168.599609375,
+        "queueWaitMsSum": 0.20000076293945312
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d0-coordinated-2000",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51837.28857421875,
+    "driverSendMs": 7342.50048828125,
+    "driverReceiveMs": 12497.1025390625,
+    "driverUnoccupiedMs": 31997.685546875,
+    "sendStarts": 23,
+    "receiveStarts": 44,
+    "driverAlternationCount": 44,
+    "readTurns": 162,
+    "primaryCounts": {
+      "self": 24,
+      "other": 93,
+      "activePeer": 45
+    },
+    "quietTokenReads": 138,
+    "emptyReads": 140,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 45669.199951171875,
+      "p50": 120.699951171875,
+      "p95": 2153.800048828125,
+      "max": 2594.400146484375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 1689.231201171875,
+      "p50": 13.171875,
+      "p95": 199.311767578125,
+      "max": 303.3828125
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43162.608154296875,
+      "p50": 2101.972412109375,
+      "p95": 2117.772705078125,
+      "max": 2124.623046875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 400.079345703125,
+      "p50": 17.77734375,
+      "p95": 23.9267578125,
+      "max": 24.456298828125
+    },
+    "networkReadHttpCalls": 162,
+    "networkReadRequestToHeadersMs": {
+      "n": 162,
+      "sum": 2319.8779296875,
+      "p50": 12.42822265625,
+      "p95": 22.047119140625,
+      "max": 48.850830078125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 42.199951171875,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 162,
+        "operationMs": 1968.498046875,
+        "queueWaitMsSum": 0.8999977111816406
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 324,
+        "operationMs": 3000.703857421875,
+        "queueWaitMsSum": 1.599996566772461
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 2348.2001953125,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 23.5,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 162,
+        "operationMs": 3068.002685546875,
+        "queueWaitMsSum": 1.7000007629394531
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 104.000244140625,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 3380.599853515625,
+        "queueWaitMsSum": 0.5000019073486328
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 489.5,
+        "queueWaitMsSum": 0.6999969482421875
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 583.1005859375,
+        "queueWaitMsSum": 414.7000045776367
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 138,
+        "operationMs": 616.099609375,
+        "queueWaitMsSum": 1.799997329711914
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 181.799560546875,
+        "queueWaitMsSum": 0.3000011444091797
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-coordinated-2000",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44869.69677734375,
+    "driverSendMs": 13279.999755859375,
+    "driverReceiveMs": 19503.5244140625,
+    "driverUnoccupiedMs": 12086.172607421875,
+    "sendStarts": 21,
+    "receiveStarts": 42,
+    "driverAlternationCount": 41,
+    "readTurns": 144,
+    "primaryCounts": {
+      "other": 83,
+      "activePeer": 41,
+      "self": 20
+    },
+    "quietTokenReads": 124,
+    "emptyReads": 123,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 41,
+      "sum": 41679.60009765625,
+      "p50": 194.099853515625,
+      "p95": 2171.7001953125,
+      "max": 2205.10009765625
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 9264.101806640625,
+      "p50": 373.97802734375,
+      "p95": 638.72119140625,
+      "max": 891.479736328125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42073.8896484375,
+      "p50": 2103.521484375,
+      "p95": 2132.023193359375,
+      "max": 2150.3291015625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 1452.441162109375,
+      "p50": 67.916015625,
+      "p95": 70.885009765625,
+      "max": 102.9990234375
+    },
+    "networkReadHttpCalls": 144,
+    "networkReadRequestToHeadersMs": {
+      "n": 144,
+      "sum": 9278.908935546875,
+      "p50": 63.702392578125,
+      "p95": 71.052490234375,
+      "max": 77.857666015625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 39.3994140625,
+        "queueWaitMsSum": 0
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 3554.899658203125,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 289,
+        "operationMs": 3096.224609375,
+        "queueWaitMsSum": 2.0
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 144,
+        "operationMs": 1777.198486328125,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 30.599853515625,
+        "queueWaitMsSum": 0.3000011444091797
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 144,
+        "operationMs": 2746.19921875,
+        "queueWaitMsSum": 1.3000030517578125
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 65.10009765625,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 6738.99951171875,
+        "queueWaitMsSum": 0.6000003814697266
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 550.7001953125,
+        "queueWaitMsSum": 1.1000003814697266
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 885.80126953125,
+        "queueWaitMsSum": 412.4000015258789
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 124,
+        "operationMs": 471.89892578125,
+        "queueWaitMsSum": 0.9999961853027344
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 194.599365234375,
+        "queueWaitMsSum": 0.5999965667724609
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-coordinated-2000",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51815.242919921875,
+    "driverSendMs": 13984.7998046875,
+    "driverReceiveMs": 25739.970458984375,
+    "driverUnoccupiedMs": 12090.47265625,
+    "sendStarts": 23,
+    "receiveStarts": 46,
+    "driverAlternationCount": 45,
+    "readTurns": 153,
+    "primaryCounts": {
+      "other": 88,
+      "activePeer": 44,
+      "self": 21
+    },
+    "quietTokenReads": 132,
+    "emptyReads": 131,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 48410.5,
+      "p50": 194.099853515625,
+      "p95": 2202.900146484375,
+      "max": 6555.89990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 15134.296630859375,
+      "p50": 373.97802734375,
+      "p95": 891.479736328125,
+      "max": 5870.19482421875
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43327.921875,
+      "p50": 2103.521484375,
+      "p95": 2132.023193359375,
+      "max": 2150.3291015625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 1516.302490234375,
+      "p50": 67.6708984375,
+      "p95": 70.885009765625,
+      "max": 102.9990234375
+    },
+    "networkReadHttpCalls": 153,
+    "networkReadRequestToHeadersMs": {
+      "n": 153,
+      "sum": 9916.770263671875,
+      "p50": 64.017578125,
+      "p95": 72.569580078125,
+      "max": 77.857666015625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 48.79931640625,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 3764.300048828125,
+        "queueWaitMsSum": 1.7000007629394531
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 305,
+        "operationMs": 3266.098876953125,
+        "queueWaitMsSum": 108.0
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 153,
+        "operationMs": 1881.198486328125,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 35.89990234375,
+        "queueWaitMsSum": 2.5
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 152,
+        "operationMs": 2965.19921875,
+        "queueWaitMsSum": 1.5000038146972656
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 73.89990234375,
+        "queueWaitMsSum": 2.3999996185302734
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 7114.999267578125,
+        "queueWaitMsSum": 5.700002670288086
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 93,
+        "operationMs": 4960.30029296875,
+        "queueWaitMsSum": 599.299991607666
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 565.30029296875,
+        "queueWaitMsSum": 11.899999618530273
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 904.90087890625,
+        "queueWaitMsSum": 416.6000003814697
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 131,
+        "operationMs": 494.69873046875,
+        "queueWaitMsSum": 0.9999961853027344
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 213.099609375,
+        "queueWaitMsSum": 2.599996566772461
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-coordinated-2000",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44869.69677734375,
+    "driverSendMs": 8045.299560546875,
+    "driverReceiveMs": 20525.9970703125,
+    "driverUnoccupiedMs": 16298.400146484375,
+    "sendStarts": 21,
+    "receiveStarts": 43,
+    "driverAlternationCount": 42,
+    "readTurns": 158,
+    "primaryCounts": {
+      "other": 91,
+      "self": 23,
+      "activePeer": 44
+    },
+    "quietTokenReads": 135,
+    "emptyReads": 137,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 45485.10009765625,
+      "p50": 670.89990234375,
+      "p95": 2070.199951171875,
+      "max": 2120.39990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 15,
+      "sum": 1714.9931640625,
+      "p50": 84.474365234375,
+      "p95": 503.389892578125,
+      "max": 503.389892578125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42011.682861328125,
+      "p50": 2097.043212890625,
+      "p95": 2131.46533203125,
+      "max": 2142.92724609375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 1479.612060546875,
+      "p50": 69.922119140625,
+      "p95": 76.869384765625,
+      "max": 80.387939453125
+    },
+    "networkReadHttpCalls": 157,
+    "networkReadRequestToHeadersMs": {
+      "n": 157,
+      "sum": 10207.610107421875,
+      "p50": 64.0859375,
+      "p95": 72.452392578125,
+      "max": 86.339599609375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 40.500244140625,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 158,
+        "operationMs": 1830.724609375,
+        "queueWaitMsSum": 0.7000007629394531
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 316,
+        "operationMs": 2782.500732421875,
+        "queueWaitMsSum": 3.400005340576172
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 2212.900146484375,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 22.0,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 158,
+        "operationMs": 3024.400146484375,
+        "queueWaitMsSum": 1.6000003814697266
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 85.999755859375,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 3201.80029296875,
+        "queueWaitMsSum": 0.5
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 509.799560546875,
+        "queueWaitMsSum": 0.9000015258789062
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 541.500244140625,
+        "queueWaitMsSum": 414.29999923706055
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 135,
+        "operationMs": 505.299560546875,
+        "queueWaitMsSum": 1.5000019073486328
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 158.7998046875,
+        "queueWaitMsSum": 0.29999542236328125
+      }
+    }
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 2,
+    "phase": 333,
+    "runName": "paired333-r2-d50-coordinated-2000",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51815.242919921875,
+    "driverSendMs": 8428.599365234375,
+    "driverReceiveMs": 22062.372314453125,
+    "driverUnoccupiedMs": 21324.271240234375,
+    "sendStarts": 23,
+    "receiveStarts": 47,
+    "driverAlternationCount": 46,
+    "readTurns": 169,
+    "primaryCounts": {
+      "other": 98,
+      "self": 25,
+      "activePeer": 46
+    },
+    "quietTokenReads": 144,
+    "emptyReads": 147,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 45,
+      "sum": 45676.800048828125,
+      "p50": 670.89990234375,
+      "p95": 2070.199951171875,
+      "max": 2120.39990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 16,
+      "sum": 1854.086669921875,
+      "p50": 84.474365234375,
+      "p95": 503.389892578125,
+      "max": 503.389892578125
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43261.09716796875,
+      "p50": 2097.043212890625,
+      "p95": 2131.46533203125,
+      "max": 2142.92724609375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 1546.1025390625,
+      "p50": 69.78466796875,
+      "p95": 76.869384765625,
+      "max": 80.387939453125
+    },
+    "networkReadHttpCalls": 169,
+    "networkReadRequestToHeadersMs": {
+      "n": 169,
+      "sum": 11048.97412109375,
+      "p50": 64.2685546875,
+      "p95": 73.73583984375,
+      "max": 89.599853515625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 40.500244140625,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 169,
+        "operationMs": 1977.300048828125,
+        "queueWaitMsSum": 0.7000007629394531
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 339,
+        "operationMs": 2998.401123046875,
+        "queueWaitMsSum": 3.5000057220458984
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 2347.099853515625,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 22.0,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 170,
+        "operationMs": 3261.900634765625,
+        "queueWaitMsSum": 1.6000003814697266
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 85.999755859375,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 3350.400390625,
+        "queueWaitMsSum": 0.6999988555908203
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 524.099365234375,
+        "queueWaitMsSum": 3.8000011444091797
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 559.900146484375,
+        "queueWaitMsSum": 414.29999923706055
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 145,
+        "operationMs": 546.29931640625,
+        "queueWaitMsSum": 1.700002670288086
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 171.5,
+        "queueWaitMsSum": 0.29999542236328125
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-coordinated-2000",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44866.37158203125,
+    "driverSendMs": 13175.499755859375,
+    "driverReceiveMs": 19506.62060546875,
+    "driverUnoccupiedMs": 12184.251220703125,
+    "sendStarts": 21,
+    "receiveStarts": 41,
+    "driverAlternationCount": 41,
+    "readTurns": 144,
+    "primaryCounts": {
+      "other": 83,
+      "activePeer": 41,
+      "self": 20
+    },
+    "quietTokenReads": 124,
+    "emptyReads": 123,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 41,
+      "sum": 41688.300048828125,
+      "p50": 198.2001953125,
+      "p95": 2209.400146484375,
+      "max": 2210.0
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 9305.702392578125,
+      "p50": 375.294677734375,
+      "p95": 641.517333984375,
+      "max": 898.9892578125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42065.96533203125,
+      "p50": 2103.472412109375,
+      "p95": 2124.65478515625,
+      "max": 2125.139404296875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 1444.398681640625,
+      "p50": 66.841796875,
+      "p95": 72.011474609375,
+      "max": 101.11669921875
+    },
+    "networkReadHttpCalls": 144,
+    "networkReadRequestToHeadersMs": {
+      "n": 144,
+      "sum": 9330.53515625,
+      "p50": 63.800537109375,
+      "p95": 70.5185546875,
+      "max": 76.968505859375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 37.2001953125,
+        "queueWaitMsSum": 0
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 3474.30029296875,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 287,
+        "operationMs": 2990.499267578125,
+        "queueWaitMsSum": 2.9000015258789062
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 144,
+        "operationMs": 1829.296630859375,
+        "queueWaitMsSum": 0.40000152587890625
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 21.7001953125,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 144,
+        "operationMs": 2713.92138671875,
+        "queueWaitMsSum": 2.0
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 64.199951171875,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 6757.199951171875,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 510.00048828125,
+        "queueWaitMsSum": 0.9999980926513672
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 914.099609375,
+        "queueWaitMsSum": 357.8999938964844
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 123,
+        "operationMs": 484.30126953125,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 191.70068359375,
+        "queueWaitMsSum": 0.39999961853027344
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-coordinated-2000",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51799.968505859375,
+    "driverSendMs": 13941.7998046875,
+    "driverReceiveMs": 25672.61767578125,
+    "driverUnoccupiedMs": 12185.551025390625,
+    "sendStarts": 23,
+    "receiveStarts": 46,
+    "driverAlternationCount": 45,
+    "readTurns": 153,
+    "primaryCounts": {
+      "other": 88,
+      "activePeer": 44,
+      "self": 21
+    },
+    "quietTokenReads": 132,
+    "emptyReads": 131,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 48416.400146484375,
+      "p50": 208.7001953125,
+      "p95": 2209.800048828125,
+      "max": 6519.39990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 15163.72607421875,
+      "p50": 375.294677734375,
+      "p95": 898.9892578125,
+      "max": 5858.023681640625
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43304.560791015625,
+      "p50": 2103.472412109375,
+      "p95": 2124.65478515625,
+      "max": 2125.139404296875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 1506.4130859375,
+      "p50": 66.3583984375,
+      "p95": 72.011474609375,
+      "max": 101.11669921875
+    },
+    "networkReadHttpCalls": 153,
+    "networkReadRequestToHeadersMs": {
+      "n": 153,
+      "sum": 9952.097900390625,
+      "p50": 63.856201171875,
+      "p95": 73.254638671875,
+      "max": 76.968505859375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 41.80029296875,
+        "queueWaitMsSum": 1.7999992370605469
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 3708.200439453125,
+        "queueWaitMsSum": 2.1000003814697266
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 305,
+        "operationMs": 3176.999267578125,
+        "queueWaitMsSum": 3.1000022888183594
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 153,
+        "operationMs": 1934.596435546875,
+        "queueWaitMsSum": 0.5000019073486328
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 24.60009765625,
+        "queueWaitMsSum": 4764.300001144409
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 152,
+        "operationMs": 2929.901123046875,
+        "queueWaitMsSum": 2.200000762939453
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 73.0,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 7141.80029296875,
+        "queueWaitMsSum": 5.600000381469727
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 94,
+        "operationMs": 4957.29931640625,
+        "queueWaitMsSum": 623.0000019073486
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 527.800537109375,
+        "queueWaitMsSum": 3.299999237060547
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 935.799560546875,
+        "queueWaitMsSum": 362.39999198913574
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 131,
+        "operationMs": 513.9013671875,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 237.200927734375,
+        "queueWaitMsSum": 2.1000003814697266
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-coordinated-2000",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44866.37158203125,
+    "driverSendMs": 7923.399169921875,
+    "driverReceiveMs": 20591.471923828125,
+    "driverUnoccupiedMs": 16351.50048828125,
+    "sendStarts": 21,
+    "receiveStarts": 43,
+    "driverAlternationCount": 42,
+    "readTurns": 156,
+    "primaryCounts": {
+      "self": 23,
+      "other": 89,
+      "activePeer": 44
+    },
+    "quietTokenReads": 133,
+    "emptyReads": 135,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 45642.599853515625,
+      "p50": 659.599853515625,
+      "p95": 2096.5,
+      "max": 2111.39990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 15,
+      "sum": 1731.69482421875,
+      "p50": 89.09619140625,
+      "p95": 493.634765625,
+      "max": 493.634765625
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42020.43798828125,
+      "p50": 2095.388671875,
+      "p95": 2127.260986328125,
+      "max": 2135.082763671875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 1471.3798828125,
+      "p50": 69.027587890625,
+      "p95": 74.757568359375,
+      "max": 78.930419921875
+    },
+    "networkReadHttpCalls": 156,
+    "networkReadRequestToHeadersMs": {
+      "n": 156,
+      "sum": 10222.6259765625,
+      "p50": 64.507568359375,
+      "p95": 74.26171875,
+      "max": 84.8046875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 38.900146484375,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 156,
+        "operationMs": 1802.20068359375,
+        "queueWaitMsSum": 0.40000152587890625
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 312,
+        "operationMs": 2782.098876953125,
+        "queueWaitMsSum": 2.900005340576172
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 2128.699462890625,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 21.300048828125,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 157,
+        "operationMs": 3003.299072265625,
+        "queueWaitMsSum": 1.9999980926513672
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 89.000244140625,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 3183.7998046875,
+        "queueWaitMsSum": 0.6000003814697266
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 489.799560546875,
+        "queueWaitMsSum": 0.40000152587890625
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 558.19970703125,
+        "queueWaitMsSum": 383.10000228881836
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 133,
+        "operationMs": 526.601806640625,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 161.401123046875,
+        "queueWaitMsSum": 0.10000038146972656
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-coordinated-2000",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51799.968505859375,
+    "driverSendMs": 8343.4990234375,
+    "driverReceiveMs": 22100.05126953125,
+    "driverUnoccupiedMs": 21356.418212890625,
+    "sendStarts": 23,
+    "receiveStarts": 47,
+    "driverAlternationCount": 46,
+    "readTurns": 168,
+    "primaryCounts": {
+      "self": 25,
+      "other": 97,
+      "activePeer": 46
+    },
+    "quietTokenReads": 143,
+    "emptyReads": 146,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 45,
+      "sum": 45820.199951171875,
+      "p50": 659.599853515625,
+      "p95": 2096.5,
+      "max": 2111.39990234375
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 16,
+      "sum": 1910.993408203125,
+      "p50": 89.09619140625,
+      "p95": 493.634765625,
+      "max": 493.634765625
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43253.44140625,
+      "p50": 2095.388671875,
+      "p95": 2127.260986328125,
+      "max": 2135.082763671875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 1539.544677734375,
+      "p50": 68.897705078125,
+      "p95": 74.757568359375,
+      "max": 78.930419921875
+    },
+    "networkReadHttpCalls": 168,
+    "networkReadRequestToHeadersMs": {
+      "n": 168,
+      "sum": 11048.83642578125,
+      "p50": 64.808349609375,
+      "p95": 74.570068359375,
+      "max": 84.8046875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 38.900146484375,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 168,
+        "operationMs": 1950.30078125,
+        "queueWaitMsSum": 0.40000152587890625
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 337,
+        "operationMs": 3025.69873046875,
+        "queueWaitMsSum": 3.2000064849853516
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 2279.09912109375,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 21.300048828125,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 169,
+        "operationMs": 3230.09912109375,
+        "queueWaitMsSum": 1.9999980926513672
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 89.000244140625,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 3350.199951171875,
+        "queueWaitMsSum": 0.7000007629394531
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 504.69970703125,
+        "queueWaitMsSum": 0.5000019073486328
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 577.19970703125,
+        "queueWaitMsSum": 383.2000026702881
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 144,
+        "operationMs": 566.20166015625,
+        "queueWaitMsSum": 2.1000022888183594
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 174.90087890625,
+        "queueWaitMsSum": 0.10000038146972656
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-immediate-inflight",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44866.470947265625,
+    "driverSendMs": 33570.431396484375,
+    "driverReceiveMs": 11258.199951171875,
+    "driverUnoccupiedMs": 37.839599609375,
+    "sendStarts": 45,
+    "receiveStarts": 44,
+    "driverAlternationCount": 88,
+    "readTurns": 44,
+    "primaryCounts": {
+      "other": 27,
+      "activePeer": 11,
+      "self": 6
+    },
+    "quietTokenReads": 28,
+    "emptyReads": 33,
+    "peerProductiveCommits": 11,
+    "peerPositions": 56,
+    "peerCommitWidth": {
+      "n": 11,
+      "sum": 56,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 11,
+      "sum": 47332.300048828125,
+      "p50": 5819.199951171875,
+      "p95": 7161.5,
+      "max": 7161.5
+    },
+    "peerBacklogLowerBoundMax": 26,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 11,
+      "sum": 89147.81079101562,
+      "p50": 6391.57421875,
+      "p95": 16063.66748046875,
+      "max": 16063.66748046875
+    },
+    "submitCalls": 44,
+    "submitStatuses": {
+      "200": 44
+    },
+    "submitStartIntervals": {
+      "n": 43,
+      "sum": 42765.98486328125,
+      "p50": 957.5146484375,
+      "p95": 1287.419677734375,
+      "max": 1367.0849609375
+    },
+    "submitRequestToHeadersMs": {
+      "n": 44,
+      "sum": 3070.800537109375,
+      "p50": 68.67626953125,
+      "p95": 80.529052734375,
+      "max": 104.28125
+    },
+    "networkReadHttpCalls": 44,
+    "networkReadRequestToHeadersMs": {
+      "n": 44,
+      "sum": 3914.96484375,
+      "p50": 90.892578125,
+      "p95": 105.403564453125,
+      "max": 118.63916015625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 74.699951171875,
+        "queueWaitMsSum": 14.69999885559082
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 45,
+        "operationMs": 7756.2001953125,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 88,
+        "operationMs": 1531.399658203125,
+        "queueWaitMsSum": 120.30000114440918
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 44,
+        "operationMs": 722.299072265625,
+        "queueWaitMsSum": 63.299997329711914
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 22.900146484375,
+        "queueWaitMsSum": 67.30000114440918
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 35,
+        "operationMs": 1205.39990234375,
+        "queueWaitMsSum": 13.300003051757812
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 246.0,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 132,
+        "operationMs": 17782.599365234375,
+        "queueWaitMsSum": 1211.2000122070312
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 9,
+        "operationMs": 816.131591796875,
+        "queueWaitMsSum": 248.0999984741211
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 340,
+        "operationMs": 3632.2001953125,
+        "queueWaitMsSum": 15953.5
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 922.800048828125,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 89,
+        "operationMs": 1702.600830078125,
+        "queueWaitMsSum": 654.0000095367432
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 38,
+        "operationMs": 179.099609375,
+        "queueWaitMsSum": 2.200002670288086
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 45,
+        "operationMs": 405.598388671875,
+        "queueWaitMsSum": 31.600000381469727
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-immediate-inflight",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 51804.079833984375,
+    "driverSendMs": 38656.5,
+    "driverReceiveMs": 13108.340576171875,
+    "driverUnoccupiedMs": 39.2392578125,
+    "sendStarts": 47,
+    "receiveStarts": 51,
+    "driverAlternationCount": 93,
+    "readTurns": 57,
+    "primaryCounts": {
+      "other": 33,
+      "activePeer": 16,
+      "self": 8
+    },
+    "quietTokenReads": 35,
+    "emptyReads": 42,
+    "peerProductiveCommits": 15,
+    "peerPositions": 78,
+    "peerCommitWidth": {
+      "n": 15,
+      "sum": 78,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 15,
+      "sum": 48082.300048828125,
+      "p50": 1235.300048828125,
+      "p95": 7161.5,
+      "max": 7161.5
+    },
+    "peerBacklogLowerBoundMax": 26,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 15,
+      "sum": 137685.16064453125,
+      "p50": 8719.567626953125,
+      "p95": 18473.954345703125,
+      "max": 18473.954345703125
+    },
+    "submitCalls": 46,
+    "submitStatuses": {
+      "200": 46
+    },
+    "submitStartIntervals": {
+      "n": 45,
+      "sum": 49592.966552734375,
+      "p50": 958.57421875,
+      "p95": 1336.41357421875,
+      "max": 5688.242919921875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 46,
+      "sum": 3212.74267578125,
+      "p50": 68.67626953125,
+      "p95": 80.529052734375,
+      "max": 104.28125
+    },
+    "networkReadHttpCalls": 52,
+    "networkReadRequestToHeadersMs": {
+      "n": 52,
+      "sum": 4590.68115234375,
+      "p50": 90.892578125,
+      "p95": 105.9482421875,
+      "max": 118.63916015625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 100.199951171875,
+        "queueWaitMsSum": 14.69999885559082
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 47,
+        "operationMs": 7971.80029296875,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 113,
+        "operationMs": 1797.3994140625,
+        "queueWaitMsSum": 120.50000190734863
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 57,
+        "operationMs": 873.799072265625,
+        "queueWaitMsSum": 63.299997329711914
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 25.2001953125,
+        "queueWaitMsSum": 67.30000114440918
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 44,
+        "operationMs": 1293.83984375,
+        "queueWaitMsSum": 13.300003051757812
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 256.89990234375,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "untagged": {
+        "n": 138,
+        "operationMs": 18643.999267578125,
+        "queueWaitMsSum": 5818.700012207031
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 9,
+        "operationMs": 4599.0,
+        "queueWaitMsSum": 248.0999984741211
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 344,
+        "operationMs": 3660.60009765625,
+        "queueWaitMsSum": 20855.700002670288
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 13,
+        "operationMs": 1240.699951171875,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 93,
+        "operationMs": 1738.901123046875,
+        "queueWaitMsSum": 654.1000099182129
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 49,
+        "operationMs": 218.899169921875,
+        "queueWaitMsSum": 2.3000030517578125
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 47,
+        "operationMs": 421.8984375,
+        "queueWaitMsSum": 31.600000381469727
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-immediate-inflight",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44866.470947265625,
+    "driverSendMs": 30325.93310546875,
+    "driverReceiveMs": 14507.23876953125,
+    "driverUnoccupiedMs": 33.299072265625,
+    "sendStarts": 77,
+    "receiveStarts": 76,
+    "driverAlternationCount": 153,
+    "readTurns": 76,
+    "primaryCounts": {
+      "self": 8,
+      "other": 29,
+      "activePeer": 39
+    },
+    "quietTokenReads": 56,
+    "emptyReads": 45,
+    "peerProductiveCommits": 31,
+    "peerPositions": 44,
+    "peerCommitWidth": {
+      "n": 31,
+      "sum": 44,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 39,
+      "sum": 47723.7001953125,
+      "p50": 623.10009765625,
+      "p95": 3578.699951171875,
+      "max": 4566.60009765625
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 31,
+      "sum": 51472.27001953125,
+      "p50": 1111.371337890625,
+      "p95": 3315.617431640625,
+      "max": 3381.0927734375
+    },
+    "submitCalls": 76,
+    "submitStatuses": {
+      "200": 76
+    },
+    "submitStartIntervals": {
+      "n": 75,
+      "sum": 44161.180908203125,
+      "p50": 574.952880859375,
+      "p95": 777.556396484375,
+      "max": 844.287841796875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 76,
+      "sum": 5331.9814453125,
+      "p50": 70.258056640625,
+      "p95": 74.95068359375,
+      "max": 96.45556640625
+    },
+    "networkReadHttpCalls": 76,
+    "networkReadRequestToHeadersMs": {
+      "n": 76,
+      "sum": 5505.993408203125,
+      "p50": 68.7041015625,
+      "p95": 97.515625,
+      "max": 116.581787109375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 46.499755859375,
+        "queueWaitMsSum": 11.899999618530273
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 77,
+        "operationMs": 7981.83203125,
+        "queueWaitMsSum": 0.40000152587890625
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 153,
+        "operationMs": 1836.498779296875,
+        "queueWaitMsSum": 99.0999984741211
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 76,
+        "operationMs": 1034.700439453125,
+        "queueWaitMsSum": 78.39999961853027
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 22.600341796875,
+        "queueWaitMsSum": 20.599998474121094
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 70,
+        "operationMs": 2464.099365234375,
+        "queueWaitMsSum": 33.30000305175781
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 129.400390625,
+        "queueWaitMsSum": 25.899999618530273
+      },
+      "untagged": {
+        "n": 228,
+        "operationMs": 13555.79931640625,
+        "queueWaitMsSum": 1070.0999946594238
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 377,
+        "operationMs": 3478.5,
+        "queueWaitMsSum": 5812.099998474121
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 7,
+        "operationMs": 498.900390625,
+        "queueWaitMsSum": 1
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 153,
+        "operationMs": 1269.001220703125,
+        "queueWaitMsSum": 351.70000076293945
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 69,
+        "operationMs": 270.598388671875,
+        "queueWaitMsSum": 0.8999958038330078
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 77,
+        "operationMs": 492.5,
+        "queueWaitMsSum": 0.1999988555908203
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d50-immediate-inflight",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 51804.079833984375,
+    "driverSendMs": 31038.701416015625,
+    "driverReceiveMs": 17164.138671875,
+    "driverUnoccupiedMs": 3601.23974609375,
+    "sendStarts": 79,
+    "receiveStarts": 83,
+    "driverAlternationCount": 158,
+    "readTurns": 95,
+    "primaryCounts": {
+      "self": 11,
+      "other": 41,
+      "activePeer": 43
+    },
+    "quietTokenReads": 72,
+    "emptyReads": 62,
+    "peerProductiveCommits": 33,
+    "peerPositions": 46,
+    "peerCommitWidth": {
+      "n": 33,
+      "sum": 46,
+      "p50": 1,
+      "p95": 3,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 42,
+      "sum": 48817.10009765625,
+      "p50": 623.0,
+      "p95": 3549.5,
+      "max": 4566.60009765625
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 33,
+      "sum": 51731.85791015625,
+      "p50": 965.90380859375,
+      "p95": 3315.617431640625,
+      "max": 3381.0927734375
+    },
+    "submitCalls": 78,
+    "submitStatuses": {
+      "200": 78
+    },
+    "submitStartIntervals": {
+      "n": 77,
+      "sum": 45241.772216796875,
+      "p50": 574.952880859375,
+      "p95": 777.556396484375,
+      "max": 844.287841796875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 78,
+      "sum": 5467.3720703125,
+      "p50": 70.08837890625,
+      "p95": 74.95068359375,
+      "max": 96.45556640625
+    },
+    "networkReadHttpCalls": 95,
+    "networkReadRequestToHeadersMs": {
+      "n": 95,
+      "sum": 6748.7919921875,
+      "p50": 67.984375,
+      "p95": 96.89013671875,
+      "max": 116.581787109375
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 53.7998046875,
+        "queueWaitMsSum": 11.899999618530273
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 79,
+        "operationMs": 8150.800537109375,
+        "queueWaitMsSum": 0.40000152587890625
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 191,
+        "operationMs": 2257.39892578125,
+        "queueWaitMsSum": 99.5999984741211
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 95,
+        "operationMs": 1282.400146484375,
+        "queueWaitMsSum": 78.5
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 28.100341796875,
+        "queueWaitMsSum": 20.599998474121094
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 89,
+        "operationMs": 2829.099609375,
+        "queueWaitMsSum": 33.40000343322754
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 144.400390625,
+        "queueWaitMsSum": 25.899999618530273
+      },
+      "untagged": {
+        "n": 234,
+        "operationMs": 13904.699462890625,
+        "queueWaitMsSum": 1084.2999954223633
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 380,
+        "operationMs": 3493.10009765625,
+        "queueWaitMsSum": 5833.599998474121
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 7,
+        "operationMs": 498.900390625,
+        "queueWaitMsSum": 1
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 157,
+        "operationMs": 1297.10107421875,
+        "queueWaitMsSum": 351.8000011444092
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 85,
+        "operationMs": 335.197998046875,
+        "queueWaitMsSum": 1.1999969482421875
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 79,
+        "operationMs": 506.599853515625,
+        "queueWaitMsSum": 0.29999732971191406
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-immediate-inflight",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44870.109375,
+    "driverSendMs": 35821.298583984375,
+    "driverReceiveMs": 9008.207275390625,
+    "driverUnoccupiedMs": 40.603515625,
+    "sendStarts": 51,
+    "receiveStarts": 51,
+    "driverAlternationCount": 101,
+    "readTurns": 51,
+    "primaryCounts": {
+      "other": 32,
+      "activePeer": 12,
+      "self": 7
+    },
+    "quietTokenReads": 33,
+    "emptyReads": 39,
+    "peerProductiveCommits": 12,
+    "peerPositions": 64,
+    "peerCommitWidth": {
+      "n": 12,
+      "sum": 64,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 12,
+      "sum": 47796.89990234375,
+      "p50": 4907.699951171875,
+      "p95": 7230.699951171875,
+      "max": 7230.699951171875
+    },
+    "peerBacklogLowerBoundMax": 36,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 12,
+      "sum": 100035.98486328125,
+      "p50": 5753.13232421875,
+      "p95": 17848.761474609375,
+      "max": 17848.761474609375
+    },
+    "submitCalls": 51,
+    "submitStatuses": {
+      "200": 51
+    },
+    "submitStartIntervals": {
+      "n": 50,
+      "sum": 43794.994384765625,
+      "p50": 859.9501953125,
+      "p95": 1097.69921875,
+      "max": 1166.785888671875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 51,
+      "sum": 837.3896484375,
+      "p50": 16.341064453125,
+      "p95": 26.061279296875,
+      "max": 27.33056640625
+    },
+    "networkReadHttpCalls": 50,
+    "networkReadRequestToHeadersMs": {
+      "n": 50,
+      "sum": 1968.67236328125,
+      "p50": 40.395751953125,
+      "p95": 65.26953125,
+      "max": 75.767578125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 9,
+        "operationMs": 65.39990234375,
+        "queueWaitMsSum": 44.69999885559082
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 51,
+        "operationMs": 9029.50048828125,
+        "queueWaitMsSum": 2.1000003814697266
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 101,
+        "operationMs": 1657.10107421875,
+        "queueWaitMsSum": 147.80001068115234
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 51,
+        "operationMs": 936.899658203125,
+        "queueWaitMsSum": 119.89999961853027
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 40.69970703125,
+        "queueWaitMsSum": 31.499998092651367
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 41,
+        "operationMs": 1012.099365234375,
+        "queueWaitMsSum": 56.900001525878906
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 303.699951171875,
+        "queueWaitMsSum": 24.399999618530273
+      },
+      "untagged": {
+        "n": 153,
+        "operationMs": 20912.2998046875,
+        "queueWaitMsSum": 1413.099998474121
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 84,
+        "operationMs": 220.599853515625,
+        "queueWaitMsSum": 1037.1999950408936
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 350,
+        "operationMs": 3601.79833984375,
+        "queueWaitMsSum": 17828.899995803833
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 10,
+        "operationMs": 860.89990234375,
+        "queueWaitMsSum": 13.60000228881836
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 102,
+        "operationMs": 1984.99853515625,
+        "queueWaitMsSum": 739.6000099182129
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 44,
+        "operationMs": 175.709228515625,
+        "queueWaitMsSum": 4.100000381469727
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 51,
+        "operationMs": 563.2001953125,
+        "queueWaitMsSum": 49.099998474121094
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-immediate-inflight",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 52841.060302734375,
+    "driverSendMs": 36653.0986328125,
+    "driverReceiveMs": 15580.19921875,
+    "driverUnoccupiedMs": 607.762451171875,
+    "sendStarts": 53,
+    "receiveStarts": 58,
+    "driverAlternationCount": 105,
+    "readTurns": 74,
+    "primaryCounts": {
+      "other": 46,
+      "activePeer": 18,
+      "self": 10
+    },
+    "quietTokenReads": 48,
+    "emptyReads": 57,
+    "peerProductiveCommits": 17,
+    "peerPositions": 96,
+    "peerCommitWidth": {
+      "n": 17,
+      "sum": 96,
+      "p50": 6,
+      "p95": 8,
+      "max": 8
+    },
+    "peerRevisitGap": {
+      "n": 17,
+      "sum": 49411.800048828125,
+      "p50": 959.89990234375,
+      "p95": 7230.699951171875,
+      "max": 7230.699951171875
+    },
+    "peerBacklogLowerBoundMax": 36,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 17,
+      "sum": 171068.66381835938,
+      "p50": 9835.990478515625,
+      "p95": 21329.03564453125,
+      "max": 21329.03564453125
+    },
+    "submitCalls": 52,
+    "submitStatuses": {
+      "200": 52
+    },
+    "submitStartIntervals": {
+      "n": 51,
+      "sum": 44952.003173828125,
+      "p50": 872.0078125,
+      "p95": 1117.529541015625,
+      "max": 1166.785888671875
+    },
+    "submitRequestToHeadersMs": {
+      "n": 52,
+      "sum": 856.887939453125,
+      "p50": 16.341064453125,
+      "p95": 26.061279296875,
+      "max": 27.33056640625
+    },
+    "networkReadHttpCalls": 60,
+    "networkReadRequestToHeadersMs": {
+      "n": 60,
+      "sum": 2258.074951171875,
+      "p50": 39.1494140625,
+      "p95": 65.0810546875,
+      "max": 75.767578125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 10,
+        "operationMs": 69.89990234375,
+        "queueWaitMsSum": 44.69999885559082
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 53,
+        "operationMs": 9253.300537109375,
+        "queueWaitMsSum": 6.0
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 148,
+        "operationMs": 2147.199951171875,
+        "queueWaitMsSum": 164.00000762939453
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 74,
+        "operationMs": 1267.7001953125,
+        "queueWaitMsSum": 4679.299999237061
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 10,
+        "operationMs": 43.599609375,
+        "queueWaitMsSum": 31.59999656677246
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 59,
+        "operationMs": 1207.099609375,
+        "queueWaitMsSum": 73.80000114440918
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 10,
+        "operationMs": 312.39990234375,
+        "queueWaitMsSum": 24.399999618530273
+      },
+      "untagged": {
+        "n": 156,
+        "operationMs": 21363.7998046875,
+        "queueWaitMsSum": 1419.1000003814697
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 144,
+        "operationMs": 4938.7998046875,
+        "queueWaitMsSum": 1985.2999935150146
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 353,
+        "operationMs": 3617.198486328125,
+        "queueWaitMsSum": 17864.299995422363
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 15,
+        "operationMs": 1271.5,
+        "queueWaitMsSum": 13.60000228881836
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 105,
+        "operationMs": 2041.0986328125,
+        "queueWaitMsSum": 761.4000091552734
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 64,
+        "operationMs": 243.6015625,
+        "queueWaitMsSum": 9.000001907348633
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 53,
+        "operationMs": 583.10009765625,
+        "queueWaitMsSum": 54.39999961853027
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-immediate-inflight",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44870.109375,
+    "driverSendMs": 33514.499267578125,
+    "driverReceiveMs": 11317.01025390625,
+    "driverUnoccupiedMs": 38.599853515625,
+    "sendStarts": 95,
+    "receiveStarts": 95,
+    "driverAlternationCount": 190,
+    "readTurns": 95,
+    "primaryCounts": {
+      "self": 10,
+      "other": 37,
+      "activePeer": 48
+    },
+    "quietTokenReads": 71,
+    "emptyReads": 56,
+    "peerProductiveCommits": 39,
+    "peerPositions": 48,
+    "peerCommitWidth": {
+      "n": 39,
+      "sum": 48,
+      "p50": 1,
+      "p95": 2,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 48,
+      "sum": 44130.39990234375,
+      "p50": 550.60009765625,
+      "p95": 2741.800048828125,
+      "max": 2924.5
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 39,
+      "sum": 43192.611328125,
+      "p50": 700.820556640625,
+      "p95": 2578.399658203125,
+      "max": 2619.52783203125
+    },
+    "submitCalls": 95,
+    "submitStatuses": {
+      "200": 95
+    },
+    "submitStartIntervals": {
+      "n": 94,
+      "sum": 44423.650634765625,
+      "p50": 452.52978515625,
+      "p95": 601.641357421875,
+      "max": 722.46142578125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 95,
+      "sum": 1850.712646484375,
+      "p50": 17.038330078125,
+      "p95": 36.433837890625,
+      "max": 56.010009765625
+    },
+    "networkReadHttpCalls": 95,
+    "networkReadRequestToHeadersMs": {
+      "n": 95,
+      "sum": 1849.952392578125,
+      "p50": 14.747314453125,
+      "p95": 47.84375,
+      "max": 60.97265625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 49.000244140625,
+        "queueWaitMsSum": 11.399999618530273
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 95,
+        "operationMs": 1209.100341796875,
+        "queueWaitMsSum": 46.19999885559082
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 191,
+        "operationMs": 2355.20361328125,
+        "queueWaitMsSum": 142.20000076293945
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 95,
+        "operationMs": 10096.69921875,
+        "queueWaitMsSum": 0.5000019073486328
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 45.900390625,
+        "queueWaitMsSum": 0.1999988555908203
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 87,
+        "operationMs": 2769.301025390625,
+        "queueWaitMsSum": 15.600000381469727
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 130.800048828125,
+        "queueWaitMsSum": 35.80000114440918
+      },
+      "untagged": {
+        "n": 285,
+        "operationMs": 16823.599853515625,
+        "queueWaitMsSum": 1421.3000049591064
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 392,
+        "operationMs": 3518.10400390625,
+        "queueWaitMsSum": 8023.0
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 8,
+        "operationMs": 508.800048828125,
+        "queueWaitMsSum": 9.399999618530273
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 190,
+        "operationMs": 1674.598876953125,
+        "queueWaitMsSum": 517.1000080108643
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 85,
+        "operationMs": 337.19970703125,
+        "queueWaitMsSum": 0.9999980926513672
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 95,
+        "operationMs": 622.80078125,
+        "queueWaitMsSum": 0.7000007629394531
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-immediate-inflight",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 52841.060302734375,
+    "driverSendMs": 33898.39892578125,
+    "driverReceiveMs": 13872.260498046875,
+    "driverUnoccupiedMs": 5070.40087890625,
+    "sendStarts": 97,
+    "receiveStarts": 103,
+    "driverAlternationCount": 194,
+    "readTurns": 128,
+    "primaryCounts": {
+      "self": 15,
+      "other": 57,
+      "activePeer": 56
+    },
+    "quietTokenReads": 97,
+    "emptyReads": 86,
+    "peerProductiveCommits": 42,
+    "peerPositions": 52,
+    "peerCommitWidth": {
+      "n": 42,
+      "sum": 52,
+      "p50": 1,
+      "p95": 2,
+      "max": 3
+    },
+    "peerRevisitGap": {
+      "n": 55,
+      "sum": 50651.699951171875,
+      "p50": 554.400146484375,
+      "p95": 2741.800048828125,
+      "max": 2924.5
+    },
+    "peerBacklogLowerBoundMax": 4,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 42,
+      "sum": 48538.388916015625,
+      "p50": 700.820556640625,
+      "p95": 2578.399658203125,
+      "max": 2868.599365234375
+    },
+    "submitCalls": 96,
+    "submitStatuses": {
+      "200": 96
+    },
+    "submitStartIntervals": {
+      "n": 95,
+      "sum": 44998.539306640625,
+      "p50": 453.32080078125,
+      "p95": 601.641357421875,
+      "max": 722.46142578125
+    },
+    "submitRequestToHeadersMs": {
+      "n": 96,
+      "sum": 1867.920654296875,
+      "p50": 17.038330078125,
+      "p95": 36.433837890625,
+      "max": 56.010009765625
+    },
+    "networkReadHttpCalls": 124,
+    "networkReadRequestToHeadersMs": {
+      "n": 124,
+      "sum": 2267.92626953125,
+      "p50": 14.389892578125,
+      "p95": 45.08251953125,
+      "max": 60.97265625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 10,
+        "operationMs": 69.500244140625,
+        "queueWaitMsSum": 11.399999618530273
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 128,
+        "operationMs": 1643.2001953125,
+        "queueWaitMsSum": 46.799997329711914
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 257,
+        "operationMs": 3046.00341796875,
+        "queueWaitMsSum": 173.3000030517578
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 97,
+        "operationMs": 10239.49951171875,
+        "queueWaitMsSum": 0.5000019073486328
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 9,
+        "operationMs": 48.80029296875,
+        "queueWaitMsSum": 0.1999988555908203
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 119,
+        "operationMs": 3323.30126953125,
+        "queueWaitMsSum": 16.0
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 9,
+        "operationMs": 143.10009765625,
+        "queueWaitMsSum": 35.80000114440918
+      },
+      "untagged": {
+        "n": 288,
+        "operationMs": 17008.499755859375,
+        "queueWaitMsSum": 1421.3000049591064
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 395,
+        "operationMs": 3546.196533203125,
+        "queueWaitMsSum": 8045.199998855591
+      },
+      "accountReceive.ts:1871:receiveGroup": {
+        "n": 9,
+        "operationMs": 575.10009765625,
+        "queueWaitMsSum": 9.399999618530273
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 193,
+        "operationMs": 1696.49853515625,
+        "queueWaitMsSum": 517.1000080108643
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 113,
+        "operationMs": 466.9990234375,
+        "queueWaitMsSum": 1.3999958038330078
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 97,
+        "operationMs": 637.700927734375,
+        "queueWaitMsSum": 0.7000007629394531
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-coordinated-2000",
+    "device": 1,
+    "window": "typing",
+    "durationMs": 44868.783203125,
+    "driverSendMs": 12348.100341796875,
+    "driverReceiveMs": 11488.66943359375,
+    "driverUnoccupiedMs": 21032.013427734375,
+    "sendStarts": 21,
+    "receiveStarts": 42,
+    "driverAlternationCount": 41,
+    "readTurns": 145,
+    "primaryCounts": {
+      "other": 83,
+      "activePeer": 42,
+      "self": 20
+    },
+    "quietTokenReads": 125,
+    "emptyReads": 124,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 42,
+      "sum": 43066.5,
+      "p50": 147.7998046875,
+      "p95": 2132.60009765625,
+      "max": 2213.0
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 8699.99951171875,
+      "p50": 386.1123046875,
+      "p95": 558.351318359375,
+      "max": 678.9267578125
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42046.429931640625,
+      "p50": 2099.02294921875,
+      "p95": 2130.018310546875,
+      "max": 2131.4384765625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 353.71435546875,
+      "p50": 16.286376953125,
+      "p95": 21.139892578125,
+      "max": 24.3583984375
+    },
+    "networkReadHttpCalls": 145,
+    "networkReadRequestToHeadersMs": {
+      "n": 145,
+      "sum": 1853.169921875,
+      "p50": 11.656982421875,
+      "p95": 18.92919921875,
+      "max": 28.82275390625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 50.500244140625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 3510.60009765625,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 290,
+        "operationMs": 3028.470947265625,
+        "queueWaitMsSum": 3.799999237060547
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 145,
+        "operationMs": 1874.300537109375,
+        "queueWaitMsSum": 0.20000076293945312
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 29.699951171875,
+        "queueWaitMsSum": 0.09999847412109375
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 145,
+        "operationMs": 2835.2998046875,
+        "queueWaitMsSum": 1.1999969482421875
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 83.900146484375,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 6919.600830078125,
+        "queueWaitMsSum": 0.7999992370605469
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 564.699951171875,
+        "queueWaitMsSum": 1.1000003814697266
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 927.399658203125,
+        "queueWaitMsSum": 411.99999046325684
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 125,
+        "operationMs": 415.899658203125,
+        "queueWaitMsSum": 1.4999980926513672
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 188.599365234375,
+        "queueWaitMsSum": 0.3000011444091797
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-coordinated-2000",
+    "device": 1,
+    "window": "visibility",
+    "durationMs": 46792.443115234375,
+    "driverSendMs": 13014.500244140625,
+    "driverReceiveMs": 12494.300537109375,
+    "driverUnoccupiedMs": 21283.642333984375,
+    "sendStarts": 23,
+    "receiveStarts": 44,
+    "driverAlternationCount": 45,
+    "readTurns": 157,
+    "primaryCounts": {
+      "other": 91,
+      "activePeer": 44,
+      "self": 22
+    },
+    "quietTokenReads": 135,
+    "emptyReads": 135,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 43260.2998046875,
+      "p50": 193.7998046875,
+      "p95": 2132.60009765625,
+      "max": 2213.0
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 9296.568359375,
+      "p50": 386.1123046875,
+      "p95": 596.56884765625,
+      "max": 678.9267578125
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43217.232666015625,
+      "p50": 2099.02294921875,
+      "p95": 2130.018310546875,
+      "max": 2131.4384765625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 369.94482421875,
+      "p50": 16.23046875,
+      "p95": 21.139892578125,
+      "max": 24.3583984375
+    },
+    "networkReadHttpCalls": 157,
+    "networkReadRequestToHeadersMs": {
+      "n": 157,
+      "sum": 1998.90283203125,
+      "p50": 11.57568359375,
+      "p95": 19.460693359375,
+      "max": 28.82275390625
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 8,
+        "operationMs": 57.100341796875,
+        "queueWaitMsSum": 5.400001525878906
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 3725.199951171875,
+        "queueWaitMsSum": 3.3999977111816406
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 314,
+        "operationMs": 3264.302490234375,
+        "queueWaitMsSum": 25.60000228881836
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 157,
+        "operationMs": 2021.600830078125,
+        "queueWaitMsSum": 12.099998474121094
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 8,
+        "operationMs": 32.699951171875,
+        "queueWaitMsSum": 1.0999984741210938
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 157,
+        "operationMs": 3032.199951171875,
+        "queueWaitMsSum": 14.299999237060547
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 8,
+        "operationMs": 93.800048828125,
+        "queueWaitMsSum": 1.7999992370605469
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 7292.70068359375,
+        "queueWaitMsSum": 6.499998092651367
+      },
+      "accountCapture.ts:380:schedule": {
+        "n": 217,
+        "operationMs": 571.628173828125,
+        "queueWaitMsSum": 1005.0999908447266
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 579.800048828125,
+        "queueWaitMsSum": 4.899999618530273
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 950.099609375,
+        "queueWaitMsSum": 417.799991607666
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 135,
+        "operationMs": 441.60009765625,
+        "queueWaitMsSum": 10.399999618530273
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 203.499267578125,
+        "queueWaitMsSum": 4.30000114440918
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-coordinated-2000",
+    "device": 2,
+    "window": "typing",
+    "durationMs": 44868.783203125,
+    "driverSendMs": 6923.300048828125,
+    "driverReceiveMs": 11828.78369140625,
+    "driverUnoccupiedMs": 26116.699462890625,
+    "sendStarts": 21,
+    "receiveStarts": 42,
+    "driverAlternationCount": 42,
+    "readTurns": 154,
+    "primaryCounts": {
+      "self": 23,
+      "other": 88,
+      "activePeer": 43
+    },
+    "quietTokenReads": 131,
+    "emptyReads": 133,
+    "peerProductiveCommits": 21,
+    "peerPositions": 21,
+    "peerCommitWidth": {
+      "n": 21,
+      "sum": 21,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 43,
+      "sum": 45515.5,
+      "p50": 1059.39990234375,
+      "p95": 2161.60009765625,
+      "max": 2590.800048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 21,
+      "sum": 1623.50390625,
+      "p50": 12.15087890625,
+      "p95": 172.0205078125,
+      "max": 304.4521484375
+    },
+    "submitCalls": 21,
+    "submitStatuses": {
+      "200": 21
+    },
+    "submitStartIntervals": {
+      "n": 20,
+      "sum": 42019.150390625,
+      "p50": 2098.64013671875,
+      "p95": 2126.0,
+      "max": 2131.09619140625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 21,
+      "sum": 382.029052734375,
+      "p50": 17.51513671875,
+      "p95": 21.936279296875,
+      "max": 24.126220703125
+    },
+    "networkReadHttpCalls": 153,
+    "networkReadRequestToHeadersMs": {
+      "n": 153,
+      "sum": 2176.238525390625,
+      "p50": 12.89697265625,
+      "p95": 26.54833984375,
+      "max": 43.616455078125
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 40.599609375,
+        "queueWaitMsSum": 0.1999969482421875
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 154,
+        "operationMs": 1873.067138671875,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 307,
+        "operationMs": 2800.316162109375,
+        "queueWaitMsSum": 2.7000064849853516
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 21,
+        "operationMs": 2175.299560546875,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 20.69970703125,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 153,
+        "operationMs": 2947.80029296875,
+        "queueWaitMsSum": 1.8000030517578125
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 80.200439453125,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 63,
+        "operationMs": 3203.7998046875,
+        "queueWaitMsSum": 0.7999973297119141
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 42,
+        "operationMs": 511.198486328125,
+        "queueWaitMsSum": 11.699996948242188
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 42,
+        "operationMs": 562.7001953125,
+        "queueWaitMsSum": 376.2999973297119
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 131,
+        "operationMs": 538.30029296875,
+        "queueWaitMsSum": 0.7000007629394531
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 21,
+        "operationMs": 177.49951171875,
+        "queueWaitMsSum": 17.30000114440918
+      }
+    }
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "replicate": 3,
+    "phase": 333,
+    "runName": "paired333-r3-d0-coordinated-2000",
+    "device": 2,
+    "window": "visibility",
+    "durationMs": 46792.443115234375,
+    "driverSendMs": 7274.800048828125,
+    "driverReceiveMs": 12504.514892578125,
+    "driverUnoccupiedMs": 27013.128173828125,
+    "sendStarts": 23,
+    "receiveStarts": 44,
+    "driverAlternationCount": 44,
+    "readTurns": 162,
+    "primaryCounts": {
+      "self": 24,
+      "other": 93,
+      "activePeer": 45
+    },
+    "quietTokenReads": 138,
+    "emptyReads": 140,
+    "peerProductiveCommits": 22,
+    "peerPositions": 22,
+    "peerCommitWidth": {
+      "n": 22,
+      "sum": 22,
+      "p50": 1,
+      "p95": 1,
+      "max": 1
+    },
+    "peerRevisitGap": {
+      "n": 44,
+      "sum": 45631.800048828125,
+      "p50": 147.699951171875,
+      "p95": 2161.60009765625,
+      "max": 2590.800048828125
+    },
+    "peerBacklogLowerBoundMax": 1,
+    "peerOldestAcceptedWaitLowerBoundMs": {
+      "n": 22,
+      "sum": 1635.205810546875,
+      "p50": 11.97509765625,
+      "p95": 172.0205078125,
+      "max": 304.4521484375
+    },
+    "submitCalls": 22,
+    "submitStatuses": {
+      "200": 22
+    },
+    "submitStartIntervals": {
+      "n": 21,
+      "sum": 43154.04296875,
+      "p50": 2098.64013671875,
+      "p95": 2126.0,
+      "max": 2131.09619140625
+    },
+    "submitRequestToHeadersMs": {
+      "n": 22,
+      "sum": 398.7802734375,
+      "p50": 17.34716796875,
+      "p95": 21.936279296875,
+      "max": 24.126220703125
+    },
+    "networkReadHttpCalls": 162,
+    "networkReadRequestToHeadersMs": {
+      "n": 162,
+      "sum": 2341.25146484375,
+      "p50": 12.93359375,
+      "p95": 26.54833984375,
+      "max": 52.248046875
+    },
+    "storageJobsByName": {
+      "accountReceive.ts:2487:prepared": {
+        "n": 7,
+        "operationMs": 40.599609375,
+        "queueWaitMsSum": 0.1999969482421875
+      },
+      "accountReceive.ts:1240:prepareGroupOwned": {
+        "n": 162,
+        "operationMs": 1983.698486328125,
+        "queueWaitMsSum": 1.8000011444091797
+      },
+      "accountReceive.ts:1608:status": {
+        "n": 324,
+        "operationMs": 2956.51611328125,
+        "queueWaitMsSum": 2.7000064849853516
+      },
+      "accountEnvelopePreparation.ts:157:prepareNextEnvelope": {
+        "n": 23,
+        "operationMs": 2305.699462890625,
+        "queueWaitMsSum": 0.10000038146972656
+      },
+      "accountReceive.ts:2188:installMembership": {
+        "n": 7,
+        "operationMs": 20.69970703125,
+        "queueWaitMsSum": 0
+      },
+      "accountReceive.ts:1631:receivePage": {
+        "n": 162,
+        "operationMs": 3114.0,
+        "queueWaitMsSum": 1.900003433227539
+      },
+      "accountReceive.ts:1377:prepared": {
+        "n": 7,
+        "operationMs": 80.200439453125,
+        "queueWaitMsSum": 0
+      },
+      "untagged": {
+        "n": 66,
+        "operationMs": 3357.19970703125,
+        "queueWaitMsSum": 0.8999977111816406
+      },
+      "accountCapture.ts:615:flushJournal": {
+        "n": 45,
+        "operationMs": 526.498779296875,
+        "queueWaitMsSum": 11.699996948242188
+      },
+      "accountReceive.ts:2809:deliveryStatus": {
+        "n": 45,
+        "operationMs": 594.400390625,
+        "queueWaitMsSum": 379.99999809265137
+      },
+      "accountReceive.ts:1802:acknowledged": {
+        "n": 138,
+        "operationMs": 563.10009765625,
+        "queueWaitMsSum": 0.8000011444091797
+      },
+      "accountReceive.ts:2832:spoolStatus": {
+        "n": 23,
+        "operationMs": 190.799560546875,
+        "queueWaitMsSum": 17.30000114440918
+      }
+    }
+  }
+]

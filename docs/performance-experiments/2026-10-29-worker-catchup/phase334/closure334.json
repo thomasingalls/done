@@ -1,0 +1,13 @@
+{
+  "canonicalBuildInputsUnchanged": 1552,
+  "indexEmpty": true,
+  "signedHead": "2c92793c23fab59781c5fa327ec7500c79356681",
+  "onlyDocumentationChanges": true,
+  "noNewAppBuildBrowserTimedRunUnitTestOrRuntimeChange": true,
+  "all93SignaturesReverified": true,
+  "allOriginalGateOutcomesUnchanged": true,
+  "rawInputHomes": 56,
+  "nativeOwnerReconciliations": 24,
+  "derivedSchemaAttempt1Retained": true,
+  "acceptanceCredit": false
+}

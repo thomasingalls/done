@@ -1,0 +1,282 @@
+{
+  "head": "2c92793c23fab59781c5fa327ec7500c79356681",
+  "inputs": [
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-analysis.json",
+      "sha256": "eec42e7555e5b66e65c959f7803f3060c4e5fa45271c387d2a2a67d145e718fa"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r1-d50-immediate-inflight/result.json",
+      "sha256": "18b4ada2cd0f573b96f7cbdd2864ddcdde5ffca87d69b5a5e6686848e9fb81e7"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r1-d50-coordinated-2000/result.json",
+      "sha256": "6e28f8cbdf308629376701ee416c2a4838013d9f470a7c00c08db972eccd83db"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r1-d0-coordinated-2000/result.json",
+      "sha256": "db0b518ed2df30fb4d19fab8dab96152f620c692375ee154ed4b42a6a0b93910"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r1-d0-immediate-inflight/result.json",
+      "sha256": "f723886b2ec12fd33a3ac227685e9830358469a83d644700f56b833f7ea4b9a7"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r1-d0-reference/result.json",
+      "sha256": "9d9f592536fd5fbb18934b2656812d7fabb593629e0d9b41d5260fccb6023830"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r1-d50-reference/result.json",
+      "sha256": "3ac7f15414efb42f56331f43e112fa7d9943bf5120f5f58752ab9115a1fd664b"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r2-d50-immediate-inflight/result.json",
+      "sha256": "c381ad980ea21e3a14bef22306be379efebfd1ac7fce4b7cacbfab7e3283113a"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r2-d50-reference/result.json",
+      "sha256": "5905b92e117b6fd12eb2f56e1fe36a4f8c6a6902ad315d234c6f87c77b23b113"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r2-d0-immediate-inflight/result.json",
+      "sha256": "5692e17a4919341280a6ced02010a48dbebe7bbbcaad49f25f7626b19fb1cfbc"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r2-d0-coordinated-2000/result.json",
+      "sha256": "f957da0cb180936b405ab870cd95739c91553404618851a49dbf17a942c55713"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r2-d50-coordinated-2000/result.json",
+      "sha256": "cd1555a15771c1d51eaae7ef5a8a430cd5d53eb1ca03f3c3813eb844346b1311"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r2-d0-reference/result.json",
+      "sha256": "604b6cf7677fa68b1ad7c9d6a28ff0ed184bccf83e060f1a25e4c04594e0ead7"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r3-d50-coordinated-2000/result.json",
+      "sha256": "cf354af8a6dc5bf3ecfff9881b2137c0bc8bc24f99c3e5b7bc12ae2f10102a0f"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r3-d50-immediate-inflight/result.json",
+      "sha256": "89f69f6b5b212926027238b3895fe6c5d93f35de08c25f7e9eee11eb74e63ab6"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r3-d0-reference/result.json",
+      "sha256": "0429ab25d10c7c517a636bbce285c547bbb5a08889b096b06c45bd7c38d973ad"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r3-d0-coordinated-2000/result.json",
+      "sha256": "06d891c56852c69558303f6ac7549732aa88c2c34d3869720aa724184c5e138f"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r3-d50-reference/result.json",
+      "sha256": "83787c0691fbc58543c8ef2e26a582bcbf1ae60435409465a4b0940e4580426c"
+    },
+    {
+      "path": "/private/tmp/done-retained-scope-lab-20261101/paired329-r3-d0-immediate-inflight/result.json",
+      "sha256": "f09e34b615466778bc841d36ad68e594ea332a7ddf41509996b08c206d83a27a"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-analysis.json",
+      "sha256": "af732da3f262b04b7b7b0fa1c9436ebe0702fcef236b953d21fd650d6cf4830c"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/result.json",
+      "sha256": "f96c5db579fb2837bb392d8beb78978ed627d0f4de7bc63e86f8ac237b512d05"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/audit333-owner-1-worker-0.json",
+      "sha256": "1c10adca3ba2bffd158c2abea5e85ce2c5770c39bf67c947bdb7daf62f3fae3e"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/audit333-owner-2-worker-0.json",
+      "sha256": "c7d74dbd85fe877c00518873949ef846e11b9433e044844345133821e7079625"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/result.json",
+      "sha256": "b276e5dbcb528072e4586aeb2d9f9853958b641098530eca9aeeb691dcfde781"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/audit333-owner-1-worker-0.json",
+      "sha256": "d9911e45da8f6c03d17f749953e5e2bb46a4ffe17cad71e9a64606c5efebdf7f"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/audit333-owner-2-worker-0.json",
+      "sha256": "37a3b4d077280e7a598145ffb06ec17faa11878745561405eea76e1addb89270"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/result.json",
+      "sha256": "387e49ae7eb55f6454320cc0fbc5452be5cb313c09ba47e470c64d5cbdf0f845"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/audit333-owner-1-worker-0.json",
+      "sha256": "65d2fd86cc412e13ac49216681fa415c2803fc1c22a409816ac6c79421183a1b"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/audit333-owner-2-worker-0.json",
+      "sha256": "f87a0adb08f3a05962d98dce047a9f1f102570efa2caec525fd4fe646efb13d2"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/result.json",
+      "sha256": "93c489df3104c6c5c5eb128af27ea2ea5f5615c7afd283d9adb16e6f7bea2bde"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/audit333-owner-1-worker-0.json",
+      "sha256": "9cfe3a2be5795b58abb96d3341d225588b6d18811ffe2516263b9c608dd35960"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/audit333-owner-2-worker-0.json",
+      "sha256": "004448f51f21ce70f5651942ec9bf1f77aec3131c74c5b6cd1dfd37cd6048a5e"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/result.json",
+      "sha256": "7481796bf5b1143ff1fc2d49c5c6c3cc284beafff18d20ab09d5b9c6f5dd72f6"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/audit333-owner-1-worker-0.json",
+      "sha256": "8560a17dbec7c8ebc416d83e7d6f2dda4132ff0a47c2fa863cecfa85aff49dfe"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/audit333-owner-2-worker-0.json",
+      "sha256": "bdea90c77314d12709e1f51a2e098f0c61a8cb2492382e25f9ab1e5bf3db71a1"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/result.json",
+      "sha256": "86a2a87cd2b0c8b2d191b3d78142e7c6fb6bf4c84d1358f1929941599bd81cd0"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/audit333-owner-1-worker-0.json",
+      "sha256": "39a0f7db51be57afef9cf6d2c3faedd74d9cf357004c13f0b55233d7c7d4701c"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/audit333-owner-2-worker-0.json",
+      "sha256": "89df5ce78d5790c8a0465bb205d4000fa1435152bc77bc8c5cd8fa97f2e4c9ac"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/result.json",
+      "sha256": "a540a05593562a4993ed0733b688d2b2f4bf75355e830142b53b77bc5a6e43c8"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/audit333-owner-1-worker-0.json",
+      "sha256": "e98e3435945ebf5a6f973ce120eb29293397fd6f0c73ec738cc3bc9cd8c3b127"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/audit333-owner-2-worker-0.json",
+      "sha256": "1dd027a1e1f085dc2d79a5b6abae5aa1fd7912f7a11d07a145e0cfba0d93788f"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/result.json",
+      "sha256": "5da1f939ff312a3b7156a6bdeb107c207135bd311b1487de9675e307bf0a550c"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/audit333-owner-1-worker-0.json",
+      "sha256": "b5cc6cefba8829ec45b833485cf7fa1b41e050fa1f0a7e0d0afe27959a948ab9"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/audit333-owner-2-worker-0.json",
+      "sha256": "6612f50f445c0a8d884b3618470addf9f13b3170b179afb0596d10c253f0da53"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/result.json",
+      "sha256": "26c64e1e7715d10576b7f7831311871e127c86028a1d40373427c14264a3d410"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/audit333-owner-1-worker-0.json",
+      "sha256": "1b5fec5d5029d37b64db39e581dfaedddc364401dc3b1de8312a8ef88788659f"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/audit333-owner-2-worker-0.json",
+      "sha256": "3895bdd3c5d0cae6496ae202a199bc141ee0c3df4ff3486c35303b4497bc3c9b"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/result.json",
+      "sha256": "277be8fb92fc2605fff71838ef5a1b01382700ba0642c8e1dacea436eac0a755"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/audit333-owner-1-worker-0.json",
+      "sha256": "1d0a2f05ff70c9b666085710df67d3217f2fbbc07128b72c2fb489807312f03a"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/audit333-owner-2-worker-0.json",
+      "sha256": "b78debc30452e755e0d1fb9a0fd921d697fb8029b095d36695e8bc6ed729036d"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/result.json",
+      "sha256": "f4103e312803cfbe726eb8d88512899282a6f215d2cf2ece1beed57ef2da4eea"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/audit333-owner-1-worker-0.json",
+      "sha256": "f374c50e75ff81b97d8725f951309bf7b6988203c54df4dffe4401832db3f09f"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/audit333-owner-2-worker-0.json",
+      "sha256": "1941687fcc344153edc1b344df68e666926289e752c28a550cd4f1fd17016076"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/result.json",
+      "sha256": "02a573b99c60fb6e41c62a481e06e3701d13a1f1c37ccd2430634a79f18f9ffa"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/audit333-owner-1-worker-0.json",
+      "sha256": "660725e9617d6f4ede590f45356abefbc916985e7967aea6f3f0904bd896b2e6"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/audit333-owner-2-worker-0.json",
+      "sha256": "6b18381db77eaafb7482243b8326c564b7f342761b9678f480f129b87a84b1b9"
+    }
+  ],
+  "source": [
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/verifiedRecords.ts",
+      "sha256": "90e6a1838f09526ca0442eef1c13b122c588665fbd7140cd31f8de79da5abc1a"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/localBaselineReuse.ts",
+      "sha256": "5eaba03cc1bf2ce2b46b82ae89bd9dbbdc79304e3080b93f512c375b2a123833"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/contentStore.ts",
+      "sha256": "96b6d51fd50aeccf429a98417aacca20c48f4ba02626ac38456d6db05bf50580"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/incrementalAccountLedger.ts",
+      "sha256": "d0477080b4b1814a3276a3d61a677c7c82d8293f825edb2e536d7352ef0823a1"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountCapture.ts",
+      "sha256": "5e057a20d050c5ab55380cd21613acc32ff089671715146cb1ca1cb04f17b57c"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountReceive.ts",
+      "sha256": "0241e958bb550ec2fb1db4d4600fa03d7a67f71e353e6b51b662298ddd02feab"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountSyncDriver.ts",
+      "sha256": "218d22d5fd4b77c93a4af107597487ae1cff357efacfe1e803bdc0fab94f98d3"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountReceiveDriver.ts",
+      "sha256": "122943e31783821655bfaf99008d22a94f26304e55381cace85871a309198efd"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/receiveSelection.ts",
+      "sha256": "f7abd23827243f505148e518693895635287e127bf0f44902da3e0e04b93cf96"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/rangeLab.ts",
+      "sha256": "56245b9a6300f61836abeafed6a76a6c248375121774a7adb6f97a13a8884c3a"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/cpuBudget.ts",
+      "sha256": "8d9932f2ffb5de59b5470627b585c92c1cd39e04f4218a29eff588afef066e9f"
+    },
+    {
+      "path": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountDelivery.ts",
+      "sha256": "638d9d134846692d46390e7512dd8124eed91a4f6baf64dfa73f8563bf70c521",
+      "reason": "follow discovered untagged publication storage jobs; read-only source extension"
+    }
+  ],
+  "noTimedRun": true,
+  "acceptanceCredit": false
+}

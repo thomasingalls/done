@@ -1256,3 +1256,7 @@ Matched checkpoint cuts return visibility18.939→2.363s/26.243→2.760s at0/50m
 ### 2026-11-01 — Phase333: idle-audit evidence available, no candidate promoted
 
 Twelve declared paired journeys and per-audit/read-turn/native-queue observations preserved, functional maintenance/cold exact. Consult every directional predicate before selecting further work; no default/hardening/landing or release preparation. The reference-policy input outlier remains unresolved by this two-policy screen. [Results](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md).
+
+### 2026-11-02 — Phase334: trace-only follow-up after signing241–333
+
+All93preparedcommits signed locally; no push/release. Next possible lab questions are aggregated-instrumentation/exactcooperativeprefixloop cost and receiver progress under continuousbidirectional writing, including untaggeddelivery storage boundaries. Existing30journeys/60owners retained; four333latencycells remain failed despite exactwriting/cold. No implementationselected or hardeningstarted. [Details](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md).

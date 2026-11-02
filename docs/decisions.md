@@ -6849,3 +6849,7 @@ Control and checkpoint preparations have identical A/Cnormal-sync steps, onlyCre
 ### 2026-11-01 — Phase333: observe idle scheduling without weakening audit
 
 Private lab choice:1000ms input quiet plus no pending foreground jobs,1024new physical rows forces an attempt; existing full comparison/audit/interruption guards stay. No trust/format/default change, no landing. Functional failures stop, latency failures keep cell failed and continue; a pre-app harness list failure was retained/repaired. The original reference1.422s miss was not directly retested. Operator decides any hardening next. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md).
+
+### 2026-11-02 — Phase334: keep prefix cost separate from receive-service imbalance
+
+Do not treat millions of one-record async comparison calls as full-ledgerreplays or instrumented elapsed spans as CPU. Preserve exactprefix/byte/header/taskchecks and allfreshauthority/witness/commitchecks. Complete333native logs show already-publishedwriting waiting through alternating sends/emptypublisherchecks; optimizingDevice2alonecannotestablish a peer-latencygain. No V/F, limit/defaultselection, build or hardening. Any next diagnostic must separate observation overhead, exactcomparison machinery and receiver scheduling with originalfairness/gates. [Trace](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md).

@@ -18507,3 +18507,7 @@ Both native preparations normally catch C up and preserve1334accepted rows byte-
 ### 2026-11-01 — Phase333: idle-start warm-audit lab screen
 
 Completed12declared paired journeys on329fixture; all complete writing/Undo/both automatic maintenance120s and24offlinecoldowners exact. Full semantic audit during typing observed 1times; every latency predicate/marker/cell remains separately recorded, no acceptance credit.45focusedtests and stricttypecheck pass; failed preflight/typecheck retained.1552canonicalinputs unchanged,indexempty; no runtime patch/default/format/gate change. [Phase333](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md). Outcome recorded before queue advance.
+
+### 2026-11-02 — Phase334: signed prepared series and traced slow direction
+
+Signed93preparedcommits241–333inorder, verifiedeverytree,parentandSSHsignature;head2c92793c,cleanbeforeanalysis,no push. Trace-only analysis of30existingpairedjourneys finds Device2’s8.49–10.49sinstrumented prefix spans plus a separate receiver imbalance: Device1 admits64positions during0msimmediatetyping whileDevice2 starts95–96sends; fiveemptychecks/sixsends separate aG8peer revisit by6.009s. Complete native accounting agreeswithfinalprefixes; high-volume prefixevents truncate, aggregatecounterscontinue. No newrun/app/default/format/gate change or acceptancecredit. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md). Outcome recorded before queue advance.

@@ -1,0 +1,935 @@
+{
+  "base": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "commits": [
+    {
+      "phase": 241,
+      "patch": "241-signed-worker-matched-protocol.patch",
+      "patchSha256": "4d376ca25462c65cd0b1f23c8d63743de4c5c121ecb13adaa0f135aed526ee1f",
+      "commit": "bc7052cee0cbbfc811164f9b56f3c0c4972726eb",
+      "parent": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+      "tree": "5d68193c05cac23e04f3178b496912708c56564d",
+      "signatureVerified": true,
+      "title": "docs: signed worker matched protocol (phase 241)"
+    },
+    {
+      "phase": 242,
+      "patch": "242-matched-catchup-results.patch",
+      "patchSha256": "9b1a05d9bbc13a5a953b422aec9caa4d4a37d50a2944bc184c24415c9045c194",
+      "commit": "0162ed293cd3586413302d6c9b9335a238178556",
+      "parent": "bc7052cee0cbbfc811164f9b56f3c0c4972726eb",
+      "tree": "0a31f1e197425c045d45ae8ac0eac78caba26052",
+      "signatureVerified": true,
+      "title": "docs: matched catchup results (phase 242)"
+    },
+    {
+      "phase": 243,
+      "patch": "243-marker-attribution-protocol.patch",
+      "patchSha256": "92782981bd1fe9ed829d3770b941dcefd7c87cebf61e56e3e4ef9dd47971f5fd",
+      "commit": "34b175cb4f5e39c0d3d7c1cb92cffaa04c1f4c98",
+      "parent": "0162ed293cd3586413302d6c9b9335a238178556",
+      "tree": "237a2fe487ab75ca90fce20bd1415b1c44b47e76",
+      "signatureVerified": true,
+      "title": "docs: marker attribution protocol (phase 243)"
+    },
+    {
+      "phase": 244,
+      "patch": "244-invalid-midnight-diagnostic.patch",
+      "patchSha256": "25c5736f5c83a09ecc82c199f1ea5cfdeffb88aa119e317c6c2b27317d182173",
+      "commit": "291b21c1c3c6976ac1313cc759f4b08d2fd11d49",
+      "parent": "34b175cb4f5e39c0d3d7c1cb92cffaa04c1f4c98",
+      "tree": "b2f17414f29c411f81c73627ef70f4225e18e0d7",
+      "signatureVerified": true,
+      "title": "docs: invalid midnight diagnostic (phase 244)"
+    },
+    {
+      "phase": 245,
+      "patch": "245-civil-diagnostic-apparatus.patch",
+      "patchSha256": "fca9def5ac39dfe409f5ece4a2d849796e06f03005f9f420c948fb10d1c15a45",
+      "commit": "d3c8c015a969e642bb2dc1876b958786b186a66a",
+      "parent": "291b21c1c3c6976ac1313cc759f4b08d2fd11d49",
+      "tree": "38b9ac8ca57783bc403a560fc15bd871cc9653db",
+      "signatureVerified": true,
+      "title": "docs: civil diagnostic apparatus (phase 245)"
+    },
+    {
+      "phase": 246,
+      "patch": "246-marker-attribution-results.patch",
+      "patchSha256": "fa42fbfc32d90981b896b5be874cac4b77422cf1db43cb5af5684bbdf8304441",
+      "commit": "7025561e86d1cdee642e7329c6a9fcd1583657fe",
+      "parent": "d3c8c015a969e642bb2dc1876b958786b186a66a",
+      "tree": "d7f3c942554ccc5231268326d41888332c97d70e",
+      "signatureVerified": true,
+      "title": "docs: marker attribution results (phase 246)"
+    },
+    {
+      "phase": 247,
+      "patch": "247-due-send-yield-contract.patch",
+      "patchSha256": "9914f3ad2d6865efa8f9c27cf4ec85996b51fa6f485d7f8374e683cb9e31c24b",
+      "commit": "e8d147872a1589b3d08176d273a3a5064ba0f851",
+      "parent": "7025561e86d1cdee642e7329c6a9fcd1583657fe",
+      "tree": "90ba6e9f08e038dcd92df73ddddde2ccdcd791d6",
+      "signatureVerified": true,
+      "title": "docs: due send yield contract (phase 247)"
+    },
+    {
+      "phase": 248,
+      "patch": "248-due-send-publisher-yield.patch",
+      "patchSha256": "fa8efdf602c53a3015b09fa406b00011409fae976d5b69691d0f98217832a67f",
+      "commit": "72811d1889895d8316d6ca7f85190ade740de479",
+      "parent": "e8d147872a1589b3d08176d273a3a5064ba0f851",
+      "tree": "87a5d90f50586cb56d6d9ed297bf1623e6ca0d19",
+      "signatureVerified": true,
+      "title": "fix: due send publisher yield (phase 248)"
+    },
+    {
+      "phase": 249,
+      "patch": "249-due-send-comparison-apparatus.patch",
+      "patchSha256": "e67c32550ea216ffec5552b4986cd978ae99612b034973f4fc4931c754a60ec5",
+      "commit": "8bba85dd54a45cc9cf7e089c591486b8a7282f17",
+      "parent": "72811d1889895d8316d6ca7f85190ade740de479",
+      "tree": "d5f739cfb58189d25fde669b53152ffee454aa9b",
+      "signatureVerified": true,
+      "title": "docs: due send comparison apparatus (phase 249)"
+    },
+    {
+      "phase": 250,
+      "patch": "250-due-send-comparison-results.patch",
+      "patchSha256": "91a10be08347143d370ebb2ad194dbc729f62895fc6fef748c44bac9a0ab82c2",
+      "commit": "c99aeb2fd287d1f0f5476bf7edd708acc9a57eeb",
+      "parent": "8bba85dd54a45cc9cf7e089c591486b8a7282f17",
+      "tree": "67dc20091e43572e6828d24e11effe44d16b2f1e",
+      "signatureVerified": true,
+      "title": "docs: due send comparison results (phase 250)"
+    },
+    {
+      "phase": 251,
+      "patch": "251-existing-selection-control.patch",
+      "patchSha256": "b7310557879ba8cf48fa74db0ad3b711ae27663f869add26f5e751ef43af8da5",
+      "commit": "1dbf2c1c24b6b3e92a06bf947be6827c070254c5",
+      "parent": "c99aeb2fd287d1f0f5476bf7edd708acc9a57eeb",
+      "tree": "fe1bb6a85a5ad63154e9de0b14ea4f00e921bb39",
+      "signatureVerified": true,
+      "title": "docs: existing selection control (phase 251)"
+    },
+    {
+      "phase": 252,
+      "patch": "252-existing-selection-control-results.patch",
+      "patchSha256": "39903272a96b4498086345fe328fc65deab6484314efdb7cc5c095e377e07855",
+      "commit": "49a64ecf5463fe059a1b930831178843c141094a",
+      "parent": "1dbf2c1c24b6b3e92a06bf947be6827c070254c5",
+      "tree": "fb9d231a429e4e0b837c1a6f9c06f3b43afdb93d",
+      "signatureVerified": true,
+      "title": "docs: existing selection control results (phase 252)"
+    },
+    {
+      "phase": 253,
+      "patch": "253-input-delay-attribution-protocol.patch",
+      "patchSha256": "c77ccd0ebe8ed8b9658b58ef106fd06c05e0991d76093fb07b24ab4a4519b665",
+      "commit": "68a67e1d7dce19d58200a337e85b0f7fb0ccc418",
+      "parent": "49a64ecf5463fe059a1b930831178843c141094a",
+      "tree": "e9110666b5223d426945c6e2f65edce5a5bbe80e",
+      "signatureVerified": true,
+      "title": "docs: input delay attribution protocol (phase 253)"
+    },
+    {
+      "phase": 254,
+      "patch": "254-input-delay-attribution-results.patch",
+      "patchSha256": "1bd73ea7b6fa88e12cec4342a0274a4ac729cbf7b9d4f568e77234c26273f51a",
+      "commit": "0f0eb9d3e5d4fcb5ac785d3da17f34d53857e708",
+      "parent": "68a67e1d7dce19d58200a337e85b0f7fb0ccc418",
+      "tree": "3a78f839c3e7078f76f38db44b65a9df64d7cf6c",
+      "signatureVerified": true,
+      "title": "docs: input delay attribution results (phase 254)"
+    },
+    {
+      "phase": 255,
+      "patch": "255-native-delivery-crossover-protocol.patch",
+      "patchSha256": "2c6a53a05d29826a30d170cf09a9e165f33bb4e4f661c62447ed76c621e4ba83",
+      "commit": "9796a537d412573d9c09a10ffcb36310baae349b",
+      "parent": "0f0eb9d3e5d4fcb5ac785d3da17f34d53857e708",
+      "tree": "5330d3ba7f8e9e1085ccc7aa2214ff17d5968d81",
+      "signatureVerified": true,
+      "title": "docs: native delivery crossover protocol (phase 255)"
+    },
+    {
+      "phase": 256,
+      "patch": "256-native-delivery-crossover-results.patch",
+      "patchSha256": "c4388a3cddfe8dc77227e554b7ce5331709a544d896348ec5b38922e185746b6",
+      "commit": "482fdde9951acd5f653c5ca61b9d3a97349739f1",
+      "parent": "9796a537d412573d9c09a10ffcb36310baae349b",
+      "tree": "4d5568dc08d82b733503e7dc92f6904eaa2feafa",
+      "signatureVerified": true,
+      "title": "docs: native delivery crossover results (phase 256)"
+    },
+    {
+      "phase": 257,
+      "patch": "257-production-flag-correction.patch",
+      "patchSha256": "3fba9f336e64edfad28929385e3e876e86bd1650aa4911aabf5aededff738611",
+      "commit": "9eb2843340d38f3725c3a0af5ad3e5a6d5a9ad59",
+      "parent": "482fdde9951acd5f653c5ca61b9d3a97349739f1",
+      "tree": "89f3816d1662958e40a63944b2b155e4b7b19055",
+      "signatureVerified": true,
+      "title": "docs: production flag correction (phase 257)"
+    },
+    {
+      "phase": 258,
+      "patch": "258-production-worker-baseline-protocol.patch",
+      "patchSha256": "01d9863c59b0820cf81a3e7bf88306fb73af4dd9bcbe263d22d96d824e2bbb46",
+      "commit": "b1176a6bfff010fb07674f6c1b66e61170f68865",
+      "parent": "9eb2843340d38f3725c3a0af5ad3e5a6d5a9ad59",
+      "tree": "682c997f3a47abe478b9da1a4af3890952f24256",
+      "signatureVerified": true,
+      "title": "docs: production worker baseline protocol (phase 258)"
+    },
+    {
+      "phase": 259,
+      "patch": "259-production-worker-baseline-results.patch",
+      "patchSha256": "19443e558bd8e985b67eddb69dc3c06e0d4d465e18c3ec2f22b7553f57fca6d3",
+      "commit": "873d66f50e6f6cecb457bb485f3c904d933edb91",
+      "parent": "b1176a6bfff010fb07674f6c1b66e61170f68865",
+      "tree": "6d6ffacb69061108fca0a7b4781f24acc0d0f4bf",
+      "signatureVerified": true,
+      "title": "docs: production worker baseline results (phase 259)"
+    },
+    {
+      "phase": 260,
+      "patch": "260-production-cold-compatibility-protocol.patch",
+      "patchSha256": "f642bafa6ea928059ed2db3038981d38ba26596a18df473048a7174b7c66aac4",
+      "commit": "a12ff8855c1d54835953072cada738df33a15143",
+      "parent": "873d66f50e6f6cecb457bb485f3c904d933edb91",
+      "tree": "7d4da930a181855e8c211e29f05bf896f7a77acb",
+      "signatureVerified": true,
+      "title": "docs: production cold compatibility protocol (phase 260)"
+    },
+    {
+      "phase": 261,
+      "patch": "261-production-cold-compatibility-results.patch",
+      "patchSha256": "7ef1dfbd1bd6a34e40787f4d6baf2bf07dd62251095c114306b997ca8b6f58ed",
+      "commit": "127dd17da7023c0ad390f635d16b15d01d2c69d5",
+      "parent": "a12ff8855c1d54835953072cada738df33a15143",
+      "tree": "ec121ac239e1c808947df48951e5a99fe2d0c241",
+      "signatureVerified": true,
+      "title": "docs: production cold compatibility results (phase 261)"
+    },
+    {
+      "phase": 262,
+      "patch": "262-quiet-host-input-protocol.patch",
+      "patchSha256": "ac484d5cbd214fb9ebc3c226ed3baf6d9324879dbce83fc9bcd6c7534d90c0d0",
+      "commit": "4e02690613e15fd50b0a5ef61bbc936b11759216",
+      "parent": "127dd17da7023c0ad390f635d16b15d01d2c69d5",
+      "tree": "afebe2f7ccfeb978cae57b8016d64d8b3b532553",
+      "signatureVerified": true,
+      "title": "docs: quiet host input protocol (phase 262)"
+    },
+    {
+      "phase": 263,
+      "patch": "263-quiet-host-input-results.patch",
+      "patchSha256": "a17e1b68c48b56f05abddeb47749432e22fe473c94ec37aa550cb104b0ada298",
+      "commit": "cd8bd50345af114177b98e753f7a18d0cd48c418",
+      "parent": "4e02690613e15fd50b0a5ef61bbc936b11759216",
+      "tree": "c83f4550b5266cb602092d2b5d996a0d9529ba9e",
+      "signatureVerified": true,
+      "title": "docs: quiet host input results (phase 263)"
+    },
+    {
+      "phase": 264,
+      "patch": "264-session-budget-falsifier-protocol.patch",
+      "patchSha256": "9527d4ee206e6f7fa621cc7985a52a8c13f57d466e9685841ad4a1c0c059e826",
+      "commit": "53a6026821ae5823e51ba53ff5d617c85657cde1",
+      "parent": "cd8bd50345af114177b98e753f7a18d0cd48c418",
+      "tree": "5be29cea1bdf5d60bd6717709def08d5bdfa0a76",
+      "signatureVerified": true,
+      "title": "docs: session budget falsifier protocol (phase 264)"
+    },
+    {
+      "phase": 265,
+      "patch": "265-session-budget-falsifier-results.patch",
+      "patchSha256": "a651f25a6887b413d101c93a8825979c4252f7cbbb258801fdc1924460c87591",
+      "commit": "a0d4b8465b246793e4f8ebf13a131a1e2d896b49",
+      "parent": "53a6026821ae5823e51ba53ff5d617c85657cde1",
+      "tree": "2064e9c5532abfe694e4219e5557dcc78eb9c828",
+      "signatureVerified": true,
+      "title": "docs: session budget falsifier results (phase 265)"
+    },
+    {
+      "phase": 266,
+      "patch": "266-public-cold-attribution-protocol.patch",
+      "patchSha256": "2497ce7f6dee8b069e90c4fc3d160755557cd5490fcf29718f4a5f384660823f",
+      "commit": "b2641c34b6b4fe9cd70dc273934c47c9c5f8366b",
+      "parent": "a0d4b8465b246793e4f8ebf13a131a1e2d896b49",
+      "tree": "bcb19bbb901c9a471ebb5ba06f06aa250b0723dd",
+      "signatureVerified": true,
+      "title": "docs: public cold attribution protocol (phase 266)"
+    },
+    {
+      "phase": 267,
+      "patch": "267-public-cold-partial-results.patch",
+      "patchSha256": "73e5fc0c5e0ae9030a40a0305a12a2403cb1e9dce4d9f5812c1b47d19061ea62",
+      "commit": "532e5b4289614941405304a364beed62902a8148",
+      "parent": "b2641c34b6b4fe9cd70dc273934c47c9c5f8366b",
+      "tree": "c18a6a6b15f4e804c01ba1b0c63cded66f23dbef",
+      "signatureVerified": true,
+      "title": "docs: public cold partial results (phase 267)"
+    },
+    {
+      "phase": 268,
+      "patch": "268-actual-cold-owner-error-protocol.patch",
+      "patchSha256": "d2e036dc3f5ce55204df6cc0349b3638add72539167a6433b35205f462ee6588",
+      "commit": "545a05a7c23fcf44604f6b257c0126c57b427cc5",
+      "parent": "532e5b4289614941405304a364beed62902a8148",
+      "tree": "9af233bffc40144b6ff0078bf1483007a1b08335",
+      "signatureVerified": true,
+      "title": "docs: actual cold owner error protocol (phase 268)"
+    },
+    {
+      "phase": 269,
+      "patch": "269-cold-owner-attribution-results.patch",
+      "patchSha256": "c1fab2a098f8455903d062f47b78e528827352ad9c8fb72fca5f2477ec8b88fb",
+      "commit": "527f0bb209361f3e1763c873dc4345d8cbad1b0e",
+      "parent": "545a05a7c23fcf44604f6b257c0126c57b427cc5",
+      "tree": "58bf762af755ba8f97f212a373d9c79fa784b180",
+      "signatureVerified": true,
+      "title": "docs: cold owner attribution results (phase 269)"
+    },
+    {
+      "phase": 270,
+      "patch": "270-baseline-recovery-red-contract.patch",
+      "patchSha256": "b010ef5e351d5b35019763f94e5f39df74597e6967c7ac2a476c74befd38ac31",
+      "commit": "5baa0efa9bc7d76d2396542198fc8cc32170548c",
+      "parent": "527f0bb209361f3e1763c873dc4345d8cbad1b0e",
+      "tree": "879fe31b5c31a70569e470902584fe1f930645a9",
+      "signatureVerified": true,
+      "title": "docs: baseline recovery red contract (phase 270)"
+    },
+    {
+      "phase": 271,
+      "patch": "271-baseline-recovery-compatibility.patch",
+      "patchSha256": "03406e26bc9fc09a2100357630b98eee4f1c746a5ad2a5315ac3ff7e055e7dc0",
+      "commit": "caa88dce74281e16c572d1b67cc3ed6b852524ad",
+      "parent": "5baa0efa9bc7d76d2396542198fc8cc32170548c",
+      "tree": "9ff92ca1ea435bc649eb1350c6aa0cc8d9d2527e",
+      "signatureVerified": true,
+      "title": "fix: baseline recovery compatibility (phase 271)"
+    },
+    {
+      "phase": 272,
+      "patch": "272-repaired-native-walkthrough-protocol.patch",
+      "patchSha256": "551e58ea84c105cdff69f6c0c111d9f04415436656e684d392256960ba3a9294",
+      "commit": "cab7d3eac627732aed0bcb86bf258a84d4985ab4",
+      "parent": "caa88dce74281e16c572d1b67cc3ed6b852524ad",
+      "tree": "e812877e87da152ca78702388dc565515b78a838",
+      "signatureVerified": true,
+      "title": "docs: repaired native walkthrough protocol (phase 272)"
+    },
+    {
+      "phase": 273,
+      "patch": "273-repaired-native-walkthrough-results.patch",
+      "patchSha256": "5180a7ec0ef19a84d77ccf605c94edefd5a0125245b5d782d738dbb3fb303f43",
+      "commit": "b7fd601c5836957255f816301f74eaed8a2cfb0e",
+      "parent": "cab7d3eac627732aed0bcb86bf258a84d4985ab4",
+      "tree": "43691785cae070f175735eaec2b40477ad38b9cc",
+      "signatureVerified": true,
+      "title": "docs: repaired native walkthrough results (phase 273)"
+    },
+    {
+      "phase": 274,
+      "patch": "274-unreduced-baseline-contract.patch",
+      "patchSha256": "d6a65e631e80d2fdda9a2a2305507382bef6b4cabf5c18206af5c9e7d0e798c0",
+      "commit": "87da23d5b6209838332695c9c01c1cc5d2f7e94a",
+      "parent": "b7fd601c5836957255f816301f74eaed8a2cfb0e",
+      "tree": "bd94ff8d2cd71523efd338893dbc3bfdcd183715",
+      "signatureVerified": true,
+      "title": "docs: unreduced baseline contract (phase 274)"
+    },
+    {
+      "phase": 275,
+      "patch": "275-unreduced-exact-reuse.patch",
+      "patchSha256": "de8fc6a793d4bd2aca9e161e5a82fbb0ca5fcaf4930f1d52f5a3e41cd391bd21",
+      "commit": "239948ffd5d0a237877e10aaa3bbdeb90a87bc12",
+      "parent": "87da23d5b6209838332695c9c01c1cc5d2f7e94a",
+      "tree": "3bad0b690db65afa98a77312df5ff49c1350dcef",
+      "signatureVerified": true,
+      "title": "fix: unreduced exact reuse (phase 275)"
+    },
+    {
+      "phase": 276,
+      "patch": "276-unreduced-cold-protocol.patch",
+      "patchSha256": "934efdc4cd817a3048be6f544eeeb0f87b71984e8c0c026e427a494e3bca6dc1",
+      "commit": "5761a4d1bf83c6eac2f181ac5758a33098d30c39",
+      "parent": "239948ffd5d0a237877e10aaa3bbdeb90a87bc12",
+      "tree": "0b77d27f9fe16100d17b84a96567c1f4f8c91419",
+      "signatureVerified": true,
+      "title": "docs: unreduced cold protocol (phase 276)"
+    },
+    {
+      "phase": 277,
+      "patch": "277-unreduced-cold-outcome.patch",
+      "patchSha256": "eb29a8c5465542f51b3e5cab444ad7003e7521fb8365f867b211b64fd35e5cab",
+      "commit": "9cc358e2780ded8823393057637c5168724a993f",
+      "parent": "5761a4d1bf83c6eac2f181ac5758a33098d30c39",
+      "tree": "1073410d395060c50dc3a0af16965a279fcf1341",
+      "signatureVerified": true,
+      "title": "docs: unreduced cold outcome (phase 277)"
+    },
+    {
+      "phase": 278,
+      "patch": "278-deep-traffic-protocol.patch",
+      "patchSha256": "d171989f02ec74503f4516f80e973879d0857c0011516ffeda6e11468b6117f9",
+      "commit": "095163d6e8b128a27b1feeee592a8a3df55b4a2a",
+      "parent": "9cc358e2780ded8823393057637c5168724a993f",
+      "tree": "5ebe13877a450a0858ee1fa6851b0313c1cdb5ab",
+      "signatureVerified": true,
+      "title": "docs: deep traffic protocol (phase 278)"
+    },
+    {
+      "phase": 279,
+      "patch": "279-deep-single-entry-trace.patch",
+      "patchSha256": "395a2b101d8c0fd2a90609e3704ee19999fb92c67dafa7ce2357bdc2ef30e81a",
+      "commit": "f9de137cc16f4e1a171dcb46b31fabc7c4bff38b",
+      "parent": "095163d6e8b128a27b1feeee592a8a3df55b4a2a",
+      "tree": "c8f466a1fadf7b7facdffbe9a018246bb7738f9f",
+      "signatureVerified": true,
+      "title": "docs: deep single entry trace (phase 279)"
+    },
+    {
+      "phase": 280,
+      "patch": "280-multi-entry-reader-contract.patch",
+      "patchSha256": "1e6840d82f79cd787f022b9af5f9cb373bb67a76e91470d51c6b721715cce7d5",
+      "commit": "ec97ea48b950284947c7e4368f88d0a8bbb92199",
+      "parent": "f9de137cc16f4e1a171dcb46b31fabc7c4bff38b",
+      "tree": "17b2c488202e0255a5c4439cc3e8a4df6e0c53fd",
+      "signatureVerified": true,
+      "title": "docs: multi entry reader contract (phase 280)"
+    },
+    {
+      "phase": 281,
+      "patch": "281-unreduced-work-count-protocol.patch",
+      "patchSha256": "e3bcba8cc37dd22919d420a30e236574ec8b1014235d8f91ed5ae86c99c5f3aa",
+      "commit": "8329170f2fc98cd833591c982d2f5cbf3fc182e4",
+      "parent": "ec97ea48b950284947c7e4368f88d0a8bbb92199",
+      "tree": "79da0c4ee9c648863d09d7e669d09e183b41e2f6",
+      "signatureVerified": true,
+      "title": "docs: unreduced work count protocol (phase 281)"
+    },
+    {
+      "phase": 282,
+      "patch": "282-unreduced-work-count-outcome.patch",
+      "patchSha256": "186a856076bd00cc9898fbb0b226337d4061fceb6cf5550f26e97720de26b3ca",
+      "commit": "97464142ff81eea4a20b4de30938c2961ef3df24",
+      "parent": "8329170f2fc98cd833591c982d2f5cbf3fc182e4",
+      "tree": "2bc862540bf0ad4ce5962af72e0572a025b68c49",
+      "signatureVerified": true,
+      "title": "docs: unreduced work count outcome (phase 282)"
+    },
+    {
+      "phase": 283,
+      "patch": "283-multi-entry-reader-coverage.patch",
+      "patchSha256": "e8c30b49c46a97aecbc52b93f876afc1248a294da3de97d19129af4853ca8921",
+      "commit": "ff2a352bdef3387d61c7bf5e537997660fb66786",
+      "parent": "97464142ff81eea4a20b4de30938c2961ef3df24",
+      "tree": "4e9236b81b13f5d5fbafd13e1252ed0ccc80ad87",
+      "signatureVerified": true,
+      "title": "docs: multi entry reader coverage (phase 283)"
+    },
+    {
+      "phase": 284,
+      "patch": "284-multi-entry-reader.patch",
+      "patchSha256": "cdba614d01e341a56b6d64fe80b890127e5305fa2341a0e34099e101066bbaf2",
+      "commit": "31cea8f8d5e552c1061bc4c336ecc33baf409162",
+      "parent": "ff2a352bdef3387d61c7bf5e537997660fb66786",
+      "tree": "e1a9e38a930a7d558a390ee16361e69f355b242b",
+      "signatureVerified": true,
+      "title": "fix: multi entry reader (phase 284)"
+    },
+    {
+      "phase": 285,
+      "patch": "285-composed-peer-range-writer.patch",
+      "patchSha256": "fada958ad57dc02f2e433e873afe97b9cd6fc575c05e2d809e9cc6b8382b654d",
+      "commit": "cc7efbae1711576243a7e8c73c6a45fd206e44c1",
+      "parent": "31cea8f8d5e552c1061bc4c336ecc33baf409162",
+      "tree": "d6f0e0d45cb045146c1dfd0e08a79e79f937af5f",
+      "signatureVerified": true,
+      "title": "fix: composed peer range writer (phase 285)"
+    },
+    {
+      "phase": 286,
+      "patch": "286-range-four-deep-protocol.patch",
+      "patchSha256": "b8b5dd3df4d61e001f3307794e948e92b229084abc17967c06536143f1aa9b07",
+      "commit": "b63ec561c0aa439eac5ca0985b01c1932658cd33",
+      "parent": "cc7efbae1711576243a7e8c73c6a45fd206e44c1",
+      "tree": "b5b21953193e5e5386230769446b9a15be358e7c",
+      "signatureVerified": true,
+      "title": "docs: range four deep protocol (phase 286)"
+    },
+    {
+      "phase": 287,
+      "patch": "287-range-four-deep-outcome.patch",
+      "patchSha256": "bf80e108d40c7883dff6183d9ff7429458c91b080cd0742b8b1a029cccddd622",
+      "commit": "b9a236a8cc68c0d88a5eb8306bd1de69746f0772",
+      "parent": "b63ec561c0aa439eac5ca0985b01c1932658cd33",
+      "tree": "8a99eda33ea7014fd1e0c87c4e671baf128a72bd",
+      "signatureVerified": true,
+      "title": "docs: range four deep outcome (phase 287)"
+    },
+    {
+      "phase": 288,
+      "patch": "288-bounded-range-preparation-regressions.patch",
+      "patchSha256": "af2e6af5b0758fbb11806cd600b4e81b03ebdc2ac9ade1b5291f9407a9538572",
+      "commit": "cf11bd5037533bb661c73dd940d43ad8ae7d601c",
+      "parent": "b9a236a8cc68c0d88a5eb8306bd1de69746f0772",
+      "tree": "92b8f2a6f18137f9a0224451b48dee7ed40c7509",
+      "signatureVerified": true,
+      "title": "test: bounded range preparation regressions (phase 288)"
+    },
+    {
+      "phase": 289,
+      "patch": "289-bounded-range-preparation.patch",
+      "patchSha256": "b4570febed3de339a979aed12862c663def54417ea25625fce74b78b18ec9070",
+      "commit": "fa05eb4d09c9a7e369bc0cb640affef760e57a05",
+      "parent": "cf11bd5037533bb661c73dd940d43ad8ae7d601c",
+      "tree": "8d8ef042c03e5c08cf82b268d2f2763c7628b012",
+      "signatureVerified": true,
+      "title": "fix: bounded range preparation (phase 289)"
+    },
+    {
+      "phase": 290,
+      "patch": "290-range-eight-raw-tail.patch",
+      "patchSha256": "ed31abca0073cd12256f56cf69ca4fb09bc9d739ec32f718d5a5379ff995f9a2",
+      "commit": "6d80a48c79c187f6ba9d5f79366177bc2bb46820",
+      "parent": "fa05eb4d09c9a7e369bc0cb640affef760e57a05",
+      "tree": "d5625180a8f632f15e8b7441c3cf58b0a8539911",
+      "signatureVerified": true,
+      "title": "fix: range eight raw tail (phase 290)"
+    },
+    {
+      "phase": 291,
+      "patch": "291-aligned-range-download.patch",
+      "patchSha256": "448c8c69ff71984261712a69680520c92eedbe69e7ba16287cc5c5838a128d72",
+      "commit": "41e58063fc40de77d95c070a24a9ac3093aa6196",
+      "parent": "6d80a48c79c187f6ba9d5f79366177bc2bb46820",
+      "tree": "319d0f5b84d685e85a2b7642f135df3fe3df206d",
+      "signatureVerified": true,
+      "title": "fix: aligned range download (phase 291)"
+    },
+    {
+      "phase": 292,
+      "patch": "292-range-eight-deep-protocol.patch",
+      "patchSha256": "f2534999d35ee78432d72ec65cee1fa2470064e53ac6f55cba532a649daef5ee",
+      "commit": "4000bcc805013370b32ce34b1d8ad55ffbbc953a",
+      "parent": "41e58063fc40de77d95c070a24a9ac3093aa6196",
+      "tree": "07ae4f7f3a174f2974acadf8fba94ef3a3c16fcb",
+      "signatureVerified": true,
+      "title": "docs: range eight deep protocol (phase 292)"
+    },
+    {
+      "phase": 293,
+      "patch": "293-range-eight-deep-outcome.patch",
+      "patchSha256": "2d744e9fe596c0aae87e261c2f65dcd93c9bec17e50737d96d7c306006fc2d32",
+      "commit": "5d57bdfbac28bff83f92fca53ec921f019fa4f7e",
+      "parent": "4000bcc805013370b32ce34b1d8ad55ffbbc953a",
+      "tree": "98034c9adfe499222fbe8ccc8bb280b38e7ec4b7",
+      "signatureVerified": true,
+      "title": "docs: range eight deep outcome (phase 293)"
+    },
+    {
+      "phase": 294,
+      "patch": "294-page-deep-lab64-protocol.patch",
+      "patchSha256": "067b25ec4af4244c0331057f23fe1a6b334bdff4aba08318acac98e13172efbf",
+      "commit": "151f14101b1a6859fdde7e0f0e72c550ececd264",
+      "parent": "5d57bdfbac28bff83f92fca53ec921f019fa4f7e",
+      "tree": "822ea583c836e1343d168b7bc4961c2d3087a84f",
+      "signatureVerified": true,
+      "title": "docs: page deep lab64 protocol (phase 294)"
+    },
+    {
+      "phase": 295,
+      "patch": "295-page-deep-lab64-outcome.patch",
+      "patchSha256": "044560c1dbe20cf6dc19c4227fa2fc6cb3dbfa9a19e482ab66986f8322e991c5",
+      "commit": "a96ef60f5350ff9bc8bf03b000204c1f5a2400ca",
+      "parent": "151f14101b1a6859fdde7e0f0e72c550ececd264",
+      "tree": "40c701a3f23aac50fc8d33604f1df5ddc5d8047d",
+      "signatureVerified": true,
+      "title": "docs: page deep lab64 outcome (phase 295)"
+    },
+    {
+      "phase": 296,
+      "patch": "296-civil-fixture-recipe.patch",
+      "patchSha256": "4689bc38849664989a765be5dfd7ed8ab123f89b2a7d1bd43c891ecb647b3269",
+      "commit": "238451c1a2f765bb3ef9d6039d803e72c32ee230",
+      "parent": "a96ef60f5350ff9bc8bf03b000204c1f5a2400ca",
+      "tree": "96106745dbf62442b831f7a4c066905b3a48defe",
+      "signatureVerified": true,
+      "title": "docs: civil fixture recipe (phase 296)"
+    },
+    {
+      "phase": 297,
+      "patch": "297-civil-fixture-outcome-and-verifier.patch",
+      "patchSha256": "2882965a1a814f903e702664d5af2e3c7a0eb98d240ca5bbf711bfbeb11917a9",
+      "commit": "2abdc7536f46fafa457f740a0f50305e8fc8f7e3",
+      "parent": "238451c1a2f765bb3ef9d6039d803e72c32ee230",
+      "tree": "83a5d1c2bb2b8988ea7c5a7b2b86aa916022718a",
+      "signatureVerified": true,
+      "title": "docs: civil fixture outcome and verifier (phase 297)"
+    },
+    {
+      "phase": 298,
+      "patch": "298-civil-fixture-role-adapter.patch",
+      "patchSha256": "94d6c18d08aee386f087b53277c2cd6c80eea84e4cc46c21dbb583cbb83c6944",
+      "commit": "a1e08d0fc91ba367c55d4cdf1a2bb3da77bd80ee",
+      "parent": "2abdc7536f46fafa457f740a0f50305e8fc8f7e3",
+      "tree": "32ee1d8bb602e2c32b3ca08890fddfa1c3ce0250",
+      "signatureVerified": true,
+      "title": "docs: civil fixture role adapter (phase 298)"
+    },
+    {
+      "phase": 299,
+      "patch": "299-fresh-fixture-ordinary-gate-protocol.patch",
+      "patchSha256": "5e16c29bf586c93409647e021a434a21a522eec95afb2fd4c34189ffcdcee4a6",
+      "commit": "a8b2f3b9a30729ad885984ac20b0db9424138a93",
+      "parent": "a1e08d0fc91ba367c55d4cdf1a2bb3da77bd80ee",
+      "tree": "0dc12668861a214c45bab0eaeccfb3db408429e1",
+      "signatureVerified": true,
+      "title": "docs: fresh fixture ordinary gate protocol (phase 299)"
+    },
+    {
+      "phase": 300,
+      "patch": "300-signed-withheld-gates-pass.patch",
+      "patchSha256": "2d73b3bb9d854393958a62da62eaa9a088ce46c4d086ec31fc7de897acc1da37",
+      "commit": "c6b26a3e3958dda21134717338d2f9a13b2d0f25",
+      "parent": "a8b2f3b9a30729ad885984ac20b0db9424138a93",
+      "tree": "6881ccaea9188d950a188caf51a4f3b3d844dd34",
+      "signatureVerified": true,
+      "title": "docs: signed withheld gates pass (phase 300)"
+    },
+    {
+      "phase": 301,
+      "patch": "301-pinned-browser-gate-protocol.patch",
+      "patchSha256": "9a42aa96571896fb5d6d37d2f7bed245eece70b90f27aa4ba52fc84cc2265151",
+      "commit": "a2e745743bd71d1689f327694d14bac9984e4a58",
+      "parent": "c6b26a3e3958dda21134717338d2f9a13b2d0f25",
+      "tree": "90d967e42236d0679e019f59000ca4a5c07d7cef",
+      "signatureVerified": true,
+      "title": "docs: pinned browser gate protocol (phase 301)"
+    },
+    {
+      "phase": 302,
+      "patch": "302-pinned-signed-input-miss.patch",
+      "patchSha256": "a98e6a75c8ee3f96a79738fb3a6cbda865287ddd01bf9bae0a39027912cb2a79",
+      "commit": "9c81336e9999186fe2bb0b7eb6ac6b18d0f174d7",
+      "parent": "a2e745743bd71d1689f327694d14bac9984e4a58",
+      "tree": "1f61bc78dd2df73e4e1523489f9549ed61eb89d6",
+      "signatureVerified": true,
+      "title": "docs: pinned signed input miss (phase 302)"
+    },
+    {
+      "phase": 303,
+      "patch": "303-matched-yield-withheld-pass.patch",
+      "patchSha256": "932384b6925abf7d92b602a342983334434a3f0fb8e8f5dc6c87190be6043303",
+      "commit": "0aa5f9707bed3a1c772df9a789b97e13eabd2c9c",
+      "parent": "9c81336e9999186fe2bb0b7eb6ac6b18d0f174d7",
+      "tree": "483278142614666b6a7a67b75f972aafffe114d8",
+      "signatureVerified": true,
+      "title": "docs: matched yield withheld pass (phase 303)"
+    },
+    {
+      "phase": 304,
+      "patch": "304-current-normal-marker-miss.patch",
+      "patchSha256": "2023b4113217f129bcb91b2c551d468797ef738aaf955ad747ec53d601f1e647",
+      "commit": "9d6e93565c02a3789d31aa5e3292b753652080e9",
+      "parent": "0aa5f9707bed3a1c772df9a789b97e13eabd2c9c",
+      "tree": "38c9049fde9dfb2d0fd5ca76fc8408a2477b2fc8",
+      "signatureVerified": true,
+      "title": "docs: current normal marker miss (phase 304)"
+    },
+    {
+      "phase": 305,
+      "patch": "305-current-fairness-performance-failures.patch",
+      "patchSha256": "4fb64070b6f85c20d72c7150b6d2bf09dcbda036f7215f75416c95f47eed5049",
+      "commit": "6d182ea79e83f500bddeef26a4acfccddd5389d6",
+      "parent": "9d6e93565c02a3789d31aa5e3292b753652080e9",
+      "tree": "f8b41472fb82c33128f6d46b030748a26b5c2319",
+      "signatureVerified": true,
+      "title": "docs: current fairness performance failures (phase 305)"
+    },
+    {
+      "phase": 306,
+      "patch": "306-default-off-range-writer.patch",
+      "patchSha256": "2761df3f68a8656f5ea9e9f8602af29654eb6f473d13c320f6c4d97348d94336",
+      "commit": "9672289e09977b60ca72a5201a019d0c2283623f",
+      "parent": "6d182ea79e83f500bddeef26a4acfccddd5389d6",
+      "tree": "2802c0629444a563d55ce24588a496f4c6327814",
+      "signatureVerified": true,
+      "title": "fix: default off range writer (phase 306)"
+    },
+    {
+      "phase": 307,
+      "patch": "307-range-lab-screen-evidence.patch",
+      "patchSha256": "eb0991cfce96f5694cca067e6d6d8fcededfd5f02f03b9604437fdd87d99b757",
+      "commit": "9f48a062fd4cc1735999f88110b54a9c09f2cc50",
+      "parent": "9672289e09977b60ca72a5201a019d0c2283623f",
+      "tree": "eb5348944ca30b67874579e1413d298500f234d0",
+      "signatureVerified": true,
+      "title": "docs: range lab screen evidence (phase 307)"
+    },
+    {
+      "phase": 308,
+      "patch": "308-lab-suffix-repair-maintenance-evidence.patch",
+      "patchSha256": "29bd1e694bc4c049072f2d2547574b675c5b8b570195eccb7e5376fe2194c6ae",
+      "commit": "1978cd55b896a1b956454062dac21c414f4ec5d6",
+      "parent": "9f48a062fd4cc1735999f88110b54a9c09f2cc50",
+      "tree": "3cec390afa3291f4874a9dd24103c58cdd1b7fde",
+      "signatureVerified": true,
+      "title": "docs: lab suffix repair maintenance evidence (phase 308)"
+    },
+    {
+      "phase": 309,
+      "patch": "309-unfixed-maintenance-priority-trace-evidence.patch",
+      "patchSha256": "f73998febe2a2442fff494c294109feba33ab89a32292dfe033e99b089a21d7b",
+      "commit": "dbceb915d365931cc6065c13dc052620e564d4a3",
+      "parent": "1978cd55b896a1b956454062dac21c414f4ec5d6",
+      "tree": "c05ccec296f258d1f4d36c8acbe6bb2a12f70cd1",
+      "signatureVerified": true,
+      "title": "docs: unfixed maintenance priority trace evidence (phase 309)"
+    },
+    {
+      "phase": 310,
+      "patch": "310-reader-idle-slice-capacity-evidence.patch",
+      "patchSha256": "f34e52fb8159aef4f3e4f9cc4112705b7d8289070cee26c4c3fad8d0088ba9f1",
+      "commit": "02985ef81345a6904ff9f07e251c4bf19cdc6fd1",
+      "parent": "dbceb915d365931cc6065c13dc052620e564d4a3",
+      "tree": "5b78a4c28e8ed073253e1f022c0411c32d1cbd85",
+      "signatureVerified": true,
+      "title": "docs: reader idle slice capacity evidence (phase 310)"
+    },
+    {
+      "phase": 311,
+      "patch": "311-sy-screen-reader-capacity-evidence.patch",
+      "patchSha256": "2302a955f5a5b920e2e506afb5a3f57e67488d510d54d334c28e64b93029d585",
+      "commit": "61ea66f963b39ee5ff1bb2655115c0f10647edba",
+      "parent": "02985ef81345a6904ff9f07e251c4bf19cdc6fd1",
+      "tree": "9b11c87707dfca1f03a53313d12686556d75207b",
+      "signatureVerified": true,
+      "title": "docs: sy screen reader capacity evidence (phase 311)"
+    },
+    {
+      "phase": 312,
+      "patch": "312-dense-page-prototype-cut-evidence.patch",
+      "patchSha256": "4dbf7ae9bec193b3f546bbbeb9a33c9c704061c45ce21eb1c102d2cd177e7346",
+      "commit": "43ae9162a2642989b33bf95bf92c0ab72d513f77",
+      "parent": "61ea66f963b39ee5ff1bb2655115c0f10647edba",
+      "tree": "9542c700506203845cef65dc425b7676de40628a",
+      "signatureVerified": true,
+      "title": "docs: dense page prototype cut evidence (phase 312)"
+    },
+    {
+      "phase": 313,
+      "patch": "313-dense-page-paired-deep-screen-evidence.patch",
+      "patchSha256": "e2467bb1925d0631707216e4517b44553295079b6f5f3fb9b29ee8e0d6c119dc",
+      "commit": "a973428160bede605a6b848cbef4493e6aac059f",
+      "parent": "43ae9162a2642989b33bf95bf92c0ab72d513f77",
+      "tree": "5a9e2d8dd36275e2e4d94b6b576e8220bc67ef3c",
+      "signatureVerified": true,
+      "title": "docs: dense page paired deep screen evidence (phase 313)"
+    },
+    {
+      "phase": 314,
+      "patch": "314-dense-page-grown-capacity-evidence.patch",
+      "patchSha256": "0d4560f86572139f92b3aaca6e5131fb633e0879eb380285819890b27cb5e438",
+      "commit": "d1b929a4809a307b4d530ac87779cb602e51ccbd",
+      "parent": "a973428160bede605a6b848cbef4493e6aac059f",
+      "tree": "3b243b0fdcb86a96c3cda5097a00bec87a8d43b5",
+      "signatureVerified": true,
+      "title": "docs: dense page grown capacity evidence (phase 314)"
+    },
+    {
+      "phase": 315,
+      "patch": "315-adaptive-repair-dose-normal-traffic-evidence.patch",
+      "patchSha256": "87dd4964a15da95dc7014538000a701d81dee82d2ae53632d85eca95f9cef9e6",
+      "commit": "1727ca1d8b30201320db50bdaf063bf9fe410b37",
+      "parent": "d1b929a4809a307b4d530ac87779cb602e51ccbd",
+      "tree": "5cf625c1c4b49b79789df22aef6b7cf7f8146430",
+      "signatureVerified": true,
+      "title": "docs: adaptive repair dose normal traffic evidence (phase 315)"
+    },
+    {
+      "phase": 316,
+      "patch": "316-real-3072-cohort-interrupted-generation-evidence.patch",
+      "patchSha256": "d12602887787e2fbb5e7b572c73dec48dfc8699affb90806a6ac5d5156592dd1",
+      "commit": "b06ededa02cbbbb6d45ccc0ecb27202abe826528",
+      "parent": "1727ca1d8b30201320db50bdaf063bf9fe410b37",
+      "tree": "463dd856b1bee25ed3e0d05ebb2cb57c073ca014",
+      "signatureVerified": true,
+      "title": "docs: real 3072 cohort interrupted generation evidence (phase 316)"
+    },
+    {
+      "phase": 317,
+      "patch": "317-3072-reader-index-capacity-evidence.patch",
+      "patchSha256": "7f939935ce6f96b16c341d070d4aa9863a04a898b25973cb5c6305af795e5c23",
+      "commit": "2a2abf50a2a74bc89c506c26b0a18aab77f9490c",
+      "parent": "b06ededa02cbbbb6d45ccc0ecb27202abe826528",
+      "tree": "6384a17858bce0288de4f16f7b0b4549acd22659",
+      "signatureVerified": true,
+      "title": "docs: 3072 reader index capacity evidence (phase 317)"
+    },
+    {
+      "phase": 318,
+      "patch": "318-named-hints-normal-repair-controls-evidence.patch",
+      "patchSha256": "97386b214d2e536f1ad70e82f116ec447a83c6766c058d601eb0a88811c7acde",
+      "commit": "c28beaa4d0af548bbba539c0e0804733cd163df4",
+      "parent": "2a2abf50a2a74bc89c506c26b0a18aab77f9490c",
+      "tree": "3e67718caacf16140b5c6ef4b5301526d985dd3e",
+      "signatureVerified": true,
+      "title": "docs: named hints normal repair controls evidence (phase 318)"
+    },
+    {
+      "phase": 319,
+      "patch": "319-original-fixture-cold-observers-gate-plan-evidence.patch",
+      "patchSha256": "9621f5c63bef7cda63052d61f5396aa7c8792d36bc535db72a832cfb81c4035e",
+      "commit": "168040671ffdb9fdcae1c7e7f160daf3cdc078ae",
+      "parent": "c28beaa4d0af548bbba539c0e0804733cd163df4",
+      "tree": "e90383d972e69f30918febc4891f963ed8a45d1f",
+      "signatureVerified": true,
+      "title": "docs: original fixture cold observers gate plan evidence (phase 319)"
+    },
+    {
+      "phase": 320,
+      "patch": "320-frozen-gates-retry-and-landing-evidence.patch",
+      "patchSha256": "fea6947b95987120826e221f2ed4696e56ae810c7829478c1c64a230107c23e9",
+      "commit": "9705e2105db9acbc3730977ac05cc41074797f8d",
+      "parent": "168040671ffdb9fdcae1c7e7f160daf3cdc078ae",
+      "tree": "a48b8b3edc16127dc8227951b38e0f09ab9a19a5",
+      "signatureVerified": true,
+      "title": "docs: frozen gates retry and landing evidence (phase 320)"
+    },
+    {
+      "phase": 321,
+      "patch": "321-grown-owner-completion-observation-evidence.patch",
+      "patchSha256": "e8a2364cfaf5bc9b8a5671f2311d354e28342e06f92cd1f909a6f9fae7842653",
+      "commit": "266422e658bc4f4eac51916d8181d0fccf9eb1a5",
+      "parent": "9705e2105db9acbc3730977ac05cc41074797f8d",
+      "tree": "12f9bef1474064d72147c5fb94eeb8237aa08850",
+      "signatureVerified": true,
+      "title": "docs: grown owner completion observation evidence (phase 321)"
+    },
+    {
+      "phase": 322,
+      "patch": "322-deep-baseline-cold-stop-evidence.patch",
+      "patchSha256": "501a0c42c80dbca97eefd62c7e36dd9a59ea58f8daf1e1573f6e919c7d9552b5",
+      "commit": "f7cabc1c6323b67ec6e537618e22532ff79125ef",
+      "parent": "266422e658bc4f4eac51916d8181d0fccf9eb1a5",
+      "tree": "91f5d9d91bbba46db99c2b230f5cf2ad118bb1ea",
+      "signatureVerified": true,
+      "title": "docs: deep baseline cold stop evidence (phase 322)"
+    },
+    {
+      "phase": 323,
+      "patch": "323-idle-read-ahead-timing-evidence.patch",
+      "patchSha256": "26235067ac1d1b7ac0ddb878624b6aa2995a5b14de126f6e30d90eb3ea0c5dfb",
+      "commit": "6ab12607e4393b3d465fe1913eede9f65c0ded53",
+      "parent": "f7cabc1c6323b67ec6e537618e22532ff79125ef",
+      "tree": "8dc1e05b6bfe97c15ab7f5d7202ab1aa91f99554",
+      "signatureVerified": true,
+      "title": "docs: idle read ahead timing evidence (phase 323)"
+    },
+    {
+      "phase": 324,
+      "patch": "324-owned-page-parsing-cold-stop-evidence.patch",
+      "patchSha256": "0bd4996900bdaaada55822e9a9db33c861d58310d321b5760c66c85f77c173c6",
+      "commit": "ef0c9a10d5f53b5e48dd697f9ca0cbb7491baf59",
+      "parent": "6ab12607e4393b3d465fe1913eede9f65c0ded53",
+      "tree": "175cd5ed4db421e65690c5367276424851c5a854",
+      "signatureVerified": true,
+      "title": "docs: owned page parsing cold stop evidence (phase 324)"
+    },
+    {
+      "phase": 325,
+      "patch": "325-sender-wait-addendum-protocol.patch",
+      "patchSha256": "5cbae6fe8d53daf0e1a3907ad120e8e0dbaab4b89e3c11fb37e0929894bdfd91",
+      "commit": "a57162a7ee56dbd5e5425f018d9ea87e862da4cf",
+      "parent": "ef0c9a10d5f53b5e48dd697f9ca0cbb7491baf59",
+      "tree": "c186ea4f3ddceba53f937d160e2f3ee0146cee21",
+      "signatureVerified": true,
+      "title": "docs: sender wait addendum protocol (phase 325)"
+    },
+    {
+      "phase": 326,
+      "patch": "326-repaired-page-replay-and-full-lab-screen-evidence.patch",
+      "patchSha256": "dc2c6dfed49b45995b1a5df95933e21418d809df97ba6d693428b2272537fa62",
+      "commit": "a5f6b815dbc8f9523bdfce507affa6bb7cc57d9f",
+      "parent": "a57162a7ee56dbd5e5425f018d9ea87e862da4cf",
+      "tree": "ceee0a3edec6a1a4f5da4c322f5dfccd134bfcab",
+      "signatureVerified": true,
+      "title": "docs: repaired page replay and full lab screen evidence (phase 326)"
+    },
+    {
+      "phase": 327,
+      "patch": "327-native-warm-audit-fault-trace-evidence.patch",
+      "patchSha256": "77c77324ef74649e48f4c05b387dc64ea9b84a73e2b413349a409c9638f25acd",
+      "commit": "51391c950f087e818aed815ecd0137f309a3a9b4",
+      "parent": "a5f6b815dbc8f9523bdfce507affa6bb7cc57d9f",
+      "tree": "57ddccbf3656c2086689048a043e9f5bba2c5da6",
+      "signatureVerified": true,
+      "title": "docs: native warm audit fault trace evidence (phase 327)"
+    },
+    {
+      "phase": 328,
+      "patch": "328-running-log-evidence-index-correction.patch",
+      "patchSha256": "980d2114280b97d9021f646ff42ca03122c74939f10b8351004287799f923471",
+      "commit": "70daffd6178a8dc7a682b0255e4857f9b9aaed94",
+      "parent": "51391c950f087e818aed815ecd0137f309a3a9b4",
+      "tree": "e2815a376464700d22ced04d9b67d1b4e6b55ef4",
+      "signatureVerified": true,
+      "title": "docs: running log evidence index correction (phase 328)"
+    },
+    {
+      "phase": 329,
+      "patch": "329-retained-receipt-scope-and-functional-stop-evidence.patch",
+      "patchSha256": "521fe8cdb36b7c5c3d34795065c6045fb1f8303567d9df20529d8ef2238ba606",
+      "commit": "e8b2d002c13156e036b0345aa84cd0daa1d2b197",
+      "parent": "70daffd6178a8dc7a682b0255e4857f9b9aaed94",
+      "tree": "39d5feaa5178481c204b13eb2e1e3e0370c3d1c5",
+      "signatureVerified": true,
+      "title": "docs: retained receipt scope and functional stop evidence (phase 329)"
+    },
+    {
+      "phase": 330,
+      "patch": "330-checkpoint-experiment-precondition-stop-evidence.patch",
+      "patchSha256": "6b150dc80148fbf761a19ac49243f8f1071b51d37f8c350df3d931f7e83f0d92",
+      "commit": "4856acf3898724cc55b176a93c650989acaf0484",
+      "parent": "e8b2d002c13156e036b0345aa84cd0daa1d2b197",
+      "tree": "e15b42cd4d176609815f95c8e469318d7e9e499b",
+      "signatureVerified": true,
+      "title": "docs: checkpoint experiment precondition stop evidence (phase 330)"
+    },
+    {
+      "phase": 331,
+      "patch": "331-repaired-single-writer-and-deep-controls-evidence.patch",
+      "patchSha256": "852842430a8ef09ebbfc79e33f46f955d2d648ee927e9435e4c0693d8fc3903f",
+      "commit": "1bfa52b57e872cb0f53533fd951a6566d20dd561",
+      "parent": "4856acf3898724cc55b176a93c650989acaf0484",
+      "tree": "f75d1bdd251a4dd00a1835dca1514651a7983680",
+      "signatureVerified": true,
+      "title": "docs: repaired single writer and deep controls evidence (phase 331)"
+    },
+    {
+      "phase": 332,
+      "patch": "332-matched-checkpoint-return-and-storage-tail-evidence.patch",
+      "patchSha256": "19323db88c479919c2077d564fd9341ed92b6665d58e937d164058f745dc8ae2",
+      "commit": "a6941902917cb0ae0e4a00079b6c5d10445f7934",
+      "parent": "1bfa52b57e872cb0f53533fd951a6566d20dd561",
+      "tree": "01db508e879fa09aa36f3c74852d87de58337364",
+      "signatureVerified": true,
+      "title": "docs: matched checkpoint return and storage tail evidence (phase 332)"
+    },
+    {
+      "phase": 333,
+      "patch": "333-idle-warm-audit-paired-screen-evidence.patch",
+      "patchSha256": "e4546da6e7c8dcbab21f99a86c5b39a037b15bcc42dfeab2b9f1bee8c394d889",
+      "commit": "2c92793c23fab59781c5fa327ec7500c79356681",
+      "parent": "a6941902917cb0ae0e4a00079b6c5d10445f7934",
+      "tree": "72334cb5bc996fba74151e61383b3152977c78c7",
+      "signatureVerified": true,
+      "title": "docs: idle warm audit paired screen evidence (phase 333)"
+    }
+  ]
+}
