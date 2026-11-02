@@ -843,3 +843,8 @@ Phase252: next bounded input-delay attribution with event/longtask/driver timing
 ## 2026-10-30 — phase253: input-delay attribution protocol
 
 Phase253: attribute pre-beforeinput stall before any product repair. Preserve38ms input failure, disabled2526ms marker failure and15s cold control failure. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).
+
+
+## 2026-10-30 — phase254: pre-event input-delay attribution
+
+Phase254: next bounded delivery-backend crossover to distinguish Playwright path from remaining CDP/host scheduling. Keep all16ms/2.5s gates and previous physical/UI/input/cold failures; no blind application repair or release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).

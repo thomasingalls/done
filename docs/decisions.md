@@ -6427,3 +6427,8 @@ Existing guarded selection materially reduces catch-up on same248source, but ret
 ## 2026-10-30 — phase253: input-delay attribution protocol
 
 Distinguish renderer queueing from driver/CDP delay using actual browser event creation/processing, Long Tasks/frame gaps and driver heartbeat; do not replace failed16ms gate with fast beforeinput handler time. One metadata-only isolated withheld diagnostic, actual source/assets unchanged, no acceptance credit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).
+
+
+## 2026-10-30 — phase254: pre-event input-delay attribution
+
+Do not alter application CPU yielding or coordination for observed pre-event input tails. Actual browser creation→handler0.6ms/EventTiming queue0.6ms and zero longtasks narrow this diagnostic to precreation delivery/host work; test delivery APIs within one balanced journey, keep original Node-offer→DOM16ms gate. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).

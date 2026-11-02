@@ -18071,3 +18071,8 @@ Same-source control enabled156.551/145.927s versus disabled236.067/244.416s, lat
 ## 2026-10-30 — phase253: input-delay attribution protocol
 
 Prepared and discovered1 metadata-only input diagnostic, armed after fictional unlock. Original gates/deadlines retained, finally-safe bounded metadata and no factors/writing/proofs recorded. Source stays248 and warm1artifact251; no diagnostic result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).
+
+
+## 2026-10-30 — phase254: pre-event input-delay attribution
+
+253 native diagnostic retains local25.166ms failure; peer/markers/archive/offline-cold pass. Trusted creation→keydownp950.6ms, beforeinput→DOM0.7ms; offered→creation24.066ms. Eight slow keys, four driver-gap overlaps, no save overlap and metadatahandlermax0.135ms. No product edit; exact cleanup complete. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).
