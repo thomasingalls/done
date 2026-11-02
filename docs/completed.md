@@ -18281,3 +18281,8 @@ Phase294: Page64diagnostic inputs frozen. Exact291runtime/398compiled bodies/125
 ### 2026-10-30 — Worker catch-up phase295
 
 Phase295: actual Page syncing/no owner Worker confirmed; lab64deepfailed30s at707/zero receive failures.233reads all200, no429, complete at/headersAt trace. Marker/Undo/cold guards not reached; no normal/default acceptance credit. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase296
+
+Phase296: rerunnable fresh-root civil-day recipe and original generator/helpers frozen. Positive preflight passes; overwrite/short-window controls refuse. No fresh fixture generated yet. Old measurement gates/assertions retained; no source/old test edits. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).

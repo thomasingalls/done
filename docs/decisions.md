@@ -6637,3 +6637,8 @@ Use the lab genuine Page syncing factory for joined deep at explicitly permitted
 ### 2026-10-30 — Worker catch-up phase295
 
 Retain failed real Page64deep. It weakens a Worker-only or session-budget-only explanation without causal attribution. The civil-date recipe must create editable cards before backlog generation, preserving editing-versus-catch-up rather than appending late cards after the backlog. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase296
+
+Regenerate the dated workload from signed0ab through actual app setup/early editable cards, then original unequal backlogs. UTC controls calendar interpretation only; epoch/auth clocks remain real. Seed-only discretionary reduction stays off, with no measurement credit and exact production service budgets. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).

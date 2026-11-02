@@ -1053,3 +1053,8 @@ Run frozen joined Page64deep once next; preserve actual outcome before fixture r
 ### 2026-10-30 — Worker catch-up phase295
 
 Next rerunnable civil-date fixture generation with early editable cards and unchanged history/device asymmetry; then withheld yield cell/normal gates. Bulk4/8and Page64all fail30s; preserve proof/evidence-cost investigation and native compatibility obligations. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase296
+
+Run the phase296recipe, retain generation failures/success identities, then fresh civil preflight before withheld signed0ab/yield cell and normal gates. Do not append late cards after old backlogs or bypass freeze logic. V2 compatibility/fairness obligations remain. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).

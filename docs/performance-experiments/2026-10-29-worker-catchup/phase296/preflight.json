@@ -1,0 +1,18 @@
+{
+  "kind": "untimed fictional fixture preparation",
+  "sourceCommit": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "date": "2026-10-30",
+  "timezone": "UTC",
+  "realEpoch": true,
+  "neededSeconds": 10800,
+  "output": "/private/tmp/done-civil-fixture-20261030-r1",
+  "nodeVersion": "24.18.0",
+  "image": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "nativeBudgets": {
+    "session": 16,
+    "process": 64
+  },
+  "seedOnlyLocalAutomation": "off",
+  "serviceAutomation": "off",
+  "noAcceptanceCredit": true
+}
