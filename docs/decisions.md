@@ -6367,3 +6367,8 @@ Keep the original2.5s every-marker gate after Worker conversion: normal final ma
 ## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
 
 Compare rebuilt Page8d6d42c1 and signed Worker0ab9cbc8 in fixed normal-hint ABBA journeys with one server/fixture/browser/flag set. Whole-journey replication, not key pseudoreplication; keep every absolute gate and security check. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).
+
+
+## 2026-10-29 — phase242: matched catch-up comparison
+
+Treat dated100s and200s trajectories as unmatched. Under fixed current conditions Page226–230s versus Worker233–240s gives opposite-order ratios1.0403/1.0307; no substantial doubling reproduced. Retain the modest overhead and all absolute marker misses; do not infer equivalence or one-function causality. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).

@@ -783,3 +783,8 @@ Phase240 closes the requested conversion-and-measurement run. Normal public heav
 ## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
 
 Phase241: conversion is signed locally. Matched before/after catch-up comparison is next/in flight, followed by missed2.5s marker attribution. No product repair or release preparation selected. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).
+
+
+## 2026-10-29 — phase242: matched catch-up comparison
+
+Phase242: apparent2x Worker catch-up slowdown not reproduced under matched current conditions; common226–240s throughput still deserves later server/apparatus/host isolation. Now trace the reproducible2.5s late-marker misses, retaining security and every existing gate. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).

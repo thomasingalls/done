@@ -18011,3 +18011,8 @@ Completed Worker candidate measured. Two functional peer journeys and all archiv
 ## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
 
 Committed and independently verified all80patches161–240; tip0ab9cbc8. Frozen matched catch-up protocol, both exact source builds and apparatus QA. No timed comparison outcome yet; malformed smoke refusal preserved and corrected to the actual POST contract. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).
+
+
+## 2026-10-29 — phase242: matched catch-up comparison
+
+Four matched ABBA functional/cold/archive journeys pass. Worker backlog+4.03%/+3.07% in the two pairs; all local/peerp95 budgets pass, three late-marker misses keep acceptance blocked. Six exact containers absent. No runtime/test changes. Matched comparison completed before marker attribution. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).
