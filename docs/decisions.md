@@ -6647,3 +6647,8 @@ Regenerate the dated workload from signed0ab through actual app setup/early edit
 ### 2026-10-30 — Worker catch-up phase297
 
 Repair the fixture postcheck only: canonical empty files are valid exact hash evidence. Independently verify the successful real-app output in both directions rather than regenerate or edit data; retain the failed outer attempt and original passing seeding run. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase298
+
+Refresh observer target by semantic live-writer role from public admission metadata, proving old constant==old actor2. Retain exact cursor1stream assertion. Remove only generated Python bytecode via explicit next patch; prior immutable artifacts remain. See [phase298](./performance-experiments/2026-10-29-worker-catchup/phase298/README.md).

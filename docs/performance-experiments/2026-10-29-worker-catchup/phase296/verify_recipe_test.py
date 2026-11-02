@@ -1,4 +1,5 @@
-import hashlib,tempfile,unittest
+import hashlib,tempfile,unittest,sys
+sys.dont_write_bytecode=True
 from pathlib import Path
 from verify_fixture import verify_files
 sha=lambda b:hashlib.sha256(b).hexdigest()

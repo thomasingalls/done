@@ -1063,3 +1063,8 @@ Run the phase296recipe, retain generation failures/success identities, then fres
 ### 2026-10-30 — Worker catch-up phase297
 
 Fresh civil fixture is now verified. Next signed0abwithheld/default flags, then normal cases with original gates and per-case editability preflight. V2 remains development-only; preserve all deep failures and compatibility obligations. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase298
+
+Fresh fixture now has semantic writer-role adapter. Freeze and run signed0abwithheld first, then yield-only matched withheld and current ordinary/fairness cases with original absolute/native gates. Deep and compatibility blocks remain. See [phase298](./performance-experiments/2026-10-29-worker-catchup/phase298/README.md).
