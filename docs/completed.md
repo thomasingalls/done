@@ -18372,3 +18372,26 @@ promotion credit. See [phase308](./performance-experiments/2026-10-29-worker-cat
 Phase308 closeout: all seven repository contract checks and whitespace/link checks pass.
 Only the three planned closeout appends differ from the prior prepared series; no runtime or
 test source changed, and the real index has no staged content.
+
+
+### 2026-10-31 — Worker catch-up phase309
+
+Completed the ordered unfixed maintenance trace screen in a new fictional-only lab root.
+One unchanged full unit run passes283files/2,855tests/one existing skip with actual child
+exit0 captured by Python. All timed cases retain five-second external host/process-name logs
+under the operator-approved remaining Firefox/WindowServer activity.
+
+Both grown typing journeys retain120overlapping keys, exact archive and Undo, but miss the
+unchanged120smaintenance wait. Idle-with-polls also times out. With only periodic idle polls
+paused, the unchanged algorithm completes after11attempts/10saved deltas in36.012s from its
+first attempt and passes actual offline cold reopen. This contradicts the predicted continued
+verification stall, so work stops before S/Y/P or later screens. Four journeys,66attempts and
+14interruptions are retained:12poll-driven membership-discovery arrivals and two typing-driven
+flushes, all queue-priority-only. Many late attempts complete hundreds of misses; the one-miss
+estimate is not general, though observed on each late reader.
+
+Only evidence/documentation enter the patch; all1,552canonical inputs and all777prior raw
+originals plus phase308source/assets match. Seven repository contracts and evidence/link checks
+pass; real index empty. No guard, deadline, format, manifest, runtime or old test changes, no
+qualification/landing credit and no hardening. See
+[phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).

@@ -1135,3 +1135,21 @@ against the ten-reader inventory, membership/replacement replay, cuts within pag
 budgets, audit units and old-tab/rollback fences before implementing a format. Keep the range
 writer default off, V confined to the lab, service automation off and every gate unchanged.
 No release preparation. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase309
+
+The maintenance trace confirms periodic idle receive enters membership discovery's storage queue,
+interrupts preparation and incurs60sretry. It also contradicts the proposed inevitable verifying
+stall: with those periodic polls paused, unchanged preparation/removal completes in36.012s and
+actual cold passes. The operator's stop condition applies before S/Y/P. Both grown typing cases
+and idle-with-polls retain their120scompletion failures; no cold credit for those timeouts.
+
+Reconsider the next lab repair with this evidence: distinguish discovery queue priority from
+typing-driven flushes before Y; measure S as efficiency rather than assume one-miss starvation.
+The approved dense P exploration, P/V screens, R1scomparison,3072index diagnostic, three new
+D pairs and original/grown three-replicate gates remain unrun after this stop. Landing requirements
+for S/Y/G/R/D/P are separate in the report; no hardening is started. Keep V out of candidate,
+all security checks/gates/deadlines,750msquiet/defaultoff writer/service automationoff, and the
+frozen phase308lab intact. See
+[phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).

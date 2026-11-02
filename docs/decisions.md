@@ -6719,3 +6719,21 @@ Investigate the larger maintenance fixture's guard and retry sequence next, pres
 and activity/journal checks and the deadline. The raw complete-page receipt remains a design
 note; logical/physical units, every reader, cuts and old-tab/rollback behavior need separate
 hardening. This evidence authorizes no release work or runtime adoption. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase309
+
+Honor the operator's prediction gate: idle polls paused removes observed interruptions **and**
+lets unchanged verification/removal finish, so stop after the four unfixed trace cases before
+building S/Y/P. Do not turn the lab-only24hour idle timer into a product repair or remove the
+preparation guard. The60sretry amplifies poll arrival contention, but replay is not inevitably
+stuck at one new entry per slice on this fixture/host.
+
+Preserve the separate typing origin: a typing-driven flush also has queue-priority-only flags.
+Y cannot classify that boolean alone as a background-read interruption while promising typing
+keeps60s. S remains a possible fresh-work accounting optimization; its necessity/sufficiency is
+not established by this trace. V is comparison-only; P remains an approved isolated lab proposal,
+not a selected format. G/R/D and all later screens remain unclosed. Range writer defaultoff,
+750msquiet budget, all gates/deadlines and disabled service automation stay unchanged. No
+hardening begins without the operator's decision. See
+[phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).

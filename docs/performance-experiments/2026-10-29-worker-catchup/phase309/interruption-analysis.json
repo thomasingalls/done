@@ -1,0 +1,464 @@
+[
+  {
+    "case": "trace-grown-normal",
+    "owner": 0,
+    "attempt": 2,
+    "at": 1793444314261.8,
+    "sinceCaseStartMs": 157791.28344726562,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 5285,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444312572.8
+      },
+      "arrivingJob": {
+        "id": 5287,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444314256.1
+      },
+      "at": 1793444314261.8
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 2,
+      "at": 1793444314256
+    },
+    "fromReceiveTurnMs": 5.800048828125
+  },
+  {
+    "case": "trace-grown-normal",
+    "owner": 0,
+    "attempt": 6,
+    "at": 1793444386996.1,
+    "sinceCaseStartMs": 230525.58349609375,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 5434,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444385951.4001
+      },
+      "arrivingJob": {
+        "id": 5436,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444386990.4001
+      },
+      "at": 1793444386996.1
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 6,
+      "at": 1793444386990.3
+    },
+    "fromReceiveTurnMs": 5.800048828125
+  },
+  {
+    "case": "trace-grown-normal",
+    "owner": 1,
+    "attempt": 2,
+    "at": 1793444171786.8,
+    "sinceCaseStartMs": 15316.283447265625,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 82,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444169605.9001
+      },
+      "arrivingJob": {
+        "id": 84,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444171782.5
+      },
+      "at": 1793444171786.8
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": null,
+      "at": 1793444162778
+    },
+    "fromReceiveTurnMs": 9008.800048828125
+  },
+  {
+    "case": "trace-grown-normal",
+    "owner": 1,
+    "attempt": 4,
+    "at": 1793444245191.2,
+    "sinceCaseStartMs": 88720.68334960938,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 1034,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444244021.1
+      },
+      "arrivingJob": {
+        "id": 1036,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444245185.6
+      },
+      "at": 1793444245191.2
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 4,
+      "at": 1793444245185.5
+    },
+    "fromReceiveTurnMs": 5.699951171875
+  },
+  {
+    "case": "trace-grown-normal",
+    "owner": 1,
+    "attempt": 8,
+    "at": 1793444319914.3,
+    "sinceCaseStartMs": 163443.78344726562,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 1209,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444317464.7
+      },
+      "arrivingJob": {
+        "id": 1211,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444319908.9001
+      },
+      "at": 1793444319914.3
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 8,
+      "at": 1793444319908.9001
+    },
+    "fromReceiveTurnMs": 5.39990234375
+  },
+  {
+    "case": "trace-grown-normal",
+    "owner": 1,
+    "attempt": 12,
+    "at": 1793444391452.1,
+    "sinceCaseStartMs": 234981.58349609375,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 1358,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444389591.2
+      },
+      "arrivingJob": {
+        "id": 1360,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444391446.5
+      },
+      "at": 1793444391452.1
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 12,
+      "at": 1793444391446.5
+    },
+    "fromReceiveTurnMs": 5.60009765625
+  },
+  {
+    "case": "trace-grown-withheld",
+    "owner": 0,
+    "attempt": 3,
+    "at": 1793444575925.9,
+    "sinceCaseStartMs": 140980.3583984375,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 4113,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444574266.2
+      },
+      "arrivingJob": {
+        "id": 4115,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444575920.9
+      },
+      "at": 1793444575925.9
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 3,
+      "at": 1793444575920.7
+    },
+    "fromReceiveTurnMs": 5.199951171875
+  },
+  {
+    "case": "trace-grown-withheld",
+    "owner": 0,
+    "attempt": 7,
+    "at": 1793444649148.5999,
+    "sinceCaseStartMs": 214203.05834960938,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 4600,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444647297.5
+      },
+      "arrivingJob": {
+        "id": 4602,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444649143.2
+      },
+      "at": 1793444649148.5999
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 7,
+      "at": 1793444649143.0999
+    },
+    "fromReceiveTurnMs": 5.5
+  },
+  {
+    "case": "trace-grown-withheld",
+    "owner": 1,
+    "attempt": 2,
+    "at": 1793444450154.8,
+    "sinceCaseStartMs": 15209.258544921875,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 82,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444448049.2
+      },
+      "arrivingJob": {
+        "id": 84,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444450149.5
+      },
+      "at": 1793444450154.8
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": null,
+      "at": 1793444440187.2
+    },
+    "fromReceiveTurnMs": 9967.60009765625
+  },
+  {
+    "case": "trace-grown-withheld",
+    "owner": 1,
+    "attempt": 7,
+    "at": 1793444533056.9,
+    "sinceCaseStartMs": 98111.3583984375,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 1124,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444531731.7
+      },
+      "arrivingJob": {
+        "id": 1126,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444533051.2
+      },
+      "at": 1793444533056.9
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 7,
+      "at": 1793444533051.2
+    },
+    "fromReceiveTurnMs": 5.699951171875
+  },
+  {
+    "case": "trace-grown-withheld",
+    "owner": 1,
+    "attempt": 17,
+    "at": 1793444625176.9,
+    "sinceCaseStartMs": 190231.3583984375,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 1367,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444624215.8
+      },
+      "arrivingJob": {
+        "id": 1369,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444625171.3
+      },
+      "at": 1793444625176.9
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 17,
+      "at": 1793444625171.3
+    },
+    "fromReceiveTurnMs": 5.599853515625
+  },
+  {
+    "case": "trace-grown-withheld",
+    "owner": 1,
+    "attempt": 21,
+    "at": 1793444696608.7,
+    "sinceCaseStartMs": 261663.15844726562,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 1516,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444695451.3
+      },
+      "arrivingJob": {
+        "id": 1518,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444696603.5
+      },
+      "at": 1793444696608.7
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 21,
+      "at": 1793444696603.4
+    },
+    "fromReceiveTurnMs": 5.300048828125
+  },
+  {
+    "case": "trace-idle-polls",
+    "owner": 0,
+    "attempt": 4,
+    "at": 1793444734533.6,
+    "sinceCaseStartMs": 21240.111083984375,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 94,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444732291.3
+      },
+      "arrivingJob": {
+        "id": 96,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444734527.5
+      },
+      "at": 1793444734533.6
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 4,
+      "at": 1793444734527.4001
+    },
+    "fromReceiveTurnMs": 6.199951171875
+  },
+  {
+    "case": "trace-idle-polls",
+    "owner": 0,
+    "attempt": 9,
+    "at": 1793444807243.3,
+    "sinceCaseStartMs": 93949.81103515625,
+    "condition": {
+      "site": "accountCapture:baseline-shadow",
+      "suspended": false,
+      "shadowActivity": false,
+      "queuePriority": true,
+      "capturedQueue": {
+        "id": 249,
+        "name": "accountCapture.ts:615:flushJournal",
+        "at": 1793444807160.9001
+      },
+      "arrivingJob": {
+        "id": 251,
+        "name": "accountReceive.ts:2487:prepared",
+        "at": 1793444807242.9001
+      },
+      "at": 1793444807243.3
+    },
+    "priorReceiveTurn": {
+      "kind": "receive-turn-start",
+      "continuing": false,
+      "dirty": false,
+      "expedite": false,
+      "attempt": 9,
+      "at": 1793444807242.9001
+    },
+    "fromReceiveTurnMs": 0.39990234375
+  }
+]
