@@ -6769,3 +6769,7 @@ The declared P1V0arm passes all three deep30sruns and fresh-owner cold checks; P
 ### 2026-10-31 — Phase314: keep reader censoring and capacity separate from writer success
 
 Carry G/R1500/S1Y1/P1,V/Doff to the declared pacing screen: all four exploratory Ponwriter journeys pass measured predicates/cold, versus four Poffcapacity failures. The unchanged test observes writer completion only; one Ponreader completion is demonstrated, other reader windows are censored. Do not infer universal reader fit or waive3,072diagnostics. Family accounting supports representation-driven pressure in opened rows while per-entry verification memo remains material. No cap,120sdeadline,60-keypredicate or security check changes. No hardening starts; compatibility/format remains an operator call.
+
+### 2026-10-31 — Phase315: choose1s for further lab work without hiding normal repair
+
+Keep the2.5spost-drain target: one1500replicate misses, both1000withheld and normal measured metric/cold replicates pass. Continue G8/R1000/S1Y1/P1,V/Doff into the declared3,072/D/gate work. This is conditional and unqualified: normal repair is armed across much of typing despite few rearm events; actual incremental traffic is not isolated. Maintenance completion remains unexposed in the late case, and its wait/cold precondition is unchanged. Do not harden or revise the approved Rpredicate now; its normal-traffic behavior needs evidence/operator decision before landing. Preserve every failure and the no-Fcold stop.

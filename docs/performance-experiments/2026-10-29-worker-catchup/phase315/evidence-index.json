@@ -1,0 +1,440 @@
+{
+  "labRoot": "/private/tmp/done-dense-page-screen-lab-20261031",
+  "items": [
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-plan.json",
+      "copy": "evidence/repair-plan.json.gz",
+      "rawSha256": "5a16cb3e409ba0d603787a7cbef556467d425bb679d73b191fde9cf85d6a5449",
+      "bytes": 1585,
+      "gzipSha256": "72bbfb36b2d52884fcc6dbbdb0f397f8a2387ef5f52accf060b0c83cbeff36d2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-inputs.json",
+      "copy": "evidence/repair-inputs.json.gz",
+      "rawSha256": "dabfa3e442ce7c921f4e14389e330307864c73689606b6767c9c8ab5f51df335",
+      "bytes": 131312,
+      "gzipSha256": "6a9b89e05f3871c3dccbc3207f44e13fda4ae02665bad0d57b4c74171d6edd75"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-results.json",
+      "copy": "evidence/repair-results.json.gz",
+      "rawSha256": "796f5db2f26ecf3f01d2deae20f2716905305d1656612322073b359140ca03c0",
+      "bytes": 6020,
+      "gzipSha256": "62529f5e34db0139e9eb32e5f75923dc9794529cee5ed6b05d52612f6e1e5d69"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-analysis.json",
+      "copy": "evidence/repair-analysis.json.gz",
+      "rawSha256": "16872341f8fa60b2b204e9c4f61254ac4001bcdb492e8ca16754e943add271d8",
+      "bytes": 44193,
+      "gzipSha256": "f4c8fae44945c94e505f8653081a35a6a970a022b960950e033cb9399b7357ae"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-analysis-console.log",
+      "copy": "evidence/repair-analysis-console.log.gz",
+      "rawSha256": "7cf8b781cff7e459f6490666cfc133234dfb41a165fa7dceaedc1bf07b489cd1",
+      "bytes": 9418,
+      "gzipSha256": "e60b10a0fcdca24fa8412c19589d2951e1e82b98ebeb9c592845538fe60c35e1"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-selection.json",
+      "copy": "evidence/repair-selection.json.gz",
+      "rawSha256": "dea3f1e244bc30bc2aeb8b930977a7ced452e651ad5e2a90159cb5624aaaa112",
+      "bytes": 499,
+      "gzipSha256": "e967312c098292683f6af86015e070d61fdf30ea1d6e286227f0e7256ffd3d54"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/normal-repair-detail.json",
+      "copy": "evidence/normal-repair-detail.json.gz",
+      "rawSha256": "54efbbe1d00c01a1ed9c0e8cfea6aaa6706048263494a888cb1b1ee60dc5e64f",
+      "bytes": 2415,
+      "gzipSha256": "a55b62deed1230318e91b2e30d3226d94ba97ba0cc2a936ee7e6852a2236736a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/REPAIR-PROTOCOL.md",
+      "copy": "evidence/REPAIR-PROTOCOL.md.gz",
+      "rawSha256": "c0121558464f5e4e10d58f83039be887e4aa3ef7a1814fa67e6998d44858330c",
+      "bytes": 1324,
+      "gzipSha256": "90b2b28fd9f21eb44523d5731acb774bbb84317d7320303b181d27d3aef32452"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-identity.json",
+      "copy": "evidence/build-identity.json.gz",
+      "rawSha256": "7656a8c923827ceb19ac10bf65e236480868c3ec373f66188af50af8447f2be5",
+      "bytes": 75053,
+      "gzipSha256": "b0e80952b006dca1c608042c9d77c1484dd8b29fa38795f5ecf2e5b6fe29ee21"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-flags.json",
+      "copy": "evidence/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "bytes": 308,
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/console.log",
+      "copy": "evidence/repair-01-withheld-R1500/console.log.gz",
+      "rawSha256": "5a6bb4cde5e4c2d011fe9b1b8204f78bb1362655ca563b0d5db9e5fd55ac4fda",
+      "bytes": 349,
+      "gzipSha256": "e5f33262adac0b665e21dcd373d443c73443c8f62488a423d0bbace266ac61fa"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/list.log",
+      "copy": "evidence/repair-01-withheld-R1500/list.log.gz",
+      "rawSha256": "489b8b56ed72324a2334bfae565e648529b1c310dba0a43e84a8099f4f347460",
+      "bytes": 128,
+      "gzipSha256": "339918ec1e0b6e9c439966ff26a3c3a2d3dee5cbc4f46d549bac871a8a3606bb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/receipt.json",
+      "copy": "evidence/repair-01-withheld-R1500/receipt.json.gz",
+      "rawSha256": "d38fa95c484783f3435c58ddc4672aec336773830c938b9816a118868dca0560",
+      "bytes": 931,
+      "gzipSha256": "7818a4b07e7c6b755e4099226e085e78aab7ea4522f7103217801f82b23dff03"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/result.json",
+      "copy": "evidence/repair-01-withheld-R1500/result.json.gz",
+      "rawSha256": "20648536ca60199b7faac43d63e170ae02b2c3d88edb4e65a059bab7b01b5747",
+      "bytes": 68321059,
+      "gzipSha256": "408df9a5c1e94eff834d22c3f2b29cdda4893758daff9630161adfa3096d00eb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/partial-result.json",
+      "copy": "evidence/repair-01-withheld-R1500/partial-result.json.gz",
+      "rawSha256": "606523a62cd10ccf63840109ce432ed764f5b15cf18203a3386ba6fba88a0d1e",
+      "bytes": 68177997,
+      "gzipSha256": "5c3afe9e338a5c5e0e346fdd7a74fe94a1a27e3d72dd307807f442ad28388eb9"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/host-load.jsonl",
+      "copy": "evidence/repair-01-withheld-R1500/host-load.jsonl.gz",
+      "rawSha256": "14252729799d1ec7974f363d1b79c9ea7f89ad53669a64d77cb81b611b0adc15",
+      "bytes": 34272,
+      "gzipSha256": "92fe7d092b6945976c9d61ef7ac618576c9c3adacde207e1a89d38607e700ed7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-01-withheld-R1500/container-identity.json",
+      "copy": "evidence/repair-01-withheld-R1500/container-identity.json.gz",
+      "rawSha256": "410f0db7bfaafbae1eb39d38c02291e78cf6dba98a725d6362fec7575f6c8dea",
+      "bytes": 2707,
+      "gzipSha256": "5ab4b15fb03718dc060fa626ca664062f49e1b04551284d6c878f6d9e8d7a155"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/console.log",
+      "copy": "evidence/repair-02-withheld-R1000/console.log.gz",
+      "rawSha256": "19b33bcd32553063a0b7046b01ce2eca755db4140bbbaf84020e9c49a8a14f9f",
+      "bytes": 349,
+      "gzipSha256": "cf394e3e04501a5d4592b5f7b5fd9883bbd3c9092f13b830cee93a898681991b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/list.log",
+      "copy": "evidence/repair-02-withheld-R1000/list.log.gz",
+      "rawSha256": "489b8b56ed72324a2334bfae565e648529b1c310dba0a43e84a8099f4f347460",
+      "bytes": 128,
+      "gzipSha256": "339918ec1e0b6e9c439966ff26a3c3a2d3dee5cbc4f46d549bac871a8a3606bb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/receipt.json",
+      "copy": "evidence/repair-02-withheld-R1000/receipt.json.gz",
+      "rawSha256": "75938de38d85ededa4f55d1623e335e613da82daf60f7f311d1839b7dc086d09",
+      "bytes": 929,
+      "gzipSha256": "78311e5cce2c4de68bec6c0ef0847a4e3c5a2fe1c44da32f2da4497a9092ccdf"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/result.json",
+      "copy": "evidence/repair-02-withheld-R1000/result.json.gz",
+      "rawSha256": "ad6686690996d3aa7f26a1e45e6db9e3f42c9f9ace16bc61886ea78341dad668",
+      "bytes": 69803574,
+      "gzipSha256": "159f804926c4c84187c110d8b9cbdc6bed0697844014e19beb1d2e242d55ccc2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/partial-result.json",
+      "copy": "evidence/repair-02-withheld-R1000/partial-result.json.gz",
+      "rawSha256": "6f82385794b42f0936fd52d66156bd869028bb6f3505bbfa2e3c4adb1e9f72b8",
+      "bytes": 69667355,
+      "gzipSha256": "358e067d4e25bc1e2c32a3d8a4373a09c83e70820bd1a381bcd735812cae36c6"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/host-load.jsonl",
+      "copy": "evidence/repair-02-withheld-R1000/host-load.jsonl.gz",
+      "rawSha256": "dd31b25672dc29c52a46935df99e0a2fe720e6f0edaf5de7b70750ce9ad7b7a9",
+      "bytes": 32666,
+      "gzipSha256": "8001321c17bd48b0ff6b23e5037beb8b37bb823c9be744d0f731f9044b54e110"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-02-withheld-R1000/container-identity.json",
+      "copy": "evidence/repair-02-withheld-R1000/container-identity.json.gz",
+      "rawSha256": "a6e4ac940a017057627875756085fd326105f11c2c25ec354e4bd090f5844e61",
+      "bytes": 2705,
+      "gzipSha256": "27f768ab459843d4185ff4e97a0f6c8d3c295964bb883a962dc132e9f60c528a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/console.log",
+      "copy": "evidence/repair-03-withheld-R1000/console.log.gz",
+      "rawSha256": "4d332923c37e8028b193982bc3941fe219b85bf17c89fb210bed1c8660d0f13a",
+      "bytes": 349,
+      "gzipSha256": "88dbe84c1ff9242f8f5c5cb8470ab867d386391a731ef5a825566fc8da98cc1a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/list.log",
+      "copy": "evidence/repair-03-withheld-R1000/list.log.gz",
+      "rawSha256": "489b8b56ed72324a2334bfae565e648529b1c310dba0a43e84a8099f4f347460",
+      "bytes": 128,
+      "gzipSha256": "339918ec1e0b6e9c439966ff26a3c3a2d3dee5cbc4f46d549bac871a8a3606bb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/receipt.json",
+      "copy": "evidence/repair-03-withheld-R1000/receipt.json.gz",
+      "rawSha256": "f6efbc84bea834a27afa7a0ce6123f5945fd627b19fb73b227a78536ec64fc8e",
+      "bytes": 931,
+      "gzipSha256": "3b5db81334b22777744d1efd204ba77bdde16012957ceec61763b9d90a1c38a7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/result.json",
+      "copy": "evidence/repair-03-withheld-R1000/result.json.gz",
+      "rawSha256": "8d501aba73be832b783ff3dbe27ed5aa33e5fd5af54d493f05a4c77ed6d58a53",
+      "bytes": 69648369,
+      "gzipSha256": "0ddcd6dce8d079370eff2799f5cb315190468ea823441db7fb9a16b6f4494949"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/partial-result.json",
+      "copy": "evidence/repair-03-withheld-R1000/partial-result.json.gz",
+      "rawSha256": "ff64cf6dca4e6cee64aeb96ce68906abc5f619e7757e1db1188b412e6b16391a",
+      "bytes": 69500998,
+      "gzipSha256": "20b7536aa91300b3d476452ebcc5777ac8d2635852b817c854553a93c80bc551"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/host-load.jsonl",
+      "copy": "evidence/repair-03-withheld-R1000/host-load.jsonl.gz",
+      "rawSha256": "df9a78fa20447a9db1d9ec289c529473c717e5bf9622dc47b456eef458f65195",
+      "bytes": 34160,
+      "gzipSha256": "0642df7bf2471f48f33afcb1325e0ce4f89529e61cd5f28dd5e354cb358b14fd"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-03-withheld-R1000/container-identity.json",
+      "copy": "evidence/repair-03-withheld-R1000/container-identity.json.gz",
+      "rawSha256": "5295deebdb075faaa330ec5ba9006ea8d9a8150bcdbf0e0e433ab1fd30afb227",
+      "bytes": 2705,
+      "gzipSha256": "e8e6bbb27b53a98debd7263a5beed17516bd3f49af7c3d6362bbdf96ed31730e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/console.log",
+      "copy": "evidence/repair-04-withheld-R1500/console.log.gz",
+      "rawSha256": "03525432d163a0cb53335ca56d08c60beda3af9de4e7f4fcf327e5c7401b836b",
+      "bytes": 349,
+      "gzipSha256": "9febf5fc81962553624d3ab445ad669dc270723af812dd3ae033b3265914ed0d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/list.log",
+      "copy": "evidence/repair-04-withheld-R1500/list.log.gz",
+      "rawSha256": "489b8b56ed72324a2334bfae565e648529b1c310dba0a43e84a8099f4f347460",
+      "bytes": 128,
+      "gzipSha256": "339918ec1e0b6e9c439966ff26a3c3a2d3dee5cbc4f46d549bac871a8a3606bb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/receipt.json",
+      "copy": "evidence/repair-04-withheld-R1500/receipt.json.gz",
+      "rawSha256": "cde158d3b0b67454509e867db7cc6d0d45e2b4e49eb73c4f898b830e6272fbcd",
+      "bytes": 931,
+      "gzipSha256": "dfabb6b9951c1cfa73cf8fe13f591f14878f9993d35471bd466ebc778bc2b795"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/result.json",
+      "copy": "evidence/repair-04-withheld-R1500/result.json.gz",
+      "rawSha256": "5f748426aa3b93700d7def204626e6decb6a014f0ba839a5b12d07bc2274cabc",
+      "bytes": 68125501,
+      "gzipSha256": "03f26b532e8137166050bf14b702071c8ab52cc247251a4b52b5ce4cc7a84c11"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/partial-result.json",
+      "copy": "evidence/repair-04-withheld-R1500/partial-result.json.gz",
+      "rawSha256": "5926ce671d22d37dc2bce8e74ef9f61f959b180654732b4ae7a99a471fd7af3e",
+      "bytes": 67985768,
+      "gzipSha256": "ced5d927979754d6008727ab406ee8d85cf108b2e89e04c01597264591841b57"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/host-load.jsonl",
+      "copy": "evidence/repair-04-withheld-R1500/host-load.jsonl.gz",
+      "rawSha256": "76be967efd7c862a4470e13c9c168c6987e2cf3dc6d490050e8913d6e97f67df",
+      "bytes": 34202,
+      "gzipSha256": "ed5ed03ddb333695d5857e2b51cbe750409ff592d17f5e52d6303b590292b5f6"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-04-withheld-R1500/container-identity.json",
+      "copy": "evidence/repair-04-withheld-R1500/container-identity.json.gz",
+      "rawSha256": "20763f8d77e730ef0d00414d34b4ce3b811550fd37340d4a9c33fc0f881a1144",
+      "bytes": 2705,
+      "gzipSha256": "294b0b88a884234c2d010ab6534a9222431c8bbfb133ff7450d6d122866f6aa1"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/console.log",
+      "copy": "evidence/repair-05-normal-R1000/console.log.gz",
+      "rawSha256": "cf217f0ab511cce80b1814ce500a823794f110c632c315cd5eb111b4f8b2ef96",
+      "bytes": 349,
+      "gzipSha256": "6cffa21f0dd00721422da7a75eb9b632917d9a55fba6d7dd41fa54619b555815"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/list.log",
+      "copy": "evidence/repair-05-normal-R1000/list.log.gz",
+      "rawSha256": "489b8b56ed72324a2334bfae565e648529b1c310dba0a43e84a8099f4f347460",
+      "bytes": 128,
+      "gzipSha256": "339918ec1e0b6e9c439966ff26a3c3a2d3dee5cbc4f46d549bac871a8a3606bb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/receipt.json",
+      "copy": "evidence/repair-05-normal-R1000/receipt.json.gz",
+      "rawSha256": "0f6e97e5e41d267ed6bc56c27bb7b6a55e72e7e4ae3f676fbcad5c0b07c23356",
+      "bytes": 929,
+      "gzipSha256": "c83cff983e8236188b78e0219638e9ede0ad79453da1ca90b8ad9f24a6cab3aa"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/result.json",
+      "copy": "evidence/repair-05-normal-R1000/result.json.gz",
+      "rawSha256": "f385f7eb9993881b1274fbde245902a5556a83f0420c5219935b095ba84b352f",
+      "bytes": 70817706,
+      "gzipSha256": "cd33a422dd363f828cb7e1ccdeae3f1cc478a1c9a179b65c03c6e90f81c5823e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/partial-result.json",
+      "copy": "evidence/repair-05-normal-R1000/partial-result.json.gz",
+      "rawSha256": "c0351ed2f8da50098618230d026c1f16b900fd5433e3ee162905f81b35e0ccb2",
+      "bytes": 70668218,
+      "gzipSha256": "0bba3bf7545fd23d7c5cc4c92e83a55ff5c7d3f9e113249a6169c37f585236f8"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/host-load.jsonl",
+      "copy": "evidence/repair-05-normal-R1000/host-load.jsonl.gz",
+      "rawSha256": "5b0e29543f8c43c3697e43726dc3a3f2af5e90ce983bc190356e6c4da0d03cd7",
+      "bytes": 34573,
+      "gzipSha256": "db2b19cf7809224d6e5b4ce74fdb3c4cb1e480ea4d1d527010edbebe49fbedc7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-05-normal-R1000/container-identity.json",
+      "copy": "evidence/repair-05-normal-R1000/container-identity.json.gz",
+      "rawSha256": "07861e29b83da30df9ca89245f42803980cce6fd9a46aa5c3ec8f660714860fb",
+      "bytes": 2703,
+      "gzipSha256": "1f077f5e5b566670edddafb73fe3e28833c957d25efb0c83845acf32f9c92184"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/console.log",
+      "copy": "evidence/repair-06-normal-R1000/console.log.gz",
+      "rawSha256": "6ae00cf613c2863988e27477e0c035cc627d219b75b9ee041c175b5bc98b9a2d",
+      "bytes": 349,
+      "gzipSha256": "aa92a581fee364512693e5b8822477441aeb87e3f3fc6d25618f3d8adc93dbcc"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/list.log",
+      "copy": "evidence/repair-06-normal-R1000/list.log.gz",
+      "rawSha256": "489b8b56ed72324a2334bfae565e648529b1c310dba0a43e84a8099f4f347460",
+      "bytes": 128,
+      "gzipSha256": "339918ec1e0b6e9c439966ff26a3c3a2d3dee5cbc4f46d549bac871a8a3606bb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/receipt.json",
+      "copy": "evidence/repair-06-normal-R1000/receipt.json.gz",
+      "rawSha256": "23828989ad5f510de5156690ecd8a6ac662bf4e29a162635ae6d520abb04ed72",
+      "bytes": 928,
+      "gzipSha256": "b9607ab416081d0b45a67ad7ac34fe2e253328cca30e0efb2405f69b6b42f41b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/result.json",
+      "copy": "evidence/repair-06-normal-R1000/result.json.gz",
+      "rawSha256": "1a1e7e5dd6807b33ca41e54836f4c80e26738f48f0a58ef959506341fb5c2ea5",
+      "bytes": 70592064,
+      "gzipSha256": "150237ab780cc081ae1c056ef363e1d25dc6031440d479a7748f2b064f27a831"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/partial-result.json",
+      "copy": "evidence/repair-06-normal-R1000/partial-result.json.gz",
+      "rawSha256": "748bcde1700430365b71ba865e6d241dcea4e40b27ffab7b667e6b0eda94354f",
+      "bytes": 70428894,
+      "gzipSha256": "a1c8a4362f49bd22bc49692027de540863c45dfaa818e8886729ea7a07f7b15a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/host-load.jsonl",
+      "copy": "evidence/repair-06-normal-R1000/host-load.jsonl.gz",
+      "rawSha256": "2ad0214ee82a9b071b1a34bf5a82a4f01bde4a270d70d0ead84abb3f32ee56cf",
+      "bytes": 34381,
+      "gzipSha256": "3a42327293b671aa01ca0c76aa7cdbc299ce693330c2fadce98915f40c516e15"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/repair-06-normal-R1000/container-identity.json",
+      "copy": "evidence/repair-06-normal-R1000/container-identity.json.gz",
+      "rawSha256": "cae8263a7b9090726335cbf9c47b7558d56e2ff92d3c55ce97d3fcc74e527be2",
+      "bytes": 2703,
+      "gzipSha256": "fb92c514d2d59a2486427957a9fdf0cfffd065ddc26f48bd07c319ea28bd7c77"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-matrix.py",
+      "copy": "apparatus/run-matrix.py.gz",
+      "rawSha256": "26267fbf8db2bf43ae579ce90b2c4da50fa702372bbedee9cb150f02e2d2aa64",
+      "bytes": 4064,
+      "gzipSha256": "08a1f22a41cd87f927dfe10adee49744e0b29a1451c4d3764b2709f39bba93e3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-repair.py",
+      "copy": "apparatus/analyze-repair.py.gz",
+      "rawSha256": "11b70b1a94dbad1e8ef3899c042e6418865244d7b4d3a6806f07d5fac3387651",
+      "bytes": 5490,
+      "gzipSha256": "2a9ab1269a485b74590c5dfa224d4a50066d99a70d29c80a2f8879218807a08b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/prepare-r-screen.py",
+      "copy": "apparatus/prepare-r-screen.py.gz",
+      "rawSha256": "b7a679f389fe5cc4363ff3e0594160aa4fd86bb93599ad82657921b78130b397",
+      "bytes": 2781,
+      "gzipSha256": "3e1672e24cccbbf7953aa2271b3f7e01da422ae9a6f9a386a73f9387b8cf3175"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/lab-context.mjs",
+      "copy": "apparatus/lab-context.mjs.gz",
+      "rawSha256": "bbf1049bc2737f46d6d1734aff44828869675ad9f59c875eac859d57495674e5",
+      "bytes": 2362,
+      "gzipSha256": "a3a67dd638a60d9738f369edd01c4f05318beaa1cc30c2926da063c9a906e34c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/r-late-before-repair-observation.spec.ts",
+      "copy": "apparatus/r-late-before-repair-observation.spec.ts.gz",
+      "rawSha256": "8280267a8c259023699361405bab354f794768fc6bb3d6dafa6ea3d2e9dcb9e8",
+      "bytes": 11111,
+      "gzipSha256": "fba9158af29c50cfdeeee7bd4884be761b7944d1692700e8ea6debfe815e4cc7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/r-late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.spec.ts.gz",
+      "rawSha256": "6e0e20d51a4c8d7d4bd539553619fa551f1d5ef44ef416e329f9bb83ac47e01a",
+      "bytes": 11421,
+      "gzipSha256": "8240b070cf058cf90160b2f9deb773372da2e14109eeb91cc344da4b855209c3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/r-late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.config.ts.gz",
+      "rawSha256": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+      "bytes": 283,
+      "gzipSha256": "5bb30739474228ef550c986cfe86a764122dd74e8b6908ab939c92c19e89e42b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/normal-repair-coverage.json",
+      "copy": "evidence/normal-repair-coverage.json.gz",
+      "rawSha256": "fb8bf54883adb697bcd607ba3836f7117fc2ebe2dbc6625c9ff96f0851521b5d",
+      "bytes": 1133,
+      "gzipSha256": "9f657ead65bdfae415553198a6739823ac9b4b1a499e19477cfc07421c43dff5"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-normal-window.py",
+      "copy": "apparatus/analyze-normal-window.py.gz",
+      "rawSha256": "e09ac2b3677fd501ce47b52adfbeededb0c40a2fe734dc7d3a52edf2a4b29dfd",
+      "bytes": 2369,
+      "gzipSha256": "157af75600f8042a32350d28583061692a3bdef8cb60b5d532d1f668e5122458"
+    }
+  ],
+  "profilesCredentialsDatabasesBuildsNotCopied": true
+}
