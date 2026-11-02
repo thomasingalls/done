@@ -18216,3 +18216,8 @@ Prepared requested diagnostic work-count/live-publish artifact:396source bodies/
 ## 2026-10-30 — phase282: diagnostic work-count outcome
 
 Requested diagnostic confirms2full/3exact at both editor milestones; original case started-to-editor7.420s (8.150s Worker-clock milestone). One actual unreduced v3 source publishes in22.378s, admission17ms/flush154ms, +10full/+17exact with3status polls included. Full archive guards pass;3own containers/browsers absent. No acceptance or steady-state gain claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).
+
+
+## 2026-10-30 — phase283: range and reader coverage contract
+
+Extended reader-first red evidence to33cases:15fail/18pass. Reproduced reader-ID-as-epoch, delivery fallthrough and incremental fallback; real prior fixtures/indexing succeed. Added real4/8 ranges, native retention and cold/full/incremental consumer tests. Exact source/tag inventory and test bytes archived; old tests/runtime untouched. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).

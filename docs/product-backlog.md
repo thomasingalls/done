@@ -988,3 +988,8 @@ Phase281 adds cold editor work-count and unreduced live-publish observations bef
 ## 2026-10-30 — phase282: diagnostic work-count outcome
 
 Phase282 confirms cold exact reuse is exercised, but opens explicit unreduced post-commit cost:one source22.378s/+10full replays, observer-inclusive. Preserve exact-evidence boundaries. Continue multi-entry reader/planner with all tag readers, ranges4/8, stale-tab/rollback record; then deep/fairness, Page deep64 and fixture/withheld/normal gates. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).
+
+
+## 2026-10-30 — phase283: range and reader coverage contract
+
+Phase283: implement shared v1/v2 tag recognition, exact indexed receipt reader/range verifier and all reader paths, preserving old v1 API and original checks. Then reader fault/bookkeeping checks, separate planner/deep/fairness. V2 development-only; stale-tab/rollback before release work. Retain unreduced mutation cost, normal comparison hold and remaining Page64/fixture/withheld/gates. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).

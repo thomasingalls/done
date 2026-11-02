@@ -6572,3 +6572,8 @@ Run one exact275 diagnostic build with only numeric profiling enabled, no accept
 ## 2026-10-30 — phase282: diagnostic work-count outcome
 
 Treat cold work-count gain and unreduced mutation cost separately. Real frozen editor reports2full/3exact as hypothesized; no acceptance credit from diagnostic build. One unreduced publish takes22.378s with10full/17exact additional loads including3status polls. Retain that limitation; no proof reuse for changed evidence/commits without a separate bounded contract. V2 stays development-only. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).
+
+
+## 2026-10-30 — phase283: range and reader coverage contract
+
+Use one receipt-tag home across every literal/indirect reader, including membership/successor boundaries, full and incremental census, selected entry, retention and handoff. Add real range4/8 and consumer regressions before enabling v2 writes. Development-only approval does not establish stale-tab/rollback behavior; record/test those before release work. All limits/gates/security retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).
