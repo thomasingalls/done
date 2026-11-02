@@ -1,0 +1,1004 @@
+{
+  "labRoot": "/private/tmp/done-checkpoint-return-lab-20261101",
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "noApplicationPatch": true,
+  "compiledBuildsBrowserProfilesCredentialsDatabasesNotCopied": true,
+  "noRunningOutputCaptured": true,
+  "items": [
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/PROTOCOL330.md",
+      "copy": "evidence/PROTOCOL330.md.gz",
+      "rawSha256": "74080a5c9f2ba653c3426f95a22c913cc9ed0bea6cb28ecba8f2d2d72306b4ef",
+      "bytes": 6086,
+      "gzipSha256": "9eb2defab6d4c4a15c700a3308cc045929476bbd673f0bf4954bac150d2c754c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/STOP_FUNCTIONAL.json",
+      "copy": "evidence/STOP_FUNCTIONAL.json.gz",
+      "rawSha256": "e09c62c4ccbba7bd635250dae54e50dbca98a5f7a26d7142771889e5d2d3c37b",
+      "bytes": 3115,
+      "gzipSha256": "827401a29da37946d27687b58401ce740dacf2a5703b2332106af335e36c7614"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/append-only330-before.json",
+      "copy": "evidence/append-only330-before.json.gz",
+      "rawSha256": "b0151da8392e19997df45ae2c9f68aee189cb32c2bb2dd815402eac9bd97b539",
+      "bytes": 406,
+      "gzipSha256": "560b006be35745ba71f1926afc4050881affc1883610d97950c8305b2293db94"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build330.log",
+      "copy": "evidence/build330.log.gz",
+      "rawSha256": "f69f8e1a745d5946f0c5ca19844a78765b0ae35257ee90caa213fe39bf0ae3d1",
+      "bytes": 409,
+      "gzipSha256": "7e7e56d08a653976e47240d89403f5fd713eea17ffbb5b8875695b9b6227bf2c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/canonical-start.json",
+      "copy": "evidence/canonical-start.json.gz",
+      "rawSha256": "7482468a97b646569a5e41184bac93bc815491ec55ecf194ff9b141c06fff928",
+      "bytes": 172002,
+      "gzipSha256": "15347b9e3533707b19409a73c5006c4a162437927e8d3d3d26866ab9c05f5a59"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/container-image.json",
+      "copy": "evidence/container-image.json.gz",
+      "rawSha256": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+      "bytes": 4538,
+      "gzipSha256": "ead75b01a977e5c739f82fee2002c50e4704076ab8b16209b3fc47168378dd00"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/container-service.mjs",
+      "copy": "apparatus/container-service.mjs.gz",
+      "rawSha256": "56849d574273bedd37035be41563b544f180ec9728ab41c4ef9906e0b1e8f3b2",
+      "bytes": 6245,
+      "gzipSha256": "7897ae1c60735931ee66a4d413285bf56c2f6e1ab90690f9a1189139c6802616"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/fixture-roles.mjs",
+      "copy": "apparatus/fixture-roles.mjs.gz",
+      "rawSha256": "9a7c96ce6d15f7ddb3bc0c0edf290efa58bad57e295cf86a20fda683ac2417e4",
+      "bytes": 1029,
+      "gzipSha256": "fe5abeb0a308f1b9a82add52bcb08ebb7fc57e7733976b06f5a757fde2f2eec3"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/freeze330.py",
+      "copy": "apparatus/freeze330.py.gz",
+      "rawSha256": "294c650be1774cd2162182b0c3283bd458cf37b0eaa74e84b38dc24f53705f71",
+      "bytes": 3869,
+      "gzipSha256": "1ed01395b0f9bb07b7bdadffdd502b4fde441e95474f04fa8817dc7b9749a098"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/lab-context.mjs",
+      "copy": "apparatus/lab-context.mjs.gz",
+      "rawSha256": "6cacafed8615a5586d82fd7629e37a6a3d9b586314ceda0bcddcdc2c8b711c07",
+      "bytes": 3650,
+      "gzipSha256": "84991162096ea8259cabb51fe75f40496b8a5ace005430a26e039ca0517aa961"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/loaded330-plan.json",
+      "copy": "evidence/loaded330-plan.json.gz",
+      "rawSha256": "50c571081fc49724fdb9b288eda285b29be58aff2ae20d4272a1472df96d4473",
+      "bytes": 3669,
+      "gzipSha256": "2fa8b9a7c1492e170fbc415e3fc206cf0bb81b5d74cc2b066d7eff6e34a9f904"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/notification-probe.mjs",
+      "copy": "apparatus/notification-probe.mjs.gz",
+      "rawSha256": "179a77f2ed0debbfe257821c61411a4b0b67d32e80bab7333e1f39125bc604f0",
+      "bytes": 1713,
+      "gzipSha256": "53e3b9fea547061617e7f9c6ba2317e0afe36bb4ff4b8532b2193b5ce6756d8a"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/observation330.diff",
+      "copy": "apparatus/observation330.diff.gz",
+      "rawSha256": "08413e353e332f6f7b3065d85cca979cb8c55445ee01f1f034ecd6ef99aaa63d",
+      "bytes": 5479,
+      "gzipSha256": "939cb855e6d2c2f76ae21e2c3e096218a1e41d2417ab2e4e7b4ac9fd91ae1a23"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/observer.mjs",
+      "copy": "apparatus/observer.mjs.gz",
+      "rawSha256": "776437226d5971f2700e11f273a23e59ebd6496e120b0f2f1c0bcfc04346e7f0",
+      "bytes": 579,
+      "gzipSha256": "307722984cec831501afcc094a34c67d3ee3800faefc922807902b7dfcc79cf9"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/playwright-storage-source.txt",
+      "copy": "evidence/playwright-storage-source.txt.gz",
+      "rawSha256": "d3f2f3af4867283ed658a2b3f58759903e72fa7359e9bb732931248c25885ffb",
+      "bytes": 14719,
+      "gzipSha256": "a9f986a5b1bb207b9554d6cbdef7842f412be85ddfab59fcbc94c4b87edc13f9"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-driver.log",
+      "copy": "evidence/prepare330-driver.log.gz",
+      "rawSha256": "d959c02eff996e2ecc1cdd058848487cae6b0a11d8424552a5581859115d06ab",
+      "bytes": 2870,
+      "gzipSha256": "d89f3f2e911f554b83eeb531a68c9fe6ef002408245e1c0ea6a183fa2f115494"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-inputs.json",
+      "copy": "evidence/prepare330-inputs.json.gz",
+      "rawSha256": "6e96523f01acd6d763b5fa52de8b8276909dc3652a9781dea3f11980effd0c00",
+      "bytes": 226369,
+      "gzipSha256": "e19b4cf7b995c88b837679c4f8ddfa25b9744609df22e47e5fe1e63a3092a283"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-plan.json",
+      "copy": "evidence/prepare330-plan.json.gz",
+      "rawSha256": "241c6aa59edc09dd77b1fb1c1c2f4461d59d795c8c3275ca032ce385a0f29352",
+      "bytes": 636,
+      "gzipSha256": "82db165747630274253c505697e282d10f122a9aef18297a3d1ebcc158adb72e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-results.json",
+      "copy": "evidence/prepare330-results.json.gz",
+      "rawSha256": "0e4f3cd346904e094f4a24c03587dd397eabdbfa7a64bc8b6af0c5f88026acb0",
+      "bytes": 2999,
+      "gzipSha256": "3a2f0ea88a12450850dffd5199f3fdcd9927fa88debdeaaf6bbe209ac813ffb5"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/preserve330.py",
+      "copy": "apparatus/preserve330.py.gz",
+      "rawSha256": "6a23fc47955104f2f037b25fc91a8f5e395cee4f17cf31bc7c5060c6f842434c",
+      "bytes": 2537,
+      "gzipSha256": "8427721e2f8a7d074fa4651360f0a3a3394af4f30cbdbcba59aa11a74514852e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/read-request.mjs",
+      "copy": "apparatus/read-request.mjs.gz",
+      "rawSha256": "dddcdf4c98fcc778cc1b8e9dcc7dad09934a747b52c009f7a211519eb10960cc",
+      "bytes": 1047,
+      "gzipSha256": "b528a80f6c6ac5179b5efac4c54509ed8542e087aa025396f66abe3cc200d1bd"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/record-stop330.log",
+      "copy": "evidence/record-stop330.log.gz",
+      "rawSha256": "c1e7eea4ae1ec807fcfe556208b623eb7d76427733eff45d4a041a62863cef33",
+      "bytes": 2299,
+      "gzipSha256": "91bd594731d600b09bd79a7691d808de64fd9a7ccf65706a907eff8f452bb3af"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/record-stop330.py",
+      "copy": "apparatus/record-stop330.py.gz",
+      "rawSha256": "62977147b9158bb97da775fadd6783fe53017cae0e503208f58bf9628db22972",
+      "bytes": 4119,
+      "gzipSha256": "1f60bc5e72d1ffdd39882c64f4316ea718f17a87e593edecfdcc3cc7569d7c01"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/return330-plan.json",
+      "copy": "evidence/return330-plan.json.gz",
+      "rawSha256": "408ac7fcf52ce1a161cac851a641d7d7d2fd2fb2af034f7f990102c6c7248759",
+      "bytes": 7749,
+      "gzipSha256": "ecc73c39775ea4fe64109e76dd2b94d7c5f58e75cb8dd5ff7b4f57734df2e46d"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/run-stage.py",
+      "copy": "apparatus/run-stage.py.gz",
+      "rawSha256": "8f579017bae588c74d4f88db285ff79e3c4f9b5951042d56f3391a1f4bd33bf1",
+      "bytes": 6388,
+      "gzipSha256": "516fdcd7a14a413834c2dfc620225e8037649e8a63ef6c778d0606a5214c6348"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/setup330.py",
+      "copy": "apparatus/setup330.py.gz",
+      "rawSha256": "66e65b3ad372ca1bc4445e1e5d119bed4b4633fb9fd8bfe51d767916eb5a0982",
+      "bytes": 5391,
+      "gzipSha256": "31def95d3b7a0d4e8bb451b1c833e54263a0ee87fff5574f99baa6c4777f3a09"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/source-inputs330.json",
+      "copy": "evidence/source-inputs330.json.gz",
+      "rawSha256": "fb636a41dd57a21ae224338af070a6e2cc4efdd6b707d8565d7ddcc772fdad7c",
+      "bytes": 162714,
+      "gzipSha256": "453efb9cb27b98e98ece35ddc71f537d61172d36f808af441dc9b9bf9f661f10"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/stop330-analysis.json",
+      "copy": "evidence/stop330-analysis.json.gz",
+      "rawSha256": "4674c3fced876af61d10e21220041a3781825fa15272b576996408bc0413fe9d",
+      "bytes": 4523,
+      "gzipSha256": "e3089b5f720f218105293f969b6d24cf3cd3f3890c26b56b44da931481b5b24b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/tsconfig330.json",
+      "copy": "evidence/tsconfig330.json.gz",
+      "rawSha256": "de8c0849ec719c0cd3136e6aa87fe7ad7fdd8544d076510a7d89f0966355ac89",
+      "bytes": 898,
+      "gzipSha256": "01ec79756976b73529a088e06427123ea4e5719a56a3cd8e04fa710daecd3631"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/type330.log",
+      "copy": "evidence/type330.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/fault330-C.json",
+      "copy": "evidence/prepare330-admitted-checkpoint/fault330-C.json.gz",
+      "rawSha256": "f30cf2698a0e06f3c3bf68d09821a056de004d74fa844e6816f2a7d0e6e7372e",
+      "bytes": 36165,
+      "gzipSha256": "bbde9b710002823523d8492494b80bbdf305fe7196fe12cd0a13dd1765f7c574"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/result.json",
+      "copy": "evidence/prepare330-admitted-checkpoint/result.json.gz",
+      "rawSha256": "27742b966a2ce4bf875d4c1ea993e022866173394e0745480d5b8dedd1a3a277",
+      "bytes": 38018,
+      "gzipSha256": "120a26f66333f9b30c55dba8d38f9370300ae57dc1fea42e9213da4036e44f8c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/docker-command.json",
+      "copy": "evidence/prepare330-admitted-checkpoint/docker-command.json.gz",
+      "rawSha256": "1e3f5d14001ce6eba290ced2310f5c12f5d58ed4be09ce225092080617915a88",
+      "bytes": 1221,
+      "gzipSha256": "88aa1876444a65789f337934598643d7992ba29d41270c01be1b55c4bcfe06a0"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/console.log",
+      "copy": "evidence/prepare330-admitted-checkpoint/console.log.gz",
+      "rawSha256": "20faa7cd98dbe0a6ef9c480ff50a3e7ebd14a258e17eb2948394c6175a782968",
+      "bytes": 5308,
+      "gzipSha256": "6d9d833a67898ac00028650cfbe830d88a289b953b713af545d07eaf7d60bf30"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/container-identity.json",
+      "copy": "evidence/prepare330-admitted-checkpoint/container-identity.json.gz",
+      "rawSha256": "7f9a51b5b554bf09fbd008dff8817124f0603a0bd7f7536e72047292f773fdf7",
+      "bytes": 2713,
+      "gzipSha256": "b7bd70dd2292c0b63ad2a22e0f386bda3867c65afa6f52c00a576d60e114db52"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/services.log",
+      "copy": "evidence/prepare330-admitted-checkpoint/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318,
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/list.log",
+      "copy": "evidence/prepare330-admitted-checkpoint/list.log.gz",
+      "rawSha256": "b8ea5063e9c7e13b6f501bfe54f1938c43d25a665cc9b8ed44ccf395cd1d883e",
+      "bytes": 149,
+      "gzipSha256": "b3c2f197b8cd1ecb41e4b380635ebebff11b543320594e11dc8427f61168ea1e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/fault330-A.json",
+      "copy": "evidence/prepare330-admitted-checkpoint/fault330-A.json.gz",
+      "rawSha256": "5e3ff238c04e85270d47aead3794c338cf5ed4763dd7d0d7b4969fe06c521eb0",
+      "bytes": 37469,
+      "gzipSha256": "8f404e2fe237f3c435c72a43c387b0af54bf92678b60b9fc8be46b3e6687a99e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/host-load.jsonl",
+      "copy": "evidence/prepare330-admitted-checkpoint/host-load.jsonl.gz",
+      "rawSha256": "8fc0dc05405c5608417e093054b6fd490072c5c878582e96f64913ff535fc5ad",
+      "bytes": 7372,
+      "gzipSha256": "e696550b3afe941812e742624516b2f6cd7a32b23e087636acc95192835f4787"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/receipt.json",
+      "copy": "evidence/prepare330-admitted-checkpoint/receipt.json.gz",
+      "rawSha256": "db18ab30f69c4c55f23bd2ae18fb537821c96a3874015ed69aabde091a2863ae",
+      "bytes": 2913,
+      "gzipSha256": "2a60cb20562a93d96a3f62198a4f2ca81447f9d590ba5c620157fb40b38b445f"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/prepare330-admitted-checkpoint/artifacts/prepare330-prepare-genuine-77e8a-out-adding-accepted-writing/error-context.md",
+      "copy": "evidence/prepare330-admitted-checkpoint/artifacts/prepare330-prepare-genuine-77e8a-out-adding-accepted-writing/error-context.md.gz",
+      "rawSha256": "7a4d14ad44c42e94e5cdfdc3ca007d0dda21b2d40a0635f4d24fe24c825c74cd",
+      "bytes": 12679,
+      "gzipSha256": "06b3d1edc437ecb4c93a3d8f46d4a18c6e59816ba6be97b4e265355d824de9da"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/seed.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed.config.ts.gz",
+      "rawSha256": "31a35401f2a1943585dc5732bb4acef2ffb0c6dc62dc96c49e1445353cfc851e",
+      "bytes": 471,
+      "gzipSha256": "36d3327108eea29cc4c68527700ddef3f8fd388f1d05324f083d3c5261acd616"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/old1024-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.spec.ts.gz",
+      "rawSha256": "7391bccddd08c18b14fe9e2e88306c29094ccf0049126829280f2f37f719e0b4",
+      "bytes": 4351,
+      "gzipSha256": "b4e6d4c2c66e08fd8b2ef4cbb8ae771004e67b150532f0d9180309d9a7f28b54"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance.spec.ts.gz",
+      "rawSha256": "8f27a07df6eead1a45f8045d222383fd08fbf747f71c406905624e231f920c27",
+      "bytes": 10984,
+      "gzipSha256": "7fde833a227ade4ff0c0c1197c82bf21e746fcc64896a0071d783e380f2b78db"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/idle-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/idle-maintenance.config.ts.gz",
+      "rawSha256": "ad9491d0f5de1c0c88b3ff8ee022a67ccc66b81d56d92dd7cfbcf4c2fcc7026b",
+      "bytes": 290,
+      "gzipSha256": "edee73743f4748272a3107cfd0a3a90908101220de4421234a9c6402ee15b0fc"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "rawSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "bytes": 285,
+      "gzipSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/grown-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grown-maintenance.config.ts.gz",
+      "rawSha256": "45909a9e9b43e1507a96f8eb463ef30fe898cfdb4bd1bc4d2033619c368d66a7",
+      "bytes": 294,
+      "gzipSha256": "a67a7cb28aa9dd3f18be236525397378b889a12ac1621b789bee115fb56704fa"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/deep-traffic.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/deep-traffic.mjs.gz",
+      "rawSha256": "225c2a0ff00eeac608f21ceb2280cf8d33bc1f4535dd609b64724e17535ffb4f",
+      "bytes": 2142,
+      "gzipSha256": "322aa6dd20eaca26fb52cdba88c56f842ccb6898c746d11beec67d87bb41ef00"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/continuation.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/continuation.spec.ts.gz",
+      "rawSha256": "4e78bbbde088cc2c41aefda32b1329d86e1c9d43bfc63a4ff3ae33dbb2a31055",
+      "bytes": 17829,
+      "gzipSha256": "005705853d4743e399a0b9bed58d148a59d79033f7d6c123ba53c22d548711a2"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/r-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-idle.spec.ts.gz",
+      "rawSha256": "050c0a8e3c98d671b9495b343c47ba2765e95c284fb1568558641cd9c7d6d929",
+      "bytes": 11880,
+      "gzipSha256": "f65c2afee3bb4d3ecb87c55b7b2f4702eb9159dc632c283d3b97af8039286eeb"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/focus-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/focus-sender326.config.ts.gz",
+      "rawSha256": "b1f2b2b83484648f35ca2b7fb42e437064f2abf17399f3675fdec9e20df719de",
+      "bytes": 289,
+      "gzipSha256": "4e19823799831e0f398f051cd37361ac4925966fa57914c800a0385894e69e51"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/devices.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "rawSha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77",
+      "bytes": 5092,
+      "gzipSha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/prepare-short326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-short326.config.ts.gz",
+      "rawSha256": "a83a6e86bd263891eeae6a0e0b6b07090a87fe7d351e84174b260756788474d8",
+      "bytes": 290,
+      "gzipSha256": "b33b459fc85ca0892453c465b6b02714e901550920fd9134370e0007939e51f1"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/dense-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.spec.ts.gz",
+      "rawSha256": "13a5e12cdbb148d542147264c12aa12e803cc5e526745e5282110307a4de5603",
+      "bytes": 4350,
+      "gzipSha256": "d6c91e6f3ed23d0d719c3021cb2522e520a4039b7cd645bfb6ea84ec0d1a2e5b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/marker-civil.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker-civil.spec.ts.gz",
+      "rawSha256": "7bce3ea6ff68ec5fda8b3c99fed87779654f268a4362397613f638d45f45ed6e",
+      "bytes": 11764,
+      "gzipSha256": "8ef4ee77be990fbbef3c8a6cd544cd7192e93ad68290c75f47b1b5b943f0b941"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/race.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/race.spec.ts.gz",
+      "rawSha256": "d371f255566c1344574c523b17b310c2b2690f706b2e62701e22793a7b666f88",
+      "bytes": 7096,
+      "gzipSha256": "bc2b38223782acb6c136cb7cd83687b8442001463f5ecf38af462578ba6f946b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/result.d.mts",
+      "copy": "apparatus/harness/test/account-continuation-lab/result.d.mts.gz",
+      "rawSha256": "59587c96f34299f9033c31ddabf68514b60498c5c84a1828e27cbc4b929d1994",
+      "bytes": 96,
+      "gzipSha256": "0ea08ffb4530ea1e811b729a8072904a333f6237d12593cf482be5d93bdd6deb"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/grow-paired329.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grow-paired329.spec.ts.gz",
+      "rawSha256": "8b2a2647a414dd854f3d3eec6818779ba073bb7316e692d7c5dc65d9dcdf2491",
+      "bytes": 4866,
+      "gzipSha256": "7e85ea543453577f3dbc09ee2cf95cbb7729b96078a0da457f2eca598f3b7931"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/inspect-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/inspect-sender326.config.ts.gz",
+      "rawSha256": "2dda7a8a635b3ee6880f6b4c7fac1b4d4d06a2c6575a8e7e76297e341c1fbcf3",
+      "bytes": 291,
+      "gzipSha256": "10e6c3420e6b6f04c1dbe479bec1ba1c8de320f50e940f355aefd05d0ac40baa"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/dense-cut.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cut.config.ts.gz",
+      "rawSha256": "a4b9c1a77e0e86dde1980e8fa971903d12fda9988085171bf72b7481e785e344",
+      "bytes": 286,
+      "gzipSha256": "3a7f9a21f3acca6e808f26e467f3819f5dced9486e59a1e03096dcafdf818e28"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/prepare-short326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-short326.spec.ts.gz",
+      "rawSha256": "65e75463e0eb13e7f0c682739839eab755facd910ea44fa4b0e5d716f674984c",
+      "bytes": 3606,
+      "gzipSha256": "25b6b37034ef9db5d7f87c117828adbba2980c3b1a5608489ce7f8e676667267"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/dense-cut.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cut.spec.ts.gz",
+      "rawSha256": "364b0a69d01fa8494a6b68ea73f48fed0781be8d89ef7e357506b62e02044b4e",
+      "bytes": 8614,
+      "gzipSha256": "31c9d4076eee7474c1fca18001d181ac1eb73afd375f109d83a377828f6792f6"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/runtime.d.mts",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.d.mts.gz",
+      "rawSha256": "d033939d1d06cc3d19a3592adfb6cc728f0a025fffadca7fb074ce30c1a71446",
+      "bytes": 254,
+      "gzipSha256": "3762793e6a740c9907253daff3cb27220577efbf716f197c831f1222269c4659"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/race.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/race.config.ts.gz",
+      "rawSha256": "21521655e2c96f7792b80086b52d2113486197093b34acaf6df61a74fec1a0a8",
+      "bytes": 281,
+      "gzipSha256": "82517b9ef451e8be91b7ea188317f8aae618af44b4c588e6461d627688bc40b4"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/marker-civil.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker-civil.config.ts.gz",
+      "rawSha256": "03df63e48830666304a691cd8aa4c3fedb466d0af9381a829e11c23cc2b893a2",
+      "bytes": 289,
+      "gzipSha256": "f00e0d41013dc49b22154828fe2485f767df792b1f23874dc59acb78bc9ed19c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/input-diagnostic.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/input-diagnostic.spec.ts.gz",
+      "rawSha256": "a36cfdfe272075b910e0e21901f8bc153e0fe6b2cf4b9399481df852a5d7c1a2",
+      "bytes": 14413,
+      "gzipSha256": "07e1ba652ec94990cd274031fa87708df508e5e0364b20b44b09ec3f3a79d23c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/maintenance-pilot.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance-pilot.config.ts.gz",
+      "rawSha256": "bc663e4e8a826c87ded50ccc42e00ad83b43118ea1d93ebe99b98403102ba6f0",
+      "bytes": 294,
+      "gzipSha256": "ce7b15ba1f00c20f467d8ffb07052ff26e7094f00d03949b92532aedfb996073"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/inspect-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/inspect-sender326.spec.ts.gz",
+      "rawSha256": "40443f076a7b904755ddae442224b7e5acc92ab2443f55c46b050e1fea73b983",
+      "bytes": 2683,
+      "gzipSha256": "843b21b4491f3d40972f5ee52b6c549007c9aead5636674fd674e776dd42739e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/sender326.spec.ts.gz",
+      "rawSha256": "9ebf78864af684ba0647e3ba324ccb07b1e3bf75fc69d5c41ef243148c61dcbc",
+      "bytes": 14280,
+      "gzipSha256": "3815a47828ca1551a573494c411a7a04ce4f22fe729b15e0535261031c68ba7e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/nonoverlap.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/nonoverlap.config.ts.gz",
+      "rawSha256": "0b07f2c1dc822cfdde3ea58a5850776096be513ee9aea3ee1a7c76211ff2b796",
+      "bytes": 477,
+      "gzipSha256": "eb139d56981c12e1895ca3dea0a864de78989aae10c52b56f3cc68cefbd6ec48"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/seed-profile.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "rawSha256": "f86fb965936090d65acc09052baadcffd285c1ae02a210f961c2acb714f8e751",
+      "bytes": 1544,
+      "gzipSha256": "02b4677d6998f4ed4a6f73c46c299c276d96affc336e0068bb71f24f460611b9"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/input-diagnostic.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/input-diagnostic.config.ts.gz",
+      "rawSha256": "b33998b1fef15b4197b8ad7da773ccce035beec714426534df0718a2401798a6",
+      "bytes": 293,
+      "gzipSha256": "616172a70005b531c48ba4394ed86ff5e8dcb640ced5bc5b42bcbc085522c983"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/gate-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.spec.ts.gz",
+      "rawSha256": "8e6c4fb532b7642b3b229ca0fec60e463f1d0d4e32ac1b3346c903dc57ece22c",
+      "bytes": 11440,
+      "gzipSha256": "34fac797c554d6be981e0692a06506c7b83fd4cc7d1856edcc0820e25a597a34"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/marker.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker.config.ts.gz",
+      "rawSha256": "e228a74799169cc091979e0b67b6b0f9b3c0239ca7c7194683a5cd2edf10cf28",
+      "bytes": 283,
+      "gzipSha256": "92dcec3f276f7162bc743db33c270247fa567ba53500dbd4c2dbdb0cc1ca6247"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/common.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "rawSha256": "2d23ddbe8235d13fee0edf28f79c810d6f534f2e20ae8c2b2ebb004c910fa132",
+      "bytes": 3497,
+      "gzipSha256": "651ce71c36017e15e2c0fb4ea1c21d1eabd0e5c6c8d5648975c8a942b63cedad"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/stall-probe.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall-probe.ts.gz",
+      "rawSha256": "9a19478276881be6ca8546524a1f2de3b4ae776feed1e0849677fe4b68e10e95",
+      "bytes": 3046,
+      "gzipSha256": "131f64aba3afb197cbb8935e445c49f7724bec38c9b7af03eb1e996b7b27b856"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/prepare-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-sender326.config.ts.gz",
+      "rawSha256": "fee5127e478858c4d666f53bb636ef9d733d77b80f247057db5a92080ba0110e",
+      "bytes": 294,
+      "gzipSha256": "accec648f6e5ff4014edbbaf61e9b00bd18d385952a223b24ee707ef4ef535db"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/idle-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/idle-maintenance.spec.ts.gz",
+      "rawSha256": "2fc4f41abee8bf32baf1eed941e8201e8e7c3d616beb8ecd902b6a6390e30012",
+      "bytes": 4934,
+      "gzipSha256": "4431d647ce2a101cf1e795973a9ea55abf9805b9c6c3ab56e65d6cd8ee3394b5"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/seed.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed.spec.ts.gz",
+      "rawSha256": "f5870b3ff3049e9c60bfcee512c1531cfbe48c4da0135934200ee56f950f12e4",
+      "bytes": 6439,
+      "gzipSha256": "e71d5c8539a61046012d81621abc8bca5cd52e20f808004b8b917e5ba3115852"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/sender326.config.ts.gz",
+      "rawSha256": "ae83ee26e9b639fdc28f8b107b31d8fff5813f98b88b11160701dff6d7451384",
+      "bytes": 286,
+      "gzipSha256": "ea1c97ef7a04388d32d05a112ff07dd0d1b9ae7543d98cc811fe5c5510f2152b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/focus-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/focus-sender326.spec.ts.gz",
+      "rawSha256": "c51fcef14bed927bbfb36090b79a6f4240e6b83d207c3fade39d6f6721e24736",
+      "bytes": 2818,
+      "gzipSha256": "bf61707c6f8c8ab3d1c166278441a1b6db0b109e7b15fb00f84d280c41b0793d"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/default.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/default.spec.ts.gz",
+      "rawSha256": "b1bc5ed7d62eb4e44250ff13d15156d5e6f62a0c0b61f44fdf78263342f9a2de",
+      "bytes": 4313,
+      "gzipSha256": "1dac703aaa0e89bc04c156fffe7409d0d62de7c134ca7b3043f0cdb94af80ba0"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/r-late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.config.ts.gz",
+      "rawSha256": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+      "bytes": 283,
+      "gzipSha256": "5bb30739474228ef550c986cfe86a764122dd74e8b6908ab939c92c19e89e42b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/gate-native.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "rawSha256": "7b6e26cc22b08aae22d68194410391906638238211951797dd33e2e2c2e69a6d",
+      "bytes": 153929,
+      "gzipSha256": "df584d36bc40f282467dc19d50ce925322631ac94df998d9e7e80d0160453e8d"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/root-cache-review.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/root-cache-review.spec.ts.gz",
+      "rawSha256": "f62600f00adda6c4359d3d77607cf50c63a6e104c6600582dc72044c40f82a84",
+      "bytes": 4815,
+      "gzipSha256": "e9a171e17506f50f5f6ccae9795e20672c474a568eff75f89aca68b5cbe0109d"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/r-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-idle.config.ts.gz",
+      "rawSha256": "dda6b768130ed88c009e3af76a5fcf07e018cdecf02b0f04fd46461905999b11",
+      "bytes": 283,
+      "gzipSha256": "2d0b59bb4923bf4ced4eb59991356ad173161350d70d0901276bd7a5028ea9cd"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/late.config.ts.gz",
+      "rawSha256": "8b87a9b0c5633b19b45e167d7fe3bca4712549bff967bcdcc8982ec7142a6387",
+      "bytes": 281,
+      "gzipSha256": "79dd73c5093c6996d81ce5dee6938b8c71cd7ced24680f036d1b15ead22db27a"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/gate-native.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.config.ts.gz",
+      "rawSha256": "2e71b9a38acbabec7d18717abec3271cc7f48cf2a414879f259748bb61a57413",
+      "bytes": 288,
+      "gzipSha256": "ff3677b6dfeec325ef38d2b9f369cbd85227567f3cf60d3515644cf4ee069ede"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/capture-maintenance-trace.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/capture-maintenance-trace.ts.gz",
+      "rawSha256": "32e0d1836fd0e499f0415b3e452a763e30ff5803147c7d45c68f7464c01b4107",
+      "bytes": 392,
+      "gzipSha256": "fabde8cf16c32cb6f63a5c23596f1d528d2615bf3c518b2b75c73371a134cc6c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/gate-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.config.ts.gz",
+      "rawSha256": "f2b9974f167087fd3899fc2aad61639acc0f2439169b9fdd85670015c73f5b35",
+      "bytes": 293,
+      "gzipSha256": "7a10d2f124f2bb640f0e2d3a468b4a83ea154c5d53655a1d40d689dbf8aa7392"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/treatment.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/treatment.config.ts.gz",
+      "rawSha256": "31123458dd7b1ecbc7a2cc36ead9c3cee0365263cd606a779df52ef534165d8b",
+      "bytes": 286,
+      "gzipSha256": "5d788a0c76f81d29b59e8a3c7905074538bf16a2f86999a32a8070ee23c7a1cd"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/worker-owner.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.spec.ts.gz",
+      "rawSha256": "7b54bff2dfe49fcef56ada9812b79b61a3caf03b7c97a7a60cdec267610baf09",
+      "bytes": 158374,
+      "gzipSha256": "bbd48b14864091542af846a55854d7781c2b655bffd147660346609ea0cd3183"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/dense-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.config.ts.gz",
+      "rawSha256": "88520272e626e2ff47081cff1f15d40a07da943ef37b4717a79921ed11a3e132",
+      "bytes": 289,
+      "gzipSha256": "f3a0f452a0fc5f2c4fa8c0a4d09e39b8753af125fd083c60f114f4c820e137c4"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/cohort323.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cohort323.config.ts.gz",
+      "rawSha256": "5c3c16ab2fde37e2911b5417c82f99127b810131e34985e155e95f3273df05e3",
+      "bytes": 286,
+      "gzipSha256": "939baae5d06e0125d5dba8ff75eb0d46a9cdfe31041608adfb9138219ad1c64b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/dispatch-probe.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "rawSha256": "801dd1c895d29b673e54331760455d173e8d22e5f65cb7eeb1f50b5b2748ae64",
+      "bytes": 4448,
+      "gzipSha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/runtime.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "rawSha256": "52e4d7e6765b0739d6f4025d559419c22d1bd87fab623cbd1c532cd0e5ada0a7",
+      "bytes": 4465,
+      "gzipSha256": "e0726502239e61f9740f5b52efc3cd8b0208bc40f60b950435cba90adf9bd455"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/r-late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.spec.ts.gz",
+      "rawSha256": "6e0e20d51a4c8d7d4bd539553619fa551f1d5ef44ef416e329f9bb83ac47e01a",
+      "bytes": 11421,
+      "gzipSha256": "8240b070cf058cf90160b2f9deb773372da2e14109eeb91cc344da4b855209c3"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/nonoverlap.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/nonoverlap.spec.ts.gz",
+      "rawSha256": "52e3db4f0b4d2de2cf13cd50604bc41547c6edacd0865ed7f9ff5de261dec065",
+      "bytes": 5415,
+      "gzipSha256": "7821761928ee053528e74558677cadbf969814f5df8b24f275a1f2993de8f558"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/paired329.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/paired329.config.ts.gz",
+      "rawSha256": "0c078a3556bc48387b548a7d7bfffaeb91c674e4c2a48d6544279f5dffaf37ee",
+      "bytes": 283,
+      "gzipSha256": "d51c62d84b16d59fbf76d81e777688977142dfd2630412192ac6fb5f7b34a18a"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/capture-lab.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/capture-lab.ts.gz",
+      "rawSha256": "126dae0c0104dff6772dab27933aa53282b61c163ecfd2c0788d75188a8b6c6c",
+      "bytes": 412,
+      "gzipSha256": "cf57ad0eaf25534b3e55a185a06d48428b5dbea630f758041a6326c585be1cbd"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/worker-owner.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.config.ts.gz",
+      "rawSha256": "51a6a8ba5e326e169f571208c17ee8741fec1174b14c6faffff638090022acc9",
+      "bytes": 289,
+      "gzipSha256": "5741c02b5b3d0dcf68d10dcb9dbb40c1259ab7bf100459e33e9a6ae8e995efc7"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/treatment.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/treatment.spec.ts.gz",
+      "rawSha256": "5f9d75066faae8f7d6ddbb491ef9c1d47571542826d757dd8448a10c789495af",
+      "bytes": 2507,
+      "gzipSha256": "5118c986a23ad35fdc6e3c21cbce42792c364e9195931c376eaa93c90c8d1c0b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/prepare-profile.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-profile.spec.ts.gz",
+      "rawSha256": "3162bfd281d582d3282935657af5fc661c17c5efac4aa1604d0635220c376ea3",
+      "bytes": 3463,
+      "gzipSha256": "f1d18d87c9838eae71cd8e6d1ed32b10fa1b56432607428c61c9277b3f004bc2"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/root-cache-review.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/root-cache-review.config.ts.gz",
+      "rawSha256": "969bcbffe98d4bd85ea512a1bab64a86e5b99e889c9c19ab6d5876227a84920b",
+      "bytes": 294,
+      "gzipSha256": "74110cd1771fc49d90721b2da340d37bbbcafc4444295df77223f9cc24b21174"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/paired329.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/paired329.spec.ts.gz",
+      "rawSha256": "a889bfc42b7489e13ef0b519bdc21d8432ee156d8e876a4bad3cedfaff6cb7e2",
+      "bytes": 16840,
+      "gzipSha256": "2802165e46f3626f45fc9cd4e4bd7287c1fb781c40181c1d01065315d8b66383"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/marker.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker.spec.ts.gz",
+      "rawSha256": "89889adb1dc8372178b5ed144f1cba4f23eca54c893a24c4c6e5ddb8b37b4168",
+      "bytes": 10327,
+      "gzipSha256": "94bc5e9af20c8b5929af1bef5188371a8f244ed2270eb965e816938b0d1d815b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/late.spec.ts.gz",
+      "rawSha256": "91dc7b950f3286e7b6085f8851c5044df14b12711fccf9192ab31af65790ded9",
+      "bytes": 11072,
+      "gzipSha256": "fedce71364404d9b190f0b252bcd9bdf549059662b9f793020538d150606062f"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance.config.ts.gz",
+      "rawSha256": "70b43c22df03535dc5849f9c2c6c597e1cd1e960edfdfa777982a0afa6a142f9",
+      "bytes": 288,
+      "gzipSha256": "8d9593f88cc2c59efeb331c81780652e4a7bdbdc35cded4da2ba5721499465c1"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/old1024-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.config.ts.gz",
+      "rawSha256": "abcad4ab77d5824818e4787dd4330907e2d40d968d5ba079ab84a01972505169",
+      "bytes": 291,
+      "gzipSha256": "86a9538f9043d2b05dc3484a5bf4537d7cf5798299b964856ac66d3b30fc7bfc"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/stall.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.config.ts.gz",
+      "rawSha256": "8b57cc7f74f224ccf47e7cae7b5ca17a4b0a5f12630e0a7f691de9b776a50fb5",
+      "bytes": 285,
+      "gzipSha256": "bb39ada26d52a24a57c6c9ef96a89c254ca656dee81c04a5e68ce17fd17f44a2"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "rawSha256": "52a98127646d48363fe64520ca44f18e0b1a810248a2e8901f8ed971c6e3e76f",
+      "bytes": 5601,
+      "gzipSha256": "ccfdb89ffc1bdceffa9eab2a799ec141826da179a5c9ecb4cab73d29938171cf"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/default.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/default.config.ts.gz",
+      "rawSha256": "b2c7926bd6cf25d23e3e326c2253a828eacd120d9b912062059f265fff80c972",
+      "bytes": 284,
+      "gzipSha256": "353b312daea65a62d8fffa22305f7b09b02b6724ef6fa269d6695abb7024bc30"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grown-maintenance.spec.ts.gz",
+      "rawSha256": "d78afc6147b03d726102303d5ad5bac292aa3fbecce06f452f80c79f8ad9c7df",
+      "bytes": 12043,
+      "gzipSha256": "09cc1edcb58b2655558f99723e7f87129c00240602ccd649e7f8a5da71433d87"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/lab-cpu.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/lab-cpu.mjs.gz",
+      "rawSha256": "f7e40df43bdbdb16babcb8dd1797b9a277299ae87e4ce00e110e233a8a51669f",
+      "bytes": 1455,
+      "gzipSha256": "7ac5561b761acccb13d72cf0e60ddcfd73944acdae8f8f1676d093aaadd2496a"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/fixture-roles.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/fixture-roles.mjs.gz",
+      "rawSha256": "e188d9e96861a2600eb7399d68f5110042b79eaa0edac46a398fd2d0b75e62e5",
+      "bytes": 943,
+      "gzipSha256": "062c5b175a2dae51f6704b3513c960fed3f51d906395a38e3c230aa7822ceb17"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/prepare-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-sender326.spec.ts.gz",
+      "rawSha256": "c28df171840c7a8863ebfb9d035b9db6e8bb2f8cdce6d7a2f1376d9ff204932f",
+      "bytes": 3400,
+      "gzipSha256": "7a71db0c6980f40502d82b91f45ed19532176fc9b6dbe40bc182d87971ab1c56"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/playwright.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/playwright.config.ts.gz",
+      "rawSha256": "8e6b678c7eb438f3f2d34f97c325a8cf4bd6b9e250a07aad47497233a28754b0",
+      "bytes": 479,
+      "gzipSha256": "cb1687309948f52fd8437ada5a7b1ac4ae1b4dc327b2d44a07a8d4c1bbfa12cd"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/cohort323.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cohort323.spec.ts.gz",
+      "rawSha256": "20efbd578520db6b44c9810e24f073c90920b15eba821fb82f6849bc26cb0c84",
+      "bytes": 4385,
+      "gzipSha256": "9e484377ebcb6267f4f5aa52e616ceb1abd0119ce693260ce1f95926ab90571e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/hint.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/hint.config.ts.gz",
+      "rawSha256": "391f47fa119beabce52f563b47d5c440c1078dc0425cd8c32cc64d42d3e78592",
+      "bytes": 471,
+      "gzipSha256": "3a8aa50f4c141da82963247e727759fd0989accb1f85c817b028e2198b7bfcf1"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/cold-observer.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cold-observer.ts.gz",
+      "rawSha256": "a191ff009d3c711bd519c784407a7988f4f8ea00caccff4e96d731031f9429b2",
+      "bytes": 714,
+      "gzipSha256": "f06384fcf16d3a46c9070359ad083065cf3b2d3bd994eb85dfa37c2866f7e4f5"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/worker-cpu-profile.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-cpu-profile.mjs.gz",
+      "rawSha256": "d188e8f1fea59dc0531c70f12dacb0294d21dba12d7a6fbb2e83b363df70c2a9",
+      "bytes": 2107,
+      "gzipSha256": "6fddfea0f66a7afb1c155630cd237ce4f6e6af078538d8b6a32f9f12dbcac853"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/hint.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/hint.spec.ts.gz",
+      "rawSha256": "3b732293f37bc6fb6bbb275021507261dd9feeb60abc5e97de70b7e6d8a6e475",
+      "bytes": 4132,
+      "gzipSha256": "1bd05d2f81b5d642148406d0353d0d31bc3008280b19e93595167ea9bb0eb898"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/maintenance-pilot.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance-pilot.spec.ts.gz",
+      "rawSha256": "e6bd99a496aa0146517520dbe89956ba4a40784055437b5d9df8cc682bcf2d19",
+      "bytes": 2656,
+      "gzipSha256": "bdbb500a90d1ef20e6ed20e89aa15bf531518462784829713dd4aaa08c3edd6b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/prepare.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare.config.ts.gz",
+      "rawSha256": "9c9c77ec61b78096de8ab698cb6132db2978638bec7d60a0a42fb10246aa9f7a",
+      "bytes": 292,
+      "gzipSha256": "1a8aaa30ca67f6ea727dd84b21f8ccaeab9f50482770268f3837686c0daf530b"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/result.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/result.mjs.gz",
+      "rawSha256": "191d89fe6b82522f92a5e52ca8aa61a62c080e8679c14d621dcf66bc982953d2",
+      "bytes": 244,
+      "gzipSha256": "731b2f8a787e5f614667fd9771ac3a67500ea48ee4298d58aadc33a04eb30eb9"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/stall.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.spec.ts.gz",
+      "rawSha256": "a7f13260b8126434a0dafae8d37d7ba41035224419b98c262db98fb0ac697661",
+      "bytes": 10173,
+      "gzipSha256": "5000ab5eee170972b688f14fdc721dbe524a7da725db303ee04936ddeeafbeff"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/grow-paired329.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grow-paired329.config.ts.gz",
+      "rawSha256": "456033c9b1e37301de0cbe62cf3d78c07cabc5d856028ebc67db057f52d0f41f",
+      "bytes": 288,
+      "gzipSha256": "7564a9047906d1dc6669f2f6f5b6116efcfe230a71e8aa2f0c3d565f181eea28"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase330/prepare330.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase330/prepare330.spec.ts.gz",
+      "rawSha256": "d930d2bcc1f17d6469f9c7c45b65ad191b35aa3eac8a7ae0bf3875d314d0f55f",
+      "bytes": 3099,
+      "gzipSha256": "a8a0311d347afd8d66266e593909f2344cca3f1eb6a545507472420229233336"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase330/return330.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase330/return330.spec.ts.gz",
+      "rawSha256": "edfdb7c607647fa1e60d8a5e3711f7be1319d91f05be35cf25b86cb100e59f39",
+      "bytes": 3268,
+      "gzipSha256": "356c818ef5cd6e3928ecef5d24b9f88c1be52b5f27f1adbccc44e7a2ac45e9b0"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase330/common330.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase330/common330.ts.gz",
+      "rawSha256": "cbbd43ce4d2e2e4d258fb2515e94998e6e0cbb41ab02ceaa902627ddc39f59fc",
+      "bytes": 10397,
+      "gzipSha256": "5097c00b661f848c610486684cfbfa462e8368e44f150d631ded95ee4f6b0095"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase330/config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase330/config.ts.gz",
+      "rawSha256": "9104be3775373f2c07cac05a689b68bee3c7e89f8891a321f7a17d94ef448187",
+      "bytes": 286,
+      "gzipSha256": "382b99a9c1c9657c746a013643578750ed313a911eb948a73da0a096e4221135"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase330/loaded330.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase330/loaded330.spec.ts.gz",
+      "rawSha256": "daf1c7c0f7da89c723e0ecf5db4202e63a4778ad86728c6a19197995c26163c7",
+      "bytes": 3527,
+      "gzipSha256": "c3dad90506ad44a5e16d5f22136dc20141dfb965ac6ce727d16f7000121d3ffa"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase329/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase329/grown-maintenance.spec.ts.gz",
+      "rawSha256": "94a305e02cefb61c2bb87e8602594fafaff14d764a7f9b3d448cb878bab77604",
+      "bytes": 15369,
+      "gzipSha256": "18533fad2c8bad00ecb05299679f95928fecc354cba8e3925a700bd397178718"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts.gz",
+      "rawSha256": "571cab4b1f23d9374f8173fb04ac081adf356ef5eac72c2432d1a8eb86ce9798",
+      "bytes": 14456,
+      "gzipSha256": "7093861d6747b18ae510463d4b2af131c16735df33e2b960ceed249563d13821"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/build-identity.json",
+      "copy": "evidence/build/build-identity.json.gz",
+      "rawSha256": "c5277886be26f6e20b1486610518a51532e291bb89d55744c53d37a51cbd41c9",
+      "bytes": 74183,
+      "gzipSha256": "3c9c4852b608ebe1830e1d4d40577bcdaab463482a46b1d880357b59967efb37"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/build-flags.json",
+      "copy": "evidence/build/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "bytes": 308,
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/frontend-build.log",
+      "copy": "evidence/build/frontend-build.log.gz",
+      "rawSha256": "4cb4bd2e9a75b0a419dd9c2b7975018f0a38dd9a2a731c46c593eb3806acd5b6",
+      "bytes": 8779,
+      "gzipSha256": "a317b1be248962452fe30cdfe9074754ba90264a39a6b1e19ee5085efa4d557e"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/lab-build.log",
+      "copy": "evidence/build/lab-build.log.gz",
+      "rawSha256": "ef56311573034c8fdb856f98869bd410091c16a045eb8bca24b1d0dd1cc11740",
+      "bytes": 30438,
+      "gzipSha256": "835d396c1e5747fe35a616652288b246af2840af89ed89448cf92e0832f804a9"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/build-lab.py",
+      "copy": "apparatus/build/build-lab.py.gz",
+      "rawSha256": "d420d000be7a7d604dbe5d0f74e0b7f19103e0cca3d7370933925387ce894a11",
+      "bytes": 1443,
+      "gzipSha256": "f9631cb65d5f30079b0fd3752b1b47c79715c601b39605c72c8773f37d332586"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/build.mjs",
+      "copy": "apparatus/build/build.mjs.gz",
+      "rawSha256": "133fd5221f519d7b6304884ba1359a72492fbd2cb5406e8dcc90bd2c2d393e47",
+      "bytes": 2072,
+      "gzipSha256": "0dee6231634049f7171fd09011eeaacc1e2e50cbeaceb65d5cbba62be06a8e9c"
+    },
+    {
+      "source": "/private/tmp/done-checkpoint-return-lab-20261101/build/release-flags.json",
+      "copy": "evidence/build/release-flags.json.gz",
+      "rawSha256": "87d55e97ad4d3ecf145b227dc651b11e9b925d7d7499644a464ccdcaa24bf6b9",
+      "bytes": 1466,
+      "gzipSha256": "01a437feb9c4f22b711c8f2b0960680cd30a1731feaca43c4b91d68f08b59409"
+    }
+  ]
+}
