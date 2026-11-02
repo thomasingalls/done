@@ -6482,3 +6482,8 @@ Quiet withheld original248warmdefault passes all gates10.906ms inputp95; diagnos
 ## 2026-10-30 — phase264: disposable request-budget protocol
 
 Test sessionbudget with one original deepjoined30scase, disposable complete0abserver changing only16→64/session. Keepprocess64andallotherlimits/securitychecks; startup numeric receipt verifies effective policy. No productrate change, no acceptance substitution; budgettable remains inferred. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).
+
+
+## 2026-10-30 — phase265: disposable request-budget outcome
+
+Lab64/session increases original30sdeep progress447→703(+57.3%)but stillfails; no recorded receivefailure. Supports contribution, rejects budget-only closure. Keepprocess64/fairness restrictions; last200all200notwhole429proof.259payloadwallgaps19.3–25.8requestedunits/s are rough comparison, notCPU/debitcount. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).

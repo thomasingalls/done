@@ -18126,3 +18126,8 @@ Three fixed quiet controls complete all native/archive/cold guards. Originaldefa
 ## 2026-10-30 — phase264: disposable request-budget protocol
 
 Frozen original deepjoined budgetprobe with exact clientassets/one-line serverpolicy diff. Effective64/session,64/process and allotherlimitsverified; discovery/readiness/shutdown pass. No timed outcome yet. Later normalcardfixture needs civil-window refresh before900scases. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).
+
+
+## 2026-10-30 — phase265: disposable request-budget outcome
+
+Frozen budgetprobe runs once and retains original30sfailure at703positions,0receivefailures. Last200responsesall200; effectivepolicy64/session/64processverified. Bothowncontainers/browsersabsent. Productionlimits/code/testsunchanged; no acceptance/releaseclaim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).

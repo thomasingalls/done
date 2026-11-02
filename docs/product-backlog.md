@@ -898,3 +898,8 @@ Phase263: productionflag ordinary withheld input/peer gates pass once; diagnosti
 ## 2026-10-30 — phase264: disposable request-budget protocol
 
 Phase264: next is lab-only budgetfalsifier, then publiccold numeric/WorkerCPU trace. Native workcounts moveafter current blocker attribution. Preserve current productyield/oldfailures/allgates; no productionrate/releaseprep change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).
+
+
+## 2026-10-30 — phase265: disposable request-budget outcome
+
+Phase265: budget contributes but deepjoinedstillblocked30s; retain447/703failures. Next uncappedPage/Workercomparison after validcivilfixture, plus independent publiccold profiling. Do not raise productionrate or choose newmechanism from roughcounts; keepsecurity/allgates. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).
