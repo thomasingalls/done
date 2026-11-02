@@ -6761,3 +6761,7 @@ See [phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/READ
 ### 2026-10-31 — Phase312: keep P representation and cold evidence scoped
 
 P remains an isolated lab prototype with exact original wires and explicit admitted extent; no alias/registry or verification shortcut. Charge expanded logical work at quotas/audit/index bounds and keep physical witness units separate. The live partial-cut probe refetched after a safe tail invalidation; preserve that finding rather than count it as a same-page cut. A separate genuine checkpoint cut/native-v5 cold probe covers the admitted suffix using the test IndexedDB implementation. Neither establishes compatibility or production readiness. No hardening starts; proceed to P-grown fixtures and the declared screens, with the no-F cold stop intact.
+
+### 2026-10-31 — Phase313: carry P with full comparison to the grown screen
+
+The declared P1V0arm passes all three deep30sruns and fresh-owner cold checks; P0V0misses one. Continue G/R/S1Y1/P with V/Doff into the declared grown screen. This selection is lab-only, with host variability and all failed runs retained. Vdoes not become a landing prerequisite. Paired grown fixtures are actually rebuilt via their selected writer, not relabeled ciphertext; report them separately from the old single-entry writer fixture. All limits,120smaintenance,>=60overlap and no-Fcoldstop remain. No hardening is authorized.

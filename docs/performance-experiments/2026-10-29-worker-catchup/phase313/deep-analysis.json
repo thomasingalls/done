@@ -1,0 +1,4321 @@
+[
+  {
+    "name": "deep-01-P0V0",
+    "P": 0,
+    "V": 0,
+    "replicate": 1,
+    "bits": "10100",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453191.322305,
+    "finishedAt": 1793453246.137928,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 15332.800048828125,
+    "timeTo1025Ms": 27091.5,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 409,
+    "tokensThrough1025": 403,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2432.699951171875,
+        "msPerPosition": 24.32699951171875
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1515.5,
+        "msPerPosition": 15.155
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 2102.900146484375,
+        "msPerPosition": 21.02900146484375
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1795.7998046875,
+        "msPerPosition": 17.957998046875
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 2193.400146484375,
+        "msPerPosition": 21.93400146484375
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 2537.099853515625,
+        "msPerPosition": 25.37099853515625
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 2755.400146484375,
+        "msPerPosition": 27.55400146484375
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 2849.800048828125,
+        "msPerPosition": 28.49800048828125
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 3775.5,
+        "msPerPosition": 37.755
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 3496.599853515625,
+        "msPerPosition": 34.96599853515625
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 1636.800048828125,
+        "msPerPosition": 65.472001953125
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 103.36278161337209,
+            "p50": 104.60009765625,
+            "p95": 118.199951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 6.949207394622093,
+            "clientValidation": 19.227658293968023,
+            "nativeBeforeCommitOther": 22.77208621002907,
+            "nativeAfterCommitOther": 4.083655069040698,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.5255723110465116,
+            "remainingPrepareFetchHandoff": 49.804602334665695
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 298.81591796875,
+            "clientValidation": 826.789306640625,
+            "nativeBeforeCommitOther": 979.19970703125,
+            "nativeAfterCommitOther": 175.59716796875,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 22.599609375,
+            "remainingPrepareFetchHandoff": 2141.597900390625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 31,
+            "mean": 48.11935326360887,
+            "p50": 39.599853515625,
+            "p95": 126.89990234375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 4.658092867943548,
+            "clientValidation": 0.0903714087701613,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 7.70964591733871,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 35.66124306955645
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 144.40087890625,
+            "clientValidation": 2.801513671875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 238.9990234375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1105.49853515625
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 33,
+            "mean": 23.027284564393938,
+            "p50": 0.10009765625,
+            "p95": 92.300048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.5606504498106061,
+            "clientValidation": 0.13941169507575757,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 22.327222419507574
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 18.50146484375,
+            "clientValidation": 4.6005859375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 736.79833984375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 164.77045787464488,
+            "p50": 167.0,
+            "p95": 190.300048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 33.94413063742898,
+            "clientValidation": 22.374256480823863,
+            "nativeBeforeCommitOther": 32.78177157315341,
+            "nativeAfterCommitOther": 8.2567138671875,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.63409423828125,
+            "remainingPrepareFetchHandoff": 66.77949107776989
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1493.541748046875,
+            "clientValidation": 984.46728515625,
+            "nativeBeforeCommitOther": 1442.39794921875,
+            "nativeAfterCommitOther": 363.29541015625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 27.900146484375,
+            "remainingPrepareFetchHandoff": 2938.297607421875
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 56,
+            "mean": 76.85535539899554,
+            "p50": 77.10009765625,
+            "p95": 95.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 23.414319719587052,
+            "clientValidation": 0.18936593191964285,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 13.082118443080358,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 40.16955130440848
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1311.201904296875,
+            "clientValidation": 10.6044921875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 732.5986328125,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 2249.494873046875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 30,
+            "mean": 27.9566650390625,
+            "p50": 0.10009765625,
+            "p95": 110.10009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 4.770011393229167,
+            "clientValidation": 0.043351236979166666,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 23.143302408854165
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 143.100341796875,
+            "clientValidation": 1.300537109375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 694.299072265625
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1352,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 0,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 13562.28487804878,
+    "storage": {
+      "physicalHeads": 1025,
+      "physicalRows": 2050,
+      "logicalPositions": 1025,
+      "plaintextBytes": 13843942,
+      "cipherBytes": 13901342,
+      "plaintextBytesPerPosition": 13506.28487804878,
+      "physicalRowsPerPosition": 2.0,
+      "denseExtents": 0,
+      "distinctOriginalPageHashes": 0,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 137,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 55,
+        "logical": 55,
+        "chargedBytes": 123059,
+        "physicalBytes": 123059,
+        "lastSeq": 55,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453203337
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 2108,
+        "logical": 2108,
+        "chargedBytes": 13965538,
+        "physicalBytes": 13965538,
+        "lastSeq": 2108,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453229886.0999
+      },
+      "peakChargedBytes": 13965538,
+      "peakPhysicalBytes": 13965538,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 4877.100049972534,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 42.771181023379576,
+        "p50": 40.54805401111994,
+        "p95": 52.039800995024876
+      },
+      "externalTopProcesses": [
+        "ChatGPT",
+        "Finder",
+        "WallpaperAerialsExtension",
+        "WindowServer",
+        "XProtectRemediatorColdSnap",
+        "airportd",
+        "backgroundtaskmanagementd",
+        "claude",
+        "codex",
+        "ctkd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "loginwindow",
+        "plugin-container",
+        "rapportd",
+        "secd",
+        "trustd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-02-P1V1",
+    "P": 1,
+    "V": 1,
+    "replicate": 1,
+    "bits": "11101",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453246.990719,
+    "finishedAt": 1793453295.103435,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 11554,
+    "timeTo1025Ms": 16885.300048828125,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 359,
+    "tokensThrough1025": 353,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2374.900146484375,
+        "msPerPosition": 23.74900146484375
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1347.39990234375,
+        "msPerPosition": 13.4739990234375
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1478.89990234375,
+        "msPerPosition": 14.7889990234375
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1602.0,
+        "msPerPosition": 16.02
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1528.60009765625,
+        "msPerPosition": 15.2860009765625
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1438.300048828125,
+        "msPerPosition": 14.38300048828125
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 1783.89990234375,
+        "msPerPosition": 17.8389990234375
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1438.800048828125,
+        "msPerPosition": 14.38800048828125
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 1623.5,
+        "msPerPosition": 16.235
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 1749.0,
+        "msPerPosition": 17.49
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 520.0,
+        "msPerPosition": 20.8
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 93.44419399527617,
+            "p50": 93.400146484375,
+            "p95": 99.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.041901344476744186,
+            "clientValidation": 16.297743686409884,
+            "nativeBeforeCommitOther": 24.316241597020348,
+            "nativeAfterCommitOther": 3.520927961482558,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.47906636082848836,
+            "remainingPrepareFetchHandoff": 48.78831304505814
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1.8017578125,
+            "clientValidation": 700.802978515625,
+            "nativeBeforeCommitOther": 1045.598388671875,
+            "nativeAfterCommitOther": 151.39990234375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 20.599853515625,
+            "remainingPrepareFetchHandoff": 2097.8974609375
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 41.94642857142857,
+            "p50": 31.800048828125,
+            "p95": 122.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.08222307477678571,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 7.442844935825893,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 34.421360560825896
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 2.30224609375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 208.399658203125,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 963.798095703125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 32,
+            "mean": 22.606239318847656,
+            "p50": 0.10009765625,
+            "p95": 81.10009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.01251220703125,
+            "clientValidation": 0.11251068115234375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 22.481216430664062
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.400390625,
+            "clientValidation": 3.600341796875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 719.39892578125
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 103.26816073330966,
+            "p50": 105.199951171875,
+            "p95": 115.400146484375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.12279718572443182,
+            "clientValidation": 18.304609818892047,
+            "nativeBeforeCommitOther": 29.215836958451703,
+            "nativeAfterCommitOther": 4.940901322798296,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.4431818181818182,
+            "remainingPrepareFetchHandoff": 50.24083362926137
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 5.403076171875,
+            "clientValidation": 805.40283203125,
+            "nativeBeforeCommitOther": 1285.496826171875,
+            "nativeAfterCommitOther": 217.399658203125,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 19.5,
+            "remainingPrepareFetchHandoff": 2210.5966796875
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 27,
+            "mean": 34.6814869068287,
+            "p50": 33.800048828125,
+            "p95": 40.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.003707320601851852,
+            "clientValidation": 0.07414641203703703,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 9.251826533564815,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 25.351806640625
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.10009765625,
+            "clientValidation": 2.001953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 249.79931640625,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 684.498779296875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 27,
+            "mean": 7.351878978587963,
+            "p50": 0.10009765625,
+            "p95": 72.699951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.0,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 7.351878978587963
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.0,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 198.500732421875
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1167,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 1305,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 1739.5843902439024,
+    "storage": {
+      "physicalHeads": 258,
+      "physicalRows": 1283,
+      "logicalPositions": 1025,
+      "plaintextBytes": 1747150,
+      "cipherBytes": 1783074,
+      "plaintextBytesPerPosition": 1704.5365853658536,
+      "physicalRowsPerPosition": 1.2517073170731707,
+      "denseExtents": 256,
+      "distinctOriginalPageHashes": 256,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 137,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 55,
+        "logical": 55,
+        "chargedBytes": 123059,
+        "physicalBytes": 123059,
+        "lastSeq": 55,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453258873.7002
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 1341,
+        "logical": 2108,
+        "chargedBytes": 8541874,
+        "physicalBytes": 1868746,
+        "lastSeq": 1341,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453275311
+      },
+      "peakChargedBytes": 8541874,
+      "peakPhysicalBytes": 1868746,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 11.700004577636719,
+    "host": {
+      "samples": 9,
+      "aggregateBusy": {
+        "n": 9,
+        "mean": 41.463172426523855,
+        "p50": 41.22789588714485,
+        "p95": 50.76404048422306
+      },
+      "externalTopProcesses": [
+        "Codex (Renderer)",
+        "Finder",
+        "WallpaperAerialsExtension",
+        "WindowServer",
+        "XProtectRemediatorColdSnap",
+        "XProtectRemediatorDolittle",
+        "claude",
+        "codex",
+        "ctkd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "launchservicesd",
+        "loginwindow",
+        "opendirectoryd",
+        "plugin-container",
+        "rapportd",
+        "secd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-03-P0V1",
+    "P": 0,
+    "V": 1,
+    "replicate": 1,
+    "bits": "11100",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453295.9427772,
+    "finishedAt": 1793453346.876798,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 12977.800048828125,
+    "timeTo1025Ms": 20344.800048828125,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 375,
+    "tokensThrough1025": 369,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2450.0,
+        "msPerPosition": 24.5
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1327.300048828125,
+        "msPerPosition": 13.27300048828125
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1611.199951171875,
+        "msPerPosition": 16.11199951171875
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1712.0,
+        "msPerPosition": 17.12
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1634.199951171875,
+        "msPerPosition": 16.34199951171875
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1683.0,
+        "msPerPosition": 16.83
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 2560.10009765625,
+        "msPerPosition": 25.6010009765625
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1791.10009765625,
+        "msPerPosition": 17.9110009765625
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2489.5,
+        "msPerPosition": 24.895
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 2296.199951171875,
+        "msPerPosition": 22.96199951171875
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 790.199951171875,
+        "msPerPosition": 31.607998046875
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 102.06743958938954,
+            "p50": 102.599853515625,
+            "p95": 114.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.03491778706395349,
+            "clientValidation": 19.35825081758721,
+            "nativeBeforeCommitOther": 25.132494549418606,
+            "nativeAfterCommitOther": 4.123239916424419,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.7046466206395349,
+            "remainingPrepareFetchHandoff": 52.713889898255815
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1.50146484375,
+            "clientValidation": 832.40478515625,
+            "nativeBeforeCommitOther": 1080.697265625,
+            "nativeAfterCommitOther": 177.29931640625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 30.2998046875,
+            "remainingPrepareFetchHandoff": 2266.697265625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 36.453578404017854,
+            "p50": 35.10009765625,
+            "p95": 43.7001953125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.010724748883928572,
+            "clientValidation": 0.13227190290178573,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.753548758370536,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 27.557032993861608
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.30029296875,
+            "clientValidation": 3.70361328125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 245.099365234375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 771.596923828125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 30,
+            "mean": 26.163330078125,
+            "p50": 0.10009765625,
+            "p95": 86.10009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0033365885416666665,
+            "clientValidation": 0.16002604166666667,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 25.999967447916667
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.10009765625,
+            "clientValidation": 4.80078125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 779.9990234375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 127.80225164240056,
+            "p50": 127.5,
+            "p95": 145.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.12734153053977273,
+            "clientValidation": 21.538712935014203,
+            "nativeBeforeCommitOther": 33.07946222478693,
+            "nativeAfterCommitOther": 8.138649680397727,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6522771661931818,
+            "remainingPrepareFetchHandoff": 64.26580810546875
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 5.60302734375,
+            "clientValidation": 947.703369140625,
+            "nativeBeforeCommitOther": 1455.496337890625,
+            "nativeAfterCommitOther": 358.1005859375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 28.7001953125,
+            "remainingPrepareFetchHandoff": 2827.695556640625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 36,
+            "mean": 51.35833062065972,
+            "p50": 52.099853515625,
+            "p95": 60.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.022243923611111112,
+            "clientValidation": 0.11121961805555555,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 12.86661105685764,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 38.358256022135414
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.80078125,
+            "clientValidation": 4.00390625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 463.197998046875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1380.897216796875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 31,
+            "mean": 7.129063760080645,
+            "p50": 0.10009765625,
+            "p95": 80.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0032289566532258066,
+            "clientValidation": 0.0032289566532258066,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 7.122605846774194
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.10009765625,
+            "clientValidation": 0.10009765625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 220.80078125
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1230,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 1368,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 13562.28487804878,
+    "storage": {
+      "physicalHeads": 1025,
+      "physicalRows": 2050,
+      "logicalPositions": 1025,
+      "plaintextBytes": 13843942,
+      "cipherBytes": 13901342,
+      "plaintextBytesPerPosition": 13506.28487804878,
+      "physicalRowsPerPosition": 2.0,
+      "denseExtents": 0,
+      "distinctOriginalPageHashes": 0,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 137,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 55,
+        "logical": 55,
+        "chargedBytes": 123059,
+        "physicalBytes": 123059,
+        "lastSeq": 55,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453309294.7998
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 2108,
+        "logical": 2108,
+        "chargedBytes": 13965538,
+        "physicalBytes": 13965538,
+        "lastSeq": 2108,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453328944.9
+      },
+      "peakChargedBytes": 13965538,
+      "peakPhysicalBytes": 13965538,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 13.700008392333984,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 37.01656939352082,
+        "p50": 34.989072123981714,
+        "p95": 62.89295662554716
+      },
+      "externalTopProcesses": [
+        "ChatGPT",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "MailQuickLookExtension",
+        "VTDecoderXPCService",
+        "WallpaperAerialsExtension",
+        "WindowServer",
+        "XProtectRemediatorWaterNet",
+        "claude",
+        "codex",
+        "ctkd",
+        "duetexpertd",
+        "efilogin-helper",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "launchservicesd",
+        "opendirectoryd",
+        "plugin-container",
+        "rapportd",
+        "secd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-04-P1V0",
+    "P": 1,
+    "V": 0,
+    "replicate": 1,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453347.744363,
+    "finishedAt": 1793453399.907084,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 12712.5,
+    "timeTo1025Ms": 19267.699951171875,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 370,
+    "tokensThrough1025": 364,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2419.199951171875,
+        "msPerPosition": 24.19199951171875
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1448.39990234375,
+        "msPerPosition": 14.4839990234375
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1897.60009765625,
+        "msPerPosition": 18.9760009765625
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1588.099853515625,
+        "msPerPosition": 15.88099853515625
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1725.300048828125,
+        "msPerPosition": 17.25300048828125
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1895.699951171875,
+        "msPerPosition": 18.95699951171875
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 1738.2001953125,
+        "msPerPosition": 17.382001953125
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1779.5,
+        "msPerPosition": 17.795
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2262.199951171875,
+        "msPerPosition": 22.62199951171875
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 1866.800048828125,
+        "msPerPosition": 18.66800048828125
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 646.699951171875,
+        "msPerPosition": 25.867998046875
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 100.88372093023256,
+            "p50": 100.099853515625,
+            "p95": 114.199951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 1.9582689861918605,
+            "clientValidation": 16.69760628633721,
+            "nativeBeforeCommitOther": 26.39302098473837,
+            "nativeAfterCommitOther": 3.706906340843023,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.5162779342296512,
+            "remainingPrepareFetchHandoff": 51.611640397892444
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 84.20556640625,
+            "clientValidation": 717.9970703125,
+            "nativeBeforeCommitOther": 1134.89990234375,
+            "nativeAfterCommitOther": 159.39697265625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 22.199951171875,
+            "remainingPrepareFetchHandoff": 2219.300537109375
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 48.59999302455357,
+            "p50": 35.10009765625,
+            "p95": 131.39990234375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 1.1285400390625,
+            "clientValidation": 0.13575962611607142,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 7.932155064174107,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 39.403538295200896
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 31.59912109375,
+            "clientValidation": 3.80126953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 222.100341796875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1103.299072265625
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 34,
+            "mean": 17.794117647058822,
+            "p50": 0.10009765625,
+            "p95": 76.2998046875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.17652803308823528,
+            "clientValidation": 0.10589240579044118,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 17.51169720818015
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 6.001953125,
+            "clientValidation": 3.600341796875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 595.397705078125
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 118.83863414417614,
+            "p50": 120.10009765625,
+            "p95": 130.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 7.807361949573863,
+            "clientValidation": 19.524591619318183,
+            "nativeBeforeCommitOther": 31.093150745738637,
+            "nativeAfterCommitOther": 5.459017666903409,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.4772671786221591,
+            "remainingPrepareFetchHandoff": 54.47724498401988
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 343.52392578125,
+            "clientValidation": 859.08203125,
+            "nativeBeforeCommitOther": 1368.0986328125,
+            "nativeAfterCommitOther": 240.19677734375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 20.999755859375,
+            "remainingPrepareFetchHandoff": 2396.998779296875
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 32,
+            "mean": 44.337493896484375,
+            "p50": 43.800048828125,
+            "p95": 53.400146484375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 5.156219482421875,
+            "clientValidation": 0.1031494140625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 10.371894836425781,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 28.70623016357422
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 164.9990234375,
+            "clientValidation": 3.30078125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 331.900634765625,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 918.599365234375
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 21,
+            "mean": 9.376209077380953,
+            "p50": 0.10009765625,
+            "p95": 76.60009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.43809291294642855,
+            "clientValidation": 0.009521484375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 8.928594680059524
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 9.199951171875,
+            "clientValidation": 0.199951171875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 187.50048828125
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1210,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 0,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 1739.5843902439024,
+    "storage": {
+      "physicalHeads": 258,
+      "physicalRows": 1283,
+      "logicalPositions": 1025,
+      "plaintextBytes": 1747150,
+      "cipherBytes": 1783074,
+      "plaintextBytesPerPosition": 1704.5365853658536,
+      "physicalRowsPerPosition": 1.2517073170731707,
+      "denseExtents": 256,
+      "distinctOriginalPageHashes": 256,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453359860.2002
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 1341,
+        "logical": 2108,
+        "chargedBytes": 8541874,
+        "physicalBytes": 1868746,
+        "lastSeq": 1341,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453379009.5
+      },
+      "peakChargedBytes": 8541874,
+      "peakPhysicalBytes": 1868746,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 954.8001041412354,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 33.29307021763595,
+        "p50": 33.47869177403369,
+        "p95": 46.73847995212448
+      },
+      "externalTopProcesses": [
+        "ChatGPT",
+        "Claude",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "PerfPowerServices",
+        "WallpaperAerialsExtension",
+        "WindowServer",
+        "claude",
+        "codex",
+        "corespotlightd",
+        "ctkd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "launchservicesd",
+        "loginwindow",
+        "plugin-container",
+        "rapportd",
+        "runningboardd",
+        "secd",
+        "spotlightknowledged.updater"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-05-P1V0",
+    "P": 1,
+    "V": 0,
+    "replicate": 2,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453401.4308228,
+    "finishedAt": 1793453454.467041,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 13936.599853515625,
+    "timeTo1025Ms": 22011.099853515625,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 382,
+    "tokensThrough1025": 376,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2447.599853515625,
+        "msPerPosition": 24.47599853515625
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1470.400146484375,
+        "msPerPosition": 14.70400146484375
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1974.699951171875,
+        "msPerPosition": 19.74699951171875
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1713.800048828125,
+        "msPerPosition": 17.13800048828125
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1974.2998046875,
+        "msPerPosition": 19.742998046875
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 2087.400146484375,
+        "msPerPosition": 20.87400146484375
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 2268.39990234375,
+        "msPerPosition": 22.6839990234375
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 2336.400146484375,
+        "msPerPosition": 23.36400146484375
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2682.699951171875,
+        "msPerPosition": 26.82699951171875
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 2434.099853515625,
+        "msPerPosition": 24.34099853515625
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 621.300048828125,
+        "msPerPosition": 24.852001953125
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 101.5069835574128,
+            "p50": 101.099853515625,
+            "p95": 119.900146484375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 1.9792537245639534,
+            "clientValidation": 16.867397574491278,
+            "nativeBeforeCommitOther": 26.79531363553779,
+            "nativeAfterCommitOther": 3.811557503633721,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.5325558684593024,
+            "remainingPrepareFetchHandoff": 51.52090525072674
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 85.10791015625,
+            "clientValidation": 725.298095703125,
+            "nativeBeforeCommitOther": 1152.198486328125,
+            "nativeAfterCommitOther": 163.89697265625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 22.89990234375,
+            "remainingPrepareFetchHandoff": 2215.39892578125
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 45.85355922154018,
+            "p50": 35.5,
+            "p95": 124
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 1.1714564732142858,
+            "clientValidation": 0.07859584263392858,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.278555733816964,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 36.324951171875
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 32.80078125,
+            "clientValidation": 2.20068359375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 231.799560546875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1017.0986328125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 32,
+            "mean": 23.246871948242188,
+            "p50": 0.10009765625,
+            "p95": 89.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.2000579833984375,
+            "clientValidation": 0.14063262939453125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 22.90618133544922
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 6.40185546875,
+            "clientValidation": 4.500244140625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 732.997802734375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 141.77726606889203,
+            "p50": 127.699951171875,
+            "p95": 177.099853515625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 7.780079234730113,
+            "clientValidation": 20.245033957741477,
+            "nativeBeforeCommitOther": 48.24317515980113,
+            "nativeAfterCommitOther": 5.5635597922585225,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.4340875799005682,
+            "remainingPrepareFetchHandoff": 59.51133034446023
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 342.323486328125,
+            "clientValidation": 890.781494140625,
+            "nativeBeforeCommitOther": 2122.69970703125,
+            "nativeAfterCommitOther": 244.796630859375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 19.099853515625,
+            "remainingPrepareFetchHandoff": 2618.49853515625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 40,
+            "mean": 50.63001708984375,
+            "p50": 47.199951171875,
+            "p95": 66.300048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 5.18997802734375,
+            "clientValidation": 0.127569580078125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 11.095001220703125,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 34.21746826171875
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 207.59912109375,
+            "clientValidation": 5.102783203125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 443.800048828125,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1368.69873046875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 31,
+            "mean": 13.319343813004032,
+            "p50": 0.10009765625,
+            "p95": 82.10009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.6290086315524194,
+            "clientValidation": 0.029052734375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 12.661282447076612
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 19.499267578125,
+            "clientValidation": 0.900634765625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 392.499755859375
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1252,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 0,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 1739.5795121951219,
+    "storage": {
+      "physicalHeads": 258,
+      "physicalRows": 1283,
+      "logicalPositions": 1025,
+      "plaintextBytes": 1747145,
+      "cipherBytes": 1783069,
+      "plaintextBytesPerPosition": 1704.5317073170731,
+      "physicalRowsPerPosition": 1.2517073170731707,
+      "denseExtents": 256,
+      "distinctOriginalPageHashes": 256,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 137,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 55,
+        "logical": 55,
+        "chargedBytes": 123059,
+        "physicalBytes": 123059,
+        "lastSeq": 55,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453415071.7
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 1341,
+        "logical": 2108,
+        "chargedBytes": 8541874,
+        "physicalBytes": 1868746,
+        "lastSeq": 1341,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453436652.4
+      },
+      "peakChargedBytes": 8541874,
+      "peakPhysicalBytes": 1868746,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 1018.900016784668,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 40.21530017948611,
+        "p50": 39.46895587941705,
+        "p95": 72.40899144619057
+      },
+      "externalTopProcesses": [
+        "Claude Helper (Renderer)",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "NotificationCenter",
+        "WeatherWidget",
+        "WindowServer",
+        "claude",
+        "codex",
+        "com.apple.DriverKit-AppleBCMWLAN",
+        "ctkd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "plugin-container",
+        "runningboardd",
+        "secd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-06-P0V0",
+    "P": 0,
+    "V": 0,
+    "replicate": 2,
+    "bits": "10100",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453455.338347,
+    "finishedAt": 1793453511.1906738,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 15807.199951171875,
+    "timeTo1025Ms": 28439.5,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 410,
+    "tokensThrough1025": 404,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2604.199951171875,
+        "msPerPosition": 26.04199951171875
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1640.10009765625,
+        "msPerPosition": 16.4010009765625
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 2053.7998046875,
+        "msPerPosition": 20.537998046875
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1962.300048828125,
+        "msPerPosition": 19.62300048828125
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 2132.400146484375,
+        "msPerPosition": 21.32400146484375
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 2554.2998046875,
+        "msPerPosition": 25.542998046875
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 2860.10009765625,
+        "msPerPosition": 28.6010009765625
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 2851.89990234375,
+        "msPerPosition": 28.5189990234375
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 4413.10009765625,
+        "msPerPosition": 44.1310009765625
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 4270.5,
+        "msPerPosition": 42.705
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 1096.800048828125,
+        "msPerPosition": 43.872001953125
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 108.4139659792878,
+            "p50": 110.5,
+            "p95": 123.7001953125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 7.044501726017442,
+            "clientValidation": 19.897517714389537,
+            "nativeBeforeCommitOther": 24.11390011809593,
+            "nativeAfterCommitOther": 4.33714117005814,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6092955123546512,
+            "remainingPrepareFetchHandoff": 52.41160973837209
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 302.91357421875,
+            "clientValidation": 855.59326171875,
+            "nativeBeforeCommitOther": 1036.897705078125,
+            "nativeAfterCommitOther": 186.4970703125,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 26.19970703125,
+            "remainingPrepareFetchHandoff": 2253.69921875
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 32,
+            "mean": 53.140625,
+            "p50": 43.400146484375,
+            "p95": 128.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 4.462516784667969,
+            "clientValidation": 0.1000518798828125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.384353637695312,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 40.193702697753906
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 142.800537109375,
+            "clientValidation": 3.20166015625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 268.29931640625,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1286.198486328125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 33,
+            "mean": 19.54846561316288,
+            "p50": 0.10009765625,
+            "p95": 82.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.4485233191287879,
+            "clientValidation": 0.14244495738636365,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 18.957497336647727
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 14.80126953125,
+            "clientValidation": 4.70068359375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 625.597412109375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 171.56590687144887,
+            "p50": 167.0,
+            "p95": 207.199951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 34.14417058771307,
+            "clientValidation": 22.544638893821023,
+            "nativeBeforeCommitOther": 36.59996448863637,
+            "nativeAfterCommitOther": 9.054465553977273,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.654541015625,
+            "remainingPrepareFetchHandoff": 68.56812633167614
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1502.343505859375,
+            "clientValidation": 991.964111328125,
+            "nativeBeforeCommitOther": 1610.3984375,
+            "nativeAfterCommitOther": 398.396484375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 28.7998046875,
+            "remainingPrepareFetchHandoff": 3016.99755859375
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 54,
+            "mean": 87.66481752748842,
+            "p50": 82.300048828125,
+            "p95": 121.300048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 23.77031792534722,
+            "clientValidation": 0.20751953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 14.755560980902779,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 48.931419089988424
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1283.59716796875,
+            "clientValidation": 11.2060546875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 796.80029296875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 2642.296630859375
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 35,
+            "mean": 23.0,
+            "p50": 0.10009765625,
+            "p95": 102.900146484375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 3.605698939732143,
+            "clientValidation": 0.028585379464285715,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 19.36571568080357
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 126.199462890625,
+            "clientValidation": 1.00048828125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 677.800048828125
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1356,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 0,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 13562.28487804878,
+    "storage": {
+      "physicalHeads": 1025,
+      "physicalRows": 2050,
+      "logicalPositions": 1025,
+      "plaintextBytes": 13843942,
+      "cipherBytes": 13901342,
+      "plaintextBytesPerPosition": 13506.28487804878,
+      "physicalRowsPerPosition": 2.0,
+      "denseExtents": 0,
+      "distinctOriginalPageHashes": 0,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453467545.2
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 2108,
+        "logical": 2108,
+        "chargedBytes": 13965538,
+        "physicalBytes": 13965538,
+        "lastSeq": 2108,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453495821.7998
+      },
+      "peakChargedBytes": 13965538,
+      "peakPhysicalBytes": 13965538,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 4880.800016403198,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 41.19953969843341,
+        "p50": 40.25432147824359,
+        "p95": 52.54541824715512
+      },
+      "externalTopProcesses": [
+        "CacheDeleteExtension",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "WindowServer",
+        "backupd",
+        "claude",
+        "codex",
+        "ctkd",
+        "deleted",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "mobileassetd",
+        "opendirectoryd",
+        "secd",
+        "triald_system"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-07-P1V1",
+    "P": 1,
+    "V": 1,
+    "replicate": 2,
+    "bits": "11101",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453512.0714161,
+    "finishedAt": 1793453561.1129332,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 12739,
+    "timeTo1025Ms": 18722.199951171875,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 366,
+    "tokensThrough1025": 360,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2417.89990234375,
+        "msPerPosition": 24.1789990234375
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1429.39990234375,
+        "msPerPosition": 14.2939990234375
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1824.5,
+        "msPerPosition": 18.245
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1760.900146484375,
+        "msPerPosition": 17.60900146484375
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1649.300048828125,
+        "msPerPosition": 16.49300048828125
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1462.5,
+        "msPerPosition": 14.625
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 2194.5,
+        "msPerPosition": 21.945
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1533.89990234375,
+        "msPerPosition": 15.3389990234375
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2139.699951171875,
+        "msPerPosition": 21.39699951171875
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 1726.60009765625,
+        "msPerPosition": 17.2660009765625
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 583.0,
+        "msPerPosition": 23.32
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 98.48838344840117,
+            "p50": 99.10009765625,
+            "p95": 107.300048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.05819063408430233,
+            "clientValidation": 16.55821902252907,
+            "nativeBeforeCommitOther": 26.246462799781977,
+            "nativeAfterCommitOther": 3.946510492369186,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.5744174691133721,
+            "remainingPrepareFetchHandoff": 51.10458303052326
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 2.502197265625,
+            "clientValidation": 712.00341796875,
+            "nativeBeforeCommitOther": 1128.597900390625,
+            "nativeAfterCommitOther": 169.699951171875,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 24.699951171875,
+            "remainingPrepareFetchHandoff": 2197.4970703125
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 49.26072474888393,
+            "p50": 35.300048828125,
+            "p95": 129.099853515625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.010724748883928572,
+            "clientValidation": 0.09294782366071429,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.224966866629464,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 40.93208530970982
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.30029296875,
+            "clientValidation": 2.6025390625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 230.299072265625,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1146.098388671875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 36,
+            "mean": 16.98331027560764,
+            "p50": 0.10009765625,
+            "p95": 78.599853515625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.011121961805555556,
+            "clientValidation": 0.0888943142361111,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 16.88329399956597
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.400390625,
+            "clientValidation": 3.2001953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 607.798583984375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 111.01364413174716,
+            "p50": 110.300048828125,
+            "p95": 129.7001953125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.13188587535511365,
+            "clientValidation": 19.11599454012784,
+            "nativeBeforeCommitOther": 30.593134099786933,
+            "nativeAfterCommitOther": 6.229542125355113,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6136363636363636,
+            "remainingPrepareFetchHandoff": 54.3294511274858
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 5.802978515625,
+            "clientValidation": 841.103759765625,
+            "nativeBeforeCommitOther": 1346.097900390625,
+            "nativeAfterCommitOther": 274.099853515625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 27.0,
+            "remainingPrepareFetchHandoff": 2390.495849609375
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 32,
+            "mean": 40.87500762939453,
+            "p50": 38.7001953125,
+            "p95": 50.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0250244140625,
+            "clientValidation": 0.0719451904296875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 10.240585327148438,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 30.537452697753906
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.80078125,
+            "clientValidation": 2.30224609375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 327.69873046875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 977.198486328125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 24,
+            "mean": 9.633310953776041,
+            "p50": 0.10009765625,
+            "p95": 89.0
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.0,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 9.633310953776041
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.0,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 231.199462890625
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1194,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 1331,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 1739.5843902439024,
+    "storage": {
+      "physicalHeads": 258,
+      "physicalRows": 1283,
+      "logicalPositions": 1025,
+      "plaintextBytes": 1747150,
+      "cipherBytes": 1783074,
+      "plaintextBytesPerPosition": 1704.5365853658536,
+      "physicalRowsPerPosition": 1.2517073170731707,
+      "denseExtents": 256,
+      "distinctOriginalPageHashes": 256,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453524256.4001
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 1341,
+        "logical": 2108,
+        "chargedBytes": 8541874,
+        "physicalBytes": 1868746,
+        "lastSeq": 1341,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453542796.4001
+      },
+      "peakChargedBytes": 8541874,
+      "peakPhysicalBytes": 1868746,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 13.699996948242188,
+    "host": {
+      "samples": 9,
+      "aggregateBusy": {
+        "n": 9,
+        "mean": 52.40933237941682,
+        "p50": 52.13760190892822,
+        "p95": 58.07929866507272
+      },
+      "externalTopProcesses": [
+        "CacheDeleteExtension",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "WindowServer",
+        "backupd",
+        "claude",
+        "codex",
+        "com.maxgoedjen.Secretive.SecretAgent",
+        "ctkd",
+        "deleted",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "mobileassetd",
+        "opendirectoryd",
+        "secd",
+        "triald_system"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-08-P0V1",
+    "P": 0,
+    "V": 1,
+    "replicate": 2,
+    "bits": "11100",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453562.0129468,
+    "finishedAt": 1793453612.5442739,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 13113.699951171875,
+    "timeTo1025Ms": 22773.699951171875,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 388,
+    "tokensThrough1025": 382,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2340.0,
+        "msPerPosition": 23.4
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1374.699951171875,
+        "msPerPosition": 13.74699951171875
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1545.199951171875,
+        "msPerPosition": 15.45199951171875
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1660.39990234375,
+        "msPerPosition": 16.6039990234375
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1694.0,
+        "msPerPosition": 16.94
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 2117.60009765625,
+        "msPerPosition": 21.1760009765625
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 2381.800048828125,
+        "msPerPosition": 23.81800048828125
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1994.39990234375,
+        "msPerPosition": 19.9439990234375
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 4441.5,
+        "msPerPosition": 44.415
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 2510.400146484375,
+        "msPerPosition": 25.10400146484375
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 713.699951171875,
+        "msPerPosition": 28.547998046875
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 95.65812931504361,
+            "p50": 94.699951171875,
+            "p95": 112.89990234375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.046557049418604654,
+            "clientValidation": 16.444262127543606,
+            "nativeBeforeCommitOther": 23.669728833575583,
+            "nativeAfterCommitOther": 4.186046511627907,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.5186057867005814,
+            "remainingPrepareFetchHandoff": 50.792929006177324
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 2.001953125,
+            "clientValidation": 707.103271484375,
+            "nativeBeforeCommitOther": 1017.79833984375,
+            "nativeAfterCommitOther": 180.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 22.300048828125,
+            "remainingPrepareFetchHandoff": 2184.095947265625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 45.560721261160715,
+            "p50": 35.60009765625,
+            "p95": 124.0
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.007149832589285714,
+            "clientValidation": 0.11079624720982142,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.482125418526786,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 36.96064976283482
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.2001953125,
+            "clientValidation": 3.102294921875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 237.49951171875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1034.898193359375
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 38,
+            "mean": 16.747372275904606,
+            "p50": 0.10009765625,
+            "p95": 82.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.007902446546052632,
+            "clientValidation": 0.10528243215460527,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 16.63418739720395
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.30029296875,
+            "clientValidation": 4.000732421875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 632.09912109375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 149.13183038884944,
+            "p50": 135.0,
+            "p95": 248.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.13642467151988635,
+            "clientValidation": 18.97735595703125,
+            "nativeBeforeCommitOther": 38.06585138494318,
+            "nativeAfterCommitOther": 9.2318115234375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6204556551846591,
+            "remainingPrepareFetchHandoff": 82.09993119673295
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 6.002685546875,
+            "clientValidation": 835.003662109375,
+            "nativeBeforeCommitOther": 1674.8974609375,
+            "nativeAfterCommitOther": 406.19970703125,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 27.300048828125,
+            "remainingPrepareFetchHandoff": 3612.39697265625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 47,
+            "mean": 65.9404296875,
+            "p50": 57.10009765625,
+            "p95": 100.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.010648686835106383,
+            "clientValidation": 0.12139502992021277,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 14.212745179521276,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 51.5956407912234
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.50048828125,
+            "clientValidation": 5.70556640625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 667.9990234375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 2424.9951171875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 20,
+            "mean": 23.4149658203125,
+            "p50": 0.10009765625,
+            "p95": 86.89990234375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.010009765625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 23.4049560546875
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.2001953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 468.09912109375
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1275,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 1412,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 13562.28487804878,
+    "storage": {
+      "physicalHeads": 1025,
+      "physicalRows": 2050,
+      "logicalPositions": 1025,
+      "plaintextBytes": 13843942,
+      "cipherBytes": 13901342,
+      "plaintextBytesPerPosition": 13506.28487804878,
+      "physicalRowsPerPosition": 2.0,
+      "denseExtents": 0,
+      "distinctOriginalPageHashes": 0,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453574104.3
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 2108,
+        "logical": 2108,
+        "chargedBytes": 13965538,
+        "physicalBytes": 13965538,
+        "lastSeq": 2108,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453596592.3
+      },
+      "peakChargedBytes": 13965538,
+      "peakPhysicalBytes": 13965538,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 13.80001449584961,
+    "host": {
+      "samples": 9,
+      "aggregateBusy": {
+        "n": 9,
+        "mean": 52.41085163526858,
+        "p50": 50.23875845602865,
+        "p95": 70.77077077077077
+      },
+      "externalTopProcesses": [
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "WindowServer",
+        "claude",
+        "codex",
+        "com.apple.DriverKit-AppleBCMWLAN",
+        "ctkd",
+        "docker",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "opendirectoryd",
+        "plugin-container",
+        "secd",
+        "tar"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-09-P0V1",
+    "P": 0,
+    "V": 1,
+    "replicate": 3,
+    "bits": "11100",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453613.423703,
+    "finishedAt": 1793453664.047125,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 12901.60009765625,
+    "timeTo1025Ms": 20199.10009765625,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 372,
+    "tokensThrough1025": 366,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2448.300048828125,
+        "msPerPosition": 24.48300048828125
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1422.39990234375,
+        "msPerPosition": 14.2239990234375
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1809.10009765625,
+        "msPerPosition": 18.0910009765625
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1592.60009765625,
+        "msPerPosition": 15.9260009765625
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1746.099853515625,
+        "msPerPosition": 17.46099853515625
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1903.60009765625,
+        "msPerPosition": 19.0360009765625
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 1979.5,
+        "msPerPosition": 19.795
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1825.099853515625,
+        "msPerPosition": 18.25099853515625
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2554.60009765625,
+        "msPerPosition": 25.5460009765625
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 2157.10009765625,
+        "msPerPosition": 21.5710009765625
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 760.699951171875,
+        "msPerPosition": 30.427998046875
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 99.30232558139535,
+            "p50": 98.699951171875,
+            "p95": 114.699951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.058196311773255814,
+            "clientValidation": 19.674503769985463,
+            "nativeBeforeCommitOther": 23.530199627543606,
+            "nativeAfterCommitOther": 3.983676644258721,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.49767214752906974,
+            "remainingPrepareFetchHandoff": 51.55807708030523
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 2.50244140625,
+            "clientValidation": 846.003662109375,
+            "nativeBeforeCommitOther": 1011.798583984375,
+            "nativeAfterCommitOther": 171.298095703125,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 21.39990234375,
+            "remainingPrepareFetchHandoff": 2216.997314453125
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 28,
+            "mean": 46.675022670200896,
+            "p50": 35.89990234375,
+            "p95": 126.0
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.003574916294642857,
+            "clientValidation": 0.10009765625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.714259556361608,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 37.857090541294646
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.10009765625,
+            "clientValidation": 2.802734375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 243.999267578125,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1059.99853515625
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 35,
+            "mean": 21.842843191964285,
+            "p50": 0.10009765625,
+            "p95": 87.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0028599330357142855,
+            "clientValidation": 0.12287946428571428,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 21.717103794642856
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.10009765625,
+            "clientValidation": 4.30078125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 760.0986328125
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 126.35678378018466,
+            "p50": 126.099853515625,
+            "p95": 151.0
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.1296053799715909,
+            "clientValidation": 21.393243963068183,
+            "nativeBeforeCommitOther": 34.11810857599432,
+            "nativeAfterCommitOther": 8.481855912642045,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.7681829279119318,
+            "remainingPrepareFetchHandoff": 61.46578702059659
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 5.70263671875,
+            "clientValidation": 941.302734375,
+            "nativeBeforeCommitOther": 1501.19677734375,
+            "nativeAfterCommitOther": 373.20166015625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 33.800048828125,
+            "remainingPrepareFetchHandoff": 2704.49462890625
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 33,
+            "mean": 54.65152254971591,
+            "p50": 53.7998046875,
+            "p95": 81.10009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.027299360795454544,
+            "clientValidation": 0.09705699573863637,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 14.615108605587121,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 39.912057587594695
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.90087890625,
+            "clientValidation": 3.202880859375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 482.298583984375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1317.097900390625
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 27,
+            "mean": 8.75930447048611,
+            "p50": 0.10009765625,
+            "p95": 87.60009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.003707320601851852,
+            "clientValidation": 0.003707320601851852,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 8.751889829282407
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.10009765625,
+            "clientValidation": 0.10009765625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 236.301025390625
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1219,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 1357,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 13562.28487804878,
+    "storage": {
+      "physicalHeads": 1025,
+      "physicalRows": 2050,
+      "logicalPositions": 1025,
+      "plaintextBytes": 13843942,
+      "cipherBytes": 13901342,
+      "plaintextBytesPerPosition": 13506.28487804878,
+      "physicalRowsPerPosition": 2.0,
+      "denseExtents": 0,
+      "distinctOriginalPageHashes": 0,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 137,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 55,
+        "logical": 55,
+        "chargedBytes": 123059,
+        "physicalBytes": 123059,
+        "lastSeq": 55,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453626272.9
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 2108,
+        "logical": 2108,
+        "chargedBytes": 13965538,
+        "physicalBytes": 13965538,
+        "lastSeq": 2108,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453645941.2
+      },
+      "peakChargedBytes": 13965538,
+      "peakPhysicalBytes": 13965538,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 13.099996566772461,
+    "host": {
+      "samples": 9,
+      "aggregateBusy": {
+        "n": 9,
+        "mean": 47.479513685404214,
+        "p50": 46.60561417479594,
+        "p95": 57.27652797133187
+      },
+      "externalTopProcesses": [
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "WindowServer",
+        "claude",
+        "codex",
+        "ctkd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchservicesd",
+        "opendirectoryd",
+        "plugin-container",
+        "secd",
+        "sysmond"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-10-P1V0",
+    "P": 1,
+    "V": 0,
+    "replicate": 3,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453664.9272041,
+    "finishedAt": 1793453720.245045,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 13007.2998046875,
+    "timeTo1025Ms": 19763.699951171875,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 370,
+    "tokensThrough1025": 364,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2422.2998046875,
+        "msPerPosition": 24.222998046875
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1448.5,
+        "msPerPosition": 14.485
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 1979.2001953125,
+        "msPerPosition": 19.792001953125
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1573.699951171875,
+        "msPerPosition": 15.73699951171875
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1809.300048828125,
+        "msPerPosition": 18.09300048828125
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1917.099853515625,
+        "msPerPosition": 19.17099853515625
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 1857.199951171875,
+        "msPerPosition": 18.57199951171875
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1770.0,
+        "msPerPosition": 17.7
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2340.400146484375,
+        "msPerPosition": 23.40400146484375
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 1912.5,
+        "msPerPosition": 19.125
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 733.5,
+        "msPerPosition": 29.34
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 101.99998296693315,
+            "p50": 104.0,
+            "p95": 111.0
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 2.011843659156977,
+            "clientValidation": 17.12550531431686,
+            "nativeBeforeCommitOther": 26.297613099563954,
+            "nativeAfterCommitOther": 4.127855877543604,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6069733375726745,
+            "remainingPrepareFetchHandoff": 51.83019167877907
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 86.50927734375,
+            "clientValidation": 736.396728515625,
+            "nativeBeforeCommitOther": 1130.79736328125,
+            "nativeAfterCommitOther": 177.497802734375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 26.099853515625,
+            "remainingPrepareFetchHandoff": 2228.6982421875
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 31,
+            "mean": 46.277438256048384,
+            "p50": 37.0,
+            "p95": 127.60009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 1.2322879914314515,
+            "clientValidation": 0.09360824092741936,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.416078629032258,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 36.535463394657256
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 38.200927734375,
+            "clientValidation": 2.90185546875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 260.8984375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1132.599365234375
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 30,
+            "mean": 21.560001627604166,
+            "p50": 0.10009765625,
+            "p95": 83.300048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.18004557291666667,
+            "clientValidation": 0.136669921875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 21.2432861328125
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 5.4013671875,
+            "clientValidation": 4.10009765625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 637.298583984375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 121.46135364879261,
+            "p50": 121.099853515625,
+            "p95": 137.800048828125
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 7.921014959161932,
+            "clientValidation": 19.688165838068183,
+            "nativeBeforeCommitOther": 31.659068714488637,
+            "nativeAfterCommitOther": 6.440862482244318,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6681851473721591,
+            "remainingPrepareFetchHandoff": 55.08405650745738
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 348.524658203125,
+            "clientValidation": 866.279296875,
+            "nativeBeforeCommitOther": 1392.9990234375,
+            "nativeAfterCommitOther": 283.39794921875,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 29.400146484375,
+            "remainingPrepareFetchHandoff": 2423.698486328125
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 32,
+            "mean": 47.34686279296875,
+            "p50": 45.5,
+            "p95": 62.199951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 5.196868896484375,
+            "clientValidation": 0.12194061279296875,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 11.306243896484375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 30.72180938720703
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 166.2998046875,
+            "clientValidation": 3.902099609375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 361.7998046875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 983.097900390625
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 25,
+            "mean": 8.264033203125,
+            "p50": 0.10009765625,
+            "p95": 76.699951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.352001953125,
+            "clientValidation": 0.012001953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 7.900029296875
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 8.800048828125,
+            "clientValidation": 0.300048828125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 197.500732421875
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1210,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 0,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 1739.5843902439024,
+    "storage": {
+      "physicalHeads": 258,
+      "physicalRows": 1283,
+      "logicalPositions": 1025,
+      "plaintextBytes": 1747150,
+      "cipherBytes": 1783074,
+      "plaintextBytesPerPosition": 1704.5365853658536,
+      "physicalRowsPerPosition": 1.2517073170731707,
+      "denseExtents": 256,
+      "distinctOriginalPageHashes": 256,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453679169.9
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 1341,
+        "logical": 2108,
+        "chargedBytes": 8541874,
+        "physicalBytes": 1868746,
+        "lastSeq": 1341,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453698763.4
+      },
+      "peakChargedBytes": 8541874,
+      "peakPhysicalBytes": 1868746,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 972.8000354766846,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 54.36120183453455,
+        "p50": 48.47579199043634,
+        "p95": 74.31010522136192
+      },
+      "externalTopProcesses": [
+        "ChatGPT",
+        "Claude",
+        "Claude Helper (Renderer)",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "Firefox Developer Edition GPU Helper",
+        "NotificationCenter",
+        "PerfPowerServices",
+        "WindowServer",
+        "claude",
+        "codex",
+        "coreaudiod",
+        "ctkd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "launchservicesd",
+        "loginwindow",
+        "opendirectoryd",
+        "plugin-container",
+        "secd",
+        "talagentd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-11-P0V0",
+    "P": 0,
+    "V": 0,
+    "replicate": 3,
+    "bits": "10100",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453721.1819782,
+    "finishedAt": 1793453778.5335538,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1016,
+    "timeTo700Ms": 18515.5,
+    "timeTo1025Ms": 33467.89990234375,
+    "deep30Pass": false,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 411,
+    "tokensThrough1025": 416,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2823.0,
+        "msPerPosition": 28.23
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1707.199951171875,
+        "msPerPosition": 17.07199951171875
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 2594.10009765625,
+        "msPerPosition": 25.9410009765625
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 2086.39990234375,
+        "msPerPosition": 20.8639990234375
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 3070.699951171875,
+        "msPerPosition": 30.70699951171875
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 2707.400146484375,
+        "msPerPosition": 27.07400146484375
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 3526.699951171875,
+        "msPerPosition": 35.26699951171875
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 3083.89990234375,
+        "msPerPosition": 30.8389990234375
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 3710.300048828125,
+        "msPerPosition": 37.10300048828125
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 3839.199951171875,
+        "msPerPosition": 38.39199951171875
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 4319.0,
+        "msPerPosition": 172.76
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 118.49997161155524,
+            "p50": 116.699951171875,
+            "p95": 140
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 7.274669558502907,
+            "clientValidation": 20.271932912427324,
+            "nativeBeforeCommitOther": 27.509300054505815,
+            "nativeAfterCommitOther": 5.318580804869186,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.6046454851017442,
+            "remainingPrepareFetchHandoff": 57.52084279614826
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 312.810791015625,
+            "clientValidation": 871.693115234375,
+            "nativeBeforeCommitOther": 1182.89990234375,
+            "nativeAfterCommitOther": 228.698974609375,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 25.999755859375,
+            "remainingPrepareFetchHandoff": 2473.396240234375
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 36,
+            "mean": 58.41388617621528,
+            "p50": 48.0,
+            "p95": 141.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 4.850023057725695,
+            "clientValidation": 0.14729139539930555,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 9.94720458984375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 43.46936713324653
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 174.600830078125,
+            "clientValidation": 5.302490234375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 358.099365234375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1564.897216796875
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 32,
+            "mean": 22.24066162109375,
+            "p50": 0.10009765625,
+            "p95": 104.199951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.446929931640625,
+            "clientValidation": 0.14374542236328125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 21.649986267089844
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 14.3017578125,
+            "clientValidation": 4.599853515625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 692.799560546875
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 193.37953879616478,
+            "p50": 175.199951171875,
+            "p95": 196.89990234375
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 34.93740012428977,
+            "clientValidation": 23.63552579012784,
+            "nativeBeforeCommitOther": 34.81358753551137,
+            "nativeAfterCommitOther": 9.152193936434658,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.7272727272727273,
+            "remainingPrepareFetchHandoff": 90.1135586825284
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1537.24560546875,
+            "clientValidation": 1039.963134765625,
+            "nativeBeforeCommitOther": 1531.7978515625,
+            "nativeAfterCommitOther": 402.696533203125,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 32.0,
+            "remainingPrepareFetchHandoff": 3964.99658203125
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 57,
+            "mean": 115.54386821546052,
+            "p50": 84.7001953125,
+            "p95": 98.599853515625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 23.771942674067983,
+            "clientValidation": 0.22816012198464913,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 14.806974712171053,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 76.73679070723684
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 1355.000732421875,
+            "clientValidation": 13.005126953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 843.99755859375,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 4373.9970703125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 31,
+            "mean": 17.235477570564516,
+            "p50": 0.10009765625,
+            "p95": 102.699951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 2.6870904737903225,
+            "clientValidation": 0.016136907762096774,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 14.532250189012096
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 83.2998046875,
+            "clientValidation": 0.500244140625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 450.499755859375
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1380,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 0,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 13562.28487804878,
+    "storage": {
+      "physicalHeads": 1025,
+      "physicalRows": 2050,
+      "logicalPositions": 1025,
+      "plaintextBytes": 13843942,
+      "cipherBytes": 13901342,
+      "plaintextBytesPerPosition": 13506.28487804878,
+      "physicalRowsPerPosition": 2.0,
+      "denseExtents": 0,
+      "distinctOriginalPageHashes": 0,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453734276.9
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 2108,
+        "logical": 2108,
+        "chargedBytes": 13965538,
+        "physicalBytes": 13965538,
+        "lastSeq": 2108,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453765321.4
+      },
+      "peakChargedBytes": 13965538,
+      "peakPhysicalBytes": 13965538,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 5127.499965667725,
+    "host": {
+      "samples": 11,
+      "aggregateBusy": {
+        "n": 11,
+        "mean": 56.60052245939007,
+        "p50": 55.170364500792395,
+        "p95": 71.65276122367898
+      },
+      "externalTopProcesses": [
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "Firefox Developer Edition GPU Helper",
+        "WeatherWidget",
+        "WindowServer",
+        "claude",
+        "codex",
+        "ctkd",
+        "distnoted",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "kubectl",
+        "opendirectoryd",
+        "plugin-container",
+        "secd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  },
+  {
+    "name": "deep-12-P1V1",
+    "P": 1,
+    "V": 1,
+    "replicate": 3,
+    "bits": "11101",
+    "SY": "11",
+    "repairMs": 1500,
+    "config": "worker-owner.config.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 0,
+    "startedAt": 1793453779.420644,
+    "finishedAt": 1793453830.1226702,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true,
+      "originalAccountReaderColdExact": true
+    },
+    "positionsAt30": 1025,
+    "timeTo700Ms": 13362.39990234375,
+    "timeTo1025Ms": 19194.800048828125,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl",
+    "tokensAt30": 368,
+    "tokensThrough1025": 362,
+    "msPer100": [
+      {
+        "fromPositionExclusive": 0,
+        "throughPosition": 100,
+        "elapsedMs": 2752.5,
+        "msPerPosition": 27.525
+      },
+      {
+        "fromPositionExclusive": 100,
+        "throughPosition": 200,
+        "elapsedMs": 1538.10009765625,
+        "msPerPosition": 15.3810009765625
+      },
+      {
+        "fromPositionExclusive": 200,
+        "throughPosition": 300,
+        "elapsedMs": 2032.89990234375,
+        "msPerPosition": 20.3289990234375
+      },
+      {
+        "fromPositionExclusive": 300,
+        "throughPosition": 400,
+        "elapsedMs": 1541.60009765625,
+        "msPerPosition": 15.4160009765625
+      },
+      {
+        "fromPositionExclusive": 400,
+        "throughPosition": 500,
+        "elapsedMs": 1889.89990234375,
+        "msPerPosition": 18.8989990234375
+      },
+      {
+        "fromPositionExclusive": 500,
+        "throughPosition": 600,
+        "elapsedMs": 1859.60009765625,
+        "msPerPosition": 18.5960009765625
+      },
+      {
+        "fromPositionExclusive": 600,
+        "throughPosition": 700,
+        "elapsedMs": 1747.7998046875,
+        "msPerPosition": 17.477998046875
+      },
+      {
+        "fromPositionExclusive": 700,
+        "throughPosition": 800,
+        "elapsedMs": 1623.900146484375,
+        "msPerPosition": 16.23900146484375
+      },
+      {
+        "fromPositionExclusive": 800,
+        "throughPosition": 900,
+        "elapsedMs": 2002.099853515625,
+        "msPerPosition": 20.02099853515625
+      },
+      {
+        "fromPositionExclusive": 900,
+        "throughPosition": 1000,
+        "elapsedMs": 1706.300048828125,
+        "msPerPosition": 17.06300048828125
+      },
+      {
+        "fromPositionExclusive": 1000,
+        "throughPosition": 1025,
+        "elapsedMs": 500.10009765625,
+        "msPerPosition": 20.00400390625
+      }
+    ],
+    "stageThirds": {
+      "early": {
+        "productive": {
+          "roundMs": {
+            "n": 43,
+            "mean": 107.5604617096657,
+            "p50": 105.7001953125,
+            "p95": 123.60009765625
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0628463390261628,
+            "clientValidation": 17.165243459302324,
+            "nativeBeforeCommitOther": 29.130178052325583,
+            "nativeAfterCommitOther": 4.797658521075581,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.646507085755814,
+            "remainingPrepareFetchHandoff": 55.75802825218023
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 2.702392578125,
+            "clientValidation": 738.10546875,
+            "nativeBeforeCommitOther": 1252.59765625,
+            "nativeAfterCommitOther": 206.29931640625,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 27.7998046875,
+            "remainingPrepareFetchHandoff": 2397.59521484375
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 32,
+            "mean": 51.77501678466797,
+            "p50": 39.900146484375,
+            "p95": 137.0
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.01251220703125,
+            "clientValidation": 0.081329345703125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 8.999961853027344,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 42.68121337890625
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.400390625,
+            "clientValidation": 2.6025390625,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 287.998779296875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 1365.798828125
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 31,
+            "mean": 20.990313130040324,
+            "p50": 0.10009765625,
+            "p95": 80.7998046875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.006457913306451613,
+            "clientValidation": 0.1225979712701613,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 20.861257245463708
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.2001953125,
+            "clientValidation": 3.800537109375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 646.698974609375
+          }
+        }
+      },
+      "late": {
+        "productive": {
+          "roundMs": {
+            "n": 44,
+            "mean": 110.3681807084517,
+            "p50": 111.400146484375,
+            "p95": 121.199951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.12279163707386363,
+            "clientValidation": 18.90688809481534,
+            "nativeBeforeCommitOther": 31.265880237926137,
+            "nativeAfterCommitOther": 6.163629705255682,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.4863614169034091,
+            "remainingPrepareFetchHandoff": 53.42262961647727
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 5.40283203125,
+            "clientValidation": 831.903076171875,
+            "nativeBeforeCommitOther": 1375.69873046875,
+            "nativeAfterCommitOther": 271.19970703125,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 21.39990234375,
+            "remainingPrepareFetchHandoff": 2350.595703125
+          }
+        },
+        "quiet": {
+          "roundMs": {
+            "n": 30,
+            "mean": 39.539998372395836,
+            "p50": 37.5,
+            "p95": 49.699951171875
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.013346354166666666,
+            "clientValidation": 0.10343424479166667,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 10.023291015625,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 29.3999267578125
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.400390625,
+            "clientValidation": 3.10302734375,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 300.69873046875,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 881.997802734375
+          }
+        },
+        "other": {
+          "roundMs": {
+            "n": 30,
+            "mean": 6.733341471354167,
+            "p50": 0.10009765625,
+            "p95": 77.5
+          },
+          "stagesMeanMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.006673177083333333,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 6.726668294270834
+          },
+          "stagesTotalMs": {
+            "prefixComparison": 0.0,
+            "clientValidation": 0.2001953125,
+            "nativeBeforeCommitOther": 0.0,
+            "nativeAfterCommitOther": 0.0,
+            "emptyFlightOther": 0.0,
+            "singlePageEnvelopeOther": 0.0,
+            "remainingPrepareFetchHandoff": 201.800048828125
+          }
+        }
+      }
+    },
+    "exposure": {
+      "warmRecordViews": 1202,
+      "fullPhysicalLoads": 0,
+      "suffixPrefixReuses": 1339,
+      "full1024Audits": 0,
+      "fullLedgerChecks": 0,
+      "eventOverflow": 0
+    },
+    "ledgerCipherBytesPerPosition": 1739.5843902439024,
+    "storage": {
+      "physicalHeads": 258,
+      "physicalRows": 1283,
+      "logicalPositions": 1025,
+      "plaintextBytes": 1747150,
+      "cipherBytes": 1783074,
+      "plaintextBytesPerPosition": 1704.5365853658536,
+      "physicalRowsPerPosition": 1.2517073170731707,
+      "denseExtents": 256,
+      "distinctOriginalPageHashes": 256,
+      "duplicateOriginalPageStores": 0,
+      "duplicateOriginalWireBytes": 0,
+      "duplicateQualification": "Exact original signed-wire hashes only; does not count overlaps between separately signed fresh pages."
+    },
+    "index": {
+      "observations": 136,
+      "first": {
+        "kind": "indexBudget",
+        "rows": 56,
+        "logical": 56,
+        "chargedBytes": 123315,
+        "physicalBytes": 123315,
+        "lastSeq": 56,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453793376.2002
+      },
+      "last": {
+        "kind": "indexBudget",
+        "rows": 1341,
+        "logical": 2108,
+        "chargedBytes": 8541874,
+        "physicalBytes": 1868746,
+        "lastSeq": 1341,
+        "fits": true,
+        "maxRows": 32768,
+        "maxBytes": 33554432,
+        "at": 1793453812466.9001
+      },
+      "peakChargedBytes": 8541874,
+      "peakPhysicalBytes": 1868746,
+      "fallbacks": [],
+      "qualification": "Bounded expanded-work accounting, not a heap-size measurement."
+    },
+    "comparisonMs": 13.399995803833008,
+    "host": {
+      "samples": 10,
+      "aggregateBusy": {
+        "n": 10,
+        "mean": 54.667653737207694,
+        "p50": 50.876843363889996,
+        "p95": 71.31180223285486
+      },
+      "externalTopProcesses": [
+        "ChatGPT",
+        "Claude",
+        "Codex (Renderer)",
+        "Codex (Service)",
+        "Finder",
+        "Firefox Developer Edition GPU Helper",
+        "WindowServer",
+        "claude",
+        "codex",
+        "ctkd",
+        "duetexpertd",
+        "firefox",
+        "fseventsd",
+        "ghostty",
+        "launchd",
+        "launchservicesd",
+        "opendirectoryd",
+        "plugin-container",
+        "secd"
+      ]
+    },
+    "analysisQualification": "Descriptive independent journeys. Signature-bounded rounds include sign-only/partial rounds as other. Stages partition by priority: validation, native before/after commit, empty flight, single-page envelope, remainder. The remainder includes preparation/network/Window handoff and prefix copies; no exclusive Window claim. 100-position boundaries use first crossing commit (up to8positions/burst), not interpolated individual completion times. Budget events use server epoch timestamps; raw snapshots preserve offset uncertainty."
+  }
+]
