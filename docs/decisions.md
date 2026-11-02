@@ -6703,3 +6703,19 @@ stack clears one deep30scell; first isolate missing-hint scheduling/2.5smisses b
 adoption. Realv5publication, not explicitv3installation, is the relevant publish observation.
 Default-off writer, security boundaries, all gates and stale-tab/rollback holds stay. See
 [phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).
+
+### 2026-10-31 — Worker catch-up phase308
+
+Keep every lab result, including the host-contended screen, wrapper failure, old overlap
+failures, six maintenance completion failures and six unexposed named-hint runs. The corrected
+named comparison repairs only private gateway wiring and uses the same client build. It does
+not erase the invalid attempt. A failed replicate still fails its cell.
+
+Keep the 750 ms quiet budget, 16/s session and 64/s process limits, all original gates, the
+default-off range writer and disabled service automation. A/B/C/E/F stay out. G remains a
+candidate. V needs an enforceable immutable-prefix contract and independent faults before
+landing. R does not establish a 2.5-second post-drain bound despite passing whole-run cases.
+Investigate the larger maintenance fixture's guard and retry sequence next, preserving authority
+and activity/journal checks and the deadline. The raw complete-page receipt remains a design
+note; logical/physical units, every reader, cuts and old-tab/rollback behavior need separate
+hardening. This evidence authorizes no release work or runtime adoption. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).

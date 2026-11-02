@@ -1,0 +1,11 @@
+{
+  "onlyPriorFilesChanged": [
+    "docs/product-backlog.md",
+    "docs/completed.md",
+    "docs/decisions.md"
+  ],
+  "missingFromPatchDiscovery": [],
+  "newTextTrailingWhitespace": [],
+  "sevenContractChecksPass": true,
+  "realIndexEmpty": true
+}

@@ -1,0 +1,143 @@
+{
+  "scope": "All direct decoder/tag/stored-verifier consumers in src/crdt, plus writer/census consumers discussed in design note",
+  "directReaderFiles": [
+    {
+      "path": "src/crdt/accountInbound.ts",
+      "sha256": "f9a6502772f73c1c28ac86eac7674f60b3ac086510c0281e48115a11fcdf16de",
+      "uses": {
+        "decodeInboundRecord": [
+          41,
+          630
+        ],
+        "verifyStoredInbound": [
+          624
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/accountMembership.ts",
+      "sha256": "1b474ce888c38a04651e641f7c34b050173ed404ebea670f2e24694c6440beab",
+      "uses": {
+        "decodeInboundRecord": [
+          20,
+          81
+        ],
+        "isInboundRecordTag": [
+          20,
+          80
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/accountSuccessor.ts",
+      "sha256": "a2b846095723ab24f2591c4b3e10abf400ea07ae5012cc1a5f1f011922fe7874",
+      "uses": {
+        "decodeInboundRecord": [
+          21,
+          181
+        ],
+        "isInboundRecordTag": [
+          21,
+          180
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/handoffHistory.ts",
+      "sha256": "38463b7bb47a0f80acab045f641cdc3d7a38e5c022fa3b4517d59a0787104f7e",
+      "uses": {
+        "decodeInboundRecord": [
+          24,
+          142
+        ],
+        "verifyStoredInbound": [
+          23,
+          156
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/inboundLedger.ts",
+      "sha256": "fa796d88503a2c3c1486694abac5866e99a3cfbe0454f2fc10ff217c9cacea98",
+      "uses": {
+        "decodeInboundRecord": [
+          27,
+          105,
+          122,
+          138
+        ],
+        "isInboundRecordTag": [
+          27,
+          120,
+          137
+        ],
+        "verifyStoredInbound": [
+          28,
+          620
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/inboundRecord.ts",
+      "sha256": "7fbbf51ec6a6df38d76fcae501bcb9e87771fbbf93e2f8f327ae50d767db3dfd",
+      "uses": {
+        "decodeInboundRecord": [
+          106
+        ],
+        "isInboundRecordTag": [
+          26
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "6bb5851f3d429cc086a228baafb9724271c34606c9494f64a9b65fd24471a716",
+      "uses": {
+        "decodeInboundRecord": [
+          43,
+          207,
+          261,
+          324
+        ],
+        "isInboundRecordTag": [
+          43,
+          206,
+          259,
+          324
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/localRetentionPlan.ts",
+      "sha256": "2a22a0dcc38727b4284b310e0f321b121992018a41c2ccc67506d4f2ecb5712a",
+      "uses": {
+        "isInboundRecordTag": [
+          1,
+          501
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/membershipReading.ts",
+      "sha256": "fa823c6f7575a985def64b2dc69ac6daf7a8cb7a6f6df658bd609487fd50fc6b",
+      "uses": {
+        "verifyStoredInbound": [
+          30,
+          303
+        ]
+      }
+    },
+    {
+      "path": "src/crdt/replacementSource.ts",
+      "sha256": "abd1a1b4a7cd805fcbadd41761b05bf11bee4fdbbff994e5ab56fd6f099396ad",
+      "uses": {
+        "verifyStoredInbound": [
+          30,
+          271
+        ]
+      }
+    }
+  ],
+  "designOnly": true,
+  "noFormatBuild": true
+}

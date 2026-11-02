@@ -1118,3 +1118,20 @@ and verification hardening separately. Byte-comparison/storage work is the stron
 Keep range writer default off, all gates, full-unit red history and v2stale-tab/rollback holds;
 no normalPage/Workercomparison or release work. See
 [phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).
+
+### 2026-10-31 — Worker catch-up phase308
+
+Next bounded performance investigation: use the retained 2,048-position failures to trace why
+local preparation repeatedly returns `activity-or-journal` and does not commit after typing
+stops. All six runs have 112–120 overlapping keys, passing input/peer/marker timings and exact
+archive/Undo checks, but zero completions and counter v2 after the unchanged 120-second wait.
+Cold reopening was not reached. Preserve this before evidence and its deadline. The trace can
+begin without a phone.
+
+Then address R's initial missing-hint wait, its 2.560/2.553-second post-drain diagnostic tail,
+and healthy-hint arm/rearm behavior. Harden G and any immutable-prefix reuse separately.
+Named hints show modest traffic savings. Review the design-only self-contained page receipt
+against the ten-reader inventory, membership/replacement replay, cuts within pages, logical
+budgets, audit units and old-tab/rollback fences before implementing a format. Keep the range
+writer default off, V confined to the lab, service automation off and every gate unchanged.
+No release preparation. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).

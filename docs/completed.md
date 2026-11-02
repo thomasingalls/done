@@ -18349,3 +18349,26 @@ withheld2.5sgates, fairnessinput16.100ms misses16. Actualv5publish648.104ms obse
 
 Phase307 closeout checks:266raw copies/original hashes, all frozen apparatus,10design rows and
 3ablations independently agree; seven repository contracts and diff whitespace checks pass.
+
+### 2026-10-31 — Worker catch-up phase308
+
+Completed the operator-directed fictional-only G/V/R/D lab: all 65 application journeys,
+three fixture preparations, six metadata inspections on profile copies, and every failed or
+unexposed attempt are retained. All 777 raw copies match their originals. Eight native deep
+milestones and 26 raw latency journeys were independently recomputed. The one quiet full unit
+run reports 2,855 passed tests, one existing skip and 283 files; its post-run wrapper error and
+uncaptured child exit remain qualified. All 1,552 canonical unit inputs are unchanged.
+
+G+V+R passes the three original deep gates in 19.221, 19.628 and 23.256 seconds. V remains an
+unproven immutability assumption. Five old maintenance runs lack the required overlap. The
+larger fixture achieves 112–120 overlapping keys, but all six runs miss the unchanged 120-second
+completion deadline; their counter remains v2 and cold reopening is not reached. R still has
+the initial idle miss and post-drain p95 of 2.560/2.553 seconds. The first named-hint comparison
+was unexposed; a private gateway repair and a new declared comparison show modest traffic savings
+with mixed peer latency. The complete-page receipt note covers all ten direct readers; no format
+was built. Only evidence and documentation enter this phase, with no runtime/test changes or
+promotion credit. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).
+
+Phase308 closeout: all seven repository contract checks and whitespace/link checks pass.
+Only the three planned closeout appends differ from the prior prepared series; no runtime or
+test source changed, and the real index has no staged content.

@@ -1,0 +1,15 @@
+{
+  "rawArtifactsVerified": 777,
+  "rawCopiesAndOriginalsMatch": true,
+  "applicationJourneys": 65,
+  "plansAndResultsAgreeBothDirections": true,
+  "nativeDeepMilestonesIndependentlyRecomputed": 8,
+  "rawLatencyRunsIndependentlyRecomputed": 26,
+  "directReceiptReaderInventoryBothDirections": 10,
+  "canonicalUnitInputsUnchanged": 1552,
+  "unitSummaryGreenButChildExitNotCaptured": true,
+  "markdownLinksExist": true,
+  "realIndexEmpty": true,
+  "labOnly": true,
+  "acceptanceCredit": false
+}

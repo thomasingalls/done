@@ -1,0 +1,8 @@
+{
+  "scope": "Lab gateway forwards the existing opt-in header; no application, service verification, limits or built asset change",
+  "beforeSha256": "90c20c3d8c1067825d7954c358d14bf6fb482cda182bd28b5138120cce1972c0",
+  "afterSha256": "0188189dbd7406fda58facd8098b574686c316a2592bff429a5eb84df385401c",
+  "firstSixNamedRuns": "NOT EXPOSED: all three D-on runs recorded zero named hints",
+  "labOnly": true,
+  "acceptanceCredit": false
+}

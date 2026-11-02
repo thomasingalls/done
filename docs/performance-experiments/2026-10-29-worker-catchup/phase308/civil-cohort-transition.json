@@ -1,0 +1,22 @@
+{
+  "reason": "Previous civil cohort expired; no clock or freeze override in measurements",
+  "at": "2026-10-31T00:37:40.899752+00:00",
+  "allOriginalThirtyResultsRetained": true,
+  "sourceAndArtifactUnchanged": true,
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "selectors": {
+    "private-fixture": {
+      "old": "/private/tmp/done-civil-fixture-20261030-r1/private-fixture",
+      "oldFixtureSha256": "2e0d95a19fc54c46c9faf518710aecbe5dc70eeb014e7a2ee15f127c478ac6e2",
+      "new": "/private/tmp/done-range-vgr-lab-20261030/civil31-fixture/private-fixture",
+      "newFixtureSha256": "1fdfcaa4637c91ca0560c1fab98cab17fa15eac4f289e261b1e027c9bbd256b5"
+    },
+    "prepared-fixture": {
+      "old": "/private/tmp/done-range-lab-gates-20261030/prepared-fixture",
+      "oldFixtureSha256": "9487d4750dad7602f87dffeae89e0cbd8ba0ca501ba0cc7e7eebfdae6b310734",
+      "new": "/private/tmp/done-range-vgr-lab-20261030/civil31-grown/prepared-fixture",
+      "newFixtureSha256": "eca35835058e92467bee513e9c3ec331d220dd0ee3c6ec4c461c1aac84aa4e01"
+    }
+  }
+}
