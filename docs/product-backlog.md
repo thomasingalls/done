@@ -1248,3 +1248,7 @@ The first new harness attempt stops before history creation because it compares 
 ### 2026-11-01 — Phase331: previously unrun controls complete
 
 Device1single500all3policies and repaireddeep0nowfunctionally/coldexact; no acceptance credit. Continue matched checkpoint preparations and only then the separately declared idle-warm-audit arm. Existing paired latency deficits remain unresolved. [Controls](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md).
+
+### 2026-11-01 — Phase332: checkpoint comparison measured; idle-audit arm next
+
+Matched checkpoint cuts return visibility18.939→2.363s/26.243→2.760s at0/50ms on1024corpus, all primaryarchive/Undo/cold exact. Loadedproducer/admitterinputp95under16ms inthislab; install itself n0/1unexposed. Keep unresolvedone-offdownloadobservationtimeout visible, no browser20limit claim. Automatic service history remains off; no default/format/trust changes. Proceed idle-warm-audit arm with full oracle/guards/hardrowbound, same329fixture. [Allattempts](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md).

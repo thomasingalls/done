@@ -1,0 +1,22 @@
+{
+  "canonicalInputsUnchanged": 1552,
+  "realIndexEmpty": true,
+  "frozenStagesVerified": [
+    "prepare332",
+    "returnFirst332",
+    "returnRest332",
+    "loadedReady332",
+    "inspect332",
+    "loadedRetry332",
+    "loadedBlob332"
+  ],
+  "bothPreparedStatesUnchanged": true,
+  "allAcceptedFamiliesByteIdentical": true,
+  "primaryReturnRuns": 12,
+  "primaryLoadedRuns": 6,
+  "primaryColdOwners": 24,
+  "failedHarnessAttemptsRetained": 2,
+  "offlineDiagnosticRetained": true,
+  "noAppSourceChange": true,
+  "acceptanceCredit": false
+}

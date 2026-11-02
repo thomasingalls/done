@@ -1,0 +1,12 @@
+{
+  "failedCase": "loaded332-r1-d0-attempt2",
+  "completedPerUndoArchiveChecks": 18,
+  "failure": "waitForEvent download timeout20s on next check",
+  "nativeOwnerOrIntegrityFailureObserved": false,
+  "http": "303responses200,6unfinished at close",
+  "ChromeHistoryCompletedDownloads": 20,
+  "cause": "Unresolved; no claim of a specific browser limit. Primary Chromium request-limiter source uses50, not evidence for a20limit.",
+  "nextObservation": "Observe exact ZIP Blob produced by unchanged native Export button. Leave URL creation, anchor click and revocation untouched; capture downloads separately. Any native export refusal/no Blob/incorrect full archive still fails. Old download timeout stays failed and visible, with no export-delivery qualification claim.",
+  "appSourceChanged": false,
+  "nextAttempt": "loaded332-r1-d0-attempt3"
+}

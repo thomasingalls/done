@@ -1,0 +1,1172 @@
+[
+  {
+    "name": "return332-r1-d0-ordinary",
+    "checkpoint": false,
+    "rtt": 0,
+    "replicate": 1,
+    "childExit": 0,
+    "unlockToEditorMs": 835.614501953125,
+    "unlockToAllVisibleMs": 18791.395751953125,
+    "visibleClockOffsetBoundsMs": [
+      -1.34423828125,
+      1.242431640625
+    ],
+    "originalTargetObservedAt": 1793563891975.5,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 4,
+    "install": null,
+    "otherInstalls": [],
+    "snapshot": null,
+    "latestBodyBytes": 0,
+    "snapshotDownloadCount": 0,
+    "readUnitsToVisible": 233,
+    "positionsFetchedToVisible": 1024,
+    "readUnitsThroughInputEnd": 233,
+    "positionsFetchedThroughInputEnd": 1024,
+    "positionsFetchedAfterInstallToVisible": null,
+    "positionsFetchedAfterInstallThroughInputEnd": null,
+    "latePrefetchPositionsThroughInputEnd": null,
+    "historyRequestsToVisible": 4,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 2.7626953125,
+      "p95": 3.459716796875,
+      "max": 5.829345703125
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 22
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r1-d50-checkpoint",
+    "checkpoint": true,
+    "rtt": 50,
+    "replicate": 1,
+    "childExit": 0,
+    "unlockToEditorMs": 836.87451171875,
+    "unlockToAllVisibleMs": 2890.780029296875,
+    "visibleClockOffsetBoundsMs": [
+      -1.357666015625,
+      1.205322265625
+    ],
+    "originalTargetObservedAt": 1793563980356,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 1,
+    "install": {
+      "start": 1793563980275.5,
+      "end": 1793563980343.7998,
+      "durationMs": 68.2998046875,
+      "committed": true,
+      "results": [
+        "installed"
+      ],
+      "installBytes": 39292
+    },
+    "otherInstalls": [
+      {
+        "start": 1793563980275.5,
+        "end": 1793563980343.7998,
+        "durationMs": 68.2998046875,
+        "committed": true,
+        "results": [
+          "installed"
+        ],
+        "installBytes": 39292
+      }
+    ],
+    "snapshot": {
+      "jsonBytes": 38281,
+      "ciphertextBytes": 17741,
+      "manifest": {
+        "workspaceId": "e139e3aa0f5c2a18b40a2a1ad7c5a800",
+        "lineageId": "e6bd3a57237d3ab4d691edec92b6f01d2e3c715b882989bb37ce67f14a9dd48a",
+        "epoch": 11,
+        "epochHead": "759afc404a3b5d4dc8c293c6ad8283a653fbe6652ee1a7397fbf49534414b19a",
+        "generation": 1,
+        "sequence": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "producer": "7bc524d8892706c37bee339148dc4ee6",
+        "checkpointDigest": "e939e2520b1311402c4e79618521a6a2d4a7c317df445c8df5caf9435596ea78",
+        "sv": "08e0a9b3a40a01a2fae4ec060193d4d4e9069c0883d0c6cc06de32e3f7b4e204019199f29c0404869b8ac50201bebad3f00101",
+        "ds": "019199f29c0401000100",
+        "headVectorDigest": "c79debf6c07477146793e04415668fd3dcc06d6642809dd79e54a61b3e3c75e8",
+        "sourcesDigest": "ca803256aed72b560684bae78abdb26158ffcd5a7114bde759a3fb0a1f2b538a"
+      },
+      "heads": [
+        {
+          "credentialId": "0b72105a5169495c9d0ee449c303de50",
+          "position": 1,
+          "link": "4db7934327f1d57caa29bb11fc300584052ba1932a7627157c46f2029784ec2f"
+        },
+        {
+          "credentialId": "6539fd50d7b811c828195aa258fb9903",
+          "position": 1,
+          "link": "70463b44d1dddf958c8f9472a33b3b4585b5c4cf42e32d89493f0ab79127e3a8"
+        },
+        {
+          "credentialId": "7bc524d8892706c37bee339148dc4ee6",
+          "position": 1029,
+          "link": "52a407886678dcd4080a7b43f91b43bd5a652f50c043711a8c099e7efa7c9c3f"
+        },
+        {
+          "credentialId": "8415f169f863454f2be068b172be03b8",
+          "position": 1,
+          "link": "77f964c0980b7782f84cf1501825f5c1fdbff5b2757da87e770d36bd23836ef0"
+        },
+        {
+          "credentialId": "a446947a56e94f43055db5d0f929548a",
+          "position": 1,
+          "link": "f9e06976cffdd52c7c5fc49f7fd7534b1d471b5c414d4e6a5e34ec7dd5a0abe4"
+        },
+        {
+          "credentialId": "e56050c395a32a17991a24d31c4187e5",
+          "position": 1,
+          "link": "b578c5f056d61a7206bedc77633f5879106a4d5bf5c9efe81b11e9fbf54dd63e"
+        }
+      ],
+      "sources": 5,
+      "hasAdmission": true,
+      "metadataSource": "single immutable admitted preparation record; actual responseBytes separately observed"
+    },
+    "latestBodyBytes": 41642,
+    "snapshotDownloadCount": 1,
+    "readUnitsToVisible": 0,
+    "positionsFetchedToVisible": 0,
+    "readUnitsThroughInputEnd": 6,
+    "positionsFetchedThroughInputEnd": 0,
+    "positionsFetchedAfterInstallToVisible": 0,
+    "positionsFetchedAfterInstallThroughInputEnd": 0,
+    "latePrefetchPositionsThroughInputEnd": 0,
+    "historyRequestsToVisible": 2,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 6.251953125,
+      "p95": 8.826171875,
+      "max": 14.493896484375
+    },
+    "inputDuringInstallMs": {
+      "n": 1,
+      "p50": 2.7509765625,
+      "p95": 2.7509765625,
+      "max": 2.7509765625
+    },
+    "inputDuringInstallExposure": "exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 16
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r1-d50-ordinary",
+    "checkpoint": false,
+    "rtt": 50,
+    "replicate": 1,
+    "childExit": 0,
+    "unlockToEditorMs": 830.654296875,
+    "unlockToAllVisibleMs": 26243.374267578125,
+    "visibleClockOffsetBoundsMs": [
+      -1.216796875,
+      1.382080078125
+    ],
+    "originalTargetObservedAt": 1793564031201.9001,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 5,
+    "install": null,
+    "otherInstalls": [],
+    "snapshot": null,
+    "latestBodyBytes": 0,
+    "snapshotDownloadCount": 0,
+    "readUnitsToVisible": 272,
+    "positionsFetchedToVisible": 1024,
+    "readUnitsThroughInputEnd": 272,
+    "positionsFetchedThroughInputEnd": 1024,
+    "positionsFetchedAfterInstallToVisible": null,
+    "positionsFetchedAfterInstallThroughInputEnd": null,
+    "latePrefetchPositionsThroughInputEnd": null,
+    "historyRequestsToVisible": 5,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 2.8291015625,
+      "p95": 3.726318359375,
+      "max": 6.25048828125
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 25
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r1-d0-checkpoint",
+    "checkpoint": true,
+    "rtt": 0,
+    "replicate": 1,
+    "childExit": 0,
+    "unlockToEditorMs": 824.43603515625,
+    "unlockToAllVisibleMs": 2345.765380859375,
+    "visibleClockOffsetBoundsMs": [
+      -1.1640625,
+      1.456298828125
+    ],
+    "originalTargetObservedAt": 1793564044576.9001,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 1,
+    "install": {
+      "start": 1793564044510.6,
+      "end": 1793564044569.2002,
+      "durationMs": 58.60009765625,
+      "committed": true,
+      "results": [
+        "installed"
+      ],
+      "installBytes": 39292
+    },
+    "otherInstalls": [
+      {
+        "start": 1793564044510.6,
+        "end": 1793564044569.2002,
+        "durationMs": 58.60009765625,
+        "committed": true,
+        "results": [
+          "installed"
+        ],
+        "installBytes": 39292
+      }
+    ],
+    "snapshot": {
+      "jsonBytes": 38281,
+      "ciphertextBytes": 17741,
+      "manifest": {
+        "workspaceId": "e139e3aa0f5c2a18b40a2a1ad7c5a800",
+        "lineageId": "e6bd3a57237d3ab4d691edec92b6f01d2e3c715b882989bb37ce67f14a9dd48a",
+        "epoch": 11,
+        "epochHead": "759afc404a3b5d4dc8c293c6ad8283a653fbe6652ee1a7397fbf49534414b19a",
+        "generation": 1,
+        "sequence": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "producer": "7bc524d8892706c37bee339148dc4ee6",
+        "checkpointDigest": "e939e2520b1311402c4e79618521a6a2d4a7c317df445c8df5caf9435596ea78",
+        "sv": "08e0a9b3a40a01a2fae4ec060193d4d4e9069c0883d0c6cc06de32e3f7b4e204019199f29c0404869b8ac50201bebad3f00101",
+        "ds": "019199f29c0401000100",
+        "headVectorDigest": "c79debf6c07477146793e04415668fd3dcc06d6642809dd79e54a61b3e3c75e8",
+        "sourcesDigest": "ca803256aed72b560684bae78abdb26158ffcd5a7114bde759a3fb0a1f2b538a"
+      },
+      "heads": [
+        {
+          "credentialId": "0b72105a5169495c9d0ee449c303de50",
+          "position": 1,
+          "link": "4db7934327f1d57caa29bb11fc300584052ba1932a7627157c46f2029784ec2f"
+        },
+        {
+          "credentialId": "6539fd50d7b811c828195aa258fb9903",
+          "position": 1,
+          "link": "70463b44d1dddf958c8f9472a33b3b4585b5c4cf42e32d89493f0ab79127e3a8"
+        },
+        {
+          "credentialId": "7bc524d8892706c37bee339148dc4ee6",
+          "position": 1029,
+          "link": "52a407886678dcd4080a7b43f91b43bd5a652f50c043711a8c099e7efa7c9c3f"
+        },
+        {
+          "credentialId": "8415f169f863454f2be068b172be03b8",
+          "position": 1,
+          "link": "77f964c0980b7782f84cf1501825f5c1fdbff5b2757da87e770d36bd23836ef0"
+        },
+        {
+          "credentialId": "a446947a56e94f43055db5d0f929548a",
+          "position": 1,
+          "link": "f9e06976cffdd52c7c5fc49f7fd7534b1d471b5c414d4e6a5e34ec7dd5a0abe4"
+        },
+        {
+          "credentialId": "e56050c395a32a17991a24d31c4187e5",
+          "position": 1,
+          "link": "b578c5f056d61a7206bedc77633f5879106a4d5bf5c9efe81b11e9fbf54dd63e"
+        }
+      ],
+      "sources": 5,
+      "hasAdmission": true,
+      "metadataSource": "single immutable admitted preparation record; actual responseBytes separately observed"
+    },
+    "latestBodyBytes": 41642,
+    "snapshotDownloadCount": 1,
+    "readUnitsToVisible": 0,
+    "positionsFetchedToVisible": 0,
+    "readUnitsThroughInputEnd": 6,
+    "positionsFetchedThroughInputEnd": 0,
+    "positionsFetchedAfterInstallToVisible": 0,
+    "positionsFetchedAfterInstallThroughInputEnd": 0,
+    "latePrefetchPositionsThroughInputEnd": 0,
+    "historyRequestsToVisible": 2,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 6.2138671875,
+      "p95": 8.97216796875,
+      "max": 20.85546875
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 15
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r2-d50-checkpoint",
+    "checkpoint": true,
+    "rtt": 50,
+    "replicate": 2,
+    "childExit": 0,
+    "unlockToEditorMs": 836.450927734375,
+    "unlockToAllVisibleMs": 2756.469482421875,
+    "visibleClockOffsetBoundsMs": [
+      -1.079833984375,
+      1.452880859375
+    ],
+    "originalTargetObservedAt": 1793564072736.3,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 1,
+    "install": {
+      "start": 1793564072670.4,
+      "end": 1793564072729,
+      "durationMs": 58.60009765625,
+      "committed": true,
+      "results": [
+        "installed"
+      ],
+      "installBytes": 39292
+    },
+    "otherInstalls": [
+      {
+        "start": 1793564072670.4,
+        "end": 1793564072729,
+        "durationMs": 58.60009765625,
+        "committed": true,
+        "results": [
+          "installed"
+        ],
+        "installBytes": 39292
+      }
+    ],
+    "snapshot": {
+      "jsonBytes": 38281,
+      "ciphertextBytes": 17741,
+      "manifest": {
+        "workspaceId": "e139e3aa0f5c2a18b40a2a1ad7c5a800",
+        "lineageId": "e6bd3a57237d3ab4d691edec92b6f01d2e3c715b882989bb37ce67f14a9dd48a",
+        "epoch": 11,
+        "epochHead": "759afc404a3b5d4dc8c293c6ad8283a653fbe6652ee1a7397fbf49534414b19a",
+        "generation": 1,
+        "sequence": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "producer": "7bc524d8892706c37bee339148dc4ee6",
+        "checkpointDigest": "e939e2520b1311402c4e79618521a6a2d4a7c317df445c8df5caf9435596ea78",
+        "sv": "08e0a9b3a40a01a2fae4ec060193d4d4e9069c0883d0c6cc06de32e3f7b4e204019199f29c0404869b8ac50201bebad3f00101",
+        "ds": "019199f29c0401000100",
+        "headVectorDigest": "c79debf6c07477146793e04415668fd3dcc06d6642809dd79e54a61b3e3c75e8",
+        "sourcesDigest": "ca803256aed72b560684bae78abdb26158ffcd5a7114bde759a3fb0a1f2b538a"
+      },
+      "heads": [
+        {
+          "credentialId": "0b72105a5169495c9d0ee449c303de50",
+          "position": 1,
+          "link": "4db7934327f1d57caa29bb11fc300584052ba1932a7627157c46f2029784ec2f"
+        },
+        {
+          "credentialId": "6539fd50d7b811c828195aa258fb9903",
+          "position": 1,
+          "link": "70463b44d1dddf958c8f9472a33b3b4585b5c4cf42e32d89493f0ab79127e3a8"
+        },
+        {
+          "credentialId": "7bc524d8892706c37bee339148dc4ee6",
+          "position": 1029,
+          "link": "52a407886678dcd4080a7b43f91b43bd5a652f50c043711a8c099e7efa7c9c3f"
+        },
+        {
+          "credentialId": "8415f169f863454f2be068b172be03b8",
+          "position": 1,
+          "link": "77f964c0980b7782f84cf1501825f5c1fdbff5b2757da87e770d36bd23836ef0"
+        },
+        {
+          "credentialId": "a446947a56e94f43055db5d0f929548a",
+          "position": 1,
+          "link": "f9e06976cffdd52c7c5fc49f7fd7534b1d471b5c414d4e6a5e34ec7dd5a0abe4"
+        },
+        {
+          "credentialId": "e56050c395a32a17991a24d31c4187e5",
+          "position": 1,
+          "link": "b578c5f056d61a7206bedc77633f5879106a4d5bf5c9efe81b11e9fbf54dd63e"
+        }
+      ],
+      "sources": 5,
+      "hasAdmission": true,
+      "metadataSource": "single immutable admitted preparation record; actual responseBytes separately observed"
+    },
+    "latestBodyBytes": 41642,
+    "snapshotDownloadCount": 1,
+    "readUnitsToVisible": 0,
+    "positionsFetchedToVisible": 0,
+    "readUnitsThroughInputEnd": 6,
+    "positionsFetchedThroughInputEnd": 0,
+    "positionsFetchedAfterInstallToVisible": 0,
+    "positionsFetchedAfterInstallThroughInputEnd": 0,
+    "latePrefetchPositionsThroughInputEnd": 0,
+    "historyRequestsToVisible": 2,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 5.3935546875,
+      "p95": 9.2373046875,
+      "max": 20.199462890625
+    },
+    "inputDuringInstallMs": {
+      "n": 1,
+      "p50": 2.845703125,
+      "p95": 2.845703125,
+      "max": 2.845703125
+    },
+    "inputDuringInstallExposure": "exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 15
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r2-d50-ordinary",
+    "checkpoint": false,
+    "rtt": 50,
+    "replicate": 2,
+    "childExit": 0,
+    "unlockToEditorMs": 826.681640625,
+    "unlockToAllVisibleMs": 25888.583740234375,
+    "visibleClockOffsetBoundsMs": [
+      -1.239990234375,
+      1.439453125
+    ],
+    "originalTargetObservedAt": 1793564123259.8,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 5,
+    "install": null,
+    "otherInstalls": [],
+    "snapshot": null,
+    "latestBodyBytes": 0,
+    "snapshotDownloadCount": 0,
+    "readUnitsToVisible": 268,
+    "positionsFetchedToVisible": 1024,
+    "readUnitsThroughInputEnd": 268,
+    "positionsFetchedThroughInputEnd": 1024,
+    "positionsFetchedAfterInstallToVisible": null,
+    "positionsFetchedAfterInstallThroughInputEnd": null,
+    "latePrefetchPositionsThroughInputEnd": null,
+    "historyRequestsToVisible": 5,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 2.82763671875,
+      "p95": 3.22021484375,
+      "max": 6.072021484375
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 25
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r2-d0-ordinary",
+    "checkpoint": false,
+    "rtt": 0,
+    "replicate": 2,
+    "childExit": 0,
+    "unlockToEditorMs": 831.364990234375,
+    "unlockToAllVisibleMs": 19017.76708984375,
+    "visibleClockOffsetBoundsMs": [
+      -1.24658203125,
+      1.525634765625
+    ],
+    "originalTargetObservedAt": 1793564153804.7,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 4,
+    "install": null,
+    "otherInstalls": [],
+    "snapshot": null,
+    "latestBodyBytes": 0,
+    "snapshotDownloadCount": 0,
+    "readUnitsToVisible": 235,
+    "positionsFetchedToVisible": 1024,
+    "readUnitsThroughInputEnd": 235,
+    "positionsFetchedThroughInputEnd": 1024,
+    "positionsFetchedAfterInstallToVisible": null,
+    "positionsFetchedAfterInstallThroughInputEnd": null,
+    "latePrefetchPositionsThroughInputEnd": null,
+    "historyRequestsToVisible": 4,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 2.763427734375,
+      "p95": 3.318603515625,
+      "max": 6.288818359375
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 22
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r2-d0-checkpoint",
+    "checkpoint": true,
+    "rtt": 0,
+    "replicate": 2,
+    "childExit": 0,
+    "unlockToEditorMs": 842.16748046875,
+    "unlockToAllVisibleMs": 2472.2421875,
+    "visibleClockOffsetBoundsMs": [
+      -1.275390625,
+      1.287841796875
+    ],
+    "originalTargetObservedAt": 1793564166969.6,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 1,
+    "install": {
+      "start": 1793564166896.9,
+      "end": 1793564166962.2,
+      "durationMs": 65.300048828125,
+      "committed": true,
+      "results": [
+        "installed"
+      ],
+      "installBytes": 39292
+    },
+    "otherInstalls": [
+      {
+        "start": 1793564166896.9,
+        "end": 1793564166962.2,
+        "durationMs": 65.300048828125,
+        "committed": true,
+        "results": [
+          "installed"
+        ],
+        "installBytes": 39292
+      }
+    ],
+    "snapshot": {
+      "jsonBytes": 38281,
+      "ciphertextBytes": 17741,
+      "manifest": {
+        "workspaceId": "e139e3aa0f5c2a18b40a2a1ad7c5a800",
+        "lineageId": "e6bd3a57237d3ab4d691edec92b6f01d2e3c715b882989bb37ce67f14a9dd48a",
+        "epoch": 11,
+        "epochHead": "759afc404a3b5d4dc8c293c6ad8283a653fbe6652ee1a7397fbf49534414b19a",
+        "generation": 1,
+        "sequence": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "producer": "7bc524d8892706c37bee339148dc4ee6",
+        "checkpointDigest": "e939e2520b1311402c4e79618521a6a2d4a7c317df445c8df5caf9435596ea78",
+        "sv": "08e0a9b3a40a01a2fae4ec060193d4d4e9069c0883d0c6cc06de32e3f7b4e204019199f29c0404869b8ac50201bebad3f00101",
+        "ds": "019199f29c0401000100",
+        "headVectorDigest": "c79debf6c07477146793e04415668fd3dcc06d6642809dd79e54a61b3e3c75e8",
+        "sourcesDigest": "ca803256aed72b560684bae78abdb26158ffcd5a7114bde759a3fb0a1f2b538a"
+      },
+      "heads": [
+        {
+          "credentialId": "0b72105a5169495c9d0ee449c303de50",
+          "position": 1,
+          "link": "4db7934327f1d57caa29bb11fc300584052ba1932a7627157c46f2029784ec2f"
+        },
+        {
+          "credentialId": "6539fd50d7b811c828195aa258fb9903",
+          "position": 1,
+          "link": "70463b44d1dddf958c8f9472a33b3b4585b5c4cf42e32d89493f0ab79127e3a8"
+        },
+        {
+          "credentialId": "7bc524d8892706c37bee339148dc4ee6",
+          "position": 1029,
+          "link": "52a407886678dcd4080a7b43f91b43bd5a652f50c043711a8c099e7efa7c9c3f"
+        },
+        {
+          "credentialId": "8415f169f863454f2be068b172be03b8",
+          "position": 1,
+          "link": "77f964c0980b7782f84cf1501825f5c1fdbff5b2757da87e770d36bd23836ef0"
+        },
+        {
+          "credentialId": "a446947a56e94f43055db5d0f929548a",
+          "position": 1,
+          "link": "f9e06976cffdd52c7c5fc49f7fd7534b1d471b5c414d4e6a5e34ec7dd5a0abe4"
+        },
+        {
+          "credentialId": "e56050c395a32a17991a24d31c4187e5",
+          "position": 1,
+          "link": "b578c5f056d61a7206bedc77633f5879106a4d5bf5c9efe81b11e9fbf54dd63e"
+        }
+      ],
+      "sources": 5,
+      "hasAdmission": true,
+      "metadataSource": "single immutable admitted preparation record; actual responseBytes separately observed"
+    },
+    "latestBodyBytes": 41642,
+    "snapshotDownloadCount": 1,
+    "readUnitsToVisible": 0,
+    "positionsFetchedToVisible": 0,
+    "readUnitsThroughInputEnd": 6,
+    "positionsFetchedThroughInputEnd": 0,
+    "positionsFetchedAfterInstallToVisible": 0,
+    "positionsFetchedAfterInstallThroughInputEnd": 0,
+    "latePrefetchPositionsThroughInputEnd": 0,
+    "historyRequestsToVisible": 2,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 5.47314453125,
+      "p95": 9.21630859375,
+      "max": 21.216552734375
+    },
+    "inputDuringInstallMs": {
+      "n": 1,
+      "p50": 2.775634765625,
+      "p95": 2.775634765625,
+      "max": 2.775634765625
+    },
+    "inputDuringInstallExposure": "exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 15
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r3-d0-checkpoint",
+    "checkpoint": true,
+    "rtt": 0,
+    "replicate": 3,
+    "childExit": 0,
+    "unlockToEditorMs": 828.377197265625,
+    "unlockToAllVisibleMs": 2362.5625,
+    "visibleClockOffsetBoundsMs": [
+      -1.406494140625,
+      1.264892578125
+    ],
+    "originalTargetObservedAt": 1793564194279,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 1,
+    "install": {
+      "start": 1793564194214.5999,
+      "end": 1793564194271.3,
+      "durationMs": 56.7001953125,
+      "committed": true,
+      "results": [
+        "installed"
+      ],
+      "installBytes": 39292
+    },
+    "otherInstalls": [
+      {
+        "start": 1793564194214.5999,
+        "end": 1793564194271.3,
+        "durationMs": 56.7001953125,
+        "committed": true,
+        "results": [
+          "installed"
+        ],
+        "installBytes": 39292
+      }
+    ],
+    "snapshot": {
+      "jsonBytes": 38281,
+      "ciphertextBytes": 17741,
+      "manifest": {
+        "workspaceId": "e139e3aa0f5c2a18b40a2a1ad7c5a800",
+        "lineageId": "e6bd3a57237d3ab4d691edec92b6f01d2e3c715b882989bb37ce67f14a9dd48a",
+        "epoch": 11,
+        "epochHead": "759afc404a3b5d4dc8c293c6ad8283a653fbe6652ee1a7397fbf49534414b19a",
+        "generation": 1,
+        "sequence": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "producer": "7bc524d8892706c37bee339148dc4ee6",
+        "checkpointDigest": "e939e2520b1311402c4e79618521a6a2d4a7c317df445c8df5caf9435596ea78",
+        "sv": "08e0a9b3a40a01a2fae4ec060193d4d4e9069c0883d0c6cc06de32e3f7b4e204019199f29c0404869b8ac50201bebad3f00101",
+        "ds": "019199f29c0401000100",
+        "headVectorDigest": "c79debf6c07477146793e04415668fd3dcc06d6642809dd79e54a61b3e3c75e8",
+        "sourcesDigest": "ca803256aed72b560684bae78abdb26158ffcd5a7114bde759a3fb0a1f2b538a"
+      },
+      "heads": [
+        {
+          "credentialId": "0b72105a5169495c9d0ee449c303de50",
+          "position": 1,
+          "link": "4db7934327f1d57caa29bb11fc300584052ba1932a7627157c46f2029784ec2f"
+        },
+        {
+          "credentialId": "6539fd50d7b811c828195aa258fb9903",
+          "position": 1,
+          "link": "70463b44d1dddf958c8f9472a33b3b4585b5c4cf42e32d89493f0ab79127e3a8"
+        },
+        {
+          "credentialId": "7bc524d8892706c37bee339148dc4ee6",
+          "position": 1029,
+          "link": "52a407886678dcd4080a7b43f91b43bd5a652f50c043711a8c099e7efa7c9c3f"
+        },
+        {
+          "credentialId": "8415f169f863454f2be068b172be03b8",
+          "position": 1,
+          "link": "77f964c0980b7782f84cf1501825f5c1fdbff5b2757da87e770d36bd23836ef0"
+        },
+        {
+          "credentialId": "a446947a56e94f43055db5d0f929548a",
+          "position": 1,
+          "link": "f9e06976cffdd52c7c5fc49f7fd7534b1d471b5c414d4e6a5e34ec7dd5a0abe4"
+        },
+        {
+          "credentialId": "e56050c395a32a17991a24d31c4187e5",
+          "position": 1,
+          "link": "b578c5f056d61a7206bedc77633f5879106a4d5bf5c9efe81b11e9fbf54dd63e"
+        }
+      ],
+      "sources": 5,
+      "hasAdmission": true,
+      "metadataSource": "single immutable admitted preparation record; actual responseBytes separately observed"
+    },
+    "latestBodyBytes": 41642,
+    "snapshotDownloadCount": 1,
+    "readUnitsToVisible": 0,
+    "positionsFetchedToVisible": 0,
+    "readUnitsThroughInputEnd": 6,
+    "positionsFetchedThroughInputEnd": 0,
+    "positionsFetchedAfterInstallToVisible": 0,
+    "positionsFetchedAfterInstallThroughInputEnd": 0,
+    "latePrefetchPositionsThroughInputEnd": 0,
+    "historyRequestsToVisible": 2,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 5.810302734375,
+      "p95": 8.83203125,
+      "max": 10.015625
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 15
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r3-d50-checkpoint",
+    "checkpoint": true,
+    "rtt": 50,
+    "replicate": 3,
+    "childExit": 0,
+    "unlockToEditorMs": 831.829833984375,
+    "unlockToAllVisibleMs": 2760.28369140625,
+    "visibleClockOffsetBoundsMs": [
+      -1.26513671875,
+      1.26611328125
+    ],
+    "originalTargetObservedAt": 1793564222122.2998,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 1,
+    "install": {
+      "start": 1793564222051.1,
+      "end": 1793564222114.6,
+      "durationMs": 63.5,
+      "committed": true,
+      "results": [
+        "installed"
+      ],
+      "installBytes": 39292
+    },
+    "otherInstalls": [
+      {
+        "start": 1793564222051.1,
+        "end": 1793564222114.6,
+        "durationMs": 63.5,
+        "committed": true,
+        "results": [
+          "installed"
+        ],
+        "installBytes": 39292
+      }
+    ],
+    "snapshot": {
+      "jsonBytes": 38281,
+      "ciphertextBytes": 17741,
+      "manifest": {
+        "workspaceId": "e139e3aa0f5c2a18b40a2a1ad7c5a800",
+        "lineageId": "e6bd3a57237d3ab4d691edec92b6f01d2e3c715b882989bb37ce67f14a9dd48a",
+        "epoch": 11,
+        "epochHead": "759afc404a3b5d4dc8c293c6ad8283a653fbe6652ee1a7397fbf49534414b19a",
+        "generation": 1,
+        "sequence": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "producer": "7bc524d8892706c37bee339148dc4ee6",
+        "checkpointDigest": "e939e2520b1311402c4e79618521a6a2d4a7c317df445c8df5caf9435596ea78",
+        "sv": "08e0a9b3a40a01a2fae4ec060193d4d4e9069c0883d0c6cc06de32e3f7b4e204019199f29c0404869b8ac50201bebad3f00101",
+        "ds": "019199f29c0401000100",
+        "headVectorDigest": "c79debf6c07477146793e04415668fd3dcc06d6642809dd79e54a61b3e3c75e8",
+        "sourcesDigest": "ca803256aed72b560684bae78abdb26158ffcd5a7114bde759a3fb0a1f2b538a"
+      },
+      "heads": [
+        {
+          "credentialId": "0b72105a5169495c9d0ee449c303de50",
+          "position": 1,
+          "link": "4db7934327f1d57caa29bb11fc300584052ba1932a7627157c46f2029784ec2f"
+        },
+        {
+          "credentialId": "6539fd50d7b811c828195aa258fb9903",
+          "position": 1,
+          "link": "70463b44d1dddf958c8f9472a33b3b4585b5c4cf42e32d89493f0ab79127e3a8"
+        },
+        {
+          "credentialId": "7bc524d8892706c37bee339148dc4ee6",
+          "position": 1029,
+          "link": "52a407886678dcd4080a7b43f91b43bd5a652f50c043711a8c099e7efa7c9c3f"
+        },
+        {
+          "credentialId": "8415f169f863454f2be068b172be03b8",
+          "position": 1,
+          "link": "77f964c0980b7782f84cf1501825f5c1fdbff5b2757da87e770d36bd23836ef0"
+        },
+        {
+          "credentialId": "a446947a56e94f43055db5d0f929548a",
+          "position": 1,
+          "link": "f9e06976cffdd52c7c5fc49f7fd7534b1d471b5c414d4e6a5e34ec7dd5a0abe4"
+        },
+        {
+          "credentialId": "e56050c395a32a17991a24d31c4187e5",
+          "position": 1,
+          "link": "b578c5f056d61a7206bedc77633f5879106a4d5bf5c9efe81b11e9fbf54dd63e"
+        }
+      ],
+      "sources": 5,
+      "hasAdmission": true,
+      "metadataSource": "single immutable admitted preparation record; actual responseBytes separately observed"
+    },
+    "latestBodyBytes": 41642,
+    "snapshotDownloadCount": 1,
+    "readUnitsToVisible": 0,
+    "positionsFetchedToVisible": 0,
+    "readUnitsThroughInputEnd": 6,
+    "positionsFetchedThroughInputEnd": 0,
+    "positionsFetchedAfterInstallToVisible": 0,
+    "positionsFetchedAfterInstallThroughInputEnd": 0,
+    "latePrefetchPositionsThroughInputEnd": 0,
+    "historyRequestsToVisible": 2,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 5.756103515625,
+      "p95": 9.298828125,
+      "max": 11.592041015625
+    },
+    "inputDuringInstallMs": {
+      "n": 1,
+      "p50": 3.4833984375,
+      "p95": 3.4833984375,
+      "max": 3.4833984375
+    },
+    "inputDuringInstallExposure": "exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 15
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r3-d50-ordinary",
+    "checkpoint": false,
+    "rtt": 50,
+    "replicate": 3,
+    "childExit": 0,
+    "unlockToEditorMs": 827.023681640625,
+    "unlockToAllVisibleMs": 26308.09130859375,
+    "visibleClockOffsetBoundsMs": [
+      -1.339111328125,
+      1.52294921875
+    ],
+    "originalTargetObservedAt": 1793564273046,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 5,
+    "install": null,
+    "otherInstalls": [],
+    "snapshot": null,
+    "latestBodyBytes": 0,
+    "snapshotDownloadCount": 0,
+    "readUnitsToVisible": 272,
+    "positionsFetchedToVisible": 1024,
+    "readUnitsThroughInputEnd": 272,
+    "positionsFetchedThroughInputEnd": 1024,
+    "positionsFetchedAfterInstallToVisible": null,
+    "positionsFetchedAfterInstallThroughInputEnd": null,
+    "latePrefetchPositionsThroughInputEnd": null,
+    "historyRequestsToVisible": 5,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 2.938720703125,
+      "p95": 3.609130859375,
+      "max": 7.786865234375
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 24
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  },
+  {
+    "name": "return332-r3-d0-ordinary",
+    "checkpoint": false,
+    "rtt": 0,
+    "replicate": 3,
+    "childExit": 0,
+    "unlockToEditorMs": 833.9833984375,
+    "unlockToAllVisibleMs": 18939.3330078125,
+    "visibleClockOffsetBoundsMs": [
+      -1.17529296875,
+      1.323486328125
+    ],
+    "originalTargetObservedAt": 1793564303180.7,
+    "fullArchiveExact": true,
+    "coldExact": true,
+    "Undo": true,
+    "naturalHistoryRequired": true,
+    "actualCatalogReads": 4,
+    "install": null,
+    "otherInstalls": [],
+    "snapshot": null,
+    "latestBodyBytes": 0,
+    "snapshotDownloadCount": 0,
+    "readUnitsToVisible": 239,
+    "positionsFetchedToVisible": 1024,
+    "readUnitsThroughInputEnd": 239,
+    "positionsFetchedThroughInputEnd": 1024,
+    "positionsFetchedAfterInstallToVisible": null,
+    "positionsFetchedAfterInstallThroughInputEnd": null,
+    "latePrefetchPositionsThroughInputEnd": null,
+    "historyRequestsToVisible": 4,
+    "inputWholeReturnMs": {
+      "n": 120,
+      "p50": 2.70703125,
+      "p95": 4.93701171875,
+      "max": 7.758544921875
+    },
+    "inputDuringInstallMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "inputDuringInstallExposure": "not exposed",
+    "trustedFocusedVisible": true,
+    "inputBeforeEvents": 121,
+    "observationErrors": [],
+    "streams": [
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 2
+      },
+      {
+        "gaps": 0,
+        "dropped": 0,
+        "received": 22
+      }
+    ],
+    "interpretation": "Positions are decoded logical page entries, not units. After-install is request-start timing; late prefetched replies reported separately. Whole input end may extend beyond full-target visibility; install n0 is unexposed."
+  }
+]

@@ -1,0 +1,1117 @@
+[
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r1-d0",
+    "replicate": 1,
+    "fileFilter": "phase330/loaded332.spec.ts",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loaded332.spec.ts"
+    ],
+    "childExit": 1,
+    "startedAt": 1793564513.0975559,
+    "finishedAt": 1793564556.9558048,
+    "outcome": "failed",
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+    "coldFailure": false,
+    "guards": {},
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 7866.5947265625,
+        "nativeCommandMs": 7496.099853515625,
+        "nativeStorageTailMs": 7468.800048828125,
+        "beforeStorageMs": 27.199951171875,
+        "offeredKeys": 53,
+        "inputAllMs": {
+          "n": 53,
+          "p50": 2.977294921875,
+          "p95": 6.03076171875,
+          "max": 6.346923828125
+        },
+        "inputDuringStorageMs": {
+          "n": 50,
+          "p50": 2.977294921875,
+          "p95": 6.03076171875,
+          "max": 6.346923828125
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 54,
+        "undoSteps": 0,
+        "undoFullArchiveRestored": false,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "400a8b4282f9561198213e2a123710b06a8a6440aeb745280ec2e42680943325",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5073,
+              "characters": 5073
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [],
+    "primary": false,
+    "zipObservation": [],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r1-d0-attempt2",
+    "replicate": 1,
+    "fileFilter": "phase330/loadedRetry332.spec.ts",
+    "attempt": 2,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedRetry332.spec.ts"
+    ],
+    "childExit": 1,
+    "startedAt": 1793565142.3097448,
+    "finishedAt": 1793565207.9496572,
+    "outcome": "failed",
+    "error": "TimeoutError: page.waitForEvent: Timeout 20000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================",
+    "coldFailure": false,
+    "guards": {},
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 7855.34521484375,
+        "nativeCommandMs": 7465.300048828125,
+        "nativeStorageTailMs": 7435.0,
+        "beforeStorageMs": 30.300048828125,
+        "offeredKeys": 53,
+        "inputAllMs": {
+          "n": 53,
+          "p50": 2.932373046875,
+          "p95": 6.117431640625,
+          "max": 6.199951171875
+        },
+        "inputDuringStorageMs": {
+          "n": 50,
+          "p50": 2.932373046875,
+          "p95": 6.117431640625,
+          "max": 6.199951171875
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 54,
+        "undoSteps": 18,
+        "undoFullArchiveRestored": false,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "400a8b4282f9561198213e2a123710b06a8a6440aeb745280ec2e42680943325",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5073,
+              "characters": 5073
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [],
+    "primary": false,
+    "zipObservation": [],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r1-d0-attempt3",
+    "replicate": 1,
+    "fileFilter": "phase330/loadedBlob332.spec.ts",
+    "attempt": 3,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedBlob332.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793565725.531441,
+    "finishedAt": 1793565806.500863,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "bothOfflineColdAndUndoExact": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 7860.830322265625,
+        "nativeCommandMs": 7430.199951171875,
+        "nativeStorageTailMs": 7402.199951171875,
+        "beforeStorageMs": 28,
+        "offeredKeys": 53,
+        "inputAllMs": {
+          "n": 53,
+          "p50": 2.9853515625,
+          "p95": 5.76806640625,
+          "max": 5.98291015625
+        },
+        "inputDuringStorageMs": {
+          "n": 50,
+          "p50": 2.988037109375,
+          "p95": 5.76806640625,
+          "max": 5.98291015625
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 54,
+        "undoSteps": 54,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "400a8b4282f9561198213e2a123710b06a8a6440aeb745280ec2e42680943325",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5073,
+              "characters": 5073
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      },
+      {
+        "device": "C",
+        "command": "verify",
+        "UICommandMs": 5890.7236328125,
+        "nativeCommandMs": 5678.10009765625,
+        "nativeStorageTailMs": 5654.60009765625,
+        "beforeStorageMs": 23.5,
+        "offeredKeys": 40,
+        "inputAllMs": {
+          "n": 40,
+          "p50": 3.06005859375,
+          "p95": 5.6611328125,
+          "max": 6.255859375
+        },
+        "inputDuringStorageMs": {
+          "n": 38,
+          "p50": 3.06005859375,
+          "p95": 6.20556640625,
+          "max": 6.255859375
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 41,
+        "undoSteps": 41,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "03deceee86d10dd0a30afca98ce4907c224993b92bd914775071b1b8c4d676bd",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5060,
+              "characters": 5060
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [
+      {
+        "device": "A",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      },
+      {
+        "device": "C",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      }
+    ],
+    "primary": true,
+    "zipObservation": [
+      {
+        "device": "A",
+        "nativeZIPs": 68,
+        "downloadEvents": 68
+      },
+      {
+        "device": "C",
+        "nativeZIPs": 70,
+        "downloadEvents": 70
+      }
+    ],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 50,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r1-d50",
+    "replicate": 1,
+    "fileFilter": "phase330/loadedBlob332.spec.ts",
+    "attempt": 1,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedBlob332.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793565807.298796,
+    "finishedAt": 1793565915.96832,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "bothOfflineColdAndUndoExact": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 14411.1279296875,
+        "nativeCommandMs": 14102.2001953125,
+        "nativeStorageTailMs": 14076.10009765625,
+        "beforeStorageMs": 26.10009765625,
+        "offeredKeys": 97,
+        "inputAllMs": {
+          "n": 97,
+          "p50": 3.09521484375,
+          "p95": 5.923095703125,
+          "max": 9.2490234375
+        },
+        "inputDuringStorageMs": {
+          "n": 94,
+          "p50": 3.098388671875,
+          "p95": 5.923095703125,
+          "max": 9.2490234375
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 98,
+        "undoSteps": 98,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "d0dfd33530531e77393421b2227021d9230588b81df610260d4071bced624739",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5117,
+              "characters": 5117
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      },
+      {
+        "device": "C",
+        "command": "verify",
+        "UICommandMs": 13949.66552734375,
+        "nativeCommandMs": 13801.89990234375,
+        "nativeStorageTailMs": 13785.60009765625,
+        "beforeStorageMs": 16.199951171875,
+        "offeredKeys": 94,
+        "inputAllMs": {
+          "n": 94,
+          "p50": 5.30224609375,
+          "p95": 7.500732421875,
+          "max": 13.300048828125
+        },
+        "inputDuringStorageMs": {
+          "n": 92,
+          "p50": 5.32763671875,
+          "p95": 7.500732421875,
+          "max": 13.300048828125
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 95,
+        "undoSteps": 95,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "0eaf07da2b4a2a8e3e2e247b7403808fb20275e7a0eddcfc82e71ff1646a9ce2",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5114,
+              "characters": 5114
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [
+      {
+        "device": "A",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      },
+      {
+        "device": "C",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      }
+    ],
+    "primary": true,
+    "zipObservation": [
+      {
+        "device": "A",
+        "nativeZIPs": 112,
+        "downloadEvents": 112
+      },
+      {
+        "device": "C",
+        "nativeZIPs": 132,
+        "downloadEvents": 132
+      }
+    ],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 50,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r2-d50",
+    "replicate": 2,
+    "fileFilter": "phase330/loadedBlob332.spec.ts",
+    "attempt": 1,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedBlob332.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793565916.753779,
+    "finishedAt": 1793566026.667896,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "bothOfflineColdAndUndoExact": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 14396.21044921875,
+        "nativeCommandMs": 14107.199951171875,
+        "nativeStorageTailMs": 14070.5,
+        "beforeStorageMs": 36.599853515625,
+        "offeredKeys": 97,
+        "inputAllMs": {
+          "n": 97,
+          "p50": 3.135009765625,
+          "p95": 6.45458984375,
+          "max": 9.0576171875
+        },
+        "inputDuringStorageMs": {
+          "n": 94,
+          "p50": 3.154541015625,
+          "p95": 6.45458984375,
+          "max": 9.0576171875
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 98,
+        "undoSteps": 98,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "d0dfd33530531e77393421b2227021d9230588b81df610260d4071bced624739",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5117,
+              "characters": 5117
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      },
+      {
+        "device": "C",
+        "command": "verify",
+        "UICommandMs": 13908.238037109375,
+        "nativeCommandMs": 13840.7998046875,
+        "nativeStorageTailMs": 13823.199951171875,
+        "beforeStorageMs": 17.599853515625,
+        "offeredKeys": 94,
+        "inputAllMs": {
+          "n": 94,
+          "p50": 4.869140625,
+          "p95": 6.838623046875,
+          "max": 9.046630859375
+        },
+        "inputDuringStorageMs": {
+          "n": 92,
+          "p50": 4.869140625,
+          "p95": 6.838623046875,
+          "max": 9.046630859375
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 95,
+        "undoSteps": 95,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "0eaf07da2b4a2a8e3e2e247b7403808fb20275e7a0eddcfc82e71ff1646a9ce2",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5114,
+              "characters": 5114
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [
+      {
+        "device": "A",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      },
+      {
+        "device": "C",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      }
+    ],
+    "primary": true,
+    "zipObservation": [
+      {
+        "device": "A",
+        "nativeZIPs": 113,
+        "downloadEvents": 113
+      },
+      {
+        "device": "C",
+        "nativeZIPs": 132,
+        "downloadEvents": 132
+      }
+    ],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r2-d0",
+    "replicate": 2,
+    "fileFilter": "phase330/loadedBlob332.spec.ts",
+    "attempt": 1,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedBlob332.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793566027.456924,
+    "finishedAt": 1793566105.860667,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "bothOfflineColdAndUndoExact": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 7860.735107421875,
+        "nativeCommandMs": 7470.099853515625,
+        "nativeStorageTailMs": 7443.2998046875,
+        "beforeStorageMs": 26.800048828125,
+        "offeredKeys": 53,
+        "inputAllMs": {
+          "n": 53,
+          "p50": 2.966796875,
+          "p95": 5.675048828125,
+          "max": 6.2724609375
+        },
+        "inputDuringStorageMs": {
+          "n": 50,
+          "p50": 2.9775390625,
+          "p95": 5.675048828125,
+          "max": 6.2724609375
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 54,
+        "undoSteps": 54,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "400a8b4282f9561198213e2a123710b06a8a6440aeb745280ec2e42680943325",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5073,
+              "characters": 5073
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      },
+      {
+        "device": "C",
+        "command": "verify",
+        "UICommandMs": 5837.106689453125,
+        "nativeCommandMs": 5709.300048828125,
+        "nativeStorageTailMs": 5683.300048828125,
+        "beforeStorageMs": 26.0,
+        "offeredKeys": 40,
+        "inputAllMs": {
+          "n": 40,
+          "p50": 3.21435546875,
+          "p95": 5.88427734375,
+          "max": 6.59375
+        },
+        "inputDuringStorageMs": {
+          "n": 38,
+          "p50": 3.21435546875,
+          "p95": 5.92822265625,
+          "max": 6.59375
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 41,
+        "undoSteps": 41,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "03deceee86d10dd0a30afca98ce4907c224993b92bd914775071b1b8c4d676bd",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5060,
+              "characters": 5060
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [
+      {
+        "device": "A",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      },
+      {
+        "device": "C",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      }
+    ],
+    "primary": true,
+    "zipObservation": [
+      {
+        "device": "A",
+        "nativeZIPs": 68,
+        "downloadEvents": 68
+      },
+      {
+        "device": "C",
+        "nativeZIPs": 71,
+        "downloadEvents": 71
+      }
+    ],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 50,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r3-d50",
+    "replicate": 3,
+    "fileFilter": "phase330/loadedBlob332.spec.ts",
+    "attempt": 1,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedBlob332.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793566106.646753,
+    "finishedAt": 1793566216.502285,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "bothOfflineColdAndUndoExact": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 14428.01708984375,
+        "nativeCommandMs": 13916.5,
+        "nativeStorageTailMs": 13889.2001953125,
+        "beforeStorageMs": 27.2998046875,
+        "offeredKeys": 97,
+        "inputAllMs": {
+          "n": 97,
+          "p50": 3.01904296875,
+          "p95": 5.987060546875,
+          "max": 6.7998046875
+        },
+        "inputDuringStorageMs": {
+          "n": 93,
+          "p50": 3.01904296875,
+          "p95": 5.987060546875,
+          "max": 6.7998046875
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 98,
+        "undoSteps": 98,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "d0dfd33530531e77393421b2227021d9230588b81df610260d4071bced624739",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5117,
+              "characters": 5117
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      },
+      {
+        "device": "C",
+        "command": "verify",
+        "UICommandMs": 14409.631591796875,
+        "nativeCommandMs": 13920.800048828125,
+        "nativeStorageTailMs": 13899.10009765625,
+        "beforeStorageMs": 21.699951171875,
+        "offeredKeys": 97,
+        "inputAllMs": {
+          "n": 97,
+          "p50": 4.625,
+          "p95": 8.294189453125,
+          "max": 18.654052734375
+        },
+        "inputDuringStorageMs": {
+          "n": 93,
+          "p50": 4.729736328125,
+          "p95": 8.294189453125,
+          "max": 18.654052734375
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 98,
+        "undoSteps": 98,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "f859acf7f3c1ef8b7aff3ffc13a54151351d69cd9da9397f0c1ddc6da7b95423",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5117,
+              "characters": 5117
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [
+      {
+        "device": "A",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      },
+      {
+        "device": "C",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      }
+    ],
+    "primary": true,
+    "zipObservation": [
+      {
+        "device": "A",
+        "nativeZIPs": 112,
+        "downloadEvents": 112
+      },
+      {
+        "device": "C",
+        "nativeZIPs": 134,
+        "downloadEvents": 134
+      }
+    ],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  },
+  {
+    "source": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+    "dist": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+    "fixture": "/private/tmp/done-checkpoint-matched-lab-20261101/private-fixture/fixture.json",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "stopFunctional": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "phase330/config.ts",
+    "result": "result.json",
+    "name": "loaded332-r3-d0",
+    "replicate": 3,
+    "fileFilter": "phase330/loadedBlob332.spec.ts",
+    "attempt": 1,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/phase330/config.ts",
+      "phase330/loadedBlob332.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793566217.2963579,
+    "finishedAt": 1793566296.4736588,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "bothOfflineColdAndUndoExact": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "operations": [
+      {
+        "device": "A",
+        "command": "create",
+        "UICommandMs": 7861.049072265625,
+        "nativeCommandMs": 7542.599853515625,
+        "nativeStorageTailMs": 7512.300048828125,
+        "beforeStorageMs": 30.2998046875,
+        "offeredKeys": 53,
+        "inputAllMs": {
+          "n": 53,
+          "p50": 2.95703125,
+          "p95": 5.597412109375,
+          "max": 6.923095703125
+        },
+        "inputDuringStorageMs": {
+          "n": 50,
+          "p50": 2.95703125,
+          "p95": 5.597412109375,
+          "max": 6.923095703125
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 54,
+        "undoSteps": 54,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "400a8b4282f9561198213e2a123710b06a8a6440aeb745280ec2e42680943325",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5073,
+              "characters": 5073
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      },
+      {
+        "device": "C",
+        "command": "verify",
+        "UICommandMs": 5848.63916015625,
+        "nativeCommandMs": 5628.400146484375,
+        "nativeStorageTailMs": 5608.2001953125,
+        "beforeStorageMs": 20.199951171875,
+        "offeredKeys": 40,
+        "inputAllMs": {
+          "n": 40,
+          "p50": 3.1005859375,
+          "p95": 5.8544921875,
+          "max": 12.036376953125
+        },
+        "inputDuringStorageMs": {
+          "n": 38,
+          "p50": 3.10302734375,
+          "p95": 6.0517578125,
+          "max": 12.036376953125
+        },
+        "trustedFocusedVisible": true,
+        "beforeInputEvents": 41,
+        "undoSteps": 41,
+        "undoFullArchiveRestored": true,
+        "peerSawProbe": true,
+        "allObservedUndoArchivesExact": true,
+        "wholeProbeArchive": {
+          "sha256": "03deceee86d10dd0a30afca98ce4907c224993b92bd914775071b1b8c4d676bd",
+          "files": [
+            {
+              "name": "master.md",
+              "bytes": 5060,
+              "characters": 5060
+            },
+            {
+              "name": "days/2026-11-01.md",
+              "bytes": 2465,
+              "characters": 2465
+            }
+          ]
+        }
+      }
+    ],
+    "cold": [
+      {
+        "device": "A",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      },
+      {
+        "device": "C",
+        "archiveExact": true,
+        "offlineEditUndoExact": true
+      }
+    ],
+    "primary": true,
+    "zipObservation": [
+      {
+        "device": "A",
+        "nativeZIPs": 68,
+        "downloadEvents": 68
+      },
+      {
+        "device": "C",
+        "nativeZIPs": 71,
+        "downloadEvents": 71
+      }
+    ],
+    "timingQualification": "Native storage/command wall intervals, not CPU samples. Input offered during native storage with conservative Page clock bounds; each event and every prior failed attempt retained. ZIP-data checks separate from natural download delivery."
+  }
+]

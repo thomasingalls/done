@@ -1,0 +1,3 @@
+# Observation correction before freezing332
+
+The initial network observer looked for catalog/checkpoint at the reply root; the real transport nests them under page. It still recorded actual raw response body byte counts and all request metadata; no observationError was emitted for missing optional fields. Preserve initial analysis and CSV with .observer-incomplete suffix. Correct postprocessing selects actual successful B latest requests and reports their observed body bytes; ciphertext/canonical checkpoint/admission sizes are independently read from the single immutable admitted preparation record. All6native installs verified its signed catalog/admission and exact writing/cold; no fixture or app source is changed, no cell rerun for this accounting repair.

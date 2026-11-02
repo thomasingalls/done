@@ -6841,3 +6841,7 @@ The new checkpoint lab incorrectly requires C's original frozen profile to be cu
 ### 2026-11-01 — Phase331: apply amended stop classification
 
 Preserve329/330asrecorded. New declared negative controls are expected to fail; unexpected pass stops. Harness preconditions may be repaired/rerun with all attempts retained. Functional app failure still stops; latency misses never stop. Resume only the fourdeclared329controls before the matched checkpoint retry; all pass functionally. No policy/default selected. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md).
+
+### 2026-11-01 — Phase332: matched service state and explicit observation boundaries
+
+Control and checkpoint preparations have identical A/Cnormal-sync steps, onlyCreate/Verifyadded; Busespreparedcontrolstate. Full accepted-row families independently checked, not onlypublisherrows. Keep harness8Undoerror (proved by offline45key remainder), download timeout and metadata-parser corrections. ObserveactualnativeZIPforper-keyarchivecheckswithoutchanging app URL/click/revoke, retainnaturaldownloadseparately and noqualificationclaim. Install n0/1notpassedinputgate. All crypto/authority/commit guards/defaults unchanged; no hardening/landing. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md).

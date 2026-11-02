@@ -1,0 +1,43 @@
+{
+  "states": {
+    "original": "/private/tmp/done-idle-read-ahead-lab-20261101/civil01-fixture-attempt2/seed/state",
+    "control": "/private/tmp/done-checkpoint-matched-lab-20261101/prepare332-control/state",
+    "checkpoint": "/private/tmp/done-checkpoint-matched-lab-20261101/prepare332-checkpoint/state"
+  },
+  "families": {
+    "original": {
+      "delivery_decisions": {
+        "acceptedRows": 1327,
+        "allColumnsSha256": "585cdb0b12d1815084682c24f457966cdb459967434885df4df28926b24765da"
+      },
+      "publisher_decisions": {
+        "acceptedRows": 7,
+        "allColumnsSha256": "347bc9bf0ef46a17ac2e68246314c67ac0002befe59e8438e242356f1a607da5"
+      }
+    },
+    "control": {
+      "delivery_decisions": {
+        "acceptedRows": 1327,
+        "allColumnsSha256": "585cdb0b12d1815084682c24f457966cdb459967434885df4df28926b24765da"
+      },
+      "publisher_decisions": {
+        "acceptedRows": 7,
+        "allColumnsSha256": "347bc9bf0ef46a17ac2e68246314c67ac0002befe59e8438e242356f1a607da5"
+      }
+    },
+    "checkpoint": {
+      "delivery_decisions": {
+        "acceptedRows": 1327,
+        "allColumnsSha256": "585cdb0b12d1815084682c24f457966cdb459967434885df4df28926b24765da"
+      },
+      "publisher_decisions": {
+        "acceptedRows": 7,
+        "allColumnsSha256": "347bc9bf0ef46a17ac2e68246314c67ac0002befe59e8438e242356f1a607da5"
+      }
+    }
+  },
+  "allAcceptedRowsByteIdentical": true,
+  "bothPreparationsAddedZero": true,
+  "totalAcceptedRows": 1334,
+  "qualification": "The in-spec acceptedRowsBefore/After fields count publisher_decisions only (7). This independent check also covers all1327 legacy delivery_decisions, including original A backlog, every column and exact submission/response bytes. No rows were changed."
+}
