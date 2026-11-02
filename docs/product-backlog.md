@@ -1174,3 +1174,5 @@ capacity remains. Include reader completion/journal/capacity in every grown/inde
 preparation bytes in Pcomparison. All originalgates/limits,3replicates/anyfailure rule,Vcomparison
 only,defaultoffwriter/serviceautomationoff remain; no hardening. See
 [phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).
+
+- 2026-10-31 phase312 checkpoint: P exploratory prototype/probes complete, no acceptance or landing. Continue with genuinely P-grown cohorts and the declared P/V, maintenance, R,3072,D and original/grown three-replicate screens. Reader capacity and all failed cells stay visible. Physical-browser same-page-cut/process-reopen, all compatibility/format/verification hardening and separate S/Y/G/R/D landing needs remain open; do not start hardening without operator decision. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase312/README.md).

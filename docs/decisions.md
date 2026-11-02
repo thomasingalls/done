@@ -6757,3 +6757,7 @@ checks and capacity cap. Continue Pwithout weakeningchecks; capacitydoesnotstop,
 failuredoes. The unused native labbundle retains308source links; retargetin a NEWProot before
 native/Ptests, never claim exposure from unused assets. No hardening or release authorization.
 See [phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).
+
+### 2026-10-31 — Phase312: keep P representation and cold evidence scoped
+
+P remains an isolated lab prototype with exact original wires and explicit admitted extent; no alias/registry or verification shortcut. Charge expanded logical work at quotas/audit/index bounds and keep physical witness units separate. The live partial-cut probe refetched after a safe tail invalidation; preserve that finding rather than count it as a same-page cut. A separate genuine checkpoint cut/native-v5 cold probe covers the admitted suffix using the test IndexedDB implementation. Neither establishes compatibility or production readiness. No hardening starts; proceed to P-grown fixtures and the declared screens, with the no-F cold stop intact.

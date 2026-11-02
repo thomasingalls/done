@@ -18417,3 +18417,7 @@ at33.543MBmap,28.213MBdurable; no reader completes in observed windows. Allorigi
 latency/overlap/backlog predicates pass, no qualification/oldrelative credit. Evidence/docs
 only; no hardening. See
 [phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).
+
+### 2026-10-31 — Phase312: P lab prototype and interior-cut/native cold evidence
+
+Built the isolated, default-off dense signed-page prototype, retaining full per-entry/fresh checks, full-prefix comparison Voff, logical limits/audits and physical witnesses. Final strict closure typecheck and56focused checks pass. Genuine authenticated interior-page handoff suffix persists over a v5 baseline and cold-opens exactly in the IndexedDB test implementation; native browser partial-cut/refetch plus fresh-owner reopen also pass, with their distinct scopes recorded. All nine unit attempts and four browser attempts retained; failures before cold include missing fixture/config closure, new-probe call/advancement errors, incorrect barrier assumptions and safe tail invalidation. No no-F cold failure. Evidence/docs only, no hardening or acceptance. Old-tab/rollback/conversion/handoff-version/final-schema and full physical interior-cut/process-reopen proof remain open. See [phase312](./performance-experiments/2026-10-29-worker-catchup/phase312/README.md). Completion recorded before queue advance.
