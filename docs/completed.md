@@ -18081,3 +18081,8 @@ Prepared and discovered1 metadata-only input diagnostic, armed after fictional u
 ## 2026-10-30 — phase255: native delivery crossover protocol
 
 Prepared/discovered1same-source native delivery crossover, deterministic paired plan and exact-input/archive/cold guards. No timing outcome yet; original25/38ms gate failures and physical-input limits retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).
+
+
+## 2026-10-30 — phase256: keyboard crossover result
+
+255crossover completes full native/archive/offline guards; all120inputp9531.828ms fails16. Playwright60keyp9519.503 versusCDP43.923, no API-fix signal. Exact resources absent; source248unchanged. Host quiet confirmed after this run. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).

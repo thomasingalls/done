@@ -853,3 +853,8 @@ Phase254: next bounded delivery-backend crossover to distinguish Playwright path
 ## 2026-10-30 — phase255: native delivery crossover protocol
 
 Phase255: measure delivery API versus other pre-event scheduling, then repair only clearly identified cause; all originalgates/source248/security intact. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).
+
+
+## 2026-10-30 — phase256: keyboard crossover result
+
+Phase256: stop delivery-API repair hypothesis. Verify/record production-flag mismatch and reported outside-load overlap, then correct Page/Worker baseline before further mechanism. All gates/failures unchanged; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).

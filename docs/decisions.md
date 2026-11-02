@@ -6437,3 +6437,8 @@ Do not alter application CPU yielding or coordination for observed pre-event inp
 ## 2026-10-30 — phase255: native delivery crossover protocol
 
 Use balanced native delivery crossover within one identical loaded journey,60Playwright/60CDP actualtrustedkeys, to isolate pre-event test delivery. Keep every original gate over all120keys and no diagnostic adoption credit; no product edit based on a fast handler alone. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).
+
+
+## 2026-10-30 — phase256: keyboard crossover result
+
+Do not adopt CDP delivery as a latency fix: balanced crossover fails16ms and CDPprecreationp95 is2.41xPlaywright, not>=50%faster. Keep backend-subset timing diagnostic only; reorient to verified production flags/quiet-host baseline from supplied brief. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).
