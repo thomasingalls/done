@@ -71,3 +71,12 @@ to a publisher whose wider response/evidence exceeds bounds; optional batching r
 All original native authority, commit/readback, witness and Window acknowledgement checks remain.
 Functional/native legacy checks pass; wider deep, contention and stale/rollback behavior remain
 unqualified. This is development activation only, with no aggregate release credit.
+
+## Fresh bounded preparation (phase289)
+
+prepareInboundRange may verify only the fitting prefix within a1–4position allowance, beginning
+at the independently supplied native prefix's offset in the original signed page. Every call
+reauthenticates originals and each selected entry; an unselected tail has no verification credit.
+The strict full-range API is unchanged. A size hint returning no result can select narrower work
+only; it grants no progress. Native commit and any raw-tail ownership/writer integration remain
+separate obligations. No proof is retained between calls.

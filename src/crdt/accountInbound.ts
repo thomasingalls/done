@@ -46,6 +46,7 @@ import {
   type InboundRecord,
 } from './inboundRecord';
 import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
+import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
 import { guardedSubtle } from './custodyCrypto';
 import { Y } from './yjs';
 
@@ -492,11 +493,28 @@ export const verifyInboundPage = (
 /** One bounded forward range. Header crypto is shared only within this call's owned snapshots;
  * each position, link, envelope, actor and lifetime still verifies before any result escapes.
  * No native progress or persisted trust is produced here. */
-export async function verifyInboundRange(
+export const verifyInboundRange = (
+  input: InboundContext,
+  request: Bytes,
+  page: Bytes,
+  lifetime: InboundLifetime,
+): Promise<readonly InboundResult[]> => verifyRange(input, request, page, lifetime);
+/** Native preparation only: verify a fitting prefix within this turn's position allowance.
+ * An unselected raw tail is not verified, trusted or handed to the next owner. Every continuation
+ * authenticates the original again against its independently supplied current native prefix. */
+export const prepareInboundRange = (
+  input: InboundContext,
+  request: Bytes,
+  page: Bytes,
+  lifetime: InboundLifetime,
+  positions = RECEIVE_GROUP_LIMIT,
+): Promise<readonly InboundResult[]> => verifyRange(input, request, page, lifetime, positions);
+async function verifyRange(
   input: InboundContext,
   requestInput: Bytes,
   pageInput: Bytes,
   lifetime: InboundLifetime,
+  positions?: number,
 ): Promise<readonly InboundResult[]> {
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     guard = () => {
@@ -519,7 +537,31 @@ export async function verifyInboundRange(
   try {
     const r = decodeInboundRequest(request),
       p = decodeInboundPage(page);
-    if (r.after !== context.prefix.position || context.retained) fail('prefix');
+    if (
+      positions !== undefined &&
+      (!Number.isSafeInteger(positions) || positions < 1 || positions > RECEIVE_GROUP_LIMIT)
+    )
+      fail('size');
+    const start = positions === undefined ? 0 : context.prefix.position - r.after;
+    if (
+      context.retained ||
+      !Number.isSafeInteger(start) ||
+      start < 0 ||
+      (positions === undefined && r.after !== context.prefix.position) ||
+      (positions !== undefined && (r.limit < 2 || start >= Math.max(1, p.entries.length)))
+    )
+      fail('prefix');
+    // Conservative size hint only: an indexed receipt repeats the original request/page as hex.
+    // The margin covers closed JSON fields. This grants no evidence or cursor progress; the fresh
+    // narrower read still needs the full verifier. Exact bounds remain enforced below/in the codec.
+    if (
+      positions !== undefined &&
+      2 * (request.length + page.length) + 1024 > INBOUND_RECORD_LIMIT
+    ) {
+      guard();
+      transferred = true;
+      return Object.freeze(results);
+    }
     // These bytes and authority were captured once above and never leave this call. Prefix and
     // lifetime checks still run for every entry, including after the two wire signatures reuse.
     const authenticate: typeof authenticateInboundWire = async (...args) => {
@@ -530,7 +572,8 @@ export async function verifyInboundRange(
         authenticated = true;
       } else assertInboundPagePrefix(args[0], args[1], args[2]);
     };
-    for (let index = 0; index < Math.max(1, p.entries.length); index++) {
+    for (let index = start; index < Math.max(1, p.entries.length); index++) {
+      if (positions !== undefined && results.length === positions) break;
       const result = await verify(
         context,
         request,
@@ -544,7 +587,14 @@ export async function verifyInboundRange(
       if (result.kind === 'received') {
         bytes += result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
         records += result.updates.length + 1;
-        if (bytes > MAX_BATCH_BYTES || records > MAX_BATCH_RECORDS) fail('size');
+        if (bytes > MAX_BATCH_BYTES || records > MAX_BATCH_RECORDS) {
+          if (positions === undefined) fail('size');
+          // Only a valid fitting prefix escapes. Erase this verified but unused result immediately.
+          results.pop();
+          result.record.fill(0);
+          for (const update of result.updates) update.fill(0);
+          break;
+        }
         context.prefix = {
           position: result.position,
           link: result.link,

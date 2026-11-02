@@ -2,7 +2,8 @@ import type { Bytes } from './custodyCrypto';
 import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import { AdmissionError, MAX_PENDING_BYTES } from './admissionQueue';
 
-export const RECEIVE_GROUP_LIMIT = 4;
+import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
+export { RECEIVE_GROUP_LIMIT } from './receiveLimits';
 export const RECEIVE_COLLECT_MS = 250;
 const invalid = (): never => {
   throw new AdmissionError('receive-refused', 'Invalid receive group');

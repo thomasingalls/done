@@ -1,11 +1,12 @@
 // @vitest-environment node
-import { expect, it } from 'vitest';
+import { afterEach, expect, it, vi } from 'vitest';
 import * as inbound from '../src/crdt/accountInbound';
 import type { Bytes } from '../src/crdt/custodyCrypto';
 import { decodeInboundRecord } from '../src/crdt/inboundRecord';
 import { Y } from '../src/crdt/yjs';
 import { A, entry, packet, sources, ZERO, type FixtureEntry } from './account-inbound/fixtures';
 import { context, hex, live, prior, reframe } from './account-inbound-codecs/oracle';
+afterEach(() => vi.restoreAllMocks());
 // Red checkpoint calls the existing full-range verifier if bounded preparation is absent.
 const prepare = (
   c: inbound.InboundContext,
@@ -76,7 +77,9 @@ it('continuation reauthenticates the same original against a fresh native prefix
   const x = fixture();
   let c = x.context;
   for (const e of x.entries.slice(0, 4)) c = forward(c, e);
+  const signatures = vi.spyOn(crypto.subtle, 'verify');
   const next = await prepare(c, x.request, x.page);
+  expect(signatures).toHaveBeenCalledTimes(10);
   expect(next.map((r) => r.position)).toEqual([5, 6, 7, 8]);
   for (const [i, result] of next.entries()) {
     if (result.kind !== 'received') throw Error();

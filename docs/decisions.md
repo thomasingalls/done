@@ -6602,3 +6602,8 @@ Retain the failed deep4 cell. Eight-entry download must preserve four-position n
 ### 2026-10-30 — Worker catch-up phase288
 
 Separate bounded range preparation from the strict full-range verifier. Original signed bytes may be downloaded once, but every consumed prefix is checked anew against the current native context; unused tail grants no trust. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase289
+
+Bounded preparation verifies at most the remaining four positions using a fresh native prefix on every call; strict full-range verification remains all-or-nothing. Keep the shared position limit in a pure module to avoid pulling admission ownership into crypto bundles. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).

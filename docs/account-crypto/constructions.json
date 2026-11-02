@@ -7504,6 +7504,10 @@
         {
           "path": "src/crdt/accountReceive.ts",
           "name": "openOwnedSyncingAccountWorkspace"
+        },
+        {
+          "path": "src/crdt/accountInbound.ts",
+          "name": "prepareInboundRange"
         }
       ],
       "homePins": [],
@@ -7512,7 +7516,8 @@
       "tests": [
         "test/multiEntryInbound.test.ts",
         "test/multiEntryInboundReaders.test.ts",
-        "test/multiEntryReceiveScheduling.test.ts"
+        "test/multiEntryReceiveScheduling.test.ts",
+        "test/boundedInboundPreparation.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",

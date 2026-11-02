@@ -1018,3 +1018,8 @@ Deep4 improves deadline progress but still fails30s. Next bounded8download/unver
 ### 2026-10-30 — Worker catch-up phase288
 
 Implement bounded preparation from phase288 before raw-tail/planner8. Preserve full-range all-or-nothing contract, four-position native turns and clean size fallback; all native/performance/rollback obligations stay open. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase289
+
+Phase289 closes bounded preparation. Next raw signed-original tail cache and8entry planner with fresh native checks/four-position turns; test clean Worker size fallback and actual8deep/fairness. Preserve all other held gates and rollback obligations. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).

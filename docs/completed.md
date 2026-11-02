@@ -18246,3 +18246,8 @@ Phase287: rebuilt default-budget deep4 failed30s at position747/zero native rece
 ### 2026-10-30 — Worker catch-up phase288
 
 Phase288:8new bounded-preparation regression cases,7expected failures/1pass against existing full-range behavior. Old strict range cases retained. No implementation or acceptance claim; type-only fixture corrections retained in raw attempts. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase289
+
+Phase289: eight bounded-preparation cases, three detected faults,89focused and2840full Vitest passes plus oneexisting skip; stronger signature-count assertion passes in focused rerun.119metadata/7contracts and affected final inventory checks pass. API remains unwired; no native8or acceptance claim. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).
