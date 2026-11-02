@@ -18076,3 +18076,8 @@ Prepared and discovered1 metadata-only input diagnostic, armed after fictional u
 ## 2026-10-30 — phase254: pre-event input-delay attribution
 
 253 native diagnostic retains local25.166ms failure; peer/markers/archive/offline-cold pass. Trusted creation→keydownp950.6ms, beforeinput→DOM0.7ms; offered→creation24.066ms. Eight slow keys, four driver-gap overlaps, no save overlap and metadatahandlermax0.135ms. No product edit; exact cleanup complete. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).
+
+
+## 2026-10-30 — phase255: native delivery crossover protocol
+
+Prepared/discovered1same-source native delivery crossover, deterministic paired plan and exact-input/archive/cold guards. No timing outcome yet; original25/38ms gate failures and physical-input limits retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).

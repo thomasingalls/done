@@ -6432,3 +6432,8 @@ Distinguish renderer queueing from driver/CDP delay using actual browser event c
 ## 2026-10-30 — phase254: pre-event input-delay attribution
 
 Do not alter application CPU yielding or coordination for observed pre-event input tails. Actual browser creation→handler0.6ms/EventTiming queue0.6ms and zero longtasks narrow this diagnostic to precreation delivery/host work; test delivery APIs within one balanced journey, keep original Node-offer→DOM16ms gate. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).
+
+
+## 2026-10-30 — phase255: native delivery crossover protocol
+
+Use balanced native delivery crossover within one identical loaded journey,60Playwright/60CDP actualtrustedkeys, to isolate pre-event test delivery. Keep every original gate over all120keys and no diagnostic adoption credit; no product edit based on a fast handler alone. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).

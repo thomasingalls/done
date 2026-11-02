@@ -848,3 +848,8 @@ Phase253: attribute pre-beforeinput stall before any product repair. Preserve38m
 ## 2026-10-30 — phase254: pre-event input-delay attribution
 
 Phase254: next bounded delivery-backend crossover to distinguish Playwright path from remaining CDP/host scheduling. Keep all16ms/2.5s gates and previous physical/UI/input/cold failures; no blind application repair or release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).
+
+
+## 2026-10-30 — phase255: native delivery crossover protocol
+
+Phase255: measure delivery API versus other pre-event scheduling, then repair only clearly identified cause; all originalgates/source248/security intact. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).
