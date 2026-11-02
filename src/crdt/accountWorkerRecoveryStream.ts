@@ -123,7 +123,10 @@ export async function readAccountRecoveryStream(
               !Number.isSafeInteger(h.gen) ||
               h.gen < 1 ||
               !Number.isSafeInteger(h.seq) ||
-              h.seq < 1 ||
+              h.seq < 0 ||
+              // Authenticated baseline recovery starts with a logical state at sequence zero.
+              // This does not change the positive sequence requirement for stored ciphertext.
+              (h.seq === 0 && (index !== 0 || h.recordKind !== 'state')) ||
               Object.keys(h).sort().join() !== 'gen,kind,recordKind,seq'
             )
               throw refuse();

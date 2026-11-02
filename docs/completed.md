@@ -18156,3 +18156,8 @@ Correctedtwo-case diagnostic finishes1pass/1fail. FirstactualWorkerCPU/sourcemap
 ## 2026-10-30 — phase270: baseline recovery red contract
 
 Captured exact red regression/sourcehash before repair:9cases,2expectedvalidbaselinefailures/7negativepasses. Formattedonlynewtestfile andheldbyteswithcheckpoint; repositoryparser/oldtestsunchanged. No repair acceptance yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).
+
+
+## 2026-10-30 — phase271: baseline recovery compatibility repair
+
+Implementednarrowrecoverycompatibility/new9cases.65focused/full2766unitpass(oneexisting skip),145metadataunits/sevencontracts/types/scopedlint/formatpass. Independentmetadata503sources/all1025oldrowsintact/newrequireduncreditedtestaddsblocked480. Oldtestsuntouched. Nativeafterwalkthroughstillpending, no fullfix/releaseclaim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).

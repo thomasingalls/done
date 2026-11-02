@@ -928,3 +928,8 @@ Phase269: next boundedregression/repair targets authenticatedbaseline state0 thr
 ## 2026-10-30 — phase270: baseline recovery red contract
 
 Phase270: implement narrowfirststatezero transportcompatibility, retain allnative/diskchecks, then focused/fullunits/sourcebookkeeping and unchanged realcoldcases. Repeatedbaselineperf, higherbudgetnormalcompare/fixture refresh and yielddecision remain pending; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).
+
+
+## 2026-10-30 — phase271: baseline recovery compatibility repair
+
+Phase271: narrowbaselineprojectionrepair passes affected/fullunit/bookkeepingchecks. Next exactcumulativecandidate at originalnativecold/deepgates withoutdiagnostics. Keepsecurity/freshchecks/oldfailures; repeatedbaselineperformance and budget/fixture/yield followups stillopen. No releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).

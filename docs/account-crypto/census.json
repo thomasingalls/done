@@ -897,7 +897,7 @@
     },
     {
       "path": "src/crdt/accountWorkerRecoveryStream.ts",
-      "sha256": "c656302eb69b2a043b5cd45fb4de87ba7f4d85347e518f5296a93f07220d2051"
+      "sha256": "2618103ca0a822bb1e348a46a6c1650ad4accede8f80729c7a7e49fecf1e3fc7"
     },
     {
       "path": "src/crdt/accountWorkerRuntime.ts",
