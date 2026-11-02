@@ -818,3 +818,8 @@ Phase247: implement due-send publisher-boundary yield, continuation/scope/backof
 ## 2026-10-30 — phase248: due-send publisher-check yield
 
 Phase248 implementation/regressions complete. Run fixed before/after normal/withheld two-receiver comparison, original16ms/2.5s every-marker/30s/600s/cold guards; keep proof reuse separate until results identify next clear repair. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).
+
+
+## 2026-10-30 — phase249: matched due-send comparison apparatus
+
+Phase249: run four fixed serial native before/after normal/withheld journeys; original2.5s gate unresolved. Continue clear attribution/repairs only after preserving outcomes. No release preparation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).

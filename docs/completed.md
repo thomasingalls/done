@@ -18046,3 +18046,8 @@ Demonstrated old scheduler misses due send between completed publisher checks: o
 ## 2026-10-30 — phase248: due-send publisher-check yield
 
 Implemented bounded due-send yielding in two runtime files;23 new/95 focused,2757 full unit cases pass with one existing skip;108 metadata/types/lint/format/seven contracts pass. Four deliberate faults detected and isolated sources restored. All1024 old manifest rows unchanged, new test required/uncredited. Timer/review/formatter construction mistakes retained. Browser comparison next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).
+
+
+## 2026-10-30 — phase249: matched due-send comparison apparatus
+
+Both248 comparison clients rebuilt,396map bodies each/125assets exact. Actual isolated service/config/HTML/shutdown and1test discovery pass. Missing metadata decoder alias caught in static review and restored before execution. Four-case apparatus/protocol frozen; no timed outcomes yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).

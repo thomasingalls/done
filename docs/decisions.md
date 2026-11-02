@@ -6402,3 +6402,8 @@ Use pass-scoped due-send predicate and explicit yielded receive result after ful
 ## 2026-10-30 — phase248: due-send publisher-check yield
 
 Yield only between complete verified empty publisher checks; hold native-context/count-scoped remaining sweep, use exact active-turn send eligibility and retain dirty/expedite hints across pause. Explicit yielded outcome claims no progress and preserves failure evidence. Keep batching/local flush/backoff and all authority/fence/commit checks. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).
+
+
+## 2026-10-30 — phase249: matched due-send comparison apparatus
+
+Freeze before/after normal and after/before withheld native Worker journeys, both builds exact and one fixed signed server. Preserve all absolute gates and native ownership/security, real epoch clocks and guarded civil fixture validity. One pair per mode is descriptive; no favorable reruns or stage instrumentation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).
