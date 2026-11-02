@@ -1,0 +1,55 @@
+{
+  "seed": 3062026,
+  "order": [
+    {
+      "run": 1,
+      "bits": "0000000",
+      "repeat": "plain-before"
+    },
+    {
+      "run": 2,
+      "bits": "0101011",
+      "designRow": 2
+    },
+    {
+      "run": 3,
+      "bits": "0000000",
+      "designRow": 0
+    },
+    {
+      "run": 4,
+      "bits": "1011010",
+      "designRow": 5
+    },
+    {
+      "run": 5,
+      "bits": "1100110",
+      "designRow": 6
+    },
+    {
+      "run": 6,
+      "bits": "1001101",
+      "designRow": 4
+    },
+    {
+      "run": 7,
+      "bits": "1110001",
+      "designRow": 7
+    },
+    {
+      "run": 8,
+      "bits": "0111100",
+      "designRow": 3
+    },
+    {
+      "run": 9,
+      "bits": "0010111",
+      "designRow": 1
+    },
+    {
+      "run": 10,
+      "bits": "0000000",
+      "repeat": "plain-after"
+    }
+  ]
+}

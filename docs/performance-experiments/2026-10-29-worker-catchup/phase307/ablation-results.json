@@ -1,0 +1,113 @@
+[
+  {
+    "remove": "C",
+    "bits": "0000111",
+    "directory": "ablate-C-0000111",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 386,
+      "nativeCommits": 130,
+      "windowMessages": 6464,
+      "windowCalls": 3232,
+      "ledgerPlaintextBytes": 1627534,
+      "ledgerCipherBytes": 1684934,
+      "externalPageBytes": 1529791,
+      "perPosition": {
+        "tokenUnits": 0.37658536585365854,
+        "nativeCommits": 0.12682926829268293,
+        "windowMessages": 6.306341463414634,
+        "windowCalls": 3.153170731707317,
+        "ledgerPlaintextBytes": 1587.8380487804877,
+        "ledgerCipherBytes": 1643.8380487804877,
+        "externalPageBytes": 1492.479024390244
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 6898,
+      "externalPages": 256
+    },
+    "receiveFailures": 0,
+    "completion1025Ms": 22688.60009765625
+  },
+  {
+    "remove": "F",
+    "bits": "0010101",
+    "directory": "ablate-F-0010101",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 314,
+      "nativeCommits": 130,
+      "windowMessages": 5304,
+      "windowCalls": 2652,
+      "ledgerPlaintextBytes": 13843947,
+      "ledgerCipherBytes": 13901347,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.30634146341463414,
+        "nativeCommits": 0.12682926829268293,
+        "windowMessages": 5.174634146341464,
+        "windowCalls": 2.587317073170732,
+        "ledgerPlaintextBytes": 13506.289756097562,
+        "ledgerCipherBytes": 13562.289756097562,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 6754,
+      "externalPages": 0
+    },
+    "receiveFailures": 0,
+    "completion1025Ms": 23481.300048828125
+  },
+  {
+    "remove": "G",
+    "bits": "0010110",
+    "directory": "ablate-G-0010110",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 320,
+      "nativeCommits": 258,
+      "windowMessages": 7920,
+      "windowCalls": 3960,
+      "ledgerPlaintextBytes": 1627523,
+      "ledgerCipherBytes": 1684923,
+      "externalPageBytes": 1529790,
+      "perPosition": {
+        "tokenUnits": 0.3121951219512195,
+        "nativeCommits": 0.25170731707317073,
+        "windowMessages": 7.726829268292683,
+        "windowCalls": 3.8634146341463413,
+        "ledgerPlaintextBytes": 1587.8273170731707,
+        "ledgerCipherBytes": 1643.8273170731707,
+        "externalPageBytes": 1492.4780487804878
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 6764,
+      "externalPages": 256
+    },
+    "receiveFailures": 0,
+    "completion1025Ms": 27199.89990234375
+  }
+]

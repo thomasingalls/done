@@ -1108,3 +1108,13 @@ Next default-off range writer, realv5livepublish and approved isolated7factor ra
 ### 2026-10-30 — Worker catch-up phase306
 
 Begin fictional-only range4Worker CPU profile and seven-toggle8run+2plain lab screen, then contributor ablations and one frozen original-gate stack. Measure realv5publication; v3lab result is not established production cost. Writer stays default off; full-red attempt and marker/fairness/deep/compatibility blocks remain. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase307
+
+Lab screen/ablations/original-gate challenge complete with failures retained. Next isolate
+withheld-hint scheduling (16.609/18.967speerp95) with C/E/GwithoutunsafeF, then native8fairness
+and verification hardening separately. Byte-comparison/storage work is the stronger profile lead.
+Keep range writer default off, all gates, full-unit red history and v2stale-tab/rollback holds;
+no normalPage/Workercomparison or release work. See
+[phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).

@@ -1,0 +1,113 @@
+{
+  "outcome": "passed",
+  "guards": {
+    "realV5BeforeAndAfter": true,
+    "oneFreshSourceAccepted": true,
+    "unchangedShippingReaderExact": true
+  },
+  "noInstallLocalBaseline": true,
+  "initialCounter": {
+    "version": 2,
+    "revision": 0
+  },
+  "reduction": [
+    {
+      "kind": "preparation-saved",
+      "newEntries": 4488
+    },
+    {
+      "kind": "preparation-saved",
+      "newEntries": 2334
+    },
+    {
+      "kind": "preparation-saved",
+      "newEntries": 6574
+    },
+    {
+      "kind": "preparation-saved",
+      "newEntries": 872
+    },
+    {
+      "kind": "preparation-saved",
+      "newEntries": 1107
+    },
+    {
+      "kind": "preparation-saved",
+      "newEntries": 632
+    },
+    {
+      "kind": "skipped",
+      "reason": "activity-or-journal"
+    },
+    {
+      "kind": "skipped",
+      "reason": "activity-or-journal"
+    },
+    {
+      "kind": "skipped",
+      "reason": "activity-or-journal"
+    },
+    {
+      "kind": "skipped",
+      "reason": "activity-or-journal"
+    },
+    {
+      "kind": "skipped",
+      "reason": "activity-or-journal"
+    },
+    {
+      "kind": "removed",
+      "revision": 1,
+      "removed": 7275
+    }
+  ],
+  "hint": {
+    "revision": 0,
+    "records": 7275
+  },
+  "beforePublish": {
+    "version": 5,
+    "revision": 1
+  },
+  "live": {
+    "deadlineMs": 30000,
+    "observerInclusive": true,
+    "handlerReturnedMs": 15.984959000001254,
+    "admittedMs": 20.70100000000093,
+    "flushedMs": 36.05025000000023,
+    "acceptedMs": 648.1039999999994,
+    "acceptance": {
+      "acceptedThrough": 1030,
+      "freshCaptures": 1,
+      "sourceCount": 1
+    },
+    "statusPolls": 9
+  },
+  "afterPublish": {
+    "version": 5,
+    "revision": 1
+  },
+  "trace": {
+    "incomingKeyZero": true,
+    "passkeyStarted": true,
+    "passkeyCalls": 1,
+    "busy": false,
+    "committed": false,
+    "closed": true
+  },
+  "shippingArchive": {
+    "sha256": "ea4a93e0d1c63dd00fcfe1b6c77b5c431a2baafeeafff4765968c821c4a81a21",
+    "files": [
+      {
+        "name": "master.md",
+        "bytes": 5042,
+        "characters": 5042
+      },
+      {
+        "name": "days/2026-10-27.md",
+        "bytes": 2465,
+        "characters": 2465
+      }
+    ]
+  }
+}

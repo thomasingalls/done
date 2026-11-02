@@ -6692,3 +6692,14 @@ Keep every frozen result; durable pending writing is distinct from performance a
 ### 2026-10-30 — Worker catch-up phase306
 
 New range writer requires exact explicit build opt-in, default off, with native admission refusal and retained v2readers. Correct v3publication interpretation to lab state absent a shipped caller; measure actual v5next. Separate approved exploratory lab builds never land. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase307
+
+Keep the operator-approved fast lab exploration separate from landing hardening. Retain all
+10screen rows,3ablations, profiling and invalid apparatus cells; no aliased causal effects or
+acceptance credit. Unsafe page-once references fail cold by design and never land. The no-F
+stack clears one deep30scell; first isolate missing-hint scheduling/2.5smisses before proposing
+adoption. Realv5publication, not explicitv3installation, is the relevant publish observation.
+Default-off writer, security boundaries, all gates and stale-tab/rollback holds stay. See
+[phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).

@@ -18336,3 +18336,16 @@ Phase305: genuine10device fairness functional/durability/Undo/isolation/cold che
 ### 2026-10-30 — Worker catch-up phase306
 
 Phase306: default-off guard,4new cases/66affected units/2detected faults/11native cases/98metadata/7contracts/types/lint/format pass. Full run2853pass/2storage-compatibility failures/oneexisting skip retained; unchanged7cases pass alone afterward. No full-suite acceptance claim. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase307
+
+Phase307: approved fictional-only lab lane complete, 10screen runs/3ablations/oneactualWorker CPU
+profile/realv5publication and frozen original-gate challenge, with every failed/invalid attempt
+retained. Best deep18.561s, no-unsafe-format ablation23.481s; winning stack fails cold and
+withheld2.5sgates, fairnessinput16.100ms misses16. Actualv5publish648.104ms observer-inclusive;
+22.378sv3is artificiallab state. No lab code/build lands or qualification credit; see
+[phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).
+
+Phase307 closeout checks:266raw copies/original hashes, all frozen apparatus,10design rows and
+3ablations independently agree; seven repository contracts and diff whitespace checks pass.
