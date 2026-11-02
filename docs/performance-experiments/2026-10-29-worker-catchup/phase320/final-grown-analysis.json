@@ -1,0 +1,4785 @@
+[
+  {
+    "name": "final-grown-r1-normal",
+    "config": "grown-maintenance.config.ts",
+    "cell": "grown-normal",
+    "mode": "maintenance",
+    "grown": true,
+    "replicate": 1,
+    "withhold": false,
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "variant": "P-screen",
+    "timeoutMs": 900000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "oneFailFailsCell": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793466127.177896,
+    "finishedAt": 1793466299.476657,
+    "rawResults": [
+      {
+        "path": "result.json",
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "actualPreparationAndBacklogAtTypingStart": true,
+          "fullOriginalArchivePlusOnlyOfferedAppend": true,
+          "undoAndPeerConvergence": true,
+          "maintenanceFinishesAfterInput": true,
+          "bothOfflineColdProfilesExact": true,
+          "noColdStorageReinjection": true
+        },
+        "coldFailure": false
+      }
+    ],
+    "coldFailure": false,
+    "coldReasons": [],
+    "coldStages": [],
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 7,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19937760,
+        "durableBytes": 19755347,
+        "durablePeakBytes": 19755347,
+        "durableDeltas": 4,
+        "durableChunks": 77,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 65860.66137695312,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466239467,
+            "notBefore": 1793466257380,
+            "attempt": 3,
+            "at": 1793466247379.9
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466239467,
+            "notBefore": 1793466277782,
+            "attempt": 6,
+            "at": 1793466267781.5
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            }
+          },
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 708,
+              "bytes": 4985315
+            },
+            "coverage": {
+              "entries": 707,
+              "bytes": 97566
+            }
+          },
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 708,
+              "bytes": 4985315
+            },
+            "coverage": {
+              "entries": 707,
+              "bytes": 97566
+            }
+          },
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1408,
+              "bytes": 9820675
+            },
+            "coverage": {
+              "entries": 1407,
+              "bytes": 194166
+            }
+          },
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2143,
+              "bytes": 14866012
+            },
+            "coverage": {
+              "entries": 2142,
+              "bytes": 295596
+            }
+          },
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2143,
+              "bytes": 14866012
+            },
+            "coverage": {
+              "entries": 2142,
+              "bytes": 295596
+            }
+          },
+          {
+            "opened": {
+              "entries": 2860,
+              "bytes": 4420858
+            },
+            "witness": {
+              "entries": 648,
+              "bytes": 106162
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2178,
+              "bytes": 15108540
+            },
+            "coverage": {
+              "entries": 2179,
+              "bytes": 300702
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4749,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466246164.1
+                },
+                "arrivingJob": {
+                  "id": 4751,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466247366.6
+                },
+                "at": 1793466247372.9
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4796,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466266655.4
+                },
+                "arrivingJob": {
+                  "id": 4798,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466267768.7
+                },
+                "at": 1793466267774.4
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466239467,
+            "notBefore": 1793466257380,
+            "endedAt": 1793466247379.9,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 10011.2001953125,
+            "actualClockToNextStartMs": 10011.2001953125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466239467,
+            "notBefore": 1793466277782,
+            "endedAt": 1793466267781.5,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 10003.800048828125,
+            "actualClockToNextStartMs": 10003.800048828125,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 10,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19302619,
+        "durableBytes": 18053253,
+        "durablePeakBytes": 18053253,
+        "durableDeltas": 4,
+        "durableChunks": 71,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 76707.56127929688,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466167502,
+            "notBefore": 1793466167828,
+            "attempt": 2,
+            "at": 1793466157827.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466238036,
+            "notBefore": 1793466238345,
+            "attempt": 3,
+            "at": 1793466228344.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466239626,
+            "notBefore": 1793466255871,
+            "attempt": 5,
+            "at": 1793466245871.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466239626,
+            "notBefore": 1793466271787,
+            "attempt": 7,
+            "at": 1793466261786.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466239626,
+            "notBefore": 1793466288423,
+            "attempt": 9,
+            "at": 1793466278422.3
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 144,
+              "bytes": 993510
+            },
+            "coverage": {
+              "entries": 144,
+              "bytes": 19872
+            }
+          },
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 333,
+              "bytes": 2319156
+            },
+            "coverage": {
+              "entries": 333,
+              "bytes": 45954
+            }
+          },
+          {
+            "opened": {
+              "entries": 3418,
+              "bytes": 4244407
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 144,
+              "bytes": 993510
+            },
+            "coverage": {
+              "entries": 144,
+              "bytes": 19872
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 311,
+              "bytes": 2164848
+            },
+            "coverage": {
+              "entries": 311,
+              "bytes": 42918
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 995,
+              "bytes": 6962631
+            },
+            "coverage": {
+              "entries": 995,
+              "bytes": 137310
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 1089,
+              "bytes": 7622590
+            },
+            "coverage": {
+              "entries": 1088,
+              "bytes": 150144
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 1089,
+              "bytes": 7622590
+            },
+            "coverage": {
+              "entries": 1088,
+              "bytes": 150144
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 1867,
+              "bytes": 13093049
+            },
+            "coverage": {
+              "entries": 1867,
+              "bytes": 257646
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 1867,
+              "bytes": 13093049
+            },
+            "coverage": {
+              "entries": 1867,
+              "bytes": 257646
+            }
+          },
+          {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4253286
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466155655.9001
+                },
+                "arrivingJob": {
+                  "id": 85,
+                  "name": "accountReceive.ts:2809:deliveryStatus",
+                  "at": 1793466157815.9001
+                },
+                "at": 1793466157821.4001
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1292,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466227033.2
+                },
+                "arrivingJob": {
+                  "id": 1294,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466228333.3
+                },
+                "at": 1793466228339.4001
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1327,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466242458
+                },
+                "arrivingJob": {
+                  "id": 1329,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466245856.6
+                },
+                "at": 1793466245863.4001
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1368,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466259964.8
+                },
+                "arrivingJob": {
+                  "id": 1370,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466261772.2
+                },
+                "at": 1793466261778.2
+              }
+            ]
+          },
+          {
+            "attempt": 9,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1409,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466276365.9001
+                },
+                "arrivingJob": {
+                  "id": 1411,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466278406.2
+                },
+                "at": 1793466278412.7
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466167502,
+            "notBefore": 1793466167828,
+            "endedAt": 1793466157827.8,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 69202.80004882812,
+            "actualClockToNextStartMs": 69202.80004882812,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466238036,
+            "notBefore": 1793466238345,
+            "endedAt": 1793466228344.7,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 11290.800048828125,
+            "actualClockToNextStartMs": 11290.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466239626,
+            "notBefore": 1793466255871,
+            "endedAt": 1793466245871.2,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 10006.2001953125,
+            "actualClockToNextStartMs": 10006.2001953125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466239626,
+            "notBefore": 1793466271787,
+            "endedAt": 1793466261786.6,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 10001.699951171875,
+            "actualClockToNextStartMs": 10001.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 9,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466239626,
+            "notBefore": 1793466288423,
+            "endedAt": 1793466278422.3,
+            "nextAttempt": 10,
+            "actualEndToNextStartMs": 10035.800048828125,
+            "actualClockToNextStartMs": 10035.800048828125,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 865.295166015625,
+    "peerWorstMarkerMs": 771.487060546875,
+    "inputP95Ms": 4.862060546875,
+    "inputWorstMarkerMs": 9.572021484375,
+    "overlapKeys": 120,
+    "backlogMs": 84534.40112304688,
+    "finalNewDeliveryMs": 867.95068359375,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 31.15201076115236,
+    "hostBusyMax": 43.013972055888225
+  },
+  {
+    "name": "final-grown-r1-withheld",
+    "config": "grown-maintenance.config.ts",
+    "cell": "grown-withheld",
+    "mode": "maintenance",
+    "grown": true,
+    "replicate": 1,
+    "withhold": true,
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "variant": "P-screen",
+    "timeoutMs": 900000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "oneFailFailsCell": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793466300.213963,
+    "finishedAt": 1793466480.165109,
+    "rawResults": [
+      {
+        "path": "result.json",
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "actualPreparationAndBacklogAtTypingStart": true,
+          "fullOriginalArchivePlusOnlyOfferedAppend": true,
+          "undoAndPeerConvergence": true,
+          "maintenanceFinishesAfterInput": true,
+          "bothOfflineColdProfilesExact": true,
+          "noColdStorageReinjection": true
+        },
+        "coldFailure": false
+      }
+    ],
+    "coldFailure": false,
+    "coldReasons": [],
+    "coldStages": [],
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 7,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19862738,
+        "durableBytes": 14845612,
+        "durablePeakBytes": 14845612,
+        "durableDeltas": 3,
+        "durableChunks": 58,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": null,
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466412673,
+            "notBefore": 1793466424135,
+            "attempt": 1,
+            "at": 1793466414135.0999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466412673,
+            "notBefore": 1793466435490,
+            "attempt": 2,
+            "at": 1793466425489.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466412673,
+            "notBefore": 1793466462325,
+            "attempt": 6,
+            "at": 1793466452324.5999
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2688,
+              "bytes": 3386295
+            }
+          },
+          {
+            "opened": {
+              "entries": 2684,
+              "bytes": 3362785
+            }
+          },
+          {
+            "opened": {
+              "entries": 2851,
+              "bytes": 4364403
+            }
+          },
+          {
+            "opened": {
+              "entries": 2851,
+              "bytes": 4364403
+            },
+            "witness": {
+              "entries": 639,
+              "bytes": 104686
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 695,
+              "bytes": 4903365
+            },
+            "coverage": {
+              "entries": 694,
+              "bytes": 95772
+            }
+          },
+          {
+            "opened": {
+              "entries": 2851,
+              "bytes": 4364403
+            },
+            "witness": {
+              "entries": 639,
+              "bytes": 104686
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1448,
+              "bytes": 10121943
+            },
+            "coverage": {
+              "entries": 1448,
+              "bytes": 199824
+            }
+          },
+          {
+            "opened": {
+              "entries": 2851,
+              "bytes": 4364403
+            },
+            "witness": {
+              "entries": 639,
+              "bytes": 104686
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 15091311
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3653,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466413121
+                },
+                "arrivingJob": {
+                  "id": 3655,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793466414123.2998
+                },
+                "at": 1793466414130
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3894,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466424474.9
+                },
+                "arrivingJob": {
+                  "id": 3896,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793466425478.2998
+                },
+                "at": 1793466425484.9
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4094,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466446289.5999
+                },
+                "arrivingJob": {
+                  "id": 4096,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466452305.9
+                },
+                "at": 1793466452312.5999
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466412673,
+            "notBefore": 1793466424135,
+            "endedAt": 1793466414135.0999,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 10337.300048828125,
+            "actualClockToNextStartMs": 10337.300048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466412673,
+            "notBefore": 1793466435490,
+            "endedAt": 1793466425489.5999,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 10009.400146484375,
+            "actualClockToNextStartMs": 10009.400146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466412673,
+            "notBefore": 1793466462325,
+            "endedAt": 1793466452324.5999,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 10006.0,
+            "actualClockToNextStartMs": 10006.0,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 9,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19306590,
+        "durableBytes": 17534517,
+        "durablePeakBytes": 17534517,
+        "durableDeltas": 4,
+        "durableChunks": 69,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 74980.45092773438,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466340657,
+            "notBefore": 1793466340958,
+            "attempt": 2,
+            "at": 1793466330958.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466412825,
+            "notBefore": 1793466425977,
+            "attempt": 4,
+            "at": 1793466415977.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466412825,
+            "notBefore": 1793466442555,
+            "attempt": 6,
+            "at": 1793466432555.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793466412825,
+            "notBefore": 1793466459684,
+            "attempt": 8,
+            "at": 1793466449684.0999
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 159,
+              "bytes": 1098720
+            },
+            "coverage": {
+              "entries": 158,
+              "bytes": 21804
+            }
+          },
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 361,
+              "bytes": 2515548
+            },
+            "coverage": {
+              "entries": 361,
+              "bytes": 49818
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 284,
+              "bytes": 1975470
+            },
+            "coverage": {
+              "entries": 284,
+              "bytes": 39192
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 284,
+              "bytes": 1975470
+            },
+            "coverage": {
+              "entries": 284,
+              "bytes": 39192
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1060,
+              "bytes": 7419155
+            },
+            "coverage": {
+              "entries": 1060,
+              "bytes": 146280
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1260,
+              "bytes": 8824018
+            },
+            "coverage": {
+              "entries": 1260,
+              "bytes": 173880
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1794,
+              "bytes": 12579640
+            },
+            "coverage": {
+              "entries": 1793,
+              "bytes": 247434
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1887,
+              "bytes": 13233709
+            },
+            "coverage": {
+              "entries": 1887,
+              "bytes": 260406
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4255310
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 144951
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466328761
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466330951.3
+                },
+                "at": 1793466330953
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1329,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466415625.8
+                },
+                "arrivingJob": {
+                  "id": 1331,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466415965.8
+                },
+                "at": 1793466415972.3
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1370,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466430180.7
+                },
+                "arrivingJob": {
+                  "id": 1372,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466432540.8
+                },
+                "at": 1793466432547.3
+              }
+            ]
+          },
+          {
+            "attempt": 8,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1411,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793466447173.9
+                },
+                "arrivingJob": {
+                  "id": 1413,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793466449667.4
+                },
+                "at": 1793466449674.0999
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466340657,
+            "notBefore": 1793466340958,
+            "endedAt": 1793466330958.2,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 81874.89990234375,
+            "actualClockToNextStartMs": 81874.89990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466412825,
+            "notBefore": 1793466425977,
+            "endedAt": 1793466415977.3,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 10006.89990234375,
+            "actualClockToNextStartMs": 10006.89990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466412825,
+            "notBefore": 1793466442555,
+            "endedAt": 1793466432555.3,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 10007.699951171875,
+            "actualClockToNextStartMs": 10007.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793466412825,
+            "notBefore": 1793466459684,
+            "endedAt": 1793466449684.0999,
+            "nextAttempt": 9,
+            "actualEndToNextStartMs": 10005.10009765625,
+            "actualClockToNextStartMs": 10005.10009765625,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 1832.151123046875,
+    "peerWorstMarkerMs": 1632.952392578125,
+    "inputP95Ms": 4.025146484375,
+    "inputWorstMarkerMs": 3.052001953125,
+    "overlapKeys": 86,
+    "backlogMs": 57191.591796875,
+    "finalNewDeliveryMs": 1883.564208984375,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 29.175726428147854,
+    "hostBusyMax": 45.52621206148995
+  },
+  {
+    "name": "final-grown-r2-withheld",
+    "config": "grown-maintenance.config.ts",
+    "cell": "grown-withheld",
+    "mode": "maintenance",
+    "grown": true,
+    "replicate": 2,
+    "withhold": true,
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "variant": "P-screen",
+    "timeoutMs": 900000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "oneFailFailsCell": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793467569.059175,
+    "finishedAt": 1793467736.778751,
+    "rawResults": [
+      {
+        "path": "result.json",
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "actualPreparationAndBacklogAtTypingStart": true,
+          "fullOriginalArchivePlusOnlyOfferedAppend": true,
+          "undoAndPeerConvergence": true,
+          "maintenanceFinishesAfterInput": true,
+          "bothOfflineColdProfilesExact": true,
+          "noColdStorageReinjection": true
+        },
+        "coldFailure": false
+      }
+    ],
+    "coldFailure": false,
+    "coldReasons": [],
+    "coldStages": [],
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 7,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19566155,
+        "durableBytes": 19630900,
+        "durablePeakBytes": 19630900,
+        "durableDeltas": 4,
+        "durableChunks": 77,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467682200,
+            "notBefore": 1793467692240,
+            "attempt": 1,
+            "at": 1793467682239.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467682200,
+            "notBefore": 1793467703663,
+            "attempt": 2,
+            "at": 1793467693662.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467682200,
+            "notBefore": 1793467731123,
+            "attempt": 7,
+            "at": 1793467721122.5999
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2600,
+              "bytes": 2819230
+            }
+          },
+          {
+            "opened": {
+              "entries": 2850,
+              "bytes": 4359472
+            },
+            "witness": {
+              "entries": 638,
+              "bytes": 104522
+            }
+          },
+          {
+            "opened": {
+              "entries": 2850,
+              "bytes": 4359472
+            },
+            "witness": {
+              "entries": 638,
+              "bytes": 104522
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 690,
+              "bytes": 4864624
+            },
+            "coverage": {
+              "entries": 690,
+              "bytes": 95220
+            }
+          },
+          {
+            "opened": {
+              "entries": 2850,
+              "bytes": 4359472
+            },
+            "witness": {
+              "entries": 638,
+              "bytes": 104522
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1410,
+              "bytes": 9858826
+            },
+            "coverage": {
+              "entries": 1409,
+              "bytes": 194442
+            }
+          },
+          {
+            "opened": {
+              "entries": 2850,
+              "bytes": 4359472
+            },
+            "witness": {
+              "entries": 638,
+              "bytes": 104522
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2125,
+              "bytes": 14807551
+            },
+            "coverage": {
+              "entries": 2124,
+              "bytes": 293112
+            }
+          },
+          {
+            "opened": {
+              "entries": 2850,
+              "bytes": 4359472
+            },
+            "witness": {
+              "entries": 638,
+              "bytes": 104522
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2125,
+              "bytes": 14807551
+            },
+            "coverage": {
+              "entries": 2124,
+              "bytes": 293112
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3595,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467682227.5
+                },
+                "arrivingJob": {
+                  "id": 3597,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793467682239
+                },
+                "at": 1793467682239.3
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3836,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467692646.9
+                },
+                "arrivingJob": {
+                  "id": 3838,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793467693650.7
+                },
+                "at": 1793467693656.3
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4071,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467719423.4
+                },
+                "arrivingJob": {
+                  "id": 4073,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467721109
+                },
+                "at": 1793467721113.9
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467682200,
+            "notBefore": 1793467692240,
+            "endedAt": 1793467682239.5999,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 10405.2001953125,
+            "actualClockToNextStartMs": 10405.2001953125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467682200,
+            "notBefore": 1793467703663,
+            "endedAt": 1793467693662.7,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 10007.60009765625,
+            "actualClockToNextStartMs": 10007.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467682200,
+            "notBefore": 1793467731123,
+            "endedAt": 1793467721122.5999,
+            "nextAttempt": null,
+            "actualEndToNextStartMs": null,
+            "actualClockToNextStartMs": null,
+            "censoredNoNextStart": true
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 8,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19308574,
+        "durableBytes": 17581381,
+        "durablePeakBytes": 17581381,
+        "durableDeltas": 4,
+        "durableChunks": 70,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 63308.4052734375,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467610093,
+            "notBefore": 1793467610401,
+            "attempt": 2,
+            "at": 1793467600401
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467682346,
+            "notBefore": 1793467699520,
+            "attempt": 5,
+            "at": 1793467689520.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467682346,
+            "notBefore": 1793467717545,
+            "attempt": 7,
+            "at": 1793467707544.6
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 170,
+              "bytes": 1175874
+            },
+            "coverage": {
+              "entries": 169,
+              "bytes": 23322
+            }
+          },
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 351,
+              "bytes": 2445408
+            },
+            "coverage": {
+              "entries": 351,
+              "bytes": 48438
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 252,
+              "bytes": 1751022
+            },
+            "coverage": {
+              "entries": 251,
+              "bytes": 34638
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1027,
+              "bytes": 7187633
+            },
+            "coverage": {
+              "entries": 1026,
+              "bytes": 141588
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1800,
+              "bytes": 12621838
+            },
+            "coverage": {
+              "entries": 1800,
+              "bytes": 248400
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467598265.1
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467600391.4
+                },
+                "at": 1793467600396
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1335,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467689237.3
+                },
+                "arrivingJob": {
+                  "id": 1337,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467689516
+                },
+                "at": 1793467689516.1
+              },
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1335,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467689237.3
+                },
+                "arrivingJob": {
+                  "id": 1337,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467689516
+                },
+                "at": 1793467689516.8
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1376,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467704131.9
+                },
+                "arrivingJob": {
+                  "id": 1378,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467707525.7
+                },
+                "at": 1793467707532.3
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467610093,
+            "notBefore": 1793467610401,
+            "endedAt": 1793467600401,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 81953,
+            "actualClockToNextStartMs": 81953,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467682346,
+            "notBefore": 1793467699520,
+            "endedAt": 1793467689520.2,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 9999.900146484375,
+            "actualClockToNextStartMs": 9999.900146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467682346,
+            "notBefore": 1793467717545,
+            "endedAt": 1793467707544.6,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 10010.699951171875,
+            "actualClockToNextStartMs": 10010.699951171875,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 1754.999267578125,
+    "peerWorstMarkerMs": 1387.970947265625,
+    "inputP95Ms": 3.88818359375,
+    "inputWorstMarkerMs": 3.10888671875,
+    "overlapKeys": 85,
+    "backlogMs": 56624.60302734375,
+    "finalNewDeliveryMs": 1888.29541015625,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 28.148000795703197,
+    "hostBusyMax": 41.54550886277634
+  },
+  {
+    "name": "final-grown-r2-normal",
+    "config": "grown-maintenance.config.ts",
+    "cell": "grown-normal",
+    "mode": "maintenance",
+    "grown": true,
+    "replicate": 2,
+    "withhold": false,
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "variant": "P-screen",
+    "timeoutMs": 900000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "oneFailFailsCell": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793467737.4959612,
+    "finishedAt": 1793467908.692662,
+    "rawResults": [
+      {
+        "path": "result.json",
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "actualPreparationAndBacklogAtTypingStart": true,
+          "fullOriginalArchivePlusOnlyOfferedAppend": true,
+          "undoAndPeerConvergence": true,
+          "maintenanceFinishesAfterInput": true,
+          "bothOfflineColdProfilesExact": true,
+          "noColdStorageReinjection": true
+        },
+        "coldFailure": false
+      }
+    ],
+    "coldFailure": false,
+    "coldReasons": [],
+    "coldStages": [],
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 7,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19203756,
+        "durableBytes": 19267821,
+        "durablePeakBytes": 19267821,
+        "durableDeltas": 4,
+        "durableChunks": 75,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467850197,
+            "notBefore": 1793467869017,
+            "attempt": 3,
+            "at": 1793467859016.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467850197,
+            "notBefore": 1793467885748,
+            "attempt": 5,
+            "at": 1793467875747.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467850197,
+            "notBefore": 1793467902053,
+            "attempt": 7,
+            "at": 1793467892052.7
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 683,
+              "bytes": 4811810
+            },
+            "coverage": {
+              "entries": 682,
+              "bytes": 94116
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 771,
+              "bytes": 5419839
+            },
+            "coverage": {
+              "entries": 771,
+              "bytes": 106398
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1368,
+              "bytes": 9539247
+            },
+            "coverage": {
+              "entries": 1367,
+              "bytes": 188646
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1368,
+              "bytes": 9539247
+            },
+            "coverage": {
+              "entries": 1367,
+              "bytes": 188646
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2074,
+              "bytes": 14384121
+            },
+            "coverage": {
+              "entries": 2073,
+              "bytes": 286074
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2074,
+              "bytes": 14384121
+            },
+            "coverage": {
+              "entries": 2073,
+              "bytes": 286074
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4791,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467856959.5
+                },
+                "arrivingJob": {
+                  "id": 4793,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467859004
+                },
+                "at": 1793467859010.1
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4832,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467873653.8
+                },
+                "arrivingJob": {
+                  "id": 4834,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467875732.7
+                },
+                "at": 1793467875739.5
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4873,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467890733.3
+                },
+                "arrivingJob": {
+                  "id": 4875,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467892037.3
+                },
+                "at": 1793467892043.8
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467850197,
+            "notBefore": 1793467869017,
+            "endedAt": 1793467859016.8,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 10008.60009765625,
+            "actualClockToNextStartMs": 10008.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467850197,
+            "notBefore": 1793467885748,
+            "endedAt": 1793467875747.3,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 10003.39990234375,
+            "actualClockToNextStartMs": 10003.39990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467850197,
+            "notBefore": 1793467902053,
+            "endedAt": 1793467892052.7,
+            "nextAttempt": null,
+            "actualEndToNextStartMs": null,
+            "actualClockToNextStartMs": null,
+            "censoredNoNextStart": true
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 9,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19308574,
+        "durableBytes": 17591377,
+        "durablePeakBytes": 17591377,
+        "durableDeltas": 4,
+        "durableChunks": 69,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 65466.470947265625,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467778037,
+            "notBefore": 1793467778361,
+            "attempt": 2,
+            "at": 1793467768361.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467848632,
+            "notBefore": 1793467848937,
+            "attempt": 3,
+            "at": 1793467838936.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467850228,
+            "notBefore": 1793467865845,
+            "attempt": 5,
+            "at": 1793467855844.9
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793467850228,
+            "notBefore": 1793467882660,
+            "attempt": 7,
+            "at": 1793467872659.5
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 140,
+              "bytes": 965454
+            },
+            "coverage": {
+              "entries": 140,
+              "bytes": 19320
+            }
+          },
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 327,
+              "bytes": 2277072
+            },
+            "coverage": {
+              "entries": 327,
+              "bytes": 45126
+            }
+          },
+          {
+            "opened": {
+              "entries": 3423,
+              "bytes": 4248167
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 140,
+              "bytes": 965454
+            },
+            "coverage": {
+              "entries": 140,
+              "bytes": 19320
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 273,
+              "bytes": 1898316
+            },
+            "coverage": {
+              "entries": 273,
+              "bytes": 37674
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 733,
+              "bytes": 5124756
+            },
+            "coverage": {
+              "entries": 733,
+              "bytes": 101154
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1057,
+              "bytes": 7398110
+            },
+            "coverage": {
+              "entries": 1057,
+              "bytes": 145866
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1263,
+              "bytes": 8845117
+            },
+            "coverage": {
+              "entries": 1263,
+              "bytes": 174294
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1802,
+              "bytes": 12635904
+            },
+            "coverage": {
+              "entries": 1801,
+              "bytes": 248538
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467766228.0999
+                },
+                "arrivingJob": {
+                  "id": 85,
+                  "name": "accountReceive.ts:2809:deliveryStatus",
+                  "at": 1793467768349.5
+                },
+                "at": 1793467768355.7
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1297,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467837535.9
+                },
+                "arrivingJob": {
+                  "id": 1299,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467838924.4
+                },
+                "at": 1793467838930.5
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1332,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467853099
+                },
+                "arrivingJob": {
+                  "id": 1334,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467855831.8
+                },
+                "at": 1793467855836.9
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1373,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793467870050.5999
+                },
+                "arrivingJob": {
+                  "id": 1375,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793467872643.2
+                },
+                "at": 1793467872650
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467778037,
+            "notBefore": 1793467778361,
+            "endedAt": 1793467768361.7,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 69171.60009765625,
+            "actualClockToNextStartMs": 69171.7001953125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467848632,
+            "notBefore": 1793467848937,
+            "endedAt": 1793467838936.7,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 11295.39990234375,
+            "actualClockToNextStartMs": 11295.39990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467850228,
+            "notBefore": 1793467865845,
+            "endedAt": 1793467855844.9,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 10002.60009765625,
+            "actualClockToNextStartMs": 10002.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793467850228,
+            "notBefore": 1793467882660,
+            "endedAt": 1793467872659.5,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 10007.89990234375,
+            "actualClockToNextStartMs": 10007.89990234375,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 865.822265625,
+    "peerWorstMarkerMs": 746.064208984375,
+    "inputP95Ms": 4.5986328125,
+    "inputWorstMarkerMs": 3.46826171875,
+    "overlapKeys": 120,
+    "backlogMs": 84522.58471679688,
+    "finalNewDeliveryMs": 874.992919921875,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 34.356929212362914,
+    "hostBusyMax": 55.40407034182968
+  },
+  {
+    "name": "final-grown-r3-normal",
+    "config": "grown-maintenance.config.ts",
+    "cell": "grown-normal",
+    "mode": "maintenance",
+    "grown": true,
+    "replicate": 3,
+    "withhold": false,
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "variant": "P-screen",
+    "timeoutMs": 900000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "oneFailFailsCell": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793469018.7224371,
+    "finishedAt": 1793469166.088947,
+    "rawResults": [
+      {
+        "path": "result.json",
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "actualPreparationAndBacklogAtTypingStart": true,
+          "fullOriginalArchivePlusOnlyOfferedAppend": true,
+          "undoAndPeerConvergence": true,
+          "maintenanceFinishesAfterInput": true,
+          "bothOfflineColdProfilesExact": true,
+          "noColdStorageReinjection": true
+        },
+        "coldFailure": false
+      }
+    ],
+    "coldFailure": false,
+    "coldReasons": [],
+    "coldStages": [],
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 3,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 12276468,
+        "durableBytes": 9390329,
+        "durablePeakBytes": 9390329,
+        "durableDeltas": 2,
+        "durableChunks": 37,
+        "byteCap": 33554432,
+        "lastStage": "verifying",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793469137185,
+            "notBefore": 1793469157091,
+            "attempt": 3,
+            "at": 1793469147090.6
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 671,
+              "bytes": 4723954
+            },
+            "coverage": {
+              "entries": 671,
+              "bytes": 92598
+            }
+          },
+          {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1087,
+              "bytes": 7592901
+            },
+            "coverage": {
+              "entries": 1087,
+              "bytes": 150006
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4851,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793469144013.1
+                },
+                "arrivingJob": {
+                  "id": 4853,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793469147076.7002
+                },
+                "at": 1793469147083.4001
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793469137185,
+            "notBefore": 1793469157091,
+            "endedAt": 1793469147090.6,
+            "nextAttempt": null,
+            "actualEndToNextStartMs": null,
+            "actualClockToNextStartMs": null,
+            "censoredNoNextStart": true
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 7,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19308574,
+        "durableBytes": 17511408,
+        "durablePeakBytes": 17511408,
+        "durableDeltas": 5,
+        "durableChunks": 70,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 41778.1552734375,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793469059439,
+            "notBefore": 1793469059747,
+            "attempt": 2,
+            "at": 1793469049747
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 121,
+              "bytes": 832188
+            },
+            "coverage": {
+              "entries": 120,
+              "bytes": 16560
+            }
+          },
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 286,
+              "bytes": 1989498
+            },
+            "coverage": {
+              "entries": 286,
+              "bytes": 39468
+            }
+          },
+          {
+            "opened": {
+              "entries": 3423,
+              "bytes": 4248167
+            },
+            "witness": {
+              "entries": 1122,
+              "bytes": 184020
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 121,
+              "bytes": 8846
+            },
+            "delivery": {
+              "entries": 242,
+              "bytes": 142826
+            },
+            "link": {
+              "entries": 121,
+              "bytes": 16590
+            },
+            "inbound": {
+              "entries": 192,
+              "bytes": 1330182
+            },
+            "coverage": {
+              "entries": 191,
+              "bytes": 26358
+            }
+          },
+          {
+            "opened": {
+              "entries": 3423,
+              "bytes": 4248167
+            },
+            "witness": {
+              "entries": 1122,
+              "bytes": 184020
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 121,
+              "bytes": 8846
+            },
+            "delivery": {
+              "entries": 242,
+              "bytes": 142826
+            },
+            "link": {
+              "entries": 121,
+              "bytes": 16590
+            },
+            "inbound": {
+              "entries": 901,
+              "bytes": 6303221
+            },
+            "coverage": {
+              "entries": 900,
+              "bytes": 124200
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1067,
+              "bytes": 7468260
+            },
+            "coverage": {
+              "entries": 1066,
+              "bytes": 147108
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1773,
+              "bytes": 12431947
+            },
+            "coverage": {
+              "entries": 1772,
+              "bytes": 244536
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793469047585.5
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793469049735.2
+                },
+                "at": 1793469049741.5
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793469059439,
+            "notBefore": 1793469059747,
+            "endedAt": 1793469049747,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 69175.89990234375,
+            "actualClockToNextStartMs": 69175.89990234375,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 933.392333984375,
+    "peerWorstMarkerMs": 814.5244140625,
+    "inputP95Ms": 4.547119140625,
+    "inputWorstMarkerMs": 3.1181640625,
+    "overlapKeys": 120,
+    "backlogMs": 89726.98901367188,
+    "finalNewDeliveryMs": 880.205078125,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 44.44665209616531,
+    "hostBusyMax": 48.30812101910828
+  },
+  {
+    "name": "final-grown-r3-withheld",
+    "config": "grown-maintenance.config.ts",
+    "cell": "grown-withheld",
+    "mode": "maintenance",
+    "grown": true,
+    "replicate": 3,
+    "withhold": true,
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "variant": "P-screen",
+    "timeoutMs": 900000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "oneFailFailsCell": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793469166.8324292,
+    "finishedAt": 1793469313.5255628,
+    "rawResults": [
+      {
+        "path": "result.json",
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "actualPreparationAndBacklogAtTypingStart": true,
+          "fullOriginalArchivePlusOnlyOfferedAppend": true,
+          "undoAndPeerConvergence": true,
+          "maintenanceFinishesAfterInput": true,
+          "bothOfflineColdProfilesExact": true,
+          "noColdStorageReinjection": true
+        },
+        "coldFailure": false
+      }
+    ],
+    "coldFailure": false,
+    "coldReasons": [],
+    "coldStages": [],
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 2,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 59179,
+        "durableBytes": null,
+        "durablePeakBytes": null,
+        "durableDeltas": 0,
+        "durableChunks": null,
+        "byteCap": 33554432,
+        "lastStage": "opening",
+        "lastOutcome": {
+          "kind": "skipped",
+          "reason": "activity-or-journal"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793469279972,
+            "notBefore": 1793469290096,
+            "attempt": 1,
+            "at": 1793469280096.2002
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793469279972,
+            "notBefore": 1793469300316,
+            "attempt": 2,
+            "at": 1793469290315.9001
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 366,
+              "bytes": 59179
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3629,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793469279988.4001
+                },
+                "arrivingJob": {
+                  "id": 3631,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793469280088.1
+                },
+                "at": 1793469280094.9001
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3841,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793469290103
+                },
+                "arrivingJob": {
+                  "id": 3843,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793469290306.9001
+                },
+                "at": 1793469290313.7002
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793469279972,
+            "notBefore": 1793469290096,
+            "endedAt": 1793469280096.3,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 10003.900146484375,
+            "actualClockToNextStartMs": 10004.0,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793469279972,
+            "notBefore": 1793469300316,
+            "endedAt": 1793469290315.9001,
+            "nextAttempt": null,
+            "actualEndToNextStartMs": null,
+            "actualClockToNextStartMs": null,
+            "censoredNoNextStart": true
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 6,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 19308574,
+        "durableBytes": 16522589,
+        "durablePeakBytes": 16522589,
+        "durableDeltas": 4,
+        "durableChunks": 66,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 40847.60595703125,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 10000,
+            "quietUntil": 1793469207550,
+            "notBefore": 1793469207876,
+            "attempt": 2,
+            "at": 1793469197876.4
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 105,
+              "bytes": 719970
+            },
+            "coverage": {
+              "entries": 105,
+              "bytes": 14490
+            }
+          },
+          {
+            "opened": {
+              "entries": 2577,
+              "bytes": 3719950
+            },
+            "witness": {
+              "entries": 522,
+              "bytes": 85498
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 269,
+              "bytes": 1870260
+            },
+            "coverage": {
+              "entries": 269,
+              "bytes": 37122
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 208,
+              "bytes": 1442406
+            },
+            "coverage": {
+              "entries": 207,
+              "bytes": 28566
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 948,
+              "bytes": 6632926
+            },
+            "coverage": {
+              "entries": 948,
+              "bytes": 130824
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1654,
+              "bytes": 11595020
+            },
+            "coverage": {
+              "entries": 1654,
+              "bytes": 228252
+            }
+          },
+          {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793469195745
+                },
+                "arrivingJob": {
+                  "id": 85,
+                  "name": "accountReceive.ts:2809:deliveryStatus",
+                  "at": 1793469197864.0999
+                },
+                "at": 1793469197870.4
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793469207550,
+            "notBefore": 1793469207876,
+            "endedAt": 1793469197876.4,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 82144.10009765625,
+            "actualClockToNextStartMs": 82144.10009765625,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "error": null,
+    "peerP95Ms": 1663.33642578125,
+    "peerWorstMarkerMs": 1492.709228515625,
+    "inputP95Ms": 6.549560546875,
+    "inputWorstMarkerMs": 4.503173828125,
+    "overlapKeys": 98,
+    "backlogMs": 63187.848876953125,
+    "finalNewDeliveryMs": 1874.852783203125,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 43.762484424989864,
+    "hostBusyMax": 50.07958615200955
+  }
+]

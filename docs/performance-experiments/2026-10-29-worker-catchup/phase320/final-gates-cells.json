@@ -1,0 +1,166 @@
+{
+  "native-context": {
+    "runs": [
+      "final-gate-r1-native-context",
+      "final-gate-r2-native-context",
+      "final-gate-r3-native-context"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "native-resumable": {
+    "runs": [
+      "final-gate-r1-native-resumable",
+      "final-gate-r2-native-resumable",
+      "final-gate-r3-native-resumable"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "native-deep": {
+    "runs": [
+      "final-gate-r1-native-deep",
+      "final-gate-r2-native-deep",
+      "final-gate-r3-native-deep"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "late-normal": {
+    "runs": [
+      "final-gate-r1-late-normal",
+      "final-gate-r2-late-normal",
+      "final-gate-r3-late-normal"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "late-withheld": {
+    "runs": [
+      "final-gate-r1-late-withheld",
+      "final-gate-r2-late-withheld",
+      "final-gate-r3-late-withheld"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "old-maintenance-normal": {
+    "runs": [
+      "final-gate-r1-old-maintenance-normal",
+      "final-gate-r2-old-maintenance-normal",
+      "final-gate-r3-old-maintenance-normal"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": false,
+    "failedRuns": [
+      "final-gate-r1-old-maintenance-normal",
+      "final-gate-r2-old-maintenance-normal",
+      "final-gate-r3-old-maintenance-normal"
+    ],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "old-maintenance-withheld": {
+    "runs": [
+      "final-gate-r1-old-maintenance-withheld",
+      "final-gate-r2-old-maintenance-withheld",
+      "final-gate-r3-old-maintenance-withheld"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": false,
+    "failedRuns": [
+      "final-gate-r1-old-maintenance-withheld",
+      "final-gate-r2-old-maintenance-withheld",
+      "final-gate-r3-old-maintenance-withheld"
+    ],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "fairness": {
+    "runs": [
+      "final-gate-r1-fairness",
+      "final-gate-r2-fairness",
+      "final-gate-r3-fairness"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "goals-desktop": {
+    "runs": [
+      "final-gate-r1-goals-desktop",
+      "final-gate-r2-goals-desktop",
+      "final-gate-r3-goals-desktop"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "goals-mobile4x": {
+    "runs": [
+      "final-gate-r1-goals-mobile4x",
+      "final-gate-r2-goals-mobile4x",
+      "final-gate-r3-goals-mobile4x"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": false,
+    "acceptanceCredit": false
+  },
+  "grown-normal": {
+    "runs": [
+      "final-grown-r1-normal",
+      "final-grown-r2-normal",
+      "final-grown-r3-normal"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": true,
+    "acceptanceCredit": false
+  },
+  "grown-withheld": {
+    "runs": [
+      "final-grown-r1-withheld",
+      "final-grown-r2-withheld",
+      "final-grown-r3-withheld"
+    ],
+    "replicatesReached": 3,
+    "threeReplicatesComplete": true,
+    "cellPass": true,
+    "failedRuns": [],
+    "grownReportedSeparately": true,
+    "acceptanceCredit": false
+  }
+}
