@@ -6457,3 +6457,8 @@ Freeze corrected production-flag normal ABBA: signed Page8d/Worker0ab, fixed0abs
 ## 2026-10-30 — phase259: production baseline outcomes
 
 Production-flag ABBA all original gates pass, but pairratios1.105044/1.010544 are inconclusive under predeclared rule. Do not average away order/variance or infer absence of physical stalls. Read updated brief; measure proposed empty-Window/publication work before mechanism. Original publiccold/deepjoined still need sameflag reruns. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).
+
+
+## 2026-10-30 — phase260: production cold compatibility apparatus
+
+Re-run original237senderclosed/deepjoined/publiccold cases with exact signed0ab shippingproduction frontend and native closure; only roots/warmoverride differ. Keep lab identity exception explicit and all original15s/30s deadlines/assertions; no diagnostic extension earns pass. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).

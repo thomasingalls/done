@@ -18101,3 +18101,8 @@ Both exact signed clients rebuilt310/396mapped bodies and86/125assets; release f
 ## 2026-10-30 — phase259: production baseline outcomes
 
 Four fixed production-flag normal-hint journeys pass all480keys/12markers/archive/offline-cold and16ms/2.5s/30s/600s gates. Page118.039/101.335s, Worker130.438/102.403s; mixed>1.10signal. Five owncontainers/browsers absent. Updated brief archived/read; no runtime change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).
+
+
+## 2026-10-30 — phase260: production cold compatibility apparatus
+
+Prepared original4case productionflag compatibility rerun.396source bodies/125shipping assets exact; release compiledflag parity, pinned helper closure,4case discovery and readiness/shutdown smoke pass. Failed setup searches/listings retained; no timed result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).

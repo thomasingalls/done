@@ -873,3 +873,8 @@ Phase258: production-flag Page/Worker ABBA now prepared. Use coordinated quiet h
 ## 2026-10-30 — phase259: production baseline outcomes
 
 Phase259: corrected baseline all absolute gates pass; repeatable>10%Worker slowdown remains inconclusive. Do original productionflag publiccold/deepjoined next, then clean withheld inputcontrol and request/commit/Window counts/Worker profiles. Keep248yield candidate unaccepted and all previous qualified failures. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).
+
+
+## 2026-10-30 — phase260: production cold compatibility apparatus
+
+Phase260: original publiccold/deepjoined checks ready at actual release settings. Run unchanged deadlines/guards, then sourcebound work/input attribution. No repair selected from brief estimates; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).
