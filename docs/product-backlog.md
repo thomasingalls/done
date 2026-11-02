@@ -868,3 +868,8 @@ Phase257: previous warm-off3–4%overhead and public/deep deadline failures do n
 ## 2026-10-30 — phase258: production baseline apparatus
 
 Phase258: production-flag Page/Worker ABBA now prepared. Use coordinated quiet host and no concurrent heavy work; retain every gate/failure. Original publiccold/deepjoined reruns follow separately. No new mechanism or release prep. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).
+
+
+## 2026-10-30 — phase259: production baseline outcomes
+
+Phase259: corrected baseline all absolute gates pass; repeatable>10%Worker slowdown remains inconclusive. Do original productionflag publiccold/deepjoined next, then clean withheld inputcontrol and request/commit/Window counts/Worker profiles. Keep248yield candidate unaccepted and all previous qualified failures. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).

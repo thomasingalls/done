@@ -18096,3 +18096,8 @@ Verified released warm default using source, Dockerfile and compiled flag eviden
 ## 2026-10-30 — phase258: production baseline apparatus
 
 Both exact signed clients rebuilt310/396mapped bodies and86/125assets; release flag parity, source/assets, discovery and isolated readiness/shutdown smoke pass. Protocol/input hashes frozen before timing. Original full comparison still pending, no acceptance claim. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).
+
+
+## 2026-10-30 — phase259: production baseline outcomes
+
+Four fixed production-flag normal-hint journeys pass all480keys/12markers/archive/offline-cold and16ms/2.5s/30s/600s gates. Page118.039/101.335s, Worker130.438/102.403s; mixed>1.10signal. Five owncontainers/browsers absent. Updated brief archived/read; no runtime change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).

@@ -6452,3 +6452,8 @@ Correct baseline scope: released b6 warm loads are default-on,241/native237expli
 ## 2026-10-30 — phase258: production baseline apparatus
 
 Freeze corrected production-flag normal ABBA: signed Page8d/Worker0ab, fixed0abserver, no248yield, warmunset. Independent emitted-flag equality guards release parity. Same original workload/security/archive/cold/gates; paired>1.10investigation signal, no favorable reruns. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).
+
+
+## 2026-10-30 — phase259: production baseline outcomes
+
+Production-flag ABBA all original gates pass, but pairratios1.105044/1.010544 are inconclusive under predeclared rule. Do not average away order/variance or infer absence of physical stalls. Read updated brief; measure proposed empty-Window/publication work before mechanism. Original publiccold/deepjoined still need sameflag reruns. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).
