@@ -938,3 +938,8 @@ Phase271: narrowbaselineprojectionrepair passes affected/fullunit/bookkeepingche
 ## 2026-10-30 — phase272: repaired native walkthrough protocol
 
 Phase272: originalnative aftercases next, then closecompatibilityrepair onlyifactual coveredhistoryremoval/coldarchive/Undo passes. Remainingstartupcost/budgetnormal/yieldquestions separate; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).
+
+
+## 2026-10-30 — phase273: repaired native walkthrough outcome
+
+Phase273: Workerrecovery baseline0 compatibility repaired/realmaintenancecold verified. Remainingdeepcatchup30s/unreducedcold15s, capfreePageWorkercompare aftercivilfixture refresh, Page/WorkerMainlongtasks/Goals andmissing0abwithheld/yielddecision stayopen. No releaseprep or productionrate/automation change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).

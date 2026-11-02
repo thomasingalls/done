@@ -18166,3 +18166,8 @@ Implementednarrowrecoverycompatibility/new9cases.65focused/full2766unitpass(onee
 ## 2026-10-30 — phase272: repaired native walkthrough protocol
 
 Prepared actualcandidate afterwalkthrough:sourcebytes396maps/125frontendassets exact, releaseflags/defaultlimitsverified, fourcase discovery/readiness/shutdown pass. No timedafteroutcome yet. Allbeforeevidence preserved; no oldtest/productsourcechange beyond271. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).
+
+
+## 2026-10-30 — phase273: repaired native walkthrough outcome
+
+Originalnativeafter4cases finish2pass/2fail. Senderclosedcontrol and fullcoveredhistoryremoved publiccold/exactarchive/Undo pass; deep30s and unreducedcontextcold15sremain. Five owncontainers/browsersabsent. Repair271nowverifiednative; allbeforefailures preserved. No oldtestedit or releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).

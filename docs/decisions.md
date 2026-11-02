@@ -6522,3 +6522,8 @@ Acceptonlyfirstlogicalstate seq0after nativeauthenticatedbaseline; diskpositive 
 ## 2026-10-30 — phase272: repaired native walkthrough protocol
 
 Run originalfournative cases on exact cumulative271candidate, no diagnosticflags/hooks and unchangedproduction16/session64/process. Fullmaintenancecold exactarchive mustpassbefore repairclosure. Retain anydeep30s/rebind15smiss; originalbody/assertions/deadlinesunchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).
+
+
+## 2026-10-30 — phase273: repaired native walkthrough outcome
+
+Close onlynarrowbaselineprojectioncompatibility: actualfullresumablemaintenance/removal7275/revision2/inputUndo/publiccold15s/exactarchive passes on realcandidate/defaultflags. Keepdeep30s459progress and unreducedcontextcold15sfailures; no fullperformance/throughput/phone acceptance. Allsecurity/disk/freshness/journal/fencing preserved. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).
