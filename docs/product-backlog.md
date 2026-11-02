@@ -788,3 +788,8 @@ Phase241: conversion is signed locally. Matched before/after catch-up comparison
 ## 2026-10-29 — phase242: matched catch-up comparison
 
 Phase242: apparent2x Worker catch-up slowdown not reproduced under matched current conditions; common226–240s throughput still deserves later server/apparatus/host isolation. Now trace the reproducible2.5s late-marker misses, retaining security and every existing gate. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).
+
+
+## 2026-10-29 — phase243: late-marker attribution protocol
+
+Phase243: trace scheduler send wait/prelude and receiver quiet-stream sweep on separately identified diagnostic. Keep2.5s gate blocked and security checks unchanged; do not lower publication timing or prioritize an unauthenticated publisher hint. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).

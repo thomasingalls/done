@@ -6372,3 +6372,8 @@ Compare rebuilt Page8d6d42c1 and signed Worker0ab9cbc8 in fixed normal-hint ABBA
 ## 2026-10-29 — phase242: matched catch-up comparison
 
 Treat dated100s and200s trajectories as unmatched. Under fixed current conditions Page226–230s versus Worker233–240s gives opposite-order ratios1.0403/1.0307; no substantial doubling reproduced. Retain the modest overhead and all absolute marker misses; do not infer equivalence or one-function causality. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).
+
+
+## 2026-10-29 — phase243: late-marker attribution protocol
+
+Separate latency attribution from matched performance: timestamp-only diagnostic copy, no behavior/check/deadline change and no acceptance credit. One fresh two-receiver journey, retain all original misses and diagnostic overhead limitations. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).

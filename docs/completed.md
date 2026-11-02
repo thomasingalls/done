@@ -18016,3 +18016,8 @@ Committed and independently verified all80patches161–240; tip0ab9cbc8. Frozen 
 ## 2026-10-29 — phase242: matched catch-up comparison
 
 Four matched ABBA functional/cold/archive journeys pass. Worker backlog+4.03%/+3.07% in the two pairs; all local/peerp95 budgets pass, three late-marker misses keep acceptance blocked. Six exact containers absent. No runtime/test changes. Matched comparison completed before marker attribution. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).
+
+
+## 2026-10-29 — phase243: late-marker attribution protocol
+
+Matched results frozen242 before attribution. Coarse raw timeline identifies publication plus receiver sweep wait. Prepared isolated trace build: reverse edits recover863 exact signed inputs,397 source-map bodies match; workload/assertions unchanged. Two guarded source-preparation anchor failures retained before any diagnostic journey. No diagnostic outcome yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).
