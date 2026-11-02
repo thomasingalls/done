@@ -6677,3 +6677,8 @@ Retain the pinned-browser S0input miss and old-browser pass separately; proceed 
 ### 2026-10-30 — Worker catch-up phase303
 
 The single exact matched yield pair supports248with its tails and original old-browser pass retained. Do not generalize its effect size or credit291range changes from this pair. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase304
+
+Retain the current marker failure despite good p95. Finish frozen fairness before the approved isolated lab screen; do not infer a range-only effect across differing hint conditions. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).

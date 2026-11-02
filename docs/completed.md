@@ -18321,3 +18321,8 @@ Phase302: native/archive/offline-cold pass, independent inputp9518.749ms fails16
 ### 2026-10-30 — Worker catch-up phase303
 
 Phase303: matched248withheld all gates/native/cold pass; inputp9512.728ms, peer2181.561ms, worstmarker1793.272ms, backlog143.973s versus302184.013s. Raw and one-pair descriptive analysis retained. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase304
+
+Phase304: current291normal native/archive/cold pass; input11.715ms/peer1583.005ms p95, lastmarker3354.092ms fails2.5s, backlog266.948s. Raw evidence retained, no acceptance. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).

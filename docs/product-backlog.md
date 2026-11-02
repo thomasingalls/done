@@ -1093,3 +1093,8 @@ Next fixed248-onlywithheld, then current291normal and fairness under301. Input m
 ### 2026-10-30 — Worker catch-up phase303
 
 Next fixed current291normal then multi-account fairness. Yield withheld gap is filled; current range deep/compatibility and release blocks remain. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase304
+
+Finish frozen fairness, then approved lab-only Worker CPU profile/factorial4range screen; default-off writer and realv5publish before any landing. Deep/marker/compatibility blocks remain. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).
