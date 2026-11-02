@@ -18171,3 +18171,8 @@ Prepared actualcandidate afterwalkthrough:sourcebytes396maps/125frontendassets e
 ## 2026-10-30 — phase273: repaired native walkthrough outcome
 
 Originalnativeafter4cases finish2pass/2fail. Senderclosedcontrol and fullcoveredhistoryremoved publiccold/exactarchive/Undo pass; deep30s and unreducedcontextcold15sremain. Five owncontainers/browsersabsent. Repair271nowverifiednative; allbeforefailures preserved. No oldtestedit or releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).
+
+
+## 2026-10-30 — phase274: unreduced baseline exact-evidence contract
+
+Recorded 23-case real-crypto unreduced v3/v4 red regression: nine discriminating failures and fourteen passes; setup and negative corruption controls pass. Initial attempt and exact test/source hashes retained. New test held outside executable checkout until repair; no old test or runtime change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase274/README.md).

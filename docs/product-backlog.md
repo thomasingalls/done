@@ -943,3 +943,8 @@ Phase272: originalnative aftercases next, then closecompatibilityrepair onlyifac
 ## 2026-10-30 — phase273: repaired native walkthrough outcome
 
 Phase273: Workerrecovery baseline0 compatibility repaired/realmaintenancecold verified. Remainingdeepcatchup30s/unreducedcold15s, capfreePageWorkercompare aftercivilfixture refresh, Page/WorkerMainlongtasks/Goals andmissing0abwithheld/yielddecision stayopen. No releaseprep or productionrate/automation change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).
+
+
+## 2026-10-30 — phase274: unreduced baseline exact-evidence contract
+
+Phase 274: implement bounded same-carrier unreduced exact-proof reuse, then verify cold behavior. Normal Page/Worker comparison is held. Deep at/headersAt and multi-entry reads/fairness come next, followed by deep Page64, reproducible fixture refresh and withheld/normal gates. No release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase274/README.md).

@@ -6527,3 +6527,8 @@ Run originalfournative cases on exact cumulative271candidate, no diagnosticflags
 ## 2026-10-30 — phase273: repaired native walkthrough outcome
 
 Close onlynarrowbaselineprojectioncompatibility: actualfullresumablemaintenance/removal7275/revision2/inputUndo/publiccold15s/exactarchive passes on realcandidate/defaultflags. Keepdeep30s459progress and unreducedcontextcold15sfailures; no fullperformance/throughput/phone acceptance. Allsecurity/disk/freshness/journal/fencing preserved. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).
+
+
+## 2026-10-30 — phase274: unreduced baseline exact-evidence contract
+
+The unreduced gate was deliberate conservative scope in 354c9c59 and phase 122, not an accidental omission. Extend only same-carrier exact-evidence reuse after the first full physical/reference comparison. Keep reduced rolling continuation, new-carrier full replay, fresh authentication, complete byte census, late lifetime guards and all security/gates unchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase274/README.md).
