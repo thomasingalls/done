@@ -6362,3 +6362,8 @@ Conversion completion means normal public heavy owners are in actual Workers, wi
 ## 2026-10-29 — phase240: Worker measurements retain the acceptance block
 
 Keep the original2.5s every-marker gate after Worker conversion: normal final marker2835.760ms fails despite passing peer/localp95. Treat slower full catch-up as an observation requiring matched attribution. Label actual-realm CPU, cadence and lifecycle limits; never award phone or strict-cadence acceptance from the diagnostic. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).
+
+
+## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
+
+Compare rebuilt Page8d6d42c1 and signed Worker0ab9cbc8 in fixed normal-hint ABBA journeys with one server/fixture/browser/flag set. Whole-journey replication, not key pseudoreplication; keep every absolute gate and security check. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).

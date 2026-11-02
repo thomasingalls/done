@@ -18006,3 +18006,8 @@ Worker placement complete.2734unit cases pass/one existing skip;99metadata/type/
 ## 2026-10-29 — phase240: Worker measurements retain the acceptance block
 
 Completed Worker candidate measured. Two functional peer journeys and all archive/cold guards pass; localp958.317/4.904ms, peerp951710.721/2041.809ms, but normal final marker2835.760ms blocks acceptance. Full backlog203.610/195.437s versus earlier~100s remains a throughput concern. Both779-event Goals diagnostics preserve text/Undo/cold writing, zero paragraph long tasks but latency/return tails remain. Independent audit and exact-container cleanup preserved. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).
+
+
+## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
+
+Committed and independently verified all80patches161–240; tip0ab9cbc8. Frozen matched catch-up protocol, both exact source builds and apparatus QA. No timed comparison outcome yet; malformed smoke refusal preserved and corrected to the actual POST contract. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).

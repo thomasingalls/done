@@ -778,3 +778,8 @@ Phase239: conversion complete on normal public paths; remaining work is measured
 ## 2026-10-29 — phase240: Worker measurements retain the acceptance block
 
 Phase240 closes the requested conversion-and-measurement run. Normal public heavy owners are Workers; prepared sequential patches through240 remain uncommitted. Performance follow-ups: trace the normal final-marker2.836s failure and195–204s full catch-up; preserve16ms/2.5s/every-marker/30s gates. Cold post-maintenance~21s still misses15s; deep joined30s remains open. Strict no-catch-up driver and real-device suspension/throttle evidence are measurement gaps. No release preparation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).
+
+
+## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
+
+Phase241: conversion is signed locally. Matched before/after catch-up comparison is next/in flight, followed by missed2.5s marker attribution. No product repair or release preparation selected. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).
