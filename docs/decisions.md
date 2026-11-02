@@ -6497,3 +6497,8 @@ Trace both original baselinepubliccold cases with exact0abdefaultpolicy and name
 ## 2026-10-30 — phase267: partial public cold-open attribution
 
 Retain partialcoldtrace: numericfirstDeviceOwner metrics show5fullbaselinereplaysbeforeeditor14.68s; no CPUcoverage because wrongfilename selected. Maintenancecold endsfixedpasskeyfallback/noWorker, not provenpurelatency. Correct sampler/error trace before repair; original261failures remain, diagnosticpass earnsnoacceptance. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).
+
+
+## 2026-10-30 — phase268: actual cold owner/error protocol
+
+Correct physicalfirstDeviceOwner profile and isolate publicmaintenance opening failure with bounded enum/location-onlycatchobservers. Same originalcasebodies/nativechecks; log-onlyisolatedsourcevariantidentified, originalthrowobjects/failuregatespreserved. No nativeerror masking or productrepair before cause. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).

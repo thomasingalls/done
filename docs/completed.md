@@ -18141,3 +18141,8 @@ Frozen two-case coldprofile apparatus,396exactsourcebodies/125frontendassets, or
 ## 2026-10-30 — phase267: partial public cold-open attribution
 
 Two original cold diagnostics finish1pass/1fail, allpartialresultsretained. ActualfirstDeviceOwnermetrics valid; CPUprofilemissing duewrongtarget. Secondmaintenance/reduction/Undo succeeds then15sfails and90scensored withfixedpublicfallback. Three owncontainers/browsersabsent. No product/oldtestchange. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).
+
+
+## 2026-10-30 — phase268: actual cold owner/error protocol
+
+Frozen correctedowner/errortrace with397actualvariantmappedbodies and125frontendassets. Original16/session64/process verified, fivecontracts/discovery/readiness/shutdown pass. No timedresult or repositoryruntime/testchange;267partialattempt preserved. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).

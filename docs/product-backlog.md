@@ -913,3 +913,8 @@ Phase266: trace repeatedbaseline/nativecost in both originalpubliccold failures 
 ## 2026-10-30 — phase267: partial public cold-open attribution
 
 Phase267: repeatedbaseline candidate now measured5replaysbeforeeditor; actualWorkerCPU stillneeded. Prioritize actual maintenanceopening failure/errorboundary before treatingsecond15smissasperformance. Correcttarget/errorenumtrace next; no newtrustwindow/securityrelaxation/releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).
+
+
+## 2026-10-30 — phase268: actual cold owner/error protocol
+
+Phase268: diagnoseactualcoldopeningfallback andcollectcorrectWorkerCPU next; repeatedbaselinecountsvalid butCPUcausepending. Preserve265partialbudgetresult and originalgates/failures. No performanceortrustmechanism/releaseprep selected. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).
