@@ -1,0 +1,23 @@
+{
+  "protocol.md": "4dd89e82f49aa2e6f4859d9eea97a178fe2bc26f571c1c14c08806c15bfa3ab3",
+  "source-change.json": "118c2d0f40ed7d3cdfb2ba61e9cffea237671a5300f5dcf2a4681630f9d928aa",
+  "lab-budget.patch": "671f61d2c6fc433933ec94eb8646d281342b278974e0789d6c80d13a247d875e",
+  "frozen-inputs.json": "c25f80e0f62d9081185095f68d06afc0cedc99ffded47f8e27a91bb776887caa",
+  "build-identity.json": "674473a5ac0efe1070f4431dfa93413d9da3e6a5ace1c81ddfaf0a10ed7e2aa9",
+  "build-flags.json": "955717a8be298d49821907df4caf25c9b05515270ae0c588541b409cf694bf08",
+  "release-flags.json": "87d55e97ad4d3ecf145b227dc651b11e9b925d7d7499644a464ccdcaa24bf6b9",
+  "container-service.mjs": "5d791af4300e9857a83f1cc8690b0548ffa47b3231417a63c27d74127b5e4998",
+  "container-image.json": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+  "observer.mjs": "776437226d5971f2700e11f273a23e59ebd6496e120b0f2f1c0bcfc04346e7f0",
+  "run.py": "82a45797150fd39b66e06c7687f9b241dae4001203ec50e1eaf863746e889ee2",
+  "discovery.log": "5d2de82f2b5dedc699bf1ba019174c32cd067bcb6863702557ee7406d5eb7b6f",
+  "smoke.mjs": "e4363a662ed86e55cf4fac17480ee5ad71091af643df97f17c754dfeca92f7b7",
+  "smoke.log": "7224e72e7c54399f249c31c266aab4c1445e1ad0f331146c5ef7401a44d91f05",
+  "apparatus-smoke/result.json": "7dcde86faefb4634b0fea74dbb5859f2ae9ca94c930ae27e01749252cf143ff8",
+  "apparatus-smoke/container-identity.json": "8fced856e85e26d653900cefec20f237397a51d792cff4c1cc3ffca9dc84f94e",
+  "source-server/account-service/requestBudget.ts": "86934004a5867f609704af4f948ceeefb916c81beacfc9f43add7ef4c70a3e33",
+  "harness/test/account-continuation-lab/runtime.mjs": "fe2d2b637040d257ef53321b842e3076df70ab68129961aaa013336b114ae676",
+  "harness/test/account-continuation-lab/worker-owner.spec.ts": "1c00cdfd9e5894c09224f1bcf2bc784c1b325665046cf85d5c1333999e6fd252",
+  "harness/test/account-continuation-lab/worker-owner.config.ts": "51a6a8ba5e326e169f571208c17ee8741fec1174b14c6faffff638090022acc9",
+  "setup-budget264.py": "e7962ed836121901d4e877b74c3b976f86c107ce2bd6dd4f3a24759034f853f6"
+}

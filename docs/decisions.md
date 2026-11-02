@@ -6477,3 +6477,8 @@ Finish clean withheld inputcontrol with frozen3journeys: original warmdefault, t
 ## 2026-10-30 — phase263: quiet-host input outcomes
 
 Quiet withheld original248warmdefault passes all gates10.906ms inputp95; diagnosticdefault17.034msmiss remains. Delay largely beforecreation, callbacks alone insufficient: ordinarydefault highest rate14.418/s passes. No causal observer/Worker/Main claim from3ordered dependent journeys; count/profile real native work before mechanism. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).
+
+
+## 2026-10-30 — phase264: disposable request-budget protocol
+
+Test sessionbudget with one original deepjoined30scase, disposable complete0abserver changing only16→64/session. Keepprocess64andallotherlimits/securitychecks; startup numeric receipt verifies effective policy. No productrate change, no acceptance substitution; budgettable remains inferred. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).

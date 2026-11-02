@@ -18121,3 +18121,8 @@ Both248source profiles rebuilt396mapped bodies, releaseflag parity with named wa
 ## 2026-10-30 — phase263: quiet-host input outcomes
 
 Three fixed quiet controls complete all native/archive/cold guards. Originaldefault142.373s/input10.906ms passes; diagnosticwarm0fails3.327smarker; diagnosticdefaultfails17.034msinput. Timing decomposition/actualcallback rates retained, four owncontainers/browsers absent. No runtime/oldtest edit; all prior failures retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).
+
+
+## 2026-10-30 — phase264: disposable request-budget protocol
+
+Frozen original deepjoined budgetprobe with exact clientassets/one-line serverpolicy diff. Effective64/session,64/process and allotherlimitsverified; discovery/readiness/shutdown pass. No timed outcome yet. Later normalcardfixture needs civil-window refresh before900scases. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).

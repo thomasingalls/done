@@ -893,3 +893,8 @@ Phase262: quiet-host withheld original/diagnostic controls ready. Preserve261col
 ## 2026-10-30 — phase263: quiet-host input outcomes
 
 Phase263: productionflag ordinary withheld input/peer gates pass once; diagnostic inputtail remains precreation and quiet warm0marker fails. Next actual native work counts and WorkerCPU(emptyreceive/envelope), then side-effect audit before any emptyWindow-flight/publication repair. Preserve261deadline blockers, all gates,248candidate status and no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).
+
+
+## 2026-10-30 — phase264: disposable request-budget protocol
+
+Phase264: next is lab-only budgetfalsifier, then publiccold numeric/WorkerCPU trace. Native workcounts moveafter current blocker attribution. Preserve current productyield/oldfailures/allgates; no productionrate/releaseprep change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).
