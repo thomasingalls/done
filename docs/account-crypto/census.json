@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "9848e483f1b6896323d849e7627fd1fd56cdf9a525362834a5ebfde2fce553e0"
+      "sha256": "5b4284aaab6db2d18829234e8abc890291d7f4b2ddcb24951d7feb96bc2312f4"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1373,7 +1373,7 @@
     },
     {
       "path": "src/crdt/receiveSelection.ts",
-      "sha256": "e3bba81b1096ed66de86c83f7673286be2d4bfc276e59b8436400986aef66531"
+      "sha256": "bae77dc98513d2c59781a94b827261fe0d1db616cb1256e9868cdd0dae7acbf7"
     },
     {
       "path": "src/crdt/recoveryOwner.worker.ts",
@@ -2191,7 +2191,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 750
+          "line": 751
         }
       ]
     },

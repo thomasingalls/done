@@ -43,6 +43,7 @@ import {
 import {
   createReceiveSelection,
   receiveReadWidths,
+  receiveDownloadWidth,
   hasPeerBacklog,
   unresolvedSelfSubmission,
 } from './receiveSelection';
@@ -1186,7 +1187,7 @@ async function openAccountReceiveOwner(
       const previous =
         peerRange && cached ? rangeTail?.take(base.authority, publisher, cursor) : undefined;
       const widths = peerRange
-        ? [Math.min(READ_COUNT_LIMIT, Math.max(1, s.prefix.observedThrough - cursor))]
+        ? [receiveDownloadWidth(count, s.prefix.observedThrough - cursor, READ_COUNT_LIMIT)]
         : receiveReadWidths(count, 1);
       let offset = 0;
       if (previous) {

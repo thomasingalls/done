@@ -18256,3 +18256,8 @@ Phase289: eight bounded-preparation cases, three detected faults,89focused and28
 ### 2026-10-30 — Worker catch-up phase290
 
 Phase290: development8download/four-position admission and raw-tail ownership.9new cases/3detected faults,131focused/2849full Vitest passes plus oneexisting skip;11unchanged native group cases,119metadata/7contracts/types/lint/format pass. Actual deep8/composed fallback/fairness and rollback still open; no acceptance credit. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase291
+
+Phase291: turn-aligned bulk width.2new cases red→green, one detected alignment fault,133affected units/119metadata/7contracts/types/lint/format pass. Full2849/native11evidence remains290; actual final8measurement follows. No acceptance credit. See [phase291](./performance-experiments/2026-10-29-worker-catchup/phase291/README.md).

@@ -6612,3 +6612,8 @@ Bounded preparation verifies at most the remaining four positions using a fresh 
 ### 2026-10-30 — Worker catch-up phase290
 
 Download width8 is independent of native position allowance4. Carry only one bounded raw-original tail across turns; reauthenticate each consumed prefix and evict before legacy full reservations. Settle size scheduling refusal cleanly before a publisher-specific narrower retry. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase291
+
+Finish the initial partial publisher turn before downloading8, so a full page is consumed in two4position turns rather than3+4+1. This is a scheduling change only; native allowance, fresh verification and all gates remain. See [phase291](./performance-experiments/2026-10-29-worker-catchup/phase291/README.md).

@@ -4,6 +4,26 @@ import type { InboundReadCursor } from './inboundLedger';
 import { RECEIVE_GROUP_LIMIT } from './receiveGroup';
 import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 
+/** Align a partial native turn first; a full turn may download two turns of raw originals. */
+export function receiveDownloadWidth(
+  positions: number,
+  backlog: number,
+  width = READ_COUNT_LIMIT,
+): number {
+  if (
+    !Number.isSafeInteger(positions) ||
+    positions < 1 ||
+    positions > RECEIVE_GROUP_LIMIT ||
+    !Number.isSafeInteger(backlog) ||
+    backlog < 0 ||
+    !Number.isSafeInteger(width) ||
+    width < 1 ||
+    width > READ_COUNT_LIMIT
+  )
+    throw Error('Invalid receive download width');
+  return Math.min(positions < RECEIVE_GROUP_LIMIT ? positions : width, width, Math.max(1, backlog));
+}
+
 /** A network width cannot multiply the caller's existing verified-position allowance. */
 export function receiveReadWidths(positions: number, width: number): readonly number[] {
   if (
