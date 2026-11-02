@@ -6532,3 +6532,8 @@ Close onlynarrowbaselineprojectioncompatibility: actualfullresumablemaintenance/
 ## 2026-10-30 — phase274: unreduced baseline exact-evidence contract
 
 The unreduced gate was deliberate conservative scope in 354c9c59 and phase 122, not an accidental omission. Extend only same-carrier exact-evidence reuse after the first full physical/reference comparison. Keep reduced rolling continuation, new-carrier full replay, fresh authentication, complete byte census, late lifetime guards and all security/gates unchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase274/README.md).
+
+
+## 2026-10-30 — phase275: unreduced same-carrier exact reuse
+
+Extend only the existing private exact-proof path to opted-in one-shot and exclusive live unreduced carriers. Preserve first full physical/reference comparison, fresh complete authenticated evidence and final authority/lifetime checks; v3 proof may have no logical projection. Reduced rolling policy, new-owner full verification and all security/gates remain unchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase275/README.md).

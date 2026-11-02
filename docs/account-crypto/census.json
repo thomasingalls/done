@@ -1001,7 +1001,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "8b27103cc5a78e864fc8ed503d5649d3c1fa6be1c77ccfc94a2c2c9e13b9076c"
+      "sha256": "c6d1c21bfda71f10cc0d73ff45b3504018658154ce6eef1b962baa391b304398"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",

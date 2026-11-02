@@ -453,19 +453,19 @@ export const createContentOwner = (
             const { baselineAuthorityPin } = await task.wait(() => import('./localBaselineReuse'));
             const unchangedAuthority = baselineAuthorityPin(context);
             const prior = openedView;
-            // One-shot recovery still reads every row/chunk. Only exact authenticated evidence
-            // under the same verifier-owned authority can retain its completed logical proof.
-            // Warm reference/oracle calls and other direct snapshot consumers stay full replays.
+            // Unreduced live owners and opted-in one-shot recovery still read every row/chunk.
+            // Only exact evidence under the same verifier-owned authority retains a completed
+            // proof. Reduced warm continuation and direct reference/oracle replays are unchanged.
+            const exactOwner =
+              (crypt.exactBaselineReuse && !crypt.warmLoads) ||
+              (crypt.warmLoads && !metadata.reduced());
             if (
               allowExactBaselineReuse &&
-              crypt.exactBaselineReuse &&
-              !crypt.warmLoads &&
+              exactOwner &&
               !forceFullRead &&
-              metadata.reduced() &&
               reuse &&
               prior === reusedView &&
-              prior?.baseline &&
-              prior.baselineChunks &&
+              prior?.baselineChunks &&
               prior.baselineMatches?.(context) &&
               prior.baselineChunks.length === snapshot.chunks.length &&
               snapshot.chunks.every((row, n) => equalStoredRecord(row, prior.baselineChunks![n]!))
@@ -477,7 +477,10 @@ export const createContentOwner = (
                   'generation-changed',
                   'Baseline authority changed during reuse.',
                 );
-              logical = task.step(() => structuredClone(prior.baseline!));
+              // v3 verification completes without a journal-era logical projection.
+              logical = task.step(() =>
+                prior.baseline ? structuredClone(prior.baseline) : undefined,
+              );
               chunks = structuredClone(snapshot.chunks);
               baselineMatches = prior.baselineMatches;
               id = prior.id;
@@ -509,12 +512,8 @@ export const createContentOwner = (
                 baselineReuse.matches(baselineContext)
               )
                 baselineReuse.compare(logical);
-              if (held.counter.v === 5) chunks = structuredClone(held.chunks);
-              if (
-                crypt.exactBaselineReuse &&
-                metadata.reduced() &&
-                unchangedAuthority(baselineContext)
-              )
+              if (held.counter.v === 5 || exactOwner) chunks = structuredClone(held.chunks);
+              if (exactOwner && unchangedAuthority(baselineContext))
                 baselineMatches = unchangedAuthority;
             }
           } finally {
