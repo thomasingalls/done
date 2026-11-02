@@ -958,3 +958,8 @@ Phase 275: same-carrier unreduced exact reuse implemented and checked. Next actu
 ## 2026-10-30 — phase276: unreduced cold after-check protocol
 
 Phase 276: run the frozen unreduced/reduced cold after-check next, retaining all prior outcomes. Then trace deep at/headersAt before multi-entry reads and fairness. Normal comparison held; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).
+
+
+## 2026-10-30 — phase277: native cold after-check outcome
+
+Phase 277 closes item1 cold same-carrier reuse at the original native gates. Next item2 deep traffic start/header timestamps and read extents, then multi-entry verification/read repair and fairness. Item3 Page deep64 and item4 fixture recipe/withheld/normal gates follow. Normal comparison held; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).

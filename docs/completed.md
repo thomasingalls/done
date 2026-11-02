@@ -18186,3 +18186,8 @@ Implemented same-carrier unreduced exact reuse plus 23 new regressions. 70 focus
 ## 2026-10-30 — phase276: unreduced cold after-check protocol
 
 Rebuilt and checked 396 source bodies/125 public assets, compiled release flag parity and unchanged limits. Original two cold cases discover; container readiness and shutdown smoke pass. Timed after-result remains pending. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).
+
+
+## 2026-10-30 — phase277: native cold after-check outcome
+
+Both original native cold after-checks pass without diagnostic hooks or raised limits: previously failing context/rebind and full resumable removal7275/revision2/input/Undo/exact archive. Three own containers/browsers absent. Original failures retained; no exact cold-time or phone claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).

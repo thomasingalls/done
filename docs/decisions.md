@@ -6542,3 +6542,8 @@ Extend only the existing private exact-proof path to opted-in one-shot and exclu
 ## 2026-10-30 — phase276: unreduced cold after-check protocol
 
 Run original two cold cases once on exact cumulative275 source, released flags and default production limits. Keep 15s public cold gate, 180s case, full authentication, Undo, native journal/readback, archive equality and resumable removal assertions; no diagnostics or favorable retries. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).
+
+
+## 2026-10-30 — phase277: native cold after-check outcome
+
+Close the same-carrier unreduced cold repair against original real native cases: both original15s public-cold gates and native journal/rebind/Undo/archive/resumable reduction checks pass. Do not infer exact cold latency or native replay count from whole-case duration; retain before failure and new-carrier independence. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).
