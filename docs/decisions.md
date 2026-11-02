@@ -6657,3 +6657,8 @@ Refresh observer target by semantic live-writer role from public admission metad
 ### 2026-10-30 — Worker catch-up phase299
 
 Freeze signed0abwithheld, exact248-onlywithheld, current291normal and original multi-account fairness at production flags/default limits with the fresh verified fixture. Preserve all gates; classify functional failures before proceeding and do not claim normal Page/Worker comparison. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase300
+
+Retain individual tails while recording the passing missing signed0abwithheld baseline. Do not infer yield necessity or credit291from one older-source pass; run the fixed matched248-onlycell next. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).

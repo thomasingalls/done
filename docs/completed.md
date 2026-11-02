@@ -18301,3 +18301,8 @@ Phase298: six role checks and actual old/new role audit pass; four verifier cont
 ### 2026-10-30 — Worker catch-up phase299
 
 Phase299: three exact client closures/compiled flags and fresh-fixture adapters checked; default16/64actual service smoke and discovery pass. Missing serializer discovered/restored before any timing. No timed result yet; fixed four-case gate protocol frozen. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase300
+
+Phase300: signed0abwithheld passes all original gates/native/archive/offline-cold checks. Inputp9511.687ms/max69.953, peerp952142.820ms/max2855.742, worstmarker1767.582ms, backlog150.757s. Fault exercised/120keys/3markers and zero backendOOM confirmed; raw compressed evidence retained. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).

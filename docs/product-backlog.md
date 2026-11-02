@@ -1073,3 +1073,8 @@ Fresh fixture now has semantic writer-role adapter. Freeze and run signed0abwith
 ### 2026-10-30 — Worker catch-up phase299
 
 Execute missing signed0abwithheld first under299, record functional and independent latency outcomes, then matched yield-only/current ordinary/fairness cases if classification allows. All deep/compatibility and release holds remain. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase300
+
+Missing signed0abwithheld baseline nowpasses. Next matched248-onlywithheld, then current291normal/multi-account fairness. Preserve tails, all deep failures and v2compatibility/release blocks. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).
