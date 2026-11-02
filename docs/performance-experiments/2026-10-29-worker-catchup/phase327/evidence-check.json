@@ -1,4 +1,5 @@
 {
-  "copiesVerified": 209,
-  "allRawAndCompressedHashesMatch": true
+  "copiesVerified": 212,
+  "allRawAndCompressedHashesMatch": true,
+  "phase328Correction": "Separate the reconstructed empty running-log snapshot from the completed log. Both original recorded hashes match. No run/source/trace/metric changes."
 }

@@ -1232,3 +1232,7 @@ Keep stored-mode repair and parsed-page reuse development-only pending separate 
 ### 2026-11-01 — Phase327: local baseline warm-audit disagreement is the next fault target
 
 A tagged paired reference run pinpoints repair-required in localBaselineReuse.compare, reached by the scheduled full warm audit; subsequent native-owner withdrawal closes the Window. Next isolate the first differing census/delivery/inbound field and exact committed-prefix/owner/baseline evidence on both sides, with bounded hashes/counts rather than writing. Preserve the full semantic oracle and terminal security behavior; determine which projection or comparison scope is wrong before repairing. No observed RPC quota saturation, and Window fail callbacks were downstream. This does not prove all prior closures or phase326's grown building failure share a cause. Lab-only; no landing/hardening/release. [Trace and separate requirements](./performance-experiments/2026-10-29-worker-catchup/phase327/README.md).
+
+### 2026-11-01 — Phase 328: provenance correction complete; fault target unchanged
+
+The phase327 log-index correction changes no result. The next substantive diagnostic remains the first differing census/delivery/inbound field and captured evidence identity in the warm full-versus-incremental ledger comparison; preserve every guard. [Correction](./performance-experiments/2026-10-29-worker-catchup/phase328/README.md).

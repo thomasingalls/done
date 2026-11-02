@@ -6825,3 +6825,7 @@ Explicit historical mode derives only from saved-byte arguments, never network i
 ### 2026-11-01 — Phase327: use initiating native error, not pending-call timing
 
 Drop the flush timing clue and simple send-count/network-limit explanations as directed. Distinguish suppressed Window cleanup fail callbacks from the earlier native-owner close. Preserve the existing repair-required terminal behavior: this lab reproduction catches disagreement between full and incremental semantic ledgers. Separate immutable source variants allow one additional pre-close code/job observation without changing the branch. Stream via bounded observation messages outside RPC slots, keep a tail and critical records, and expose all loss/overhead; no performance credit follows. Counter peaks and quota codes stay native. No security guard is weakened and no hardening starts. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase327/README.md).
+
+### 2026-11-01 — Phase 328: preserve immutable patch and correct evidence metadata in sequence
+
+A verification failure found two phase327 log entries sharing a destination after the writer completed. Preserve frozen327 and add a sequential correction, with the empty snapshot explicitly reconstructed and independently hash checked rather than silently editing a registered patch. All run conclusions stay unchanged. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase328/README.md).

@@ -174,11 +174,12 @@
       "gzipSha256": "a9f986a5b1bb207b9554d6cbdef7842f412be85ddfab59fcbc94c4b87edc13f9"
     },
     {
-      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/preserve327.log",
-      "copy": "evidence/preserve327.log.gz",
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/preserve327-running-empty-reconstructed.log",
+      "copy": "evidence/preserve327-running-empty.log.gz",
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "bytes": 0,
-      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "reconstructedFromRecordedEmptyRawAndGzipHashes": true
     },
     {
       "source": "/private/tmp/done-owner-fault-trace-lab-20261101/preserve327.py",
