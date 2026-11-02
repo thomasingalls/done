@@ -1244,3 +1244,7 @@ The lab mixed dense/legacy replay reuses a stale turn; focused controls and a ma
 ### 2026-11-01 — Phase330: admitted-checkpoint return comparison remains unmeasured
 
 The first new harness attempt stops before history creation because it compares offline pre-backlog C to the final archive. Correct C's normal-sync preparation on a separately resumed attempt, retaining full archives/catalog exposure/install/Undo/cold checks and the frozen0/50ms ×3 plan. All12Breturn journeys and6loaded A/C companions are unrun; no snapshot speedup or storage-tail input result exists yet. Do not conflate the harness precondition failure with a product install defect, or phase329's unresolved paired latency. [Stop and declaration](./performance-experiments/2026-10-29-worker-catchup/phase330/README.md).
+
+### 2026-11-01 — Phase331: previously unrun controls complete
+
+Device1single500all3policies and repaireddeep0nowfunctionally/coldexact; no acceptance credit. Continue matched checkpoint preparations and only then the separately declared idle-warm-audit arm. Existing paired latency deficits remain unresolved. [Controls](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md).

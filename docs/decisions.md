@@ -6837,3 +6837,7 @@ Apply the operator's clarification literally: latency misses keep predicates/cel
 ### 2026-11-01 — Phase330: retain the bad precondition and obey the archive stop
 
 The new checkpoint lab incorrectly requires C's original frozen profile to be current while offline, although it was deliberately saved before A's backlog. Preserve the failed comparison and stop; do not call it an installation failure, erase the attempt, edit the fixture into agreement or silently rerun. The intended comparison keeps the original1024corpus and actual signed catalog checks; loaded producer/admitter input is separate to avoid changing B's compared history. A corrected preparation must let C catch up through real sync and verify its full archive before admission. No source verification/format/default/hardening change is authorized or made. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase330/README.md).
+
+### 2026-11-01 — Phase331: apply amended stop classification
+
+Preserve329/330asrecorded. New declared negative controls are expected to fail; unexpected pass stops. Harness preconditions may be repaired/rerun with all attempts retained. Functional app failure still stops; latency misses never stop. Resume only the fourdeclared329controls before the matched checkpoint retry; all pass functionally. No policy/default selected. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md).

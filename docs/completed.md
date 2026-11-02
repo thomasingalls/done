@@ -18495,3 +18495,7 @@ Pre-repair warm audit first differs at inbound.peers.map#3.retained[7].envelope;
 ### 2026-11-01 — Phase330: checkpoint experiment stops at an incorrect harness precondition
 
 Declared12matched return journeys and6loaded checkpoint/admission companions, with observation-only private source/build and no guarantee/default change. First apparatus preparation compares still-offline C's deliberately pre-backlog profile to A's completed1024archive; the missing target suffix triggers the archive stop before any history request/create/admit. Child1/runner5 retained, no rerun; all requested timings remain unmeasured. Agent setup mistake, no established install defect/data loss.142inert evidence files verified;1552canonicalinputs unchanged,indexempty. [Phase330](./performance-experiments/2026-10-29-worker-catchup/phase330/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase331: resumed repaired controls
+
+All3Device1single500policy controls preserve full writing/Undo/both offlinecold; latency predicates remain separately recorded. One repairedE1B1P1deep0control commits1025by14.585s,30sgate and originalcold/Undo pass. Exact329assets/source reused,1552canonicalinputs unchanged,indexempty; allfourruns/hostlogs retained. No credit/default/hardening/landing. [Phase331](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md). Outcome recorded before queue advance.
