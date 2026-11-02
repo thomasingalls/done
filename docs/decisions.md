@@ -6507,3 +6507,8 @@ Correct physicalfirstDeviceOwner profile and isolate publicmaintenance opening f
 ## 2026-10-30 — phase269: cold CPU and recovery compatibility target
 
 ActualfirstDeviceOwnerCPU now captured10622samples; nested verifier/recorddecode costs support repeatedwork but no trust-window change. Maintenanceopening fails at Workerrecoveryheaderguard; native baseline emitsleadingstate seq0 whereas readerdemandspositive. Demonstrate/fixthatnarrowcompatibilitybeforemoreperf; keepallnative/disk/securitychecks. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).
+
+
+## 2026-10-30 — phase270: baseline recovery red contract
+
+Bound recoverycompatibilityrepair to leadinglogicalstate seq0 from authenticatedbaseline. Red9casecounterexample:2validsnapshotfail/7negativeanddiskpass at sameguard. Do notrenumberrecords or relaxnative/disk/shape/order/size/lifetime/zeroization; originalactualmaintenancecold required afterfix. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).

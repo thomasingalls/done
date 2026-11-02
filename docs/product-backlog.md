@@ -923,3 +923,8 @@ Phase268: diagnoseactualcoldopeningfallback andcollectcorrectWorkerCPU next; rep
 ## 2026-10-30 — phase269: cold CPU and recovery compatibility target
 
 Phase269: next boundedregression/repair targets authenticatedbaseline state0 through Workerrecovery, preserving strictlypositive diskrecords and all authority/history/journal/fencing. Then rerunoriginalmaintenancecold. Repeatedbaselineperf and labbudgetPageWorkercompare remain pending; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).
+
+
+## 2026-10-30 — phase270: baseline recovery red contract
+
+Phase270: implement narrowfirststatezero transportcompatibility, retain allnative/diskchecks, then focused/fullunits/sourcebookkeeping and unchanged realcoldcases. Repeatedbaselineperf, higherbudgetnormalcompare/fixture refresh and yielddecision remain pending; no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).

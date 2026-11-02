@@ -18151,3 +18151,8 @@ Frozen correctedowner/errortrace with397actualvariantmappedbodies and125frontend
 ## 2026-10-30 — phase269: cold CPU and recovery compatibility target
 
 Correctedtwo-case diagnostic finishes1pass/1fail. FirstactualWorkerCPU/sourcemapattribution retained; secondearlyclose preventsprofilebut enum/locations isolate recoveryheaderguard. Three owncontainers/browsersabsent. No productfixoroldtestedit yet; originalgatefailuresallretained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).
+
+
+## 2026-10-30 — phase270: baseline recovery red contract
+
+Captured exact red regression/sourcehash before repair:9cases,2expectedvalidbaselinefailures/7negativepasses. Formattedonlynewtestfile andheldbyteswithcheckpoint; repositoryparser/oldtestsunchanged. No repair acceptance yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).
