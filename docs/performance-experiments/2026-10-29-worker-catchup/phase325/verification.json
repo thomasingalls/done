@@ -1,0 +1,32 @@
+{
+  "phase": 325,
+  "status": "protocol only, no runtime change/build/test run",
+  "canonicalSourceInputsUnchanged": 1552,
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "predecessorPatch": {
+    "phase": 324,
+    "patch": "324-owned-page-parsing-cold-stop-evidence.patch",
+    "sha256": "0bd4996900bdaaada55822e9a9db33c861d58310d321b5760c66c85f77c173c6"
+  },
+  "referenceHashes": {
+    "docs/performance-experiments/2026-10-11-account-batching/README.md": "a982550d6fb17dcee9d343496c29919e7efccaa0daf781e5dbae03d060e9b554",
+    "docs/performance-experiments/2026-10-29-worker-catchup/phase324/README.md": "a4efa3d3a025d08ad7d549e8edb681da99a1e3035108a0cba0270c92ff7ce63c",
+    "src/crdt/batchWindow.ts": "0ec0c253f474f045cabf451b0240ec437c16826babdc882c3cc0ab60ec5d0535",
+    "src/crdt/accountSyncDriver.ts": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746"
+  },
+  "planJourneys": 18,
+  "replicatesPerCell": 3,
+  "perCellCounts": {
+    "coordinated-2000:paired-150": 3,
+    "coordinated-2000:single-500": 3,
+    "reference:paired-150": 3,
+    "reference:single-500": 3,
+    "immediate-inflight:paired-150": 3,
+    "immediate-inflight:single-500": 3
+  },
+  "planSha256": "918e3ebd8691c6796a388a6172d534bc2a6554c2f18a9ef02d5bd8d1bf9197e7",
+  "readmeSha256": "071eeed98f0f9e1d6cfcf4078f93bc87dc15c4ce13ad3904066383376a14bc3c",
+  "labOnly": true,
+  "acceptanceCredit": false
+}

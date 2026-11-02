@@ -1220,3 +1220,7 @@ Review idle-check coalescing/read-ahead as a network-latency tradeoff, with 0 ms
 ### 2026-11-01 — Phase 324: stopped parsed-page reuse experiment
 
 Before resuming the lab, repair the prototype's dense stored-replay mode only in a new bounded phase, reviewing all expectedRecord branches and adding expired-historical versus expired-live, tuple/duplicate and erasure controls. Preserve the failed cold journey. Then revisit the remaining mixed B×P screen, profiles, live/grown checks, cap prediction, sender wait study and read-only signed multi-publisher-tip contract. No winner or production/default decision yet. [Stopped evidence](./performance-experiments/2026-10-29-worker-catchup/phase324/README.md).
+
+### 2026-11-01 — Phase 325: sender-wait three-arm comparison queued
+
+After the phase 324 cold-replay blocker and valid candidate-stack screen, compare coordinated-2000, reference and immediate/in-flight coalescing in 18 declared journeys: paired 150 ms and single 500 ms, three per cell. Include both directions, accepted positions per 100 keys, route-specific read/write costs and timed exact offline cold opens; preserve all gates and leave defaults unchanged. No implementation or measurements yet. [Declared order and controls](./performance-experiments/2026-10-29-worker-catchup/phase325/README.md).
