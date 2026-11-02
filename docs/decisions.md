@@ -6407,3 +6407,8 @@ Yield only between complete verified empty publisher checks; hold native-context
 ## 2026-10-30 — phase249: matched due-send comparison apparatus
 
 Freeze before/after normal and after/before withheld native Worker journeys, both builds exact and one fixed signed server. Preserve all absolute gates and native ownership/security, real epoch clocks and guarded civil fixture validity. One pair per mode is descriptive; no favorable reruns or stage instrumentation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).
+
+
+## 2026-10-30 — phase250: due-send comparison outcomes
+
+Retain yield latency/throughput tradeoff: peerp95 better in both modes, uploads~60% more, backlog+15.0%/+8.2%, withheld late2526.722ms still fails2.5s. Do not waive near-miss or hide raw input tails. Compare pre-existing verified selection path before designing another reuse mechanism; completed0 references remain authoritative. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).

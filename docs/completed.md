@@ -18051,3 +18051,8 @@ Implemented bounded due-send yielding in two runtime files;23 new/95 focused,275
 ## 2026-10-30 — phase249: matched due-send comparison apparatus
 
 Both248 comparison clients rebuilt,396map bodies each/125assets exact. Actual isolated service/config/HTML/shutdown and1test discovery pass. Missing metadata decoder alias caught in static review and restored before execution. Four-case apparatus/protocol frozen; no timed outcomes yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).
+
+
+## 2026-10-30 — phase250: due-send comparison outcomes
+
+Four matched249 journeys complete with full writing/archive/offline-cold guards. Normal after passes every gate; withheld after late2526.722ms fails. Backlog ratios1.150156/1.081875 and upload counts68→109/65→104 retained. Independent reconstruction and exact cleanup pass; rare local maxima remain. No concurrent changes or retries. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).

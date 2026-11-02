@@ -823,3 +823,8 @@ Phase248 implementation/regressions complete. Run fixed before/after normal/with
 ## 2026-10-30 — phase249: matched due-send comparison apparatus
 
 Phase249: run four fixed serial native before/after normal/withheld journeys; original2.5s gate unresolved. Continue clear attribution/repairs only after preserving outcomes. No release preparation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).
+
+
+## 2026-10-30 — phase250: due-send comparison outcomes
+
+Phase250: yielding improves peerp95 but not aggregate acceptance; throughput cost requires investigation. Next same-source verified warm/selection0vs1 configuration control with native security guards, then follow clear evidence. Original2.5s/16ms gates and all old failures stay; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).
