@@ -1,0 +1,36 @@
+{
+  "journeys": 6,
+  "normal": 3,
+  "withheld": 3,
+  "owners": 12,
+  "counts": {
+    "readerCompletedWithin120s": 6,
+    "capacity": 0,
+    "halts": 0,
+    "traceOverflow": 0,
+    "writerCompletedWithin120s": 6
+  },
+  "perOwnerColdChecksPassed": 12,
+  "jobs": {
+    "accountReceive.ts:2487:prepared": 25,
+    "accountCapture.ts:615:flushJournal": 7,
+    "accountReceive.ts:1608:status": 6,
+    "accountReceive.ts:2809:deliveryStatus": 1
+  },
+  "retryClockCountsMs": {
+    "10000": 38
+  },
+  "interruptedAttempts": 38,
+  "originalWriterWaitAllSatisfied": true,
+  "allOriginalColdGuardsSatisfied": true,
+  "allCutoffsAbsolute120s": true,
+  "onlyAddedRuntimeHarnessFile": [
+    "harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+  ],
+  "oldAssertionsWaitsConfigAndColdOperationsUnchanged": true,
+  "nativeTimingsIndependentlyRecomputed": true,
+  "journalFamilyBytesIndependentlySummed": true,
+  "noNewTypingOrReaderDrainStarts": true,
+  "diagnosticOnly": true,
+  "acceptanceCredit": false
+}
