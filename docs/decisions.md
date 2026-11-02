@@ -6472,3 +6472,8 @@ Retain corrected productionflag failures: original deepjoined30s (progress447/re
 ## 2026-10-30 — phase262: quiet-host input protocol
 
 Finish clean withheld inputcontrol with frozen3journeys: original warmdefault, then warm0/default bounded metadata diagnostics. All same248source/fixed0abserver; named flag exception explicit and independently checked. Use end-to-end input gate, retain missing/censored timing, no diagnostic acceptance or causal population claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).
+
+
+## 2026-10-30 — phase263: quiet-host input outcomes
+
+Quiet withheld original248warmdefault passes all gates10.906ms inputp95; diagnosticdefault17.034msmiss remains. Delay largely beforecreation, callbacks alone insufficient: ordinarydefault highest rate14.418/s passes. No causal observer/Worker/Main claim from3ordered dependent journeys; count/profile real native work before mechanism. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).

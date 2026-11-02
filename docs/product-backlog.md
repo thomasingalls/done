@@ -888,3 +888,8 @@ Phase261:182/205/187fullcase deadline blockers persist at production flags; inte
 ## 2026-10-30 — phase262: quiet-host input protocol
 
 Phase262: quiet-host withheld original/diagnostic controls ready. Preserve261cold/deep failures and all gates; next count actual request/commit/Window work and profileWorker before adopting brief mechanism hypotheses. No releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).
+
+
+## 2026-10-30 — phase263: quiet-host input outcomes
+
+Phase263: productionflag ordinary withheld input/peer gates pass once; diagnostic inputtail remains precreation and quiet warm0marker fails. Next actual native work counts and WorkerCPU(emptyreceive/envelope), then side-effect audit before any emptyWindow-flight/publication repair. Preserve261deadline blockers, all gates,248candidate status and no releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).
