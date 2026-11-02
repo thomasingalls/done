@@ -6777,3 +6777,9 @@ Keep the2.5spost-drain target: one1500replicate misses, both1000withheld and nor
 ### 2026-10-31 — Phase316: preserve the failed generation, resume real state, use the measured writer
 
 Do not extend the30minute fixture deadline or manufacture rows: retain its failure, clone its closed fictional profile/server state, verify confirmed writing offline, settle the pending input normally, then finish the remaining real edits. The independent archive/accepted-position checks prevent duplication or unrelated changes. For3,072reader-only diagnostics, one common history and freshH1suffice because the measured receiver itself writes the chosen receipt format. Omit unused actor2intakes rather than label its old profile as P-grown; retain the draft/addendum and all four measured cells. No gate, crypto, index, trace or rate bound changes; no hardening or credit.
+
+### 2026-10-31 — Phase317: Retain 3,072 failures and explicit capacity semantics
+
+All four predeclared real3,072 reader diagnostics retained. Full per-run index fallback, map-family/durable bytes, timing curve, interruptions and cold exposure recorded; capacity throws remain owner-error/halted, not parked. Reopen behavior traced without building a fix. S landing explicitly requires specific skipped/capacity mapping and reopened-journal coverage. Two Roff normal controls declared before D pairs. Evidence/docs only, no credit or hardening. See[phase317](./performance-experiments/2026-10-29-worker-catchup/phase317/README.md).
+
+Phase317 measurement limitation: all four detailed event buffers filled before the boundary, so exact first fallback positions and late native per100costs are unmeasured. Retained uncapped scalars/network show77versus1full ledger checks and a P0cursor bend at2,400–2,600; those do not replace the missing event. Dense-on27.887MBfits, but one of two reader maintenance windows times out; no qualification claim.

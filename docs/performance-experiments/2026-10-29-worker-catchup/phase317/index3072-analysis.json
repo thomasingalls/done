@@ -1,0 +1,1788 @@
+[
+  {
+    "name": "index3072-01-P0",
+    "P": 0,
+    "bits": "10100",
+    "SY": "11",
+    "repairMs": 1000,
+    "config": "reader-idle.config.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/prepared-fixture/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "actorIndex": 1,
+    "formatExposure": "Fresh receiver actually writes selected P0/P1 receipts during catch-up; no relabeling",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/reader-idle.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793461876.8489542,
+    "finishedAt": 1793462466.97202,
+    "outcome": "maintenance-halted",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "startedBehind": true,
+      "fullArchiveAfterDrain": true
+    },
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "drainComplete": true,
+    "drainMs": 556307.8002929688,
+    "observedLogicalCommitPositions": 1256,
+    "scalarLogicalPositions": 3072,
+    "eventOverflow": 1075647,
+    "timelineComplete": false,
+    "firstIndexFallback": null,
+    "indexPeakObservedCharge": 17106377,
+    "indexPeakObservedPhysicalBytes": 17106377,
+    "comparisonMsScalar": 83301.29986953735,
+    "observedNativeRows": 2512,
+    "observedHeadRows": 1256,
+    "observedPlaintextBytes": 16983661,
+    "observedBytesPerPosition": 13522.023089171975,
+    "denseExtentCountObserved": 0,
+    "duplicateOriginalPageStoresObserved": 0,
+    "readerAttempts": 2,
+    "readerCompletions": 0,
+    "readerCapacityRefusals": 1,
+    "readerPeakMapBytes": 33545153,
+    "readerDurablePeakBytes": 22942564,
+    "readerLastOutcome": {
+      "kind": "threw",
+      "name": "Error"
+    },
+    "readerFurthestStages": [
+      "opening"
+    ],
+    "cold": "not reached",
+    "hostBusyMedian": 34.42509612493768,
+    "hostBusyMax": 62.23595057791949,
+    "qualification": "Diagnostic only, no credit. Expanded index charge is not heap size. Event truncation/censoring remains explicit; no missing positions interpolated. Node drain duration is end-to-end; first native timeline bin has unbracketed epoch alignment. Reader120swindow/600sdrain/guards unchanged; cold only if maintenance reaches it.",
+    "readerJournalFamilySnapshots": [
+      {
+        "attempt": 1,
+        "journal": 1,
+        "mapBytes": 22902657,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 4776,
+            "bytes": 22902657
+          }
+        },
+        "entries": 4776,
+        "newMisses": 4776
+      },
+      {
+        "attempt": 2,
+        "journal": 2,
+        "mapBytes": 33545153,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 5557,
+            "bytes": 33545153
+          }
+        },
+        "entries": 5557,
+        "newMisses": 781
+      }
+    ],
+    "readerRetryClocks": [],
+    "readerInterruptions": [],
+    "uncappedNativeScalars": {
+      "fullLedgerChecks": 77,
+      "fullPhysicalLoads": 3,
+      "prefixComparisonCalls": 1203876,
+      "prefixComparisonMs": 83270.29988670349,
+      "receiveGroupMs": 340853.0999851227
+    },
+    "requestCursor": {
+      "publisherSha256": "f27a11c86683d237a5d3b720cb2bbf6fec7f8a0bdd1c6a459e5ebcf153623596",
+      "baselineAfter": 5,
+      "lastAfter": 3077,
+      "requestCount": 770,
+      "crossings": {
+        "0": 1793461884811.3757,
+        "100": 1793461890773.7173,
+        "200": 1793461892577.614,
+        "300": 1793461894666.1194,
+        "400": 1793461896777.6394,
+        "500": 1793461899239.927,
+        "600": 1793461901768.5928,
+        "700": 1793461904724.6848,
+        "800": 1793461907854.9026,
+        "900": 1793461911668.5625,
+        "1000": 1793461916413.6394,
+        "1100": 1793461920559.3354,
+        "1200": 1793461925979.746,
+        "1300": 1793461931686.4084,
+        "1400": 1793461937298.8892,
+        "1500": 1793461943595.1304,
+        "1600": 1793461950177.2322,
+        "1700": 1793461957206.5269,
+        "1800": 1793461964498.9265,
+        "1900": 1793461971543.9602,
+        "2000": 1793461980604.4634,
+        "2100": 1793461991307.2578,
+        "2200": 1793462003256.189,
+        "2300": 1793462014794.2117,
+        "2400": 1793462028860.0068,
+        "2500": 1793462055268.006,
+        "2600": 1793462118841.8093,
+        "2700": 1793462180744.7834,
+        "2800": 1793462249576.0137,
+        "2900": 1793462318117.739,
+        "3000": 1793462391058.237,
+        "3072": 1793462442340.66
+      },
+      "qualification": "Network cursor only; cannot assign exact index fallback from a timing bend."
+    },
+    "firstIndexFallbackMeasurement": "NOT MEASURED: event cap truncated before the boundary. No absent-event/no-fallback inference."
+  },
+  {
+    "name": "index3072-02-P1",
+    "P": 1,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "config": "reader-idle.config.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/prepared-fixture/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "actorIndex": 1,
+    "formatExposure": "Fresh receiver actually writes selected P0/P1 receipts during catch-up; no relabeling",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/reader-idle.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793462467.79859,
+    "finishedAt": 1793462696.725058,
+    "outcome": "maintenance-timeout",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "startedBehind": true,
+      "fullArchiveAfterDrain": true
+    },
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "drainComplete": true,
+    "drainMs": 82819.11547851562,
+    "observedLogicalCommitPositions": 1552,
+    "scalarLogicalPositions": 3072,
+    "eventOverflow": 675578,
+    "timelineComplete": false,
+    "firstIndexFallback": null,
+    "indexPeakObservedCharge": 12825731,
+    "indexPeakObservedPhysicalBytes": 2749691,
+    "comparisonMsScalar": 10272.09994316101,
+    "observedNativeRows": 1941,
+    "observedHeadRows": 389,
+    "observedPlaintextBytes": 2640601,
+    "observedBytesPerPosition": 1701.4181701030927,
+    "denseExtentCountObserved": 388,
+    "duplicateOriginalPageStoresObserved": 0,
+    "readerAttempts": 12,
+    "readerCompletions": 0,
+    "readerCapacityRefusals": 0,
+    "readerPeakMapBytes": 27886589,
+    "readerDurablePeakBytes": 25562515,
+    "readerLastOutcome": {
+      "kind": "skipped",
+      "reason": "activity-or-journal"
+    },
+    "readerFurthestStages": [
+      "coverage",
+      "opening",
+      "verifying"
+    ],
+    "cold": "not reached",
+    "hostBusyMedian": 29.90430622009569,
+    "hostBusyMax": 59.52238805970149,
+    "qualification": "Diagnostic only, no credit. Expanded index charge is not heap size. Event truncation/censoring remains explicit; no missing positions interpolated. Node drain duration is end-to-end; first native timeline bin has unbracketed epoch alignment. Reader120swindow/600sdrain/guards unchanged; cold only if maintenance reaches it.",
+    "readerJournalFamilySnapshots": [
+      {
+        "attempt": 1,
+        "journal": 1,
+        "mapBytes": 5650845,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          }
+        },
+        "entries": 3894,
+        "newMisses": 3894
+      },
+      {
+        "attempt": 2,
+        "journal": 2,
+        "mapBytes": 7826306,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 281,
+            "bytes": 2006883
+          },
+          "coverage": {
+            "entries": 281,
+            "bytes": 38778
+          }
+        },
+        "entries": 5244,
+        "newMisses": 1350
+      },
+      {
+        "attempt": 3,
+        "journal": 3,
+        "mapBytes": 10107794,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 600,
+            "bytes": 4244349
+          },
+          "coverage": {
+            "entries": 600,
+            "bytes": 82800
+          }
+        },
+        "entries": 5882,
+        "newMisses": 1988
+      },
+      {
+        "attempt": 4,
+        "journal": 4,
+        "mapBytes": 10107794,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 600,
+            "bytes": 4244349
+          },
+          "coverage": {
+            "entries": 600,
+            "bytes": 82800
+          }
+        },
+        "entries": 5882,
+        "newMisses": 0
+      },
+      {
+        "attempt": 5,
+        "journal": 5,
+        "mapBytes": 15304217,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 1326,
+            "bytes": 9340584
+          },
+          "coverage": {
+            "entries": 1326,
+            "bytes": 182988
+          }
+        },
+        "entries": 7334,
+        "newMisses": 1452
+      },
+      {
+        "attempt": 6,
+        "journal": 6,
+        "mapBytes": 19657014,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 1933,
+            "bytes": 13609615
+          },
+          "coverage": {
+            "entries": 1933,
+            "bytes": 266754
+          }
+        },
+        "entries": 8548,
+        "newMisses": 1214
+      },
+      {
+        "attempt": 7,
+        "journal": 7,
+        "mapBytes": 20273582,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2019,
+            "bytes": 14214453
+          },
+          "coverage": {
+            "entries": 2018,
+            "bytes": 278484
+          }
+        },
+        "entries": 8719,
+        "newMisses": 1385
+      },
+      {
+        "attempt": 8,
+        "journal": 8,
+        "mapBytes": 20273582,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2019,
+            "bytes": 14214453
+          },
+          "coverage": {
+            "entries": 2018,
+            "bytes": 278484
+          }
+        },
+        "entries": 8719,
+        "newMisses": 0
+      },
+      {
+        "attempt": 9,
+        "journal": 9,
+        "mapBytes": 25477562,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2745,
+            "bytes": 19318107
+          },
+          "coverage": {
+            "entries": 2745,
+            "bytes": 378810
+          }
+        },
+        "entries": 10172,
+        "newMisses": 1453
+      },
+      {
+        "attempt": 10,
+        "journal": 10,
+        "mapBytes": 25477562,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2745,
+            "bytes": 19318107
+          },
+          "coverage": {
+            "entries": 2745,
+            "bytes": 378810
+          }
+        },
+        "entries": 10172,
+        "newMisses": 0
+      },
+      {
+        "attempt": 11,
+        "journal": 11,
+        "mapBytes": 27886589,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 3081,
+            "bytes": 21680628
+          },
+          "coverage": {
+            "entries": 3082,
+            "bytes": 425316
+          }
+        },
+        "entries": 10845,
+        "newMisses": 673
+      },
+      {
+        "attempt": 12,
+        "journal": 12,
+        "mapBytes": 27886589,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 3081,
+            "bytes": 21680628
+          },
+          "coverage": {
+            "entries": 3082,
+            "bytes": 425316
+          }
+        },
+        "entries": 10845,
+        "newMisses": 673
+      }
+    ],
+    "readerRetryClocks": [
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462581508,
+        "attempt": 2,
+        "at": 1793462571507.9
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462597949,
+        "attempt": 4,
+        "at": 1793462587949.5
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462617561,
+        "attempt": 6,
+        "at": 1793462607561.0999
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462633961,
+        "attempt": 8,
+        "at": 1793462623961
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462652831,
+        "attempt": 10,
+        "at": 1793462642830.5999
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462669304,
+        "attempt": 11,
+        "at": 1793462659303.5
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462565550,
+        "notBefore": 1793462685925,
+        "attempt": 12,
+        "at": 1793462675924.5
+      }
+    ],
+    "readerInterruptions": [
+      {
+        "attempt": 2,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3892,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462568718.3
+        },
+        "arrivingJob": {
+          "id": 3894,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462571498.5999
+        },
+        "at": 1793462571500.5
+      },
+      {
+        "attempt": 4,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3933,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462585794.9
+        },
+        "arrivingJob": {
+          "id": 3935,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462587937.5
+        },
+        "at": 1793462587942.5
+      },
+      {
+        "attempt": 6,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3974,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462602929.2
+        },
+        "arrivingJob": {
+          "id": 3976,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462607538.7
+        },
+        "at": 1793462607543.3
+      },
+      {
+        "attempt": 8,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 4015,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462623225.8
+        },
+        "arrivingJob": {
+          "id": 4017,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462623945.4
+        },
+        "at": 1793462623951.2
+      },
+      {
+        "attempt": 10,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 4056,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462639983.3
+        },
+        "arrivingJob": {
+          "id": 4058,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462642798.9
+        },
+        "at": 1793462642803
+      },
+      {
+        "attempt": 11,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 4091,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462652837.3
+        },
+        "arrivingJob": {
+          "id": 4093,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462659280.0999
+        },
+        "at": 1793462659285.8
+      },
+      {
+        "attempt": 12,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 4126,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462669307
+        },
+        "arrivingJob": {
+          "id": 4128,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462675901.5
+        },
+        "at": 1793462675906.7
+      }
+    ],
+    "uncappedNativeScalars": {
+      "fullLedgerChecks": 1,
+      "fullPhysicalLoads": 3,
+      "prefixComparisonCalls": 760579,
+      "prefixComparisonMs": 10257.499935150146,
+      "receiveGroupMs": 28116.099992752075
+    },
+    "requestCursor": {
+      "publisherSha256": "f27a11c86683d237a5d3b720cb2bbf6fec7f8a0bdd1c6a459e5ebcf153623596",
+      "baselineAfter": 5,
+      "lastAfter": 3077,
+      "requestCount": 777,
+      "crossings": {
+        "0": 1793462472687.4878,
+        "100": 1793462478860.4644,
+        "200": 1793462480461.8545,
+        "300": 1793462482237.9072,
+        "400": 1793462483979.0222,
+        "500": 1793462485595.8325,
+        "600": 1793462487680.1365,
+        "700": 1793462489394.08,
+        "800": 1793462492754.3474,
+        "900": 1793462494844.1091,
+        "1000": 1793462497298.4395,
+        "1100": 1793462499432.0042,
+        "1200": 1793462501779.2798,
+        "1300": 1793462504280.4717,
+        "1400": 1793462506558.69,
+        "1500": 1793462509067.1816,
+        "1600": 1793462511469.1323,
+        "1700": 1793462514041.0479,
+        "1800": 1793462516603.322,
+        "1900": 1793462519252.404,
+        "2000": 1793462521886.3733,
+        "2100": 1793462524641.144,
+        "2200": 1793462527626.8435,
+        "2300": 1793462530508.6487,
+        "2400": 1793462533895.1477,
+        "2500": 1793462536735.7468,
+        "2600": 1793462540093.326,
+        "2700": 1793462542860.162,
+        "2800": 1793462546186.2732,
+        "2900": 1793462549367.0518,
+        "3000": 1793462552661.6414,
+        "3072": 1793462555533.6448
+      },
+      "qualification": "Network cursor only; cannot assign exact index fallback from a timing bend."
+    },
+    "firstIndexFallbackMeasurement": "NOT MEASURED: event cap truncated before the boundary. No absent-event/no-fallback inference."
+  },
+  {
+    "name": "index3072-03-P1",
+    "P": 1,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "config": "reader-idle.config.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/prepared-fixture/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "actorIndex": 1,
+    "formatExposure": "Fresh receiver actually writes selected P0/P1 receipts during catch-up; no relabeling",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/reader-idle.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793462697.5655,
+    "finishedAt": 1793462903.416956,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "startedBehind": true,
+      "fullArchiveAfterDrain": true,
+      "offlineColdProfileExact": true
+    },
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "drainComplete": true,
+    "drainMs": 80780.13305664062,
+    "observedLogicalCommitPositions": 1552,
+    "scalarLogicalPositions": 3072,
+    "eventOverflow": 690028,
+    "timelineComplete": false,
+    "firstIndexFallback": null,
+    "indexPeakObservedCharge": 12825731,
+    "indexPeakObservedPhysicalBytes": 2749691,
+    "comparisonMsScalar": 9818.699983596802,
+    "observedNativeRows": 1941,
+    "observedHeadRows": 389,
+    "observedPlaintextBytes": 2640601,
+    "observedBytesPerPosition": 1701.4181701030927,
+    "denseExtentCountObserved": 388,
+    "duplicateOriginalPageStoresObserved": 0,
+    "readerAttempts": 11,
+    "readerCompletions": 1,
+    "readerCapacityRefusals": 0,
+    "readerPeakMapBytes": 27886589,
+    "readerDurablePeakBytes": 25569703,
+    "readerLastOutcome": {
+      "kind": "removed"
+    },
+    "readerFurthestStages": [
+      "complete",
+      "coverage",
+      "verifying"
+    ],
+    "cold": "exact",
+    "hostBusyMedian": 29.797784740356356,
+    "hostBusyMax": 49.960063897763575,
+    "qualification": "Diagnostic only, no credit. Expanded index charge is not heap size. Event truncation/censoring remains explicit; no missing positions interpolated. Node drain duration is end-to-end; first native timeline bin has unbracketed epoch alignment. Reader120swindow/600sdrain/guards unchanged; cold only if maintenance reaches it.",
+    "readerJournalFamilySnapshots": [
+      {
+        "attempt": 1,
+        "journal": 1,
+        "mapBytes": 5650845,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          }
+        },
+        "entries": 3894,
+        "newMisses": 3894
+      },
+      {
+        "attempt": 2,
+        "journal": 2,
+        "mapBytes": 9235250,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 478,
+            "bytes": 3388641
+          },
+          "coverage": {
+            "entries": 478,
+            "bytes": 65964
+          }
+        },
+        "entries": 5638,
+        "newMisses": 1744
+      },
+      {
+        "attempt": 3,
+        "journal": 3,
+        "mapBytes": 10129250,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 603,
+            "bytes": 4265391
+          },
+          "coverage": {
+            "entries": 603,
+            "bytes": 83214
+          }
+        },
+        "entries": 5888,
+        "newMisses": 1994
+      },
+      {
+        "attempt": 4,
+        "journal": 4,
+        "mapBytes": 14357645,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 1194,
+            "bytes": 8412228
+          },
+          "coverage": {
+            "entries": 1194,
+            "bytes": 164772
+          }
+        },
+        "entries": 7070,
+        "newMisses": 1182
+      },
+      {
+        "attempt": 5,
+        "journal": 5,
+        "mapBytes": 15289737,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 1324,
+            "bytes": 9326518
+          },
+          "coverage": {
+            "entries": 1323,
+            "bytes": 182574
+          }
+        },
+        "entries": 7329,
+        "newMisses": 1441
+      },
+      {
+        "attempt": 6,
+        "journal": 6,
+        "mapBytes": 17778212,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 1671,
+            "bytes": 11766969
+          },
+          "coverage": {
+            "entries": 1671,
+            "bytes": 230598
+          }
+        },
+        "entries": 8024,
+        "newMisses": 695
+      },
+      {
+        "attempt": 7,
+        "journal": 7,
+        "mapBytes": 20496021,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2050,
+            "bytes": 14432476
+          },
+          "coverage": {
+            "entries": 2050,
+            "bytes": 282900
+          }
+        },
+        "entries": 8782,
+        "newMisses": 1453
+      },
+      {
+        "attempt": 8,
+        "journal": 8,
+        "mapBytes": 24294347,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2580,
+            "bytes": 18157662
+          },
+          "coverage": {
+            "entries": 2580,
+            "bytes": 356040
+          }
+        },
+        "entries": 9842,
+        "newMisses": 1060
+      },
+      {
+        "attempt": 9,
+        "journal": 9,
+        "mapBytes": 25484733,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2746,
+            "bytes": 19325140
+          },
+          "coverage": {
+            "entries": 2746,
+            "bytes": 378948
+          }
+        },
+        "entries": 10174,
+        "newMisses": 1392
+      },
+      {
+        "attempt": 10,
+        "journal": 10,
+        "mapBytes": 27886589,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 3081,
+            "bytes": 21680628
+          },
+          "coverage": {
+            "entries": 3082,
+            "bytes": 425316
+          }
+        },
+        "entries": 10845,
+        "newMisses": 671
+      },
+      {
+        "attempt": 11,
+        "journal": 11,
+        "mapBytes": 27886589,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 3894,
+            "bytes": 5650845
+          },
+          "witness": {
+            "entries": 783,
+            "bytes": 128302
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 3081,
+            "bytes": 21680628
+          },
+          "coverage": {
+            "entries": 3082,
+            "bytes": 425316
+          }
+        },
+        "entries": 10845,
+        "newMisses": 671
+      }
+    ],
+    "readerRetryClocks": [
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462793484,
+        "notBefore": 1793462810073,
+        "attempt": 2,
+        "at": 1793462800073.4
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462793484,
+        "notBefore": 1793462828350,
+        "attempt": 4,
+        "at": 1793462818350.4
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462793484,
+        "notBefore": 1793462847012,
+        "attempt": 6,
+        "at": 1793462837012.1
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462793484,
+        "notBefore": 1793462867024,
+        "attempt": 8,
+        "at": 1793462857023.6
+      },
+      {
+        "kind": "retry-clock",
+        "priorityRetry": true,
+        "retryMs": 10000,
+        "quietUntil": 1793462793484,
+        "notBefore": 1793462887553,
+        "attempt": 10,
+        "at": 1793462877553.2
+      }
+    ],
+    "readerInterruptions": [
+      {
+        "attempt": 2,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3860,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462796712.8
+        },
+        "arrivingJob": {
+          "id": 3862,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462800060.1
+        },
+        "at": 1793462800065.8
+      },
+      {
+        "attempt": 4,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3901,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462814357.1
+        },
+        "arrivingJob": {
+          "id": 3903,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462818336.7
+        },
+        "at": 1793462818342.4
+      },
+      {
+        "attempt": 6,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3942,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462833353.5
+        },
+        "arrivingJob": {
+          "id": 3944,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462836999.7
+        },
+        "at": 1793462837001.5
+      },
+      {
+        "attempt": 8,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 3983,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462852505.2
+        },
+        "arrivingJob": {
+          "id": 3985,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462857006.2
+        },
+        "at": 1793462857011.9
+      },
+      {
+        "attempt": 10,
+        "site": "accountCapture:baseline-shadow",
+        "suspended": false,
+        "shadowActivity": false,
+        "queuePriority": true,
+        "capturedQueue": {
+          "id": 4024,
+          "name": "accountCapture.ts:615:flushJournal",
+          "at": 1793462873010.5
+        },
+        "arrivingJob": {
+          "id": 4026,
+          "name": "accountReceive.ts:2487:prepared",
+          "at": 1793462877530.2
+        },
+        "at": 1793462877535.2
+      }
+    ],
+    "uncappedNativeScalars": {
+      "fullLedgerChecks": 1,
+      "fullPhysicalLoads": 4,
+      "prefixComparisonCalls": 760504,
+      "prefixComparisonMs": 9807.59998703003,
+      "receiveGroupMs": 28026.700017929077
+    },
+    "requestCursor": {
+      "publisherSha256": "f27a11c86683d237a5d3b720cb2bbf6fec7f8a0bdd1c6a459e5ebcf153623596",
+      "baselineAfter": 5,
+      "lastAfter": 3077,
+      "requestCount": 775,
+      "crossings": {
+        "0": 1793462702672.1765,
+        "100": 1793462708209.2866,
+        "200": 1793462709915.3481,
+        "300": 1793462711781.4531,
+        "400": 1793462713637.0303,
+        "500": 1793462715328.1475,
+        "600": 1793462717424.1,
+        "700": 1793462719189.4895,
+        "800": 1793462721315.6396,
+        "900": 1793462723333.1265,
+        "1000": 1793462725481.9578,
+        "1100": 1793462727714.4465,
+        "1200": 1793462730037.4817,
+        "1300": 1793462732478.0137,
+        "1400": 1793462734647.7346,
+        "1500": 1793462737207.695,
+        "1600": 1793462739873.2588,
+        "1700": 1793462742514.0093,
+        "1800": 1793462745323.9026,
+        "1900": 1793462748019.8362,
+        "2000": 1793462750669.297,
+        "2100": 1793462753360.413,
+        "2200": 1793462756314.2664,
+        "2300": 1793462759090.7708,
+        "2400": 1793462761891.8635,
+        "2500": 1793462765106.7332,
+        "2600": 1793462768163.014,
+        "2700": 1793462771126.0007,
+        "2800": 1793462774478.4785,
+        "2900": 1793462777432.5344,
+        "3000": 1793462780750.436,
+        "3072": 1793462783255.8718
+      },
+      "qualification": "Network cursor only; cannot assign exact index fallback from a timing bend."
+    },
+    "firstIndexFallbackMeasurement": "NOT MEASURED: event cap truncated before the boundary. No absent-event/no-fallback inference."
+  },
+  {
+    "name": "index3072-04-P0",
+    "P": 0,
+    "bits": "10100",
+    "SY": "11",
+    "repairMs": 1000,
+    "config": "reader-idle.config.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/prepared-fixture/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "actorIndex": 1,
+    "formatExposure": "Fresh receiver actually writes selected P0/P1 receipts during catch-up; no relabeling",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/reader-idle.config.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793462904.268687,
+    "finishedAt": 1793463412.769105,
+    "outcome": "maintenance-halted",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "startedBehind": true,
+      "fullArchiveAfterDrain": true
+    },
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "drainComplete": true,
+    "drainMs": 476684.5134277344,
+    "observedLogicalCommitPositions": 1256,
+    "scalarLogicalPositions": 3072,
+    "eventOverflow": 1074852,
+    "timelineComplete": false,
+    "firstIndexFallback": null,
+    "indexPeakObservedCharge": 17106377,
+    "indexPeakObservedPhysicalBytes": 17106377,
+    "comparisonMsScalar": 80396.40009689331,
+    "observedNativeRows": 2512,
+    "observedHeadRows": 1256,
+    "observedPlaintextBytes": 16983661,
+    "observedBytesPerPosition": 13522.023089171975,
+    "denseExtentCountObserved": 0,
+    "duplicateOriginalPageStoresObserved": 0,
+    "readerAttempts": 2,
+    "readerCompletions": 0,
+    "readerCapacityRefusals": 1,
+    "readerPeakMapBytes": 33545153,
+    "readerDurablePeakBytes": 25507072,
+    "readerLastOutcome": {
+      "kind": "threw",
+      "name": "Error"
+    },
+    "readerFurthestStages": [
+      "opening"
+    ],
+    "cold": "not reached",
+    "hostBusyMedian": 38.365791698592815,
+    "hostBusyMax": 74.87586891757697,
+    "qualification": "Diagnostic only, no credit. Expanded index charge is not heap size. Event truncation/censoring remains explicit; no missing positions interpolated. Node drain duration is end-to-end; first native timeline bin has unbracketed epoch alignment. Reader120swindow/600sdrain/guards unchanged; cold only if maintenance reaches it.",
+    "readerJournalFamilySnapshots": [
+      {
+        "attempt": 1,
+        "journal": 1,
+        "mapBytes": 25465473,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 4964,
+            "bytes": 25465473
+          }
+        },
+        "entries": 4964,
+        "newMisses": 4964
+      },
+      {
+        "attempt": 2,
+        "journal": 2,
+        "mapBytes": 33545153,
+        "cap": 33554432,
+        "families": {
+          "opened": {
+            "entries": 5557,
+            "bytes": 33545153
+          }
+        },
+        "entries": 5557,
+        "newMisses": 593
+      }
+    ],
+    "readerRetryClocks": [],
+    "readerInterruptions": [],
+    "uncappedNativeScalars": {
+      "fullLedgerChecks": 77,
+      "fullPhysicalLoads": 3,
+      "prefixComparisonCalls": 1203716,
+      "prefixComparisonMs": 80364.50010108948,
+      "receiveGroupMs": 271916.50002098083
+    },
+    "requestCursor": {
+      "publisherSha256": "f27a11c86683d237a5d3b720cb2bbf6fec7f8a0bdd1c6a459e5ebcf153623596",
+      "baselineAfter": 5,
+      "lastAfter": 3077,
+      "requestCount": 770,
+      "crossings": {
+        "0": 1793462909393.405,
+        "100": 1793462915552.1143,
+        "200": 1793462917466.9836,
+        "300": 1793462919667.0103,
+        "400": 1793462921901.8582,
+        "500": 1793462924246.5242,
+        "600": 1793462926788.0027,
+        "700": 1793462929641.9065,
+        "800": 1793462932728.6482,
+        "900": 1793462936699.5164,
+        "1000": 1793462940749.0217,
+        "1100": 1793462944987.3027,
+        "1200": 1793462949893.2664,
+        "1300": 1793462955293.5103,
+        "1400": 1793462961308.8984,
+        "1500": 1793462967243.376,
+        "1600": 1793462973808.3784,
+        "1700": 1793462980372.7458,
+        "1800": 1793462987590.5217,
+        "1900": 1793462994875.3643,
+        "2000": 1793463003633.6714,
+        "2100": 1793463013752.191,
+        "2200": 1793463025422.7837,
+        "2300": 1793463038452.9243,
+        "2400": 1793463051019.1816,
+        "2500": 1793463075261.1501,
+        "2600": 1793463126461.7795,
+        "2700": 1793463176842.243,
+        "2800": 1793463232632.8164,
+        "2900": 1793463285113.9617,
+        "3000": 1793463344174.299,
+        "3072": 1793463386779.5728
+      },
+      "qualification": "Network cursor only; cannot assign exact index fallback from a timing bend."
+    },
+    "firstIndexFallbackMeasurement": "NOT MEASURED: event cap truncated before the boundary. No absent-event/no-fallback inference."
+  }
+]

@@ -1,0 +1,314 @@
+{
+  "labRoot": "/private/tmp/done-dense-page-screen-lab-20261031",
+  "items": [
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-plan.json",
+      "copy": "evidence/index3072-plan.json.gz",
+      "rawSha256": "610ea0396fec1da41dcfaeab5f83d6989a2972f18ddd3e8e7d9fa7da1488d364",
+      "bytes": 2031,
+      "gzipSha256": "227c70743a9d929ac0895482cfe08254e196e3e1450130b68e9c345fa2d9f537"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-inputs.json",
+      "copy": "evidence/index3072-inputs.json.gz",
+      "rawSha256": "38632ed4197bde742fd0bb794fdb7b8352331c5c554e42e8b086c9dbbff3c0a1",
+      "bytes": 131734,
+      "gzipSha256": "53564c615a616f0dee3db678cc633ac2af59fecbc6bab02e3cfbc792bc72fa4c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-results.json",
+      "copy": "evidence/index3072-results.json.gz",
+      "rawSha256": "7dbb614de3c9167d0b9304da6c0f5c779060b503633e9a1f779b113355ae02cc",
+      "bytes": 4644,
+      "gzipSha256": "905ec5c7106d96b3d2f10d64727a3af62663892e3fc278eb7042f393944fab27"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-analysis.json",
+      "copy": "evidence/index3072-analysis.json.gz",
+      "rawSha256": "cd58740f55cc540cd39425ef35e7bf95919e26a6fa8e30cdab31577f736ece37",
+      "bytes": 47796,
+      "gzipSha256": "6364e09e61ff7ac4a9ed3c7553b7be0d7b8b131aa1ff32e4e304b885bc465f37"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-analysis-console.log",
+      "copy": "evidence/index3072-analysis-console.log.gz",
+      "rawSha256": "626f1d0fb3155ef8c05b20a3d3a5c942454ad1334fe327138be0e7d7da547300",
+      "bytes": 40500,
+      "gzipSha256": "fadee49de007e73db6108b69a42738c854cb87efe2f76a91eab13aa5fedfcbb5"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-identity.json",
+      "copy": "evidence/build-identity.json.gz",
+      "rawSha256": "7656a8c923827ceb19ac10bf65e236480868c3ec373f66188af50af8447f2be5",
+      "bytes": 75053,
+      "gzipSha256": "b0e80952b006dca1c608042c9d77c1484dd8b29fa38795f5ecf2e5b6fe29ee21"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-flags.json",
+      "copy": "evidence/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "bytes": 308,
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-01-P0/console.log",
+      "copy": "evidence/index3072-01-P0/console.log.gz",
+      "rawSha256": "304197cf4937e8b5fc0df27e90bb385c567fd72c4e26b5b7d26ede112c1a6804",
+      "bytes": 520,
+      "gzipSha256": "9cf8cc7c2ecc2f4338fab4e739f1b86f4b22595ce551b823078ac7b4b8135a83"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-01-P0/list.log",
+      "copy": "evidence/index3072-01-P0/list.log.gz",
+      "rawSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "bytes": 123,
+      "gzipSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-01-P0/receipt.json",
+      "copy": "evidence/index3072-01-P0/receipt.json.gz",
+      "rawSha256": "b81867631454f9ccb299246f0a7ba7a012e0ec875a7c3809ce4ca02c7f83bba5",
+      "bytes": 1079,
+      "gzipSha256": "45f4b9360289d21c0fecad2662c3fd884066715fb2e128ead24f4beb2bc59efd"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-01-P0/result.json",
+      "copy": "evidence/index3072-01-P0/result.json.gz",
+      "rawSha256": "01fd219e8198d992354bd76f07e1b16beec69665824c91dc4ab669b4aa9e39d8",
+      "bytes": 67383795,
+      "gzipSha256": "ac18b9bd4f05f01e45b34d82310748369f16f904756586da6330cc4120abd4d6"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-01-P0/host-load.jsonl",
+      "copy": "evidence/index3072-01-P0/host-load.jsonl.gz",
+      "rawSha256": "2bf76cae71a6d10cba4f16ed98120055188b17c458526324e9c2d491ec125719",
+      "bytes": 194357,
+      "gzipSha256": "facfffe0b2789ec501458e9490114811736851fab8b06a97255a9b137e09f39a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-01-P0/container-identity.json",
+      "copy": "evidence/index3072-01-P0/container-identity.json.gz",
+      "rawSha256": "fbfba8c926250465b7b22a503609b5a80f474d8e1b2f7b974a4167dac9096d51",
+      "bytes": 2696,
+      "gzipSha256": "9a2d07da9abb2aad26464611689047135e740a18a2f2cf3c882edb2b1c933537"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-02-P1/console.log",
+      "copy": "evidence/index3072-02-P1/console.log.gz",
+      "rawSha256": "e5a212410c0225a6d264f6bb47171fac73a9acd8d9c17ebe0486232a78bda3de",
+      "bytes": 344,
+      "gzipSha256": "26879af06ba19562aae4033a844331410e2781fb1613d8294059bd718b9a54fd"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-02-P1/list.log",
+      "copy": "evidence/index3072-02-P1/list.log.gz",
+      "rawSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "bytes": 123,
+      "gzipSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-02-P1/receipt.json",
+      "copy": "evidence/index3072-02-P1/receipt.json.gz",
+      "rawSha256": "ccacfaaa061e75ac1b299c7d88f83dd09e4a7a0952176786a53e6d0c28bd8538",
+      "bytes": 1079,
+      "gzipSha256": "253837f5e56cbcc67c3e2e32637db34b3b74f3c641e8df26eb928b1006411087"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-02-P1/result.json",
+      "copy": "evidence/index3072-02-P1/result.json.gz",
+      "rawSha256": "d5df3adb92f0411671563a8912959c5837395007d6e867062d8671b984f993c4",
+      "bytes": 65698904,
+      "gzipSha256": "b72399efb515a28a99d09149c30fdb3119526c3d75a9b23e4c766b239674c8f7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-02-P1/host-load.jsonl",
+      "copy": "evidence/index3072-02-P1/host-load.jsonl.gz",
+      "rawSha256": "5d4ae524d6ffbddf55f2c564d23932339a89213a3fad40a865bb3eb71a9c4189",
+      "bytes": 75555,
+      "gzipSha256": "d81e930bad85fbd6ee2d0ce6f16d91664942a2c819e29e2f230828d56abf62aa"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-02-P1/container-identity.json",
+      "copy": "evidence/index3072-02-P1/container-identity.json.gz",
+      "rawSha256": "3f49bc73c7915679e8b736e7f4e97b7e6b660398c8d7bceebf8863add5e13c32",
+      "bytes": 2696,
+      "gzipSha256": "514c236868746a3861bfe8beb059c1ef7f8ca8bcdd985940a02cd5d934a29d17"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-03-P1/console.log",
+      "copy": "evidence/index3072-03-P1/console.log.gz",
+      "rawSha256": "597ae7591b19ad05e3f723dc68a8f5265ee8be4822787832c648a49adb73fa65",
+      "bytes": 344,
+      "gzipSha256": "dcfa1cf81792daf70d0f07de4f1fcfb1e3fbf2a36cd6cbc54d70891b9f267260"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-03-P1/list.log",
+      "copy": "evidence/index3072-03-P1/list.log.gz",
+      "rawSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "bytes": 123,
+      "gzipSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-03-P1/receipt.json",
+      "copy": "evidence/index3072-03-P1/receipt.json.gz",
+      "rawSha256": "d9f9433cc930e093514003409fc0b1006f622b2e53ff0e9386245ff0d97e75d4",
+      "bytes": 1102,
+      "gzipSha256": "510f6be8a139c884de3cd9d89e01194ffc5897383f81fb8bd38c05b37a96b2f5"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-03-P1/result.json",
+      "copy": "evidence/index3072-03-P1/result.json.gz",
+      "rawSha256": "43590e561f969a42bd6b05abc1f232bed2cde8ddbf90948da52c7e83db4d0dd2",
+      "bytes": 33137569,
+      "gzipSha256": "8746de7efe75135672cb42dec8e04a9bbf18ad70e42fe00f9a5a4cdb0b8d2e4a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-03-P1/host-load.jsonl",
+      "copy": "evidence/index3072-03-P1/host-load.jsonl.gz",
+      "rawSha256": "b339e8ecfdfefe239cccb192b35a00f2990c18aac16091069d98fd02278b8714",
+      "bytes": 67925,
+      "gzipSha256": "2be336fac63620cba8d923ea3341a5338cc419e7b2d247f79044fcb95246f53a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-03-P1/container-identity.json",
+      "copy": "evidence/index3072-03-P1/container-identity.json.gz",
+      "rawSha256": "291dfe202cb2fb6ee56e931f572baa8ea41f501314e49ad6426fde10b8f06d2f",
+      "bytes": 2696,
+      "gzipSha256": "e1dc3a5557aa0c20726bc4545bdc5e6f5d6f9797951860e002165cf234641cb9"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-04-P0/console.log",
+      "copy": "evidence/index3072-04-P0/console.log.gz",
+      "rawSha256": "f66b9d1a5a052d81496b0c2e55784e3a010bf5b0f9471e51b74f5860723aa11b",
+      "bytes": 520,
+      "gzipSha256": "ab156bbb8cec860b6ddf271cdb51c7523401ac621cb40db4d2c8b2c5e9121e51"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-04-P0/list.log",
+      "copy": "evidence/index3072-04-P0/list.log.gz",
+      "rawSha256": "dfa1c15ee76a2445c04cd350f335ea179015a0263676282eeff246db7d656836",
+      "bytes": 123,
+      "gzipSha256": "b9b4aa3fb4fc1fb1fe392d031e72336b080252827e178e5ae8b20d0723da2e32"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-04-P0/receipt.json",
+      "copy": "evidence/index3072-04-P0/receipt.json.gz",
+      "rawSha256": "0c72eebebd696061547ba01e190f8acc7cb2cce9315fcb9e2b0a7417a6e380cc",
+      "bytes": 1079,
+      "gzipSha256": "18f9352e3e6b8b12caf333305f55f385c371a232efd6aab03619c01c81d8ac6d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-04-P0/result.json",
+      "copy": "evidence/index3072-04-P0/result.json.gz",
+      "rawSha256": "0991e4fe5f4e6d229701f7e9c4323d83127e7cf5072be4e7a580487756707332",
+      "bytes": 67049841,
+      "gzipSha256": "2f07c97ef1798f386761ad66964d5a9bb90b2c26dbe6bfb3ef29014c42f9f1a2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-04-P0/host-load.jsonl",
+      "copy": "evidence/index3072-04-P0/host-load.jsonl.gz",
+      "rawSha256": "1b18db7874412e47f7ec746c256bc58be4ebe806f59ac642356eee852914ad1a",
+      "bytes": 168363,
+      "gzipSha256": "1427abb9097c2b36b8d9e533efa9f8ed6f14082dc923403c9923eb5752c445e3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-04-P0/container-identity.json",
+      "copy": "evidence/index3072-04-P0/container-identity.json.gz",
+      "rawSha256": "a104b5bccfa0574094cf20ae3abc22b6ebce2c4e3f9e3a7c7bce1d48a66f2034",
+      "bytes": 2696,
+      "gzipSha256": "b37d1a8e3e472c461998b4a9570e03b46acee211f5b9c2745cbce4ea764f2eba"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-matrix.py",
+      "copy": "apparatus/run-matrix.py.gz",
+      "rawSha256": "26267fbf8db2bf43ae579ce90b2c4da50fa702372bbedee9cb150f02e2d2aa64",
+      "bytes": 4064,
+      "gzipSha256": "08a1f22a41cd87f927dfe10adee49744e0b29a1451c4d3764b2709f39bba93e3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-index3072.py",
+      "copy": "apparatus/analyze-index3072.py.gz",
+      "rawSha256": "7d16fb07f24aa6808722b16047b8b588628a2ba0655ac0eecc9836de5302602f",
+      "bytes": 6215,
+      "gzipSha256": "4334a9ea3c961bbeafc73fc5664c3d459329d384fc26d2c801810f610ff535b0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-index3072-network.py",
+      "copy": "apparatus/analyze-index3072-network.py.gz",
+      "rawSha256": "aab7c35662ba0f9e475eb263a00643e725e0e39db8cfd841bea634977911fa62",
+      "bytes": 2307,
+      "gzipSha256": "470a2206a1c874137a733e4b9f58cdb29101454b077939f2382c9aa4b2389eca"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/OPERATOR-ADDITIONS-317.md",
+      "copy": "evidence/OPERATOR-ADDITIONS-317.md.gz",
+      "rawSha256": "2f59bd5f20809c2d80baf58a4420ecd25729c3f25f4947f775eb714ba27ab946",
+      "bytes": 2169,
+      "gzipSha256": "f57297d03f55e01b81154d8475b913af42223e0fb407dc0c5d56c65dbec4fedd"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/NAMED-COST-PROTOCOL.md",
+      "copy": "evidence/NAMED-COST-PROTOCOL.md.gz",
+      "rawSha256": "3fcfec761b09a3ce46f0dfaf1d68cf825b6541da80d4f4fb79010aeb043539f6",
+      "bytes": 1108,
+      "gzipSha256": "5822569347f13d57324c6035e8c1e715bd925177cf99ab2578ed23eeafd55ab3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/named-cost-plan.json",
+      "copy": "evidence/named-cost-plan.json.gz",
+      "rawSha256": "557bb13436509688b7e0fd30f5c4a15b353149264dca546bd34167bc9fdec083",
+      "bytes": 3043,
+      "gzipSha256": "0a766c14d660304e5f40ee7d1513aec37c05c637f88a728db8e0d1c4653f0077"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-network-per100.csv",
+      "copy": "evidence/index3072-network-per100.csv.gz",
+      "rawSha256": "56eb2a081757addb49fa155b2f7a249ce0971115090666a9455e71cad68fa444",
+      "bytes": 20027,
+      "gzipSha256": "36b27bc3bfdba3086c1d1e67ed69558513815359fdf2c4169772e6dd5de80803"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-network-analysis-console.log",
+      "copy": "evidence/index3072-network-analysis-console.log.gz",
+      "rawSha256": "4813c351e0ea2d94dab7fc0272b832d86cebc9b378557065d51e4bfc13d8f156",
+      "bytes": 1114,
+      "gzipSha256": "1fda1c6f899c3feb91899b354caa0fa64ba95d7be64bfb6293bd0b5ecdff7d2b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-per100.csv",
+      "copy": "evidence/index3072-per100.csv.gz",
+      "rawSha256": "d4cecac02229995579152a9996c5dbd0d17279700871ed89c93ee013b7b29fe4",
+      "bytes": 17283,
+      "gzipSha256": "d8912f15b93be0072c30d7ef06a19c5161c84039999f3f0dc2858f556328d63a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-attempts.csv",
+      "copy": "evidence/index3072-attempts.csv.gz",
+      "rawSha256": "bfb54ca422abc0b7d6f76587205fb7e7f21d6250de10f2dfedca21ca6cbc70d7",
+      "bytes": 17507,
+      "gzipSha256": "e40fdaa8c5d2cac46d773281837b075237c60d9dd22174d429d0c8a863fb63e4"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "rawSha256": "52a98127646d48363fe64520ca44f18e0b1a810248a2e8901f8ed971c6e3e76f",
+      "bytes": 5601,
+      "gzipSha256": "ccfdb89ffc1bdceffa9eab2a799ec141826da179a5c9ecb4cab73d29938171cf"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "rawSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "bytes": 285,
+      "gzipSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170"
+    }
+  ],
+  "profilesCredentialsDatabasesBuildsNotCopied": true
+}
