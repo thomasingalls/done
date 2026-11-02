@@ -6652,3 +6652,8 @@ Repair the fixture postcheck only: canonical empty files are valid exact hash ev
 ### 2026-10-30 — Worker catch-up phase298
 
 Refresh observer target by semantic live-writer role from public admission metadata, proving old constant==old actor2. Retain exact cursor1stream assertion. Remove only generated Python bytecode via explicit next patch; prior immutable artifacts remain. See [phase298](./performance-experiments/2026-10-29-worker-catchup/phase298/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase299
+
+Freeze signed0abwithheld, exact248-onlywithheld, current291normal and original multi-account fairness at production flags/default limits with the fresh verified fixture. Preserve all gates; classify functional failures before proceeding and do not claim normal Page/Worker comparison. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).

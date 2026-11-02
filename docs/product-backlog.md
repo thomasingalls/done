@@ -1068,3 +1068,8 @@ Fresh civil fixture is now verified. Next signed0abwithheld/default flags, then 
 ### 2026-10-30 — Worker catch-up phase298
 
 Fresh fixture now has semantic writer-role adapter. Freeze and run signed0abwithheld first, then yield-only matched withheld and current ordinary/fairness cases with original absolute/native gates. Deep and compatibility blocks remain. See [phase298](./performance-experiments/2026-10-29-worker-catchup/phase298/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase299
+
+Execute missing signed0abwithheld first under299, record functional and independent latency outcomes, then matched yield-only/current ordinary/fairness cases if classification allows. All deep/compatibility and release holds remain. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).
