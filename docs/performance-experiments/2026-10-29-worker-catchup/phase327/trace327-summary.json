@@ -1,0 +1,923 @@
+[
+  {
+    "name": "trace327-ready-paired150-d0-reference",
+    "policy": "reference",
+    "workload": "paired150",
+    "replicate": 1,
+    "rtt": 0,
+    "writers": 2,
+    "keys": 300,
+    "keyMs": 150,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source",
+    "dist": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-reference/combined-dist",
+    "fixture": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-short-fixture/fixture.json",
+    "config": "sender326.config.ts",
+    "fileFilter": "sender326.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "purpose": "observation-only failure origin, streamed worker tail and both-direction channel occupancy; no latency comparison credit",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/sender326.config.ts",
+      "sender326.spec.ts"
+    ],
+    "childExit": 1,
+    "startedAt": 1793543521.2639449,
+    "finishedAt": 1793543632.227427,
+    "outcome": "failed",
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m300\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 30000ms exceeded while waiting on the predicate",
+    "coldFailure": false,
+    "guards": {
+      "genuinelyCaughtUpBeforeWriting": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "closureAfterTypingMs": [],
+    "owners": [
+      {
+        "actor": 1,
+        "failCalls": [
+          {
+            "kind": "ceremony-fail",
+            "origin": "session-cohort-abort",
+            "reason": {
+              "name": "AbortError",
+              "frames": [
+                "    at Object.close (http://localhost:53781/assets/deviceDataRemoval-CC10NjLJ.js:2:16294)",
+                "    at http://localhost:53781/assets/AccountDevices-CggHL7Ax.js:1:32619",
+                "    at w (http://localhost:53781/assets/writeSession-DEVB--qk.js:2:3596)",
+                "    at MessagePort.E (http://localhost:53781/assets/writeSession-DEVB--qk.js:2:3806)"
+              ]
+            },
+            "closed": true,
+            "needsReboot": false,
+            "poisoned": false,
+            "handingOff": true,
+            "explicitlyClosed": true,
+            "ended": false,
+            "faultCritical": true,
+            "at": 1793543552351.2002
+          },
+          {
+            "kind": "ceremony-fail",
+            "origin": "control-channel",
+            "reason": {
+              "name": "WorkerChannelError",
+              "code": "closed",
+              "frames": [
+                "    at Object.close (http://localhost:53781/assets/writeSession-DEVB--qk.js:2:6243)",
+                "    at http://localhost:53781/assets/AccountDevices-CggHL7Ax.js:1:37273",
+                "    at async http://localhost:53781/assets/AccountDevices-CggHL7Ax.js:1:3831"
+              ]
+            },
+            "closed": true,
+            "needsReboot": false,
+            "poisoned": false,
+            "handingOff": true,
+            "explicitlyClosed": true,
+            "ended": false,
+            "faultCritical": true,
+            "at": 1793543552356.3
+          }
+        ],
+        "nativeTerminal": [],
+        "transport": [
+          {
+            "realm": "http://localhost:53781/assets/localStartup.worker-8nZKo35P.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 3,
+            "workerDropped": 0,
+            "batchGaps": 0,
+            "tailEvents": 3,
+            "lastTailAt": 1793543533227.5999
+          },
+          {
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 28475,
+            "workerDropped": 241,
+            "batchGaps": 0,
+            "tailEvents": 8192,
+            "lastTailAt": 1793543552347.5
+          }
+        ],
+        "queueFull": [],
+        "channels": [
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 1,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 2,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 3,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 4,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/localStartup.worker-8nZKo35P.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 2,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 3,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          }
+        ],
+        "firstChannelCloseAfterTypingMs": 7573.105712890625,
+        "firstActionableCeremonyFail": null
+      },
+      {
+        "actor": 2,
+        "failCalls": [],
+        "nativeTerminal": [],
+        "transport": [
+          {
+            "realm": "http://localhost:53781/assets/localStartup.worker-8nZKo35P.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 3,
+            "workerDropped": 0,
+            "batchGaps": 0,
+            "tailEvents": 3,
+            "lastTailAt": 1793543538451.0999
+          },
+          {
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 446830,
+            "workerDropped": 2028501,
+            "batchGaps": 0,
+            "tailEvents": 8192,
+            "lastTailAt": 1793543613513.5
+          }
+        ],
+        "queueFull": [],
+        "channels": [
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 1,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 2,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 3,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 4,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/localStartup.worker-8nZKo35P.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 2,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 3,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          }
+        ],
+        "firstChannelCloseAfterTypingMs": null,
+        "firstActionableCeremonyFail": null
+      }
+    ],
+    "observedNon200": [],
+    "hostBusyMedian": 35.28125621148877,
+    "hostBusyMax": 62.17295785899741
+  },
+  {
+    "name": "trace327-ready-paired150-d0-coordinated-2000",
+    "policy": "coordinated-2000",
+    "workload": "paired150",
+    "replicate": 1,
+    "rtt": 0,
+    "writers": 2,
+    "keys": 300,
+    "keyMs": 150,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source",
+    "dist": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-coordinated-2000/combined-dist",
+    "fixture": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-short-fixture/fixture.json",
+    "config": "sender326.config.ts",
+    "fileFilter": "sender326.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "purpose": "observation-only failure origin, streamed worker tail and both-direction channel occupancy; no latency comparison credit",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/sender326.config.ts",
+      "sender326.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793543805.3215091,
+    "finishedAt": 1793543896.974721,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "genuinelyCaughtUpBeforeWriting": true,
+      "fullArchivePlusBothOfferedStreams": true,
+      "undoPreservesPeerStreams": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "closureAfterTypingMs": [],
+    "owners": [
+      {
+        "actor": 1,
+        "failCalls": [],
+        "nativeTerminal": [],
+        "transport": [
+          {
+            "realm": "http://localhost:53781/assets/localStartup.worker-Blo0Bmp3.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 3,
+            "workerDropped": 0,
+            "batchGaps": 0,
+            "tailEvents": 3,
+            "lastTailAt": 1793543809963.8
+          },
+          {
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 86989,
+            "workerDropped": 38061,
+            "batchGaps": 0,
+            "tailEvents": 8192,
+            "lastTailAt": 1793543880494.2
+          }
+        ],
+        "queueFull": [],
+        "channels": [
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "page",
+            "channel": 1,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "page",
+            "channel": 2,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "page",
+            "channel": 3,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "page",
+            "channel": 4,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/localStartup.worker-Blo0Bmp3.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 2,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 3,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          }
+        ],
+        "firstChannelCloseAfterTypingMs": null,
+        "firstActionableCeremonyFail": null
+      },
+      {
+        "actor": 2,
+        "failCalls": [],
+        "nativeTerminal": [],
+        "transport": [
+          {
+            "realm": "http://localhost:53781/assets/localStartup.worker-Blo0Bmp3.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 3,
+            "workerDropped": 0,
+            "batchGaps": 0,
+            "tailEvents": 3,
+            "lastTailAt": 1793543815083.3
+          },
+          {
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 94159,
+            "workerDropped": 470246,
+            "batchGaps": 0,
+            "tailEvents": 8192,
+            "lastTailAt": 1793543880498.7
+          }
+        ],
+        "queueFull": [],
+        "channels": [
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "page",
+            "channel": 1,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "page",
+            "channel": 2,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "page",
+            "channel": 3,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "page",
+            "channel": 4,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/localStartup.worker-Blo0Bmp3.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 2,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-ready-paired150-d0-coordinated-2000",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-BI47w4kx.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 3,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          }
+        ],
+        "firstChannelCloseAfterTypingMs": null,
+        "firstActionableCeremonyFail": null
+      }
+    ],
+    "observedNon200": [],
+    "hostBusyMedian": 39.56113560289285,
+    "hostBusyMax": 62.76532434040865
+  },
+  {
+    "name": "trace327-tagged-paired150-d0-reference",
+    "policy": "reference",
+    "workload": "paired150",
+    "replicate": 1,
+    "rtt": 0,
+    "writers": 2,
+    "keys": 300,
+    "keyMs": 150,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "pp": true,
+    "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source-tagged",
+    "dist": "/private/tmp/done-owner-fault-trace-lab-20261101/tagged-reference/combined-dist",
+    "fixture": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-short-fixture/fixture.json",
+    "config": "sender326.config.ts",
+    "fileFilter": "sender326.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "purpose": "one additional observation before existing native terminal close, exact job/code/stack; branch unchanged",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/sender326.config.ts",
+      "sender326.spec.ts"
+    ],
+    "childExit": 1,
+    "startedAt": 1793544112.593819,
+    "finishedAt": 1793544216.177268,
+    "outcome": "failed",
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m300\u001b[39m\nReceived: \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 30000ms exceeded while waiting on the predicate",
+    "coldFailure": false,
+    "guards": {
+      "genuinelyCaughtUpBeforeWriting": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "closureAfterTypingMs": [],
+    "owners": [
+      {
+        "actor": 1,
+        "failCalls": [
+          {
+            "kind": "ceremony-fail",
+            "origin": "session-cohort-abort",
+            "reason": {
+              "name": "AbortError",
+              "frames": [
+                "    at Object.close (http://localhost:53781/assets/deviceDataRemoval-CMPALUEZ.js:2:16294)",
+                "    at http://localhost:53781/assets/AccountDevices-_WBOQgRF.js:1:32619",
+                "    at w (http://localhost:53781/assets/writeSession-BvDrodhm.js:2:3596)",
+                "    at MessagePort.E (http://localhost:53781/assets/writeSession-BvDrodhm.js:2:3806)"
+              ]
+            },
+            "closed": true,
+            "needsReboot": false,
+            "poisoned": false,
+            "handingOff": true,
+            "explicitlyClosed": true,
+            "ended": false,
+            "faultCritical": true,
+            "at": 1793544136511.4
+          },
+          {
+            "kind": "ceremony-fail",
+            "origin": "control-channel",
+            "reason": {
+              "name": "WorkerChannelError",
+              "code": "closed",
+              "frames": [
+                "    at Object.close (http://localhost:53781/assets/writeSession-BvDrodhm.js:2:6243)",
+                "    at http://localhost:53781/assets/AccountDevices-_WBOQgRF.js:1:37273",
+                "    at async http://localhost:53781/assets/AccountDevices-_WBOQgRF.js:1:3831"
+              ]
+            },
+            "closed": true,
+            "needsReboot": false,
+            "poisoned": false,
+            "handingOff": true,
+            "explicitlyClosed": true,
+            "ended": false,
+            "faultCritical": true,
+            "at": 1793544136517.0999
+          }
+        ],
+        "nativeTerminal": [
+          {
+            "kind": "native-owner-terminal-close",
+            "traceName": "accountCapture.ts:380:schedule",
+            "preparation": false,
+            "reason": {
+              "name": "ContentError",
+              "code": "repair-required",
+              "frames": [
+                "    at V (http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js:2:32129)",
+                "    at Object.compare (http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js:14:503323)",
+                "    at k (http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js:14:515137)",
+                "    at async A (http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js:14:517256)",
+                "    at async Object.auditWarm (http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js:14:530877)",
+                "    at async http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js:63:8963"
+              ]
+            },
+            "faultCritical": true,
+            "at": 1793544136506.7,
+            "traceSeq": 27663
+          }
+        ],
+        "transport": [
+          {
+            "realm": "http://localhost:53781/assets/localStartup.worker-CYJC6V-D.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 3,
+            "workerDropped": 0,
+            "batchGaps": 0,
+            "tailEvents": 3,
+            "lastTailAt": 1793544117261.2
+          },
+          {
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 27416,
+            "workerDropped": 248,
+            "batchGaps": 0,
+            "tailEvents": 8192,
+            "lastTailAt": 1793544136507.5
+          }
+        ],
+        "queueFull": [],
+        "channels": [
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 1,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 2,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 3,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "page",
+            "channel": 4,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/localStartup.worker-CYJC6V-D.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 2,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 1,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 3,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          }
+        ],
+        "firstChannelCloseAfterTypingMs": 7715.9091796875,
+        "firstActionableCeremonyFail": null
+      },
+      {
+        "actor": 2,
+        "failCalls": [],
+        "nativeTerminal": [],
+        "transport": [
+          {
+            "realm": "http://localhost:53781/assets/localStartup.worker-CYJC6V-D.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 3,
+            "workerDropped": 0,
+            "batchGaps": 0,
+            "tailEvents": 3,
+            "lastTailAt": 1793544122537.0999
+          },
+          {
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "received": 462955,
+            "workerDropped": 2033824,
+            "batchGaps": 0,
+            "tailEvents": 8192,
+            "lastTailAt": 1793544200077.5999
+          }
+        ],
+        "queueFull": [],
+        "channels": [
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 1,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 2,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 0,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 3,
+            "outgoingHighWater": 1,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "page",
+            "channel": 4,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/localStartup.worker-CYJC6V-D.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 1,
+            "outgoingHighWater": 0,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 2,
+            "outgoingHighWater": 2,
+            "incomingHighWater": 1,
+            "queueFull": 0,
+            "limit": 8
+          },
+          {
+            "case": "trace327-tagged-paired150-d0-reference",
+            "actor": 2,
+            "realm": "http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N",
+            "channel": 3,
+            "outgoingHighWater": 3,
+            "incomingHighWater": 2,
+            "queueFull": 0,
+            "limit": 8
+          }
+        ],
+        "firstChannelCloseAfterTypingMs": null,
+        "firstActionableCeremonyFail": null
+      }
+    ],
+    "observedNon200": [],
+    "hostBusyMedian": 35.27384421924114,
+    "hostBusyMax": 63.489852765618785
+  }
+]
