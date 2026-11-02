@@ -6765,3 +6765,7 @@ P remains an isolated lab prototype with exact original wires and explicit admit
 ### 2026-10-31 — Phase313: carry P with full comparison to the grown screen
 
 The declared P1V0arm passes all three deep30sruns and fresh-owner cold checks; P0V0misses one. Continue G/R/S1Y1/P with V/Doff into the declared grown screen. This selection is lab-only, with host variability and all failed runs retained. Vdoes not become a landing prerequisite. Paired grown fixtures are actually rebuilt via their selected writer, not relabeled ciphertext; report them separately from the old single-entry writer fixture. All limits,120smaintenance,>=60overlap and no-Fcoldstop remain. No hardening is authorized.
+
+### 2026-10-31 — Phase314: keep reader censoring and capacity separate from writer success
+
+Carry G/R1500/S1Y1/P1,V/Doff to the declared pacing screen: all four exploratory Ponwriter journeys pass measured predicates/cold, versus four Poffcapacity failures. The unchanged test observes writer completion only; one Ponreader completion is demonstrated, other reader windows are censored. Do not infer universal reader fit or waive3,072diagnostics. Family accounting supports representation-driven pressure in opened rows while per-entry verification memo remains material. No cap,120sdeadline,60-keypredicate or security check changes. No hardening starts; compatibility/format remains an operator call.
