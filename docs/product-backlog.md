@@ -808,3 +808,8 @@ Phase245: finish late-marker attribution with corrected calendar/collector; orig
 ## 2026-10-30 — phase246: late-marker attribution closed
 
 Phase246: next cooperative receive-sweep yield for due sending, with regression tests and original two-receiver2.5s gate; follow with repeated receiveStatus proof-reuse investigation. Matched current catch-up overhead3–4%, historical2x not reproduced. Aggregate acceptance remains blocked; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).
+
+
+## 2026-10-30 — phase247: due-send yield contract
+
+Phase247: implement due-send publisher-boundary yield, continuation/scope/backoff regressions, then matched native normal/withheld two-receiver cases. Original2.5s gate stays blocked pending results; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).

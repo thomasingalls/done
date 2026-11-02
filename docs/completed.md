@@ -18036,3 +18036,8 @@ Prepared separate phase245 diagnostic with unchanged source/assets. Apparatus co
 ## 2026-10-30 — phase246: late-marker attribution closed
 
 Completed matched-first then marker attribution. Corrected diagnostic passes all original functional/archive/offline-cold guards,123 trusted inputs and zero trace overflow; sender starts265ms late, envelope/submission383/200ms, receiver hint→writer selection560ms. Midnight invalid trajectory and two analysis-assumption failures retained. No runtime/test edits, source0ab9cbc8 intact; exact lab resources absent. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).
+
+
+## 2026-10-30 — phase247: due-send yield contract
+
+Demonstrated old scheduler misses due send between completed publisher checks: only[0] sends at300ms instead of[0,300]. Own new test cleanup first masked failure with timeout; retained and repaired cleanup, precise assertion then fails. No old test or product edit. Contract/proposed regression and fixed benchmark plan archived. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).

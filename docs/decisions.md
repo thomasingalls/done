@@ -6392,3 +6392,8 @@ Correct only diagnostic civil timezone toUTCdate29, keeping real protocol clocks
 ## 2026-10-30 — phase246: late-marker attribution closed
 
 Choose cooperative yield at verified publisher boundaries as next bounded repair, preserving receive continuation/fairness and due-publication/backoff/local-flush policies. Trace also exposes repeated receiveStatus/native validation for later owner-bound proof reuse. Keep unmodified2.5s misses authoritative; diagnostic2070ms receives no promotion credit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).
+
+
+## 2026-10-30 — phase247: due-send yield contract
+
+Use pass-scoped due-send predicate and explicit yielded receive result after full verified checks. Preserve remaining sweep budget scoped to authority/count; no progress lie, proof reuse, backoff change or partial commit. Freeze four before/after normal/withheld journeys, original gates and independent civil-date guards. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).
