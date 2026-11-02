@@ -18251,3 +18251,8 @@ Phase288:8new bounded-preparation regression cases,7expected failures/1pass agai
 ### 2026-10-30 — Worker catch-up phase289
 
 Phase289: eight bounded-preparation cases, three detected faults,89focused and2840full Vitest passes plus oneexisting skip; stronger signature-count assertion passes in focused rerun.119metadata/7contracts and affected final inventory checks pass. API remains unwired; no native8or acceptance claim. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase290
+
+Phase290: development8download/four-position admission and raw-tail ownership.9new cases/3detected faults,131focused/2849full Vitest passes plus oneexisting skip;11unchanged native group cases,119metadata/7contracts/types/lint/format pass. Actual deep8/composed fallback/fairness and rollback still open; no acceptance credit. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).

@@ -6607,3 +6607,8 @@ Separate bounded range preparation from the strict full-range verifier. Original
 ### 2026-10-30 — Worker catch-up phase289
 
 Bounded preparation verifies at most the remaining four positions using a fresh native prefix on every call; strict full-range verification remains all-or-nothing. Keep the shared position limit in a pure module to avoid pulling admission ownership into crypto bundles. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase290
+
+Download width8 is independent of native position allowance4. Carry only one bounded raw-original tail across turns; reauthenticate each consumed prefix and evict before legacy full reservations. Settle size scheduling refusal cleanly before a publisher-specific narrower retry. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).

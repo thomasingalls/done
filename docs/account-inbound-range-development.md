@@ -80,3 +80,14 @@ reauthenticates originals and each selected entry; an unselected tail has no ver
 The strict full-range API is unchanged. A size hint returning no result can select narrower work
 only; it grants no progress. Native commit and any raw-tail ownership/writer integration remain
 separate obligations. No proof is retained between calls.
+
+## Raw tail and native allowance (phase290)
+
+Development peer requests can download8known entries. The owned native request separately
+captures a1–4position allowance and exact native cursor; both are checked before writes. A single
+bounded raw-original slot may bridge turns, with no verified plaintext or completed proof. Every
+continuation reauthenticates against fresh native state. Context/cursor/revision/expiry/owner
+fences erase or refuse stale originals. Its reservation coexists only with one new single-page
+fetch; legacy multi-request collection evicts first. This is not cross-owner proof reuse.
+A no-result size refusal settles preparation cleanly and narrows fresh work; invalid selected
+evidence still fails. Actual composed fallback/fairness/deep8 and stale-tab/rollback are pending.

@@ -1023,3 +1023,8 @@ Implement bounded preparation from phase288 before raw-tail/planner8. Preserve f
 ### 2026-10-30 — Worker catch-up phase289
 
 Phase289 closes bounded preparation. Next raw signed-original tail cache and8entry planner with fresh native checks/four-position turns; test clean Worker size fallback and actual8deep/fairness. Preserve all other held gates and rollback obligations. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase290
+
+Phase290 closes raw-tail integration functionally. Before timed8 inspect/alleviate partial-turn3+4+1 alignment; then rebuilt deep8, native composed size/fairness and Page64. Keep normal comparison/release held and all gates unchanged. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).

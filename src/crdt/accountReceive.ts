@@ -32,6 +32,7 @@ import {
   type RetentionProgressSink,
 } from './contentMaintenance';
 import { createReceivePageTransport } from './receivePageTransport';
+import { createReceiveRangeTail } from './receiveRangeTail';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
   RECEIVE_GROUP_LIMIT,
@@ -169,7 +170,7 @@ import {
   recordPrivateReceiveExpiry,
   recordPrivateTransportDiagnostic,
 } from '../account/privateDeliveryHttp';
-import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
+import { READ_PAGE_LIMIT, READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
   hex,
   openCredential,
@@ -180,7 +181,7 @@ import {
 } from './custodyCrypto';
 import {
   verifyInboundPage,
-  verifyInboundRange,
+  prepareInboundRange,
   InboundError,
   type InboundContext,
 } from './accountInbound';
@@ -299,6 +300,9 @@ async function openAccountReceiveOwner(
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
   let outstandingGroup: Bytes[] = [];
+  let outstandingCursor = 0,
+    outstandingAllowance = 1;
+  let rangeTail: ReturnType<typeof createReceiveRangeTail> | undefined;
   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
   // Composed owners reuse unchanged quiet proofs within the guarded 750 ms budget.
   // Publication deadline latching preserves the two-receiver 2.5s acceptance gate (phase117).
@@ -777,6 +781,7 @@ async function openAccountReceiveOwner(
       baselineShadow?.invalidate();
       baselineShadow = undefined;
       retentionReads.close();
+      rangeTail?.close();
       receiveSelection.invalidateQuiet();
       outstandingQuiet = undefined;
       authority.dispose();
@@ -811,6 +816,7 @@ async function openAccountReceiveOwner(
     runBaselineShadow,
     copyMirrorOpening,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
+  rangeTail = createReceiveRangeTail(carrier.signal);
   invalidateFinalPermission = invalidateFinalApply;
   const checkLocalBaseline: (() => Promise<BaselineShadowResult>) | undefined =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1'
@@ -1102,6 +1108,7 @@ async function openAccountReceiveOwner(
     _route: CaptureRoute,
     after?: number,
     grouped = false,
+    cached?: (page: Bytes) => void,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
     const stamp = retentionReads.capture();
@@ -1171,30 +1178,38 @@ async function openAccountReceiveOwner(
         : undefined;
     const requests: Bytes[] = [];
     try {
-      const widths = receiveReadWidths(
-        count,
-        grouped && composed && publisher !== base.publisher.id
-          ? receivePages.entryLimit(publisher)
-          : 1,
-      );
+      const peerRange =
+        grouped &&
+        composed &&
+        publisher !== base.publisher.id &&
+        receivePages.entryLimit(publisher) > 1;
+      const previous =
+        peerRange && cached ? rangeTail?.take(base.authority, publisher, cursor) : undefined;
+      const widths = peerRange
+        ? [Math.min(READ_COUNT_LIMIT, Math.max(1, s.prefix.observedThrough - cursor))]
+        : receiveReadWidths(count, 1);
       let offset = 0;
-      for (const width of widths) {
-        const next = {
-          ...r,
-          after: cursor + offset,
-          limit: width,
-          nonce: hex(task.step(() => random(32))),
-        };
-        offset += width;
-        next.signature = hex(
-          new Uint8Array(
-            await task.wait(() =>
-              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+      if (previous) {
+        requests.push(previous.request);
+        cached!(previous.page);
+      } else
+        for (const width of widths) {
+          const next = {
+            ...r,
+            after: cursor + offset,
+            limit: width,
+            nonce: hex(task.step(() => random(32))),
+          };
+          offset += width;
+          next.signature = hex(
+            new Uint8Array(
+              await task.wait(() =>
+                subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+              ),
             ),
-          ),
-        );
-        requests.push(encodeInboundRequest(next));
-      }
+          );
+          requests.push(encodeInboundRequest(next));
+        }
       await assertCurrent(task);
       return task.step(() => {
         outstanding?.fill(0);
@@ -1202,6 +1217,8 @@ async function openAccountReceiveOwner(
         stamp.check();
         outstandingStamp = stamp;
         outstandingQuiet = quiet;
+        outstandingCursor = cursor;
+        outstandingAllowance = count;
         outstandingGroup = requests;
         outstanding = requests[0]!;
         return outstanding.slice();
@@ -1211,13 +1228,38 @@ async function openAccountReceiveOwner(
       throw cause;
     }
   };
-  const prepareGroupOwned = () =>
-    runCaptureTask(async (task, owner, route) => {
-      const first = await prepareRead(task, owner, route, undefined, true);
-      first.fill(0);
-      return { requests: outstandingGroup.map((r) => r.slice()), quiet: outstandingQuiet };
-    });
-  const prepareGroup = async () => (await prepareGroupOwned()).requests;
+  const prepareGroupOwned = async (reuse = false) => {
+    let cachedPage: Bytes | undefined;
+    try {
+      return await runCaptureTask(async (task, owner, route) => {
+        const first = await prepareRead(
+          task,
+          owner,
+          route,
+          undefined,
+          true,
+          reuse
+            ? (page) => {
+                cachedPage = page;
+              }
+            : undefined,
+        );
+        first.fill(0);
+        return {
+          requests: outstandingGroup.map((r) => r.slice()),
+          quiet: outstandingQuiet,
+          cachedPage,
+        };
+      });
+    } catch (cause) {
+      cachedPage?.fill(0);
+      throw cause;
+    }
+  };
+  const prepareGroup = async () => {
+    rangeTail?.drop();
+    return (await prepareGroupOwned()).requests;
+  };
   const receivePages = createReceivePageTransport();
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
@@ -1227,69 +1269,73 @@ async function openAccountReceiveOwner(
       pages: Bytes[] = [];
     try {
       return await runNetworkTask(async (network) => {
-        const prepared = await prepareGroupOwned();
+        const prepared = await prepareGroupOwned(true);
         requests = prepared.requests;
+        if (prepared.cachedPage) pages = [prepared.cachedPage];
         stamp.check();
         const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
         let attempted = 0;
-        await network.wait(async () => {
-          const collected = await receivePages(
-            requests,
-            signal,
-            {
-              read: (request, index, signal, limit) =>
-                canReceive()
-                  ? privateDeliveryPost(
-                      options.pin,
-                      access ?? operatorToken,
-                      'read-v2',
-                      request,
-                      limit,
-                      signal,
-                      (event) => {
-                        events[index]!.push(event);
-                      },
-                    )
-                  : Promise.resolve(null),
-              batch: (body, signal, limit, unsupported) =>
-                canReceive()
-                  ? privateDeliveryPost(
-                      options.pin,
-                      access ?? operatorToken,
-                      'read-v2-batch',
-                      body,
-                      limit,
-                      signal,
-                      (event) => {
-                        events[0]!.push(event);
-                      },
-                      false,
-                      unsupported,
-                      // Select bounded individual work only after a successful binary response
-                      // exceeds aggregation space. Hints cannot trigger this downgrade.
-                      () => {
-                        // The aggregate's size is a transport choice, not the individual result.
-                        // A failed fallback retains its own retry/refusal classification.
-                        events[0]!.length = 0;
-                        void unsupported('aggregate-limit');
-                      },
-                    )
-                  : Promise.resolve(null),
-            },
-            (page) => {
-              // Unverified hints may shorten collection, never grant progress or authority.
-              try {
-                return decodeInboundPage(page).entries.length > 0;
-              } catch {
-                return false;
-              }
-            },
-            decodeInboundRequest(requests[0]!).publisher,
-          );
-          pages = collected.pages;
-          attempted = collected.attempted;
-        });
+        if (!prepared.cachedPage) {
+          rangeTail?.beforeFetch(requests.length);
+          await network.wait(async () => {
+            const collected = await receivePages(
+              requests,
+              signal,
+              {
+                read: (request, index, signal, limit) =>
+                  canReceive()
+                    ? privateDeliveryPost(
+                        options.pin,
+                        access ?? operatorToken,
+                        'read-v2',
+                        request,
+                        limit,
+                        signal,
+                        (event) => {
+                          events[index]!.push(event);
+                        },
+                      )
+                    : Promise.resolve(null),
+                batch: (body, signal, limit, unsupported) =>
+                  canReceive()
+                    ? privateDeliveryPost(
+                        options.pin,
+                        access ?? operatorToken,
+                        'read-v2-batch',
+                        body,
+                        limit,
+                        signal,
+                        (event) => {
+                          events[0]!.push(event);
+                        },
+                        false,
+                        unsupported,
+                        // Select bounded individual work only after a successful binary response
+                        // exceeds aggregation space. Hints cannot trigger this downgrade.
+                        () => {
+                          // The aggregate's size is a transport choice, not the individual result.
+                          // A failed fallback retains its own retry/refusal classification.
+                          events[0]!.length = 0;
+                          void unsupported('aggregate-limit');
+                        },
+                      )
+                    : Promise.resolve(null),
+              },
+              (page) => {
+                // Unverified hints may shorten collection, never grant progress or authority.
+                try {
+                  return decodeInboundPage(page).entries.length > 0;
+                } catch {
+                  return false;
+                }
+              },
+              decodeInboundRequest(requests[0]!).publisher,
+            );
+            pages = collected.pages;
+            attempted = collected.attempted;
+          });
+        }
         stamp.check();
         // A speculative tail cannot overwrite the diagnostic for the attempted prefix.
         for (const observations of events.slice(0, attempted))
@@ -1813,8 +1859,21 @@ async function openAccountReceiveOwner(
       if (composed && first.publisher === base.publisher.id)
         throw new AdmissionError('receive-refused', 'Own reconciliation must remain single-entry');
       const peer = publisherState(s, base, first.publisher);
-      if (s.conflict || peer.conflict || first.after !== peer.prefix.position)
+      if (
+        s.conflict ||
+        peer.conflict ||
+        (!wide && first.after !== peer.prefix.position) ||
+        (wide &&
+          (first.after > peer.prefix.position || first.after + first.limit <= peer.prefix.position))
+      )
         throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
+      if (peer.prefix.position !== outstandingCursor) throw new ReceiveAuthorityChanged();
+      if (
+        !Number.isSafeInteger(outstandingAllowance) ||
+        outstandingAllowance < 1 ||
+        outstandingAllowance > RECEIVE_GROUP_LIMIT
+      )
+        throw new AdmissionError('receive-refused', 'Invalid receive position allowance');
       const stamp = outstandingStamp;
       if (!stamp) throw new ReceiveAuthorityChanged();
       let expectedAfter = first.after;
@@ -1843,12 +1902,19 @@ async function openAccountReceiveOwner(
         bytes = 0;
       try {
         pageLoop: for (let i = 0; i < pages.length; i++) {
+          if (results.length === outstandingAllowance) break;
           let pageResults: readonly Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
           try {
             await task.wait(async () => {
               pageResults =
                 decodeInboundRequest(requests[i]!).limit > 1
-                  ? await verifyInboundRange(context, requests[i]!, pages[i]!, lifetime(task))
+                  ? await prepareInboundRange(
+                      context,
+                      requests[i]!,
+                      pages[i]!,
+                      lifetime(task),
+                      outstandingAllowance - results.length,
+                    )
                   : [await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task))];
               // Retain ownership before the final lifetime check can reject.
               prepared.push(...pageResults);
@@ -1857,7 +1923,9 @@ async function openAccountReceiveOwner(
             task.step(() => {});
             throw new AdmissionError('receive-refused', String(cause), { cause });
           }
-          if (!pageResults.length) throw Error('Missing inbound verification result');
+          // An oversized indexed original is a size scheduling refusal, not a committed or
+          // verified empty page. Settle preparation normally so the owner can narrow and retry.
+          if (!pageResults.length) break;
           verifiedRequests.push(requests[i]!);
           for (const [entry, result] of pageResults.entries()) {
             if (result.kind === 'empty') {
@@ -1901,13 +1969,18 @@ async function openAccountReceiveOwner(
           return task.step(() => {
             promote([]);
             return {
-              kind: 'empty' as const,
+              kind: wide && !kinds.length ? ('range-size' as const) : ('empty' as const),
               recorded: false,
               status: describe(s),
               kinds,
               ...(wide ? { counts, positions: 0 } : {}),
             };
           });
+        if (results.length > outstandingAllowance)
+          throw new AdmissionError(
+            'receive-refused',
+            'Receive exceeds its native position allowance',
+          );
         const before = await owner.carrier.spoolWitness(task);
         let after = before;
         for (const result of results)
@@ -2936,7 +3009,13 @@ async function openAccountReceiveOwner(
     receiveGroup,
     preparedPromotion,
     invalidateQuietReads: receiveSelection.invalidateQuiet,
-    completedRead: (request: Bytes, kind: string, quiet?: object, positions?: number) => {
+    completedRead: (
+      request: Bytes,
+      kind: string,
+      quiet?: object,
+      positions?: number,
+      page?: Bytes,
+    ) => {
       receiveSelection.completedQuiet(quiet, kind);
       const read = decodeInboundRequest(request),
         publisher = read.publisher;
@@ -2951,10 +3030,17 @@ async function openAccountReceiveOwner(
         composed && publisher === base.publisher.id && (kind === 'received' || kind === 'empty'),
         positions ?? 1,
       );
+      if (kind === 'received' && read.limit > 1 && positions && page && outstandingStamp)
+        rangeTail?.remember(request, page, {
+          context: base.authority,
+          signal: outstandingStamp.signal,
+          after: outstandingCursor + positions,
+        });
     },
     narrowRead: (request: Bytes) => {
       const r = decodeInboundRequest(request);
       if (!composed || r.publisher === base.publisher.id || r.limit === 1) return false;
+      rangeTail?.drop(r.publisher);
       receivePages.narrow(r.publisher);
       return true;
     },
@@ -3120,12 +3206,13 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
       }
     };
     const receivePage = (bytes: Bytes, request?: Bytes) => {
+      type Result = Awaited<ReturnType<typeof api.receivePage>>;
       try {
         return preparedRemote
-          ? prepare(bytes, (page, stage) =>
+          ? prepare<Result>(bytes, (page, stage) =>
               api.receivePage(page, (updates) => stage(updates, preparedPromotion()), request),
             )
-          : enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
+          : enqueue<Result>(bytes, (page, promote) => api.receivePage(page, promote, request));
       } catch (cause) {
         return Promise.reject(cause);
       }
@@ -3199,6 +3286,8 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                         promote,
                       ),
                     );
+                if (received.kind === 'range-size' && narrowRead(request))
+                  return { kind: 'unknown' as const, recorded: false };
                 for (let i = 0; i < received.kinds.length; i++)
                   completedRead(requests[i]!, received.kinds[i]!, quiet, received.counts?.[i]);
                 return received;
@@ -3207,6 +3296,8 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
               }
             }
             const received = await receivePage(page, request);
+            if (received.kind === 'range-size' && narrowRead(request))
+              return { kind: 'unknown' as const, recorded: false };
             completedRead(
               request,
               received.kind,
@@ -3214,6 +3305,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
               'positions' in received && typeof received.positions === 'number'
                 ? received.positions
                 : undefined,
+              page,
             );
             return received;
           } catch (cause) {

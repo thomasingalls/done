@@ -5342,7 +5342,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 746,
+          "line": 750,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },
@@ -7517,7 +7517,8 @@
         "test/multiEntryInbound.test.ts",
         "test/multiEntryInboundReaders.test.ts",
         "test/multiEntryReceiveScheduling.test.ts",
-        "test/boundedInboundPreparation.test.ts"
+        "test/boundedInboundPreparation.test.ts",
+        "test/receiveRangeTail.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -7529,7 +7530,7 @@
         "bounded-range-fairness",
         "stale-tab-rollback"
       ],
-      "blocker": "Development-only indexed v2 reader and bounded four-position composed-peer writer; no aggregate credit. Published vector/map qualification, native wider-range cost/fairness, stale-tab and rollback remain open. Existing specified v1 contracts are unchanged.",
+      "blocker": "Development-only indexed v2 reader and eight-entry download with four-position native preparation; no aggregate credit. Published vector/map qualification, native cost/fairness, stale-tab and rollback remain open. Existing specified v1 contracts are unchanged.",
       "next": "Qualify the indexed record and every consumer against independent originals, native mixed-owner/rollback evidence and unchanged performance/security gates before any release work."
     }
   ],

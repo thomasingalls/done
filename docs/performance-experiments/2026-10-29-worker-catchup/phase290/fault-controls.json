@@ -1,0 +1,14 @@
+[
+  {
+    "fault": "skip-authority-identity",
+    "exactNamedCaseFails": true
+  },
+  {
+    "fault": "retain-before-large-reservation",
+    "exactNamedCaseFails": true
+  },
+  {
+    "fault": "skip-raw-page-erasure",
+    "exactNamedCaseFails": true
+  }
+]
