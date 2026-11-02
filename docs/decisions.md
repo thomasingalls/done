@@ -6487,3 +6487,8 @@ Test sessionbudget with one original deepjoined30scase, disposable complete0abse
 ## 2026-10-30 — phase265: disposable request-budget outcome
 
 Lab64/session increases original30sdeep progress447→703(+57.3%)but stillfails; no recorded receivefailure. Supports contribution, rejects budget-only closure. Keepprocess64/fairness restrictions; last200all200notwhole429proof.259payloadwallgaps19.3–25.8requestedunits/s are rough comparison, notCPU/debitcount. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).
+
+
+## 2026-10-30 — phase266: public cold-open attribution protocol
+
+Trace both original baselinepubliccold cases with exact0abdefaultpolicy and namedLEDGER_PROFILE1; bounded numeric all-live-realm metrics and actualWorkerCPU, no fakeauthclock/check/cachechanges. Keep15sfailure/180scase evenif.shelllater; gate-wrapperfaulttestdetectsswallowedfailure. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).

@@ -903,3 +903,8 @@ Phase264: next is lab-only budgetfalsifier, then publiccold numeric/WorkerCPU tr
 ## 2026-10-30 — phase265: disposable request-budget outcome
 
 Phase265: budget contributes but deepjoinedstillblocked30s; retain447/703failures. Next uncappedPage/Workercomparison after validcivilfixture, plus independent publiccold profiling. Do not raise productionrate or choose newmechanism from roughcounts; keepsecurity/allgates. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).
+
+
+## 2026-10-30 — phase266: public cold-open attribution protocol
+
+Phase266: trace repeatedbaseline/nativecost in both originalpubliccold failures next. Keep265partialbudgetresult and normalfixturecalendarrefresh pending; allgates/security/sourcecandidateunchanged. No releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).

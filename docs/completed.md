@@ -18131,3 +18131,8 @@ Frozen original deepjoined budgetprobe with exact clientassets/one-line serverpo
 ## 2026-10-30 — phase265: disposable request-budget outcome
 
 Frozen budgetprobe runs once and retains original30sfailure at703positions,0receivefailures. Last200responsesall200; effectivepolicy64/session/64processverified. Bothowncontainers/browsersabsent. Productionlimits/code/testsunchanged; no acceptance/releaseclaim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).
+
+
+## 2026-10-30 — phase266: public cold-open attribution protocol
+
+Frozen two-case coldprofile apparatus,396exactsourcebodies/125frontendassets, original16/session64/processverified. Two observercontracttests and actualWorkerbusy-loopCPU smoke pass; swallowed-gatefaultdetected. Discovery/readiness/shutdown pass. No timedcoldoutcome or productchange. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).
