@@ -1,0 +1,11 @@
+--- /private/tmp/done-page-deep-lab64-20261030/source-after/account-service/requestBudget.ts	2026-10-29 23:14:06
++++ /private/tmp/done-page-deep-lab64-20261030/source-server/account-service/requestBudget.ts	2026-10-30 17:50:20
+@@ -3,7 +3,7 @@
+  * existing byte bounds and deadlines still cap work. Renewed access/grants share the same key. */
+ export const REQUEST_LIMITS = Object.freeze({
+   sessionBurst: 120,
+-  sessionPerSecond: 16,
++  sessionPerSecond: 64,
+   processBurst: 480,
+   processPerSecond: 64,
+   active: 16,

@@ -18271,3 +18271,8 @@ Phase292: final8comparison source/build/observer inputs frozen.398compiled bodie
 ### 2026-10-30 — Worker catch-up phase293
 
 Phase293: deep8failed30s at719/zero receive failures.236reads versus4range331, but4made747progress. Complete at/headersAt/extent trace retained, no429; downstream marker/Undo/cold guards not reached. No acceptance credit. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase294
+
+Phase294: Page64diagnostic inputs frozen. Exact291runtime/398compiled bodies/125frontend assets, one-line lab policy and actual64startup limits,6observer contracts/service smoke checked. No timed result yet. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).

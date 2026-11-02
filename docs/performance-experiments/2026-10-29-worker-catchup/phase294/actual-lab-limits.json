@@ -1,0 +1,9 @@
+{
+  "sessionBurst": 120,
+  "sessionPerSecond": 64,
+  "processBurst": 480,
+  "processPerSecond": 64,
+  "active": 16,
+  "sessionActive": 4,
+  "sessions": 1024
+}

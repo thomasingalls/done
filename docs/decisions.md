@@ -6627,3 +6627,8 @@ Freeze both291client roles at production flags/default budgets for one original 
 ### 2026-10-30 — Worker catch-up phase293
 
 Do not adopt8on traffic reduction: deep8also fails30s. Follow the requested Page64diagnostic before attributing residual work to native verification, storage or Window coordination; all production limits and gates remain. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase294
+
+Use the lab genuine Page syncing factory for joined deep at explicitly permitted lab64/session64/process, with one-line isolated policy diff and actual startup verification. Retain all30s/native guards; normal comparison/default acceptance remain held. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).

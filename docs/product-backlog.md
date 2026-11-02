@@ -1043,3 +1043,8 @@ Execute frozen deep8cell next; record actual native progress/failure and traffic
 ### 2026-10-30 — Worker catch-up phase293
 
 Deep4and8both fail30s. Next real Page syncing joined deep at lab64, then fixture recipe/withheld/normal gates. Preserve native range fallback/fairness and stale-tab/rollback obligations; no release work. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase294
+
+Run frozen joined Page64deep once next; preserve actual outcome before fixture recipe and withheld/normal gates. No normal comparison/release activation. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).
