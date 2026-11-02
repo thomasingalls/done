@@ -18181,3 +18181,8 @@ Recorded 23-case real-crypto unreduced v3/v4 red regression: nine discriminating
 ## 2026-10-30 — phase275: unreduced same-carrier exact reuse
 
 Implemented same-carrier unreduced exact reuse plus 23 new regressions. 70 focused and 2,789 full unit cases pass (one existing skip); three guard fault controls, types/lint/format and seven repository contracts pass. Metadata preserves every old obligation, adds one required blocked row; two sandboxed process-control failures retained, unchanged 38-case stage suite passes natively. Actual cold timing remains next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase275/README.md).
+
+
+## 2026-10-30 — phase276: unreduced cold after-check protocol
+
+Rebuilt and checked 396 source bodies/125 public assets, compiled release flag parity and unchanged limits. Original two cold cases discover; container readiness and shutdown smoke pass. Timed after-result remains pending. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).

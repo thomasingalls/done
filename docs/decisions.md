@@ -6537,3 +6537,8 @@ The unreduced gate was deliberate conservative scope in 354c9c59 and phase 122, 
 ## 2026-10-30 — phase275: unreduced same-carrier exact reuse
 
 Extend only the existing private exact-proof path to opted-in one-shot and exclusive live unreduced carriers. Preserve first full physical/reference comparison, fresh complete authenticated evidence and final authority/lifetime checks; v3 proof may have no logical projection. Reduced rolling policy, new-owner full verification and all security/gates remain unchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase275/README.md).
+
+
+## 2026-10-30 — phase276: unreduced cold after-check protocol
+
+Run original two cold cases once on exact cumulative275 source, released flags and default production limits. Keep 15s public cold gate, 180s case, full authentication, Undo, native journal/readback, archive equality and resumable removal assertions; no diagnostics or favorable retries. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).

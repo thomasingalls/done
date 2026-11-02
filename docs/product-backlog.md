@@ -953,3 +953,8 @@ Phase 274: implement bounded same-carrier unreduced exact-proof reuse, then veri
 ## 2026-10-30 — phase275: unreduced same-carrier exact reuse
 
 Phase 275: same-carrier unreduced exact reuse implemented and checked. Next actual cold after-check, then deep request at/headersAt and multi-entry/fairness. Preserve normal Page/Worker hold and step order; no release prep or production limit change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase275/README.md).
+
+
+## 2026-10-30 — phase276: unreduced cold after-check protocol
+
+Phase 276: run the frozen unreduced/reduced cold after-check next, retaining all prior outcomes. Then trace deep at/headersAt before multi-entry reads and fairness. Normal comparison held; no release prep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).
