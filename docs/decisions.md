@@ -6787,3 +6787,7 @@ Phase317 measurement limitation: all four detailed event buffers filled before t
 ### 2026-10-31 — Phase318: normal cost controls and separate D benefit
 
 All eight predeclared normal runs pass functional,16cold and measured predicates. Roff2controls versus R1000/Doff3arms show no added token/quiet-read cost in these windows, with0Ractivations in all3R1000/Doffarms; prior315normal episodes remain. Dspeeds H1in all3pairs(~7.5sin the two less-contended pairs), removing/defering unrelated quiet-peer probes; H2mostlyunchanged. Source/build/gates unchanged. Continue smallest selected Doffstack to3rep original/grown challenge; no hardening or credit. See[phase318](./performance-experiments/2026-10-29-worker-catchup/phase318/README.md).
+
+### 2026-10-31 — Phase319: retain original preconditions and immediate cold-stop visibility
+
+Recreated genuine current-civil original1024single-entry caught-up H2profile through real sync, whole archive exact/counterv2/onlyH2changed; retained distinct grown2048and native/Goals prepared-v5preconditions. Added observation-only cold-stop markers and explicit old-fixture selector; independent ASTchecks preserve all old expectation/test/wait nodes and existing config hashes. Declared30original+6separate grown runs before start, unchanged gates/deadlines,3percell/onefailfailscell; per-owner interruption/retry reporting. Evidence/docs only, no hardening or credit. See[phase319](./performance-experiments/2026-10-29-worker-catchup/phase319/README.md).

@@ -1,0 +1,67 @@
+{
+  "originalFixtureSha256": "1fdfcaa4637c91ca0560c1fab98cab17fa15eac4f289e261b1e027c9bbd256b5",
+  "rebuiltFixtureSha256": "1a33a03473af361eb171e0cf015d893a5c9877aa8e4c90cb3906157efeb5b9a8",
+  "backlog": 1024,
+  "date": "2026-10-31",
+  "onlyChangedActor": [
+    [
+      "H",
+      2
+    ]
+  ],
+  "archivesExpectedAndOtherActorsExact": true,
+  "writerCounterV2": true,
+  "producerOutcome": "passed",
+  "census": [
+    {
+      "stores": {
+        "content": {
+          "rows": 1030,
+          "cipherBytes": 61830
+        },
+        "heads": {
+          "rows": 1031,
+          "cipherBytes": 5065170
+        },
+        "meta": {
+          "rows": 1,
+          "cipherBytes": 0
+        },
+        "outbound": {
+          "rows": 3,
+          "cipherBytes": 2644
+        }
+      },
+      "counterVersion": 2
+    }
+  ],
+  "allExistingConfigFilesUnchanged": {
+    "harness/test/account-continuation-lab/seed.config.ts": "31a35401f2a1943585dc5732bb4acef2ffb0c6dc62dc96c49e1445353cfc851e",
+    "harness/test/account-continuation-lab/idle-maintenance.config.ts": "ad9491d0f5de1c0c88b3ff8ee022a67ccc66b81d56d92dd7cfbcf4c2fcc7026b",
+    "harness/test/account-continuation-lab/reader-idle.config.ts": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+    "harness/test/account-continuation-lab/grown-maintenance.config.ts": "45909a9e9b43e1507a96f8eb463ef30fe898cfdb4bd1bc4d2033619c368d66a7",
+    "harness/test/account-continuation-lab/dense-cut.config.ts": "a4b9c1a77e0e86dde1980e8fa971903d12fda9988085171bf72b7481e785e344",
+    "harness/test/account-continuation-lab/race.config.ts": "21521655e2c96f7792b80086b52d2113486197093b34acaf6df61a74fec1a0a8",
+    "harness/test/account-continuation-lab/marker-civil.config.ts": "03df63e48830666304a691cd8aa4c3fedb466d0af9381a829e11c23cc2b893a2",
+    "harness/test/account-continuation-lab/maintenance-pilot.config.ts": "bc663e4e8a826c87ded50ccc42e00ad83b43118ea1d93ebe99b98403102ba6f0",
+    "harness/test/account-continuation-lab/nonoverlap.config.ts": "0b07f2c1dc822cfdde3ea58a5850776096be513ee9aea3ee1a7c76211ff2b796",
+    "harness/test/account-continuation-lab/input-diagnostic.config.ts": "b33998b1fef15b4197b8ad7da773ccce035beec714426534df0718a2401798a6",
+    "harness/test/account-continuation-lab/marker.config.ts": "e228a74799169cc091979e0b67b6b0f9b3c0239ca7c7194683a5cd2edf10cf28",
+    "harness/test/account-continuation-lab/r-late.config.ts": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+    "harness/test/account-continuation-lab/r-idle.config.ts": "dda6b768130ed88c009e3af76a5fcf07e018cdecf02b0f04fd46461905999b11",
+    "harness/test/account-continuation-lab/late.config.ts": "8b87a9b0c5633b19b45e167d7fe3bca4712549bff967bcdcc8982ec7142a6387",
+    "harness/test/account-continuation-lab/gate-native.config.ts": "2e71b9a38acbabec7d18717abec3271cc7f48cf2a414879f259748bb61a57413",
+    "harness/test/account-continuation-lab/gate-maintenance.config.ts": "f2b9974f167087fd3899fc2aad61639acc0f2439169b9fdd85670015c73f5b35",
+    "harness/test/account-continuation-lab/treatment.config.ts": "31123458dd7b1ecbc7a2cc36ead9c3cee0365263cd606a779df52ef534165d8b",
+    "harness/test/account-continuation-lab/dense-cohort.config.ts": "88520272e626e2ff47081cff1f15d40a07da943ef37b4717a79921ed11a3e132",
+    "harness/test/account-continuation-lab/worker-owner.config.ts": "51a6a8ba5e326e169f571208c17ee8741fec1174b14c6faffff638090022acc9",
+    "harness/test/account-continuation-lab/root-cache-review.config.ts": "969bcbffe98d4bd85ea512a1bab64a86e5b99e889c9c19ab6d5876227a84920b",
+    "harness/test/account-continuation-lab/maintenance.config.ts": "70b43c22df03535dc5849f9c2c6c597e1cd1e960edfdfa777982a0afa6a142f9",
+    "harness/test/account-continuation-lab/stall.config.ts": "8b57cc7f74f224ccf47e7cae7b5ca17a4b0a5f12630e0a7f691de9b776a50fb5",
+    "harness/test/account-continuation-lab/default.config.ts": "b2c7926bd6cf25d23e3e326c2253a828eacd120d9b912062059f265fff80c972",
+    "harness/test/account-continuation-lab/playwright.config.ts": "8e6b678c7eb438f3f2d34f97c325a8cf4bd6b9e250a07aad47497233a28754b0",
+    "harness/test/account-continuation-lab/hint.config.ts": "391f47fa119beabce52f563b47d5c440c1078dc0425cd8c32cc64d42d3e78592",
+    "harness/test/account-continuation-lab/prepare.config.ts": "9c9c77ec61b78096de8ab698cb6132db2978638bec7d60a0a42fb10246aa9f7a"
+  },
+  "noAcceptanceCredit": true
+}

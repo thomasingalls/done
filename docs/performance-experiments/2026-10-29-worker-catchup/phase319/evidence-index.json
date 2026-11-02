@@ -1,0 +1,265 @@
+{
+  "items": [
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-inputs.json",
+      "copy": "evidence/old1024-cohort-inputs.json.gz",
+      "rawSha256": "17b46369a0ea0806818680c47c2d8e3a05883487d3cc9033d505b70c239779de",
+      "bytes": 23542,
+      "gzipSha256": "f421e0ba5e53469bcd74199f3e6da033311fb10508b59aeddb33d014d2097f7b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-results.json",
+      "copy": "evidence/old1024-cohort-results.json.gz",
+      "rawSha256": "4385fc37131b91c646ceb622e3ea5fdd363da539c4d9ea6a86c75b9feafae119",
+      "bytes": 538,
+      "gzipSha256": "49866ed9db9d8d5a7865a2fc737fee3542527443d68b28f5285c26154294ad01"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-independent-check.json",
+      "copy": "evidence/old1024-independent-check.json.gz",
+      "rawSha256": "570adce2f79defb1719c6f18ad40b25fc82b8230c8ed620974ce19ff341e3b88",
+      "bytes": 4374,
+      "gzipSha256": "8e4598bfc84251081cfcb0b3083a8d9255940e7913e742f34ba7acbc75aa9646"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/final-gates-plan.json",
+      "copy": "evidence/final-gates-plan.json.gz",
+      "rawSha256": "455595f7b01b5e27edcefe7364e7942a80549001d28c5e0195276c9b89049c9b",
+      "bytes": 14931,
+      "gzipSha256": "e5d0ec458b1d4e83e7139997873f15c7182369165ad792ba0d809a0c738a6cac"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/FINAL-GATES-PROTOCOL.md",
+      "copy": "evidence/FINAL-GATES-PROTOCOL.md.gz",
+      "rawSha256": "4d677ee81546405727c52ba3202bf12f71529ee34500396dbee6b44221c1847e",
+      "bytes": 3019,
+      "gzipSha256": "f8de1316fe45381c50f48d1209cc27f8662b51c9fcda2b68865d589d79fb55b2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/final-observer-ast-check.json",
+      "copy": "evidence/final-observer-ast-check.json.gz",
+      "rawSha256": "2b5c9d6063181be4d6d78194f7d2d04d7c60897daee89cef591020b6e38a2b9c",
+      "bytes": 21193,
+      "gzipSha256": "497ffd387581b39feeaaa45b2622f3859324d6f2fab9597ca15d37e23909baa4"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-identity.json",
+      "copy": "evidence/build-identity.json.gz",
+      "rawSha256": "7656a8c923827ceb19ac10bf65e236480868c3ec373f66188af50af8447f2be5",
+      "bytes": 75053,
+      "gzipSha256": "b0e80952b006dca1c608042c9d77c1484dd8b29fa38795f5ecf2e5b6fe29ee21"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-flags.json",
+      "copy": "evidence/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "bytes": 308,
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-generation/console.log",
+      "copy": "evidence/old1024-cohort-generation/console.log.gz",
+      "rawSha256": "167e78ea8b7c00b6b9fe90302b8760800b58b469689e10ea84b0ca5d08110f82",
+      "bytes": 366,
+      "gzipSha256": "73de91b70ce9b966028ea6a6a0e819375d157e6678e932552e0151960b3ecfe6"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-generation/receipt.json",
+      "copy": "evidence/old1024-cohort-generation/receipt.json.gz",
+      "rawSha256": "01f63463a19ed0c45cd9269542cd94ef8a336caca84c6c6868f34a96a7d28d3c",
+      "bytes": 500,
+      "gzipSha256": "fc3231b3760852a769e8617d6e627953be43d26ccf406774d7d6b45565baf4b0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-generation/result.json",
+      "copy": "evidence/old1024-cohort-generation/result.json.gz",
+      "rawSha256": "3ce78ba38b314a976cca286bf2913d5b3500d3e490fe2b0570bc18c96caf2671",
+      "bytes": 1428,
+      "gzipSha256": "7006e596b8dfa50449c9c237da33b53415f433a47c882423b3b07a60a15e39eb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-generation/host-load.jsonl",
+      "copy": "evidence/old1024-cohort-generation/host-load.jsonl.gz",
+      "rawSha256": "bde536ed2baf8903e5f99de3d98d1d346c49f1a758c19cfcc67424762f81bec6",
+      "bytes": 27064,
+      "gzipSha256": "78ec725ea7c9c0d885e2710a8aac60b1a497964204cd03949c3ba004eb42e396"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/old1024-cohort-generation/container-identity.json",
+      "copy": "evidence/old1024-cohort-generation/container-identity.json.gz",
+      "rawSha256": "94debf4b236b57fef1aaae08c758074335613c8d29148a9b1fe5009bccfa3878",
+      "bytes": 2707,
+      "gzipSha256": "7e775ab39e768697d5c4670d5ef2d6d7344c8ecae64b70a818481263cb0fccb7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/prepare-old1024.py",
+      "copy": "apparatus/prepare-old1024.py.gz",
+      "rawSha256": "a11866ece01ab9bbec2eef7070ee8e46b0a32aa1f815ac3381385ad265871de9",
+      "bytes": 971,
+      "gzipSha256": "e3247ab3d24813a1cdfee958680c07b8ec8568b5dd44857ef3c3fdabc9fdc19d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-old1024.py",
+      "copy": "apparatus/run-old1024.py.gz",
+      "rawSha256": "5dc5e093811aa92f272755ec624e353979bec97226d7fc64aaebdc90f7c70eb5",
+      "bytes": 2863,
+      "gzipSha256": "0297eeba14317bbef54d5976a9dbd44a259580d9042a43d27bbb999452b0e793"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/prepare-native-cold-observer.py",
+      "copy": "apparatus/prepare-native-cold-observer.py.gz",
+      "rawSha256": "a50aeeb4ca51aec2be1976b4e70fc164e632c30e375a3fd96b4df8de43fb7493",
+      "bytes": 2390,
+      "gzipSha256": "dc3527ce8dbb460e7f971d57f809b76fd58ac8ef597c7dc79c6a2da9525a7a60"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/prepare-final-observers.py",
+      "copy": "apparatus/prepare-final-observers.py.gz",
+      "rawSha256": "f631813dc78032751740cc84a752cd01edfc0ee8f076ef1f92185715eb1da51b",
+      "bytes": 1799,
+      "gzipSha256": "a166a9de50fbe161df3740dad3445cbda5ec5a6a10d87fbbc47850579358f921"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/check-final-observers.mjs",
+      "copy": "apparatus/check-final-observers.mjs.gz",
+      "rawSha256": "819e5030b7693a488264ed1f97da71b37dd3463b0b886aacaeb52064299bd6c4",
+      "bytes": 3117,
+      "gzipSha256": "073e4b0e8f528eec0fe18dd826b8999fd2da7bcd06d43afff44afc5791d69737"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/check-final-observers-typescript-unavailable.mjs",
+      "copy": "apparatus/check-final-observers-typescript-unavailable.mjs.gz",
+      "rawSha256": "7d508e8cf493f95b6faabe29b25607ccefa231e49628f8d9704d50722dab060c",
+      "bytes": 2586,
+      "gzipSha256": "3f9ae4846d985399df302ab9b34bd672750fd04d51c2fef7da6c738acaafaa87"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/declare-final-gates.py",
+      "copy": "apparatus/declare-final-gates.py.gz",
+      "rawSha256": "1d606fcab016573ca6f95f10835190004bf00cf21bfd46fc464d2f6baa82f987",
+      "bytes": 4418,
+      "gzipSha256": "5d7b7b5d8242cfc172f7b540737141b893e7cc06e816aa23c59b8f10dbba54ad"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-final-gates.py",
+      "copy": "apparatus/run-final-gates.py.gz",
+      "rawSha256": "77195f3707857cfc8f2826674f4b701d131622f1c070e82fec5a4c2ae893a989",
+      "bytes": 5482,
+      "gzipSha256": "e1782c2e2db0302e570e8a8e3ebd0b5dba2fbf9cba0348380965c9207681f849"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-final-gates.py",
+      "copy": "apparatus/analyze-final-gates.py.gz",
+      "rawSha256": "e51d97eefb70b4d90f5625161ce4420938f14b62ec75f90c4de5c95f85c7b14e",
+      "bytes": 6159,
+      "gzipSha256": "760bd264f62d0e6e5298824864f9ed7638fb6bd5d1a01de79bfac62ef5b6b0bc"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-final-grown.py",
+      "copy": "apparatus/analyze-final-grown.py.gz",
+      "rawSha256": "8ad81e530d5e049ef5f47dd547ace416f867955676baec7883603fb8d3d7bce3",
+      "bytes": 8641,
+      "gzipSha256": "47a641e5ca455a2fef1b25241d9765f7856fa80c0c125bee5808d2d409f7d40d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-case.py",
+      "copy": "apparatus/analyze-case.py.gz",
+      "rawSha256": "3686b66f22b86cff4ff97ac720160cfdc5c8a8225984c06544d53e5764f590db",
+      "bytes": 4884,
+      "gzipSha256": "f7c0a36a2b3f57cbe91132b7c2bfc79908ec8a5098b5cbb096cf9a5c102b549f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-fairness.py",
+      "copy": "apparatus/analyze-fairness.py.gz",
+      "rawSha256": "0d13bc4ac837c2adf55ff0e75e98be02d3e5eb2b7bff088bcaf1746556fe603e",
+      "bytes": 5236,
+      "gzipSha256": "b9c21c0344830a2c0581cfc437c023eb08e60293fbc1d774bd308642f7b3b4e3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/gate-native-before-cold-observer.spec.ts",
+      "copy": "apparatus/gate-native-before-cold-observer.spec.ts.gz",
+      "rawSha256": "fb57148c982039abba27d14cbb060338b7de6387687936255c267bddf3732242",
+      "bytes": 153054,
+      "gzipSha256": "8d5b6b25c3bee5ef79e6e8798aed57f92b14aaec28370d8a02e481451ca9b6ea"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/before-cold-observation-stall.spec.ts",
+      "copy": "apparatus/before-cold-observation-stall.spec.ts.gz",
+      "rawSha256": "7161e14bb6fba596bc982fe78816146a273711fa1c65eacd4310f502293063ff",
+      "bytes": 10068,
+      "gzipSha256": "7daa4f1eaf7e1f9ef174d67e0f3d76cb9ac4a25ba864894cc3ab6002ac69406e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/before-cold-observation-continuation.spec.ts",
+      "copy": "apparatus/before-cold-observation-continuation.spec.ts.gz",
+      "rawSha256": "997f2f01be74c53b779c795d0ac424c616e37b9f45b6130a77803789cd247362",
+      "bytes": 17651,
+      "gzipSha256": "831d71fe7885451bcf9bdbaf7ad7961a96a3995bfbd467b46ac7d4c1e387197f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/gate-maintenance-before-explicit-old-fixture.spec.ts",
+      "copy": "apparatus/gate-maintenance-before-explicit-old-fixture.spec.ts.gz",
+      "rawSha256": "3182d3d0653d396b7550f28df357560ba2d80102c4f0a514649520d0362b5455",
+      "bytes": 11409,
+      "gzipSha256": "917f8366e31f198c1f9f5cd3700109146a97c38addcb54a879614a3e6d64f6ea"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/gate-native.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "rawSha256": "04d2ddca4e824527579e675e073d3e346ccacd4c2ed923de2dd1264600f8095d",
+      "bytes": 153929,
+      "gzipSha256": "8df457606b6b980c68e75c8836522e46831c92dff7dfeca5e64855ebfe817289"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/stall.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.spec.ts.gz",
+      "rawSha256": "6a6f78e817839a39bffa80d553b151c0cc606f95ed630427c6a9d51084d3e601",
+      "bytes": 10173,
+      "gzipSha256": "77948cd6c18872447093fb16a49aee67876059b119316b42ae9bf38ee8931735"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/continuation.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/continuation.spec.ts.gz",
+      "rawSha256": "4e78bbbde088cc2c41aefda32b1329d86e1c9d43bfc63a4ff3ae33dbb2a31055",
+      "bytes": 17829,
+      "gzipSha256": "005705853d4743e399a0b9bed58d148a59d79033f7d6c123ba53c22d548711a2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/cold-observer.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cold-observer.ts.gz",
+      "rawSha256": "a191ff009d3c711bd519c784407a7988f4f8ea00caccff4e96d731031f9429b2",
+      "bytes": 714,
+      "gzipSha256": "f06384fcf16d3a46c9070359ad083065cf3b2d3bd994eb85dfa37c2866f7e4f5"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/gate-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.spec.ts.gz",
+      "rawSha256": "8e6c4fb532b7642b3b229ca0fec60e463f1d0d4e32ac1b3346c903dc57ece22c",
+      "bytes": 11440,
+      "gzipSha256": "34fac797c554d6be981e0692a06506c7b83fd4cc7d1856edcc0820e25a597a34"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/old1024-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.spec.ts.gz",
+      "rawSha256": "7391bccddd08c18b14fe9e2e88306c29094ccf0049126829280f2f37f719e0b4",
+      "bytes": 4351,
+      "gzipSha256": "b4e6d4c2c66e08fd8b2ef4cbb8ae771004e67b150532f0d9180309d9a7f28b54"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/old1024-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.config.ts.gz",
+      "rawSha256": "abcad4ab77d5824818e4787dd4330907e2d40d968d5ba079ab84a01972505169",
+      "bytes": 291,
+      "gzipSha256": "86a9538f9043d2b05dc3484a5bf4537d7cf5798299b964856ac66d3b30fc7bfc"
+    }
+  ],
+  "labRoot": "/private/tmp/done-dense-page-screen-lab-20261031",
+  "profilesCredentialsDatabasesBuildsNotCopied": true
+}
