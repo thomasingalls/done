@@ -1,0 +1,40 @@
+{
+  "pairedRuns": 18,
+  "functionallyPassed": 18,
+  "exactColdRuns": 18,
+  "ownersCompleted": 36,
+  "ownerColdExact": 36,
+  "failuresByPredicate": {
+    "functional": 0,
+    "coldExact": 0,
+    "allOfferedKeysObserved": 0,
+    "trustedFocusedVisible": 0,
+    "input16ms": 1,
+    "peer2500ms": 18,
+    "everyMarker2500ms": 18
+  },
+  "immediate": {
+    "0": {
+      "inputP95RangeMs": [
+        4.220947265625,
+        6.795166015625
+      ],
+      "peerP95RangeMs": [
+        4569.613525390625,
+        25027.099365234375
+      ]
+    },
+    "50": {
+      "inputP95RangeMs": [
+        4.343017578125,
+        5.30078125
+      ],
+      "peerP95RangeMs": [
+        5386.811767578125,
+        24810.822998046875
+      ]
+    }
+  },
+  "historicalCoordinatedEveryMarkerFailed": 6,
+  "pairedFaultRecordsWithFailureEvents": 0
+}

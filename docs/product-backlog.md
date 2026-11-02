@@ -1236,3 +1236,7 @@ A tagged paired reference run pinpoints repair-required in localBaselineReuse.co
 ### 2026-11-01 — Phase 328: provenance correction complete; fault target unchanged
 
 The phase327 log-index correction changes no result. The next substantive diagnostic remains the first differing census/delivery/inbound field and captured evidence identity in the warm full-versus-incremental ledger comparison; preserve every guard. [Correction](./performance-experiments/2026-10-29-worker-catchup/phase328/README.md).
+
+### 2026-11-01 — Phase329: scope diagnosis confirmed; paired latency and unrun controls remain
+
+The lab mixed dense/legacy replay reuses a stale turn; focused controls and a matched unrepaired grown recurrence confirm the retained receipt defect. Private repair passes18paired functional/both-maintenance/cold journeys and3repaired grown measured journeys. All6paired latencycells remain red, including one1.422sinputp95outlier; trace on the common larger fixture before selecting a sender policy. Device1single500 and finaldeep0 control are unrun because the unrepairedP1maintenance owner-error triggered the explicit functional stop. Resumption and hardening need operator direction; no main/source/default/format change or release work. [Allruns and separate limits](./performance-experiments/2026-10-29-worker-catchup/phase329/README.md).

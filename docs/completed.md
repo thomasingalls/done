@@ -18487,3 +18487,7 @@ Added only private lab observations for every Window fail origin, pre-terminatio
 ### 2026-11-01 — Phase 328: correct running-log provenance
 
 Separated phase327's empty running preservation-log snapshot from its completed log. The empty snapshot is explicitly reconstructed from matching original raw and gzip hashes; all212 final artifact copies verify. Patch327 stays immutable; no run, trace, metric, app/test source, guard or gate changes. [Correction](./performance-experiments/2026-10-29-worker-catchup/phase328/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase329: mixed dense/legacy retained-record scope
+
+Pre-repair warm audit first differs at inbound.peers.map#3.retained[7].envelope; two real-crypto full/continuation controls fail, including first>0. Private record-scoped turn repair passes P0/P1 controls,122focused cases/17files and strictTS. All18paired journeys complete actual maintenance on both owners and36exactofflinecoldchecks; all6latencycellsfail(peer/markers18of18,input1of18). Three repaired grown withheld runs and P0 pass all measured predicates/both cold; matched unrepairedP1 halts owner-error with integrity guard at localBaselineReplay:596. Functional stop leaves Device1single500/deep control unrun. All25runs/failures/hostlogs preserved,1552canonicalinputs unchanged,indexempty. Evidence/docs only; no landing/default/hardening/credit. [Phase329](./performance-experiments/2026-10-29-worker-catchup/phase329/README.md). Outcome recorded before queue advance.
