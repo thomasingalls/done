@@ -6592,3 +6592,8 @@ Use the existing atomic receive owner for development peer ranges; count verifie
 ### 2026-10-30 — Worker catch-up phase286
 
 Measure the development four-position writer with both client roles rebuilt at default production flags and limits, using original deep actor1 and30s gate plus Node traffic clocks/final native health. No profiler or favorable rerun. See [phase286](./performance-experiments/2026-10-29-worker-catchup/phase286/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase287
+
+Retain the failed deep4 cell. Eight-entry download must preserve four-position native turns and carry only unverified bounded originals across turns; fresh native verification remains mandatory. Test clean size narrowing before extending the planner. See [phase287](./performance-experiments/2026-10-29-worker-catchup/phase287/README.md).
