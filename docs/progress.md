@@ -189,24 +189,24 @@ graph in both ownership modes. Fully verified binary views can now build cold in
 observation; append continuation still takes the full reference. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full313files/3107cases/one existing skip pass114.04s at120s;
-240s unused. Types,93 focused and4 unchanged generation/index controls pass,
-with reviewed registry/inventory. [Cold page indexing](./development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md)
-keeps bounds/full caller verification. Initial uncertified fixture and recording
-failures remain; genuine history replaces only that fixture. No old test edits or
-native cold/MAC/lease/performance credit.
+**Latest checks.** Full314files/3115cases/one existing skip pass114.16s at120s;
+240s unused. Types,101 focused and4 unchanged generation/index controls pass,
+with reviewed registry/inventory. [Closed ledger capture](./development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md)
+keeps one owned binary backing and exact old census error scope. Initial erasure
+and message-surface unit failures remain; fixed without old test edits.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Binary append continuation: shared closed census
-metadata, fixed-header logical-work preflight before expansion and explicit
-owner proof-byte observation. Keep complete exact prefix comparison,
+**Active bounded outcome.** Wire binary append continuation using the closed
+raw capture and fixed-header preflight before expansion. Keep the old unconditional
+canonical/byte check for every added non-content row, exact prefix comparison,
 own-publisher/reference and installed-authority fences, physical witness and
-chain-order semantics. Compare mixed legacy/page continuation to full replay;
-shared per-load syntax ownership and permanent stale-turn properties follow.
+owner proof-byte observation. Compare genuine mixed page/legacy continuation to
+full replay and independently check retained envelope positions. Shared per-load
+syntax ownership and permanent mixed/stale-turn properties remain afterward.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

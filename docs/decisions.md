@@ -7272,3 +7272,10 @@ The same existing flag expression controls cache installation and prospective ac
 **Date:** 2026-11-04 · **Commit:** pending patch403
 
 Smaller physical rows do not establish full ownership charge. Verified callers supply their real separately retained proof bytes; ports without that observation retain full reference fallback. This grants no trust or permission to omit full verification/floor checks. Binary epoch uses the original raw request via the common classifier; append reuse stays separate. [403 evidence](development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md).
+
+
+### Erase only buffers no longer owned by a reader
+
+**Date:** 2026-11-04 · **Commit:** pending patch404
+
+Binary request/page frames are subviews of one owned backing, so retaining either keeps that allocation. Preserve it without adding copies; erase decoded entries, unused legacy raw copies and all refused captures. Shared private projection keeps the old census error boundary while the raw helper captures its own bytes/floor. Header work bounds expansion only and grants no syntax/authority trust. [404 evidence](development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md).

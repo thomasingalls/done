@@ -182,27 +182,34 @@ const inboundNamespaceHex = hex(inboundNamespaceBytes);
 /** Work bound only, never receipt validity or authority. Legacy rows admit at most one
  * position and keep their existing opaque capture/replay contract. A binary extent's
  * fixed header bounds admitted work before any request/page or logical entry expansion. */
+/** Fixed-header work bound only. No request/page decode, crypto or trust is performed. */
+export function inboundReceiptByteWork(bytes: Bytes, scope: unknown): number {
+  const floor = captureInboundReceiptVersion(scope);
+  if (!(bytes instanceof Uint8Array) || bytes.length > INBOUND_RECORD_LIMIT) return invalid();
+  if (!inboundNamespaceBytes.every((byte, index) => bytes[index] === byte)) return 1;
+  if (floor.inboundReceiptVersion !== 1) throw new StorageCompatibilityError();
+  if (!pageMagic.every((byte, index) => bytes[index] === byte))
+    throw new StorageCompatibilityError();
+  const { position } = inboundPageHeader(bytes),
+    first = bytes[229]!,
+    count = bytes[230]!;
+  if (
+    first >= 8 ||
+    count < 1 ||
+    count > 8 ||
+    first + count > 8 ||
+    position + BigInt(count) - 1n > BigInt(Number.MAX_SAFE_INTEGER)
+  )
+    invalid();
+  return count;
+}
 export function inboundReceiptEventWork(wire: string, scope: unknown): number {
   const floor = captureInboundReceiptVersion(scope);
   if (typeof wire !== 'string') return invalid();
   if (!wire.startsWith(inboundNamespaceHex)) return 1;
   const bytes = inboundBytes(wire, INBOUND_RECORD_LIMIT);
   try {
-    if (floor.inboundReceiptVersion !== 1) throw new StorageCompatibilityError();
-    if (!pageMagic.every((byte, index) => bytes[index] === byte))
-      throw new StorageCompatibilityError();
-    const { position } = inboundPageHeader(bytes),
-      first = bytes[229]!,
-      count = bytes[230]!;
-    if (
-      first >= 8 ||
-      count < 1 ||
-      count > 8 ||
-      first + count > 8 ||
-      position + BigInt(count) - 1n > BigInt(Number.MAX_SAFE_INTEGER)
-    )
-      invalid();
-    return count;
+    return inboundReceiptByteWork(bytes, floor);
   } finally {
     bytes.fill(0);
   }

@@ -134,6 +134,52 @@ export function inboundMemoSlots(entry: InboundLedgerEntry): string[] {
     inboundEntryMemoSlot(entry.record.seq, first + offset),
   );
 }
+/** Closed syntax metadata only, never content/authority verification. Capture this record's
+ * own bytes/scope each time. Returned original frames stay owned by the view; unused raw and
+ * decoded-entry copies are erased. No supplied parser object or projection selects trust. */
+export function captureInboundLedgerRecord(
+  record: OpenedRecord,
+  context: InboundContext,
+): InboundLedgerEntry | undefined {
+  const captured = captureScopedInboundReceiptSyntax(record.bytes, context);
+  return captured ? capturedInboundLedgerRecord(record, captured) : undefined;
+}
+function capturedInboundLedgerRecord(
+  record: OpenedRecord,
+  captured: NonNullable<ReturnType<typeof captureScopedInboundReceiptSyntax>>,
+): InboundLedgerEntry {
+  let transferred = false;
+  try {
+    if (record.kind !== 'heads') captureError('Inbound record misplaced');
+    const first = inboundReceiptViews(captured).entries().next().value;
+    if (!first) captureError('Empty inbound receipt');
+    const entry: InboundLedgerEntry = {
+      record,
+      event: first.event,
+      ...(captured.receipt.kind === 'page'
+        ? {
+            extent: {
+              firstEntry: captured.receipt.record.firstEntry,
+              entryCount: captured.receipt.record.entryCount,
+            },
+          }
+        : {}),
+    };
+    transferred = true;
+    return entry;
+  } finally {
+    const keptBacking =
+      transferred &&
+      (captured.receipt.record.request.buffer === captured.bytes.buffer ||
+        captured.receipt.record.page.buffer === captured.bytes.buffer);
+    if (!keptBacking) captured.bytes.fill(0);
+    eraseVerified(captured.originals.page.entries);
+    if (!transferred) {
+      captured.receipt.record.request.fill(0);
+      captured.receipt.record.page.fill(0);
+    }
+  }
+}
 function* inspectInboundSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
@@ -168,24 +214,7 @@ function* inspectInboundSteps(
         captureError('Unreadable inbound carrier');
       }
       if (captured) {
-        if (record.kind !== 'heads') captureError('Inbound record misplaced');
-        const first = inboundReceiptViews(captured).entries().next().value;
-        if (!first) captureError('Empty inbound receipt');
-        entries.push({
-          record,
-          event: first.event,
-          ...(captured.receipt.kind === 'page'
-            ? {
-                extent: {
-                  firstEntry: captured.receipt.record.firstEntry,
-                  entryCount: captured.receipt.record.entryCount,
-                },
-              }
-            : {}),
-        });
-        // Only the closed event metadata/original frames survive census. Parsed wire-entry buffers
-        // are not permissions and do not cross the native view or Window/Worker boundary.
-        eraseVerified(captured.originals.page.entries);
+        entries.push(capturedInboundLedgerRecord(record, captured));
         continue;
       }
     }

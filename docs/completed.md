@@ -19134,3 +19134,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Binary full-history indexing requires explicit owner proof-byte observation and retains all bounds. Epoch uses the raw-byte classifier. Three controls discriminate fallback; a fourth uses genuine certification after a fixture refusal. Final93 focused,4 unchanged generation and full313files/3107cases/one existing skip pass114.04s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md).
 
 **Limits.** Fixture/recording failures preserved. No old test edits. Index construction is not native cold/MAC/lease evidence. Binary append fallback and all later mixed/owned-parse/dual-audit/writer/lifecycle/final gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Share closed ledger capture and preserve buffer ownership
+
+**Date:** 2026-11-04 · **Commit:** pending patch404 · **Stage:** partial Stage3.2
+
+**Exit.** Raw fixed-header work and scoped record capture share existing guards/projection. The census catch remains exact. Keep one owned binary backing, erase unused legacy raw/decoded-entry copies and refused buffers. Final101 focused,4 unchanged generation and full314files/3115cases/one existing skip pass114.16s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md).
+
+**Limits.** Initial retained-backing erasure caused11 unit reds; corrected. One old error-surface failure corrected without changing its test. Before expectation mistake and all versions remain; no old test edits. Append binary fallback and later hardening/gates remain. Outcome recorded before updating this seat's active state.
