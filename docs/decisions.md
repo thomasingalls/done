@@ -7384,3 +7384,10 @@ Use the approved eight-position selector/native allowance and split writer-on re
 **Date:**2026-11-04 · **Commit:**pending patch419
 
 Use one content-free budget predicate and evict optional quiet originals for the complete cache/tail/wire reservation. Include wire originals and a proposed independent cache/tail copy simultaneously. Inability to retain speculative work cannot undo acknowledged writing. Keep every native verifier, authority and lifecycle fence, and harden real format activation/cold/rollback separately. [Evidence](development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
+
+
+### Make dense writer activation explicit in both build entry paths
+
+**Date:**2026-11-04 · **Commit:**pending patch420
+
+Use a strict captured build selector with ordinary default0 and Docker forwarding, preserving reader compatibility independently. Local Vite raw environment exposure was already possible; distinguish that observation from the previously absent Docker path. Keep actual writer-on/off image and lifecycle evidence separate from configuration-unit proof. [Evidence](development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).

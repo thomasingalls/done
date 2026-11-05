@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Bound cache tail and wire originals together](./development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
-The pure new budget predicate passes its control before integration while four new integration cases fail on missing cache eviction/tail pressure; all six final cases pass, including metadata that cannot overwrite required bytes. Tests cover the independent ceilings, four-request sharing,32-position eviction, invalid pressure, conservative tail pressure/retirement and combined tail/wire/cache space. Types and162affected receive/crypto cases pass; the selected actual native run executes exactly the two unchanged audit cases, not a binary peer/group journey. Full329files/3204pass/one existing skip pass128.78s at240s; actual command 129.709s. Independent AST checks retain native receiveGroup, complete reference, request preparation, all quiet age/context/expiry/originals/lifecycle guards and all tail guards except its content-free usage observer. Quality, format,17registry checks, inventory and10controls pass. New source registered without any new crypto domain; four source hashes and one corresponding address move. No old tests change.
+**Latest checks.** [Forward an explicit default-off dense writer selector through Vite and Docker](./development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
+The initial six-red build test includes two new assertions that incorrectly compare an ES-module namespace with a plain object; those are corrected to compare exported scalar values, retaining the failed attempt. Corrected before has four failures for missing explicit definition/default/validation and Docker forwarding, while both raw local-environment compilations already work: Vite previously exposed an explicit local VITE value automatically. This does not establish prior Docker support. After the change, six new controls pass through the actual config, including production-mode on/off compiled probes with reader1, immutable captured selection, invalid-value refusals and independent Docker mapping. Initial new-test typing of optional config.define is corrected without app changes; the red log remains. Types and21cases/four files pass, with all prior build-policy and writer controls untouched. Independent AST review preserves both old policies and the complete config except selector; Docker comparison retains every old byte. Quality, format,17registry checks, inventory and10controls pass; no runtime/crypto hashes, domains or construction moves. Graph adds one required five-declaration/six-case file.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Add strict default-off RANGE_RECEIVE forwarding through the actual Vite and Docker build paths, then prove first-floor lifecycle and genuine composed peer/Worker dense admission, aged interior cold, actual stale-turn audit and same-tree writer-off rollback image. Continue automatically after each freeze.
+**Active bounded outcome.** Prove first-floor lifecycle with genuine composed peer/Worker dense admission, then31s interior cold, frozen old readers/pending writing, actual stale-turn idle audit and the same-tree writer-off rollback image. Correct any implementation defect within the approved format and existing native/authentication guards; stop only at the operator decision/unfixable boundaries. Continue automatically after each freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged stored semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage;
@@ -210,8 +210,8 @@ is not yet observed. Reduced and unreduced full-oracle pressure now feeds the gu
 Real peer/Worker B fairness, cancellation and past-index observations remain.
 G8/range4 and combined raw-original caps are covered in418/419; physical
 counters/witnesses remain separate.
-Ordinary builds remain writer-off; Docker/Vite forwarding and the selected
-writer-on/writer-off build proofs remain.
+Ordinary builds remain writer-off. Docker/Vite forwarding is covered in420;
+selected writer-on/writer-off image and lifecycle proofs remain.
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine

@@ -19280,3 +19280,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Shared originals accounting now covers cache, tail, wire and temporary retained copies at8entries/32positions/4MiB. Six new cases,162focused cases and full329files/3204pass/one skip pass128.78s. Native authentication/commit and old tests remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
 
 **Limits.** This phase establishes bounded canonical source and isolated controls, not measured B performance or a real composed-peer dense transaction. Binary Worker/peer floor lifecycle,31s interior cold, old artifacts, actual stale-turn audit and same-tree writer-off rollback image remain. No RAM or timing acceptance claim, format/trust/service/wire/rate/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Forward an explicit default-off dense writer selector through Vite and Docker
+
+**Date:**2026-11-04 · **Commit:**pending patch420 · **Stage:**partial Stage3.2
+
+**Exit.** The selected writer flag now has a strict explicit Vite path and Docker ARG/ENV forwarding, ordinary default0 and unchanged readers. Six new build controls plus existing policies total21passing cases, with types/bookkeeping checks green. Runtime source is byte-identical to419. [Evidence](development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
+
+**Limits.** Production-mode unit compilation is not an image or lifecycle proof. The same-tree writer-off rollback image, real marked/dense/stale-tab opening, ordinary legacy operation and cold/Undo are still required. Latest full unit checkpoint remains419:329files/3204pass/one skip128.78s; it predates the new six-case build test. Real peer/Worker B fairness/past-index and Stage5/6 remain. No format/trust/runtime/limit/gate/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
