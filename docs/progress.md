@@ -208,13 +208,20 @@ bookkeeping. Six R/E hashes and one diagnostic line changed; all classifications
 construction statuses and obligations remain. Explicit census regeneration,
 authority, all 12 registry controls and inventory checks pass. No code/test change.
 
-**Next bounded outcome.** Rerun the original full Stage 2 check after freezing this
-record, with the pinned runtime/browser and unchanged child deadlines. Preserve
-every failure and classify before repair. Actual app refusal, closure,
-repair-required, missing writing, archive difference, cold failure or an
-unexpected negative-control pass stops. Stage 2 is not yet closed.
-After a green checkpoint, hand over the Stage 3.1 format contract. Stage 4 may
-proceed while that decision waits, then stop for the operator. No Stage 5 timing
-credit, new stored format, release preparation, publication or deployment.
+**Partial checkpoint retained.** [363](./development-evidence/2026-11-02-release-hardening/363-checkpoint-clear-timeout/README.md)
+records 26 passing root commands, including 292 files/2,927 unit cases/one old skip
+in 110.71s. Local clear first times out after 17 positive passes and three observer
+errors; the base and current selected comparisons pass, then the complete current
+retry passes 17 cases/five original mutation detections in 85.619s under 120s.
+The cause remains unresolved. Only failure-time content-free diagnostics were
+added; app/protocol bytes, original waits and all 73 assertion arguments remain.
+
+**Next bounded outcome.** Refresh exact-tree receipts and run the 56 unrun root
+commands, starting at storage:trim. Keep pinned runtime/browser and every child
+deadline. Preserve failures and classify before repair; actual app functional,
+negative-control and guard stops remain. Stage 2 is not closed and no monolithic
+final check pass is claimed. After green, hand over the Stage 3.1 format contract;
+Stage 4 may proceed while that waits, then stop for the operator. No new stored
+format, Stage 5 credit, release preparation, publication or deployment.
 
 This seat edits only this document;the other seat's document above is unchanged.

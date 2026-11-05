@@ -18743,3 +18743,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The first root check stops at stale source bookkeeping before units/native stages. Review finds six R/E source identities and one relocated diagnostic line; all 199 labels, construction properties/statuses and obligations remain. The generator, authority check, all 12 registry controls, formatter and inventory checks pass. Program/test bytes remain identical to the failed-check declaration. [Evidence](development-evidence/2026-11-02-release-hardening/362-reviewed-source-census/README.md).
 
 **Next.** Rerun the original full check after this record. The Stage 2 checkpoint is not yet green; no runtime or security-policy change. Record before advancing progress.
+
+
+### Stage 2 checkpoint retains a clear-observer timeout beside the full passing retry
+
+**Date:** 2026-11-02 · **Commit:** pending sequential evidence patch 364 (test diagnostics frozen as 363) · **Stage:** operator hardening Stage 2 checkpoint
+
+**Exit.** First 26 root commands pass, including 292 unit files/2,927 cases/one old skip in 110.71s. Local clear passes 17 positive cases but times out after three mutation-observer errors. Signed-base and current selected comparisons pass, and the full current retry passes 17 cases/five original mutation detections in 85.619s under the original 120s. The failed attempt remains; no unique cause or reliable deadline margin is established. [Evidence](development-evidence/2026-11-02-release-hardening/363-checkpoint-clear-timeout/README.md).
+
+**Change and next.** Only failure-time content-free diagnostics; all 73 assertion arguments, waits, case/mutation definitions and deadlines remain. New-block formatting is AST-identical to the actually tested source, whose historical pin is checked. App/protocol bytes remain unchanged. Continue the 56 unrun commands after receipt refresh; Stage 2 is not yet closed. Record before advancing progress.

@@ -1310,7 +1310,7 @@
     {"path":"scripts/lib/webauthn.mjs","sha256":"18ca0dd62e41bc382657b23369707ecc342cf37e0947cd6a1c0840c2f4d07e8b"},
     {"path":"scripts/local-clear/catalog.mjs","sha256":"0e760a365bc7f2ad5b2bd9a5a718b8ad4fbf29f6aa8312cf8f0d2e0b376aee8a"},
     {"path":"scripts/local-clear/run.mjs","sha256":"20343f711ca3e6a235a9e349d1300bc1377396fcf18707ee22f5f8e32612b4a5"},
-    {"path":"scripts/local-clear/scenarios.mjs","sha256":"c31d803ef53a25f4d99fa2ed1327dc1f251135ecbd35ebddfc4e01c5041b2d88"},
+    {"path":"scripts/local-clear/scenarios.mjs","sha256":"745eaac4708d35e1732bcbe814208ccfabd7d8b7b985a9ad0184ee35962e57c0"},
     {"path":"scripts/local-clear/worker.mjs","sha256":"0eecb71bd04ee601d16a1bcb83803c60c5d8c0b74d1d237fb487616a91cbf5ea"},
     {"path":"scripts/local-genesis/catalog.mjs","sha256":"3950802058d08668c98bb20d93271d043fdc82725823eca78538fc4cd2287a06"},
     {"path":"scripts/local-genesis/run.mjs","sha256":"c7d4fb29039a0590dcaf7933cd94ee089190c911c91ae18f6734c5393d39370a"},
