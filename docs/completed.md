@@ -18978,3 +18978,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Checks.** Full unit298files/2985cases/one existing skip,105.42s at120s; types, scoped quality, registry and inventory pass. Old guard/native-CAS ASTs exact after only declared additions. Expected source-census and dependent-pin failures preserved and corrected after review; no old tests/obligations removed.240s unused.
 
 **Limits.** Genuine Worker/Joined activation, old artifacts, all metadata rewrites, dense rows and same-tree rollback image remain; source-only writer-off cold is narrower evidence. All further gates remain. Outcome recorded before advancing this seat's progress.
+
+
+### Real original and Joined Worker owners reopen marked custody
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch387 · **Stage:**partial Stage3.2, test-only
+
+**Exit.** One actual packaged-app/private-service/virtual-WebAuthn journey creates and connects two devices, observes real Worker cohorts, exchanges writing both ways and reauthenticates both after lock/navigation. Expected writing and the floor survive. Types, scoped quality/format and inventory controls pass. No runtime or old test changes;386's full-unit pass remains the unchanged runtime baseline. [Evidence](development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md).
+
+**Preserved failures/limits.** The initial harness prefix query included valid exclusive supervisor/member names; exact slot selection and a separate supervisor assertion repair it without app/wait/deadline changes. Unmapped-family inventory refusal is preserved and the new required config is registered without altering old dispositions. This does not isolate the first floor write's task mode, establish binary/archive export or writer-off image behavior, close old-reader/lifecycle controls or earn Stage5 credit. Outcome recorded before this seat's progress update.

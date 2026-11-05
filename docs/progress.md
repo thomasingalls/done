@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: remaining approved Stage3.2 format hardening after cleared functional checkpoint
-blocks_on: genuine Worker/Joined floor activation; complete binary readers/writer and rollback evidence
+blocks_on: floor lifecycle/old-reader controls; complete binary readers/writer and rollback evidence
 updated: 2026-11-03
 ```
 
@@ -191,13 +191,21 @@ Full unit298files/2985cases/one existing skip passes105.42s at120s. All prior
 failures stay; expected runtime census/source-site/pin drift was reviewed without
 changing classifications or open obligations. Ordinary writing remains off.
 
-**Next bounded outcome.** Genuine authenticated Account Worker and Joined startup,
-all floor-preserving rewrite/lifecycle paths, pending writing/lost reply and actual
-old artifacts. Page source-only reader-off cold evidence is not the required
-same-tree rollback image and contains no dense rows. Continue stored mode,
-logical readers, dense writer, record-scoped owned pages, G8/range4/B and that
-rollback image. No new ceremony, serialized authority, cross-owner assertion
-reuse, trust/wire/gate/limit change; stop/report as the operator requires.
+**Genuine Worker/Joined opening checked.**
+[387](./development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md)
+uses normal packaged UI/private service/virtual WebAuthn, no authentication or native
+acquire seam. Original/Joined real cohorts preserve marked custody and two-way
+writing through lock/navigation/cold opening. The first prefix-lock assumption
+failed; exact-slot and independent supervisor checks pass. New family registered
+as required; all old dispositions stay. Runtime/Vitest population exact to386.
+
+**Next bounded outcome.** Complete floor-preserving lifecycle/rewriter coverage,
+interrupted/lost replies, pending writing and genuine frozen old artifacts.387does
+not isolate first floor write task mode. Continue stored mode, logical readers,
+dense writer, record-scoped owned pages, G8/range4/B and same-tree writer-off image.
+No binary or final rollback-image proof yet. Ordinary writing remains off. No new
+ceremony, serialized authority, cross-owner assertion reuse, trust/wire/gate/limit
+change; stop/report as the operator requires.
 
 **Still required.** Stage4's stale-turn audit control after format integration,
 full coherent-source checkpoints, release-profile assets, all Stage5 replicates and

@@ -7150,3 +7150,10 @@ The actual app timer omission is detected in both projects, so retain touchend r
 **Date:**2026-11-03 · **Commit:**pending patch386 · **Scope:**approved Stage3.2, PRD/TRD unchanged
 
 Use the existing hook after ordinary Account startup and carrier initialization; no new passkey prompt or serialized permission. Fresh saved-custody MAC authentication and exact expected state precede floor signing; actual native ownership is required again inside CAS. Update private authority expectations only after the native commit, and never strip the floor on writer disable. Keep ordinary RANGE_RECEIVE off and label Page proof separately from genuine Worker/Joined proof and rollback-image evidence. The AST/negative-control/full-unit and bookkeeping results in [386](development-evidence/2026-11-02-release-hardening/386-authenticated-floor-activation/README.md) do not close remaining format or performance obligations.
+
+
+### Keep native owner evidence distinct from unauthenticated storage observations
+
+**Date:**2026-11-03 · **Commit:**pending patch387 · **Scope:**Stage3.2 native test evidence; PRD/TRD unchanged
+
+Use actual packaged UI, private service and virtual authenticators to supplement the private coordination model. Read metadata/locks without treating those observations as trust: ordinary successful cold opening still authenticates custody, binding, authority and passkey. Query exact slot permits rather than the supervisor/member namespace prefix. Preserve the first failed harness assumption and new-family inventory refusal. Register the new test as required, with no old exclusions or deadlines changed. [Evidence387](development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md) remains narrower than first-write/frozen-old-reader and final dense rollback evidence.
