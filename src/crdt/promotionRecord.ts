@@ -55,7 +55,7 @@ import {
 } from './storageCompatibility';
 import { probeDatabase } from './startupStorage';
 import { contentTransaction } from './contentDatabase';
-import type { SessionTask } from './writeSession';
+import { requireAccountFormatSessionTask, type SessionTask } from './writeSession';
 import {
   captureInboundReceiptVersion,
   inboundReceiptVersionFields,
@@ -447,6 +447,37 @@ export async function readPromotion(task: SessionTask, slotId: string, code: str
     claim,
     (await slotCustodyRows(task, slotId)) ?? [],
   );
+}
+/** Internal post-authentication activation only. Reauthenticate before extending the local floor;
+ * neither an owner ticket nor the caller's expected bytes authenticate saved custody. */
+export async function acknowledgePromotionInboundReceiptVersion(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  expectedPayload: Bytes,
+  expectedRecord: CustodyRecord,
+): Promise<PromotionRecord> {
+  requireAccountFormatSessionTask(task, slotId);
+  const state = await readPromotion(task, slotId, code),
+    marker = state.marker;
+  if (!marker || marker.v !== 9 || marker.stage !== 'account-receiving')
+    throw Error('Inbound receipt floor needs receiving custody');
+  const payload = promotionPayload(marker);
+  try {
+    if (!sameBytes(payload, expectedPayload) || !recordEqual(state.record, expectedRecord))
+      throw Error('Inbound receipt floor authority changed');
+  } finally {
+    payload.fill(0);
+  }
+  requireAccountFormatSessionTask(task, slotId);
+  if (marker.inboundReceiptVersion === 1) return marker;
+  const next = await withPromotionRoot(task, state.claim, state.record, code, (root, subtle) =>
+    signPromotion(root, { ...marker, inboundReceiptVersion: 1 }, subtle),
+  );
+  await writePromotion(task, state.claim, state.record, state.record, marker, next, () =>
+    requireAccountFormatSessionTask(task, slotId),
+  );
+  return next;
 }
 /** Internal owner check: authenticate the exact snapshot retained for unchanged-authority reuse. */
 export function authenticatePromotionRows(

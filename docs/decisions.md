@@ -7143,3 +7143,10 @@ The actual app timer omission is detected in both projects, so retain touchend r
 **Date:** 2026-11-03 · **Commit:** pending patch385 · **Orientation:** verified second daemon restart and operator-approved exhaustive codec driver; PRD/TRD unchanged from89b11fe2.
 
 **Decision.** Keep the original120s full-unit guard: all nine complete commands pass with actual unit times104.723–110.332s. No240s fallback is triggered. Retain unit sidecars and independent Vitest durations on every run so future growth stays visible. Preserve383and384evidence; host recovery plus test-driver change do not isolate causal attribution. Clear this segmented checkpoint and return to approved Stage3.2, retaining all further gates and rollout boundaries. [Evidence385](development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md).
+
+
+### Acknowledge the receipt floor at existing authenticated native activation
+
+**Date:**2026-11-03 · **Commit:**pending patch386 · **Scope:**approved Stage3.2, PRD/TRD unchanged
+
+Use the existing hook after ordinary Account startup and carrier initialization; no new passkey prompt or serialized permission. Fresh saved-custody MAC authentication and exact expected state precede floor signing; actual native ownership is required again inside CAS. Update private authority expectations only after the native commit, and never strip the floor on writer disable. Keep ordinary RANGE_RECEIVE off and label Page proof separately from genuine Worker/Joined proof and rollback-image evidence. The AST/negative-control/full-unit and bookkeeping results in [386](development-evidence/2026-11-02-release-hardening/386-authenticated-floor-activation/README.md) do not close remaining format or performance obligations.

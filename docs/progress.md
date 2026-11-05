@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: remaining approved Stage3.2 format hardening after cleared functional checkpoint
-blocks_on: authenticated floor acknowledgment, complete binary readers/writer and rollback evidence
+blocks_on: genuine Worker/Joined floor activation; complete binary readers/writer and rollback evidence
 updated: 2026-11-03
 ```
 
@@ -182,18 +182,22 @@ index empty. New daemon PID88698 verified.240s fallback unused. All83commands ha
 passing segments across381/382/383/385, not a final monolithic hardened-build check.
 Old failures stay immutable; no causal timing or release credit is claimed.
 
-**Now.** Freeze evidence385, then continue approved Stage3.2 in bounded pieces.
-Core codec375, metadata376/377 and original-task/native-coordination378/379 are
-partial/unwired.379does not establish Account authentication. Read the approved
-contract and326/323landing notes; retain all guards and every required reader.
+**Floor activation checked on Page.**
+[386](./development-evidence/2026-11-02-release-hardening/386-authenticated-floor-activation/README.md)
+uses the existing full-authentication/carrier-initialization hook and fresh saved
+MAC/exact snapshot/native-task checks, including the CAS guard. Five new native
+Page controls and five unchanged joined-parser controls pass; omission fails.
+Full unit298files/2985cases/one existing skip passes105.42s at120s. All prior
+failures stay; expected runtime census/source-site/pin drift was reviewed without
+changing classifications or open obligations. Ordinary writing remains off.
 
-**Next boundary.** Authenticated monotonic floor acknowledgment under the actual
-Page exclusive owner or real Account Worker join, after ordinary full authentication.
-No new ceremony, serialized permission, cross-owner assertion reuse or wire change.
-Then stored-mode controls, logical readers, dense writer, record-scoped owned pages,
-G8/range4/B, lifecycle/version preservation and the same-tree writer-off rollback
-image. Ordinary RANGE_RECEIVE writing remains off. Stop/report as the operator
-requires if the implementation needs a changed trust/format/wire boundary.
+**Next bounded outcome.** Genuine authenticated Account Worker and Joined startup,
+all floor-preserving rewrite/lifecycle paths, pending writing/lost reply and actual
+old artifacts. Page source-only reader-off cold evidence is not the required
+same-tree rollback image and contains no dense rows. Continue stored mode,
+logical readers, dense writer, record-scoped owned pages, G8/range4/B and that
+rollback image. No new ceremony, serialized authority, cross-owner assertion
+reuse, trust/wire/gate/limit change; stop/report as the operator requires.
 
 **Still required.** Stage4's stale-turn audit control after format integration,
 full coherent-source checkpoints, release-profile assets, all Stage5 replicates and

@@ -26,8 +26,14 @@ import type { PreparedReceiveFinish } from './admissionQueue';
 import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
-import { authenticateJoinedAccountRows } from './joinedAccount';
-import { authenticatePromotionRows } from './promotionRecord';
+import {
+  authenticateJoinedAccountRows,
+  acknowledgeJoinedInboundReceiptVersion,
+} from './joinedAccount';
+import {
+  authenticatePromotionRows,
+  acknowledgePromotionInboundReceiptVersion,
+} from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
 import {
   MaintenanceInterrupted,
@@ -311,6 +317,7 @@ async function openAccountReceiveOwner(
   let expectedPayload: Bytes = new Uint8Array(),
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
+  let inboundReceiptVersion: 1 | undefined;
   let outstandingGroup: Bytes[] = [];
   let outstandingCursor = 0,
     outstandingAllowance = 1;
@@ -470,6 +477,7 @@ async function openAccountReceiveOwner(
       : {}),
     async initialize(task, v) {
       invalidateAuthority();
+      inboundReceiptVersion = v.marker.inboundReceiptVersion;
       expectedPayload = promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' });
       expectedRecord = v.record;
       membershipAnchor = v.marker.admission?.receipt
@@ -516,6 +524,7 @@ async function openAccountReceiveOwner(
     },
     async initializeJoined(task, v) {
       invalidateAuthority();
+      inboundReceiptVersion = v.marker!.inboundReceiptVersion;
       expectedPayload = joinedPayload(v.marker!);
       expectedRecord = v.record;
       membershipAnchor = structuredClone(v.marker!.authority.base);
@@ -553,7 +562,36 @@ async function openAccountReceiveOwner(
         publicKey = verifying;
       });
     },
-    activate: (task, owner) => owner.carrier.enableSpool(task),
+    async activate(task, owner) {
+      // Full ordinary startup authentication and old-journal recovery have completed before this
+      // hook. Commit the floor before a writer can reserve or admit a multi-entry receipt.
+      if (rangeWrites && inboundReceiptVersion !== 1) {
+        const nextPayload = joined
+          ? joinedPayload(
+              await acknowledgeJoinedInboundReceiptVersion(
+                task,
+                options.slotId,
+                options.code,
+                expectedPayload,
+                expectedRecord,
+              ),
+            )
+          : promotionPayload(
+              await acknowledgePromotionInboundReceiptVersion(
+                task,
+                options.slotId,
+                options.code,
+                expectedPayload,
+                expectedRecord,
+              ),
+            );
+        invalidateAuthority(true);
+        expectedPayload.fill(0);
+        expectedPayload = nextPayload;
+        inboundReceiptVersion = 1;
+      }
+      await owner.carrier.enableSpool(task);
+    },
     async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
       localRetentionHint = undefined;
       if (baseline) {

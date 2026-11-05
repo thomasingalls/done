@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "1e3cc2cfcc7e1d544e3e155646a29c19645d86c75301d3d8bfaa5c7f59aa0016"
+      "sha256": "ef733ad02a03254f7cb9eb487a16f47848867a3e42d26c29ae64d43f4d29ca2e"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1121,7 +1121,7 @@
     },
     {
       "path": "src/crdt/joinedAccount.ts",
-      "sha256": "e8773975427f050559701e1d9e097f9082251939030034182ce7d568946fcfbb"
+      "sha256": "2d1fcb1cc6d528a68693f7aa0d8aa8099d6c669735f0c03787d23ab2554030fe"
     },
     {
       "path": "src/crdt/journalCodec.ts",
@@ -1357,7 +1357,7 @@
     },
     {
       "path": "src/crdt/promotionRecord.ts",
-      "sha256": "e6ac024af98f0b963d0cbde8061595c1440ed1ca6ec593cd748e71b1d4120037"
+      "sha256": "e59916ffe474494d9948a6e32e2c8875afd82d3fb2d8cefba26ed93f22fed4d8"
     },
     {
       "path": "src/crdt/protectionEnvironment.ts",
@@ -2229,7 +2229,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 787
+          "line": 825
         }
       ]
     },
@@ -3225,11 +3225,11 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 504
+          "line": 537
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 513
+          "line": 546
         }
       ]
     },

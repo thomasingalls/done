@@ -87,7 +87,7 @@ import { capturedRecovery, type CaptureRoute } from './sourceCapture';
 import { replayRecovery } from './admissionDocument';
 import { Y, coversGenesis, hasPendingUpdates } from './yjs';
 import { requireAccountAccess } from './accountAccess';
-import { withJoinedSlot, type SessionTask } from './writeSession';
+import { withJoinedSlot, requireAccountFormatSessionTask, type SessionTask } from './writeSession';
 import type { AccountStartupOptions } from './accountStartup';
 import type { ContentReaderState } from '../account/contentReader';
 import type { InstalledContentKey } from '../account/ceremonyVault';
@@ -407,6 +407,39 @@ async function signJoined(task: SessionTask, state: JoinedState, code: string, n
       ),
     ),
   }));
+}
+/** Internal post-authentication activation; the native CAS preserves all original custody and
+ * retained reading. A locally supplied expected payload never replaces its fresh authentication. */
+export async function acknowledgeJoinedInboundReceiptVersion(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  expectedPayload: Bytes,
+  expectedRecord: CustodyRecord,
+): Promise<JoinedRecord> {
+  requireAccountFormatSessionTask(task, slotId);
+  const state = await readJoinedAccount(task, slotId, code),
+    marker = state.marker;
+  if (!marker || marker.phase !== 'active')
+    throw Error('Inbound receipt floor needs active certified custody');
+  const payload = joinedPayload(marker);
+  try {
+    if (
+      payload.length !== expectedPayload.length ||
+      !payload.every((v, i) => v === expectedPayload[i]) ||
+      !recordEqual(state.record, expectedRecord)
+    )
+      throw Error('Inbound receipt floor authority changed');
+  } finally {
+    payload.fill(0);
+  }
+  requireAccountFormatSessionTask(task, slotId);
+  if (marker.inboundReceiptVersion === 1) return marker;
+  const next = await signJoined(task, state, code, { ...marker, inboundReceiptVersion: 1 });
+  await writeJoined(task, state, next, state.record, () =>
+    requireAccountFormatSessionTask(task, slotId),
+  );
+  return next;
 }
 /** Approval writes must rebind the active joined marker in the same native transaction. */
 export async function writeJoinedApproval(
