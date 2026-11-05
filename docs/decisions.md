@@ -7171,3 +7171,10 @@ Use a private discriminated mode constructed only by the saved-byte wrapper. A f
 **Date:**2026-11-03 · **Commit:**pending patch389 · **Scope:**approved Stage3.2; PRD/TRD unchanged
 
 Expose a count before lazy logical expansion and key private memo slots by actual physical sequence plus original selected page index. Preserve exact original bytes per physical extent instead of encoding one synthetic legacy row per view. A shared syntax projection does not authenticate a floor or replace per-entry crypto/authority/commit checks. Keep first selected predecessor independent of unadmitted entries. Unknown future versions use the existing update-required refusal at the tag home; every caller must still be moved there. [389evidence](development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md) leaves parsed-page reuse, reader integration and all final gates outstanding.
+
+
+### Share captured syntax without exporting verification trust
+
+**Date:**2026-11-03 · **Commit:**pending patch390 · **Scope:**approved owned-page hardening; contracts unchanged
+
+Keep the original request/page and their parsed syntax together inside one copied physical receipt. Reuse parsing across admitted entries, preserving every per-entry structural validation. Only private codec paths accept already captured syntax, with exact raw-object matching; public decoders return ordinary data. Signature, prefix, current authority, witness and commit checks remain the verifier/owner's responsibility. [Phase390](development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md) does not complete their integration.

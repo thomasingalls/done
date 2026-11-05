@@ -19005,3 +19005,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** One home provides admitted count, true request epoch, actual index/position/link/original-byte views and physical+entry memo slots; future inbound versions are update-required there. Eight independent cases cover all72extents and legacy/interior/ownership/address controls.93focused cases pass; all existing codec guard ASTs exact. [Evidence](development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md).
 
 **Checks/limits.** Full299files/2993cases/one existing skip passes107.81s at120s. Types, scoped quality, registry/inventory pass; before-classification and new-generator typecheck failures preserved. No old tests or obligations changed. Every actual reader/floor scope, owned-page reuse, physical/logical accounting, binary writer and final gates remain; no syntax trust or release credit. Outcome recorded before progress advances.
+
+
+### Capture original receipt syntax once per physical codec turn
+
+**Date:**2026-11-03 · **Commit:**pending patch390 · **Stage:**partial Stage3.2
+
+**Exit.** Exact original syntax is shared only within one owned physical extent; public bytes/shapes and every prior codec predicate/semantic guard remain. Four new count controls fail before and all five pass after;98focused checks pass. Full300files/2998cases/one existing skip passes109.01s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md).
+
+**Limits.** Syntax grants no verification trust. Types, scoped quality, registry/inventory pass; private proposal-shape error retained. All verifier/reader/floor/memo/writer integration and final gates remain. No timed performance, RAM or release credit. Outcome recorded before progress advances.

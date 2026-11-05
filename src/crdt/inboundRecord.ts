@@ -16,6 +16,8 @@ import {
   inboundHex,
   inboundInteger,
   parseInboundArray,
+  type InboundReadRequest,
+  type InboundReadPage,
 } from '../../account-protocol/inboundTransport';
 import { MAX_BATCH_BYTES } from './contentRecord';
 import { StorageCompatibilityError } from './storageCompatibility';
@@ -44,10 +46,34 @@ export interface InboundRecord {
 const invalid = (): never => {
   throw Error('Invalid inbound record');
 };
-function validatedFields(e: InboundRecord) {
+/** Captured syntax only. No wire authentication, authority or lifetime trust travels with it. */
+export interface InboundOriginalSyntax {
+  readonly requestBytes: Bytes;
+  readonly pageBytes: Bytes;
+  readonly request: InboundReadRequest;
+  readonly page: InboundReadPage;
+}
+function originalSyntax(requestBytes: Bytes, pageBytes: Bytes): InboundOriginalSyntax {
+  return {
+    requestBytes,
+    pageBytes,
+    request: decodeInboundRequest(requestBytes),
+    page: decodeInboundPage(pageBytes),
+  };
+}
+function matchingOriginals(
+  e: Pick<InboundRecord, 'request' | 'page'>,
+  captured?: InboundOriginalSyntax,
+): InboundOriginalSyntax {
+  const originals = captured ?? originalSyntax(e.request, e.page);
+  if (originals.requestBytes !== e.request || originals.pageBytes !== e.page) invalid();
+  return originals;
+}
+function validatedFields(e: InboundRecord, captured?: InboundOriginalSyntax) {
   if (e.kind !== 'received' && e.kind !== 'conflict') invalid();
-  const r = decodeInboundRequest(e.request),
-    p = decodeInboundPage(e.page),
+  const originals = matchingOriginals(e, captured),
+    r = originals.request,
+    p = originals.page,
     index = e.entry === undefined ? 0 : inboundInteger(e.entry);
   checkInboundExtent(p, r);
   if (index >= p.entries.length) invalid();
@@ -105,6 +131,12 @@ export function encodeInboundRecord(e: InboundRecord): Bytes {
   return bytes;
 }
 export function decodeInboundRecord(bytes: Bytes): InboundRecord {
+  return decodeLegacySyntax(bytes).record;
+}
+function decodeLegacySyntax(bytes: Bytes): {
+  record: InboundRecord;
+  originals: InboundOriginalSyntax;
+} {
   const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
   const indexed = v[0] === 'done/account-inbound/v2' && v[1] === 2;
   if (
@@ -127,8 +159,10 @@ export function decodeInboundRecord(bytes: Bytes): InboundRecord {
   } as InboundRecord;
   // parseInboundArray already checked byte length and exact canonical JSON. The binary
   // fields were decoded from canonical hex above; re-encoding them adds no validation.
-  validatedFields(e);
-  return e;
+  if (e.kind !== 'received' && e.kind !== 'conflict') invalid();
+  const originals = originalSyntax(e.request, e.page);
+  validatedFields(e, originals);
+  return { record: e, originals };
 }
 
 /** Approved page receipt. Unwired until the authenticated compatibility floor is installed. */
@@ -170,15 +204,16 @@ function pageLengths(requestLength: number, pageLength: number): number {
     invalid();
   return length;
 }
-function validatePageRecord(e: InboundPageRecord): void {
+function validatePageRecord(e: InboundPageRecord): InboundOriginalSyntax {
   if (!(e.request instanceof Uint8Array) || !(e.page instanceof Uint8Array)) invalid();
   pageLengths(e.request.length, e.page.length);
   for (const [name, , size] of pageIds) inboundHex(e[name], size);
   const first = inboundInteger(e.firstEntry),
     count = inboundInteger(e.entryCount, 1),
     position = inboundInteger(e.firstPosition, 1),
-    request = decodeInboundRequest(e.request),
-    page = decodeInboundPage(e.page);
+    originals = originalSyntax(e.request, e.page),
+    request = originals.request,
+    page = originals.page;
   checkInboundExtent(page, request);
   if (
     count > 8 ||
@@ -195,23 +230,27 @@ function validatePageRecord(e: InboundPageRecord): void {
     if (proof.kind !== 'accepted') return invalid();
     // Reuse the existing selected-entry structural checks, not its JSON encoding.
     // Crypto and acceptance-chain authentication remain the verifier's responsibility.
-    validatedFields({
-      baseline: e.baseline,
-      lineage: e.lineage,
-      head: e.head,
-      reader: e.reader,
-      publisher: e.publisher,
-      kind: 'received',
-      position: position + index - first,
-      previous,
-      link: proof.head.link,
-      request: e.request,
-      page: e.page,
-      ...(request.limit === 1 ? {} : { entry: index }),
-    });
+    validatedFields(
+      {
+        baseline: e.baseline,
+        lineage: e.lineage,
+        head: e.head,
+        reader: e.reader,
+        publisher: e.publisher,
+        kind: 'received',
+        position: position + index - first,
+        previous,
+        link: proof.head.link,
+        request: e.request,
+        page: e.page,
+        ...(request.limit === 1 ? {} : { entry: index }),
+      },
+      originals,
+    );
     previous = proof.head.link;
   }
   if (previous !== e.lastLink) invalid();
+  return originals;
 }
 export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
   validatePageRecord(e);
@@ -229,6 +268,12 @@ export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
   return bytes;
 }
 export function decodeInboundPageRecord(input: Bytes): InboundPageRecord {
+  return decodePageSyntax(input).record;
+}
+function decodePageSyntax(input: Bytes): {
+  record: InboundPageRecord;
+  originals: InboundOriginalSyntax;
+} {
   if (
     !(input instanceof Uint8Array) ||
     input.length < INBOUND_PAGE_HEADER_BYTES ||
@@ -259,14 +304,22 @@ export function decodeInboundPageRecord(input: Bytes): InboundPageRecord {
       request: bytes.subarray(INBOUND_PAGE_HEADER_BYTES, INBOUND_PAGE_HEADER_BYTES + requestLength),
       page: bytes.subarray(INBOUND_PAGE_HEADER_BYTES + requestLength),
     };
-  validatePageRecord(e);
-  return e;
+  return { record: e, originals: validatePageRecord(e) };
 }
 export type InboundReceipt =
   | { kind: 'legacy'; record: InboundRecord }
   | { kind: 'page'; record: InboundPageRecord };
+export interface InboundReceiptSyntax {
+  readonly receipt: InboundReceipt;
+  readonly originals: InboundOriginalSyntax;
+}
 /** Classify before JSON, refuse unknown inbound versions, and never infer verification trust. */
 export function decodeInboundReceipt(bytes: Bytes): InboundReceipt | undefined {
+  return captureInboundReceiptSyntax(bytes)?.receipt;
+}
+/** Internal captured physical extent. Keep this parsed syntax inside its owning turn; it is not
+ * a verification capability, transport message or persistent cache. */
+export function captureInboundReceiptSyntax(bytes: Bytes): InboundReceiptSyntax | undefined {
   if (!(bytes instanceof Uint8Array) || bytes.length > INBOUND_RECORD_LIMIT) invalid();
   if (bytes[0] !== 91) {
     if (
@@ -274,10 +327,14 @@ export function decodeInboundReceipt(bytes: Bytes): InboundReceipt | undefined {
       !pageMagic.every((byte, index) => bytes[index] === byte)
     )
       throw new StorageCompatibilityError();
-    return { kind: 'page', record: decodeInboundPageRecord(bytes) };
+    const parsed = decodePageSyntax(bytes);
+    return { receipt: { kind: 'page', record: parsed.record }, originals: parsed.originals };
   }
   const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
-  if (isInboundRecordTag(v[0])) return { kind: 'legacy', record: decodeInboundRecord(bytes) };
+  if (isInboundRecordTag(v[0])) {
+    const parsed = decodeLegacySyntax(bytes);
+    return { receipt: { kind: 'legacy', record: parsed.record }, originals: parsed.originals };
+  }
   if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace))
     throw new StorageCompatibilityError();
   return undefined;
@@ -299,9 +356,10 @@ export interface InboundReceiptViews {
  * Original bytes are owned by this decoded physical extent and shared by its views, never encoded
  * into synthetic v2 rows. Readers must independently enforce the authenticated encoding floor. */
 export function inspectInboundReceipt(bytes: Bytes): InboundReceiptViews | undefined {
-  const receipt = decodeInboundReceipt(bytes);
-  if (!receipt) return;
-  const request = decodeInboundRequest(receipt.record.request);
+  const captured = captureInboundReceiptSyntax(bytes);
+  if (!captured) return;
+  const receipt = captured.receipt,
+    request = captured.originals.request;
   if (receipt.kind === 'legacy') {
     const event = Object.freeze(receipt.record);
     return {
@@ -314,7 +372,7 @@ export function inspectInboundReceipt(bytes: Bytes): InboundReceiptViews | undef
     };
   }
   const e = receipt.record,
-    page = decodeInboundPage(e.page),
+    page = captured.originals.page,
     first = e.firstEntry,
     count = e.entryCount,
     position = e.firstPosition,

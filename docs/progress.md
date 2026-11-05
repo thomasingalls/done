@@ -217,6 +217,14 @@ at120s. Old codec guard ASTs exact; classification/typecheck development failure
 preserved. No authority trust, binary writing, caller compatibility or performance
 credit follows. Parsed-page reuse remains pending.
 
+**Owned syntax core checked.**
+[390](./development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md)
+shares one parsed original per owned physical codec/inspection turn. Four new
+count controls fail before, five pass after;98focused checks and full300files/
+2998cases/one existing skip pass (109.01s at120s). All old codec predicates and
+semantic guard calls remain. No authentication trust or timed performance/RAM
+claim follows. The verifier and actual readers still need integration.
+
 **Next bounded outcome.** Encoding-floor scopes and complete binary stored/read
 integration through all ten direct readers and indirect consumers, then owned
 pages/dense writer/G8/range4/B/index/audit/reservation controls. Keep physical
