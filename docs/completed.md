@@ -18628,3 +18628,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Original command/default fork pool/two workers passes within the unchanged 120 seconds: 108.6 seconds, 288 files, 2,882 passed plus the same skip. All 287 old unit files are byte-identical; two new cascade/omission cases and the 28 affected property/regression cases pass. Strict types, format/lint and inventory/census controls pass. [All attempts and independent checks](development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
 
 **Notes.** Correct the old base comparison's report environment, preserving both failed corrected runs. Preserve and drop the insufficient thread-pool proposal. Only the unit replica helper changes from timer wait to task yield; application, configuration, assertions, generated populations, Undo settings, limits and deadlines remain. Complete nested campaign exits and fresh receipts are still pending. Record before advancing to those reruns.
+
+
+### Complete-command reruns reach another copied scheduler dependency failure
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 350 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Geometry (228 passed/32 old skips), transport and service-inbound pass in full. Sync passes its native stage (25 passed/6 old skips), then five copied scheduler controls fail to load missing dependencies. The source-closure failure reproduces on signed base. [Every result and remaining command](development-evidence/2026-11-02-release-hardening/350-campaign-rerun-checkpoint/README.md).
+
+**Notes.** The observer stops before later commands for classification. This is a harness precondition failure; no app failure or guard change. Keep the complete list and all logs, then repair the test-only source closure before resuming the remaining ten commands and receipt refresh. Outcome recorded before advancing active state.

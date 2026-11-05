@@ -1,0 +1,398 @@
+{
+  "phase": 350,
+  "results": [
+    {
+      "command": "test:geometry",
+      "argv": [
+        "pnpm",
+        "test:geometry"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 2400,
+      "started": 1793632572.540297,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "childPid": 98865,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793632688.637474
+    },
+    {
+      "command": "account:transport",
+      "argv": [
+        "pnpm",
+        "account:transport"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 2400,
+      "started": 1793632688.71197,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "childPid": 99498,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793632766.601534
+    },
+    {
+      "command": "account:service-inbound",
+      "argv": [
+        "pnpm",
+        "account:service-inbound"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 2400,
+      "started": 1793632766.683454,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "childPid": 99718,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793632790.538372
+    },
+    {
+      "command": "account:sync",
+      "argv": [
+        "pnpm",
+        "account:sync"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 2400,
+      "started": 1793632790.5997162,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "childPid": 99815,
+      "childExit": 1,
+      "timedOut": false,
+      "finished": 1793633126.4354188
+    }
+  ],
+  "pendingCommands": [
+    "account:recovery-contract",
+    "account:transport-contract",
+    "account:service-custody",
+    "account:promotion-contract",
+    "account:ledger-contract",
+    "account:counter-contract",
+    "account:store-contract",
+    "account:local-custody",
+    "account:checkpoint-contract",
+    "account:local-provenance"
+  ],
+  "syncNative": {
+    "passed": 25,
+    "existingSkipped": 6,
+    "stagePassed": true
+  },
+  "stoppedAt": "Sync scheduler controls: missing copied relative dependencies; also fails on signed base. No app refusal.",
+  "applicationChanges": false,
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-rerun-state.json",
+      "artifact": "objects/e652050f9f402b07c79403692a041eea340a3c30b3116420992245b89d3f34d4.gz",
+      "sha256": "e652050f9f402b07c79403692a041eea340a3c30b3116420992245b89d3f34d4",
+      "bytes": 2764
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/run350.py",
+      "artifact": "objects/6302dd08bf4c3408165914a07579995ad4fb6d1c178ca1b7bd364220c892e774.gz",
+      "sha256": "6302dd08bf4c3408165914a07579995ad4fb6d1c178ca1b7bd364220c892e774",
+      "bytes": 1781
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-test-geometry/child.log",
+      "artifact": "objects/bb8d1a0c15d80bdb8a69420579baaf5feed4008084bbad3505dd02f314fb2e97.gz",
+      "sha256": "bb8d1a0c15d80bdb8a69420579baaf5feed4008084bbad3505dd02f314fb2e97",
+      "bytes": 43088
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-test-geometry/run.json",
+      "artifact": "objects/703c241ad3e6234645b96a2ce59b4a1831a89baa12298d5d5b30e17c930b3720.gz",
+      "sha256": "703c241ad3e6234645b96a2ce59b4a1831a89baa12298d5d5b30e17c930b3720",
+      "bytes": 307
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-test-geometry/host-load.jsonl",
+      "artifact": "objects/c118cbf6461ca94f1ebeb11b269213516d9fddefd933cf34136979f615d1b2c3.gz",
+      "sha256": "c118cbf6461ca94f1ebeb11b269213516d9fddefd933cf34136979f615d1b2c3",
+      "bytes": 3155
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-service-inbound/child.log",
+      "artifact": "objects/47c6713011ea7a77baf05f3a4d4188e5de71a018bcaab8010b1893bc617af9b4.gz",
+      "sha256": "47c6713011ea7a77baf05f3a4d4188e5de71a018bcaab8010b1893bc617af9b4",
+      "bytes": 8258
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-service-inbound/run.json",
+      "artifact": "objects/ce2e48766f876a69cb71fefede150cf276fec10b2273d35c615eb6b6b13e2063.gz",
+      "sha256": "ce2e48766f876a69cb71fefede150cf276fec10b2273d35c615eb6b6b13e2063",
+      "bytes": 317
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-service-inbound/host-load.jsonl",
+      "artifact": "objects/79cb3c50b979b22cf12dbec0548c5da8116cefbfa18413c24fe8bebf73f9b1a3.gz",
+      "sha256": "79cb3c50b979b22cf12dbec0548c5da8116cefbfa18413c24fe8bebf73f9b1a3",
+      "bytes": 3673
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-sync/child.log",
+      "artifact": "objects/e3c5e51e26410cc367b77e5f03fbad479c49ff5a4dc1081efc70f168b04c1f1a.gz",
+      "sha256": "e3c5e51e26410cc367b77e5f03fbad479c49ff5a4dc1081efc70f168b04c1f1a",
+      "bytes": 18188
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-sync/run.json",
+      "artifact": "objects/3df557464ea3ba39f1290a6dbee729b84841dab07f2c88642f1206e7ea084607.gz",
+      "sha256": "3df557464ea3ba39f1290a6dbee729b84841dab07f2c88642f1206e7ea084607",
+      "bytes": 308
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-sync/host-load.jsonl",
+      "artifact": "objects/6bc82c5a2cbd18fad866d78516041935624a88c6786a46f52be1681b3810de79.gz",
+      "sha256": "6bc82c5a2cbd18fad866d78516041935624a88c6786a46f52be1681b3810de79",
+      "bytes": 43828
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-transport/child.log",
+      "artifact": "objects/25d5030909d75f16792041b3a5c55c2945d23d6a0300c69bccc4b49cd105f967.gz",
+      "sha256": "25d5030909d75f16792041b3a5c55c2945d23d6a0300c69bccc4b49cd105f967",
+      "bytes": 4458
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-transport/run.json",
+      "artifact": "objects/6b29a813e2db6e7a2275a3a202f71748e5dbf92e5a21af11143b2adab57ef892.gz",
+      "sha256": "6b29a813e2db6e7a2275a3a202f71748e5dbf92e5a21af11143b2adab57ef892",
+      "bytes": 310
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/350-account-transport/host-load.jsonl",
+      "artifact": "objects/9544bde8278a52cc4cea251c1c8288a517f041edf4b294d96f4faa1f5b841725.gz",
+      "sha256": "9544bde8278a52cc4cea251c1c8288a517f041edf4b294d96f4faa1f5b841725",
+      "bytes": 10504
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/351-base-sync-controls/child.log",
+      "artifact": "objects/543dbac7a466fdcde8c1b228c25cb3b59d19f18a26366121ea68b0279505aaa0.gz",
+      "sha256": "543dbac7a466fdcde8c1b228c25cb3b59d19f18a26366121ea68b0279505aaa0",
+      "bytes": 7045
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/351-base-sync-controls/run.json",
+      "artifact": "objects/d21b2f6cbd4b73c1d1a5fa0c46d24832447500ed9d47a720a81eaef8138867eb.gz",
+      "sha256": "d21b2f6cbd4b73c1d1a5fa0c46d24832447500ed9d47a720a81eaef8138867eb",
+      "bytes": 478
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/351-base-sync-controls/host-load.jsonl",
+      "artifact": "objects/4d3510b01bbb0a2fcedb961ec42edf2f76b34ebd795fdc781dd0101f23d15f0c.gz",
+      "sha256": "4d3510b01bbb0a2fcedb961ec42edf2f76b34ebd795fdc781dd0101f23d15f0c",
+      "bytes": 77
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/summary.json",
+      "artifact": "objects/0b7934a50a6128d650cb79d3ccd1e87ebc6b103de038ff94139c64545c71cdb1.gz",
+      "sha256": "0b7934a50a6128d650cb79d3ccd1e87ebc6b103de038ff94139c64545c71cdb1",
+      "bytes": 527
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/sources.json",
+      "artifact": "objects/e8612b2c7556159d24b260e360e9c5658fd0816be3da2a4a8c12edc3e41bc644.gz",
+      "sha256": "e8612b2c7556159d24b260e360e9c5658fd0816be3da2a4a8c12edc3e41bc644",
+      "bytes": 217213
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/generated.json",
+      "artifact": "objects/256033ba3aeb786d39d200cc07b470e09c1d2234e443404154deb7d7445060fc.gz",
+      "sha256": "256033ba3aeb786d39d200cc07b470e09c1d2234e443404154deb7d7445060fc",
+      "bytes": 46723
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/results.xml",
+      "artifact": "objects/637b6e4b31aadf284db453daf1d3062ff96f5b39b93b8aeace4e9f00d33e7078.gz",
+      "sha256": "637b6e4b31aadf284db453daf1d3062ff96f5b39b93b8aeace4e9f00d33e7078",
+      "bytes": 2659
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/control-current.json",
+      "artifact": "objects/2e7afda162fd04ffbf159333ec8ac1a3b8bd312031793d17b7a7300b4187fe31.gz",
+      "sha256": "2e7afda162fd04ffbf159333ec8ac1a3b8bd312031793d17b7a7300b4187fe31",
+      "bytes": 118
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/control-request-binding.json",
+      "artifact": "objects/40bd8b17c6580fa56bba8d822a6478bd7d68cee01db2a7ffd6dec136a03498d1.gz",
+      "sha256": "40bd8b17c6580fa56bba8d822a6478bd7d68cee01db2a7ffd6dec136a03498d1",
+      "bytes": 124
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/service.log",
+      "artifact": "objects/ab9cce9378fd262e9dec5d565c873b5bfa0154c9b8f895d3eead042169056fa5.gz",
+      "sha256": "ab9cce9378fd262e9dec5d565c873b5bfa0154c9b8f895d3eead042169056fa5",
+      "bytes": 2334
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/native.log",
+      "artifact": "objects/2f11d7b52f0a0de8e6a98f24a936fb5152095279b49684c52bbd750e2814e36b.gz",
+      "sha256": "2f11d7b52f0a0de8e6a98f24a936fb5152095279b49684c52bbd750e2814e36b",
+      "bytes": 1658
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T15-18-09.036Z/control-signature.json",
+      "artifact": "objects/212284dd947d127fe6388e6a58448e17e16cce9a95c5f52167faf36e261d0007.gz",
+      "sha256": "212284dd947d127fe6388e6a58448e17e16cce9a95c5f52167faf36e261d0007",
+      "bytes": 91
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/types.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/summary.json",
+      "artifact": "objects/39a97a01efa3fecea665a16de0d2d625ab9dba57f1406bc46e187f5c6c38fb52.gz",
+      "sha256": "39a97a01efa3fecea665a16de0d2d625ab9dba57f1406bc46e187f5c6c38fb52",
+      "bytes": 671
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/sources.json",
+      "artifact": "objects/1505990e2b0c1870ae5b94591937d720e8a148617534d0ea4919170650c2cc63.gz",
+      "sha256": "1505990e2b0c1870ae5b94591937d720e8a148617534d0ea4919170650c2cc63",
+      "bytes": 217496
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/generated.json",
+      "artifact": "objects/629776b41528b58d304e68ce92f4d19f5bdc7189e2762d8d4b4b8fcd4f0652ce.gz",
+      "sha256": "629776b41528b58d304e68ce92f4d19f5bdc7189e2762d8d4b4b8fcd4f0652ce",
+      "bytes": 1345371
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-registration.json",
+      "artifact": "objects/1cb6d01b95f5589573f471e9f1da5225b70b049fbacca0ef4b172982278b9489.gz",
+      "sha256": "1cb6d01b95f5589573f471e9f1da5225b70b049fbacca0ef4b172982278b9489",
+      "bytes": 18612
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/results.xml",
+      "artifact": "objects/2e073f614f695d9ff5b658bc29e0fe62a0368ca5a8b6fb204246d30243a36ee5.gz",
+      "sha256": "2e073f614f695d9ff5b658bc29e0fe62a0368ca5a8b6fb204246d30243a36ee5",
+      "bytes": 8034
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-publisher.json",
+      "artifact": "objects/a483484a0bc6b5af50cab16577405fb5b3a5d6aaebb1212e584eb7f1d42ea5d3.gz",
+      "sha256": "a483484a0bc6b5af50cab16577405fb5b3a5d6aaebb1212e584eb7f1d42ea5d3",
+      "bytes": 14660
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-current.json",
+      "artifact": "objects/887e98bd580eb8c8f1da3cd87fcd419b8ad25277b835693a9f1e457c5d90b501.gz",
+      "sha256": "887e98bd580eb8c8f1da3cd87fcd419b8ad25277b835693a9f1e457c5d90b501",
+      "bytes": 16199
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-custody.json",
+      "artifact": "objects/ed90e443ff445caabf19fee8d5b3edbb75a9ec2e4ee057113a797ddcc498d5e5.gz",
+      "sha256": "ed90e443ff445caabf19fee8d5b3edbb75a9ec2e4ee057113a797ddcc498d5e5",
+      "bytes": 16199
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-expiry.json",
+      "artifact": "objects/97a01d66ca6bda26e3abb3d9978a8d0f3a840979beba527953b89347883b657f.gz",
+      "sha256": "97a01d66ca6bda26e3abb3d9978a8d0f3a840979beba527953b89347883b657f",
+      "bytes": 16202
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/native-http.json",
+      "artifact": "objects/5ed064d7935ea3a72ed765ecde959a55a052ac2a6c1a5bffb502dedcd40eaaf8.gz",
+      "sha256": "5ed064d7935ea3a72ed765ecde959a55a052ac2a6c1a5bffb502dedcd40eaaf8",
+      "bytes": 21574
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/restart-verified.json",
+      "artifact": "objects/fdeadba36e2c962b53afb24229c8315f1a65c6d62d3cdb622361ee6eb9079d94.gz",
+      "sha256": "fdeadba36e2c962b53afb24229c8315f1a65c6d62d3cdb622361ee6eb9079d94",
+      "bytes": 6249
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/service.log",
+      "artifact": "objects/889f26575701cf8754183cd7a6489ac7fe61d52de3c6ab73c8f304e4c8af9e80.gz",
+      "sha256": "889f26575701cf8754183cd7a6489ac7fe61d52de3c6ab73c8f304e4c8af9e80",
+      "bytes": 7311
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/native.log",
+      "artifact": "objects/9a73afee80e16c2692647f4061ad9b723f2d07e21c8cb0c200c67ab2e87c520e.gz",
+      "sha256": "9a73afee80e16c2692647f4061ad9b723f2d07e21c8cb0c200c67ab2e87c520e",
+      "bytes": 551
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-witness.json",
+      "artifact": "objects/85bf095cd23fe61a4a8129587e6143d7a0cdf18f760173d1fd5b8999efa93ae5.gz",
+      "sha256": "85bf095cd23fe61a4a8129587e6143d7a0cdf18f760173d1fd5b8999efa93ae5",
+      "bytes": 16378
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-signature.json",
+      "artifact": "objects/90f4753c35d64cbc38f24edf607a27d9bb8c0e2dd5dadf2756c0f0df509d0fef.gz",
+      "sha256": "90f4753c35d64cbc38f24edf607a27d9bb8c0e2dd5dadf2756c0f0df509d0fef",
+      "bytes": 16205
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/control-reader.json",
+      "artifact": "objects/1f659be8b190554312172c7dc1136c1e298c8e08a46abaad28405d481216a2d3.gz",
+      "sha256": "1f659be8b190554312172c7dc1136c1e298c8e08a46abaad28405d481216a2d3",
+      "bytes": 16198
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T15-19-27.116Z/restart-signed.json",
+      "artifact": "objects/739421431b8d18191b92f6f486a5102aa5bfd0e1f7d6d3c84f01ab099dde448f.gz",
+      "sha256": "739421431b8d18191b92f6f486a5102aa5bfd0e1f7d6d3c84f01ab099dde448f",
+      "bytes": 6247
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/controls.log",
+      "artifact": "objects/d024ca6751c4d0b0a4bc10304c7bbd1e96e4b701557acb941957e87ada3b1895.gz",
+      "sha256": "d024ca6751c4d0b0a4bc10304c7bbd1e96e4b701557acb941957e87ada3b1895",
+      "bytes": 6773
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/types.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/summary.json",
+      "artifact": "objects/f2d75c39fe4ea3cee355a706054b4a84e2ece724ce0a22beae0d68927a866701.gz",
+      "sha256": "f2d75c39fe4ea3cee355a706054b4a84e2ece724ce0a22beae0d68927a866701",
+      "bytes": 789
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/sources.json",
+      "artifact": "objects/84e002a634782537fcfaa889956e2e28eb962478da9b746df07347e021e03967.gz",
+      "sha256": "84e002a634782537fcfaa889956e2e28eb962478da9b746df07347e021e03967",
+      "bytes": 217629
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/units.log",
+      "artifact": "objects/069c711128d8ed8fa67d425c7ead17b0a94ca0568cdf260db8f47877066caba4.gz",
+      "sha256": "069c711128d8ed8fa67d425c7ead17b0a94ca0568cdf260db8f47877066caba4",
+      "bytes": 5513
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/native.xml",
+      "artifact": "objects/ea109407917308c37c0ad6756322b354e7a3f990b5c0779abc801f2454677361.gz",
+      "sha256": "ea109407917308c37c0ad6756322b354e7a3f990b5c0779abc801f2454677361",
+      "bytes": 7764
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/native.log",
+      "artifact": "objects/5d4f2f2172619581cb1825493df8ccba4fbc924ebd6bff18e04bc76a1dce985a.gz",
+      "sha256": "5d4f2f2172619581cb1825493df8ccba4fbc924ebd6bff18e04bc76a1dce985a",
+      "bytes": 4706
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T15-19-51.022Z/controls.xml",
+      "artifact": "objects/40920c9d0b1f04a6b67afbcc7897a5bdedd58d7fd38387fdc6d073a0c1e0dea5.gz",
+      "sha256": "40920c9d0b1f04a6b67afbcc7897a5bdedd58d7fd38387fdc6d073a0c1e0dea5",
+      "bytes": 11648
+    }
+  ]
+}

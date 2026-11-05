@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: complete nested campaign reruns and whole-tree receipt refresh
+blocks_on: sync control source closure, remaining nested campaigns and receipt refresh
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -204,10 +204,14 @@ passed plus the existing skip. The test-only replica task-yield repair retains
 all 287 old unit files byte-for-byte and adds two cascade controls. All failed
 runs and the unadopted pool trial remain in [349](./development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
 
-Next: rerun previously failed nested campaigns to complete the command failure
-list, and refresh whole-tree receipts after records settle. Their old failures
-are not cleared by the standalone unit pass. Application source and Vite config
-remain unchanged after Stage1. Stage2 has not started.
+Complete-command reruns pass geometry (228/32 existing skips), transport and
+service-inbound. Sync passes native checks (25/6 existing skips), then its five
+scheduler controls fail before running: an isolated copied module is missing
+relative dependencies. This reproduces on signed base. [350](./development-evidence/2026-11-02-release-hardening/350-campaign-rerun-checkpoint/README.md)
+preserves every result. Repair that test-only closure next, then resume the ten
+unrun commands and final receipt refresh. No runtime failure has been observed;
+application source and Vite config remain unchanged after Stage1. Stage2 has not
+started.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
