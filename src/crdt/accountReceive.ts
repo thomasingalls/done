@@ -38,6 +38,9 @@ import {
 } from './contentMaintenance';
 import { createReceivePageTransport } from './receivePageTransport';
 import { createReceiveRangeTail } from './receiveRangeTail';
+import { createReceiveQuietPages } from './receiveQuietPages';
+import { RECEIVE_SINGLE_PAGE_BYTES } from './receivePrefetch';
+import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
   RECEIVE_GROUP_LIMIT,
@@ -202,6 +205,7 @@ import {
   publisherContext,
   publisherState,
   inboundReadCursors,
+  type InboundReadCursor,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery, emptyDelivery } from './deliveryRecord';
@@ -311,6 +315,7 @@ async function openAccountReceiveOwner(
   let outstandingCursor = 0,
     outstandingAllowance = 1;
   let rangeTail: ReturnType<typeof createReceiveRangeTail> | undefined;
+  let quietOriginals: ReturnType<typeof createReceiveQuietPages> | undefined;
   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
   // Composed owners reuse unchanged quiet proofs within the guarded 750 ms budget.
   // Publication deadline latching preserves the two-receiver 2.5s acceptance gate (phase117).
@@ -323,7 +328,21 @@ async function openAccountReceiveOwner(
   const invalidateReadScheduling = () => {
     receiveSelection.invalidateQuiet();
     receiveRepair.invalidate();
+    quietOriginals?.drop();
     readScheduling = new WeakMap();
+  };
+  const captureReadScheduling = (publisher: string, cursor: InboundReadCursor) => {
+    if (!composed || publisher === base.publisher.id) return undefined;
+    const token = {};
+    readScheduling.set(token, {
+      quiet: receiveSelection.captureQuiet(base.authority, publisher, cursor),
+      repair: receiveRepair.capture(
+        base.authority,
+        publisher,
+        cursor.prefix.observedThrough === cursor.prefix.position,
+      ),
+    });
+    return token;
   };
   let outstandingQuiet: object | undefined;
   let pendingPromotions = 0;
@@ -800,6 +819,7 @@ async function openAccountReceiveOwner(
       baselineShadow = undefined;
       retentionReads.close();
       rangeTail?.close();
+      quietOriginals?.close();
       invalidateReadScheduling();
       receiveRepair.close();
       outstandingQuiet = undefined;
@@ -836,6 +856,7 @@ async function openAccountReceiveOwner(
     copyMirrorOpening,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
   rangeTail = createReceiveRangeTail(carrier.signal);
+  if (composed) quietOriginals = createReceiveQuietPages(carrier.signal);
   invalidateFinalPermission = invalidateFinalApply;
   const checkLocalBaseline: (() => Promise<BaselineShadowResult>) | undefined =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1'
@@ -1136,6 +1157,8 @@ async function openAccountReceiveOwner(
     after?: number,
     grouped = false,
     cached?: (page: Bytes) => void,
+    probesReady?: (probes: { request: Bytes; capture: object }[]) => void,
+    probeSignal?: AbortSignal,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
     const stamp = retentionReads.capture();
@@ -1199,20 +1222,14 @@ async function openAccountReceiveOwner(
             Math.max(1, s.prefix.observedThrough - cursor),
           )
         : 1;
-    let quiet: object | undefined;
-    if (composed && publisher !== base.publisher.id) {
-      quiet = {};
-      readScheduling.set(quiet, {
-        quiet: receiveSelection.captureQuiet(base.authority, publisher, s),
-        repair: receiveRepair.capture(
-          base.authority,
-          publisher,
-          s.prefix.observedThrough === s.prefix.position,
-        ),
-      });
-    }
+    let quiet = captureReadScheduling(publisher, s);
     const requests: Bytes[] = [];
+    const probes: { request: Bytes; capture: object }[] = [];
     try {
+      const quietHit =
+        grouped && cached && publisher !== base.publisher.id
+          ? quietOriginals?.take(base.authority, publisher, s)
+          : undefined;
       const peerRange =
         rangeWrites &&
         grouped &&
@@ -1220,10 +1237,17 @@ async function openAccountReceiveOwner(
         publisher !== base.publisher.id &&
         receivePages.entryLimit(publisher) > 1;
       const previous =
-        peerRange && cached ? rangeTail?.take(base.authority, publisher, cursor) : undefined;
+        !quietHit && peerRange && cached
+          ? rangeTail?.take(base.authority, publisher, cursor)
+          : undefined;
       const widths = receivePageWidths(peerRange, count, s.prefix.observedThrough - cursor);
       let offset = 0;
-      if (previous) {
+      if (quietHit) {
+        rangeTail?.drop(publisher);
+        quiet = quietHit.scheduling;
+        requests.push(quietHit.request);
+        cached!(quietHit.page);
+      } else if (previous) {
         requests.push(previous.request);
         cached!(previous.page);
       } else
@@ -1244,6 +1268,43 @@ async function openAccountReceiveOwner(
           );
           requests.push(encodeInboundRequest(next));
         }
+      if (grouped && cached && probesReady && !quietHit && !previous && quietOriginals) {
+        const candidates = receiveSelection.quietCandidates(
+          publishers,
+          base.publisher.id,
+          publisher,
+          Math.max(0, INBOUND_BATCH_COUNT - requests.length),
+          { context: base.authority, cursor: (id) => publisherState(all, base, id) },
+          (id, cursor) => quietOriginals!.wanted(base.authority, id, cursor),
+        );
+        for (const { publisher: candidate, cursor } of candidates) {
+          const scheduling = captureReadScheduling(candidate, cursor)!;
+          const capture = quietOriginals.capture({
+            context: base.authority,
+            publisher: candidate,
+            cursor,
+            scheduling,
+            startedAt: Date.now(),
+            signal: probeSignal ? AbortSignal.any([stamp.signal, probeSignal]) : stamp.signal,
+          });
+          if (!capture) continue;
+          const next = {
+            ...r,
+            publisher: candidate,
+            after: cursor.prefix.position,
+            limit: 1,
+            nonce: hex(task.step(() => random(32))),
+          };
+          next.signature = hex(
+            new Uint8Array(
+              await task.wait(() =>
+                subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+              ),
+            ),
+          );
+          probes.push({ request: encodeInboundRequest(next), capture });
+        }
+      }
       await assertCurrent(task);
       return task.step(() => {
         outstanding?.fill(0);
@@ -1255,15 +1316,18 @@ async function openAccountReceiveOwner(
         outstandingAllowance = count;
         outstandingGroup = requests;
         outstanding = requests[0]!;
+        probesReady?.(probes);
         return outstanding.slice();
       });
     } catch (cause) {
       for (const request of requests) request.fill(0);
+      for (const probe of probes) probe.request.fill(0);
       throw cause;
     }
   };
-  const prepareGroupOwned = async (reuse = false) => {
+  const prepareGroupOwned = async (reuse = false, probeSignal?: AbortSignal) => {
     let cachedPage: Bytes | undefined;
+    let probes: { request: Bytes; capture: object }[] = [];
     try {
       return await runCaptureTask(async (task, owner, route) => {
         const first = await prepareRead(
@@ -1277,21 +1341,30 @@ async function openAccountReceiveOwner(
                 cachedPage = page;
               }
             : undefined,
+          reuse
+            ? (prepared) => {
+                probes = prepared;
+              }
+            : undefined,
+          probeSignal,
         );
         first.fill(0);
         return {
           requests: outstandingGroup.map((r) => r.slice()),
           quiet: outstandingQuiet,
           cachedPage,
+          probes,
         };
       });
     } catch (cause) {
       cachedPage?.fill(0);
+      for (const probe of probes) probe.request.fill(0);
       throw cause;
     }
   };
   const prepareGroup = async () => {
     rangeTail?.drop();
+    quietOriginals?.drop();
     return (await prepareGroupOwned()).requests;
   };
   const receivePages = createReceivePageTransport();
@@ -1301,20 +1374,35 @@ async function openAccountReceiveOwner(
     const stamp = retentionReads.capture();
     let requests: Bytes[] = [],
       pages: Bytes[] = [];
+    let probes: { request: Bytes; capture: object }[] = [];
     try {
       return await runNetworkTask(async (network) => {
-        const prepared = await prepareGroupOwned(true);
+        const prepared = await prepareGroupOwned(true, network.signal);
         requests = prepared.requests;
+        probes = prepared.probes;
         if (prepared.cachedPage) pages = [prepared.cachedPage];
         stamp.check();
         const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
         let attempted = 0;
         if (!prepared.cachedPage) {
-          rangeTail?.beforeFetch(requests.length);
+          const wireRequests = [...requests, ...probes.map((p) => p.request)];
+          rangeTail?.beforeFetch(wireRequests.length);
+          const requestBytes = wireRequests.reduce((n, r) => n + r.length + 4, 0);
+          if (
+            (rangeTail?.bytes ?? 0) + requestBytes + RECEIVE_SINGLE_PAGE_BYTES + 4 >
+            MAX_PENDING_BYTES
+          )
+            rangeTail?.drop();
+          const tailBytes = rangeTail?.bytes ?? 0;
+          const maxBytes = quietOriginals
+            ? quietOriginals.reserve(tailBytes + requestBytes + RECEIVE_SINGLE_PAGE_BYTES + 4) -
+              tailBytes -
+              requestBytes
+            : MAX_PENDING_BYTES;
           await network.wait(async () => {
             const collected = await receivePages(
-              requests,
+              wireRequests,
               signal,
               {
                 read: (request, index, signal, limit) =>
@@ -1365,9 +1453,18 @@ async function openAccountReceiveOwner(
                 }
               },
               decodeInboundRequest(requests[0]!).publisher,
+              quietOriginals ? { primaryCount: requests.length, maxBytes } : undefined,
             );
             pages = collected.pages;
             attempted = collected.attempted;
+            try {
+              for (let i = 0; i < (collected.quietPages?.length ?? 0); i++) {
+                const probe = probes[i]!;
+                quietOriginals?.remember(probe.request, collected.quietPages![i]!, probe.capture);
+              }
+            } finally {
+              for (const page of collected.quietPages ?? []) page.fill(0);
+            }
           });
         }
         stamp.check();
@@ -1387,8 +1484,11 @@ async function openAccountReceiveOwner(
     } catch (cause) {
       for (const request of requests) request.fill(0);
       for (const page of pages) page.fill(0);
+      quietOriginals?.drop();
       stamp.check();
       throw cause;
+    } finally {
+      for (const probe of probes) probe.request.fill(0);
     }
   };
   // Network waits never hold the local writer tail. The request captures actual slot authority;
@@ -3058,6 +3158,7 @@ async function openAccountReceiveOwner(
     receiveContentHint: () => {
       receiveSelection.invalidateQuiet();
       receiveRepair.contentHint();
+      quietOriginals?.drop();
     },
     repairReceiveInterval: (idle: number) => receiveRepair.interval(idle),
     completedRead: (

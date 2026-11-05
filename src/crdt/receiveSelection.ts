@@ -3,6 +3,7 @@ import { RECEIVE_POLL_MS } from './accountReceiveDriver';
 import type { InboundReadCursor } from './inboundLedger';
 import { RECEIVE_GROUP_LIMIT } from './receiveGroup';
 import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
 
 /** New indexed receipts are development-only until explicitly enabled in a build. */
 export const receiveRangeWriterEnabled = (value: unknown): boolean => value === '1';
@@ -76,6 +77,7 @@ export function hasPeerBacklog(
 }
 
 export const RECEIVE_QUIET_MS = 750;
+const QUIET_PREFETCH_LEAD_MS = 250;
 const MAX_QUIET_PUBLISHERS = 128;
 export type QuietReceiveBasis = {
   context: object;
@@ -134,8 +136,45 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
   let previous: string | undefined;
   let productive = false;
   let checkedOwn: { publisher: string; at: number } | undefined;
+  const prefetchDue = (context: object, publisher: string, cursor: InboundReadCursor) => {
+    if (!quietBudget || !isQuietReceiveCursor(cursor)) return false;
+    const at = now();
+    observeClock(at);
+    if (!Number.isFinite(at)) return false;
+    const held = quiet.get(publisher);
+    return (
+      !held ||
+      held.context !== context ||
+      !sameQuietReceiveCursor(held, cursor) ||
+      at - held.at >= RECEIVE_QUIET_MS - QUIET_PREFETCH_LEAD_MS
+    );
+  };
   return {
     invalidateQuiet,
+    /** Speculation only. Never changes the native selector or grants a quiet proof. */
+    quietCandidates(
+      publishers: readonly string[],
+      own: string,
+      selected: string,
+      slots: number,
+      view: { context: object; cursor(publisher: string): InboundReadCursor },
+      available: (publisher: string, cursor: InboundReadCursor) => boolean,
+    ) {
+      if (!Number.isInteger(slots) || slots < 0 || slots > INBOUND_BATCH_COUNT)
+        throw Error('Invalid quiet receive slots');
+      const result: { publisher: string; cursor: InboundReadCursor }[] = [];
+      if (!quietBudget || slots === 0) return result;
+      const first = publishers.indexOf(selected);
+      if (first < 0) return result;
+      for (let step = 1; step < publishers.length && result.length < slots; step++) {
+        const publisher = publishers[(first + step) % publishers.length]!;
+        if (publisher === own || publisher === selected) continue;
+        const cursor = view.cursor(publisher);
+        if (prefetchDue(view.context, publisher, cursor) && available(publisher, cursor))
+          result.push({ publisher, cursor });
+      }
+      return result;
+    },
     captureQuiet(context: object, publisher: string, cursor: InboundReadCursor) {
       if (!quietBudget) return undefined;
       const basis = quietReceiveBasis(context, publisher, cursor);

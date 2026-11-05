@@ -7027,3 +7027,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Date:** 2026-11-02 · **Commit:** pending sequential patch 360
 
 **Decision.** Retain only exact original bytes under a generation-fenced capture, never a reusable verification result. Count their request/page bytes against the next fetch reservation. Keep speculative quiet replies separate from the primary prefix, and drop speculative requests on legacy fallback. Use the shared exact cursor-basis comparison for selection and cache ownership. Apply the operator-required request-start age even when verification completes later; update the one old completion-clock expectation to the stronger boundary without changing the 750 ms limit.
+
+
+### Speculation changes transport collection, never native publisher ownership
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 361
+
+**Decision.** Use the freshly authenticated projection for both selection and quiet-request preparation. Keep the selector as the only source of the current publisher turn; cache hits replace only that selected request with its exact original. Sign extra one-position peer requests only in spare existing wire slots, with no own-publisher probe or new work lane. Charge retained originals, tail and fresh response before I/O, and invalidate raw caches on hints/lifetime changes. Keep all entry verification, chain-order commit and local admission unchanged.

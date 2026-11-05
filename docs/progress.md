@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: harden R1000 and quiet transport E without new rows
-blocks_on: bounded implementation, regression controls and Stage2 full-suite checkpoint
+blocks_on: Stage2 full-suite checkpoint before the format contract
 updated: 2026-11-02
 ```
 
@@ -195,11 +195,19 @@ and inventory checks. The raw cache and mixed-response seam share the existing
 byte cap; no native turn or verified prefix advances from cached evidence. Quiet
 expiry follows the required request-start clock. Owner integration is not done.
 
-**Next bounded outcome.** Consume quiet originals only at their native selector
-turn with fresh verification; coalesce due quiet requests into spare existing
-batch slots. Keep 750 ms eligibility, 5-second self checks, round robin/send
-yielding, request-start age and erasure. Add continuous fairness and lifecycle
-controls, then run the Stage 2 full-suite checkpoint. No range writer, server or
-wire change. Format approval remains a later operator stop.
+**E owner integration complete.** [361](./development-evidence/2026-11-02-release-hardening/361-quiet-owner-integration/README.md)
+records 169 focused cases, strict types, scoped quality/inventory and the
+own-stream fault control. Only the native selected turn consumes a cached raw
+original, after fresh authenticated state and through the existing verifier and
+commit path. Extra peer requests use spare existing wire slots. Byte reservations,
+request-start age, erasure, own checks, fairness and send yielding remain.
+
+**Next bounded outcome.** Run the full Stage 2 command checkpoint with the pinned
+runtime/browser and existing child deadlines. Preserve every failure and classify
+before repair. Actual app refusal, closure, repair-required, missing writing,
+archive difference, cold failure or an unexpected negative-control pass stops.
+No Stage 5 timing credit yet. After a green checkpoint, write the Stage 3.1 format
+contract for the operator; no new rows are approved. Stage 4 may proceed while
+that decision waits, then stop for the operator.
 
 This seat edits only this document;the other seat's document above is unchanged.

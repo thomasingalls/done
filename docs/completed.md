@@ -18725,3 +18725,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Raw quiet cache, generation/erasure/cursor guards and shared response reservation pass 127 focused cases, strict types, scoped lint/format and inventory checks. Two declared faults fail exact assertions and restore source. Quiet proof age is now measured from request capture, under the unchanged 750 ms bound; one old expiry test follows that explicitly approved contract and adds the former later point as a non-reuse check. [Evidence](development-evidence/2026-11-02-release-hardening/360-quiet-original-primitives/README.md).
 
 **Limit.** Cache and extended transport are not yet wired into the owner. No new rows, server/wire change or Stage 5 credit. Next is E owner integration, then the full Stage 2 checkpoint. Record before advancing progress.
+
+
+### E consumes bounded quiet originals only at the native publisher turn
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 361 · **Stage:** operator hardening Stage 2
+
+**Exit.** Quiet-peer speculation uses spare existing wire slots and exact original bytes; consume requires fresh authenticated state and the unchanged native verifier/commit path. Own checks, fairness, send yielding, 750 ms age and shared byte reservations remain. All 169 focused cases, types, scoped quality and inventory checks pass; the own-stream fault fails its intended assertion and restores source. [Evidence](development-evidence/2026-11-02-release-hardening/361-quiet-owner-integration/README.md).
+
+**Limit.** The required Stage 2 full-suite checkpoint follows; no app/performance acceptance is inferred from these focused checks. Range writing remains off, and Stage 3's wider B reservations remain separate. No server/wire, format, sender or deployment change. Record before advancing progress.
