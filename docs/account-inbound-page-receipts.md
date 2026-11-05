@@ -330,3 +330,19 @@ All Stage 5 gates and declared replicates remain. A paper contract, functional
 checkpoint or prior lab result supplies no performance, format, RAM or release
 acceptance credit. The [operator handoff](development-evidence/2026-11-02-release-hardening/367-format-contract/README.md)
 will preserve the source review and decision state.
+
+
+### Native B evidence map during hardening
+
+Phase437 adds continuous native multi-publisher fairness in both pre-accepted
+backlog and initially caught-up states, each with normal and server-withheld
+hints. It observes actual productive same-publisher wire batches and durable
+eight-position turns; its unfair-selector control must fail the same turn
+assertion. Final writing, actor-local Undo and ordinary offline process-cold are
+exact. [Source, every attempt and limitations](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
+
+The earlier418/419 reservation/selection controls and421/422 cuts remain component
+evidence; they do not substitute for that continuous journey. Actual32MiB
+past-index fallback remains a separate bounded native obligation after437, before
+Stage5. The later Stage5 fairness and3,072 report-only cells remain owed and receive
+no credit from this functional proof. Pause for commits before starting Stage5.

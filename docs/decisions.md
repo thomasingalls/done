@@ -7503,3 +7503,10 @@ Normalize this mutable registry’s layout rather than remove or relax the forma
 **Date:**2026-11-05 · **Commit:**pending patch436
 
 Keep passing source-pinned segments and every earlier failed attempt. Do not rerun unchanged long commands merely to obscure their history, and do not call the segmented checkpoint a single byte-identical83-command run. The approved240s hang guard applies to the complete recovery unit suite too; focused recovery stays120s. Record actual times for all ten full suites. B continuous-native and actual index fallback proofs still precedeStage5and the commit pause. [Evidence](development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
+
+
+### Close the B fairness gap with native evidence, not future Stage5 credit
+
+**Date:**2026-11-05 · **Commit:**pending patch437
+
+The contract requires real continuous multi-publisher evidence beyond418/419component controls and421/422native cuts. Use genuine native profiles, an independent accepted frontier, server-side hint fault exposure, actual productive signed batches and the same durable turn assertion in the negative. Keep correct self-read suppression and Joined baseline semantics in the initial precondition. A negative liveness failure is expected, not a production failure; keep it and finish the declared durable-bound/Undo/cold control. Actual past-index fallback still precedesStage5and the commit pause. [Evidence](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).

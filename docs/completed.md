@@ -19446,3 +19446,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The coherent functional checkpoint has passing segments for all83commands, with unchanged runtime source since429 and actual full-unit times131.05–145.64s. Only the approved recovery full-unit guard/timing and exact derived inventory change in436. [Evidence](development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
 
 **Limits.** Functional checkpoint only, not Stage3closure or Stage5/performance/format/RAM/release acceptance. All original functional/security/performance predicates and focused deadlines stay; only the already approved full-unit hang guard is240s. Continuous native B fairness/past-index remains open and has no prior functional credit; private apparatus drafts have not been built/run. No new lab, computer use, signing, push, release preparation, publication or deployment. The operator requires a commit pause beforeStage5. Outcome precedes advancing this seat.
+
+
+### Prove continuous native B fairness with normal and withheld hints
+
+**Date:**2026-11-05 · **Commit:**pending patch437 · **Stage:**partial Stage3.2
+
+**Exit.** Continuous native B fairness is established for both initial conditions with normal/withheld hints, actual productive wire batches, independent accepted/native positions, a sensitive unfair-selector control, exact Undo and ordinary offline process-cold. App runtime is unchanged since429. [Evidence](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
+
+**Limits.** Functional contract evidence only: no input/peer latency, performance, Stage5, RAM, release or aggregate acceptance credit. No lab code or switches land; test entries/controls never enter ordinary app assets. Ordinary release-profile assets remain byte-exact. Actual32MiB index fallback is still open for the next bounded phase. Earlier failed attempts and the negative sparse-liveness failure are preserved, with no timeout/assertion/security/rate-limit changes. No real staging, signing, push, publication, deployment or computer use. The operator requires a commit pause beforeStage5. Outcome precedes advancing this seat.

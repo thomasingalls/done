@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: B continuous-native fairness and actual past-index evidence, then commit pause
+blocks_on: actual past-index evidence, then commit pause
 updated: 2026-11-04
 ```
 
@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Complete the functional checkpoint with actual full-unit times](./development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
-All ten remaining commands pass every stage without timeout. Each full unit suite reports330files,3,210passes and the same one existing skip. In root order73–82, Vitest durations are145.64, 135.04, 139.08, 136.65, 135.49, 135.41, 136.14, 139.94, 132.37, 131.05s (131.05–145.64s); separate child stage elapsedMs and240000ms guards are preserved for each.62existing wrapper controls,17registry checks, scoped lint/format, inventory and10inventory controls pass. All59,817source files and membership remain exact in both directions. Live computed runtime census equals the immutable429census; no later frozen phase changed a runtime path. All83root commands now have passing segments:432(0–62),433(63),434(64–71),435(72),436(73–82). This is not a claim that all83ran on one byte-identical harness tree.432and434failures and the review collector failure remain. Focused prerequisite stages are retained separately; their recovery-contract labels do not imply another full unit invocation.
+**Latest checks.** [Prove continuous native B fairness with normal and withheld hints](./development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
+Genuine three-device preparation passes. Four positive native journeys pass ([85127, 85687, 57710, 59148]ms): each sparse item is visible while the hot publisher still advances, final actual positions are contiguous and all writing/actor-local Undo/ordinary offline process-cold are exact. Both known backlogs alternate8/8/8/8native positions and expose real same-publisher multi-request productive wire batches; receiver-specific positive hint drops prove withheld exposure. The unfair-selector control is detected by the SAME durable eight-position assertion and completes exact writing/Undo/cold (78498ms). Its earlier sparse-liveness failure remains an expected negative result, and all initial-state/typecheck/lint/layout development failures remain visible. Initial harness errors distinguished successful outbound decisions and snapshot-established prefixes from inbound receipt rows; no app repair or guard change was needed. Final ordinary/positive/negative builds from the final test-source tree are byte-identical to the exercised assets. Scoped lint/format/typecheck,17registry checks, inventory and10inventory controls pass. Independent policy/graph review keeps all old fields, campaigns, construction bytes and449runtime census exact; only the new required test family/configuration and its source inputs are added (733files/727required). The red whole r4command remains red; only its four passing positive cases and the separately passing final negative receive functional credit.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze436. Declare and implement the bounded B native functional family: both prepared-backlog and initially caught-up conditions include continuous writing, normal and server-withheld hints, real same-publisher wire batches, independent accepted/native positions, a genuine unfair-selection control, actor-local Undo and ordinary offline process-cold. Then observe actual32MiB index fallback and continued exact writing/cold in a separate bounded phase. Freeze each sequential patch, then PAUSE FOR COMMITS; do not startStage5cells or refresh their fixtures.
+**Active bounded outcome.** Freeze437. Then implement the bounded observation-only native past-index probe at the unchanged32MiB limit, with actual accepted oversized backlog, exact logical positions, continued fully verified reference work, Undo and ordinary offline process-cold. Freeze that patch, then PAUSE FOR COMMITS. Do not startStage5cells, fixture refresh or timing runs.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +209,7 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
 closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Close real continuous B multi-publisher fairness with/without backlog and withheld hints, plus actual past-index fallback, in bounded functional phases after the checkpoint.418/419focused controls and422native cuts do not close this gap; later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
+in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Actual32MiB past-index fallback remains open for the next bounded phase;418/419focused controls and422native cuts do not close it. Later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.

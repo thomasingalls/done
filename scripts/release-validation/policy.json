@@ -302,6 +302,9 @@
     ],
     "test/inbound-rollback": [
       "playwright.inbound-rollback.config.ts"
+    ],
+    "test/inbound-continuation": [
+      "playwright.inbound-continuation.config.ts"
     ]
   },
   "vectorGenerators": {
