@@ -1105,7 +1105,7 @@
     },
     {
       "path": "src/crdt/inboundRecord.ts",
-      "sha256": "7fbbf51ec6a6df38d76fcae501bcb9e87771fbbf93e2f8f327ae50d767db3dfd"
+      "sha256": "9004ad97324ea5ee243837e739b002359b7be0df58dfa93d98e1d1eb464e9f56"
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
@@ -2160,6 +2160,16 @@
         {
           "path": "src/crdt/localRetentionPlan.ts",
           "line": 500
+        }
+      ]
+    },
+    {
+      "label": "done/account-inbound/page/v1",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 134
         }
       ]
     },

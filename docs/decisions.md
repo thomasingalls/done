@@ -7059,3 +7059,10 @@ The phase372 counterexample shows that max(rolling pressure, consumed semantic p
 **Date:** 2026-11-03 · **Authority:** explicit operator Stage3.1 decision in this conversation
 
 The operator approved [the version1 receipt contract](account-inbound-page-receipts.md) and all of Stage3.2, with writing on in this release. Build a writer-off image from the same hardened tree as the rollback target, and prove it opens dense-row profiles including from a stale tab. Stage6 must state plainly: **rolling back to any build before this release locks out devices that wrote dense rows.** Preserve all native fences, exact writing and Undo. No gate, budget, limit, deadline, trust or server/wire change was approved; ordinary builds stay writer-off. This selects the release profile, not publication/deployment. No format implementation or artifact verification is claimed by this decision.
+
+
+### Separate binary syntax from verified receipt authority
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 implementation under the approved format
+
+Keep the new codec unwired until the authenticated floor and all readers are hardened. Reuse the old selected-entry structural checks without synthesizing v2 records, then optimize owned page parsing in its own bounded slice. The central classifier rejects unknown inbound versions rather than handing them to delivery inspection. No decoding result supplies signature, chain or native authority. Phase375 independently retains exact legacy bytes and all old codec ASTs. [Evidence](development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md).

@@ -18851,3 +18851,12 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Evidence.** Twenty root commands pass, including295 unit files/2,958 cases/one skip in103.57s under120s. Editor's12 normal cases pass; mutation observers/actionability fail. Full signed-base history reproduces the observer failure, while its shorter selection detects allthree original mutations. Two post-failure probes see zero frames in200ms with a visible/enabled normal-size Retry button. Underlying cause/display sleep remains unconfirmed; no error is counted as detection. [All13 attempts and limits](development-evidence/2026-11-02-release-hardening/374-format-approval-and-frame-blocker/README.md).
 
 **Disposition.** All attempted polling/focus/browser treatments are removed; all original runtime/harness/test bytes are exact373. Only the operator-approved format decision and records change. The full functional checkpoint and62 remaining commands remain open. Proceed with independently hardening the approved codec; no binary writing or artifact is enabled, and no Stage5/performance/release credit is claimed. The Mac-state question remains pending.
+
+
+### Approved binary page receipt codec isolated from live writing
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch375 · **Stage:**Stage3.2 codec
+
+**Exit.** The approved bounded binary schema/classifier has independent byte/extent/property controls; all126 focused cases pass, plus types/scoped quality/registry/inventory. Three omissions fail their exact assertions. Old codec guards and legacy bytes remain exact. No live reader/writer or native/Stage5 claim. [Evidence](development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md).
+
+**Next.** Harden the authenticated compatibility floor before binary effects, then the remaining approved Stage3.2 contract. Stage4's frame checkpoint and same-tree writer-off artifact proof remain open.

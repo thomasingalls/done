@@ -204,10 +204,16 @@ attempts and the full signed-base reproduction. Post-failure frame count is0/200
 in two controls. No error earns detection credit. Every experimental harness and
 browser change is restored; Mac display/session status is pending.
 
-**Next bounded outcome.** Harden the approved binary codec/tag home with independent
-byte/property controls and no live writing, then the remaining Stage3.2 pieces.
-The full functional checkpoint and allStage5 gates remain required. Native frame
-availability must be resolved before claiming their completion. Preserve every
-guard/limit/deadline; no new lab phase or publication. Broad formatting stays deferred.
+**Stage3.2 codec isolated and checked.**
+[375](./development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md)
+adds the approved bounded schema/classifier without live calls. All126 focused
+cases pass, including independent bytes, generated extents and three exact omission
+controls; old guards/tests stay exact. Types/quality/registry/inventory pass.
+
+**Next bounded outcome.** Harden the authenticated optional compatibility floor and
+its exact legacy MAC/preservation contracts before enabling any binary writer.
+Then stored mode, logical readers, owned pages and bounded G8/B, followed by the
+same-tree writer-on/off artifacts and required native/Stage5 gates. The Stage4
+frame checkpoint stays open; no final acceptance or release claim.
 
 This seat edits only this document; the other seat's document above is unchanged.

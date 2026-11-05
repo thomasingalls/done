@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1\u2013D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
+  "status": "A/B/C/D1–D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -6467,8 +6467,14 @@
       "status": "open",
       "roles": ["carrier", "predicate"],
       "signer": null,
-      "labels": ["done/account-inbound/v2"],
+      "labels": ["done/account-inbound/v2", "done/account-inbound/page/v1"],
       "sourceSites": [
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 134,
+          "label": "done/account-inbound/page/v1",
+          "kind": "literal"
+        },
         {
           "path": "src/crdt/inboundRecord.ts",
           "line": 27,
@@ -6512,6 +6518,18 @@
         {
           "path": "src/crdt/accountInbound.ts",
           "name": "prepareInboundRange"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "encodeInboundPageRecord"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "decodeInboundPageRecord"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "decodeInboundReceipt"
         }
       ],
       "homePins": [],
@@ -6524,7 +6542,8 @@
         "test/boundedInboundPreparation.test.ts",
         "test/receiveRangeTail.test.ts",
         "test/receiveDownloadWidth.test.ts",
-        "test/rangeWriterPolicy.test.ts"
+        "test/rangeWriterPolicy.test.ts",
+        "test/inboundPageCodec.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -6534,10 +6553,13 @@
         "complete-witness-and-coverage",
         "all-reader-version-routing",
         "bounded-range-fairness",
-        "stale-tab-rollback"
+        "stale-tab-rollback",
+        "approved-bounded-binary-page-schema",
+        "monotonic-authenticated-local-floor",
+        "same-tree-writer-off-rollback"
       ],
-      "blocker": "Development-only indexed v2 reader and eight-entry download with four-position native preparation; no aggregate credit. Published vector/map qualification, native cost/fairness, stale-tab and rollback remain open. Existing specified v1 contracts are unchanged.",
-      "next": "Qualify the indexed record and every consumer against independent originals, native mixed-owner/rollback evidence and unchanged performance/security gates before any release work."
+      "blocker": "Approved binary page codec only; not wired into live readers/writers. Every existing range obligation remains open. Authenticated floor, all logical readers, stored mode, owned-page evidence, stale-tab/rollback, bounds and final gates remain required. No aggregate credit.",
+      "next": "Harden the approved Stage3.2 contract in bounded patches before enabling release writing; ordinary builds stay off."
     }
   ],
   "additionalCorpora": [

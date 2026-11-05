@@ -1,5 +1,5 @@
-/** Plaintext schema for a FUTURE encrypted v9 heads row. No store writes or activation. */
-import { hex } from '../../account-protocol/recovery';
+/** Closed plaintext schemas inside encrypted heads rows. Decoding grants no authority. */
+import { hex, unhex } from '../../account-protocol/recovery';
 import {
   decodeNetworkEnvelope,
   ADMITTED_ENVELOPE_WIRE_LIMIT,
@@ -128,4 +128,147 @@ export function decodeInboundRecord(bytes: Bytes): InboundRecord {
   // fields were decoded from canonical hex above; re-encoding them adds no validation.
   validatedFields(e);
   return e;
+}
+
+/** Approved page receipt. Unwired until the authenticated compatibility floor is installed. */
+export const INBOUND_PAGE_RECORD_TAG = 'done/account-inbound/page/v1';
+export const INBOUND_PAGE_HEADER_BYTES = 239;
+const pageMagic = new TextEncoder().encode(INBOUND_PAGE_RECORD_TAG + '\0');
+const inboundNamespace = INBOUND_PAGE_RECORD_TAG.slice(0, INBOUND_PAGE_RECORD_TAG.indexOf('page/'));
+export interface InboundPageRecord {
+  baseline: string;
+  lineage: string;
+  head: string;
+  reader: string;
+  publisher: string;
+  firstPosition: number;
+  previous: string;
+  lastLink: string;
+  firstEntry: number;
+  entryCount: number;
+  request: Bytes;
+  page: Bytes;
+}
+const pageIds = [
+  ['baseline', 29, 32],
+  ['lineage', 61, 32],
+  ['head', 93, 32],
+  ['reader', 125, 16],
+  ['publisher', 141, 16],
+  ['previous', 165, 32],
+  ['lastLink', 197, 32],
+] as const;
+function pageLengths(requestLength: number, pageLength: number): number {
+  const length = INBOUND_PAGE_HEADER_BYTES + requestLength + pageLength;
+  if (
+    inboundInteger(requestLength, 1) > READ_REQUEST_LIMIT ||
+    inboundInteger(pageLength, 1) > READ_PAGE_LIMIT ||
+    length > INBOUND_RECORD_LIMIT
+  )
+    invalid();
+  return length;
+}
+function validatePageRecord(e: InboundPageRecord): void {
+  if (!(e.request instanceof Uint8Array) || !(e.page instanceof Uint8Array)) invalid();
+  pageLengths(e.request.length, e.page.length);
+  for (const [name, , size] of pageIds) inboundHex(e[name], size);
+  const first = inboundInteger(e.firstEntry),
+    count = inboundInteger(e.entryCount, 1),
+    position = inboundInteger(e.firstPosition, 1),
+    request = decodeInboundRequest(e.request),
+    page = decodeInboundPage(e.page);
+  checkInboundExtent(page, request);
+  if (
+    count > 8 ||
+    first >= page.entries.length ||
+    first + count > page.entries.length ||
+    !Number.isSafeInteger(position + count - 1) ||
+    !Number.isSafeInteger(request.after + first + 1) ||
+    position !== request.after + first + 1
+  )
+    invalid();
+  let previous = e.previous;
+  for (let index = first; index < first + count; index++) {
+    const proof = decodePositionResponse(page.entries[index]!.proof);
+    if (proof.kind !== 'accepted') return invalid();
+    // Reuse the existing selected-entry structural checks, not its JSON encoding.
+    // Crypto and acceptance-chain authentication remain the verifier's responsibility.
+    validatedFields({
+      baseline: e.baseline,
+      lineage: e.lineage,
+      head: e.head,
+      reader: e.reader,
+      publisher: e.publisher,
+      kind: 'received',
+      position: position + index - first,
+      previous,
+      link: proof.head.link,
+      request: e.request,
+      page: e.page,
+      ...(request.limit === 1 ? {} : { entry: index }),
+    });
+    previous = proof.head.link;
+  }
+  if (previous !== e.lastLink) invalid();
+}
+export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
+  validatePageRecord(e);
+  const bytes = new Uint8Array(pageLengths(e.request.length, e.page.length)),
+    view = new DataView(bytes.buffer);
+  bytes.set(pageMagic);
+  for (const [name, offset, size] of pageIds) bytes.set(unhex(e[name], size), offset);
+  view.setBigUint64(157, BigInt(e.firstPosition));
+  bytes[229] = e.firstEntry;
+  bytes[230] = e.entryCount;
+  view.setUint32(231, e.request.length);
+  view.setUint32(235, e.page.length);
+  bytes.set(e.request, INBOUND_PAGE_HEADER_BYTES);
+  bytes.set(e.page, INBOUND_PAGE_HEADER_BYTES + e.request.length);
+  return bytes;
+}
+export function decodeInboundPageRecord(input: Bytes): InboundPageRecord {
+  if (
+    !(input instanceof Uint8Array) ||
+    input.length < INBOUND_PAGE_HEADER_BYTES ||
+    input.length > INBOUND_RECORD_LIMIT ||
+    !pageMagic.every((byte, index) => input[index] === byte)
+  )
+    invalid();
+  const view = new DataView(input.buffer, input.byteOffset, input.byteLength),
+    requestLength = view.getUint32(231),
+    pageLength = view.getUint32(235),
+    position = view.getBigUint64(157);
+  if (
+    pageLengths(requestLength, pageLength) !== input.length ||
+    position < 1n ||
+    position > BigInt(Number.MAX_SAFE_INTEGER)
+  )
+    invalid();
+  // Copy once after checking lengths; the caller cannot mutate the decoded originals.
+  const bytes = input.slice(),
+    ids = Object.fromEntries(
+      pageIds.map(([name, offset, size]) => [name, hex(bytes.subarray(offset, offset + size))]),
+    ) as Pick<InboundPageRecord, (typeof pageIds)[number][0]>,
+    e: InboundPageRecord = {
+      ...ids,
+      firstPosition: Number(position),
+      firstEntry: bytes[229]!,
+      entryCount: bytes[230]!,
+      request: bytes.subarray(INBOUND_PAGE_HEADER_BYTES, INBOUND_PAGE_HEADER_BYTES + requestLength),
+      page: bytes.subarray(INBOUND_PAGE_HEADER_BYTES + requestLength),
+    };
+  validatePageRecord(e);
+  return e;
+}
+export type InboundReceipt =
+  | { kind: 'legacy'; record: InboundRecord }
+  | { kind: 'page'; record: InboundPageRecord };
+/** Classify before JSON, refuse unknown inbound versions, and never infer verification trust. */
+export function decodeInboundReceipt(bytes: Bytes): InboundReceipt | undefined {
+  if (!(bytes instanceof Uint8Array) || bytes.length > INBOUND_RECORD_LIMIT) invalid();
+  if (bytes[0] !== 91) return { kind: 'page', record: decodeInboundPageRecord(bytes) };
+  const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
+  if (isInboundRecordTag(v[0])) return { kind: 'legacy', record: decodeInboundRecord(bytes) };
+  if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace)) invalid();
+  return undefined;
 }
