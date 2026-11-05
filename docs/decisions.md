@@ -7220,3 +7220,10 @@ Keep stored mode private to captured saved bytes. Check the authenticated encodi
 **Date:** 2026-11-04 · **Commit:** pending patch 396 · **Scope:** approved receipt-reader hardening
 
 One receipt row is one completeness event, even when it proves eight admitted positions. Verify, cover and retain every actual entry independently through the saved-byte boundary; never carry a previous record's parsed page into a later legacy event. Resolve epoch/disposition through the tag home, preserving unrelated legacy tag parsing and strict future-version refusal. Keep binary views on the full reference until logical-work/owned-byte bounds are hardened rather than treating fewer physical rows as eligibility. [396 evidence](development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md) retains every development failure and intermediate checkpoint.
+
+
+### Keep a cut inside a page without rewriting its signed originals
+
+**Date:** 2026-11-04 · **Commit:** pending patch 397 · **Scope:** approved interior-cut hardening
+
+Verify every admitted entry first. At every covered position preserve the full snapshot comparison and observed accepted-cut link. Retain only the suffix as one self-contained extent, changing its unsigned range header with actual verified indices/predecessor/end while keeping complete original signed frames. Preserve legacy bytes, one gap only across the authenticated cut, final closure and failure erasure. [397 evidence](development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md) distinguishes low-level precondition/aged semantics from still-required native admission and31s cold evidence.

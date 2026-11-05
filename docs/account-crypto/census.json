@@ -1069,7 +1069,7 @@
     },
     {
       "path": "src/crdt/handoffHistory.ts",
-      "sha256": "38463b7bb47a0f80acab045f641cdc3d7a38e5c022fa3b4517d59a0787104f7e"
+      "sha256": "1f9c5292e361fe49d842746b7e5e0520a76ef3dc85d49c90bc9dfed9bda8000c"
     },
     {
       "path": "src/crdt/handoffRecord.ts",

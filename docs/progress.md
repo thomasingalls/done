@@ -193,22 +193,23 @@ logical. Membership/successor/retention classification uses the tag home. Binary
 views use the full reference until their index accounting is hardened. Every phase outcome/failure is in completed.md
 and its immutable evidence, not repeated here.
 
-**Latest checks.** Final full306files/3057cases/one existing skip pass109.76s at
-120s;240s unused. Types,92 focused reader/retention controls and reviewed registry/
-inventory pass. The109.96s intermediate pass and both classification development
-failures remain. No old test changes in396; all unrelated guard bodies are compared.
+**Latest checks.** Full307files/3065cases/one existing skip pass110.02s at120s;
+240s unused. Types,78 focused handoff/stored/ledger/baseline cases and reviewed
+registry/inventory pass. [Handoff interior suffixes](./development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md)
+now preserve full snapshot/cut checks and exact signed originals. The unit models an
+already-authenticated cut; actual native admission/31s cold remains. Earlier reds
+remain preserved; no old test edits in397.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Integrate handoff replay, retained membership readings
-and replacement sources with their own authenticated encoding floor, logical event
-limits and every stored entry. Preserve covered snapshot/accepted-cut closure and
-cuts inside a page; no raw cursor/header may skip work. Exercise aged stored callers
-and unchanged live expiry. Then finish arbitrary mixed histories and the permanent
-stale-turn control across the remaining reader paths.
+**Active bounded outcome.** Retained membership readings: count logical positions
+at the existing4096 ceiling before expansion, retain the64stream bound and each
+reading's own floor, then replay all saved entries under unchanged admission,
+snapshot/prefix/current checks. Review every producer of these reading objects.
+Then implement replacement-source stored suffixes and accepted-cut/limit controls.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

@@ -19068,3 +19068,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Binary census/full replay keeps one physical witness and checks/retains each actual entry. Interior firstEntry and dense-then-legacy continuation agree, including seq=position. Shared epoch/disposition classification handles binary/future tags; memo retention uses actual indices. Binary indexing stays on the verified reference until its bounds are hardened. Eight new cases fail before;92 focused and full306files/3057cases/one existing skip pass109.76s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md).
 
 **Preserved development results/limits.** Keep the old malformed-carrier refusal without editing its test. Preserve the109.96s intermediate checkpoint and the review reorder failure (8new red/84old green), then final pass. Final focused selection corrects a nonexistent earlier filename; initial/final bookkeeping stay preserved. All other guard bodies are independently AST-compared. Remaining reading/cut/owned-parse/index/writer/lifecycle/rollback/final-gate obligations stay open; no performance or acceptance claim. Outcome recorded before updating this seat's active state.
+
+
+### Preserve handoff snapshot and cut checks across a page interior
+
+**Date:** 2026-11-04 · **Commit:** pending patch 397 · **Stage:** partial Stage3.2, second stored reader
+
+**Exit.** Every admitted handoff entry verifies/applies in order. Covered snapshot and cut-link checks remain; one self-contained suffix header can start inside the original signed page, with exact original frames and indices. Legacy bytes stay exact; gap/order/erasure guards remain. Eight new controls fail before;78 focused and full307files/3065cases/one existing skip pass110.02s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md).
+
+**Limits.** Unit cut metadata models the caller's already-authenticated precondition, not an admission proof. Clock-aged new-document reconstruction is not actual31s native cold evidence. No old test edits or397 implementation reds. Remaining retained/replacement readers, mixed/index/writer/lifecycle/rollback/final gates stay open. Outcome recorded before updating this seat's active state.
