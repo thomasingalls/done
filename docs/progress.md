@@ -193,23 +193,21 @@ logical. Membership/successor/retention classification uses the tag home. Binary
 views use the full reference until their index accounting is hardened. Every phase outcome/failure is in completed.md
 and its immutable evidence, not repeated here.
 
-**Latest checks.** Full307files/3065cases/one existing skip pass110.02s at120s;
-240s unused. Types,78 focused handoff/stored/ledger/baseline cases and reviewed
-registry/inventory pass. [Handoff interior suffixes](./development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md)
-now preserve full snapshot/cut checks and exact signed originals. The unit models an
-already-authenticated cut; actual native admission/31s cold remains. Earlier reds
-remain preserved; no old test edits in397.
+**Latest checks.** Full308files/3072cases/one existing skip pass110.49s at120s;
+240s unused. Types,52 focused cases and registry/inventory checks pass.
+[Logical reading bounds](./development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md)
+keep physical4096 and64-stream guards, own floors and full verification. Six new
+controls fail before; no old test edits. Earlier failures remain preserved.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Retained membership readings: count logical positions
-at the existing4096 ceiling before expansion, retain the64stream bound and each
-reading's own floor, then replay all saved entries under unchanged admission,
-snapshot/prefix/current checks. Review every producer of these reading objects.
-Then implement replacement-source stored suffixes and accepted-cut/limit controls.
+**Active bounded outcome.** Replay every saved entry in later v3 membership
+readings under unchanged certification, checkpoint, stream-prefix and lifecycle
+checks. Then implement replacement-source stored pages under accepted-cut and
+logical-limit checks. Both must use their own retained encoding floor.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

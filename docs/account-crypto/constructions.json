@@ -6498,7 +6498,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 164,
+          "line": 165,
           "label": "done/certified-account-device/v1",
           "kind": "literal"
         },
@@ -6534,13 +6534,13 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 539,
+          "line": 547,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 548,
+          "line": 556,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },

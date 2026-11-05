@@ -178,6 +178,36 @@ const inboundNamespaceBytes = new TextEncoder().encode(inboundNamespace);
 /** Namespace ownership includes future versions. It grants no syntax or verification trust. */
 export const isInboundReceiptNamespace = (tag: unknown): boolean =>
   typeof tag === 'string' && tag.startsWith(inboundNamespace);
+const inboundNamespaceHex = hex(inboundNamespaceBytes);
+/** Work bound only, never receipt validity or authority. Legacy rows admit at most one
+ * position and keep their existing opaque capture/replay contract. A binary extent's
+ * fixed header bounds admitted work before any request/page or logical entry expansion. */
+export function inboundReceiptEventWork(wire: string, scope: unknown): number {
+  const floor = captureInboundReceiptVersion(scope);
+  if (typeof wire !== 'string') return invalid();
+  if (!wire.startsWith(inboundNamespaceHex)) return 1;
+  const bytes = inboundBytes(wire, INBOUND_RECORD_LIMIT);
+  try {
+    if (floor.inboundReceiptVersion !== 1) throw new StorageCompatibilityError();
+    if (!pageMagic.every((byte, index) => bytes[index] === byte))
+      throw new StorageCompatibilityError();
+    const { position } = inboundPageHeader(bytes),
+      first = bytes[229]!,
+      count = bytes[230]!;
+    if (
+      first >= 8 ||
+      count < 1 ||
+      count > 8 ||
+      first + count > 8 ||
+      position + BigInt(count) - 1n > BigInt(Number.MAX_SAFE_INTEGER)
+    )
+      invalid();
+    return count;
+  } finally {
+    bytes.fill(0);
+  }
+}
+
 export interface InboundPageRecord {
   baseline: string;
   lineage: string;
@@ -277,11 +307,7 @@ export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
 export function decodeInboundPageRecord(input: Bytes): InboundPageRecord {
   return decodePageSyntax(input).record;
 }
-function decodePageSyntax(input: Bytes): {
-  record: InboundPageRecord;
-  originals: InboundOriginalSyntax;
-  bytes: Bytes;
-} {
+function inboundPageHeader(input: Bytes) {
   if (
     !(input instanceof Uint8Array) ||
     input.length < INBOUND_PAGE_HEADER_BYTES ||
@@ -299,6 +325,14 @@ function decodePageSyntax(input: Bytes): {
     position > BigInt(Number.MAX_SAFE_INTEGER)
   )
     invalid();
+  return { requestLength, pageLength, position };
+}
+function decodePageSyntax(input: Bytes): {
+  record: InboundPageRecord;
+  originals: InboundOriginalSyntax;
+  bytes: Bytes;
+} {
+  const { requestLength, position } = inboundPageHeader(input);
   // Copy once after checking lengths; the caller cannot mutate the decoded originals.
   const bytes = input.slice(),
     ids = Object.fromEntries(

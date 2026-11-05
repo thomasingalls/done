@@ -33,7 +33,7 @@ import {
 } from '../../account-protocol/admissionHistory';
 import { openContentCheckpoint } from './contentCheckpoint';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
-import { INBOUND_RECORD_LIMIT } from './inboundRecord';
+import { INBOUND_RECORD_LIMIT, inboundReceiptEventWork } from './inboundRecord';
 import { Y, hasPendingUpdates } from './yjs';
 import type { Bytes } from './custodyCrypto';
 import {
@@ -97,20 +97,21 @@ export function membershipReadingPrefix(
   };
 }
 export function captureMembershipReading(input: unknown): MembershipReading {
-  const r = closed(input, [
-    'v',
-    'epoch',
-    'head',
-    'checkpoint',
-    'admission',
-    'streams',
-    ...inboundReceiptVersionFields(input),
-    ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
-    ...((input as { v?: unknown; history?: unknown } | null)?.v === 2 &&
-    (input as { history?: unknown }).history !== undefined
-      ? ['history']
-      : []),
-  ]);
+  const floor = captureInboundReceiptVersion(input),
+    r = closed(input, [
+      'v',
+      'epoch',
+      'head',
+      'checkpoint',
+      'admission',
+      'streams',
+      ...inboundReceiptVersionFields(input),
+      ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
+      ...((input as { v?: unknown; history?: unknown } | null)?.v === 2 &&
+      (input as { history?: unknown }).history !== undefined
+        ? ['history']
+        : []),
+    ]);
   if (
     (r['v'] !== 2 && r['v'] !== 3) ||
     !Number.isSafeInteger(r['epoch']) ||
@@ -126,7 +127,8 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     (!r['admission'] || typeof r['admission'] !== 'object' || Array.isArray(r['admission']))
   )
     throw Error('Invalid later reader admission');
-  let count = 0;
+  let count = 0,
+    logicalCount = 0;
   const streams = r['streams'].map((value) => {
     const s = closed(value, ['publisher', 'events', 'prefix']);
     unhex(s['publisher'], 16);
@@ -141,6 +143,8 @@ export function captureMembershipReading(input: unknown): MembershipReading {
         !/^[0-9a-f]+$/.test(wire)
       )
         throw Error('Invalid later reader event');
+      if ((logicalCount += inboundReceiptEventWork(wire, floor)) > MEMBERSHIP_READING_EVENTS)
+        throw Error('Later reader history limit');
       return wire;
     });
     const p = closed(s['prefix'], ['position', 'link', 'observedThrough']);

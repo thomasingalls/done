@@ -19077,3 +19077,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Every admitted handoff entry verifies/applies in order. Covered snapshot and cut-link checks remain; one self-contained suffix header can start inside the original signed page, with exact original frames and indices. Legacy bytes stay exact; gap/order/erasure guards remain. Eight new controls fail before;78 focused and full307files/3065cases/one existing skip pass110.02s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md).
 
 **Limits.** Unit cut metadata models the caller's already-authenticated precondition, not an admission proof. Clock-aged new-document reconstruction is not actual31s native cold evidence. No old test edits or397 implementation reds. Remaining retained/replacement readers, mixed/index/writer/lifecycle/rollback/final gates stay open. Outcome recorded before updating this seat's active state.
+
+
+### Bound retained reading work before expanding a page
+
+**Date:** 2026-11-04 · **Commit:** pending patch398 · **Stage:** partial Stage3.2
+
+**Exit.** Original and later retained readings count logical entries against the existing4096 ceiling, keeping physical4096 and64 streams. The bounded header is a work count only; full authentication/decoding remains. Reading floors stay independent and original contexts forward their own. Six new controls fail before; final52 focused and full308files/3072cases/one existing skip pass110.49s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md).
+
+**Limits.** Intermediate unused-local type error retained. No old test edits. Actual multi-entry v3/replacement replay and all subsequent native/index/writer/lifecycle gates remain. Outcome recorded before updating this seat's active state.

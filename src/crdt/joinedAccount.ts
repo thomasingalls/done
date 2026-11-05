@@ -1,3 +1,4 @@
+import { inboundReceiptEventWork } from './inboundRecord';
 import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { authorityClaim, type AccountAuthorityRows } from './accountAuthorityInventory';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
@@ -252,6 +253,13 @@ function parseJoined(input: unknown): JoinedRecord {
     !Array.isArray(reading['events']) ||
     reading['events'].length > 4096 ||
     reading['events'].some((e) => typeof e !== 'string')
+  )
+    throw Error('Incomplete retained reader');
+  if (
+    (reading['events'] as string[]).reduce(
+      (n, wire) => n + inboundReceiptEventWork(wire, reading),
+      0,
+    ) > 4096
   )
     throw Error('Incomplete retained reader');
   return {

@@ -36,7 +36,11 @@ import type { LocalPasskey } from '../crdt/accountAccess';
 import { privateDeliveryPost } from './privateDeliveryHttp';
 import type { CeremonyVault } from './ceremonyVault';
 import type { ContentHandoffState } from './contentHandoff';
-import type { InboundReceiptVersion } from '../crdt/inboundReceiptVersion';
+import {
+  captureInboundReceiptVersion,
+  type InboundReceiptVersion,
+} from '../crdt/inboundReceiptVersion';
+import { inboundReceiptEventWork } from '../crdt/inboundRecord';
 export interface ContentReaderState extends InboundReceiptVersion {
   checkpoint: ContentCheckpoint;
   admission: CheckpointAdmission | null;
@@ -141,6 +145,7 @@ export async function openApprovedWriting(
       }
       await mergeHandoffHistory(doc, state.history, history, kg);
       const base: InboundContext = {
+        ...captureInboundReceiptVersion(state),
         baseline: { kind: 'content-checkpoint', id: await contentCheckpointHash(checkpoint) },
         service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
         authority: history.current,
@@ -174,6 +179,8 @@ export async function openApprovedWriting(
       };
       if (!Array.isArray(state.events) || state.events.length > 4096)
         throw Error('Reader history limit');
+      let count = state.events.reduce((n, wire) => n + inboundReceiptEventWork(wire, state), 0);
+      if (count > 4096) throw Error('Reader history limit');
       const replay = await replayHandoffStream(doc, base, state.events, state.history, {
         assertCurrent: guard,
       });
@@ -247,11 +254,12 @@ export async function openApprovedWriting(
         try {
           const result = await verifyInboundPage(base, bytes, page, { assertCurrent: guard });
           if (result.kind === 'empty') break;
-          if (result.kind !== 'received' || state.events.length >= 4096)
+          if (result.kind !== 'received' || state.events.length >= 4096 || count >= 4096)
             throw Error('Reader history limit or conflicting update');
           const wire = hex(result.record);
           apply(result);
           state.events.push(wire);
+          count++;
           state.prefix = { ...base.prefix };
           await input.save();
           if (base.prefix.position === base.prefix.observedThrough) break;

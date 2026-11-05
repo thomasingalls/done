@@ -541,7 +541,7 @@
     },
     {
       "path": "src/account/contentReader.ts",
-      "sha256": "3d3d1c699537c2d7beacb9acb35129122cc44d6f5627d9a173511978be0a47e7"
+      "sha256": "25643e249a2ce569815788aab826cad106a4a663a84845105bd286f656dd2aaf"
     },
     {
       "path": "src/account/deviceConnectionRoutes.ts",
@@ -649,7 +649,7 @@
     },
     {
       "path": "src/account/membershipReader.ts",
-      "sha256": "1469c881cc02202fc56783cf1ffac86a6f49076dd1ff082929ee7e26c9c65782"
+      "sha256": "dfb25da9143f40b57c32679afc88b78063dff904df61df4cc446bac3ec415bd7"
     },
     {
       "path": "src/account/membershipVault.ts",
@@ -1109,7 +1109,7 @@
     },
     {
       "path": "src/crdt/inboundRecord.ts",
-      "sha256": "28bfe73a27a6f899edb9d76e99bd94d6e035752f1d95eb45d220952a629f0708"
+      "sha256": "10832fc58814f794863b28c3b73c12534d3770d88a5dc9124d71f53a7c640c1a"
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
@@ -1121,7 +1121,7 @@
     },
     {
       "path": "src/crdt/joinedAccount.ts",
-      "sha256": "4f25e43f7ef2c91ea45df37676f3611a73bbb90b387e8104351e22605ec1aded"
+      "sha256": "ca0202937853fdd17cc99da05a408f260db6c5262c30e73bed5bb3d7b675f675"
     },
     {
       "path": "src/crdt/journalCodec.ts",
@@ -1297,7 +1297,7 @@
     },
     {
       "path": "src/crdt/membershipReading.ts",
-      "sha256": "5b2c06c0d21b86c82d1910e7ca7b5ed8657603d2a4fe4c85740bb294a9881efa"
+      "sha256": "b9e688783d80fa4b226063bb95d66ec59b3f57cdeee64ea83051fedc88406d25"
     },
     {
       "path": "src/crdt/membershipSource.ts",
@@ -2453,7 +2453,7 @@
       "sites": [
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 164
+          "line": 165
         }
       ]
     },
@@ -3225,11 +3225,11 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 539
+          "line": 547
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 548
+          "line": 556
         }
       ]
     },

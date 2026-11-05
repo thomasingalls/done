@@ -7227,3 +7227,10 @@ One receipt row is one completeness event, even when it proves eight admitted po
 **Date:** 2026-11-04 · **Commit:** pending patch 397 · **Scope:** approved interior-cut hardening
 
 Verify every admitted entry first. At every covered position preserve the full snapshot comparison and observed accepted-cut link. Retain only the suffix as one self-contained extent, changing its unsigned range header with actual verified indices/predecessor/end while keeping complete original signed frames. Preserve legacy bytes, one gap only across the authenticated cut, final closure and failure erasure. [397 evidence](development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md) distinguishes low-level precondition/aged semantics from still-required native admission and31s cold evidence.
+
+
+### Count retained work without granting trust to its header
+
+**Date:** 2026-11-04 · **Commit:** pending patch398
+
+Before expanding a retained binary receipt, require its own encoding floor and closed fixed header, then count its bounded admitted extent against the existing logical ceiling. This is only a work bound: full syntax, signatures, authorization and chain checks still determine admissibility. Preserve physical bounds and legacy capture behavior. [398 evidence](development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md).
