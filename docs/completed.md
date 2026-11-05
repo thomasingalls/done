@@ -18878,3 +18878,12 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Exit.** Five private-parser/writer Node cases,43 focused unit cases, two exact omission controls and types/quality/registry/inventory pass. Old authentication/CAS/commit/parser ASTs remain exact apart from named floor additions. No floor installation or binary effects. [Evidence](development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md).
 
 **Checkpoint clarification.** With Mac awake, an added outer command wrapper cancelled the editor stage at53.7s after setup. The original repository owner, retaining its120s stage and every existing resource/startup/cleanup limit, then passes12normal cases and detects all3mutants. Old failures remain; no causal frame repair or full-checkpoint/Stage5 success is claimed.
+
+
+### Bound the format transition to an original native task
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch378 · **Stage:**Stage3.2 provenance core
+
+**Exit.** The unwired guard distinguishes original exclusive scopes and exact Account joined scopes from arbitrary shared, copied, Local or expired tasks. All34 focused wiring cases and two exact omission controls pass, with types/quality/registry/inventory. Old acquisition/compatibility/lifecycle/native callback ASTs remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md).
+
+**Limit.** Test-only compatibility/authentication stubs provide no native or Account authority proof. Real native ownership/old-tab tests, authenticated floor installation and every remaining Stage3.2 obligation are still required.

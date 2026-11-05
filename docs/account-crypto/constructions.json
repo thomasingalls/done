@@ -6542,6 +6542,10 @@
         {
           "path": "src/crdt/inboundReceiptVersion.ts",
           "name": "inboundReceiptMacTail"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "name": "requireAccountFormatSessionTask"
         }
       ],
       "homePins": [],
@@ -6557,7 +6561,8 @@
         "test/rangeWriterPolicy.test.ts",
         "test/inboundPageCodec.test.ts",
         "test/inboundReceiptFloor.test.ts",
-        "test/inbound-receipt-floor/joined.test.mjs"
+        "test/inbound-receipt-floor/joined.test.mjs",
+        "test/inboundFormatTask.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -6573,7 +6578,8 @@
         "same-tree-writer-off-rollback",
         "legacy-exact-tagged-floor-mac",
         "closed-floor-parser-and-monotonic-native-cas",
-        "joined-and-retained-reading-floor-preservation"
+        "joined-and-retained-reading-floor-preservation",
+        "original-native-format-task-provenance"
       ],
       "blocker": "Approved binary codec and promotion/joined/retained-reading floor metadata only; no floor installation or live binary effects. Actual old-owner fences, all logical readers, stored mode, owned pages, stale-tab/rollback and final gates remain open. No aggregate credit.",
       "next": "Harden the approved Stage3.2 contract in bounded patches before enabling release writing; ordinary builds stay off."

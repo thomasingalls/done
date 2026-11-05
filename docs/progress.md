@@ -224,10 +224,17 @@ checks actual closed joined/reading parsers, complete payload inclusion and both
 central downgrade guards. Five Node and43 focused unit cases pass; two exact
 omissions fail. Old authentication/CAS/commit ASTs remain exact.
 
-**Next bounded outcome.** Prove actual native Page/Account-cohort provenance and
-old-owner exclusion; install/acknowledge the authenticated floor before any new
-receipt effect, preserving every rewrite/rotation/handoff/install path. Continue
-stored mode, logical readers, owned pages, G8/B and same-tree writer-on/off artifacts.
-All functional checkpoints and Stage5 gates remain required; no acceptance or publication.
+**Format-task provenance core checked, unwired.**
+[378](./development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md)
+adds only a private original-task/join identity check and ephemeral metadata.
+All34 wiring cases and two omission controls pass. They are models, not native
+custody/lease proof; old acquisition and lifecycle ASTs stay exact.
+
+**Next bounded outcome.** Exercise real native Page/Account-cohort ownership and
+old-owner exclusion, then install/acknowledge the authenticated floor before any
+new receipt effect. Preserve every rewrite/rotation/handoff/install/removal path.
+Continue stored mode, logical readers, owned pages, G8/B and same-tree writer-on/off
+artifacts. Functional checkpoints and allStage5 gates remain required; no final
+acceptance, commit or publication. Other heavy host jobs' paused status is pending.
 
 This seat edits only this document; the other seat's document above is unchanged.

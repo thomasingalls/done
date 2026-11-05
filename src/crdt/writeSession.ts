@@ -23,12 +23,41 @@ export interface SessionTask {
 }
 
 /** Internal live original task identity. This proves only slot/mode/lifetime, never custody or coverage. */
-const nativeTasks = new WeakMap<SessionTask, { slotId: string; mode: LockMode; check(): void }>();
+const nativeTasks = new WeakMap<
+  SessionTask,
+  {
+    slotId: string;
+    mode: LockMode;
+    check(): void;
+    join?: NonNullable<ReturnType<typeof accountWorkerRuntime>>['join'];
+  }
+>();
 export function requireExclusiveSessionTask(task: SessionTask, slotId: string): void {
   const owned = nativeTasks.get(task);
   if (!owned || owned.slotId !== slotId || owned.mode !== 'exclusive')
     throw new WriteSessionError('inactive', 'An actual exclusive task for this slot is required.');
   owned.check();
+}
+
+/** Coordination only: never substitutes for custody, factors, binding or fresh authority.
+ * The shared arm must come from this runtime's actual one-shot Account join callback.
+ * That unchanged path retains supervisor/anchor/slot/member fences after the Window's
+ * exclusive startup barrier. A generic shared task or serialized ticket is insufficient. */
+export function requireAccountFormatSessionTask(task: SessionTask, slotId: string): void {
+  const owned = nativeTasks.get(task);
+  if (!owned || owned.slotId !== slotId)
+    throw new WriteSessionError('inactive', 'An actual format task for this slot is required.');
+  owned.check();
+  if (owned.mode === 'exclusive') return;
+  const runtime = accountWorkerRuntime(slotId);
+  if (
+    owned.mode !== 'shared' ||
+    !owned.join ||
+    runtime?.kind !== 'account' ||
+    owned.join !== runtime.join
+  )
+    throw new WriteSessionError('inactive', 'An actual Account cohort format task is required.');
+  runtime.assertCurrent();
 }
 
 export interface WriteSession {
@@ -151,7 +180,12 @@ async function acquire(
             });
           },
         };
-        nativeTasks.set(scope, { slotId, mode, check: guard });
+        nativeTasks.set(scope, {
+          slotId,
+          mode,
+          check: guard,
+          ...(workerJoin ? { join: workerJoin } : {}),
+        });
         const value = await operation(scope);
         guard();
         return value;

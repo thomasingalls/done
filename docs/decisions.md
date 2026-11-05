@@ -7080,3 +7080,10 @@ Use a single closed optional encoding-floor helper and enforce monotonic preserv
 **Date:**2026-11-03 · **Scope:**Stage3.2 metadata and checkpoint observation
 
 Joined writes retain both the marker floor and any retained-reading floor. Each scope remains authenticated by the existing joined payload; absent legacy fields keep their exact bytes. The private test seam exports actual parsers only inside a disposable Node bundle and is absent from app entry points. Phase377 also removes no repository deadline: the original full editor command passes with its unchanged120s stage, after an extra external wrapper had truncated it during setup. Preserve both results and the earlier frame failures rather than attributing them to Mac sleep. [Evidence](development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md).
+
+
+### Use original task provenance for the approved Worker format transition
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 implementation, no trust-model change
+
+Retain the exact join object only on tasks actually created by the existing native acquisition callback. A new format guard accepts the original exclusive task or that exact Account Worker join/lifetime, never an arbitrary shared task, Local join, structurally similar object or ticket. This preserves the approved real-cohort exclusion path without changing its locks or treating coordination as authenticated custody. Phase378 is unwired and carries model tests only; native and ordinary factor/authority proof still precede installation. [Evidence](development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md).

@@ -1693,7 +1693,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "73e092230cf0ba5e69c84ee5b9fa6aa4fd2712ee58ab5fb62f4b6675beacedc0"
+      "sha256": "191f1e0f4a3a003817af01dfdc6634b4f6bad6cc6e715fab1c5bb6b3e38e0354"
     },
     {
       "path": "src/crdt/yjs.ts",
