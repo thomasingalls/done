@@ -19332,3 +19332,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** A genuine loss after the floor CAS leaves authenticated floor1 before any binary copy, then retries with unchanged retained reading and exact cold/Undo writing. Omitting only the CAS fails the same test at the saved-floor assertion. Runtime449 and prior test/helper1,119 hashes remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).
 
 **Limits.** This is an isolated native reply-loss control, not an ordinary artifact rollback or stale-tab proof. Full floor rewriter/membership/removal lifecycle checks, frozen old Page/Worker artifacts, actual mixed stale-turn idle audit, B fairness/past-index and the same-tree writer-off image remain. Stage5/6 are not complete. No format/trust/server/wire/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Prove the genuine mixed-receipt idle audit closes a stale retained-page owner
+
+**Date:**2026-11-04 · **Commit:**pending patch425 · **Stage:**partial Stage3.2
+
+**Exit.** The actual dense-to-legacy retained-original fault is detected by the genuine idle full oracle and closes the owner. Baseline passes. Both retain all accepted writing through exact offline cold reopening; no global clock or guard change and no performance acceptance credit. [Evidence](development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).
+
+**Limits.** This is an isolated correctness control, not a timing gate or RAM result. Frozen old Page/Worker and stale-tab artifacts, full marker rewrite/membership/removal lifecycle checks, B fairness/past-index and same-tree writer-off image rollback remain. Stage5/6 are not complete. No format/trust/server/wire/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.

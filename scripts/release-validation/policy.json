@@ -290,6 +290,9 @@
     ],
     "test/inbound-floor-reply": [
       "playwright.inbound-floor-reply.config.ts"
+    ],
+    "test/inbound-audit": [
+      "playwright.inbound-audit.config.ts"
     ]
   },
   "vectorGenerators": {

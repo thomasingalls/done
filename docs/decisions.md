@@ -7419,3 +7419,10 @@ A valid retained reading’s floor never substitutes for a native marker acknowl
 **Date:**2026-11-04 · **Commit:**pending patch424
 
 Prove reply-loss durability under the same native authentication path that a reopened device uses. Inspect only authenticated metadata and readonly encrypted row counts; let app admission, Undo and cold opening establish semantics. Keep a permanent omission build and all the positive assertions, so skipping the floor’s actual native write is distinguishable from a successful acknowledgment. Keep injected faults confined to test Worker builds. [Evidence](development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).
+
+
+### Test the real mixed-page audit fault without weakening its oracle or changing clocks
+
+**Date:**2026-11-04 · **Commit:**pending patch425
+
+Keep the idle-start audit and every original verification guard. Age its private clock only, feed the real input-quiet scheduler, and reintroduce only the known retained-original metadata fault after a correct startup. Stream content-free mismatch/closure events before Worker termination and require exact unarmed cold writing. Test observations remain in isolated fixture builds; ordinary source and all prior tests are unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).

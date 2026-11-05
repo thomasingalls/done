@@ -191,22 +191,23 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Prove durable floor acknowledgment survives a lost installation reply](./development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).
-Positive native case passes20.4s: authenticated floor1 and zero native rows after the lost reply, unchanged reading digest after normal retry, active floor1 with copied rows, Undo and exact offline cold. The negative case fails16.6s at the intended saved-floor assertion: native floor is null while reading floor1, phase installing and native rows0 are correct. The control-proof command confirms both expected child exits and no timeout. Hash review verifies six exact Worker source transforms in each arm,449 unchanged runtime/protocol files and1,119 unchanged pre-existing test/helper files. Types, quality/format,17registry checks, inventory and10controls pass; the new one-case family is required and every old obligation stays. No full-unit repetition: runtime and all previous tests are unchanged from423’s330-file/3,210pass/one-skip checkpoint. All development failures remain: incomplete recovery-union floor typing and plugin signature were corrected in test files; duplicate plugin composition failed a build; an incorrectly started dependent test stopped at its missing-build precondition before any app ran; an unused build was rejected for a mistyped revision label; its corrected negative build uses the exact positive argv plus the declared omission/outDir. Untimed review mistakes compared independent random reading digests and assumed five instead of six Worker builds; only review tooling was corrected. No app guard, case assertion or deadline changed in response.
+**Latest checks.** [Prove the genuine mixed-receipt idle audit closes a stale retained-page owner](./development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).
+Both genuine cases pass on one identical artifact: baseline30,618ms and stale-turn30,679ms. At650ms after the real scheduler input stimulus no semantic audit has started and the owner remains live. Baseline then emits start/passed and remains live until the test explicitly locks it; its later closed event is that intentional lock. Stale-turn emits start, the canonical done/account-ledger-reference-mismatch and actual carrier closed, without passed. Events stream to Node before Worker termination. Both profiles reopen offline unarmed with the complete exact exported archive and retained floor1; virtual authenticators stay attached. Exact mutation review records accountReceive5, accountCapture5 and inboundLedger6 Worker transforms, six uniquely anchored hooks,449 unchanged runtime/protocol files and1,121 unchanged previous test/helper files. Types, quality/format,17registry checks, inventory and10controls pass. One final formatter check flags only indentation added to the new live-owner selector; the failed attempt stays, and the complete parsed test AST is identical after correction. Only its inventory input hash changes; every case/assertion/deadline and old obligation remains. One new required family/case declaration expands to the two executed arms. No full-unit repetition: all runtime and previous tests remain identical to423’s330-file/3,210pass/one-skip checkpoint.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden the genuine mixed dense/legacy stale-turn idle-audit control, then complete frozen old Page/Worker and stale-tab lifecycle proofs, marker rewrite preservation, B fairness/past-index and same-tree writer-off rollback images. Continue automatically after each freeze.
+**Active bounded outcome.** Build immutable frozen old Page/Worker compatibility artifacts, prove stale-owner exclusion, marked-store refusal and pending-writing recovery, then complete marker-rewrite lifecycles, B fairness/past-index and the same-tree writer-off rollback images. Continue automatically after each freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
 Original and Joined Workers now have genuine dense admission, nonzero-entry tails,
 31s expiry/offline cold, retained journal recovery, Undo and exact exports in421.
 Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
-full-oracle pressure feeds the guarded idle lane; G8/range4 and combined originals
+full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
+closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
 in422. Complete real B fairness/cancellation/past-index and floor
 rewriter/lost-reply lifecycles. Binary retained-reading installation with writer-off/on
