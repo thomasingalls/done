@@ -19392,3 +19392,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** Both local same-tree ARM64 images pass actual final-runtime suites and two-container smoke. Compatible writer0 opens dense data from a preloaded tab, writes fresh legacy receipts and retains exact writing/Undo/offline disk cold and floor1. [Evidence](development-evidence/2026-11-02-release-hardening/430-same-tree-arm64-reader-rollback/README.md).
 
 **Limits.** Unsigned hardening snapshots with explicit base-dirty/source fingerprints, not published or signed release artifacts. Client/storage rollback uses host Node24 APIs; actual containers have separate suites/smoke. No old-server rollback, physical phone/real-account timing, SW-adoption, RAM, vulnerability-scan or Stage5 credit. Catalogue registration is the sole later build-input delta; publication requires its separate signed-source artifact procedure. B fairness/past-index, coherent Stage3/4 checkpoints and Stage5/6 remain. No runtime/old-test, format/trust/server-wire/budget/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Apply the approved full-unit hang guard without changing case or performance deadlines
+
+**Date:**2026-11-04 · **Commit:**pending patch431 · **Stage:**partial Stage3.2
+
+**Exit.** The nine full-suite stages now use the already approved240s hang guard. Exact inverse source review and all62 existing wrapper controls pass; per-case/native/performance deadlines and runtime source remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).
+
+**Limits.** Guard-only harness maintenance under an existing conditional operator approval, not a new gate relaxation or performance result. Full campaign execution, coherent Stage3/4 checkpoint and Stage5/6 remain. No crypto/format/trust/budget/limit/sender/default change, new lab, commit, publication or deployment. The latest full unit remains429’s330files/3,210pass/one skip128.35s. Outcome precedes advancing this seat.

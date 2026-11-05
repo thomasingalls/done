@@ -7461,3 +7461,10 @@ Rotation is another native stored-row reader and must receive the independently 
 **Date:**2026-11-04 · **Commit:**pending patch430
 
 RANGE_RECEIVE selects framing of newly fetched live pages. The compatible reader keeps the binary reader and authenticated monotonic floor. Prove actual stale-tab/mixed-row/cold behavior and minimal container runtime separately, bind them to exact source/image bytes and retain local archives. Flag rollback/history reduction does not remove the floor or make pre-release clients compatible. Once the floor commits, rollback requires this compatible reader; pre-release builds lock out dense-writing devices. These are hardening artifacts only. [Evidence](development-evidence/2026-11-02-release-hardening/430-same-tree-arm64-reader-rollback/README.md).
+
+
+### Exercise the existing conditional full-unit timeout approval and retain actual suite times
+
+**Date:**2026-11-04 · **Commit:**pending patch431
+
+Use the measured cleaned-host full-suite duration and identical two-worker command to invoke the operator’s existing240s hang-guard approval. Limit the change to the full-suite unit branch, preserve every other source byte, and keep unit-timing.json reporting elapsed/deadline/code/timeout on each campaign. Do not change any individual test or frozen16ms/2.5s/30s/600s/15s/120s predicate. [Evidence](development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).

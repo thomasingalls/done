@@ -285,7 +285,7 @@ try {
         name.endsWith('-regressions') || name.endsWith('-native')
           ? 300000
           : name === 'unit'
-            ? 120000
+            ? 240000
             : 60000,
       ))
     )

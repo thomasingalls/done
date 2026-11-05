@@ -243,7 +243,7 @@ try {
         name.endsWith('-regressions') || name === 'promotion-native'
           ? 180000
           : name === 'unit'
-            ? 120000
+            ? 240000
             : 60000,
       ))
     )

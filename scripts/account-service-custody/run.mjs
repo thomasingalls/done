@@ -276,7 +276,7 @@ try {
         ['service-delivery', 'transport', 'service-inbound', 'authority-regressions'].includes(name)
           ? 180000
           : name === 'unit'
-            ? 120000
+            ? 240000
             : 60000,
       ))
     )
