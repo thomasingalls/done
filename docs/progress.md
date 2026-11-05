@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Own canonical live originals through verification and encoding](./development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).
-Eight initial controls: seven fail and one passes before; the real eight-entry live path decodes each original17times before versus once after, retaining18signature checks. Added ninth final-crypto mutation control has no matched-before credit. Nine pass, including exact default codec agreement, interior dense syntax, metadata/clone, foreign originals, raw/decoded mutation, output/caller erasure and unchanged live expiry. Types,251focused cases across28files and18unchanged legacy pass; quality, format,17registry checks, inventory and10controls pass. Independent normalized AST review preserves all prior codec/verifier operations. Two runtime hashes/three source-site line moves reviewed, constructions/obligations/old tests unchanged. Latest full checkpoint remains412:323files/3161cases/one skip124.19s at240s; no redundant full rerun for this isolated slice.
+**Latest checks.** [Prepare one bounded dense receipt per verified prefix](./development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
+Seven initial controls fail solely because the API is absent, with no matched app-defect credit. Nine final controls pass: four positions/one physical buffer/one parse/ten signature checks, interior cuts, two self-contained extents deliberately repeating original bytes, exact byte/row cuts, expired stored replay/live expiry, floor/raised-budget refusal, close after crypto, crypto refusal after a valid entry and final expiry. Development duplicate/missing imports and the reviewer’s AwaitExpression lookup error are retained and repaired without guard changes. Types,260focused cases across29files and18unchanged legacy pass. Independent normalized AST review preserves every old default/stored operation, entry loop, verifier invocation and cleanup. Quality, format,17registry checks, inventory and10controls pass. One runtime hash changes; no source-site/domain/construction/obligation moves. Latest full checkpoint remains412:323files/3161cases/one skip124.19s at240s.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Implement bounded native dense preparation and its atomic physical receipt writing, then dual physical/logical audit, G8/B and floor/lifecycle/old artifacts/cold/rollback. Continue after each freeze under the latest automatic continuation instruction.
+**Active bounded outcome.** Wire dense preparation into flagged grouped native receipt admission with explicit one-row framing and physical witness accounting, preserving every commit fence. Then dual audit, G8/B and floor/lifecycle/old artifacts/cold/rollback. Continue after the freeze.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

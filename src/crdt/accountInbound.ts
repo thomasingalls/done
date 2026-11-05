@@ -1,3 +1,4 @@
+import { decodePositionResponse } from '../../account-protocol/positionDecision';
 import {
   historyAuthority,
   historyGeneration,
@@ -384,6 +385,7 @@ async function openInboundEntry(
  * compare; that never makes their expired request live, or permits an empty/duplicate receipt. */
 type InboundVerificationMode =
   | { readonly kind: 'live' }
+  | { readonly kind: 'livePhysical'; readonly record: Bytes; readonly event: InboundRecord }
   | {
       readonly kind: 'stored';
       readonly expectedRecord?: Bytes;
@@ -407,7 +409,7 @@ async function verify(
   },
   liveOriginals?: OwnedInboundOriginals,
 ): Promise<InboundResult> {
-  const storedMode = mode.kind !== 'live';
+  const storedMode = mode.kind === 'stored' || mode.kind === 'storedPhysical';
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     now = lifetime.now ? lifetime.now.bind(lifetime) : Date.now;
   const guard = () => {
@@ -456,7 +458,8 @@ async function verify(
     current();
     await (selection?.authenticate ?? authenticateInboundWire)(c, r, p, request, subtle);
     if (!p.entries.length) {
-      if (r.after !== c.prefix.position || storedMode) fail('record');
+      if (r.after !== c.prefix.position || storedMode || mode.kind === 'livePhysical')
+        fail('record');
       current();
       return Object.freeze({ kind: 'empty', through: p.through, position: c.prefix.position });
     }
@@ -481,7 +484,7 @@ async function verify(
       { proof, envelope: e, updateBytes } = checked;
     body = checked.body;
     if (old && hex(c.retained!.envelope) === hex(entry.envelope)) {
-      if (storedMode) fail('record');
+      if (storedMode || mode.kind === 'livePhysical') fail('record');
       current();
       return Object.freeze({ kind: 'duplicate', through: p.through, position });
     }
@@ -502,7 +505,7 @@ async function verify(
       page: pageBytes,
       ...(selection ? { entry: index } : {}),
     };
-    if (mode.kind === 'storedPhysical') {
+    if (mode.kind === 'storedPhysical' || mode.kind === 'livePhysical') {
       if (
         c.inboundReceiptVersion !== 1 ||
         kind !== 'received' ||
@@ -525,7 +528,7 @@ async function verify(
         fail('record');
     }
     const record =
-      mode.kind === 'storedPhysical'
+      mode.kind === 'storedPhysical' || mode.kind === 'livePhysical'
         ? mode.record
         : liveOriginals
           ? liveOriginals.encodeLegacy(event)
@@ -576,12 +579,28 @@ export const prepareInboundRange = (
   lifetime: InboundLifetime,
   positions = RECEIVE_GROUP_LIMIT,
 ): Promise<readonly InboundResult[]> => verifyRange(input, request, page, lifetime, positions);
+/** Prepare one self-contained physical page extent. All returned received results share the
+ * same receipt buffer: native callers must write it exactly once, atomically with every update.
+ * This prepares bytes only; the authenticated floor and native commit fence still belong to the owner. */
+export const prepareInboundPage = (
+  input: InboundContext,
+  request: Bytes,
+  page: Bytes,
+  lifetime: InboundLifetime,
+  positions = RECEIVE_GROUP_LIMIT,
+  budget: Readonly<{ bytes: number; records: number }> = {
+    bytes: MAX_BATCH_BYTES,
+    records: MAX_BATCH_RECORDS,
+  },
+): Promise<readonly InboundResult[]> =>
+  verifyRange(input, request, page, lifetime, positions, budget);
 async function verifyRange(
   input: InboundContext,
   requestInput: Bytes,
   pageInput: Bytes,
   lifetime: InboundLifetime,
   positions?: number,
+  denseBudget?: Readonly<{ bytes: number; records: number }>,
 ): Promise<readonly InboundResult[]> {
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     guard = () => {
@@ -597,6 +616,8 @@ async function verifyRange(
       ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
     },
     results: InboundResult[] = [];
+  const dense = denseBudget && { bytes: denseBudget.bytes, records: denseBudget.records };
+  let physical: Bytes | undefined;
   let originals: OwnedInboundOriginals | undefined;
   let transferred = false,
     authenticated = false,
@@ -606,6 +627,18 @@ async function verifyRange(
     originals = createOwnedInboundOriginals(request, page);
     const r = originals.syntax.request,
       p = originals.syntax.page;
+    if (
+      dense &&
+      (context.inboundReceiptVersion !== 1 ||
+        positions === undefined ||
+        !Number.isSafeInteger(dense.bytes) ||
+        dense.bytes < 0 ||
+        dense.bytes > MAX_BATCH_BYTES ||
+        !Number.isSafeInteger(dense.records) ||
+        dense.records < 0 ||
+        dense.records > MAX_BATCH_RECORDS)
+    )
+      fail('size');
     if (
       positions !== undefined &&
       (!Number.isSafeInteger(positions) || positions < 1 || positions > RECEIVE_GROUP_LIMIT)
@@ -625,12 +658,35 @@ async function verifyRange(
     // narrower read still needs the full verifier. Exact bounds remain enforced below/in the codec.
     if (
       positions !== undefined &&
-      2 * (request.length + page.length) + 1024 > INBOUND_RECORD_LIMIT
+      (dense
+        ? INBOUND_PAGE_HEADER_BYTES + request.length + page.length > INBOUND_RECORD_LIMIT
+        : 2 * (request.length + page.length) + 1024 > INBOUND_RECORD_LIMIT)
     ) {
       guard();
       transferred = true;
       return Object.freeze(results);
     }
+    const initialPrevious = context.prefix.link;
+    const extent = (count: number) => {
+      const proof = decodePositionResponse(p.entries[start + count - 1]!.proof);
+      if (proof.kind !== 'accepted') return fail('record');
+      return {
+        baseline: context.baseline.id,
+        lineage: context.authority.lineage,
+        head: context.authority.head,
+        reader: context.reader.id,
+        publisher: context.publisher.id,
+        firstPosition: r.after + start + 1,
+        previous: initialPrevious,
+        lastLink: proof.head.link,
+        firstEntry: start,
+        entryCount: count,
+        request: originals!.syntax.requestBytes,
+        page: originals!.syntax.pageBytes,
+      };
+    };
+    const selected = Math.min(positions ?? 8, p.entries.length - start);
+    if (dense && selected > 0) physical = originals.encodePage(extent(selected));
     // These bytes and authority were captured once above and never leave this call. Prefix and
     // lifetime checks still run for every entry, including after the two wire signatures reuse.
     const authenticate: typeof authenticateInboundWire = async (...args) => {
@@ -643,25 +699,61 @@ async function verifyRange(
     };
     for (let index = start; index < Math.max(1, p.entries.length); index++) {
       if (positions !== undefined && results.length === positions) break;
-      const result = await verify(
-        context,
-        originals.syntax.requestBytes,
-        originals.syntax.pageBytes,
-        ownedLifetime,
-        undefined,
-        r.limit > 1 ? { index, authenticate } : undefined,
-        originals,
-      );
+      let result: InboundResult;
+      try {
+        result = await verify(
+          context,
+          originals.syntax.requestBytes,
+          originals.syntax.pageBytes,
+          ownedLifetime,
+          physical
+            ? {
+                kind: 'livePhysical',
+                record: physical,
+                event: {
+                  baseline: context.baseline.id,
+                  lineage: context.authority.lineage,
+                  head: context.authority.head,
+                  reader: context.reader.id,
+                  publisher: context.publisher.id,
+                  kind: 'received',
+                  position: r.after + index + 1,
+                  previous: context.prefix.link,
+                  link: (() => {
+                    const proof = decodePositionResponse(p.entries[index]!.proof);
+                    if (proof.kind !== 'accepted') return fail('record');
+                    return proof.head.link;
+                  })(),
+                  request: originals.syntax.requestBytes,
+                  page: originals.syntax.pageBytes,
+                  ...(r.limit > 1 ? { entry: index } : {}),
+                },
+              }
+            : undefined,
+          r.limit > 1 ? { index, authenticate } : undefined,
+          originals,
+        );
+      } catch (cause) {
+        // A bounded dense turn may keep only its already verified fitting prefix.
+        // The same size guard still refuses this entry; a fresh narrower read grants no trust.
+        if (dense && cause instanceof InboundError && cause.reason === 'size') break;
+        throw cause;
+      }
       // Own plaintext before a final guard or aggregate bound can reject it.
       results.push(result);
       if (result.kind === 'received') {
-        bytes += result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
-        records += result.updates.length + 1;
-        if (bytes > MAX_BATCH_BYTES || records > MAX_BATCH_RECORDS) {
+        bytes +=
+          (!dense || results.length === 1 ? result.record.length : 0) +
+          result.updates.reduce((n, b) => n + b.length, 0);
+        records += result.updates.length + (!dense || results.length === 1 ? 1 : 0);
+        if (
+          bytes > (dense?.bytes ?? MAX_BATCH_BYTES) ||
+          records > (dense?.records ?? MAX_BATCH_RECORDS)
+        ) {
           if (positions === undefined) fail('size');
           // Only a valid fitting prefix escapes. Erase this verified but unused result immediately.
           results.pop();
-          result.record.fill(0);
+          if (!dense) result.record.fill(0);
           for (const update of result.updates) update.fill(0);
           break;
         }
@@ -673,6 +765,24 @@ async function verifyRange(
       } else if (result.kind !== 'empty') fail('prefix');
       guard();
     }
+    if (physical) {
+      if (!results.length) {
+        physical.fill(0);
+        physical = undefined;
+      } else if (results.length !== selected) {
+        const next = originals.encodePage(extent(results.length));
+        physical.fill(0);
+        physical = next;
+        for (let i = 0; i < results.length; i++)
+          results[i] = Object.freeze({ ...results[i]!, record: next });
+      }
+      originals.assertCurrent();
+    }
+    if (dense) {
+      const time = ownedLifetime.now ? ownedLifetime.now() : Date.now();
+      if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
+      if (r.expires <= time) fail('expired');
+    }
     guard();
     transferred = true;
     return Object.freeze(results);
@@ -682,11 +792,13 @@ async function verifyRange(
     page.fill(0);
     context.generationKey.fill(0);
     for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
-    if (!transferred)
+    if (!transferred) {
+      physical?.fill(0);
       for (const result of results) {
         if ('record' in result) result.record.fill(0);
         if (result.kind === 'received') for (const update of result.updates) update.fill(0);
       }
+    }
   }
 }
 /** Recheck original signatures/bytes after request expiry using the independently replayed pre-event prefix.

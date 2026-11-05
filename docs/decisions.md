@@ -7342,3 +7342,10 @@ A continuation captures only its new physical rows, never its retained predecess
 **Date:**2026-11-04 · **Commit:**pending patch413
 
 Do not accept externally supplied parsed objects at an encoder or live verification boundary. A call-local lifetime owns syntax and bound encoders, retains exact current raw/frame checks and erasure, and shares no authority or permission across an owner or Worker. Existing per-entry crypto and canonical structural checks remain. [Evidence](development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).
+
+
+### Separate dense prefix preparation from native physical admission
+
+**Date:**2026-11-04 · **Commit:**pending patch414
+
+Prepare exact binary extents without granting native progress. Count the one receipt physically, every received position logically, and retain all cryptographic and lifetime guards. Only size scheduling may return an already verified prefix; cryptographic refusal returns none. The native owner must atomically commit all covered updates with exactly one receipt under its existing fresh floor/witness/authority fences. [Evidence](development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
