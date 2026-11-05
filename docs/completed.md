@@ -18594,3 +18594,10 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** All five native receive-transport stages pass, including 16 seeded histories, with original case/child deadlines and exact writing/prefix/source/cold assertions. All 55 wrapper unit cases pass. Actual-report reconciliation remains red: the unchanged old guard accepts human sources only, while every native setup includes a system initializer. [Evidence and retained refusal](development-evidence/2026-11-02-release-hardening/345-receive-model-guard-hold/README.md).
 
 **Notes.** Repair the missing batch HTTP mock and model grouped progress independently of the app result. Keep framing, false-progress and corruption controls and the 4 MiB artifact cap. Do not widen the source-kind guard. Under the operator's stop rule, hold for that policy boundary; no Stage2, app change, commit or release work. Six existing 120-second full-unit wrapper timeouts and stale whole-tree receipts remain. Outcome recorded before updating the active slice.
+
+
+### Active checkpoint status reflects the source-kind hold
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 346 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Correct the active YAML status and blocker to match phase345's recorded actual-report hold. Clarify that phase339's unchanged-old-test statement described that census, before the later recorded and approved fixture repairs. No test, evidence result, requirement or application code changes. The immutable phase345 artifact remains intact.

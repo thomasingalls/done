@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: operator-release-hardening-stage-1
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight
+status: blocked
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: signed-base attribution and fixture versus application diagnosis
+blocks_on: operator review of the unchanged human-only report source guard
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -181,7 +181,8 @@ retains the opening checkpoint. The remaining 43 commands have now all run:
 24 pass and 19 fail, with some shared causes across wrappers.
 [339](./development-evidence/2026-11-02-release-hardening/339-full-check-census/README.md)
 contains the complete census and amends 338's incorrect stale-string classification.
-Both editor messages remain current. All old browser tests/assertions remain unchanged.
+Both editor messages remain current. That census preceded the later fixture
+repairs recorded below; the asset-predicate change had explicit operator approval.
 
 **Now.** Native Worker fixture repairs pass startup/editor 15/15 and cut 8/8
 ([341](./development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md));
