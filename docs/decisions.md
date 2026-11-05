@@ -7034,3 +7034,14 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Date:** 2026-11-02 · **Commit:** pending sequential patch 361
 
 **Decision.** Use the freshly authenticated projection for both selection and quiet-request preparation. Keep the selector as the only source of the current publisher turn; cache hits replace only that selected request with its exact original. Sign extra one-position peer requests only in spare existing wire slots, with no own-publisher probe or new work lane. Charge retained originals, tail and fresh response before I/O, and invalidate raw caches on hints/lifetime changes. Keep all entry verification, chain-order commit and local admission unchanged.
+
+
+### Proposed page-receipt contract requires an operator format decision
+
+**Date:** 2026-11-03 · **Status:** proposed only; not approved or implemented · **Scope:** hardening Stage 3.1
+
+**Proposal.** A bounded self-contained binary extent stores each original signed page once per committed extent, with raw original bytes and explicit entry bounds. A MAC-bound monotonic local compatibility floor and versioned retained readings fence old closed parsers. Readers remain independent of the writer flag; a tested reader-only rollback artifact is required before any writer is eligible. No persistent page registry, suffix-only verification, server/wire change or cross-owner trust. [Contract and tradeoffs](account-inbound-page-receipts.md); [review](development-evidence/2026-11-02-release-hardening/367-format-contract/README.md).
+
+**Accounting choice proposed for approval.** Keep both the pre-existing logical 1,024-position audit ceiling and the operator's physical 1,024-row cap. Either forces an attempt without waiving interruptions; dense encoding cannot dilute verification frequency. Retain ordinary due rules and all original gates/limits.
+
+**What is given up.** Self-contained cuts can duplicate a signed page; that cost must be counted. Once marked, storage requires the compatible reader even with the writer disabled. Reader-first release delays the G8/B/dense gains and adds a release operation. Actual old-tab UX and rollback binaries remain tests to perform in Stage 3.2. The operator may approve, choose reader-first activation or defer the format. No selection or permission is inferred from this entry.

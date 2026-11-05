@@ -163,7 +163,7 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: Stage3.1 format contract, then independent Stage4 idle-start audit
+scope: Stage4 idle-start audit; Stage3.1 paper handed over, decision pending
 blocks_on: operator approval before any Stage3.2 format implementation
 updated: 2026-11-03
 ```
@@ -181,11 +181,16 @@ full unit child. Earlier clear/trim observer timeouts and their full passing ret
 remain, with cause and reliable margin unresolved. No monolithic final check success
 or Stage5 credit is claimed. The broader formatting patch stays deferred.
 
-**Next bounded outcome.** Write the final bounded receipt schema and reader census,
-old-tab fencing, rollback, handoff versioning, work/index/audit accounting, released
-v2 evidence and reader-first option. Hand over and stop Stage3 for the operator.
-No format-changing implementation or new writer activation before approval.
-Stage4's idle-start audit may proceed while approval waits, then wait. Keep
-nondiscretionary validation and all existing oracle/interrupt/lifecycle guards.
+**Format handoff ready; not approved.** [Contract](./account-inbound-page-receipts.md)
+and [367 review](./development-evidence/2026-11-02-release-hardening/367-format-contract/README.md)
+specify the bounded binary version, all readers, monotonic authenticated floor,
+old-tab/cut/rollback requirements, dual logical/physical audit ceilings and the
+reader-first option. No format code or new writer is authorized. Stage3 stops
+for the operator's decision.
+
+**Next bounded outcome.** Implement independent Stage4 idle-start audit, keeping
+all nondiscretionary checks, due rules and oracle/interrupt/lifecycle guards.
+Add regression/fault controls and close its full-suite checkpoint, then wait if
+format approval is still pending. No new lab phase or unlisted measurement.
 
 This seat edits only this document; the other seat's document above is unchanged.

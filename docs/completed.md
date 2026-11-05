@@ -18772,3 +18772,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Limits.** This is a segmented checkpoint, not one final monolithic check exit. Clear and trim observer timeouts remain beside their full passing retries; their causes and reliable margins are unresolved. No guard, deadline, skip or construction classification was relaxed. Broader formatting stays deferred. No new format, Stage 5 credit, RAM claim or release preparation.
 
 **Next.** Write and hand over Stage 3.1's format contract. Stage 4 may proceed while the operator decides; new rows remain unauthorized. Outcome recorded before advancing this seat's progress document.
+
+
+### Stage 3.1 proposes the bounded receipt contract and stops for its operator decision
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 367 · **Stage:** operator hardening Stage 3.1, documentation only
+
+**Exit.** The [concrete contract](account-inbound-page-receipts.md) covers binary layout/bounds, reader census, compatibility floor, old tabs, handoff, rollback, existing-format evidence, accounting and reader-first ordering. Independent arithmetic confirms its 239-byte header and required ten reader homes. Source review pins released codec/parsers and later v2 introduction. [Evidence and limitations](development-evidence/2026-11-02-release-hardening/367-format-contract/README.md).
+
+**Boundary.** This completes the paper handoff only. It grants no format/writer permission, has no code/test change and earns no timing or release credit. Stage 3 waits for the operator; proceed only with independent Stage 4 in the meantime. The Stage 2 segmented checkpoint remains source-equivalent; refresh exact-tree documentation receipts. Outcome recorded before advancing this seat's active state.
