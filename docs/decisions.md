@@ -7307,3 +7307,10 @@ Reuse independent signed originals to vary physical receipt layout in every save
 **Date:**2026-11-04 · **Commit:**pending patch408
 
 The operator directs continuation through every remaining Stage3.2 item, freezing/reporting each phase without waiting. Stop for a format/trust/limit/deadline decision or a failure unfixable within current guards. Earlier stop/failure records remain historical evidence. Do not relax monotonic received-through checks to accommodate a stale fixture: re-sign the independent response at a consistent service tip. Pure baseline payload tags and physical counterv5 are separate formats. [408 evidence](development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md).
+
+
+### Keep parsed syntax ownership separate from verification-result memo ownership
+
+**Date:**2026-11-04 · **Commit:**pending patch409
+
+A per-load parser scope grants no verified prefix, authority or commit permission. It stays inside one carrier and compares exact current physical input; all old per-entry verification remains. The existing memo erases callback values after cloning, so only the new scope detaches the compact record/original bytes it gives to that memo. Track outputs until explicit non-parser transfer, otherwise erase them. Do not substitute a persisted alias, lease, counter or later audit for exact retained-row checks. [409 evidence](development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md).

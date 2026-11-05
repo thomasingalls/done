@@ -50,11 +50,14 @@ import {
   type InboundRecord,
   type InboundOriginalSyntax,
   type InboundReceiptSyntax,
+  type InboundReceiptViews,
 } from './inboundRecord';
-import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
+import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS, type OpenedRecord } from './contentRecord';
 import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
 import { guardedSubtle, utf8 } from './custodyCrypto';
 import { sameBytes, eraseVerified } from './verifiedRecords';
+import { eraseUnretained } from './verificationOwnership';
+import { StorageCompatibilityError } from './storageCompatibility';
 import type { VerificationMemo } from './verificationMemo';
 import { Y } from './yjs';
 import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
@@ -695,6 +698,212 @@ export async function verifyStoredInbound(
   );
 }
 
+/** Ephemeral syntax/byte ownership only. It grants no authority, accepted prefix or commit
+ * permission. Keep this object in one carrier task; never send it over the Worker boundary. */
+export interface InboundReceiptTurn {
+  inspect(record: OpenedRecord, scope: InboundReceiptVersion): InboundReceiptViews | undefined;
+  complete(retained: unknown): void;
+  dispose(): void;
+}
+interface InboundTurnRow {
+  readonly record: OpenedRecord;
+  readonly seq: number;
+  readonly gen: number;
+  readonly kind: OpenedRecord['kind'];
+  readonly input: Bytes;
+  readonly syntax: InboundReceiptSyntax;
+  readonly view: InboundReceiptViews;
+  readonly verificationViews: InboundReceiptViews;
+  readonly logical: readonly { entryIndex: number; event: InboundRecord }[];
+  claimed: boolean;
+  verified: boolean;
+}
+interface InboundTurnState {
+  claim(record: OpenedRecord, bytes: Bytes, scope: InboundReceiptVersion): InboundTurnRow;
+  finish(row: InboundTurnRow, result: VerifiedStoredInboundReceipt): void;
+  dispose(): void;
+}
+// This brands an ephemeral owning scope, never a stored page reference or acceptance proof.
+const inboundSyntaxTurnStates = new WeakMap<InboundReceiptTurn, InboundTurnState>();
+function freezeInboundSyntax(value: unknown, seen = new Set<object>()): void {
+  if (!value || typeof value !== 'object' || value instanceof Uint8Array || seen.has(value)) return;
+  seen.add(value);
+  for (const child of Object.values(value)) freezeInboundSyntax(child, seen);
+  Object.freeze(value);
+}
+export function createInboundReceiptTurn(): InboundReceiptTurn {
+  const rows = new Map<OpenedRecord, InboundTurnRow>(),
+    outputs: VerifiedStoredInboundReceipt[] = [],
+    parsers = new Set<object>();
+  let state: 'open' | 'complete' | 'closed' = 'open',
+    retained: unknown;
+  const active = () => {
+    if (state !== 'open') fail('record');
+  };
+  const dispose = () => {
+    if (state === 'closed') return;
+    state = 'closed';
+    // Map keys/input stamps are borrowed caller records and never enter the erasure graph.
+    eraseUnretained(
+      [[...rows.values()].map((r) => [r.syntax, r.view, r.logical]), outputs],
+      retained,
+    );
+    rows.clear();
+    outputs.length = 0;
+    parsers.clear();
+    retained = undefined;
+  };
+  const current = (row: InboundTurnRow) => {
+    active();
+    if (
+      row.record.seq !== row.seq ||
+      row.record.gen !== row.gen ||
+      row.record.kind !== row.kind ||
+      row.record.bytes !== row.input ||
+      !sameBytes(row.input, row.syntax.bytes) ||
+      !sameBytes(row.view.receipt.record.request, row.syntax.receipt.record.request) ||
+      !sameBytes(row.view.receipt.record.page, row.syntax.receipt.record.page)
+    )
+      fail('record');
+  };
+  const capture = (record: OpenedRecord, scope: InboundReceiptVersion) => {
+    try {
+      active();
+      const floor = captureInboundReceiptVersion(scope);
+      const found = rows.get(record);
+      if (found) {
+        if (found.syntax.receipt.kind === 'page' && floor.inboundReceiptVersion !== 1)
+          throw new StorageCompatibilityError();
+        current(found);
+        return found;
+      }
+      if (
+        !Number.isSafeInteger(record.seq) ||
+        record.seq < 1 ||
+        !Number.isSafeInteger(record.gen) ||
+        record.gen < 1 ||
+        !['heads', 'outbound'].includes(record.kind)
+      )
+        fail('record');
+      const syntax = captureScopedInboundReceiptSyntax(record.bytes, scope);
+      if (!syntax) return;
+      freezeInboundSyntax(syntax);
+      const original = inboundReceiptViews(syntax);
+      // Legacy frames are decoded out of JSON; keep their public projection separate from
+      // private parsed originals. Binary projections share their one owned physical backing.
+      const receipt =
+        original.receipt.kind === 'legacy'
+          ? {
+              kind: 'legacy' as const,
+              record: {
+                ...original.receipt.record,
+                request: original.receipt.record.request.slice(),
+                page: original.receipt.record.page.slice(),
+              },
+            }
+          : original.receipt;
+      const privateLogical = [...original.entries()];
+      const verificationViews: InboundReceiptViews = Object.freeze({
+        ...original,
+        *entries() {
+          yield* privateLogical;
+        },
+      });
+      const logical = privateLogical.map((entry) =>
+        Object.freeze({
+          entryIndex: entry.entryIndex,
+          event: receipt.kind === 'legacy' ? receipt.record : entry.event,
+        }),
+      );
+      freezeInboundSyntax(receipt);
+      const view: InboundReceiptViews = Object.freeze({
+        receipt,
+        epoch: original.epoch,
+        count: original.count,
+        *entries() {
+          yield* logical;
+        },
+      });
+      for (const parser of [
+        syntax,
+        syntax.receipt,
+        syntax.originals,
+        syntax.originals.request,
+        syntax.originals.page,
+        view,
+        verificationViews,
+        receipt,
+      ])
+        parsers.add(parser);
+      const row: InboundTurnRow = {
+        record,
+        seq: record.seq,
+        gen: record.gen,
+        kind: record.kind,
+        input: record.bytes,
+        syntax,
+        view,
+        verificationViews,
+        logical,
+        claimed: false,
+        verified: false,
+      };
+      rows.set(record, row);
+      return row;
+    } catch (cause) {
+      dispose();
+      throw cause;
+    }
+  };
+  const noParserEscape = (value: unknown, seen = new Set<object>()): void => {
+    if (!value || typeof value !== 'object' || value instanceof Uint8Array || seen.has(value))
+      return;
+    if (value === api || parsers.has(value)) fail('record');
+    seen.add(value);
+    if (value instanceof Map)
+      for (const [key, item] of value) {
+        noParserEscape(key, seen);
+        noParserEscape(item, seen);
+      }
+    else if (value instanceof Set) for (const item of value) noParserEscape(item, seen);
+    else for (const item of Object.values(value)) noParserEscape(item, seen);
+  };
+  const api: InboundReceiptTurn = Object.freeze({
+    inspect: (record: OpenedRecord, scope: InboundReceiptVersion) => capture(record, scope)?.view,
+    complete(value: unknown) {
+      try {
+        active();
+        for (const row of rows.values()) {
+          current(row);
+          if (!row.verified) fail('record');
+        }
+        noParserEscape(value);
+        retained = value;
+        state = 'complete';
+      } catch (cause) {
+        dispose();
+        throw cause;
+      }
+    },
+    dispose,
+  });
+  inboundSyntaxTurnStates.set(api, {
+    claim(record, bytes, scope) {
+      const row = capture(record, scope);
+      if (!row || row.input !== bytes || row.kind !== 'heads' || row.claimed) fail('record');
+      row.claimed = true;
+      return row;
+    },
+    finish(row, result) {
+      current(row);
+      row.verified = true;
+      outputs.push(result);
+    },
+    dispose,
+  });
+  return api;
+}
+
 /** Detached evidence for one physical saved receipt. Logical entries share its exact owned
  * originals. Callers still verify completeness/coverage and current native commit authority. */
 export interface VerifiedStoredInboundReceipt {
@@ -713,6 +922,7 @@ export async function verifyStoredInboundReceipt(
   bytes: Bytes,
   lifetime: InboundLifetime,
   reuse?: { memo: VerificationMemo; sequence: number },
+  syntaxTurn?: { turn: InboundReceiptTurn; record: OpenedRecord },
 ): Promise<VerifiedStoredInboundReceipt> {
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     guard = () => {
@@ -726,14 +936,20 @@ export async function verifyStoredInboundReceipt(
       ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
     },
     entries: VerifiedStoredInboundReceipt['entries'][number][] = [];
+  let turnState: InboundTurnState | undefined, turnRow: InboundTurnRow | undefined;
   let captured: InboundReceiptSyntax | undefined,
     transferred = false,
     physicalMemo = false;
   let evidenceInputs: Bytes[] | undefined, memoProof: unknown, legacyMemoIndex: number | undefined;
   try {
-    captured = captureScopedInboundReceiptSyntax(bytes, context);
+    if (syntaxTurn) {
+      turnState = inboundSyntaxTurnStates.get(syntaxTurn.turn);
+      if (!turnState) fail('record');
+      turnRow = turnState.claim(syntaxTurn.record, bytes, context);
+    }
+    captured = turnRow?.syntax ?? captureScopedInboundReceiptSyntax(bytes, context);
     if (!captured) fail('record');
-    const views = inboundReceiptViews(captured),
+    const views = turnRow?.verificationViews ?? inboundReceiptViews(captured),
       physical = captured.receipt.kind === 'page';
     if (
       captured.receipt.kind === 'page' &&
@@ -788,12 +1004,16 @@ export async function verifyStoredInboundReceipt(
         guard();
       }
     };
+    const transfer = (result: VerifiedStoredInboundReceipt) => {
+      if (turnState) turnState.finish(turnRow!, result);
+      transferred = true;
+      return result;
+    };
     const memo = reuse?.memo;
     if (!memo || (physical && !memo.checkReceipt)) {
       await run();
       guard();
-      transferred = true;
-      return Object.freeze({ record: captured.bytes, entries: Object.freeze(entries) });
+      return transfer(Object.freeze({ record: captured.bytes, entries: Object.freeze(entries) }));
     }
     const sequence = inboundInteger(reuse!.sequence, 1),
       keyEntries = [...(context.retainedGenerationKeys ?? [])].sort(([a], [b]) => a - b),
@@ -823,11 +1043,18 @@ export async function verifyStoredInboundReceipt(
         async () => {
           await run();
           return {
-            record: captured!.bytes,
+            // The memo owns/erases callback values; an active syntax turn still owns its raw.
+            record: turnState ? captured!.bytes.slice() : captured!.bytes,
             entries: entries.map((e) => {
               if (e.result.kind !== 'received') fail('record');
               const { record: _record, ...result } = e.result;
-              return { index: e.index, original: e.original, result };
+              return {
+                index: e.index,
+                original: turnState
+                  ? { envelope: e.original.envelope.slice(), proof: e.original.proof.slice() }
+                  : e.original,
+                result,
+              };
             }),
           };
         },
@@ -871,8 +1098,7 @@ export async function verifyStoredInboundReceipt(
         );
         guard();
       }
-      transferred = true;
-      return Object.freeze({ record: proof.record, entries: Object.freeze(restored) });
+      return transfer(Object.freeze({ record: proof.record, entries: Object.freeze(restored) }));
     }
     const view = logical[0]!;
     const result = await memo.check(
@@ -899,13 +1125,12 @@ export async function verifyStoredInboundReceipt(
     });
     guard();
     legacyMemoIndex = view.entryIndex;
-    transferred = true;
-    return Object.freeze({ record: captured.bytes, entries: Object.freeze([entry]) });
+    return transfer(Object.freeze({ record: captured.bytes, entries: Object.freeze([entry]) }));
   } finally {
     context.generationKey.fill(0);
     for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
     if (!transferred) eraseVerified(memoProof);
-    if (physicalMemo) {
+    if (physicalMemo && !turnState) {
       captured?.bytes.fill(0);
       captured?.originals.requestBytes.fill(0);
       captured?.originals.pageBytes.fill(0);
@@ -916,20 +1141,24 @@ export async function verifyStoredInboundReceipt(
           legacyMemoIndex === undefined ? entries.map((entry) => entry.index) : [legacyMemoIndex],
         )
       : undefined;
-    for (const [index, original] of captured?.originals.page.entries.entries() ?? [])
-      if (physicalMemo || !kept?.has(index)) {
-        original.envelope.fill(0);
-        original.proof.fill(0);
-      }
+    if (!turnState)
+      for (const [index, original] of captured?.originals.page.entries.entries() ?? [])
+        if (physicalMemo || !kept?.has(index)) {
+          original.envelope.fill(0);
+          original.proof.fill(0);
+        }
     if (!transferred) {
-      captured?.bytes.fill(0);
-      captured?.originals.requestBytes.fill(0);
-      captured?.originals.pageBytes.fill(0);
+      if (!turnState) {
+        captured?.bytes.fill(0);
+        captured?.originals.requestBytes.fill(0);
+        captured?.originals.pageBytes.fill(0);
+      }
       for (const entry of entries) {
         if ('record' in entry.result) entry.result.record.fill(0);
         if (entry.result.kind === 'received')
           for (const update of entry.result.updates) update.fill(0);
       }
+      turnState?.dispose();
     }
   }
 }

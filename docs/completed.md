@@ -19181,3 +19181,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Indirect source/authority/recovery/baseline/journal/Worker/export paths are mapped, with their old-owner fences left as explicit lifecycle obligations. Four controls exercise full logical replay, selected frontier and exact writing through pure and encrypted fake-IndexedDB reduction/reopen; absent/future floors refuse. Types and61focused pass; registry/inventory/quality checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md).
 
 **Limits.** The new type-model error and regressing-through fixture failures remain; only fixture assertions/framing changed, not app guards. No new full-suite/browser-cold/lease/rollback/performance credit. Latest full checkpoint stays407. Outcome recorded before this seat advances to owned syntax.
+
+
+### Harden one physical receipt's explicit parsed-syntax lifetime
+
+**Date:**2026-11-04 · **Commit:**pending patch409 · **Stage:**partial Stage3.2
+
+**Exit.** An isolated owner-local parser lifetime shares inspection with one saved verification under exact row/byte/floor checks, private decoded originals, current guards and explicit transfer/erasure. All18fresh signature checks remain while original decoding drops from2to1 in the discriminating unit control.13controls include a permanent layered final-byte omission. Types,180focused,18unchanged legacy and full320files/3145cases/one existing skip pass122.33s at approved240s. [Evidence](development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md).
+
+**Limits.** Initial memo/callback ownership failure remains and is repaired only on the new path; the13thfault has no before credit. Existing default/live helpers and all old tests stay exact. App owners are not wired yet; no timing/RAM/activation/acceptance claim. Outcome precedes advancing this seat to integration.

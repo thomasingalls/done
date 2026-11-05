@@ -190,29 +190,27 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Indirect readers](./development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md)
-adds4whole-history/baseline/encrypted-carrier controls; types and61focused pass,
-with quality/registry/inventory. Initial new type-model/regressing-tip fixture errors
-remain; all app/old-test bytes are exact. No new full suite for this test-only slice:
-407remains the latest full318files/3128cases/one existing skip122.51s at approved240s.
-Every other deadline/gate stays. Mixed semantic caller properties and the permanent
-stale-turn control remain. These are supplied-context/fake-IndexedDB checks, not
-physical browser-cold/lease/rollback or acceptance evidence. Actual displays remain
-observable through the unchanged outside-sandbox harness/caffeinate-d.
+**Latest checks.** [Owned saved syntax](./development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md)
+adds13isolated lifecycle controls. Types,180focused,18unchanged legacy and full320files/
+3145cases/one existing skip pass122.33s at approved240s; other deadlines/gates stay.
+All old tests and existing live/default helper checks remain. Initial memo/callback
+ownership failure is retained and fixed only for the new scope. One inspect+verify
+unit decodes originals once with all18signature checks. App owners remain unwired,
+so this is no activation/performance/RAM/acceptance proof.408covers indirect full/
+reduced/fake-IndexedDB reader semantics; physical browser-cold/lifecycle remains open.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden explicit per-load owned syntax lifetime and the
-live dense writer. The indirect call-path census is recorded in408; frozen old
-owners and first-write/rewrite lifecycle proofs remain separate. Preserve exact
-raw input, per-record scope, independent authority/current/coverage/witness checks,
-selected originals and erasure. No parse object/trust crosses Window/Worker.
-Continue sequential bounded phases without waiting after each freeze. Stop only
-for a format/trust/limit/deadline decision or failure unfixable within current guards,
-per the operator's latest amendment. Then dual audit, G8/B and lifecycle/rollback.
+**Active bounded outcome.** Connect the409scope to per-load census, epoch and ledger
+consumers under their existing independent guards, then actual native/full/baseline
+loads. Keep exact retained-row comparison before borrowing, record-specific turns,
+plain output graphs and all failure erasure. Next implement live owned pages and
+dense writing, dual audit, G8/B and lifecycle/rollback. Continue automatically after
+each freeze; stop only for a format/trust/limit/deadline decision or failure unfixable
+within existing guards. No parse capability crosses Window/Worker.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
