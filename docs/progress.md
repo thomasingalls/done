@@ -163,38 +163,40 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: cleaned-host retry of nine commands with exhaustive codec coverage and unit durations
-blocks_on: observed original fseventsd PID354 at100%CPU/about7GiB; restart confirmation/readback
+scope: remaining approved Stage3.2 format hardening after cleared functional checkpoint
+blocks_on: authenticated floor acknowledgment, complete binary readers/writer and rollback evidence
 updated: 2026-11-03
 ```
 
-**Scope.** The [hardening plan](./release-hardening-2026-11-02.md), its November3
-unit-guard amendment and the [approved format](./account-inbound-page-receipts.md).
-Bounded sequential patches, all other original checks/limits. No lab work, computer
-use, commit, push, publication or deployment.
+**Scope.** [Operator hardening plan](./release-hardening-2026-11-02.md), its
+November3 unit amendment, and [approved writer-on contract](./account-inbound-page-receipts.md).
+Bounded sequential patches, no lab work or unlisted speed experiments. All other
+gates, limits, budgets, deadlines and security checks stay. No computer use,
+commit, push, publication or deployment.
 
-**Prepared384.** [Evidence](./development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md)
-proves all72logical codec extents, exact old byte assertions/other11tests, real
-12/12pass, types/lint/format/census and10inventory controls. Nine runners add only
-clock observation and unit-duration sidecars, keeping all old commands, summaries,
-timers and120s unit guards. New five-second logs add fseventsd CPU/RSS and swap.
-Inventory changes only the intended input hashes, source locations and the removed
-fc.property syntax marker; all counts/obligations/limits remain.
+**Checkpoint cleared.** [385](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
+passes all nine complete commands at original120s, full units104.723–110.332s,
+298files/2985cases/one existing skip each. Actual sidecars and internal durations,
+fseventsd CPU/RSS, swap and display logs are preserved; all52133start pins exact,
+index empty. New daemon PID88698 verified.240s fallback unused. All83commands have
+passing segments across381/382/383/385, not a final monolithic hardened-build check.
+Old failures stay immutable; no causal timing or release credit is claimed.
 
-**Now.** Freeze384. Fresh process readback still shows original PID354,144days,
-100%CPU and about7GiB RSS; the operator has been asked to check/retry the reported
-restart. Do not call the host cleaned or start the nine retries until verified.
-Then run the original nine commands at120s, recording actual unit elapsed time.
-A cleaned-host full-unit overrun authorizes240s for that class of hang guard only.
-No240s change has been applied or triggered. Keep every failure.
+**Now.** Freeze evidence385, then continue approved Stage3.2 in bounded pieces.
+Core codec375, metadata376/377 and original-task/native-coordination378/379 are
+partial/unwired.379does not establish Account authentication. Read the approved
+contract and326/323landing notes; retain all guards and every required reader.
 
-**Preserved.** [382](./development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md)
-closes geometry; [383](./development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md)
-retains33passes/nine unit deadlines and the codec red report. No later focused
-pass clears that checkpoint. Further format integration stays held until green.
+**Next boundary.** Authenticated monotonic floor acknowledgment under the actual
+Page exclusive owner or real Account Worker join, after ordinary full authentication.
+No new ceremony, serialized permission, cross-owner assertion reuse or wire change.
+Then stored-mode controls, logical readers, dense writer, record-scoped owned pages,
+G8/range4/B, lifecycle/version preservation and the same-tree writer-off rollback
+image. Ordinary RANGE_RECEIVE writing remains off. Stop/report as the operator
+requires if the implementation needs a changed trust/format/wire boundary.
 
-**Afterward.** Authenticated floor acknowledgment, old-app/pending-writing
-profiles, stored mode, logical readers, owned pages, G8/B, same-tree writer-off
-rollback image, all Stage5 gates and Stage6 report. No release claim.
+**Still required.** Stage4's stale-turn audit control after format integration,
+full coherent-source checkpoints, release-profile assets, all Stage5 replicates and
+Stage6 landing report. Do not turn functional unit timings into acceptance credit.
 
 This seat edits only this document; the other seat above is unchanged.

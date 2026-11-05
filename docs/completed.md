@@ -18956,3 +18956,14 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Observation.** Nine runners add only a monotonic start and unit-timing.json write; all old runner AST/summary/timers/commands and120s limits are exact after stripping those two statements. New host logs explicitly include fseventsd CPU/RSS and swap each5s. Actual unit sidecars await the nine runs. Input pins/source-line/syntax metadata refresh is independently bounded; no count, obligation or block changes. Initial over-strict helper reviews remain.
 
 **Hold.** Fresh readback still shows original PID354/144days/100%CPU/about7GiB RSS despite the reported restart. Nine cleaned-host retries remain unstarted pending host recovery; no240s guard applied.383remains red and immutable. Outcome recorded before advancing progress. No app change or release credit.
+
+
+### All nine cleaned-host commands pass at the original unit hang guard
+
+**Date:** 2026-11-03 · **Commit:** pending patch385 · **Stage:** segmented functional checkpoint cleared
+
+**Exit.** Nine complete root commands74–82 pass, including every preceding native/contract stage, full unit suite, vectors, lint and format. Each unit run passes298files/2985cases/one existing skip. Actual unit process times104.723–110.332s remain below120s; the approved240s fallback is unused. [All nine durations, raw reports and host logs](development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md).
+
+**Identity and host.** All52133start pins exact, no canonical additions during execution, index empty, predecessor hashes exact. Only progress differed from frozen384 at the start; actual receipt producers refreshed before running. New daemon PID88698 remains small; all675display samples are on and none records a power-log off event. CPU and swap ranges are retained without a continuous-idle or isolated causal-speed claim.
+
+**Limits.** All83root commands now have passing segments across381/382/383/385; this is not a final monolithic hardened-build check or Stage5 acceptance.383failures remain. The restart and approved exhaustive driver both differ. No app/protocol/test or deadline change in385. Outcome recorded before advancing progress to remaining approved format hardening.

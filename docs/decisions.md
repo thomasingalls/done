@@ -7136,3 +7136,10 @@ The actual app timer omission is detected in both projects, so retain touchend r
 **Date:** 2026-11-03 · **Commit:** pending patch384 · **Orientation:** operator's383unit-stop review; PRD/TRD unchanged from89b11fe2. The hardening-note amendment records the latest authority.
 
 **Decision.** Replace160seeded draws by all72distinct logical extents, preserving the byte assertions and every other test. Keep run summaries exact and write monotonic unit durations to sidecars. Attempt the nine original commands at120s on the cleaned host;240s is approved only after a cleaned-host full-unit overrun. No other bounds or checks change. Dedicated CPU/RSS/swap observations reveal the original daemon still active, so hold the cleaned-host retries rather than infer that the reported restart succeeded. [Evidence384](development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md).
+
+
+### Retain120s because the cleaned-host reruns pass without the fallback
+
+**Date:** 2026-11-03 · **Commit:** pending patch385 · **Orientation:** verified second daemon restart and operator-approved exhaustive codec driver; PRD/TRD unchanged from89b11fe2.
+
+**Decision.** Keep the original120s full-unit guard: all nine complete commands pass with actual unit times104.723–110.332s. No240s fallback is triggered. Retain unit sidecars and independent Vitest durations on every run so future growth stays visible. Preserve383and384evidence; host recovery plus test-driver change do not isolate causal attribution. Clear this segmented checkpoint and return to approved Stage3.2, retaining all further gates and rollout boundaries. [Evidence385](development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md).
