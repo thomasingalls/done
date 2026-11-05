@@ -18808,3 +18808,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The owner uses the fixed input port, actual foreground settlement and physical pressure from both audit caches. Ninety-four focused cases/seven files pass; typecheck/scoped quality, inventory/authority and one sensitive pressure omission control pass. Complete native audit-body and closure ASTs are unchanged after scheduling readiness. Earlier development failures stay recorded. [Evidence](development-evidence/2026-11-02-release-hardening/370-idle-audit-integration/README.md).
 
 **Limits/next.** Native owner lifecycle/disagreement regression coverage and the Stage4 full-suite checkpoint remain. No format work before approval, no timing or Stage5 claim. Audit lag can reach about 1,024 physical rows, and the unchanged full comparison still blocks receive; earlier lab cost is recorded as proposed RC debt.
+
+
+### Stage 4 native owner tests retain the oracle under idle scheduling
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 371 · **Stage:** independent Stage4, native regressions
+
+**Exit.** Both real native audit cases pass with exact cold writing. Foreground and oracle omissions each fail their specific assertion through the final suite registration; app bytes remain exact370. All62 wrapper cases pass after eight reviewed count/title literal updates, including the earlier353 Worker-control denominator. Every other old assertion/deadline and all31 old native cases stay exact ASTs. [Evidence](development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md).
+
+**Limits/next.** Earlier harness/count/optional formatting failures remain; broad formatting stays deferred. Stage4's full-suite checkpoint is next. Format approval is pending, and no Stage3.2, performance, release or deployment work occurred.

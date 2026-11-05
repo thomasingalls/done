@@ -1,3 +1,4 @@
+import { nativeWarmAuditQuiet, nativeWarmAuditDisagreement } from './warm-audit.native.mjs';
 import fc from 'fast-check';
 import { prepare, open, request, receive, envelope, answer } from './fixtures.mjs';
 import test from 'node:test';
@@ -1154,3 +1155,14 @@ for (const boundary of ['before-commit', 'after-commit']) {
     );
   }
 }
+
+test(
+  'native warm audit waits for actual foreground settlement and all fixed input quiet periods, then closes cleanly',
+  { timeout: 60000 },
+  nativeWarmAuditQuiet,
+);
+test(
+  'declared warm semantic-oracle disagreement closes the idle reduced owner and cold replay preserves writing',
+  { timeout: 90000 },
+  nativeWarmAuditDisagreement,
+);

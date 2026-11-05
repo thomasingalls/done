@@ -188,15 +188,15 @@ old-tab/cut/rollback requirements, dual logical/physical audit ceilings and the
 reader-first option. No format code or new writer is authorized. Stage3 stops
 for the operator's decision.
 
-**Stage4 owner integration is implemented.** [368](./development-evidence/2026-11-02-release-hardening/368-audit-start-policy/README.md),
-[369](./development-evidence/2026-11-02-release-hardening/369-audit-timer-coordinator/README.md)
-and [370](./development-evidence/2026-11-02-release-hardening/370-idle-audit-integration/README.md)
-record scheduling, queue-head/close controls and real-crypto physical-pressure tests.
-All 94 focused cases pass; the full audit body and owner closure remain unchanged.
+**Stage4 implementation and focused native controls pass.**
+[368–370](./development-evidence/2026-11-02-release-hardening/370-idle-audit-integration/README.md)
+record scheduling and physical pressure; [371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
+records both native lifecycle/oracle cases, two sensitive omissions, exact cold
+writing and62 passing wrapper cases. Old assertion/guard/deadline ASTs are retained.
 
-**Next bounded outcome.** Add test-only native owner lifecycle/quiet/cap and
-oracle-disagreement controls, then close Stage4's full-suite checkpoint. Preserve
-all guards and waits. Wait if Stage3 format approval remains pending; no new lab
-phase, unlisted measurement, Stage3.2 implementation or release work.
+**Next bounded outcome.** Close Stage4's full-suite checkpoint on the pinned tree,
+retaining all failures and original deadlines. Then wait if Stage3 format approval
+remains pending. No new lab phase, unlisted measurement, Stage3.2 implementation
+or release work. Broad old formatting stays deferred.
 
 This seat edits only this document; the other seat's document above is unchanged.
