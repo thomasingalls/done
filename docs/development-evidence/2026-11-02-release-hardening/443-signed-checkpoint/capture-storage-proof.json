@@ -1,0 +1,9 @@
+{
+  "runnerOriginalSha256": "724ebe7a9d930ac6bdc975ade8d55e93796d0c4ffc9c33c812984dcadfeea2ee",
+  "runnerSha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+  "inverseBytesExact": true,
+  "displayAndHostFunctionsAstExact": true,
+  "allAssertionRaiseAndControlConditionsExact": true,
+  "removedDisplayGuardControlDetected": true,
+  "changes": "power-log storage and timestamps only; no display result, timeout, child status or pass/fail policy changes"
+}

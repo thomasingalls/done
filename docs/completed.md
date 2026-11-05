@@ -19500,3 +19500,32 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The reproduced park is the existing4MiBencoded-baseline ceiling, not either32MiB/131072entry preparation-journal guard. Writing remains active and durable, publishes at position50and reaches an exact witness archive after the park. Record this as Stage6debt with no fix; native B proof remains closed in437/441. [Evidence](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
 
 **Limits.** This is a frozen-profile reproduction:439did not record the original throw site/size, so do not backfill historical telemetry. Its earlier320post-park replacements/15positions are retained separately. A single new edit and exact receiving do not establish unlimited growth, completed maintenance, eventual retry success, phone performance, input/peer latency or RAM saving. Real-scale production32MiBindex time/RAM and438/439setup failures remain debt. No preparation-cost diagnosis, limit/format/guard/catch/retry/default/service/wire change, new lab, computer use, agents, staging/signing, push, release prep, publication or deployment. The observed scripts stay private evidence and do not enter app/runtime modules. Commits remain deferred; Stage5and Stage6landing work have not run. Outcome precedes advancing this seat.
+
+
+### Signed hardening sequence — phases 335–442
+
+**Date:** 2026-11-05 · **Phase:** 443 · **Scope:** commit bookkeeping only.
+
+**Outcome.** The operator-authorized sequence of 108 frozen patches is committed
+in order, with each parent, staged tree and SSH signature independently checked.
+The cumulative checkout matches the isolated replay and is clean after phase442.
+The [signed checkpoint](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/README.md)
+contains the immutable patch-to-commit mapping and verification results. Earlier
+failed attempts and evidence remain unchanged. This adds no app or test change,
+no Stage5credit and no push, publication or deployment. Stage5remains paused for
+operator resumption after the commit checkpoint; Stage6is later work.
+
+
+### Rebuilt hardening history without tracked evidence objects
+
+**Date:** 2026-11-05 · **Phase:** revised 443 · **Scope:** operator-authorized local history and evidence storage.
+
+The 108 phase commits 335–442 are re-signed in their original order with exact messages
+and author dates. Every replacement tree removes only the specified object paths;
+all local object bytes and all phase manifests/README bytes remain intact. The
+original history is retained on the never-push local backup branch. The
+[rebuild checkpoint](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/REBUILD.md)
+records the new mapping, verification, fresh source identity and tested future
+capture policy. Power logs are windowed with full-log hash/size; committed source
+inputs are referenced by commit and path. Display checks and their result logic
+remain unchanged. Stage 5 is still paused; no push, publication or deployment.

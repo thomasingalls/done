@@ -1,0 +1,22 @@
+test_exact_commit_reference_and_dirty_untracked_outside_refusals (__main__.StorageControls.test_exact_commit_reference_and_dirty_untracked_outside_refusals) ... ERROR
+test_offsets_fractional_boundaries_empty_and_invalid (__main__.StorageControls.test_offsets_fractional_boundaries_empty_and_invalid) ... ok
+test_window_bounds_continuations_and_full_identity (__main__.StorageControls.test_window_bounds_continuations_and_full_identity) ... ok
+test_write_never_stores_full_log (__main__.StorageControls.test_write_never_stores_full_log) ... ok
+
+======================================================================
+ERROR: test_exact_commit_reference_and_dirty_untracked_outside_refusals (__main__.StorageControls.test_exact_commit_reference_and_dirty_untracked_outside_refusals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/done-hardening-rebuild-20261105/future/capture_controls.py", line 61, in test_exact_commit_reference_and_dirty_untracked_outside_refusals
+    ref=committed_source(repo,p)
+  File "/private/tmp/done-hardening-rebuild-20261105/future/capture_storage.py", line 71, in committed_source
+    relative = path.relative_to(root).as_posix()
+               ~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/pathlib/__init__.py", line 494, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/tmpqlf_o5nf/repo/src/input.txt' is not in the subpath of '/private/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/tmpqlf_o5nf/repo'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.083s
+
+FAILED (errors=1)

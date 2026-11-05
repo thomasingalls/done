@@ -7545,3 +7545,17 @@ Follow the operator's exact approval: replace only the two refusal thresholds in
 **Date:**2026-11-05 · **Commit:**pending patch442
 
 Follow the operator's debt-only request. Instrument original guard branches rather than infer the ceiling from generic capacity status. When the five PreparationCapacity events do not appear, preserve that failed observation precondition and include the existing baseline capacity branches mapped to the same status. The loaded-source marker and exact event identify the4MiBencoded-baseline guard. Do not reinterpret it as a journal32MiB/entry refusal, raise a limit, truncate writing or change the baseline format. Preserve the existing parked state/journal and verify a small complete post-park admission, durable acceptance and exact receiving. Carry the actual size and continuing growth into Stage6, with real-scale index time/RAM still unmeasured. Stop after this requested bounded work; defer commits and do not start Stage5. [Evidence](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
+
+
+### Keep bulk hardening evidence local while preserving signed phase boundaries
+
+**Date:** 2026-11-05 · **Phase:** revised 443.
+
+The operator requires removal of the hardening objects directories from each
+rebuilt phase tree, while retaining exact local bytes and the original history on
+a local backup branch that must never be pushed. Keep manifests and their hashes,
+re-sign unchanged messages/author dates in order, and refresh the checkpoint's
+source identity for the changed tracked closure. Future capture stores only the
+command-window power events plus full-log hash/size, and references exact committed
+sources instead of gzipped copies. Display and acceptance checks do not change.
+[Record](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/REBUILD.md).

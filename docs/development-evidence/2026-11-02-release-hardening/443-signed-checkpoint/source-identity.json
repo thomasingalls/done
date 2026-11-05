@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "revision": "b32b65ecb4725d74ebe7d05867223991bd2e9908",
+  "sourceDigest": "789370488d8486e50efdbb625347f6b6d9ba4a5837c14289088640e894dab8cd",
+  "sourceCount": 45563,
+  "algorithm": {
+    "commit": "b32b65ecb4725d74ebe7d05867223991bd2e9908",
+    "path": "scripts/release-validation/identity.mjs",
+    "exports": [
+      "sourcePaths",
+      "filePins",
+      "digest"
+    ],
+    "sha256": "7c6c8f878f76f801a5983dd856485d87c96128ecbad8ec98c4771cb5cdb3470e"
+  },
+  "scope": "Clean committed rebuilt phase 442, before checkpoint 443; fresh source closure, not compared with the former identity",
+  "stage5Credit": false
+}
