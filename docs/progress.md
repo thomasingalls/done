@@ -190,27 +190,29 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full318files/3128cases/one existing skip pass122.51s with
-approved240s full-unit guard (406 retains its120s timeout). Every other deadline
-and gate stays. Types,138 focused and18 unchanged legacy controls pass. [Mixed
-saved readers](./development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md)
-adds membership/handoff/replacement properties to406's full/continuation/indexed
-ledger and permanent stale-turn control. App code and old tests stay exact; two test
-helpers change. New-test type errors remain. These are aged-clock unit checks,
-with no physical native-cold/acceptance credit. Display observations outside the
-sandbox confirm the awake displays/caffeinate-d; sandbox absence was unknown.
+**Latest checks.** [Indirect readers](./development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md)
+adds4whole-history/baseline/encrypted-carrier controls; types and61focused pass,
+with quality/registry/inventory. Initial new type-model/regressing-tip fixture errors
+remain; all app/old-test bytes are exact. No new full suite for this test-only slice:
+407remains the latest full318files/3128cases/one existing skip122.51s at approved240s.
+Every other deadline/gate stays. Mixed semantic caller properties and the permanent
+stale-turn control remain. These are supplied-context/fake-IndexedDB checks, not
+physical browser-cold/lease/rollback or acceptance evidence. Actual displays remain
+observable through the unchanged outside-sandbox harness/caffeinate-d.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Finish the indirect reader census, then the explicit
-per-load owned-syntax lifetime and live dense writer. Full/indexed mixed replay,
-permanent stale-turn fault and all four saved semantic-caller properties are now
-covered without an exhaustive-history claim. Preserve exact retained-row evidence,
-record-scoped syntax, per-entry verification/coverage and erasure; no parse object or
-trust crosses the Window/Worker boundary. Then dual audit units and G8/B.
+**Active bounded outcome.** Harden explicit per-load owned syntax lifetime and the
+live dense writer. The indirect call-path census is recorded in408; frozen old
+owners and first-write/rewrite lifecycle proofs remain separate. Preserve exact
+raw input, per-record scope, independent authority/current/coverage/witness checks,
+selected originals and erasure. No parse object/trust crosses Window/Worker.
+Continue sequential bounded phases without waiting after each freeze. Stop only
+for a format/trust/limit/deadline decision or failure unfixable within current guards,
+per the operator's latest amendment. Then dual audit, G8/B and lifecycle/rollback.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

@@ -142,3 +142,14 @@ Replace the codec property's160seeded draws with all72distinct logical extents:
 two publishers, every first/count with count positive and first+count<=8. Retain
 all existing byte assertions. This is exhaustive coverage of the old logical
 input domain, including extents absent from the fixed seed; no test is removed.
+
+
+## Operator amendment — continue Stage3.2,2026-11-04
+
+No questions are pending. Continue from407through indirect reader review, per-load/live
+owned pages, dense writing, dual audit, G8/B and floor lifecycle/old artifacts/cold/
+rollback. Freeze and report each bounded phase, then continue without waiting for
+operator input. Stop only for a format, trust, limit or deadline decision, or a
+failure that cannot be fixed within the existing guards. This narrows the earlier
+blanket functional-failure stop; preserve every earlier record and failed attempt.
+No release, commit, merge or deployment authorization is added.

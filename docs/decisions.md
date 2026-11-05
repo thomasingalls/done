@@ -7300,3 +7300,10 @@ An empty sandbox CoreGraphics display list means unknown, not off. Use the uncha
 **Date:** 2026-11-04 · **Commit:** pending patch407
 
 Reuse independent signed originals to vary physical receipt layout in every saved semantic caller; do not borrow authority or checkpoint admission from a parser projection. Membership/replacement use genuine certified fixtures. The handoff property uses no checkpoint and separate publishers/Yjs identities, while existing real admitted-cut controls remain. No production optimization or trust change follows from this test-only consolidation. [407 evidence](development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md).
+
+
+### Continue Stage3.2 automatically under the operator's narrowed stop boundary
+
+**Date:**2026-11-04 · **Commit:**pending patch408
+
+The operator directs continuation through every remaining Stage3.2 item, freezing/reporting each phase without waiting. Stop for a format/trust/limit/deadline decision or a failure unfixable within current guards. Earlier stop/failure records remain historical evidence. Do not relax monotonic received-through checks to accommodate a stale fixture: re-sign the independent response at a consistent service tip. Pure baseline payload tags and physical counterv5 are separate formats. [408 evidence](development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md).

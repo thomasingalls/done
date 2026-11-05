@@ -19172,3 +19172,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Three additional properties cover retained membership, handoff and replacement, complementing406's full/indexed ledger property. Independent signed originals, every selected update, complete canonical state and the relevant accepted cuts remain. All old tests and app code stay byte-exact; only two test helpers change. Types,138 focused,18 unchanged legacy and full318files/3128cases/one existing skip pass122.51s at the approved240s full-unit guard. [Evidence](development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md).
 
 **Limits.** Initial new-test callback type errors remain;18histories include13random/5examples, not exhaustive coverage. Handoff's no-checkpoint property does not claim admission proof; old real-cut checks pass separately. This is aged-clock unit replay, not physical31s/native-cold or performance acceptance. Indirect/final owned-writer/lifecycle/gate work stays. Recorded before replacing this seat's active state.
+
+
+### Review indirect binary receipt readers and exercise whole/reduced recovery
+
+**Date:**2026-11-04 · **Commit:**pending patch408 · **Stage:**partial Stage3.2
+
+**Exit.** Indirect source/authority/recovery/baseline/journal/Worker/export paths are mapped, with their old-owner fences left as explicit lifecycle obligations. Four controls exercise full logical replay, selected frontier and exact writing through pure and encrypted fake-IndexedDB reduction/reopen; absent/future floors refuse. Types and61focused pass; registry/inventory/quality checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md).
+
+**Limits.** The new type-model error and regressing-through fixture failures remain; only fixture assertions/framing changed, not app guards. No new full-suite/browser-cold/lease/rollback/performance credit. Latest full checkpoint stays407. Outcome recorded before this seat advances to owned syntax.

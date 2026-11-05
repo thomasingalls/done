@@ -1,0 +1,11 @@
+# Indirect receipt readers — phase408
+
+Static call paths cover authority/retained-reading parsers, startup recovery, source filtering, full/reduced baseline, shadow/reuse, journals, retention, Worker composition and document export. Receiving v9 routes through inbound classification; older spool/delivery JSON readers remain version-dispatch paths and still need frozen-old-artifact/floor lifecycle proof. No raw JSON consumer was silently widened. [Source identities and census](./evidence.json).
+
+Four new controls use genuine successor/certification, accepted publication and independently signed mixed binary/v2/v1 receive histories. Whole replay verifies physical witness, every selected original/sequence and complete writing. Pure baseline reduction preserves the final accepted envelope/proof. Encrypted fake-IndexedDB retention classifies the binary frontier and a fresh ContentOwner reopens exact reduced state. Missing/future floors refuse and callers remain byte-exact. This tests supplied-context and carrier semantics, not real ceremony, browser ownership, physical31s cold or rollback images.
+
+The initial typecheck caught an incorrect test assumption: counterv5 is not a version field on the pure baseline object. The unchanged baseline tag is asserted instead. First focused attempt correctly refused a regressing advertised tip after a wide read. Re-signing only fixture single-read responses with through8 repairs temporal consistency. All3failures, the type error and every guard remain; no production code/old assertion changes.
+
+Types,61focused cases, quality/format,17registry checks, inventory and10inventory controls pass. Only one4case required test and its fixture are added; all prior implementation/tests, crypto census,78campaigns,99constructions and obligations remain exact. The full suite is not repeated for this test-only slice;407is the latest full checkpoint:318files3128pass/one skip122.51s. This slice grants no full-final-stack, performance/RAM or release acceptance credit.
+
+Next: per-load owned syntax and live dense writing, dual audit/G8/B, then floor lifecycle/frozen old artifacts/physical cold/rollback and final gates. No new lab, format/trust/wire/default/limit/deadline change, commit, publication or deployment.
