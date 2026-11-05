@@ -7122,3 +7122,10 @@ Validate the proposed touchend observation against the actual regression—Goals
 **Date:**2026-11-03 · **Authority:**operator's conditional381fixture approval, validated in382
 
 The actual app timer omission is detected in both projects, so retain touchend rather than the conditional data-goals-open alternative. Keep seed-drain time and pending counts visible in every base/hardened cut run, with both refusal paths and the existing actual Worker-abort assertion. All other tests/guards/deadlines stay. Planning refresh changes input pins only; archived lint-error sources remain immutable. [Evidence382](development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md).
+
+
+### Keep the full-unit deadline and incomplete command results visible
+
+**Date:** 2026-11-03 · **Commit:** pending patch383 · **Orientation:** approved geometry repair is proven; nine remaining wrappers reach their original120s full-unit limit. PRD/TRD remain unchanged from signed89b11fe2; the operator's hardening note governs this diagnostic.
+
+**Decision.** Preserve every failure and the unrun downstream stages. A focused codec pass or231-file partial unit diagnostic cannot close a298-file suite or any failed wrapper. Keep all case populations, assertions, deadlines and guards; do not advance format integration on partial credit. Actual producer executions, rather than edited receipts, repair freshness; `.receipts` is the live machine home. Record the collector-only schema error separately from app results. Host activity is context, not a proven explanation. [Evidence383](development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md).

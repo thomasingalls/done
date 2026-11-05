@@ -18934,3 +18934,14 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Cut evidence.** All eight base/hardened fault cases record an initial pending seed, a completed drain, one journal refusal and one Worker attempt with actual abort confirmed. Base waits120.6–457.9ms; hardened127.9–635.4ms, including poll/IPC time. Cut safety, retry/discard and cold checks remain. These are not controlled flush-performance estimates; old381producer attribution stays inferred.
 
 **Checks/limits.** Types/scoped lint/format and reviewed planning/source inventories pass without changed counts, dispositions or blocks. Optional full lint reports only immutable archived study/reproduction errors; logs remain. Prior381failures remain. Outcome recorded before advancing progress to the remaining42commands; no Stage5 or release credit.
+
+
+### Remaining checkpoint commands and unit failures are fully inventoried
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 383 · **Stage:** functional checkpoint evidence; hardening remains open
+
+**Exit.** All 42 remaining root commands attempted: 33 pass; nine stop at unchanged 120-second full-unit deadlines after all preceding stages pass. Downstream stages remain unrun. Both transport attempts and counter's codec-property failure remain. [Reports, diagnostics and bounds](development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md).
+
+**Evidence.** The unchanged codec file passes12cases, property4200ms. The whole-suite verbose diagnostic reports2577passing cases/one existing skip across231of298files before its unchanged120s stop;67files have no case report and no final summary exists. No failing case is reported there; it does not clear the earlier red result. All50846start pins stay exact, no file is added during execution, index empty, all display samples on. Six actual receipt producers repair freshness without hand edits; a private collector schema error is preserved and the completed store result recovered without a rerun.
+
+**Limits.** Outcome recorded before advancing this seat's progress. This is failure-list closure, not a green checkpoint or Stage5 credit. No app/test/assertion/wait/deadline/limit/budget/trust/format/status change in383. Hold remaining format integration at the functional checkpoint; no release activity.

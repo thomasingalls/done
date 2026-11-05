@@ -163,34 +163,40 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: remaining42functional checkpoint commands, then remaining approved Stage3.2 hardening
-blocks_on: complete the frozen-tree remaining42commands without changing existing guards or bounds
+scope: clear full-unit checkpoint before remaining approved Stage3.2 hardening
+blocks_on: nine unchanged120s unit-stage deadlines; codec property timing remains qualified
 updated: 2026-11-03
 ```
 
-**Scope.** [Operator plan](./release-hardening-2026-11-02.md) and
-[approved writer-on format](./account-inbound-page-receipts.md), immutable sequential
-patches, all original gates/limits/security checks. No new lab work, computer use,
-commit, push, publication or deployment.
+**Scope.** [Operator plan](./release-hardening-2026-11-02.md),
+[approved writer-on format](./account-inbound-page-receipts.md), bounded sequential
+patches, all original checks/limits. No new lab work, computer use, commit, push,
+publication or deployment.
 
-**Checkpoint.** [381](./development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md)
-retains40passing root commands and the three geometry failures. The operator-approved
-[382repair](./development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md)
-passes full base/hardened geometry228cases/32oldskips. The actual immediate-focus
-control fails the new guard in both projects. All eight measured cut runs retain
-both faults and actual Worker-abort proof; every seed-drain time is recorded.
-Types/scoped lint/format/source/planning checks pass. Optional root lint remains
-red only on unchanged archived documents. No passing rerun erases381.
+**Geometry closed.** [382](./development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md)
+passes complete base/hardened campaigns228cases/32oldskips. Removing the actual focus
+timer fails the new touchend guard on both projects. All eight Cut fault cases
+record seed-drain times, both refusals and actual Worker-abort proof.381stays immutable.
 
-**Now.** Freeze382, then run original root commands41–82 sequentially on that exact
-tree, with caffeinate -d, actual display state and5s host logs. Preserve original
-inner deadlines and every failed attempt; app functional failures stop as directed.
-No full checkpoint green or Stage5 credit yet.
+**Current checkpoint red.** [383](./development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md)
+attempts all42remaining commands:33pass, nine end at original120s unit limits after
+preceding stages pass; subsequent stages are unrun. Counter also reports the new
+codec property failed at5778ms, with no detailed final error before termination.
+Unchanged focused codec passes12cases/property4200ms. Full verbose diagnostic has
+2577passing reports/one existing skip across231of298files before its own unchanged
+120s stop,67files without a case report, no summary. No partial result clears a red
+wrapper.50846start pins stay exact, index empty, sampled displays on. Receipt and
+collector errors are retained and repaired without app/test or guard changes.
 
-**Afterward.** Authenticated floor acknowledgment and actual old-app/pending-writing
+**Now.** Freeze evidence383. Diagnose full-unit execution cost and the new codec
+property's timing margin without changing its population, checks or deadlines.
+Keep the functional checkpoint open;74of83root commands have segmented passing
+runs across381–383, not a green monolithic check or Stage5 acceptance.
+
+**Afterward.** Authenticated floor acknowledgment and real old-app/pending-writing
 profiles; stored mode/logical readers/owned pages/G8/B; same-tree writer-off rollback
 image. Codec375, metadata376/377 and provenance/native coordination378/379 remain
-partial/unwired;379does not establish Account authentication. AllStage5 journeys
-and Stage6 report remain required.
+partial/unwired;379does not prove Account authentication. Stage5 and Stage6 remain
+required. Optional root lint's unchanged archived-document errors remain deferred.
 
-This seat edits only this document; the other seat's document above is unchanged.
+This seat edits only this document; the other seat above is unchanged.
