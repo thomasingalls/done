@@ -18905,3 +18905,14 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Exit.** At374-20's exact2,400s outer and the unchanged120s stage,12normal cases pass and3mutants detect. All33 actual CoreGraphics samples report display on; no off transition appears during the command in the retained power log. Editor/scenario/worker/browser source and every wait/assertion remain exact. All prior failures remain. [Evidence](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md).
 
 **Correction and next.** The earlier377 quick retry incorrectly used a120s whole-command wrapper, leaving only54s after setup, so it was not a matched full display-on result. Per the operator, subsequent native campaigns use caffeinate -d and display-state host samples. Continue the functional checkpoint and approved format hardening; no Stage5, release or causality claim.
+
+
+### Display-controlled full checkpoint reaches geometry and stops with three failures
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch381 · **Stage:**functional checkpoint, notStage5
+
+**Outcome.** The first40of83original commands pass under caffeinate -d, including complete editor12normal/3mutants, clear/trim, legacy and app startup/offline. Geometry then has225pass/32oldskip/3fail;42commands remain unrun. All49,874input pins stay exact, the index is empty and all1,181display samples across runs are on, with no within-run power-log off event. [Reports, comparisons, traces and limitations](development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md).
+
+**Failures preserved.** Exact signed base reproduces swipe focus; its old cut faults fail later without reaching Worker. Base app with current approved fault fixture passes228cases. Six traced unchanged hardened cut repeats pass without reproducing or clearing the full-run failure. Cut's pre-clipboard active-state refusal is observed; seed-flush attribution remains hypothetical. Dependency-relocation and preflight-helper failures are retained.
+
+**Next/hold.** The unapplied two-file fixture proposal changes a seed-drain precondition and captures focus at the native gesture boundary; operator approval is pending because the display instruction forbids wait/assertion changes. No app, test, wait, assertion, deadline or guard change was applied. Record this outcome before replacing this seat's active state. Full checkpoint and remaining Stage3.2/Stage5 work remain open; no publication.

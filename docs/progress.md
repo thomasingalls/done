@@ -162,85 +162,41 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight
-scope: display-controlled functional checkpoint, then remaining approved Stage3.2 hardening
-blocks_on: full functional checkpoint on coherent379; authenticated format installation/readers/writer still required
+status: blocked
+scope: finish the functional checkpoint, then remaining approved Stage3.2 hardening
+blocks_on: operator decision on the two-file fixture timing proposal; geometry checkpoint remains red
 updated: 2026-11-03
 ```
 
-**Contract.** Follow the operator's [hardening plan](./release-hardening-2026-11-02.md).
-All security checks, gates, limits, budgets and deadlines stay. No new lab work,
-computer use, commit, push, publication or deployment. Artifact builds follow the approved plan.
-Keep sequential immutable patches and every earlier phase/lab root intact.
+**Governing scope.** [Operator hardening plan](./release-hardening-2026-11-02.md),
+[approved writer-on format](./account-inbound-page-receipts.md), immutable sequential
+patches and every original gate/limit/security check. No new lab work, computer use,
+commit, push or publication. Stage1/2 records remain in completed.md and evidence.
 
-**Closed.** [Stage1](./development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md)
-and [Stage2](./development-evidence/2026-11-02-release-hardening/366-stage2-closed/README.md)
-have segmented full-suite checkpoints. Stage2 accounts for all 83 original commands;
-its last 55 pass sequentially, with 292 unit files/2,927 cases/one old skip in each
-full unit child. Earlier clear/trim observer timeouts and their full passing retries
-remain, with cause and reliable margin unresolved. No monolithic final check success
-or Stage5 credit is claimed. The broader formatting patch stays deferred.
+**Display result established.** [380](./development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md)
+passes the complete editor campaign at374-20's2,400s outer and original120s stage.
+Native campaigns now run under caffeinate -d with actual display power every5s.
+Old failed attempts remain; no universal causal claim.
 
-**Stage3.1 approved, writing on in this release.** The operator approved
-[the full contract](./account-inbound-page-receipts.md) on2026-11-03. Harden all
-Stage3.2 items. Build the writer-off rollback image from the same tree; prove
-legacy/dense and stale-tab reopening. Stage6 must state that pre-release builds
-lock out devices that wrote dense rows. No format implementation/artifact or
-publication is claimed yet.
+**Current checkpoint red.** [381](./development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md)
+records40passing root commands, then geometry225pass/32oldskip/3fail;42commands
+unrun. All49,874start pins stay exact, index empty, all1,181display samples on.
+The same focus failure occurs on the exact signed base. Base app/current fault
+fixture and six traced cut repeats pass; neither clears the original failure.
+Cut's pre-clipboard active-state refusal is observed; seed-flush attribution is a
+hypothesis. The two-file fixture proposal is unapplied/untested, pending approval
+under the operator's no-wait/no-assertion-change instruction.
 
-**Stage4 focused controls and pressure repair pass.**
-[371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
-records native lifecycle/oracle controls.
-[372](./development-evidence/2026-11-02-release-hardening/372-pressure-counterexample/README.md)
-retains18 passing root commands and the7-versus14 counterexample.
-[373](./development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md)
-fixes private unconsumed physical pressure; all95 focused cases and its exact
-omission control pass. Old verification/guard/test ASTs stay exact.
+**Implemented but incomplete format.** Binary codec375, authenticated metadata
+cores376/377, original-task provenance378 and native coordination379 have focused
+controls; installation/writing remain unwired. Coordination379 deliberately skips
+Account authentication and proves no account-writing claim. Stage4 focused audit
+controls and exact pressure repair373 pass; its full checkpoint remains open.
 
-**Matched display-on full editor campaign passes.**
-[380](./development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md)
-uses374-20's exact2,400s outer and unchanged120s stage:12normal cases pass,
-3mutants detect. All33actual display samples are on, with no power-log off event.
-The operator's display-off/full-failure correlation is retained. The earlier377
-120s quick wrapper was incorrectly short and is not a matched comparison. Every
-old failed attempt remains; no causal or Stage5 proof is claimed. Native campaigns
-now use caffeinate -d and display state in every5s host log, per the operator.
-
-**Stage3.2 codec isolated and checked.**
-[375](./development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md)
-adds the approved bounded schema/classifier without live calls. All126 focused
-cases pass, including independent bytes, generated extents and three exact omission
-controls; old guards/tests stay exact. Types/quality/registry/inventory pass.
-
-**Promotion floor core checked; no installation.**
-[376](./development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md)
-checks exact legacy/tagged MACs, closed value1 and monotonic native-write guards.
-All85 focused,10 promotion/retained and19 parser cases pass. Two omissions fail
-their exact assertions. One pre-existing test anchor is repaired after base reproduction.
-
-**Joined/retained floor metadata checked; no installation.**
-[377](./development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md)
-checks actual closed joined/reading parsers, complete payload inclusion and both
-central downgrade guards. Five Node and43 focused unit cases pass; two exact
-omissions fail. Old authentication/CAS/commit ASTs remain exact.
-
-**Format-task provenance core checked, unwired.**
-[378](./development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md)
-adds only a private original-task/join identity check and ephemeral metadata.
-All34 wiring cases and two omission controls pass. They are models, not native
-custody/lease proof; old acquisition and lifecycle ASTs stay exact.
-
-**Real native coordination controls pass.**
-[379](./development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md)
-passes four Chromium/Firefox cases with raw lock/task observations. Omitting the
-startup barrier fails the named early-member assertion. Runtime/old-test bytes
-stay exact. This is coordination only; its private test seam skips authentication.
-
-**Next bounded outcome.** Resume the coherent functional checkpoint with heavy
-jobs paused, native campaigns under caffeinate -d and actual display-state logs,
-keeping every original deadline/wait/assertion. Then implement/prove authenticated
-floor acknowledgment, actual old-app/data-profile and pending-writing behavior,
-stored mode, logical readers, owned pages, G8/B and same-tree writer-off rollback.
-AllStage5 gates remain required; no final acceptance, commit or publication.
+**After the decision.** Validate/harden the approved fixture repair or follow the
+operator's alternative, resume a green full checkpoint, then authenticated floor
+acknowledgment and actual old-app/pending-writing profiles; stored mode/logical
+readers/owned pages/G8/B; same-tree writer-off rollback image. AllStage5 journeys
+and Stage6 report remain required. No final acceptance or release claim.
 
 This seat edits only this document; the other seat's document above is unchanged.

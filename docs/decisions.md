@@ -7101,3 +7101,10 @@ Use actual browser Page/Worker Web Locks for the original-task boundary, with a 
 **Date:**2026-11-03 · **Authority:**operator power-log review and explicit direction
 
 After the matched full editor run passes with the display on, use caffeinate -d for macOS native campaigns and record actual display power state in every5s host sample. Preserve the exact original2,400s editor outer,120s stage and all waits/assertions; full units keep120s outer. Keep earlier display-off failures without claiming causal proof or successful negative-control detection. This implements the operator's host-condition decision rather than changing product, security, qualification or documentation policy through a tool. [Evidence](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md).
+
+
+### Preserve the display-controlled geometry failure; keep fixture timing changes separate
+
+**Date:**2026-11-03 · **Authority:**operator's unchanged-wait/deadline/assertion direction and hardening failure rules
+
+Stop the sequential checkpoint on geometry's nonzero exit after40successful commands. Keep the exact-base refusal mismatch, later matched-fixture base pass and six passing traced repeats beside the original failure, without claiming repair or green acceptance. Do not remove the native fault: journal admission refusal has a native fallback. The seed-flush source remains an inference. A two-file fixture proposal is reviewable but unapplied pending the operator's decision about the added precondition and changed observation point. No app/trust/format/limit/gate change. [Evidence381](development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md).
