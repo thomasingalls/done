@@ -191,16 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Freeze exact old Page and Worker readers alongside current writer profiles](./development-evidence/2026-11-02-release-hardening/426-frozen-compatibility-artifacts/README.md).
-All four corrected builds pass under pinned Node24.18 and the exact installed Vite CLI. The initial old Page pnpm exec run tries its automatic dependency reinstall, then refuses a noninteractive modules purge before compilation. No purge is enabled and no dependency/source change is made. The repeat invokes that same pinned Vite CLI directly; exact old sources and all57,907 current files remain unchanged. Old Page has32,647 verified blobs,86 emitted files/40scripts/no Workers. Old Worker has45,107 blobs,125files/59scripts/six Worker entries. Current writer0 and1 each have125files/59scripts/six Worker entries and identical source. Every output byte is hashed; known excluded lab modules and all newly introduced test-hook markers are absent from both current ordinary artifacts. Source and asset manifests, sanitized profile and failed invocation remain with the reproducible recipe. No canonical runtime, old test, inventory obligation, limit or deadline changes; the latest unit checkpoint remains423 with330files/3,210pass/one skip, and its runtime is still identical.
-Historical source stays in its pinned Git trees. Complete blob/mode manifests and all run logs are recorded; exported copies and the initial unfrozen packing remain in private/tmp.
+**Latest checks.** [Prove frozen old-owner exclusion and marked-store refusal without losing pending writing](./development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
+Both final cases pass: Page32,382ms and Worker33,360ms (see raw durations for exact source of truth). Both old native readers refuse; both complete old apps accept the supplied unlock-code interaction but report Could not unlock this workspace, not the earlier setup-busy guard, and leave the protected digest identical. Frozen old parsers independently accept the actual legacy marker and reject the current authenticated floor marker. Actual dense extents, floor1, recovered pending writing, exact two-device exports, local Undo and offline disk-backed cold exports all pass. All1,606 prior runtime/protocol/test/configuration files remain byte-identical;449 crypto census source hashes and all construction sites are unchanged. One new required family adds one declaration expanding to the two native cases; inventory730files/724required. Types, quality/format,17registry checks, inventory and10controls pass. Quality flagged the new empty fixture binding; replacing it with an unused browserName binding leaves the complete tested body and every helper AST identical, proved independently, with only its inventory input hash updated. No full-unit rerun: unchanged runtime and prior tests retain423’s330-file/3,210pass/one-skip checkpoint.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Run genuine old Page/Worker active, queued and stale-tab journeys on fictional persisted profiles; prove exclusion before the first floor, fresh marked-store refusal without writes, recovery of old pending writing, and exact current cold/Undo. Then complete marker-rewriter checks, B fairness/past-index and same-tree writer-off image rollback. Continue automatically after each freeze.
+**Active bounded outcome.** Complete authenticated marker rewrite and membership/removal lifecycles on real writer-on profiles, then B fairness/past-index and same-tree writer-off Docker rollback. Continue automatically after this freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -215,7 +214,7 @@ rewriter/lost-reply lifecycles. Binary retained-reading installation with writer
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
-Final writer-on/off images and genuine old-artifact/stale-tab proofs remain.
+Genuine frozen old Page/Worker active and cold app refusals, queued old native-reader refusal, pending-writing recovery and exact current disk-cold/Undo pass in427. Final writer-on/off images remain.
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine

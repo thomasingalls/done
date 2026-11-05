@@ -293,6 +293,9 @@
     ],
     "test/inbound-audit": [
       "playwright.inbound-audit.config.ts"
+    ],
+    "test/inbound-compat": [
+      "playwright.inbound-compat.config.ts"
     ]
   },
   "vectorGenerators": {

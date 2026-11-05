@@ -7433,3 +7433,10 @@ Keep the idle-start audit and every original verification guard. Age its private
 **Date:**2026-11-04 · **Commit:**pending patch426
 
 Do not splice old readers into current modules. Verify and compile complete pinned old source trees with the identical dependency lock, retain exact emitted assets and their source identities, and test them against current profiles separately. Avoid pnpm’s automatic reinstall in exported trees by invoking its already installed pinned Vite dependency directly; never approve purging the shared modules link. Treat successful compilation as provenance only, with no reader/rollback or timing credit. [Evidence](development-evidence/2026-11-02-release-hardening/426-frozen-compatibility-artifacts/README.md).
+
+
+### Keep old-owner lifecycle controls discriminating against actual native and format guards
+
+**Date:**2026-11-04 · **Commit:**pending patch427
+
+Do not mistake pending cleanup locks for an opening or the setup-busy screen for a marked-store refusal. Assert the existing active-owner exclusion first. Queue the frozen native reader behind the real current owner, then close all current app tabs for the complete old artifact’s marked-store unlock. Keep an inert observer and byte-identical protected-data digest, an independently authenticated marker/parser control, and exact current cold writing. Test-only asset controls retain the packaged MIME/CSP boundary and never touch APIs. [Evidence](development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).

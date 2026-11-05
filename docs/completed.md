@@ -19353,3 +19353,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 
 
 **Phase426 evidence packing correction (before freeze).** The initial collector recursively copied pinned historical trees into this new record. Their canonical home is Git. Keep complete independently checked blob/mode manifests, actual build logs, asset hashes and the recipe in the record; retain exported trees and the initial unfrozen record in private/tmp. No run/source/test or earlier phase changes. This correction precedes the seat update.
+
+
+### Prove frozen old-owner exclusion and marked-store refusal without losing pending writing
+
+**Date:**2026-11-04 · **Commit:**pending patch427 · **Stage:**partial Stage3.2
+
+**Exit.** Frozen old active owners are excluded before floor activation; old pending writing survives ownership transfer. Queued old native readers and complete old marked-store unlocks refuse. Current Undo and exact offline persisted-profile cold reopen retain all writing and floor1. [Evidence](development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
+
+**Limits.** Not a timing gate, published-old-byte comparison, service-worker adoption test, RAM result or Docker rollback proof. The queued native probe uses exact old source in the stale Window; no queued old Worker execution claim. All earlier setup and fixture failures remain evidence. Marker rewrite/membership/removal lifecycles, B fairness/past-index, same-tree writer-off images and Stage5/6 remain. No runtime, old test, trust, format, server/wire, budget, gate, limit, deadline or default change; no commit, publication or deployment. Outcome precedes advancing this seat.
