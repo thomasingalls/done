@@ -7405,3 +7405,10 @@ Force the approved interior cut by lowering only a test Worker live allowance, l
 **Date:**2026-11-04 · **Commit:**pending patch422
 
 A verified partial page authorizes only its contiguous prefix. Stop the current multi-request turn at that boundary rather than weakening the next request’s prefix guard. Keep all verification and native commit checks byte-identical, and prove continuation and exact cold writing on actual Workers. Share existing regression helpers while retaining their ASTs and prior case bodies. [Evidence](development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
+
+
+### Keep retained-reading format authority separate from native installation authority
+
+**Date:**2026-11-04 · **Commit:**pending patch423
+
+A valid retained reading’s floor never substitutes for a native marker acknowledgment. Authenticate the complete existing opening first, then perform the same fresh MAC-bound native floor CAS under the actual owner before the first installation effect, even in reader-only mode. Keep the public active-only entry unchanged in scope and the installing entry private with literal call sites. Use a test-only valid-format constructor instead of modifying saved data or weakening live/stored verification. [Evidence](development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).

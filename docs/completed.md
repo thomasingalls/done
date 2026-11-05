@@ -19314,3 +19314,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The before-failing eight-upload native regression passes after a loop-control-only repair; all three native cases and the330-file full unit checkpoint pass. Existing helpers/case bodies and every other runtime byte are independently checked unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
 
 **Limits.** This is bounded correctness evidence, not final-image, RAM or performance acceptance. Binary retained-reading installation, every floor rewrite/lost reply, frozen old Page/Worker/stale tabs, actual stale-turn idle audit, B fairness/past-index and the same-tree writer-off rollback image remain. Stage5/6 are not complete. No format/trust/server/wire/limit/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Acknowledge authenticated retained-reading format before native installation
+
+**Date:**2026-11-04 · **Commit:**pending patch423 · **Stage:**partial Stage3.2
+
+**Exit.** Before-refused genuine binary retained-reading installation now passes with the writer off and on. Native floor acknowledgment precedes copying, with all prior authentication/CAS/commit guards preserved. Both real-app cold/Undo cases and the full330-file unit checkpoint pass. [Evidence](development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).
+
+**Limits.** Fixture construction supplies a valid approved retained format; the ordinary ceremony still emits its ordinary one-position saved receipts. This is not a same-tree rollback image, old-artifact/stale-tab, lost-reply, RAM or performance acceptance result. Every floor rewrite/interruption lifecycle, actual stale-turn idle audit, B fairness/past-index and final image proofs remain; Stage5/6 remain. No format/trust/server/wire/limit/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.

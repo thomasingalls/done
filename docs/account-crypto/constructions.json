@@ -6534,13 +6534,13 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 547,
+          "line": 564,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 556,
+          "line": 573,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },

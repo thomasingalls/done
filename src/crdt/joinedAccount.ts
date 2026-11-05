@@ -427,11 +427,28 @@ export async function acknowledgeJoinedInboundReceiptVersion(
   expectedPayload: Bytes,
   expectedRecord: CustodyRecord,
 ): Promise<JoinedRecord> {
+  return acknowledgeJoinedReceiptFloor(
+    task,
+    slotId,
+    code,
+    expectedPayload,
+    expectedRecord,
+    'active',
+  );
+}
+async function acknowledgeJoinedReceiptFloor(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  expectedPayload: Bytes,
+  expectedRecord: CustodyRecord,
+  phase: JoinedRecord['phase'],
+): Promise<JoinedRecord> {
   requireAccountFormatSessionTask(task, slotId);
   const state = await readJoinedAccount(task, slotId, code),
     marker = state.marker;
-  if (!marker || marker.phase !== 'active')
-    throw Error('Inbound receipt floor needs active certified custody');
+  if (!marker || marker.phase !== phase)
+    throw Error(`Inbound receipt floor needs ${phase} certified custody`);
   const payload = joinedPayload(marker);
   try {
     if (
@@ -974,6 +991,28 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
       markAccountOpen('authorized');
       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
         throw Error('Certified device changed during unlock');
+      if (
+        marker.phase === 'installing' &&
+        captureInboundReceiptVersion(marker.reading).inboundReceiptVersion === 1
+      ) {
+        // The retained reading has already passed baseline, factor and authority checks.
+        // Its own format scope does not authorize native rows until this fresh MAC-bound CAS.
+        const payload = joinedPayload(marker);
+        try {
+          marker = await acknowledgeJoinedReceiptFloor(
+            task,
+            options.slotId,
+            options.code,
+            payload,
+            state.record,
+            'installing',
+          );
+          state.marker = marker;
+          b.base = { ...b.base, ...captureInboundReceiptVersion(marker) };
+        } finally {
+          payload.fill(0);
+        }
+      }
       const scope = claimScope(state.claim),
         { local, slot } = await destination(task, state);
       if (marker.phase === 'installing') {

@@ -1121,7 +1121,7 @@
     },
     {
       "path": "src/crdt/joinedAccount.ts",
-      "sha256": "ca0202937853fdd17cc99da05a408f260db6c5262c30e73bed5bb3d7b675f675"
+      "sha256": "3495919cd11a809ae15b7cff44c50109b08dab5ca0018688019fa2e8fb11603d"
     },
     {
       "path": "src/crdt/journalCodec.ts",
@@ -3229,11 +3229,11 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 547
+          "line": 564
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 556
+          "line": 573
         }
       ]
     },

@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Stop a dense multi-request turn at its verified native prefix](./development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
-The new native case fails on the pre-repair build: only the first upload is visible, then the shell and its Worker disappear. That run has no captured internal exception, so the exact exception is not independently attributed. The loop’s gap is established by source review; the narrowly repaired build passes the discriminating journey with all eight confirmed positions, actual width4/count2 native extents, unchanged observed storage and exact offline cold export. Both prior interior-cut/31s-expired-request/Undo/cold cases also pass: 53,669ms and54,823ms; new case27,207ms. All three use the rebuilt repaired source and existing120s case/15s cold deadlines. Affected162 unit cases, types and full330files/3,210pass/one existing skip pass; suite138.59s, command139.395s under approved240s full-unit guard. Quality/format,17registry checks, inventory and10controls pass. One runtime hash changes, no domain/site/construction moves; one new required native case, all prior inventory obligations preserved. An initial reviewer syntax typo and a bookkeeping script’s obsolete run path are corrected before any canonical bookkeeping write; both development failures are retained in notes.
+**Latest checks.** [Acknowledge authenticated retained-reading format before native installation](./development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).
+A test-only Worker fixture re-encodes an already fully verified one-position ceremony result into the approved self-contained binary frame, keeping exact original signed request/page bytes and updates, and saves its own floor through the ordinary encrypted reader save. No database is edited and no verification is bypassed. The pre-repair reader-only app refuses opening with the existing generic Worker failure; no internal exception is captured, so that exception is not independently attributed. The source floor gap and isolated repair discriminate the result. Final reader-only and writer-on builds both install four binary native receipts, retain floor1, pass a read-only syntax census, exact exports on reopen, two-way writing, local Undo and exact offline cold. Final cases21,639ms and21,209ms, unchanged120s case/15s cold assertions. An earlier reader-only after run also passes and is kept. Guard AST review confirms the shared fresh-read/CAS body is unchanged apart from a private literal phase, the public API remains active-only, and all prior verifyJoinedAccount checks are exact after removing the new pre-effect branch. Types,55focused cases, five old Joined parser/MAC/downgrade controls and full330files/3,210pass/one existing skip pass138.16s (command138.884s,240s guard). Quality/format,17registry checks, inventory and10controls pass. One runtime hash and two corresponding construction line addresses change; all domains/obligations and old tests stay. The new one-case family is required.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Complete authenticated installing-floor and marker-rewriter/lost-reply lifecycles, then frozen old Page/Worker and stale-tab artifacts, actual stale-turn idle-audit control, B fairness/past-index and same-tree writer-off rollback-image proofs. Continue automatically after each freeze.
+**Active bounded outcome.** Prove interrupted/lost floor acknowledgment replies and marker rewrite preservation, then frozen old Page/Worker/stale-tab artifacts, actual mixed stale-turn idle audit, B fairness/past-index and same-tree writer-off rollback images. Continue automatically after each freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +209,9 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
 in422. Complete real B fairness/cancellation/past-index and floor
-installation/rewriter/lost-reply lifecycles.
+rewriter/lost-reply lifecycles. Binary retained-reading installation with writer-off/on
+is covered in423; native floor acknowledgment follows all existing authentication
+and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
 Final writer-on/off images and genuine old-artifact/stale-tab proofs remain.
 
