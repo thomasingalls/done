@@ -178,36 +178,31 @@ control/guard rules. New-code unit failures are ordinary development and retaine
 **Current implementation.** Stage1 and Stage2 checkpoints are closed; Stage3.1
 is approved. Stage3.2 has the closed binary codec/logical syntax home, authenticated
 native and independent retained-reading floors, real Page/Worker activation
-controls, explicit saved modes and an unwired binary bulk verifier. The new
-[receipt memo extension](./development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md)
-binds every actual entry address, owns one proof graph and measures backing-buffer
-capacity. It is not used by a semantic reader yet. The
-[authenticated journal adapter](./development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md)
-now supports compact receipt proofs with the same old grammar/MAC/input/slice/
-capacity guards. It is not wired into a semantic reader. The saved verifier now has optional
-[native/journal proof reuse](./development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md)
-under exact raw/key/context and entry-address evidence, with independent returned
-ownership. The [full ledger reader](./development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md)
-now uses it. Census/witness stays physical; replay/coverage/retained entries stay
-logical. Membership/successor/retention classification uses the tag home. Binary
-views use the full reference until their index accounting is hardened. Every phase outcome/failure is in completed.md
-and its immutable evidence, not repeated here.
+controls and explicit saved modes. The exact-evidence native/journal receipt memo
+and authenticated compact journal adapter preserve old MAC, input, slice and
+capacity guards. Full ledger, handoff, later membership and replacement-source
+replay now consume every admitted entry under their original coverage/cut/prefix
+checks. All four stored paths have aged binary semantic controls. Census/witness
+stays physical; replay/progress/reading limits stay logical. Binary views still use
+the full reference until index accounting is hardened. Every phase outcome/failure
+is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full309files/3079cases/one existing skip pass111.96s at120s;
-240s unused. Types,49 focused and14 unchanged legacy replacement controls pass,
-with reviewed registry/inventory. [Later membership page replay](./development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md)
-uses genuine certification and preserves all checkpoint/prefix checks. New-fixture
-mistakes and before failures remain; no old test edits or native31s cold claim.
+**Latest checks.** Full310files/3088cases/one existing skip pass113.97s at120s;
+240s unused. Types,58 focused and14 unchanged legacy replacement controls pass,
+with reviewed registry/inventory. [Replacement-source pages](./development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md)
+keep accepted cuts and logical4096. The isolated omission exposes over-limit work;
+new-fixture/type failures remain. No old test edits or actual31s native cold claim.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Replacement-source stored pages: verify and apply
-every admitted entry under the original accepted cuts, logical4096 limit, own
-encoding floor and lifecycle/erasure rules. Keep live single-entry behaviour.
-Prove self-contained extents ending inside an original page and saved resumption.
+**Active bounded outcome.** Harden binary incremental eligibility under expanded
+logical work and actual owned-buffer accounting at the existing32MiB ceiling.
+Keep complete exact prefix comparison, full-reference fallback and semantic
+agreement. Then record-scoped parse ownership, arbitrary mixed-reader properties
+and the permanent stale-turn fault remain before native writer/G8/B work.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

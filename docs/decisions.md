@@ -7241,3 +7241,10 @@ Before expanding a retained binary receipt, require its own encoding floor and c
 **Date:** 2026-11-04 · **Commit:** pending patch399
 
 The existing full certification, checkpoint and publisher-set validation still precedes saved replay. Only captured saved bytes select stored semantics; every selected entry opens and advances the local prefix, and the final prefix still has to match the retained stream. One physical record retains its selected plaintext updates; failure and temporary-original cleanup remain explicit. [399 evidence](development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md).
+
+
+### Share accepted-cut checks while bounding saved logical work
+
+**Date:** 2026-11-04 · **Commit:** pending patch400
+
+Replacement live and stored replay use the same unchanged accepted-result guard. Count a saved receipt's closed admitted extent before opening its entries; it does not gain4096 times its page width. Keep its original signed request/page and exact self-contained extent for resumption. An isolated omission proves the boundary check detects over-limit work. No caller parser, network flag or header grants trust. [400 evidence](development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md).

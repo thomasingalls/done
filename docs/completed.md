@@ -19095,3 +19095,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Later v3 membership readings replay every saved entry, retain one physical receipt and keep certification, checkpoint, publisher-set and final-prefix checks. Genuine full certification/two-publisher controls pass;49 focused,14 unchanged legacy and full309files/3079cases/one existing skip pass111.96s at120s. Initial new-fixture mistakes and discriminating before-run remain. [Evidence](development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md).
 
 **Limits.** No old test edits. Clock aging is not actual native cold evidence. Replacement source and subsequent mixed/index/writer/lifecycle/final gates stay open. Outcome recorded before updating this seat's active state.
+
+
+### Replay saved replacement pages under the original accepted cuts
+
+**Date:** 2026-11-04 · **Commit:** pending patch400 · **Stage:** partial Stage3.2
+
+**Exit.** Every saved entry uses the original accepted-cut guard and logical4096 ceiling; live remains single-entry. Genuine rotation/two-publisher/interior-cut/resumption controls pass. A test-only boundary and isolated omission discriminate the new logical preflight. Final58 focused,14 unchanged legacy and full310files/3088cases/one existing skip pass113.97s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md).
+
+**Limits.** New-fixture tip and owned-byte type errors retained; no old test edits. All four stored-reader aged semantics are covered, but actual native cold/lifecycle, mixed/index/writer/rollback/final gates remain. Outcome recorded before updating this seat's active state.
