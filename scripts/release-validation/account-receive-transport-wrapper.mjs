@@ -210,14 +210,21 @@ export function reconcileReceiveTransportReports(directory, sources) {
     assert(readFileSync(join(directory, file)).length, 'Empty receive-transport auxiliary report');
 }
 
-const sortCaptures = (rows) => {
+const sortCaptures = (rows, initial = []) => {
   assert(Array.isArray(rows));
   assert.equal(new Set(rows.map((c) => c.id)).size, rows.length, 'Duplicate source identity');
   for (const c of rows) {
     assert(typeof c.id === 'string' && c.id.length > 0);
     assert(Array.isArray(c.sources) && c.sources.length > 0);
     for (const source of c.sources) {
-      assert.equal(source.kind, 'human');
+      if (source.kind === 'system') {
+        assert.equal(source.actor, 'system');
+        assert.deepEqual(
+          c,
+          initial.find((entry) => entry.id === c.id),
+          'System source was not present unchanged before the first action',
+        );
+      } else assert.equal(source.kind, 'human');
       assert(typeof source.actor === 'string' && source.actor.length > 0);
       assert(Array.isArray(source.bytes) && source.bytes.length > 0);
       assert(source.bytes.every((n) => Number.isInteger(n) && n >= 0 && n <= 255));
@@ -225,8 +232,12 @@ const sortCaptures = (rows) => {
   }
   return [...rows].sort((a, b) => a.id.localeCompare(b.id));
 };
-const sameCaptures = (a, b) =>
-  assert.deepEqual(sortCaptures(a), sortCaptures(b), 'Source identities or bytes differ');
+const sameCaptures = (a, b, initial) =>
+  assert.deepEqual(
+    sortCaptures(a, initial),
+    sortCaptures(b, initial),
+    'Source identities or bytes differ',
+  );
 const hash = (v) => createHash('sha256').update(v).digest('hex');
 const frameBytes = (wire) => {
   assert(
@@ -296,7 +307,7 @@ export function reconcileReceiveTransportEvidence(r) {
       position = 0,
       link = '00'.repeat(32),
       requestIndex = 0;
-    const known = new Map(sortCaptures(h.before).map((c) => [c.id, c]));
+    const known = new Map(sortCaptures(h.before, h.before).map((c) => [c.id, c]));
     for (const [i, action] of h.actions.entries()) {
       assert(['receive', 'local', 'lost', 'corrupt', 'restart', 'compact'].includes(action));
       coverage[action] = (coverage[action] ?? 0) + 1;
@@ -373,7 +384,7 @@ export function reconcileReceiveTransportEvidence(r) {
         { state: 'ready', receivedThrough: position, observedThrough: position ? count : 0, link },
         'HTTP receipt status differs',
       );
-      const current = sortCaptures(o.captures);
+      const current = sortCaptures(o.captures, h.before);
       for (const [id, c] of known)
         assert.deepEqual(
           current.find((v) => v.id === id),
@@ -388,7 +399,7 @@ export function reconcileReceiveTransportEvidence(r) {
     assert.equal(position, count, 'HTTP history did not receive every published original');
     assert.equal(h.final.visible, text);
     assert.deepEqual(h.final.status, h.observations.at(-1).status);
-    sameCaptures(h.final.captures, [...known.values()]);
+    sameCaptures(h.final.captures, [...known.values()], h.before);
   }
   assert.deepEqual(g.coverage, coverage);
   assert.deepEqual(g.transports, transports);

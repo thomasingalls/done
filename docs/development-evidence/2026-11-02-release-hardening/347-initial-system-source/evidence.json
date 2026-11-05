@@ -1,0 +1,308 @@
+{
+  "phase": 347,
+  "operatorApproval": "Initial captures only, system actor only, exact continuity through every observation and final; every new source remains human. Same rule for driver/editor only if actual initial sources match.",
+  "realInitialSourceConfirmed": {
+    "transport": 16,
+    "editor": 10,
+    "driver": 10
+  },
+  "adapterUnitCasesPassed": 15,
+  "allOldControlsPreserved": true,
+  "additionalExplicitControlsPerWrapper": [
+    "new local capture changed to system/system through all subsequent states",
+    "initial system source with another actor in every copy",
+    "changed initializer bytes in an observation",
+    "changed initializer bytes in final"
+  ],
+  "transportAndEditorRealReportsReconciled": true,
+  "driverGeneratedPassed": true,
+  "driverCampaignPassed": false,
+  "driverFailure": "Missing dispatch anchor in existing native-controls; reproduced next on signed base, not app change",
+  "runtimeChanges": false,
+  "limitsAndDeadlinesChanged": false,
+  "aggregateCredit": false,
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-real-report/child.log",
+      "artifact": "objects/c42725f8bd905c3db081a25f735676e71c7ba19211e69ffefd79836ae5b1eda9.gz",
+      "sha256": "c42725f8bd905c3db081a25f735676e71c7ba19211e69ffefd79836ae5b1eda9",
+      "bytes": 12488
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-real-report/run.json",
+      "artifact": "objects/2aaef081f156c3146aa2c1223e2b9f2bfee68964cd500ae5d43b4304a5d0f1a6.gz",
+      "sha256": "2aaef081f156c3146aa2c1223e2b9f2bfee68964cd500ae5d43b4304a5d0f1a6",
+      "bytes": 395
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-real-report/host-load.jsonl",
+      "artifact": "objects/c1fc7b3c37ee79756ab0003551995558deb834f78951199f786fb7a66a06b204.gz",
+      "sha256": "c1fc7b3c37ee79756ab0003551995558deb834f78951199f786fb7a66a06b204",
+      "bytes": 9723
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-generated-report/child.log",
+      "artifact": "objects/6f2fd8bc926ef24a7785b85d55147290b4fcc6f9bb7f879277fc90da55429f70.gz",
+      "sha256": "6f2fd8bc926ef24a7785b85d55147290b4fcc6f9bb7f879277fc90da55429f70",
+      "bytes": 559
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-generated-report/generated-native.json",
+      "artifact": "objects/716f48d562a8d02e4ec509f0e9508c904fe3ca100a29e983d619ebc5ac754ef7.gz",
+      "sha256": "716f48d562a8d02e4ec509f0e9508c904fe3ca100a29e983d619ebc5ac754ef7",
+      "bytes": 607881
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-generated-report/run.json",
+      "artifact": "objects/c23d8b208eba5aff0e6379c5206c08f2f07fba37041936add170d62eee4ea5d7.gz",
+      "sha256": "c23d8b208eba5aff0e6379c5206c08f2f07fba37041936add170d62eee4ea5d7",
+      "bytes": 473
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-generated-report/host-load.jsonl",
+      "artifact": "objects/ffa888169d813da4660303ddc09b566f5a33ee6eff9c474482fd010c7a7a3e8c.gz",
+      "sha256": "ffa888169d813da4660303ddc09b566f5a33ee6eff9c474482fd010c7a7a3e8c",
+      "bytes": 8292
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-editor-transport-adapter-tests/child.log",
+      "artifact": "objects/46f90079a6a320760f7ca47f740f4e20d418330d24398cb5e75b93e337d1ac17.gz",
+      "sha256": "46f90079a6a320760f7ca47f740f4e20d418330d24398cb5e75b93e337d1ac17",
+      "bytes": 1333
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-editor-transport-adapter-tests/run.json",
+      "artifact": "objects/6c646b8e15532362f1cac9d9e1835ad4e1692df00ed3b00deeb726df30e80f56.gz",
+      "sha256": "6c646b8e15532362f1cac9d9e1835ad4e1692df00ed3b00deeb726df30e80f56",
+      "bytes": 503
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-editor-transport-adapter-tests/host-load.jsonl",
+      "artifact": "objects/ff0277e39e57008e0d1f4a16896955d88e46e71030f5ebd8015819bd23c6a6ef.gz",
+      "sha256": "ff0277e39e57008e0d1f4a16896955d88e46e71030f5ebd8015819bd23c6a6ef",
+      "bytes": 152
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-three-wrapper-tests/child.log",
+      "artifact": "objects/d645874599a241469e84a611e14a54ea0b81383eed30e7c17d33ef10a7ee700d.gz",
+      "sha256": "d645874599a241469e84a611e14a54ea0b81383eed30e7c17d33ef10a7ee700d",
+      "bytes": 1930
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-three-wrapper-tests/run.json",
+      "artifact": "objects/8555d39589041700a7590ba43612f2e5c1e564417f05b155a559849265fd09e0.gz",
+      "sha256": "8555d39589041700a7590ba43612f2e5c1e564417f05b155a559849265fd09e0",
+      "bytes": 510
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-three-wrapper-tests/host-load.jsonl",
+      "artifact": "objects/77d92b891c3918ee5afda2bc0834f37c4610fb161fda25ae4ce5834482be8f59.gz",
+      "sha256": "77d92b891c3918ee5afda2bc0834f37c4610fb161fda25ae4ce5834482be8f59",
+      "bytes": 152
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/control-relabel.json",
+      "artifact": "objects/5f3b8e65f87a4a0055ac8a66b21b5f88e47f6e1ec015c0b4097cd823444fad7e.gz",
+      "sha256": "5f3b8e65f87a4a0055ac8a66b21b5f88e47f6e1ec015c0b4097cd823444fad7e",
+      "bytes": 8415
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/types.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/summary.json",
+      "artifact": "objects/8dba98718e3d1e6b7d9550eae2ea02903c10acb4fe893934ddf561b712146b5c.gz",
+      "sha256": "8dba98718e3d1e6b7d9550eae2ea02903c10acb4fe893934ddf561b712146b5c",
+      "bytes": 691
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/sources.json",
+      "artifact": "objects/ef61c7842a9c49729749a5dbb0f4070a7f2d2b910ca5a42cbb7c10277c43782f.gz",
+      "sha256": "ef61c7842a9c49729749a5dbb0f4070a7f2d2b910ca5a42cbb7c10277c43782f",
+      "bytes": 217629
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/results.xml",
+      "artifact": "objects/67eade6061783c14f770db7460935cfad18c67f98b868da6d8943d1e03d5d676.gz",
+      "sha256": "67eade6061783c14f770db7460935cfad18c67f98b868da6d8943d1e03d5d676",
+      "bytes": 3436
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/properties.log",
+      "artifact": "objects/afa6a81ac5828aa743af54db8d08ddf0900ca1f261b5aff61bf228fb4af4f835.gz",
+      "sha256": "afa6a81ac5828aa743af54db8d08ddf0900ca1f261b5aff61bf228fb4af4f835",
+      "bytes": 1765448
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/baseline-before.json",
+      "artifact": "objects/c22ddecf1b6f4a7d2d1cea385dc99c5e231b1dd11c730582c7a97a473178579e.gz",
+      "sha256": "c22ddecf1b6f4a7d2d1cea385dc99c5e231b1dd11c730582c7a97a473178579e",
+      "bytes": 7823
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/native.log",
+      "artifact": "objects/dc4a4bfe1abb2c9bc4b2d026aec7c62c0e0326c8a0db4678960cac525adc096b.gz",
+      "sha256": "dc4a4bfe1abb2c9bc4b2d026aec7c62c0e0326c8a0db4678960cac525adc096b",
+      "bytes": 1879
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/generated-editor.json",
+      "artifact": "objects/4fd6154b8bada639c5dcc90517d57f7771078093937c5da5acccc1ad564481db.gz",
+      "sha256": "4fd6154b8bada639c5dcc90517d57f7771078093937c5da5acccc1ad564481db",
+      "bytes": 211322
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/control-early.json",
+      "artifact": "objects/a19d46f959c0edef26cfed9b48257ec9a74a35a1bee15fd504cdce15621b5197.gz",
+      "sha256": "a19d46f959c0edef26cfed9b48257ec9a74a35a1bee15fd504cdce15621b5197",
+      "bytes": 4886
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-editor/2026-11-02T11-43-03.557Z/baseline-after.json",
+      "artifact": "objects/51da676dd55bcf0437157a93a5043c42f31cc2bc663e169f0033a069be75ca04.gz",
+      "sha256": "51da676dd55bcf0437157a93a5043c42f31cc2bc663e169f0033a069be75ca04",
+      "bytes": 7773
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/controls.log",
+      "artifact": "objects/1a3c603b507ee809ba15e72aa7a5db7f7fa2625fe38698ff1808b6542e81adbf.gz",
+      "sha256": "1a3c603b507ee809ba15e72aa7a5db7f7fa2625fe38698ff1808b6542e81adbf",
+      "bytes": 469
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/control-halt.json",
+      "artifact": "objects/767014a33e71e5eca6369ef186b6157b36213f145cc8f166ff40a47fcbf25e9f.gz",
+      "sha256": "767014a33e71e5eca6369ef186b6157b36213f145cc8f166ff40a47fcbf25e9f",
+      "bytes": 1029
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/types.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/summary.json",
+      "artifact": "objects/23fb57e705adb9833ed5f985b23cff10059149e2c2d8bf4ea3e9cd69421cbffb.gz",
+      "sha256": "23fb57e705adb9833ed5f985b23cff10059149e2c2d8bf4ea3e9cd69421cbffb",
+      "bytes": 853
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/sources.json",
+      "artifact": "objects/5059c615f81182b87b48a195c3979de8c5bb1fbce781e0e023bcc5b45afd70fc.gz",
+      "sha256": "5059c615f81182b87b48a195c3979de8c5bb1fbce781e0e023bcc5b45afd70fc",
+      "bytes": 217362
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/units.log",
+      "artifact": "objects/1bc436b891f9affcb817c7bd4dc11b5333b14bd4391efdc68c996c9c87a49f4a.gz",
+      "sha256": "1bc436b891f9affcb817c7bd4dc11b5333b14bd4391efdc68c996c9c87a49f4a",
+      "bytes": 2813
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/control-observer.json",
+      "artifact": "objects/db388bcf814d3d41b792c5d37100f2f9add4ea589db7fd185f4c4d4760187ef3.gz",
+      "sha256": "db388bcf814d3d41b792c5d37100f2f9add4ea589db7fd185f4c4d4760187ef3",
+      "bytes": 1027
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/native.xml",
+      "artifact": "objects/3e3b04e00ff5a5da7df3d30d014db70198c69fff830f3f4219e18f6aabab29be.gz",
+      "sha256": "3e3b04e00ff5a5da7df3d30d014db70198c69fff830f3f4219e18f6aabab29be",
+      "bytes": 2649
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/native-controls.xml",
+      "artifact": "objects/c2013eb387cad6e642e0796752b89830be90b463bf6e24f3e06b1c6765beb2fb.gz",
+      "sha256": "c2013eb387cad6e642e0796752b89830be90b463bf6e24f3e06b1c6765beb2fb",
+      "bytes": 12755
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/control-overlap.json",
+      "artifact": "objects/991819f87f245f3679ab549f3c6ef326b499d3c86f1ab2ad5d843a8fd1a918ea.gz",
+      "sha256": "991819f87f245f3679ab549f3c6ef326b499d3c86f1ab2ad5d843a8fd1a918ea",
+      "bytes": 1026
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/native.log",
+      "artifact": "objects/ed80d6b6e072e4e9edf4e37de5d35ce4502d49ee0f331b4261089365c9b0b8d0.gz",
+      "sha256": "ed80d6b6e072e4e9edf4e37de5d35ce4502d49ee0f331b4261089365c9b0b8d0",
+      "bytes": 1540
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/native-controls.log",
+      "artifact": "objects/ae7bbf252f0ff38a683163d2710bf2f36dbe08f778c95478471289ef3aef22f1.gz",
+      "sha256": "ae7bbf252f0ff38a683163d2710bf2f36dbe08f778c95478471289ef3aef22f1",
+      "bytes": 7170
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/controls.xml",
+      "artifact": "objects/4eb9189ad6bba1dd41c51a89915929e77bc8ac48ba92187c317070dea66c1210.gz",
+      "sha256": "4eb9189ad6bba1dd41c51a89915929e77bc8ac48ba92187c317070dea66c1210",
+      "bytes": 1263
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/control-poll.json",
+      "artifact": "objects/0839c09e8a7b3e82383ab5f1254fa2821ebc34c76a4a6005a01238b57417d2d5.gz",
+      "sha256": "0839c09e8a7b3e82383ab5f1254fa2821ebc34c76a4a6005a01238b57417d2d5",
+      "bytes": 1020
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T14-35-00.587Z/control-resume.json",
+      "artifact": "objects/0b738d33a68d2769c790b0eb6042a0ed480f5809dcca8da202f4a10f60071e80.gz",
+      "sha256": "0b738d33a68d2769c790b0eb6042a0ed480f5809dcca8da202f4a10f60071e80",
+      "bytes": 1025
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-real-reports.json",
+      "artifact": "objects/8f489a8b66d1cb58b951c1bd15272a6cd86b172ec99a527c80aef11e1b324bdb.gz",
+      "sha256": "8f489a8b66d1cb58b951c1bd15272a6cd86b172ec99a527c80aef11e1b324bdb",
+      "bytes": 2938
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-driver-initial-source.json",
+      "artifact": "objects/759cd83db0d0bcb11182b8e48932239a5f055485b89787652a0860c2c3c2f71d.gz",
+      "sha256": "759cd83db0d0bcb11182b8e48932239a5f055485b89787652a0860c2c3c2f71d",
+      "bytes": 1178
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-checks.json",
+      "artifact": "objects/199a3b3cf7935e87c0cd9dd8c2a4b6b5796cecf1f20ce611c25d7abb46bec683.gz",
+      "sha256": "199a3b3cf7935e87c0cd9dd8c2a4b6b5796cecf1f20ce611c25d7abb46bec683",
+      "bytes": 1418
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-inventory-record.log",
+      "artifact": "objects/fb46f771ec054dc1098ed8947db9b0e28712ef9a5e81457535975d334bfc660e.gz",
+      "sha256": "fb46f771ec054dc1098ed8947db9b0e28712ef9a5e81457535975d334bfc660e",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-inventory-controls.log",
+      "artifact": "objects/b32345e72239a76c4d30f804a6fd647f50dd71dafb37ef6f233ddab15375f5cd.gz",
+      "sha256": "b32345e72239a76c4d30f804a6fd647f50dd71dafb37ef6f233ddab15375f5cd",
+      "bytes": 1089
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-format.log",
+      "artifact": "objects/37b9b9d37cfdd6b9b94932f0b9378f7980727227bb20c80e17db4bc2d0def44b.gz",
+      "sha256": "37b9b9d37cfdd6b9b94932f0b9378f7980727227bb20c80e17db4bc2d0def44b",
+      "bytes": 112
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/347-lint.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/check347-reports.mjs",
+      "artifact": "objects/12644138f7cde93db9095c4481236c72be25583f6bf8aaa0b55b42341a85d999.gz",
+      "sha256": "12644138f7cde93db9095c4481236c72be25583f6bf8aaa0b55b42341a85d999",
+      "bytes": 1615
+    }
+  ]
+}

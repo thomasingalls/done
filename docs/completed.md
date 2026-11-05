@@ -18601,3 +18601,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Date:** 2026-11-02 · **Commit:** pending sequential patch 346 · **Stage:** operator hardening Stage 1 checkpoint
 
 **Exit.** Correct the active YAML status and blocker to match phase345's recorded actual-report hold. Clarify that phase339's unchanged-old-test statement described that census, before the later recorded and approved fixture repairs. No test, evidence result, requirement or application code changes. The immutable phase345 artifact remains intact.
+
+
+### Narrow initial system-source report exception is approved and tested
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 347 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Actual HTTP/editor reports reconcile; 15 wrapper cases pass with all old controls and explicit new-system/other-actor/changed-byte controls. The same initial source is confirmed in all 10 real driver histories, permitting the identical rule there. Every later capture remains human-only; exact initial capture continuity remains. [Evidence](development-evidence/2026-11-02-release-hardening/347-initial-system-source/README.md).
+
+**Notes.** Preserve the driver aggregate's newly reached moved dispatch-anchor failure and the passing standalone generated histories. No runtime or deadline change. Record the closed policy hold before advancing to test-only dispatch attribution and the remaining unit-wrapper deadlines.

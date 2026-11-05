@@ -6936,3 +6936,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The hardening procedure requires independent evidence consumers, preserves inconvenient results and stops on an existing check that needs a guard change. Native campaign success and synthetic adapter success are distinct from reconciling the actual native reports.
 
 **Decision.** Retain the original seeded population and all exact writing/source/prefix/cold checks while serving the actual batched HTTP route and modeling its pages. Run the whole campaign and all wrapper controls. Preserve the resulting real-report source-kind refusal, whose guard is unchanged from signed base; do not silently admit system sources. Return that narrowly identified boundary to the operator before continuing. No documentation policy, runtime trust, format, budget or deadline changes.
+
+
+### Authorize only the already-present system initializer in report consumers
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 347
+
+**Orientation.** The operator approved only system sources already in the pre-action capture set, with actor `system` and exact continuity; every source added during a history must remain human. Driver/editor may share this exception only after actual reports establish the same initializer.
+
+**Decision.** Pass each report's explicit initial capture list into the existing validator, comparing the entire containing capture against that initial value for every system source. Keep all existing known-source preservation and final-state checks. Confirm all three real report populations and add direct refusal controls whose later copies agree, so mere disagreement is not the discriminator. Preserve the old real-report refusal in phases345–346; do not rewrite it. No trust, format, runtime or documentation requirement changes.

@@ -1396,7 +1396,10 @@ function receiveEditorEvidence() {
     id,
     sources: [{ actor: '11'.repeat(16), kind: 'human', bytes }],
   });
-  const before = [capsule('startup')],
+  const before = [
+      capsule('startup'),
+      { id: 'system-initial', sources: [{ actor: 'system', kind: 'system', bytes: [0, 1] }] },
+    ],
     original = [1, 2, 3],
     extra = capsule('local', original);
   const status = (n) => ({
@@ -1642,7 +1645,28 @@ test('160 generated receive-editor corruptions reject lost text, false receipt p
     (h) => h.final.captures.pop(),
     (h) => (h.final.visible += 'L'),
     (h) => (h.observations[3].status.link = 'cc'.repeat(32)),
+    (h) => {
+      for (const rows of [...h.observations.map((o) => o.captures), h.final.captures]) {
+        const source = rows.find((c) => c.id === 'local')?.sources[0];
+        if (source) {
+          source.kind = 'system';
+          source.actor = 'system';
+        }
+      }
+    },
+    (h) => {
+      for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures])
+        rows.find((c) => c.id === 'system-initial').sources[0].actor = 'other-actor';
+    },
+    (h) =>
+      h.observations[0].captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
+    (h) => h.final.captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
   ];
+  for (const alter of alters) {
+    const bad = structuredClone(r);
+    alter(bad['generated-editor.json'].histories[0]);
+    assert.throws(() => reconcileReceiveEditorEvidence(bad));
+  }
   fc.assert(
     fc.property(fc.nat(9), fc.nat(alters.length - 1), (i, k) => {
       const bad = structuredClone(r);
@@ -1681,7 +1705,10 @@ function receiveTransportEvidence() {
       id,
       sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
     }),
-    before = [capsule('startup')],
+    before = [
+      capsule('startup'),
+      { id: 'system-initial', sources: [{ actor: 'system', kind: 'system', bytes: [0, 1] }] },
+    ],
     local = capsule('local');
   const actions = [
     'lost',
@@ -2016,6 +2043,22 @@ test('160 generated receive-transport corruptions reject false progress, source 
     },
     (h) => h.observations[6].outcome.kinds.pop(),
     (h) => (h.observations[7].outcome.recorded = true),
+    (h) => {
+      for (const rows of [...h.observations.map((o) => o.captures), h.final.captures]) {
+        const source = rows.find((c) => c.id === 'local')?.sources[0];
+        if (source) {
+          source.kind = 'system';
+          source.actor = 'system';
+        }
+      }
+    },
+    (h) => {
+      for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures])
+        rows.find((c) => c.id === 'system-initial').sources[0].actor = 'other-actor';
+    },
+    (h) =>
+      h.observations[0].captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
+    (h) => h.final.captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
   ];
   for (const alter of alters) {
     const bad = structuredClone(r);
@@ -2059,7 +2102,10 @@ function receiveDriverEvidence() {
       id,
       sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
     }),
-    before = [capsule('startup')],
+    before = [
+      capsule('startup'),
+      { id: 'system-initial', sources: [{ actor: 'system', kind: 'system', bytes: [0, 1] }] },
+    ],
     local = capsule('local');
   const actions = ['lost', 'offline', 'halt', 'local', 'publish', 'publish', 'restart'];
   const h = {
@@ -2385,7 +2431,28 @@ test('160 generated receive-driver corruptions reject skipped durable queries, f
     (h) => (h.requests[0].request += '00'),
     (h) => (h.requests[4].responseBody = h.requests[4].candidatePage),
     (h) => (h.wires[0] = 'bb'),
+    (h) => {
+      for (const rows of [...h.observations.map((o) => o.captures), h.final.captures]) {
+        const source = rows.find((c) => c.id === 'local')?.sources[0];
+        if (source) {
+          source.kind = 'system';
+          source.actor = 'system';
+        }
+      }
+    },
+    (h) => {
+      for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures])
+        rows.find((c) => c.id === 'system-initial').sources[0].actor = 'other-actor';
+    },
+    (h) =>
+      h.observations[0].captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
+    (h) => h.final.captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
   ];
+  for (const alter of alters) {
+    const bad = structuredClone(r);
+    alter(bad['generated-native.json'].histories[0]);
+    assert.throws(() => reconcileReceiveDriverEvidence(bad));
+  }
   fc.assert(
     fc.property(fc.nat(9), fc.nat(alters.length - 1), (i, k) => {
       const bad = structuredClone(r);

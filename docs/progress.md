@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: operator-release-hardening-stage-1
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked
+status: in flight
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: operator review of the unchanged human-only report source guard
+blocks_on: remaining test-only dispatch anchor, full-unit wrapper deadlines and receipt refresh
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -191,15 +191,15 @@ retains all eight phase236 refusals; upgrade checks pass 8 with the old skip, an
 first-authority passes (343). Both historical oversized-writer cases pass their
 original deadlines with all 168 pinned files checked (344).
 
-The complete receive-transport campaign now passes, including 16 generated
-histories, and all 55 wrapper unit tests pass. **Actual-report reconciliation is
-still red**: the old unchanged source guard accepts only `human`, while the real
-setup includes an initial `system` capture. [345](./development-evidence/2026-11-02-release-hardening/345-receive-model-guard-hold/README.md)
-preserves the refusal. Hold under the operator's guard-change stop rule; do not
-broaden the source-kind predicate without review. Six old 120-second full-unit
-wrapper deadlines and existing whole-tree receipt refresh also remain. Other
-previously failed campaigns' unrerun nested steps are not credited. Application
-source remains unchanged after Stage1. Stage2 has not started.
+The operator-approved narrow initial-system exception is complete in all three
+report wrappers. Real initial sources were checked first; all 15 wrapper cases
+pass, including explicit new-system and wrong-actor refusals plus observation and
+final byte-preservation controls. Actual HTTP/editor reports reconcile. [347](./development-evidence/2026-11-02-release-hardening/347-initial-system-source/README.md)
+retains the real driver campaign's newly reached missing dispatch-anchor failure;
+its standalone 10 generated histories pass. Next: signed-base attribution and
+test-only repair of that injection, then the six old 120-second full-unit wrapper
+deadlines and whole-tree receipt refresh. Previously unrerun nested steps are not
+credited. Application source is unchanged after Stage1. Stage2 has not started.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
