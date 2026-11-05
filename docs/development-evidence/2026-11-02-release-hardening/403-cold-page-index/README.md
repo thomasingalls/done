@@ -1,0 +1,9 @@
+# Cold page index — phase 403
+
+Fully verified binary histories can build semantic indexes with an explicit separately owned proof-byte observation. Missing observation retains reference fallback. The number grants no trust: full caller verification and its own encoding floor still precede indexing. All physical/logical32768 and visible/actual32MiB/shared/clone limits remain. Binary epoch comes from the original request via the common raw-byte classifier. Append binary fallback is unchanged.
+
+Four controls cover all8 admitted entries, interior extents after legacy prefixes, two genuinely certified publishers, physical witnesses and actual/proof/clone/counter-version refusals. Three discriminate the old fallback. The fourth initially used uncertified publishers and correctly refused; before/after/focused failures remain. Corrected only that fixture using genuine replacement admission and full certification. No before credit for the corrected case, no old test or guard changes. A recording-code generator's quoted-newline compile error is also preserved; it changed no canonical files and launched no producers.
+
+Final93 focused cases,4 unchanged generation/index cases and full313files/3107cases/one existing skip pass114.04s (command114.755s) at120s;240s unused. Types, quality,17 registry checks, inventory and10 controls pass. One source hash/eight matching line moves preserve all construction/obligation fields and add one required four-case file. [Attempts, identities and scope](./evidence.json).
+
+Cold here means full-history index construction, not browser/native cold opening. Counter fixtures are not authenticated native MAC/lease evidence. Binary append, per-load syntax ownership, mixed-reader permanent faults, dual audit units, writer/G8/B, compatibility/actual cold/rollback and Stage5 remain. No lab, trust/format/wire/default/limit/deadline change, performance/RAM/acceptance claim, commit, publication or deployment.

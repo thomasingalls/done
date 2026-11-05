@@ -7265,3 +7265,10 @@ The existing393 backing-buffer accountant belongs in verificationOwnership and i
 **Date:** 2026-11-04 · **Commit:** pending patch402
 
 The same existing flag expression controls cache installation and prospective accounting. Shared mode counts the union; clone mode counts the cloned view plus each independent visible record copy. Keep the real memo charge, old ceilings and full-reference fallback. Actual constructor observations prove both graph shapes. This closes401's qualification without changing trust, flags or constructors. [402 evidence](development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md).
+
+
+### Require an owned-proof observation before binary indexing
+
+**Date:** 2026-11-04 · **Commit:** pending patch403
+
+Smaller physical rows do not establish full ownership charge. Verified callers supply their real separately retained proof bytes; ports without that observation retain full reference fallback. This grants no trust or permission to omit full verification/floor checks. Binary epoch uses the original raw request via the common classifier; append reuse stays separate. [403 evidence](development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md).

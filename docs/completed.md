@@ -19125,3 +19125,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** The401 clone-mode qualification is closed: the actual unchanged constructors match shared union versus cloned view plus separately copied records. One existing ownership expression drives installation and initial/extend/final budget checks. Six controls fail before;89 focused,4 unchanged generation and full312files/3103cases/one existing skip pass113.93s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md).
 
 **Limits.** Fixture-observer contamination and AST finder mistake preserved and corrected; no old test edits or app failure. Binary fallback remains. Per-load/mixed/dual-audit/writer/lifecycle/final gates stay open. No RAM/performance acceptance claim. Outcome recorded before updating this seat's active state.
+
+
+### Build a bounded binary index after full verification
+
+**Date:** 2026-11-04 · **Commit:** pending patch403 · **Stage:** partial Stage3.2
+
+**Exit.** Binary full-history indexing requires explicit owner proof-byte observation and retains all bounds. Epoch uses the raw-byte classifier. Three controls discriminate fallback; a fourth uses genuine certification after a fixture refusal. Final93 focused,4 unchanged generation and full313files/3107cases/one existing skip pass114.04s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md).
+
+**Limits.** Fixture/recording failures preserved. No old test edits. Index construction is not native cold/MAC/lease evidence. Binary append fallback and all later mixed/owned-parse/dual-audit/writer/lifecycle/final gates remain. Outcome recorded before updating this seat's active state.

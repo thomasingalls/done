@@ -50,6 +50,7 @@ import { isHistoryInstallTag } from './historyInstall';
 import { hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import { countLedger } from './accountLedgerMetrics';
+import { membershipEventEpoch } from './accountMembership';
 
 type Expected = NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string };
 type SourceIndex = {
@@ -184,12 +185,12 @@ export async function indexVerifiedLedger(
   route: CaptureRoute,
   counter: ContentCounter,
   subtle: SubtleCrypto,
-  proofBytes = 0,
+  proofBytes?: number,
   recordOwnership: AccountRecordOwnership = 'shared',
 ): Promise<AccountLedgerIndexes | undefined> {
-  // Binary eligibility waits for logical work and actual owned-copy accounting. Never infer it
-  // from fewer physical rows. The independently verified full reference remains available.
-  if (view.census.entries.some((entry) => entry.extent)) return;
+  // A binary view also needs the owner's separately retained proof-byte observation. Syntax
+  // and smaller physical rows alone never establish a complete ownership charge.
+  if (view.census.entries.some((entry) => entry.extent) && proofBytes === undefined) return;
   if (
     counter.v !== 2 ||
     records.length > INDEX_MAX_ROWS ||
@@ -241,6 +242,12 @@ export async function indexVerifiedLedger(
   let epoch = 1;
   for (const row of records)
     if (!content(row)) {
+      if (row.bytes[0] !== 91) {
+        // Binary receipts are classified at the one raw-byte tag home. In particular their
+        // request epoch must never fall through to the legacy reader-id array field.
+        epoch = membershipEventEpoch(row.bytes);
+        continue;
+      }
       const f = fields(row);
       if (isInboundRecordTag(f[0]))
         epoch = decodeInboundRequest(decodeInboundRecord(row.bytes).request).epoch;

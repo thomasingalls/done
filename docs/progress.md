@@ -185,26 +185,28 @@ replay now consume every admitted entry under their original coverage/cut/prefix
 checks. All four stored paths have aged binary semantic controls. Census/witness
 stays physical; replay/progress/reading limits stay logical. Index accounting now adds
 logical/owned-buffer ceilings, including the real memo and final fresh replay
-graph in both ownership modes. Binary views still use the full reference until eligibility is hardened. Every phase outcome/failure
+graph in both ownership modes. Fully verified binary views can now build cold indexes with explicit proof-byte
+observation; append continuation still takes the full reference. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full312files/3103cases/one existing skip pass113.93s at120s;
-240s unused. Types,89 focused and4 unchanged generation/index controls pass,
-with reviewed registry/inventory. [Clone ownership accounting](./development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md)
-closes401's qualification using actual unchanged cache constructors. Six controls
-fail before; observer/finder mistakes retained. No old test edits or RAM claim.
+**Latest checks.** Full313files/3107cases/one existing skip pass114.04s at120s;
+240s unused. Types,93 focused and4 unchanged generation/index controls pass,
+with reviewed registry/inventory. [Cold page indexing](./development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md)
+keeps bounds/full caller verification. Initial uncertified fixture and recording
+failures remain; genuine history replaces only that fixture. No old test edits or
+native cold/MAC/lease/performance credit.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Binary index census/append eligibility under the
-hardened logical/owned bounds and explicit owner proof-byte observation. Keep
-complete exact prefix comparison, own-publisher/reference and authority fences,
-physical witness and chain-order semantics. Bound added logical work before
-expansion. Compare mixed legacy/page continuation to full replay; shared per-load
-syntax ownership and permanent stale-turn properties remain afterward.
+**Active bounded outcome.** Binary append continuation: shared closed census
+metadata, fixed-header logical-work preflight before expansion and explicit
+owner proof-byte observation. Keep complete exact prefix comparison,
+own-publisher/reference and installed-authority fences, physical witness and
+chain-order semantics. Compare mixed legacy/page continuation to full replay;
+shared per-load syntax ownership and permanent stale-turn properties follow.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
