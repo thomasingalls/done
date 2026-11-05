@@ -19428,3 +19428,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** Eight more root commands pass;first-authority stops at JSON layout after its functional/security checks pass. Preserve that failure and ten unattempted commands. All source pins remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).
 
 **Limits.** Failed partial coherent checkpoint, not Stage3closure or Stage5acceptance. All original case, recovery and performance deadlines remain. The nine later full-unit contract commands have not run. No canonical app or old test edits in434, no new lab, signing, push, release preparation, publication or deployment. B native fairness/past-index remains open; pause for commits beforeStage5. Outcome precedes advancing this seat.
+
+
+### Normalize construction registry layout without changing its tokens
+
+**Date:**2026-11-04 · **Commit:**pending patch435 · **Stage:**partial Stage3.2
+
+**Exit.** The first-authority format check is green with only registry layout and its derived inventory hash changed; all construction tokens and security obligations stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
+
+**Limits.** Bookkeeping correction only; no app, test body, assertion, format contract, deadline, trust or gate change. The failed434attempt remains. Ten commands73–82remain; B functional fairness/past-index is still open. The broader deferred test/harness formatting patch remains untouched. No Stage5, signing, push, release preparation, publication or deployment. Outcome precedes advancing this seat.

@@ -1161,7 +1161,7 @@
   ],
   "inputs": [
     {"path":".oxfmtrc.json","sha256":"2571a599d0e900345d6fd483978eb10800e692aa17971c5ac9cd66916ed4dc32"},
-    {"path":"docs/account-crypto/constructions.json","sha256":"043caeab701213c6135c4e3d27e08a3259c5eb052f0fd02454e9d70da73049c4"},
+    {"path":"docs/account-crypto/constructions.json","sha256":"168b8abf6bf5531485d6344de27906f8b996477b31a8bc01314a97984ca47e15"},
     {"path":"package.json","sha256":"0f36597716b4ee2785570a7bafaa0b9e1891510bfbfb812fc998007920a52c02"},
     {"path":"playwright.account-setup.config.ts","sha256":"66c51aa38cd07b78e41b5d65d3074425bad484f9151cc82d095ff39273535798"},
     {"path":"playwright.account-upgrade.config.ts","sha256":"f638f6123dc27423cce81ef46732d5f5695dc3fad151edfe08d6516acfd99327"},

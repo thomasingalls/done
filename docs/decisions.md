@@ -7489,3 +7489,10 @@ Do not expand the joint omission to the pre-existing async branch. The two-space
 **Date:**2026-11-04 · **Commit:**pending patch434
 
 Keep the failed formatting attempt. Normalize the mutable construction registry layout in a separate patch with independent parsed-value and complete-token identity checks, preserving every contract and source address. The earlier deferred test/harness formatting patch stays untouched. A separate source review must account for the remaining recovery full-unit invocation under the operator’s already approved240s full-unit hang guard; its focused recovery deadline must stay120s. [Evidence](development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).
+
+
+### Keep construction registry values exact while satisfying its existing format check
+
+**Date:**2026-11-04 · **Commit:**pending patch435
+
+Normalize this mutable registry’s layout rather than remove or relax the formatter. Verify both its entire token sequence and parsed values independently, then update only its inventory source hash. This does not authorize or apply the earlier deferred test/harness formatting patch. [Evidence](development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
