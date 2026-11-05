@@ -1,3 +1,4 @@
+import { RECEIVE_GROUP_LIMIT } from '../src/crdt/receiveLimits';
 import { expect, it } from 'vitest';
 import {
   createReceiveSelection,
@@ -12,21 +13,15 @@ it('stays with useful pages but bounds peer starvation; empty self reads do not 
   const s = createReceiveSelection(),
     publishers = ['self', 'peer', 'third'];
   const seen: string[] = [];
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 2 * RECEIVE_GROUP_LIMIT + 3; i++) {
     const id = s.next(publishers);
     seen.push(id);
     s.completed(publishers, id, id !== 'self');
   }
   expect(seen).toEqual([
     'self',
-    'peer',
-    'peer',
-    'peer',
-    'peer',
-    'third',
-    'third',
-    'third',
-    'third',
+    ...Array(RECEIVE_GROUP_LIMIT).fill('peer'),
+    ...Array(RECEIVE_GROUP_LIMIT).fill('third'),
     'self',
     'peer',
   ]);
@@ -46,13 +41,16 @@ it('skips recently verified own polls while preserving every peer turn and the p
   expect(s.next(publishers, own)).toBe('self');
   s.completed(publishers, 'self', false, true);
   const seen = [];
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 6 * RECEIVE_GROUP_LIMIT; i++) {
     const selected = s.next(publishers, own);
     seen.push(selected);
     s.completed(publishers, selected, true);
   }
   expect(seen).toEqual(
-    Array.from({ length: 3 }, () => [...Array(4).fill('peer'), ...Array(4).fill('third')]).flat(),
+    Array.from({ length: 3 }, () => [
+      ...Array(RECEIVE_GROUP_LIMIT).fill('peer'),
+      ...Array(RECEIVE_GROUP_LIMIT).fill('third'),
+    ]).flat(),
   );
   now += RECEIVE_POLL_MS;
   expect(s.next(publishers, own)).toBe('self');
@@ -64,7 +62,7 @@ it('unresolved submissions bypass own-poll suppression without starving another 
   const own = { publisher: 'self', pending: false };
   expect(s.next(publishers, own)).toBe('self');
   s.completed(publishers, 'self', false, true);
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < RECEIVE_GROUP_LIMIT; i++) {
     expect(s.next(publishers, own)).toBe('peer');
     s.completed(publishers, 'peer', true);
   }
@@ -104,12 +102,12 @@ it('does not suppress own polling after an unverified result, a reset, or a cloc
   s.completed(publishers, 'peer', false);
   expect(s.next(publishers, own)).toBe('self');
   s.completed(publishers, 'self', false, true);
-  for (let i = 0; i < 4; i++) s.completed(publishers, 'peer', true);
+  for (let i = 0; i < RECEIVE_GROUP_LIMIT; i++) s.completed(publishers, 'peer', true);
   expect(s.next(publishers, own)).toBe('peer');
   s.reset();
   expect(s.next(publishers, own)).toBe('self');
   s.completed(publishers, 'self', false, true);
-  for (let i = 0; i < 4; i++) s.completed(publishers, 'peer', true);
+  for (let i = 0; i < RECEIVE_GROUP_LIMIT; i++) s.completed(publishers, 'peer', true);
   now--;
   expect(s.next(publishers, own)).toBe('self');
 });
@@ -117,7 +115,7 @@ it('does not suppress own polling after an unverified result, a reset, or a cloc
 it('does not transfer a completed own check to a new credential', () => {
   const s = createReceiveSelection(() => 1000);
   s.completed(['old', 'peer'], 'old', false, true);
-  for (let i = 0; i < 4; i++) s.completed(['new', 'peer'], 'peer', true);
+  for (let i = 0; i < RECEIVE_GROUP_LIMIT; i++) s.completed(['new', 'peer'], 'peer', true);
   expect(s.next(['new', 'peer'], { publisher: 'new', pending: false })).toBe('new');
 });
 
@@ -147,10 +145,10 @@ it('caps a group by the remaining publisher turn, including a partial preceding 
     publishers = ['a', 'b'];
   expect(s.next(publishers)).toBe('a');
   s.completed(publishers, 'a', true);
-  expect(s.capacity('a')).toBe(3);
-  for (let i = 0; i < 3; i++) s.completed(publishers, 'a', true);
+  expect(s.capacity('a')).toBe(RECEIVE_GROUP_LIMIT - 1);
+  for (let i = 0; i < RECEIVE_GROUP_LIMIT - 1; i++) s.completed(publishers, 'a', true);
   expect(s.next(publishers)).toBe('b');
-  expect(s.capacity('b')).toBe(4);
+  expect(s.capacity('b')).toBe(RECEIVE_GROUP_LIMIT);
 });
 
 it('uses fresh peer backlog to retain a verified self check across intervening empty peers', () => {
@@ -164,25 +162,14 @@ it('uses fresh peer backlog to retain a verified self check across intervening e
     s.completed(publishers, id, id === 'busy', id === 'self');
   }
   expect(seen.filter((id) => id === 'self')).toEqual(['self']);
-  expect(seen.filter((id) => id !== 'self').slice(0, 18)).toEqual([
+  expect(seen.filter((id) => id !== 'self').slice(0, 2 * (RECEIVE_GROUP_LIMIT + 3) + 1)).toEqual([
+    ...Array.from({ length: 2 }, () => [
+      'quiet-a',
+      'quiet-b',
+      'quiet-c',
+      ...Array(RECEIVE_GROUP_LIMIT).fill('busy'),
+    ]).flat(),
     'quiet-a',
-    'quiet-b',
-    'quiet-c',
-    'busy',
-    'busy',
-    'busy',
-    'busy',
-    'quiet-a',
-    'quiet-b',
-    'quiet-c',
-    'busy',
-    'busy',
-    'busy',
-    'busy',
-    'quiet-a',
-    'quiet-b',
-    'quiet-c',
-    'busy',
   ]);
 });
 
@@ -437,7 +424,7 @@ it('a hint fences an in-flight empty reply without discarding useful completions
     old = f.token();
   f.s.completed(f.publishers, 'busy', true);
   f.s.invalidateQuiet();
-  expect(f.s.capacity('busy')).toBe(3);
+  expect(f.s.capacity('busy')).toBe(RECEIVE_GROUP_LIMIT - 1);
   expect(f.s.completedQuiet(old, 'empty')).toBe(false);
   expect(f.selected()).toBe('quiet');
   const names = ['self', 'quiet', 'busy'];
@@ -533,7 +520,7 @@ it('evicts to safe re-probing at128 publishers instead of disabling another stre
   s.completed(names, 'quiet127', false);
   expect(s.next(names, own, { context, peers })).toBe('busy');
 });
-it('preserves four-useful-page opportunities and due quiet rechecks across publisher orders', () => {
+it('preserves eight-useful-position opportunities and due quiet rechecks across publisher orders', () => {
   const permutations = (values: string[]): string[][] =>
     values.length < 2
       ? [values]
@@ -569,7 +556,7 @@ it('preserves four-useful-page opportunities and due quiet rechecks across publi
     expect(quietAfterExpiry).toBe(true);
     expect(seen).toContain('a');
     expect(seen).toContain('b');
-    expect(seen.join(',')).not.toMatch(/(a,){4}a|(b,){4}b/);
+    expect(seen.join(',')).not.toMatch(/(a,){8}a|(b,){8}b/);
   }
 });
 

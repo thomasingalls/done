@@ -7370,3 +7370,10 @@ A compact page counts once physically and once per admitted received position lo
 **Date:**2026-11-04 · **Commit:**pending patch417
 
 Use one private scheduler port and the real maintenance-task brand, observing the existing foreground token set. Keep independent full comparison, all guards and a fallback for owners without this scheduler. A hard cap forces an attempt only; interruption still wins. Reduced and unreduced oracle lifetimes remain separate. [Evidence](development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
+
+
+### Keep native G8 independent from the production four-position request width
+
+**Date:**2026-11-04 · **Commit:**pending patch418
+
+Use the approved eight-position selector/native allowance and split writer-on requests at4. Preserve all native byte/record and protocol/rate/queue limits. Update exact four-position boundary fixtures without removing cases, assertions, seeds or deadlines; preserve every red attempt. Harden combined transport/cache/tail reservations separately before activation. [Evidence](development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).

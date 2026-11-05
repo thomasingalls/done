@@ -1,7 +1,7 @@
 import { publicationState, type DeliveryState } from './deliveryRecord';
 import { RECEIVE_POLL_MS } from './accountReceiveDriver';
 import type { InboundReadCursor } from './inboundLedger';
-import { RECEIVE_GROUP_LIMIT } from './receiveGroup';
+import { RECEIVE_GROUP_LIMIT, RECEIVE_READ_WIDTH } from './receiveLimits';
 import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
 
@@ -14,14 +14,17 @@ export function receivePageWidths(
   positions: number,
   backlog: number,
 ): readonly number[] {
-  return rangeWriter ? [receiveDownloadWidth(positions, backlog)] : receiveReadWidths(positions, 1);
+  if (!rangeWriter) return receiveReadWidths(positions, 1);
+  // Validate even a shortened backlog before splitting the existing native allowance.
+  receiveDownloadWidth(positions, backlog);
+  return receiveReadWidths(Math.min(positions, Math.max(1, backlog)), RECEIVE_READ_WIDTH);
 }
 
-/** Align a partial native turn first; a full turn may download two turns of raw originals. */
+/** Align a partial native turn; each production request stays at the selected four-position width. */
 export function receiveDownloadWidth(
   positions: number,
   backlog: number,
-  width = READ_COUNT_LIMIT,
+  width = RECEIVE_READ_WIDTH,
 ): number {
   if (
     !Number.isSafeInteger(positions) ||
@@ -288,7 +291,7 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       streak = progress ? (previous === publisher ? streak + positions : positions) : 0;
       previous = publisher;
       productive = progress;
-      // Four verified positions, then let other publishers reconcile. Network pages and ranges
+      // Eight verified positions, then let other publishers reconcile. Network pages and ranges
       // consume the same allowance; input and due sending still get their existing group yield.
       if (progress && streak < RECEIVE_GROUP_LIMIT) next = index;
       else {

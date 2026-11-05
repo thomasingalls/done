@@ -14,7 +14,7 @@ it('request widths consume the existing position allowance and split only at the
   expect(receiveReadWidths(4, 2)).toEqual([2, 2]);
   for (const [count, width] of [
     [0, 4],
-    [5, 4],
+    [9, 4],
     [1.5, 4],
     [4, 0],
     [4, 9],
@@ -22,11 +22,11 @@ it('request widths consume the existing position allowance and split only at the
   ])
     expect(() => receiveReadWidths(count!, width!)).toThrow();
 });
-it('four verified positions rotate even when they arrive in one page', () => {
+it('eight verified positions rotate even when they arrive in one page', () => {
   const s = createReceiveSelection(),
     ps = [pub(1), pub(2), pub(3)];
   expect(s.next(ps)).toBe(ps[0]);
-  s.completed(ps, ps[0]!, true, false, 4);
+  s.completed(ps, ps[0]!, true, false, 8);
   expect(s.next(ps)).toBe(ps[1]);
 });
 it('a short range consumes only its actual verified positions', () => {
@@ -34,26 +34,26 @@ it('a short range consumes only its actual verified positions', () => {
     ps = [pub(1), pub(2)];
   s.next(ps);
   s.completed(ps, ps[0]!, true, false, 2);
-  expect(s.capacity(ps[0]!)).toBe(2);
+  expect(s.capacity(ps[0]!)).toBe(6);
   expect(s.next(ps)).toBe(ps[0]);
-  s.completed(ps, ps[0]!, true, false, 2);
+  s.completed(ps, ps[0]!, true, false, 6);
   expect(s.next(ps)).toBe(ps[1]);
 });
 it('bad or excessive position credit refuses before changing the publisher turn', () => {
   const s = createReceiveSelection(),
     ps = [pub(1), pub(2)];
   s.next(ps);
-  s.completed(ps, ps[0]!, true, false, 3);
+  s.completed(ps, ps[0]!, true, false, 7);
   expect(s.capacity(ps[0]!)).toBe(1);
-  for (const count of [0, 2, 4, 5, -1, 1.5, NaN])
+  for (const count of [0, 2, 8, 9, -1, 1.5, NaN])
     expect(() => s.completed(ps, ps[0]!, true, false, count)).toThrow();
   expect(s.capacity(ps[0]!)).toBe(1);
   expect(s.next(ps)).toBe(ps[0]);
 });
-it('weighted mixed range sizes cannot extend a turn beyond four positions', () => {
+it('weighted mixed range sizes cannot extend a turn beyond eight positions', () => {
   fc.assert(
     fc.property(
-      fc.array(fc.integer({ min: 1, max: 4 }), { minLength: 1, maxLength: 120 }),
+      fc.array(fc.integer({ min: 1, max: 8 }), { minLength: 1, maxLength: 120 }),
       (sizes) => {
         const ps = [pub(1), pub(2), pub(3)],
           s = createReceiveSelection();
@@ -63,7 +63,7 @@ it('weighted mixed range sizes cannot extend a turn beyond four positions', () =
           const p = s.next(ps),
             count = Math.min(requested, s.capacity(p));
           total = p === previous ? total + count : count;
-          expect(total).toBeLessThanOrEqual(4);
+          expect(total).toBeLessThanOrEqual(8);
           s.completed(ps, p, true, false, count);
           previous = p;
         }

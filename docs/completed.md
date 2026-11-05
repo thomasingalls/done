@@ -19262,3 +19262,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** The unreduced full oracle now runs in the existing guarded idle-audit job. Two new native regressions, a discriminating comparison omission, two unchanged native cases,72focused cases and full327files/3193pass/one skip pass. Full suite136.43s; no guard or deadline change. [Evidence](development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
 
 **Limits.** The generic oracle-disagreement hook does not close the later actual dense stale-turn/Worker control. No composed-peer binary native transaction, physical31s interior cold, final rollback image, RAM or performance acceptance credit. G8/B, format-floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/budget/gate change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Separate eight-position native turns from four-position wire requests
+
+**Date:**2026-11-04 · **Commit:**pending patch418 · **Stage:**partial Stage3.2
+
+**Exit.** G8 and actual four-position request planning are hardened with five new controls. Seven old boundary fixtures retain all cases/assertions/seeds/deadlines. Final164focused and full328files/3198pass/one skip pass129.49s; all prior failures retained. [Evidence](development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).
+
+**Limits.** Combined cache/tail/wire eight-entry/32-position reservations remain the next phase, so this is not complete B coverage. No real composed-peer binary native transaction,31s interior cold, rollback image, RAM or timing acceptance credit. Floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain; no wire/service change, commit or deployment. Outcome precedes advancing this seat.

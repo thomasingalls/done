@@ -1369,7 +1369,7 @@
     },
     {
       "path": "src/crdt/receiveLimits.ts",
-      "sha256": "af79b6cab6bd7aba88d239c4178413ab9c70d1e501cc63807b8a0915963d935f"
+      "sha256": "6b64232220f8b984199e7562f70a00c3da3587532a17754b3dd91060783ce61d"
     },
     {
       "path": "src/crdt/receivePageTransport.ts",
@@ -1393,7 +1393,7 @@
     },
     {
       "path": "src/crdt/receiveSelection.ts",
-      "sha256": "e1c815d4be3bacb65a0ced18d5cc04706be1269211142cf497d2a2b4022d57ba"
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f"
     },
     {
       "path": "src/crdt/recoveryOwner.worker.ts",

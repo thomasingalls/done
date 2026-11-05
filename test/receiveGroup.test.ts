@@ -14,7 +14,7 @@ it('refuses truncation, excess pages, zero lengths and oversized queue inputs', 
   for (const n of [0, 1, 3, 4, 6, 7, 8, 9])
     expect(() => unpackReceivePages(packed.slice(0, n))).toThrow();
   expect(() => unpackReceivePages(new Uint8Array(4))).toThrow();
-  expect(() => packReceivePages(Array.from({ length: 5 }, () => new Uint8Array([1])))).toThrow();
+  expect(() => packReceivePages(Array.from({ length: 9 }, () => new Uint8Array([1])))).toThrow();
   expect(() => packReceivePages([new Uint8Array(MAX_BATCH_BYTES)])).toThrow();
   expect(() => unpackReceivePages(new Uint8Array(MAX_BATCH_BYTES + 1))).toThrow();
 });

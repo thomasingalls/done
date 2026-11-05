@@ -95,7 +95,7 @@ it('partial-turn allowance cannot silently admit the rest of an eight-entry page
   expect((await prepare(x.context, x.request, x.page, live, 2)).map((r) => r.position)).toEqual([
     1, 2,
   ]);
-  for (const n of [0, 5, 8, -1, NaN, 1.5])
+  for (const n of [0, 9, 16, -1, NaN, 1.5])
     await expect(prepare(x.context, x.request, x.page, live, n)).rejects.toThrow();
 });
 it('fresh continuation refuses expiry, changed native link, old retained evidence and a consumed page', async () => {
