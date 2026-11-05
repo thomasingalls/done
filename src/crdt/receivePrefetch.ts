@@ -18,8 +18,16 @@ export async function collectReceivePages(
   read: (index: number, signal: AbortSignal, limit: number) => Promise<Bytes | null>,
   more: (page: Bytes) => boolean,
   now: () => number = () => performance.now(),
+  maxBytes = MAX_PENDING_BYTES,
 ): Promise<{ pages: Bytes[]; attempted: number }> {
-  if (!Number.isInteger(count) || count < 1 || count > RECEIVE_GROUP_LIMIT)
+  if (
+    !Number.isInteger(count) ||
+    count < 1 ||
+    count > RECEIVE_GROUP_LIMIT ||
+    !Number.isSafeInteger(maxBytes) ||
+    maxBytes < RECEIVE_SINGLE_PAGE_BYTES + 4 ||
+    maxBytes > MAX_PENDING_BYTES
+  )
     throw Error('Invalid receive prefetch count');
   const stop = new AbortController(),
     stopped = AbortSignal.any([signal, stop.signal]),
@@ -34,7 +42,7 @@ export async function collectReceivePages(
       slots.length < count &&
       slots.length < cursor + RECEIVE_PREFETCH_LIMIT &&
       now() - began < RECEIVE_COLLECT_MS &&
-      held + RECEIVE_SINGLE_PAGE_BYTES + 4 <= MAX_PENDING_BYTES
+      held + RECEIVE_SINGLE_PAGE_BYTES + 4 <= maxBytes
     ) {
       stopped.throwIfAborted();
       const index = slots.length,

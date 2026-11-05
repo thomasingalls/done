@@ -189,11 +189,17 @@ hint/read state and the existing idle scheduler. It preserves first-miss delay,
 all verification, failure backoff, halts and maintenance readiness. No timings or
 Stage 5 credit are claimed. Development fixture/type failures remain recorded.
 
-**Next bounded outcome.** E coalesces bounded raw quiet responses, consuming them
-only at their original selector turn with fresh verification. Keep 750 ms
-eligibility, 5-second self checks, round robin/send yielding, request-start age,
-exact bytes and erasure. Prove clocks, context/cursor/through, cancellation,
-expiry, malformed/mismatched/out-of-order batches, fairness and old tabs. Then
-run the Stage 2 full-suite checkpoint. No range writer, server or wire change.
+**E primitives complete.** [360](./development-evidence/2026-11-02-release-hardening/360-quiet-original-primitives/README.md)
+records 127 focused cases, two exact fault controls, strict types, scoped quality
+and inventory checks. The raw cache and mixed-response seam share the existing
+byte cap; no native turn or verified prefix advances from cached evidence. Quiet
+expiry follows the required request-start clock. Owner integration is not done.
+
+**Next bounded outcome.** Consume quiet originals only at their native selector
+turn with fresh verification; coalesce due quiet requests into spare existing
+batch slots. Keep 750 ms eligibility, 5-second self checks, round robin/send
+yielding, request-start age and erasure. Add continuous fairness and lifecycle
+controls, then run the Stage 2 full-suite checkpoint. No range writer, server or
+wire change. Format approval remains a later operator stop.
 
 This seat edits only this document;the other seat's document above is unchanged.

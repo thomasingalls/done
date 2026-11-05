@@ -77,7 +77,7 @@ export function hasPeerBacklog(
 
 export const RECEIVE_QUIET_MS = 750;
 const MAX_QUIET_PUBLISHERS = 128;
-type QuietBasis = {
+export type QuietReceiveBasis = {
   context: object;
   publisher: string;
   position: number;
@@ -86,24 +86,39 @@ type QuietBasis = {
   startingPosition: number | undefined;
   startingLink: string | undefined;
 };
-const quietCursor = (cursor: InboundReadCursor) =>
+export const isQuietReceiveCursor = (cursor: InboundReadCursor) =>
   !cursor.conflict &&
   Number.isSafeInteger(cursor.prefix.position) &&
   cursor.prefix.position >= 0 &&
   cursor.prefix.observedThrough === cursor.prefix.position;
-const sameQuietCursor = (held: QuietBasis, cursor: InboundReadCursor) =>
-  quietCursor(cursor) &&
+export const sameQuietReceiveCursor = (held: QuietReceiveBasis, cursor: InboundReadCursor) =>
+  isQuietReceiveCursor(cursor) &&
   held.position === cursor.prefix.position &&
   held.link === cursor.prefix.link &&
   held.observedThrough === cursor.prefix.observedThrough &&
   held.startingPosition === cursor.startingPoint?.position &&
   held.startingLink === cursor.startingPoint?.link;
 
+/** Exact scheduling basis from an already authenticated projection; not a verification proof. */
+export function quietReceiveBasis(context: object, publisher: string, cursor: InboundReadCursor) {
+  return isQuietReceiveCursor(cursor)
+    ? {
+        context,
+        publisher,
+        position: cursor.prefix.position,
+        link: cursor.prefix.link,
+        observedThrough: cursor.prefix.observedThrough,
+        startingPosition: cursor.startingPoint?.position,
+        startingLink: cursor.startingPoint?.link,
+      }
+    : undefined;
+}
+
 /** Scheduling only. A selected publisher and every returned page still require fresh authority. */
 export function createReceiveSelection(now: () => number = Date.now, quietBudget = false) {
-  const quiet = new Map<string, QuietBasis & { at: number }>();
+  const quiet = new Map<string, QuietReceiveBasis & { at: number }>();
   // Opaque single-use tokens. Replacing the map fences pre-hint completions without aborting I/O.
-  let attempts = new WeakMap<object, QuietBasis>();
+  let attempts = new WeakMap<object, QuietReceiveBasis & { at: number }>();
   let lastQuietClock: number | undefined;
   const invalidateQuiet = () => {
     quiet.clear();
@@ -122,20 +137,14 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
   return {
     invalidateQuiet,
     captureQuiet(context: object, publisher: string, cursor: InboundReadCursor) {
-      if (!quietBudget || !quietCursor(cursor)) return undefined;
+      if (!quietBudget) return undefined;
+      const basis = quietReceiveBasis(context, publisher, cursor);
+      if (!basis) return undefined;
       const at = now();
       observeClock(at);
       if (!Number.isFinite(at)) return undefined;
       const token = {};
-      attempts.set(token, {
-        context,
-        publisher,
-        position: cursor.prefix.position,
-        link: cursor.prefix.link,
-        observedThrough: cursor.prefix.observedThrough,
-        startingPosition: cursor.startingPoint?.position,
-        startingLink: cursor.startingPoint?.link,
-      });
+      attempts.set(token, { ...basis, at });
       return token;
     },
     completedQuiet(token: object | undefined, kind: string) {
@@ -146,9 +155,15 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       attempts.delete(token);
       if (!held) return false;
       quiet.delete(held.publisher);
-      if (kind !== 'empty' || !Number.isFinite(at)) return false;
+      if (
+        kind !== 'empty' ||
+        !Number.isFinite(at) ||
+        at < held.at ||
+        at - held.at >= RECEIVE_QUIET_MS
+      )
+        return false;
       if (quiet.size >= MAX_QUIET_PUBLISHERS) quiet.delete(quiet.keys().next().value!);
-      quiet.set(held.publisher, { ...held, at });
+      quiet.set(held.publisher, held);
       return true;
     },
     reset() {
@@ -204,7 +219,7 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
           )
             break;
           const cursor = view.peers?.get(publisher) ?? view.cursor?.(publisher);
-          if (!cursor || !sameQuietCursor(held, cursor)) break;
+          if (!cursor || !sameQuietReceiveCursor(held, cursor)) break;
           publisher = pick();
         }
       }

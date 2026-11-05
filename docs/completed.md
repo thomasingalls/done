@@ -18716,3 +18716,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Verified quiet discovery without an intervening hint arms 1-second idle reconciliation for 30 seconds. Hot reads do not arm it; first-miss delay, retry backoff, halts, fairness and maintenance readiness remain. Fourteen new and 92 existing focused cases pass, with strict types, scoped lint/format and inventory checks. Two declared faults fail their exact intended regressions and restore good bytes. [Evidence and limits](development-evidence/2026-11-02-release-hardening/359-receive-repair-polling/README.md).
 
 **Limit.** No performance or Stage 5 credit. All verification and commit paths remain; state is ephemeral and erased on owner/authority/clock invalidation. Stage 2's full-suite checkpoint follows E. The Stage 1 final-tree receipt refresh passed and is preserved. Record before advancing progress.
+
+
+### E primitives bound quiet originals and fresh transport together
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 360 · **Stage:** operator hardening Stage 2
+
+**Exit.** Raw quiet cache, generation/erasure/cursor guards and shared response reservation pass 127 focused cases, strict types, scoped lint/format and inventory checks. Two declared faults fail exact assertions and restore source. Quiet proof age is now measured from request capture, under the unchanged 750 ms bound; one old expiry test follows that explicitly approved contract and adds the former later point as a non-reuse check. [Evidence](development-evidence/2026-11-02-release-hardening/360-quiet-original-primitives/README.md).
+
+**Limit.** Cache and extended transport are not yet wired into the owner. No new rows, server/wire change or Stage 5 credit. Next is E owner integration, then the full Stage 2 checkpoint. Record before advancing progress.

@@ -46,13 +46,22 @@ export function createReceivePageTransport() {
     io: ReceivePageIO,
     more: (page: Bytes) => boolean,
     publisher?: string,
-  ): Promise<{ pages: Bytes[]; attempted: number }> => {
+    collection?: { primaryCount: number; maxBytes: number },
+  ): Promise<{ pages: Bytes[]; attempted: number; quietPages?: Bytes[] }> => {
     if (active) throw Error('Overlapping receive transport');
+    const primaryCount = collection?.primaryCount ?? requests.length,
+      maxBytes = collection?.maxBytes ?? MAX_PENDING_BYTES;
     if (
       (publisher !== undefined &&
         (typeof publisher !== 'string' || !/^[0-9a-f]{32}$/.test(publisher))) ||
       !requests.length ||
       requests.length > RECEIVE_GROUP_LIMIT ||
+      !Number.isInteger(primaryCount) ||
+      primaryCount < 1 ||
+      primaryCount > requests.length ||
+      !Number.isSafeInteger(maxBytes) ||
+      maxBytes < RECEIVE_SINGLE_PAGE_BYTES + 4 ||
+      maxBytes > MAX_PENDING_BYTES ||
       requests.some((r) => !(r instanceof Uint8Array) || !r.length || r.length > READ_REQUEST_LIMIT)
     )
       throw Error('Invalid receive requests');
@@ -62,13 +71,14 @@ export function createReceivePageTransport() {
       reply: Bytes | null = null,
       decoded: Bytes[] = [],
       pages: Bytes[] = [],
+      quietPages: Bytes[] = [],
       complete = false;
     active = true;
     try {
       stopped.throwIfAborted();
       const individual = () =>
         collectReceivePages(
-          captured.length,
+          primaryCount,
           stopped,
           async (i, stop, limit) => {
             const outgoing = new Uint8Array(captured[i]!);
@@ -79,6 +89,8 @@ export function createReceivePageTransport() {
             }
           },
           more,
+          undefined,
+          maxBytes,
         );
       if (
         !available ||
@@ -88,7 +100,7 @@ export function createReceivePageTransport() {
       )
         return await individual();
       const count = Math.min(captured.length, BATCH_COUNT),
-        limit = BATCH_LIMIT;
+        limit = Math.min(BATCH_LIMIT, maxBytes);
       body = encodeInboundBatch(captured.slice(0, count));
       let unsupported = false;
       // Only an absent route or an aggregate HTTP byte limit selects individual reads.
@@ -109,22 +121,26 @@ export function createReceivePageTransport() {
       if (
         decoded.length > count ||
         decoded.some((p) => p.length > RECEIVE_SINGLE_PAGE_BYTES) ||
-        decoded.reduce((n, p) => n + p.length + 4, 0) > MAX_PENDING_BYTES
+        decoded.reduce((n, p) => n + p.length + 4, 0) > maxBytes
       )
         throw Error('Invalid receive batch pages');
-      for (const page of decoded) {
+      for (const page of decoded.slice(0, primaryCount)) {
         pages.push(page);
         // Unverified hints can shorten collection, never authorize it or advance a cursor.
         if (!more(page)) break;
       }
+      // Extra publishers remain unverified originals, and never extend the primary
+      // prefix or its logical progress. They will re-enter at their own selector turn.
+      quietPages = decoded.slice(primaryCount);
       stopped.throwIfAborted();
       complete = true;
-      return { pages, attempted: pages.length };
+      return { pages, attempted: pages.length, ...(collection ? { quietPages } : {}) };
     } finally {
       body?.fill(0);
       reply?.fill(0);
       for (const r of captured) r.fill(0);
-      for (const p of decoded) if (!complete || !pages.includes(p)) p.fill(0);
+      for (const p of decoded)
+        if (!complete || (!pages.includes(p) && !quietPages.includes(p))) p.fill(0);
       active = false;
     }
   };

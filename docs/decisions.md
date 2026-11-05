@@ -7020,3 +7020,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Date:** 2026-11-02 · **Commit:** pending sequential patch 359
 
 **Decision.** Use a per-owner bounded history and opaque hint generations rather than a process-global or persisted counter. Date each read's hint generation at preparation; a hint during I/O must prevent activation. Record hot reads but arm only on quiet discovery, and conservatively require a prior verified read of the same peer. Keep the first-missed-hint limitation explicit. Apply R only through the existing successful-idle scheduling port; never change failure backoff, maintenance readiness, authority or commit.
+
+
+### Cached quiet originals share the existing response budget and expire from request start
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 360
+
+**Decision.** Retain only exact original bytes under a generation-fenced capture, never a reusable verification result. Count their request/page bytes against the next fetch reservation. Keep speculative quiet replies separate from the primary prefix, and drop speculative requests on legacy fallback. Use the shared exact cursor-basis comparison for selection and cache ownership. Apply the operator-required request-start age even when verification completes later; update the one old completion-clock expectation to the stronger boundary without changing the 750 ms limit.

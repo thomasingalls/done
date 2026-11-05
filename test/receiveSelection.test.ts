@@ -372,14 +372,16 @@ const quietFixture = () => {
     },
   };
 };
-it('expires a quiet publisher at exactly750ms from verified completion', () => {
+it('expires a quiet publisher at exactly750ms from request start despite delayed verification', () => {
   const f = quietFixture(),
     token = f.token();
   f.at(1300);
   expect(f.s.completedQuiet(token, 'empty')).toBe(true);
-  f.at(2049);
+  f.at(1749);
   expect(f.selected()).toBe('busy');
-  f.at(2050);
+  f.at(1750);
+  expect(f.selected()).toBe('quiet');
+  f.at(2049);
   expect(f.selected()).toBe('quiet');
 });
 it('compares target cursor values across detached projections, independent of another publisher', () => {
