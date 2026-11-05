@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: blocked
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: operator decision after double omission still has no durable receive advance
+blocks_on: operator approval of narrow sync report source-kind policy
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -218,11 +218,27 @@ omitting recordResponse also omits the decision write. The scheduler rereads
 authenticated durable state rather than accepting a transport result as progress.
 Do not invent an acknowledgment, write, or cursor to make this control advance.
 
-A supported Worker receive handoff without recordResponse is identified; retain
-its original single-omission control when work resumes. That control,
-classification, full sync exit, the ten later contract commands and receipt/trace
-refresh remain pending. Application source and Vite config are unchanged after
-Stage1. Stage2 has not started. Await the operator's next direction.
+The operator retired the non-discriminating double arm, preserving352 as evidence.
+[353](./development-evidence/2026-11-02-release-hardening/353-worker-self-control/README.md)
+adds the genuine Worker handoff control: baseline0 with exact native storage
+unchanged; self-envelope omission persists/promotes the fork and advances to1.
+All5 native controls pass, including classification. The normal UI's own stream
+uses composed selfOnly plus recordResponse, not this retained explicit receive API.
+
+The complete sync command passes all six children:76 passed,6 existing skips,
+including8 generated histories. All1,551 source pins independently match. Canonical
+wrapper/inventory regressions pass66, and final sync wrapper regressions pass6.
+Actual report reconciliation stops at sync's existing system-versus-human guard:
+each history retains one unchanged initial system capture; every new capture is
+human. The previously approved initial-system rule covered three other wrappers.
+
+Hold for the operator's concrete two-file sync report patch. It also constrains
+the current network-unavailable label to the affected retrying lost-reply lane,
+with positive failures and the existing HTTP-loss proof. The isolated proposal
+passes actual reports and5 focused cases; it remains unapplied and earns no
+canonical credit. Ten later contract commands and receipt/trace refresh remain.
+No app changes after Stage1; no Stage2, publication or deployment. The optional
+global-lint failure on three unchanged historical evidence files remains recorded.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

@@ -18655,3 +18655,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The approved baseline and single-omission assertions pass: integrity versus both-lane conflict, position0, active editor, exact content/inbound preservation. The single omission records one conflict decision, reported separately. Both uniquely anchored omissions still yield position0, not the required1; stop at that predicate. [Every run, storage observation and live path](development-evidence/2026-11-02-release-hardening/352-layered-self-control/README.md).
 
 **Notes.** The self-only path does not append inbound data, and removing recordResponse removes its only decision write; the scheduler derives progress from authenticated storage. No fake progress/acknowledgment or additional omission is introduced. Preserve the first transient-state observation failure and corrected terminal run. Worker compatibility receive path identified; its original control and classification remain unrun under the explicit stop. No app changes. Record before advancing the active hold.
+
+
+### Real Worker omission discriminates; classification and full sync pass
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch353 · **Stage:** operator hardening Stage1 checkpoint
+
+**Exit.** Retire the operator-corrected double arm; retain352 as evidence, not a third discriminating check. Keep the normal composed baseline/single refusal outcomes. A genuine Worker/Window/native-storage control restores the original self-envelope omission's advance-to1 expectation; its baseline refuses at0 with exact native records unchanged. Classification closes as expected. All5 native controls and the complete six-stage sync command pass:76 cases plus6 existing skips, including8 generated histories. [Evidence, failed fixture attempts and normal-use reachability](development-evidence/2026-11-02-release-hardening/353-worker-self-control/README.md).
+
+**Limit.** The normal UI's own stream uses composed selfOnly plus recordResponse, not the retained explicit Worker receive handoff. Actual report reconciliation hits sync's existing initial-system guard. An unapplied narrow review patch, including constrained lost-reply status vocabulary, passes the real reports and focused negative controls; await the operator before changing that guard. Preserve the older optional global-lint failure separately; all touched code files pass lint. No app change, deadline change or release credit. Record before advancing the active hold.

@@ -6981,3 +6981,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The operator approves a layered self-envelope/decision control, explicitly requiring a stop if both omissions do not advance to1. The baseline remains and the single omission must differ as a both-lane conflict with writing refused.
 
 **Decision.** Remove only the uniquely matched decision step, leaving proof erasure and the durable-status reader intact; never substitute an accepted result or setter. Capture exact persisted content/inbound rows and conflict records separately. Once the double arm still has no durable decision or receive advance, preserve the failure and stop. Static Worker-path reachability and pending classification/control obligations remain explicit. No guard, deadline, budget, source format or production behavior change.
+
+
+### Self-envelope sensitivity belongs on a path with a real receive write
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch353
+
+**Orientation.** The operator corrects the double-arm design: without the sole delivery decision write, genuine and forked self pages both stay at0. Drop that arm, keep its evidence and the normal baseline/single outcomes, and restore the original single-omission expectation on the identified Worker path.
+
+**Decision.** Use the real authenticated compatibility Worker handoff with native storage and a branded mirror. Mutate only its self-envelope condition and require durable receive1; baseline must refuse with exact native storage unchanged. Retain the normal composed path's conflict-layer and classification checks separately. Do not claim the normal UI uses the compatibility handoff. Keep report kind acceptance unchanged until the operator decides the explicit sync proposal under the hardening stop rule; independent review passes do not grant canonical credit.

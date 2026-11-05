@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { workerReceiveBundle, installWorkerReceiveFixture } from './worker-receive-fixture.mjs';
 import {
   native,
   selected,
@@ -133,12 +134,144 @@ test(
 );
 
 test(
+  'Worker receive self-envelope omission exposes the original advance-to-one boundary',
+  { timeout: 60000 },
+  async (t) => {
+    const observations = [];
+    for (const mutant of [false, true]) {
+      const bundle = await workerReceiveBundle(mutant);
+      const f = await native(t);
+      await installWorkerReceiveFixture(f, bundle);
+      const item = await selected(f, 'worker-self-' + mutant);
+      await f.page.evaluate(async (item) => {
+        window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+        window.editor = opened.workspace;
+        window.surface = editor.text({ kind: 'master' });
+      }, args(item));
+      const retained = await prepare(f.page);
+      assert.equal(retained.position, 1);
+      const initial = await view(f.page);
+      const snapshot = await f.page.evaluate(() => [...editor.snapshot()]);
+      await close(f.page);
+      const doc = new Y.Doc({ gc: false });
+      Y.applyUpdate(doc, new Uint8Array(snapshot));
+      let original;
+      doc.on('update', (b) => (original = [...b]));
+      doc.getText('master').insert(0, 'REMOTE ');
+      doc.destroy();
+      const wire = await envelope(f.page, item, 1, [original]);
+      assert.notDeepEqual(
+        [...wire],
+        retained.bytes,
+        'The fork differs from the retained self envelope',
+      );
+      const before = await census(f.page, item);
+      const workerCreated = f.page.waitForEvent('worker');
+      void workerCreated.catch(() => {});
+      await f.page.evaluate(async (item) => {
+        const options = optionsFor(item);
+        window.workerSelfSession = await WorkerReceiveHarness.openAccountWorkerSession(options);
+        window.workerSelfMirror = await WorkerReceiveHarness.createWindowAccountMirrorController(
+          workerSelfSession.cohort,
+          workerSelfSession.opening,
+          workerSelfSession.worker,
+          {
+            identity: options.identity,
+            deviceLabelId: workerSelfSession.deviceId,
+            today: options.today,
+          },
+        );
+        await workerSelfSession.ready();
+      }, args(item));
+      const worker = await workerCreated;
+      assert.match(worker.url(), /accountOwner\.worker-/);
+      const nativeBefore = await f.page.evaluate(
+        ({ principalId, workspaceId }) =>
+          WorkerReceiveHarness.nativeRecords(principalId, workspaceId),
+        item.scope,
+      );
+      const query = await f.page.evaluate(async () => [...(await workerSelfSession.prepareRead())]);
+      const page = answer(f, item, Buffer.from(query), wire).bytes;
+      const outcome = await f.page.evaluate(
+        async ({ page, query }) => {
+          let result = null,
+            error = null,
+            errorCode = null;
+          try {
+            result = await workerSelfSession.receivePage(
+              workerSelfMirror,
+              new Uint8Array(page),
+              new Uint8Array(query),
+            );
+          } catch (cause) {
+            error = String(cause);
+            errorCode = cause.code ?? null;
+          }
+          const mirrorState = workerSelfMirror.workspace.status.state;
+          const visible = result ? workerSelfMirror.workspace.read().master : null;
+          const status = result ? await workerSelfSession.status() : null;
+          await workerSelfSession.cohort.close();
+          const closedState = workerSelfSession.cohort.state;
+          return { result, error, errorCode, visible, status, mirrorState, closedState };
+        },
+        { page: [...page], query },
+      );
+      const after = await census(f.page, item);
+      const nativeAfter = await f.page.evaluate(
+        ({ principalId, workspaceId }) =>
+          WorkerReceiveHarness.nativeRecords(principalId, workspaceId),
+        item.scope,
+      );
+      observations.push({
+        mutant,
+        initial,
+        ...outcome,
+        workerUrl: worker.url(),
+        before,
+        after,
+        nativeBefore,
+        nativeAfter,
+        bundle: bundle.evidence,
+      });
+      save('worker-self', observations);
+      assert.equal(outcome.result?.status?.receivedThrough ?? 0, mutant ? 1 : 0);
+      assert.equal(outcome.status?.receivedThrough ?? 0, mutant ? 1 : 0);
+      if (mutant) {
+        assert.equal(outcome.error, null);
+        assert.equal(outcome.result.recorded, true);
+        assert.equal(outcome.visible, 'REMOTE ' + initial);
+        assert.equal(outcome.mirrorState, 'active');
+        assert.notDeepEqual(nativeAfter, nativeBefore);
+        assert(
+          after.some(
+            (r) =>
+              r.kind === 'heads' &&
+              Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/v1"'),
+          ),
+          'The omitted Worker guard persists the original receive receipt',
+        );
+      } else {
+        assert.equal(outcome.result, null);
+        assert.equal(outcome.error, 'WorkerChannelError: Worker operation could not finish.');
+        assert.equal(outcome.errorCode, 'closed');
+        assert.equal(outcome.closedState, 'closed');
+        assert.deepEqual(
+          nativeAfter,
+          nativeBefore,
+          'Refused Worker page changes no native records',
+        );
+      }
+      await f.context.close();
+    }
+  },
+);
+
+test(
   'self-stream byte binding refuses a different valid envelope from the same synthetic credential',
   { timeout: 60000 },
   async (t) => {
     const observations = [];
-    for (const mode of ['baseline', 'self', 'self-and-decision', 'classification']) {
-      const mutant = mode === 'self-and-decision';
+    for (const mode of ['baseline', 'self', 'classification']) {
       const f = await native(t),
         item = await selected(f, 'sync-self-' + mode);
       await open(f.page, item);
@@ -180,16 +313,6 @@ test(
             editor.status.state === 'blocked' ||
             editor.status.state === 'closed',
         );
-      } else if (mode === 'self-and-decision') {
-        await waitPredicate(
-          f.page,
-          () =>
-            opened.sync.status.receive.receivedThrough === 1 ||
-            opened.sync.status.receive.phase === 'blocked' ||
-            opened.sync.status.receive.phase === 'retrying' ||
-            editor.status.state === 'blocked' ||
-            editor.status.state === 'closed',
-        );
       } else {
         await waitPredicate(
           f.page,
@@ -203,7 +326,7 @@ test(
       const status = await syncStatus(f.page);
       const advanced = status.receive.receivedThrough === 1;
       const editorState = await f.page.evaluate(() => editor.status.state);
-      const visible = await view(f.page);
+      const visible = mode === 'classification' ? null : await view(f.page);
       await close(f.page);
       const after = await census(f.page, item);
       const incoming = (rows) =>
@@ -228,7 +351,7 @@ test(
         visible,
         storage: { before, after, newDeliveryDecisions: decisions.length },
       });
-      // Preserve every completed arm, including a failed double omission.
+      // Preserve each completed layer and classification observation.
       save('self-layered', observations);
       assert(reads > 0, 'The alternate self page must actually be offered');
       if (mode === 'baseline') {
@@ -251,11 +374,11 @@ test(
           'Refused self writing must not enter stored content or inbound receipts',
         );
       }
-      assert.equal(advanced, mutant);
+      assert.equal(advanced, false);
       assert.equal(editorState, mode === 'classification' ? 'closed' : 'active');
       await f.context.close();
     }
-    save('self', observations.slice(0, 3));
-    save('classification', [observations[0], observations[3]]);
+    save('self', observations.slice(0, 2));
+    save('classification', [observations[0], observations[2]]);
   },
 );

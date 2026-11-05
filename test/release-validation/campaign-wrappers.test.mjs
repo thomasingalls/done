@@ -2672,37 +2672,107 @@ function syncEvidence() {
       { mutant: true, opened: true, master: 'base', status: status('offline') },
     ],
   };
+  const records = [{ kind: 'update', gen: 1, seq: 1, bytes: [1, 2] }];
+  const record = (tag, index, tail = []) => ({
+    kind: 'heads',
+    gen: 1,
+    seq: index,
+    bytes: [...Buffer.from(JSON.stringify([tag, ...tail]))],
+  });
+  const baselineStatus = status('retrying');
+  baselineStatus.send.reason = 'network-unavailable';
+  baselineStatus.receive = { ...baselineStatus.receive, phase: 'blocked', reason: 'integrity' };
   const baseline = {
     mode: 'baseline',
     advanced: false,
     editorState: 'active',
-    status: status('blocked'),
+    status: baselineStatus,
+    reads: 1,
+    initial: 'base',
+    visible: 'base',
+    storage: { before: records, after: records, newDeliveryDecisions: 0 },
   };
   for (const mode of ['self', 'classification']) {
-    const s = status('blocked');
-    s.receive.receivedThrough = mode === 'self' ? 1 : 0;
+    const s = status(mode === 'self' ? 'blocked' : 'closed');
+    for (const lane of ['send', 'receive'])
+      s[lane].reason = mode === 'self' ? 'conflict' : 'closed';
     r['control-' + mode + '.json'] = {
       effective: true,
       observations: [
         baseline,
         {
           mode,
-          advanced: mode === 'self',
+          advanced: false,
           editorState: mode === 'self' ? 'active' : 'closed',
           status: s,
+          reads: 1,
+          initial: 'base',
+          visible: mode === 'self' ? 'base' : null,
+          storage: {
+            before: records,
+            after:
+              mode === 'self'
+                ? [
+                    ...records,
+                    record('done/account-delivery/v1', 2, [...Array(8).fill(null), 'response']),
+                  ]
+                : records,
+            newDeliveryDecisions: mode === 'self' ? 1 : 0,
+          },
         },
       ],
     };
   }
-  return r;
+  const nativeRows = [{ store: 'content', keys: [1], values: [{ ct: [4, 5] }] }];
+  r['control-worker-self.json'] = {
+    effective: true,
+    observations: [false, true].map((mutant) => {
+      const asset = '/assets/accountOwner.worker-' + (mutant ? 'mutant' : 'baseline') + '.js';
+      const received = {
+        state: 'ready',
+        receivedThrough: 1,
+        observedThrough: 1,
+        link: 'ab'.repeat(32),
+      };
+      return {
+        mutant,
+        initial: 'base',
+        result: mutant ? { kind: 'received', recorded: true, status: received } : null,
+        status: mutant ? received : null,
+        error: mutant ? null : 'WorkerChannelError: Worker operation could not finish.',
+        errorCode: mutant ? null : 'closed',
+        mirrorState: mutant ? 'active' : 'closing',
+        closedState: 'closed',
+        visible: mutant ? 'REMOTE base' : null,
+        workerUrl: 'http://localhost:1234' + asset,
+        before: records,
+        after: mutant ? [...records, record('done/account-inbound/v1', 2)] : records,
+        nativeBefore: nativeRows,
+        nativeAfter: mutant
+          ? [...nativeRows, { store: 'heads', keys: [2], values: [{ ct: [9] }] }]
+          : nativeRows,
+        bundle: {
+          guardCount: 1,
+          omissionCount: mutant ? 1 : 0,
+          entry: '/done.js',
+          assets: ['/done.js', asset].map((path) => ({
+            path,
+            bytes: 100,
+            sha256: 'ab'.repeat(32),
+          })),
+        },
+      };
+    }),
+  };
+  return JSON.parse(JSON.stringify(r));
 }
-test('sync wrapper binds all six commands, 81 cases and inherited browser process ownership', () => {
+test('sync wrapper binds all six commands, 82 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-sync');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 81);
+  assert.equal(s.expect.cases.length, 82);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 600000, 90000, 150000, 450000],
@@ -2719,7 +2789,7 @@ test('sync wrapper binds all six commands, 81 cases and inherited browser proces
   assert.equal(s.fixture.kind, 'chromium-cdp');
   assert.equal(s.processPolicy, 'inherited-group-v1');
   assert.deepEqual(s.fileOutputs.required, syncReports);
-  assert.equal(syncReports.length, 28);
+  assert.equal(syncReports.length, 29);
   assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
   for (const change of [
     { env: { MODE: 'other' } },
@@ -2886,6 +2956,29 @@ test('160 generated sync corruptions reject rewritten retries, reused nonces, lo
     { seed: 150971, numRuns: 160 },
   );
 });
+test('sync layered and Worker controls require their distinct refusals, storage and original advance', () => {
+  const r = syncEvidence();
+  reconcileSyncEvidence(r);
+  const changes = [
+    (v) => (v['control-self.json'].observations[1].status.send.reason = 'integrity'),
+    (v) =>
+      v['control-self.json'].observations[1].storage.after.push({
+        kind: 'update',
+        gen: 1,
+        seq: 3,
+        bytes: [42],
+      }),
+    (v) => (v['control-worker-self.json'].observations[1].visible = 'base'),
+    (v) => (v['control-worker-self.json'].observations[1].status.receivedThrough = 0),
+    (v) => (v['control-worker-self.json'].observations[0].nativeAfter[0].values[0].ct[0] = 99),
+  ];
+  for (const change of changes) {
+    // Report serialization must break fixture aliases, just like separate on-disk observations.
+    const v = JSON.parse(JSON.stringify(r));
+    change(v);
+    assert.throws(() => reconcileSyncEvidence(v));
+  }
+});
 test('160 generated sync control corruptions reject ineffective scheduler, dispatch, witness and self-stream controls', () => {
   const r = syncEvidence();
   reconcileSyncEvidence(r);
@@ -2899,8 +2992,17 @@ test('160 generated sync control corruptions reject ineffective scheduler, dispa
     (r) => (r['control-dispatch-pressure.json'].observations[1].closed.send.phase = 'blocked'),
     (r) => (r['control-overlap.json'].observations[1].disposed.timers = 1),
     (r) => (r['control-witness.json'].observations[0].opened = true),
-    (r) => (r['control-self.json'].observations[1].advanced = false),
+    (r) => (r['control-self.json'].observations[1].advanced = true),
     (r) => (r['control-classification.json'].observations[1].editorState = 'active'),
+    (r) => (r['control-self.json'].observations[1].status.receive.reason = 'integrity'),
+    (r) => (r['control-self.json'].observations[1].visible += 'REMOTE'),
+    (r) => (r['control-self.json'].observations[1].storage.after[0].bytes = [99]),
+    (r) => (r['control-self.json'].observations[1].storage.newDeliveryDecisions = 0),
+    (r) => (r['control-worker-self.json'].observations[1].result.status.receivedThrough = 0),
+    (r) => (r['control-worker-self.json'].observations[1].result.recorded = false),
+    (r) => (r['control-worker-self.json'].observations[0].nativeAfter = []),
+    (r) => (r['control-worker-self.json'].observations[1].bundle.omissionCount = 0),
+    (r) => r['control-worker-self.json'].observations[1].after.pop(),
     (r) => r['generated-native.json'].coverage['lost-send']--,
   ];
   fc.assert(

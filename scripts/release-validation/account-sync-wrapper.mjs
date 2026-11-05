@@ -71,6 +71,7 @@ export const syncReports = [
     'witness',
     'self',
     'classification',
+    'worker-self',
   ].map((n) => 'control-' + n + '.json'),
   'generated-native.json',
 ];
@@ -203,6 +204,7 @@ export function reconcileSyncReports(directory, sources) {
         'scripts/generate-private-envelope-vectors.mjs',
         'scripts/generate-envelope-vectors.mjs',
         'scripts/lib/aad-coverage.mjs',
+        'scripts/lib/historical-bundle.mjs',
       ].includes(path) ||
       /^(?:src|account-protocol|account-service|test|vite|wasm\/journal-seal)\/.*\.(?:ts|tsx|mjs|json|wasm)$/.test(
         path,
@@ -228,6 +230,7 @@ export function reconcileSyncReports(directory, sources) {
           'witness',
           'self',
           'classification',
+          'worker-self',
         ].map((n) => 'control-' + n + '.json'),
         'generated-native.json',
       ].map((f) => [f, json(f)]),
@@ -274,7 +277,7 @@ const frame = (wire, domain, n) => {
   assert.equal(v[1], 2);
   return v;
 };
-function syncStatus(s, through) {
+function syncStatus(s, through, selfRefusal = false) {
   for (const lane of ['send', 'receive']) {
     const v = s[lane],
       progress = lane === 'send' ? 'acceptedThrough' : 'receivedThrough';
@@ -300,7 +303,8 @@ function syncStatus(s, through) {
         'response-too-large',
         'local-storage',
         'request-expired',
-      ].includes(v.reason),
+      ].includes(v.reason) ||
+        (selfRefusal && ['integrity', 'network-unavailable'].includes(v.reason)),
     );
   }
 }
@@ -363,6 +367,21 @@ function submission(wire) {
   e.take(64);
   e.end();
   return { lineage, workspace, credential, epoch, gen, position, nonce };
+}
+const bytesOfRecord = (row) => Buffer.from(row.bytes).toString();
+function validateRecords(rows) {
+  assert(Array.isArray(rows));
+  const seen = new Set();
+  for (const row of rows) {
+    assert(['state', 'update', 'heads', 'outbound'].includes(row.kind));
+    assert(Number.isSafeInteger(row.gen) && row.gen > 0);
+    assert(Number.isSafeInteger(row.seq) && row.seq > 0);
+    const key = row.gen + ':' + row.seq;
+    assert(!seen.has(key));
+    seen.add(key);
+    assert(Array.isArray(row.bytes) && row.bytes.length > 0);
+    assert(row.bytes.every((v) => Number.isInteger(v) && v >= 0 && v <= 255));
+  }
 }
 // Corroborates actual scheduler decisions, dispatch, witness refusal, and the
 // composition histories. It does not substitute for their existing test oracles.
@@ -447,19 +466,109 @@ export function reconcileSyncEvidence(r) {
       c.observations.map((o) => [o.mode, o.advanced, o.editorState]),
       [
         ['baseline', false, 'active'],
-        [mode, mode === 'self', mode === 'self' ? 'active' : 'closed'],
+        [mode, false, mode === 'self' ? 'active' : 'closed'],
       ],
       'Self-stream control is not discriminating',
     );
     for (const o of c.observations) {
-      syncStatus(o.status);
-      assert.equal(o.status.receive.receivedThrough, o.advanced ? 1 : 0);
+      syncStatus(o.status, undefined, true);
+      assert.equal(o.status.receive.receivedThrough, 0);
+      assert.equal(o.status.send.acceptedThrough, 0);
+      assert(Number.isSafeInteger(o.reads) && o.reads > 0);
+      assert(typeof o.initial === 'string');
+      assert.equal(o.visible, o.mode === 'classification' ? null : o.initial);
+      assert.equal(o.storage.newDeliveryDecisions, o.mode === 'self' ? 1 : 0);
+      const incoming = (rows) =>
+        rows.filter(
+          (row) =>
+            row.kind === 'update' ||
+            (row.kind === 'heads' && bytesOfRecord(row).startsWith('["done/account-inbound/')),
+        );
+      for (const rows of [o.storage.before, o.storage.after]) validateRecords(rows);
+      assert.deepEqual(
+        incoming(o.storage.after),
+        incoming(o.storage.before),
+        'Refused self writing or inbound receipt persisted',
+      );
+      const decisions = o.storage.after.filter(
+        (row) =>
+          row.kind === 'heads' &&
+          !o.storage.before.some((prior) => prior.gen === row.gen && prior.seq === row.seq) &&
+          bytesOfRecord(row).startsWith('["done/account-delivery/v1"') &&
+          JSON.parse(bytesOfRecord(row))[9] === 'response',
+      );
+      assert.equal(decisions.length, o.storage.newDeliveryDecisions);
+      if (o.mode === 'baseline') {
+        assert.equal(o.status.receive.phase, 'blocked');
+        assert.equal(o.status.receive.reason, 'integrity');
+      } else if (o.mode === 'self') {
+        for (const lane of ['send', 'receive']) {
+          assert.equal(o.status[lane].phase, 'blocked');
+          assert.equal(o.status[lane].reason, 'conflict');
+        }
+      }
     }
   }
   assert.deepEqual(
     r['control-self.json'].observations[0],
     r['control-classification.json'].observations[0],
   );
+  const worker = r['control-worker-self.json'];
+  assert.equal(worker.effective, true);
+  assert.deepEqual(
+    worker.observations.map((o) => o.mutant),
+    [false, true],
+  );
+  for (const o of worker.observations) {
+    assert.equal(o.closedState, 'closed');
+    assert.equal(o.bundle.guardCount, 1);
+    assert.equal(o.bundle.omissionCount, o.mutant ? 1 : 0);
+    assert(/^\/[A-Za-z0-9_.-]+\.js$/.test(o.bundle.entry));
+    assert(Array.isArray(o.bundle.assets) && o.bundle.assets.length > 1);
+    assert.equal(new Set(o.bundle.assets.map((a) => a.path)).size, o.bundle.assets.length);
+    for (const a of o.bundle.assets) {
+      assert(/^\/[A-Za-z0-9_./-]+$/.test(a.path) && !a.path.includes('..'));
+      assert(Number.isSafeInteger(a.bytes) && a.bytes > 0);
+      assert.match(a.sha256, /^[0-9a-f]{64}$/);
+    }
+    const url = new URL(o.workerUrl);
+    assert.equal(url.hostname, 'localhost');
+    assert.match(url.pathname, /^\/assets\/accountOwner\.worker-[A-Za-z0-9_-]+\.js$/);
+    assert(o.bundle.assets.some((a) => a.path === url.pathname));
+    assert(o.bundle.assets.some((a) => a.path === o.bundle.entry));
+    for (const rows of [o.before, o.after]) validateRecords(rows);
+    assert(Array.isArray(o.nativeBefore) && o.nativeBefore.length > 0);
+    assert(Array.isArray(o.nativeAfter) && o.nativeAfter.length > 0);
+    if (o.mutant) {
+      assert.equal(o.error, null);
+      assert.equal(o.errorCode, null);
+      assert.equal(o.result.kind, 'received');
+      assert.equal(o.result.recorded, true);
+      for (const status of [o.result.status, o.status]) {
+        assert.equal(status.state, 'ready');
+        assert.equal(status.receivedThrough, 1);
+        assert.equal(status.observedThrough, 1);
+        assert.match(status.link, /^[0-9a-f]{64}$/);
+      }
+      assert.equal(o.result.status.link, o.status.link);
+      assert.equal(o.mirrorState, 'active');
+      assert.equal(o.visible, 'REMOTE ' + o.initial);
+      assert.notDeepEqual(o.nativeAfter, o.nativeBefore);
+      assert(
+        o.after.some(
+          (row) =>
+            row.kind === 'heads' && bytesOfRecord(row).startsWith('["done/account-inbound/v1"'),
+        ),
+      );
+    } else {
+      assert.equal(o.result, null);
+      assert.equal(o.status, null);
+      assert.equal(o.visible, null);
+      assert.equal(o.error, 'WorkerChannelError: Worker operation could not finish.');
+      assert.equal(o.errorCode, 'closed');
+      assert.deepEqual(o.nativeAfter, o.nativeBefore, 'Refused Worker page changed native records');
+    }
+  }
   const g = r['generated-native.json'];
   assert.equal(g.status, 'passed');
   assert.equal(g.seed, 9112062);
