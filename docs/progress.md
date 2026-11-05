@@ -191,27 +191,27 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Forward an explicit default-off dense writer selector through Vite and Docker](./development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
-The initial six-red build test includes two new assertions that incorrectly compare an ES-module namespace with a plain object; those are corrected to compare exported scalar values, retaining the failed attempt. Corrected before has four failures for missing explicit definition/default/validation and Docker forwarding, while both raw local-environment compilations already work: Vite previously exposed an explicit local VITE value automatically. This does not establish prior Docker support. After the change, six new controls pass through the actual config, including production-mode on/off compiled probes with reader1, immutable captured selection, invalid-value refusals and independent Docker mapping. Initial new-test typing of optional config.define is corrected without app changes; the red log remains. Types and21cases/four files pass, with all prior build-policy and writer controls untouched. Independent AST review preserves both old policies and the complete config except selector; Docker comparison retains every old byte. Quality, format,17registry checks, inventory and10controls pass; no runtime/crypto hashes, domains or construction moves. Graph adds one required five-declaration/six-case file.
+**Latest checks.** [Prove real Worker dense cuts expired replay and exact cold writing](./development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+Both final directions pass on identical canonical source: original-to-Joined50470ms and Joined-to-original55349ms. Each has floor1, a2-entry head and nonzero-entry tail, unchanged observed native rows,2retained durable journal entries and exact cold export; local Undo preserves all received writing. Existing ordinary full-app floor case passes19.9s. Initial fixture build and retry fail on a Window-transformed source; scoping the uniquely anchored lower allowance to Worker builds passes with five exact mutations and zero repeated transforms. All initial native attempts remain: Page-only response observer missed uploads; SQLite now independently verifies actual accepted rows; immediate ownership check needed saved seed readiness and real cohort locks; inverse text on absent notice was corrected to no matching integrity notice; Joined observation used the wrong promotion permit and is corrected without parser changes; the new empty-journal assumption was removed because retained durable journal entries are legitimate and exact cold recovery is stronger evidence. Every failed artifact set is copied before rerun. Types, quality, format,17registry checks, inventory and10controls pass. An initially unmapped family is registered required, preserving all old policy bytes/obligations. No canonical runtime/crypto hash changes, no old test edits. Latest full unit checkpoint remains419, predating420/421 new tests. Ordinary/control assets have no old lab modules or new observation code; exact asset identities are retained.
+Before freeze, an unfrozen caption generalized the original-direction7,531bytes to both directions. It is corrected to the raw7,531/7,529byte observations; prior caption/config remain artifacts. No runtime or test change.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Prove first-floor lifecycle with genuine composed peer/Worker dense admission, then31s interior cold, frozen old readers/pending writing, actual stale-turn idle audit and the same-tree writer-off rollback image. Correct any implementation defect within the approved format and existing native/authentication guards; stop only at the operator decision/unfixable boundaries. Continue automatically after each freeze.
+**Active bounded outcome.** Test a partial first page in a multi-request G8/B batch, repair any confirmed chain-order defect within existing guards, then complete authenticated installing-floor/rewriter/lost-reply lifecycles, frozen old artifacts, actual stale-turn idle audit and same-tree writer-off rollback image. Continue automatically after each freeze.
 
-**Remaining Stage3.2.** Shared direct/indirect readers, all four aged stored semantic
-paths and arbitrary mixed full/incremental properties have isolated coverage;
-physical31s interior-cut cold and real composed peer/Worker observations remain.
-Full/native/reduced loads and new-row continuations own their syntax. Live ranges
-and flagged dense native framing are implemented; actual binary native admission
-is not yet observed. Reduced and unreduced full-oracle pressure now feeds the guarded idle lane. Harden
-Real peer/Worker B fairness, cancellation and past-index observations remain.
-G8/range4 and combined raw-original caps are covered in418/419; physical
-counters/witnesses remain separate.
-Ordinary builds remain writer-off. Docker/Vite forwarding is covered in420;
-selected writer-on/writer-off image and lifecycle proofs remain.
+**Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
+paths and arbitrary mixed full/incremental properties have isolated coverage.
+Original and Joined Workers now have genuine dense admission, nonzero-entry tails,
+31s expiry/offline cold, retained journal recovery, Undo and exact exports in421.
+Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
+full-oracle pressure feeds the guarded idle lane; G8/range4 and combined originals
+caps are covered in418/419. Complete multi-request cuts, real B fairness/
+cancellation/past-index and floor installation/rewriter/lost-reply lifecycles.
+Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
+Final writer-on/off images and genuine old-artifact/stale-tab proofs remain.
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine
@@ -220,7 +220,7 @@ writer-off image and prove dense/stale-tab opening; old-release rollback locks o
 marked devices and must be stated plainly. Stage4 core idle-audit policy exists,
 but the stale-turn audit control and coherent-source checkpoints remain. Then run
 every declared Stage5 replicate/report-only cell and write Stage6, then stop.
-No binary native cold, final rollback-image, RAM or performance acceptance credit
-is established by the partial unit/activation controls. Service automation stays off.
+Binary native cold is observed on the forced-cut fixture in421. Final rollback-image,
+RAM and performance acceptance credit remain unestablished. Service automation stays off.
 
 This seat replaces only its own document; the other seat above is unchanged.

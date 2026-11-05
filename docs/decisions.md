@@ -7391,3 +7391,10 @@ Use one content-free budget predicate and evict optional quiet originals for the
 **Date:**2026-11-04 · **Commit:**pending patch420
 
 Use a strict captured build selector with ordinary default0 and Docker forwarding, preserving reader compatibility independently. Local Vite raw environment exposure was already possible; distinguish that observation from the previously absent Docker path. Keep actual writer-on/off image and lifecycle evidence separate from configuration-unit proof. [Evidence](development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
+
+
+### Prove native dense lifecycle with read-only observations and durable journal recovery
+
+**Date:**2026-11-04 · **Commit:**pending patch421
+
+Force the approved interior cut by lowering only a test Worker live allowance, leaving every guard intact. Prove real Account ownership with known owner bootstraps plus native shared leases/exclusive supervisor. Bind uploads independently from committed service rows, observe native receipt syntax only after locking under the correct existing authenticated permit, and require saved rows unchanged. Do not require a durable journal to be empty: retain it and prove exact offline cold recovery. Keep actual old-artifact/rollback images and performance gates separate. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).

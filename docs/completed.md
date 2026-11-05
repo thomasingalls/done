@@ -19289,3 +19289,19 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** The selected writer flag now has a strict explicit Vite path and Docker ARG/ENV forwarding, ordinary default0 and unchanged readers. Six new build controls plus existing policies total21passing cases, with types/bookkeeping checks green. Runtime source is byte-identical to419. [Evidence](development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
 
 **Limits.** Production-mode unit compilation is not an image or lifecycle proof. The same-tree writer-off rollback image, real marked/dense/stale-tab opening, ordinary legacy operation and cold/Undo are still required. Latest full unit checkpoint remains419:329files/3204pass/one skip128.78s; it predates the new six-case build test. Real peer/Worker B fairness/past-index and Stage5/6 remain. No format/trust/runtime/limit/gate/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Prove real Worker dense cuts expired replay and exact cold writing
+
+**Date:**2026-11-04 · **Commit:**pending patch421 · **Stage:**partial Stage3.2
+
+**Exit.** Real original/Joined Worker dense cuts, firstEntry2 tails,31s request expiry, offline cold exactness, local Undo and pending-journal recovery pass in both directions. Native observer is read-only and syntax-only. All app guards/source remain unchanged; failed harness attempts are preserved and the new family is required. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+
+**Limits.** The lower allowance is a test-only Worker fixture; this gives no RAM/performance or unmodified-image rollback acceptance credit. Multi-request partial cuts, binary retained-reading installation, every floor rewrite/lost reply, frozen old Page/Worker/stale tabs, actual stale-turn idle audit and same-tree writer-off image remain. Stage5 full gates and Stage6 are not run. No format/trust/rate/gate/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Native cut byte-caption correction before421 freeze
+
+**Date:**2026-11-04 · **Commit:**pending patch421
+
+The two self-contained extents are7,531bytes each original-to-Joined and7,529bytes each reverse. The unfrozen caption incorrectly generalized the first size. Raw results were checked and the caption corrected; prior artifacts remain. No app/test byte or result changed. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
