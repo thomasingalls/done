@@ -19,6 +19,10 @@ import {
   answer,
   envelope,
   open,
+  args,
+  prepare,
+  request,
+  receive,
 } from './fixtures.mjs';
 const save = (mode, observations) => {
   if (process.env.ACCOUNT_REPORT_DIR)
@@ -84,6 +88,19 @@ test(
   async (t) => {
     const f = await native(t),
       item = await selected(f, 'sync-witness');
+    // Current self readback records the delivery decision without an inbound row.
+    // Seed a genuine legacy self receipt through the existing native receive API.
+    await f.page.evaluate(async (item) => {
+      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+      window.editor = opened.workspace;
+      window.surface = editor.text({ kind: 'master' });
+    }, args(item));
+    const wire = await prepare(f.page);
+    await close(f.page);
+    await open(f.page, item);
+    const query = await request(f.page, 0);
+    await receive(f.page, answer(f, item, query, wire.bytes).bytes);
+    await close(f.page);
     await syncing(f.page, item);
     await settled(f.page);
     await close(f.page);
@@ -152,7 +169,7 @@ test(
         f.page,
         () =>
           opened.sync.status.receive.receivedThrough === 1 ||
-          opened.sync.status.receive.reason === 'operation-failed' ||
+          opened.sync.status.receive.reason === 'integrity' ||
           editor.status.state === 'blocked' ||
           editor.status.state === 'closed',
       ).catch(async (cause) => {
@@ -166,6 +183,10 @@ test(
         throw cause;
       });
       const status = await syncStatus(f.page);
+      if (mode === 'baseline') {
+        assert.equal(status.receive.phase, 'blocked');
+        assert.equal(status.receive.reason, 'integrity');
+      }
       const advanced = status.receive.receivedThrough === 1;
       assert.equal(advanced, mutant);
       const editorState = await f.page.evaluate(() => editor.status.state);

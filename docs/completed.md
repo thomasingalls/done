@@ -18637,3 +18637,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Geometry (228 passed/32 old skips), transport and service-inbound pass in full. Sync passes its native stage (25 passed/6 old skips), then five copied scheduler controls fail to load missing dependencies. The source-closure failure reproduces on signed base. [Every result and remaining command](development-evidence/2026-11-02-release-hardening/350-campaign-rerun-checkpoint/README.md).
 
 **Notes.** The observer stops before later commands for classification. This is a harness precondition failure; no app failure or guard change. Keep the complete list and all logs, then repair the test-only source closure before resuming the remaining ten commands and receipt refresh. Outcome recorded before advancing active state.
+
+
+### Sync scheduler closure repaired; self-omission control held for review
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 351 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Five scheduler controls pass after genuine graph bundling and two scoped anchor updates. The native witness fixture now creates its real legacy receipt and its original ordinary/mutant cold assertions pass; both dispatch controls pass. All old assertions/deadlines remain. [Every run and stopped boundary](development-evidence/2026-11-02-release-hardening/351-sync-control-boundary/README.md).
+
+**Notes.** Stop on the existing self-omission control: baseline refuses correctly, and removing its original byte check still reaches the current delivery conflict defense rather than the expected position1. No additional guard is omitted, no old assertion is relaxed, classification remains unrun, and the full sync command is not green. This is a control-sensitivity hold on synthetic inconsistent data. No runtime changes. Record before marking the active slice blocked for the operator's control-scope decision.

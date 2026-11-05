@@ -6963,3 +6963,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The existing full-unit wrapper deadline is 120 seconds and remains binding. Its corrected-environment failure reproduces on signed base. A thread-pool proposal lacks sufficient headroom and is reverted, rather than treating one diagnostic pass as a cleared gate.
 
 **Decision.** Keep the default isolated fork configuration and all original test bodies, seeds and population sizes. In the Node replica fixture only, yield via `setImmediate` so recursively queued membership repair microtasks drain before the next operation without waiting on a timer threshold. Prove the cascade boundary and sensitivity to replacing it with a single microtask, run every affected property/regression case, then run the entire original command under its original deadline. New test admission remains a separate aggregate obligation. No runtime, trust or product-format change.
+
+
+### Do not defeat the current delivery defense to revive an old omission discriminator
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 351
+
+**Orientation.** The hardening rule distinguishes ordinary development/harness failures from an existing test requiring guard weakening. The copied scheduler and missing legacy fixture event are repairable preconditions; an old expected mutant advance blocked by a current independent decision check is a coverage boundary.
+
+**Decision.** Preserve all old assertions and deadlines while repairing the source closure, actual witness setup and precise baseline refusal wait. Once the self mutant remains blocked for conflict, stop and report instead of widening its accepted outcomes or removing another guard. The operator chooses how to re-scope the omission obligation; the shipping delivery-decision check stays. No app, trust, format, budget, deadline or documentation-policy changes.

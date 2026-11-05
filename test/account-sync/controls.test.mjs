@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { build } from 'vite';
 const flush = async () => {
   for (let i = 0; i < 30; i++) await Promise.resolve();
 };
@@ -12,13 +13,9 @@ async function load(t, mode) {
   const temp = mkdtempSync(join(dir, 'case-'));
   t.after(() => rmSync(temp, { recursive: true, force: true }));
   let code = readFileSync('src/crdt/accountSyncDriver.ts', 'utf8');
-  // The copied scheduler must retain the real protocol error class added by R-01.
+  // The actual scheduler must retain the real protocol error class added by R-01.
   const protocolImport = "from '../../account-protocol/envelope'";
   assert.equal(code.split(protocolImport).length, 2, 'scheduler protocol import');
-  code = code.replace(
-    protocolImport,
-    `from '${pathToFileURL(resolve('account-protocol/envelope.ts')).href}'`,
-  );
   const changes = {
     fairness: [['const name = due.find((n) => n !== last) ?? due[0];', 'const name = due[0];']],
     overlap: [
@@ -27,20 +24,63 @@ async function load(t, mode) {
     ],
     halt: [
       [
-        "if (cause === 'retry') lane.halt = undefined;",
-        "if (cause === 'retry' || cause === 'online') lane.halt = undefined;",
+        "if (cause === 'retry' || (cause === 'authority' && name === 'send' && lane.halt === 'closed'))",
+        "if (cause === 'retry' || cause === 'online' || (cause === 'authority' && name === 'send' && lane.halt === 'closed'))",
       ],
     ],
     resume: [["lane.phase = 'working';", "lane.phase = 'working'; lane.due = undefined;"]],
-    wake: [['lane.dirty = true;', 'lane.dirty = active === name ? false : true;']],
+    wake: [
+      [
+        "if (cause === 'local' && name === 'send') {\n        lane.dirty = true;",
+        "if (cause === 'local' && name === 'send') {\n        lane.dirty = active === name ? false : true;",
+      ],
+    ],
   };
   if (mode)
     for (const [from, to] of changes[mode]) {
       assert.equal(code.split(from).length, 2, 'anchor ' + mode);
       code = code.replace(from, to);
     }
-  const file = join(temp, 'scheduler.ts');
-  writeFileSync(file, code);
+  const entry = resolve('src/crdt/accountSyncDriver.ts');
+  let hits = 0;
+  const built = await build({
+    configFile: false,
+    logLevel: 'error',
+    plugins: [
+      {
+        name: 'actual-scheduler-control-closure',
+        enforce: 'pre',
+        transform(_source, id) {
+          if (id !== entry) return;
+          hits++;
+          return code;
+        },
+      },
+    ],
+    build: {
+      write: false,
+      minify: false,
+      target: 'esnext',
+      lib: { entry, formats: ['es'] },
+      rolldownOptions: {
+        external: ['yjs'],
+        output: { codeSplitting: false, entryFileNames: 'scheduler.mjs' },
+      },
+    },
+  });
+  assert.equal(hits, 1, 'Actual mutated scheduler is bundled once with its dependencies');
+  const output = (Array.isArray(built) ? built[0] : built).output;
+  assert.equal(output.length, 1, 'Retain the complete scheduler closure');
+  assert.equal(output[0].type, 'chunk');
+  assert.equal(output[0].isEntry, true);
+  assert.deepEqual(output[0].imports, ['yjs'], 'Only the pinned Yjs package is external');
+  assert.equal(output[0].fileName, 'scheduler.mjs');
+  assert(
+    output[0].dynamicImports.every((name) => name === output[0].fileName),
+    'Every dynamic dependency must be retained in the emitted entry',
+  );
+  const file = join(temp, output[0].fileName);
+  writeFileSync(file, output[0].code);
   return import(pathToFileURL(file).href);
 }
 for (const mode of ['fairness', 'overlap', 'halt', 'resume', 'wake'])
