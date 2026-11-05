@@ -18799,3 +18799,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Fourteen new coordinator cases/73 focused cases pass with types, scoped quality, registry, authority and reviewed inventory. Queue-head and timer-close omission controls fail their exact named assertions and restore the source. Earlier new-file formatting and incorrect test-selection attempts remain recorded. The helper is unwired; all previous runtime source hashes are exact. [Evidence](development-evidence/2026-11-02-release-hardening/369-audit-timer-coordinator/README.md).
 
 **Next.** Wire actual physical pressure and native queue settlement, prove the unchanged oracle/interrupt behavior, then close the Stage4 full-suite checkpoint. No Stage3.2 implementation before format approval, no performance or Stage5 credit.
+
+
+### Stage 4 connects idle-start scheduling to the existing native audit owner
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 370 · **Stage:** independent Stage4, integration
+
+**Exit.** The owner uses the fixed input port, actual foreground settlement and physical pressure from both audit caches. Ninety-four focused cases/seven files pass; typecheck/scoped quality, inventory/authority and one sensitive pressure omission control pass. Complete native audit-body and closure ASTs are unchanged after scheduling readiness. Earlier development failures stay recorded. [Evidence](development-evidence/2026-11-02-release-hardening/370-idle-audit-integration/README.md).
+
+**Limits/next.** Native owner lifecycle/disagreement regression coverage and the Stage4 full-suite checkpoint remain. No format work before approval, no timing or Stage5 claim. Audit lag can reach about 1,024 physical rows, and the unchanged full comparison still blocks receive; earlier lab cost is recorded as proposed RC debt.

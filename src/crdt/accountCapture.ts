@@ -6,6 +6,7 @@ import type { ContentCrypto } from './contentStore';
 import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
 import { maintenanceTask, MaintenanceInterrupted } from './contentMaintenance';
+import { createWarmAuditScheduler, type WarmAuditOutcome } from './warmAuditScheduler';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
@@ -319,11 +320,15 @@ export async function openAccountCaptureOwner(
   );
   options.networkLogin?.activate(live);
   let scheduleAudit = () => {};
+  let auditScheduler: ReturnType<typeof createWarmAuditScheduler> | undefined;
   const run = <T>(
     operation: (task: SessionTask) => Promise<T>,
     preparation = false,
+    kind: 'foreground' | 'warm-audit' = 'foreground',
   ): Promise<T> => {
     if (!preparation) preparationActivity = {};
+    const settleForeground =
+      !preparation && kind === 'foreground' ? auditScheduler?.foreground() : undefined;
     const activity = finalApply.request();
     const previous = tail;
     const enqueued = ledgerWorkStart();
@@ -343,7 +348,13 @@ export async function openAccountCaptureOwner(
           scheduleAudit();
         }
       })
-      .finally(() => activity.settle());
+      .finally(async () => {
+        try {
+          await activity.settle();
+        } finally {
+          settleForeground?.();
+        }
+      });
     tail = result.then(
       () => {},
       () => {},
@@ -355,74 +366,56 @@ export async function openAccountCaptureOwner(
     return result;
   };
   if (warmLoads) {
-    let timer: ReturnType<typeof setTimeout> | undefined,
-      auditing = false,
-      stopped = false;
-    const cancel = () => {
-      if (timer !== undefined) clearTimeout(timer);
-      timer = undefined;
-    };
-    const schedule = (delay: number) => {
-      if (stopped || live.signal.aborted || timer !== undefined) return;
-      timer = setTimeout(() => {
-        timer = undefined;
-        if (stopped || live.signal.aborted) return;
-        if (!auditing && !owner!.carrier.warmAuditDue()) {
-          schedule(owner!.carrier.warmAuditDelay());
-          return;
-        }
-        auditing = true;
+    auditScheduler = createWarmAuditScheduler({
+      signal: live.signal,
+      due: () => owner!.carrier.warmAuditDue(),
+      delay: () => owner!.carrier.warmAuditDelay(),
+      pendingRows: () => owner!.carrier.pendingWarmAuditRows(),
+      run: (mayStart) =>
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
-        void run((parent) => {
-          if (!owner!.carrier.hasReducedHistory()) return owner!.carrier.auditWarm(parent);
-          // Reduced baselines also have a full semantic oracle. Input still journals
-          // synchronously, invalidating this discretionary pass before its next effect.
-          const activity = shadowActivity;
-          const check = () => {
-            if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
-          };
-          const interruptible: SessionTask = {
-            signal: parent.signal,
-            step: (effect) =>
-              parent.step(() => {
-                check();
-                return effect();
-              }),
-            wait: (start) =>
-              parent.wait(() => {
-                check();
-                return start();
-              }),
-          };
-          return owner!.carrier.auditWarm(
-            import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
-              ? budgetedTask(interruptible)
-              : interruptible,
-          );
-        })
-          .then((complete) => {
-            auditing = !complete;
-            schedule(complete ? owner!.carrier.warmAuditDelay() : 0);
-          })
-          .catch(() => {
-            auditing = false;
-            schedule(owner!.carrier.warmAuditDelay());
-          });
-      }, delay);
-    };
-    scheduleAudit = () => {
-      if (!auditing && owner!.carrier.warmAuditDue()) {
-        cancel();
-        schedule(0);
-      }
-    };
+        run<WarmAuditOutcome>(
+          (parent) => {
+            if (!mayStart()) return Promise.resolve('deferred' as const);
+            if (!owner!.carrier.hasReducedHistory()) return owner!.carrier.auditWarm(parent);
+            // Reduced baselines also have a full semantic oracle. Input still journals
+            // synchronously, invalidating this discretionary pass before its next effect.
+            const activity = shadowActivity;
+            const check = () => {
+              if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+            };
+            const interruptible: SessionTask = {
+              signal: parent.signal,
+              step: (effect) =>
+                parent.step(() => {
+                  check();
+                  return effect();
+                }),
+              wait: (start) =>
+                parent.wait(() => {
+                  check();
+                  return start();
+                }),
+            };
+            return owner!.carrier.auditWarm(
+              import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
+                ? budgetedTask(interruptible)
+                : interruptible,
+            );
+          },
+          false,
+          'warm-audit',
+        ),
+    });
+    scheduleAudit = auditScheduler.refresh;
+    const stopInput = (['keydown', 'beforeinput', 'pointerdown'] as const).map((kind) =>
+      pageRuntimePorts.activity.onDocument(kind, () => auditScheduler!.input(), true),
+    );
     const stop = () => {
-      stopped = true;
-      cancel();
+      auditScheduler!.close();
+      stopInput.forEach((stop) => stop());
     };
     live.signal.addEventListener('abort', stop, { once: true });
     cleanups.add(stop);
-    schedule(owner!.carrier.warmAuditDelay());
   }
   if (warmLoads || extension?.invalidateAuthority) {
     const invalidate = () => {

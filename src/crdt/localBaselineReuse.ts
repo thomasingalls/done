@@ -131,6 +131,7 @@ export async function createBaselineReuse(
     clear,
     matches,
     hasIdentity: (id: object) => alive && id === lastIdentity,
+    pendingRows: () => added,
     due: () => added >= WARM_AUDIT_ROWS || performance.now() - verifiedAt >= WARM_AUDIT_MS,
     delay: () =>
       added >= WARM_AUDIT_ROWS ? 0 : Math.max(0, verifiedAt + WARM_AUDIT_MS - performance.now()),

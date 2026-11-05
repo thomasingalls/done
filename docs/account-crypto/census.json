@@ -773,7 +773,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "38c1eb78adaedc284224544e99bfc02b5ed90c343371111110426674cf07674a"
+      "sha256": "9c78abf69ef1596491163858612ee7e2937cb239ea62e40e08925f3ccedc2ae3"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -1001,7 +1001,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "c6d1c21bfda71f10cc0d73ff45b3504018658154ce6eef1b962baa391b304398"
+      "sha256": "ff83c12665ebf6426741524fe79b8cd4b5aea8526cbb0742fafedf078f18adc6"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1213,7 +1213,7 @@
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
-      "sha256": "96ab0557a54235a8279a5d08658f33d0218aad67b459047c05432398af185707"
+      "sha256": "84f3ee6649bd9e6d882f7011cccf6cefccc5058cf95c727b1d9e8cdd011b193a"
     },
     {
       "path": "src/crdt/localBaselineShadow.ts",
@@ -1529,7 +1529,7 @@
     },
     {
       "path": "src/crdt/warmContent.ts",
-      "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac"
+      "sha256": "70b8770aea16f8fc6bac27bf88fc3275eba8f32511889a445bec886c4eca6704"
     },
     {
       "path": "src/crdt/windowAccountHandoff.ts",
