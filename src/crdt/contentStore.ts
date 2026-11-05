@@ -1615,7 +1615,10 @@ export const createContentOwner = (
     // Rolling ciphertext slices may finish while the full semantic oracle remains due.
     // Either cache's physical suffix pressure must still force an audit attempt.
     pendingWarmAuditRows: () =>
-      Math.max(warm?.pendingRows() ?? 0, baselineReuse?.pendingRows() ?? 0),
+      Math.max(
+        warm?.pendingRows() ?? 0,
+        baselineReuse?.pendingRows(openedView?.opened.length) ?? 0,
+      ),
     warmAuditDelay: () =>
       Math.min(warm?.delay() ?? WARM_AUDIT_MS, baselineReuse?.delay() ?? WARM_AUDIT_MS),
     /** One background slice. Caller serializes slices with ordinary storage jobs. */

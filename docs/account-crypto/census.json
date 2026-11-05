@@ -1001,7 +1001,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "ff83c12665ebf6426741524fe79b8cd4b5aea8526cbb0742fafedf078f18adc6"
+      "sha256": "9b09b92afda6d52602c088a30e74f604cda16429e31541620def5a66102bf4f1"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1213,7 +1213,7 @@
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
-      "sha256": "84f3ee6649bd9e6d882f7011cccf6cefccc5058cf95c727b1d9e8cdd011b193a"
+      "sha256": "431ad04a7ceb9026019ce47837183b9fb77c53cdd90acf28b9c8ee464b3598fb"
     },
     {
       "path": "src/crdt/localBaselineShadow.ts",

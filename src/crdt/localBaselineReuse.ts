@@ -86,6 +86,7 @@ export async function createBaselineReuse(
   const verifiedAt = performance.now();
   let alive = true,
     added = 0,
+    physicalRowsAtLastAdvance = initial.records.length - prefix.length,
     lastIdentity = identity;
   let lastCounter = structuredClone(counter);
   const clear = () => {
@@ -131,7 +132,10 @@ export async function createBaselineReuse(
     clear,
     matches,
     hasIdentity: (id: object) => alive && id === lastIdentity,
-    pendingRows: () => added,
+    // A committed tail may not have reached advance yet. Count it without scanning or
+    // trusting it; the ordinary continuation must still verify every record.
+    pendingRows: (physicalRows = physicalRowsAtLastAdvance) =>
+      added + Math.max(0, physicalRows - physicalRowsAtLastAdvance),
     due: () => added >= WARM_AUDIT_ROWS || performance.now() - verifiedAt >= WARM_AUDIT_MS,
     delay: () =>
       added >= WARM_AUDIT_ROWS ? 0 : Math.max(0, verifiedAt + WARM_AUDIT_MS - performance.now()),
@@ -247,6 +251,7 @@ export async function createBaselineReuse(
           inbound,
         }));
         added += appended;
+        physicalRowsAtLastAdvance = physical.length;
         lastIdentity = id;
         lastCounter = structuredClone(allocation);
         // Crypto memo inputs are operation-local; retained semantic indexes are separately bounded.

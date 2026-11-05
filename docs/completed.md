@@ -18826,3 +18826,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Evidence.** First18 original root commands pass, including295 unit files/2,957 passing cases/one existing skip in104.75s under120s and all native storage campaigns through journal. All start pins remain exact. The coordinator was ended only after the current child passed; no campaign was cancelled. A focused new real-crypto unit case then demonstrates7 reported rows versus14 owed before a fresh suffix is consumed. Its test source/failure are retained, and the original file is restored. [Evidence](development-evidence/2026-11-02-release-hardening/372-pressure-counterexample/README.md).
 
 **Next.** Correct only private scheduling pressure to include the unconsumed physical suffix without double counting, add the regression, then restart the full checkpoint on fixed source. No completed Stage4/full-suite claim, guard/format/deadline change, app-journey failure, performance or release work.
+
+
+### Stage 4 counts the fresh physical suffix before consuming it
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch373 · **Stage:** Stage4 bounded repair
+
+**Exit.** The new permanent regression now reports14 for seven consumed plus seven fresh rows, before and after continuation. All95 focused cases pass; types/scoped quality/inventory and the exact omission control pass. All old validation, comparison, commit, erasure/lifecycle and test ASTs remain exact outside private scheduling metadata. [Evidence](development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md).
+
+**Next.** Restart the full checkpoint on fixed source, retaining372's partial run and failed before case. No policy ceiling, format, guard, trust, deadline or release change.

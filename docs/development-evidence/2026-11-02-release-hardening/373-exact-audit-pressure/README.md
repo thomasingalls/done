@@ -1,0 +1,9 @@
+# Exact physical pressure before semantic consumption — phase 373
+
+The reduced owner's existing continuation now remembers how many physical suffix rows its last successful verification consumed. Its scheduling accessor adds only the current unconsumed physical tail to the already accumulated semantic pressure. Reading that accessor is constant time, and a subsequent verified continuation does not double count those rows. A fresh authenticated cache still resets the count. No persisted counter, format, authority claim or reuse capability is added.
+
+The permanent regression reproduces phase372's two disjoint sets of seven rows: pressure is now14 both before and after consuming the second tail. All95 focused cases/seven files pass, with types, scoped quality, formatting and inventory. Omitting the fresh-tail contribution fails that exact assertion. Good source is restored by hash. Complete old verification/compare/commit/erasure/lifecycle ASTs are unchanged after removing only the new private count/accessor nodes; all three earlier pressure-test ASTs stay exact. [Evidence and source review](./evidence.json).
+
+The maximum of two counters was insufficient because their sets can be disjoint. This corrects the original1,024-physical-row forcing policy; it changes neither its ceiling nor the256-row/five-minute due rules,1,000ms input quiet, foreground policy, native guards, limits or deadlines. The count schedules an attempt and never authenticates a record. Source classification changes exactly two expected hashes; all domain homes, construction properties, tests, skips and release blocks remain.
+
+Next: restart the full functional checkpoint on the fixed source. Phase372's18 passing commands and before failure remain visible, without final checkpoint credit. Stage3 format approval remains pending; no dependent code, new lab phase, performance/Stage5 credit, commit, release or deployment occurs.

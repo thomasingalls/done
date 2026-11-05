@@ -7045,3 +7045,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Accounting choice proposed for approval.** Keep both the pre-existing logical 1,024-position audit ceiling and the operator's physical 1,024-row cap. Either forces an attempt without waiving interruptions; dense encoding cannot dilute verification frequency. Retain ordinary due rules and all original gates/limits.
 
 **What is given up.** Self-contained cuts can duplicate a signed page; that cost must be counted. Once marked, storage requires the compatible reader even with the writer disabled. Reader-first release delays the G8/B/dense gains and adds a release operation. Actual old-tab UX and rollback binaries remain tests to perform in Stage 3.2. The operator may approve, choose reader-first activation or defer the format. No selection or permission is inferred from this entry.
+
+
+### Count unconsumed physical audit pressure without a replay
+
+**Date:**2026-11-03 · **Scope:**Stage4 scheduling implementation, not a product/format decision
+
+The phase372 counterexample shows that max(rolling pressure, consumed semantic pressure) can omit a disjoint committed tail. Track physical row count at the existing successful continuation and add the current tail difference for scheduling only. This gives a constant-time count without another scan/replay, persisted trust or any verification shortcut. Phase373 retains every old comparison and guard; the1,024-row forcing ceiling is unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md).

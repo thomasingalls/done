@@ -188,18 +188,18 @@ old-tab/cut/rollback requirements, dual logical/physical audit ceilings and the
 reader-first option. No format code or new writer is authorized. Stage3 stops
 for the operator's decision.
 
-**Stage4 focused controls pass; the checkpoint found a pressure edge.**
-[368–371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
-record scheduling, native owner/oracle and fault controls.
+**Stage4 focused controls and pressure repair pass.**
+[371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
+records native lifecycle/oracle controls.
 [372](./development-evidence/2026-11-02-release-hardening/372-pressure-counterexample/README.md)
-records18 passing root commands and a new unit counterexample:7 reported physical
-rows versus14 owed when a fresh tail follows an already consumed suffix. Original
-test bytes and all checkpoint input pins are restored. No app journey failed.
+retains18 passing root commands and the7-versus14 counterexample.
+[373](./development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md)
+fixes private unconsumed physical pressure; all95 focused cases and its exact
+omission control pass. Old verification/guard/test ASTs stay exact.
 
-**Next bounded outcome.** Count the unconsumed physical suffix in private audit
-pressure without double counting, add the permanent regression, then restart the
-full-suite checkpoint on fixed source. Preserve every native/oracle/interruption
-guard. Stage3 format approval remains pending; no dependent code or release work.
-Broad old formatting stays deferred.
+**Next bounded outcome.** Restart and close Stage4's full-suite checkpoint on fixed
+source, retaining all failures and original deadlines. Stage3 format approval
+remains pending; wait afterward if it is still pending. No new lab phase,
+dependent format implementation or release work. Broad formatting stays deferred.
 
 This seat edits only this document; the other seat's document above is unchanged.

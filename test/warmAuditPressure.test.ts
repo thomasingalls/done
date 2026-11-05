@@ -92,3 +92,13 @@ it('interrupted maintenance cannot clear physical pressure or replace the retain
   expect(x.owner.pendingWarmAuditRows()).toBe(pressure);
   expect((await x.owner.loadAccount(task)).kind).toBe('baseline-plus-suffix');
 });
+it('physical pressure includes fresh commits after an already consumed suffix without double counting', async () => {
+  const x = await fixture();
+  const first = await x.append();
+  await x.owner.loadAccount(task);
+  expect(x.owner.pendingWarmAuditRows()).toBe(first);
+  const second = await x.append();
+  expect(x.owner.pendingWarmAuditRows()).toBe(first + second);
+  await x.owner.loadAccount(task);
+  expect(x.owner.pendingWarmAuditRows()).toBe(first + second);
+});
