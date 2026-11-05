@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: blocked
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: operator decision on the non-discriminating self-stream omission control
+blocks_on: operator decision after double omission still has no durable receive advance
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -205,18 +205,24 @@ all 287 old unit files byte-for-byte and adds two cascade controls. All failed
 runs and the unadopted pool trial remain in [349](./development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
 
 Complete-command reruns pass geometry (228/32 old skips), transport and
-service-inbound; sync's native stage passes (25/6 old skips), as preserved in350.
-The five scheduler controls now pass after a test-only complete-graph repair.
-Native witness and both dispatch controls pass too. [351](./development-evidence/2026-11-02-release-hardening/351-sync-control-boundary/README.md)
-records the stop: the self-omission mutant still halts for conflict at position0,
-while the old control expects receive to advance to1. Baseline correctly refuses
-for integrity and Local stays active. Do not weaken the later delivery guard or
-relax the old advance assertion; return the control-scope decision to the operator.
+service-inbound; sync native checks pass (25/6 old skips), as preserved in350.
+Five scheduler controls and the native witness/dispatch controls pass (351).
+The operator-approved layered control now proves the baseline integrity halt
+and the single-omission both-lane conflict, with writing/content/inbound records
+unchanged. One authenticated conflict decision is persisted in the single arm.
 
-Classification mode, complete sync exit, ten later declared contract commands
-and whole-tree receipt/trace refresh remain pending. All old assertions/deadlines
-remain; application source and Vite config are unchanged after Stage1. Stage2
-has not started. No further hardening until the operator resolves this hold.
+[352](./development-evidence/2026-11-02-release-hardening/352-layered-self-control/README.md)
+records the required stop: omitting both the self-envelope check and decision
+step still leaves receive at0. The self-only path writes no inbound receipt;
+omitting recordResponse also omits the decision write. The scheduler rereads
+authenticated durable state rather than accepting a transport result as progress.
+Do not invent an acknowledgment, write, or cursor to make this control advance.
+
+A supported Worker receive handoff without recordResponse is identified; retain
+its original single-omission control when work resumes. That control,
+classification, full sync exit, the ten later contract commands and receipt/trace
+refresh remain pending. Application source and Vite config are unchanged after
+Stage1. Stage2 has not started. Await the operator's next direction.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

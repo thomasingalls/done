@@ -6972,3 +6972,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The hardening rule distinguishes ordinary development/harness failures from an existing test requiring guard weakening. The copied scheduler and missing legacy fixture event are repairable preconditions; an old expected mutant advance blocked by a current independent decision check is a coverage boundary.
 
 **Decision.** Preserve all old assertions and deadlines while repairing the source closure, actual witness setup and precise baseline refusal wait. Once the self mutant remains blocked for conflict, stop and report instead of widening its accepted outcomes or removing another guard. The operator chooses how to re-scope the omission obligation; the shipping delivery-decision check stays. No app, trust, format, budget, deadline or documentation-policy changes.
+
+
+### Omitting a decision step must not manufacture durable progress
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 352
+
+**Orientation.** The operator approves a layered self-envelope/decision control, explicitly requiring a stop if both omissions do not advance to1. The baseline remains and the single omission must differ as a both-lane conflict with writing refused.
+
+**Decision.** Remove only the uniquely matched decision step, leaving proof erasure and the durable-status reader intact; never substitute an accepted result or setter. Capture exact persisted content/inbound rows and conflict records separately. Once the double arm still has no durable decision or receive advance, preserve the failure and stop. Static Worker-path reachability and pending classification/control obligations remain explicit. No guard, deadline, budget, source format or production behavior change.

@@ -18646,3 +18646,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Five scheduler controls pass after genuine graph bundling and two scoped anchor updates. The native witness fixture now creates its real legacy receipt and its original ordinary/mutant cold assertions pass; both dispatch controls pass. All old assertions/deadlines remain. [Every run and stopped boundary](development-evidence/2026-11-02-release-hardening/351-sync-control-boundary/README.md).
 
 **Notes.** Stop on the existing self-omission control: baseline refuses correctly, and removing its original byte check still reaches the current delivery conflict defense rather than the expected position1. No additional guard is omitted, no old assertion is relaxed, classification remains unrun, and the full sync command is not green. This is a control-sensitivity hold on synthetic inconsistent data. No runtime changes. Record before marking the active slice blocked for the operator's control-scope decision.
+
+
+### Layered self control stops at durable-progress authority
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 352 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** The approved baseline and single-omission assertions pass: integrity versus both-lane conflict, position0, active editor, exact content/inbound preservation. The single omission records one conflict decision, reported separately. Both uniquely anchored omissions still yield position0, not the required1; stop at that predicate. [Every run, storage observation and live path](development-evidence/2026-11-02-release-hardening/352-layered-self-control/README.md).
+
+**Notes.** The self-only path does not append inbound data, and removing recordResponse removes its only decision write; the scheduler derives progress from authenticated storage. No fake progress/acknowledgment or additional omission is introduced. Preserve the first transient-state observation failure and corrected terminal run. Worker compatibility receive path identified; its original control and classification remain unrun under the explicit stop. No app changes. Record before advancing the active hold.

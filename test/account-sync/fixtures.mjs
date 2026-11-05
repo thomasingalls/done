@@ -13,7 +13,10 @@ export { openAccountCaptureSession, openOwnedCapturedAccountWorkspace } from './
 export { openOwnedAccountSpoolWorkspace, openOwnedAccountDeliveryWorkspace } from './src/crdt/accountSpool';
 `,
     );
-  let hits = 0;
+  let hits = 0,
+    selfHits = 0,
+    decisionHits = 0;
+  const layered = control === 'self-and-decision';
   const targets = {
     'retention-owner': [
       '/src/crdt/accountReceive.ts',
@@ -68,7 +71,7 @@ export { openOwnedAccountSpoolWorkspace, openOwnedAccountDeliveryWorkspace } fro
       '(globalThis.syncDispatchBoundary?.(), context.canSubmit?.() === false)',
     ],
   };
-  const target = targets[control];
+  const target = targets[layered ? 'self' : control];
   const result = await build({
     configFile: false,
     logLevel: 'error',
@@ -147,6 +150,24 @@ export { openOwnedAccountSpoolWorkspace, openOwnedAccountDeliveryWorkspace } fro
             name: 'sync-control',
             enforce: 'pre',
             transform(code, id) {
+              if (layered && id.endsWith('/src/crdt/accountReceive.ts')) {
+                const anchor = `const decision = await outbound.recordResponse(position, proof);
+                  // A verified page does not prove the delivery owner retained its decision.
+                  // Duplicates may be unrecorded but accepted; a declined decision must stop
+                  // this receive attempt rather than become an unexplained network backoff.
+                  if (decision.kind === 'unknown' || decision.kind === 'blocked')
+                    return {
+                      kind: 'rejected' as const,
+                      reason: 'self-decision-refused' as const,
+                      recorded: false,
+                    };`;
+                if (code.split(anchor).length !== 2)
+                  throw Error('Missing unique self-decision step');
+                hits++;
+                decisionHits++;
+                // Omit only this step; do not forge an accepted decision or durable progress.
+                return code.replace(anchor, 'void position;');
+              }
               if (
                 control === 'r01-no-preflight' &&
                 id.endsWith('/src/crdt/accountEnvelopePreparation.ts')
@@ -169,6 +190,7 @@ export { openOwnedAccountSpoolWorkspace, openOwnedAccountDeliveryWorkspace } fro
               if (code.split(target[1]).length !== 2)
                 throw Error('Missing mutation anchor ' + control);
               hits++;
+              if (layered) selfHits++;
               if (control === 'flush-copy-boundary') {
                 const after = 'task.step(() => {\n          for (const entry of batch)';
                 if (code.split(after).length !== 2) throw Error('Missing flush cleanup boundary');
@@ -190,7 +212,10 @@ export { openOwnedAccountSpoolWorkspace, openOwnedAccountDeliveryWorkspace } fro
       lib: { entry: resolve('test/account-sync/browser.ts'), name: 'Harness', formats: ['iife'] },
     },
   });
-  if (control && hits !== (control === 'r01-old-writer' ? 3 : 1))
+  if (layered) {
+    if (hits !== 2 || selfHits !== 1 || decisionHits !== 1)
+      throw Error('Both layered omissions must apply exactly once');
+  } else if (control && hits !== (control === 'r01-old-writer' ? 3 : 1))
     throw Error('Mutation did not apply');
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }

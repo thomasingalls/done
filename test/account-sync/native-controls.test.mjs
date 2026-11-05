@@ -23,6 +23,7 @@ import {
   prepare,
   request,
   receive,
+  view,
 } from './fixtures.mjs';
 const save = (mode, observations) => {
   if (process.env.ACCOUNT_REPORT_DIR)
@@ -136,11 +137,12 @@ test(
   { timeout: 60000 },
   async (t) => {
     const observations = [];
-    for (const mode of ['baseline', 'self', 'classification']) {
-      const mutant = mode === 'self';
+    for (const mode of ['baseline', 'self', 'self-and-decision', 'classification']) {
+      const mutant = mode === 'self-and-decision';
       const f = await native(t),
         item = await selected(f, 'sync-self-' + mode);
       await open(f.page, item);
+      const initial = await view(f.page);
       const snapshot = await f.page.evaluate(() => [...editor.snapshot()]);
       await close(f.page);
       const doc = new Y.Doc({ gc: false });
@@ -150,8 +152,11 @@ test(
       doc.getText('master').insert(0, 'REMOTE ');
       doc.destroy();
       const wire = await envelope(f.page, item, 1, [original]);
+      const before = await census(f.page, item);
+      let reads = 0;
       await f.context.route(f.server.origin + '/account/delivery/submit', (r) => r.abort());
       await f.context.route(path(f), (r) => {
+        reads++;
         const q = Buffer.from(r.request().postData()),
           after = JSON.parse(q)[10];
         return r.fulfill({
@@ -165,37 +170,92 @@ test(
         await configure(f.page, f.testOperatorToken);
       }
       await syncing(f.page, item);
-      await waitPredicate(
-        f.page,
-        () =>
-          opened.sync.status.receive.receivedThrough === 1 ||
-          opened.sync.status.receive.reason === 'integrity' ||
-          editor.status.state === 'blocked' ||
-          editor.status.state === 'closed',
-      ).catch(async (cause) => {
-        console.log(
-          JSON.stringify({
-            mutant,
-            sync: await syncStatus(f.page),
-            editor: await f.page.evaluate(() => editor.status),
-          }),
+      if (mode === 'self') {
+        await waitPredicate(
+          f.page,
+          () =>
+            opened.sync.status.receive.receivedThrough === 1 ||
+            (opened.sync.status.receive.phase === 'blocked' &&
+              opened.sync.status.send.phase === 'blocked') ||
+            editor.status.state === 'blocked' ||
+            editor.status.state === 'closed',
         );
-        throw cause;
-      });
+      } else if (mode === 'self-and-decision') {
+        await waitPredicate(
+          f.page,
+          () =>
+            opened.sync.status.receive.receivedThrough === 1 ||
+            opened.sync.status.receive.phase === 'blocked' ||
+            opened.sync.status.receive.phase === 'retrying' ||
+            editor.status.state === 'blocked' ||
+            editor.status.state === 'closed',
+        );
+      } else {
+        await waitPredicate(
+          f.page,
+          () =>
+            opened.sync.status.receive.receivedThrough === 1 ||
+            opened.sync.status.receive.reason === 'integrity' ||
+            editor.status.state === 'blocked' ||
+            editor.status.state === 'closed',
+        );
+      }
       const status = await syncStatus(f.page);
+      const advanced = status.receive.receivedThrough === 1;
+      const editorState = await f.page.evaluate(() => editor.status.state);
+      const visible = await view(f.page);
+      await close(f.page);
+      const after = await census(f.page, item);
+      const incoming = (rows) =>
+        rows.filter(
+          (r) =>
+            r.kind === 'update' ||
+            (r.kind === 'heads' &&
+              Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/')),
+        );
+      const decisions = after.filter((r) => {
+        if (r.kind !== 'heads' || before.some((b) => b.seq === r.seq)) return false;
+        const text = Buffer.from(r.bytes).toString();
+        return text.startsWith('["done/account-delivery/v1"') && JSON.parse(text)[9] === 'response';
+      });
+      observations.push({
+        mode,
+        advanced,
+        editorState,
+        status,
+        reads,
+        initial,
+        visible,
+        storage: { before, after, newDeliveryDecisions: decisions.length },
+      });
+      // Preserve every completed arm, including a failed double omission.
+      save('self-layered', observations);
+      assert(reads > 0, 'The alternate self page must actually be offered');
       if (mode === 'baseline') {
         assert.equal(status.receive.phase, 'blocked');
         assert.equal(status.receive.reason, 'integrity');
       }
-      const advanced = status.receive.receivedThrough === 1;
+      if (mode === 'self') {
+        for (const lane of ['send', 'receive']) {
+          assert.equal(status[lane].phase, 'blocked');
+          assert.equal(status[lane].reason, 'conflict');
+        }
+      }
+      if (mode === 'baseline' || mode === 'self') {
+        assert.equal(status.send.acceptedThrough, 0);
+        assert.equal(status.receive.receivedThrough, 0);
+        assert.equal(visible, initial, 'Refused self writing must not enter the editor');
+        assert.deepEqual(
+          incoming(after),
+          incoming(before),
+          'Refused self writing must not enter stored content or inbound receipts',
+        );
+      }
       assert.equal(advanced, mutant);
-      const editorState = await f.page.evaluate(() => editor.status.state);
       assert.equal(editorState, mode === 'classification' ? 'closed' : 'active');
-      await close(f.page);
-      observations.push({ mode, advanced, editorState, status });
       await f.context.close();
     }
-    save('self', observations.slice(0, 2));
-    save('classification', [observations[0], observations[2]]);
+    save('self', observations.slice(0, 3));
+    save('classification', [observations[0], observations[3]]);
   },
 );
