@@ -1,0 +1,245 @@
+{
+  "phase": 348,
+  "independentChecks": {
+    "fullDriverCampaignPassed": true,
+    "actualReportsReconciled": true,
+    "sourcePinsIndependentlyRehashed": 1547,
+    "caseAssertionsAndDeadlinesByteIdenticalToSignedBase": true,
+    "applicationSourceUnchangedAfterStage1": true,
+    "reportDirectory": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z"
+  },
+  "baseComparison": "Both native dispatch cases fail on signed base with Missing dispatch anchor; same pinned Node/browser and old case deadlines.",
+  "changedFiles": "Test-only bundle injection anchor; native-controls.test.mjs byte-identical to base.",
+  "ordinaryVsMutant": "0 versus 1 HTTP requests for both offline and pressure",
+  "runtimeLimitsChanged": false,
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-base-dispatch-control/child.log",
+      "artifact": "objects/6567be3f9f38c479d696a29f1e6dd29452b5e4258d84c241c44402f013c304c3.gz",
+      "sha256": "6567be3f9f38c479d696a29f1e6dd29452b5e4258d84c241c44402f013c304c3",
+      "bytes": 7746
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-base-dispatch-control/run.json",
+      "artifact": "objects/52ba582a97d6f29f0a9b55cc68fa38536c0dc9a56513a0ea836e007cfd6eaa44.gz",
+      "sha256": "52ba582a97d6f29f0a9b55cc68fa38536c0dc9a56513a0ea836e007cfd6eaa44",
+      "bytes": 498
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-base-dispatch-control/host-load.jsonl",
+      "artifact": "objects/619b7f86985eb13e5aa0d479b41ce6d2aa395531f633c9f80662baed3f20f993.gz",
+      "sha256": "619b7f86985eb13e5aa0d479b41ce6d2aa395531f633c9f80662baed3f20f993",
+      "bytes": 1484
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-dispatch-controls-after/control-dispatch-offline.json",
+      "artifact": "objects/9236557637732a14ff31b612c9924f03a28fb71b95e0959516565e4a9a924128.gz",
+      "sha256": "9236557637732a14ff31b612c9924f03a28fb71b95e0959516565e4a9a924128",
+      "bytes": 802
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-dispatch-controls-after/child.log",
+      "artifact": "objects/b26d26f4388f69dae7ff2184ca98f7a9cddc4ec84b7b72f561a95cdd45e84c09.gz",
+      "sha256": "b26d26f4388f69dae7ff2184ca98f7a9cddc4ec84b7b72f561a95cdd45e84c09",
+      "bytes": 615
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-dispatch-controls-after/control-dispatch-pressure.json",
+      "artifact": "objects/e15c94523755ea13543c6113094fdedd802d1a38b46940164c29fee93f2bd417.gz",
+      "sha256": "e15c94523755ea13543c6113094fdedd802d1a38b46940164c29fee93f2bd417",
+      "bytes": 827
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-dispatch-controls-after/run.json",
+      "artifact": "objects/d5edc5a71aca37ad49c6a038ff68c77421a23a67a45defffe12f68f955f1ee23.gz",
+      "sha256": "d5edc5a71aca37ad49c6a038ff68c77421a23a67a45defffe12f68f955f1ee23",
+      "bytes": 480
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-dispatch-controls-after/host-load.jsonl",
+      "artifact": "objects/3c2be658864e065cb27dee5b4383864d4c1c833a81cae8fe24373bf22bb2c899.gz",
+      "sha256": "3c2be658864e065cb27dee5b4383864d4c1c833a81cae8fe24373bf22bb2c899",
+      "bytes": 3037
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-driver-campaign-after/child.log",
+      "artifact": "objects/cdacd52357586e0a71623d28edba7ee8e12764fc4b72c83a3436c78b322dfc29.gz",
+      "sha256": "cdacd52357586e0a71623d28edba7ee8e12764fc4b72c83a3436c78b322dfc29",
+      "bytes": 6693
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-driver-campaign-after/run.json",
+      "artifact": "objects/8cd5369e2908da8dfb316ccf6605b4c146ab8b5f2bcf2ff83418415fed0cc499.gz",
+      "sha256": "8cd5369e2908da8dfb316ccf6605b4c146ab8b5f2bcf2ff83418415fed0cc499",
+      "bytes": 396
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-driver-campaign-after/host-load.jsonl",
+      "artifact": "objects/decfa15f5a556d054474fca184c044272c0989deefe4dbf6549c4f4941edb5ff.gz",
+      "sha256": "decfa15f5a556d054474fca184c044272c0989deefe4dbf6549c4f4941edb5ff",
+      "bytes": 18844
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/controls.log",
+      "artifact": "objects/4cd8512285d50217d48cf4f0dad5143c756692a911d23071016a60230370c500.gz",
+      "sha256": "4cd8512285d50217d48cf4f0dad5143c756692a911d23071016a60230370c500",
+      "bytes": 469
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-halt.json",
+      "artifact": "objects/767014a33e71e5eca6369ef186b6157b36213f145cc8f166ff40a47fcbf25e9f.gz",
+      "sha256": "767014a33e71e5eca6369ef186b6157b36213f145cc8f166ff40a47fcbf25e9f",
+      "bytes": 1029
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/types.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/summary.json",
+      "artifact": "objects/bfd7a96f3a93f10a87066bc8afc5664b181a6c770453602f99481be85e29f4ec.gz",
+      "sha256": "bfd7a96f3a93f10a87066bc8afc5664b181a6c770453602f99481be85e29f4ec",
+      "bytes": 890
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/sources.json",
+      "artifact": "objects/c239eee8174a36ded550b40ea93475b97d0d8af0d3a7d880e239623c54fd2584.gz",
+      "sha256": "c239eee8174a36ded550b40ea93475b97d0d8af0d3a7d880e239623c54fd2584",
+      "bytes": 217362
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-dispatch-offline.json",
+      "artifact": "objects/9236557637732a14ff31b612c9924f03a28fb71b95e0959516565e4a9a924128.gz",
+      "sha256": "9236557637732a14ff31b612c9924f03a28fb71b95e0959516565e4a9a924128",
+      "bytes": 802
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/units.log",
+      "artifact": "objects/20406e7ee1ce9cfa973d033ccd995804efd24cc091a9f74e882c6da7cb3960f3.gz",
+      "sha256": "20406e7ee1ce9cfa973d033ccd995804efd24cc091a9f74e882c6da7cb3960f3",
+      "bytes": 2813
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-observer.json",
+      "artifact": "objects/db388bcf814d3d41b792c5d37100f2f9add4ea589db7fd185f4c4d4760187ef3.gz",
+      "sha256": "db388bcf814d3d41b792c5d37100f2f9add4ea589db7fd185f4c4d4760187ef3",
+      "bytes": 1027
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/generated.log",
+      "artifact": "objects/5c7dc493285773903e7b1c77b40e149e2a7e038f41d2faa697fefb736e52819b.gz",
+      "sha256": "5c7dc493285773903e7b1c77b40e149e2a7e038f41d2faa697fefb736e52819b",
+      "bytes": 559
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/generated-native.json",
+      "artifact": "objects/22807df42471e9baf7a46dd543dd62b3b2df042c68c0c70e3a1da4a62987386a.gz",
+      "sha256": "22807df42471e9baf7a46dd543dd62b3b2df042c68c0c70e3a1da4a62987386a",
+      "bytes": 607074
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/native.xml",
+      "artifact": "objects/1ea5e9a9bde026a30b2735ba4880dc70e7b8667c5116596209a0e8404e509860.gz",
+      "sha256": "1ea5e9a9bde026a30b2735ba4880dc70e7b8667c5116596209a0e8404e509860",
+      "bytes": 2649
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/native-controls.xml",
+      "artifact": "objects/bd39566fdc5c907d949bff4fbcc8ca9b05348f62ab450fa788a781535890a276.gz",
+      "sha256": "bd39566fdc5c907d949bff4fbcc8ca9b05348f62ab450fa788a781535890a276",
+      "bytes": 686
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-dispatch-pressure.json",
+      "artifact": "objects/e15c94523755ea13543c6113094fdedd802d1a38b46940164c29fee93f2bd417.gz",
+      "sha256": "e15c94523755ea13543c6113094fdedd802d1a38b46940164c29fee93f2bd417",
+      "bytes": 827
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-overlap.json",
+      "artifact": "objects/991819f87f245f3679ab549f3c6ef326b499d3c86f1ab2ad5d843a8fd1a918ea.gz",
+      "sha256": "991819f87f245f3679ab549f3c6ef326b499d3c86f1ab2ad5d843a8fd1a918ea",
+      "bytes": 1026
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/generated.xml",
+      "artifact": "objects/cbc4eba713232247c44a8f72c555e86706603d3090d470a1f3df9a167c955bc1.gz",
+      "sha256": "cbc4eba713232247c44a8f72c555e86706603d3090d470a1f3df9a167c955bc1",
+      "bytes": 482
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/native.log",
+      "artifact": "objects/e411e3ebe3e6a3281100603e0a5adfe09724128350d4a7cafc386ba283dae443.gz",
+      "sha256": "e411e3ebe3e6a3281100603e0a5adfe09724128350d4a7cafc386ba283dae443",
+      "bytes": 1538
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/native-controls.log",
+      "artifact": "objects/d331cbae5afa947519783fcfada13efba4f70ba8fd744ab8c55e6083e2000ca3.gz",
+      "sha256": "d331cbae5afa947519783fcfada13efba4f70ba8fd744ab8c55e6083e2000ca3",
+      "bytes": 615
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/controls.xml",
+      "artifact": "objects/5bbef5189e78b96730bed9ef4aeaca3a2a71962cf929d7bd78724afc94f76490.gz",
+      "sha256": "5bbef5189e78b96730bed9ef4aeaca3a2a71962cf929d7bd78724afc94f76490",
+      "bytes": 1263
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-poll.json",
+      "artifact": "objects/0839c09e8a7b3e82383ab5f1254fa2821ebc34c76a4a6005a01238b57417d2d5.gz",
+      "sha256": "0839c09e8a7b3e82383ab5f1254fa2821ebc34c76a4a6005a01238b57417d2d5",
+      "bytes": 1020
+    },
+    {
+      "original": "test-results/account-receive-driver/2026-11-02T14-41-36.067Z/control-resume.json",
+      "artifact": "objects/0b738d33a68d2769c790b0eb6042a0ed480f5809dcca8da202f4a10f60071e80.gz",
+      "sha256": "0b738d33a68d2769c790b0eb6042a0ed480f5809dcca8da202f4a10f60071e80",
+      "bytes": 1025
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-independent-checks.json",
+      "artifact": "objects/50a40f65b5536bac7fd1ad3599e6b9ce9b7fc5b250694fef93dce77f1f7a81a2.gz",
+      "sha256": "50a40f65b5536bac7fd1ad3599e6b9ce9b7fc5b250694fef93dce77f1f7a81a2",
+      "bytes": 314
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/check348.mjs",
+      "artifact": "objects/7fc18be853a3c362fa364f765a4522e49c2d12f6f1eab04a650dd3f22473a0c1.gz",
+      "sha256": "7fc18be853a3c362fa364f765a4522e49c2d12f6f1eab04a650dd3f22473a0c1",
+      "bytes": 1485
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-checks.json",
+      "artifact": "objects/6760d95fe3d66991ff9b7ab50b807bd203775883155ce9eb238fbfab6e09b13c.gz",
+      "sha256": "6760d95fe3d66991ff9b7ab50b807bd203775883155ce9eb238fbfab6e09b13c",
+      "bytes": 966
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-inventory-record.log",
+      "artifact": "objects/fb46f771ec054dc1098ed8947db9b0e28712ef9a5e81457535975d334bfc660e.gz",
+      "sha256": "fb46f771ec054dc1098ed8947db9b0e28712ef9a5e81457535975d334bfc660e",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-inventory-controls.log",
+      "artifact": "objects/6d2536b1ac186e0075959ac69847a9f8618d3920b30a8a3b06e76d5f50b2686b.gz",
+      "sha256": "6d2536b1ac186e0075959ac69847a9f8618d3920b30a8a3b06e76d5f50b2686b",
+      "bytes": 1092
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-format.log",
+      "artifact": "objects/bf34bdc242dd7c61ee82994baae6c3c865ff3d3e59f317145718886317c2590d.gz",
+      "sha256": "bf34bdc242dd7c61ee82994baae6c3c865ff3d3e59f317145718886317c2590d",
+      "bytes": 112
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/348-lint.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ]
+}

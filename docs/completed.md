@@ -18610,3 +18610,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Actual HTTP/editor reports reconcile; 15 wrapper cases pass with all old controls and explicit new-system/other-actor/changed-byte controls. The same initial source is confirmed in all 10 real driver histories, permitting the identical rule there. Every later capture remains human-only; exact initial capture continuity remains. [Evidence](development-evidence/2026-11-02-release-hardening/347-initial-system-source/README.md).
 
 **Notes.** Preserve the driver aggregate's newly reached moved dispatch-anchor failure and the passing standalone generated histories. No runtime or deadline change. Record the closed policy hold before advancing to test-only dispatch attribution and the remaining unit-wrapper deadlines.
+
+
+### Final-dispatch native controls target the current read decision
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 348 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** The stale injection reproduces on signed base. After test-only rebinding, both offline/pressure controls distinguish zero ordinary requests from one mutant request. The entire six-stage driver campaign and its real-report reconciliation pass. Rehash all 1,547 execution pins; the original native test file and case deadlines are unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/348-final-dispatch-fixture/README.md).
+
+**Notes.** No app or guard changes. Inventory/format/lint pass. Record this outcome before moving to the unchanged unit-wrapper deadlines and final receipt/campaign reruns.

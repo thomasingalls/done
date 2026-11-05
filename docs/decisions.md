@@ -6945,3 +6945,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The operator approved only system sources already in the pre-action capture set, with actor `system` and exact continuity; every source added during a history must remain human. Driver/editor may share this exception only after actual reports establish the same initializer.
 
 **Decision.** Pass each report's explicit initial capture list into the existing validator, comparing the entire containing capture against that initial value for every system source. Keep all existing known-source preservation and final-state checks. Confirm all three real report populations and add direct refusal controls whose later copies agree, so mere disagreement is not the discriminator. Preserve the old real-report refusal in phases345–346; do not rewrite it. No trust, format, runtime or documentation requirement changes.
+
+
+### Keep dispatch fault delivery adjacent to its actual guard
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 348
+
+**Orientation.** The operator requires faults to reach the current owner without changing assertions or app guards. A later driver control became reachable only after its earlier scheduler fixture was repaired.
+
+**Decision.** Use the unique current individual-read callback as the injection point, retaining the original baseline/mutant distinction and every native assertion/deadline. Do not instrument or relax the production path, and do not interpret a missing mutation anchor as application evidence. Reproduce on signed base and run the entire repaired campaign before advancing.

@@ -1681,7 +1681,7 @@
     {"path":"test/account-promotion/native.test.mjs","sha256":"cfc009f231271d1a5226593e3faebeba5d6b341efa4a86046bf9f05c55f0ae29"},
     {"path":"test/account-receive-driver/browser.ts","sha256":"133b8c5d911f27680a3e98f9af604959b549c4322d6d44f5f769ad3529a421c4"},
     {"path":"test/account-receive-driver/controls.test.mjs","sha256":"667a60ab0ee07b3dbe0d10e7c83fc7ba5d3ee37ea881c5f41f96e47ef39eeddc"},
-    {"path":"test/account-receive-driver/fixtures.mjs","sha256":"fa2393b6b16873c8da828008983fa194a8d030c1be41375f279fa5c867646282"},
+    {"path":"test/account-receive-driver/fixtures.mjs","sha256":"24a2c4194a0ffdea0d88c63fe918e445e05af9aaadca12570885b4aa2b662be0"},
     {"path":"test/account-receive-driver/generated.test.mjs","sha256":"6d5f5a7b8264dc86871b324e2c4655b7a69cc5454dfc1a6e71d70cee1ca3f459"},
     {"path":"test/account-receive-driver/native-controls.test.mjs","sha256":"a8cf0d2941aacdac9eaa1bb5fb9fb1fe66a641c34cbf19fe9a6e08e189461db6"},
     {"path":"test/account-receive-driver/native.test.mjs","sha256":"f433688ea5ceb2d35247042449c243dc048d80515b7662af17cc87314fc0b948"},

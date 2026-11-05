@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: remaining test-only dispatch anchor, full-unit wrapper deadlines and receipt refresh
+blocks_on: full-unit wrapper deadlines, whole-tree receipts and nested campaign reruns
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -191,15 +191,19 @@ retains all eight phase236 refusals; upgrade checks pass 8 with the old skip, an
 first-authority passes (343). Both historical oversized-writer cases pass their
 original deadlines with all 168 pinned files checked (344).
 
-The operator-approved narrow initial-system exception is complete in all three
-report wrappers. Real initial sources were checked first; all 15 wrapper cases
-pass, including explicit new-system and wrong-actor refusals plus observation and
-final byte-preservation controls. Actual HTTP/editor reports reconcile. [347](./development-evidence/2026-11-02-release-hardening/347-initial-system-source/README.md)
-retains the real driver campaign's newly reached missing dispatch-anchor failure;
-its standalone 10 generated histories pass. Next: signed-base attribution and
-test-only repair of that injection, then the six old 120-second full-unit wrapper
-deadlines and whole-tree receipt refresh. Previously unrerun nested steps are not
-credited. Application source is unchanged after Stage1. Stage2 has not started.
+The operator-approved narrow initial-system rule is complete in all three report
+wrappers; all 15 wrapper cases pass with explicit new-system/wrong-actor and exact
+byte-preservation controls (347). The moved final-dispatch injection also
+reproduced on the signed base, and its test-only repair now passes the entire
+six-stage driver campaign and actual report reconciliation. All 1,547 execution
+pins independently match; original native tests/deadlines remain. [348](./development-evidence/2026-11-02-release-hardening/348-final-dispatch-fixture/README.md).
+
+Next: diagnose the six old 120-second full-unit wrapper deadlines in the exact
+wrapper environment, then refresh whole-tree receipts and rerun previously failed
+nested campaigns. The earlier base unit diagnostic enabled report output unlike
+those wrappers; repeat that attribution with output disabled. No old failure is
+removed or credited by a later partial pass. Application source remains unchanged
+after Stage1. Stage2 has not started.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
