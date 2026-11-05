@@ -6918,3 +6918,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** PRD v9/TRD v8 and the existing phase236 packaged policy distinguish public compiled runtime JavaScript from private tooling pages. The older upgrade assertion still rejected the two runtime filenames. Automatic review rejected relaxing it without explicit approval.
 
 **Decision.** Restore the original assertion while seeking a concrete decision. The operator approved the exact patch and required phase236's rejected examples to remain rejected. Check all eight against the actual compound predicate, then run the upgrade suite; all pass. Format only the crypto registry that failed its existing formatter, independently prove full JSON equality, and preserve every qualification obligation. No documentation policy or runtime guard changes.
+
+
+### Produce historical data with the actual historical owners
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 344
+
+**Orientation.** PRD v9/TRD v8 and the operator's resume require authentic failure boundaries and retained evidence. The old R-01 fixture mixed current modules with three old substitutions and failed on a missing new export before reaching its cases.
+
+**Decision.** Use the existing bounded complete-source historical builder at the original revision, with genuine capture/spool/delivery owner exports. Independently check every archived file against fresh Git bytes; retain dependency equality, module escape, case assertions, deadlines and aggregate blocks. Do not add a compatibility stub or change application code to make an old fixture compile.

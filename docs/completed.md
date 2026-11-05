@@ -18576,3 +18576,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Applied the exact operator-approved upgrade policy patch. The actual predicate refuses all eight phase236 examples. Upgrade checks pass 8 cases with the existing predecessor skip unchanged. The first-authority command passes in full after a parsed-JSON-identical formatting repair; all construction/status/obligation values remain. Ten inventory controls and all case dispositions/counts remain. [Evidence](development-evidence/2026-11-02-release-hardening/343-reviewed-inventory-and-assets/README.md).
 
 **Notes.** Preserve the automatic-review rejection, restored proposal, subsequent explicit approval and failed-before-evaluation diagnostic import. No app source or security/runtime format change. The full checkpoint remains red for the remaining historical/network fixtures and old unit-wrapper deadline; refresh existing receipts after documentation settles. Recorded before advancing our active state.
+
+
+### Historical oversized writer uses its original coherent source graph
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 344 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Both old R-01 sealed/submitted cases pass within their unchanged 240-second deadlines, preserving all writing, size-refusal, retry-budget and cold assertions. Independently reproduce the pinned archive and match all 168 files plus bundle identity. Four adapter tests and ten inventory controls pass; classifications/counts and aggregate blocks remain. [Evidence](development-evidence/2026-11-02-release-hardening/344-historical-writer/README.md).
+
+**Notes.** The runner hashes the shared builder. Replace source-shape expectations with the genuine complete historical bridge, retaining old metadata pins and limits; no aggregate credit inferred. No app source changed. The generated receive fixture and unit-wrapper deadlines still hold the checkpoint. Recorded before advancing the active slice.

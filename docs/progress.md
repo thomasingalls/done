@@ -191,9 +191,12 @@ The operator-approved asset predicate retains all eight phase236 refusals and
 upgrade checks pass 8 cases with the existing predecessor skip; first-authority
 passes after a JSON-identical registry layout repair
 ([343](./development-evidence/2026-11-02-release-hardening/343-reviewed-inventory-and-assets/README.md)).
-Application source remains unchanged after Stage1. Next are the historical
-oversized-writer fixture, generated-receive fixture, existing whole-tree receipt
-refresh, and unchanged 120-second full-unit wrapper deadlines. If a case needs
+Both historical oversized-writer cases now pass within their original 240-second
+deadlines, with all 168 pinned source files independently checked
+([344](./development-evidence/2026-11-02-release-hardening/344-historical-writer/README.md)).
+Application source remains unchanged after Stage1. Next are the generated-receive
+fixture, existing whole-tree receipt refresh, and unchanged 120-second full-unit
+wrapper deadlines. If a case needs
 an application change or a further guard relaxation, report the full list
 first. Continue Stage2 only after the checkpoint is green.
 

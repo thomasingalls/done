@@ -460,7 +460,10 @@ test('Account fixture selection admits exactly 699 Node cases and 12 delivery ca
   );
   const syncHelper = readFileSync('test/account-sync/fixtures.mjs', 'utf8');
   for (const pin of syncHistory[0].expect.historyInputs)
-    assert(syncHelper.includes(pin.reference) && syncHelper.includes(pin.path));
+    assert(syncHelper.includes(pin.reference));
+  assert(syncHelper.includes('historicalBundle('));
+  assert(syncHelper.includes("from './src/crdt/accountCapture'"));
+  assert(syncHelper.includes("from './src/crdt/accountSpool'"));
   const syncScheduler = sync.find((s) => s.argv.at(-1).endsWith('/controls.test.mjs'));
   assert.equal(syncScheduler.fixture, undefined);
   assert.equal(syncScheduler.variant, 'node-account-fixture-file-v1');
