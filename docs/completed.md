@@ -18549,3 +18549,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Every failed browser case reproduces on signed base 89b11fe2 in the matched environment, including the counter module's pre-browser build failure. The base also reaches the unchanged 120-second unit-wrapper deadline. The dev offline trace identifies unavailable Worker assets, the handled Worker load error and the existing five-second cleanup wait. A test-only cache-header fixture makes the original offline identity test pass with startup.spec.ts byte-identical and every assertion/deadline retained. Ten inventory controls pass with all counts/dispositions preserved.
 
 **Notes.** [Evidence](development-evidence/2026-11-02-release-hardening/340-offline-fixture/README.md) keeps the failed diagnostic import, all comparison results and load logs. Built-preview offline unlock passed independently. No application source changes, Stage 1-only regression attribution, waived wrapper deadline or green-checkpoint claim. Recorded before advancing to native Worker fault delivery.
+
+
+### Native Worker fault delivery restores the original browser controls
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 341 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** The full startup/editor suite passes 15/15, including 20 generated cold histories; cut passes 8/8 across desktop/Android. Test-only faults reach real Worker IndexedDB transactions and observe their aborts. Independent AST comparison preserves all 298 original expect-expression nodes and the explicit timeout call. Types, formatting, configured lint and ten inventory controls pass. [Evidence](development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md).
+
+**Notes.** Preserve the earlier typecheck/config-placement failure, its test-only repair into vite/, and environment/lint qualifications. All app sources remain unchanged after Stage 1, and both operator-protected old unit controls remain unchanged. Unrelated baseline harness and wrapper failures still block the full checkpoint. Outcome recorded before advancing to those remaining fixtures.

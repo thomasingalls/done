@@ -31,7 +31,7 @@ export default defineConfig({
       : {}),
   },
   webServer: {
-    command: `node node_modules/vite/bin/vite.js ${packaged ? 'preview' : '--config test/local-app/vite.config.ts'}${releaseRoot ? ` --outDir ${quote(resolve(releaseRoot))}` : ''} --host 127.0.0.1 --port 4181 --strictPort`,
+    command: `node node_modules/vite/bin/vite.js ${packaged ? 'preview' : '--config vite/localStartupFixture.config.ts'}${releaseRoot ? ` --outDir ${quote(resolve(releaseRoot))}` : ''} --host 127.0.0.1 --port 4181 --strictPort`,
     url: 'http://127.0.0.1:4181/local.html',
     reuseExistingServer: false,
     timeout: 30_000,

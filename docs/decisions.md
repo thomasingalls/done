@@ -6891,3 +6891,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** PRD v9/TRD v8 and the existing storage amendment require offline use; packaged.spec already passes it in the built preview. The older direct-component dev fixture has no service worker and Vite no-cache assets, while Local startup now hands off to a fresh Worker.
 
 **Decision.** Give only that frozen dev test server cacheable asset headers. Preserve the real modules, storage, error handling, lifecycle cleanup and unchanged offline identity assertions. The measured failure is asset delivery in the fixture, not a new production unlock change. Keep matched-base failures and the existing unit-wrapper timeout open; no guard or deadline relaxation.
+
+
+### Keep browser fault controls at the real storage owner
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 341
+
+**Orientation.** PRD v9/TRD v8 and the operator's resume-338 instructions preserve all admission, durability and original test assertions. Window-only IndexedDB monkeypatches no longer reach storage after the Worker conversion.
+
+**Decision.** Inject the existing transaction refusal inside the actual Local owner/startup Worker and require observation of the abort. Retain the Window journal refusal and every old expect expression/deadline. Keep the helper outside src and product entries. Put the dev fixture config in the existing tooling TypeScript project rather than expanding the app project's file list. Use the repository's configured lint mode; an extra stricter invocation creates no new requirement.

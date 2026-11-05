@@ -2,6 +2,7 @@ import { devices, expect, type Locator, type Page } from '@playwright/test';
 import type { EditorView } from '@codemirror/view';
 import { test } from '../release-validation/browser-fixture';
 import { openApp, reloadApp } from './openApp';
+import { refuseNativeContent, allowNativeContent } from '../local-app/native-storage-faults';
 
 test.use({
   userAgent: devices['Desktop Chrome'].userAgent.replace(
@@ -51,8 +52,9 @@ const copied = (page: Page) =>
   page.evaluate(
     () => (window as unknown as { lastCut: { text: string; trusted: boolean } }).lastCut,
   );
-const failStorage = (page: Page) =>
-  page.evaluate(() => {
+const failStorage = async (page: Page) => {
+  await refuseNativeContent(page);
+  return page.evaluate(() => {
     const fault = { enabled: true };
     Object.assign(window, { cutFault: fault });
     const set = Storage.prototype.setItem;
@@ -69,6 +71,7 @@ const failStorage = (page: Page) =>
       return request;
     };
   });
+};
 
 for (const surface of ['Goals', 'card']) {
   test(`Mac Cmd X cuts a whole ${surface} line, retains selected cuts and persists undo/redo`, async ({
@@ -131,6 +134,7 @@ test('Cut copies immediately but only publishes deletion after refused storage r
   expect(await copied(page)).toEqual({ text: 'second\n', trusted: true });
   await expect(page.locator('.workspace-status')).toContainText('Input is waiting for storage.');
   await expect.poll(() => body(editor)).toBe('first\nsecond\nlast');
+  await allowNativeContent(page);
   await page.evaluate(() => {
     (window as unknown as { cutFault: { enabled: boolean } }).cutFault.enabled = false;
   });
@@ -161,6 +165,7 @@ test('Cut refuses to delete a visible line while earlier typing is still pending
     .locator('.workspace-status')
     .getByRole('button', { name: 'Discard pending input', exact: true })
     .click();
+  await allowNativeContent(page);
   await page.evaluate(() => {
     (window as unknown as { cutFault: { enabled: boolean } }).cutFault.enabled = false;
   });

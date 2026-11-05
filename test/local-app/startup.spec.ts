@@ -1,6 +1,7 @@
 import { openMenuSection } from '../geometry/openApp';
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
+import { refuseNativeGenesisContent } from './native-storage-faults';
 
 // Explicit protected startup stays covered for compatible stored workspaces.
 // Current automatic first-run and optional protection use the shipped entries in
@@ -163,33 +164,14 @@ test('interrupted creation reopens with the saved factor and original identity',
 }) => {
   await page.goto('/test/local-app/protected-startup.html');
   await state(page, 'fresh');
-  await page.evaluate(() => {
-    const put = IDBObjectStore.prototype.put;
-    IDBObjectStore.prototype.put = function (value, key) {
-      const request = put.call(this, value, key);
-      if (
-        this.name === 'entries' &&
-        Array.isArray(key) &&
-        key[1] === 'local-genesis-v1' &&
-        value.stage === 'content'
-      )
-        request.addEventListener(
-          'success',
-          () => {
-            Object.assign(window, { startupAbortObserved: true });
-            this.transaction.abort();
-          },
-          { once: true },
-        );
-      return request;
-    };
-  });
+  const recordAbort = await refuseNativeGenesisContent(page);
   await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
   const code = (await page.getByLabel('Generated unlock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code' }).click();
   await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Confirm and create' }).click();
   await state(page, 'unavailable');
+  await recordAbort();
   expect(
     await page.evaluate(
       () => (window as unknown as { startupAbortObserved: boolean }).startupAbortObserved,
