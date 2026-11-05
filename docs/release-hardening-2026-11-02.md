@@ -118,7 +118,7 @@ approval, no released build may write the new rows.
 
 ## Working state
 
-Our active slice is in [progress.md](./progress.md#active-slice-release-hardening--stage-2-receive).
+Our active slice is in [progress.md](./progress.md#active-slice-release-hardening--format-contract-and-idle-audit).
 Closed outcomes and reasoning remain in completed.md and decisions.md. This document
 records the operator's hardening scope and ordered plan; it introduces no separate
 documentation procedure or second active-state home.

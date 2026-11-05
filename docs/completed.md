@@ -18761,3 +18761,14 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Outcome.** All 21 positive trim cases pass on the first attempt; three initialization observers then time out before the named mutation checks, and the 120-second stage deadline expires. Three signed-base comparisons pass and detect their original mutations. The full current retry passes 21 cases/eight mutations in 95.138s under the original 120s. Cause and reliable margin remain unresolved. [Evidence](development-evidence/2026-11-02-release-hardening/365-trim-checkpoint/README.md).
 
 **Change and next.** Only failure-time content-free test diagnostics; 61 original assertion argument ASTs, all waits, deadlines and catalogue definitions remain. No app/protocol change. Continue the 55 unrun root commands from storage:properties after exact-tree receipt refresh. Stage 2 remains open.
+
+
+### Stage 2 receive hardening closes its segmented full-suite checkpoint
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 366 · **Stage:** operator hardening Stage 2
+
+**Exit.** All 83 original root commands have successful executions on the same R/E app sources, including the final 55 commands run sequentially. Ten final-segment unit children pass 292 files/2,927 cases/one old skip under the unchanged 120s deadline; geometry passes 228 with 32 old skips. Native/contract source pins agree, and all 12,550 checkpoint-start input pins remain exact except the two test diagnostic scripts and their reviewed inventory. [Every command, failed attempt reference, source pin and host log](development-evidence/2026-11-02-release-hardening/366-stage2-closed/README.md).
+
+**Limits.** This is a segmented checkpoint, not one final monolithic check exit. Clear and trim observer timeouts remain beside their full passing retries; their causes and reliable margins are unresolved. No guard, deadline, skip or construction classification was relaxed. Broader formatting stays deferred. No new format, Stage 5 credit, RAM claim or release preparation.
+
+**Next.** Write and hand over Stage 3.1's format contract. Stage 4 may proceed while the operator decides; new rows remain unauthorized. Outcome recorded before advancing this seat's progress document.

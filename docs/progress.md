@@ -156,78 +156,36 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 
 ---
 
-## Active slice: release hardening — Stage 2 receive
+## Active slice: release hardening — format contract and idle audit
 
 ```yaml
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: harden R1000 and quiet transport E without new rows
-blocks_on: Stage2 full-suite checkpoint before the format contract
-updated: 2026-11-02
+scope: Stage3.1 format contract, then independent Stage4 idle-start audit
+blocks_on: operator approval before any Stage3.2 format implementation
+updated: 2026-11-03
 ```
 
 **Contract.** Follow the operator's [hardening plan](./release-hardening-2026-11-02.md).
-All security checks,gates,budgets,limits and deadlines stay. No new lab work,
-computer use,commit,push,publication or deployment. Sequential immutable patchfiles.
-Stage3.1must hand over the format contract before any new rows are approved.
+All security checks, gates, limits, budgets and deadlines stay. No new lab work,
+computer use, commit, push, release preparation, publication or deployment.
+Keep sequential immutable patches and every earlier phase/lab root intact.
 
-**Completed.** Stage1capacity mapping,S and10s priority-only Y are closed in
-[358](./development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md),
-with the83-command segmented checkpoint and all earlier failures retained. No final
-monolithic pnpm check exit is claimed. All final contract pins match;canonical
-application sources have not changed since337. One full-unit120s timeout remains
-alongside the unchanged109.41s passing retry;cause and margin are not established.
-The six final-tree receipt producers and traceability also passed after that record.
-The broader formatting deferral and older optional global-lint failures remain.
+**Closed.** [Stage1](./development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md)
+and [Stage2](./development-evidence/2026-11-02-release-hardening/366-stage2-closed/README.md)
+have segmented full-suite checkpoints. Stage2 accounts for all 83 original commands;
+its last 55 pass sequentially, with 292 unit files/2,927 cases/one old skip in each
+full unit child. Earlier clear/trim observer timeouts and their full passing retries
+remain, with cause and reliable margin unresolved. No monolithic final check success
+or Stage5 credit is claimed. The broader formatting patch stays deferred.
 
-**R1000 complete.** [359](./development-evidence/2026-11-02-release-hardening/359-receive-repair-polling/README.md)
-records 14 new and 92 existing focused cases, types, scoped lint/format, inventory
-and two discriminating fault controls. Repair uses bounded ephemeral per-slot
-hint/read state and the existing idle scheduler. It preserves first-miss delay,
-all verification, failure backoff, halts and maintenance readiness. No timings or
-Stage 5 credit are claimed. Development fixture/type failures remain recorded.
+**Next bounded outcome.** Write the final bounded receipt schema and reader census,
+old-tab fencing, rollback, handoff versioning, work/index/audit accounting, released
+v2 evidence and reader-first option. Hand over and stop Stage3 for the operator.
+No format-changing implementation or new writer activation before approval.
+Stage4's idle-start audit may proceed while approval waits, then wait. Keep
+nondiscretionary validation and all existing oracle/interrupt/lifecycle guards.
 
-**E primitives complete.** [360](./development-evidence/2026-11-02-release-hardening/360-quiet-original-primitives/README.md)
-records 127 focused cases, two exact fault controls, strict types, scoped quality
-and inventory checks. The raw cache and mixed-response seam share the existing
-byte cap; no native turn or verified prefix advances from cached evidence. Quiet
-expiry follows the required request-start clock. Owner integration is not done.
-
-**E owner integration complete.** [361](./development-evidence/2026-11-02-release-hardening/361-quiet-owner-integration/README.md)
-records 169 focused cases, strict types, scoped quality/inventory and the
-own-stream fault control. Only the native selected turn consumes a cached raw
-original, after fresh authenticated state and through the existing verifier and
-commit path. Extra peer requests use spare existing wire slots. Byte reservations,
-request-start age, erasure, own checks, fairness and send yielding remain.
-
-**Checkpoint attempt retained.** [362](./development-evidence/2026-11-02-release-hardening/362-reviewed-source-census/README.md)
-records the first root check stopping before units/native stages at stale source
-bookkeeping. Six R/E hashes and one diagnostic line changed; all classifications,
-construction statuses and obligations remain. Explicit census regeneration,
-authority, all 12 registry controls and inventory checks pass. No code/test change.
-
-**Partial checkpoint retained.** [363](./development-evidence/2026-11-02-release-hardening/363-checkpoint-clear-timeout/README.md)
-records 26 passing root commands, including 292 files/2,927 unit cases/one old skip
-in 110.71s. Local clear first times out after 17 positive passes and three observer
-errors; the base and current selected comparisons pass, then the complete current
-retry passes 17 cases/five original mutation detections in 85.619s under 120s.
-The cause remains unresolved. Only failure-time content-free diagnostics were
-added; app/protocol bytes, original waits and all 73 assertion arguments remain.
-
-**Trim checkpoint retained.** [365](./development-evidence/2026-11-02-release-hardening/365-trim-checkpoint/README.md)
-keeps 21 positive passes followed by mutation-initialization observer timeouts and
-the full passing retry: 21 cases/eight original detections in 95.138s under 120s.
-Signed-base selected comparisons pass. Only failure-time diagnostics changed;
-61 assertion argument ASTs, waits, deadlines and app/protocol bytes remain.
-The earlier timeout is unresolved, with no reliable margin claim.
-
-**Next bounded outcome.** Refresh exact-tree receipts and run the 55 unrun root
-commands, starting at storage:properties. Keep pinned environment and original
-child deadlines. Preserve failures; classify before repair and retain functional,
-negative-control and guard stop rules. Stage 2 is not closed. After green, hand
-over Stage 3.1; Stage 4 may proceed while format approval waits, then stop.
-No new format, Stage 5 credit, release preparation, publication or deployment.
-
-This seat edits only this document;the other seat's document above is unchanged.
+This seat edits only this document; the other seat's document above is unchanged.
