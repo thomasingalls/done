@@ -18682,3 +18682,10 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Transport, service custody, promotion, ledger, counter and store complete commands pass. Recovery's full units pass105.05s under120s; its only failure is the unchanged, previously deferred recovery-entry formatting. The AST-identical one-file proposal remains unapplied pending approval. Local custody passes13 baseline cases but two mutants time out before assertions. The same two errors reproduce on clean signed89b11fe2, while an earlier pass used an identical candidate runtime source map. No errors are credited as detection. [All results and evidence](development-evidence/2026-11-02-release-hardening/355-contract-checkpoint-census/README.md).
 
 **Next.** Diagnose the custody harness, preserving every assertion/deadline; then complete local custody, checkpoint and local provenance, plus the pending recovery format decision and receipt/trace refresh. No app/source change or Stage2; record before advancing progress.
+
+
+### Approved recovery declaration formatting applies exactly
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch356 · **Stage:**operator hardening Stage1 checkpoint
+
+**Exit.** Apply the exact approved one-file patch; the original50-file recovery format stage passes. The reviewed complete TypeScript AST is unchanged. The broader formatting patch stays deferred; no assertions, deadlines or runtime changes. The whole recovery command still needs rerunning after custody diagnosis. [Evidence](development-evidence/2026-11-02-release-hardening/356-approved-recovery-format/README.md). Record before advancing progress.

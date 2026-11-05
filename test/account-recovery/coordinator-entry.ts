@@ -15,9 +15,7 @@ const controller = new AbortController();
 declare global {
   interface Window {
     recoveryRequest(op: string, body: unknown): Promise<unknown>;
-    recoveryAssertion(
-      challenge: string,
-    ): Promise<
+    recoveryAssertion(challenge: string): Promise<
       {
         id: string;
         response: {

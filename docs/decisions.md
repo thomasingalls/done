@@ -6999,3 +6999,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The operator explicitly approves353-sync-report-review.patch as written and instructs continuation.
 
 **Decision.** Apply those exact bytes. System kind is admitted only for an initial capture with actor system and unchanged complete capture bytes through all observations/final. Keep newly allocated sources human. Constrain network-unavailable to the observed lost-reply action's affected retrying lane with positive failures; do not expand arbitrary status vocabulary. Preserve all controls, source pins and deadlines. Re-evaluate the retained native report against its historical pins; distinguish that from a new runtime execution.
+
+
+### Recovery formatting approval is restricted to one declaration
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch356
+
+**Decision.** The operator approves355-recovery-entry-format-review.patch and explicitly keeps the broader formatting work deferred. Apply exactly those bytes, verify the reviewed AST identity and existing formatter stage, and keep unrelated custody diagnostics in their next patch. A passing repaired format stage is not a new whole-command exit. No assertion or gate changes.

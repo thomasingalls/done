@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: active
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: custody mutation harness diagnosis, deferred formatting approval, final contract and receipt checks
+blocks_on: custody mutation harness diagnosis, final contract reruns and receipt checks
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -241,15 +241,18 @@ phase353 replay; this is not a new native run or Stage5credit.
 [355](./development-evidence/2026-11-02-release-hardening/355-contract-checkpoint-census/README.md)
 records six complete green commands: transport, service custody, promotion,
 ledger, counter and store. Recovery passes full units in105.05seconds under120;
-its only failure is the unchanged October9 recovery-entry formatting. The one-file
-AST-identical proposal remains unapplied pending the operator's decision.
+its only failure was the unchanged October9 recovery-entry formatting. The operator
+approved the one-file AST-identical patch;356applies it exactly and the complete
+formatting stage now passes. The whole recovery command still needs rerunning.
+The broader formatting work stays deferred.
 
 Local custody passes13 unmodified cases, but two mutants time out before their
 assertions. A full clean signed89b11fe2 run reproduces both errors with the same
 pinned environment/browser. An earlier run passed both on an identical candidate
 runtime source map; preserve every result. No failed mutant earns detection credit.
 The next bounded phase diagnoses the fixture waits without changing assertions,
-guards or deadlines. Stop/report if an app change or guard weakening is needed.
+guards or deadlines. Focused controls pass, while the full ordering can time out
+a waiter after the operation has already settled; retain both outcomes. Stop/report if an app change or guard weakening is needed.
 
 Local custody's later stages, checkpoint, local provenance and receipt/trace refresh
 remain. No app changes after Stage1; no Stage2, publication or deployment. The

@@ -1,0 +1,35 @@
+{
+  "phase": 356,
+  "approval": "Apply355-recovery-entry-format-review.patch; broader formatting stays deferred",
+  "patchSha256": "901f75aa3ebdcde9cea5d044e574d6455b7c8526759d62f3ae87f0f453617385",
+  "exactProposedBytesApplied": true,
+  "completeRecoveryFormatStagePassed": true,
+  "recoveryWholeCommandRerun": "pending after custody diagnosis",
+  "runtimeChanges": false,
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/355-recovery-entry-format-review.patch",
+      "artifact": "objects/901f75aa3ebdcde9cea5d044e574d6455b7c8526759d62f3ae87f0f453617385.gz",
+      "sha256": "901f75aa3ebdcde9cea5d044e574d6455b7c8526759d62f3ae87f0f453617385",
+      "bytes": 494
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/355-format-review.json",
+      "artifact": "objects/5833feb0d32f3094d78f02107ba0a6767a617ad1ec1967fca071e45975c9029b.gz",
+      "sha256": "5833feb0d32f3094d78f02107ba0a6767a617ad1ec1967fca071e45975c9029b",
+      "bytes": 473
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/355-format-identity.json",
+      "artifact": "objects/4404e6909b73b6b8c7791bb7a3c3c356425304ac151d17b4832ece10d2484a80.gz",
+      "sha256": "4404e6909b73b6b8c7791bb7a3c3c356425304ac151d17b4832ece10d2484a80",
+      "bytes": 159
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/356-approved-recovery-format.log",
+      "artifact": "objects/ade46b24c0aacc3c0e8643d8ea89ee2be7a7af9a8ac69f68da675e8ad3d7edf4.gz",
+      "sha256": "ade46b24c0aacc3c0e8643d8ea89ee2be7a7af9a8ac69f68da675e8ad3d7edf4",
+      "bytes": 113
+    }
+  ]
+}
