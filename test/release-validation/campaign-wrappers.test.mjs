@@ -2956,6 +2956,72 @@ test('160 generated sync corruptions reject rewritten retries, reused nonces, lo
     { seed: 150971, numRuns: 160 },
   );
 });
+function syncInitialSystemEvidence() {
+  const r = syncEvidence();
+  for (const h of r['generated-native.json'].histories) {
+    const id = h.before[0].id;
+    for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures]) {
+      const source = rows.find((c) => c.id === id).sources[0];
+      source.kind = 'system';
+      source.actor = 'system';
+    }
+  }
+  return r;
+}
+test('sync report accepts only unchanged initial system captures with the system actor', () => {
+  const r = syncInitialSystemEvidence();
+  reconcileSyncEvidence(r);
+  for (const change of [
+    (h) => {
+      h.before[0].sources[0].actor = 'other';
+    },
+    (h) => {
+      const added = h.observations[0].captures.find((c) => !h.before.some((b) => b.id === c.id));
+      added.sources[0].kind = 'system';
+      added.sources[0].actor = 'system';
+    },
+    (h) => {
+      h.observations[0].captures[0].sources[0].bytes[0] = 99;
+    },
+    (h) => {
+      h.final.captures[0].sources[0].bytes[0] = 99;
+    },
+  ]) {
+    const v = JSON.parse(JSON.stringify(r));
+    change(v['generated-native.json'].histories[0]);
+    assert.throws(() => reconcileSyncEvidence(v));
+  }
+});
+test('sync report accepts the network reason only on the observed lost reply retry lane', () => {
+  const r = syncEvidence();
+  for (const h of r['generated-native.json'].histories) {
+    for (const o of h.observations)
+      if (o.action.startsWith('lost-')) {
+        const lane = o.action === 'lost-send' ? 'send' : 'receive';
+        o.transition[lane].reason = 'network-unavailable';
+      }
+  }
+  reconcileSyncEvidence(r);
+  const firstLost = (v) =>
+    v['generated-native.json'].histories[0].observations.find((o) => o.action.startsWith('lost-'));
+  for (const change of [
+    (o, lane) => {
+      o.transition[lane].phase = 'idle';
+    },
+    (o, lane) => {
+      o.transition[lane].failures = 0;
+    },
+    (o, lane) => {
+      o.transition[lane === 'send' ? 'receive' : 'send'].reason = 'network-unavailable';
+    },
+  ]) {
+    const v = JSON.parse(JSON.stringify(r));
+    const o = firstLost(v),
+      lane = o.action === 'lost-send' ? 'send' : 'receive';
+    change(o, lane);
+    assert.throws(() => reconcileSyncEvidence(v));
+  }
+});
 test('sync layered and Worker controls require their distinct refusals, storage and original advance', () => {
   const r = syncEvidence();
   reconcileSyncEvidence(r);

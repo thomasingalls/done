@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: operator-release-hardening-stage-1
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked
+status: active
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: operator approval of narrow sync report source-kind policy
+blocks_on: remaining ten contract commands and receipt/trace checkpoint
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -232,13 +232,15 @@ Actual report reconciliation stops at sync's existing system-versus-human guard:
 each history retains one unchanged initial system capture; every new capture is
 human. The previously approved initial-system rule covered three other wrappers.
 
-Hold for the operator's concrete two-file sync report patch. It also constrains
-the current network-unavailable label to the affected retrying lost-reply lane,
-with positive failures and the existing HTTP-loss proof. The isolated proposal
-passes actual reports and5 focused cases; it remains unapplied and earns no
-canonical credit. Ten later contract commands and receipt/trace refresh remain.
-No app changes after Stage1; no Stage2, publication or deployment. The optional
-global-lint failure on three unchanged historical evidence files remains recorded.
+The operator approved the exact two-file report patch. [354](./development-evidence/2026-11-02-release-hardening/354-approved-sync-reports/README.md)
+applies it;8 focused sync-wrapper tests pass. The canonical consumer now reconciles
+the retained complete native reports. All1,551 historical source pins match, with
+the approved changed consumer-test file explicitly checked against the immutable
+phase353 replay; this is not a new native run or Stage5credit.
+
+Continue ten later contract commands, then receipt/trace refresh. No app changes
+after Stage1; no Stage2, publication or deployment. The optional global-lint
+failure on three unchanged historical evidence files remains recorded.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

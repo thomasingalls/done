@@ -244,14 +244,21 @@ export function reconcileSyncReports(directory, sources) {
     assert(readFileSync(join(directory, file)).length, 'Empty composition auxiliary report');
 }
 
-const sortCaptures = (rows) => {
+const sortCaptures = (rows, initial = []) => {
   assert(Array.isArray(rows));
   assert.equal(new Set(rows.map((c) => c.id)).size, rows.length, 'Duplicate source identity');
   for (const c of rows) {
     assert(typeof c.id === 'string' && c.id.length > 0);
     assert(Array.isArray(c.sources) && c.sources.length > 0);
     for (const source of c.sources) {
-      assert.equal(source.kind, 'human');
+      if (source.kind === 'system') {
+        assert.equal(source.actor, 'system');
+        assert.deepEqual(
+          c,
+          initial.find((entry) => entry.id === c.id),
+          'System source was not present unchanged before the first action',
+        );
+      } else assert.equal(source.kind, 'human');
       assert(typeof source.actor === 'string' && source.actor.length > 0);
       assert(Array.isArray(source.bytes) && source.bytes.length > 0);
       assert(source.bytes.every((n) => Number.isInteger(n) && n >= 0 && n <= 255));
@@ -259,8 +266,12 @@ const sortCaptures = (rows) => {
   }
   return [...rows].sort((a, b) => a.id.localeCompare(b.id));
 };
-const sameCaptures = (a, b) =>
-  assert.deepEqual(sortCaptures(a), sortCaptures(b), 'Source identities or bytes differ');
+const sameCaptures = (a, b, initial) =>
+  assert.deepEqual(
+    sortCaptures(a, initial),
+    sortCaptures(b, initial),
+    'Source identities or bytes differ',
+  );
 const hash = (v) => createHash('sha256').update(v).digest('hex');
 const frame = (wire, domain, n) => {
   assert(
@@ -277,7 +288,7 @@ const frame = (wire, domain, n) => {
   assert.equal(v[1], 2);
   return v;
 };
-function syncStatus(s, through, selfRefusal = false) {
+function syncStatus(s, through, selfRefusal = false, lostLane) {
   for (const lane of ['send', 'receive']) {
     const v = s[lane],
       progress = lane === 'send' ? 'acceptedThrough' : 'receivedThrough';
@@ -304,7 +315,11 @@ function syncStatus(s, through, selfRefusal = false) {
         'local-storage',
         'request-expired',
       ].includes(v.reason) ||
-        (selfRefusal && ['integrity', 'network-unavailable'].includes(v.reason)),
+        (selfRefusal && ['integrity', 'network-unavailable'].includes(v.reason)) ||
+        (lostLane === lane &&
+          v.phase === 'retrying' &&
+          v.failures > 0 &&
+          v.reason === 'network-unavailable'),
     );
   }
 }
@@ -581,7 +596,7 @@ export function reconcileSyncEvidence(r) {
     assert(h.actions.length >= 5 && h.actions.length <= 7);
     assert.deepEqual(h.actions.slice(-2), ['edit', 'restart']);
     assert.equal(h.observations.length, h.actions.length);
-    const known = new Map(sortCaptures(h.before).map((c) => [c.id, c])),
+    const known = new Map(sortCaptures(h.before, h.before).map((c) => [c.id, c])),
       firstWires = new Map(),
       wireMeta = new Map(),
       assignments = new Map();
@@ -683,7 +698,7 @@ export function reconcileSyncEvidence(r) {
         'Composed source coverage differs',
       );
       assert.equal(o.visible, expected, 'Composed authored text differs');
-      const current = sortCaptures(o.captures);
+      const current = sortCaptures(o.captures, h.before);
       for (const [id, c] of known)
         assert.deepEqual(
           current.find((v) => v.id === id),
@@ -718,8 +733,8 @@ export function reconcileSyncEvidence(r) {
         syncStatus(o.transition);
         for (const lane of ['send', 'receive']) assert.equal(o.transition[lane].phase, 'offline');
       } else if (action.startsWith('lost-')) {
-        syncStatus(o.transition);
         const lane = action === 'lost-send' ? 'send' : 'receive';
+        syncStatus(o.transition, undefined, false, lane);
         assert(o.transition[lane].failures > 0);
         const requests = lane === 'send' ? h.submissions : h.reads;
         assert(
@@ -740,7 +755,7 @@ export function reconcileSyncEvidence(r) {
       priorRead = o.readEnd;
     }
     checkState(h.final);
-    sameCaptures(h.final.captures, [...known.values()]);
+    sameCaptures(h.final.captures, [...known.values()], h.before);
     assert.equal(h.positions, firstWires.size);
     assert.equal(h.final.spool.positions.length, firstWires.size);
     assert.equal(seals, firstWires.size);

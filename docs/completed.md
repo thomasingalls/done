@@ -18664,3 +18664,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Retire the operator-corrected double arm; retain352 as evidence, not a third discriminating check. Keep the normal composed baseline/single refusal outcomes. A genuine Worker/Window/native-storage control restores the original self-envelope omission's advance-to1 expectation; its baseline refuses at0 with exact native records unchanged. Classification closes as expected. All5 native controls and the complete six-stage sync command pass:76 cases plus6 existing skips, including8 generated histories. [Evidence, failed fixture attempts and normal-use reachability](development-evidence/2026-11-02-release-hardening/353-worker-self-control/README.md).
 
 **Limit.** The normal UI's own stream uses composed selfOnly plus recordResponse, not the retained explicit Worker receive handoff. Actual report reconciliation hits sync's existing initial-system guard. An unapplied narrow review patch, including constrained lost-reply status vocabulary, passes the real reports and focused negative controls; await the operator before changing that guard. Preserve the older optional global-lint failure separately; all touched code files pass lint. No app change, deadline change or release credit. Record before advancing the active hold.
+
+
+### Approved narrow sync consumer reconciles retained native evidence
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch354 · **Stage:** operator hardening Stage1 checkpoint
+
+**Exit.** Apply the exact approved patch;8 sync-wrapper tests pass. Initial system captures require actor system and byte-identical preservation; every new source stays human. Lost-reply network status is constrained to its affected retrying lane and positive failures, preserving the actual lost-HTTP proof. The retained full native campaign now reconciles under the canonical consumer, with all1,551 historical pins checked and the one changed consumer-test pin explicitly read from phase353's immutable replay. No new native run or app change claimed. [Evidence](development-evidence/2026-11-02-release-hardening/354-approved-sync-reports/README.md).
+
+**Next.** Ten remaining contract commands, then existing receipt/trace refresh; Stage2 remains behind the complete Stage1 checkpoint. Record before advancing progress.

@@ -6990,3 +6990,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The operator corrects the double-arm design: without the sole delivery decision write, genuine and forked self pages both stay at0. Drop that arm, keep its evidence and the normal baseline/single outcomes, and restore the original single-omission expectation on the identified Worker path.
 
 **Decision.** Use the real authenticated compatibility Worker handoff with native storage and a branded mirror. Mutate only its self-envelope condition and require durable receive1; baseline must refuse with exact native storage unchanged. Retain the normal composed path's conflict-layer and classification checks separately. Do not claim the normal UI uses the compatibility handoff. Keep report kind acceptance unchanged until the operator decides the explicit sync proposal under the hardening stop rule; independent review passes do not grant canonical credit.
+
+
+### Sync report source exception follows the approved initial-only boundary
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch354
+
+**Orientation.** The operator explicitly approves353-sync-report-review.patch as written and instructs continuation.
+
+**Decision.** Apply those exact bytes. System kind is admitted only for an initial capture with actor system and unchanged complete capture bytes through all observations/final. Keep newly allocated sources human. Constrain network-unavailable to the observed lost-reply action's affected retrying lane with positive failures; do not expand arbitrary status vocabulary. Preserve all controls, source pins and deadlines. Re-evaluate the retained native report against its historical pins; distinguish that from a new runtime execution.
