@@ -1,0 +1,1422 @@
+{
+  "phase": 382,
+  "operatorApproval": "381 fixture patch approved with actual immediate-focus regression; fallback only if missed; every base/hardened seed-drain time and both fault observations; full geometry then remaining42.",
+  "base": {
+    "run": "382-base-full-geometry",
+    "stats": {
+      "startTime": "2026-11-03T13:47:53.177Z",
+      "duration": 205918.386,
+      "expected": 228,
+      "skipped": 32,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cuts": [
+      {
+        "project": "desktop",
+        "test": "Cut copies immediately but only publishes deletion after refused storage retries",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 426.25695899999846,
+          "pending": [
+            1,
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      },
+      {
+        "project": "desktop",
+        "test": "Cut refuses to delete a visible line while earlier typing is still pending",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 199.97508400000152,
+          "pending": [
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      },
+      {
+        "project": "android",
+        "test": "Cut copies immediately but only publishes deletion after refused storage retries",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 120.64629199999763,
+          "pending": [
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      },
+      {
+        "project": "android",
+        "test": "Cut refuses to delete a visible line while earlier typing is still pending",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 457.9002079999991,
+          "pending": [
+            1,
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      }
+    ],
+    "focus": [
+      {
+        "project": "desktop",
+        "status": "passed",
+        "observation": "native-touchend",
+        "goalsFocused": false
+      },
+      {
+        "project": "android",
+        "status": "passed",
+        "observation": "native-touchend",
+        "goalsFocused": false
+      }
+    ],
+    "timingMeaning": "Node test-observed poll wall time, includes browser IPC and poll intervals; not isolated flush CPU time"
+  },
+  "hardened": {
+    "run": "382-hardened-full-geometry",
+    "stats": {
+      "startTime": "2026-11-03T13:52:32.329Z",
+      "duration": 172198.21600000001,
+      "expected": 228,
+      "skipped": 32,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cuts": [
+      {
+        "project": "desktop",
+        "test": "Cut copies immediately but only publishes deletion after refused storage retries",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 575.9852920000012,
+          "pending": [
+            1,
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      },
+      {
+        "project": "desktop",
+        "test": "Cut refuses to delete a visible line while earlier typing is still pending",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 371.35604199999943,
+          "pending": [
+            1,
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      },
+      {
+        "project": "android",
+        "test": "Cut copies immediately but only publishes deletion after refused storage retries",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 635.4340840000004,
+          "pending": [
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      },
+      {
+        "project": "android",
+        "test": "Cut refuses to delete a visible line while earlier typing is still pending",
+        "status": "passed",
+        "wait": {
+          "elapsedMs": 127.88479200000074,
+          "pending": [
+            1,
+            0
+          ]
+        },
+        "refusal": {
+          "workerAttempts": 1,
+          "workerAbortConfirmed": true,
+          "journalRefusals": 1
+        }
+      }
+    ],
+    "focus": [
+      {
+        "project": "desktop",
+        "status": "passed",
+        "observation": "native-touchend",
+        "goalsFocused": false
+      },
+      {
+        "project": "android",
+        "status": "passed",
+        "observation": "native-touchend",
+        "goalsFocused": false
+      }
+    ],
+    "timingMeaning": "Node test-observed poll wall time, includes browser IPC and poll intervals; not isolated flush CPU time"
+  },
+  "focusControl": [
+    {
+      "run": "382-touchend-positive",
+      "stats": {
+        "startTime": "2026-11-03T13:43:54.831Z",
+        "duration": 15241.832,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "project": "desktop",
+          "status": "passed",
+          "observations": [
+            {
+              "observation": "native-touchend",
+              "goalsFocused": false
+            }
+          ],
+          "errors": []
+        },
+        {
+          "project": "android",
+          "status": "passed",
+          "observations": [
+            {
+              "observation": "native-touchend",
+              "goalsFocused": false
+            }
+          ],
+          "errors": []
+        }
+      ]
+    },
+    {
+      "run": "382-touchend-immediate-control",
+      "stats": {
+        "startTime": "2026-11-03T13:44:47.672Z",
+        "duration": 13201.144,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "project": "desktop",
+          "status": "failed",
+          "observations": [
+            {
+              "observation": "native-touchend",
+              "goalsFocused": true
+            }
+          ],
+          "errors": [
+            {
+              "location": {
+                "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/workflow.spec.ts",
+                "column": 56,
+                "line": 137
+              },
+              "message": "Error: Goals focus at native touchend\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n  135 |       contentType: 'application/json',\n  136 |     });\n> 137 |     expect(observed, 'Goals focus at native touchend').toBe(false);\n      |                                                        ^\n  138 |     await gestureEnd.dispose();\n  139 |     await expect(editor).toBeFocused();\n  140 |\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/workflow.spec.ts:137:56"
+            }
+          ]
+        },
+        {
+          "project": "android",
+          "status": "failed",
+          "observations": [
+            {
+              "observation": "native-touchend",
+              "goalsFocused": true
+            }
+          ],
+          "errors": [
+            {
+              "location": {
+                "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/workflow.spec.ts",
+                "column": 56,
+                "line": 137
+              },
+              "message": "Error: Goals focus at native touchend\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n  135 |       contentType: 'application/json',\n  136 |     });\n> 137 |     expect(observed, 'Goals focus at native touchend').toBe(false);\n      |                                                        ^\n  138 |     await gestureEnd.dispose();\n  139 |     await expect(editor).toBeFocused();\n  140 |\n    at /Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/workflow.spec.ts:137:56"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "independentASTReview": {
+    "comparisons": [
+      {
+        "file": "cut.spec.ts",
+        "oldExpectationStatements": 21,
+        "newExpectationStatements": 23,
+        "removedExpectationCount": 0,
+        "approvedReplacement": null
+      },
+      {
+        "file": "workflow.spec.ts",
+        "oldExpectationStatements": 68,
+        "newExpectationStatements": 68,
+        "removedExpectationCount": 1,
+        "approvedReplacement": "native touchend focus false; actual immediate-focus control fails both projects"
+      }
+    ],
+    "actualControlIndependentlyReconstructedFromAST": true,
+    "onlyGoalsFocusTimeoutRemoved": true,
+    "applicationProtocolServiceScriptWasmChanges": [],
+    "oldFaultHelperExact": true
+  },
+  "reviewedInventory": {
+    "added": [
+      "playwright.geometry-focus-control.config.ts",
+      "vite/geometryFocusFixture.config.ts"
+    ],
+    "removed": [],
+    "changed": [
+      "test/geometry/cut.spec.ts",
+      "test/geometry/workflow.spec.ts"
+    ],
+    "otherDifferences": [],
+    "counts": {
+      "packageScripts": 145,
+      "campaigns": 78,
+      "testFiles": 688,
+      "requiredTestFiles": 682,
+      "excludedProductTestFiles": 6,
+      "catalogues": 12,
+      "vectorCorpora": 30,
+      "constructions": 99,
+      "vectorChainConsumers": 18
+    },
+    "allConstructionsLimitsDispositionsAndExclusionsExact": true
+  },
+  "runs": [
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry",
+      "run": {
+        "argv": [
+          "/usr/bin/env",
+          "pnpm_config_verify_deps_before_run=warn",
+          "pnpm",
+          "test:geometry"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/usr/bin/env",
+          "pnpm_config_verify_deps_before_run=warn",
+          "pnpm",
+          "test:geometry"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-hardening-381-base-89b11fe2",
+        "deadlineSeconds": 2400,
+        "started": 1793713672.4817889,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 27761,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793713879.1316962
+      },
+      "displaySamples": 42,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-graph-check",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/release-validation/check.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/release-validation/check.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714291.214684,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 29784,
+        "childExit": 1,
+        "timedOut": false,
+        "finished": 1793714292.760382
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-graph-final",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/release-validation/check.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/release-validation/check.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714608.2338,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 30260,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793714609.789927
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-graph-record",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/release-validation/check.mjs",
+          "--record"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/release-validation/check.mjs",
+          "--record"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714582.229511,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 30141,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793714583.984979
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry",
+      "run": {
+        "argv": [
+          "pnpm",
+          "test:geometry"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "test:geometry"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 2400,
+        "started": 1793713951.649066,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 28774,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793714124.568919
+      },
+      "displaySamples": 35,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root",
+      "run": {
+        "argv": [
+          "pnpm",
+          "lint"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "lint"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714585.0436502,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 30167,
+        "childExit": 1,
+        "timedOut": false,
+        "finished": 1793714586.1271548
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-scoped-lint",
+      "run": {
+        "argv": [
+          "pnpm",
+          "exec",
+          "oxlint",
+          "--react-plugin",
+          "test/geometry/cut.spec.ts",
+          "test/geometry/workflow.spec.ts",
+          "vite/geometryFocusFixture.config.ts",
+          "playwright.geometry-focus-control.config.ts"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "exec",
+          "oxlint",
+          "--react-plugin",
+          "test/geometry/cut.spec.ts",
+          "test/geometry/workflow.spec.ts",
+          "vite/geometryFocusFixture.config.ts",
+          "playwright.geometry-focus-control.config.ts"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714288.853415,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 29752,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793714290.009373
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/account-crypto-prep/run.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/account-crypto-prep/run.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714288.8534138,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 29751,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793714290.016779
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control",
+      "run": {
+        "argv": [
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "--config",
+          "playwright.geometry-focus-control.config.ts",
+          "test/geometry/workflow.spec.ts",
+          "--grep",
+          "Goals swipes own the editor surface"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "--config",
+          "playwright.geometry-focus-control.config.ts",
+          "test/geometry/workflow.spec.ts",
+          "--grep",
+          "Goals swipes own the editor surface"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 2400,
+        "started": 1793713486.7225778,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 27281,
+        "childExit": 1,
+        "timedOut": false,
+        "finished": 1793713500.917136
+      },
+      "displaySamples": 3,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-touchend-positive",
+      "run": {
+        "argv": [
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "test/geometry/workflow.spec.ts",
+          "--grep",
+          "Goals swipes own the editor surface"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "test/geometry/workflow.spec.ts",
+          "--grep",
+          "Goals swipes own the editor surface"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 2400,
+        "started": 1793713434.131125,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 27013,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793713450.190702
+      },
+      "displaySamples": 4,
+      "offTransitions": []
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/382-typecheck",
+      "run": {
+        "argv": [
+          "pnpm",
+          "typecheck"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "typecheck"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793714288.381632,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "childPid": 29725,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793714289.216079
+      },
+      "displaySamples": 1,
+      "offTransitions": []
+    }
+  ],
+  "sourceInventory": "512sources/200labels/36groups/15manual, read-only check passes; no construction/status change",
+  "scope": "test-only repair and real regression control; no app/runtime/guard/deadline/format/limit/gate change",
+  "constructionFailures": {
+    "formatting": [
+      "Two checks flagged only newly added cut-helper wrapping; final selected4-file check passes. No old formatting sweep."
+    ],
+    "reviewHelperFailure": {
+      "class": "ERR_MODULE_NOT_FOUND",
+      "path": "node_modules/typescript/lib/typescript.js",
+      "retainedSource": "382-ast-import-failure.mjs",
+      "repair": "Use the repository's existing Babel parser; final independent AST review passes."
+    },
+    "inventoryCheck": "First read reports stale source pins. Independent review finds exactly two added control configs/two changed test hashes, with no other inventory differences; record and final read pass.",
+    "optionalRootLint": {
+      "firstToolOutputTruncated": true,
+      "fullRetainedRerun": "382-optional-lint-root/child.log",
+      "unchangedArchivedErrorPaths": [
+        "docs/development-evidence/2026-10-23-sidebar-cut-background/reproduction/playwright.sidebar-firefox.config.ts",
+        "docs/development-evidence/2026-10-23-sidebar-overflow/reproduction/playwright.firefox.config.ts",
+        "docs/product-design/2026-10-23-goals-context/editor-assets/editor-study.js"
+      ],
+      "appOrChangedFileErrors": [],
+      "notPartOfPnpmCheck": true
+    },
+    "noAppGuardLimitDeadlineOrFormatChange": true
+  },
+  "remainingRootCommands": 42,
+  "Stage5Credit": false,
+  "original381FailuresRetained": true,
+  "evidence": [
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/playwright.geometry-focus-control.config.ts",
+      "artifact": "objects/b4548b2208ba7a069e154e6e8c692b815e454a3cf990751e2d738249ab3059cc.gz",
+      "sha256": "b4548b2208ba7a069e154e6e8c692b815e454a3cf990751e2d738249ab3059cc",
+      "bytes": 845
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/cut.spec.ts",
+      "artifact": "objects/1773c2c4f3d0971543f8d82f98de72b95f8e9d535f5ee6e6121b53db9fa1c51d.gz",
+      "sha256": "1773c2c4f3d0971543f8d82f98de72b95f8e9d535f5ee6e6121b53db9fa1c51d",
+      "bytes": 8199
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/geometry/workflow.spec.ts",
+      "artifact": "objects/b30d40cd23e7cb5f270800a3fb31ae860e76dd61641637c62951a73d74c42b26.gz",
+      "sha256": "b30d40cd23e7cb5f270800a3fb31ae860e76dd61641637c62951a73d74c42b26",
+      "bytes": 17269
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/local-app/native-storage-faults.ts",
+      "artifact": "objects/df70c18f245e5fc835d64c563658ffdbb4762def142ce20e2d562a0eac59e6e0.gz",
+      "sha256": "df70c18f245e5fc835d64c563658ffdbb4762def142ce20e2d562a0eac59e6e0",
+      "bytes": 3235
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/vite/geometryFocusFixture.config.ts",
+      "artifact": "objects/a0cc8cd65727c136b422ae1e467ed1c2ad3dd003ea844a3d0f350ac7f7e542a1.gz",
+      "sha256": "a0cc8cd65727c136b422ae1e467ed1c2ad3dd003ea844a3d0f350ac7f7e542a1",
+      "bytes": 1953
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-ast-import-failure.mjs",
+      "artifact": "objects/6c4f61918b2dc3ee4ce93fbde5ff299e2866425126ba3baa26ec8c890e83d2d6.gz",
+      "sha256": "6c4f61918b2dc3ee4ce93fbde5ff299e2866425126ba3baa26ec8c890e83d2d6",
+      "bytes": 3621
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-ast-review.json",
+      "artifact": "objects/a49f09e1d175612505ed1ab94c4368d3376ee86f250a4d37bcb58da80ade24b5.gz",
+      "sha256": "a49f09e1d175612505ed1ab94c4368d3376ee86f250a4d37bcb58da80ade24b5",
+      "bytes": 666
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-declaration.json",
+      "artifact": "objects/58da432df235117da5592b7ebdab2f954070f48dae63950b54101fc2650b4765.gz",
+      "sha256": "58da432df235117da5592b7ebdab2f954070f48dae63950b54101fc2650b4765",
+      "bytes": 718
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/child.log",
+      "artifact": "objects/b4df94486ebe9ff8879d7d529ed4b6b6ab80dcf423796cd74987b1bb7d140b1b.gz",
+      "sha256": "b4df94486ebe9ff8879d7d529ed4b6b6ab80dcf423796cd74987b1bb7d140b1b",
+      "bytes": 42879
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/host-load.jsonl",
+      "artifact": "objects/193b5fc6d29d3d8f7509157560f0cb13a4298df4722bc12e860aefd21f0c499f.gz",
+      "sha256": "193b5fc6d29d3d8f7509157560f0cb13a4298df4722bc12e860aefd21f0c499f",
+      "bytes": 17470
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/observations.json",
+      "artifact": "objects/49bfe293aefe7dcd614acda018b583c9fce6458975cf86c3a1a46afa96227520.gz",
+      "sha256": "49bfe293aefe7dcd614acda018b583c9fce6458975cf86c3a1a46afa96227520",
+      "bytes": 2287
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/power-assertions-before.txt",
+      "artifact": "objects/bd7dff4d458257e94c77399f37e67f93f9674f8c71ac462e5ca7325745e5e729.gz",
+      "sha256": "bd7dff4d458257e94c77399f37e67f93f9674f8c71ac462e5ca7325745e5e729",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/power-log-after.txt",
+      "artifact": "objects/908a03d474419a5ea72f325a3a46d3e4bec5ebd8e8a5f58b7fe57a1f082c9f60.gz",
+      "sha256": "908a03d474419a5ea72f325a3a46d3e4bec5ebd8e8a5f58b7fe57a1f082c9f60",
+      "bytes": 3212413
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/power-log-before.txt",
+      "artifact": "objects/3c549829d14e691b24bfd8ee1de7a9fbaa99b3d923b151526a0c4ef4b1c74298.gz",
+      "sha256": "3c549829d14e691b24bfd8ee1de7a9fbaa99b3d923b151526a0c4ef4b1c74298",
+      "bytes": 3188753
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/report.json",
+      "artifact": "objects/bafa92961293f79506faba36030d858c38304cca9a13e449eca0fcf93120e07d.gz",
+      "sha256": "bafa92961293f79506faba36030d858c38304cca9a13e449eca0fcf93120e07d",
+      "bytes": 333163
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-base-full-geometry/run.json",
+      "artifact": "objects/d6d5d9e0a73a3f603190e8d77fddc1cd908abc2d703bc53b90ca1959e87f7f0c.gz",
+      "sha256": "d6d5d9e0a73a3f603190e8d77fddc1cd908abc2d703bc53b90ca1959e87f7f0c",
+      "bytes": 668
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-construction-notes.json",
+      "artifact": "objects/8a32563404dfbf7a9e8f0b24bbfcd9c7eda3b5c7a3623f1be15ffa172fd69a68.gz",
+      "sha256": "8a32563404dfbf7a9e8f0b24bbfcd9c7eda3b5c7a3623f1be15ffa172fd69a68",
+      "bytes": 1227
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-cut-formatted.ts",
+      "artifact": "objects/1773c2c4f3d0971543f8d82f98de72b95f8e9d535f5ee6e6121b53db9fa1c51d.gz",
+      "sha256": "1773c2c4f3d0971543f8d82f98de72b95f8e9d535f5ee6e6121b53db9fa1c51d",
+      "bytes": 8199
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-declaration.json",
+      "artifact": "objects/9e16ae80580cb010148d175335ad77d89a7e732c3cc394ee427cea83cfd43416.gz",
+      "sha256": "9e16ae80580cb010148d175335ad77d89a7e732c3cc394ee427cea83cfd43416",
+      "bytes": 1274
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-focus-control-review.json",
+      "artifact": "objects/882705b9742200febda10df14e3911ba0f7e9c8d8287fed3ae75132047d53625.gz",
+      "sha256": "882705b9742200febda10df14e3911ba0f7e9c8d8287fed3ae75132047d53625",
+      "bytes": 3338
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/child.log",
+      "artifact": "objects/dd8a649e8d83d80409bec2e372509bda6a98d3e832abf06de9ff37319b26e982.gz",
+      "sha256": "dd8a649e8d83d80409bec2e372509bda6a98d3e832abf06de9ff37319b26e982",
+      "bytes": 1137
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/host-load.jsonl",
+      "artifact": "objects/18d2be66bd0bd106b0fd7d7135f168c2030a72754209a7bb5aeb45e8e69468b9.gz",
+      "sha256": "18d2be66bd0bd106b0fd7d7135f168c2030a72754209a7bb5aeb45e8e69468b9",
+      "bytes": 1000
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/power-assertions-before.txt",
+      "artifact": "objects/213532e30269d3eee5a096e8dbb850cf66b013ae085efa47498c6199828c45dd.gz",
+      "sha256": "213532e30269d3eee5a096e8dbb850cf66b013ae085efa47498c6199828c45dd",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/power-log-after.txt",
+      "artifact": "objects/cbba854f93483aa25fcbc70d8716c7f4051cf9908b281f03f0c059959ca709cc.gz",
+      "sha256": "cbba854f93483aa25fcbc70d8716c7f4051cf9908b281f03f0c059959ca709cc",
+      "bytes": 3231140
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/power-log-before.txt",
+      "artifact": "objects/1369ee81c3470fecf765bc0d9a436ba769f01dc7ab7327f0ce96966936af3f6e.gz",
+      "sha256": "1369ee81c3470fecf765bc0d9a436ba769f01dc7ab7327f0ce96966936af3f6e",
+      "bytes": 3230681
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-check/run.json",
+      "artifact": "objects/1ed4d7cb329ca8193aefec267ddca7d63a3e010eb861485b5e74c0ac718e47d2.gz",
+      "sha256": "1ed4d7cb329ca8193aefec267ddca7d63a3e010eb861485b5e74c0ac718e47d2",
+      "bytes": 579
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/child.log",
+      "artifact": "objects/8edb1f5507101604e0453f5c38ec32a618dd548956e2fa36cebe36d858a1d412.gz",
+      "sha256": "8edb1f5507101604e0453f5c38ec32a618dd548956e2fa36cebe36d858a1d412",
+      "bytes": 323
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/host-load.jsonl",
+      "artifact": "objects/8aea4373e02b40002bcc480fd53ed5f5d9e112120967d8a077e4a327bf2fe019.gz",
+      "sha256": "8aea4373e02b40002bcc480fd53ed5f5d9e112120967d8a077e4a327bf2fe019",
+      "bytes": 1028
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/power-assertions-before.txt",
+      "artifact": "objects/eb0668ffa9fb918e1e12387a94cb908c91aed135062b6c7d9593dfabaa20f78f.gz",
+      "sha256": "eb0668ffa9fb918e1e12387a94cb908c91aed135062b6c7d9593dfabaa20f78f",
+      "bytes": 2024
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/power-log-after.txt",
+      "artifact": "objects/6ed6bfaa204b87a0a6c04042b712519dcbc921c35caaeec21b8d56a3454860c0.gz",
+      "sha256": "6ed6bfaa204b87a0a6c04042b712519dcbc921c35caaeec21b8d56a3454860c0",
+      "bytes": 3230884
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/power-log-before.txt",
+      "artifact": "objects/bd5836b1e5fc104b108f6af7b2a9e454eac2a23e4fb9327db477ae31ad3d8b10.gz",
+      "sha256": "bd5836b1e5fc104b108f6af7b2a9e454eac2a23e4fb9327db477ae31ad3d8b10",
+      "bytes": 3230425
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-final/run.json",
+      "artifact": "objects/5d4087b6de95b1bb5dd59cf1d24c13e5ad0cfd2164606d6564bc8da2e63d0546.gz",
+      "sha256": "5d4087b6de95b1bb5dd59cf1d24c13e5ad0cfd2164606d6564bc8da2e63d0546",
+      "bytes": 577
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/child.log",
+      "artifact": "objects/188ab24a7cfe221f09b34c648d801222dad2109c0635b4d52025bbd0b0542da3.gz",
+      "sha256": "188ab24a7cfe221f09b34c648d801222dad2109c0635b4d52025bbd0b0542da3",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/host-load.jsonl",
+      "artifact": "objects/69f40ddf3cf9c9b8daeadd691273de34eb93ce88841b6206885f9b726a3247b0.gz",
+      "sha256": "69f40ddf3cf9c9b8daeadd691273de34eb93ce88841b6206885f9b726a3247b0",
+      "bytes": 1017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/power-assertions-before.txt",
+      "artifact": "objects/ebefa2ffc5d6fbe71bcf9f6c778f2f8bb1f3f1491b1219fd2d3a49986b49210b.gz",
+      "sha256": "ebefa2ffc5d6fbe71bcf9f6c778f2f8bb1f3f1491b1219fd2d3a49986b49210b",
+      "bytes": 2016
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/power-log-after.txt",
+      "artifact": "objects/218b355f83ccbf6254fda57113ed1e98b9e333092b09774d2eab88a2e6b04060.gz",
+      "sha256": "218b355f83ccbf6254fda57113ed1e98b9e333092b09774d2eab88a2e6b04060",
+      "bytes": 3230339
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/power-log-before.txt",
+      "artifact": "objects/72154264653117f6105b57d3cbba6ae99c8defa5f097bffadaf871a51a6430f8.gz",
+      "sha256": "72154264653117f6105b57d3cbba6ae99c8defa5f097bffadaf871a51a6430f8",
+      "bytes": 3229499
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-graph-record/run.json",
+      "artifact": "objects/6c102cfbad6be524dd5f9b0f8ce72e46d7fd74c84b38f342842f28d7fed83348.gz",
+      "sha256": "6c102cfbad6be524dd5f9b0f8ce72e46d7fd74c84b38f342842f28d7fed83348",
+      "bytes": 611
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/child.log",
+      "artifact": "objects/a36ac22dcd4486dd52531245d9df8ee9544bb10e79b426a0149c4acebc014d1b.gz",
+      "sha256": "a36ac22dcd4486dd52531245d9df8ee9544bb10e79b426a0149c4acebc014d1b",
+      "bytes": 42761
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/host-load.jsonl",
+      "artifact": "objects/2a41b196b578fac819236cff5201c6c86c7541ed2b67bd379d3f603a4f65c139.gz",
+      "sha256": "2a41b196b578fac819236cff5201c6c86c7541ed2b67bd379d3f603a4f65c139",
+      "bytes": 15715
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/observations.json",
+      "artifact": "objects/b4e57a310d09cfb8202cf820ec79b4329fb2fe3e00dea1255ce42def8891113b.gz",
+      "sha256": "b4e57a310d09cfb8202cf820ec79b4329fb2fe3e00dea1255ce42def8891113b",
+      "bytes": 2298
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/power-assertions-before.txt",
+      "artifact": "objects/36dfbef80d1eace8a07995df083b643688c46905614f43a4481121a1949b3a1d.gz",
+      "sha256": "36dfbef80d1eace8a07995df083b643688c46905614f43a4481121a1949b3a1d",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/power-log-after.txt",
+      "artifact": "objects/db340e98d55039b8a4782585689695d3fdee2099856095bf36295ec3ac1f820e.gz",
+      "sha256": "db340e98d55039b8a4782585689695d3fdee2099856095bf36295ec3ac1f820e",
+      "bytes": 3232589
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/power-log-before.txt",
+      "artifact": "objects/e8de13b407671daef6feb447f8a38c52de9b6f1a6d749d4078d4b095d934bbc1.gz",
+      "sha256": "e8de13b407671daef6feb447f8a38c52de9b6f1a6d749d4078d4b095d934bbc1",
+      "bytes": 3212413
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/report.json",
+      "artifact": "objects/a996af89f5426803bcc82e7397165e44912d52e19116272e77345ef18849c196.gz",
+      "sha256": "a996af89f5426803bcc82e7397165e44912d52e19116272e77345ef18849c196",
+      "bytes": 333311
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-hardened-full-geometry/run.json",
+      "artifact": "objects/04de36a42779424a975407048605dd7056b1b61e339efdaa4b51b74ca2d9bdfd.gz",
+      "sha256": "04de36a42779424a975407048605dd7056b1b61e339efdaa4b51b74ca2d9bdfd",
+      "bytes": 534
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-inventory-review.json",
+      "artifact": "objects/6c7c00a9f0a0a31a470889739e2791155b8fc88ef0e9ae51de7724a879b343fd.gz",
+      "sha256": "6c7c00a9f0a0a31a470889739e2791155b8fc88ef0e9ae51de7724a879b343fd",
+      "bytes": 568
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-old-tests/cut.spec.ts",
+      "artifact": "objects/16a613006618243c82d97a2f2c7d85bdb53c87102f5fb6e99bed93c7e266c24e.gz",
+      "sha256": "16a613006618243c82d97a2f2c7d85bdb53c87102f5fb6e99bed93c7e266c24e",
+      "bytes": 6802
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-old-tests/native-storage-faults.ts",
+      "artifact": "objects/df70c18f245e5fc835d64c563658ffdbb4762def142ce20e2d562a0eac59e6e0.gz",
+      "sha256": "df70c18f245e5fc835d64c563658ffdbb4762def142ce20e2d562a0eac59e6e0",
+      "bytes": 3235
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-old-tests/workflow.spec.ts",
+      "artifact": "objects/9e72d7d8024f989d31dbe552b3a8cba15911be506f3402ebd1452bb9b05106ae.gz",
+      "sha256": "9e72d7d8024f989d31dbe552b3a8cba15911be506f3402ebd1452bb9b05106ae",
+      "bytes": 16462
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-review.json",
+      "artifact": "objects/824e20b2750ce8e9f58cf353519b85a88104d9b1c990948d4d3cad39d3ffa7bc.gz",
+      "sha256": "824e20b2750ce8e9f58cf353519b85a88104d9b1c990948d4d3cad39d3ffa7bc",
+      "bytes": 527
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/child.log",
+      "artifact": "objects/b53d20188ca74f4e8a468bd9e6bf040e1abf22ce87f76e8dcc0d6df07f0d6d9a.gz",
+      "sha256": "b53d20188ca74f4e8a468bd9e6bf040e1abf22ce87f76e8dcc0d6df07f0d6d9a",
+      "bytes": 250502
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/host-load.jsonl",
+      "artifact": "objects/240de165d9c1dc2fd1a65b42a0150dcf36350660b0280e3ec01bc95dd70fde02.gz",
+      "sha256": "240de165d9c1dc2fd1a65b42a0150dcf36350660b0280e3ec01bc95dd70fde02",
+      "bytes": 1023
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/power-assertions-before.txt",
+      "artifact": "objects/98485200e36ac300d9c0554ee8e6c4ecc42fff275fe9a4b5da31ae0226b3ddc0.gz",
+      "sha256": "98485200e36ac300d9c0554ee8e6c4ecc42fff275fe9a4b5da31ae0226b3ddc0",
+      "bytes": 2397
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/power-log-after.txt",
+      "artifact": "objects/161c959eeebea6930b5b1610f3e4350f835d431e60677c6b413bb8c12f32f02c.gz",
+      "sha256": "161c959eeebea6930b5b1610f3e4350f835d431e60677c6b413bb8c12f32f02c",
+      "bytes": 3230618
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/power-log-before.txt",
+      "artifact": "objects/8a80e1dedbcade7f29df9697930fc510d84ce2f31cc6d56bdf8e9a48ba6060a9.gz",
+      "sha256": "8a80e1dedbcade7f29df9697930fc510d84ce2f31cc6d56bdf8e9a48ba6060a9",
+      "bytes": 3230339
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-optional-lint-root/run.json",
+      "artifact": "objects/dffcb9378f609db8faec8c02a6cc7a14ff33aab87d73f9f10b081668acd8ff7a.gz",
+      "sha256": "dffcb9378f609db8faec8c02a6cc7a14ff33aab87d73f9f10b081668acd8ff7a",
+      "bytes": 517
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/child.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/host-load.jsonl",
+      "artifact": "objects/775b45134b40d7dec7085c9e906590a7580b2224eec634416a221b500e244010.gz",
+      "sha256": "775b45134b40d7dec7085c9e906590a7580b2224eec634416a221b500e244010",
+      "bytes": 993
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/power-assertions-before.txt",
+      "artifact": "objects/2d421d4999de36dfe8135bcf78a3300ad2a54dcf6737c11c9adcb587eb50ace1.gz",
+      "sha256": "2d421d4999de36dfe8135bcf78a3300ad2a54dcf6737c11c9adcb587eb50ace1",
+      "bytes": 2256
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/power-log-after.txt",
+      "artifact": "objects/2981d47ced641110d0384f0d1405a1618d679fe7813f13158f757cd6560555cf.gz",
+      "sha256": "2981d47ced641110d0384f0d1405a1618d679fe7813f13158f757cd6560555cf",
+      "bytes": 3230681
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/power-log-before.txt",
+      "artifact": "objects/ae1765033ab179119bcd36120e9b2175e2d03710032340de479ef5d16081db6b.gz",
+      "sha256": "ae1765033ab179119bcd36120e9b2175e2d03710032340de479ef5d16081db6b",
+      "bytes": 3229543
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-scoped-lint/run.json",
+      "artifact": "objects/4bbdefe35f10e8074b351d1c5b57873b7f312048d4db4d3474c813ff90fa6c20.gz",
+      "sha256": "4bbdefe35f10e8074b351d1c5b57873b7f312048d4db4d3474c813ff90fa6c20",
+      "bytes": 917
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/child.log",
+      "artifact": "objects/f5de55a73804f6092528930d5566e15a4b1e99e58d83e62735b4723f6758f1f9.gz",
+      "sha256": "f5de55a73804f6092528930d5566e15a4b1e99e58d83e62735b4723f6758f1f9",
+      "bytes": 308
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/host-load.jsonl",
+      "artifact": "objects/75e69301875bce442d6c41485f00878d526b6ac3dc0e50d41231f16c97c10dbf.gz",
+      "sha256": "75e69301875bce442d6c41485f00878d526b6ac3dc0e50d41231f16c97c10dbf",
+      "bytes": 993
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/power-assertions-before.txt",
+      "artifact": "objects/2d421d4999de36dfe8135bcf78a3300ad2a54dcf6737c11c9adcb587eb50ace1.gz",
+      "sha256": "2d421d4999de36dfe8135bcf78a3300ad2a54dcf6737c11c9adcb587eb50ace1",
+      "bytes": 2256
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/power-log-after.txt",
+      "artifact": "objects/2981d47ced641110d0384f0d1405a1618d679fe7813f13158f757cd6560555cf.gz",
+      "sha256": "2981d47ced641110d0384f0d1405a1618d679fe7813f13158f757cd6560555cf",
+      "bytes": 3230681
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/power-log-before.txt",
+      "artifact": "objects/ae1765033ab179119bcd36120e9b2175e2d03710032340de479ef5d16081db6b.gz",
+      "sha256": "ae1765033ab179119bcd36120e9b2175e2d03710032340de479ef5d16081db6b",
+      "bytes": 3229543
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-source-inventory-check/run.json",
+      "artifact": "objects/073fa3f6c93595d9e6ffadbacb14095660d59e13c69b16fb364b887b4d9c4001.gz",
+      "sha256": "073fa3f6c93595d9e6ffadbacb14095660d59e13c69b16fb364b887b4d9c4001",
+      "bytes": 578
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/build.json",
+      "artifact": "objects/dbfcf10afd667c94c4038095f80a522939679266dc2a34f819dc3f2c35c22862.gz",
+      "sha256": "dbfcf10afd667c94c4038095f80a522939679266dc2a34f819dc3f2c35c22862",
+      "bytes": 231
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/child.log",
+      "artifact": "objects/09a543a11e631986ad21c5d8615a85d05ee8e559d014543cc31792e30cf9b9b9.gz",
+      "sha256": "09a543a11e631986ad21c5d8615a85d05ee8e559d014543cc31792e30cf9b9b9",
+      "bytes": 6472
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/host-load.jsonl",
+      "artifact": "objects/5da216deb076d1b01059b8731830ad6ffc151fe477ba2186f7f44f6650d8f415.gz",
+      "sha256": "5da216deb076d1b01059b8731830ad6ffc151fe477ba2186f7f44f6650d8f415",
+      "bytes": 3018
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/power-assertions-before.txt",
+      "artifact": "objects/90ce0e6b53e45d801c504209859ee596398cffb25a682e11952255460ffd1e54.gz",
+      "sha256": "90ce0e6b53e45d801c504209859ee596398cffb25a682e11952255460ffd1e54",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/power-log-after.txt",
+      "artifact": "objects/8c4898e7eb10412d727bea0cf586dc5218cb8b6709ff2ff6dd047cf78d8996d5.gz",
+      "sha256": "8c4898e7eb10412d727bea0cf586dc5218cb8b6709ff2ff6dd047cf78d8996d5",
+      "bytes": 3189629
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/power-log-before.txt",
+      "artifact": "objects/6d59bdb8a22db26f80973ea1a8c38398e04b6de0c018241c922dbfe6eb90a53d.gz",
+      "sha256": "6d59bdb8a22db26f80973ea1a8c38398e04b6de0c018241c922dbfe6eb90a53d",
+      "bytes": 3189170
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/report.json",
+      "artifact": "objects/35a9460bb6020f1fb27d9bb18641cfefdb8250018b4434304bb21ad3fa593337.gz",
+      "sha256": "35a9460bb6020f1fb27d9bb18641cfefdb8250018b4434304bb21ad3fa593337",
+      "bytes": 12507
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/run.json",
+      "artifact": "objects/976fcff85d6c937e3079911c83db11a26c246690da121445c6856f591dc7f70f.gz",
+      "sha256": "976fcff85d6c937e3079911c83db11a26c246690da121445c6856f591dc7f70f",
+      "bytes": 901
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/test-output/.last-run.json",
+      "artifact": "objects/c45426036ef4446c08a20bb5e844d15ce3499843fd52645cb6fccbae9d63a1e0.gz",
+      "sha256": "c45426036ef4446c08a20bb5e844d15ce3499843fd52645cb6fccbae9d63a1e0",
+      "bytes": 145
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/test-output/workflow-Phase-2-workflow--d0866-e-its-caret-after-reopening-android/error-context.md",
+      "artifact": "objects/4e571b2323a12aebe6956f0e2b54ce69101d84627ad80a668e6494bed3c31141.gz",
+      "sha256": "4e571b2323a12aebe6956f0e2b54ce69101d84627ad80a668e6494bed3c31141",
+      "bytes": 16005
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-immediate-control/test-output/workflow-Phase-2-workflow--d0866-e-its-caret-after-reopening-desktop/error-context.md",
+      "artifact": "objects/4e571b2323a12aebe6956f0e2b54ce69101d84627ad80a668e6494bed3c31141.gz",
+      "sha256": "4e571b2323a12aebe6956f0e2b54ce69101d84627ad80a668e6494bed3c31141",
+      "bytes": 16005
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/child.log",
+      "artifact": "objects/d45c7ab9ebe75709d1a429147a0af6647e1933d006781dbe8a928bd0975789a6.gz",
+      "sha256": "d45c7ab9ebe75709d1a429147a0af6647e1933d006781dbe8a928bd0975789a6",
+      "bytes": 3464
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/host-load.jsonl",
+      "artifact": "objects/7ac0c04d7d427a4905eb3a292cd8609f15b5826722c42b22debc19e8911c4f6d.gz",
+      "sha256": "7ac0c04d7d427a4905eb3a292cd8609f15b5826722c42b22debc19e8911c4f6d",
+      "bytes": 4116
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/power-assertions-before.txt",
+      "artifact": "objects/86f8b52187ab9dd0a9de1957e3b1157a263155345e68d4b9c16225e7b8d8c849.gz",
+      "sha256": "86f8b52187ab9dd0a9de1957e3b1157a263155345e68d4b9c16225e7b8d8c849",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/power-log-after.txt",
+      "artifact": "objects/de48d8acde3ee1a976700fa03db301aae51b4a6114bfaea5af3d5cd5eda88e61.gz",
+      "sha256": "de48d8acde3ee1a976700fa03db301aae51b4a6114bfaea5af3d5cd5eda88e61",
+      "bytes": 3189552
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/power-log-before.txt",
+      "artifact": "objects/428c728ec761b1538a9c53995bbcf9a191f3da7506a00f6dc97535433aebcc12.gz",
+      "sha256": "428c728ec761b1538a9c53995bbcf9a191f3da7506a00f6dc97535433aebcc12",
+      "bytes": 3189093
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/report.json",
+      "artifact": "objects/e26f08076d3a7ea8528c93256326c9e32ae7077984d6c2a9eac80b283764352c.gz",
+      "sha256": "e26f08076d3a7ea8528c93256326c9e32ae7077984d6c2a9eac80b283764352c",
+      "bytes": 6031
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-touchend-positive/run.json",
+      "artifact": "objects/a71ff68d5fefe30679c2ba24d71c16ba89bd2fb4ceccaadc77ded34b3e02ef31.gz",
+      "sha256": "a71ff68d5fefe30679c2ba24d71c16ba89bd2fb4ceccaadc77ded34b3e02ef31",
+      "bytes": 766
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/child.log",
+      "artifact": "objects/98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535.gz",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/host-load.jsonl",
+      "artifact": "objects/8085607816d78b673e21f8122c5491507ec1fa6ce2d0981bd109af4d32eb9e87.gz",
+      "sha256": "8085607816d78b673e21f8122c5491507ec1fa6ce2d0981bd109af4d32eb9e87",
+      "bytes": 988
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/power-assertions-before.txt",
+      "artifact": "objects/1df1647b46c32bb0f5e83d87c9acdf5fa628889dfce0980b21bbea4034f1bc89.gz",
+      "sha256": "1df1647b46c32bb0f5e83d87c9acdf5fa628889dfce0980b21bbea4034f1bc89",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/power-log-after.txt",
+      "artifact": "objects/e5e4f5ee9b62613697fc8571a50405c2aa0f0662719c3a8237861eac42faa2de.gz",
+      "sha256": "e5e4f5ee9b62613697fc8571a50405c2aa0f0662719c3a8237861eac42faa2de",
+      "bytes": 3230219
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/power-log-before.txt",
+      "artifact": "objects/729ccfaeb0becd3eccbfa5fc0996fddfc725dfe186a25cd350551e68bf05aefe.gz",
+      "sha256": "729ccfaeb0becd3eccbfa5fc0996fddfc725dfe186a25cd350551e68bf05aefe",
+      "bytes": 3229304
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/382-typecheck/run.json",
+      "artifact": "objects/20c4e47dbfdf66b7423b5917bbe0d8812bbf8259153c990c28a1daf843d58aa4.gz",
+      "sha256": "20c4e47dbfdf66b7423b5917bbe0d8812bbf8259153c990c28a1daf843d58aa4",
+      "bytes": 525
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/ast382.mjs",
+      "artifact": "objects/d83659147a799fe65bbfdb504b48eb6b4a233fda21dde05f67cc7bd57b419414.gz",
+      "sha256": "d83659147a799fe65bbfdb504b48eb6b4a233fda21dde05f67cc7bd57b419414",
+      "bytes": 4116
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/extract382.py",
+      "artifact": "objects/366884e4e5ef924a9b670a6b1748106cab8d1bae3400204121226cf52696f119.gz",
+      "sha256": "366884e4e5ef924a9b670a6b1748106cab8d1bae3400204121226cf52696f119",
+      "bytes": 1627
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/graph382.mjs",
+      "artifact": "objects/20889f5052743d3c05b7adb28b1d348556e2decd071905b7f76d24bdf5a5e875.gz",
+      "sha256": "20889f5052743d3c05b7adb28b1d348556e2decd071905b7f76d24bdf5a5e875",
+      "bytes": 1887
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/record382.py",
+      "artifact": "objects/215517b0205df0e753d7daab6c4c40804414facf1a2b8289dd7a4311f28f215d.gz",
+      "sha256": "215517b0205df0e753d7daab6c4c40804414facf1a2b8289dd7a4311f28f215d",
+      "bytes": 12432
+    }
+  ]
+}

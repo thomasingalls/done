@@ -7108,3 +7108,17 @@ After the matched full editor run passes with the display on, use caffeinate -d 
 **Date:**2026-11-03 · **Authority:**operator's unchanged-wait/deadline/assertion direction and hardening failure rules
 
 Stop the sequential checkpoint on geometry's nonzero exit after40successful commands. Keep the exact-base refusal mismatch, later matched-fixture base pass and six passing traced repeats beside the original failure, without claiming repair or green acceptance. Do not remove the native fault: journal admission refusal has a native fallback. The seed-flush source remains an inference. A two-file fixture proposal is reviewable but unapplied pending the operator's decision about the added precondition and changed observation point. No app/trust/format/limit/gate change. [Evidence381](development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md).
+
+
+### Operator conditionally approves the381 geometry fixture repair
+
+**Date:**2026-11-03 · **Authority:**operator
+
+Validate the proposed touchend observation against the actual regression—Goals focus immediately on opening without the220ms timer. An unexpected control pass requires the approved data-goals-open observation instead. Record seed-drain duration for every base/hardened run; both journal/native faults and actual Worker-abort checks remain. Preserve every deadline and original failure, then retry full geometry and remaining42commands. No app change or new performance phase is authorized by this test repair.
+
+
+### Retain native-touchend observation after the actual immediate-focus control discriminates
+
+**Date:**2026-11-03 · **Authority:**operator's conditional381fixture approval, validated in382
+
+The actual app timer omission is detected in both projects, so retain touchend rather than the conditional data-goals-open alternative. Keep seed-drain time and pending counts visible in every base/hardened cut run, with both refusal paths and the existing actual Worker-abort assertion. All other tests/guards/deadlines stay. Planning refresh changes input pins only; archived lint-error sources remain immutable. [Evidence382](development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md).

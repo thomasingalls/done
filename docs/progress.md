@@ -162,41 +162,35 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked
-scope: finish the functional checkpoint, then remaining approved Stage3.2 hardening
-blocks_on: operator decision on the two-file fixture timing proposal; geometry checkpoint remains red
+status: in flight
+scope: remaining42functional checkpoint commands, then remaining approved Stage3.2 hardening
+blocks_on: complete the frozen-tree remaining42commands without changing existing guards or bounds
 updated: 2026-11-03
 ```
 
-**Governing scope.** [Operator hardening plan](./release-hardening-2026-11-02.md),
+**Scope.** [Operator plan](./release-hardening-2026-11-02.md) and
 [approved writer-on format](./account-inbound-page-receipts.md), immutable sequential
-patches and every original gate/limit/security check. No new lab work, computer use,
-commit, push or publication. Stage1/2 records remain in completed.md and evidence.
+patches, all original gates/limits/security checks. No new lab work, computer use,
+commit, push, publication or deployment.
 
-**Display result established.** [380](./development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md)
-passes the complete editor campaign at374-20's2,400s outer and original120s stage.
-Native campaigns now run under caffeinate -d with actual display power every5s.
-Old failed attempts remain; no universal causal claim.
+**Checkpoint.** [381](./development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md)
+retains40passing root commands and the three geometry failures. The operator-approved
+[382repair](./development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md)
+passes full base/hardened geometry228cases/32oldskips. The actual immediate-focus
+control fails the new guard in both projects. All eight measured cut runs retain
+both faults and actual Worker-abort proof; every seed-drain time is recorded.
+Types/scoped lint/format/source/planning checks pass. Optional root lint remains
+red only on unchanged archived documents. No passing rerun erases381.
 
-**Current checkpoint red.** [381](./development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md)
-records40passing root commands, then geometry225pass/32oldskip/3fail;42commands
-unrun. All49,874start pins stay exact, index empty, all1,181display samples on.
-The same focus failure occurs on the exact signed base. Base app/current fault
-fixture and six traced cut repeats pass; neither clears the original failure.
-Cut's pre-clipboard active-state refusal is observed; seed-flush attribution is a
-hypothesis. The two-file fixture proposal is unapplied/untested, pending approval
-under the operator's no-wait/no-assertion-change instruction.
+**Now.** Freeze382, then run original root commands41–82 sequentially on that exact
+tree, with caffeinate -d, actual display state and5s host logs. Preserve original
+inner deadlines and every failed attempt; app functional failures stop as directed.
+No full checkpoint green or Stage5 credit yet.
 
-**Implemented but incomplete format.** Binary codec375, authenticated metadata
-cores376/377, original-task provenance378 and native coordination379 have focused
-controls; installation/writing remain unwired. Coordination379 deliberately skips
-Account authentication and proves no account-writing claim. Stage4 focused audit
-controls and exact pressure repair373 pass; its full checkpoint remains open.
-
-**After the decision.** Validate/harden the approved fixture repair or follow the
-operator's alternative, resume a green full checkpoint, then authenticated floor
-acknowledgment and actual old-app/pending-writing profiles; stored mode/logical
-readers/owned pages/G8/B; same-tree writer-off rollback image. AllStage5 journeys
-and Stage6 report remain required. No final acceptance or release claim.
+**Afterward.** Authenticated floor acknowledgment and actual old-app/pending-writing
+profiles; stored mode/logical readers/owned pages/G8/B; same-tree writer-off rollback
+image. Codec375, metadata376/377 and provenance/native coordination378/379 remain
+partial/unwired;379does not establish Account authentication. AllStage5 journeys
+and Stage6 report remain required.
 
 This seat edits only this document; the other seat's document above is unchanged.

@@ -110,13 +110,32 @@ test.describe('Phase 2 workflow', () => {
     const shell = page.locator('.shell');
     const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });
 
+    // Capture the transient state in the native event, before later test round trips.
+    const gestureEnd = await page.evaluateHandle(() => {
+      const observed: { goalsFocused: boolean | null } = { goalsFocused: null };
+      document.addEventListener(
+        'touchend',
+        () => {
+          observed.goalsFocused = document.activeElement?.matches('.goals .cm-content') === true;
+        },
+        { capture: true, once: true },
+      );
+      return observed;
+    });
+
     // Begin over a live text input: movement still belongs to spatial navigation.
     await touchSwipe(page, compose, { x: -220, y: 0 });
     await expect(shell).toHaveAttribute('data-goals', 'open');
 
     const editor = page.locator('.goals .cm-content');
     await expect(page.locator('.goals .cm-scroller')).toHaveCSS('touch-action', 'pan-y');
-    await expect(editor).not.toBeFocused();
+    const observed = await gestureEnd.evaluate((value) => value.goalsFocused);
+    await test.info().attach('goals-opening-focus', {
+      body: JSON.stringify({ observation: 'native-touchend', goalsFocused: observed }),
+      contentType: 'application/json',
+    });
+    expect(observed, 'Goals focus at native touchend').toBe(false);
+    await gestureEnd.dispose();
     await expect(editor).toBeFocused();
 
     await page.keyboard.insertText('abcd');

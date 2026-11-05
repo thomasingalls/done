@@ -18916,3 +18916,21 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Failures preserved.** Exact signed base reproduces swipe focus; its old cut faults fail later without reaching Worker. Base app with current approved fault fixture passes228cases. Six traced unchanged hardened cut repeats pass without reproducing or clearing the full-run failure. Cut's pre-clipboard active-state refusal is observed; seed-flush attribution remains hypothetical. Dependency-relocation and preflight-helper failures are retained.
 
 **Next/hold.** The unapplied two-file fixture proposal changes a seed-drain precondition and captures focus at the native gesture boundary; operator approval is pending because the display instruction forbids wait/assertion changes. No app, test, wait, assertion, deadline or guard change was applied. Record this outcome before replacing this seat's active state. Full checkpoint and remaining Stage3.2/Stage5 work remain open; no publication.
+
+
+### Geometry fixture review hold closes with operator conditions
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch382 · **Authority:**operator reply to381 fixture proposal
+
+The operator approves validation/application with an actual immediate-Goals-focus regression control: remove only its220ms timer; if touchend misses it, observe data-goals becoming open. Measure each seed-drain wait on base and hardened apps, retain both faults and show the Worker abort and Cut refusal. Then full geometry and remaining42commands. The381 failures remain. This records closure of the approval hold, not a passing repair.
+
+
+### Geometry fixture repair passes full base/hardened campaigns and actual regression control
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch382 · **Stage:**approved test-only checkpoint repair
+
+**Exit.** Both complete campaigns pass228cases/32existing skips. Removing only the real Goals focus timer makes both projects fail the new touchend guard with focused=true; ordinary app observes false. Independent AST reconstruction confirms the actual source mutation and every retained old expectation except the approved observation replacement. App and native fault helper bytes stay exact. [Every run and per-case timing](development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md).
+
+**Cut evidence.** All eight base/hardened fault cases record an initial pending seed, a completed drain, one journal refusal and one Worker attempt with actual abort confirmed. Base waits120.6–457.9ms; hardened127.9–635.4ms, including poll/IPC time. Cut safety, retry/discard and cold checks remain. These are not controlled flush-performance estimates; old381producer attribution stays inferred.
+
+**Checks/limits.** Types/scoped lint/format and reviewed planning/source inventories pass without changed counts, dispositions or blocks. Optional full lint reports only immutable archived study/reproduction errors; logs remain. Prior381failures remain. Outcome recorded before advancing progress to the remaining42commands; no Stage5 or release credit.
