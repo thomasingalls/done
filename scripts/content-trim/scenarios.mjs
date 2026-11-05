@@ -32,11 +32,32 @@ export async function runCase(definition, env) {
     return p;
   };
   const settled = async (p, id, owner = 'trim') => {
-    await p.waitForFunction(
-      ({ id, owner }) =>
-        ['resolved', 'rejected'].includes(window[owner].snapshot().entries[id]?.status),
-      { id, owner },
-    );
+    try {
+      await p.waitForFunction(
+        ({ id, owner }) =>
+          ['resolved', 'rejected'].includes(window[owner].snapshot().entries[id]?.status),
+        { id, owner },
+      );
+    } catch (cause) {
+      try {
+        artifacts.push({
+          type: 'failed-state-observation',
+          ...(await p.evaluate(
+            async ({ id, owner }) => ({
+              visibility: document.visibilityState,
+              status: window[owner].snapshot().entries[id]?.status,
+              errorCode: window[owner].snapshot().entries[id]?.error?.code,
+              gates: window[owner].snapshot().gates,
+              locks: await navigator.locks.query(),
+            }),
+            { id, owner },
+          )),
+        });
+      } catch {
+        /* Preserve the original observer error. */
+      }
+      throw cause;
+    }
     return (await call(p, owner, 'snapshot')).entries[id];
   };
   const gate = (p, name) =>

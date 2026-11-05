@@ -18752,3 +18752,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** First 26 root commands pass, including 292 unit files/2,927 cases/one old skip in 110.71s. Local clear passes 17 positive cases but times out after three mutation-observer errors. Signed-base and current selected comparisons pass, and the full current retry passes 17 cases/five original mutation detections in 85.619s under the original 120s. The failed attempt remains; no unique cause or reliable deadline margin is established. [Evidence](development-evidence/2026-11-02-release-hardening/363-checkpoint-clear-timeout/README.md).
 
 **Change and next.** Only failure-time content-free diagnostics; all 73 assertion arguments, waits, case/mutation definitions and deadlines remain. New-block formatting is AST-identical to the actually tested source, whose historical pin is checked. App/protocol bytes remain unchanged. Continue the 56 unrun commands after receipt refresh; Stage 2 is not yet closed. Record before advancing progress.
+
+
+### Stage 2 trim checkpoint preserves an observer timeout and the complete retry
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 365 · **Stage:** operator hardening Stage 2
+
+**Outcome.** All 21 positive trim cases pass on the first attempt; three initialization observers then time out before the named mutation checks, and the 120-second stage deadline expires. Three signed-base comparisons pass and detect their original mutations. The full current retry passes 21 cases/eight mutations in 95.138s under the original 120s. Cause and reliable margin remain unresolved. [Evidence](development-evidence/2026-11-02-release-hardening/365-trim-checkpoint/README.md).
+
+**Change and next.** Only failure-time content-free test diagnostics; 61 original assertion argument ASTs, all waits, deadlines and catalogue definitions remain. No app/protocol change. Continue the 55 unrun root commands from storage:properties after exact-tree receipt refresh. Stage 2 remains open.

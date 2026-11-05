@@ -1217,7 +1217,7 @@
     {"path":"scripts/check-yjs-patch.mjs","sha256":"d15685ad0f02422ff234e18b1538f2056c5bc128dc26e514984636680eed9423"},
     {"path":"scripts/content-trim/catalog.mjs","sha256":"54e36fa304d3c69dbeb85082a6d6b25afeeb92801607e91ed13e1a0442f72a03"},
     {"path":"scripts/content-trim/run.mjs","sha256":"60e79548ec6f530296b922e624ed8a03c97f33aaf2ef62e1eb03bea0ef238f16"},
-    {"path":"scripts/content-trim/scenarios.mjs","sha256":"1cef19c3c9e52c96c9c79dc53d15426b66e3d7be083c46fba29671ac48a90d3f"},
+    {"path":"scripts/content-trim/scenarios.mjs","sha256":"aadfc6038c8863191f8316e898e1027e32ca2d04a575ce841239ae74fd693145"},
     {"path":"scripts/content-trim/worker.mjs","sha256":"359e9d9c9a6b8e48a5fd0a11ff4f72164dd86c63af51c826ffdb2dec2b9b925f"},
     {"path":"scripts/content/catalog.mjs","sha256":"c442c205869759da6fe821ed5c1993e17f3b307e947f77c99381c9f7b9077816"},
     {"path":"scripts/content/run.mjs","sha256":"c87ba3e21c1c3ada5f2c43fcc8e05799983f90dbf58a661608f8cb01d8d06625"},

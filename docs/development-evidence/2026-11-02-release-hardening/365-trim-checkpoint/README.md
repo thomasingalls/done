@@ -1,0 +1,9 @@
+# Stage 2 trim checkpoint — phase 365
+
+The next root command, `storage:trim`, first passed all 21 positive cases, then three mutation controls timed out in the original 15-second settled-state observer during initialization. Five controls remained unrun when the original 120-second stage deadline expired at 120,582 ms. No generic error earns detection credit. [All attempts, source identities and host logs](./evidence.json).
+
+The three selected cases pass on untouched signed `89b11fe2` with the same pinned environment and browser, and all three original mutations are detected. The complete current retry then passes all 21 positive cases and all eight original mutation controls in 95,138 ms under the unchanged 120,000-ms deadline. Preserve the first failure; the rerun does not identify its cause or establish reliable deadline margin.
+
+The only retained change is content-free diagnostics after an existing settled wait fails: visibility, operation status/error code, gates and native lock inventory, followed by rethrowing the original error. This branch did not run in the successful retry. Every original wait, polling policy, deadline, case and mutation definition remains. An independent AST comparison confirms all 61 original assertion arguments unchanged; new-block-only formatting has the same complete AST as the actually tested file, and its exact historical hash matches the native report. All app/protocol source hashes remain checkpoint-start bytes. Scoped lint, formatting and reviewed inventory pass; counts remain 680/674/6.
+
+Stage 2 remains open. Continue the 55 unrun root commands at `storage:properties`, after refreshing exact-tree receipts. Earlier clear and trim failures remain evidence, not discarded retries. No runtime repair, monolithic final-check pass, Stage 5 credit or release preparation is claimed.

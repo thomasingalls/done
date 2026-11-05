@@ -216,12 +216,18 @@ retry passes 17 cases/five original mutation detections in 85.619s under 120s.
 The cause remains unresolved. Only failure-time content-free diagnostics were
 added; app/protocol bytes, original waits and all 73 assertion arguments remain.
 
-**Next bounded outcome.** Refresh exact-tree receipts and run the 56 unrun root
-commands, starting at storage:trim. Keep pinned runtime/browser and every child
-deadline. Preserve failures and classify before repair; actual app functional,
-negative-control and guard stops remain. Stage 2 is not closed and no monolithic
-final check pass is claimed. After green, hand over the Stage 3.1 format contract;
-Stage 4 may proceed while that waits, then stop for the operator. No new stored
-format, Stage 5 credit, release preparation, publication or deployment.
+**Trim checkpoint retained.** [365](./development-evidence/2026-11-02-release-hardening/365-trim-checkpoint/README.md)
+keeps 21 positive passes followed by mutation-initialization observer timeouts and
+the full passing retry: 21 cases/eight original detections in 95.138s under 120s.
+Signed-base selected comparisons pass. Only failure-time diagnostics changed;
+61 assertion argument ASTs, waits, deadlines and app/protocol bytes remain.
+The earlier timeout is unresolved, with no reliable margin claim.
+
+**Next bounded outcome.** Refresh exact-tree receipts and run the 55 unrun root
+commands, starting at storage:properties. Keep pinned environment and original
+child deadlines. Preserve failures; classify before repair and retain functional,
+negative-control and guard stop rules. Stage 2 is not closed. After green, hand
+over Stage 3.1; Stage 4 may proceed while format approval waits, then stop.
+No new format, Stage 5 credit, release preparation, publication or deployment.
 
 This seat edits only this document;the other seat's document above is unchanged.
