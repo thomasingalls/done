@@ -208,13 +208,24 @@ Node/native controls and types/quality/registry/inventory pass. No old guard/tes
 or row format change. Binary physical mode/received-kind and all four aged
 stored callers plus31s interior-cut cold remain after integration.
 
-**Next bounded outcome.** Shared bounded classifier/logical views and complete
-binary readers, then owned pages/dense writer/G8/range4/B/index/audit/reservation
-controls. Continue floor lifecycle/rewriter/first-write/lost-reply/pending-writing
-and genuine old artifacts, plus same-tree writer-off image.387does not isolate
-first floor write task mode. Ordinary writing remains off; no binary or final
-rollback-image proof yet. No new ceremony, serialized authority, cross-owner
-assertion reuse, trust/wire/gate/limit change; stop/report as the operator requires.
+**Shared syntax/logical home checked, not yet wired.**
+[389](./development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md)
+adds admitted count before lazy views, true request epoch and actual index/position/
+link/original-byte projections, plus physical+entry memo slots. Eight cases cover
+all72extents;93focused pass. Full299files/2993cases/one existing skip passes107.81s
+at120s. Old codec guard ASTs exact; classification/typecheck development failures
+preserved. No authority trust, binary writing, caller compatibility or performance
+credit follows. Parsed-page reuse remains pending.
+
+**Next bounded outcome.** Encoding-floor scopes and complete binary stored/read
+integration through all ten direct readers and indirect consumers, then owned
+pages/dense writer/G8/range4/B/index/audit/reservation controls. Keep physical
+witness rows distinct from logical entries. Continue floor lifecycle/rewriter/
+first-write/lost-reply/pending-writing and genuine old artifacts, plus same-tree
+writer-off image.387does not isolate first floor write task mode. Ordinary writing
+remains off; no binary or final rollback-image proof yet. No new ceremony,
+serialized authority, cross-owner assertion reuse, trust/wire/gate/limit change;
+stop/report as the operator requires.
 
 **Still required.** Stage4's stale-turn audit control after format integration,
 full coherent-source checkpoints, release-profile assets, all Stage5 replicates and

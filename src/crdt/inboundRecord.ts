@@ -18,6 +18,7 @@ import {
   parseInboundArray,
 } from '../../account-protocol/inboundTransport';
 import { MAX_BATCH_BYTES } from './contentRecord';
+import { StorageCompatibilityError } from './storageCompatibility';
 export const INBOUND_RECORD_LIMIT = MAX_BATCH_BYTES;
 export const INBOUND_ENVELOPE_LIMIT = ADMITTED_ENVELOPE_WIRE_LIMIT;
 export const INBOUND_UPDATE_LIMIT = ADMITTED_ENVELOPE_UPDATE_LIMIT;
@@ -135,6 +136,7 @@ export const INBOUND_PAGE_RECORD_TAG = 'done/account-inbound/page/v1';
 export const INBOUND_PAGE_HEADER_BYTES = 239;
 const pageMagic = new TextEncoder().encode(INBOUND_PAGE_RECORD_TAG + '\0');
 const inboundNamespace = INBOUND_PAGE_RECORD_TAG.slice(0, INBOUND_PAGE_RECORD_TAG.indexOf('page/'));
+const inboundNamespaceBytes = new TextEncoder().encode(inboundNamespace);
 export interface InboundPageRecord {
   baseline: string;
   lineage: string;
@@ -266,9 +268,95 @@ export type InboundReceipt =
 /** Classify before JSON, refuse unknown inbound versions, and never infer verification trust. */
 export function decodeInboundReceipt(bytes: Bytes): InboundReceipt | undefined {
   if (!(bytes instanceof Uint8Array) || bytes.length > INBOUND_RECORD_LIMIT) invalid();
-  if (bytes[0] !== 91) return { kind: 'page', record: decodeInboundPageRecord(bytes) };
+  if (bytes[0] !== 91) {
+    if (
+      inboundNamespaceBytes.every((byte, index) => bytes[index] === byte) &&
+      !pageMagic.every((byte, index) => bytes[index] === byte)
+    )
+      throw new StorageCompatibilityError();
+    return { kind: 'page', record: decodeInboundPageRecord(bytes) };
+  }
   const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
   if (isInboundRecordTag(v[0])) return { kind: 'legacy', record: decodeInboundRecord(bytes) };
-  if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace)) invalid();
+  if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace))
+    throw new StorageCompatibilityError();
   return undefined;
+}
+
+export interface InboundLogicalView {
+  /** Original page index, not an extent-relative index or a physical row sequence. */
+  readonly entryIndex: number;
+  readonly event: InboundRecord;
+}
+export interface InboundReceiptViews {
+  readonly receipt: InboundReceipt;
+  readonly epoch: number;
+  /** Admitted logical positions. Owners must check work/index bounds before expanding entries. */
+  readonly count: number;
+  entries(): IterableIterator<InboundLogicalView>;
+}
+/** Syntax-only logical views. No authority, acceptance, coverage, key or commit proof is returned.
+ * Original bytes are owned by this decoded physical extent and shared by its views, never encoded
+ * into synthetic v2 rows. Readers must independently enforce the authenticated encoding floor. */
+export function inspectInboundReceipt(bytes: Bytes): InboundReceiptViews | undefined {
+  const receipt = decodeInboundReceipt(bytes);
+  if (!receipt) return;
+  const request = decodeInboundRequest(receipt.record.request);
+  if (receipt.kind === 'legacy') {
+    const event = Object.freeze(receipt.record);
+    return {
+      receipt,
+      epoch: request.epoch,
+      count: 1,
+      *entries() {
+        yield { entryIndex: event.entry ?? 0, event };
+      },
+    };
+  }
+  const e = receipt.record,
+    page = decodeInboundPage(e.page),
+    first = e.firstEntry,
+    count = e.entryCount,
+    position = e.firstPosition,
+    predecessor = e.previous,
+    original = {
+      baseline: e.baseline,
+      lineage: e.lineage,
+      head: e.head,
+      reader: e.reader,
+      publisher: e.publisher,
+      request: e.request,
+      page: e.page,
+    };
+  return {
+    receipt,
+    epoch: request.epoch,
+    count,
+    *entries() {
+      let previous = predecessor;
+      for (let offset = 0; offset < count; offset++) {
+        const index = first + offset,
+          proof = decodePositionResponse(page.entries[index]!.proof);
+        if (proof.kind !== 'accepted') return invalid();
+        yield {
+          entryIndex: index,
+          event: Object.freeze({
+            ...original,
+            kind: 'received' as const,
+            position: position + offset,
+            previous,
+            link: proof.head.link,
+            ...(request.limit === 1 ? {} : { entry: index }),
+          }),
+        };
+        previous = proof.head.link;
+      }
+    },
+  };
+}
+/** Private memo address units: exact physical sequence and selected original-page entry. */
+export function inboundEntryMemoSlot(sequence: number, entryIndex: number): string {
+  inboundInteger(sequence, 1);
+  if (inboundInteger(entryIndex) >= 8) invalid();
+  return 'inbound:' + sequence + ':' + entryIndex;
 }

@@ -7164,3 +7164,10 @@ Use actual packaged UI, private service and virtual authenticators to supplement
 **Date:**2026-11-03 · **Commit:**pending patch388 · **Scope:**approved Stage3.2; PRD/TRD unchanged
 
 Use a private discriminated mode constructed only by the saved-byte wrapper. A future self-contained page receipt must not need synthetic legacy per-position bytes merely to select historical request semantics. Keep exact legacy equality independently, and keep stored empty/duplicate refusals explicit. Nothing learned from network input selects saved mode or grants verification trust. [388controls](development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md) prepare the boundary without claiming binary/four-reader/aged-cold integration complete.
+
+
+### Keep physical receipt ownership separate from admitted logical entries
+
+**Date:**2026-11-03 · **Commit:**pending patch389 · **Scope:**approved Stage3.2; PRD/TRD unchanged
+
+Expose a count before lazy logical expansion and key private memo slots by actual physical sequence plus original selected page index. Preserve exact original bytes per physical extent instead of encoding one synthetic legacy row per view. A shared syntax projection does not authenticate a floor or replace per-entry crypto/authority/commit checks. Keep first selected predecessor independent of unadmitted entries. Unknown future versions use the existing update-required refusal at the tag home; every caller must still be moved there. [389evidence](development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md) leaves parsed-page reuse, reader integration and all final gates outstanding.

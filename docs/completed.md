@@ -18996,3 +18996,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Six new actual-verifier Node controls pass after four preparatory failures, and the live-only omission fails its named aged-original assertion. Stored empty/duplicate, bad signature/prefix/owner and altered legacy bytes refuse. Public live expiry and all old checks remain. Whole-verifier AST matches the prior source after removing only declared mode substitutions. [Evidence](development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md).
 
 **Checks/limits.** Full unit298files/2985cases/one existing skip passes106.61s at120s;240s unused. All16current Node/native floor/stored controls, types, scoped quality, registry and inventory pass. No old tests or obligations change. Binary stored reader/received-kind, all four aged callers/interior-cut cold and remaining format/fence/rollback/gates still required. No new row format or release credit. Outcome recorded before progress advances.
+
+
+### Receipt home exposes bounded admitted logical views
+
+**Date:**2026-11-03 · **Commit:**pending patch389 · **Stage:**partial Stage3.2, unwired syntax
+
+**Exit.** One home provides admitted count, true request epoch, actual index/position/link/original-byte views and physical+entry memo slots; future inbound versions are update-required there. Eight independent cases cover all72extents and legacy/interior/ownership/address controls.93focused cases pass; all existing codec guard ASTs exact. [Evidence](development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md).
+
+**Checks/limits.** Full299files/2993cases/one existing skip passes107.81s at120s. Types, scoped quality, registry/inventory pass; before-classification and new-generator typecheck failures preserved. No old tests or obligations changed. Every actual reader/floor scope, owned-page reuse, physical/logical accounting, binary writer and final gates remain; no syntax trust or release credit. Outcome recorded before progress advances.
