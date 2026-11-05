@@ -1104,7 +1104,7 @@
   ],
   "inputs": [
     {"path":".oxfmtrc.json","sha256":"2571a599d0e900345d6fd483978eb10800e692aa17971c5ac9cd66916ed4dc32"},
-    {"path":"docs/account-crypto/constructions.json","sha256":"5bc2c7153a719895821d5c1ccd5ac3b56faafb2b0bf1f0fa6aeee5797f44322d"},
+    {"path":"docs/account-crypto/constructions.json","sha256":"c2a36fb4089f5e2e8bf53a677a546077dab3f6dd26a15a80ef1e495a922002ce"},
     {"path":"package.json","sha256":"0f36597716b4ee2785570a7bafaa0b9e1891510bfbfb812fc998007920a52c02"},
     {"path":"playwright.account-setup.config.ts","sha256":"66c51aa38cd07b78e41b5d65d3074425bad484f9151cc82d095ff39273535798"},
     {"path":"playwright.account-upgrade.config.ts","sha256":"f638f6123dc27423cce81ef46732d5f5695dc3fad151edfe08d6516acfd99327"},
@@ -1909,7 +1909,7 @@
     {"path":"test/admittedClipboard.test.ts","sha256":"262a06a78033a57ed75d16fdf9f3b75770927076501d1ca98c6afc30310f38ea"},
     {"path":"test/admittedEditorProjection.test.ts","sha256":"4f3e58c34436e5f17cf73f88af754e0609dfd1faaf600378c6ae016c4d0233a1"},
     {"path":"test/admittedText.test.ts","sha256":"51d505fedde679cd548da8aa12d057b7f42a74180ca734cd49eabe429ac91b71"},
-    {"path":"test/app-upgrades/upgrades.spec.ts","sha256":"2c0057961eaa1a5db575e24043f69ca75e2b46dd0ea3a709b8e4e325f25f5c03"},
+    {"path":"test/app-upgrades/upgrades.spec.ts","sha256":"8143b3e6a22a1dfa1ea404c4c21ff83f73787c03b7687ba4d43722f0814f8a91"},
     {"path":"test/appUpdate.test.ts","sha256":"82a9c9efbd37b7cd0170ab364903d7578945fd7ca7aabb611659c4451c44b253"},
     {"path":"test/archiveProjection.test.ts","sha256":"2a399a804129fa6fcc1756e8662dc0d83c11c0c9028b1cc769b05fbe5a43fa6e"},
     {"path":"test/attribution.test.ts","sha256":"e2b17b6a78c3a70952d5a79b2e98a9c14a4e982b27ef1b158425279d52f6c42d"},

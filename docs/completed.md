@@ -18567,3 +18567,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Twenty-one existing cases pass after test-only mutation/probe rebinding and complete scheduler bundling. Original case assertions, negative controls, uniqueness checks and deadlines remain. Formatting, configured lint and ten inventory controls pass; counts/dispositions and every application source remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md).
 
 **Notes.** Preserve the failed exporter draft and fix its rename census without relaxing replay checks. Remaining historical/network fixtures, asset naming, formatting, stale receipts and existing 120-second full-unit wrappers still block the checkpoint. Outcome recorded before advancing to them.
+
+
+### Approved runtime asset distinction and unchanged crypto inventory values
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 343 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Applied the exact operator-approved upgrade policy patch. The actual predicate refuses all eight phase236 examples. Upgrade checks pass 8 cases with the existing predecessor skip unchanged. The first-authority command passes in full after a parsed-JSON-identical formatting repair; all construction/status/obligation values remain. Ten inventory controls and all case dispositions/counts remain. [Evidence](development-evidence/2026-11-02-release-hardening/343-reviewed-inventory-and-assets/README.md).
+
+**Notes.** Preserve the automatic-review rejection, restored proposal, subsequent explicit approval and failed-before-evaluation diagnostic import. No app source or security/runtime format change. The full checkpoint remains red for the remaining historical/network fixtures and old unit-wrapper deadline; refresh existing receipts after documentation settles. Recorded before advancing our active state.

@@ -183,19 +183,19 @@ retains the opening checkpoint. The remaining 43 commands have now all run:
 contains the complete census and amends 338's incorrect stale-string classification.
 Both editor messages remain current. All old browser tests/assertions remain unchanged.
 
-**Now.** [340](./development-evidence/2026-11-02-release-hardening/340-offline-fixture/README.md)
-attributes every failed browser case to the signed base and fixes the dev offline
-asset setup without changing the original assertion.
-[341](./development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md)
-restores actual Worker fault delivery: startup/editor 15/15 and cut 8/8 pass,
-with all original assertions/messages/deadlines intact. Application source
-remains unchanged. [342](./development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md)
-restores 21 omission/concurrency/counter controls with unique actual guard
-anchors and a complete scheduler closure. Next are the remaining historical
-writer and generated-receive fixtures, public-runtime asset-name expectations,
-crypto-inventory formatting, stale receipts and unchanged 120-second unit-wrapper
-deadlines. If a case needs an application change or a guard relaxation, report
-the full list first. Continue Stage 2 only after the checkpoint is green.
+**Now.** Native Worker fixture repairs pass startup/editor 15/15 and cut 8/8
+([341](./development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md));
+21 omission/concurrency/counter controls pass
+([342](./development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md)).
+The operator-approved asset predicate retains all eight phase236 refusals and
+upgrade checks pass 8 cases with the existing predecessor skip; first-authority
+passes after a JSON-identical registry layout repair
+([343](./development-evidence/2026-11-02-release-hardening/343-reviewed-inventory-and-assets/README.md)).
+Application source remains unchanged after Stage1. Next are the historical
+oversized-writer fixture, generated-receive fixture, existing whole-tree receipt
+refresh, and unchanged 120-second full-unit wrapper deadlines. If a case needs
+an application change or a further guard relaxation, report the full list
+first. Continue Stage2 only after the checkpoint is green.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
