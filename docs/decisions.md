@@ -7426,3 +7426,10 @@ Prove reply-loss durability under the same native authentication path that a reo
 **Date:**2026-11-04 · **Commit:**pending patch425
 
 Keep the idle-start audit and every original verification guard. Age its private clock only, feed the real input-quiet scheduler, and reintroduce only the known retained-original metadata fault after a correct startup. Stream content-free mismatch/closure events before Worker termination and require exact unarmed cold writing. Test observations remain in isolated fixture builds; ordinary source and all prior tests are unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).
+
+
+### Use unchanged old Git trees and identical locked dependencies for compatibility tests
+
+**Date:**2026-11-04 · **Commit:**pending patch426
+
+Do not splice old readers into current modules. Verify and compile complete pinned old source trees with the identical dependency lock, retain exact emitted assets and their source identities, and test them against current profiles separately. Avoid pnpm’s automatic reinstall in exported trees by invoking its already installed pinned Vite dependency directly; never approve purging the shared modules link. Treat successful compilation as provenance only, with no reader/rollback or timing credit. [Evidence](development-evidence/2026-11-02-release-hardening/426-frozen-compatibility-artifacts/README.md).

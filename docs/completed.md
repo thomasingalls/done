@@ -19341,3 +19341,15 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The actual dense-to-legacy retained-original fault is detected by the genuine idle full oracle and closes the owner. Baseline passes. Both retain all accepted writing through exact offline cold reopening; no global clock or guard change and no performance acceptance credit. [Evidence](development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).
 
 **Limits.** This is an isolated correctness control, not a timing gate or RAM result. Frozen old Page/Worker and stale-tab artifacts, full marker rewrite/membership/removal lifecycle checks, B fairness/past-index and same-tree writer-off image rollback remain. Stage5/6 are not complete. No format/trust/server/wire/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Freeze exact old Page and Worker readers alongside current writer profiles
+
+**Date:**2026-11-04 · **Commit:**pending patch426 · **Stage:**partial Stage3.2
+
+**Exit.** Two immutable old readers and current ordinary writer0/1 assets are built and identified. Every old blob/mode and57,907 current source files remain exact. The unsafe dependency purge was refused and avoided; all final artifact checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/426-frozen-compatibility-artifacts/README.md).
+
+**Limits.** Build/provenance evidence only. These are recompiled compatibility assets, not published production bytes, final Docker images, stale-tab/cold observations or performance acceptance. Old active/queued/cold reader exclusion, pending-writing recovery, marker-rewrite lifecycles, writer-off image rollback and Stage5/6 remain. No source trust, format, server/wire, limit, gate or deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+**Phase426 evidence packing correction (before freeze).** The initial collector recursively copied pinned historical trees into this new record. Their canonical home is Git. Keep complete independently checked blob/mode manifests, actual build logs, asset hashes and the recipe in the record; retain exported trees and the initial unfrozen record in private/tmp. No run/source/test or earlier phase changes. This correction precedes the seat update.
