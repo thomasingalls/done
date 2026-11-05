@@ -1,3 +1,4 @@
+import { receiveOriginalsFit, RECEIVE_ORIGINALS_MAX_ENTRIES } from './receiveOriginalsBudget';
 /** Bounded unverified originals. Consumption never grants authority or advances selection. */
 import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import { READ_REQUEST_LIMIT } from '../../account-protocol/deliveryTransport';
@@ -12,7 +13,7 @@ import {
   type QuietReceiveBasis,
 } from './receiveSelection';
 
-const MAX_ENTRIES = 8;
+const MAX_ENTRIES = RECEIVE_ORIGINALS_MAX_ENTRIES;
 const MAX_ATTEMPTS = 128;
 type Held = QuietReceiveBasis & {
   request: Bytes;
@@ -189,11 +190,23 @@ export function createReceiveQuietPages(signal: AbortSignal, now: () => number =
       return { request: h.request, page: h.page, scheduling: h.scheduling };
     },
     /** Reserve before I/O. Cache + next response share the existing admission byte cap. */
-    reserve(minimum: number) {
+    reserve(
+      minimum: number,
+      other: { entries: number; positions: number } = { entries: 0, positions: 0 },
+    ) {
       if (!Number.isSafeInteger(minimum) || minimum < 0 || minimum > MAX_PENDING_BYTES)
         throw Error('Invalid quiet receive reservation');
+      const reservation = { ...other, bytes: minimum };
+      if (!receiveOriginalsFit(reservation)) throw Error('Invalid quiet receive reservation');
       clock();
-      while (bytes() + minimum > MAX_PENDING_BYTES) drop(held.keys().next().value!);
+      while (
+        !receiveOriginalsFit(reservation, {
+          bytes: bytes(),
+          entries: held.size,
+          positions: held.size,
+        })
+      )
+        drop(held.keys().next().value!);
       return MAX_PENDING_BYTES - bytes();
     },
     drop() {

@@ -7377,3 +7377,10 @@ Use one private scheduler port and the real maintenance-task brand, observing th
 **Date:**2026-11-04 · **Commit:**pending patch418
 
 Use the approved eight-position selector/native allowance and split writer-on requests at4. Preserve all native byte/record and protocol/rate/queue limits. Update exact four-position boundary fixtures without removing cases, assertions, seeds or deadlines; preserve every red attempt. Harden combined transport/cache/tail reservations separately before activation. [Evidence](development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).
+
+
+### Account for still-owned originals before speculative copies
+
+**Date:**2026-11-04 · **Commit:**pending patch419
+
+Use one content-free budget predicate and evict optional quiet originals for the complete cache/tail/wire reservation. Include wire originals and a proposed independent cache/tail copy simultaneously. Inability to retain speculative work cannot undo acknowledged writing. Keep every native verifier, authority and lifecycle fence, and harden real format activation/cold/rollback separately. [Evidence](development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).

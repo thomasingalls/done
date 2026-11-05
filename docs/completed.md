@@ -19271,3 +19271,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** G8 and actual four-position request planning are hardened with five new controls. Seven old boundary fixtures retain all cases/assertions/seeds/deadlines. Final164focused and full328files/3198pass/one skip pass129.49s; all prior failures retained. [Evidence](development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).
 
 **Limits.** Combined cache/tail/wire eight-entry/32-position reservations remain the next phase, so this is not complete B coverage. No real composed-peer binary native transaction,31s interior cold, rollback image, RAM or timing acceptance credit. Floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain; no wire/service change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Bound cache tail and wire originals together
+
+**Date:**2026-11-04 · **Commit:**pending patch419 · **Stage:**partial Stage3.2
+
+**Exit.** Shared originals accounting now covers cache, tail, wire and temporary retained copies at8entries/32positions/4MiB. Six new cases,162focused cases and full329files/3204pass/one skip pass128.78s. Native authentication/commit and old tests remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
+
+**Limits.** This phase establishes bounded canonical source and isolated controls, not measured B performance or a real composed-peer dense transaction. Binary Worker/peer floor lifecycle,31s interior cold, old artifacts, actual stale-turn audit and same-tree writer-off rollback image remain. No RAM or timing acceptance claim, format/trust/service/wire/rate/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.

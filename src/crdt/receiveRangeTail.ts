@@ -9,6 +9,7 @@ type Tail = {
   page: Bytes;
   publisher: string;
   after: number;
+  positions: number;
   expires: number;
   context: object;
   signal: AbortSignal;
@@ -76,6 +77,7 @@ export function createReceiveRangeTail(signal: AbortSignal, now: () => number = 
           page: originalPage,
           publisher: r.publisher,
           after: basis.after,
+          positions: r.limit,
           expires: r.expires,
           context: basis.context,
           signal: basis.signal,
@@ -132,6 +134,16 @@ export function createReceiveRangeTail(signal: AbortSignal, now: () => number = 
     },
     drop(publisher?: string) {
       if (publisher === undefined || held?.publisher === publisher) clear();
+    },
+    get reservation() {
+      observe();
+      return held
+        ? {
+            bytes: held.request.length + held.page.length + 8,
+            entries: 1,
+            positions: held.positions,
+          }
+        : { bytes: 0, entries: 0, positions: 0 };
     },
     get bytes() {
       return held ? held.request.length + held.page.length + 8 : 0;

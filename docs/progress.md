@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Separate eight-position native turns from four-position wire requests](./development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).
-Five new cases fail before the repair and pass after it. They cover8 independent live positions,18 signatures, an interior5-position cut with12 signatures, one physical extent, actual4+4/4+3 plans, invalid allowances/backlog, partial/native rotation, continuous three-publisher fairness and eight-boundary queue framing with ninth refusal. Initial affected run has20 stale four-position expectations; seven existing test files are updated only for the approved boundary and actual width. All cases, assertion counts, property seeds/run counts and deadlines remain. The first full checkpoint retains one more old invalid5/8 allowance; moving it above8 restores that refusal test while keeping the two-position cut. Both red attempts remain. Final164focused cases/15files, types and full328files/3198pass/one skip pass129.49s at240s; command 130.795s. Quality, format,17registry checks, inventory/10controls pass. Two runtime hashes, no domain/construction/obligation moves; graph adds one required five-case test.
+**Latest checks.** [Bound cache tail and wire originals together](./development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
+The pure new budget predicate passes its control before integration while four new integration cases fail on missing cache eviction/tail pressure; all six final cases pass, including metadata that cannot overwrite required bytes. Tests cover the independent ceilings, four-request sharing,32-position eviction, invalid pressure, conservative tail pressure/retirement and combined tail/wire/cache space. Types and162affected receive/crypto cases pass; the selected actual native run executes exactly the two unchanged audit cases, not a binary peer/group journey. Full329files/3204pass/one existing skip pass128.78s at240s; actual command 129.709s. Independent AST checks retain native receiveGroup, complete reference, request preparation, all quiet age/context/expiry/originals/lifecycle guards and all tail guards except its content-free usage observer. Quality, format,17registry checks, inventory and10controls pass. New source registered without any new crypto domain; four source hashes and one corresponding address move. No old tests change.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden combined cache/tail/wire reservations at eight entries,32 logical positions and MAX_PENDING_BYTES; retain four-request batches, old two-concurrent fallback, all fresh verification, cancellation, erasure, fairness and send yielding. Then Docker/Vite writer flag forwarding, real composed peer/Worker floor lifecycle, aged interior cold and same-tree writer-off rollback image. Continue automatically after each freeze.
+**Active bounded outcome.** Add strict default-off RANGE_RECEIVE forwarding through the actual Vite and Docker build paths, then prove first-floor lifecycle and genuine composed peer/Worker dense admission, aged interior cold, actual stale-turn audit and same-tree writer-off rollback image. Continue automatically after each freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged stored semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage;
@@ -207,8 +207,9 @@ physical31s interior-cut cold and real composed peer/Worker observations remain.
 Full/native/reduced loads and new-row continuations own their syntax. Live ranges
 and flagged dense native framing are implemented; actual binary native admission
 is not yet observed. Reduced and unreduced full-oracle pressure now feeds the guarded idle lane. Harden
-B cache/tail/wire reservations, fairness, cancellation and past-index behavior.
-G8 and actual range4 planning are covered in418; physical counters/witnesses remain separate.
+Real peer/Worker B fairness, cancellation and past-index observations remain.
+G8/range4 and combined raw-original caps are covered in418/419; physical
+counters/witnesses remain separate.
 Ordinary builds remain writer-off; Docker/Vite forwarding and the selected
 writer-on/writer-off build proofs remain.
 

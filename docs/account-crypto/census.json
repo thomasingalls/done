@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "a7c24b1520b0ff685a4809490d8e512934a11f996b1a32b7776e9b7c7050438b"
+      "sha256": "40ca5412fdaa01faf44e7a3597b9a80d32be15170af37dd57bd56b35512cfe26"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1372,6 +1372,10 @@
       "sha256": "6b64232220f8b984199e7562f70a00c3da3587532a17754b3dd91060783ce61d"
     },
     {
+      "path": "src/crdt/receiveOriginalsBudget.ts",
+      "sha256": "2a7ef173108ffd65f00cf1b86862a8127de3fcab4a87c57ae87c81a0ea9d0690"
+    },
+    {
       "path": "src/crdt/receivePageTransport.ts",
       "sha256": "381659b70f376d44fba18da534236ae07119263100cb637b544512ed89225c58"
     },
@@ -1381,11 +1385,11 @@
     },
     {
       "path": "src/crdt/receiveQuietPages.ts",
-      "sha256": "f0074f2db16a3abd759fd7a7fab4804f64927b0e33ca21aeff10d2f7c32f839b"
+      "sha256": "4a42098e79fe9aa4bff7df6e20a1ac62789d196233a929427fe7177211d5848b"
     },
     {
       "path": "src/crdt/receiveRangeTail.ts",
-      "sha256": "d922bf2934c499eaa3112060058363ad66f324a4ca2c37e9df5ec8c1cf1fbc41"
+      "sha256": "9353ef2db45ff54224a39cab4195a120663ce9924beb834fdf53ca2cdbfca02b"
     },
     {
       "path": "src/crdt/receiveRepairPolling.ts",
@@ -2229,7 +2233,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 928
+          "line": 929
         }
       ]
     },

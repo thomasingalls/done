@@ -1,3 +1,4 @@
+import { receiveOriginalsFit, type ReceiveOriginalsUsage } from './receiveOriginalsBudget';
 import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
 import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
 import { createWorkerContextQueue, type WorkerContextQueue } from './workerContextQueue';
@@ -1533,14 +1534,30 @@ async function openAccountReceiveOwner(
           const wireRequests = [...requests, ...probes.map((p) => p.request)];
           rangeTail?.beforeFetch(wireRequests.length);
           const requestBytes = wireRequests.reduce((n, r) => n + r.length + 4, 0);
+          const wirePositions = wireRequests.reduce(
+            (n, request) => n + decodeInboundRequest(request).limit,
+            0,
+          );
+          const reservedWire = {
+            bytes: requestBytes + RECEIVE_SINGLE_PAGE_BYTES + 4,
+            entries: wireRequests.length,
+            positions: wirePositions,
+          };
+          if (!receiveOriginalsFit(reservedWire)) throw Error('Invalid receive wire reservation');
           if (
-            (rangeTail?.bytes ?? 0) + requestBytes + RECEIVE_SINGLE_PAGE_BYTES + 4 >
-            MAX_PENDING_BYTES
+            !receiveOriginalsFit(
+              reservedWire,
+              rangeTail?.reservation ?? { bytes: 0, entries: 0, positions: 0 },
+            )
           )
             rangeTail?.drop();
-          const tailBytes = rangeTail?.bytes ?? 0;
+          const tail = rangeTail?.reservation ?? { bytes: 0, entries: 0, positions: 0 };
+          const tailBytes = tail.bytes;
           const maxBytes = quietOriginals
-            ? quietOriginals.reserve(tailBytes + requestBytes + RECEIVE_SINGLE_PAGE_BYTES + 4) -
+            ? quietOriginals.reserve(tailBytes + reservedWire.bytes, {
+                entries: tail.entries + reservedWire.entries,
+                positions: tail.positions + reservedWire.positions,
+              }) -
               tailBytes -
               requestBytes
             : MAX_PENDING_BYTES;
@@ -1604,7 +1621,31 @@ async function openAccountReceiveOwner(
             try {
               for (let i = 0; i < (collected.quietPages?.length ?? 0); i++) {
                 const probe = probes[i]!;
-                quietOriginals?.remember(probe.request, collected.quietPages![i]!, probe.capture);
+                const page = collected.quietPages![i]!;
+                const wire = {
+                  bytes:
+                    requestBytes +
+                    [...collected.pages, ...collected.quietPages!].reduce(
+                      (n, p) => n + p.length + 4,
+                      0,
+                    ),
+                  entries: wireRequests.length,
+                  positions: wirePositions,
+                };
+                const tail = rangeTail?.reservation ?? { bytes: 0, entries: 0, positions: 0 };
+                const copy = {
+                  bytes: probe.request.length + page.length + 8,
+                  entries: 1,
+                  positions: 1,
+                };
+                // Both wire originals and the proposed independent cache copy are still owned.
+                if (quietOriginals && receiveOriginalsFit(wire, tail, copy)) {
+                  quietOriginals.reserve(wire.bytes + tail.bytes + copy.bytes, {
+                    entries: wire.entries + tail.entries + copy.entries,
+                    positions: wire.positions + tail.positions + copy.positions,
+                  });
+                  quietOriginals.remember(probe.request, page, probe.capture);
+                }
               }
             } finally {
               for (const page of collected.quietPages ?? []) page.fill(0);
@@ -3334,6 +3375,7 @@ async function openAccountReceiveOwner(
       quiet?: object,
       positions?: number,
       page?: Bytes,
+      wireUsage?: ReceiveOriginalsUsage,
     ) => {
       const read = decodeInboundRequest(request),
         publisher = read.publisher;
@@ -3352,12 +3394,34 @@ async function openAccountReceiveOwner(
       if (quiet) readScheduling.delete(quiet);
       receiveSelection.completedQuiet(scheduling?.quiet, kind);
       receiveRepair.completed(scheduling?.repair, kind);
-      if (kind === 'received' && read.limit > 1 && positions && page && outstandingStamp)
-        rangeTail?.remember(request, page, {
-          context: base.authority,
-          signal: outstandingStamp.signal,
-          after: outstandingCursor + positions,
-        });
+      if (
+        kind === 'received' &&
+        read.limit > 1 &&
+        positions &&
+        page &&
+        outstandingStamp &&
+        outstandingCursor + positions < read.after + read.limit
+      ) {
+        rangeTail?.drop();
+        const wire = wireUsage ?? {
+          bytes: request.length + page.length + 8,
+          entries: 1,
+          positions: read.limit,
+        };
+        const copy = { bytes: request.length + page.length + 8, entries: 1, positions: read.limit };
+        // A tail is optional raw transport work; inability to copy it cannot undo accepted writing.
+        if (receiveOriginalsFit(wire, copy)) {
+          quietOriginals?.reserve(wire.bytes + copy.bytes, {
+            entries: wire.entries + copy.entries,
+            positions: wire.positions + copy.positions,
+          });
+          rangeTail?.remember(request, page, {
+            context: base.authority,
+            signal: outstandingStamp.signal,
+            after: outstandingCursor + positions,
+          });
+        }
+      }
     },
     narrowRead: (request: Bytes) => {
       const r = decodeInboundRequest(request);
@@ -3630,6 +3694,13 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                 ? received.positions
                 : undefined,
               page,
+              {
+                bytes:
+                  requests.reduce((n, r) => n + r.length + 4, 0) +
+                  pages.reduce((n, p) => n + p.length + 4, 0),
+                entries: requests.length,
+                positions: requests.reduce((n, r) => n + decodeInboundRequest(r).limit, 0),
+              },
             );
             return received;
           } catch (cause) {
