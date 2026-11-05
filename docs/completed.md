@@ -18987,3 +18987,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** One actual packaged-app/private-service/virtual-WebAuthn journey creates and connects two devices, observes real Worker cohorts, exchanges writing both ways and reauthenticates both after lock/navigation. Expected writing and the floor survive. Types, scoped quality/format and inventory controls pass. No runtime or old test changes;386's full-unit pass remains the unchanged runtime baseline. [Evidence](development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md).
 
 **Preserved failures/limits.** The initial harness prefix query included valid exclusive supervisor/member names; exact slot selection and a separate supervisor assertion repair it without app/wait/deadline changes. Unmapped-family inventory refusal is preserved and the new required config is registered without altering old dispositions. This does not isolate the first floor write's task mode, establish binary/archive export or writer-off image behavior, close old-reader/lifecycle controls or earn Stage5 credit. Outcome recorded before this seat's progress update.
+
+
+### Stored verification mode is independent of legacy record reencoding
+
+**Date:**2026-11-03 · **Commit:**pending patch388 · **Stage:**partial Stage3.2 core
+
+**Exit.** Six new actual-verifier Node controls pass after four preparatory failures, and the live-only omission fails its named aged-original assertion. Stored empty/duplicate, bad signature/prefix/owner and altered legacy bytes refuse. Public live expiry and all old checks remain. Whole-verifier AST matches the prior source after removing only declared mode substitutions. [Evidence](development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md).
+
+**Checks/limits.** Full unit298files/2985cases/one existing skip passes106.61s at120s;240s unused. All16current Node/native floor/stored controls, types, scoped quality, registry and inventory pass. No old tests or obligations change. Binary stored reader/received-kind, all four aged callers/interior-cut cold and remaining format/fence/rollback/gates still required. No new row format or release credit. Outcome recorded before progress advances.

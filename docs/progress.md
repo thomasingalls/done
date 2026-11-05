@@ -199,13 +199,22 @@ writing through lock/navigation/cold opening. The first prefix-lock assumption
 failed; exact-slot and independent supervisor checks pass. New family registered
 as required; all old dispositions stay. Runtime/Vitest population exact to386.
 
-**Next bounded outcome.** Complete floor-preserving lifecycle/rewriter coverage,
-interrupted/lost replies, pending writing and genuine frozen old artifacts.387does
-not isolate first floor write task mode. Continue stored mode, logical readers,
-dense writer, record-scoped owned pages, G8/range4/B and same-tree writer-off image.
-No binary or final rollback-image proof yet. Ordinary writing remains off. No new
-ceremony, serialized authority, cross-owner assertion reuse, trust/wire/gate/limit
-change; stop/report as the operator requires.
+**Explicit private stored mode checked.**
+[388](./development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md)
+separates saved-request semantics from optional legacy-byte equality. Six new
+actual-verifier controls pass; before failures and live-only omission retained.
+Full unit298files/2985cases/one existing skip passes106.61s at120s, all16current
+Node/native controls and types/quality/registry/inventory pass. No old guard/test
+or row format change. Binary physical mode/received-kind and all four aged
+stored callers plus31s interior-cut cold remain after integration.
+
+**Next bounded outcome.** Shared bounded classifier/logical views and complete
+binary readers, then owned pages/dense writer/G8/range4/B/index/audit/reservation
+controls. Continue floor lifecycle/rewriter/first-write/lost-reply/pending-writing
+and genuine old artifacts, plus same-tree writer-off image.387does not isolate
+first floor write task mode. Ordinary writing remains off; no binary or final
+rollback-image proof yet. No new ceremony, serialized authority, cross-owner
+assertion reuse, trust/wire/gate/limit change; stop/report as the operator requires.
 
 **Still required.** Stage4's stale-turn audit control after format integration,
 full coherent-source checkpoints, release-profile assets, all Stage5 replicates and

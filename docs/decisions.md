@@ -7157,3 +7157,10 @@ Use the existing hook after ordinary Account startup and carrier initialization;
 **Date:**2026-11-03 · **Commit:**pending patch387 · **Scope:**Stage3.2 native test evidence; PRD/TRD unchanged
 
 Use actual packaged UI, private service and virtual authenticators to supplement the private coordination model. Read metadata/locks without treating those observations as trust: ordinary successful cold opening still authenticates custody, binding, authority and passkey. Query exact slot permits rather than the supervisor/member namespace prefix. Preserve the first failed harness assumption and new-family inventory refusal. Register the new test as required, with no old exclusions or deadlines changed. [Evidence387](development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md) remains narrower than first-write/frozen-old-reader and final dense rollback evidence.
+
+
+### Keep saved-request lifetime distinct from optional legacy-byte equality
+
+**Date:**2026-11-03 · **Commit:**pending patch388 · **Scope:**approved Stage3.2; PRD/TRD unchanged
+
+Use a private discriminated mode constructed only by the saved-byte wrapper. A future self-contained page receipt must not need synthetic legacy per-position bytes merely to select historical request semantics. Keep exact legacy equality independently, and keep stored empty/duplicate refusals explicit. Nothing learned from network input selects saved mode or grants verification trust. [388controls](development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md) prepare the boundary without claiming binary/four-reader/aged-cold integration complete.

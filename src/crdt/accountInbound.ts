@@ -364,17 +364,23 @@ async function openInboundEntry(
     throw cause;
   }
 }
+/** Private call construction only. Saved originals may have no legacy per-position encoding to
+ * compare; that never makes their expired request live, or permits an empty/duplicate receipt. */
+type InboundVerificationMode =
+  | { readonly kind: 'live' }
+  | { readonly kind: 'stored'; readonly expectedRecord?: Bytes };
 async function verify(
   input: InboundContext,
   requestInput: Bytes,
   pageInput: Bytes,
   lifetime: InboundLifetime,
-  stored?: Bytes,
+  mode: InboundVerificationMode = { kind: 'live' },
   selection?: {
     index: number;
     authenticate: typeof authenticateInboundWire;
   },
 ): Promise<InboundResult> {
+  const storedMode = mode.kind === 'stored';
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     now = lifetime.now ? lifetime.now.bind(lifetime) : Date.now;
   const guard = () => {
@@ -384,7 +390,10 @@ async function verify(
   guard();
   const request = captureBytes(requestInput, READ_REQUEST_LIMIT),
     pageBytes = captureBytes(pageInput, READ_PAGE_LIMIT),
-    expectedRecord = stored ? captureBytes(stored, INBOUND_RECORD_LIMIT) : undefined;
+    expectedRecord =
+      mode.kind === 'stored' && mode.expectedRecord
+        ? captureBytes(mode.expectedRecord, INBOUND_RECORD_LIMIT)
+        : undefined;
   const c = captureContext(input),
     subtle = guardedSubtle(guard);
   let body: EnvelopeBody | undefined,
@@ -407,7 +416,7 @@ async function verify(
     checkInboundExtent(p, r);
     const current = () => {
       guard();
-      if (!expectedRecord) {
+      if (!storedMode) {
         const time = now();
         if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
         if (r.expires <= time) fail('expired');
@@ -416,7 +425,7 @@ async function verify(
     current();
     await (selection?.authenticate ?? authenticateInboundWire)(c, r, p, request, subtle);
     if (!p.entries.length) {
-      if (r.after !== c.prefix.position || expectedRecord) fail('record');
+      if (r.after !== c.prefix.position || storedMode) fail('record');
       current();
       return Object.freeze({ kind: 'empty', through: p.through, position: c.prefix.position });
     }
@@ -441,7 +450,7 @@ async function verify(
       { proof, envelope: e, updateBytes } = checked;
     body = checked.body;
     if (old && hex(c.retained!.envelope) === hex(entry.envelope)) {
-      if (expectedRecord) fail('record');
+      if (storedMode) fail('record');
       current();
       return Object.freeze({ kind: 'duplicate', through: p.through, position });
     }
@@ -633,7 +642,7 @@ export async function verifyStoredInbound(
     event.request,
     event.page,
     lifetime,
-    captured,
+    { kind: 'stored', expectedRecord: captured },
     event.entry === undefined
       ? undefined
       : { index: event.entry, authenticate: authenticateInboundWire },
