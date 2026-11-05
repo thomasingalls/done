@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountInbound.ts",
-      "sha256": "7d74ee537e7e5cccca91cb4e42ea5db19c145c44df4fd7ce11f2f2a70724a579"
+      "sha256": "7d4972bfc0f77ba72f2e2a7eccff3897ddfd7cae913f8d1dcf58b0074b806a9b"
     },
     {
       "path": "src/crdt/accountJournal.ts",
@@ -1109,7 +1109,7 @@
     },
     {
       "path": "src/crdt/inboundRecord.ts",
-      "sha256": "a3a5de61a1ea6106eeb7120d1b6657606a55d7141043b48142ece1a050d059b4"
+      "sha256": "5caff50f51b78d4a2d689dd411df2819c0fbf55e2cb6c4dd98feeef1617f8bb7"
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
@@ -2173,7 +2173,7 @@
       "sites": [
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 173
+          "line": 176
         }
       ]
     },
@@ -2191,7 +2191,7 @@
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 147
+          "line": 150
         }
       ]
     },
@@ -2209,7 +2209,7 @@
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 145
+          "line": 148
         }
       ]
     },

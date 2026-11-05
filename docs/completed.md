@@ -19217,3 +19217,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** New-only scopes now cover native and reduced-owner continuations. Four controls pass;205focused/18legacy plus full323files/3161cases/one skip pass124.19s. Existing operations/guards remain AST-exact after explicit normalization. [Evidence](development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
 
 **Limits.** No physical browser cold, image, activation, timing or RAM credit. Live owned parsing/dense writer, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No trust/format/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Own canonical live originals through verification and encoding
+
+**Date:**2026-11-04 · **Commit:**pending patch413 · **Stage:**partial Stage3.2
+
+**Exit.** A live range and bound codecs now share one exact captured syntax lifetime;17decodes become1 with all18signature checks. Nine controls,251focused/18legacy cases and repository checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).
+
+**Limits.** No native dense writer, physical cold, image, activation, latency or RAM credit. Snapshot copies deliberately preserve exact mutation checks; no RAM saving is claimed. Dense native writing, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.

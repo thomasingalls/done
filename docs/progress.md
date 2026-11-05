@@ -172,8 +172,9 @@ updated: 2026-11-04
 its November3 unit amendment and [approved writer-on format](./account-inbound-page-receipts.md).
 Bounded sequential patches; no new lab or unlisted speed experiments. All other
 checks, gates, limits, budgets and deadlines stay. No computer use, commit, push,
-publication or deployment. Stop/report under the operator's functional/negative-
-control/guard rules. New-code unit failures are ordinary development and retained.
+publication or deployment. Latest operator direction: continue after every phase;
+stop only for format/trust/limit/deadline decisions or failures unfixable within
+existing guards. All failed attempts remain evidence.
 
 **Current implementation.** Stage1 and Stage2 checkpoints are closed; Stage3.1
 is approved. Stage3.2 has the closed binary codec/logical syntax home, authenticated
@@ -190,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Own new receipt syntax within ledger continuations](./development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
-Four new controls; before one duplicate-parse failure and three passes, after all pass. Interior extent continuation/full agreement, later legacy record scope, predecessor immutability, changed-row early fallback, own publisher and physical witness failure covered. Initial new test annotation was too narrow for an optional index; corrected only that new annotation and retained failure. Types,205focused cases in25files,18unchanged legacy and full323files/3161cases/one existing skip pass124.19s (command125.001s) at approved240s; other deadlines unchanged. Quality, format,17registry checks, inventory and10controls pass. Three runtime hashes and nine source-site line moves reviewed; all old tests, constructions and obligations retained.
+**Latest checks.** [Own canonical live originals through verification and encoding](./development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).
+Eight initial controls: seven fail and one passes before; the real eight-entry live path decodes each original17times before versus once after, retaining18signature checks. Added ninth final-crypto mutation control has no matched-before credit. Nine pass, including exact default codec agreement, interior dense syntax, metadata/clone, foreign originals, raw/decoded mutation, output/caller erasure and unchanged live expiry. Types,251focused cases across28files and18unchanged legacy pass; quality, format,17registry checks, inventory and10controls pass. Independent normalized AST review preserves all prior codec/verifier operations. Two runtime hashes/three source-site line moves reviewed, constructions/obligations/old tests unchanged. Latest full checkpoint remains412:323files/3161cases/one skip124.19s at240s; no redundant full rerun for this isolated slice.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden live original syntax and encoding as one owned call, then dense native writing, dual audit, G8/B and floor/lifecycle/old artifacts/cold/rollback. Continue automatically after each frozen phase under the existing decision boundaries.
+**Active bounded outcome.** Implement bounded native dense preparation and its atomic physical receipt writing, then dual physical/logical audit, G8/B and floor/lifecycle/old artifacts/cold/rollback. Continue after each freeze under the latest automatic continuation instruction.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
@@ -206,8 +207,9 @@ Complete all ten direct readers and indirect baseline/reading/journal/Worker/exp
 consumers, all four aged stored callers and31s interior-cut cold, arbitrary dense/
 legacy full-versus-incremental property and permanent stale-turn control. Finish
 record-scoped owned live writing, G8/range4/B reservations/fairness/cancellation,
-logical/actual-owned index and dual audit bounds. Census and saved verification
-still capture separately: final per-load owned-page integration remains. Ordinary builds remain writer-off;
+logical/actual-owned index and dual audit bounds. Full/native/reduced loads and
+new-row continuations now own their call-local syntax; live range parsing is owned
+as well. Ordinary builds remain writer-off;
 Docker/Vite forwarding and the final selected writer-on build are still pending.
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/

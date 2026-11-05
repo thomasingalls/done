@@ -37,6 +37,8 @@ import {
   type InboundReadPage,
 } from '../../account-protocol/inboundTransport';
 import {
+  createOwnedInboundOriginals,
+  type OwnedInboundOriginals,
   encodeInboundRecord,
   decodeInboundRecord,
   captureScopedInboundReceiptSyntax,
@@ -403,6 +405,7 @@ async function verify(
     index: number;
     authenticate: typeof authenticateInboundWire;
   },
+  liveOriginals?: OwnedInboundOriginals,
 ): Promise<InboundResult> {
   const storedMode = mode.kind !== 'live';
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
@@ -412,7 +415,7 @@ async function verify(
     if (result !== undefined) fail('authority');
   };
   guard();
-  const originals = storedMode ? mode.originals : undefined;
+  const originals = storedMode ? mode.originals : liveOriginals?.syntax;
   if (originals && (requestInput !== originals.requestBytes || pageInput !== originals.pageBytes))
     fail('record');
   const request = originals?.requestBytes ?? captureBytes(requestInput, READ_REQUEST_LIMIT),
@@ -443,6 +446,7 @@ async function verify(
     checkInboundExtent(p, r);
     const current = () => {
       guard();
+      liveOriginals?.assertCurrent();
       if (!storedMode) {
         const time = now();
         if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
@@ -520,7 +524,12 @@ async function verify(
       )
         fail('record');
     }
-    const record = mode.kind === 'storedPhysical' ? mode.record : encodeInboundRecord(event);
+    const record =
+      mode.kind === 'storedPhysical'
+        ? mode.record
+        : liveOriginals
+          ? liveOriginals.encodeLegacy(event)
+          : encodeInboundRecord(event);
     if (record.length + (kind === 'received' ? updateBytes : 0) > MAX_BATCH_BYTES) fail('size');
     if (expectedRecord && hex(record) !== hex(expectedRecord)) fail('record');
     current();
@@ -588,13 +597,15 @@ async function verifyRange(
       ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
     },
     results: InboundResult[] = [];
+  let originals: OwnedInboundOriginals | undefined;
   let transferred = false,
     authenticated = false,
     bytes = 0,
     records = 0;
   try {
-    const r = decodeInboundRequest(request),
-      p = decodeInboundPage(page);
+    originals = createOwnedInboundOriginals(request, page);
+    const r = originals.syntax.request,
+      p = originals.syntax.page;
     if (
       positions !== undefined &&
       (!Number.isSafeInteger(positions) || positions < 1 || positions > RECEIVE_GROUP_LIMIT)
@@ -634,11 +645,12 @@ async function verifyRange(
       if (positions !== undefined && results.length === positions) break;
       const result = await verify(
         context,
-        request,
-        page,
+        originals.syntax.requestBytes,
+        originals.syntax.pageBytes,
         ownedLifetime,
         undefined,
         r.limit > 1 ? { index, authenticate } : undefined,
+        originals,
       );
       // Own plaintext before a final guard or aggregate bound can reject it.
       results.push(result);
@@ -665,6 +677,7 @@ async function verifyRange(
     transferred = true;
     return Object.freeze(results);
   } finally {
+    originals?.dispose();
     request.fill(0);
     page.fill(0);
     context.generationKey.fill(0);

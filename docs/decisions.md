@@ -7335,3 +7335,10 @@ Create and dispose syntax inside each verified load callback, complete only the 
 **Date:**2026-11-04 · **Commit:**pending patch412
 
 A continuation captures only its new physical rows, never its retained predecessor. A failed bound, witness, coverage or lifecycle check abandons the whole scope and existing fallback remains. Actual proof-byte observation is required to index a reduced binary suffix. [Evidence](development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
+
+
+### Bind live encoders to their own canonical originals
+
+**Date:**2026-11-04 · **Commit:**pending patch413
+
+Do not accept externally supplied parsed objects at an encoder or live verification boundary. A call-local lifetime owns syntax and bound encoders, retains exact current raw/frame checks and erasure, and shares no authority or permission across an owner or Worker. Existing per-entry crypto and canonical structural checks remain. [Evidence](development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).

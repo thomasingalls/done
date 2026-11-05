@@ -119,10 +119,10 @@ function validatedFields(e: InboundRecord, captured?: InboundOriginalSyntax) {
     inboundHex(e.link, 32),
   ];
 }
-export function encodeInboundRecord(e: InboundRecord): Bytes {
+function encodeSelectedInboundRecord(e: InboundRecord, captured?: InboundOriginalSyntax): Bytes {
   const bytes = new TextEncoder().encode(
     JSON.stringify([
-      ...validatedFields(e),
+      ...validatedFields(e, captured),
       hex(e.request),
       hex(e.page),
       ...(e.entry === undefined ? [] : [e.entry]),
@@ -130,6 +130,9 @@ export function encodeInboundRecord(e: InboundRecord): Bytes {
   );
   if (bytes.length > INBOUND_RECORD_LIMIT) invalid();
   return bytes;
+}
+export function encodeInboundRecord(e: InboundRecord): Bytes {
+  return encodeSelectedInboundRecord(e);
 }
 export function decodeInboundRecord(bytes: Bytes): InboundRecord {
   return decodeLegacySyntax(bytes).record;
@@ -248,14 +251,17 @@ function pageLengths(requestLength: number, pageLength: number): number {
     invalid();
   return length;
 }
-function validatePageRecord(e: InboundPageRecord): InboundOriginalSyntax {
+function validatePageRecord(
+  e: InboundPageRecord,
+  captured?: InboundOriginalSyntax,
+): InboundOriginalSyntax {
   if (!(e.request instanceof Uint8Array) || !(e.page instanceof Uint8Array)) invalid();
   pageLengths(e.request.length, e.page.length);
   for (const [name, , size] of pageIds) inboundHex(e[name], size);
   const first = inboundInteger(e.firstEntry),
     count = inboundInteger(e.entryCount, 1),
     position = inboundInteger(e.firstPosition, 1),
-    originals = originalSyntax(e.request, e.page),
+    originals = matchingOriginals(e, captured),
     request = originals.request,
     page = originals.page;
   checkInboundExtent(page, request);
@@ -296,8 +302,11 @@ function validatePageRecord(e: InboundPageRecord): InboundOriginalSyntax {
   if (previous !== e.lastLink) invalid();
   return originals;
 }
-export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
-  validatePageRecord(e);
+function encodeSelectedInboundPageRecord(
+  e: InboundPageRecord,
+  captured?: InboundOriginalSyntax,
+): Bytes {
+  validatePageRecord(e, captured);
   const bytes = new Uint8Array(pageLengths(e.request.length, e.page.length)),
     view = new DataView(bytes.buffer);
   bytes.set(pageMagic);
@@ -310,6 +319,9 @@ export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
   bytes.set(e.request, INBOUND_PAGE_HEADER_BYTES);
   bytes.set(e.page, INBOUND_PAGE_HEADER_BYTES + e.request.length);
   return bytes;
+}
+export function encodeInboundPageRecord(e: InboundPageRecord): Bytes {
+  return encodeSelectedInboundPageRecord(e);
 }
 export function decodeInboundPageRecord(input: Bytes): InboundPageRecord {
   return decodePageSyntax(input).record;
@@ -492,4 +504,101 @@ export function inboundEntryMemoSlot(sequence: number, entryIndex: number): stri
   inboundInteger(sequence, 1);
   if (inboundInteger(entryIndex) >= 8) invalid();
   return 'inbound:' + sequence + ':' + entryIndex;
+}
+
+/** One call owns these canonical originals and their parsed syntax. No verification or
+ * authority capability is returned, and no external parsed object is accepted by its encoders. */
+export interface OwnedInboundOriginals {
+  readonly syntax: InboundOriginalSyntax;
+  assertCurrent(): void;
+  encodeLegacy(event: InboundRecord): Bytes;
+  encodePage(event: InboundPageRecord): Bytes;
+  dispose(): void;
+}
+export function createOwnedInboundOriginals(
+  requestInput: Bytes,
+  pageInput: Bytes,
+): OwnedInboundOriginals {
+  if (
+    !(requestInput instanceof Uint8Array) ||
+    !requestInput.length ||
+    requestInput.length > READ_REQUEST_LIMIT ||
+    !(pageInput instanceof Uint8Array) ||
+    !pageInput.length ||
+    pageInput.length > READ_PAGE_LIMIT
+  )
+    invalid();
+  const request = requestInput.slice(),
+    page = pageInput.slice();
+  const pairs: { owned: Bytes; exact: Bytes }[] = [];
+  let alive = true,
+    syntax: InboundOriginalSyntax | undefined;
+  const dispose = () => {
+    if (!alive) return;
+    alive = false;
+    request.fill(0);
+    page.fill(0);
+    for (const pair of pairs) {
+      pair.owned.fill(0);
+      pair.exact.fill(0);
+    }
+    pairs.length = 0;
+  };
+  try {
+    syntax = originalSyntax(request, page);
+    for (const owned of [
+      request,
+      page,
+      ...syntax.page.entries.flatMap((e) => [e.envelope, e.proof]),
+    ])
+      pairs.push({ owned, exact: owned.slice() });
+    Object.freeze(syntax.request);
+    for (const entry of syntax.page.entries) Object.freeze(entry);
+    Object.freeze(syntax.page.entries);
+    Object.freeze(syntax.page);
+    Object.freeze(syntax);
+    const captured = syntax;
+    const current = () => {
+      if (!alive) invalid();
+      for (const { owned, exact } of pairs)
+        if (owned.length !== exact.length || !owned.every((v, i) => v === exact[i])) {
+          dispose();
+          invalid();
+        }
+    };
+    return Object.freeze({
+      syntax: captured,
+      assertCurrent: current,
+      encodeLegacy(event: InboundRecord) {
+        let result: Bytes | undefined;
+        try {
+          current();
+          result = encodeSelectedInboundRecord(event, captured);
+          current();
+          return result;
+        } catch (cause) {
+          result?.fill(0);
+          dispose();
+          throw cause;
+        }
+      },
+      encodePage(event: InboundPageRecord) {
+        let result: Bytes | undefined;
+        try {
+          current();
+          result = encodeSelectedInboundPageRecord(event, captured);
+          current();
+          return result;
+        } catch (cause) {
+          result?.fill(0);
+          dispose();
+          throw cause;
+        }
+      },
+      dispose,
+    });
+  } catch (cause) {
+    dispose();
+    throw cause;
+  }
 }
