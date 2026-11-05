@@ -19032,3 +19032,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Private captured saved mode checks every admitted entry and full metadata, shares only within-turn wire checks, preserves aggregate bounds and failure erasure, and returns one physical receipt without per-position v2 encoding.12new cases cover signed aged/interior pages, actual parser/crypto counts, scopes, mutable callers and erasure.10fail before against the real old verifier;109focused pass after. Full302files/3016cases/one existing skip passes107.46s at120s. Six old stored-core cases pass; the anchored omission fails expired as intended. [Evidence](development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md).
 
 **Limits.** Old verifier/codec AST exact after declared additions; one test-only source anchor changes, all old assertions/deadlines exact. App readers, all four aged callers, memo/index/accounting, native binary cold/writer/G8/B, rollback/old artifacts and final gates remain. No native commit trust or qualification credit. Outcome recorded before progress advances.
+
+
+### Retain one receipt proof under every actual entry address
+
+**Date:**2026-11-04 · **Commit:**pending patch393 · **Stage:**partial Stage3.2, unwired memo extension
+
+**Exit.** One owned receipt graph is addressed by all ordered actual entry slots, isolated from single-slot keys and recipient clones. Any missing address drops the proof. Common check retains all old exact-input/context/current/revision/erasure actions. Buffer-capacity accounting deduplicates actual backing storage without a RAM claim. Twelve new cases cover72extents;10fail before,74focused pass after. Full303files/3028cases/one existing skip passes108.23s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md).
+
+**Preserved development results/limits.** Initial typecheck finds the independent journal port; keep its old contract exact until its adapter is hardened. Added sparse-array unit fails before indexed capture fixes it; the earlier108.13s intermediate pass remains. No old test or journal guard changes. Receipt consumers, durable adapter, readers/accounting, writer/G8/B, cold/rollback/old artifacts and final gates remain. Outcome recorded before wholesale replacement of this seat's active state; other seat untouched.

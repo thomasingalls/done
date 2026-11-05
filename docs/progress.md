@@ -163,98 +163,61 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: remaining approved Stage3.2 format hardening after cleared functional checkpoint
-blocks_on: floor lifecycle/old-reader controls; complete binary readers/writer and rollback evidence
-updated: 2026-11-03
+scope: approved Stage3.2 format and owned-page hardening
+blocks_on: durable receipt adapter, semantic readers/writer, floor lifecycle and rollback evidence
+updated: 2026-11-04
 ```
 
-**Scope.** [Operator hardening plan](./release-hardening-2026-11-02.md), its
-November3 unit amendment, and [approved writer-on contract](./account-inbound-page-receipts.md).
-Bounded sequential patches, no lab work or unlisted speed experiments. All other
-gates, limits, budgets, deadlines and security checks stay. No computer use,
-commit, push, publication or deployment.
+**Contract.** Follow the [operator hardening plan](./release-hardening-2026-11-02.md),
+its November3 unit amendment and [approved writer-on format](./account-inbound-page-receipts.md).
+Bounded sequential patches; no new lab or unlisted speed experiments. All other
+checks, gates, limits, budgets and deadlines stay. No computer use, commit, push,
+publication or deployment. Stop/report under the operator's functional/negative-
+control/guard rules. New-code unit failures are ordinary development and retained.
 
-**Checkpoint cleared.** [385](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
-passes all nine complete commands at original120s, full units104.723–110.332s,
-298files/2985cases/one existing skip each. Actual sidecars and internal durations,
-fseventsd CPU/RSS, swap and display logs are preserved; all52133start pins exact,
-index empty. New daemon PID88698 verified.240s fallback unused. All83commands have
-passing segments across381/382/383/385, not a final monolithic hardened-build check.
-Old failures stay immutable; no causal timing or release credit is claimed.
+**Current implementation.** Stage1 and Stage2 checkpoints are closed; Stage3.1
+is approved. Stage3.2 has the closed binary codec/logical syntax home, authenticated
+native and independent retained-reading floors, real Page/Worker activation
+controls, explicit saved modes and an unwired binary bulk verifier. The new
+[receipt memo extension](./development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md)
+binds every actual entry address, owns one proof graph and measures backing-buffer
+capacity. It is not used by a semantic reader yet. The portable journal port stays
+at its actual three-method contract. Every phase outcome/failure is in completed.md
+and its immutable evidence, not repeated here.
 
-**Floor activation checked on Page.**
-[386](./development-evidence/2026-11-02-release-hardening/386-authenticated-floor-activation/README.md)
-uses the existing full-authentication/carrier-initialization hook and fresh saved
-MAC/exact snapshot/native-task checks, including the CAS guard. Five new native
-Page controls and five unchanged joined-parser controls pass; omission fails.
-Full unit298files/2985cases/one existing skip passes105.42s at120s. All prior
-failures stay; expected runtime census/source-site/pin drift was reviewed without
-changing classifications or open obligations. Ordinary writing remains off.
+**Latest checks.** Full303files/3028cases/one existing skip pass108.23s at the
+original120s guard;240s unused. Types,74focused memo/liveness checks and reviewed
+registry/inventory pass. The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
+cleared all nine former failures at120s after the daemon restart; all83root
+commands have passing segments, not a final all-target-stack check. Earlier reds,
+including393's type and sparse-address development failures, remain preserved.
+All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Genuine Worker/Joined opening checked.**
-[387](./development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md)
-uses normal packaged UI/private service/virtual WebAuthn, no authentication or native
-acquire seam. Original/Joined real cohorts preserve marked custody and two-way
-writing through lock/navigation/cold opening. The first prefix-lock assumption
-failed; exact-slot and independent supervisor checks pass. New family registered
-as required; all old dispositions stay. Runtime/Vitest population exact to386.
+**Active bounded outcome.** Harden the authenticated preparation-journal receipt
+adapter before requiring the new memo extension. Preserve every old slot/result,
+MAC/input/context, interruption, slice and capacity guard. Avoid serializing the
+same full page into every logical result. Its current closed grammar rejects new
+entry-index/group slots: it cannot be bypassed or silently cast to the new port.
+Then integrate the one receipt home and bulk verification through every actual
+semantic reader, with each scope's own authenticated floor.
 
-**Explicit private stored mode checked.**
-[388](./development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md)
-separates saved-request semantics from optional legacy-byte equality. Six new
-actual-verifier controls pass; before failures and live-only omission retained.
-Full unit298files/2985cases/one existing skip passes106.61s at120s, all16current
-Node/native controls and types/quality/registry/inventory pass. No old guard/test
-or row format change. Binary physical mode/received-kind and all four aged
-stored callers plus31s interior-cut cold remain after integration.
+**Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
+positions/budgets; enforce actual indices in every cache and retained envelope.
+Complete all ten direct readers and indirect baseline/reading/journal/Worker/export
+consumers, all four aged stored callers and31s interior-cut cold, arbitrary dense/
+legacy full-versus-incremental property and permanent stale-turn control. Finish
+record-scoped owned live writing, G8/range4/B reservations/fairness/cancellation,
+logical/actual-owned index and dual audit bounds. Ordinary builds remain writer-off;
+Docker/Vite forwarding and the final selected writer-on build are still pending.
 
-**Shared syntax/logical home checked, not yet wired.**
-[389](./development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md)
-adds admitted count before lazy views, true request epoch and actual index/position/
-link/original-byte projections, plus physical+entry memo slots. Eight cases cover
-all72extents;93focused pass. Full299files/2993cases/one existing skip passes107.81s
-at120s. Old codec guard ASTs exact; classification/typecheck development failures
-preserved. No authority trust, binary writing, caller compatibility or performance
-credit follows. Parsed-page reuse remains pending.
+**Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
+pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine
+Worker tests do not isolate first floor write task mode. Build the same-tree
+writer-off image and prove dense/stale-tab opening; old-release rollback locks out
+marked devices and must be stated plainly. Stage4 core idle-audit policy exists,
+but the stale-turn audit control and coherent-source checkpoints remain. Then run
+every declared Stage5 replicate/report-only cell and write Stage6, then stop.
+No binary native cold, final rollback-image, RAM or performance acceptance credit
+is established by the partial unit/activation controls. Service automation stays off.
 
-**Owned syntax core checked.**
-[390](./development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md)
-shares one parsed original per owned physical codec/inspection turn. Four new
-count controls fail before, five pass after;98focused checks and full300files/
-2998cases/one existing skip pass (109.01s at120s). All old codec predicates and
-semantic guard calls remain. No authentication trust or timed performance/RAM
-claim follows. The verifier and actual readers still need integration.
-
-**Authenticated scopes checked.**
-[391](./development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md)
-carries native marker floors after committed ACK and replaces parent floors with
-retained readings' own floors. Scoped binary syntax requires that scope's floor;
-no verification trust follows. Five new controls fail before, six pass after.
-Full301files/3004cases/one existing skip passes108.31s at120s;10Page/parser cases
-and a rebuilt genuine Worker/Joined cold journey pass. Actual binary semantic
-callers and their memo floor scopes remain unwired.
-
-**Binary stored core checked, not app-integrated.**
-[392](./development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md)
-privately captures saved raw/syntax/context, verifies every selected entry and
-metadata with failure erasure, and returns one owned physical extent. Twelve new
-controls cover aged/interior signed pages and actual parser/crypto counts;10fail
-before,109focused pass after. Full302files/3016cases/one existing skip passes
-107.46s at120s. Six old stored-core checks and their anchored omission control
-remain effective. No native binary cold or commit/qualification credit follows.
-
-**Next bounded outcome.** Encoding-floor scopes and complete binary stored/read
-integration through all ten direct readers and indirect consumers, then owned
-pages/dense writer/G8/range4/B/index/audit/reservation controls. Keep physical
-witness rows distinct from logical entries. Continue floor lifecycle/rewriter/
-first-write/lost-reply/pending-writing and genuine old artifacts, plus same-tree
-writer-off image.387does not isolate first floor write task mode. Ordinary writing
-remains off; no binary or final rollback-image proof yet. No new ceremony,
-serialized authority, cross-owner assertion reuse, trust/wire/gate/limit change;
-stop/report as the operator requires.
-
-**Still required.** Stage4's stale-turn audit control after format integration,
-full coherent-source checkpoints, release-profile assets, all Stage5 replicates and
-Stage6 landing report. Do not turn functional unit timings into acceptance credit.
-
-This seat edits only this document; the other seat above is unchanged.
+This seat replaces only its own document; the other seat above is unchanged.

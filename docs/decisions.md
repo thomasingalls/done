@@ -7192,3 +7192,10 @@ Carry the native marker's floor into the native verifier context, updating only 
 **Date:**2026-11-03 · **Commit:**pending patch392 · **Scope:**approved format and owned-page hardening
 
 Use a separate bulk saved-receipt API so the old single-result API cannot silently discard dense entries. Construct saved mode and original syntax only inside the saved-byte boundary. Binary entries share one exact owned raw extent while every entry still verifies crypto, authorization context, prefix and current lifetime; full returned metadata is checked against the canonical logical view. Native witnesses, coverage, actual index/memo accounting and commit authority remain outside this detached evidence. [392evidence](development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md) closes only the unwired core.
+
+
+### Bind receipt cache reuse to every entry while owning its bytes once
+
+**Date:**2026-11-04 · **Commit:**pending patch393 · **Scope:**approved owned-page and memo hardening
+
+Use one private cache entry whose canonical address includes every ordered actual entry slot, never the first slot alone. Preserve the same exact bytes/context and current/revision checks through one common implementation. Drop the whole proof when any entry address is removed, and keep clone projections independent. Expose actual retained buffer capacity only for forthcoming budget accounting; do not call it RAM savings. Keep the existing journal's portable clear/retain/check type truthful and its validators intact until the separate receipt adapter is implemented. [393evidence](development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md) includes the type and sparse-address development failures.

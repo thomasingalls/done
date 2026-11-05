@@ -1513,7 +1513,7 @@
     },
     {
       "path": "src/crdt/verificationMemo.ts",
-      "sha256": "915c0dfac0b0b4fbcb7093a4be5292ba893d0675f7ba7ebada7a0f07eae02dc1"
+      "sha256": "37de3b6d7c987d3097baceec93cf9bc5273b56c21f3a1c49e50fd00a412a5cfb"
     },
     {
       "path": "src/crdt/verificationOwnership.ts",
