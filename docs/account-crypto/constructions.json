@@ -3066,19 +3066,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 266,
+          "line": 276,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 309,
+          "line": 319,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 493,
+          "line": 498,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
@@ -3179,25 +3179,25 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 177,
+          "line": 184,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 209,
+          "line": 216,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 266,
+          "line": 276,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 499,
+          "line": 504,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -3322,25 +3322,25 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 210,
+          "line": 217,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 266,
+          "line": 276,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 344,
+          "line": 354,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 500,
+          "line": 505,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -5342,7 +5342,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 827,
+          "line": 828,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },

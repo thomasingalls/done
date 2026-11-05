@@ -19059,3 +19059,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Optional native/journal proof reuse binds the floor, current owner, exact raw/key/retained evidence and every original entry address. Fresh verification keeps all prior checks; portable old memos take the verified fallback. Returned binary projections share one independent physical buffer. Eight new controls fail5/pass3 before;70 focused and full305files/3049cases/one existing skip pass110.00s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md).
 
 **Preserved development failure/limits.** First integration erases a selected legacy original on a warm hit; the permanent equality control fails, then passes after keeping the delivered index. All attempts remain. Existing live/stored helpers and the per-entry loop are independently AST-checked; no old test changes. Semantic readers/writer and all format/cold/rollback/final-gate obligations remain. No performance/RAM or acceptance credit. Outcome recorded before updating this seat's active state.
+
+
+### Replay every admitted page entry under one physical ledger witness
+
+**Date:** 2026-11-04 · **Commit:** pending patch 396 · **Stage:** partial Stage3.2, ledger readers
+
+**Exit.** Binary census/full replay keeps one physical witness and checks/retains each actual entry. Interior firstEntry and dense-then-legacy continuation agree, including seq=position. Shared epoch/disposition classification handles binary/future tags; memo retention uses actual indices. Binary indexing stays on the verified reference until its bounds are hardened. Eight new cases fail before;92 focused and full306files/3057cases/one existing skip pass109.76s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md).
+
+**Preserved development results/limits.** Keep the old malformed-carrier refusal without editing its test. Preserve the109.96s intermediate checkpoint and the review reorder failure (8new red/84old green), then final pass. Final focused selection corrects a nonexistent earlier filename; initial/final bookkeeping stay preserved. All other guard bodies are independently AST-compared. Remaining reading/cut/owned-parse/index/writer/lifecycle/rollback/final-gate obligations stay open; no performance or acceptance claim. Outcome recorded before updating this seat's active state.

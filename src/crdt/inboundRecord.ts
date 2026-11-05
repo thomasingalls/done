@@ -175,6 +175,9 @@ export const INBOUND_PAGE_HEADER_BYTES = 239;
 const pageMagic = new TextEncoder().encode(INBOUND_PAGE_RECORD_TAG + '\0');
 const inboundNamespace = INBOUND_PAGE_RECORD_TAG.slice(0, INBOUND_PAGE_RECORD_TAG.indexOf('page/'));
 const inboundNamespaceBytes = new TextEncoder().encode(inboundNamespace);
+/** Namespace ownership includes future versions. It grants no syntax or verification trust. */
+export const isInboundReceiptNamespace = (tag: unknown): boolean =>
+  typeof tag === 'string' && tag.startsWith(inboundNamespace);
 export interface InboundPageRecord {
   baseline: string;
   lineage: string;
@@ -350,8 +353,7 @@ export function captureInboundReceiptSyntax(bytes: Bytes): InboundReceiptSyntax 
       bytes: parsed.bytes,
     };
   }
-  if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace))
-    throw new StorageCompatibilityError();
+  if (isInboundReceiptNamespace(v[0])) throw new StorageCompatibilityError();
   return undefined;
 }
 /** Semantic consumers must supply their own authenticated marker/reading scope. The scope

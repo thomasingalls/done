@@ -7213,3 +7213,10 @@ Extend the journal's closed local roles with exact physical sequence/first origi
 **Date:** 2026-11-04 · **Commit:** pending patch 395 · **Scope:** approved exact-evidence/owned-page hardening
 
 Keep stored mode private to captured saved bytes. Check the authenticated encoding floor and current owner before selecting proof; bind complete physical bytes, actual generation-key evidence, retained originals and every actual entry address. Reuse only the existing verified crypto evidence, never authority/coverage/commit permission. A memo may erase its callback result: rebind returned binary views into the exact independent clone, and explicitly keep the selected legacy original on a cache hit. Older portable adapters without the optional extension continue full verification. [395 evidence](development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md) preserves the legacy erasure regression and repair.
+
+
+### Keep physical witnesses separate from logical replay and defer unsafe index eligibility
+
+**Date:** 2026-11-04 · **Commit:** pending patch 396 · **Scope:** approved receipt-reader hardening
+
+One receipt row is one completeness event, even when it proves eight admitted positions. Verify, cover and retain every actual entry independently through the saved-byte boundary; never carry a previous record's parsed page into a later legacy event. Resolve epoch/disposition through the tag home, preserving unrelated legacy tag parsing and strict future-version refusal. Keep binary views on the full reference until logical-work/owned-byte bounds are hardened rather than treating fewer physical rows as eligibility. [396 evidence](development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md) retains every development failure and intermediate checkpoint.

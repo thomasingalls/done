@@ -40,7 +40,11 @@ import {
 import { historyMinimumGeneration } from '../../account-protocol/admissionHistory';
 import { captureRouteAt } from './sourceCapture';
 import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
-import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
+import {
+  decodeInboundRecord,
+  isInboundRecordTag,
+  captureScopedInboundReceiptSyntax,
+} from './inboundRecord';
 import { isHistoryInstallTag } from './historyInstall';
 import { hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
@@ -152,6 +156,9 @@ export async function indexVerifiedLedger(
   counter: ContentCounter,
   subtle: SubtleCrypto,
 ): Promise<AccountLedgerIndexes | undefined> {
+  // Binary eligibility waits for logical work and actual owned-copy accounting. Never infer it
+  // from fewer physical rows. The independently verified full reference remains available.
+  if (view.census.entries.some((entry) => entry.extent)) return;
   if (
     counter.v !== 2 ||
     records.length > INDEX_MAX_ROWS ||
@@ -238,6 +245,7 @@ export async function extendAccountLedger(
   reuse: { memo: VerificationMemo; current(): void },
   equivalentContent?: () => boolean,
 ): Promise<Pick<AccountLedgerView, 'census' | 'delivery' | 'indexes'> | undefined> {
+  if (previous.census.entries.some((entry) => entry.extent)) return;
   let added = appendedRecords(before, records);
   if (!added) {
     added = contentReplacement(before, records);
@@ -255,6 +263,8 @@ export async function extendAccountLedger(
   // History installations and legacy own-inbound writes take the full reference.
   for (const row of added)
     if (!content(row)) {
+      const captured = captureScopedInboundReceiptSyntax(row.bytes, base);
+      if (captured?.receipt.kind === 'page') return;
       const tag = fields(row)[0];
       if (isInboundRecordTag(tag)) {
         if (

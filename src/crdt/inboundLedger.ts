@@ -15,7 +15,8 @@ import {
 } from '../../account-protocol/admissionHistory';
 /** Internal v9 census. Authority is supplied only after admission verification under the factor permit. */
 import { parseReceipt } from '../../account-protocol/admission';
-import { decodeInboundPage, decodeInboundRequest } from '../../account-protocol/inboundTransport';
+import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import { ZERO_REFUSAL } from '../../account-protocol/positionDecision';
 import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { PromotionRecord } from './promotionRecord';
@@ -24,8 +25,19 @@ import { captureError, type CaptureRoute } from './sourceCapture';
 import { inspectDelivery, inspectDeliverySteps, expectedPosition } from './deliveryRecord';
 import { acceptanceLink, decodePositionResponse } from '../../account-protocol/positionDecision';
 import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
-import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
-import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
+import {
+  captureScopedInboundReceiptSyntax,
+  isInboundReceiptNamespace,
+  inboundReceiptViews,
+  inboundEntryMemoSlot,
+  type InboundRecord,
+} from './inboundRecord';
+import { membershipEventEpoch } from './accountMembership';
+import {
+  verifyStoredInboundReceipt,
+  type InboundContext,
+  type InboundLifetime,
+} from './accountInbound';
 import {
   Y,
   forkDoc,
@@ -39,6 +51,7 @@ import type { VerificationMemo } from './verificationMemo';
 import { canVerifyRetainedRead, RetiredHistoryRequired } from './retainedHistory';
 import type { SpoolReplayStart } from './spoolRecord';
 import { captureInboundReceiptVersion } from './inboundReceiptVersion';
+import { StorageCompatibilityError } from './storageCompatibility';
 
 export async function heldInboundContext(
   marker: PromotionRecord,
@@ -96,6 +109,27 @@ export async function heldInboundContext(
     prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
   };
 }
+export interface InboundLedgerEntry {
+  record: OpenedRecord;
+  event: InboundRecord;
+  /** Physical page extent only. Never multiply completeness witnesses by this count. */
+  extent?: { firstEntry: number; entryCount: number };
+}
+export function inboundMemoSlots(entry: InboundLedgerEntry): string[] {
+  const first = entry.extent?.firstEntry ?? entry.event.entry ?? 0,
+    count = entry.extent?.entryCount ?? 1;
+  if (
+    !Number.isSafeInteger(first) ||
+    !Number.isSafeInteger(count) ||
+    first < 0 ||
+    count < 1 ||
+    first + count > READ_COUNT_LIMIT
+  )
+    captureError('Invalid inbound memo extent');
+  return Array.from({ length: count }, (_, offset) =>
+    inboundEntryMemoSlot(entry.record.seq, first + offset),
+  );
+}
 function* inspectInboundSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
@@ -104,24 +138,56 @@ function* inspectInboundSteps(
 ) {
   countLedgerWork('inboundCensuses');
   const prior: OpenedRecord[] = [],
-    entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
+    entries: InboundLedgerEntry[] = [],
     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
   for (const record of records) {
     yield;
     let tag;
-    if (record.kind === 'heads' || record.kind === 'outbound') {
+    if ((record.kind === 'heads' || record.kind === 'outbound') && record.bytes[0] === 91) {
       try {
         tag = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(record.bytes))[0];
       } catch {
         captureError('Unreadable inbound carrier');
       }
     }
+    if (
+      (record.kind === 'heads' || record.kind === 'outbound') &&
+      (record.bytes[0] !== 91 || isInboundReceiptNamespace(tag))
+    ) {
+      let captured;
+      try {
+        captured = captureScopedInboundReceiptSyntax(record.bytes, context);
+      } catch (cause) {
+        // Keep the established unreadable-carrier surface. Known/unknown future versions still
+        // propagate their compatibility refusal, and legacy JSON schema errors stay unchanged.
+        if (cause instanceof StorageCompatibilityError || record.bytes[0] === 91) throw cause;
+        captureError('Unreadable inbound carrier');
+      }
+      if (captured) {
+        if (record.kind !== 'heads') captureError('Inbound record misplaced');
+        const first = inboundReceiptViews(captured).entries().next().value;
+        if (!first) captureError('Empty inbound receipt');
+        entries.push({
+          record,
+          event: first.event,
+          ...(captured.receipt.kind === 'page'
+            ? {
+                extent: {
+                  firstEntry: captured.receipt.record.firstEntry,
+                  entryCount: captured.receipt.record.entryCount,
+                },
+              }
+            : {}),
+        });
+        // Only the closed event metadata/original frames survive census. Parsed wire-entry buffers
+        // are not permissions and do not cross the native view or Window/Worker boundary.
+        eraseVerified(captured.originals.page.entries);
+        continue;
+      }
+    }
     if (isHistoryInstallTag(tag)) {
       if (record.kind !== 'heads') captureError('History installation misplaced');
       installations.push({ record, event: decodeHistoryInstall(record.bytes) });
-    } else if (isInboundRecordTag(tag)) {
-      if (record.kind !== 'heads') captureError('Inbound record misplaced');
-      entries.push({ record, event: decodeInboundRecord(record.bytes) });
     } else prior.push(record);
   }
   const delivery = yield* inspectDeliverySteps(prior, route, context.authority, start);
@@ -135,10 +201,7 @@ function* inspectInboundSteps(
     let epoch = 1;
     for (const row of ledger) {
       yield;
-      const v = JSON.parse(new TextDecoder().decode(row.bytes));
-      const at = isInboundRecordTag(v[0])
-        ? decodeInboundRequest(decodeInboundRecord(row.bytes).request).epoch
-        : v[5];
+      const at = membershipEventEpoch(row.bytes);
       if (at < epoch) captureError('Account ledger authority regressed');
       epoch = at;
     }
@@ -618,47 +681,48 @@ export async function verifyInboundLedger(
             }),
           }
         : publisher;
-      const context = contextAt(historical, state, request.after),
-        check = () => verifyStoredInbound(context, record.bytes, lifetime),
-        result = reuse
-          ? await reuse.memo.check(
-              'inbound:' + record.seq,
-              JSON.stringify({ ...context, generationKey: undefined, retained: undefined }),
-              [
-                record.bytes,
-                ...(context.retained
-                  ? [
-                      utf8(context.retained.previous),
-                      context.retained.envelope,
-                      context.retained.proof,
-                    ]
-                  : []),
-              ],
-              check,
-              lifetime.assertCurrent,
-            )
-          : await check();
-      if (result.kind === 'conflict') state.conflict = true;
-      else if (result.kind === 'received') {
-        try {
-          if (reuse?.checkCoverage) await reuse.checkCoverage(result.updates);
-          else if (reuse) reuse.coverage.check(records, result.updates);
-          else localCoverage!.check(result.updates);
-        } finally {
-          for (const b of result.updates) b.fill(0);
+      const context = contextAt(
+          historical,
+          state,
+          entry.extent ? event.position - 1 : request.after,
+        ),
+        receipt = await verifyStoredInboundReceipt(
+          context,
+          record.bytes,
+          lifetime,
+          reuse ? { memo: reuse.memo, sequence: record.seq } : undefined,
+        );
+      let delivered = false;
+      try {
+        for (const selected of receipt.entries) {
+          lifetime.assertCurrent();
+          const result = selected.result;
+          if (result.kind === 'conflict') state.conflict = true;
+          else if (result.kind === 'received') {
+            if (reuse?.checkCoverage) await reuse.checkCoverage(result.updates);
+            else if (reuse) reuse.coverage.check(records, result.updates);
+            else localCoverage!.check(result.updates);
+            lifetime.assertCurrent();
+            state.prefix = {
+              position: result.position,
+              link: result.link,
+              observedThrough: result.through,
+            };
+            state.retained.set(result.position, {
+              previous: selected.event.previous,
+              envelope: selected.original.envelope,
+              proof: selected.original.proof,
+            });
+          } else captureError('Unexpected stored inbound observation');
         }
-        state.prefix = {
-          position: result.position,
-          link: result.link,
-          observedThrough: result.through,
-        };
-        const entry = decodeInboundPage(event.page).entries[event.entry ?? 0]!;
-        state.retained.set(result.position, {
-          previous: event.previous,
-          envelope: entry.envelope,
-          proof: entry.proof,
-        });
-      } else captureError('Unexpected stored inbound observation');
+        delivered = true;
+      } finally {
+        for (const selected of receipt.entries) {
+          if (selected.result.kind === 'received')
+            for (const update of selected.result.updates) update.fill(0);
+          if (!delivered || selected.result.kind !== 'received') eraseVerified(selected.original);
+        }
+      }
     }
     lifetime.assertCurrent();
     return own;

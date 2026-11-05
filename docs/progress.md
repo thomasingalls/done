@@ -187,25 +187,28 @@ now supports compact receipt proofs with the same old grammar/MAC/input/slice/
 capacity guards. It is not wired into a semantic reader. The saved verifier now has optional
 [native/journal proof reuse](./development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md)
 under exact raw/key/context and entry-address evidence, with independent returned
-ownership. No actual app reader supplies it yet. Every phase outcome/failure is in completed.md
+ownership. The [full ledger reader](./development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md)
+now uses it. Census/witness stays physical; replay/coverage/retained entries stay
+logical. Membership/successor/retention classification uses the tag home. Binary
+views use the full reference until their index accounting is hardened. Every phase outcome/failure is in completed.md
 and its immutable evidence, not repeated here.
 
-**Latest checks.** Full305files/3049cases/one existing skip pass110.00s at the
-original120s guard;240s unused. Types,70 focused receipt/memo controls and reviewed
-registry/inventory pass. The new legacy warm-hit erasure control failed during
-implementation, then passed after keeping its delivered original index. All runs
-remain; no old test changes in395.
+**Latest checks.** Final full306files/3057cases/one existing skip pass109.76s at
+120s;240s unused. Types,92 focused reader/retention controls and reviewed registry/
+inventory pass. The109.96s intermediate pass and both classification development
+failures remain. No old test changes in396; all unrelated guard bodies are compared.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Integrate the one receipt home and bulk saved verifier
-through full/incremental ledger readers, preserving exact native-row comparison
-and each scope's authenticated floor before memo hits. One physical row remains one
-witness event; every admitted logical entry must be checked, covered and retained
-at its actual position/index. Then cover every remaining semantic reader and cut.
+**Active bounded outcome.** Integrate handoff replay, retained membership readings
+and replacement sources with their own authenticated encoding floor, logical event
+limits and every stored entry. Preserve covered snapshot/accepted-cut closure and
+cuts inside a page; no raw cursor/header may skip work. Exercise aged stored callers
+and unchanged live expiry. Then finish arbitrary mixed histories and the permanent
+stale-turn control across the remaining reader paths.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
@@ -213,7 +216,8 @@ Complete all ten direct readers and indirect baseline/reading/journal/Worker/exp
 consumers, all four aged stored callers and31s interior-cut cold, arbitrary dense/
 legacy full-versus-incremental property and permanent stale-turn control. Finish
 record-scoped owned live writing, G8/range4/B reservations/fairness/cancellation,
-logical/actual-owned index and dual audit bounds. Ordinary builds remain writer-off;
+logical/actual-owned index and dual audit bounds. Census and saved verification
+still capture separately: final per-load owned-page integration remains. Ordinary builds remain writer-off;
 Docker/Vite forwarding and the final selected writer-on build are still pending.
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/

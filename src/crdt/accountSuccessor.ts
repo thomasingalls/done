@@ -13,15 +13,14 @@ import {
 } from '../../account-protocol/admissionHistory';
 import { closed } from '../../account-protocol/preparation';
 import { unhex } from '../../account-protocol/recovery';
-import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import type { PromotionRecord } from './promotionRecord';
 import { captureRoute, captureError, type CaptureRoute } from './sourceCapture';
 import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './contentRecord';
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
-import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
 import {
   installedMembershipHistory,
+  membershipEventEpoch,
   verifyInstalledMembership,
   type InstalledMembership,
 } from './accountMembership';
@@ -176,10 +175,7 @@ export async function verifyInstalledSuccessor(
   let witness = emptySpoolWitness();
   let certifiedWitness = witness;
   for (const [index, bytes] of spool.events.entries()) {
-    const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
-    const epoch = isInboundRecordTag(v[0])
-      ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
-      : v[5];
+    const epoch = membershipEventEpoch(bytes);
     if (
       epoch !==
       (index < cut.events

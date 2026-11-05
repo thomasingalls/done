@@ -14,10 +14,9 @@ import {
   type AdmissionHistory,
 } from '../../account-protocol/admissionHistory';
 import type { SuccessorBase } from '../../account-protocol/successor';
-import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './contentRecord';
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
-import { decodeInboundRecord, isInboundRecordTag } from './inboundRecord';
+import { inspectInboundReceipt, isInboundReceiptNamespace } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
 import type { Bytes } from './custodyCrypto';
 
@@ -75,12 +74,20 @@ export async function installedMembershipHistory(
     historyAuthority(history, { ...history.current, tip: cut.epoch, head: cut.head });
   return history;
 }
+/** Syntax only. The native/retained reader establishes its own authenticated floor before use. */
 export const membershipEventEpoch = (bytes: Bytes): number => {
-  const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
-  return isInboundRecordTag(v[0])
-    ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
-    : v[5];
+  const v =
+    bytes[0] === 91
+      ? JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
+      : undefined;
+  if (bytes[0] !== 91 || isInboundReceiptNamespace(v[0])) {
+    const inbound = inspectInboundReceipt(bytes);
+    if (!inbound) throw Error('Invalid inbound ledger event');
+    return inbound.epoch;
+  }
+  return v[5];
 };
+
 /** Prove local issuance boundaries and every service-accepted prefix from retained ciphertext. */
 export async function verifyInstalledMembership(
   spool: SpoolState,

@@ -1,4 +1,4 @@
-import { isInboundRecordTag } from './inboundRecord';
+import { inspectInboundReceipt, isInboundReceiptNamespace } from './inboundRecord';
 /** Private dry run. No database handle, allocator, sealing callback, write, or deletion operation. */
 import { type DiskRow } from './contentCompaction';
 import {
@@ -487,9 +487,14 @@ export async function planLocalRetention(
         checking.check(content, [opened.bytes]);
         disposition = 'content-covered';
       } else {
-        const tag: unknown = JSON.parse(
-          new TextDecoder('utf-8', { fatal: true }).decode(opened.bytes),
-        )[0];
+        const tag: unknown =
+          opened.bytes[0] === 91
+            ? JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(opened.bytes))[0]
+            : undefined;
+        const inbound =
+          opened.bytes[0] !== 91 || isInboundReceiptNamespace(tag)
+            ? inspectInboundReceipt(opened.bytes)
+            : undefined;
         if (tag === 'done/source-capture/v1') {
           // All originals/allocations were independently verified above. Preserve whole partial
           // capsules, including their inherited consumed bitmap, rather than recreating identities.
@@ -498,7 +503,7 @@ export async function planLocalRetention(
             : 'source-consumed';
         } else if (tag === 'done/account-spool/v1') disposition = 'spool-settled';
         else if (tag === 'done/account-delivery/v1') disposition = 'delivery-settled';
-        else if (isInboundRecordTag(tag)) disposition = 'receive-frontier';
+        else if (inbound) disposition = 'receive-frontier';
         else if (isHistoryInstallTag(tag)) disposition = 'history-frontier';
         else return corrupt('Unclassified retention row.');
       }
