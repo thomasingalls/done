@@ -202,12 +202,19 @@ original, after fresh authenticated state and through the existing verifier and
 commit path. Extra peer requests use spare existing wire slots. Byte reservations,
 request-start age, erasure, own checks, fairness and send yielding remain.
 
-**Next bounded outcome.** Run the full Stage 2 command checkpoint with the pinned
-runtime/browser and existing child deadlines. Preserve every failure and classify
-before repair. Actual app refusal, closure, repair-required, missing writing,
-archive difference, cold failure or an unexpected negative-control pass stops.
-No Stage 5 timing credit yet. After a green checkpoint, write the Stage 3.1 format
-contract for the operator; no new rows are approved. Stage 4 may proceed while
-that decision waits, then stop for the operator.
+**Checkpoint attempt retained.** [362](./development-evidence/2026-11-02-release-hardening/362-reviewed-source-census/README.md)
+records the first root check stopping before units/native stages at stale source
+bookkeeping. Six R/E hashes and one diagnostic line changed; all classifications,
+construction statuses and obligations remain. Explicit census regeneration,
+authority, all 12 registry controls and inventory checks pass. No code/test change.
+
+**Next bounded outcome.** Rerun the original full Stage 2 check after freezing this
+record, with the pinned runtime/browser and unchanged child deadlines. Preserve
+every failure and classify before repair. Actual app refusal, closure,
+repair-required, missing writing, archive difference, cold failure or an
+unexpected negative-control pass stops. Stage 2 is not yet closed.
+After a green checkpoint, hand over the Stage 3.1 format contract. Stage 4 may
+proceed while that decision waits, then stop for the operator. No Stage 5 timing
+credit, new stored format, release preparation, publication or deployment.
 
 This seat edits only this document;the other seat's document above is unchanged.

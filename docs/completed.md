@@ -18734,3 +18734,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Quiet-peer speculation uses spare existing wire slots and exact original bytes; consume requires fresh authenticated state and the unchanged native verifier/commit path. Own checks, fairness, send yielding, 750 ms age and shared byte reservations remain. All 169 focused cases, types, scoped quality and inventory checks pass; the own-stream fault fails its intended assertion and restores source. [Evidence](development-evidence/2026-11-02-release-hardening/361-quiet-owner-integration/README.md).
 
 **Limit.** The required Stage 2 full-suite checkpoint follows; no app/performance acceptance is inferred from these focused checks. Range writing remains off, and Stage 3's wider B reservations remain separate. No server/wire, format, sender or deployment change. Record before advancing progress.
+
+
+### Stage 2 source census is refreshed without reclassifying obligations
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 362 · **Stage:** operator hardening Stage 2 checkpoint
+
+**Exit.** The first root check stops at stale source bookkeeping before units/native stages. Review finds six R/E source identities and one relocated diagnostic line; all 199 labels, construction properties/statuses and obligations remain. The generator, authority check, all 12 registry controls, formatter and inventory checks pass. Program/test bytes remain identical to the failed-check declaration. [Evidence](development-evidence/2026-11-02-release-hardening/362-reviewed-source-census/README.md).
+
+**Next.** Rerun the original full check after this record. The Stage 2 checkpoint is not yet green; no runtime or security-policy change. Record before advancing progress.

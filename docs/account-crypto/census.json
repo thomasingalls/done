@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "c3a484d6e7493bc98505ea7eebfef78d649f837a741b5677c6ea637087691af1"
+      "sha256": "1e3cc2cfcc7e1d544e3e155646a29c19645d86c75301d3d8bfaa5c7f59aa0016"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1369,19 +1369,27 @@
     },
     {
       "path": "src/crdt/receivePageTransport.ts",
-      "sha256": "4f9d94bf2b9a16a48c00c067c893f677f1f7e36cd837de259e52539b633ea537"
+      "sha256": "381659b70f376d44fba18da534236ae07119263100cb637b544512ed89225c58"
     },
     {
       "path": "src/crdt/receivePrefetch.ts",
-      "sha256": "bb89aa9ae1ad800d52ad896279ad9a95d8fb02269702f18865dd0c461e4b0499"
+      "sha256": "2653f9e5527134c9da0e117834f7cdf23f1d310de08cab428c2b01af486e96a8"
+    },
+    {
+      "path": "src/crdt/receiveQuietPages.ts",
+      "sha256": "f0074f2db16a3abd759fd7a7fab4804f64927b0e33ca21aeff10d2f7c32f839b"
     },
     {
       "path": "src/crdt/receiveRangeTail.ts",
       "sha256": "d922bf2934c499eaa3112060058363ad66f324a4ca2c37e9df5ec8c1cf1fbc41"
     },
     {
+      "path": "src/crdt/receiveRepairPolling.ts",
+      "sha256": "c8b778aa0955b1dd223f72fdc0588833768ccb6c8b966337c781c72f4b8b1bf9"
+    },
+    {
       "path": "src/crdt/receiveSelection.ts",
-      "sha256": "9b75c87f370ca464613151f1fc742ba975a3560ee0eb432e4e5c0461fdc8e32c"
+      "sha256": "e1c815d4be3bacb65a0ced18d5cc04706be1269211142cf497d2a2b4022d57ba"
     },
     {
       "path": "src/crdt/recoveryOwner.worker.ts",
@@ -2199,7 +2207,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 757
+          "line": 787
         }
       ]
     },
