@@ -19383,3 +19383,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The real marked-reading rotation counterexample now passes through the intended interruption and successful retry. All six native lifecycle cases,55focused controls,5Joined guards and the330-file full unit checkpoint pass; existing verification and native commit checks remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/429-rotation-authenticated-receipt-floor/README.md).
 
 **Limits.** Functional hardening evidence only, not performance acceptance, RAM proof or final rollback-image validation. B fairness/past-index, same-tree writer-on/off images, coherent broader checkpoints and Stage5/6 remain. No format/trust/server/wire/budget/limit/gate/deadline/sender-default change, publication, deployment or computer use. Outcome precedes advancing this seat.
+
+
+### Validate same-tree ARM64 writer and compatible reader-only rollback images
+
+**Date:**2026-11-04 · **Commit:**pending patch430 · **Stage:**partial Stage3.2
+
+**Exit.** Both local same-tree ARM64 images pass actual final-runtime suites and two-container smoke. Compatible writer0 opens dense data from a preloaded tab, writes fresh legacy receipts and retains exact writing/Undo/offline disk cold and floor1. [Evidence](development-evidence/2026-11-02-release-hardening/430-same-tree-arm64-reader-rollback/README.md).
+
+**Limits.** Unsigned hardening snapshots with explicit base-dirty/source fingerprints, not published or signed release artifacts. Client/storage rollback uses host Node24 APIs; actual containers have separate suites/smoke. No old-server rollback, physical phone/real-account timing, SW-adoption, RAM, vulnerability-scan or Stage5 credit. Catalogue registration is the sole later build-input delta; publication requires its separate signed-source artifact procedure. B fairness/past-index, coherent Stage3/4 checkpoints and Stage5/6 remain. No runtime/old-test, format/trust/server-wire/budget/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.

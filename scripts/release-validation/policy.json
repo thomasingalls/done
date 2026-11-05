@@ -299,6 +299,9 @@
     ],
     "test/inbound-lifecycle": [
       "playwright.inbound-lifecycle.config.ts"
+    ],
+    "test/inbound-rollback": [
+      "playwright.inbound-rollback.config.ts"
     ]
   },
   "vectorGenerators": {

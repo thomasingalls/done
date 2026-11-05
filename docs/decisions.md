@@ -7454,3 +7454,10 @@ Keep separate ordinary and marked-retained-reading observations. The latter must
 **Date:**2026-11-04 · **Commit:**pending patch429
 
 Rotation is another native stored-row reader and must receive the independently authenticated optional marker floor just like the ordinary baseline readers. Use the existing closed projector inside the already authenticated exclusive owner; preserve absence for legacy data and refusal for unsupported versions. Keep full per-entry verification and native commit guards unchanged. The before native failure, exact two-line inverse proof, rebuilt positive controls and full-unit result jointly establish this bounded correction. [Evidence](development-evidence/2026-11-02-release-hardening/429-rotation-authenticated-receipt-floor/README.md).
+
+
+### Keep the compatible writer-off artifact as the format rollback boundary
+
+**Date:**2026-11-04 · **Commit:**pending patch430
+
+RANGE_RECEIVE selects framing of newly fetched live pages. The compatible reader keeps the binary reader and authenticated monotonic floor. Prove actual stale-tab/mixed-row/cold behavior and minimal container runtime separately, bind them to exact source/image bytes and retain local archives. Flag rollback/history reduction does not remove the floor or make pre-release clients compatible. Once the floor commits, rollback requires this compatible reader; pre-release builds lock out dense-writing devices. These are hardening artifacts only. [Evidence](development-evidence/2026-11-02-release-hardening/430-same-tree-arm64-reader-rollback/README.md).
