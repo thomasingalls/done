@@ -19235,3 +19235,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** The new isolated preparation API shares one self-contained physical receipt across each verified prefix and retains live expiry, all entry checks and erasure. Nine controls and260focused/18legacy cases pass; old default/stored operations remain AST-exact. [Evidence](development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
 
 **Limits.** Native writing remains unwired. No physical browser cold, activation, image, latency or RAM credit. Native framing/witness/atomic commit, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Frame flagged dense receives as atomic physical page writes
+
+**Date:**2026-11-04 · **Commit:**pending patch415 · **Stage:**partial Stage3.2
+
+**Exit.** The flagged writer frames one physical receipt per verified page prefix and keeps all native commit fences. Five controls and final326file/3184case/one-skip checkpoint pass131.96s; unchanged legacy native/cold and all8old mutation controls pass. [Evidence](development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
+
+**Limits.** Two new native fixture attempts failed preconditions: the storage-only conformance owner deliberately cannot request peer ranges. The first build-define diagnosis was wrong; the composed/own-stream guard is the cause and stays unchanged. Both attempts and the withdrawn new fixture are retained, with zero binary native credit. A read-only AST review metadata difference (undefined source range on an aliased import) was normalized as location metadata only. Actual composed peer/Worker binary transaction, physical31s cold, floor lifecycle, dual audit, G8/B, old artifacts/rollback and Stage5/6 remain. No timing/RAM/activation/image credit, format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.

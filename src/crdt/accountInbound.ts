@@ -1,4 +1,4 @@
-import { decodePositionResponse } from '../../account-protocol/positionDecision';
+import { decodePositionResponse as decodeSelectedPositionResponse } from '../../account-protocol/positionDecision';
 import {
   historyAuthority,
   historyGeneration,
@@ -668,7 +668,7 @@ async function verifyRange(
     }
     const initialPrevious = context.prefix.link;
     const extent = (count: number) => {
-      const proof = decodePositionResponse(p.entries[start + count - 1]!.proof);
+      const proof = decodeSelectedPositionResponse(p.entries[start + count - 1]!.proof);
       if (proof.kind !== 'accepted') return fail('record');
       return {
         baseline: context.baseline.id,
@@ -720,7 +720,7 @@ async function verifyRange(
                   position: r.after + index + 1,
                   previous: context.prefix.link,
                   link: (() => {
-                    const proof = decodePositionResponse(p.entries[index]!.proof);
+                    const proof = decodeSelectedPositionResponse(p.entries[index]!.proof);
                     if (proof.kind !== 'accepted') return fail('record');
                     return proof.head.link;
                   })(),

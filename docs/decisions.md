@@ -7349,3 +7349,10 @@ Do not accept externally supplied parsed objects at an encoder or live verificat
 **Date:**2026-11-04 · **Commit:**pending patch414
 
 Prepare exact binary extents without granting native progress. Count the one receipt physically, every received position logically, and retain all cryptographic and lifetime guards. Only size scheduling may return an already verified prefix; cryptographic refusal returns none. The native owner must atomically commit all covered updates with exactly one receipt under its existing fresh floor/witness/authority fences. [Evidence](development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
+
+
+### Keep physical page framing separate from logical receive credit
+
+**Date:**2026-11-04 · **Commit:**pending patch415
+
+The native group writes one receipt and all covered updates in the same existing atomic append, with its witness counting those actual heads writes. Per-position credit remains logical. Keep the own-stream conformance guard; obtain actual dense native proof through the composed peer/Worker path, never by weakening that guard. A local import alias keeps existing fault controls byte-exact. [Evidence](development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).

@@ -53,6 +53,7 @@ import {
   packReceivePages,
   unpackReceivePages,
   receiveGroupFits,
+  preparedInboundPageWrites,
 } from './receiveGroup';
 import {
   createReceiveSelection,
@@ -62,7 +63,7 @@ import {
   unresolvedSelfSubmission,
 } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
-import type { OpenedRecord } from './contentRecord';
+import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS, type OpenedRecord } from './contentRecord';
 import { ledgerWorkStart, measureLedgerWork, countLedgerWork } from './accountLedgerMetrics';
 import { accountLedgerMode } from './accountLedgerMode';
 import { accountBatchPolicy } from './accountBatchPolicy';
@@ -199,7 +200,7 @@ import {
 import {
   createInboundReceiptTurn,
   verifyInboundPage,
-  prepareInboundRange,
+  prepareInboundPage,
   InboundError,
   type InboundContext,
 } from './accountInbound';
@@ -2131,19 +2132,20 @@ async function openAccountReceiveOwner(
       try {
         pageLoop: for (let i = 0; i < pages.length; i++) {
           if (results.length === outstandingAllowance) break;
+          const densePage = rangeWrites && decodeInboundRequest(requests[i]!).limit > 1;
           let pageResults: readonly Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
           try {
             await task.wait(async () => {
-              pageResults =
-                decodeInboundRequest(requests[i]!).limit > 1
-                  ? await prepareInboundRange(
-                      context,
-                      requests[i]!,
-                      pages[i]!,
-                      lifetime(task),
-                      outstandingAllowance - results.length,
-                    )
-                  : [await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task))];
+              pageResults = densePage
+                ? await prepareInboundPage(
+                    context,
+                    requests[i]!,
+                    pages[i]!,
+                    lifetime(task),
+                    outstandingAllowance - results.length,
+                    { bytes: MAX_BATCH_BYTES - bytes, records: MAX_BATCH_RECORDS - writes.length },
+                  )
+                : [await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task))];
               // Retain ownership before the final lifetime check can reject.
               prepared.push(...pageResults);
             });
@@ -2155,6 +2157,29 @@ async function openAccountReceiveOwner(
           // verified empty page. Settle preparation normally so the owner can narrow and retry.
           if (!pageResults.length) break;
           verifiedRequests.push(requests[i]!);
+          if (densePage && pageResults[0]!.kind === 'received') {
+            const framed = preparedInboundPageWrites(pageResults);
+            if (!receiveGroupFits(bytes + framed.bytes, writes.length + framed.writes.length))
+              throw new AdmissionError(
+                'receive-refused',
+                'Prepared page exceeds remaining native bounds',
+              );
+            results.push(...pageResults);
+            kinds.push('received');
+            counts.push(pageResults.length);
+            bytes += framed.bytes;
+            writes.push(...framed.writes);
+            updates.push(...framed.updates);
+            const last = pageResults.at(-1)!;
+            if (last.kind !== 'received')
+              throw new AdmissionError('receive-refused', 'Invalid prepared page');
+            context.prefix = {
+              position: last.position,
+              link: last.link,
+              observedThrough: last.through,
+            };
+            continue;
+          }
           for (const [entry, result] of pageResults.entries()) {
             if (result.kind === 'empty') {
               kinds.push(result.kind);
@@ -2211,11 +2236,10 @@ async function openAccountReceiveOwner(
           );
         const before = await owner.carrier.spoolWitness(task);
         let after = before;
-        for (const result of results)
-          if ('record' in result)
-            after = await task.wait(() =>
-              extendSpoolWitness(after, result.record, subtleFor(task)),
-            );
+        // The completeness witness counts the actual physical heads rows, not logical positions.
+        for (const write of writes)
+          if (write.kind === 'heads')
+            after = await task.wait(() => extendSpoolWitness(after, write.bytes, subtleFor(task)));
         await owner.carrier.appendInbound(task, writes, {
           before,
           after,

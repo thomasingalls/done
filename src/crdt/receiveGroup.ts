@@ -1,4 +1,6 @@
 import type { Bytes } from './custodyCrypto';
+import type { InboundResult } from './accountInbound';
+import type { ContentInput } from './contentRecord';
 import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import { AdmissionError, MAX_PENDING_BYTES } from './admissionQueue';
 
@@ -39,4 +41,41 @@ export function unpackReceivePages(bytes: Bytes): Bytes[] {
 }
 export function receiveGroupFits(bytes: number, records: number): boolean {
   return bytes <= MAX_BATCH_BYTES && records <= MAX_BATCH_RECORDS;
+}
+
+/** Physical framing of an already verified page, never an authentication or commit permission.
+ * Its producer owns the one receipt buffer shared by the logical received results. */
+export function preparedInboundPageWrites(results: readonly InboundResult[]) {
+  if (!results.length || results.length > RECEIVE_GROUP_LIMIT) return invalid();
+  const first = results[0]!;
+  if (
+    first.kind !== 'received' ||
+    !(first.record instanceof Uint8Array) ||
+    !first.record.length ||
+    !Number.isSafeInteger(first.position) ||
+    first.position < 1
+  )
+    return invalid();
+  const updates: Bytes[] = [];
+  let bytes = first.record.length;
+  for (const [index, result] of results.entries()) {
+    if (
+      result.kind !== 'received' ||
+      result.record !== first.record ||
+      !Number.isSafeInteger(result.position) ||
+      result.position !== first.position + index
+    )
+      return invalid();
+    for (const update of result.updates) {
+      if (!(update instanceof Uint8Array)) return invalid();
+      bytes += update.length;
+      updates.push(update);
+    }
+  }
+  if (!receiveGroupFits(bytes, updates.length + 1)) return invalid();
+  const writes: ContentInput[] = [
+    ...updates.map((bytes) => ({ kind: 'update' as const, bytes })),
+    { kind: 'heads', bytes: first.record },
+  ];
+  return { writes, updates, bytes };
 }

@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Prepare one bounded dense receipt per verified prefix](./development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
-Seven initial controls fail solely because the API is absent, with no matched app-defect credit. Nine final controls pass: four positions/one physical buffer/one parse/ten signature checks, interior cuts, two self-contained extents deliberately repeating original bytes, exact byte/row cuts, expired stored replay/live expiry, floor/raised-budget refusal, close after crypto, crypto refusal after a valid entry and final expiry. Development duplicate/missing imports and the reviewer’s AwaitExpression lookup error are retained and repaired without guard changes. Types,260focused cases across29files and18unchanged legacy pass. Independent normalized AST review preserves every old default/stored operation, entry loop, verifier invocation and cleanup. Quality, format,17registry checks, inventory and10controls pass. One runtime hash changes; no source-site/domain/construction/obligation moves. Latest full checkpoint remains412:323files/3161cases/one skip124.19s at240s.
+**Latest checks.** [Frame flagged dense receives as atomic physical page writes](./development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
+Five new framing controls: before three fail/two pass due absent API, after all pass; no before security credit from absent-API negative cases. Types,274focused precursor cases/32files and18legacy pass. Final-source22controls include all8unchanged accountInbound mutation controls. The first full checkpoint has1failure/3183passes/one skip125.68s: a new preparation import collided with the old prefix-proof injector’s identical import. Rename only the new local binding; old test/fault/assertions are untouched and pass. Final full326files/3184cases/one skip131.96s (command132.793s) at240s passes. Final-source selected existing native legacy transaction/old-reader cold case passes (Node run6.915s), no skips; this is legacy-only, not binary native proof. Quality, format,17registry, inventory and10controls pass. Three hashes/one source-site move reviewed, no construction/obligation/old-test changes.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Wire dense preparation into flagged grouped native receipt admission with explicit one-row framing and physical witness accounting, preserving every commit fence. Then dual audit, G8/B and floor/lifecycle/old artifacts/cold/rollback. Continue after the freeze.
+**Active bounded outcome.** Harden the approved dual physical/logical audit ceiling and idle-start integration without dropping any full comparison or interruption guard. Then G8/B and composed peer/Worker floor/lifecycle/old artifacts/cold/rollback proofs. Continue automatically after freezing.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
