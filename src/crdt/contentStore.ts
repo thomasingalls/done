@@ -1619,6 +1619,7 @@ export const createContentOwner = (
         warm?.pendingRows() ?? 0,
         baselineReuse?.pendingRows(openedView?.opened.length) ?? 0,
       ),
+    pendingWarmAuditPositions: () => baselineReuse?.pendingPositions() ?? 0,
     warmAuditDelay: () =>
       Math.min(warm?.delay() ?? WARM_AUDIT_MS, baselineReuse?.delay() ?? WARM_AUDIT_MS),
     /** One background slice. Caller serializes slices with ordinary storage jobs. */

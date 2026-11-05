@@ -773,7 +773,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "9c78abf69ef1596491163858612ee7e2937cb239ea62e40e08925f3ccedc2ae3"
+      "sha256": "1673d61b39f7441bce886b78fdf23de84938569ce137d63f60bcb3048581625d"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -1001,7 +1001,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "9b09b92afda6d52602c088a30e74f604cda16429e31541620def5a66102bf4f1"
+      "sha256": "70fbc44e2b79471bd665cce324bd818a555d8103c03560c8fdbf5c8a8241dd28"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1101,7 +1101,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "c4d0c399ba4026d735f7f510c0f12699015c8f6a8524fdb1c8fdadbf1748fb01"
+      "sha256": "5ba60d08c7817e1f9bed7df92e71ecdc91446e3ada5e377b19bc1b967cbb5747"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
@@ -1217,7 +1217,7 @@
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
-      "sha256": "d49f574c5f1dc843d6683602b810cbc4c4278181268479ae8111764b3eaa6098"
+      "sha256": "1a54dffcb5108fc332f2ea4ce2dbcd0ca7e2662f11f0f381ca87168f5f674a6b"
     },
     {
       "path": "src/crdt/localBaselineShadow.ts",
@@ -1525,11 +1525,11 @@
     },
     {
       "path": "src/crdt/warmAuditScheduler.ts",
-      "sha256": "3a6991eabf27a5bd2b9ceea00ef4d53447efc079102f6847e252771cdb51ace8"
+      "sha256": "d9d140586f457af5387bb6a47e5902f5cbf88a4b3a4d66dd317d6ba0bccea3fb"
     },
     {
       "path": "src/crdt/warmAuditStart.ts",
-      "sha256": "c4b5a3f0445064cd077a6470a3f8cd0274f14fe7e2db979a68c94d73e801f31e"
+      "sha256": "f7ac5c4fe6776a40365de17c7a684f8d6a61a0c1f8518b23fe67d0596f205938"
     },
     {
       "path": "src/crdt/warmContent.ts",

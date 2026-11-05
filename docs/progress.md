@@ -191,26 +191,26 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Frame flagged dense receives as atomic physical page writes](./development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
-Five new framing controls: before three fail/two pass due absent API, after all pass; no before security credit from absent-API negative cases. Types,274focused precursor cases/32files and18legacy pass. Final-source22controls include all8unchanged accountInbound mutation controls. The first full checkpoint has1failure/3183passes/one skip125.68s: a new preparation import collided with the old prefix-proof injector’s identical import. Rename only the new local binding; old test/fault/assertions are untouched and pass. Final full326files/3184cases/one skip131.96s (command132.793s) at240s passes. Final-source selected existing native legacy transaction/old-reader cold case passes (Node run6.915s), no skips; this is legacy-only, not binary native proof. Quality, format,17registry, inventory and10controls pass. Three hashes/one source-site move reviewed, no construction/obligation/old-test changes.
+**Latest checks.** [Track logical audit pressure alongside physical rows](./development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
+Nine new controls pass. Initial before has9failures; one reduced fixture lacked its required authenticated journal era, then the repaired before exposes the missing port. Development extent field entryCount→existing count correction restores old controls without edits. The two-publisher expected count was corrected to17 from its independent8+7binary extents and two legacy tails; earlier failures remain. Controls cover independent force, unchanged physical/quiet behavior, invalid values, clock rollback, close, scheduler interruption, real mixed/multi-publisher units and genuine reduced continuation/cold-seed exclusion. Types,314focused cases across36files and18unchanged legacy pass; full327files/3193cases/one existing skip pass129.74s at240s. All old tests remain byte-exact. Quality, format,17registry checks, inventory and10controls pass. Six hashes, no domain-site/construction/obligation moves. Independent normalized AST review preserves every old default/physical/verification guard; its first broad read-only predicate normalizer was corrected to match only the exact new comparison, with the failed reviewer retained.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden the approved dual physical/logical audit ceiling and idle-start integration without dropping any full comparison or interruption guard. Then G8/B and composed peer/Worker floor/lifecycle/old artifacts/cold/rollback proofs. Continue automatically after freezing.
+**Active bounded outcome.** Integrate unreduced semantic-oracle due/pressure into the existing warm-audit job with the original full comparison and native/suspension/shadow/foreground guards. Then G8/B, composed peer/Worker floor/lifecycle, old artifacts, cold and writer-off rollback proofs. Continue automatically after each freeze.
 
-**Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
-positions/budgets; enforce actual indices in every cache and retained envelope.
-Complete all ten direct readers and indirect baseline/reading/journal/Worker/export
-consumers, all four aged stored callers and31s interior-cut cold, arbitrary dense/
-legacy full-versus-incremental property and permanent stale-turn control. Finish
-record-scoped owned live writing, G8/range4/B reservations/fairness/cancellation,
-logical/actual-owned index and dual audit bounds. Full/native/reduced loads and
-new-row continuations now own their call-local syntax; live range parsing is owned
-as well. Ordinary builds remain writer-off;
-Docker/Vite forwarding and the final selected writer-on build are still pending.
+**Remaining Stage3.2.** Shared direct/indirect readers, all four aged stored semantic
+paths and arbitrary mixed full/incremental properties have isolated coverage;
+physical31s interior-cut cold and real composed peer/Worker observations remain.
+Full/native/reduced loads and new-row continuations own their syntax. Live ranges
+and flagged dense native framing are implemented; actual binary native admission
+is not yet observed. Harden unreduced full-oracle dual pressure, G8/range4/B cache/
+tail/wire reservations, fairness, cancellation and past-index behavior. Reduced
+logical pressure is covered in416; physical counters/witnesses remain separate.
+Ordinary builds remain writer-off; Docker/Vite forwarding and the selected
+writer-on/writer-off build proofs remain.
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine

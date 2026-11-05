@@ -11,13 +11,14 @@ import {
   type AccountLedgerView,
 } from './incrementalAccountLedger';
 import { copyRecords, createVerifiedRecords, eraseVerified } from './verifiedRecords';
-import { createInboundCoverage, verifyInboundLedger } from './inboundLedger';
+import { createInboundCoverage, verifyInboundLedger, inboundPositionsAfter } from './inboundLedger';
 import { advanceSelfReceive } from './accountSyncState';
 import { decodeSourceCapsule, eraseCapsule } from './sourceCapture';
 import { createVerificationMemo } from './verificationMemo';
 import { guardedSubtle } from './custodyCrypto';
 import { cpuCheckpoint } from './cpuBudget';
 import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
+import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
 import { countLedgerWork } from './accountLedgerMetrics';
 import type { SessionTask } from './writeSession';
 
@@ -87,11 +88,13 @@ export async function createBaselineReuse(
   const verifiedAt = performance.now();
   let alive = true,
     added = 0,
+    addedPositions = 0,
     physicalRowsAtLastAdvance = initial.records.length - prefix.length,
     lastIdentity = identity;
   let lastCounter = structuredClone(counter);
   const clear = () => {
     alive = false;
+    addedPositions = 0;
     verified.clear();
     coverage.clear();
     memo.clear();
@@ -138,9 +141,15 @@ export async function createBaselineReuse(
     // trusting it; the ordinary continuation must still verify every record.
     pendingRows: (physicalRows = physicalRowsAtLastAdvance) =>
       added + Math.max(0, physicalRows - physicalRowsAtLastAdvance),
-    due: () => added >= WARM_AUDIT_ROWS || performance.now() - verifiedAt >= WARM_AUDIT_MS,
+    pendingPositions: () => addedPositions,
+    due: () =>
+      added >= WARM_AUDIT_ROWS ||
+      addedPositions >= WARM_AUDIT_FORCE_POSITIONS ||
+      performance.now() - verifiedAt >= WARM_AUDIT_MS,
     delay: () =>
-      added >= WARM_AUDIT_ROWS ? 0 : Math.max(0, verifiedAt + WARM_AUDIT_MS - performance.now()),
+      added >= WARM_AUDIT_ROWS || addedPositions >= WARM_AUDIT_FORCE_POSITIONS
+        ? 0
+        : Math.max(0, verifiedAt + WARM_AUDIT_MS - performance.now()),
     /** Full replay must agree with the last checked logical view before it replaces that view. */
     compare(full: AccountBaselineRead) {
       const prior = verified.read(full.records);
@@ -175,7 +184,8 @@ export async function createBaselineReuse(
       }
       if (physical.some((r) => r.seq < header.firstSuffix)) corrupt('Reduced prefix reappeared.');
       const records = [...prefix, ...physical];
-      let appended = 0;
+      let appended = 0,
+        appendedPositions = 0;
       try {
         await verified.verify(
           records,
@@ -249,6 +259,7 @@ export async function createBaselineReuse(
                 previous.delivery.acceptedThrough,
               );
               appended = suffix.length;
+              appendedPositions = inboundPositionsAfter(next.census, before.at(-1)?.seq ?? 0);
               const result = { ...next, inbound };
               syntaxTurn.complete(result);
               return result;
@@ -265,6 +276,7 @@ export async function createBaselineReuse(
           inbound,
         }));
         added += appended;
+        addedPositions = Math.min(WARM_AUDIT_FORCE_POSITIONS, addedPositions + appendedPositions);
         physicalRowsAtLastAdvance = physical.length;
         lastIdentity = id;
         lastCounter = structuredClone(allocation);

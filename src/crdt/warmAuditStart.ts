@@ -1,6 +1,7 @@
 /** Owner-local scheduling only. Readiness never grants a native or verification permission. */
 export const WARM_AUDIT_INPUT_QUIET_MS = 1000;
 export const WARM_AUDIT_FORCE_ROWS = 1024;
+export const WARM_AUDIT_FORCE_POSITIONS = 1024;
 
 /** Call only after the existing row/time rules make an audit due. Queue settlement wakes the
  * owner again, so ordinary foreground contention requires no extra polling timer. */
@@ -31,12 +32,15 @@ export function createWarmAuditStart(now: () => number = () => performance.now()
       };
     },
     /** undefined means wait for queue settlement/close; zero means attempt under the old guards. */
-    delay(pendingRows: number): number | undefined {
+    delay(pendingRows: number, pendingPositions = 0): number | undefined {
       if (closed) return;
       if (!Number.isSafeInteger(pendingRows) || pendingRows < 0)
         throw Error('Invalid warm audit pressure');
+      if (!Number.isSafeInteger(pendingPositions) || pendingPositions < 0)
+        throw Error('Invalid warm audit logical pressure');
       const at = readClock();
-      if (pendingRows >= WARM_AUDIT_FORCE_ROWS) return 0;
+      if (pendingRows >= WARM_AUDIT_FORCE_ROWS || pendingPositions >= WARM_AUDIT_FORCE_POSITIONS)
+        return 0;
       if (foreground.size) return;
       return lastInput === undefined
         ? 0

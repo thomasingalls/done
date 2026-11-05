@@ -1,4 +1,8 @@
-import { createWarmAuditStart, WARM_AUDIT_FORCE_ROWS } from './warmAuditStart';
+import {
+  createWarmAuditStart,
+  WARM_AUDIT_FORCE_ROWS,
+  WARM_AUDIT_FORCE_POSITIONS,
+} from './warmAuditStart';
 
 export type WarmAuditOutcome = boolean | 'deferred';
 
@@ -9,6 +13,7 @@ export function createWarmAuditScheduler(options: {
   due(): boolean;
   delay(): number;
   pendingRows(): number;
+  pendingPositions?(): number;
   run(mayStart: () => boolean): Promise<WarmAuditOutcome>;
 }) {
   const policy = createWarmAuditStart();
@@ -21,23 +26,34 @@ export function createWarmAuditScheduler(options: {
     timer = undefined;
   };
   const mayStart = () =>
-    !closed && !options.signal.aborted && policy.delay(options.pendingRows()) === 0;
+    !closed &&
+    !options.signal.aborted &&
+    policy.delay(options.pendingRows(), options.pendingPositions?.() ?? 0) === 0;
   const refresh = () => {
     if (closed || active || options.signal.aborted) return;
     cancel();
     const rows = options.pendingRows(),
-      quiet = policy.delay(rows);
+      positions = options.pendingPositions?.() ?? 0,
+      quiet = policy.delay(rows, positions);
     if (quiet === undefined) return; // Actual foreground settlement will wake this owner.
-    const due = continuing || options.due() || rows >= WARM_AUDIT_FORCE_ROWS;
+    const due =
+      continuing ||
+      options.due() ||
+      rows >= WARM_AUDIT_FORCE_ROWS ||
+      positions >= WARM_AUDIT_FORCE_POSITIONS;
     timer = setTimeout(start, Math.max(quiet, due ? 0 : options.delay()));
   };
   const start = () => {
     timer = undefined;
     if (closed || active || options.signal.aborted) return;
-    const rows = options.pendingRows();
+    const rows = options.pendingRows(),
+      positions = options.pendingPositions?.() ?? 0;
     if (
-      policy.delay(rows) !== 0 ||
-      (!continuing && !options.due() && rows < WARM_AUDIT_FORCE_ROWS)
+      policy.delay(rows, positions) !== 0 ||
+      (!continuing &&
+        !options.due() &&
+        rows < WARM_AUDIT_FORCE_ROWS &&
+        positions < WARM_AUDIT_FORCE_POSITIONS)
     ) {
       refresh();
       return;

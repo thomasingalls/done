@@ -810,3 +810,31 @@ export function inboundReadCursors(state: Readonly<InboundState>): InboundReadCu
       : {}),
   };
 }
+
+/** Scheduling units from a verified logical census, never authentication or cursor permission.
+ * A binary physical row contributes every admitted received position; conflicts contribute none. */
+export function inboundPositionsAfter(
+  census: Pick<ReturnType<typeof inspectInbound>, 'entries'>,
+  sequence: number,
+) {
+  if (!Number.isSafeInteger(sequence) || sequence < 0)
+    return captureError('Invalid audit sequence');
+  let total = 0;
+  for (const entry of census.entries) {
+    if (!Number.isSafeInteger(entry.record.seq) || entry.record.seq < 1)
+      return captureError('Invalid audit record');
+    if (entry.record.seq <= sequence || entry.event.kind !== 'received') continue;
+    const count = inboundEntryExtent(entry).count;
+    if (
+      !Number.isSafeInteger(entry.record.seq) ||
+      entry.record.seq < 1 ||
+      !Number.isSafeInteger(count) ||
+      count < 1 ||
+      count > READ_COUNT_LIMIT ||
+      !Number.isSafeInteger(total + count)
+    )
+      return captureError('Invalid audit logical work');
+    total += count;
+  }
+  return total;
+}

@@ -371,6 +371,7 @@ export async function openAccountCaptureOwner(
       due: () => owner!.carrier.warmAuditDue(),
       delay: () => owner!.carrier.warmAuditDelay(),
       pendingRows: () => owner!.carrier.pendingWarmAuditRows(),
+      pendingPositions: () => owner!.carrier.pendingWarmAuditPositions(),
       run: (mayStart) =>
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
         run<WarmAuditOutcome>(

@@ -19244,3 +19244,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** The flagged writer frames one physical receipt per verified page prefix and keeps all native commit fences. Five controls and final326file/3184case/one-skip checkpoint pass131.96s; unchanged legacy native/cold and all8old mutation controls pass. [Evidence](development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
 
 **Limits.** Two new native fixture attempts failed preconditions: the storage-only conformance owner deliberately cannot request peer ranges. The first build-define diagnosis was wrong; the composed/own-stream guard is the cause and stays unchanged. Both attempts and the withdrawn new fixture are retained, with zero binary native credit. A read-only AST review metadata difference (undefined source range on an aliased import) was normalized as location metadata only. Actual composed peer/Worker binary transaction, physical31s cold, floor lifecycle, dual audit, G8/B, old artifacts/rollback and Stage5/6 remain. No timing/RAM/activation/image credit, format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Track logical audit pressure alongside physical rows
+
+**Date:**2026-11-04 · **Commit:**pending patch416 · **Stage:**partial Stage3.2
+
+**Exit.** Reduced-owner and scheduler logical pressure now forces an attempt at1,024positions independently of physical rows. Nine controls,314focused/18legacy and full327files/3193cases/one skip pass129.74s. Existing guards and old tests remain. [Evidence](development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
+
+**Limits.** Unreduced native full-oracle pressure/idle integration is still open, so this does not close the complete dual audit item. No composed peer/Worker binary transaction, physical31s cold, image, activation, timing or RAM credit. G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/budget/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.

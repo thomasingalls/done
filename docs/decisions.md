@@ -7356,3 +7356,10 @@ Prepare exact binary extents without granting native progress. Count the one rec
 **Date:**2026-11-04 · **Commit:**pending patch415
 
 The native group writes one receipt and all covered updates in the same existing atomic append, with its witness counting those actual heads writes. Per-position credit remains logical. Keep the own-stream conformance guard; obtain actual dense native proof through the composed peer/Worker path, never by weakening that guard. A local import alias keeps existing fault controls byte-exact. [Evidence](development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
+
+
+### Keep physical storage pressure and logical audit pressure independent
+
+**Date:**2026-11-04 · **Commit:**pending patch416
+
+A compact page counts once physically and once per admitted received position logically. Observe logical work only from a verified census after candidate acceptance, excluding its cold seed. Force only an attempt at either approved ceiling; retain all comparison/interruption/native guards and the existing work lane. Continue unreduced-oracle integration separately. [Evidence](development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
