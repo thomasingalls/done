@@ -1,0 +1,5 @@
+# Hardening 337 — stopped, unfinished Y
+
+The first Y unit run unexpectedly halts automatic maintenance with owner-error. The new module-scoped interruption metadata WeakMap is named `interruptions`; the pre-existing per-owner numeric diagnostics counter has the same name. `.get` therefore runs on a number in retry classification. Typecheck independently catches it. Existing retry/progress controls and new priority controls fail (6failed/34passed). This is an implementation defect in the unfinished hardening draft, not classified as a harness problem.
+
+Stopped under the operator’s functional-failure rule. No repair was attempted after the stop; no app walkthrough, production access or timed measurement occurred. One additional type error identifies incomplete ObservedEntry fields in the new journal test. Both logs are retained. The new draft is not ready to stage/commit. Only patches335and336 are frozen; the Stage1full-suite checkpoint and all later stages remain pending. No format is approved.

@@ -6861,3 +6861,11 @@ Catch only PreparationCapacity at the automatic removal boundary and reuse the e
 ## 2026-11-02 — Hardening 336: preserve the existing slice guard with a fresh start
 
 Exclude saved-prefix replay before the first miss; start the existing wall-clock slice there. Keep pauses before fresh verification, all freshness/digest/erasure checks and the one-indivisible-call boundary. This is the approved S behavior, not a new latency/throughput claim or a changed budget.
+
+## 2026-11-02 — Hardening 337: honor the functional stop before repairing Y
+
+The unfinished retry classification produces an unexpected maintenance owner-error in positive unit controls. Preserve the failing draft and logs and stop; do not label the implementation defect as a harness failure or proceed to later stages. The known mechanical repair is not performed without the operator resuming after this report. Existing guards remain and no trust/format/gate decision is changed.
+
+## 2026-11-02 — Hardening resume: scope functional stops to hardened-app evidence
+
+The operator authorizes ordinary red-unit repair while writing code, retaining logs. Hardened app/journey/cold failures and unexpectedly accepted negative controls still stop; an existing test may not be made green by weakening a guard. Both specified existing controls pass unchanged after the new metadata-map rename. Y keeps private typed interruption metadata local, with ten seconds only for entirely queue-priority conditions, sixty seconds otherwise. No zero-delay policy or trust/limit change.

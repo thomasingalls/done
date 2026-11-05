@@ -744,7 +744,13 @@ export async function openAccountCaptureOwner(
               activity !== shadowActivity ||
               (preparing && preparation && priority !== preparationActivity)
             )
-              throw new MaintenanceInterrupted();
+              throw new MaintenanceInterrupted([
+                {
+                  suspended,
+                  shadowActivity: activity !== shadowActivity,
+                  queuePriority: preparing && preparation && priority !== preparationActivity,
+                },
+              ]);
           });
         const task: SessionTask = {
           signal: parent.signal,
@@ -763,7 +769,7 @@ export async function openAccountCaptureOwner(
           task.step(() => {
             const entries = owner!.journal.snapshot();
             try {
-              if (entries.length) throw new MaintenanceInterrupted();
+              if (entries.length) throw new MaintenanceInterrupted([{ journal: true }]);
             } finally {
               eraseJournalSnapshot(entries);
             }

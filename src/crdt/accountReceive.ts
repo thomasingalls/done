@@ -11,7 +11,11 @@ import {
   hasRetentionWriter,
   hasAutomaticLocalRetention,
 } from './localBaselineMode';
-import { createAutomaticLocalRetention, type LocalRetentionHint } from './automaticLocalRetention';
+import {
+  createAutomaticLocalRetention,
+  localRetentionInterrupted,
+  type LocalRetentionHint,
+} from './automaticLocalRetention';
 import {
   createAutomaticServiceHistory,
   hasAutomaticServiceHistory,
@@ -27,6 +31,7 @@ import { authenticatePromotionRows } from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
 import {
   MaintenanceInterrupted,
+  addMaintenanceInterruptionConditions,
   isMaintenanceTask,
   reportRetentionProgress,
   type RetentionProgressSink,
@@ -896,8 +901,16 @@ async function openAccountReceiveOwner(
         if (refused) return refused;
         const stamp = retentionAuthority;
         const checkRetained = () => {
-          checkActivity();
-          if (handoff || stamp !== retentionAuthority) throw new MaintenanceInterrupted();
+          const conditions = { handoff: !!handoff, authorityStamp: stamp !== retentionAuthority };
+          try {
+            checkActivity();
+          } catch (cause) {
+            if (cause instanceof MaintenanceInterrupted)
+              addMaintenanceInterruptionConditions(cause, conditions);
+            throw cause;
+          }
+          if (handoff || stamp !== retentionAuthority)
+            throw new MaintenanceInterrupted([conditions]);
         };
         return owner.carrier.prepareHistoryRemoval(
           task,
@@ -3474,7 +3487,9 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                               (cause instanceof MaintenanceInterrupted ||
                                 cause instanceof ReceiveAuthorityChanged)
                             )
-                              return { kind: 'skipped' as const, reason: 'activity-or-journal' };
+                              return cause instanceof MaintenanceInterrupted
+                                ? localRetentionInterrupted(cause)
+                                : { kind: 'skipped' as const, reason: 'activity-or-journal' };
                             throw cause;
                           } finally {
                             removingLocalHistory = false;

@@ -1,0 +1,27 @@
+{
+  "stage": "1.3 Y",
+  "stopRule": "unexpected functional maintenance owner-error in positive unit control",
+  "runtimeDefect": "new module-scope interruptions WeakMap is shadowed by the existing per-owner numeric interruptions counter; retry classification calls .get on a number",
+  "typecheckAlsoFound": "new journal test fixture lacks ObservedEntry.value/key/generation",
+  "unitResult": "6 failed,34 passed,5files; existing retry/progress tests and new priority tests fail",
+  "implementedPatchStatus": {
+    "335": "frozen and focused/typechecked",
+    "336": "frozen and focused checked",
+    "337": "unfinished; not registered or ready to commit"
+  },
+  "nextWork": "operator resume required; no implementation fix attempted after stop",
+  "fullStage1Checkpoint": "not run; Stage1 unfinished",
+  "laterStages": "not started",
+  "newLabPhases": false,
+  "appWalkthroughOrTimedRun": false,
+  "priorLabRootsAndPhaseRecordsUntouched": true,
+  "draftSourceHashes": {
+    "src/crdt/automaticLocalRetention.ts": "eabbf78f6e9345cde992f8b7b1ab4c0edfd64a5543f7c30f710f11ddad65e2d2",
+    "src/crdt/contentMaintenance.ts": "8000b145dec76afd8e308f94b6acc581e3e3440f30ef975c868d5de7d581d766",
+    "src/crdt/accountCapture.ts": "513d2e0aa4804be4527d743b8e2352de5843433d384fc73c6f92d93c51c8a264",
+    "src/crdt/accountReceive.ts": "0f94b8ef9137d45c79289b9dc62a0bf03283c4858a8279d7a702e7cc2ed2239a",
+    "src/crdt/preparationJournalObservation.ts": "367d9f3ff94f51ae00b86f0a45c7dab79b47ef0d2496180df5aa0614cf7659ae",
+    "test/retentionPriorityRetry.test.ts": "fa4b4b014dd3f0bc589a11d89c64b99ddcbdeb5df886dd58d6a36ecfd0dcef27"
+  },
+  "realIndexEmpty": true
+}

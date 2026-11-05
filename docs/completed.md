@@ -18519,3 +18519,11 @@ All five preparation ceilings use the existing parked capacity path, preserving 
 ## 2026-11-02 — Hardening 336: measure preparation slices from fresh work
 
 Start the existing two-second clock at the first fresh receipt miss, preserving every interruption/expiry/capacity guard and atomic check. Replayed-prefix progress, fresh bound and quiet/drain scheduling controls pass with existing owner/storage/mutation regressions:37focusedcases. [Evidence](development-evidence/2026-11-02-release-hardening/336-fresh-slice/README.md). Recorded before advancing to Y.
+
+## 2026-11-02 — Hardening 337: stopped on the unfinished Y retry path
+
+First Y positive unit controls unexpectedly halt maintenance: a new interruption metadata WeakMap is shadowed by the existing numeric interruption counter, so `.get` throws. Typecheck independently identifies that defect and an incomplete new journal-test fixture. Retained6failed/34passedresults; stopped without fixing the implementation under the operator’s rule. No app/timed run.335capacity and336fresh-slice patches remain ready; Stage1fullsuite and later stages have not run. [Stop evidence](development-evidence/2026-11-02-release-hardening/337-priority-stop/README.md).
+
+## 2026-11-02 — Hardening 337 resumed: typed priority retry
+
+The operator narrowed functional stops to hardened app evidence and specified the two unchanged retry/progress controls. Renaming the new metadata map and completing the new journal fixture restores both files (25cases, hashes verified). Typed priority-only outcomes now use ten seconds; all mixed/unknown/non-priority conditions retain sixty seconds and quiet/drain guards.53focusedcases and strict types pass. Earlier stop/red evidence preserved. [Checks](development-evidence/2026-11-02-release-hardening/337-priority/README.md). Recorded before starting the Stage1full-suite checkpoint.

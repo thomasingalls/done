@@ -31,6 +31,15 @@ priority retries, automatic checkpoints/two-device admission/signed tips, phase 
 rotation-cost repairs, per-publisher fetch-ahead, both phase 334 diagnostics, changes to
 the single scheduler work lane, forged-ID probe, CRDT ownership or a rewrite.
 
+## Stop-rule clarification on resume
+
+Red unit tests on code still being written are ordinary development: fix, rerun and
+preserve the logs. Functional stops concern the hardened app (journeys, app runs,
+cold opens and Stage 5), an unexpectedly accepted negative control, or an existing
+test that cannot pass without weakening a guard. The two existing controls in
+localRetentionProgress and automaticLocalRetention passed after the metadata-map
+rename without any edits to those test files. The original stop record is preserved.
+
 ## Target and release profile
 
 Capacity mapping, S, Y with a 10-second priority retry, R1000, E and idle-start audit.
@@ -109,5 +118,5 @@ approval, no released build may write the new rows.
 
 ## Current checkpoint
 
-Stages 1.1 and 1.2 are complete (patches 335–336); Stage 1.3 is active. Focused checks pass; the Stage 1 full-suite checkpoint is still pending. No new format is approved.
+Stages 1.1–1.3 have bounded patches 335–337 and passing focused/type checks. The Stage 1 full-suite checkpoint is active. Later stages remain pending; no new format is approved.
 Checkpoint evidence will be appended to completed.md before advancing this state.

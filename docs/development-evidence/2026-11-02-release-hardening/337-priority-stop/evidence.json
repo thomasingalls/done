@@ -1,0 +1,17 @@
+[
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/priority-first.log",
+    "copy": "priority-first.log.gz",
+    "sha256": "68f577f8d7983c65b04c649447c0e768d0aa0c100ba6e3e0de657f51f70873cd"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/priority-types-first.log",
+    "copy": "priority-types-first.log.gz",
+    "sha256": "e40ae33e9f64ddda4f664850e8f1923e0defd4d89145e413700e186decd3beb8"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/priority-format.log",
+    "copy": "priority-format.log.gz",
+    "sha256": "2f315fe0670c03533bc94bd37b8752c30285b8152fb3e640270c667df458d14c"
+  }
+]

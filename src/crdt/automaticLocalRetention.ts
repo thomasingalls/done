@@ -3,6 +3,8 @@ import {
   copyRetentionProgress,
   type RetentionProgress,
   type RetentionProgressSink,
+  type MaintenanceInterrupted,
+  isPriorityOnlyMaintenanceInterruption,
 } from './contentMaintenance';
 import { PreparationCapacity } from './preparationCapacity';
 import { LocalBaselineError } from './localBaselineError';
@@ -36,6 +38,13 @@ export interface LocalRetentionRuntime extends LocalRetentionView {
   retry(): boolean;
 }
 type Outcome = { kind: string; reason?: string };
+const interruptedOutcomes = new WeakMap<Outcome, MaintenanceInterrupted>();
+/** Native scheduling metadata only. Serialization loses it and conservatively keeps 60 seconds. */
+export function localRetentionInterrupted(cause: MaintenanceInterrupted) {
+  const outcome = Object.freeze({ kind: 'skipped' as const, reason: 'activity-or-journal' });
+  interruptedOutcomes.set(outcome, cause);
+  return outcome;
+}
 const ownerErrorCode = (cause: unknown): string => {
   if (cause instanceof LocalBaselineError) {
     const code: unknown = Object.getOwnPropertyDescriptor(cause, 'reason')?.value;
@@ -187,7 +196,11 @@ export function createAutomaticLocalRetention(options: {
       } else if (result.kind === 'skipped') {
         if (result.reason === 'activity-or-journal') interruptions++;
         reason = result.reason;
-        notBefore = Date.now() + LOCAL_RETENTION_RETRY_MS;
+        const priorityOnly =
+          result.reason === 'activity-or-journal' &&
+          isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result));
+        notBefore =
+          Date.now() + (priorityOnly ? LOCAL_RETENTION_QUIET_MS : LOCAL_RETENTION_RETRY_MS);
         // Retrying an unchanged capacity/history refusal cannot help. A different authenticated
         // ledger hint permits another attempt, still behind the retry clock.
         if (['capacity', 'history-required', 'ineligible'].includes(result.reason ?? ''))
