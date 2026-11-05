@@ -118,5 +118,8 @@ approval, no released build may write the new rows.
 
 ## Current checkpoint
 
-Stages 1.1–1.3 have bounded patches 335–337 and passing focused/type checks. The Stage 1 full-suite checkpoint is active. Later stages remain pending; no new format is approved.
-Checkpoint evidence will be appended to completed.md before advancing this state.
+Stages 1.1–1.3 are hardened in sequential patches 335–337. Focused53cases, strict types and full units (287files, 2,880passed, one existing skip) pass; both specified old controls remain unchanged. Patch338 preserves the full-suite checkpoint and its reconciled inventory.
+
+**Hold after the application-startup browser checkpoint.** Native lifecycle and25subsequent full-check commands pass; app startup has10passes/5failures. Three failures encounter stale storage-status text. Offline correct-code unlock does not reach ready within the existing5s assertion and remains at encrypted-storage opening; cause and eventual outcome are unresolved. The interrupted-creation control does not reach its expected unavailable state or its fault-receipt assertion. Do not infer lost writing, a Y regression, or a Stage5cold-gate result. No further app run or hardening after this unresolved cold-opening result; distinguish fixture prerequisites from app behavior with the operator before continuing.
+
+Later stages and43remaining full-check commands are pending. No format is approved, no Stage5journey has run, and nothing is committed, pushed or deployed. [Evidence](./development-evidence/2026-11-02-release-hardening/338-stage1-checkpoint/README.md).
