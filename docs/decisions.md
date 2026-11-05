@@ -6873,3 +6873,12 @@ The operator authorizes ordinary red-unit repair while writing code, retaining l
 ## 2026-11-02 — Hardening 338: preserve the browser opening failure separately from fixture drift
 
 The two specified controls pass unchanged and full units are green; this is not the earlier broad red-unit stop. Keep the existing app-startup failure and5s assertion, with no readiness-budget increase. Stale UI text explains three blocked assertions but does not explain or dismiss the separate offline-opening result. Hold further hardening under the app/cold-opening rule until its fixture prerequisites versus application behavior are distinguished. No archive loss, root cause, accepted negative control or15sStage5cold result is inferred. Keep every old test/assertion and all failed attempts. Census and planning refresh preserve all classifications, required files, open obligations and aggregate blocks.
+
+
+### Preserve the existing documentation procedure and distinguish fault delivery from status semantics
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 339
+
+**Orientation.** PRD v9 and TRD v8, with their existing storage/onboarding amendments, and the operator's November 2 hardening/resume instructions govern. Phase 338 called three current editor messages stale; the operator identified Window-only fault injection after storage moved into Workers. The separate hardening tracker also held active state outside the documented progress.md home.
+
+**Decision.** Preserve all old assertions and expected text, compare failures on signed base 89b11fe2, and establish actual Worker fault delivery before fixture repair. Check the dev offline asset setup first because packaged.spec already passes offline unlock. Keep the complete red census and unchanged deadlines. Restore our own active section to progress.md without editing the other seat, retain the hardening document as scope/plan, and retain append-only outcomes and reasoning. No documentation requirement, checker or approval rule changes. Whole-tree receipts invalidated by later documentation edits must be refreshed in the correct order.

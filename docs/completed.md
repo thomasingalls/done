@@ -18531,3 +18531,12 @@ The operator narrowed functional stops to hardened app evidence and specified th
 ## 2026-11-02 — Hardening 338: Stage 1 units pass; browser checkpoint held
 
 Y’s53focusedcases and strict types pass; full units287files/2,880passed/one existing skip pass on locked self-contained dependencies. Both operator-protected test files remain byte-identical to HEAD. Reviewed census/required-test inventory and one capacity-wording expectation are reconciled without guard or exclusion changes. Native lifecycle and25subsequent full-check commands pass. Application-startup reports10passed/5failed: three stale status expectations, one unresolved offline-opening ready timeout at the existing5s assertion, and one interrupted-creation control with unconfirmed fault delivery. Hold further hardening under the app/cold-opening rule; no confirmed data loss or regression attribution, no Stage5result. Every failed attempt/environment refusal remains. [Checkpoint](development-evidence/2026-11-02-release-hardening/338-stage1-checkpoint/README.md). Recorded before advancing the active state to this hold.
+
+
+### Stage 1 full-check census completed; checkpoint remains red
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 339 · **Stage:** operator hardening Stage 1
+
+**Exit.** Ran all 43 previously unrun commands in the pinned environment: 24 passed, 19 failed. The complete command list, raw log, browser reports and failed-stage evidence are preserved in [phase 339](development-evidence/2026-11-02-release-hardening/339-full-check-census/README.md). Nested stages behind failed prerequisites remain unrun.
+
+**Notes.** This amends phase 338: the editor storage-status expectations are current, not stale strings; the Window fault has not established a Worker storage refusal. Both expected messages and every old browser test remain unchanged. Built-preview offline unlock passed separately. Six contract wrappers hit their unchanged 120-second full-unit deadline; the earlier full-unit pass does not waive that failure. Signed-base comparison and dev-fixture diagnosis follow before any app change or Stage 2. Outcome recorded before advancing our active state back into progress.md.

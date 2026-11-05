@@ -152,3 +152,45 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 
 **Not in this slice.** The open operations and product items listed at the previous slice's close in
 [completed.md](./completed.md). Release validation, which stays paused on purpose.
+
+
+---
+
+## Active slice: release hardening — Stage 1 checkpoint
+
+```yaml
+gate: operator-release-hardening-stage-1
+seat: /Users/thomasingalls/.codex/worktrees/7fda/done
+branch: codex/reduce-goals-context-overhead
+status: in flight
+scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
+blocks_on: signed-base attribution and fixture versus application diagnosis
+release_validation: only the operator's declared hardening stages; no publication
+updated: 2026-11-02
+```
+
+**Governing plan.** The operator's November 2 hardening note, recorded in
+[release-hardening-2026-11-02.md](./release-hardening-2026-11-02.md), keeps all
+gates, limits, deadlines and security checks. Canonical patches 335–337 implement
+capacity mapping, the fresh-work slice and ten-second priority-only retries.
+No new format is approved. Stage 2 has not started.
+
+**Checkpoint.** Focused controls, strict types and the full unit suite passed;
+[338](./development-evidence/2026-11-02-release-hardening/338-stage1-checkpoint/README.md)
+retains the opening checkpoint. The remaining 43 commands have now all run:
+24 pass and 19 fail, with some shared causes across wrappers.
+[339](./development-evidence/2026-11-02-release-hardening/339-full-check-census/README.md)
+contains the complete census and amends 338's incorrect stale-string classification.
+Both editor messages remain current. All old browser tests/assertions remain unchanged.
+
+**Now.** Compare every failed browser case against signed base 89b11fe2 in the
+same environment/browser. For offline unlock, diagnose the dev fixture's uncached
+Worker assets first; the built preview already passes offline unlock. For the
+storage controls, prove faults reach the actual Worker before test-only repair.
+Keep every failure. If a failure needs an application change, report the full
+list first; continue Stage 2 only after the checkpoint is green.
+
+**Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
+measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
+and lab roots stay untouched. This section alone owns our active state; the
+other seat's section above is unchanged.
