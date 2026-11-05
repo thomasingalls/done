@@ -7328,3 +7328,10 @@ Census, epoch and ledger consumers may share private exact-byte syntax within on
 **Date:**2026-11-04 · **Commit:**pending patch411
 
 Create and dispose syntax inside each verified load callback, complete only the final plain verified result, and keep audits/reference loads independent. Epoch scalar reuse and cold indexing preserve exact-byte/floor checks and actual proof-byte bounds. [Evidence](development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
+
+
+### Scope continuation syntax after exact retained-prefix comparison
+
+**Date:**2026-11-04 · **Commit:**pending patch412
+
+A continuation captures only its new physical rows, never its retained predecessor. A failed bound, witness, coverage or lifecycle check abandons the whole scope and existing fallback remains. Actual proof-byte observation is required to index a reduced binary suffix. [Evidence](development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).

@@ -784,6 +784,7 @@ async function openAccountReceiveOwner(
           () => task.step(() => {}),
           incremental
             ? async (previous, before, records) => {
+                const syntaxTurn = createInboundReceiptTurn();
                 const began = performance.now();
                 try {
                   const next = await extendAccountLedger(
@@ -797,6 +798,7 @@ async function openAccountReceiveOwner(
                     subtleFor(task),
                     { memo, current: () => task.step(() => {}), recordOwnership },
                     () => coverage.prepare(records) === 'equivalent',
+                    syntaxTurn,
                   );
                   if (!next) return;
                   const checking = coverage.bind(records);
@@ -818,6 +820,7 @@ async function openAccountReceiveOwner(
                         : {}),
                     },
                     { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
+                    syntaxTurn,
                   );
                   if (composed)
                     advanceSelfReceive(
@@ -841,8 +844,10 @@ async function openAccountReceiveOwner(
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
                     (sinceAudit >= 1024 &&
                       records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
+                  syntaxTurn.complete(result);
                   return result;
                 } finally {
+                  syntaxTurn.dispose();
                   measureLedger('incremental', began);
                 }
               }

@@ -1,3 +1,4 @@
+import { createInboundReceiptTurn } from './accountInbound';
 /** Private reduced-owner continuation. Only a full authenticated replay may seed this cache. */
 import type { LocalBaselineContext } from './localBaselineReplay';
 import type { AccountBaselineRead } from './localBaselineShadow';
@@ -117,6 +118,7 @@ export async function createBaselineReuse(
           context.route,
           counter,
           guardedSubtle(current),
+          memo.ownedBytes(),
         );
         return { ...ledger, ...(indexes ? { indexes } : {}) };
       },
@@ -183,64 +185,76 @@ export async function createBaselineReuse(
           },
           check,
           async (previous, before, candidate) => {
-            const suffix = appendedRecords(before, candidate);
-            if (!suffix) return;
-            const next = await extendAccountLedger(
-              previous,
-              before,
-              candidate,
-              c.route,
-              allocation,
-              c.inbound,
-              c.signer,
-              guardedSubtle(check),
-              { memo, current: check },
-            );
-            if (!next) return;
-            const checking = coverage.bind(candidate);
-            // Unlike the ordinary census, baseline replay also proves every unallocated source.
-            const sourceSequences = new Set([...next.indexes!.sources.values()].map((s) => s.seq));
-            for (const row of suffix)
-              if (row.kind === 'outbound') {
-                // The reducer has classified these bytes; only newly indexed capsules need this proof.
-                if (!sourceSequences.has(row.seq)) continue;
-                const capsule = decodeSourceCapsule(row.bytes, c.route);
-                try {
-                  checking.check(
-                    candidate,
-                    capsule.sources.map((s) => s.bytes),
-                  );
-                } finally {
-                  eraseCapsule(capsule);
-                }
-                const pause = cpuCheckpoint(task)?.();
-                if (pause) await pause;
-              }
-            const inbound = await verifyInboundLedger(
-              next.census,
-              candidate,
-              c.inbound,
-              { ...c, assertCurrent: check },
-              {
-                memo,
-                coverage: checking,
-                checkpoint: async () => {
+            const syntaxTurn = createInboundReceiptTurn();
+            try {
+              const suffix = appendedRecords(before, candidate);
+              if (!suffix) return;
+              const next = await extendAccountLedger(
+                previous,
+                before,
+                candidate,
+                c.route,
+                allocation,
+                c.inbound,
+                c.signer,
+                guardedSubtle(check),
+                { memo, current: check },
+                undefined,
+                syntaxTurn,
+              );
+              if (!next) return;
+              const checking = coverage.bind(candidate);
+              // Unlike the ordinary census, baseline replay also proves every unallocated source.
+              const sourceSequences = new Set(
+                [...next.indexes!.sources.values()].map((s) => s.seq),
+              );
+              for (const row of suffix)
+                if (row.kind === 'outbound') {
+                  // The reducer has classified these bytes; only newly indexed capsules need this proof.
+                  if (!sourceSequences.has(row.seq)) continue;
+                  const capsule = decodeSourceCapsule(row.bytes, c.route);
+                  try {
+                    checking.check(
+                      candidate,
+                      capsule.sources.map((s) => s.bytes),
+                    );
+                  } finally {
+                    eraseCapsule(capsule);
+                  }
                   const pause = cpuCheckpoint(task)?.();
                   if (pause) await pause;
+                }
+              const inbound = await verifyInboundLedger(
+                next.census,
+                candidate,
+                c.inbound,
+                { ...c, assertCurrent: check },
+                {
+                  memo,
+                  coverage: checking,
+                  checkpoint: async () => {
+                    const pause = cpuCheckpoint(task)?.();
+                    if (pause) await pause;
+                  },
                 },
-              },
-              { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
-            );
-            advanceSelfReceive(
-              next.census.delivery,
-              next.delivery,
-              inbound,
-              c.route,
-              (updates) => checking.check(candidate, updates),
-              previous.delivery.acceptedThrough,
-            );
-            appended = suffix.length;
-            return { ...next, inbound };
+                { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
+                syntaxTurn,
+              );
+              advanceSelfReceive(
+                next.census.delivery,
+                next.delivery,
+                inbound,
+                c.route,
+                (updates) => checking.check(candidate, updates),
+                previous.delivery.acceptedThrough,
+              );
+              appended = suffix.length;
+              const result = { ...next, inbound };
+              syntaxTurn.complete(result);
+              return result;
+            } finally {
+              syntaxTurn.dispose();
+            }
           },
           cpuCheckpoint(task),
         );

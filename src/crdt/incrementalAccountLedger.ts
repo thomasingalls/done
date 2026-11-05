@@ -37,6 +37,7 @@ import {
 import { ownedByteCapacity, eraseUnretained } from './verificationOwnership';
 import {
   ownedInboundReceiptEpoch,
+  inspectOwnedInboundRequest,
   type InboundReceiptTurn,
   type InboundContext,
 } from './accountInbound';
@@ -294,6 +295,7 @@ export async function extendAccountLedger(
   subtle: SubtleCrypto,
   reuse: { memo: VerificationMemo; current(): void; recordOwnership?: AccountRecordOwnership },
   equivalentContent?: () => boolean,
+  syntaxTurn?: InboundReceiptTurn,
 ): Promise<Pick<AccountLedgerView, 'census' | 'delivery' | 'indexes'> | undefined> {
   if (
     previous.census.entries.some((entry) => entry.extent) &&
@@ -338,11 +340,15 @@ export async function extendAccountLedger(
     // History installations and own-publisher receipts still take the full reference.
     for (const row of added)
       if (!content(row)) {
-        const entry = captureInboundLedgerRecord(row, base);
+        const entry = captureInboundLedgerRecord(row, base, syntaxTurn);
         if (entry) {
           incoming.set(row, entry);
           if (entry.extent && typeof reuse.memo.ownedBytes !== 'function') return;
-          if (decodeInboundRequest(entry.event.request).publisher === base.publisher.id) return;
+          const request = syntaxTurn
+            ? inspectOwnedInboundRequest(syntaxTurn, row, base)
+            : decodeInboundRequest(entry.event.request);
+          if (!request) return captureError('Missing inbound request');
+          if (request.publisher === base.publisher.id) return;
         } else if (
           !['done/source-capture/v1', 'done/account-spool/v1', 'done/account-delivery/v1'].includes(
             fields(row)[0] as string,
@@ -405,7 +411,8 @@ export async function extendAccountLedger(
       }
       const inboundEvent = inboundEntry?.event;
       const epoch = inboundEvent
-        ? decodeInboundRequest(inboundEvent.request).epoch
+        ? ((syntaxTurn && ownedInboundReceiptEpoch(syntaxTurn, row.bytes)) ??
+          decodeInboundRequest(inboundEvent.request).epoch)
         : (f![5] as number);
       // Adoption takes the full verifier and fixes its event boundary before append reuse.
       // The last retained event can still precede that boundary: monotonicity alone would

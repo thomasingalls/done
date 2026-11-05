@@ -190,15 +190,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Own parsed receipts within full and reduced loads](./development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
-Five new tests; original four before repair show three failures/one pass, including four decodes per full load versus one afterward. Reduced suffix control initially had an invalid synthetic allocation counter; corrected fixture then demonstrated two versus one decodes across an interior frontier. All attempts retained. Types,192focused cases across23files and18unchanged legacy cases pass; quality, format,17registry checks, inventory and10controls pass. The latest full checkpoint remains410:321files/3152cases/one skip123.80s; it is not rerun for this bounded slice. Four source hashes/ten source-site line moves are reviewed, no construction/obligation/test removals.
+**Latest checks.** [Own new receipt syntax within ledger continuations](./development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
+Four new controls; before one duplicate-parse failure and three passes, after all pass. Interior extent continuation/full agreement, later legacy record scope, predecessor immutability, changed-row early fallback, own publisher and physical witness failure covered. Initial new test annotation was too narrow for an optional index; corrected only that new annotation and retained failure. Types,205focused cases in25files,18unchanged legacy and full323files/3161cases/one existing skip pass124.19s (command125.001s) at approved240s; other deadlines unchanged. Quality, format,17registry checks, inventory and10controls pass. Three runtime hashes and nine source-site line moves reviewed; all old tests, constructions and obligations retained.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Wire new-row-only scopes into native and reduced-owner continuations, preserving exact prefix checks and full fallback. Then live owned pages/dense writer, dual audit, G8/B and lifecycle/rollback. Continue automatically after each freeze; stop only for the operator decision or an unfixable guard-preserving failure.
+**Active bounded outcome.** Harden live original syntax and encoding as one owned call, then dense native writing, dual audit, G8/B and floor/lifecycle/old artifacts/cold/rollback. Continue automatically after each frozen phase under the existing decision boundaries.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

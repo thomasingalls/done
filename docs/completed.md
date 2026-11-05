@@ -19208,3 +19208,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Actual full/native/reduced callbacks now own per-load syntax; five controls and192focused/18legacy cases pass. Existing operations and guards are AST-exact after explicit scope normalization. [Evidence](development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
 
 **Limits.** No actual browser cold, image, activation, latency or RAM credit. Native continuation and live pages/dense writer, dual audit, G8/B and lifecycle/old artifacts/cold/rollback remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Own new receipt syntax within ledger continuations
+
+**Date:**2026-11-04 · **Commit:**pending patch412 · **Stage:**partial Stage3.2
+
+**Exit.** New-only scopes now cover native and reduced-owner continuations. Four controls pass;205focused/18legacy plus full323files/3161cases/one skip pass124.19s. Existing operations/guards remain AST-exact after explicit normalization. [Evidence](development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
+
+**Limits.** No physical browser cold, image, activation, timing or RAM credit. Live owned parsing/dense writer, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No trust/format/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
