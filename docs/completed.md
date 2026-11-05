@@ -18558,3 +18558,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The full startup/editor suite passes 15/15, including 20 generated cold histories; cut passes 8/8 across desktop/Android. Test-only faults reach real Worker IndexedDB transactions and observe their aborts. Independent AST comparison preserves all 298 original expect-expression nodes and the explicit timeout call. Types, formatting, configured lint and ten inventory controls pass. [Evidence](development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md).
 
 **Notes.** Preserve the earlier typecheck/config-placement failure, its test-only repair into vite/, and environment/lint qualifications. All app sources remain unchanged after Stage 1, and both operator-protected old unit controls remain unchanged. Unrelated baseline harness and wrapper failures still block the full checkpoint. Outcome recorded before advancing to those remaining fixtures.
+
+
+### Current omission controls reach the actual guards again
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 342 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Twenty-one existing cases pass after test-only mutation/probe rebinding and complete scheduler bundling. Original case assertions, negative controls, uniqueness checks and deadlines remain. Formatting, configured lint and ten inventory controls pass; counts/dispositions and every application source remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md).
+
+**Notes.** Preserve the failed exporter draft and fix its rename census without relaxing replay checks. Remaining historical/network fixtures, asset naming, formatting, stale receipts and existing 120-second full-unit wrappers still block the checkpoint. Outcome recorded before advancing to them.

@@ -35,8 +35,8 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     ],
     'verification-order': [
       '/src/crdt/accountReceive.ts',
-      'async validate(task, records, route, counter, view, baseline) {',
-      `async validate(task, records, route, counter, view, baseline) {
+      'async validate(task, records, route, counter, view, baseline, localRetentionRevision) {',
+      `async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
         await globalThis.verificationOrderProbe?.();`,
     ],
     classification: [

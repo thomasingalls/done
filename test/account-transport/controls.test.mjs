@@ -27,9 +27,9 @@ for (const control of ['signature', 'current'])
           const pattern =
             control === 'signature'
               ? /!\(await crypto\.subtle\.verify\(\s*'Ed25519',\s*auth.key,\s*unhex\(request.signature, 64\),\s*readRequestMessage\(request\),\s*\)\)/g
-              : /snapshotBytes\(s\) !== snapshotBytes\(snapshot\(db, request.workspace\)\)/g;
+              : /(hook\('after-verify', 'read-accepted'\);\s*db.exec\('BEGIN'\);\s*if \()!unchanged\(db, s, reuse\)/g;
           assert.equal([...code.matchAll(pattern)].length, 1, 'Mutation anchor');
-          code = code.replace(pattern, 'false');
+          code = code.replace(pattern, control === 'current' ? '$1false' : 'false');
         }
         writeFileSync(join(dir, folder, file), code);
       }

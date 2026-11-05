@@ -189,8 +189,11 @@ asset setup without changing the original assertion.
 [341](./development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md)
 restores actual Worker fault delivery: startup/editor 15/15 and cut 8/8 pass,
 with all original assertions/messages/deadlines intact. Application source
-remains unchanged. Next are the remaining baseline mutation/source/network
-fixtures, formatting, stale receipts and unchanged 120-second unit-wrapper
+remains unchanged. [342](./development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md)
+restores 21 omission/concurrency/counter controls with unique actual guard
+anchors and a complete scheduler closure. Next are the remaining historical
+writer and generated-receive fixtures, public-runtime asset-name expectations,
+crypto-inventory formatting, stale receipts and unchanged 120-second unit-wrapper
 deadlines. If a case needs an application change or a guard relaxation, report
 the full list first. Continue Stage 2 only after the checkpoint is green.
 

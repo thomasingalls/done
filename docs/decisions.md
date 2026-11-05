@@ -6900,3 +6900,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** PRD v9/TRD v8 and the operator's resume-338 instructions preserve all admission, durability and original test assertions. Window-only IndexedDB monkeypatches no longer reach storage after the Worker conversion.
 
 **Decision.** Inject the existing transaction refusal inside the actual Local owner/startup Worker and require observation of the abort. Retain the Window journal refusal and every old expect expression/deadline. Keep the helper outside src and product entries. Put the dev fixture config in the existing tooling TypeScript project rather than expanding the app project's file list. Use the repository's configured lint mode; an extra stricter invocation creates no new requirement.
+
+
+### Restore fixture sensitivity without changing the protected checks
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 342
+
+**Orientation.** PRD v9/TRD v8 and the operator's resume require real fault delivery and all security checks. Signed-base controls failed before executing their intended faults because source anchors and a copied scheduler's imports had drifted.
+
+**Decision.** Rebind each omission to its corresponding current guard and retain the original ordinary-refusal/mutant-disclosure and counter/queue assertions. Bundle the actual mutated scheduler graph, checking one entry and complete output. Do not alter app/service checks to accommodate a fixture. Preserve exact patch export checks and the red full-check census.
