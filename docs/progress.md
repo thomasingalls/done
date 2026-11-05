@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: Stage3.2 approved format hardening; native frame checkpoint remains open
-blocks_on: native frame availability for full checkpoint; unit/property codec work can proceed
+blocks_on: remaining functional checkpoint commands; native format fencing and reader/writer hardening required
 updated: 2026-11-03
 ```
 
@@ -197,12 +197,14 @@ retains18 passing root commands and the7-versus14 counterexample.
 fixes private unconsumed physical pressure; all95 focused cases and its exact
 omission control pass. Old verification/guard/test ASTs stay exact.
 
-**Native checkpoint remains open.**
+**Native checkpoint remains open; editor now passes.**
 [374](./development-evidence/2026-11-02-release-hardening/374-format-approval-and-frame-blocker/README.md)
-retains20 passing root commands, twelve passing normal editor cases, all13 editor
-attempts and the full signed-base reproduction. Post-failure frame count is0/200ms
-in two controls. No error earns detection credit. Every experimental harness and
-browser change is restored; Mac display/session status is pending.
+retains all13 editor attempts and the signed-base reproduction. The operator now
+confirms Mac awake/unlocked. [377](./development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md)
+retains an extra-wrapper cancellation and the full original-command pass:
+12normal cases,3mutants detected with the unchanged120s repository stage. No
+causal explanation or reliable margin for earlier frame failures is claimed.
+The remaining checkpoint commands and allStage5 gates are still required.
 
 **Stage3.2 codec isolated and checked.**
 [375](./development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md)
@@ -216,10 +218,16 @@ checks exact legacy/tagged MACs, closed value1 and monotonic native-write guards
 All85 focused,10 promotion/retained and19 parser cases pass. Two omissions fail
 their exact assertions. One pre-existing test anchor is repaired after base reproduction.
 
-**Next bounded outcome.** Extend the floor to joined custody and retained readings,
-review every rewrite/rotation/handoff/install path, then prove native exclusion and
-floor acknowledgment before any binary effect. Continue stored mode, all logical
-readers, owned pages, G8/B and same-tree writer-on/off artifacts. Stage4 frame
-checkpoint and allStage5 gates remain open; no final acceptance or publication.
+**Joined/retained floor metadata checked; no installation.**
+[377](./development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md)
+checks actual closed joined/reading parsers, complete payload inclusion and both
+central downgrade guards. Five Node and43 focused unit cases pass; two exact
+omissions fail. Old authentication/CAS/commit ASTs remain exact.
+
+**Next bounded outcome.** Prove actual native Page/Account-cohort provenance and
+old-owner exclusion; install/acknowledge the authenticated floor before any new
+receipt effect, preserving every rewrite/rotation/handoff/install path. Continue
+stored mode, logical readers, owned pages, G8/B and same-tree writer-on/off artifacts.
+All functional checkpoints and Stage5 gates remain required; no acceptance or publication.
 
 This seat edits only this document; the other seat's document above is unchanged.

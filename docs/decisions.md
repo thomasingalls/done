@@ -7073,3 +7073,10 @@ Keep the new codec unwired until the authenticated floor and all readers are har
 **Date:**2026-11-03 · **Scope:**approved Stage3.2 implementation
 
 Use a single closed optional encoding-floor helper and enforce monotonic preservation at the existing native promotion writer. Legacy absence emits no MAC extension and retains exact original bytes. A marked payload appends only the operator-approved tagged tuple. This isolated slice does not install the floor or authorize binary writing; actual native exclusion and rollback evidence remain obligations. A pre-existing test-only source omission anchor now targets the same route guard's current historical variable, with all cases and assertions unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md).
+
+
+### Preserve floor scopes and distinguish setup time from the repository stage
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 metadata and checkpoint observation
+
+Joined writes retain both the marker floor and any retained-reading floor. Each scope remains authenticated by the existing joined payload; absent legacy fields keep their exact bytes. The private test seam exports actual parsers only inside a disposable Node bundle and is absent from app entry points. Phase377 also removes no repository deadline: the original full editor command passes with its unchanged120s stage, after an extra external wrapper had truncated it during setup. Preserve both results and the earlier frame failures rather than attributing them to Mac sleep. [Evidence](development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md).

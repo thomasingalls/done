@@ -7,6 +7,11 @@ import {
 } from './handoffHistory';
 /** Replay a later device's retained baseline and each independent publisher prefix. */
 import { closed } from '../../account-protocol/preparation';
+import {
+  captureInboundReceiptVersion,
+  inboundReceiptVersionFields,
+  type InboundReceiptVersion,
+} from './inboundReceiptVersion';
 import { same } from '../../account-protocol/admission';
 import { unhex } from '../../account-protocol/recovery';
 import {
@@ -52,7 +57,7 @@ import { historyMembership, historyGeneration } from '../../account-protocol/adm
 import { openReplacementCheckpoint } from './replacementCheckpoint';
 
 export const MEMBERSHIP_READING_EVENTS = 4096;
-interface ReadingFields {
+interface ReadingFields extends InboundReceiptVersion {
   epoch: number;
   head: string;
   streams: { publisher: string; events: string[]; prefix: InboundContext['prefix'] }[];
@@ -99,6 +104,7 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     'checkpoint',
     'admission',
     'streams',
+    ...inboundReceiptVersionFields(input),
     ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
     ...((input as { v?: unknown; history?: unknown } | null)?.v === 2 &&
     (input as { history?: unknown }).history !== undefined
@@ -174,6 +180,7 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     epoch: r['epoch'] as number,
     head: r['head'] as string,
     streams,
+    ...captureInboundReceiptVersion(r),
   };
 }
 export async function verifyReplacementReading(

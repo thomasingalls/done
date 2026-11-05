@@ -541,7 +541,7 @@
     },
     {
       "path": "src/account/contentReader.ts",
-      "sha256": "38dd9a71babc5541975e81a7d146786bd161bdad45d98b1a556d3fa33e2a38dd"
+      "sha256": "3d3d1c699537c2d7beacb9acb35129122cc44d6f5627d9a173511978be0a47e7"
     },
     {
       "path": "src/account/deviceConnectionRoutes.ts",
@@ -1121,7 +1121,7 @@
     },
     {
       "path": "src/crdt/joinedAccount.ts",
-      "sha256": "7cbd69d3cda075a1411cb8b3d5a3c36d1c67276f23b0009e9f3c39864b2f0671"
+      "sha256": "e8773975427f050559701e1d9e097f9082251939030034182ce7d568946fcfbb"
     },
     {
       "path": "src/crdt/journalCodec.ts",
@@ -1297,7 +1297,7 @@
     },
     {
       "path": "src/crdt/membershipReading.ts",
-      "sha256": "fa823c6f7575a985def64b2dc69ac6daf7a8cb7a6f6df658bd609487fd50fc6b"
+      "sha256": "792a09344bc012b203133ab3ce8eaaa33f88cb27e370a08b494cc85111eaee34"
     },
     {
       "path": "src/crdt/membershipSource.ts",
@@ -2453,7 +2453,7 @@
       "sites": [
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 156
+          "line": 162
         }
       ]
     },
@@ -3225,11 +3225,11 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 492
+          "line": 504
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 501
+          "line": 513
         }
       ]
     },

@@ -36,7 +36,8 @@ import type { LocalPasskey } from '../crdt/accountAccess';
 import { privateDeliveryPost } from './privateDeliveryHttp';
 import type { CeremonyVault } from './ceremonyVault';
 import type { ContentHandoffState } from './contentHandoff';
-export interface ContentReaderState {
+import type { InboundReceiptVersion } from '../crdt/inboundReceiptVersion';
+export interface ContentReaderState extends InboundReceiptVersion {
   checkpoint: ContentCheckpoint;
   admission: CheckpointAdmission | null;
   active: boolean;

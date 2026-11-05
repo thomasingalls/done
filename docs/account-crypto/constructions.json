@@ -5562,7 +5562,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 156,
+          "line": 162,
           "label": "done/certified-account-device/v1",
           "kind": "literal"
         },
@@ -5598,13 +5598,13 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 492,
+          "line": 504,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 501,
+          "line": 513,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },
@@ -6556,7 +6556,8 @@
         "test/receiveDownloadWidth.test.ts",
         "test/rangeWriterPolicy.test.ts",
         "test/inboundPageCodec.test.ts",
-        "test/inboundReceiptFloor.test.ts"
+        "test/inboundReceiptFloor.test.ts",
+        "test/inbound-receipt-floor/joined.test.mjs"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -6571,9 +6572,10 @@
         "monotonic-authenticated-local-floor",
         "same-tree-writer-off-rollback",
         "legacy-exact-tagged-floor-mac",
-        "closed-floor-parser-and-monotonic-native-cas"
+        "closed-floor-parser-and-monotonic-native-cas",
+        "joined-and-retained-reading-floor-preservation"
       ],
-      "blocker": "Approved binary codec and optional promotion floor core only; no floor installation or live binary effects. Joined/retained-reading preservation, actual old-owner fences, all logical readers, stored mode, owned pages, stale-tab/rollback and final gates remain open. No aggregate credit.",
+      "blocker": "Approved binary codec and promotion/joined/retained-reading floor metadata only; no floor installation or live binary effects. Actual old-owner fences, all logical readers, stored mode, owned pages, stale-tab/rollback and final gates remain open. No aggregate credit.",
       "next": "Harden the approved Stage3.2 contract in bounded patches before enabling release writing; ordinary builds stay off."
     }
   ],

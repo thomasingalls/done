@@ -64,6 +64,11 @@ import {
 } from './localGenesisRecord';
 import { parseRecord, recordKey, recordEqual, type CustodyRecord } from './custodyRecord';
 import { storageUpgradeKey } from './storageCompatibility';
+import {
+  inboundReceiptVersionFields,
+  requireMonotonicInboundReceiptVersion,
+  type InboundReceiptVersion,
+} from './inboundReceiptVersion';
 import { withPromotionRoot, signRecord } from './promotionRecord';
 import { hex, utf8, hkdf, fields, openCredential, type Bytes } from './custodyCrypto';
 import { contentTransaction } from './contentDatabase';
@@ -94,7 +99,7 @@ import {
   type InstalledMembership,
 } from './accountMembership';
 
-interface JoinedFields {
+interface JoinedFields extends InboundReceiptVersion {
   kind: 'certified-account-device';
   slotId: string;
   claimMac: string;
@@ -146,6 +151,7 @@ export const joinedKeyHash = (marker: JoinedRecord) =>
       ? membershipDeliveryHash(laterCertification(marker).epoch.delivery)
       : contentDeliveryHash(marker.authority.certification.epoch.delivery);
 export const joinedPayload = (r: JoinedRecord) => {
+  inboundReceiptVersionFields(r);
   const { mac: _mac, ...payload } = r;
   return utf8(JSON.stringify(payload));
 };
@@ -170,6 +176,7 @@ function parseJoined(input: unknown): JoinedRecord {
     'reading',
     'key',
     'mac',
+    ...inboundReceiptVersionFields(input),
     ...(Object.hasOwn(input as object, 'membership') ? ['membership'] : []),
   ]);
   if (
@@ -234,6 +241,7 @@ function parseJoined(input: unknown): JoinedRecord {
     'active',
     'events',
     'prefix',
+    ...inboundReceiptVersionFields(r['reading']),
     ...((r['reading'] as { history?: unknown })?.history === undefined ? [] : ['history']),
   ]);
   if (
@@ -349,6 +357,8 @@ async function writeJoined(
   record: CustodyRecord = state.record,
   check?: () => void,
 ) {
+  requireMonotonicInboundReceiptVersion(state.marker, next);
+  requireMonotonicInboundReceiptVersion(state.marker?.reading, next.reading);
   const found = await probeDatabase(task, 'done.custody', (db) =>
     contentTransaction(
       db,
@@ -374,6 +384,8 @@ async function writeJoined(
                 !same(requests[2]!.result ?? null, state.marker)
               )
                 throw Error('Certified device compare changed');
+              requireMonotonicInboundReceiptVersion(state.marker, next);
+              requireMonotonicInboundReceiptVersion(state.marker?.reading, next.reading);
               check?.();
               if (!recordEqual(record, state.record)) store.put(record, recordKey(scope));
               store.put(next, storageUpgradeKey(next.slotId));

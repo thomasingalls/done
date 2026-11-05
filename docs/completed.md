@@ -18869,3 +18869,12 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Exit.** Closed floor parsing, exact legacy and tagged HMAC bytes, retained encoding and central monotonic promotion-write guards pass85 focused cases,10 old promotion/retained cases,19 parser/control cases and two exact omission controls. Old guards/CAS/commit ASTs remain exact. One pre-existing mutation anchor is repaired after signed-base reproduction, keeping all test assertions. [Evidence](development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md).
 
 **Limit.** No floor installation or native old-tab/artifact/Stage5 proof. Joined/retained-reading integration and the remaining approved format contract continue; Stage4 frame checkpoint stays open.
+
+
+### Joined custody and retained readings preserve the encoding floor
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch377 · **Stage:**Stage3.2 floor metadata
+
+**Exit.** Five private-parser/writer Node cases,43 focused unit cases, two exact omission controls and types/quality/registry/inventory pass. Old authentication/CAS/commit/parser ASTs remain exact apart from named floor additions. No floor installation or binary effects. [Evidence](development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md).
+
+**Checkpoint clarification.** With Mac awake, an added outer command wrapper cancelled the editor stage at53.7s after setup. The original repository owner, retaining its120s stage and every existing resource/startup/cleanup limit, then passes12normal cases and detects all3mutants. Old failures remain; no causal frame repair or full-checkpoint/Stage5 success is claimed.
