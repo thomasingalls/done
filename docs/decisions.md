@@ -7482,3 +7482,10 @@ Treat this as a harness build precondition, not evidence that missing content wa
 **Date:**2026-11-04 · **Commit:**pending patch433
 
 Do not expand the joint omission to the pre-existing async branch. The two-space anchor refresh restores the signed-base operation and every existing assertion. Keep432as a failed attempt, and complete the checkpoint before the remaining B functional proofs. [Evidence](development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).
+
+
+### Separate construction registry layout from its unchanged security values
+
+**Date:**2026-11-04 · **Commit:**pending patch434
+
+Keep the failed formatting attempt. Normalize the mutable construction registry layout in a separate patch with independent parsed-value and complete-token identity checks, preserving every contract and source address. The earlier deferred test/harness formatting patch stays untouched. A separate source review must account for the remaining recovery full-unit invocation under the operator’s already approved240s full-unit hang guard; its focused recovery deadline must stay120s. [Evidence](development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).

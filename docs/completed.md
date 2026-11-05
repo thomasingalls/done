@@ -19419,3 +19419,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The indentation-only fixture repair restores all17native receive cases plus51focused cases, with no app code, assertion, omission scope or deadline change. [Evidence](development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).
 
 **Limits.** Functional regression/harness evidence only; no continuous B fairness, actual past-index fallback or Stage5 credit. The remaining19root commands are still unrun. No signing, release preparation, push, publication, deployment or computer use. Outcome precedes advancing this seat.
+
+
+### Preserve the remaining checkpoint at the construction layout check
+
+**Date:**2026-11-04 · **Commit:**pending patch434 · **Stage:**partial Stage3.2
+
+**Exit.** Eight more root commands pass;first-authority stops at JSON layout after its functional/security checks pass. Preserve that failure and ten unattempted commands. All source pins remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).
+
+**Limits.** Failed partial coherent checkpoint, not Stage3closure or Stage5acceptance. All original case, recovery and performance deadlines remain. The nine later full-unit contract commands have not run. No canonical app or old test edits in434, no new lab, signing, push, release preparation, publication or deployment. B native fairness/past-index remains open; pause for commits beforeStage5. Outcome precedes advancing this seat.

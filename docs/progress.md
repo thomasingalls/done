@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Refresh only the receive joint-control indentation anchor](./development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).
-The complete account:receive campaign passes:51focused cases and all17native cases, including baseline missing-content refusal, both single omissions and the original joint omission. Both parent stages exit0 without timeout; the whole command takes106.43s. The independent inventory comparison changes only the existing fixture source hash; every other graph field, obligation and all449runtime hashes remain exact. Lint, scoped formatting, registry and inventory controls pass. The failed432run remains unchanged.
+**Latest checks.** [Preserve the remaining checkpoint at the construction layout check](./development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).
+Eight commands64–71pass:receive-editor,service-inbound,receive-transport,receive-driver,sync,admission-bounds,activation andcrypto-prep. In72first-authority all inventory, authority, format-contract, admission, slot-verifier,31vector and lint stages pass; only its final formatter rejects constructions.json. There is no timeout or failed security assertion. Ten commands73–82remain unattempted. Independent review verifies all59,466source files and membership in both directions unchanged. The proposed registry layout preserves all99parsed entries and every non-whitespace JSON token. The private reviewer first assumed the direct crypto census emitted a parent summary; retain that failed collector/source, then correct only the assumption and successfully retain all real parent/raw reports.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze433, then run commands64–82 sequentially on a fresh fixed-source population with the approved240s full-unit hang guard and unchanged native deadlines. Close continuous B fairness with/without backlog and withheld hints plus actual past-index fallback in bounded functional phases. Then PAUSE FOR COMMITS before any Stage5cell.
+**Active bounded outcome.** Freeze434. Refresh construction registry layout in435 and rerun first-authority with unchanged assertions. Then address only the overlooked recovery full-unit hang-guard entry under the existing approval, record actual unit times, and complete commands73–82. Close the B native continuous fairness and actual past-index obligations next. PAUSE FOR COMMITS before anyStage5cell.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
