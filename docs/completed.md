@@ -19143,3 +19143,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Raw fixed-header work and scoped record capture share existing guards/projection. The census catch remains exact. Keep one owned binary backing, erase unused legacy raw/decoded-entry copies and refused buffers. Final101 focused,4 unchanged generation and full314files/3115cases/one existing skip pass114.16s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md).
 
 **Limits.** Initial retained-backing erasure caused11 unit reds; corrected. One old error-surface failure corrected without changing its test. Before expectation mistake and all versions remain; no old test edits. Append binary fallback and later hardening/gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Extend binary page indexes under exact prefix and logical bounds
+
+**Date:** 2026-11-04 · **Commit:** pending patch405 · **Stage:** partial Stage3.2
+
+**Exit.** Genuine binary then legacy continuation equals independent full replay and signed originals. Old prefix/canonical/authority/witness/reducer bounds remain, with fixed-header preflight before expansion, owner proof-byte observation and precise fallback/cleanup. Final107 focused,4 unchanged generation and full315files/3121cases/one existing skip pass116.13s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md).
+
+**Limits.** Anchor miss/stale-source run, new byte-container assertion and type-only review normalization retained. Added sixth cleanup case has no before credit. No old test edits or native MAC/performance claim. All later owned-syntax/property/writer/lifecycle/final gates remain. Outcome recorded before updating this seat's active state.

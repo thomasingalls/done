@@ -28,8 +28,13 @@ import {
   expectedPosition,
   type DeliveryState,
 } from './deliveryRecord';
-import { inboundEntryExtent, type InboundState, type inspectInbound } from './inboundLedger';
-import { ownedByteCapacity } from './verificationOwnership';
+import {
+  captureInboundLedgerRecord,
+  inboundEntryExtent,
+  type InboundState,
+  type inspectInbound,
+} from './inboundLedger';
+import { ownedByteCapacity, eraseUnretained } from './verificationOwnership';
 import { type InboundContext } from './accountInbound';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 import {
@@ -41,11 +46,7 @@ import {
 import { historyMinimumGeneration } from '../../account-protocol/admissionHistory';
 import { captureRouteAt } from './sourceCapture';
 import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
-import {
-  decodeInboundRecord,
-  isInboundRecordTag,
-  captureScopedInboundReceiptSyntax,
-} from './inboundRecord';
+import { decodeInboundRecord, isInboundRecordTag, inboundReceiptByteWork } from './inboundRecord';
 import { isHistoryInstallTag } from './historyInstall';
 import { hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
@@ -284,7 +285,11 @@ export async function extendAccountLedger(
   reuse: { memo: VerificationMemo; current(): void; recordOwnership?: AccountRecordOwnership },
   equivalentContent?: () => boolean,
 ): Promise<Pick<AccountLedgerView, 'census' | 'delivery' | 'indexes'> | undefined> {
-  if (previous.census.entries.some((entry) => entry.extent)) return;
+  if (
+    previous.census.entries.some((entry) => entry.extent) &&
+    typeof reuse.memo.ownedBytes !== 'function'
+  )
+    return;
   let added = appendedRecords(before, records);
   if (!added) {
     added = contentReplacement(before, records);
@@ -299,229 +304,246 @@ export async function extendAccountLedger(
     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
   )
     return;
-  if (
-    !accountLedgerIndexUsage(
-      previous,
-      records,
-      reuse.memo.ownedBytes?.() ?? 0,
-      reuse.recordOwnership,
-    ).eligible
-  )
-    return;
-  // History installations and legacy own-inbound writes take the full reference.
+  const usage = accountLedgerIndexUsage(
+    previous,
+    records,
+    reuse.memo.ownedBytes?.() ?? 0,
+    reuse.recordOwnership,
+  );
+  if (!usage.eligible) return;
+  let logicalWork = usage.logicalRows;
+  // Fixed header only, before expanding or decoding any new signed request/page.
   for (const row of added)
     if (!content(row)) {
-      const captured = captureScopedInboundReceiptSyntax(row.bytes, base);
-      if (captured?.receipt.kind === 'page') return;
-      const tag = fields(row)[0];
-      if (isInboundRecordTag(tag)) {
-        if (
-          decodeInboundRequest(decodeInboundRecord(row.bytes).request).publisher ===
-          base.publisher.id
+      logicalWork += inboundReceiptByteWork(row.bytes, base) - 1;
+      if (logicalWork > INDEX_MAX_ROWS) return;
+    }
+  const incoming = new Map<
+    OpenedRecord,
+    NonNullable<ReturnType<typeof captureInboundLedgerRecord>>
+  >();
+  let transferred = false;
+  try {
+    // Keep the old unconditional canonical/byte check for every added non-content row.
+    // History installations and own-publisher receipts still take the full reference.
+    for (const row of added)
+      if (!content(row)) {
+        const entry = captureInboundLedgerRecord(row, base);
+        if (entry) {
+          incoming.set(row, entry);
+          if (entry.extent && typeof reuse.memo.ownedBytes !== 'function') return;
+          if (decodeInboundRequest(entry.event.request).publisher === base.publisher.id) return;
+        } else if (
+          !['done/source-capture/v1', 'done/account-spool/v1', 'done/account-delivery/v1'].includes(
+            fields(row)[0] as string,
+          )
         )
           return;
-      } else if (
-        !['done/source-capture/v1', 'done/account-spool/v1', 'done/account-delivery/v1'].includes(
-          tag as string,
-        )
-      )
-        return;
-    }
-  const indexes: AccountLedgerIndexes = {
-    sources: new Map(old.sources),
-    sourceCount: old.sourceCount,
-    used: new Set(old.used),
-    expected: new Map(old.expected),
-    envelopes: new Map(old.envelopes),
-    witness: { ...old.witness },
-    epoch: old.epoch,
-  };
-  countLedger('incremental');
-  const prior = previous.census.delivery;
-  const spool: SpoolState = {
-    ...prior.spool,
-    sources: new Map(prior.spool.sources),
-    positions: prior.spool.positions.map((p) => ({
-      ...p,
-      attempts: [...p.attempts],
-      ...(p.retries ? { retries: [...p.retries] } : {}),
-    })),
-    sourceRecords: [...prior.spool.sourceRecords],
-    events: [...prior.spool.events],
-  };
-  const ledger = [...prior.ledger],
-    entries = [...prior.entries],
-    newLedger: OpenedRecord[] = [],
-    newEntries: typeof entries = [];
-  const inbound = [...previous.census.entries];
-  const kept = new Set(records.map((r) => r.seq));
-  spool.sourceRecords = spool.sourceRecords.filter((r) => kept.has(r.seq));
-  const touched = new Set<number>();
-  for (const row of added) {
-    if (content(row)) {
-      spool.sourceRecords.push(row);
-      continue;
-    }
-    const f = fields(row),
-      tag = f[0];
-    if (tag === 'done/source-capture/v1') {
-      if (row.kind !== 'outbound') captureError('Source record misplaced');
-      const x = sourceIndex(row.bytes, row.seq, route),
-        found = spool.sources.get(x.id);
-      if (found && !sameBytes(found, row.bytes))
-        captureError('Conflicting source capsule identity');
-      spool.sources.set(x.id, row.bytes);
-      spool.sourceRecords.push(row);
-      if (!indexes.sources.has(x.id)) {
-        indexes.sourceCount += x.index.sources.length;
-        if (indexes.sourceCount > INDEX_MAX_ROWS) return;
-        indexes.sources.set(x.id, x.index);
       }
-      continue;
-    }
-    const inboundEvent = isInboundRecordTag(tag) ? decodeInboundRecord(row.bytes) : undefined;
-    const epoch = inboundEvent
-      ? decodeInboundRequest(inboundEvent.request).epoch
-      : (f[5] as number);
-    // Adoption takes the full verifier and fixes its event boundary before append reuse.
-    // The last retained event can still precede that boundary: monotonicity alone would
-    // admit another old-epoch event that the reference rejects at the next audit/open.
-    if (route.history && epoch !== route.epoch)
-      captureError('Account ledger crosses installed authority');
-    indexes.epoch = epoch;
-    countLedger('events');
-    spool.events.push(row.bytes);
-    indexes.witness = await extendSpoolWitness(indexes.witness, row.bytes, subtle);
-    if (inboundEvent) {
-      if (row.kind !== 'heads') captureError('Inbound record misplaced');
-      inbound.push({ record: row, event: inboundEvent });
-      continue;
-    }
-    ledger.push(row);
-    newLedger.push(row);
-    if (tag === 'done/account-delivery/v1') {
-      const entry = decodeDeliveryEntry(row.bytes, route, base.authority);
-      if ((entry.type === 'submission') !== (row.kind === 'outbound'))
-        captureError('Delivery record misplaced');
-      const e = { record: row, entry, epoch };
-      entries.push(e);
-      newEntries.push(e);
-      continue;
-    }
-    const e = decodeSpoolEntry(row.bytes, route);
-    if ((e.type === 'envelope') !== (row.kind === 'outbound'))
-      captureError('Spool record misplaced');
-    if (e.type === 'position' || e.type === 'position-batch') {
-      if (e.position !== nextSpoolPosition(spool) || spool.positions.some((p) => !p.wire))
-        captureError('Position sequence or unresolved predecessor');
-      const refs = e.type === 'position' ? [e.source] : e.sources;
-      let sequence = -1,
-        index = -1,
-        total = 0,
-        actor = '',
-        kind = '',
-        sourceEpoch = 0;
-      for (const ref of refs) {
-        const meta = indexes.sources.get(ref.id),
-          key = ref.id + ':' + ref.index;
-        if (!meta || indexes.used.has(key) || meta.seq >= row.seq)
-          return captureError('Missing, repeated or late source');
-        if (meta.seq < sequence || (meta.seq === sequence && ref.index <= index))
-          captureError('Source batch order changed');
-        if (sourceEpoch && meta.epoch !== sourceEpoch)
-          captureError('Source batch crosses authority');
-        const s = meta.sources[ref.index];
-        if (!s) return captureError('Missing source index');
-        if (actor && (actor !== s.actor || kind !== s.kind))
-          captureError('Source batch actor changed');
-        total += s.length;
-        if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
-        sourceEpoch = meta.epoch;
-        actor = s.actor;
-        kind = s.kind;
-        sequence = meta.seq;
-        index = ref.index;
-        indexes.used.add(key);
+    const indexes: AccountLedgerIndexes = {
+      sources: new Map(old.sources),
+      sourceCount: old.sourceCount,
+      used: new Set(old.used),
+      expected: new Map(old.expected),
+      envelopes: new Map(old.envelopes),
+      witness: { ...old.witness },
+      epoch: old.epoch,
+    };
+    countLedger('incremental');
+    const prior = previous.census.delivery;
+    const spool: SpoolState = {
+      ...prior.spool,
+      sources: new Map(prior.spool.sources),
+      positions: prior.spool.positions.map((p) => ({
+        ...p,
+        attempts: [...p.attempts],
+        ...(p.retries ? { retries: [...p.retries] } : {}),
+      })),
+      sourceRecords: [...prior.spool.sourceRecords],
+      events: [...prior.spool.events],
+    };
+    const ledger = [...prior.ledger],
+      entries = [...prior.entries],
+      newLedger: OpenedRecord[] = [],
+      newEntries: typeof entries = [];
+    const inbound = [...previous.census.entries];
+    const kept = new Set(records.map((r) => r.seq));
+    spool.sourceRecords = spool.sourceRecords.filter((r) => kept.has(r.seq));
+    const touched = new Set<number>();
+    for (const row of added) {
+      if (content(row)) {
+        spool.sourceRecords.push(row);
+        continue;
       }
-      spool.positions.push({
-        position: e.position,
-        source: refs[0]!,
-        ...(refs.length > 1 ? { additional: refs.slice(1) } : {}),
-        attempts: [],
-      });
-    } else if (e.type === 'retry') {
-      const p = spool.positions[e.position - (spool.origin?.position ?? 0) - 1];
-      if (!p?.wire || !route.history) return captureError('Retry without retained envelope');
-      const envelope = decodeNetworkEnvelope(p.wire),
-        proof = decodePositionResponse(e.refusal);
-      if (
-        proof.kind !== 'refused' ||
-        proof.refusal.reason !== 'retired-generation' ||
-        proof.refusal.workspace !== route.workspace ||
-        proof.refusal.credential !== route.credential ||
-        proof.refusal.position !== e.position ||
-        proof.refusal.digest !== hex(envelope.digest) ||
-        proof.refusal.epoch !== envelope.epoch ||
-        envelope.gen >= captureRouteAt(route, epoch).generation ||
-        envelope.gen >= historyMinimumGeneration(route.history, epoch)
-      )
-        captureError('Retry does not close an older generation');
-      (p.retries ??= []).push({ wire: p.wire, refusal: e.refusal });
-      delete p.wire;
-      p.attempts = [];
-    } else {
-      const p = spool.positions[e.position - (spool.origin?.position ?? 0) - 1];
-      if (!p || p.wire || (p !== spool.positions.at(-1) && !p.retries?.length))
-        return captureError('Spool transition without open position');
-      if (e.type === 'attempt') {
-        if (e.attempt !== spool.attempts + 1 || e.attempt >= NET_SEAL_LIMIT)
-          captureError('Invocation sequence changed');
-        spool.attempts = e.attempt;
-        p.attempts.push(e.attempt);
-      } else {
-        if (!p.attempts.length || e.attempt !== p.attempts.at(-1))
-          captureError('Envelope lacks latest invocation grant');
+      const inboundEntry = incoming.get(row),
+        f = inboundEntry ? undefined : fields(row),
+        tag = f?.[0];
+      if (tag === 'done/source-capture/v1') {
+        if (row.kind !== 'outbound') captureError('Source record misplaced');
+        const x = sourceIndex(row.bytes, row.seq, route),
+          found = spool.sources.get(x.id);
+        if (found && !sameBytes(found, row.bytes))
+          captureError('Conflicting source capsule identity');
+        spool.sources.set(x.id, row.bytes);
+        spool.sourceRecords.push(row);
+        if (!indexes.sources.has(x.id)) {
+          indexes.sourceCount += x.index.sources.length;
+          if (indexes.sourceCount > INDEX_MAX_ROWS) return;
+          indexes.sources.set(x.id, x.index);
+        }
+        continue;
+      }
+      const inboundEvent = inboundEntry?.event;
+      const epoch = inboundEvent
+        ? decodeInboundRequest(inboundEvent.request).epoch
+        : (f![5] as number);
+      // Adoption takes the full verifier and fixes its event boundary before append reuse.
+      // The last retained event can still precede that boundary: monotonicity alone would
+      // admit another old-epoch event that the reference rejects at the next audit/open.
+      if (route.history && epoch !== route.epoch)
+        captureError('Account ledger crosses installed authority');
+      indexes.epoch = epoch;
+      countLedger('events');
+      spool.events.push(row.bytes);
+      indexes.witness = await extendSpoolWitness(indexes.witness, row.bytes, subtle);
+      if (inboundEvent) {
+        if (row.kind !== 'heads') captureError('Inbound record misplaced');
+        inbound.push(inboundEntry!);
+        continue;
+      }
+      ledger.push(row);
+      newLedger.push(row);
+      if (tag === 'done/account-delivery/v1') {
+        const entry = decodeDeliveryEntry(row.bytes, route, base.authority);
+        if ((entry.type === 'submission') !== (row.kind === 'outbound'))
+          captureError('Delivery record misplaced');
+        const e = { record: row, entry, epoch };
+        entries.push(e);
+        newEntries.push(e);
+        continue;
+      }
+      const e = decodeSpoolEntry(row.bytes, route);
+      if ((e.type === 'envelope') !== (row.kind === 'outbound'))
+        captureError('Spool record misplaced');
+      if (e.type === 'position' || e.type === 'position-batch') {
+        if (e.position !== nextSpoolPosition(spool) || spool.positions.some((p) => !p.wire))
+          captureError('Position sequence or unresolved predecessor');
+        const refs = e.type === 'position' ? [e.source] : e.sources;
+        let sequence = -1,
+          index = -1,
+          total = 0,
+          actor = '',
+          kind = '',
+          sourceEpoch = 0;
+        for (const ref of refs) {
+          const meta = indexes.sources.get(ref.id),
+            key = ref.id + ':' + ref.index;
+          if (!meta || indexes.used.has(key) || meta.seq >= row.seq)
+            return captureError('Missing, repeated or late source');
+          if (meta.seq < sequence || (meta.seq === sequence && ref.index <= index))
+            captureError('Source batch order changed');
+          if (sourceEpoch && meta.epoch !== sourceEpoch)
+            captureError('Source batch crosses authority');
+          const s = meta.sources[ref.index];
+          if (!s) return captureError('Missing source index');
+          if (actor && (actor !== s.actor || kind !== s.kind))
+            captureError('Source batch actor changed');
+          total += s.length;
+          if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
+          sourceEpoch = meta.epoch;
+          actor = s.actor;
+          kind = s.kind;
+          sequence = meta.seq;
+          index = ref.index;
+          indexes.used.add(key);
+        }
+        spool.positions.push({
+          position: e.position,
+          source: refs[0]!,
+          ...(refs.length > 1 ? { additional: refs.slice(1) } : {}),
+          attempts: [],
+        });
+      } else if (e.type === 'retry') {
+        const p = spool.positions[e.position - (spool.origin?.position ?? 0) - 1];
+        if (!p?.wire || !route.history) return captureError('Retry without retained envelope');
+        const envelope = decodeNetworkEnvelope(p.wire),
+          proof = decodePositionResponse(e.refusal);
         if (
-          p.retries?.length &&
-          decodeNetworkEnvelope(e.wire).gen <= decodeNetworkEnvelope(p.retries.at(-1)!.wire).gen
+          proof.kind !== 'refused' ||
+          proof.refusal.reason !== 'retired-generation' ||
+          proof.refusal.workspace !== route.workspace ||
+          proof.refusal.credential !== route.credential ||
+          proof.refusal.position !== e.position ||
+          proof.refusal.digest !== hex(envelope.digest) ||
+          proof.refusal.epoch !== envelope.epoch ||
+          envelope.gen >= captureRouteAt(route, epoch).generation ||
+          envelope.gen >= historyMinimumGeneration(route.history, epoch)
         )
-          captureError('Retry generation did not advance');
-        p.wire = e.wire;
+          captureError('Retry does not close an older generation');
+        (p.retries ??= []).push({ wire: p.wire, refusal: e.refusal });
+        delete p.wire;
+        p.attempts = [];
+      } else {
+        const p = spool.positions[e.position - (spool.origin?.position ?? 0) - 1];
+        if (!p || p.wire || (p !== spool.positions.at(-1) && !p.retries?.length))
+          return captureError('Spool transition without open position');
+        if (e.type === 'attempt') {
+          if (e.attempt !== spool.attempts + 1 || e.attempt >= NET_SEAL_LIMIT)
+            captureError('Invocation sequence changed');
+          spool.attempts = e.attempt;
+          p.attempts.push(e.attempt);
+        } else {
+          if (!p.attempts.length || e.attempt !== p.attempts.at(-1))
+            captureError('Envelope lacks latest invocation grant');
+          if (
+            p.retries?.length &&
+            decodeNetworkEnvelope(e.wire).gen <= decodeNetworkEnvelope(p.retries.at(-1)!.wire).gen
+          )
+            captureError('Retry generation did not advance');
+          p.wire = e.wire;
+        }
       }
+      touched.add(e.position);
     }
-    touched.add(e.position);
+    if (!sameSpoolWitness(indexes.witness, counter.spool))
+      captureError('Spool ledger commitment changed');
+    await verifySpool(
+      { ...spool, positions: spool.positions.filter((p) => touched.has(p.position)) },
+      route,
+      new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
+      signer,
+      subtle,
+      reuse,
+    );
+    const state: DeliveryState = {
+      ...previous.delivery,
+      refusals: new Map(previous.delivery.refusals),
+      submissions: new Map(previous.delivery.submissions),
+      responses: new Map([...previous.delivery.responses].map(([n, r]) => [n, [...r]])),
+    };
+    const delivery = await verifyDelivery(
+      { spool, entries: newEntries, ledger: newLedger },
+      route,
+      base.authority,
+      signer,
+      subtle,
+      reuse,
+      { state, spool: prior.spool, envelopes: indexes.envelopes, expected: indexes.expected },
+    );
+    reuse.current();
+    transferred = true;
+    return {
+      census: { ...previous.census, entries: inbound, delivery: { spool, entries, ledger } },
+      delivery,
+      indexes,
+    };
+  } finally {
+    if (!transferred)
+      eraseUnretained(
+        [...incoming.values()].map((entry) => entry.event),
+        records,
+      );
   }
-  if (!sameSpoolWitness(indexes.witness, counter.spool))
-    captureError('Spool ledger commitment changed');
-  await verifySpool(
-    { ...spool, positions: spool.positions.filter((p) => touched.has(p.position)) },
-    route,
-    new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
-    signer,
-    subtle,
-    reuse,
-  );
-  const state: DeliveryState = {
-    ...previous.delivery,
-    refusals: new Map(previous.delivery.refusals),
-    submissions: new Map(previous.delivery.submissions),
-    responses: new Map([...previous.delivery.responses].map(([n, r]) => [n, [...r]])),
-  };
-  const delivery = await verifyDelivery(
-    { spool, entries: newEntries, ledger: newLedger },
-    route,
-    base.authority,
-    signer,
-    subtle,
-    reuse,
-    { state, spool: prior.spool, envelopes: indexes.envelopes, expected: indexes.expected },
-  );
-  reuse.current();
-  return {
-    census: { ...previous.census, entries: inbound, delivery: { spool, entries, ledger } },
-    delivery,
-    indexes,
-  };
 }
 
 /** Compare the observable verified result, independently of continuation-only indexes. */

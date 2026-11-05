@@ -7279,3 +7279,10 @@ Smaller physical rows do not establish full ownership charge. Verified callers s
 **Date:** 2026-11-04 · **Commit:** pending patch404
 
 Binary request/page frames are subviews of one owned backing, so retaining either keeps that allocation. Preserve it without adding copies; erase decoded entries, unused legacy raw copies and all refused captures. Shared private projection keeps the old census error boundary while the raw helper captures its own bytes/floor. Header work bounds expansion only and grants no syntax/authority trust. [404 evidence](development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md).
+
+
+### Keep the old canonical boundary while indexing binary appends
+
+**Date:** 2026-11-04 · **Commit:** pending patch405
+
+Do not replace the old unconditional scoped capture with a weaker tag-only pass for unrelated rows. Reuse the same raw capture, preserve own-publisher/history fallback, and count the fixed-header extent before expansion. The final verified state and real memo charge still govern retained eligibility. Transfer only new metadata on success; erase its buffers on refusal without touching caller or predecessor. [405 evidence](development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md).

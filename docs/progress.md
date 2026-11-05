@@ -186,27 +186,27 @@ checks. All four stored paths have aged binary semantic controls. Census/witness
 stays physical; replay/progress/reading limits stay logical. Index accounting now adds
 logical/owned-buffer ceilings, including the real memo and final fresh replay
 graph in both ownership modes. Fully verified binary views can now build cold indexes with explicit proof-byte
-observation; append continuation still takes the full reference. Every phase outcome/failure
+observation; peer page appends now reuse indexes under exact prefix, canonical,
+logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full314files/3115cases/one existing skip pass114.16s at120s;
-240s unused. Types,101 focused and4 unchanged generation/index controls pass,
-with reviewed registry/inventory. [Closed ledger capture](./development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md)
-keeps one owned binary backing and exact old census error scope. Initial erasure
-and message-surface unit failures remain; fixed without old test edits.
+**Latest checks.** Full315files/3121cases/one existing skip pass116.13s at120s;
+240s unused. Types,107 focused and4 unchanged generation/index controls pass,
+with reviewed registry/inventory. [Page append indexing](./development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md)
+agrees with full replay and signed originals; over-logical work refuses before
+decoding. Anchor/type-container/review failures remain; no old test edits or
+native MAC/lease/performance credit.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Wire binary append continuation using the closed
-raw capture and fixed-header preflight before expansion. Keep the old unconditional
-canonical/byte check for every added non-content row, exact prefix comparison,
-own-publisher/reference and installed-authority fences, physical witness and
-owner proof-byte observation. Compare genuine mixed page/legacy continuation to
-full replay and independently check retained envelope positions. Shared per-load
-syntax ownership and permanent mixed/stale-turn properties remain afterward.
+**Active bounded outcome.** Complete arbitrary mixed binary/legacy full-versus-
+incremental properties and the permanent record-scoped stale-turn negative control,
+including two publishers and original first indices above zero. Cover every
+reader path without weakening scope/cut/coverage checks. Then finish owned
+per-load/live syntax and dense writing, dual audit units and G8/B.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
