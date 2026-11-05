@@ -1,26 +1,29 @@
-# Inbound page receipts — proposed version 1 contract
+# Inbound page receipts — version 1 contract
 
-**Status: Stage 3.1 operator handoff, 2026-11-03. Not approved or implemented.**
-This is the proposed storage contract for Stage 3.2, not a statement that the
-current app supports it. RANGE_RECEIVE remains off in ordinary builds. The
+**Status: Operator approved Stage 3.2 on 2026-11-03, with writing on in this release.
+Not yet implemented or validated.** This is the approved storage contract, not a
+statement that the current app supports it. RANGE_RECEIVE remains off in ordinary builds. The
 [hardening scope](release-hardening-2026-11-02.md) and
 [Stage 2 checkpoint](development-evidence/2026-11-02-release-hardening/366-stage2-closed/README.md)
 remain governing context. No server endpoint, signed network frame, trust rule,
 limit, gate or deadline changes are proposed.
 
-## Decision requested
+## Operator decision
 
-Approve one self-contained binary receipt per committed contiguous extent of one
-original signed page, with an authenticated, monotonic local compatibility floor.
-Readers must be available independently of the writer flag. Approving this paper
-permits implementation and tests; it does not approve release, activation or any
-unverified artifact.
+On 2026-11-03 the operator approved this contract and all of Stage 3.2, selecting
+writing on in this release. Harden one self-contained binary receipt per committed
+contiguous extent of one original signed page, with the authenticated monotonic
+local compatibility floor. Readers remain independent of the writer flag.
 
-The operator can instead ship the reader one release ahead, or defer the format.
-Both choices leave RANGE_RECEIVE off for the first release and defer the G8/B,
-dense-receipt and owned-page gains. R1000, E, S/Y/capacity mapping and idle-start
-audit remain independently usable. No timing result for that reduced stack is
-claimed; Stage 5 must report its actual numbers if that option is selected.
+Build a writer-off image of the same hardened tree as the rollback target. Prove
+that it opens a profile holding dense rows, including from a stale tab; retain
+native ownership fences and exact writing/Undo. Record both source/image
+identities. Stage 6 must state plainly that rolling back to any build before this
+release locks out devices that wrote dense rows. This approval authorizes
+hardening and the selected release profile, not publication or deployment.
+
+The reader-first/deferred alternatives below remain documented alternatives, not
+the selected release order. No gate, check, budget, limit or deadline changed.
 
 ## Binary schema and bounds
 
@@ -183,7 +186,7 @@ budgets 16/s and 64/s. No second scheduler work lane or per-publisher fetch-ahea
 
 ## Compatibility floor, old tabs and handoff
 
-Proposed local floor: a closed optional `inboundReceiptVersion: 1` field in the
+Approved local floor: a closed optional `inboundReceiptVersion: 1` field in the
 authenticated promotion/joined interlock, and in a retained-reading object that
 contains binary events. Absence restricts that marker/retained-reading scope to legacy receipts. The
 initial retained reading can stay legacy while later native rows use a marked
@@ -237,18 +240,18 @@ trust change in implementation, stop and report.
 
 ## Rollback and release ordering
 
-There is no tested reader-only artifact yet. Stage 3.2 must build and test one
-from the hardened source with RANGE_RECEIVE=0, keeping readers enabled. It must
-open both legacy and binary data, preserve the floor and writing, permit ordinary
-legacy operation and pass cold/Undo checks. Record its source/image identity
+There is no tested writer-off artifact yet. Stage 3.2 must build and test one
+from the same hardened tree as the writer-on image, with RANGE_RECEIVE=0 and readers enabled. It must
+open both legacy and binary data, including from a stale tab, preserve the floor
+and writing, permit ordinary legacy operation and pass cold/Undo checks. Record its source/image identity
 before any writer artifact is eligible. RANGE_RECEIVE is a writer flag, not a
 reader-compatibility flag. Docker and Vite must pass it explicitly; ordinary and
 reader-only builds default to zero.
 
 Once the floor transaction commits, rollback requires that compatible reader
 artifact even if no binary row followed it. Disabling the writer stops new binary
-rows; it neither converts existing rows nor removes the floor. The old released
-binary cannot reopen marked storage. Do not clear storage, strip metadata,
+rows; it neither converts existing rows nor removes the floor. Rolling back to any build before this release locks out devices that wrote dense
+rows. The old released binary cannot reopen marked storage. Do not clear storage, strip metadata,
 re-encrypt rows or restore an older browser profile as an automatic rollback.
 Accepted writing and authenticated history must remain. No server rollback is
 needed for this client-local payload format.
@@ -258,7 +261,10 @@ confirm client adoption, then separately enable the tested writer in a later
 release. It costs a second release and delays the multi-entry/dense gains. A
 combined reader/writer release instead relies on the tested old-tab fence and
 requires the compatible reader-only rollback artifact from the outset. The
-operator chooses; this contract does not silently select activation.
+operator selected this combined release on 2026-11-03. Ordinary builds remain
+writer-off; the tested release profile enables writing. A rollback artifact stops
+new dense writes only in clients that adopt it: cached writer-on tabs do not lose
+their compiled writer flag merely because the served artifact changes.
 
 ## Existing v2 and lab formats
 

@@ -163,14 +163,14 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: Stage4 idle-start audit; Stage3.1 paper handed over, decision pending
-blocks_on: operator approval before any Stage3.2 format implementation
+scope: Stage3.2 approved format hardening; native frame checkpoint remains open
+blocks_on: native frame availability for full checkpoint; unit/property codec work can proceed
 updated: 2026-11-03
 ```
 
 **Contract.** Follow the operator's [hardening plan](./release-hardening-2026-11-02.md).
 All security checks, gates, limits, budgets and deadlines stay. No new lab work,
-computer use, commit, push, release preparation, publication or deployment.
+computer use, commit, push, publication or deployment. Artifact builds follow the approved plan.
 Keep sequential immutable patches and every earlier phase/lab root intact.
 
 **Closed.** [Stage1](./development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md)
@@ -181,12 +181,12 @@ full unit child. Earlier clear/trim observer timeouts and their full passing ret
 remain, with cause and reliable margin unresolved. No monolithic final check success
 or Stage5 credit is claimed. The broader formatting patch stays deferred.
 
-**Format handoff ready; not approved.** [Contract](./account-inbound-page-receipts.md)
-and [367 review](./development-evidence/2026-11-02-release-hardening/367-format-contract/README.md)
-specify the bounded binary version, all readers, monotonic authenticated floor,
-old-tab/cut/rollback requirements, dual logical/physical audit ceilings and the
-reader-first option. No format code or new writer is authorized. Stage3 stops
-for the operator's decision.
+**Stage3.1 approved, writing on in this release.** The operator approved
+[the full contract](./account-inbound-page-receipts.md) on2026-11-03. Harden all
+Stage3.2 items. Build the writer-off rollback image from the same tree; prove
+legacy/dense and stale-tab reopening. Stage6 must state that pre-release builds
+lock out devices that wrote dense rows. No format implementation/artifact or
+publication is claimed yet.
 
 **Stage4 focused controls and pressure repair pass.**
 [371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
@@ -197,9 +197,17 @@ retains18 passing root commands and the7-versus14 counterexample.
 fixes private unconsumed physical pressure; all95 focused cases and its exact
 omission control pass. Old verification/guard/test ASTs stay exact.
 
-**Next bounded outcome.** Restart and close Stage4's full-suite checkpoint on fixed
-source, retaining all failures and original deadlines. Stage3 format approval
-remains pending; wait afterward if it is still pending. No new lab phase,
-dependent format implementation or release work. Broad formatting stays deferred.
+**Native checkpoint remains open.**
+[374](./development-evidence/2026-11-02-release-hardening/374-format-approval-and-frame-blocker/README.md)
+retains20 passing root commands, twelve passing normal editor cases, all13 editor
+attempts and the full signed-base reproduction. Post-failure frame count is0/200ms
+in two controls. No error earns detection credit. Every experimental harness and
+browser change is restored; Mac display/session status is pending.
+
+**Next bounded outcome.** Harden the approved binary codec/tag home with independent
+byte/property controls and no live writing, then the remaining Stage3.2 pieces.
+The full functional checkpoint and allStage5 gates remain required. Native frame
+availability must be resolved before claiming their completion. Preserve every
+guard/limit/deadline; no new lab phase or publication. Broad formatting stays deferred.
 
 This seat edits only this document; the other seat's document above is unchanged.

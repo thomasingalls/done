@@ -7052,3 +7052,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Date:**2026-11-03 · **Scope:**Stage4 scheduling implementation, not a product/format decision
 
 The phase372 counterexample shows that max(rolling pressure, consumed semantic pressure) can omit a disjoint committed tail. Track physical row count at the existing successful continuation and add the current tail difference for scheduling only. This gives a constant-time count without another scan/replay, persisted trust or any verification shortcut. Phase373 retains every old comparison and guard; the1,024-row forcing ceiling is unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md).
+
+
+### Operator approves dense receipts and writing in the next release
+
+**Date:** 2026-11-03 · **Authority:** explicit operator Stage3.1 decision in this conversation
+
+The operator approved [the version1 receipt contract](account-inbound-page-receipts.md) and all of Stage3.2, with writing on in this release. Build a writer-off image from the same hardened tree as the rollback target, and prove it opens dense-row profiles including from a stale tab. Stage6 must state plainly: **rolling back to any build before this release locks out devices that wrote dense rows.** Preserve all native fences, exact writing and Undo. No gate, budget, limit, deadline, trust or server/wire change was approved; ordinary builds stay writer-off. This selects the release profile, not publication/deployment. No format implementation or artifact verification is claimed by this decision.

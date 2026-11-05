@@ -18835,3 +18835,19 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The new permanent regression now reports14 for seven consumed plus seven fresh rows, before and after continuation. All95 focused cases pass; types/scoped quality/inventory and the exact omission control pass. All old validation, comparison, commit, erasure/lifecycle and test ASTs remain exact outside private scheduling metadata. [Evidence](development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md).
 
 **Next.** Restart the full checkpoint on fixed source, retaining372's partial run and failed before case. No policy ceiling, format, guard, trust, deadline or release change.
+
+
+### Stage 3.1 receives the operator's writer-on format decision
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch374 · **Stage:** format decision only
+
+The operator approved all of Stage3.2 under the receipt contract, with writing on in this release. The same-tree writer-off rollback image must open dense-row profiles, including from a stale tab. Stage6 must explicitly record pre-release-build lockout for devices that wrote dense rows. [Approved contract](account-inbound-page-receipts.md). No dependent code, image, publication or deployment is claimed. The current editor-admission checkpoint failure/diagnostic rerun is being recorded before format implementation starts.
+
+
+### Stage4 checkpoint preserves the older headless frame failure before approved format work
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch374 · **Stage:**functional checkpoint/evidence; not closed
+
+**Evidence.** Twenty root commands pass, including295 unit files/2,958 cases/one skip in103.57s under120s. Editor's12 normal cases pass; mutation observers/actionability fail. Full signed-base history reproduces the observer failure, while its shorter selection detects allthree original mutations. Two post-failure probes see zero frames in200ms with a visible/enabled normal-size Retry button. Underlying cause/display sleep remains unconfirmed; no error is counted as detection. [All13 attempts and limits](development-evidence/2026-11-02-release-hardening/374-format-approval-and-frame-blocker/README.md).
+
+**Disposition.** All attempted polling/focus/browser treatments are removed; all original runtime/harness/test bytes are exact373. Only the operator-approved format decision and records change. The full functional checkpoint and62 remaining commands remain open. Proceed with independently hardening the approved codec; no binary writing or artifact is enabled, and no Stage5/performance/release credit is claimed. The Mac-state question remains pending.
