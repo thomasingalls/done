@@ -1,0 +1,13 @@
+# Mixed receipt replay and stale-turn control — phase 406
+
+Four new cases exercise genuine two-publisher certification and independent signatures. Histories interleave binary extents, indexed legacy/v2 and single legacy/v1 receipts; the producer starts at original index1. Full and per-record replay and eligible append indexing agree. Every retained envelope/proof matches the original signed bytes and position. Three seeds execute four histories each: six random histories and six explicit examples (examples count toward fast-check numRuns), not exhaustive history coverage.
+
+The permanent test-only, uniquely anchored fault recreates the record-scope error: a dense original leaks into a later legacy record. Baseline passes; the fault makes full/continuation disagree and stores sequence8 at position9 for both publishers. All other verification/coverage/prefix checks still run. The bundle keeps each independent fixture schema/vector at its source URL; application modules never take that relocation branch. No production entry imports the helper. All1867previous implementation/test/script files checked against405 remain byte-exact.
+
+New type errors, schema/vector relocation failures and a5000ms new-property timeout are retained. The property was split into smaller new cases without changing the5000ms per-case guard or any old test. The initial property passed once and the retry timed out; both remain. No matched-before defect or runtime repair claim is made: this is required hardening coverage.
+
+The display preflight initially saw no displays inside the sandbox. That is unknown, not off; the earlier off claim was unsupported. Outside sandbox, the unchanged observer sees three awake displays and the operator's active caffeinate-d assertion. Actual checks retain the unchanged display-protected harness and5s CPU/display/fseventsd/swap log.
+
+Types,111 focused,4 unchanged generation and all317unit files/3125cases/one existing skip pass. Full-unit120s timed out; the approved full-unit-only240s retry passed126.44s (command127.370s). Every other deadline, per-test5000ms guard and Stage5 predicate stays. Quality, format,17 registry checks, inventory and10 inventory controls pass. Inventory adds only these two required files/four cases/three test helpers; all old tests,78campaigns,99constructions, obligations and crypto census are exact. [Every attempt, identity and review](./evidence.json).
+
+Other-reader mixed properties, final owned pages/live dense writer, dual audit, G8/B, native floor/lifecycle/old artifacts/actual31s cold/rollback and Stage5/6 remain. No new lab, runtime/default/format/trust/wire/limit change, release/performance/RAM/native MAC/lease credit, commit, publication or deployment.

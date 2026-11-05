@@ -190,23 +190,26 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full315files/3121cases/one existing skip pass116.13s at120s;
-240s unused. Types,107 focused and4 unchanged generation/index controls pass,
-with reviewed registry/inventory. [Page append indexing](./development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md)
-agrees with full replay and signed originals; over-logical work refuses before
-decoding. Anchor/type-container/review failures remain; no old test edits or
-native MAC/lease/performance credit.
+**Latest checks.** Full317files/3125cases/one existing skip pass126.44s with
+approved240s full-unit guard after retained120s timeout. Every other deadline and
+gate stays. Types,111 focused and4 unchanged generation controls pass, with registry/
+inventory review. [Mixed replay/control](./development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md)
+adds full/continuation/index agreement and a discriminating permanent stale-turn
+fault. No old test or runtime edits. New-test setup/type/timeout failures remain.
+Sandbox display absence was unknown, not off; unchanged outside-sandbox observations
+confirm the operator's awake displays/caffeinate-d. No display wait remains.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Complete arbitrary mixed binary/legacy full-versus-
-incremental properties and the permanent record-scoped stale-turn negative control,
-including two publishers and original first indices above zero. Cover every
-reader path without weakening scope/cut/coverage checks. Then finish owned
-per-load/live syntax and dense writing, dual audit units and G8/B.
+**Active bounded outcome.** Extend the mixed binary/legacy property through the
+other semantic readers: retained membership, handoff and replacement; share genuine
+signed fixtures while retaining their own scope/cut/coverage checks. Full/indexed
+ledger properties and the permanent stale-turn control are closed in406, with no
+exhaustive-history claim. Then finish owned per-load/live syntax and dense writing,
+dual audit units and G8/B.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

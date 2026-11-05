@@ -7286,3 +7286,10 @@ Binary request/page frames are subviews of one owned backing, so retaining eithe
 **Date:** 2026-11-04 · **Commit:** pending patch405
 
 Do not replace the old unconditional scoped capture with a weaker tag-only pass for unrelated rows. Reuse the same raw capture, preserve own-publisher/history fallback, and count the fixed-header extent before expansion. The final verified state and real memo charge still govern retained eligibility. Transfer only new metadata on success; erase its buffers on refusal without touching caller or predecessor. [405 evidence](development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md).
+
+
+### Observe the real display; keep timeout and sampling evidence explicit
+
+**Date:** 2026-11-04 · **Commit:** pending patch406
+
+An empty sandbox CoreGraphics display list means unknown, not off. Use the unchanged observer/harness outside sandbox, preserving the operator's display requirement and real power assertions. Apply the already approved240s hang guard only after the full-unit120s timeout, and retain actual126.44s suite time; other deadlines/gates remain. Explicit examples count toward fast-check numRuns, so record six random and six example histories rather than claiming twelve random histories or exhaustive coverage. [406 evidence](development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md).

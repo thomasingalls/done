@@ -19152,3 +19152,14 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Genuine binary then legacy continuation equals independent full replay and signed originals. Old prefix/canonical/authority/witness/reducer bounds remain, with fixed-header preflight before expansion, owner proof-byte observation and precise fallback/cleanup. Final107 focused,4 unchanged generation and full315files/3121cases/one existing skip pass116.13s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md).
 
 **Limits.** Anchor miss/stale-source run, new byte-container assertion and type-only review normalization retained. Added sixth cleanup case has no before credit. No old test edits or native MAC/performance claim. All later owned-syntax/property/writer/lifecycle/final gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Preserve mixed receipt replay and permanently detect stale dense originals
+
+**Date:** 2026-11-04 · **Commit:** pending patch406 · **Stage:** partial Stage3.2
+
+**Exit.** Four new controls compare full and per-record/indexed replay for genuine two-publisher mixed binary/v2/v1 histories. The test-only stale-turn fault discriminates and corrupts exactly the retained sequence as expected; baseline passes. All1867prior code/test/script files remain exact. Types,111 focused,4 unchanged generation and full317files/3125cases/one existing skip pass126.44s using the approved240s full-unit hang guard. The120s timeout, new-test development failures and actual sample counts remain. [Evidence](development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md).
+
+**Correction.** The display was unobservable inside the sandbox, not established off. The operator's caffeinate-d assertion was active; outside-sandbox observations confirm three awake displays. No display assertion/deadline was bypassed.
+
+**Limits.** Other-reader properties and later format/writer/lifecycle/final gates stay open; no runtime/old-test edits or performance/native-cold/acceptance credit. This outcome precedes replacing this seat's active state.
