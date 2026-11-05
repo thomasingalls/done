@@ -7013,3 +7013,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Date:**2026-11-02 · **Commit:**pending sequential patch357
 
 **Decision.** Repair the base-reproduced custody test observer under its original8s limit. Await asynchronous predicate values and use timer polling for crypto/state/native-lock conditions; do not weaken an app guard or count generic mutation timeouts as detection. Add real-crypto regressions for withheld frame callbacks and a predicate that first returns false. Require exact named regression failures when old policies are restored. Keep all old assertions, mutants, cases and broader deferred formatting. Preserve source-equivalent prior passes and later errors; observer robustness does not prove every historical failure had one cause.
+
+
+### Missed-hint repair requires verified per-publisher read history
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 359
+
+**Decision.** Use a per-owner bounded history and opaque hint generations rather than a process-global or persisted counter. Date each read's hint generation at preparation; a hint during I/O must prevent activation. Record hot reads but arm only on quiet discovery, and conservatively require a prior verified read of the same peer. Keep the first-missed-hint limitation explicit. Apply R only through the existing successful-idle scheduling port; never change failure backoff, maintenance readiness, authority or commit.

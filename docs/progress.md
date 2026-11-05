@@ -179,15 +179,21 @@ with the83-command segmented checkpoint and all earlier failures retained. No fi
 monolithic pnpm check exit is claimed. All final contract pins match;canonical
 application sources have not changed since337. One full-unit120s timeout remains
 alongside the unchanged109.41s passing retry;cause and margin are not established.
-Receipt/trace checks pass before the record and are being refreshed after it.
+The six final-tree receipt producers and traceability also passed after that record.
 The broader formatting deferral and older optional global-lint failures remain.
 
-**Next bounded outcome.** R1000uses ephemeral per-slot hint/read state to repair
-missed hints after a quiet read discovers writing:1s idle reconciliation for30s.
-The first missed hint without prior evidence retains today's delay. Prove clock
-rollback,owner invalidation/close,normal-traffic cost and maintenance interaction.
-Then harden E's bounded raw quiet responses with original-byte ownership,fresh
-verification,fairness,750ms eligibility,5s self checks and request-start proof age.
-No range writer,server or wire change. Stage2has not yet changed application code.
+**R1000 complete.** [359](./development-evidence/2026-11-02-release-hardening/359-receive-repair-polling/README.md)
+records 14 new and 92 existing focused cases, types, scoped lint/format, inventory
+and two discriminating fault controls. Repair uses bounded ephemeral per-slot
+hint/read state and the existing idle scheduler. It preserves first-miss delay,
+all verification, failure backoff, halts and maintenance readiness. No timings or
+Stage 5 credit are claimed. Development fixture/type failures remain recorded.
+
+**Next bounded outcome.** E coalesces bounded raw quiet responses, consuming them
+only at their original selector turn with fresh verification. Keep 750 ms
+eligibility, 5-second self checks, round robin/send yielding, request-start age,
+exact bytes and erasure. Prove clocks, context/cursor/through, cancellation,
+expiry, malformed/mismatched/out-of-order batches, fairness and old tabs. Then
+run the Stage 2 full-suite checkpoint. No range writer, server or wire change.
 
 This seat edits only this document;the other seat's document above is unchanged.

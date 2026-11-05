@@ -18707,3 +18707,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Recovery,checkpoint and local provenance complete commands pass;all4,564source pins match. Together with340–357this closes the83-command segmented checkpoint. No single final monolithic pnpm check exit is claimed. Six receipt producers and traceability pass (101claims,28/28defects,9debts);refresh again after this record because receipts bind the tree. Stage1canonical sources remain exact337bytes. [Results and limits](development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md).
 
 **Limit.** First recovery rerun hit the unchanged120s full-unit deadline;unchanged retry passed109.41s. Keep both;cause and reliable deadline margin remain unresolved. Broader formatting stays deferred. No trust,format,guard,budget or deadline change;no Stage5credit. Record before advancing progress to Stage2.
+
+
+### R1000 uses bounded owner-local evidence and the existing idle scheduler
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 359 · **Stage:** operator hardening Stage 2
+
+**Exit.** Verified quiet discovery without an intervening hint arms 1-second idle reconciliation for 30 seconds. Hot reads do not arm it; first-miss delay, retry backoff, halts, fairness and maintenance readiness remain. Fourteen new and 92 existing focused cases pass, with strict types, scoped lint/format and inventory checks. Two declared faults fail their exact intended regressions and restore good bytes. [Evidence and limits](development-evidence/2026-11-02-release-hardening/359-receive-repair-polling/README.md).
+
+**Limit.** No performance or Stage 5 credit. All verification and commit paths remain; state is ephemeral and erased on owner/authority/clock invalidation. Stage 2's full-suite checkpoint follows E. The Stage 1 final-tree receipt refresh passed and is preserved. Record before advancing progress.

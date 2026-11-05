@@ -152,6 +152,7 @@ import {
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
+import { createReceiveRepairPolling } from './receiveRepairPolling';
 import type { DriverGate } from './accountDriver';
 /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
@@ -314,6 +315,16 @@ async function openAccountReceiveOwner(
   // Composed owners reuse unchanged quiet proofs within the guarded 750 ms budget.
   // Publication deadline latching preserves the two-receiver 2.5s acceptance gate (phase117).
   const receiveSelection = createReceiveSelection(Date.now, composed);
+  const receiveRepair = createReceiveRepairPolling();
+  let readScheduling = new WeakMap<
+    object,
+    { quiet: object | undefined; repair: object | undefined }
+  >();
+  const invalidateReadScheduling = () => {
+    receiveSelection.invalidateQuiet();
+    receiveRepair.invalidate();
+    readScheduling = new WeakMap();
+  };
   let outstandingQuiet: object | undefined;
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
@@ -789,7 +800,8 @@ async function openAccountReceiveOwner(
       baselineShadow = undefined;
       retentionReads.close();
       rangeTail?.close();
-      receiveSelection.invalidateQuiet();
+      invalidateReadScheduling();
+      receiveRepair.close();
       outstandingQuiet = undefined;
       authority.dispose();
       membershipAnchor = undefined;
@@ -948,7 +960,7 @@ async function openAccountReceiveOwner(
           prepared.check();
           checkJournal();
           const release = retentionReads.begin();
-          receiveSelection.invalidateQuiet();
+          invalidateReadScheduling();
           outstandingQuiet = undefined;
           outstanding?.fill(0);
           outstanding = undefined;
@@ -1007,7 +1019,7 @@ async function openAccountReceiveOwner(
                 await assertCurrent(task);
               }
               const release = retentionReads.begin();
-              receiveSelection.invalidateQuiet();
+              invalidateReadScheduling();
               outstandingQuiet = undefined;
               outstanding?.fill(0);
               outstanding = undefined;
@@ -1187,10 +1199,18 @@ async function openAccountReceiveOwner(
             Math.max(1, s.prefix.observedThrough - cursor),
           )
         : 1;
-    const quiet =
-      composed && publisher !== base.publisher.id
-        ? receiveSelection.captureQuiet(base.authority, publisher, s)
-        : undefined;
+    let quiet: object | undefined;
+    if (composed && publisher !== base.publisher.id) {
+      quiet = {};
+      readScheduling.set(quiet, {
+        quiet: receiveSelection.captureQuiet(base.authority, publisher, s),
+        repair: receiveRepair.capture(
+          base.authority,
+          publisher,
+          s.prefix.observedThrough === s.prefix.position,
+        ),
+      });
+    }
     const requests: Bytes[] = [];
     try {
       const peerRange =
@@ -1511,7 +1531,7 @@ async function openAccountReceiveOwner(
     check: () => void = () => {},
   ) => {
     const bytes = input.slice();
-    receiveSelection.invalidateQuiet();
+    invalidateReadScheduling();
     return runCaptureTask(async (task, owner, route) => {
       let result: Awaited<ReturnType<typeof verifyHistoryInstall>> | undefined,
         committed = false;
@@ -2158,6 +2178,7 @@ async function openAccountReceiveOwner(
               base = nextBase;
               installed = successor;
               receiveSelection.reset();
+              invalidateReadScheduling();
               invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
@@ -2363,6 +2384,7 @@ async function openAccountReceiveOwner(
           base = nextBase;
           membership = nextMembership;
           receiveSelection.reset();
+          invalidateReadScheduling();
           verifiedCounter = undefined;
           sinceAudit = 0;
           auditDue = auditDeferred = false;
@@ -3032,7 +3054,12 @@ async function openAccountReceiveOwner(
     prepareGroup,
     receiveGroup,
     preparedPromotion,
-    invalidateQuietReads: receiveSelection.invalidateQuiet,
+    invalidateQuietReads: invalidateReadScheduling,
+    receiveContentHint: () => {
+      receiveSelection.invalidateQuiet();
+      receiveRepair.contentHint();
+    },
+    repairReceiveInterval: (idle: number) => receiveRepair.interval(idle),
     completedRead: (
       request: Bytes,
       kind: string,
@@ -3040,7 +3067,6 @@ async function openAccountReceiveOwner(
       positions?: number,
       page?: Bytes,
     ) => {
-      receiveSelection.completedQuiet(quiet, kind);
       const read = decodeInboundRequest(request),
         publisher = read.publisher;
       if (kind === 'received' && read.limit > 1 && positions === undefined)
@@ -3054,6 +3080,10 @@ async function openAccountReceiveOwner(
         composed && publisher === base.publisher.id && (kind === 'received' || kind === 'empty'),
         positions ?? 1,
       );
+      const scheduling = quiet && readScheduling.get(quiet);
+      if (quiet) readScheduling.delete(quiet);
+      receiveSelection.completedQuiet(scheduling?.quiet, kind);
+      receiveRepair.completed(scheduling?.repair, kind);
       if (kind === 'received' && read.limit > 1 && positions && page && outstandingStamp)
         rangeTail?.remember(request, page, {
           context: base.authority,
@@ -3160,6 +3190,8 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     publisherCount,
     sweepContext,
     invalidateQuietReads,
+    receiveContentHint,
+    repairReceiveInterval,
     completedRead,
     narrowRead,
     isSelfRequest,
@@ -3666,7 +3698,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             ? 'sign-in-required'
             : state;
         },
-        receiveInterval: () => idleReceiveInterval(notificationHealthy),
+        receiveInterval: () => repairReceiveInterval(idleReceiveInterval(notificationHealthy)),
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         send: (beforeNewEnvelope) =>
           driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
@@ -3783,8 +3815,11 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             open: (signal) => access.openNotifications(signal),
             wake: (event) => {
               if (event !== 'content') automaticHistory?.hint();
-              invalidateQuietReads();
-              if (event !== 'content') resetDiscovery();
+              if (event === 'content') receiveContentHint();
+              else {
+                invalidateQuietReads();
+                resetDiscovery();
+              }
               // A fresh subscription handshake proves renewed reachability. Content
               // hints alone never override a failed operation's retry clock.
               scheduler.wake(event === 'ready' ? 'online' : 'remote');
