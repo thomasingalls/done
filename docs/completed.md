@@ -19323,3 +19323,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** Before-refused genuine binary retained-reading installation now passes with the writer off and on. Native floor acknowledgment precedes copying, with all prior authentication/CAS/commit guards preserved. Both real-app cold/Undo cases and the full330-file unit checkpoint pass. [Evidence](development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).
 
 **Limits.** Fixture construction supplies a valid approved retained format; the ordinary ceremony still emits its ordinary one-position saved receipts. This is not a same-tree rollback image, old-artifact/stale-tab, lost-reply, RAM or performance acceptance result. Every floor rewrite/interruption lifecycle, actual stale-turn idle audit, B fairness/past-index and final image proofs remain; Stage5/6 remain. No format/trust/server/wire/limit/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Prove durable floor acknowledgment survives a lost installation reply
+
+**Date:**2026-11-04 · **Commit:**pending patch424 · **Stage:**partial Stage3.2
+
+**Exit.** A genuine loss after the floor CAS leaves authenticated floor1 before any binary copy, then retries with unchanged retained reading and exact cold/Undo writing. Omitting only the CAS fails the same test at the saved-floor assertion. Runtime449 and prior test/helper1,119 hashes remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).
+
+**Limits.** This is an isolated native reply-loss control, not an ordinary artifact rollback or stale-tab proof. Full floor rewriter/membership/removal lifecycle checks, frozen old Page/Worker artifacts, actual mixed stale-turn idle audit, B fairness/past-index and the same-tree writer-off image remain. Stage5/6 are not complete. No format/trust/server/wire/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.

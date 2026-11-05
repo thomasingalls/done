@@ -7412,3 +7412,10 @@ A verified partial page authorizes only its contiguous prefix. Stop the current 
 **Date:**2026-11-04 · **Commit:**pending patch423
 
 A valid retained reading’s floor never substitutes for a native marker acknowledgment. Authenticate the complete existing opening first, then perform the same fresh MAC-bound native floor CAS under the actual owner before the first installation effect, even in reader-only mode. Keep the public active-only entry unchanged in scope and the installing entry private with literal call sites. Use a test-only valid-format constructor instead of modifying saved data or weakening live/stored verification. [Evidence](development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).
+
+
+### Require a native saved floor rather than trusting an acknowledgment return value
+
+**Date:**2026-11-04 · **Commit:**pending patch424
+
+Prove reply-loss durability under the same native authentication path that a reopened device uses. Inspect only authenticated metadata and readonly encrypted row counts; let app admission, Undo and cold opening establish semantics. Keep a permanent omission build and all the positive assertions, so skipping the floor’s actual native write is distinguishable from a successful acknowledgment. Keep injected faults confined to test Worker builds. [Evidence](development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).

@@ -287,6 +287,9 @@
     ],
     "test/inbound-installation": [
       "playwright.inbound-installation.config.ts"
+    ],
+    "test/inbound-floor-reply": [
+      "playwright.inbound-floor-reply.config.ts"
     ]
   },
   "vectorGenerators": {
