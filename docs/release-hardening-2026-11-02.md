@@ -153,3 +153,36 @@ operator input. Stop only for a format, trust, limit or deadline decision, or a
 failure that cannot be fixed within the existing guards. This narrows the earlier
 blanket functional-failure stop; preserve every earlier record and failed attempt.
 No release, commit, merge or deployment authorization is added.
+
+
+## Operator amendment — bounded index proof and preparation debts, 2026-11-05
+
+Defer commits. Past-index fallback may be proved with the421test-only Worker-build
+pattern, lowering only INDEX_MAX_BYTES. Production remains32MiB. Bind the ordinary
+asset to that value, prove the test's constant-only change by inverse bytes and
+keep the identical eligibility comparisons. The returning-reader proof must still
+observe an actual refusal, later fully verified continuation, exact positions,
+Undo and ordinary offline process-cold. All original900s setup,120s native and15s
+cold bounds remain; this is functional evidence with no performance acceptance.
+
+Do not diagnose preparation cost in this phase. Carry these earlier failed
+fixture observations into Stage6, without treating them as representative account
+throughput:438's900s attempts witness384replacements/85positions/2,464,019wire
+bytes (large pasted values), and1,536replacements/86positions/4,249,788wire bytes
+(one-slice UTF8 values).439's corrected900s attempt witnesses1,344replacements/
+64positions/3,714,996wire bytes. The actual returning-reader cap case did not run.
+The immutable [438record](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md)
+and [439record](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md)
+remain the outcome homes. Real-scale32MiB build-up, fallback time and process RAM
+are debt, or explicitly report-only later evidence; a smaller functional ceiling
+establishes none of those quantities and does not replace the Stage5gates.
+
+Stage6must also state the producer preparation ceiling and its observed size.
+In439the producer parks during building at1,024witnessed replacements/49accepted
+positions/2,830,306wire bytes. Its status alone cannot distinguish the byte ceiling
+from PREPARATION_ENTRIES; instrument the unchanged guard to resolve this without
+fixing it. After that park,439actually admits, durably saves and witnesses320more
+replacements through15additional accepted positions, ending at1,344/64. That is
+bounded continued-writing/sync evidence, not completed maintenance or a claim of
+unlimited progress. Keep the journal, parked/retry semantics and every ceiling.
+Exact guard/size observations are the next bounded debt-recording task.

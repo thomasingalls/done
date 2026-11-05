@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: paused for commits; Stage5 blocked
+status: in flight; native proof awaits clarification/display
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: commit pause; actual past-index evidence still required before Stage5
+blocks_on: threshold literal clarification, display-on, actual fallback proof; commits deferred
 updated: 2026-11-05
 ```
 
@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Preserve the native index preparation blocker before the commit pause](./development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
-Scoped lint, format, typecheck, inventory,10inventory controls and17registry tests pass. Both current ordinary and observation builds pass; all125ordinary asset bytes match438. Independent review checks exact current source pins, unchanged449runtime census and construction bytes, unchanged policy/campaign/count fields (734files/728required), all original437driver methods by inverse-byte equality, and the exact unchanged actual-cap/cold test body. Unique/inverse test observation anchors stay4ledger/2owner. The first attempt is explicitly interrupted after repeated building interruptions; it is retained. The second fails only the new setup precondition requiring completion when maintenance safely parks at capacity. The final corrected attempt completes its first producer reduction, permits the subsequent capacity park, then FAILS the unchanged900s setup guard at900003ms:1,344fully witnessed replacements,64accepted positions and3,714,996wire bytes. The actual returning-reader test remains unrun in every attempt. Host logs retain a busy browser process; a separate read-only process ancestry observation identifies the B renderer, without a CPU profile or code-hotspot attribution.
+**Latest checks.** [Bind a test-only index ceiling and prepare a genuine native backlog](./development-evidence/2026-11-02-release-hardening/440-index-ceiling-binding/README.md).
+All four final builds pass. A separate compiled-AST and asset comparison binds all7ordinary eligibility copies to32MiBand6testWorker copies to1MiB(the Page copy stays32MiB). Across67served runtime files, only the located constant expressions, content-hashed filenames/references and independently verified generated service-worker integrity/cache metadata differ; every other runtime byte and binary asset is exact.58source-map files per build remain recorded separately, without an equality claim for their tool mappings. Source inverse checks cover all actual Worker transforms. Ordinary and unobserved lower-ceiling assets contain no fixture observation/switch/lab tokens. The genuine three-device setup passes in17,107mswithin the unchanged900s ceiling:384fully witnessed replacements,19total publisher positions/18new accepted positions and1,061,486wire bytes. Complete expected Markdown is2713master bytes plus66day bytes. Scoped lint/format/typecheck, inventory,10controls and17registry checks pass; final pure checks explicitly record display-off and use an exact non-browser command whitelist. All449runtime/construction/policy bytes, original439driver bytes, campaign/count fields and current source/build pins remain exact. The returning-reader case remains unrun and byte-identical to439. The original display-on runner stops before final lint after the display turns off; it remains unchanged for native execution. Preserve the two compiler-stage source-guard failures, asset-check development failures and no-tests-selected filter attempt before the passing retries.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze439with every attempted fixture, source identity and failed outcome; PAUSE FOR COMMITS now. Stage5remains blocked. After the operator resumes, a bounded preparation/admission-cost diagnosis and successful actual32MiB native fallback/continuation/Undo/cold proof are still required before anyStage5fixture or timed cell. No release preparation.
+**Active bounded outcome.** Commits remain deferred. With production/test asset binding and the genuine18-position backlog ready, await the operator clarification for the two numeric threshold references and the actual display-on precondition. Then run the unchanged refusal/continuation/positions/Undo/ordinary-offline-cold flow on the1MiBWorker fixture, with verified expected ceiling and preserved assertions. Separately observe the original439producer's unchanged capacity guard and exact size, then one genuine post-park publication/receiving, using its frozen verifier closure and cloned fictional profiles. No cost diagnosis or fix. Stage5remains blocked until the functional proof passes; do not start its fixtures/cells or release work.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +209,7 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
 closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Actual32MiB past-index fallback remains open:438/439setup attempts never reach the native returning reader.418/419focused controls and422native cuts do not close it. Later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
+in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Past-index fallback remains open. The operator now permits a test-only lower ceiling with separate production32MiBbinding;440binds the assets and prepares genuine data, while438/439failed setups remain debt.418/419controls and422cuts do not close the native fallback proof. Later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.

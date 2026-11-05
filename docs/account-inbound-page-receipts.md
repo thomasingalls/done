@@ -369,3 +369,26 @@ obligation. [Attempt records and limitations](development-evidence/2026-11-02-re
 Pause for commits now. Stage5remains blocked until a bounded native case observes
 the actual32MiB refusal and subsequent exact continuation/cold; neither437nor
 these failed preparations substitute for it.
+
+
+### Operator amendment — bounded past-index proof,2026-11-05
+
+The contract requires actual fallback through the same eligibility code; it does
+not require reaching the production32MiBceiling through the UI. Use421's separate
+test-only Worker-build pattern to lower only INDEX_MAX_BYTES. Production remains
+32MiB. Bind the ordinary compiled asset separately and reverse the one constant
+and all observation hooks byte-for-byte. Keep the actual refusal, subsequent full
+verification, positions, Undo and ordinary offline cold assertions.438/439remain
+failed real-scale setup observations and Stage6debt, with no cost diagnosis now.
+This supersedes the earlier more specific demand to build32MiBthrough native UI.
+
+[Phase440](development-evidence/2026-11-02-release-hardening/440-index-ceiling-binding/README.md)
+binds67runtime files: after the index constant and independently checked generated
+asset/cache metadata, every other runtime byte is equal. All7ordinary compiled
+copies use32MiB;6Worker copies in the test use1MiB, while Page code stays32MiB.
+The genuine32MiBpreparation passes at384witnessed replacements and18new accepted
+positions (1,061,486total publisher wire bytes, including its seed position).
+The returning-reader case remains unrun, byte-identical to439while the operator
+clarifies its two hardcoded threshold literals. Native capacity observation also
+waits for the display-on precondition. No fallback, cold, performance or Stage5
+credit yet. Commits remain deferred by the operator.

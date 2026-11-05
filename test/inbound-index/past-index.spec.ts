@@ -1,4 +1,4 @@
-/** Draft until the previous bounded phase freezes. Genuine accepted rows; no cap changes. */
+/** Genuine accepted rows. Only the separately built receiver's test index ceiling is lower. */
 import { test, expect, type BrowserContext, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -22,6 +22,7 @@ import { decodeSubmission } from '../../account-protocol/submission';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 const normalized = (entries: { path: string; content: string }[]) =>
   [...entries].sort((a, b) => a.path.localeCompare(b.path));
+const PREPARE_WIRE_BYTES = 1024 * 1024;
 function wires(directory: string, publisher: string) {
   const db = new DatabaseSync(join(directory, 'account.sqlite'), { readOnly: true });
   try {
@@ -85,7 +86,7 @@ test('prepare independently accepted oversized backlog', async ({
     const filler = '界'.repeat(900);
     expect(filler.length + 64).toBeLessThanOrEqual(1000);
     expect(8 * MAX_JOURNAL_UPDATE).toBeLessThan(MAX_PENDING_BYTES);
-    while (bytes <= 8 * 1024 * 1024) {
+    while (bytes <= PREPARE_WIRE_BYTES) {
       for (let n = 0; n < burst; n++) {
         master = `A:\nB:${++version}:${filler}\nC:\n`;
         expect(
@@ -123,7 +124,7 @@ test('prepare independently accepted oversized backlog', async ({
       };
       progress.push(row);
       writeFileSync(join(directory, 'growth.json'), JSON.stringify(progress, null, 2) + '\n');
-      if (version % 512 === 0 && bytes <= 8 * 1024 * 1024) {
+      if (version % 512 === 0 && bytes <= PREPARE_WIRE_BYTES) {
         // Observe cached session ports only: status polling must not enqueue a foreground
         // storage job and priority-interrupt the very preparation this pause is waiting for.
         const began = Date.now();
@@ -165,6 +166,7 @@ test('prepare independently accepted oversized backlog', async ({
         await contexts[1]!.setOffline(false);
       }
     }
+    expect(wires(join(directory, 'service'), publisher).length).toBeGreaterThan(8);
     const expected = normalized(
       baseline.map((row) => (row.path === 'master.md' ? { ...row, content: master } : row)),
     );

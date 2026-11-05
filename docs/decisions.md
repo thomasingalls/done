@@ -7524,3 +7524,10 @@ A ready-made fixture or usage estimate cannot close the contract. Retain both900
 **Date:**2026-11-05 · **Commit:**pending patch439
 
 Map continuous native fairness with/without backlog and withheld hints to437;418/419component controls and422cuts supply different evidence. Cached status and ordinary offline preparation can remove a diagnostic-induced obstacle without changing app scheduling or trust. Keep the existing safe capacity park as a valid preparation outcome. The final900s failure still prevents native exposure, so no cap or cold claim follows. Do not substitute arithmetic, a usage-only model, prior lab results or a later report-only Stage5cell for the missing actual native proof. Record the unresolved setup cost and pause for commits under the operator instruction, with Stage5explicitly blocked. Do not broaden the repair into excluded performance work or raise limits/deadlines to obtain credit. [Evidence](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
+
+
+### Exercise cache fallback at a test ceiling while binding production separately
+
+**Date:**2026-11-05 · **Commit:**pending patch440
+
+The operator clarifies that the contract requires the real eligibility/fallback control flow, not hours of production-scale UI growth. Use a distinct test-only Worker build, inverse-byte proof and independent compiled/runtime asset comparison to retain the production32MiBbinding. Keep all native continuation/positions/Undo/cold assertions. Do not silently rewrite their two hardcoded thresholds after the literal keep-body-unchanged instruction; request the narrow clarification and perform independent build/preparation work meanwhile. Record the original failed setup numbers and real-scale time/RAM as debt, with no diagnosis or acceptance substitution. Keep native display-on enforcement unchanged. A separate exact-whitelisted runner may perform pure lint/type/inventory/bookkeeping checks while recording actual display-off; it cannot execute a browser/native command. [Evidence](development-evidence/2026-11-02-release-hardening/440-index-ceiling-binding/README.md).
