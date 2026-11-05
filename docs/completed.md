@@ -18698,3 +18698,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The complete local-custody command passes. Native15/15 includes all13 original cases and2 permanent observer regressions; all5 original mutations fail their original named assertions. The repaired helper awaits asynchronous predicates and polls nonvisual state under the unchanged8000ms total bound, clearing timers on exit. All60 old assertion arguments, mutation definitions and old case definitions/order are unchanged. Two declared old-policy faults fail exact new assertions, then restore the good helper. [Every failed attempt, before-fix pass, sensitivity control and source proof](development-evidence/2026-11-02-release-hardening/357-custody-state-observer/README.md).
 
 **Limits.** Keep the intermittent pre-repair pass and failed first fault-injection draft; do not claim every historical timeout's unique cause is proven. No app/guard/deadline change. The broader formatting deferral is preserved. Recovery, checkpoint, local provenance and receipt/trace refresh remain; record before advancing progress.
+
+
+### Stage1 segmented full-command checkpoint closes
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch358 · **Stage:**operator hardening Stage1
+
+**Exit.** Recovery,checkpoint and local provenance complete commands pass;all4,564source pins match. Together with340–357this closes the83-command segmented checkpoint. No single final monolithic pnpm check exit is claimed. Six receipt producers and traceability pass (101claims,28/28defects,9debts);refresh again after this record because receipts bind the tree. Stage1canonical sources remain exact337bytes. [Results and limits](development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md).
+
+**Limit.** First recovery rerun hit the unchanged120s full-unit deadline;unchanged retry passed109.41s. Keep both;cause and reliable deadline margin remain unresolved. Broader formatting stays deferred. No trust,format,guard,budget or deadline change;no Stage5credit. Record before advancing progress to Stage2.

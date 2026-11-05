@@ -156,111 +156,38 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 
 ---
 
-## Active slice: release hardening — Stage 1 checkpoint
+## Active slice: release hardening — Stage 2 receive
 
 ```yaml
-gate: operator-release-hardening-stage-1
+gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: active
-scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: recovery, checkpoint, local provenance complete reruns and receipt checks
-release_validation: only the operator's declared hardening stages; no publication
+status: in flight
+scope: harden R1000 and quiet transport E without new rows
+blocks_on: bounded implementation, regression controls and Stage2 full-suite checkpoint
 updated: 2026-11-02
 ```
 
-**Governing plan.** The operator's November 2 hardening note, recorded in
-[release-hardening-2026-11-02.md](./release-hardening-2026-11-02.md), keeps all
-gates, limits, deadlines and security checks. Canonical patches 335–337 implement
-capacity mapping, the fresh-work slice and ten-second priority-only retries.
-No new format is approved. Stage 2 has not started.
+**Contract.** Follow the operator's [hardening plan](./release-hardening-2026-11-02.md).
+All security checks,gates,budgets,limits and deadlines stay. No new lab work,
+computer use,commit,push,publication or deployment. Sequential immutable patchfiles.
+Stage3.1must hand over the format contract before any new rows are approved.
 
-**Checkpoint.** Focused controls, strict types and the full unit suite passed;
-[338](./development-evidence/2026-11-02-release-hardening/338-stage1-checkpoint/README.md)
-retains the opening checkpoint. The remaining 43 commands have now all run:
-24 pass and 19 fail, with some shared causes across wrappers.
-[339](./development-evidence/2026-11-02-release-hardening/339-full-check-census/README.md)
-contains the complete census and amends 338's incorrect stale-string classification.
-Both editor messages remain current. That census preceded the later fixture
-repairs recorded below; the asset-predicate change had explicit operator approval.
+**Completed.** Stage1capacity mapping,S and10s priority-only Y are closed in
+[358](./development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md),
+with the83-command segmented checkpoint and all earlier failures retained. No final
+monolithic pnpm check exit is claimed. All final contract pins match;canonical
+application sources have not changed since337. One full-unit120s timeout remains
+alongside the unchanged109.41s passing retry;cause and margin are not established.
+Receipt/trace checks pass before the record and are being refreshed after it.
+The broader formatting deferral and older optional global-lint failures remain.
 
-**Now.** Native Worker fixture repairs pass startup/editor 15/15 and cut 8/8
-([341](./development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md));
-21 omission/concurrency/counter controls pass (342). The approved asset predicate
-retains all eight phase236 refusals; upgrade checks pass 8 with the old skip, and
-first-authority passes (343). Both historical oversized-writer cases pass their
-original deadlines with all 168 pinned files checked (344).
+**Next bounded outcome.** R1000uses ephemeral per-slot hint/read state to repair
+missed hints after a quiet read discovers writing:1s idle reconciliation for30s.
+The first missed hint without prior evidence retains today's delay. Prove clock
+rollback,owner invalidation/close,normal-traffic cost and maintenance interaction.
+Then harden E's bounded raw quiet responses with original-byte ownership,fresh
+verification,fairness,750ms eligibility,5s self checks and request-start proof age.
+No range writer,server or wire change. Stage2has not yet changed application code.
 
-The operator-approved narrow initial-system rule is complete in all three report
-wrappers; all 15 wrapper cases pass with explicit new-system/wrong-actor and exact
-byte-preservation controls (347). The moved final-dispatch injection also
-reproduced on the signed base, and its test-only repair now passes the entire
-six-stage driver campaign and actual report reconciliation. All 1,547 execution
-pins independently match; original native tests/deadlines remain. [348](./development-evidence/2026-11-02-release-hardening/348-final-dispatch-fixture/README.md).
-
-The original full-unit gate now passes in 108.6 seconds under its unchanged
-120-second deadline, default fork pool and two-worker limit: 288 files, 2,882
-passed plus the existing skip. The test-only replica task-yield repair retains
-all 287 old unit files byte-for-byte and adds two cascade controls. All failed
-runs and the unadopted pool trial remain in [349](./development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
-
-Complete-command reruns pass geometry (228/32 old skips), transport and
-service-inbound; sync native checks pass (25/6 old skips), as preserved in350.
-Five scheduler controls and the native witness/dispatch controls pass (351).
-The operator-approved layered control now proves the baseline integrity halt
-and the single-omission both-lane conflict, with writing/content/inbound records
-unchanged. One authenticated conflict decision is persisted in the single arm.
-
-[352](./development-evidence/2026-11-02-release-hardening/352-layered-self-control/README.md)
-records the required stop: omitting both the self-envelope check and decision
-step still leaves receive at0. The self-only path writes no inbound receipt;
-omitting recordResponse also omits the decision write. The scheduler rereads
-authenticated durable state rather than accepting a transport result as progress.
-Do not invent an acknowledgment, write, or cursor to make this control advance.
-
-The operator retired the non-discriminating double arm, preserving352 as evidence.
-[353](./development-evidence/2026-11-02-release-hardening/353-worker-self-control/README.md)
-adds the genuine Worker handoff control: baseline0 with exact native storage
-unchanged; self-envelope omission persists/promotes the fork and advances to1.
-All5 native controls pass, including classification. The normal UI's own stream
-uses composed selfOnly plus recordResponse, not this retained explicit receive API.
-
-The complete sync command passes all six children:76 passed,6 existing skips,
-including8 generated histories. All1,551 source pins independently match. Canonical
-wrapper/inventory regressions pass66, and final sync wrapper regressions pass6.
-Actual report reconciliation stops at sync's existing system-versus-human guard:
-each history retains one unchanged initial system capture; every new capture is
-human. The previously approved initial-system rule covered three other wrappers.
-
-The operator approved the exact two-file report patch. [354](./development-evidence/2026-11-02-release-hardening/354-approved-sync-reports/README.md)
-applies it;8 focused sync-wrapper tests pass. The canonical consumer now reconciles
-the retained complete native reports. All1,551 historical source pins match, with
-the approved changed consumer-test file explicitly checked against the immutable
-phase353 replay; this is not a new native run or Stage5credit.
-
-[355](./development-evidence/2026-11-02-release-hardening/355-contract-checkpoint-census/README.md)
-records six complete green commands: transport, service custody, promotion,
-ledger, counter and store. Recovery passes full units in105.05seconds under120;
-its only failure was the unchanged October9 recovery-entry formatting. The operator
-approved the one-file AST-identical patch;356applies it exactly and the complete
-formatting stage now passes. The whole recovery command still needs rerunning.
-The broader formatting work stays deferred.
-
-[357](./development-evidence/2026-11-02-release-hardening/357-custody-state-observer/README.md)
-repairs the nonvisual custody observer under its unchanged8s total limit. It
-awaits asynchronous false results and does not depend on renderer frames. The
-complete local-custody command passes:15 native cases (all13 old plus2 regressions),
-all5 original named mutation detections, units, vectors, typecheck/lint/format.
-All60 old assertion arguments, mutations and old cases remain unchanged. Both
-declared old-policy faults fail exact new assertions, and the good helper is
-restored. Preserve the earlier source-equivalent errors and unrepaired pass;
-not every historical timeout's unique cause is proven.
-
-Recovery whole-command rerun, checkpoint, local provenance and receipt/trace refresh
-remain. No app changes after Stage1; no Stage2, publication or deployment. The
-broader formatting deferral and older optional global-lint failure remain.
-
-**Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
-measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
-and lab roots stay untouched. This section alone owns our active state; the
-other seat's section above is unchanged.
+This seat edits only this document;the other seat's document above is unchanged.
