@@ -1,31 +1,7 @@
 /** Private, owner-scoped crypto reuse. Semantic reducers and commit guards always run again. */
 import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import { eraseVerified, sameBytes } from './verifiedRecords';
-/** Count retained buffer capacity, including subview backing storage, once per owned graph.
- * Object/string overhead and process RAM are outside this byte-budget observation. */
-function bufferCapacity(value: unknown): number {
-  const objects = new Set<object>(),
-    buffers = new Set<ArrayBufferLike>();
-  const charge = (buffer: ArrayBufferLike) => {
-    if (buffers.has(buffer)) return 0;
-    buffers.add(buffer);
-    return buffer.byteLength;
-  };
-  const visit = (v: unknown): number => {
-    if (!v || typeof v !== 'object' || objects.has(v)) return 0;
-    objects.add(v);
-    if (ArrayBuffer.isView(v)) return charge(v.buffer);
-    if (
-      v instanceof ArrayBuffer ||
-      (typeof SharedArrayBuffer !== 'undefined' && v instanceof SharedArrayBuffer)
-    )
-      return charge(v);
-    if (v instanceof Map) return [...v].reduce((n, [key, item]) => n + visit(key) + visit(item), 0);
-    if (v instanceof Set) return [...v].reduce((n, item) => n + visit(item), 0);
-    return Object.values(v).reduce<number>((n, item) => n + visit(item), 0);
-  };
-  return visit(value);
-}
+import { ownedByteCapacity } from './verificationOwnership';
 export function createVerificationMemo() {
   const entries = new Map<
     string,
@@ -76,7 +52,7 @@ export function createVerificationMemo() {
       current();
       if (at !== revision) throw Error('Verification owner changed');
       const retained = { context, inputs: copy, value: structuredClone(value), slots };
-      const bytes = bufferCapacity([retained.inputs, retained.value]);
+      const bytes = ownedByteCapacity([retained.inputs, retained.value]);
       entries.set(key, { ...retained, bytes });
       ownedBytes += bytes;
       return structuredClone(value);

@@ -115,7 +115,7 @@ export interface InboundLedgerEntry {
   /** Physical page extent only. Never multiply completeness witnesses by this count. */
   extent?: { firstEntry: number; entryCount: number };
 }
-export function inboundMemoSlots(entry: InboundLedgerEntry): string[] {
+export function inboundEntryExtent(entry: InboundLedgerEntry) {
   const first = entry.extent?.firstEntry ?? entry.event.entry ?? 0,
     count = entry.extent?.entryCount ?? 1;
   if (
@@ -126,6 +126,10 @@ export function inboundMemoSlots(entry: InboundLedgerEntry): string[] {
     first + count > READ_COUNT_LIMIT
   )
     captureError('Invalid inbound memo extent');
+  return { first, count };
+}
+export function inboundMemoSlots(entry: InboundLedgerEntry): string[] {
+  const { first, count } = inboundEntryExtent(entry);
   return Array.from({ length: count }, (_, offset) =>
     inboundEntryMemoSlot(entry.record.seq, first + offset),
   );

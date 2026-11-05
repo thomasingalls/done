@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "f7f21b018fbfe317d360ccc0227c35d0b40642b195056ae468ce433930d5d210"
+      "sha256": "39d4db0d87a7bdd4e597b8cc4a03a2e2b4016ff1e52d84e56971447576f9f503"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1101,7 +1101,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "8c9e8f0172449b70c6686c7b2bf8f1333072d9a24f9929764a3811c79677d43a"
+      "sha256": "37ceea1e6e0eb2424789a71c16d0cbdad8c68fbd7fabf447c8e12b7bc80844ae"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
@@ -1113,7 +1113,7 @@
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
-      "sha256": "a86548d5e2c330e4961854d6939656104a1113726d0db878a06e088c8aae4cb6"
+      "sha256": "fa9a9efa545ea00a2376bf22865d79a2c3b0c7c7bcee523e5ad4ae844409f7a2"
     },
     {
       "path": "src/crdt/index.ts",
@@ -1513,11 +1513,11 @@
     },
     {
       "path": "src/crdt/verificationMemo.ts",
-      "sha256": "21100986cfbb0cd850d006bd78617c8e74d4343e04a137131124326b1b4b828e"
+      "sha256": "a1dc062060a7d4ff7713d715ab44128bfb99761445c7d4fb2e7a8d81739dd0aa"
     },
     {
       "path": "src/crdt/verificationOwnership.ts",
-      "sha256": "2189144ef4ab0f5cbc1ff8605d763a121ba949f91ed13edaecfe14eaea9ee3e4"
+      "sha256": "36b893c953dfc697a7d4237e17510f475ffa81b2764ca43c775d58a66515e555"
     },
     {
       "path": "src/crdt/verifiedRecords.ts",
@@ -2151,15 +2151,15 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 217
+          "line": 239
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 276
+          "line": 299
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 354
+          "line": 377
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
@@ -2229,7 +2229,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 828
+          "line": 840
         }
       ]
     },
@@ -2363,15 +2363,15 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 184
+          "line": 206
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 216
+          "line": 238
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 276
+          "line": 299
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
@@ -4179,11 +4179,11 @@
       "sites": [
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 276
+          "line": 299
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 319
+          "line": 342
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",

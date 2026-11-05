@@ -19104,3 +19104,15 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Every saved entry uses the original accepted-cut guard and logical4096 ceiling; live remains single-entry. Genuine rotation/two-publisher/interior-cut/resumption controls pass. A test-only boundary and isolated omission discriminate the new logical preflight. Final58 focused,14 unchanged legacy and full310files/3088cases/one existing skip pass113.97s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md).
 
 **Limits.** New-fixture tip and owned-byte type errors retained; no old test edits. All four stored-reader aged semantics are covered, but actual native cold/lifecycle, mixed/index/writer/rollback/final gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Bound index work and actual owned buffers before binary eligibility
+
+**Date:** 2026-11-04 · **Commit:** pending patch401 · **Stage:** partial Stage3.2
+
+**Exit.** Logical32768 and owned-buffer32MiB guards add conservative fallback while all old physical/visible checks remain. Memo and index share the exact393 accountant; the native owner includes its memo and fresh replay graph. Seven of eight controls fail before; final82 focused,4 unchanged generation and full311files/3096cases/one existing skip pass114.00s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/401-index-owned-bounds/README.md).
+
+**Limits.** Binary fallback remains. Buffer capacity excludes object/string/transient memory and is no RAM claim. No old test edits. Recording-script error and uncredited premature producer run retained. Subsequent binary/mixed/owned-parse/writer/lifecycle/final gates stay open. Outcome recorded before updating this seat's active state.
+
+
+**Phase401 qualification, 2026-11-04 (before freezing).** Static review of `createVerifiedRecords` found that non-owning mode clones the view and then separately copies records. The candidate-graph union measured in401 is exact for shared ownership, not this subsequent duplication. Actual accounting across both modes stays open; fix clone-mode accounting before binary eligibility. The passing unit/source results remain, with this explicit limit. No additional timing measurement or acceptance credit.

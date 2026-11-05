@@ -137,6 +137,7 @@ import { createVerificationMemo } from './verificationMemo';
 import {
   extendAccountLedger,
   indexVerifiedLedger,
+  accountLedgerIndexUsage,
   sameAccountLedger,
   type AccountLedgerView,
 } from './incrementalAccountLedger';
@@ -735,7 +736,14 @@ async function openAccountReceiveOwner(
           );
           const result: AccountLedgerView = { delivery, inbound, census };
           if (incremental && !audit) {
-            const indexes = await indexVerifiedLedger(result, records, route, counter, subtle);
+            const indexes = await indexVerifiedLedger(
+              result,
+              records,
+              route,
+              counter,
+              subtle,
+              memo.ownedBytes(),
+            );
             if (indexes) result.indexes = indexes;
           }
           return result;
@@ -798,6 +806,10 @@ async function openAccountReceiveOwner(
                       previous.delivery.acceptedThrough,
                     );
                   const result = { ...next, inbound };
+                  // Recheck the fresh retained graph after replay adds originals/proofs. Dropping
+                  // indexes preserves the verified state and selects the full reference next turn.
+                  if (!accountLedgerIndexUsage(result, records, memo.ownedBytes()).eligible)
+                    delete result.indexes;
                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
                   auditDue ||=
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||

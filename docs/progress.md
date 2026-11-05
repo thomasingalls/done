@@ -183,26 +183,29 @@ and authenticated compact journal adapter preserve old MAC, input, slice and
 capacity guards. Full ledger, handoff, later membership and replacement-source
 replay now consume every admitted entry under their original coverage/cut/prefix
 checks. All four stored paths have aged binary semantic controls. Census/witness
-stays physical; replay/progress/reading limits stay logical. Binary views still use
-the full reference until index accounting is hardened. Every phase outcome/failure
+stays physical; replay/progress/reading limits stay logical. Index accounting now adds
+logical/owned-buffer ceilings, including the real memo and final fresh replay
+graph. Binary views still use the full reference until eligibility is hardened. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full310files/3088cases/one existing skip pass113.97s at120s;
-240s unused. Types,58 focused and14 unchanged legacy replacement controls pass,
-with reviewed registry/inventory. [Replacement-source pages](./development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md)
-keep accepted cuts and logical4096. The isolated omission exposes over-limit work;
-new-fixture/type failures remain. No old test edits or actual31s native cold claim.
+**Latest checks.** Full311files/3096cases/one existing skip pass114.00s at120s;
+240s unused. Types,82 focused and4 unchanged generation/index controls pass,
+with reviewed registry/inventory. [Owned index bounds](./development-evidence/2026-11-02-release-hardening/401-index-owned-bounds/README.md)
+add conservative fallback and share one accountant. Seven new controls fail before;
+no old test edits or RAM/acceptance claim. Recording error and premature
+producer run retained without credit, then corrected after the durable record.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden binary incremental eligibility under expanded
-logical work and actual owned-buffer accounting at the existing32MiB ceiling.
-Keep complete exact prefix comparison, full-reference fallback and semantic
-agreement. Then record-scoped parse ownership, arbitrary mixed-reader properties
-and the permanent stale-turn fault remain before native writer/G8/B work.
+**Active bounded outcome.** First cover the existing clone mode: it clones the
+view and separately copies retained records, so the candidate-graph union alone
+is not its final ownership charge. Keep binary fallback. Then enable binary index
+eligibility under explicit ownership/proof-byte observations, logical/owned bounds,
+complete exact prefix comparison, own-publisher/reference and authority fences.
+Shared per-load parsing and permanent mixed/stale-turn controls remain.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

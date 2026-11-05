@@ -7248,3 +7248,13 @@ The existing full certification, checkpoint and publisher-set validation still p
 **Date:** 2026-11-04 · **Commit:** pending patch400
 
 Replacement live and stored replay use the same unchanged accepted-result guard. Count a saved receipt's closed admitted extent before opening its entries; it does not gain4096 times its page width. Keep its original signed request/page and exact self-contained extent for resumption. An isolated omission proves the boundary check detects over-limit work. No caller parser, network flag or header grants trust. [400 evidence](development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md).
+
+
+### Give retained buffer accounting one home and keep fallback conservative
+
+**Date:** 2026-11-04 · **Commit:** pending patch401
+
+The existing393 backing-buffer accountant belongs in verificationOwnership and is shared unchanged by proof memo and index usage. Preserve old physical/visible ceilings, add logical and actual-owned bounds, and recheck the final replay graph with the real memo charge. Overflow removes only semantic indexes; exact full-reference validation remains. Aliases are not independent allocations, and byte-identical copies are. This measures buffers, not object/string overhead or RAM. [401 evidence](development-evidence/2026-11-02-release-hardening/401-index-owned-bounds/README.md).
+
+
+**Phase401 accounting follow-up, 2026-11-04.** Keep binary fallback while accounting for the existing clone mode's separate retained-record copy. Treat the ownership mode as an explicit budget input and prove both installed graph shapes; a union of candidate buffers cannot stand in for two later allocations. This is a remaining hardening obligation, not a change to limits or trust.

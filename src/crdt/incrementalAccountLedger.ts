@@ -28,7 +28,8 @@ import {
   expectedPosition,
   type DeliveryState,
 } from './deliveryRecord';
-import { type InboundState, type inspectInbound } from './inboundLedger';
+import { inboundEntryExtent, type InboundState, type inspectInbound } from './inboundLedger';
+import { ownedByteCapacity } from './verificationOwnership';
 import { type InboundContext } from './accountInbound';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 import {
@@ -79,6 +80,25 @@ export interface AccountLedgerView {
 // Large views use the reference, rather than accumulate an additional unbounded cache.
 const INDEX_MAX_ROWS = 32768,
   INDEX_MAX_BYTES = 32 * 1024 * 1024;
+/** Retained buffer capacity only. Object/string overhead and transient task copies are not RAM.
+ * The caller supplies the separately owned proof memo charge; raw aliases in this graph count once.
+ * A row refusal stops this bounded walk, so ownedBytes is absent when it was not measured. */
+export function accountLedgerIndexUsage(
+  view: AccountLedgerView,
+  records: readonly OpenedRecord[],
+  proofBytes = 0,
+): { logicalRows: number; ownedBytes?: number; eligible: boolean } {
+  if (!Number.isSafeInteger(proofBytes) || proofBytes < 0)
+    captureError('Invalid index byte observation');
+  let logicalRows = records.length;
+  if (logicalRows > INDEX_MAX_ROWS) return { logicalRows, eligible: false };
+  for (const entry of view.census.entries) {
+    logicalRows += inboundEntryExtent(entry).count - 1;
+    if (logicalRows > INDEX_MAX_ROWS) return { logicalRows, eligible: false };
+  }
+  const ownedBytes = ownedByteCapacity([records, view]) + proofBytes;
+  return { logicalRows, ownedBytes, eligible: ownedBytes <= INDEX_MAX_BYTES };
+}
 const text = new TextDecoder('utf-8', { fatal: true });
 const fields = (r: OpenedRecord): unknown[] => {
   try {
@@ -155,6 +175,7 @@ export async function indexVerifiedLedger(
   route: CaptureRoute,
   counter: ContentCounter,
   subtle: SubtleCrypto,
+  proofBytes = 0,
 ): Promise<AccountLedgerIndexes | undefined> {
   // Binary eligibility waits for logical work and actual owned-copy accounting. Never infer it
   // from fewer physical rows. The independently verified full reference remains available.
@@ -165,6 +186,7 @@ export async function indexVerifiedLedger(
     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
   )
     return;
+  if (!accountLedgerIndexUsage(view, records, proofBytes).eligible) return;
   const spool = view.census.delivery.spool;
   const sources = new Map<string, SourceIndex>();
   let sourceCount = 0;
@@ -260,6 +282,7 @@ export async function extendAccountLedger(
     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
   )
     return;
+  if (!accountLedgerIndexUsage(previous, records, reuse.memo.ownedBytes?.() ?? 0).eligible) return;
   // History installations and legacy own-inbound writes take the full reference.
   for (const row of added)
     if (!content(row)) {
