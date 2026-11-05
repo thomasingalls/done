@@ -296,6 +296,9 @@
     ],
     "test/inbound-compat": [
       "playwright.inbound-compat.config.ts"
+    ],
+    "test/inbound-lifecycle": [
+      "playwright.inbound-lifecycle.config.ts"
     ]
   },
   "vectorGenerators": {

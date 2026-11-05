@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Prove frozen old-owner exclusion and marked-store refusal without losing pending writing](./development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
-Both final cases pass: Page32,382ms and Worker33,360ms (see raw durations for exact source of truth). Both old native readers refuse; both complete old apps accept the supplied unlock-code interaction but report Could not unlock this workspace, not the earlier setup-busy guard, and leave the protected digest identical. Frozen old parsers independently accept the actual legacy marker and reject the current authenticated floor marker. Actual dense extents, floor1, recovered pending writing, exact two-device exports, local Undo and offline disk-backed cold exports all pass. All1,606 prior runtime/protocol/test/configuration files remain byte-identical;449 crypto census source hashes and all construction sites are unchanged. One new required family adds one declaration expanding to the two native cases; inventory730files/724required. Types, quality/format,17registry checks, inventory and10controls pass. Quality flagged the new empty fixture binding; replacing it with an unused browserName binding leaves the complete tested body and every helper AST identical, proved independently, with only its inventory input hash updated. No full-unit rerun: unchanged runtime and prior tests retain423’s330-file/3,210pass/one-skip checkpoint.
+**Latest checks.** [Exercise authenticated marker rewrites and expose the joined rotation floor gap](./development-evidence/2026-11-02-release-hardening/428-authenticated-floor-rewrite-counterexample/README.md).
+Ordinary writer-on final cases pass at25,868/22,380/21,918ms; every observed marker floor remains1 with its valid absent legacy reading floor, exact exports and offline cold/Undo. The retained-reading arm passes progress/history on both owners (24,926ms) and original removal (22,389ms), but Joined removal fails before its declared activation fault: StorageCompatibilityError at inspectInboundSteps, reached through activateAccountRotation’s validation. It correctly refuses a dense stored receipt because the rotation context omits the freshly authenticated floor. This is a real uncovered valid-format path, not acceptance and not an expected negative fault. No guard is bypassed. Per the operator’s latest direction, the next bounded repair may propagate that existing floor without changing trust/format. Static review enumerates34 mutation calls through exactly the two existing native marker CAS homes; both check monotonicity before storage and at native commit, with Joined checking the reading floor independently. All1,610 previous runtime/protocol/test/configuration files and all449 census source hashes remain exact. One new required family adds two declarations expanding to three runtime cases; inventory731files/725required, all old obligations unchanged. Types, quality/format,17registry checks, inventory and10controls pass. Initial progress attempt failed only because the new fixture passed a Page object to evaluate; filter its three scalar arguments, retain the failure and rerun successfully. No full-unit repeat is claimed on the unchanged runtime.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Complete authenticated marker rewrite and membership/removal lifecycles on real writer-on profiles, then B fairness/past-index and same-tree writer-off Docker rollback. Continue automatically after this freeze.
+**Active bounded outcome.** Repair activateAccountRotation’s missing authenticated context floor, review every other InboundContext builder for the same omission, rerun both lifecycle arms and the full-unit checkpoint. Then finish B fairness/past-index and same-tree writer-off Docker rollback; continue automatically.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +209,7 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
 closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. Complete real B fairness/cancellation/past-index and floor
+in422. Ordinary authenticated marker rewrite/removal lifecycles pass in428; its marked-reading Joined rotation control reveals a missing floor in the rotation reader and remains red pending the next repair. Complete real B fairness/cancellation/past-index and floor
 rewriter/lost-reply lifecycles. Binary retained-reading installation with writer-off/on
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.

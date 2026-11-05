@@ -7440,3 +7440,10 @@ Do not splice old readers into current modules. Verify and compile complete pinn
 **Date:**2026-11-04 · **Commit:**pending patch427
 
 Do not mistake pending cleanup locks for an opening or the setup-busy screen for a marked-store refusal. Assert the existing active-owner exclusion first. Queue the frozen native reader behind the real current owner, then close all current app tabs for the complete old artifact’s marked-store unlock. Keep an inert observer and byte-identical protected-data digest, an independently authenticated marker/parser control, and exact current cold writing. Test-only asset controls retain the packaged MIME/CSP boundary and never touch APIs. [Evidence](development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
+
+
+### Test the independent reading floor rather than infer it from native marker activation
+
+**Date:**2026-11-04 · **Commit:**pending patch428
+
+Keep separate ordinary and marked-retained-reading observations. The latter must use a valid authenticated sealed reading and every old verification guard. The joined rotation reader’s missing context floor is repaired by copying the already authenticated marker selection, never by granting floor1 to arbitrary receipts or catching its refusal. Preserve the failing native attempt before implementing the separate repair. The latest operator instruction permits continuation for a failure fixable within existing guards. [Evidence](development-evidence/2026-11-02-release-hardening/428-authenticated-floor-rewrite-counterexample/README.md).

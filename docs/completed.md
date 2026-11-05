@@ -19362,3 +19362,15 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** Frozen old active owners are excluded before floor activation; old pending writing survives ownership transfer. Queued old native readers and complete old marked-store unlocks refuse. Current Undo and exact offline persisted-profile cold reopen retain all writing and floor1. [Evidence](development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
 
 **Limits.** Not a timing gate, published-old-byte comparison, service-worker adoption test, RAM result or Docker rollback proof. The queued native probe uses exact old source in the stale Window; no queued old Worker execution claim. All earlier setup and fixture failures remain evidence. Marker rewrite/membership/removal lifecycles, B fairness/past-index, same-tree writer-off images and Stage5/6 remain. No runtime, old test, trust, format, server/wire, budget, gate, limit, deadline or default change; no commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Exercise authenticated marker rewrites and expose the joined rotation floor gap
+
+**Date:**2026-11-04 · **Commit:**pending patch428 · **Stage:**partial Stage3.2
+
+**Exit.** The ordinary floor rewrite/removal lifecycles pass. The independently marked retained-reading control reveals a missing authenticated encoding floor in rotation validation; freeze this counterexample for the next in-scope repair. [Evidence](development-evidence/2026-11-02-release-hardening/428-authenticated-floor-rewrite-counterexample/README.md).
+
+**Limits.** Stage3.2 remains blocked on that real rotation compatibility defect; the extra retained-reading run is red and stays recorded. This is correctness evidence, not a gate, RAM result, Docker rollback proof or release candidate. Marker routing census is not semantic authority evidence. No canonical runtime or old helper/test change, trust/format/server/wire/budget/limit/gate/deadline/default change, commit, publication or deployment. B fairness/past-index, same-tree writer-off images and Stage5/6 remain. Outcome precedes advancing this seat.
+
+
+**Phase428 pre-freeze metadata correction.** The retained-arm raw report records progress24,926ms, original removal22,389ms and the Joined activation refusal17,151ms. Two transcribed durations in the unfrozen narrative were inaccurate; the corrected record/progress now uses the raw values. Original draft metadata and every run remain retained. This changes no result, case, deadline or acceptance claim.
