@@ -49,8 +49,9 @@ import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
 import { guardedSubtle } from './custodyCrypto';
 import { Y } from './yjs';
+import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
 
-export interface InboundContext {
+export interface InboundContext extends InboundReceiptVersion {
   baseline: {
     kind: 'promotion-genesis' | 'content-checkpoint' | 'history-checkpoint' | 'recovery-checkpoint';
     id: string;
@@ -122,7 +123,8 @@ const captureBytes = (bytes: Bytes, limit: number): Bytes => {
 };
 function captureContext(input: InboundContext): InboundContext {
   // Validate without copying any key until all other potentially failing fields have been captured.
-  const a = captureAuthority(input.authority),
+  const floor = captureInboundReceiptVersion(input),
+    a = captureAuthority(input.authority),
     baseline = { ...input.baseline },
     service = { ...input.service },
     reader = { ...input.reader },
@@ -201,6 +203,7 @@ function captureContext(input: InboundContext): InboundContext {
   }
   for (const [generation, key] of retainedKeys) retainedGenerationKeys.set(generation, key.slice());
   return {
+    ...floor,
     baseline,
     service,
     authority: a,

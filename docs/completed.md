@@ -19014,3 +19014,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Exact original syntax is shared only within one owned physical extent; public bytes/shapes and every prior codec predicate/semantic guard remain. Four new count controls fail before and all five pass after;98focused checks pass. Full300files/2998cases/one existing skip passes109.01s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md).
 
 **Limits.** Syntax grants no verification trust. Types, scoped quality, registry/inventory pass; private proposal-shape error retained. All verifier/reader/floor/memo/writer integration and final gates remain. No timed performance, RAM or release credit. Outcome recorded before progress advances.
+
+
+### Keep authenticated native and retained-reading receipt scopes independent
+
+**Date:**2026-11-03 · **Commit:**pending patch391 · **Stage:**partial Stage3.2
+
+**Exit.** Native contexts retain the authenticated floor only after its commit; retained readings use their own floor and cannot borrow the parent's. Verifier capture refuses unknown floors before key copies. New scoped syntax entry refuses unmarked binary receipts without granting verification trust. Five new controls fail before, six pass after;45focused, full301files/3004cases/one existing skip (108.31s at120s),10Page/parser cases and one genuine rebuilt Worker/Joined cold journey pass. [Evidence](development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md).
+
+**Limits.** Every actual binary semantic consumer and memo scope still needs integration. First floor write task mode, old artifacts, dense stored/writer, full archive, rollback images and final gates remain. Old app AST/guards exact after declared additions; private comment-review failure retained. Outcome recorded before progress advances.

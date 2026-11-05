@@ -274,6 +274,7 @@ export async function replayMembershipReading(
     for (const stream of reading.streams) {
       const publisher = historyPublisher(history, stream.publisher);
       const context: InboundContext = {
+        ...captureInboundReceiptVersion(reading),
         baseline: { kind: 'content-checkpoint', id },
         ...(reading.v === 3 ? { baselineHeads: reading.checkpoint.heads } : {}),
         service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },

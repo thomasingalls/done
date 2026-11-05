@@ -3422,19 +3422,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 30,
+          "line": 31,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 108,
+          "line": 109,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 143,
+          "line": 144,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         }
@@ -5342,7 +5342,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 825,
+          "line": 827,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },
@@ -6498,7 +6498,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 162,
+          "line": 164,
           "label": "done/certified-account-device/v1",
           "kind": "literal"
         },
@@ -6534,13 +6534,13 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 537,
+          "line": 539,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 546,
+          "line": 548,
           "label": "done/installed-content-key/v1",
           "kind": "literal"
         },
@@ -7468,25 +7468,25 @@
       "sourceSites": [
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 169,
+          "line": 170,
           "label": "done/account-inbound/page/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 30,
+          "line": 31,
           "label": "done/account-inbound/v2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 108,
+          "line": 109,
           "label": "done/account-inbound/v2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 141,
+          "line": 142,
           "label": "done/account-inbound/v2",
           "kind": "literal"
         }

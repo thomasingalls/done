@@ -589,6 +589,8 @@ async function openAccountReceiveOwner(
         expectedPayload.fill(0);
         expectedPayload = nextPayload;
         inboundReceiptVersion = 1;
+        // The native acknowledgement committed above; only now can this owner read new rows.
+        base.inboundReceiptVersion = 1;
       }
       await owner.carrier.enableSpool(task);
     },

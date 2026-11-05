@@ -7178,3 +7178,10 @@ Expose a count before lazy logical expansion and key private memo slots by actua
 **Date:**2026-11-03 · **Commit:**pending patch390 · **Scope:**approved owned-page hardening; contracts unchanged
 
 Keep the original request/page and their parsed syntax together inside one copied physical receipt. Reuse parsing across admitted entries, preserving every per-entry structural validation. Only private codec paths accept already captured syntax, with exact raw-object matching; public decoders return ordinary data. Signature, prefix, current authority, witness and commit checks remain the verifier/owner's responsibility. [Phase390](development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md) does not complete their integration.
+
+
+### An encoding floor belongs to the authenticated object that contains the rows
+
+**Date:**2026-11-03 · **Commit:**pending patch391 · **Scope:**approved receipt contract, no product/trust change
+
+Carry the native marker's floor into the native verifier context, updating only after committed acknowledgement. Rebuild a retained-reading context with that reading's own floor; explicitly remove an inherited parent floor. Unknown versions refuse even if the selected row is legacy. The scoped syntax home permits only the encoding; ordinary signature, authority, chain, witness and commit verification remain mandatory. [391evidence](development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md) leaves the semantic callers and memo scopes open.

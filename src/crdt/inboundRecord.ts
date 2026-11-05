@@ -21,6 +21,7 @@ import {
 } from '../../account-protocol/inboundTransport';
 import { MAX_BATCH_BYTES } from './contentRecord';
 import { StorageCompatibilityError } from './storageCompatibility';
+import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
 export const INBOUND_RECORD_LIMIT = MAX_BATCH_BYTES;
 export const INBOUND_ENVELOPE_LIMIT = ADMITTED_ENVELOPE_WIRE_LIMIT;
 export const INBOUND_UPDATE_LIMIT = ADMITTED_ENVELOPE_UPDATE_LIMIT;
@@ -338,6 +339,18 @@ export function captureInboundReceiptSyntax(bytes: Bytes): InboundReceiptSyntax 
   if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace))
     throw new StorageCompatibilityError();
   return undefined;
+}
+/** Semantic consumers must supply their own authenticated marker/reading scope. The scope
+ * permits an encoding only; syntax inspection still authenticates no content or authority. */
+export function captureScopedInboundReceiptSyntax(
+  bytes: Bytes,
+  scope: InboundReceiptVersion,
+): InboundReceiptSyntax | undefined {
+  const floor = captureInboundReceiptVersion(scope),
+    captured = captureInboundReceiptSyntax(bytes);
+  if (captured?.receipt.kind === 'page' && floor.inboundReceiptVersion !== 1)
+    throw new StorageCompatibilityError();
+  return captured;
 }
 
 export interface InboundLogicalView {

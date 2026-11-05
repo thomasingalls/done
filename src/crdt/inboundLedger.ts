@@ -38,6 +38,7 @@ import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRe
 import type { VerificationMemo } from './verificationMemo';
 import { canVerifyRetainedRead, RetiredHistoryRequired } from './retainedHistory';
 import type { SpoolReplayStart } from './spoolRecord';
+import { captureInboundReceiptVersion } from './inboundReceiptVersion';
 
 export async function heldInboundContext(
   marker: PromotionRecord,
@@ -57,6 +58,7 @@ export async function heldInboundContext(
   )
     captureError('Unsupported inbound membership');
   return {
+    ...captureInboundReceiptVersion(marker),
     baseline: {
       kind: 'promotion-genesis',
       id: hex(new Uint8Array(await subtle.digest('SHA-256', utf8(JSON.stringify(receipt))))),

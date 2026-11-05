@@ -225,6 +225,15 @@ count controls fail before, five pass after;98focused checks and full300files/
 semantic guard calls remain. No authentication trust or timed performance/RAM
 claim follows. The verifier and actual readers still need integration.
 
+**Authenticated scopes checked.**
+[391](./development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md)
+carries native marker floors after committed ACK and replaces parent floors with
+retained readings' own floors. Scoped binary syntax requires that scope's floor;
+no verification trust follows. Five new controls fail before, six pass after.
+Full301files/3004cases/one existing skip passes108.31s at120s;10Page/parser cases
+and a rebuilt genuine Worker/Joined cold journey pass. Actual binary semantic
+callers and their memo floor scopes remain unwired.
+
 **Next bounded outcome.** Encoding-floor scopes and complete binary stored/read
 integration through all ten direct readers and indirect consumers, then owned
 pages/dense writer/G8/range4/B/index/audit/reservation controls. Keep physical

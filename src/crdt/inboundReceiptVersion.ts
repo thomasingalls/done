@@ -18,6 +18,15 @@ export function inboundReceiptVersionFields(input: unknown): string[] {
 export function captureInboundReceiptVersion(input: unknown): InboundReceiptVersion {
   return inboundReceiptVersionFields(input).length ? { inboundReceiptVersion: 1 } : {};
 }
+/** A retained reading has its own authenticated encoding scope. Never inherit the native
+ * account's floor when constructing that reading's context. This copies syntax, not trust. */
+export function withInboundReceiptScope<T extends object>(
+  context: T,
+  source: unknown,
+): Omit<T, 'inboundReceiptVersion'> & InboundReceiptVersion {
+  const { inboundReceiptVersion: _floor, ...rest } = context as T & InboundReceiptVersion;
+  return { ...rest, ...captureInboundReceiptVersion(source) };
+}
 export function inboundReceiptMacTail(input: unknown): ['inboundReceiptVersion', 1][] {
   return inboundReceiptVersionFields(input).length ? [[INBOUND_RECEIPT_VERSION_FIELD, 1]] : [];
 }

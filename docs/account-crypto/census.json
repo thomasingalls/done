@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountInbound.ts",
-      "sha256": "48ae231c0bf1eeb9352fd307b81e5bba404f0a274eaf9085b15e159dad611523"
+      "sha256": "a4302a05fedb8043f5041ea2fe0e43d476a6441ecd44db58234919bd733f7794"
     },
     {
       "path": "src/crdt/accountJournal.ts",
@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "ef733ad02a03254f7cb9eb487a16f47848867a3e42d26c29ae64d43f4d29ca2e"
+      "sha256": "7afebe36309d2d8cbb083547b149cb26dff1e3aac73028fbb85ddaa9ba5fd039"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1101,15 +1101,15 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "fa796d88503a2c3c1486694abac5866e99a3cfbe0454f2fc10ff217c9cacea98"
+      "sha256": "9c267b2ae425f82d5ab7d0b88cac616ed1b3ee51d5ed03c59dc753dfd775f448"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
-      "sha256": "ef34f766c4aba68bee2b6d527223fc6a9a093e448d1b7d5025c30bf8860e4d68"
+      "sha256": "6de6331e7ae8cf4875593cd9ddd7cf914e85291b73b2bbf6fca1752d4bd0db5d"
     },
     {
       "path": "src/crdt/inboundRecord.ts",
-      "sha256": "2c48ee8cab1dccd019355eeeff9506047e23cce4d671671118e9e36494694d7c"
+      "sha256": "3a8ddef38b2b72c7b7333fd972cd81bb2834fadafa18ebfa90c8d9102bcf1089"
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
@@ -1121,7 +1121,7 @@
     },
     {
       "path": "src/crdt/joinedAccount.ts",
-      "sha256": "2d1fcb1cc6d528a68693f7aa0d8aa8099d6c669735f0c03787d23ab2554030fe"
+      "sha256": "4f25e43f7ef2c91ea45df37676f3611a73bbb90b387e8104351e22605ec1aded"
     },
     {
       "path": "src/crdt/journalCodec.ts",
@@ -1297,7 +1297,7 @@
     },
     {
       "path": "src/crdt/membershipReading.ts",
-      "sha256": "792a09344bc012b203133ab3ce8eaaa33f88cb27e370a08b494cc85111eaee34"
+      "sha256": "5b2c06c0d21b86c82d1910e7ca7b5ed8657603d2a4fe4c85740bb294a9881efa"
     },
     {
       "path": "src/crdt/membershipSource.ts",
@@ -1413,7 +1413,7 @@
     },
     {
       "path": "src/crdt/replacementSource.ts",
-      "sha256": "abd1a1b4a7cd805fcbadd41761b05bf11bee4fdbbff994e5ab56fd6f099396ad"
+      "sha256": "1a412a543d5dd96b62994a69e11bc041c49732a0fc3b63c42bdcfa3c5339c41d"
     },
     {
       "path": "src/crdt/retainedHistory.ts",
@@ -2173,7 +2173,7 @@
       "sites": [
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 169
+          "line": 170
         }
       ]
     },
@@ -2183,15 +2183,15 @@
       "sites": [
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 30
+          "line": 31
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 108
+          "line": 109
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 143
+          "line": 144
         }
       ]
     },
@@ -2201,15 +2201,15 @@
       "sites": [
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 30
+          "line": 31
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 108
+          "line": 109
         },
         {
           "path": "src/crdt/inboundRecord.ts",
-          "line": 141
+          "line": 142
         }
       ]
     },
@@ -2229,7 +2229,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 825
+          "line": 827
         }
       ]
     },
@@ -2453,7 +2453,7 @@
       "sites": [
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 162
+          "line": 164
         }
       ]
     },
@@ -3225,11 +3225,11 @@
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 537
+          "line": 539
         },
         {
           "path": "src/crdt/joinedAccount.ts",
-          "line": 546
+          "line": 548
         }
       ]
     },

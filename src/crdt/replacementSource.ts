@@ -34,22 +34,26 @@ import {
 } from './accountInbound';
 import { Y, hasPendingUpdates, type YDoc } from './yjs';
 import type { Bytes } from './custodyCrypto';
+import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
 
 export const REPLACEMENT_SOURCE_EVENTS = 4096;
 /** Existing survivors start at the original baseline; replacements start at their own admitted
  * replacement baseline and its authenticated cuts. Neither transport hints nor caller prefix fields
  * can skip writing. The native owner supplies captured journal-inclusive local originals at finish. */
-export async function openReplacementSource(input: {
-  authority: HistoryCheckpointAuthority;
-  checkpoint: ContentCheckpoint | ReplacementCheckpoint | RecoveryReading;
-  installed?: { parent: VerifiedMembership; admission: ReplacementCheckpointAdmission };
-  history: AdmissionHistory;
-  producer: string;
-  candidate: string;
-  keys: ReadonlyMap<number, Bytes>;
-  lifetime: InboundLifetime;
-}) {
+export async function openReplacementSource(
+  input: InboundReceiptVersion & {
+    authority: HistoryCheckpointAuthority;
+    checkpoint: ContentCheckpoint | ReplacementCheckpoint | RecoveryReading;
+    installed?: { parent: VerifiedMembership; admission: ReplacementCheckpointAdmission };
+    history: AdmissionHistory;
+    producer: string;
+    candidate: string;
+    keys: ReadonlyMap<number, Bytes>;
+    lifetime: InboundLifetime;
+  },
+) {
   const a = structuredClone(input.authority),
+    floor = captureInboundReceiptVersion(input),
     checkpoint = structuredClone(input.checkpoint),
     installed = input.installed
       ? { parent: input.installed.parent, admission: structuredClone(input.installed.admission) }
@@ -172,6 +176,7 @@ export async function openReplacementSource(input: {
       }
       const publisher = historyPublisher(history, cut.credentialId);
       contexts.set(cut.credentialId, {
+        ...floor,
         baseline,
         service: { id: p.pin.serviceId, origin: p.pin.origin },
         authority: publisher.current,

@@ -65,7 +65,9 @@ import {
 import { parseRecord, recordKey, recordEqual, type CustodyRecord } from './custodyRecord';
 import { storageUpgradeKey } from './storageCompatibility';
 import {
+  captureInboundReceiptVersion,
   inboundReceiptVersionFields,
+  withInboundReceiptScope,
   requireMonotonicInboundReceiptVersion,
   type InboundReceiptVersion,
 } from './inboundReceiptVersion';
@@ -621,6 +623,7 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
           ),
   );
   const base: InboundContext = {
+    ...captureInboundReceiptVersion(marker),
     baseline: { kind: 'content-checkpoint', id: await joinedBaselineHash(marker) },
     ...(joinedBaselineHeads(marker) ? { baselineHeads: joinedBaselineHeads(marker)! } : {}),
     service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
@@ -706,7 +709,7 @@ async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
     openContentCheckpoint(marker.reading.checkpoint, key, marker.authority),
   );
   const peer: InboundContext = {
-    ...base,
+    ...withInboundReceiptScope(base, marker.reading),
     history: original,
     creatingCredential: original.credential,
     publisher: { ...base.publisher, id: original.credential, publicKey: original.signingKey },
