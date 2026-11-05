@@ -18540,3 +18540,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Ran all 43 previously unrun commands in the pinned environment: 24 passed, 19 failed. The complete command list, raw log, browser reports and failed-stage evidence are preserved in [phase 339](development-evidence/2026-11-02-release-hardening/339-full-check-census/README.md). Nested stages behind failed prerequisites remain unrun.
 
 **Notes.** This amends phase 338: the editor storage-status expectations are current, not stale strings; the Window fault has not established a Worker storage refusal. Both expected messages and every old browser test remain unchanged. Built-preview offline unlock passed separately. Six contract wrappers hit their unchanged 120-second full-unit deadline; the earlier full-unit pass does not waive that failure. Signed-base comparison and dev-fixture diagnosis follow before any app change or Stage 2. Outcome recorded before advancing our active state back into progress.md.
+
+
+### Signed-base attribution and development offline asset setup
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 340 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Every failed browser case reproduces on signed base 89b11fe2 in the matched environment, including the counter module's pre-browser build failure. The base also reaches the unchanged 120-second unit-wrapper deadline. The dev offline trace identifies unavailable Worker assets, the handled Worker load error and the existing five-second cleanup wait. A test-only cache-header fixture makes the original offline identity test pass with startup.spec.ts byte-identical and every assertion/deadline retained. Ten inventory controls pass with all counts/dispositions preserved.
+
+**Notes.** [Evidence](development-evidence/2026-11-02-release-hardening/340-offline-fixture/README.md) keeps the failed diagnostic import, all comparison results and load logs. Built-preview offline unlock passed independently. No application source changes, Stage 1-only regression attribution, waived wrapper deadline or green-checkpoint claim. Recorded before advancing to native Worker fault delivery.

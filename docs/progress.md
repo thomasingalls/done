@@ -183,12 +183,15 @@ retains the opening checkpoint. The remaining 43 commands have now all run:
 contains the complete census and amends 338's incorrect stale-string classification.
 Both editor messages remain current. All old browser tests/assertions remain unchanged.
 
-**Now.** Compare every failed browser case against signed base 89b11fe2 in the
-same environment/browser. For offline unlock, diagnose the dev fixture's uncached
-Worker assets first; the built preview already passes offline unlock. For the
-storage controls, prove faults reach the actual Worker before test-only repair.
-Keep every failure. If a failure needs an application change, report the full
-list first; continue Stage 2 only after the checkpoint is green.
+**Now.** Every failed browser case reproduces on signed base 89b11fe2, and that
+base also hits the existing 120-second unit-wrapper deadline.
+[340](./development-evidence/2026-11-02-release-hardening/340-offline-fixture/README.md)
+traces the dev fixture's missing offline Worker assets and preserves its test-only
+cache repair: the original offline identity case now passes unchanged. Next,
+make the existing storage faults reach the real Worker, keeping every assertion
+and expected message. Unrelated harness/format/receipt and wrapper failures
+remain open. If a failure needs an application change, report the full list
+first; continue Stage 2 only after the checkpoint is green.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

@@ -6882,3 +6882,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** PRD v9 and TRD v8, with their existing storage/onboarding amendments, and the operator's November 2 hardening/resume instructions govern. Phase 338 called three current editor messages stale; the operator identified Window-only fault injection after storage moved into Workers. The separate hardening tracker also held active state outside the documented progress.md home.
 
 **Decision.** Preserve all old assertions and expected text, compare failures on signed base 89b11fe2, and establish actual Worker fault delivery before fixture repair. Check the dev offline asset setup first because packaged.spec already passes offline unlock. Keep the complete red census and unchanged deadlines. Restore our own active section to progress.md without editing the other seat, retain the hardening document as scope/plan, and retain append-only outcomes and reasoning. No documentation requirement, checker or approval rule changes. Whole-tree receipts invalidated by later documentation edits must be refreshed in the correct order.
+
+
+### Repair offline prerequisites in the development fixture
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 340
+
+**Orientation.** PRD v9/TRD v8 and the existing storage amendment require offline use; packaged.spec already passes it in the built preview. The older direct-component dev fixture has no service worker and Vite no-cache assets, while Local startup now hands off to a fresh Worker.
+
+**Decision.** Give only that frozen dev test server cacheable asset headers. Preserve the real modules, storage, error handling, lifecycle cleanup and unchanged offline identity assertions. The measured failure is asset delivery in the fixture, not a new production unlock change. Keep matched-base failures and the existing unit-wrapper timeout open; no guard or deadline relaxation.
