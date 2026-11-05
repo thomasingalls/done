@@ -1297,7 +1297,7 @@
     },
     {
       "path": "src/crdt/membershipReading.ts",
-      "sha256": "b9e688783d80fa4b226063bb95d66ec59b3f57cdeee64ea83051fedc88406d25"
+      "sha256": "98d7ef1b684184ebcd7f1033873f9f07356dab37791807d3b5c643e9b50ad5f3"
     },
     {
       "path": "src/crdt/membershipSource.ts",

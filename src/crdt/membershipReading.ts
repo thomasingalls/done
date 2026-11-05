@@ -32,8 +32,13 @@ import {
   type AdmissionHistory,
 } from '../../account-protocol/admissionHistory';
 import { openContentCheckpoint } from './contentCheckpoint';
-import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
+import {
+  verifyStoredInboundReceipt,
+  type InboundContext,
+  type InboundLifetime,
+} from './accountInbound';
 import { INBOUND_RECORD_LIMIT, inboundReceiptEventWork } from './inboundRecord';
+import { eraseVerified } from './verifiedRecords';
 import { Y, hasPendingUpdates } from './yjs';
 import type { Bytes } from './custodyCrypto';
 import {
@@ -312,15 +317,34 @@ export async function replayMembershipReading(
           lifetime.assertCurrent();
           const bytes = unhex(wire, wire.length / 2);
           try {
-            const result = await verifyStoredInbound(context, bytes, lifetime);
-            if (result.kind !== 'received') throw Error('Invalid retained publisher event');
-            records.push({ record: result.record, updates: result.updates });
-            for (const u of result.updates) Y.applyUpdate(doc, u);
-            context.prefix = {
-              position: result.position,
-              link: result.link,
-              observedThrough: result.through,
-            };
+            const receipt = await verifyStoredInboundReceipt(context, bytes, lifetime);
+            let retained = false;
+            try {
+              const updates: Bytes[] = [];
+              for (const selected of receipt.entries) {
+                lifetime.assertCurrent();
+                const result = selected.result;
+                if (result.kind !== 'received') throw Error('Invalid retained publisher event');
+                updates.push(...result.updates);
+                for (const u of result.updates) Y.applyUpdate(doc, u);
+                context.prefix = {
+                  position: result.position,
+                  link: result.link,
+                  observedThrough: result.through,
+                };
+              }
+              records.push({ record: receipt.record, updates });
+              retained = true;
+            } finally {
+              if (!retained) receipt.record.fill(0);
+              for (const selected of receipt.entries) {
+                if ('record' in selected.result && selected.result.record !== receipt.record)
+                  selected.result.record.fill(0);
+                if (!retained && selected.result.kind === 'received')
+                  for (const update of selected.result.updates) update.fill(0);
+                eraseVerified(selected.original);
+              }
+            }
           } finally {
             bytes.fill(0);
           }

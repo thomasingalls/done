@@ -193,21 +193,21 @@ logical. Membership/successor/retention classification uses the tag home. Binary
 views use the full reference until their index accounting is hardened. Every phase outcome/failure is in completed.md
 and its immutable evidence, not repeated here.
 
-**Latest checks.** Full308files/3072cases/one existing skip pass110.49s at120s;
-240s unused. Types,52 focused cases and registry/inventory checks pass.
-[Logical reading bounds](./development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md)
-keep physical4096 and64-stream guards, own floors and full verification. Six new
-controls fail before; no old test edits. Earlier failures remain preserved.
+**Latest checks.** Full309files/3079cases/one existing skip pass111.96s at120s;
+240s unused. Types,49 focused and14 unchanged legacy replacement controls pass,
+with reviewed registry/inventory. [Later membership page replay](./development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md)
+uses genuine certification and preserves all checkpoint/prefix checks. New-fixture
+mistakes and before failures remain; no old test edits or native31s cold claim.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Replay every saved entry in later v3 membership
-readings under unchanged certification, checkpoint, stream-prefix and lifecycle
-checks. Then implement replacement-source stored pages under accepted-cut and
-logical-limit checks. Both must use their own retained encoding floor.
+**Active bounded outcome.** Replacement-source stored pages: verify and apply
+every admitted entry under the original accepted cuts, logical4096 limit, own
+encoding floor and lifecycle/erasure rules. Keep live single-entry behaviour.
+Prove self-contained extents ending inside an original page and saved resumption.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

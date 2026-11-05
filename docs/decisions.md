@@ -7234,3 +7234,10 @@ Verify every admitted entry first. At every covered position preserve the full s
 **Date:** 2026-11-04 · **Commit:** pending patch398
 
 Before expanding a retained binary receipt, require its own encoding floor and closed fixed header, then count its bounded admitted extent against the existing logical ceiling. This is only a work bound: full syntax, signatures, authorization and chain checks still determine admissibility. Preserve physical bounds and legacy capture behavior. [398 evidence](development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md).
+
+
+### Keep later reading authority outside the saved-page turn
+
+**Date:** 2026-11-04 · **Commit:** pending patch399
+
+The existing full certification, checkpoint and publisher-set validation still precedes saved replay. Only captured saved bytes select stored semantics; every selected entry opens and advances the local prefix, and the final prefix still has to match the retained stream. One physical record retains its selected plaintext updates; failure and temporary-original cleanup remain explicit. [399 evidence](development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md).

@@ -19086,3 +19086,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Original and later retained readings count logical entries against the existing4096 ceiling, keeping physical4096 and64 streams. The bounded header is a work count only; full authentication/decoding remains. Reading floors stay independent and original contexts forward their own. Six new controls fail before; final52 focused and full308files/3072cases/one existing skip pass110.49s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md).
 
 **Limits.** Intermediate unused-local type error retained. No old test edits. Actual multi-entry v3/replacement replay and all subsequent native/index/writer/lifecycle gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Replay every saved entry after a replacement baseline
+
+**Date:** 2026-11-04 · **Commit:** pending patch399 · **Stage:** partial Stage3.2
+
+**Exit.** Later v3 membership readings replay every saved entry, retain one physical receipt and keep certification, checkpoint, publisher-set and final-prefix checks. Genuine full certification/two-publisher controls pass;49 focused,14 unchanged legacy and full309files/3079cases/one existing skip pass111.96s at120s. Initial new-fixture mistakes and discriminating before-run remain. [Evidence](development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md).
+
+**Limits.** No old test edits. Clock aging is not actual native cold evidence. Replacement source and subsequent mixed/index/writer/lifecycle/final gates stay open. Outcome recorded before updating this seat's active state.
