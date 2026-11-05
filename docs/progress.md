@@ -188,9 +188,15 @@ old-tab/cut/rollback requirements, dual logical/physical audit ceilings and the
 reader-first option. No format code or new writer is authorized. Stage3 stops
 for the operator's decision.
 
-**Next bounded outcome.** Implement independent Stage4 idle-start audit, keeping
-all nondiscretionary checks, due rules and oracle/interrupt/lifecycle guards.
-Add regression/fault controls and close its full-suite checkpoint, then wait if
-format approval is still pending. No new lab phase or unlisted measurement.
+**Stage4 primitives complete; unwired.** [368](./development-evidence/2026-11-02-release-hardening/368-audit-start-policy/README.md)
+records 13 new/83 focused passing cases, types/scoped quality, two exact fault
+controls and reviewed census/registry checks. Every older app/test byte stays
+exact. The paper handoff's normative checks and exact-tree receipts passed.
+
+**Next bounded outcome.** Wire the policy into the existing owner audit timer,
+physical pressure and native foreground settlement. Preserve the oracle, due
+rules and every interrupt/lifecycle guard; prove queue/quiet/cap/close/mismatch
+controls and close Stage4's full-suite checkpoint. Then wait if Stage3 format
+approval remains pending. No new lab phase or unlisted measurement.
 
 This seat edits only this document; the other seat's document above is unchanged.

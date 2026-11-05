@@ -1,0 +1,11 @@
+# Stage 4 audit-start primitives — phase 368
+
+An owner-local scheduling policy waits for the full 1,000ms input quiet period and foreground queue settlement. The 1,024-physical-row ceiling forces an attempt, including during continuous input; it never authorizes an effect or waives a verification/interruption guard. Foreground jobs use idempotent settlement tokens. Clock rollback starts a bounded conservative quiet interval; close permanently disables readiness. The policy owns no timers, keys, proof, storage or application objects. It is not wired into the running app yet.
+
+Thirteen new policy cases plus existing warm-content, reduced-baseline and retention tests pass (83 cases/five files). Types, scoped lint, new-file formatting, inventory, registry controls and authority pass. Two independently declared omissions each fail exactly their named assertion: missing cap override and missing close guard. Generic errors/timeouts earn no credit; exact good-source hashes are restored after each. Every pre-existing app/protocol/service/test file in the declaration remains byte-identical. [Logs, controls, source review and pins](./evidence.json).
+
+Source classification adds exactly the unwired scheduling module: 510 sources, with all 199 domain labels/locations, 36 groups, 15 manual entrypoints and construction properties unchanged. Inventory adds exactly the new test file (681/675/6). It remains planning coverage only. No old test, format, server/wire, native guard, sender default or work lane changed.
+
+This record also preserves Stage 3.1's successful documentation checks and all six exact-tree receipt producers plus traceability after patch367. Its functional checkpoint reuses unchanged app/tests from366; no fresh monolithic root exit or Stage5 credit is claimed. The format decision is pending; no dependent implementation occurred.
+
+Next: wire the policy into the existing Account audit timer, measure physical pending rows from the existing audit owners and wake after actual native foreground settlement. Keep each old audit/oracle and interruption guard, and prove lifecycle, queue, cap and mismatch behavior before closing Stage4's full-suite checkpoint. No new lab phase, benchmark, performance or RAM claim.

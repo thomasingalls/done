@@ -1520,6 +1520,10 @@
       "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
     },
     {
+      "path": "src/crdt/warmAuditStart.ts",
+      "sha256": "c4b5a3f0445064cd077a6470a3f8cd0274f14fe7e2db979a68c94d73e801f31e"
+    },
+    {
       "path": "src/crdt/warmContent.ts",
       "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac"
     },

@@ -18781,3 +18781,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The [concrete contract](account-inbound-page-receipts.md) covers binary layout/bounds, reader census, compatibility floor, old tabs, handoff, rollback, existing-format evidence, accounting and reader-first ordering. Independent arithmetic confirms its 239-byte header and required ten reader homes. Source review pins released codec/parsers and later v2 introduction. [Evidence and limitations](development-evidence/2026-11-02-release-hardening/367-format-contract/README.md).
 
 **Boundary.** This completes the paper handoff only. It grants no format/writer permission, has no code/test change and earns no timing or release credit. Stage 3 waits for the operator; proceed only with independent Stage 4 in the meantime. The Stage 2 segmented checkpoint remains source-equivalent; refresh exact-tree documentation receipts. Outcome recorded before advancing this seat's active state.
+
+
+### Stage 4 scheduling primitives preserve the audit boundaries before integration
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 368 · **Stage:** independent Stage 4, primitives only
+
+**Exit.** Thirteen new policy cases and 70 existing cases pass; types/scoped quality and reviewed inventory/authority/registry checks pass. Missing-cap and missing-close controls each fail their exact assertion, with restored source hashes. All older app/test bytes remain exact. The new module is unwired and changes no running-app behavior. [Evidence](development-evidence/2026-11-02-release-hardening/368-audit-start-policy/README.md).
+
+**Next.** Integrate the existing timer and real native queue settlement/physical pressure, then prove interruption/oracle/lifecycle behavior and close the full-suite checkpoint. Stage3 format approval remains pending; no format, benchmark, gate or release work. The paper handoff's normative checks and refreshed exact-tree receipts passed and are preserved here.
