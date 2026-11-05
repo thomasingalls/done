@@ -18817,3 +18817,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Both real native audit cases pass with exact cold writing. Foreground and oracle omissions each fail their specific assertion through the final suite registration; app bytes remain exact370. All62 wrapper cases pass after eight reviewed count/title literal updates, including the earlier353 Worker-control denominator. Every other old assertion/deadline and all31 old native cases stay exact ASTs. [Evidence](development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md).
 
 **Limits/next.** Earlier harness/count/optional formatting failures remain; broad formatting stays deferred. Stage4's full-suite checkpoint is next. Format approval is pending, and no Stage3.2, performance, release or deployment work occurred.
+
+
+### Stage 4 partial checkpoint reveals unconsumed audit pressure
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 372 · **Stage:** Stage4 development, checkpoint held
+
+**Evidence.** First18 original root commands pass, including295 unit files/2,957 passing cases/one existing skip in104.75s under120s and all native storage campaigns through journal. All start pins remain exact. The coordinator was ended only after the current child passed; no campaign was cancelled. A focused new real-crypto unit case then demonstrates7 reported rows versus14 owed before a fresh suffix is consumed. Its test source/failure are retained, and the original file is restored. [Evidence](development-evidence/2026-11-02-release-hardening/372-pressure-counterexample/README.md).
+
+**Next.** Correct only private scheduling pressure to include the unconsumed physical suffix without double counting, add the regression, then restart the full checkpoint on fixed source. No completed Stage4/full-suite claim, guard/format/deadline change, app-journey failure, performance or release work.

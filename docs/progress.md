@@ -188,15 +188,18 @@ old-tab/cut/rollback requirements, dual logical/physical audit ceilings and the
 reader-first option. No format code or new writer is authorized. Stage3 stops
 for the operator's decision.
 
-**Stage4 implementation and focused native controls pass.**
-[368–370](./development-evidence/2026-11-02-release-hardening/370-idle-audit-integration/README.md)
-record scheduling and physical pressure; [371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
-records both native lifecycle/oracle cases, two sensitive omissions, exact cold
-writing and62 passing wrapper cases. Old assertion/guard/deadline ASTs are retained.
+**Stage4 focused controls pass; the checkpoint found a pressure edge.**
+[368–371](./development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md)
+record scheduling, native owner/oracle and fault controls.
+[372](./development-evidence/2026-11-02-release-hardening/372-pressure-counterexample/README.md)
+records18 passing root commands and a new unit counterexample:7 reported physical
+rows versus14 owed when a fresh tail follows an already consumed suffix. Original
+test bytes and all checkpoint input pins are restored. No app journey failed.
 
-**Next bounded outcome.** Close Stage4's full-suite checkpoint on the pinned tree,
-retaining all failures and original deadlines. Then wait if Stage3 format approval
-remains pending. No new lab phase, unlisted measurement, Stage3.2 implementation
-or release work. Broad old formatting stays deferred.
+**Next bounded outcome.** Count the unconsumed physical suffix in private audit
+pressure without double counting, add the permanent regression, then restart the
+full-suite checkpoint on fixed source. Preserve every native/oracle/interruption
+guard. Stage3 format approval remains pending; no dependent code or release work.
+Broad old formatting stays deferred.
 
 This seat edits only this document; the other seat's document above is unchanged.
