@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: active
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: remaining ten contract commands and receipt/trace checkpoint
+blocks_on: custody mutation harness diagnosis, deferred formatting approval, final contract and receipt checks
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -238,9 +238,22 @@ the retained complete native reports. All1,551 historical source pins match, wit
 the approved changed consumer-test file explicitly checked against the immutable
 phase353 replay; this is not a new native run or Stage5credit.
 
-Continue ten later contract commands, then receipt/trace refresh. No app changes
-after Stage1; no Stage2, publication or deployment. The optional global-lint
-failure on three unchanged historical evidence files remains recorded.
+[355](./development-evidence/2026-11-02-release-hardening/355-contract-checkpoint-census/README.md)
+records six complete green commands: transport, service custody, promotion,
+ledger, counter and store. Recovery passes full units in105.05seconds under120;
+its only failure is the unchanged October9 recovery-entry formatting. The one-file
+AST-identical proposal remains unapplied pending the operator's decision.
+
+Local custody passes13 unmodified cases, but two mutants time out before their
+assertions. A full clean signed89b11fe2 run reproduces both errors with the same
+pinned environment/browser. An earlier run passed both on an identical candidate
+runtime source map; preserve every result. No failed mutant earns detection credit.
+The next bounded phase diagnoses the fixture waits without changing assertions,
+guards or deadlines. Stop/report if an app change or guard weakening is needed.
+
+Local custody's later stages, checkpoint, local provenance and receipt/trace refresh
+remain. No app changes after Stage1; no Stage2, publication or deployment. The
+optional global-lint failure on three unchanged historical evidence files remains.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence
