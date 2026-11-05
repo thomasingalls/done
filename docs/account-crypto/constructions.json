@@ -1093,13 +1093,13 @@
       "sourceSites": [
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 267,
+          "line": 276,
           "label": "done/local-promotion/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 312,
+          "line": 322,
           "label": "done/local-promotion/v1",
           "kind": "literal"
         }
@@ -6530,6 +6530,18 @@
         {
           "path": "src/crdt/inboundRecord.ts",
           "name": "decodeInboundReceipt"
+        },
+        {
+          "path": "src/crdt/inboundReceiptVersion.ts",
+          "name": "captureInboundReceiptVersion"
+        },
+        {
+          "path": "src/crdt/inboundReceiptVersion.ts",
+          "name": "requireMonotonicInboundReceiptVersion"
+        },
+        {
+          "path": "src/crdt/inboundReceiptVersion.ts",
+          "name": "inboundReceiptMacTail"
         }
       ],
       "homePins": [],
@@ -6543,7 +6555,8 @@
         "test/receiveRangeTail.test.ts",
         "test/receiveDownloadWidth.test.ts",
         "test/rangeWriterPolicy.test.ts",
-        "test/inboundPageCodec.test.ts"
+        "test/inboundPageCodec.test.ts",
+        "test/inboundReceiptFloor.test.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -6556,9 +6569,11 @@
         "stale-tab-rollback",
         "approved-bounded-binary-page-schema",
         "monotonic-authenticated-local-floor",
-        "same-tree-writer-off-rollback"
+        "same-tree-writer-off-rollback",
+        "legacy-exact-tagged-floor-mac",
+        "closed-floor-parser-and-monotonic-native-cas"
       ],
-      "blocker": "Approved binary page codec only; not wired into live readers/writers. Every existing range obligation remains open. Authenticated floor, all logical readers, stored mode, owned-page evidence, stale-tab/rollback, bounds and final gates remain required. No aggregate credit.",
+      "blocker": "Approved binary codec and optional promotion floor core only; no floor installation or live binary effects. Joined/retained-reading preservation, actual old-owner fences, all logical readers, stored mode, owned pages, stale-tab/rollback and final gates remain open. No aggregate credit.",
       "next": "Harden the approved Stage3.2 contract in bounded patches before enabling release writing; ordinary builds stay off."
     }
   ],

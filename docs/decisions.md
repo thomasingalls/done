@@ -7066,3 +7066,10 @@ The operator approved [the version1 receipt contract](account-inbound-page-recei
 **Date:**2026-11-03 · **Scope:**Stage3.2 implementation under the approved format
 
 Keep the new codec unwired until the authenticated floor and all readers are hardened. Reuse the old selected-entry structural checks without synthesizing v2 records, then optimize owned page parsing in its own bounded slice. The central classifier rejects unknown inbound versions rather than handing them to delivery inspection. No decoding result supplies signature, chain or native authority. Phase375 independently retains exact legacy bytes and all old codec ASTs. [Evidence](development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md).
+
+
+### Authenticate and preserve an optional floor before enabling effects
+
+**Date:**2026-11-03 · **Scope:**approved Stage3.2 implementation
+
+Use a single closed optional encoding-floor helper and enforce monotonic preservation at the existing native promotion writer. Legacy absence emits no MAC extension and retains exact original bytes. A marked payload appends only the operator-approved tagged tuple. This isolated slice does not install the floor or authorize binary writing; actual native exclusion and rollback evidence remain obligations. A pre-existing test-only source omission anchor now targets the same route guard's current historical variable, with all cases and assertions unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md).

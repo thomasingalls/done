@@ -210,10 +210,16 @@ adds the approved bounded schema/classifier without live calls. All126 focused
 cases pass, including independent bytes, generated extents and three exact omission
 controls; old guards/tests stay exact. Types/quality/registry/inventory pass.
 
-**Next bounded outcome.** Harden the authenticated optional compatibility floor and
-its exact legacy MAC/preservation contracts before enabling any binary writer.
-Then stored mode, logical readers, owned pages and bounded G8/B, followed by the
-same-tree writer-on/off artifacts and required native/Stage5 gates. The Stage4
-frame checkpoint stays open; no final acceptance or release claim.
+**Promotion floor core checked; no installation.**
+[376](./development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md)
+checks exact legacy/tagged MACs, closed value1 and monotonic native-write guards.
+All85 focused,10 promotion/retained and19 parser cases pass. Two omissions fail
+their exact assertions. One pre-existing test anchor is repaired after base reproduction.
+
+**Next bounded outcome.** Extend the floor to joined custody and retained readings,
+review every rewrite/rotation/handoff/install path, then prove native exclusion and
+floor acknowledgment before any binary effect. Continue stored mode, all logical
+readers, owned pages, G8/B and same-tree writer-on/off artifacts. Stage4 frame
+checkpoint and allStage5 gates remain open; no final acceptance or publication.
 
 This seat edits only this document; the other seat's document above is unchanged.

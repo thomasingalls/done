@@ -26,7 +26,7 @@ export const controls = {
   ],
   source: [
     'src/crdt/sourceCapture.ts',
-    "if (result[key] !== route[key]) throw Error('route');",
+    "if (result[key] !== historical[key]) throw Error('route');",
     'void key;',
   ],
   spool: ['src/crdt/spoolRecord.ts', "typeof s.hash !== 'string' ||", ''],

@@ -1104,6 +1104,10 @@
       "sha256": "fa796d88503a2c3c1486694abac5866e99a3cfbe0454f2fc10ff217c9cacea98"
     },
     {
+      "path": "src/crdt/inboundReceiptVersion.ts",
+      "sha256": "ef34f766c4aba68bee2b6d527223fc6a9a093e448d1b7d5025c30bf8860e4d68"
+    },
+    {
       "path": "src/crdt/inboundRecord.ts",
       "sha256": "9004ad97324ea5ee243837e739b002359b7be0df58dfa93d98e1d1eb464e9f56"
     },
@@ -1353,7 +1357,7 @@
     },
     {
       "path": "src/crdt/promotionRecord.ts",
-      "sha256": "f2943f1024ef6290003a2853d792130ea09c99d1f75f44aa721042f9f688e7c9"
+      "sha256": "e6ac024af98f0b963d0cbde8061595c1440ed1ca6ec593cd748e71b1d4120037"
     },
     {
       "path": "src/crdt/protectionEnvironment.ts",
@@ -3455,11 +3459,11 @@
       "sites": [
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 267
+          "line": 276
         },
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 312
+          "line": 322
         }
       ]
     },

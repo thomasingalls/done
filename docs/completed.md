@@ -18860,3 +18860,12 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Exit.** The approved bounded binary schema/classifier has independent byte/extent/property controls; all126 focused cases pass, plus types/scoped quality/registry/inventory. Three omissions fail their exact assertions. Old codec guards and legacy bytes remain exact. No live reader/writer or native/Stage5 claim. [Evidence](development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md).
 
 **Next.** Harden the authenticated compatibility floor before binary effects, then the remaining approved Stage3.2 contract. Stage4's frame checkpoint and same-tree writer-off artifact proof remain open.
+
+
+### Promotion custody preserves the approved encoding floor
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch376 · **Stage:**Stage3.2 floor core
+
+**Exit.** Closed floor parsing, exact legacy and tagged HMAC bytes, retained encoding and central monotonic promotion-write guards pass85 focused cases,10 old promotion/retained cases,19 parser/control cases and two exact omission controls. Old guards/CAS/commit ASTs remain exact. One pre-existing mutation anchor is repaired after signed-base reproduction, keeping all test assertions. [Evidence](development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md).
+
+**Limit.** No floor installation or native old-tab/artifact/Stage5 proof. Joined/retained-reading integration and the remaining approved format contract continue; Stage4 frame checkpoint stays open.
