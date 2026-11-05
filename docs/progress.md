@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: semantic readers/writer, floor lifecycle and rollback evidence
+blocks_on: receive-control anchor, remaining functional checkpoint and B fairness/past-index evidence
 updated: 2026-11-04
 ```
 
@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Apply the approved full-unit hang guard without changing case or performance deadlines](./development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).
-Each of the nine files is byte-identical to its predecessor after the single inverse240000→120000 unit-branch replacement. The existing62 wrapper/fixture controls pass without edits, as do quality/format,17registry checks, inventory and10controls. The449-source runtime/crypto census and all constructions remain identical. Inventory changes only nine script fingerprints and the same nine derived unit-guard clauses; every other field/count/case/obligation is unchanged (732files/726required). Two private review assumptions initially fail: the commands use literal Vitest paths with explicit maxWorkers2 rather than resolve(), and inventory campaign data legitimately embeds those guard clauses. Preserve both failures, verify the actual command/default, and compare the entire inventory after normalizing exactly those nine authorized clauses. No app or old-test change. This is not a new full-unit result or claim that all nine campaigns have already run under240s; the forthcoming coherent checkpoint will retain each actual unit duration.
+**Latest checks.** [Preserve the functional checkpoint at the stale receive-control anchor](./development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
+The first63 root commands pass on one byte-pinned application/test tree: the full330-file unit suite has3,210passes and one existing skip in137.68s, followed by storage, migration, geometry, upgrade and account checks. Command63(account:receive), the64th attempted, fails only while building the missing-content joint-coverage control: its old uniquely anchored two-line string has0matches. Its51focused tests and16other native cases pass. No timeout, app refusal, negative-control acceptance or archive difference is reported by this failure. The remaining19commands64–82 are unattempted because the declared coordinator stops at the first nonzero. Independent review verifies all58,881source bytes plus membership in both directions, with no additions/removals/changes and empty real index. Babel AST comparison proves the entire three-branch coverage guard is unchanged from signed89b11fe2; phase396changed only its enclosing-loop indentation. The old control intentionally leaves the pre-existing async branch alone; only its escaped-newline indentation needs refreshing.17registry checks, inventory and10controls pass with449runtime hashes and all obligations unchanged. The first private review tried an unavailable TypeScript package; preserve that failure and its exact source, then use the existing Babel parser successfully. No canonical code or old test changes in432.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Close the Stage3/4 evidence map and run the full coherent functional checkpoint with display protection,5s host/fseventsd/swap logs and actual unit times. Then execute the declared Stage5 cells/report-only work and Stage6; continue automatically after each freeze.
+**Active bounded outcome.** Freeze the failed432checkpoint as evidence. In433refresh only two spaces in the existing joint-coverage mutation anchor, retaining its exact omission scope and every test/assertion/deadline, then rerun the receive campaign. Complete unrun commands64–82 with fresh source pins and actual full-unit times. Next close continuous native B fairness with/without backlog and withheld hints, and actual past-index fallback in bounded functional phases. Then PAUSE FOR COMMITS before any Stage5 cell; continue automatically only to that boundary.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +209,7 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
 closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Complete real B fairness/cancellation/past-index and the final writer-off image lifecycles. Binary retained-reading installation with writer-off/on
+in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Close real continuous B multi-publisher fairness with/without backlog and withheld hints, plus actual past-index fallback, in bounded functional phases after the checkpoint.418/419focused controls and422native cuts do not close this gap; later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
@@ -217,10 +217,7 @@ Genuine frozen old Page/Worker active and cold app refusals, queued old native-r
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine
-Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy exists,
-but the stale-turn audit control and coherent-source checkpoints remain. Then run
-every declared Stage5 replicate/report-only cell and write Stage6, then stop.
-Binary native cold is observed on the forced-cut fixture in421. Final rollback-image,
-RAM and performance acceptance credit remain unestablished. Service automation stays off.
+Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy and its genuine stale-turn control pass in425; the broader coherent checkpoint is in flight. After the completed functional checkpoint and remaining B proofs, PAUSE FOR COMMITS. Do not start Stage5cells or fixture/timing runs until the operator resumes after commits. Stage5and Stage6remain later work.
+Binary native cold is observed on the forced-cut fixture in421. The430same-tree ARM64image/rollback component evidence is established for its recorded tree; final signed-source artifacts, RAM and performance acceptance remain unestablished. Service automation stays off.
 
 This seat replaces only its own document; the other seat above is unchanged.

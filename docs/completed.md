@@ -19401,3 +19401,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The nine full-suite stages now use the already approved240s hang guard. Exact inverse source review and all62 existing wrapper controls pass; per-case/native/performance deadlines and runtime source remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).
 
 **Limits.** Guard-only harness maintenance under an existing conditional operator approval, not a new gate relaxation or performance result. Full campaign execution, coherent Stage3/4 checkpoint and Stage5/6 remain. No crypto/format/trust/budget/limit/sender/default change, new lab, commit, publication or deployment. The latest full unit remains429’s330files/3,210pass/one skip128.35s. Outcome precedes advancing this seat.
+
+
+### Preserve the functional checkpoint at the stale receive-control anchor
+
+**Date:**2026-11-04 · **Commit:**pending patch432 · **Stage:**partial Stage3.2
+
+**Exit.** 63commands pass; the receive campaign stops on an obsolete indentation-only mutation anchor after51focused and16other native cases pass. All58,881source files remain exact in both directions. Preserve the failure, narrow the repair to two spaces, then complete the remaining checkpoint. B fairness/past-index and the commit pause remain explicit. [Evidence](development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
+
+**Limits.** Failed partial functional checkpoint, not Stage3closure or Stage5/performance/format/RAM/release acceptance. All original predicates and native deadlines remain; only the previously approved240s full-unit hang guard is used. The nine contract full-unit stages have not run yet. Existing broad formatter deferral remains untouched. No new lab, source optimization, computer use, signing, push, publication or deployment. B native fairness/past-index remains open, and the operator now requires its bounded functional evidence before Stage5, followed by a pause for commits. Outcome precedes advancing this seat.

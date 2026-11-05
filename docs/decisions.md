@@ -7468,3 +7468,10 @@ RANGE_RECEIVE selects framing of newly fetched live pages. The compatible reader
 **Date:**2026-11-04 · **Commit:**pending patch431
 
 Use the measured cleaned-host full-suite duration and identical two-worker command to invoke the operator’s existing240s hang-guard approval. Limit the change to the full-suite unit branch, preserve every other source byte, and keep unit-timing.json reporting elapsed/deadline/code/timeout on each campaign. Do not change any individual test or frozen16ms/2.5s/30s/600s/15s/120s predicate. [Evidence](development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).
+
+
+### Preserve the stopped checkpoint and refresh only the executed coverage anchor
+
+**Date:**2026-11-04 · **Commit:**pending patch432
+
+Treat this as a harness build precondition, not evidence that missing content was accepted. The actual coverage guard AST is identical to the signed base; the async owner branch also predates hardening. Refresh only the changed indentation first, preserving every old omission, assertion and deadline. Never erase the failed432run or label the19unattempted commands as passing. Close the operator-identified B functional evidence gap before Stage5 and pause for commits. [Evidence](development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
