@@ -23,6 +23,7 @@
  *   and stepped through rather than admired.
  */
 
+import { setImmediate } from 'node:timers';
 import {
   Y,
   cardId,
@@ -128,11 +129,12 @@ export const openReplica = async (name: string, clientId: number): Promise<Repli
 /**
  * The membership repair runs on a microtask, and its own writes can queue
  * another. A macrotask boundary drains the whole cascade rather than one link
- * of it, which `await Promise.resolve()` does not.
+ * of it, which `await Promise.resolve()` does not. These Node unit fixtures use
+ * the check queue so every generated step need not wait for a timer threshold.
  */
 export const settle = (): Promise<void> =>
   new Promise((resolve) => {
-    setTimeout(resolve, 0);
+    setImmediate(resolve);
   });
 
 /* -------------------------------------------------------------------------- */

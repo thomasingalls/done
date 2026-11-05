@@ -6954,3 +6954,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** The operator requires faults to reach the current owner without changing assertions or app guards. A later driver control became reachable only after its earlier scheduler fixture was repaired.
 
 **Decision.** Use the unique current individual-read callback as the injection point, retaining the original baseline/mutant distinction and every native assertion/deadline. Do not instrument or relax the production path, and do not interpret a missing mutation anchor as application evidence. Reproduce on signed base and run the entire repaired campaign before advancing.
+
+
+### Preserve the replica task boundary without imposing a per-operation timer wait
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 349
+
+**Orientation.** The existing full-unit wrapper deadline is 120 seconds and remains binding. Its corrected-environment failure reproduces on signed base. A thread-pool proposal lacks sufficient headroom and is reverted, rather than treating one diagnostic pass as a cleared gate.
+
+**Decision.** Keep the default isolated fork configuration and all original test bodies, seeds and population sizes. In the Node replica fixture only, yield via `setImmediate` so recursively queued membership repair microtasks drain before the next operation without waiting on a timer threshold. Prove the cascade boundary and sensitivity to replacing it with a single microtask, run every affected property/regression case, then run the entire original command under its original deadline. New test admission remains a separate aggregate obligation. No runtime, trust or product-format change.

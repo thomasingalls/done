@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: full-unit wrapper deadlines, whole-tree receipts and nested campaign reruns
+blocks_on: complete nested campaign reruns and whole-tree receipt refresh
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -198,12 +198,16 @@ reproduced on the signed base, and its test-only repair now passes the entire
 six-stage driver campaign and actual report reconciliation. All 1,547 execution
 pins independently match; original native tests/deadlines remain. [348](./development-evidence/2026-11-02-release-hardening/348-final-dispatch-fixture/README.md).
 
-Next: diagnose the six old 120-second full-unit wrapper deadlines in the exact
-wrapper environment, then refresh whole-tree receipts and rerun previously failed
-nested campaigns. The earlier base unit diagnostic enabled report output unlike
-those wrappers; repeat that attribution with output disabled. No old failure is
-removed or credited by a later partial pass. Application source remains unchanged
-after Stage1. Stage2 has not started.
+The original full-unit gate now passes in 108.6 seconds under its unchanged
+120-second deadline, default fork pool and two-worker limit: 288 files, 2,882
+passed plus the existing skip. The test-only replica task-yield repair retains
+all 287 old unit files byte-for-byte and adds two cascade controls. All failed
+runs and the unadopted pool trial remain in [349](./development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
+
+Next: rerun previously failed nested campaigns to complete the command failure
+list, and refresh whole-tree receipts after records settle. Their old failures
+are not cleared by the standalone unit pass. Application source and Vite config
+remain unchanged after Stage1. Stage2 has not started.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

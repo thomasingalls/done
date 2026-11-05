@@ -18619,3 +18619,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** The stale injection reproduces on signed base. After test-only rebinding, both offline/pressure controls distinguish zero ordinary requests from one mutant request. The entire six-stage driver campaign and its real-report reconciliation pass. Rehash all 1,547 execution pins; the original native test file and case deadlines are unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/348-final-dispatch-fixture/README.md).
 
 **Notes.** No app or guard changes. Inventory/format/lint pass. Record this outcome before moving to the unchanged unit-wrapper deadlines and final receipt/campaign reruns.
+
+
+### Original full-unit deadline passes after a test-only task-boundary repair
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 349 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Original command/default fork pool/two workers passes within the unchanged 120 seconds: 108.6 seconds, 288 files, 2,882 passed plus the same skip. All 287 old unit files are byte-identical; two new cascade/omission cases and the 28 affected property/regression cases pass. Strict types, format/lint and inventory/census controls pass. [All attempts and independent checks](development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
+
+**Notes.** Correct the old base comparison's report environment, preserving both failed corrected runs. Preserve and drop the insufficient thread-pool proposal. Only the unit replica helper changes from timer wait to task yield; application, configuration, assertions, generated populations, Undo settings, limits and deadlines remain. Complete nested campaign exits and fresh receipts are still pending. Record before advancing to those reruns.
