@@ -392,3 +392,21 @@ The returning-reader case remains unrun, byte-identical to439while the operator
 clarifies its two hardcoded threshold literals. Native capacity observation also
 waits for the display-on precondition. No fallback, cold, performance or Stage5
 credit yet. Commits remain deferred by the operator.
+
+
+Phase441closes the bounded native past-index obligation under the November5
+amendment. Only the two approved refusal thresholds change in the returning-reader
+case; reversing those tokens recovers every other byte of439'scase. The test
+record is loaded from the exact served directory and binds every non-record file
+by count/SHA256digest. Controls refuse a copied directory'srecord, stale asset
+bytes and an unexpected file. All four rebuilt asset sets equal440byte-for-byte.
+
+The1MiBWorker actually drops its index at native sequence63, with1,200,806owned
+bytes and63logical rows. The first crossing receipt is a legacy position2;
+five later dense receipts carry positions3–19(counts4,3,4,4,2), with fully verified
+reference results at native sequences216,387,429. All18new accepted positions,
+complete writing, local Undo, read-only native inspection and ordinary32MiBoffline
+process-cold are exact. The native case passes in8.7s; this is functional evidence,
+not production-scale timing/RAM credit. [Raw observations and source bindings](development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).
+Fairness remains separately covered by437. Capacity-ceiling/size debt observation
+is next. Commits remain deferred; Stage5has not started.

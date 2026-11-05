@@ -7531,3 +7531,10 @@ Map continuous native fairness with/without backlog and withheld hints to437;418
 **Date:**2026-11-05 · **Commit:**pending patch440
 
 The operator clarifies that the contract requires the real eligibility/fallback control flow, not hours of production-scale UI growth. Use a distinct test-only Worker build, inverse-byte proof and independent compiled/runtime asset comparison to retain the production32MiBbinding. Keep all native continuation/positions/Undo/cold assertions. Do not silently rewrite their two hardcoded thresholds after the literal keep-body-unchanged instruction; request the narrow clarification and perform independent build/preparation work meanwhile. Record the original failed setup numbers and real-scale time/RAM as debt, with no diagnosis or acceptance substitution. Keep native display-on enforcement unchanged. A separate exact-whitelisted runner may perform pure lint/type/inventory/bookkeeping checks while recording actual display-off; it cannot execute a browser/native command. [Evidence](development-evidence/2026-11-02-release-hardening/440-index-ceiling-binding/README.md).
+
+
+### Bind test expectations to actual served assets and retain the original native case
+
+**Date:**2026-11-05 · **Commit:**pending patch441
+
+Follow the operator's exact approval: replace only the two refusal thresholds inside the case and prove the inverse recovers every remaining byte. Add directory-and-full-asset binding outside the case rather than accepting an arbitrary old build record. Require wrong-directory, stale-byte and extra-file controls. Reuse the closed genuine440cohort without editing its stored data, and revalidate all source/build identities. Count the actual lower-ceiling cap crossing and later dense/native semantic checks as functional evidence only. Do not treat successful scaled testing as production32MiBtime/RAM evidence or Stage5credit. Freeze this bounded result, then observe the original producer capacity guard/size and one post-park publication under unchanged limits. [Evidence](development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).

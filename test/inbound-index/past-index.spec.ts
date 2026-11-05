@@ -2,7 +2,19 @@
 import { test, expect, type BrowserContext, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { readFileSync, writeFileSync, appendFileSync, existsSync } from 'node:fs';
+import {
+  readFileSync,
+  writeFileSync,
+  appendFileSync,
+  existsSync,
+  readdirSync,
+  realpathSync,
+  mkdtempSync,
+  cpSync,
+  rmSync,
+} from 'node:fs';
+import { createHash } from 'node:crypto';
+import { tmpdir } from 'node:os';
 import {
   cloneSeed,
   paths,
@@ -23,6 +35,60 @@ import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 const normalized = (entries: { path: string; content: string }[]) =>
   [...entries].sort((a, b) => a.path.localeCompare(b.path));
 const PREPARE_WIRE_BYTES = 1024 * 1024;
+function verifiedIndexBytes(build: string) {
+  const identity = JSON.parse(readFileSync(join(build, 'index-ceiling-identity.json'), 'utf8'));
+  if (
+    identity.inverseByteExact !== true ||
+    identity.observe !== true ||
+    identity.productionBytes !== 32 * 1024 * 1024 ||
+    ![1024 * 1024, 32 * 1024 * 1024].includes(identity.limit)
+  )
+    throw Error('Expected the independently verified index fixture identity');
+  if (identity.servedDirectory !== realpathSync(build))
+    throw Error('Index build record belongs to another served directory');
+  const files = (directory: string, prefix = ''): string[] =>
+    readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+      const path = prefix + entry.name;
+      if (entry.isSymbolicLink()) throw Error('Index fixture assets must not be symlinks');
+      if (entry.isDirectory()) return files(join(directory, entry.name), path + '/');
+      if (!entry.isFile()) throw Error('Expected a regular index fixture asset');
+      return path === 'index-ceiling-identity.json' ? [] : [path];
+    });
+  const assets = files(build)
+    .sort()
+    .map((path) => {
+      const bytes = readFileSync(join(build, path));
+      return [path, createHash('sha256').update(bytes).digest('hex'), bytes.length];
+    });
+  const digest = createHash('sha256').update(JSON.stringify(assets)).digest('hex');
+  if (identity.assetDigest !== digest || identity.assetCount !== assets.length)
+    throw Error('Index build record does not match the served asset bytes');
+  return identity.limit as number;
+}
+const INDEX_BYTES = verifiedIndexBytes(paths().build);
+test('index build record rejects a different directory and stale or extra assets', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'done-index-build-record-')),
+    copy = join(directory, 'copy');
+  try {
+    cpSync(paths().build, copy, { recursive: true });
+    expect(() => verifiedIndexBytes(copy)).toThrow('another served directory');
+    const record = join(copy, 'index-ceiling-identity.json'),
+      identity = JSON.parse(readFileSync(record, 'utf8'));
+    identity.servedDirectory = realpathSync(copy);
+    writeFileSync(record, JSON.stringify(identity));
+    expect(verifiedIndexBytes(copy)).toBe(INDEX_BYTES);
+    const entry = join(copy, 'test/inbound-continuation/driver.html'),
+      original = readFileSync(entry);
+    writeFileSync(entry, 'stale build asset');
+    expect(() => verifiedIndexBytes(copy)).toThrow('does not match the served asset bytes');
+    writeFileSync(entry, original);
+    expect(verifiedIndexBytes(copy)).toBe(INDEX_BYTES);
+    writeFileSync(join(copy, 'unexpected.js'), 'extra build asset');
+    expect(() => verifiedIndexBytes(copy)).toThrow('does not match the served asset bytes');
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 function wires(directory: string, publisher: string) {
   const db = new DatabaseSync(join(directory, 'account.sqlite'), { readOnly: true });
   try {
@@ -232,7 +298,7 @@ test('actual byte-ceiling fallback continues exact native writing and ordinary c
       (e) =>
         e['site'] === 'actual-index-drop' ||
         e['site'] === 'append-usage-refusal' ||
-        (e['site'] === 'append-pre-refusal' && e['physicalBytes'] > 32 * 1024 * 1024),
+        (e['site'] === 'append-pre-refusal' && e['physicalBytes'] > INDEX_BYTES),
     );
   try {
     const context = await launch(join(directory, 'A'));
@@ -267,7 +333,7 @@ test('actual byte-ceiling fallback continues exact native writing and ordinary c
           BigInt(e['ordinal']) < BigInt(refused!['ordinal']),
       );
     if (refused!['site'] !== 'append-pre-refusal')
-      expect(usage!['ownedBytes']).toBeGreaterThan(32 * 1024 * 1024);
+      expect(usage!['ownedBytes']).toBeGreaterThan(INDEX_BYTES);
     expect(
       events.some(
         (e) =>
