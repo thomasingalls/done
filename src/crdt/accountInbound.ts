@@ -41,6 +41,8 @@ import {
   decodeInboundRecord,
   captureScopedInboundReceiptSyntax,
   inboundReceiptViews,
+  inboundEntryMemoSlot,
+  INBOUND_PAGE_HEADER_BYTES,
   INBOUND_ENVELOPE_LIMIT,
   INBOUND_RECORD_LIMIT,
   INBOUND_UPDATE_BYTES,
@@ -51,7 +53,9 @@ import {
 } from './inboundRecord';
 import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
-import { guardedSubtle } from './custodyCrypto';
+import { guardedSubtle, utf8 } from './custodyCrypto';
+import { sameBytes, eraseVerified } from './verifiedRecords';
+import type { VerificationMemo } from './verificationMemo';
 import { Y } from './yjs';
 import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
 
@@ -708,6 +712,7 @@ export async function verifyStoredInboundReceipt(
   input: InboundContext,
   bytes: Bytes,
   lifetime: InboundLifetime,
+  reuse?: { memo: VerificationMemo; sequence: number },
 ): Promise<VerifiedStoredInboundReceipt> {
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     guard = () => {
@@ -722,7 +727,9 @@ export async function verifyStoredInboundReceipt(
     },
     entries: VerifiedStoredInboundReceipt['entries'][number][] = [];
   let captured: InboundReceiptSyntax | undefined,
-    transferred = false;
+    transferred = false,
+    physicalMemo = false;
+  let evidenceInputs: Bytes[] | undefined, memoProof: unknown, legacyMemoIndex: number | undefined;
   try {
     captured = captureScopedInboundReceiptSyntax(bytes, context);
     if (!captured) fail('record');
@@ -733,6 +740,8 @@ export async function verifyStoredInboundReceipt(
       (context.retained || context.prefix.position !== captured.receipt.record.firstPosition - 1)
     )
       fail('prefix');
+    const logical = [...views.entries()],
+      syntax = captured;
     let authenticated = false,
       totalBytes = captured.bytes.length,
       totalRecords = 1;
@@ -745,42 +754,170 @@ export async function verifyStoredInboundReceipt(
         authenticated = true;
       } else assertInboundPagePrefix(args[0], args[1], args[2]);
     };
-    for (const { entryIndex, event } of views.entries()) {
-      const original = captured.originals.page.entries[entryIndex];
-      if (!original) fail('record');
-      const result = await verify(
-        context,
-        event.request,
-        event.page,
-        ownedLifetime,
-        physical
-          ? { kind: 'storedPhysical', record: captured.bytes, event, originals: captured.originals }
-          : { kind: 'stored', expectedRecord: captured.bytes, originals: captured.originals },
-        event.entry === undefined ? undefined : { index: entryIndex, authenticate },
-      );
-      entries.push(Object.freeze({ index: entryIndex, event, original, result }));
-      if (!('record' in result) || (physical && result.kind !== 'received')) fail('record');
-      if (result.kind === 'received') {
-        totalBytes += result.updates.reduce((sum, update) => sum + update.length, 0);
-        totalRecords += result.updates.length;
-        context.prefix = {
-          position: result.position,
-          link: result.link,
-          observedThrough: result.through,
-        };
+    const run = async () => {
+      for (const { entryIndex, event } of logical) {
+        const original = syntax.originals.page.entries[entryIndex];
+        if (!original) fail('record');
+        const result = await verify(
+          context,
+          event.request,
+          event.page,
+          ownedLifetime,
+          physical
+            ? {
+                kind: 'storedPhysical',
+                record: syntax.bytes,
+                event,
+                originals: syntax.originals,
+              }
+            : { kind: 'stored', expectedRecord: syntax.bytes, originals: syntax.originals },
+          event.entry === undefined ? undefined : { index: entryIndex, authenticate },
+        );
+        entries.push(Object.freeze({ index: entryIndex, event, original, result }));
+        if (!('record' in result) || (physical && result.kind !== 'received')) fail('record');
+        if (result.kind === 'received') {
+          totalBytes += result.updates.reduce((sum, update) => sum + update.length, 0);
+          totalRecords += result.updates.length;
+          context.prefix = {
+            position: result.position,
+            link: result.link,
+            observedThrough: result.through,
+          };
+        }
+        if (totalBytes > MAX_BATCH_BYTES || totalRecords > MAX_BATCH_RECORDS) fail('size');
+        guard();
       }
-      if (totalBytes > MAX_BATCH_BYTES || totalRecords > MAX_BATCH_RECORDS) fail('size');
+    };
+    const memo = reuse?.memo;
+    if (!memo || (physical && !memo.checkReceipt)) {
+      await run();
       guard();
+      transferred = true;
+      return Object.freeze({ record: captured.bytes, entries: Object.freeze(entries) });
     }
+    const sequence = inboundInteger(reuse!.sequence, 1),
+      keyEntries = [...(context.retainedGenerationKeys ?? [])].sort(([a], [b]) => a - b),
+      memoContext = JSON.stringify({
+        ...context,
+        generationKey: undefined,
+        retainedGenerationKeys: keyEntries.map(([generation]) => generation),
+        retained: undefined,
+      });
+    // Own the comparison input independently: a memo erases its callback value after cloning it.
+    evidenceInputs = [
+      captured.bytes.slice(),
+      context.generationKey,
+      ...keyEntries.map(([, key]) => key),
+      ...(context.retained
+        ? [utf8(context.retained.previous), context.retained.envelope, context.retained.proof]
+        : []),
+    ];
+    if (physical) {
+      physicalMemo = true;
+      const requestLength = captured.originals.requestBytes.length,
+        pageLength = captured.originals.pageBytes.length;
+      const proof = await memo.checkReceipt!(
+        logical.map((e) => inboundEntryMemoSlot(sequence, e.entryIndex)),
+        memoContext,
+        evidenceInputs,
+        async () => {
+          await run();
+          return {
+            record: captured!.bytes,
+            entries: entries.map((e) => {
+              if (e.result.kind !== 'received') fail('record');
+              const { record: _record, ...result } = e.result;
+              return { index: e.index, original: e.original, result };
+            }),
+          };
+        },
+        guard,
+      );
+      memoProof = proof;
+      guard();
+      if (
+        !proof ||
+        !(proof.record instanceof Uint8Array) ||
+        !sameBytes(proof.record, evidenceInputs[0]!) ||
+        !Array.isArray(proof.entries) ||
+        proof.entries.length !== logical.length
+      )
+        fail('record');
+      const request = proof.record.subarray(
+          INBOUND_PAGE_HEADER_BYTES,
+          INBOUND_PAGE_HEADER_BYTES + requestLength,
+        ),
+        page = proof.record.subarray(INBOUND_PAGE_HEADER_BYTES + requestLength);
+      if (page.length !== pageLength) fail('record');
+      const restored: VerifiedStoredInboundReceipt['entries'][number][] = [];
+      for (const [offset, view] of logical.entries()) {
+        const e = proof.entries[offset]!;
+        if (
+          !e ||
+          e.index !== view.entryIndex ||
+          e.result.kind !== 'received' ||
+          e.result.position !== view.event.position ||
+          e.result.link !== view.event.link ||
+          e.result.through !== captured.originals.page.through
+        )
+          fail('record');
+        restored.push(
+          Object.freeze({
+            index: e.index,
+            event: Object.freeze({ ...view.event, request, page }),
+            original: e.original,
+            result: Object.freeze({ ...e.result, record: proof.record }),
+          }),
+        );
+        guard();
+      }
+      transferred = true;
+      return Object.freeze({ record: proof.record, entries: Object.freeze(restored) });
+    }
+    const view = logical[0]!;
+    const result = await memo.check(
+      inboundEntryMemoSlot(sequence, view.entryIndex),
+      memoContext,
+      evidenceInputs,
+      async () => {
+        await run();
+        return entries[0]!.result;
+      },
+      guard,
+    );
+    memoProof = result;
     guard();
+    if (!('record' in result) || !sameBytes(result.record, captured.bytes)) fail('record');
+    // The exact legacy encoding is preserved; its detached cache copy is not another retained row.
+    const restored = Object.freeze({ ...result, record: captured.bytes });
+    result.record.fill(0);
+    const entry = Object.freeze({
+      index: view.entryIndex,
+      event: view.event,
+      original: captured.originals.page.entries[view.entryIndex]!,
+      result: restored,
+    });
+    guard();
+    legacyMemoIndex = view.entryIndex;
     transferred = true;
-    return Object.freeze({ record: captured.bytes, entries: Object.freeze(entries) });
+    return Object.freeze({ record: captured.bytes, entries: Object.freeze([entry]) });
   } finally {
     context.generationKey.fill(0);
     for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
-    const kept = transferred ? new Set(entries.map((entry) => entry.index)) : undefined;
+    if (!transferred) eraseVerified(memoProof);
+    if (physicalMemo) {
+      captured?.bytes.fill(0);
+      captured?.originals.requestBytes.fill(0);
+      captured?.originals.pageBytes.fill(0);
+    }
+    for (const input of evidenceInputs ?? []) input.fill(0);
+    const kept = transferred
+      ? new Set(
+          legacyMemoIndex === undefined ? entries.map((entry) => entry.index) : [legacyMemoIndex],
+        )
+      : undefined;
     for (const [index, original] of captured?.originals.page.entries.entries() ?? [])
-      if (!kept?.has(index)) {
+      if (physicalMemo || !kept?.has(index)) {
         original.envelope.fill(0);
         original.proof.fill(0);
       }

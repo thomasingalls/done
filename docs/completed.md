@@ -19050,3 +19050,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** The closed local role binds physical sequence and every contiguous actual entry index. One physical receipt plus received results/originals is stored without full-page repetition. Existing authentication/input/import/current/slice/capacity and old result roles remain exact; the new owned-buffer observer counts encoded storage once. Thirteen new cases cover72extents. All99affected controls and full304files/3041cases/one existing skip pass109.26s at120s;240s unused. [Evidence](development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md).
 
 **Preserved failures/limits.** Initial11red/1green controls and a pending-rejection fixture observer gap, two new byte-type errors, a stale capacity-injection anchor and a new sparse-fixture lint error remain. Only that old test helper's injection literal changes; all guards/cases/assertions/deadlines remain. The final equivalent sparse-fixture syntax passes all13cases after the full run, with runtime bytes unchanged. Semantic readers/writer, format lifecycle/cold/rollback and final gates remain; no performance/RAM/acceptance claim. Outcome recorded before updating this seat's active state.
+
+
+### Reuse exact saved-receipt evidence without repeating whole-page result storage
+
+**Date:** 2026-11-04 · **Commit:** pending patch 395 · **Stage:** partial Stage3.2, saved verifier only
+
+**Exit.** Optional native/journal proof reuse binds the floor, current owner, exact raw/key/retained evidence and every original entry address. Fresh verification keeps all prior checks; portable old memos take the verified fallback. Returned binary projections share one independent physical buffer. Eight new controls fail5/pass3 before;70 focused and full305files/3049cases/one existing skip pass110.00s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md).
+
+**Preserved development failure/limits.** First integration erases a selected legacy original on a warm hit; the permanent equality control fails, then passes after keeping the delivered index. All attempts remain. Existing live/stored helpers and the per-entry loop are independently AST-checked; no old test changes. Semantic readers/writer and all format/cold/rollback/final-gate obligations remain. No performance/RAM or acceptance credit. Outcome recorded before updating this seat's active state.

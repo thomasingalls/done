@@ -7206,3 +7206,10 @@ Use one private cache entry whose canonical address includes every ordered actua
 **Date:**2026-11-04 · **Commit:**pending patch394 · **Scope:**approved indirect receipt reader/journal hardening
 
 Extend the journal's closed local roles with exact physical sequence/first original index/count, not an arbitrary blob or page reference. Store one exact approved receipt and closed per-entry received results/originals; verify raw-input equality and every original index/position/link. Keep the existing binary value grammar, MAC domain/context, import capability, slice and limits. The adapter is implemented independently and now truthfully supports the receipt port. Its future consumer must enforce its authenticated floor before reuse. [394evidence](development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md) preserves all development failures and the sole old-helper anchor repair.
+
+
+### Bind optional stored-receipt reuse before projecting independently owned results
+
+**Date:** 2026-11-04 · **Commit:** pending patch 395 · **Scope:** approved exact-evidence/owned-page hardening
+
+Keep stored mode private to captured saved bytes. Check the authenticated encoding floor and current owner before selecting proof; bind complete physical bytes, actual generation-key evidence, retained originals and every actual entry address. Reuse only the existing verified crypto evidence, never authority/coverage/commit permission. A memo may erase its callback result: rebind returned binary views into the exact independent clone, and explicitly keep the selected legacy original on a cache hit. Older portable adapters without the optional extension continue full verification. [395 evidence](development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md) preserves the legacy erasure regression and repair.

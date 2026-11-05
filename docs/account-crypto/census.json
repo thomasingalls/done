@@ -793,7 +793,7 @@
     },
     {
       "path": "src/crdt/accountInbound.ts",
-      "sha256": "a2d959c49d4ae03402191bad544d006ad3b613c1729e483f57585b4d72f3fdd8"
+      "sha256": "86ec4492ca664998f1648411f47a700a8e6ddd7d957fc1bd06c22d8573fad8dd"
     },
     {
       "path": "src/crdt/accountJournal.ts",
@@ -1513,7 +1513,7 @@
     },
     {
       "path": "src/crdt/verificationMemo.ts",
-      "sha256": "37de3b6d7c987d3097baceec93cf9bc5273b56c21f3a1c49e50fd00a412a5cfb"
+      "sha256": "21100986cfbb0cd850d006bd78617c8e74d4343e04a137131124326b1b4b828e"
     },
     {
       "path": "src/crdt/verificationOwnership.ts",

@@ -184,24 +184,28 @@ binds every actual entry address, owns one proof graph and measures backing-buff
 capacity. It is not used by a semantic reader yet. The
 [authenticated journal adapter](./development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md)
 now supports compact receipt proofs with the same old grammar/MAC/input/slice/
-capacity guards. It is not wired into a semantic reader. Every phase outcome/failure is in completed.md
+capacity guards. It is not wired into a semantic reader. The saved verifier now has optional
+[native/journal proof reuse](./development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md)
+under exact raw/key/context and entry-address evidence, with independent returned
+ownership. No actual app reader supplies it yet. Every phase outcome/failure is in completed.md
 and its immutable evidence, not repeated here.
 
-**Latest checks.** Full304files/3041cases/one existing skip pass109.26s at the
-original120s guard;240s unused. Types,99focused retention/receipt checks and reviewed
-registry/inventory pass. After the full run only equivalent new sparse-fixture
-syntax changes; all13new cases and quality pass again, runtime/harness unchanged.
+**Latest checks.** Full305files/3049cases/one existing skip pass110.00s at the
+original120s guard;240s unused. Types,70 focused receipt/memo controls and reviewed
+registry/inventory pass. The new legacy warm-hit erasure control failed during
+implementation, then passed after keeping its delivered original index. All runs
+remain; no old test changes in395.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Wire compact exact-evidence reuse into the bulk saved
-verifier, then integrate the one receipt home through every actual semantic reader,
-with each scope's own authenticated floor before any memo hit. Preserve old result,
-MAC/input/context, interruption, slice/capacity and erasure guards. One physical row
-must remain one witness event while every admitted entry is checked and covered.
+**Active bounded outcome.** Integrate the one receipt home and bulk saved verifier
+through full/incremental ledger readers, preserving exact native-row comparison
+and each scope's authenticated floor before memo hits. One physical row remains one
+witness event; every admitted logical entry must be checked, covered and retained
+at its actual position/index. Then cover every remaining semantic reader and cut.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

@@ -140,11 +140,11 @@ export function createVerificationMemo() {
     },
   };
 }
-/** Existing portable verifier port, also implemented by authenticated preparation journals. */
+/** Portable base port; old adapters may omit receipt reuse and keep the verified fallback. */
 export type VerificationMemo = Pick<
   ReturnType<typeof createVerificationMemo>,
   'clear' | 'retain' | 'check'
->;
-/** Native process-local extension. A journal adapter must be hardened separately before a
- * receipt consumer can require this port; a base memo is never asserted to implement it. */
+> &
+  Partial<Pick<ReturnType<typeof createVerificationMemo>, 'checkReceipt' | 'ownedBytes'>>;
+/** Complete extension implemented by native memos and the separately hardened journal adapter. */
 export type ReceiptVerificationMemo = ReturnType<typeof createVerificationMemo>;

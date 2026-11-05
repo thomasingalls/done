@@ -165,7 +165,8 @@ encoding floor before any memo hit and still run the semantic and coverage check
 Capacity counts encoded bytes at the same ceiling; a reopened journal that still
 exceeds that ceiling refuses again. Its buffer observer counts retained encoded
 result storage once, not the aliased pending map, transient inputs or process RAM.
-The adapter is hardened in394; no semantic reader uses it yet.
+The adapter is hardened in394;395 adds optional use in the saved verifier.
+Actual ledger/reading consumers remain to integrate.
 
 ## Admission, cuts and accounting
 
