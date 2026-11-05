@@ -305,6 +305,9 @@
     ],
     "test/inbound-continuation": [
       "playwright.inbound-continuation.config.ts"
+    ],
+    "test/inbound-index": [
+      "playwright.inbound-index.config.ts"
     ]
   },
   "vectorGenerators": {

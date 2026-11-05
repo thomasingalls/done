@@ -87,6 +87,63 @@ const api = {
     );
     return readMaster();
   },
+  admission() {
+    if (!workspace) throw Error('Owner absent');
+    return workspace.status;
+  },
+  async replaceSettled(text: string) {
+    if (!workspace) throw Error('Owner absent');
+    const surface = workspace.text({ kind: 'master' }),
+      before = surface.read().text;
+    document.dispatchEvent(new InputEvent('beforeinput', { inputType: 'insertText', data: text }));
+    const ticket = surface.input(
+      { name: 'insert', text },
+      { ranges: [{ anchor: 0, head: before.length }], main: 0 },
+    );
+    let off = () => {};
+    const blocked = new Promise<never>((_resolve, reject) => {
+      const observe = (status: AdmittedWorkspace['status']) => {
+        if (status.state !== 'active')
+          reject(
+            Error('Native admission ' + status.state + ':' + (status.pressure?.code ?? 'none')),
+          );
+      };
+      off = workspace!.onStatus(observe);
+      observe(workspace!.status);
+    });
+    try {
+      await Promise.race([ticket.accepted, blocked]);
+      return readMaster();
+    } finally {
+      off();
+    }
+  },
+  async flushChecked() {
+    if (!workspace || !owner) throw Error('Owner absent');
+    let off = () => {};
+    const blocked = new Promise<never>((_resolve, reject) => {
+      const observe = (status: AdmittedWorkspace['status']) => {
+        if (status.state !== 'active')
+          reject(
+            Error('Native admission ' + status.state + ':' + (status.pressure?.code ?? 'none')),
+          );
+      };
+      off = workspace!.onStatus(observe);
+      observe(workspace!.status);
+    });
+    try {
+      await Promise.race([workspace.whenDurable(), blocked]);
+      owner.session!.sync!.retry('send');
+    } finally {
+      off();
+    }
+  },
+  async undoSettled() {
+    if (!workspace) throw Error('Owner absent');
+    document.dispatchEvent(new PointerEvent('pointerdown'));
+    await workspace.command({ kind: 'undo' }).accepted;
+    return readMaster();
+  },
   undo() {
     if (!workspace) throw Error('Owner absent');
     window.dispatchEvent(new PointerEvent('pointerdown'));

@@ -19455,3 +19455,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** Continuous native B fairness is established for both initial conditions with normal/withheld hints, actual productive wire batches, independent accepted/native positions, a sensitive unfair-selector control, exact Undo and ordinary offline process-cold. App runtime is unchanged since429. [Evidence](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
 
 **Limits.** Functional contract evidence only: no input/peer latency, performance, Stage5, RAM, release or aggregate acceptance credit. No lab code or switches land; test entries/controls never enter ordinary app assets. Ordinary release-profile assets remain byte-exact. Actual32MiB index fallback is still open for the next bounded phase. Earlier failed attempts and the negative sparse-liveness failure are preserved, with no timeout/assertion/security/rate-limit changes. No real staging, signing, push, publication, deployment or computer use. The operator requires a commit pause beforeStage5. Outcome precedes advancing this seat.
+
+
+### Hold actual past-index credit after bounded fixture setup fails
+
+**Date:**2026-11-05 · **Commit:**pending patch438 · **Stage:**partial Stage3.2
+
+**Exit.** The actual-index test apparatus is source-reviewed, but genuine fixture preparation fails the original900s budget and the native index/cold case is unrun. Actual past-index remains an explicit preStage5blocker; fairness437stays established separately. [Evidence](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
+
+**Limits.** No past-index, performance, Stage5, RAM, release or aggregate acceptance credit. This is a failed preparation checkpoint, not Stage3.2closure or a green new native suite. Do not infer absence of transient sync halts from helpers that used public retries without retaining cached lane status; the next bounded phase adds that observation and genuine producer quiet. Build identity invalidation is retained, not narrowed. All900/120/15guards, production limits/profile and security checks stay. Earlier failures remain, including the first failed independent asset review. No new lab, real staging/signing, push, publication, deployment or computer use. Commit pause is still required beforeStage5. Outcome precedes advancing this seat.

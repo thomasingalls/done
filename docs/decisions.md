@@ -7510,3 +7510,10 @@ Keep passing source-pinned segments and every earlier failed attempt. Do not rer
 **Date:**2026-11-05 · **Commit:**pending patch437
 
 The contract requires real continuous multi-publisher evidence beyond418/419component controls and421/422native cuts. Use genuine native profiles, an independent accepted frontier, server-side hint fault exposure, actual productive signed batches and the same durable turn assertion in the negative. Keep correct self-read suppression and Joined baseline semantics in the initial precondition. A negative liveness failure is expected, not a production failure; keep it and finish the declared durable-bound/Undo/cold control. Actual past-index fallback still precedesStage5and the commit pause. [Evidence](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
+
+
+### Keep failed preparation separate from actual index-fallback evidence
+
+**Date:**2026-11-05 · **Commit:**pending patch438
+
+A ready-made fixture or usage estimate cannot close the contract. Retain both900s failures and every prior development attempt; native A was never run. Correct test semantics by awaiting complete sliced admission tickets without changing the planner or journal bounds. Preserve the conservative verifier identity change from the new Vite test config; the prior-byte reconstruction explains it without weakening reuse guards. Next address setup scheduling through cached Window ports and real automatic producer maintenance/quiet, not a raised cap or deadline. Any actual app refusal/owner closure/missing writing/cold failure keeps the operator stop rules. [Evidence](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).

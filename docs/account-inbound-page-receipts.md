@@ -346,3 +346,14 @@ evidence; they do not substitute for that continuous journey. Actual32MiB
 past-index fallback remains a separate bounded native obligation after437, before
 Stage5. The later Stage5 fairness and3,072 report-only cells remain owed and receive
 no credit from this functional proof. Pause for commits before starting Stage5.
+
+
+Phase438 preserves the attempted actual-index fixture and its failed setup:
+both the complete-ticket large-paste recipe and the one-slice UTF8 recipe exhaust
+the existing900s preparation budget before the native returning-reader case.
+The latter witnesses1,536complete replacements/86accepted positions and
+4,249,788wire bytes. This is no past-index proof. [Every attempt, source identities
+and the unrun boundary](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
+The next bounded fixture repair must observe cached sync/maintenance status and
+allow genuine producer quiet under the same profile and limits. Actual32MiB
+fallback and continued exact receive/cold still precedeStage5and the commit pause.
