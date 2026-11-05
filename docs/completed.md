@@ -19253,3 +19253,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Reduced-owner and scheduler logical pressure now forces an attempt at1,024positions independently of physical rows. Nine controls,314focused/18legacy and full327files/3193cases/one skip pass129.74s. Existing guards and old tests remain. [Evidence](development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
 
 **Limits.** Unreduced native full-oracle pressure/idle integration is still open, so this does not close the complete dual audit item. No composed peer/Worker binary transaction, physical31s cold, image, activation, timing or RAM credit. G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/budget/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Schedule the unreduced semantic oracle in the guarded warm-audit lane
+
+**Date:**2026-11-04 · **Commit:**pending patch417 · **Stage:**partial Stage3.2
+
+**Exit.** The unreduced full oracle now runs in the existing guarded idle-audit job. Two new native regressions, a discriminating comparison omission, two unchanged native cases,72focused cases and full327files/3193pass/one skip pass. Full suite136.43s; no guard or deadline change. [Evidence](development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
+
+**Limits.** The generic oracle-disagreement hook does not close the later actual dense stale-turn/Worker control. No composed-peer binary native transaction, physical31s interior cold, final rollback image, RAM or performance acceptance credit. G8/B, format-floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/budget/gate change, commit or deployment. Outcome precedes advancing this seat.

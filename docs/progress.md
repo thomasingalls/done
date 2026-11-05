@@ -191,24 +191,24 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Track logical audit pressure alongside physical rows](./development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
-Nine new controls pass. Initial before has9failures; one reduced fixture lacked its required authenticated journal era, then the repaired before exposes the missing port. Development extent field entryCount→existing count correction restores old controls without edits. The two-publisher expected count was corrected to17 from its independent8+7binary extents and two legacy tails; earlier failures remain. Controls cover independent force, unchanged physical/quiet behavior, invalid values, clock rollback, close, scheduler interruption, real mixed/multi-publisher units and genuine reduced continuation/cold-seed exclusion. Types,314focused cases across36files and18unchanged legacy pass; full327files/3193cases/one existing skip pass129.74s at240s. All old tests remain byte-exact. Quality, format,17registry checks, inventory and10controls pass. Six hashes, no domain-site/construction/obligation moves. Independent normalized AST review preserves every old default/physical/verification guard; its first broad read-only predicate normalizer was corrected to match only the exact new comparison, with the failed reviewer retained.
+**Latest checks.** [Schedule the unreduced semantic oracle in the guarded warm-audit lane](./development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
+Two native unreduced-owner controls first failed waiting for the missing full oracle, then pass with actual crypto/IndexedDB, foreground/input deferral, close, acknowledged writing and cold exactness. Omitting the original comparison causes the declared disagreement assertion to fail, as required. The initial direct invocation of the old helper module executed no exported cases and earns no case credit; the actual two existing native cases then pass unchanged. The read-only reviewer initially searched for a string label as an identifier; corrected selector preserves the failed reviewer and proves the complete reference verifier and comparison/refusal/erasure bodies AST-exact except completed-oracle clock/count reset. Native run/settlement and old policy AST remain exact. Types,72focused cases, full327files/3193pass/one existing skip at136.43s and240s, quality, format,17registry checks, inventory and10controls pass. Actual command137.193s. Four runtime hashes, one corresponding construction/domain address move; old tests and all other obligations remain.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Integrate unreduced semantic-oracle due/pressure into the existing warm-audit job with the original full comparison and native/suspension/shadow/foreground guards. Then G8/B, composed peer/Worker floor/lifecycle, old artifacts, cold and writer-off rollback proofs. Continue automatically after each freeze.
+**Active bounded outcome.** Harden G8 with actual four-position reads, B bounded aggregation and shared cache/tail/wire reservations, preserving native chain order, round robin and send yielding. Then real composed peer/Worker floor lifecycle, aged interior cold and same-tree writer-off rollback image. Continue automatically after each freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged stored semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage;
 physical31s interior-cut cold and real composed peer/Worker observations remain.
 Full/native/reduced loads and new-row continuations own their syntax. Live ranges
 and flagged dense native framing are implemented; actual binary native admission
-is not yet observed. Harden unreduced full-oracle dual pressure, G8/range4/B cache/
-tail/wire reservations, fairness, cancellation and past-index behavior. Reduced
-logical pressure is covered in416; physical counters/witnesses remain separate.
+is not yet observed. Reduced and unreduced full-oracle pressure now feeds the guarded idle lane. Harden
+G8/range4/B cache/tail/wire reservations, fairness, cancellation and past-index
+behavior; physical counters/witnesses remain separate.
 Ordinary builds remain writer-off; Docker/Vite forwarding and the selected
 writer-on/writer-off build proofs remain.
 

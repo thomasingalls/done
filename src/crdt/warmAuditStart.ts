@@ -31,6 +31,7 @@ export function createWarmAuditStart(now: () => number = () => performance.now()
         foreground.delete(token);
       };
     },
+    foregroundPending: () => !closed && foreground.size > 0,
     /** undefined means wait for queue settlement/close; zero means attempt under the old guards. */
     delay(pendingRows: number, pendingPositions = 0): number | undefined {
       if (closed) return;

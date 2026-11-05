@@ -85,6 +85,7 @@ export function createWarmAuditScheduler(options: {
   else refresh();
   return Object.freeze({
     refresh,
+    foregroundPending: policy.foregroundPending,
     input() {
       policy.input();
       refresh();

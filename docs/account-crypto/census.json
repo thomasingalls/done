@@ -773,7 +773,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "1673d61b39f7441bce886b78fdf23de84938569ce137d63f60bcb3048581625d"
+      "sha256": "f9abd8db7b7f7a96b95d01c06d6a47e4b4d32c4068f4e3f10b1592b4982a8f36"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "7b408e5d04b8622ad22cc3ad548d2a976dc588a4a828c845978d2b26d910250f"
+      "sha256": "a7c24b1520b0ff685a4809490d8e512934a11f996b1a32b7776e9b7c7050438b"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1525,11 +1525,11 @@
     },
     {
       "path": "src/crdt/warmAuditScheduler.ts",
-      "sha256": "d9d140586f457af5387bb6a47e5902f5cbf88a4b3a4d66dd317d6ba0bccea3fb"
+      "sha256": "00f32596e332c09d74003f4965c0102339b174198994758e19c46793cdde8867"
     },
     {
       "path": "src/crdt/warmAuditStart.ts",
-      "sha256": "f7ac5c4fe6776a40365de17c7a684f8d6a61a0c1f8518b23fe67d0596f205938"
+      "sha256": "7386b29fcabf5d6f7d869838d9d8e3c8294b731597874a25fb7e080a64875795"
     },
     {
       "path": "src/crdt/warmContent.ts",
@@ -2229,7 +2229,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 872
+          "line": 928
         }
       ]
     },

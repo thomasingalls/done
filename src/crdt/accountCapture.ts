@@ -58,6 +58,15 @@ import type { ContentSelection } from './contentSelection';
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
   version: 7 | 8 | 9;
+  /** Private semantic oracle scheduling; readiness grants no verification or effect permission. */
+  audit?: {
+    due(): boolean;
+    delay(): number;
+    pendingRows(): number;
+    pendingPositions(): number;
+    schedule(wake: () => void): void;
+    run(task: SessionTask, owner: ReturnType<typeof prepareAccountCustody>): Promise<boolean>;
+  };
   readBaseline?: true;
   /** Private verifier may borrow retained carrier rows immutably during selection validation. */
   selectiveLoads?: true;
@@ -368,21 +377,33 @@ export async function openAccountCaptureOwner(
   if (warmLoads) {
     auditScheduler = createWarmAuditScheduler({
       signal: live.signal,
-      due: () => owner!.carrier.warmAuditDue(),
-      delay: () => owner!.carrier.warmAuditDelay(),
-      pendingRows: () => owner!.carrier.pendingWarmAuditRows(),
-      pendingPositions: () => owner!.carrier.pendingWarmAuditPositions(),
+      due: () => owner!.carrier.warmAuditDue() || Boolean(extension?.audit?.due()),
+      delay: () => Math.min(owner!.carrier.warmAuditDelay(), extension?.audit?.delay() ?? Infinity),
+      pendingRows: () =>
+        Math.max(owner!.carrier.pendingWarmAuditRows(), extension?.audit?.pendingRows() ?? 0),
+      pendingPositions: () =>
+        Math.max(
+          owner!.carrier.pendingWarmAuditPositions(),
+          extension?.audit?.pendingPositions() ?? 0,
+        ),
       run: (mayStart) =>
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
         run<WarmAuditOutcome>(
-          (parent) => {
-            if (!mayStart()) return Promise.resolve('deferred' as const);
-            if (!owner!.carrier.hasReducedHistory()) return owner!.carrier.auditWarm(parent);
+          async (parent) => {
+            if (!mayStart()) return 'deferred' as const;
             // Reduced baselines also have a full semantic oracle. Input still journals
             // synchronously, invalidating this discretionary pass before its next effect.
             const activity = shadowActivity;
             const check = () => {
-              if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+              const foreground = auditScheduler?.foregroundPending() ?? false;
+              if (suspended || activity !== shadowActivity || foreground)
+                throw new MaintenanceInterrupted([
+                  {
+                    suspended,
+                    shadowActivity: activity !== shadowActivity,
+                    queuePriority: foreground,
+                  },
+                ]);
             };
             const interruptible: SessionTask = {
               signal: parent.signal,
@@ -397,17 +418,22 @@ export async function openAccountCaptureOwner(
                   return start();
                 }),
             };
-            return owner!.carrier.auditWarm(
+            const auditTask = maintenanceTask(
               import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
                 ? budgetedTask(interruptible)
                 : interruptible,
+              parent.signal,
             );
+            const completed = await owner!.carrier.auditWarm(auditTask);
+            if (!completed) return false;
+            return extension?.audit ? extension.audit.run(auditTask, owner!) : true;
           },
           false,
           'warm-audit',
         ),
     });
     scheduleAudit = auditScheduler.refresh;
+    extension?.audit?.schedule(scheduleAudit);
     const stopInput = (['keydown', 'beforeinput', 'pointerdown'] as const).map((kind) =>
       pageRuntimePorts.activity.onDocument(kind, () => auditScheduler!.input(), true),
     );

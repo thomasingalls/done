@@ -1,3 +1,5 @@
+import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
+import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
 import { createWorkerContextQueue, type WorkerContextQueue } from './workerContextQueue';
 import type { AccountMirrorContext } from './accountMirrorMaterial';
 import { eraseWorkerMessage } from './workerChannel';
@@ -210,6 +212,7 @@ import {
   inspectInbound,
   inspectInboundCooperatively,
   verifyInboundLedger,
+  inboundPositionsAfter,
   contextAt,
   publisherContext,
   publisherState,
@@ -269,8 +272,26 @@ async function openAccountReceiveOwner(
   let localRetentionHint: LocalRetentionHint | undefined;
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
+    sinceAuditPositions = 0,
+    auditedAt = performance.now(),
+    auditWake: (() => void) | undefined,
+    auditAlive = true,
     auditDue = false,
     auditDeferred = false;
+  const resetSemanticAudit = () => {
+    sinceAudit = sinceAuditPositions = 0;
+    auditedAt = performance.now();
+  };
+  const semanticAuditDue = () =>
+    auditAlive &&
+    incremental &&
+    !baselineReading &&
+    verifiedCounter !== undefined &&
+    (auditDue ||
+      sinceAudit >= WARM_AUDIT_ROWS ||
+      sinceAuditPositions >= WARM_AUDIT_FORCE_POSITIONS ||
+      performance.now() < auditedAt ||
+      performance.now() - auditedAt >= WARM_AUDIT_MS);
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
     coverage = createInboundCoverage({
@@ -430,6 +451,30 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
+    audit: {
+      due: semanticAuditDue,
+      delay: () =>
+        !auditAlive || !incremental || baselineReading || verifiedCounter === undefined
+          ? Infinity
+          : semanticAuditDue()
+            ? 0
+            : Math.max(0, auditedAt + WARM_AUDIT_MS - performance.now()),
+      pendingRows: () => (auditAlive && !baselineReading ? sinceAudit : 0),
+      pendingPositions: () => (auditAlive && !baselineReading ? sinceAuditPositions : 0),
+      schedule(wake) {
+        auditWake = wake;
+        wake();
+      },
+      async run(task, owner) {
+        if (!semanticAuditDue()) return true;
+        await assertCurrent(task);
+        auditDue = true;
+        owner.carrier.invalidateWarm();
+        const records = await owner.carrier.load(task);
+        eraseVerified(records);
+        return !auditDue;
+      },
+    },
     ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
     ...(hasBaselineVerifier()
       ? ({
@@ -621,7 +666,7 @@ async function openAccountReceiveOwner(
           verifiedCounter = structuredClone(counter);
           if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
             localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
-          sinceAudit = 0;
+          resetSemanticAudit();
           auditDue = auditDeferred = false;
           memo.clear();
           coverage.clear();
@@ -769,6 +814,7 @@ async function openAccountReceiveOwner(
             if (indexes) result.indexes = indexes;
           }
           syntaxTurn.complete(result);
+          if (!audit) resetSemanticAudit();
           return result;
         } finally {
           syntaxTurn.dispose();
@@ -841,10 +887,14 @@ async function openAccountReceiveOwner(
                   )
                     delete result.indexes;
                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
+                  sinceAuditPositions = Math.min(
+                    WARM_AUDIT_FORCE_POSITIONS,
+                    sinceAuditPositions +
+                      inboundPositionsAfter(next.census, before.at(-1)?.seq ?? 0),
+                  );
                   auditDue ||=
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
-                    (sinceAudit >= 1024 &&
-                      records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
+                    semanticAuditDue();
                   syntaxTurn.complete(result);
                   return result;
                 } finally {
@@ -859,7 +909,13 @@ async function openAccountReceiveOwner(
         verifiedCounter = structuredClone(counter);
         // Install only the fully authenticated delta before discretionary reference work.
         // A cancelled audit stays due, but must not migrate onto the next foreground edit.
-        if (auditDue && (!auditDeferred || isMaintenanceTask(task))) {
+        if (
+          auditDue &&
+          (!auditDeferred || isMaintenanceTask(task)) &&
+          (!auditWake ||
+            isMaintenanceTask(task) ||
+            import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every')
+        ) {
           countLedger('audits');
           const auditRows = copyRecords(records),
             result = verified.read(records);
@@ -873,7 +929,7 @@ async function openAccountReceiveOwner(
               captureError('Account ledger reference mismatch');
             }
             countLedger('auditCompletions');
-            sinceAudit = 0;
+            resetSemanticAudit();
             auditDue = auditDeferred = false;
           } catch (e) {
             if (e instanceof MaintenanceInterrupted) {
@@ -899,6 +955,9 @@ async function openAccountReceiveOwner(
         localRetentionHint = { revision: localRetentionRevision ?? 0, records: records.length };
     },
     dispose() {
+      auditAlive = false;
+      auditWake = undefined;
+      resetSemanticAudit();
       baselineReading = false;
       baselineShadow?.invalidate();
       baselineShadow = undefined;
@@ -2390,7 +2449,7 @@ async function openAccountReceiveOwner(
               invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
-              sinceAudit = 0;
+              resetSemanticAudit();
               auditDue = auditDeferred = false;
               verified.clear();
               memo.clear();
@@ -2594,7 +2653,7 @@ async function openAccountReceiveOwner(
           receiveSelection.reset();
           invalidateReadScheduling();
           verifiedCounter = undefined;
-          sinceAudit = 0;
+          resetSemanticAudit();
           auditDue = auditDeferred = false;
           verified.clear();
           memo.clear();

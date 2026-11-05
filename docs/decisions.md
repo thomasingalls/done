@@ -7363,3 +7363,10 @@ The native group writes one receipt and all covered updates in the same existing
 **Date:**2026-11-04 · **Commit:**pending patch416
 
 A compact page counts once physically and once per admitted received position logically. Observe logical work only from a verified census after candidate acceptance, excluding its cold seed. Force only an attempt at either approved ceiling; retain all comparison/interruption/native guards and the existing work lane. Continue unreduced-oracle integration separately. [Evidence](development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
+
+
+### Keep unreduced full-oracle work in the existing warm-audit lane
+
+**Date:**2026-11-04 · **Commit:**pending patch417
+
+Use one private scheduler port and the real maintenance-task brand, observing the existing foreground token set. Keep independent full comparison, all guards and a fallback for owners without this scheduler. A hard cap forces an attempt only; interruption still wins. Reduced and unreduced oracle lifetimes remain separate. [Evidence](development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
