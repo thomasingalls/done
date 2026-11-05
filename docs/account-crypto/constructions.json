@@ -6562,7 +6562,8 @@
         "test/inboundPageCodec.test.ts",
         "test/inboundReceiptFloor.test.ts",
         "test/inbound-receipt-floor/joined.test.mjs",
-        "test/inboundFormatTask.test.ts"
+        "test/inboundFormatTask.test.ts",
+        "test/account-worker-cohort/format.spec.ts"
       ],
       "requirements": [
         "closed-indexed-plaintext",
@@ -6579,7 +6580,8 @@
         "legacy-exact-tagged-floor-mac",
         "closed-floor-parser-and-monotonic-native-cas",
         "joined-and-retained-reading-floor-preservation",
-        "original-native-format-task-provenance"
+        "original-native-format-task-provenance",
+        "real-native-format-task-coordination"
       ],
       "blocker": "Approved binary codec and promotion/joined/retained-reading floor metadata only; no floor installation or live binary effects. Actual old-owner fences, all logical readers, stored mode, owned pages, stale-tab/rollback and final gates remain open. No aggregate credit.",
       "next": "Harden the approved Stage3.2 contract in bounded patches before enabling release writing; ordinary builds stay off."

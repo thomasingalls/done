@@ -18887,3 +18887,12 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Exit.** The unwired guard distinguishes original exclusive scopes and exact Account joined scopes from arbitrary shared, copied, Local or expired tasks. All34 focused wiring cases and two exact omission controls pass, with types/quality/registry/inventory. Old acquisition/compatibility/lifecycle/native callback ASTs remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md).
 
 **Limit.** Test-only compatibility/authentication stubs provide no native or Account authority proof. Real native ownership/old-tab tests, authenticated floor installation and every remaining Stage3.2 obligation are still required.
+
+
+### Real native scopes discriminate the format-task boundary
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch379 · **Stage:**Stage3.2 native coordination controls
+
+**Exit.** Four Chromium/Firefox cases verify real Page/Worker grant identity, the old shared holder's startup exclusion, generic shared refusal and retained slot ownership through abort/drain. An omitted startup barrier fails the named early-member data assertion. All runtime and old-test bytes stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md).
+
+**Limit.** Coordination only: a test-only private native acquisition seam skips custody/authentication. No authenticated floor installation, saved writing, old real-data profile or rollback proof is claimed.

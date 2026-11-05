@@ -230,11 +230,18 @@ adds only a private original-task/join identity check and ephemeral metadata.
 All34 wiring cases and two omission controls pass. They are models, not native
 custody/lease proof; old acquisition and lifecycle ASTs stay exact.
 
-**Next bounded outcome.** Exercise real native Page/Account-cohort ownership and
-old-owner exclusion, then install/acknowledge the authenticated floor before any
-new receipt effect. Preserve every rewrite/rotation/handoff/install/removal path.
-Continue stored mode, logical readers, owned pages, G8/B and same-tree writer-on/off
-artifacts. Functional checkpoints and allStage5 gates remain required; no final
-acceptance, commit or publication. Other heavy host jobs' paused status is pending.
+**Real native coordination controls pass.**
+[379](./development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md)
+passes four Chromium/Firefox cases with raw lock/task observations. Omitting the
+startup barrier fails the named early-member assertion. Runtime/old-test bytes
+stay exact. This is coordination only; its private test seam skips authentication.
+
+**Next bounded outcome.** Implement and prove authenticated floor installation and
+acknowledgment under the original native scope, preserving every metadata rewrite
+and ordinary factor/binding/authority/passkey check. Actual old-app/data-profile,
+pending writing and same-tree writer-off rollback proof remain. Then complete stored
+mode, logical readers, owned pages and G8/B. Full functional checkpoints and allStage5
+gates remain required. No final acceptance, commit or publication. Host heavy-job
+paused status is pending; do not claim a quiet timed run without it.
 
 This seat edits only this document; the other seat's document above is unchanged.
