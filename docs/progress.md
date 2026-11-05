@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight; native B proof complete, capacity observation next
+status: awaiting operator; commits deferred, Stage5 unstarted
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: capacity ceiling/size debt observation; commits deferred before Stage5
+blocks_on: operator instruction for commits and later Stage5
 updated: 2026-11-05
 ```
 
@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Prove native past-index continuation against an exact served build](./development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).
-The record controls pass332ms; the native refusal/continuation/positions/Undo/ordinary-offline-cold case passes8.7s (2/2cases,10.5srunner). The actual1MiBindex drops at native sequence63 with counterv2,63logical rows and1,200,806owned bytes; the crossing receipt is legacy publisher position2. Subsequent five dense receipts contain4,3,4,4,2positions, exactly3–19, while fully verified index-free results occur at native sequences216,387,429. The independently accepted18new positions match the read-only native receipts exactly; complete Markdown, local Undo and ordinary32MiBoffline browser-process cold are exact. The original120s native/15s cold constraints stay. Source inverse comparison recovers every other byte of the439case. The served positive record's directory/source identity/full asset digest are checked before and after native execution. All four asset sets equal440, retaining its independent compiled32MiB/1MiBbinding and all67runtime byte comparisons. Scoped lint/format/typecheck, inventory,10controls and17registry checks pass. Runtime449, policy and construction bytes remain exact; no new file/count/campaign change. Independent review reconstructs the cap crossing and post-fallback dense positions from raw events/receipts.
+**Latest checks.** [Identify the parked producer ceiling and preserve post-park writing](./development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
+The final observer build and report-only native case pass (74,389ms, original120sbound). The actual loaded Worker reports encoded baseline5,763,419bytes exceeding LOCAL_BASELINE_LIMIT4,194,304bytes. Raw snapshot2,779,095is within that bound, sources0are below4,096and publishers3below128. The refusal is LocalBaselineCapacityError from encodeLocalBaseline's encoded-length guard, mapped by localRetentionPlan449to skipped/capacity. None of the five instrumented PreparationCapacity throws fires, so do not assign this park to the journal byte/entry guard at429. Before/after admission is active/durable with zero pending items and no pressure. One new accepted publisher position50is independently checked; the witness's complete normalized Markdown equals the producer's. Maintenance is subsequently waiting/capacity; no retry completion is claimed. The old verifier identity11048a947b5c43238bfc226346478c31de4091c6de4f79aa6f88268092fb39b7is naturally produced and present in the old ordinary artifact. All old ordinary asset bytes are preserved in the served overlay; every frozen439input and every current441build input remains exact. Independent review checks raw events, source/guard bindings and full witness result. Preserve the first private ESM module-scope collection failure and the second missing-PreparationCapacity-telemetry assertion failure before adding the baseline guard observations; neither is erased or called a pass.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze441with the exact-build controls and passing native fallback/continuation/Undo/ordinary-cold proof. Continue directly to a bounded capacity-debt observation: clone the original439R2producer/witness/service, preserve its naturally matching frozen verifier identity, observe the unchanged capacity guard and exact count/bytes, then demonstrate one genuine post-park publication and receiving. No preparation-cost diagnosis or fix. Keep commits deferred and Stage5unstarted; pause for the operator after these debt observations.
+**Active bounded outcome.** Freeze442as the requested capacity-debt observation. The two questioned B functional obligations are closed by437and441, with production32MiBbound separately from the1MiBtest fixture. Capacity is now attributed with exact reproduction sizes and post-park writing/sync evidence; no fix or cost diagnosis is included. Wait for the operator's next instruction: commits remain deferred and Stage5must not start. Any later Stage5preparation/36blocking journeys/report-only cells/Stage6report remains separate work.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

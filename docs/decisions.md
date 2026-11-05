@@ -7538,3 +7538,10 @@ The operator clarifies that the contract requires the real eligibility/fallback 
 **Date:**2026-11-05 · **Commit:**pending patch441
 
 Follow the operator's exact approval: replace only the two refusal thresholds inside the case and prove the inverse recovers every remaining byte. Add directory-and-full-asset binding outside the case rather than accepting an arbitrary old build record. Require wrong-directory, stale-byte and extra-file controls. Reuse the closed genuine440cohort without editing its stored data, and revalidate all source/build identities. Count the actual lower-ceiling cap crossing and later dense/native semantic checks as functional evidence only. Do not treat successful scaled testing as production32MiBtime/RAM evidence or Stage5credit. Freeze this bounded result, then observe the original producer capacity guard/size and one post-park publication under unchanged limits. [Evidence](development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).
+
+
+### Attribute the capacity park to the observed baseline guard without fixing it
+
+**Date:**2026-11-05 · **Commit:**pending patch442
+
+Follow the operator's debt-only request. Instrument original guard branches rather than infer the ceiling from generic capacity status. When the five PreparationCapacity events do not appear, preserve that failed observation precondition and include the existing baseline capacity branches mapped to the same status. The loaded-source marker and exact event identify the4MiBencoded-baseline guard. Do not reinterpret it as a journal32MiB/entry refusal, raise a limit, truncate writing or change the baseline format. Preserve the existing parked state/journal and verify a small complete post-park admission, durable acceptance and exact receiving. Carry the actual size and continuing growth into Stage6, with real-scale index time/RAM still unmeasured. Stop after this requested bounded work; defer commits and do not start Stage5. [Evidence](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).

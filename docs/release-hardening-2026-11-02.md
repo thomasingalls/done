@@ -186,3 +186,44 @@ replacements through15additional accepted positions, ending at1,344/64. That is
 bounded continued-writing/sync evidence, not completed maintenance or a claim of
 unlimited progress. Keep the journal, parked/retry semantics and every ceiling.
 Exact guard/size observations are the next bounded debt-recording task.
+
+
+### Capacity debt observation — phase442
+
+The exact439R2parked producer/witness/service were cloned and reopened under their
+naturally matching frozen439verifier closure; every runtime source is byte-equal
+to current hardened code. Five unchanged PreparationCapacity throws and both
+LocalBaselineCapacityError guards were instrumented with content-free numeric
+observations and inverse-byte proofs. The module-ready event confirms that the
+observed Worker code actually loaded. This is reproduction telemetry, not a
+retroactive measurement of439, which lacked the throw observations.
+
+The refusal is the **encoded local-baseline limit**, not either preparation-journal
+ceiling at retentionPreparation429:
+
+| Value at refusal | Observed | Original ceiling |
+|---|---:|---:|
+| Encoded baseline bytes | 5,763,419 | 4,194,304 |
+| Raw snapshot bytes | 2,779,095 | 4,194,304 |
+| Sources | 0 | 4,096 |
+| Publishers | 3 | 128 |
+
+encodeLocalBaseline throws LocalBaselineCapacityError at its encoded-length guard;
+localRetentionPlan maps that existing candidate refusal to skipped/capacity.
+None of the five PreparationCapacity throw observations fires in this reproduction.
+No limit, format, catch or retry policy changes. The previous authenticated
+baseline/journal and writing remain authoritative; maintenance did not complete.
+
+After the park, the producer remains active/durable without pressure. One new
+fully awaited edit is durably saved and accepted at publisher position50; the
+witness has the exact complete normalized Markdown archive. Maintenance then
+shows waiting/capacity after the changed hint; no later retry completion was
+observed. Existing new-hint/retry-clock behavior is retained, and a future
+candidate may still hit the same ceiling.439's320post-park replacements and15new
+positions remain separate earlier evidence. [Frozen-source observation, every
+attempt and limits](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
+
+Carry the4MiBencoded-baseline ceiling, continuing growth after a park and unmeasured
+real-scale32MiBindex time/RAM into Stage6. Do not fix or diagnose preparation cost
+in this work. The74.4sreport-only reproduction passes its120sbound and gives no
+phone, input/peer performance, RAM or Stage5credit.

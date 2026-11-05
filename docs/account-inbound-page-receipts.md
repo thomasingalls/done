@@ -410,3 +410,14 @@ process-cold are exact. The native case passes in8.7s; this is functional eviden
 not production-scale timing/RAM credit. [Raw observations and source bindings](development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).
 Fairness remains separately covered by437. Capacity-ceiling/size debt observation
 is next. Commits remain deferred; Stage5has not started.
+
+
+Phase442records the remaining capacity debt without changing the app. A frozen439
+parked-profile reproduction reaches5,763,419encoded baseline bytes against the
+existing4MiBlimit; neither journal ceiling at retentionPreparation429fires. One
+post-park edit remains active/durable, reaches accepted publisher position50and
+is received as an exact full archive. Maintenance remains waiting/capacity.
+[Evidence and the historical/reproduction distinction](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
+The questioned native B functional obligations remain covered by437/441; these
+capacity observations add no Stage5orreal-scale timing/RAM credit. Commits stay
+deferred, and no preparation-cost diagnosis or capacity fix is included.
