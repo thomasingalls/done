@@ -191,16 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Prove real Worker dense cuts expired replay and exact cold writing](./development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
-Both final directions pass on identical canonical source: original-to-Joined50470ms and Joined-to-original55349ms. Each has floor1, a2-entry head and nonzero-entry tail, unchanged observed native rows,2retained durable journal entries and exact cold export; local Undo preserves all received writing. Existing ordinary full-app floor case passes19.9s. Initial fixture build and retry fail on a Window-transformed source; scoping the uniquely anchored lower allowance to Worker builds passes with five exact mutations and zero repeated transforms. All initial native attempts remain: Page-only response observer missed uploads; SQLite now independently verifies actual accepted rows; immediate ownership check needed saved seed readiness and real cohort locks; inverse text on absent notice was corrected to no matching integrity notice; Joined observation used the wrong promotion permit and is corrected without parser changes; the new empty-journal assumption was removed because retained durable journal entries are legitimate and exact cold recovery is stronger evidence. Every failed artifact set is copied before rerun. Types, quality, format,17registry checks, inventory and10controls pass. An initially unmapped family is registered required, preserving all old policy bytes/obligations. No canonical runtime/crypto hash changes, no old test edits. Latest full unit checkpoint remains419, predating420/421 new tests. Ordinary/control assets have no old lab modules or new observation code; exact asset identities are retained.
-Before freeze, an unfrozen caption generalized the original-direction7,531bytes to both directions. It is corrected to the raw7,531/7,529byte observations; prior caption/config remain artifacts. No runtime or test change.
+**Latest checks.** [Stop a dense multi-request turn at its verified native prefix](./development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
+The new native case fails on the pre-repair build: only the first upload is visible, then the shell and its Worker disappear. That run has no captured internal exception, so the exact exception is not independently attributed. The loop’s gap is established by source review; the narrowly repaired build passes the discriminating journey with all eight confirmed positions, actual width4/count2 native extents, unchanged observed storage and exact offline cold export. Both prior interior-cut/31s-expired-request/Undo/cold cases also pass: 53,669ms and54,823ms; new case27,207ms. All three use the rebuilt repaired source and existing120s case/15s cold deadlines. Affected162 unit cases, types and full330files/3,210pass/one existing skip pass; suite138.59s, command139.395s under approved240s full-unit guard. Quality/format,17registry checks, inventory and10controls pass. One runtime hash changes, no domain/site/construction moves; one new required native case, all prior inventory obligations preserved. An initial reviewer syntax typo and a bookkeeping script’s obsolete run path are corrected before any canonical bookkeeping write; both development failures are retained in notes.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Test a partial first page in a multi-request G8/B batch, repair any confirmed chain-order defect within existing guards, then complete authenticated installing-floor/rewriter/lost-reply lifecycles, frozen old artifacts, actual stale-turn idle audit and same-tree writer-off rollback image. Continue automatically after each freeze.
+**Active bounded outcome.** Complete authenticated installing-floor and marker-rewriter/lost-reply lifecycles, then frozen old Page/Worker and stale-tab artifacts, actual stale-turn idle-audit control, B fairness/past-index and same-tree writer-off rollback-image proofs. Continue automatically after each freeze.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -208,8 +207,9 @@ Original and Joined Workers now have genuine dense admission, nonzero-entry tail
 31s expiry/offline cold, retained journal recovery, Undo and exact exports in421.
 Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane; G8/range4 and combined originals
-caps are covered in418/419. Complete multi-request cuts, real B fairness/
-cancellation/past-index and floor installation/rewriter/lost-reply lifecycles.
+caps are covered in418/419. The native multi-request partial-prefix repair passes
+in422. Complete real B fairness/cancellation/past-index and floor
+installation/rewriter/lost-reply lifecycles.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
 Final writer-on/off images and genuine old-artifact/stale-tab proofs remain.
 

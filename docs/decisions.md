@@ -7398,3 +7398,10 @@ Use a strict captured build selector with ordinary default0 and Docker forwardin
 **Date:**2026-11-04 · **Commit:**pending patch421
 
 Force the approved interior cut by lowering only a test Worker live allowance, leaving every guard intact. Prove real Account ownership with known owner bootstraps plus native shared leases/exclusive supervisor. Bind uploads independently from committed service rows, observe native receipt syntax only after locking under the correct existing authenticated permit, and require saved rows unchanged. Do not require a durable journal to be empty: retain it and prove exact offline cold recovery. Keep actual old-artifact/rollback images and performance gates separate. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+
+
+### Leave an uncommitted page suffix for a fresh receive turn
+
+**Date:**2026-11-04 · **Commit:**pending patch422
+
+A verified partial page authorizes only its contiguous prefix. Stop the current multi-request turn at that boundary rather than weakening the next request’s prefix guard. Keep all verification and native commit checks byte-identical, and prove continuation and exact cold writing on actual Workers. Share existing regression helpers while retaining their ASTs and prior case bodies. [Evidence](development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).

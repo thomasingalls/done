@@ -19305,3 +19305,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Date:**2026-11-04 · **Commit:**pending patch421
 
 The two self-contained extents are7,531bytes each original-to-Joined and7,529bytes each reverse. The unfrozen caption incorrectly generalized the first size. Raw results were checked and the caption corrected; prior artifacts remain. No app/test byte or result changed. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+
+
+### Stop a dense multi-request turn at its verified native prefix
+
+**Date:**2026-11-04 · **Commit:**pending patch422 · **Stage:**partial Stage3.2
+
+**Exit.** The before-failing eight-upload native regression passes after a loop-control-only repair; all three native cases and the330-file full unit checkpoint pass. Existing helpers/case bodies and every other runtime byte are independently checked unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
+
+**Limits.** This is bounded correctness evidence, not final-image, RAM or performance acceptance. Binary retained-reading installation, every floor rewrite/lost reply, frozen old Page/Worker/stale tabs, actual stale-turn idle audit, B fairness/past-index and the same-tree writer-off rollback image remain. Stage5/6 are not complete. No format/trust/server/wire/limit/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.

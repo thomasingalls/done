@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './test/inbound-native',
-  testMatch: 'dense.spec.ts',
+  testMatch: '*.spec.ts',
   outputDir: './test-results/inbound-native/artifacts',
   timeout: 120000,
   workers: 1,

@@ -67,6 +67,9 @@ export async function inspectNativeReceipts(slotId: string, code: string, joined
       async (recovery) => {
         const receipts: {
           seq: number;
+          publisher: string;
+          requestLimit: number;
+          requestAfter: number;
           kind: string;
           count: number;
           firstEntry: number;
@@ -84,6 +87,9 @@ export async function inspectNativeReceipts(slotId: string, code: string, joined
               event.kind === 'page'
                 ? {
                     seq: row.seq,
+                    publisher: event.record.publisher,
+                    requestLimit: syntax.originals.request.limit,
+                    requestAfter: syntax.originals.request.after,
                     kind: 'page',
                     count: event.record.entryCount,
                     firstEntry: event.record.firstEntry,
@@ -93,6 +99,9 @@ export async function inspectNativeReceipts(slotId: string, code: string, joined
                   }
                 : {
                     seq: row.seq,
+                    publisher: event.record.publisher,
+                    requestLimit: syntax.originals.request.limit,
+                    requestAfter: syntax.originals.request.after,
                     kind: 'legacy',
                     count: 1,
                     firstEntry: event.record.entry ?? 0,

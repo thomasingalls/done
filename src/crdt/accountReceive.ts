@@ -2232,7 +2232,8 @@ async function openAccountReceiveOwner(
       try {
         pageLoop: for (let i = 0; i < pages.length; i++) {
           if (results.length === outstandingAllowance) break;
-          const densePage = rangeWrites && decodeInboundRequest(requests[i]!).limit > 1;
+          const pageRequest = decodeInboundRequest(requests[i]!);
+          const densePage = rangeWrites && pageRequest.limit > 1;
           let pageResults: readonly Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
           try {
             await task.wait(async () => {
@@ -2278,6 +2279,9 @@ async function openAccountReceiveOwner(
               link: last.link,
               observedThrough: last.through,
             };
+            // A native bound can admit only part of this signed page. Later requests
+            // start after the whole requested range, so leave that gap for a fresh turn.
+            if (last.position < pageRequest.after + pageRequest.limit) break pageLoop;
             continue;
           }
           for (const [entry, result] of pageResults.entries()) {
