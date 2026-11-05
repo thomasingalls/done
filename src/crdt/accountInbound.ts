@@ -39,11 +39,15 @@ import {
 import {
   encodeInboundRecord,
   decodeInboundRecord,
+  captureScopedInboundReceiptSyntax,
+  inboundReceiptViews,
   INBOUND_ENVELOPE_LIMIT,
   INBOUND_RECORD_LIMIT,
   INBOUND_UPDATE_BYTES,
   INBOUND_UPDATE_LIMIT,
   type InboundRecord,
+  type InboundOriginalSyntax,
+  type InboundReceiptSyntax,
 } from './inboundRecord';
 import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
@@ -371,7 +375,17 @@ async function openInboundEntry(
  * compare; that never makes their expired request live, or permits an empty/duplicate receipt. */
 type InboundVerificationMode =
   | { readonly kind: 'live' }
-  | { readonly kind: 'stored'; readonly expectedRecord?: Bytes };
+  | {
+      readonly kind: 'stored';
+      readonly expectedRecord?: Bytes;
+      readonly originals?: InboundOriginalSyntax;
+    }
+  | {
+      readonly kind: 'storedPhysical';
+      readonly record: Bytes;
+      readonly event: InboundRecord;
+      readonly originals: InboundOriginalSyntax;
+    };
 async function verify(
   input: InboundContext,
   requestInput: Bytes,
@@ -383,7 +397,7 @@ async function verify(
     authenticate: typeof authenticateInboundWire;
   },
 ): Promise<InboundResult> {
-  const storedMode = mode.kind === 'stored';
+  const storedMode = mode.kind !== 'live';
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     now = lifetime.now ? lifetime.now.bind(lifetime) : Date.now;
   const guard = () => {
@@ -391,8 +405,11 @@ async function verify(
     if (result !== undefined) fail('authority');
   };
   guard();
-  const request = captureBytes(requestInput, READ_REQUEST_LIMIT),
-    pageBytes = captureBytes(pageInput, READ_PAGE_LIMIT),
+  const originals = storedMode ? mode.originals : undefined;
+  if (originals && (requestInput !== originals.requestBytes || pageInput !== originals.pageBytes))
+    fail('record');
+  const request = originals?.requestBytes ?? captureBytes(requestInput, READ_REQUEST_LIMIT),
+    pageBytes = originals?.pageBytes ?? captureBytes(pageInput, READ_PAGE_LIMIT),
     expectedRecord =
       mode.kind === 'stored' && mode.expectedRecord
         ? captureBytes(mode.expectedRecord, INBOUND_RECORD_LIMIT)
@@ -402,8 +419,8 @@ async function verify(
   let body: EnvelopeBody | undefined,
     transfer = false;
   try {
-    const r = decodeInboundRequest(request),
-      p = decodeInboundPage(pageBytes),
+    const r = originals?.request ?? decodeInboundRequest(request),
+      p = originals?.page ?? decodeInboundPage(pageBytes),
       a = c.authority;
     assertInboundScope(c, r);
     if (!selection) {
@@ -474,7 +491,29 @@ async function verify(
       page: pageBytes,
       ...(selection ? { entry: index } : {}),
     };
-    const record = encodeInboundRecord(event);
+    if (mode.kind === 'storedPhysical') {
+      if (
+        c.inboundReceiptVersion !== 1 ||
+        kind !== 'received' ||
+        [
+          'baseline',
+          'lineage',
+          'head',
+          'reader',
+          'publisher',
+          'kind',
+          'position',
+          'previous',
+          'link',
+          'entry',
+        ].some(
+          (field) =>
+            event[field as keyof InboundRecord] !== mode.event[field as keyof InboundRecord],
+        )
+      )
+        fail('record');
+    }
+    const record = mode.kind === 'storedPhysical' ? mode.record : encodeInboundRecord(event);
     if (record.length + (kind === 'received' ? updateBytes : 0) > MAX_BATCH_BYTES) fail('size');
     if (expectedRecord && hex(record) !== hex(expectedRecord)) fail('record');
     current();
@@ -650,6 +689,112 @@ export async function verifyStoredInbound(
       ? undefined
       : { index: event.entry, authenticate: authenticateInboundWire },
   );
+}
+
+/** Detached evidence for one physical saved receipt. Logical entries share its exact owned
+ * originals. Callers still verify completeness/coverage and current native commit authority. */
+export interface VerifiedStoredInboundReceipt {
+  readonly record: Bytes;
+  readonly entries: readonly {
+    readonly index: number;
+    readonly event: InboundRecord;
+    readonly original: { readonly envelope: Bytes; readonly proof: Bytes };
+    readonly result: InboundResult;
+  }[];
+}
+/** Stored mode and owned syntax come only from these captured saved-byte arguments. Nothing
+ * supplied by a network response, parser projection or lifetime flag selects either of them. */
+export async function verifyStoredInboundReceipt(
+  input: InboundContext,
+  bytes: Bytes,
+  lifetime: InboundLifetime,
+): Promise<VerifiedStoredInboundReceipt> {
+  const assertCurrent = lifetime.assertCurrent.bind(lifetime),
+    guard = () => {
+      const result: unknown = assertCurrent();
+      if (result !== undefined) fail('authority');
+    };
+  guard();
+  const context = captureContext(input),
+    ownedLifetime: InboundLifetime = {
+      assertCurrent: guard,
+      ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
+    },
+    entries: VerifiedStoredInboundReceipt['entries'][number][] = [];
+  let captured: InboundReceiptSyntax | undefined,
+    transferred = false;
+  try {
+    captured = captureScopedInboundReceiptSyntax(bytes, context);
+    if (!captured) fail('record');
+    const views = inboundReceiptViews(captured),
+      physical = captured.receipt.kind === 'page';
+    if (
+      captured.receipt.kind === 'page' &&
+      (context.retained || context.prefix.position !== captured.receipt.record.firstPosition - 1)
+    )
+      fail('prefix');
+    let authenticated = false,
+      totalBytes = captured.bytes.length,
+      totalRecords = 1;
+    // No context except its fresh prefix changes inside this privately captured physical turn.
+    const authenticate: typeof authenticateInboundWire = async (...args) => {
+      guard();
+      if (!authenticated) {
+        await authenticateInboundWire(...args);
+        guard();
+        authenticated = true;
+      } else assertInboundPagePrefix(args[0], args[1], args[2]);
+    };
+    for (const { entryIndex, event } of views.entries()) {
+      const original = captured.originals.page.entries[entryIndex];
+      if (!original) fail('record');
+      const result = await verify(
+        context,
+        event.request,
+        event.page,
+        ownedLifetime,
+        physical
+          ? { kind: 'storedPhysical', record: captured.bytes, event, originals: captured.originals }
+          : { kind: 'stored', expectedRecord: captured.bytes, originals: captured.originals },
+        event.entry === undefined ? undefined : { index: entryIndex, authenticate },
+      );
+      entries.push(Object.freeze({ index: entryIndex, event, original, result }));
+      if (!('record' in result) || (physical && result.kind !== 'received')) fail('record');
+      if (result.kind === 'received') {
+        totalBytes += result.updates.reduce((sum, update) => sum + update.length, 0);
+        totalRecords += result.updates.length;
+        context.prefix = {
+          position: result.position,
+          link: result.link,
+          observedThrough: result.through,
+        };
+      }
+      if (totalBytes > MAX_BATCH_BYTES || totalRecords > MAX_BATCH_RECORDS) fail('size');
+      guard();
+    }
+    guard();
+    transferred = true;
+    return Object.freeze({ record: captured.bytes, entries: Object.freeze(entries) });
+  } finally {
+    context.generationKey.fill(0);
+    for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
+    const kept = transferred ? new Set(entries.map((entry) => entry.index)) : undefined;
+    for (const [index, original] of captured?.originals.page.entries.entries() ?? [])
+      if (!kept?.has(index)) {
+        original.envelope.fill(0);
+        original.proof.fill(0);
+      }
+    if (!transferred) {
+      captured?.bytes.fill(0);
+      captured?.originals.requestBytes.fill(0);
+      captured?.originals.pageBytes.fill(0);
+      for (const entry of entries) {
+        if ('record' in entry.result) entry.result.record.fill(0);
+        if (entry.result.kind === 'received')
+          for (const update of entry.result.updates) update.fill(0);
+      }
+    }
+  }
 }
 
 /** Transient history reconstruction only. No durable inbound record or authority is produced.

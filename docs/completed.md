@@ -19023,3 +19023,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Native contexts retain the authenticated floor only after its commit; retained readings use their own floor and cannot borrow the parent's. Verifier capture refuses unknown floors before key copies. New scoped syntax entry refuses unmarked binary receipts without granting verification trust. Five new controls fail before, six pass after;45focused, full301files/3004cases/one existing skip (108.31s at120s),10Page/parser cases and one genuine rebuilt Worker/Joined cold journey pass. [Evidence](development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md).
 
 **Limits.** Every actual binary semantic consumer and memo scope still needs integration. First floor write task mode, old artifacts, dense stored/writer, full archive, rollback images and final gates remain. Old app AST/guards exact after declared additions; private comment-review failure retained. Outcome recorded before progress advances.
+
+
+### Verify one saved binary extent with record-scoped owned originals
+
+**Date:**2026-11-03 · **Commit:**pending patch392 · **Stage:**partial Stage3.2, unwired bulk core
+
+**Exit.** Private captured saved mode checks every admitted entry and full metadata, shares only within-turn wire checks, preserves aggregate bounds and failure erasure, and returns one physical receipt without per-position v2 encoding.12new cases cover signed aged/interior pages, actual parser/crypto counts, scopes, mutable callers and erasure.10fail before against the real old verifier;109focused pass after. Full302files/3016cases/one existing skip passes107.46s at120s. Six old stored-core cases pass; the anchored omission fails expired as intended. [Evidence](development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md).
+
+**Limits.** Old verifier/codec AST exact after declared additions; one test-only source anchor changes, all old assertions/deadlines exact. App readers, all four aged callers, memo/index/accounting, native binary cold/writer/G8/B, rollback/old artifacts and final gates remain. No native commit trust or qualification credit. Outcome recorded before progress advances.

@@ -7185,3 +7185,10 @@ Keep the original request/page and their parsed syntax together inside one copie
 **Date:**2026-11-03 · **Commit:**pending patch391 · **Scope:**approved receipt contract, no product/trust change
 
 Carry the native marker's floor into the native verifier context, updating only after committed acknowledgement. Rebuild a retained-reading context with that reading's own floor; explicitly remove an inherited parent floor. Unknown versions refuse even if the selected row is legacy. The scoped syntax home permits only the encoding; ordinary signature, authority, chain, witness and commit verification remain mandatory. [391evidence](development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md) leaves the semantic callers and memo scopes open.
+
+
+### Keep a saved receipt's physical ownership distinct from its verified logical entries
+
+**Date:**2026-11-03 · **Commit:**pending patch392 · **Scope:**approved format and owned-page hardening
+
+Use a separate bulk saved-receipt API so the old single-result API cannot silently discard dense entries. Construct saved mode and original syntax only inside the saved-byte boundary. Binary entries share one exact owned raw extent while every entry still verifies crypto, authorization context, prefix and current lifetime; full returned metadata is checked against the canonical logical view. Native witnesses, coverage, actual index/memo accounting and commit authority remain outside this detached evidence. [392evidence](development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md) closes only the unwired core.

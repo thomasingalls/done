@@ -134,10 +134,13 @@ export function encodeInboundRecord(e: InboundRecord): Bytes {
 export function decodeInboundRecord(bytes: Bytes): InboundRecord {
   return decodeLegacySyntax(bytes).record;
 }
-function decodeLegacySyntax(bytes: Bytes): {
+function decodeLegacySyntax(input: Bytes): {
   record: InboundRecord;
   originals: InboundOriginalSyntax;
+  bytes: Bytes;
 } {
+  if (!(input instanceof Uint8Array) || input.length > INBOUND_RECORD_LIMIT) invalid();
+  const bytes = input.slice();
   const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
   const indexed = v[0] === 'done/account-inbound/v2' && v[1] === 2;
   if (
@@ -163,7 +166,7 @@ function decodeLegacySyntax(bytes: Bytes): {
   if (e.kind !== 'received' && e.kind !== 'conflict') invalid();
   const originals = originalSyntax(e.request, e.page);
   validatedFields(e, originals);
-  return { record: e, originals };
+  return { record: e, originals, bytes };
 }
 
 /** Approved page receipt. Unwired until the authenticated compatibility floor is installed. */
@@ -274,6 +277,7 @@ export function decodeInboundPageRecord(input: Bytes): InboundPageRecord {
 function decodePageSyntax(input: Bytes): {
   record: InboundPageRecord;
   originals: InboundOriginalSyntax;
+  bytes: Bytes;
 } {
   if (
     !(input instanceof Uint8Array) ||
@@ -305,12 +309,14 @@ function decodePageSyntax(input: Bytes): {
       request: bytes.subarray(INBOUND_PAGE_HEADER_BYTES, INBOUND_PAGE_HEADER_BYTES + requestLength),
       page: bytes.subarray(INBOUND_PAGE_HEADER_BYTES + requestLength),
     };
-  return { record: e, originals: validatePageRecord(e) };
+  return { record: e, originals: validatePageRecord(e), bytes };
 }
 export type InboundReceipt =
   | { kind: 'legacy'; record: InboundRecord }
   | { kind: 'page'; record: InboundPageRecord };
 export interface InboundReceiptSyntax {
+  /** Exact owned physical receipt. Binary request/page fields are subviews of this buffer. */
+  readonly bytes: Bytes;
   readonly receipt: InboundReceipt;
   readonly originals: InboundOriginalSyntax;
 }
@@ -329,12 +335,20 @@ export function captureInboundReceiptSyntax(bytes: Bytes): InboundReceiptSyntax 
     )
       throw new StorageCompatibilityError();
     const parsed = decodePageSyntax(bytes);
-    return { receipt: { kind: 'page', record: parsed.record }, originals: parsed.originals };
+    return {
+      receipt: { kind: 'page', record: parsed.record },
+      originals: parsed.originals,
+      bytes: parsed.bytes,
+    };
   }
   const v = parseInboundArray(bytes, INBOUND_RECORD_LIMIT);
   if (isInboundRecordTag(v[0])) {
     const parsed = decodeLegacySyntax(bytes);
-    return { receipt: { kind: 'legacy', record: parsed.record }, originals: parsed.originals };
+    return {
+      receipt: { kind: 'legacy', record: parsed.record },
+      originals: parsed.originals,
+      bytes: parsed.bytes,
+    };
   }
   if (typeof v[0] === 'string' && v[0].startsWith(inboundNamespace))
     throw new StorageCompatibilityError();
@@ -371,6 +385,11 @@ export interface InboundReceiptViews {
 export function inspectInboundReceipt(bytes: Bytes): InboundReceiptViews | undefined {
   const captured = captureInboundReceiptSyntax(bytes);
   if (!captured) return;
+  return inboundReceiptViews(captured);
+}
+/** Project only syntax captured by the caller's own turn. Consumers must never treat a supplied
+ * projection as verified bytes or as permission to omit parsing at a verification boundary. */
+export function inboundReceiptViews(captured: InboundReceiptSyntax): InboundReceiptViews {
   const receipt = captured.receipt,
     request = captured.originals.request;
   if (receipt.kind === 'legacy') {

@@ -234,6 +234,15 @@ Full301files/3004cases/one existing skip passes108.31s at120s;10Page/parser case
 and a rebuilt genuine Worker/Joined cold journey pass. Actual binary semantic
 callers and their memo floor scopes remain unwired.
 
+**Binary stored core checked, not app-integrated.**
+[392](./development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md)
+privately captures saved raw/syntax/context, verifies every selected entry and
+metadata with failure erasure, and returns one owned physical extent. Twelve new
+controls cover aged/interior signed pages and actual parser/crypto counts;10fail
+before,109focused pass after. Full302files/3016cases/one existing skip passes
+107.46s at120s. Six old stored-core checks and their anchored omission control
+remain effective. No native binary cold or commit/qualification credit follows.
+
 **Next bounded outcome.** Encoding-floor scopes and complete binary stored/read
 integration through all ten direct readers and indirect consumers, then owned
 pages/dense writer/G8/range4/B/index/audit/reservation controls. Keep physical

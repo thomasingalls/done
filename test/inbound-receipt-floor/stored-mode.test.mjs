@@ -19,7 +19,7 @@ const built = await build({
         assert.equal(code.split('async function verify(').length, 2);
         seams++;
         if (control) {
-          const anchor = "const storedMode = mode.kind === 'stored';";
+          const anchor = "const storedMode = mode.kind !== 'live';";
           assert.equal(code.split(anchor).length, 2);
           code = code.replace(anchor, 'const storedMode = false;');
           omissions++;
