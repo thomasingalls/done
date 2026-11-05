@@ -29,11 +29,38 @@ export async function runCase(definition, env) {
     return p;
   };
   const settled = async (p, id, owner = 'clear') => {
-    await p.waitForFunction(
-      ({ id, owner }) =>
-        ['resolved', 'rejected'].includes(window[owner].snapshot().entries[id]?.status),
-      { id, owner },
-    );
+    try {
+      await p.waitForFunction(
+        ({ id, owner }) =>
+          ['resolved', 'rejected'].includes(window[owner].snapshot().entries[id]?.status),
+        { id, owner },
+      );
+    } catch (cause) {
+      try {
+        artifacts.push({
+          type: 'failed-state-observation',
+          id,
+          owner,
+          value: await p.evaluate(
+            async ({ id, owner }) => {
+              const view = window[owner].snapshot(),
+                entry = view.entries[id];
+              return {
+                visibility: document.visibilityState,
+                status: entry?.status,
+                errorCode: entry?.error?.code,
+                gates: view.gates,
+                locks: await navigator.locks.query(),
+              };
+            },
+            { id, owner },
+          ),
+        });
+      } catch {
+        /* Preserve the original observer failure if its context is gone. */
+      }
+      throw cause;
+    }
     return (await call(p, owner, 'snapshot')).entries[id];
   };
   const gate = (p, name) =>
