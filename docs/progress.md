@@ -163,8 +163,8 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: Stage3.2 approved format hardening; native frame checkpoint remains open
-blocks_on: remaining functional checkpoint commands; native format fencing and reader/writer hardening required
+scope: display-controlled functional checkpoint, then remaining approved Stage3.2 hardening
+blocks_on: full functional checkpoint on coherent379; authenticated format installation/readers/writer still required
 updated: 2026-11-03
 ```
 
@@ -197,14 +197,14 @@ retains18 passing root commands and the7-versus14 counterexample.
 fixes private unconsumed physical pressure; all95 focused cases and its exact
 omission control pass. Old verification/guard/test ASTs stay exact.
 
-**Native checkpoint remains open; editor now passes.**
-[374](./development-evidence/2026-11-02-release-hardening/374-format-approval-and-frame-blocker/README.md)
-retains all13 editor attempts and the signed-base reproduction. The operator now
-confirms Mac awake/unlocked. [377](./development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md)
-retains an extra-wrapper cancellation and the full original-command pass:
-12normal cases,3mutants detected with the unchanged120s repository stage. No
-causal explanation or reliable margin for earlier frame failures is claimed.
-The remaining checkpoint commands and allStage5 gates are still required.
+**Matched display-on full editor campaign passes.**
+[380](./development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md)
+uses374-20's exact2,400s outer and unchanged120s stage:12normal cases pass,
+3mutants detect. All33actual display samples are on, with no power-log off event.
+The operator's display-off/full-failure correlation is retained. The earlier377
+120s quick wrapper was incorrectly short and is not a matched comparison. Every
+old failed attempt remains; no causal or Stage5 proof is claimed. Native campaigns
+now use caffeinate -d and display state in every5s host log, per the operator.
 
 **Stage3.2 codec isolated and checked.**
 [375](./development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md)
@@ -236,12 +236,11 @@ passes four Chromium/Firefox cases with raw lock/task observations. Omitting the
 startup barrier fails the named early-member assertion. Runtime/old-test bytes
 stay exact. This is coordination only; its private test seam skips authentication.
 
-**Next bounded outcome.** Implement and prove authenticated floor installation and
-acknowledgment under the original native scope, preserving every metadata rewrite
-and ordinary factor/binding/authority/passkey check. Actual old-app/data-profile,
-pending writing and same-tree writer-off rollback proof remain. Then complete stored
-mode, logical readers, owned pages and G8/B. Full functional checkpoints and allStage5
-gates remain required. No final acceptance, commit or publication. Host heavy-job
-paused status is pending; do not claim a quiet timed run without it.
+**Next bounded outcome.** Resume the coherent functional checkpoint with heavy
+jobs paused, native campaigns under caffeinate -d and actual display-state logs,
+keeping every original deadline/wait/assertion. Then implement/prove authenticated
+floor acknowledgment, actual old-app/data-profile and pending-writing behavior,
+stored mode, logical readers, owned pages, G8/B and same-tree writer-off rollback.
+AllStage5 gates remain required; no final acceptance, commit or publication.
 
 This seat edits only this document; the other seat's document above is unchanged.

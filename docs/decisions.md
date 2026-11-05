@@ -7094,3 +7094,10 @@ Retain the exact join object only on tasks actually created by the existing nati
 **Date:**2026-11-03 · **Scope:**Stage3.2 permanent controls
 
 Use actual browser Page/Worker Web Locks for the original-task boundary, with a held older shared lease and a discriminating startup-barrier omission. Keep that claim narrow: the test-only compatibility/authentication seam cannot authorize a floor or writing and is absent from app builds. Actual ordinary-factor/authority installation, old-data/stale-tab and rollback proof remain separate obligations. [Evidence](development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md).
+
+
+### Operator chooses display-controlled native execution, preserving every bound
+
+**Date:**2026-11-03 · **Authority:**operator power-log review and explicit direction
+
+After the matched full editor run passes with the display on, use caffeinate -d for macOS native campaigns and record actual display power state in every5s host sample. Preserve the exact original2,400s editor outer,120s stage and all waits/assertions; full units keep120s outer. Keep earlier display-off failures without claiming causal proof or successful negative-control detection. This implements the operator's host-condition decision rather than changing product, security, qualification or documentation policy through a tool. [Evidence](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md).

@@ -122,3 +122,8 @@ Our active slice is in [progress.md](./progress.md#active-slice-release-hardenin
 Closed outcomes and reasoning remain in completed.md and decisions.md. This document
 records the operator's hardening scope and ordered plan; it introduces no separate
 documentation procedure or second active-state home.
+
+
+## Operator amendment — display-controlled native campaigns,2026-11-03
+
+The operator's Mac power-log review places every full observer failure from363/365/374 in display-off intervals and the full clear/trim passing retries in display-on intervals; the Mac never slept. After a complete display-on storage:editor run at the same2,400s outer budget as374-20, all12normal cases and3mutants pass in phase380. Keep all earlier failed evidence. Subsequent macOS native campaigns use `caffeinate -d` and record actual display power state in each5s host log. No wait, deadline, assertion, gate, limit, budget, trust or format decision changes; no new lab phase or performance/causal credit.

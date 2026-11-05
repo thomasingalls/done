@@ -1,0 +1,206 @@
+{
+  "phase": 380,
+  "lane": "operator-directed evidence/docs only",
+  "operatorPowerLogReview": {
+    "timezone": "Europe/Paris",
+    "displayOffIntervals": [
+      "2026-11-02 21:42\u201322:04",
+      "2026-11-02 22:18\u201322:29",
+      "2026-11-02 22:43\u201322:48",
+      "2026-11-02 23:00\u20132026-11-03 07:26"
+    ],
+    "MacNeverSlept": true,
+    "failedWhileOff": [
+      "363 storage:clear around21:50",
+      "365 storage:trim22:26",
+      "all13 phase374 editor attempts"
+    ],
+    "passedWhileOn": [
+      "clear22:06",
+      "trim22:32"
+    ],
+    "shortSelections": "passed either way",
+    "377Correction": "120s extra outer cap left54s of stage time after66s fingerprinting, not a valid full display-on comparison",
+    "nextDirective": "Complete editor with display on and same outer as374-20; after pass use caffeinate -d and display state in every host log; change no wait/deadline/assertion."
+  },
+  "review": {
+    "operatorPowerLogEvidence": "All reported full observer failures display-off; clear and trim full passing retries display-on; short selections pass both. Mac never slept. This is operator-supplied and independently retained power-log correlation, not an intentionally repeated display-off intervention.",
+    "matchedOuterSeconds": 2400,
+    "innerStageMs": 120000,
+    "normalPasses": 12,
+    "detectedMutants": 3,
+    "displaySamples": 33,
+    "allMainDisplaySamplesOn": true,
+    "offTransitionsDuringCommand": [],
+    "noWaitDeadlineOrAssertionChange": true,
+    "unchangedSourcePaths": [
+      "scripts/editor-admission/scenarios.mjs",
+      "scripts/editor-admission/worker.mjs",
+      "scripts/release-validation/browser.mjs",
+      "test/editor-admission/browser.mjs",
+      "src/editor/admittedText.ts",
+      "src/crdt/admissionDocument.ts"
+    ],
+    "report": "test-results/editor-admission/2026-11-03T07-04-26.832Z",
+    "durationSeconds": 161.65767288208008,
+    "futureNativePolicy": "caffeinate -d with actual display-state field in every5s external host log",
+    "noCausalOrStage5Credit": true
+  },
+  "displayObserver": "Read-only CoreGraphics main/online-display asleep flags every5s; no UI content or control. A sandbox-only probe returned no displays and is not treated as on; the authorized host probe supplies actual state.",
+  "correction": "The agent misread the matched outer timeout;374-20 is2400s. The original stage120s and every wait/assertion remain.",
+  "earlierFailuresRetained": true,
+  "noSourceOrHarnessChange": true,
+  "noStage5OrCausalProof": true,
+  "evidence": [
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/inputs.json.gz",
+      "artifact": "objects/79a9a03a8b978b9c9aaa1d7bfca00fa296e31c423ea3332c09d9310c77b1f942.gz",
+      "sha256": "79a9a03a8b978b9c9aaa1d7bfca00fa296e31c423ea3332c09d9310c77b1f942",
+      "bytes": 2623379
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/report.json",
+      "artifact": "objects/0f685afead4735657dee70f206574e86323b92ab1d3718049bfb33fbd83e2773.gz",
+      "sha256": "0f685afead4735657dee70f206574e86323b92ab1d3718049bfb33fbd83e2773",
+      "bytes": 272809
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/report.md",
+      "artifact": "objects/97f367d45da94ecdda118aa0a863204e1a357405aa79a185f4e47f8f75f31d5f.gz",
+      "sha256": "97f367d45da94ecdda118aa0a863204e1a357405aa79a185f4e47f8f75f31d5f",
+      "bytes": 979
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/stages/dca1f21fa8247c9980900998e90f3f0a50818837ea4d51aad1a3d0fb781ba3ad/browser.json",
+      "artifact": "objects/c43c553380899a0a353f0bf63019a38d369a2a1356999b8129b4459e40a13a00.gz",
+      "sha256": "c43c553380899a0a353f0bf63019a38d369a2a1356999b8129b4459e40a13a00",
+      "bytes": 1440
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/stages/dca1f21fa8247c9980900998e90f3f0a50818837ea4d51aad1a3d0fb781ba3ad/cases.json",
+      "artifact": "objects/0f685afead4735657dee70f206574e86323b92ab1d3718049bfb33fbd83e2773.gz",
+      "sha256": "0f685afead4735657dee70f206574e86323b92ab1d3718049bfb33fbd83e2773",
+      "bytes": 272809
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/stages/dca1f21fa8247c9980900998e90f3f0a50818837ea4d51aad1a3d0fb781ba3ad/output.log",
+      "artifact": "objects/3080e221d01549eb6fe525f3acb6938ea637469cd5591acfa84572259c42bb4d.gz",
+      "sha256": "3080e221d01549eb6fe525f3acb6938ea637469cd5591acfa84572259c42bb4d",
+      "bytes": 691
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/stages/dca1f21fa8247c9980900998e90f3f0a50818837ea4d51aad1a3d0fb781ba3ad/ownership.jsonl",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/stages/dca1f21fa8247c9980900998e90f3f0a50818837ea4d51aad1a3d0fb781ba3ad/receipt.json",
+      "artifact": "objects/ae0b95a3a9a2f0a229a17f385fb84db758a3eae15b5bf5d8059cc0449cecc630.gz",
+      "sha256": "ae0b95a3a9a2f0a229a17f385fb84db758a3eae15b5bf5d8059cc0449cecc630",
+      "bytes": 9634
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/editor-admission/2026-11-03T07-04-26.832Z/summary.json",
+      "artifact": "objects/395ca4114cfdb1eac7549bdadce00e61a0deb10d4c3bcb871bc9f2a9642942dd.gz",
+      "sha256": "395ca4114cfdb1eac7549bdadce00e61a0deb10d4c3bcb871bc9f2a9642942dd",
+      "bytes": 634
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-declaration.json",
+      "artifact": "objects/693ee97934f703de0c34511d8ad0dfb49a9db0bb013c15f63bf538160ba6baa9.gz",
+      "sha256": "693ee97934f703de0c34511d8ad0dfb49a9db0bb013c15f63bf538160ba6baa9",
+      "bytes": 1015
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/child.log",
+      "artifact": "objects/064d1a18f9d72967416b8b1c0cd5b68297d00c4fc607348cc21dd32d82014ed4.gz",
+      "sha256": "064d1a18f9d72967416b8b1c0cd5b68297d00c4fc607348cc21dd32d82014ed4",
+      "bytes": 649
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/host-load.jsonl",
+      "artifact": "objects/90dfc16706e49025690663ffa664ccbadab9746c6ad21c6b294f8c200e4bddf8.gz",
+      "sha256": "90dfc16706e49025690663ffa664ccbadab9746c6ad21c6b294f8c200e4bddf8",
+      "bytes": 33986
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/power-assertions-before.txt",
+      "artifact": "objects/c16d81a32a06ea059b5ef48abed720887d102cbc5661c53e9dc41a3131498e55.gz",
+      "sha256": "c16d81a32a06ea059b5ef48abed720887d102cbc5661c53e9dc41a3131498e55",
+      "bytes": 1791
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/power-log-after.txt",
+      "artifact": "objects/8bb3b31a1302e96677351aa5ddfcdb3ee989fb66d5b86a3fec40a7fbcc62d5b8.gz",
+      "sha256": "8bb3b31a1302e96677351aa5ddfcdb3ee989fb66d5b86a3fec40a7fbcc62d5b8",
+      "bytes": 3089390
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/power-log-before.txt",
+      "artifact": "objects/9fd6914e2c665f12360f214d2686fa63cac638a9a20b61c7cbdf559921020ba5.gz",
+      "sha256": "9fd6914e2c665f12360f214d2686fa63cac638a9a20b61c7cbdf559921020ba5",
+      "bytes": 3088488
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-on-editor/run.json",
+      "artifact": "objects/6ff3e498e0e6d90ef10c633e1c13359f89303c95b81cdf11dad74d315828111c.gz",
+      "sha256": "6ff3e498e0e6d90ef10c633e1c13359f89303c95b81cdf11dad74d315828111c",
+      "bytes": 542
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-display-review.json",
+      "artifact": "objects/99caf5f05bc0336151e98619a1f150c20647efc6a93ff1f44fe82207e7b3f907.gz",
+      "sha256": "99caf5f05bc0336151e98619a1f150c20647efc6a93ff1f44fe82207e7b3f907",
+      "bytes": 1078
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-initial-power-log.txt",
+      "artifact": "objects/f294a050d796dd65ae2d04a759b22421c2e497afd5fc27ec62812096bfd4cf93.gz",
+      "sha256": "f294a050d796dd65ae2d04a759b22421c2e497afd5fc27ec62812096bfd4cf93",
+      "bytes": 3088440
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/380-power-log-before.txt",
+      "artifact": "objects/2dd3f912a187b7d091527cfac084da6962001965c8b4f03072ae1d29c419a4de.gz",
+      "sha256": "2dd3f912a187b7d091527cfac084da6962001965c8b4f03072ae1d29c419a4de",
+      "bytes": 16080
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/display-state380.c",
+      "artifact": "objects/ef4fe5d09de90af72b7eab6eb274f52e699d63d25ecf0efb6cabdd5e5a317418.gz",
+      "sha256": "ef4fe5d09de90af72b7eab6eb274f52e699d63d25ecf0efb6cabdd5e5a317418",
+      "bytes": 696
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/record380.py",
+      "artifact": "objects/647d7ce674af094110e1d08b75fae3db0133c6083cb7950a2190c22c5b97bab1.gz",
+      "sha256": "647d7ce674af094110e1d08b75fae3db0133c6083cb7950a2190c22c5b97bab1",
+      "bytes": 10811
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/review380.py",
+      "artifact": "objects/738fe36ec0b99472778773883d89498761a188bc8c1bedfd91fe8a5aa5f30671.gz",
+      "sha256": "738fe36ec0b99472778773883d89498761a188bc8c1bedfd91fe8a5aa5f30671",
+      "bytes": 2313
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/run-check-display380.py",
+      "artifact": "objects/928633534a6f07ac70c5cceccb6be08fb90de9bdf2fe1841e89eed3be4cc5427.gz",
+      "sha256": "928633534a6f07ac70c5cceccb6be08fb90de9bdf2fe1841e89eed3be4cc5427",
+      "bytes": 4880
+    }
+  ]
+}

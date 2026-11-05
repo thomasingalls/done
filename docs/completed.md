@@ -18896,3 +18896,12 @@ The operator approved all of Stage3.2 under the receipt contract, with writing o
 **Exit.** Four Chromium/Firefox cases verify real Page/Worker grant identity, the old shared holder's startup exclusion, generic shared refusal and retained slot ownership through abort/drain. An omitted startup barrier fails the named early-member data assertion. All runtime and old-test bytes stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md).
 
 **Limit.** Coordination only: a test-only private native acquisition seam skips custody/authentication. No authenticated floor installation, saved writing, old real-data profile or rollback proof is claimed.
+
+
+### Full editor campaign passes at matched deadlines with display on
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch380 · **Stage:**operator-directed checkpoint evidence
+
+**Exit.** At374-20's exact2,400s outer and the unchanged120s stage,12normal cases pass and3mutants detect. All33 actual CoreGraphics samples report display on; no off transition appears during the command in the retained power log. Editor/scenario/worker/browser source and every wait/assertion remain exact. All prior failures remain. [Evidence](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md).
+
+**Correction and next.** The earlier377 quick retry incorrectly used a120s whole-command wrapper, leaving only54s after setup, so it was not a matched full display-on result. Per the operator, subsequent native campaigns use caffeinate -d and display-state host samples. Continue the functional checkpoint and approved format hardening; no Stage5, release or causality claim.
