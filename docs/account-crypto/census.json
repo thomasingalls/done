@@ -837,7 +837,7 @@
     },
     {
       "path": "src/crdt/accountRotation.ts",
-      "sha256": "214d84cbca37a63cbfbe66bc2b78d47e17d9a55b9434966fa93ec2e9c41b5628"
+      "sha256": "664fdceddcda1d6dc0896a23fc5f75ab3dc536f2efa2eb8b65d4212b20a8ea2f"
     },
     {
       "path": "src/crdt/accountSessionBridge.ts",
@@ -2633,7 +2633,7 @@
       "sites": [
         {
           "path": "src/crdt/accountRotation.ts",
-          "line": 285
+          "line": 287
         },
         {
           "path": "src/crdt/custody.ts",
@@ -4223,7 +4223,7 @@
       "sites": [
         {
           "path": "src/crdt/accountRotation.ts",
-          "line": 271
+          "line": 273
         },
         {
           "path": "src/crdt/contentRecord.ts",

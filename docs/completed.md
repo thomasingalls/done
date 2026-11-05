@@ -19374,3 +19374,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 
 
 **Phase428 pre-freeze metadata correction.** The retained-arm raw report records progress24,926ms, original removal22,389ms and the Joined activation refusal17,151ms. Two transcribed durations in the unfrozen narrative were inaccurate; the corrected record/progress now uses the raw values. Original draft metadata and every run remain retained. This changes no result, case, deadline or acceptance claim.
+
+
+### Carry the authenticated receipt floor into native rotation validation
+
+**Date:**2026-11-04 · **Commit:**pending patch429 · **Stage:**partial Stage3.2
+
+**Exit.** The real marked-reading rotation counterexample now passes through the intended interruption and successful retry. All six native lifecycle cases,55focused controls,5Joined guards and the330-file full unit checkpoint pass; existing verification and native commit checks remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/429-rotation-authenticated-receipt-floor/README.md).
+
+**Limits.** Functional hardening evidence only, not performance acceptance, RAM proof or final rollback-image validation. B fairness/past-index, same-tree writer-on/off images, coherent broader checkpoints and Stage5/6 remain. No format/trust/server/wire/budget/limit/gate/deadline/sender-default change, publication, deployment or computer use. Outcome precedes advancing this seat.

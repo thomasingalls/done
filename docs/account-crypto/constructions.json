@@ -3636,7 +3636,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/accountRotation.ts",
-          "line": 285,
+          "line": 287,
           "label": "done/content-metadata/v1",
           "kind": "literal"
         },
@@ -3995,7 +3995,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/accountRotation.ts",
-          "line": 271,
+          "line": 273,
           "label": "done/store/v1",
           "kind": "literal"
         },

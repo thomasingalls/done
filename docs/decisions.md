@@ -7447,3 +7447,10 @@ Do not mistake pending cleanup locks for an opening or the setup-busy screen for
 **Date:**2026-11-04 · **Commit:**pending patch428
 
 Keep separate ordinary and marked-retained-reading observations. The latter must use a valid authenticated sealed reading and every old verification guard. The joined rotation reader’s missing context floor is repaired by copying the already authenticated marker selection, never by granting floor1 to arbitrary receipts or catching its refusal. Preserve the failing native attempt before implementing the separate repair. The latest operator instruction permits continuation for a failure fixable within existing guards. [Evidence](development-evidence/2026-11-02-release-hardening/428-authenticated-floor-rewrite-counterexample/README.md).
+
+
+### Copy an existing authenticated encoding selection rather than relax rotation replay
+
+**Date:**2026-11-04 · **Commit:**pending patch429
+
+Rotation is another native stored-row reader and must receive the independently authenticated optional marker floor just like the ordinary baseline readers. Use the existing closed projector inside the already authenticated exclusive owner; preserve absence for legacy data and refusal for unsupported versions. Keep full per-entry verification and native commit guards unchanged. The before native failure, exact two-line inverse proof, rebuilt positive controls and full-unit result jointly establish this bounded correction. [Evidence](development-evidence/2026-11-02-release-hardening/429-rotation-authenticated-receipt-floor/README.md).

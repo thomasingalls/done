@@ -1,4 +1,5 @@
 import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
+import { captureInboundReceiptVersion } from './inboundReceiptVersion';
 import { eraseVerified } from './verifiedRecords';
 import { originalMembershipBoundaries } from './accountSuccessor';
 /** Resume a verified removal under the caller's exclusive slot permit. Old openers and the apply
@@ -220,6 +221,7 @@ export async function activateAccountRotation(
           history,
         };
         const context: InboundContext = {
+          ...captureInboundReceiptVersion(original ? marker : joined!.marker),
           baseline: original
             ? {
                 kind: 'promotion-genesis',
