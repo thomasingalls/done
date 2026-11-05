@@ -19410,3 +19410,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** 63commands pass; the receive campaign stops on an obsolete indentation-only mutation anchor after51focused and16other native cases pass. All58,881source files remain exact in both directions. Preserve the failure, narrow the repair to two spaces, then complete the remaining checkpoint. B fairness/past-index and the commit pause remain explicit. [Evidence](development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
 
 **Limits.** Failed partial functional checkpoint, not Stage3closure or Stage5/performance/format/RAM/release acceptance. All original predicates and native deadlines remain; only the previously approved240s full-unit hang guard is used. The nine contract full-unit stages have not run yet. Existing broad formatter deferral remains untouched. No new lab, source optimization, computer use, signing, push, publication or deployment. B native fairness/past-index remains open, and the operator now requires its bounded functional evidence before Stage5, followed by a pause for commits. Outcome precedes advancing this seat.
+
+
+### Refresh only the receive joint-control indentation anchor
+
+**Date:**2026-11-04 · **Commit:**pending patch433 · **Stage:**partial Stage3.2
+
+**Exit.** The indentation-only fixture repair restores all17native receive cases plus51focused cases, with no app code, assertion, omission scope or deadline change. [Evidence](development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).
+
+**Limits.** Functional regression/harness evidence only; no continuous B fairness, actual past-index fallback or Stage5 credit. The remaining19root commands are still unrun. No signing, release preparation, push, publication, deployment or computer use. Outcome precedes advancing this seat.

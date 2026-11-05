@@ -29,7 +29,7 @@ export async function receiveBundle(control) {
     ],
     coverage: [
       '/src/crdt/inboundLedger.ts',
-      'if (reuse) reuse.coverage.check(records, result.updates);\n          else localCoverage!.check(result.updates);',
+      'if (reuse) reuse.coverage.check(records, result.updates);\n            else localCoverage!.check(result.updates);',
       'void records;',
     ],
     'coverage-without-reuse': [

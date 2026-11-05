@@ -7475,3 +7475,10 @@ Use the measured cleaned-host full-suite duration and identical two-worker comma
 **Date:**2026-11-04 · **Commit:**pending patch432
 
 Treat this as a harness build precondition, not evidence that missing content was accepted. The actual coverage guard AST is identical to the signed base; the async owner branch also predates hardening. Refresh only the changed indentation first, preserving every old omission, assertion and deadline. Never erase the failed432run or label the19unattempted commands as passing. Close the operator-identified B functional evidence gap before Stage5 and pause for commits. [Evidence](development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
+
+
+### Preserve the receive mutation scope while refreshing its indentation
+
+**Date:**2026-11-04 · **Commit:**pending patch433
+
+Do not expand the joint omission to the pre-existing async branch. The two-space anchor refresh restores the signed-base operation and every existing assertion. Keep432as a failed attempt, and complete the checkpoint before the remaining B functional proofs. [Evidence](development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).

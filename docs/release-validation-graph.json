@@ -1762,7 +1762,7 @@
     {"path":"test/account-receive-transport/native.test.mjs","sha256":"6527d607c249c330a7d2ac68f04472c008dd741fb51a0edcf97ea7f517da409a"},
     {"path":"test/account-receive/batch-transport.test.mjs","sha256":"b94db249a92e7dbe6c522edc57df00bb14761df817c7a43d3b58c715e594e29c"},
     {"path":"test/account-receive/browser.ts","sha256":"0d9dafc1a9bc50ac1e4f43446e03ba0dc5df624a857c6f085c6ec04e9067bd2a"},
-    {"path":"test/account-receive/fixtures.mjs","sha256":"7b2a99b04c20488a80a00c1d00b5a00c1568e7bfbf619f782799f0c930fe5838"},
+    {"path":"test/account-receive/fixtures.mjs","sha256":"258f4ad1bc4b9e2adb5605797acd2d5066edd97906d5a8e6210ef985860c6a74"},
     {"path":"test/account-receive/groups-transport.test.mjs","sha256":"0b6c1ab2b72ace31b018f702a28341742741957389f989f13a291bdb686bbf0c"},
     {"path":"test/account-receive/groups.test.mjs","sha256":"1d1389a5d73ef7c2ce172d837fb8526bbdf219dd15845fda908bec6c08ea46d2"},
     {"path":"test/account-receive/historical-owner.test.mjs","sha256":"8aee36dc0ba1004d86cadb8e16196500d2c6105c82077d901f38b52e1c9cedf9"},
