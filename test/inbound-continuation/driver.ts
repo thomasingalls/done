@@ -87,11 +87,27 @@ const api = {
     );
     return readMaster();
   },
+  syncHealth(): void {
+    if (!owner || !owner.session?.sync) throw Error('Owner absent');
+    const status = owner.session.sync.status;
+    for (const lane of ['send', 'receive'] as const)
+      if (
+        status[lane].phase === 'blocked' &&
+        status[lane].reason !== 'local-storage' &&
+        status[lane].reason !== 'sign-in-required'
+      )
+        throw Error('Native sync ' + lane + ':' + status[lane].reason);
+  },
+  localHistory() {
+    if (!owner) throw Error('Owner absent');
+    return owner.session?.devices.localHistory?.status ?? null;
+  },
   admission() {
     if (!workspace) throw Error('Owner absent');
     return workspace.status;
   },
   async replaceSettled(text: string) {
+    this.syncHealth();
     if (!workspace) throw Error('Owner absent');
     const surface = workspace.text({ kind: 'master' }),
       before = surface.read().text;
@@ -113,12 +129,14 @@ const api = {
     });
     try {
       await Promise.race([ticket.accepted, blocked]);
+      this.syncHealth();
       return readMaster();
     } finally {
       off();
     }
   },
   async flushChecked() {
+    this.syncHealth();
     if (!workspace || !owner) throw Error('Owner absent');
     let off = () => {};
     const blocked = new Promise<never>((_resolve, reject) => {
@@ -133,15 +151,17 @@ const api = {
     });
     try {
       await Promise.race([workspace.whenDurable(), blocked]);
-      owner.session!.sync!.retry('send');
+      this.syncHealth();
     } finally {
       off();
     }
   },
   async undoSettled() {
+    this.syncHealth();
     if (!workspace) throw Error('Owner absent');
     document.dispatchEvent(new PointerEvent('pointerdown'));
     await workspace.command({ kind: 'undo' }).accepted;
+    this.syncHealth();
     return readMaster();
   },
   undo() {

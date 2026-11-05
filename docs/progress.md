@@ -162,10 +162,10 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight
+status: paused for commits; Stage5 blocked
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: actual past-index evidence, then commit pause
-updated: 2026-11-04
+blocks_on: commit pause; actual past-index evidence still required before Stage5
+updated: 2026-11-05
 ```
 
 **Contract.** Follow the [operator hardening plan](./release-hardening-2026-11-02.md),
@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Hold actual past-index credit after bounded fixture setup fails](./development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
-Scoped lint/format/typecheck,17registry checks, inventory and10inventory controls pass. Independent review preserves every old policy field/campaign/construction/census byte and all original test-driver methods by inverse-byte comparison; only added ports, the new required family and derived source graph change (734files/728required). Final app/test assets exactly match those exercised. Both correct-ticket setup attempts FAIL under900s: large ASCII pastes witness384completeversions/85positions/2464019wire bytes; one-slice900-character CJK values witness1536completeversions/86positions/4249788wire bytes, with C at1582of1600planned at the final budget. Neither reaches the returning A case: no actual cap event, later reference/cold or past-index credit exists. Earlier interrupted/short-wait/diagnostic attempts remain, including B320durable/C320ready after reopening and one later fully admitted/durable385replacement. Diagnostic1000-character partial states match the existing paste planner; active content-pending/oversize is not relabelled an admission refusal. Final-source observed assets are byte-identical to exercised assets. The initial ordinary437byte-equality review failed: adding a Vite test config conservatively changes the verifier identity. A disposable build omitting only that addition reproduces all125previous ordinary files exactly; keep that invalidation and every original guard. Runtime449source remains unchanged since429.
+**Latest checks.** [Preserve the native index preparation blocker before the commit pause](./development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
+Scoped lint, format, typecheck, inventory,10inventory controls and17registry tests pass. Both current ordinary and observation builds pass; all125ordinary asset bytes match438. Independent review checks exact current source pins, unchanged449runtime census and construction bytes, unchanged policy/campaign/count fields (734files/728required), all original437driver methods by inverse-byte equality, and the exact unchanged actual-cap/cold test body. Unique/inverse test observation anchors stay4ledger/2owner. The first attempt is explicitly interrupted after repeated building interruptions; it is retained. The second fails only the new setup precondition requiring completion when maintenance safely parks at capacity. The final corrected attempt completes its first producer reduction, permits the subsequent capacity park, then FAILS the unchanged900s setup guard at900003ms:1,344fully witnessed replacements,64accepted positions and3,714,996wire bytes. The actual returning-reader test remains unrun in every attempt. Host logs retain a busy browser process; a separate read-only process ancestry observation identifies the B renderer, without a CPU profile or code-hotspot attribution.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze438as an explicitly failed setup checkpoint. Continue one bounded fixture repair: observe cached sync health and automatic-local-history status, remove repeated producer storage retries from witness polling, allow genuine quiet and fresh owner lifetimes on the producer under the unchanged profile, then require actual32MiB fallback and subsequent exact native writing/Undo/cold. Preserve every run. Once these B proofs close, freeze the next patch and PAUSE FOR COMMITS before anyStage5fixture/cell. No release preparation.
+**Active bounded outcome.** Freeze439with every attempted fixture, source identity and failed outcome; PAUSE FOR COMMITS now. Stage5remains blocked. After the operator resumes, a bounded preparation/admission-cost diagnosis and successful actual32MiB native fallback/continuation/Undo/cold proof are still required before anyStage5fixture or timed cell. No release preparation.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +209,7 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
 closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Actual32MiB past-index fallback remains open for the next bounded phase;418/419focused controls and422native cuts do not close it. Later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
+in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Actual32MiB past-index fallback remains open:438/439setup attempts never reach the native returning reader.418/419focused controls and422native cuts do not close it. Later Stage5fairness/3,072cells remain separate. Then pause for commits before Stage5. Binary retained-reading installation with writer-off/on
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.

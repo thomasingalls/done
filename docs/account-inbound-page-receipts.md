@@ -357,3 +357,15 @@ and the unrun boundary](development-evidence/2026-11-02-release-hardening/438-na
 The next bounded fixture repair must observe cached sync/maintenance status and
 allow genuine producer quiet under the same profile and limits. Actual32MiB
 fallback and continued exact receive/cold still precedeStage5and the commit pause.
+
+
+Phase439 preserves the cached-status/quiet preparation repair and every failed
+attempt. The first producer reduction completes; the second safely parks at the
+unchanged preparation capacity. That expected park is permitted in setup, but the
+final recipe still expires at900s (1,344witnessed replacements,64accepted
+positions,3,714,996wire bytes). The actual returning-reader cap/continuation/Undo/
+cold case is byte-identical to438 and remains **unrun**. This closes no past-index
+obligation. [Attempt records and limitations](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
+Pause for commits now. Stage5remains blocked until a bounded native case observes
+the actual32MiB refusal and subsequent exact continuation/cold; neither437nor
+these failed preparations substitute for it.

@@ -7517,3 +7517,10 @@ The contract requires real continuous multi-publisher evidence beyond418/419comp
 **Date:**2026-11-05 · **Commit:**pending patch438
 
 A ready-made fixture or usage estimate cannot close the contract. Retain both900s failures and every prior development attempt; native A was never run. Correct test semantics by awaiting complete sliced admission tickets without changing the planner or journal bounds. Preserve the conservative verifier identity change from the new Vite test config; the prior-byte reconstruction explains it without weakening reuse guards. Next address setup scheduling through cached Window ports and real automatic producer maintenance/quiet, not a raised cap or deadline. Any actual app refusal/owner closure/missing writing/cold failure keeps the operator stop rules. [Evidence](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
+
+
+### Keep fairness coverage separate from an unexposed past-index assertion
+
+**Date:**2026-11-05 · **Commit:**pending patch439
+
+Map continuous native fairness with/without backlog and withheld hints to437;418/419component controls and422cuts supply different evidence. Cached status and ordinary offline preparation can remove a diagnostic-induced obstacle without changing app scheduling or trust. Keep the existing safe capacity park as a valid preparation outcome. The final900s failure still prevents native exposure, so no cap or cold claim follows. Do not substitute arithmetic, a usage-only model, prior lab results or a later report-only Stage5cell for the missing actual native proof. Record the unresolved setup cost and pause for commits under the operator instruction, with Stage5explicitly blocked. Do not broaden the repair into excluded performance work or raise limits/deadlines to obtain credit. [Evidence](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).

@@ -50,8 +50,6 @@ function wires(directory: string, publisher: string) {
 test('prepare independently accepted oversized backlog', async ({
   browserName: _browserName,
 }, info) => {
-  const started = Date.now();
-  const remaining = () => Math.max(1, 900000 - (Date.now() - started));
   test.setTimeout(900000); // Existing bounded fixture-preparation recipe ceiling, not the native gate.
   const { root, build } = paths(),
     directory = join(root, 'grown'),
@@ -100,17 +98,15 @@ test('prepare independently accepted oversized backlog', async ({
           await pages[1]!.evaluate(() => globalThis.nativeContinuation.flushChecked());
       }
       await pages[1]!.evaluate(() => globalThis.nativeContinuation.flushChecked());
-      await expect
-        .poll(
-          async () => {
-            const latest = await pages[2]!.evaluate(() => globalThis.nativeContinuation.read());
-            if (latest !== master)
-              await pages[1]!.evaluate(() => globalThis.nativeContinuation.flushChecked());
-            return latest;
-          },
-          { timeout: remaining() },
-        )
-        .toBe(master);
+      let witnessed: string;
+      for (;;) {
+        for (const page of pages.slice(1))
+          await page.evaluate(() => globalThis.nativeContinuation.syncHealth());
+        witnessed = await pages[2]!.evaluate(() => globalThis.nativeContinuation.read());
+        if (witnessed === master) break;
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+      expect(witnessed).toBe(master);
       const added = acceptedRows(join(directory, 'service')).filter(
         (row) => !prior.some((old) => old.key === row.key),
       );
@@ -127,6 +123,47 @@ test('prepare independently accepted oversized backlog', async ({
       };
       progress.push(row);
       writeFileSync(join(directory, 'growth.json'), JSON.stringify(progress, null, 2) + '\n');
+      if (version % 512 === 0 && bytes <= 8 * 1024 * 1024) {
+        // Observe cached session ports only: status polling must not enqueue a foreground
+        // storage job and priority-interrupt the very preparation this pause is waiting for.
+        const began = Date.now();
+        for (;;) {
+          await pages[1]!.evaluate(() => globalThis.nativeContinuation.syncHealth());
+          const status = await pages[1]!.evaluate(() => globalThis.nativeContinuation.status());
+          if (status.send.phase === 'idle') break;
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        await closeDriver(pages[1]!);
+        await pages[1]!.evaluate(
+          ({ code, joined }) => globalThis.nativeContinuation.open(code, joined),
+          seed.actors[1]!,
+        );
+        // Ordinary offline state stops idle network work; no scheduler/maintenance guard
+        // is changed. This is fictional fixture preparation, not a maintenance gate.
+        await contexts[1]!.setOffline(true);
+        const statuses: unknown[] = [];
+        for (;;) {
+          await pages[1]!.evaluate(() => globalThis.nativeContinuation.syncHealth());
+          const status = await pages[1]!.evaluate(() =>
+            globalThis.nativeContinuation.localHistory(),
+          );
+          if (!status) throw Error('Expected release-profile local maintenance');
+          statuses.push(status);
+          writeFileSync(
+            join(directory, `maintenance-${version}.json`),
+            JSON.stringify({ version, elapsedMs: Date.now() - began, statuses }, null, 2) + '\n',
+          );
+          if (status.phase === 'halted' || status.phase === 'closed')
+            throw Error('Native local maintenance ' + status.phase + ':' + status.reason);
+          // Capacity is an expected safe park, not a prerequisite for admitting more
+          // writing. Preserve its status and require the same exact active workspace.
+          if (status.reason === 'capacity') break;
+          if (status.progress?.stage === 'complete' && status.phase !== 'running') break;
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        expect(await pages[1]!.evaluate(() => globalThis.nativeContinuation.read())).toBe(master);
+        await contexts[1]!.setOffline(false);
+      }
     }
     const expected = normalized(
       baseline.map((row) => (row.path === 'master.md' ? { ...row, content: master } : row)),

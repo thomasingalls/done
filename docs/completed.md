@@ -19464,3 +19464,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The actual-index test apparatus is source-reviewed, but genuine fixture preparation fails the original900s budget and the native index/cold case is unrun. Actual past-index remains an explicit preStage5blocker; fairness437stays established separately. [Evidence](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
 
 **Limits.** No past-index, performance, Stage5, RAM, release or aggregate acceptance credit. This is a failed preparation checkpoint, not Stage3.2closure or a green new native suite. Do not infer absence of transient sync halts from helpers that used public retries without retaining cached lane status; the next bounded phase adds that observation and genuine producer quiet. Build identity invalidation is retained, not narrowed. All900/120/15guards, production limits/profile and security checks stay. Earlier failures remain, including the first failed independent asset review. No new lab, real staging/signing, push, publication, deployment or computer use. Commit pause is still required beforeStage5. Outcome precedes advancing this seat.
+
+
+### Preserve the native index preparation blocker before the commit pause
+
+**Date:**2026-11-05 · **Commit:**pending patch439 · **Stage:**partial Stage3.2
+
+**Exit.** Continuous native B fairness is established separately in437. Actual past-index fallback is still unproved: final setup times out before the unchanged native cap/continuation/cold case. Preserve the failure and pause for commits; Stage5stays blocked. [Evidence](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
+
+**Limits.** No actual-index, post-cap continuation, cold, performance, RAM, release or Stage5credit. This is a failed fixture-preparation checkpoint, not a green new native suite or Stage3.2closure. The underlying preparation cost remains unresolved; busy CPU is not a root-cause diagnosis. The expected capacity park is retained as a genuine limit finding, not hidden or changed to success. All900/120/15deadlines,32MiB index, journal limits, quiet/retry policies, flags, service, wire and security guards remain. No new lab phase, app change, real staging/signing, push, publication, deployment or computer use. Earlier attempts and original lab roots remain untouched. PAUSE FOR COMMITS; do not begin Stage5fixtures or cells. Outcome precedes advancing this seat.
