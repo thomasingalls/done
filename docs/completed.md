@@ -18790,3 +18790,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Thirteen new policy cases and 70 existing cases pass; types/scoped quality and reviewed inventory/authority/registry checks pass. Missing-cap and missing-close controls each fail their exact assertion, with restored source hashes. All older app/test bytes remain exact. The new module is unwired and changes no running-app behavior. [Evidence](development-evidence/2026-11-02-release-hardening/368-audit-start-policy/README.md).
 
 **Next.** Integrate the existing timer and real native queue settlement/physical pressure, then prove interruption/oracle/lifecycle behavior and close the full-suite checkpoint. Stage3 format approval remains pending; no format, benchmark, gate or release work. The paper handoff's normative checks and refreshed exact-tree receipts passed and are preserved here.
+
+
+### Stage 4 timer ownership checks scheduling again at the native queue head
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 369 · **Stage:** independent Stage 4, coordinator unwired
+
+**Exit.** Fourteen new coordinator cases/73 focused cases pass with types, scoped quality, registry, authority and reviewed inventory. Queue-head and timer-close omission controls fail their exact named assertions and restore the source. Earlier new-file formatting and incorrect test-selection attempts remain recorded. The helper is unwired; all previous runtime source hashes are exact. [Evidence](development-evidence/2026-11-02-release-hardening/369-audit-timer-coordinator/README.md).
+
+**Next.** Wire actual physical pressure and native queue settlement, prove the unchanged oracle/interrupt behavior, then close the Stage4 full-suite checkpoint. No Stage3.2 implementation before format approval, no performance or Stage5 credit.

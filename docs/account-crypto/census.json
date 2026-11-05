@@ -1520,6 +1520,10 @@
       "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
     },
     {
+      "path": "src/crdt/warmAuditScheduler.ts",
+      "sha256": "3a6991eabf27a5bd2b9ceea00ef4d53447efc079102f6847e252771cdb51ace8"
+    },
+    {
       "path": "src/crdt/warmAuditStart.ts",
       "sha256": "c4b5a3f0445064cd077a6470a3f8cd0274f14fe7e2db979a68c94d73e801f31e"
     },
