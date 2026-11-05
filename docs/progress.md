@@ -190,24 +190,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Reader syntax ports](./development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md)
-adds7controls. Types,187focused,18legacy and full321files/3152cases/one existing skip
-pass123.80s at approved240s. Quality/format/registry/inventory controls pass. Default
-paths and all old tests retain their guards. Normal app owners remain unwired; no
-performance/activation/acceptance claim.409supplies explicit syntax ownership.
+**Latest checks.** [Own parsed receipts within full and reduced loads](./development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
+Five new tests; original four before repair show three failures/one pass, including four decodes per full load versus one afterward. Reduced suffix control initially had an invalid synthetic allocation counter; corrected fixture then demonstrated two versus one decodes across an interior frontier. All attempts retained. Types,192focused cases across23files and18unchanged legacy cases pass; quality, format,17registry checks, inventory and10controls pass. The latest full checkpoint remains410:321files/3152cases/one skip123.80s; it is not rerun for this bounded slice. Four source hashes/ten source-site line moves are reviewed, no construction/obligation/test removals.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Connect the409scope to per-load census, epoch and ledger
-consumers under their existing independent guards, then actual native/full/baseline
-loads. Keep exact retained-row comparison before borrowing, record-specific turns,
-plain output graphs and all failure erasure. Next implement live owned pages and
-dense writing, dual audit, G8/B and lifecycle/rollback. Continue automatically after
-each freeze; stop only for a format/trust/limit/deadline decision or failure unfixable
-within existing guards. No parse capability crosses Window/Worker.
+**Active bounded outcome.** Wire new-row-only scopes into native and reduced-owner continuations, preserving exact prefix checks and full fallback. Then live owned pages/dense writer, dual audit, G8/B and lifecycle/rollback. Continue automatically after each freeze; stop only for the operator decision or an unfixable guard-preserving failure.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.

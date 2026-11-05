@@ -7321,3 +7321,10 @@ A per-load parser scope grants no verified prefix, authority or commit permissio
 **Date:**2026-11-04 · **Commit:**pending patch410
 
 Census, epoch and ledger consumers may share private exact-byte syntax within one load, but only through a genuine local scope. Scalar projection does not select stored mode or grant verification authority. Continuations capture only new physical rows; old prefix comparison remains independent. [410 evidence](development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md).
+
+
+### Keep independent load and audit syntax lifetimes
+
+**Date:**2026-11-04 · **Commit:**pending patch411
+
+Create and dispose syntax inside each verified load callback, complete only the final plain verified result, and keep audits/reference loads independent. Epoch scalar reuse and cold indexing preserve exact-byte/floor checks and actual proof-byte bounds. [Evidence](development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).

@@ -35,7 +35,11 @@ import {
   type inspectInbound,
 } from './inboundLedger';
 import { ownedByteCapacity, eraseUnretained } from './verificationOwnership';
-import { type InboundContext } from './accountInbound';
+import {
+  ownedInboundReceiptEpoch,
+  type InboundReceiptTurn,
+  type InboundContext,
+} from './accountInbound';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 import {
   acceptanceLink,
@@ -188,6 +192,7 @@ export async function indexVerifiedLedger(
   subtle: SubtleCrypto,
   proofBytes?: number,
   recordOwnership: AccountRecordOwnership = 'shared',
+  syntaxTurn?: InboundReceiptTurn,
 ): Promise<AccountLedgerIndexes | undefined> {
   // A binary view also needs the owner's separately retained proof-byte observation. Syntax
   // and smaller physical rows alone never establish a complete ownership charge.
@@ -243,6 +248,11 @@ export async function indexVerifiedLedger(
   let epoch = 1;
   for (const row of records)
     if (!content(row)) {
+      const capturedEpoch = syntaxTurn && ownedInboundReceiptEpoch(syntaxTurn, row.bytes);
+      if (capturedEpoch !== undefined) {
+        epoch = capturedEpoch;
+        continue;
+      }
       if (row.bytes[0] !== 91) {
         // Binary receipts are classified at the one raw-byte tag home. In particular their
         // request epoch must never fall through to the legacy reader-id array field.

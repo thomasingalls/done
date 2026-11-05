@@ -1,3 +1,4 @@
+import type { InboundReceiptTurn } from './accountInbound';
 /** Experimental continuation of authenticated local cuts. No install or deletion authority. */
 import {
   historyAuthority,
@@ -92,6 +93,7 @@ export async function verifyBaselineAuthority(
   b: LocalBaseline,
   spool: SpoolState,
   c: LocalBaselineContext,
+  syntaxTurn?: InboundReceiptTurn,
 ) {
   const origin = b.authorityState,
     all = installation(c),
@@ -129,7 +131,7 @@ export async function verifyBaselineAuthority(
     }
     if (n === spool.events.length) break;
     const bytes = spool.events[n]!;
-    if (membershipEventEpoch(bytes) !== epoch) fail();
+    if (membershipEventEpoch(bytes, syntaxTurn) !== epoch) fail();
     witness = await extendSpoolWitness(witness, bytes, subtle);
   }
   if (cut !== later.length || epoch !== c.route.epoch) fail();

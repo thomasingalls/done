@@ -19199,3 +19199,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** Brand-checked census, epoch and ledger ports retain exact/current/floor checks and all verification. Seven controls pass; types,187focused,18legacy and321unit files/3152cases/one existing skip pass123.80s at240s. Four default paths and other guards remain AST-exact after declared normalization; old tests stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md).
 
 **Limits.** Actual app owners remain unwired; no performance/activation proof. Outcome precedes advancing this seat.
+
+
+### Own parsed receipts within full and reduced loads
+
+**Date:**2026-11-04 · **Commit:**pending patch411 · **Stage:**partial Stage3.2
+
+**Exit.** Actual full/native/reduced callbacks now own per-load syntax; five controls and192focused/18legacy cases pass. Existing operations and guards are AST-exact after explicit scope normalization. [Evidence](development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
+
+**Limits.** No actual browser cold, image, activation, latency or RAM credit. Native continuation and live pages/dense writer, dual audit, G8/B and lifecycle/old artifacts/cold/rollback remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.

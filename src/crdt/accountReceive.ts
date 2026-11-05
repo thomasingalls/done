@@ -197,6 +197,7 @@ import {
   type Bytes,
 } from './custodyCrypto';
 import {
+  createInboundReceiptTurn,
   verifyInboundPage,
   prepareInboundRange,
   InboundError,
@@ -638,6 +639,7 @@ async function openAccountReceiveOwner(
         records: import('./contentRecord').OpenedRecord[],
         audit = false,
       ): Promise<AccountLedgerView> => {
+        const syntaxTurn = createInboundReceiptTurn();
         const began = performance.now();
         countLedger('full');
         const isolated = audit ? createInboundCoverage() : undefined;
@@ -656,8 +658,15 @@ async function openAccountReceiveOwner(
               : undefined;
         try {
           const census = checkpoint
-              ? await inspectInboundCooperatively(records, route, base, checkpoint)
-              : inspectInbound(records, route, base),
+              ? await inspectInboundCooperatively(
+                  records,
+                  route,
+                  base,
+                  checkpoint,
+                  undefined,
+                  syntaxTurn,
+                )
+              : inspectInbound(records, route, base, undefined, syntaxTurn),
             subtle = subtleFor(task),
             reuse = { memo, current: () => task.step(() => {}) };
           await checkpoint?.();
@@ -671,6 +680,7 @@ async function openAccountReceiveOwner(
               subtle,
               reuse,
               membership,
+              syntaxTurn,
             );
           else if (membership)
             await verifyInstalledMembership(
@@ -680,6 +690,7 @@ async function openAccountReceiveOwner(
               initialEpoch,
               subtle,
               reuse,
+              syntaxTurn,
             );
           await checkpoint?.();
           await verifySpool(
@@ -703,11 +714,19 @@ async function openAccountReceiveOwner(
             reuse,
           );
           await checkpoint?.();
-          const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
-            memo,
-            coverage: checking,
-            ...(checkpoint ? { checkpoint } : {}),
-          });
+          const inbound = await verifyInboundLedger(
+            census,
+            records,
+            base,
+            lifetime(task),
+            {
+              memo,
+              coverage: checking,
+              ...(checkpoint ? { checkpoint } : {}),
+            },
+            undefined,
+            syntaxTurn,
+          );
           if (composed) {
             const check = (updates: readonly Bytes[]) => checking.check(records, updates);
             if (checkpoint)
@@ -744,11 +763,14 @@ async function openAccountReceiveOwner(
               subtle,
               memo.ownedBytes(),
               recordOwnership,
+              syntaxTurn,
             );
             if (indexes) result.indexes = indexes;
           }
+          syntaxTurn.complete(result);
           return result;
         } finally {
+          syntaxTurn.dispose();
           isolated?.clear();
           measureLedger('full', began);
         }

@@ -4,7 +4,11 @@ import { encodePreparationValue } from './preparationValue';
 import { decodeNetworkEnvelope, openNetworkEnvelope } from '../../account-protocol/envelope';
 import { decodePositionResponse, ZERO_REFUSAL } from '../../account-protocol/positionDecision';
 import { unhex } from '../../account-protocol/recovery';
-import { type InboundContext, type InboundLifetime } from './accountInbound';
+import {
+  createInboundReceiptTurn,
+  type InboundContext,
+  type InboundLifetime,
+} from './accountInbound';
 import { LocalBaselineError } from './localBaselineError';
 export { LocalBaselineError } from './localBaselineError';
 import {
@@ -198,6 +202,7 @@ async function full(
   c: LocalBaselineContext,
   preparation?: PreparationVerification,
 ) {
+  const syntaxTurn = createInboundReceiptTurn();
   let delivered = false;
   try {
     const checkpoint = createCpuBudget(c.assertCurrent);
@@ -216,7 +221,14 @@ async function full(
       },
     });
     const { route, inbound: base } = c;
-    const census = await inspectInboundCooperatively(input.records, route, base, checkpoint);
+    const census = await inspectInboundCooperatively(
+      input.records,
+      route,
+      base,
+      checkpoint,
+      undefined,
+      syntaxTurn,
+    );
     const reuse = preparation && { memo: preparation.memo, current: c.assertCurrent };
     await verifySpoolWitness(census.delivery.spool, input.counter, subtle, reuse);
     if (c.installation.kind === 'original')
@@ -227,6 +239,7 @@ async function full(
         subtle,
         reuse,
         c.installation.membership,
+        syntaxTurn,
       );
     else if (c.installation.membership) {
       if (!route.history) refuse('scope');
@@ -237,12 +250,15 @@ async function full(
         c.installation.initialEpoch,
         subtle,
         reuse,
+        syntaxTurn,
       );
     } else {
       if (
         !route.history ||
         c.installation.initialEpoch !== route.epoch ||
-        census.delivery.spool.events.some((e) => membershipEventEpoch(e) !== route.epoch)
+        census.delivery.spool.events.some(
+          (e) => membershipEventEpoch(e, syntaxTurn) !== route.epoch,
+        )
       )
         refuse('scope');
     }
@@ -305,6 +321,8 @@ async function full(
           },
           checkCoverage: check,
         },
+        undefined,
+        syntaxTurn,
       );
       await advanceSelfReceiveCooperatively(
         census.delivery,
@@ -334,12 +352,14 @@ async function full(
       }
       c.assertCurrent();
       const result = { census, delivery, inbound, snapshot: documentState(input.records, false) };
+      syntaxTurn.complete(result);
       delivered = true;
       return result;
     } finally {
       coverage.clear();
     }
   } finally {
+    syntaxTurn.dispose();
     if (!delivered) eraseVerified(input);
   }
 }
@@ -649,6 +669,7 @@ export async function replayLocalBaseline(
   auth: Pick<BaselineAuthentication, 'verify'>,
 ) {
   const c = captureLocalBaselineContext(context);
+  const syntaxTurn = createInboundReceiptTurn();
   let payload: Bytes | undefined, mac: Bytes | undefined;
   try {
     payload = input.payload.slice();
@@ -711,8 +732,8 @@ export async function replayLocalBaseline(
       consumed,
       ...(b.own.receipt ? { receipt: b.own.receipt } : {}),
     };
-    const census = inspectInbound(records, c.route, c.inbound, start);
-    const witness = await verifyBaselineAuthority(b, census.delivery.spool, c);
+    const census = inspectInbound(records, c.route, c.inbound, start, syntaxTurn);
+    const witness = await verifyBaselineAuthority(b, census.delivery.spool, c, syntaxTurn);
     if (!sameSpoolWitness(witness, tail.counter.spool)) refuse('integrity');
     const own = emptyInbound();
     own.peers = new Map();
@@ -789,10 +810,18 @@ export async function replayLocalBaseline(
         expected: new Map(),
       },
     );
-    const inbound = await verifyInboundLedger(census, records, c.inbound, c, undefined, {
-      state: own,
-      after: b.cut.sequence,
-    });
+    const inbound = await verifyInboundLedger(
+      census,
+      records,
+      c.inbound,
+      c,
+      undefined,
+      {
+        state: own,
+        after: b.cut.sequence,
+      },
+      syntaxTurn,
+    );
     advanceSelfReceive(
       census.delivery,
       delivery,
@@ -813,11 +842,14 @@ export async function replayLocalBaseline(
       }
     }
     c.assertCurrent();
-    return { census, delivery, inbound, snapshot: documentState(records, false) };
+    const result = { census, delivery, inbound, snapshot: documentState(records, false) };
+    syntaxTurn.complete(result);
+    return result;
   } catch (e) {
     if (e instanceof RetiredHistoryRequired) refuse('history-required');
     throw e;
   } finally {
+    syntaxTurn.dispose();
     payload?.fill(0);
     mac?.fill(0);
     clearLocalBaselineContext(c);
