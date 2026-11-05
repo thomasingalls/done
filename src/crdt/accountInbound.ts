@@ -719,6 +719,12 @@ interface InboundTurnRow {
   verified: boolean;
 }
 interface InboundTurnState {
+  inspect(record: OpenedRecord, scope: InboundReceiptVersion): InboundReceiptViews | undefined;
+  request(
+    record: OpenedRecord,
+    scope: InboundReceiptVersion,
+  ): Readonly<Pick<InboundReadRequest, 'publisher' | 'epoch' | 'after'>> | undefined;
+  epoch(bytes: Bytes): number | undefined;
   claim(record: OpenedRecord, bytes: Bytes, scope: InboundReceiptVersion): InboundTurnRow;
   finish(row: InboundTurnRow, result: VerifiedStoredInboundReceipt): void;
   dispose(): void;
@@ -733,6 +739,7 @@ function freezeInboundSyntax(value: unknown, seen = new Set<object>()): void {
 }
 export function createInboundReceiptTurn(): InboundReceiptTurn {
   const rows = new Map<OpenedRecord, InboundTurnRow>(),
+    inputRows = new Map<Bytes, InboundTurnRow | null>(),
     outputs: VerifiedStoredInboundReceipt[] = [],
     parsers = new Set<object>();
   let state: 'open' | 'complete' | 'closed' = 'open',
@@ -749,6 +756,7 @@ export function createInboundReceiptTurn(): InboundReceiptTurn {
       retained,
     );
     rows.clear();
+    inputRows.clear();
     outputs.length = 0;
     parsers.clear();
     retained = undefined;
@@ -849,6 +857,7 @@ export function createInboundReceiptTurn(): InboundReceiptTurn {
         verified: false,
       };
       rows.set(record, row);
+      inputRows.set(row.input, inputRows.has(row.input) ? null : row);
       return row;
     } catch (cause) {
       dispose();
@@ -888,6 +897,26 @@ export function createInboundReceiptTurn(): InboundReceiptTurn {
     dispose,
   });
   inboundSyntaxTurnStates.set(api, {
+    inspect: api.inspect,
+    request(record, scope) {
+      const row = capture(record, scope);
+      if (!row) return;
+      const { publisher, epoch, after } = row.syntax.originals.request;
+      return Object.freeze({ publisher, epoch, after });
+    },
+    epoch(bytes) {
+      try {
+        active();
+        const row = inputRows.get(bytes);
+        // Ambiguous aliased inputs take the ordinary independent classifier.
+        if (!row) return;
+        current(row);
+        return row.view.epoch;
+      } catch (cause) {
+        dispose();
+        throw cause;
+      }
+    },
     claim(record, bytes, scope) {
       const row = capture(record, scope);
       if (!row || row.input !== bytes || row.kind !== 'heads' || row.claimed) fail('record');
@@ -902,6 +931,32 @@ export function createInboundReceiptTurn(): InboundReceiptTurn {
     dispose,
   });
   return api;
+}
+
+/** Brand-checked syntax projections only; supplied parser objects/functions grant nothing. */
+export function inspectOwnedInboundReceipt(
+  turn: InboundReceiptTurn,
+  record: OpenedRecord,
+  scope: InboundReceiptVersion,
+) {
+  const owner = inboundSyntaxTurnStates.get(turn);
+  if (!owner) fail('record');
+  return owner.inspect(record, scope);
+}
+export function inspectOwnedInboundRequest(
+  turn: InboundReceiptTurn,
+  record: OpenedRecord,
+  scope: InboundReceiptVersion,
+) {
+  const owner = inboundSyntaxTurnStates.get(turn);
+  if (!owner) fail('record');
+  return owner.request(record, scope);
+}
+/** Syntax epoch only, never authority. Uncaptured/ambiguous rows retain independent parsing. */
+export function ownedInboundReceiptEpoch(turn: InboundReceiptTurn, bytes: Bytes) {
+  const owner = inboundSyntaxTurnStates.get(turn);
+  if (!owner) fail('record');
+  return owner.epoch(bytes);
 }
 
 /** Detached evidence for one physical saved receipt. Logical entries share its exact owned

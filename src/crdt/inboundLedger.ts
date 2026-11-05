@@ -31,10 +31,14 @@ import {
   inboundReceiptViews,
   inboundEntryMemoSlot,
   type InboundRecord,
+  type InboundReceiptViews,
 } from './inboundRecord';
 import { membershipEventEpoch } from './accountMembership';
 import {
   verifyStoredInboundReceipt,
+  inspectOwnedInboundReceipt,
+  inspectOwnedInboundRequest,
+  type InboundReceiptTurn,
   type InboundContext,
   type InboundLifetime,
 } from './accountInbound';
@@ -140,9 +144,34 @@ export function inboundMemoSlots(entry: InboundLedgerEntry): string[] {
 export function captureInboundLedgerRecord(
   record: OpenedRecord,
   context: InboundContext,
+  syntaxTurn?: InboundReceiptTurn,
 ): InboundLedgerEntry | undefined {
+  if (syntaxTurn) {
+    const view = inspectOwnedInboundReceipt(syntaxTurn, record, context);
+    return view ? inspectedInboundLedgerRecord(record, view) : undefined;
+  }
   const captured = captureScopedInboundReceiptSyntax(record.bytes, context);
   return captured ? capturedInboundLedgerRecord(record, captured) : undefined;
+}
+function inspectedInboundLedgerRecord(
+  record: OpenedRecord,
+  view: InboundReceiptViews,
+): InboundLedgerEntry {
+  if (record.kind !== 'heads') captureError('Inbound record misplaced');
+  const first = view.entries().next().value;
+  if (!first) captureError('Empty inbound receipt');
+  return {
+    record,
+    event: first.event,
+    ...(view.receipt.kind === 'page'
+      ? {
+          extent: {
+            firstEntry: view.receipt.record.firstEntry,
+            entryCount: view.receipt.record.entryCount,
+          },
+        }
+      : {}),
+  };
 }
 function capturedInboundLedgerRecord(
   record: OpenedRecord,
@@ -150,21 +179,7 @@ function capturedInboundLedgerRecord(
 ): InboundLedgerEntry {
   let transferred = false;
   try {
-    if (record.kind !== 'heads') captureError('Inbound record misplaced');
-    const first = inboundReceiptViews(captured).entries().next().value;
-    if (!first) captureError('Empty inbound receipt');
-    const entry: InboundLedgerEntry = {
-      record,
-      event: first.event,
-      ...(captured.receipt.kind === 'page'
-        ? {
-            extent: {
-              firstEntry: captured.receipt.record.firstEntry,
-              entryCount: captured.receipt.record.entryCount,
-            },
-          }
-        : {}),
-    };
+    const entry = inspectedInboundLedgerRecord(record, inboundReceiptViews(captured));
     transferred = true;
     return entry;
   } finally {
@@ -185,6 +200,7 @@ function* inspectInboundSteps(
   route: CaptureRoute,
   context: InboundContext,
   start?: SpoolReplayStart,
+  syntaxTurn?: InboundReceiptTurn,
 ) {
   countLedgerWork('inboundCensuses');
   const prior: OpenedRecord[] = [],
@@ -204,17 +220,23 @@ function* inspectInboundSteps(
       (record.kind === 'heads' || record.kind === 'outbound') &&
       (record.bytes[0] !== 91 || isInboundReceiptNamespace(tag))
     ) {
-      let captured;
+      let captured: ReturnType<typeof captureScopedInboundReceiptSyntax>;
+      let view: InboundReceiptViews | undefined;
       try {
-        captured = captureScopedInboundReceiptSyntax(record.bytes, context);
+        if (syntaxTurn) view = inspectOwnedInboundReceipt(syntaxTurn, record, context);
+        else captured = captureScopedInboundReceiptSyntax(record.bytes, context);
       } catch (cause) {
         // Keep the established unreadable-carrier surface. Known/unknown future versions still
         // propagate their compatibility refusal, and legacy JSON schema errors stay unchanged.
         if (cause instanceof StorageCompatibilityError || record.bytes[0] === 91) throw cause;
         captureError('Unreadable inbound carrier');
       }
-      if (captured) {
-        entries.push(capturedInboundLedgerRecord(record, captured));
+      if (captured || view) {
+        entries.push(
+          view
+            ? inspectedInboundLedgerRecord(record, view)
+            : capturedInboundLedgerRecord(record, captured!),
+        );
         continue;
       }
     }
@@ -234,7 +256,7 @@ function* inspectInboundSteps(
     let epoch = 1;
     for (const row of ledger) {
       yield;
-      const at = membershipEventEpoch(row.bytes);
+      const at = membershipEventEpoch(row.bytes, syntaxTurn);
       if (at < epoch) captureError('Account ledger authority regressed');
       epoch = at;
     }
@@ -255,8 +277,9 @@ export async function inspectInboundCooperatively(
   context: InboundContext,
   checkpoint: () => Promise<void> | undefined,
   start?: SpoolReplayStart,
+  syntaxTurn?: InboundReceiptTurn,
 ) {
-  const steps = inspectInboundSteps(records, route, context, start);
+  const steps = inspectInboundSteps(records, route, context, start, syntaxTurn);
   try {
     let next = steps.next();
     while (!next.done) {
@@ -639,6 +662,7 @@ export async function verifyInboundLedger(
     checkCoverage?(updates: readonly Bytes[]): Promise<void>;
   },
   continuation?: { state: InboundState; after: number },
+  syntaxTurn?: InboundReceiptTurn,
 ): Promise<InboundState> {
   countLedgerWork('inboundVerifications');
   const clone = (s: InboundState): InboundState => ({
@@ -699,7 +723,10 @@ export async function verifyInboundLedger(
         continue;
       }
       const { record, event } = entry;
-      const request = decodeInboundRequest(event.request);
+      const request = syntaxTurn
+        ? inspectOwnedInboundRequest(syntaxTurn, record, base)
+        : decodeInboundRequest(event.request);
+      if (!request) return captureError('Missing inbound request');
       const publisher = publisherContext(base, request.publisher);
       const state = publisherState(own, base, request.publisher);
       if (request.publisher !== base.publisher.id) own.peers.set(request.publisher, state);
@@ -724,6 +751,7 @@ export async function verifyInboundLedger(
           record.bytes,
           lifetime,
           reuse ? { memo: reuse.memo, sequence: record.seq } : undefined,
+          syntaxTurn ? { turn: syntaxTurn, record } : undefined,
         );
       let delivered = false;
       try {

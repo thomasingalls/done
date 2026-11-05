@@ -190,14 +190,11 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Owned saved syntax](./development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md)
-adds13isolated lifecycle controls. Types,180focused,18unchanged legacy and full320files/
-3145cases/one existing skip pass122.33s at approved240s; other deadlines/gates stay.
-All old tests and existing live/default helper checks remain. Initial memo/callback
-ownership failure is retained and fixed only for the new scope. One inspect+verify
-unit decodes originals once with all18signature checks. App owners remain unwired,
-so this is no activation/performance/RAM/acceptance proof.408covers indirect full/
-reduced/fake-IndexedDB reader semantics; physical browser-cold/lifecycle remains open.
+**Latest checks.** [Reader syntax ports](./development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md)
+adds7controls. Types,187focused,18legacy and full321files/3152cases/one existing skip
+pass123.80s at approved240s. Quality/format/registry/inventory controls pass. Default
+paths and all old tests retain their guards. Normal app owners remain unwired; no
+performance/activation/acceptance claim.409supplies explicit syntax ownership.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,

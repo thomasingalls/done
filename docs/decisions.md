@@ -7314,3 +7314,10 @@ The operator directs continuation through every remaining Stage3.2 item, freezin
 **Date:**2026-11-04 · **Commit:**pending patch409
 
 A per-load parser scope grants no verified prefix, authority or commit permission. It stays inside one carrier and compares exact current physical input; all old per-entry verification remains. The existing memo erases callback values after cloning, so only the new scope detaches the compact record/original bytes it gives to that memo. Track outputs until explicit non-parser transfer, otherwise erase them. Do not substitute a persisted alias, lease, counter or later audit for exact retained-row checks. [409 evidence](development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md).
+
+
+### Brand-check syntax ports independently of verification
+
+**Date:**2026-11-04 · **Commit:**pending patch410
+
+Census, epoch and ledger consumers may share private exact-byte syntax within one load, but only through a genuine local scope. Scalar projection does not select stored mode or grant verification authority. Continuations capture only new physical rows; old prefix comparison remains independent. [410 evidence](development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md).

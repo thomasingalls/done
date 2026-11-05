@@ -19190,3 +19190,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Exit.** An isolated owner-local parser lifetime shares inspection with one saved verification under exact row/byte/floor checks, private decoded originals, current guards and explicit transfer/erasure. All18fresh signature checks remain while original decoding drops from2to1 in the discriminating unit control.13controls include a permanent layered final-byte omission. Types,180focused,18unchanged legacy and full320files/3145cases/one existing skip pass122.33s at approved240s. [Evidence](development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md).
 
 **Limits.** Initial memo/callback ownership failure remains and is repaired only on the new path; the13thfault has no before credit. Existing default/live helpers and all old tests stay exact. App owners are not wired yet; no timing/RAM/activation/acceptance claim. Outcome precedes advancing this seat to integration.
+
+
+### Connect optional owned-syntax ports through saved readers
+
+**Date:**2026-11-04 · **Commit:**pending patch410 · **Stage:**partial Stage3.2
+
+**Exit.** Brand-checked census, epoch and ledger ports retain exact/current/floor checks and all verification. Seven controls pass; types,187focused,18legacy and321unit files/3152cases/one existing skip pass123.80s at240s. Four default paths and other guards remain AST-exact after declared normalization; old tests stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md).
+
+**Limits.** Actual app owners remain unwired; no performance/activation proof. Outcome precedes advancing this seat.

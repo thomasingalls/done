@@ -1,3 +1,4 @@
+import { ownedInboundReceiptEpoch, type InboundReceiptTurn } from './accountInbound';
 import { requireFullSpool } from './retainedHistory';
 /** Current membership is separate from the immutable installation/key/checkpoint binding. */
 import { closed } from '../../account-protocol/preparation';
@@ -75,7 +76,9 @@ export async function installedMembershipHistory(
   return history;
 }
 /** Syntax only. The native/retained reader establishes its own authenticated floor before use. */
-export const membershipEventEpoch = (bytes: Bytes): number => {
+export const membershipEventEpoch = (bytes: Bytes, syntaxTurn?: InboundReceiptTurn): number => {
+  const captured = syntaxTurn ? ownedInboundReceiptEpoch(syntaxTurn, bytes) : undefined;
+  if (captured !== undefined) return captured;
   const v =
     bytes[0] === 91
       ? JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
@@ -96,6 +99,7 @@ export async function verifyInstalledMembership(
   initialEpoch: number | { epoch: number; cuts: InstalledMembership['cuts'] },
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
+  syntaxTurn?: InboundReceiptTurn,
 ) {
   requireFullSpool(spool);
   const cuts = [...(typeof initialEpoch === 'number' ? [] : initialEpoch.cuts), ...installed.cuts];
@@ -124,7 +128,8 @@ export async function verifyInstalledMembership(
     }
     if (i === spool.events.length) break;
     const bytes = spool.events[i]!;
-    if (membershipEventEpoch(bytes) !== epoch) throw Error('Ledger crosses membership adoption');
+    if (membershipEventEpoch(bytes, syntaxTurn) !== epoch)
+      throw Error('Ledger crosses membership adoption');
     if (i >= cuts.at(-1)!.before.events) continue;
     const before = witness,
       check = () => extendSpoolWitness(before, bytes, subtle);

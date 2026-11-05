@@ -1,3 +1,4 @@
+import type { InboundReceiptTurn } from './accountInbound';
 import { requireFullSpool } from './retainedHistory';
 import {
   parseCertificationSuccessor,
@@ -139,6 +140,7 @@ export async function verifyInstalledSuccessor(
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
   membership?: InstalledMembership,
+  syntaxTurn?: InboundReceiptTurn,
 ): Promise<void> {
   requireFullSpool(spool);
   if (membership) {
@@ -151,6 +153,7 @@ export async function verifyInstalledSuccessor(
       originalMembershipBoundaries(installed),
       subtle,
       reuse,
+      syntaxTurn,
     );
     return;
   }
@@ -175,7 +178,7 @@ export async function verifyInstalledSuccessor(
   let witness = emptySpoolWitness();
   let certifiedWitness = witness;
   for (const [index, bytes] of spool.events.entries()) {
-    const epoch = membershipEventEpoch(bytes);
+    const epoch = membershipEventEpoch(bytes, syntaxTurn);
     if (
       epoch !==
       (index < cut.events
