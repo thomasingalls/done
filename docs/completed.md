@@ -19163,3 +19163,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Correction.** The display was unobservable inside the sandbox, not established off. The operator's caffeinate-d assertion was active; outside-sandbox observations confirm three awake displays. No display assertion/deadline was bypassed.
 
 **Limits.** Other-reader properties and later format/writer/lifecycle/final gates stay open; no runtime/old-test edits or performance/native-cold/acceptance credit. This outcome precedes replacing this seat's active state.
+
+
+### Exercise mixed physical receipts through all four saved semantic callers
+
+**Date:** 2026-11-04 · **Commit:** pending patch407 · **Stage:** partial Stage3.2
+
+**Exit.** Three additional properties cover retained membership, handoff and replacement, complementing406's full/indexed ledger property. Independent signed originals, every selected update, complete canonical state and the relevant accepted cuts remain. All old tests and app code stay byte-exact; only two test helpers change. Types,138 focused,18 unchanged legacy and full318files/3128cases/one existing skip pass122.51s at the approved240s full-unit guard. [Evidence](development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md).
+
+**Limits.** Initial new-test callback type errors remain;18histories include13random/5examples, not exhaustive coverage. Handoff's no-checkpoint property does not claim admission proof; old real-cut checks pass separately. This is aged-clock unit replay, not physical31s/native-cold or performance acceptance. Indirect/final owned-writer/lifecycle/gate work stays. Recorded before replacing this seat's active state.

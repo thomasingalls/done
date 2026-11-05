@@ -1,4 +1,4 @@
-/** Repartition genuine signed two-publisher histories; original frames use an independent oracle. */
+/** Repartition independently signed pages; syntax generation never grants verification trust. */
 import type { InboundPageRecord } from '../../src/crdt/inboundRecord';
 import { decodeInboundPageRecord } from '../../src/crdt/inboundRecord';
 import { referenceBytes } from './fixtures';
@@ -9,74 +9,82 @@ type Fixture = Awaited<ReturnType<typeof membershipPageFixture>>;
 export type Mix = readonly number[];
 export const hex = (b: Uint8Array) => Buffer.from(b).toString('hex');
 const json = (v: unknown) => new Uint8Array(Buffer.from(JSON.stringify(v)));
-export function mixedPublisher(f: Fixture, source: Fixture['producer'], choices: Mix) {
-  const original = decodeInboundPageRecord(source.raw),
-    start = original.firstEntry,
+export function partitionSignedPage(
+  original: InboundPageRecord,
+  entries: readonly { position: number; link: string }[],
+  updates: readonly Uint8Array[],
+  choices: Mix,
+  single: (index: number) => { request: Uint8Array<ArrayBuffer>; page: Uint8Array<ArrayBuffer> },
+) {
+  const start = original.firstEntry,
+    end = start + original.entryCount,
     chunks: {
       raw: Uint8Array<ArrayBuffer>;
       updates: Uint8Array<ArrayBuffer>[];
       first: number;
       count: number;
     }[] = [];
-  const legacy = (index: number, single: boolean) => {
-    const entry = source.entries[index]!,
-      previous = index === start ? original.previous : source.entries[index - 1]!.link;
-    let { request, page } = original;
-    if (single) {
-      const r = JSON.parse(Buffer.from(request).toString()) as unknown[];
-      r.pop();
-      r[10] = entry.position - 1;
-      r[11] = 1;
-      request = json([...r, signed(f.d.keys.new, json(r))]);
-      const p = JSON.parse(Buffer.from(page).toString()) as unknown[];
-      p.pop();
-      p[2] = hash(request);
-      p[4] = entry.position;
-      p[5] = [[hex(entry.envelope), hex(entry.proof)]];
-      page = json([...p, signed(f.f.x.f.f.keys.acceptance, json(p))]);
-    }
-    return json([
-      single ? 'done/account-inbound/v1' : 'done/account-inbound/v2',
-      single ? 1 : 2,
-      original.baseline,
-      original.lineage,
-      original.head,
-      original.reader,
-      original.publisher,
-      'received',
-      entry.position,
-      previous,
-      entry.link,
-      hex(request),
-      hex(page),
-      ...(single ? [] : [index]),
-    ]);
-  };
   let index = start;
-  while (index < 8) {
+  while (index < end) {
     const choice = choices[index] ?? 0,
       kind = choice % 3,
-      count = kind === 0 ? Math.min(1 + Math.floor(choice / 3), 8 - index) : 1;
+      count = kind === 0 ? Math.min(1 + Math.floor(choice / 3), end - index) : 1,
+      previous = index === start ? original.previous : entries[index - 1]!.link;
     let raw: Uint8Array<ArrayBuffer>;
-    if (kind === 0) {
-      const page: InboundPageRecord = {
+    if (kind === 0)
+      raw = referenceBytes({
         ...original,
         firstEntry: index,
         entryCount: count,
-        firstPosition: source.entries[index]!.position,
-        previous: index === start ? original.previous : source.entries[index - 1]!.link,
-        lastLink: source.entries[index + count - 1]!.link,
-      };
-      raw = referenceBytes(page);
-    } else raw = legacy(index, kind === 2);
+        firstPosition: entries[index]!.position,
+        previous,
+        lastLink: entries[index + count - 1]!.link,
+      });
+    else {
+      const wire = kind === 2 ? single(index) : original;
+      raw = json([
+        kind === 2 ? 'done/account-inbound/v1' : 'done/account-inbound/v2',
+        kind === 2 ? 1 : 2,
+        original.baseline,
+        original.lineage,
+        original.head,
+        original.reader,
+        original.publisher,
+        'received',
+        entries[index]!.position,
+        previous,
+        entries[index]!.link,
+        hex(wire.request),
+        hex(wire.page),
+        ...(kind === 2 ? [] : [index]),
+      ]);
+    }
     chunks.push({
       raw,
-      updates: source.updates.slice(index - start, index - start + count).map((u) => u.slice()),
+      updates: updates.slice(index - start, index - start + count).map((u) => u.slice()),
       first: index,
       count,
     });
     index += count;
   }
+  return chunks;
+}
+export function mixedPublisher(f: Fixture, source: Fixture['producer'], choices: Mix) {
+  const original = decodeInboundPageRecord(source.raw);
+  const chunks = partitionSignedPage(original, source.entries, source.updates, choices, (index) => {
+    const entry = source.entries[index]!;
+    const r = JSON.parse(Buffer.from(original.request).toString()) as unknown[];
+    r.pop();
+    r[10] = entry.position - 1;
+    r[11] = 1;
+    const request = json([...r, signed(f.d.keys.new, json(r))]);
+    const p = JSON.parse(Buffer.from(original.page).toString()) as unknown[];
+    p.pop();
+    p[2] = hash(request);
+    p[4] = entry.position;
+    p[5] = [[hex(entry.envelope), hex(entry.proof)]];
+    return { request, page: json([...p, signed(f.f.x.f.f.keys.acceptance, json(p))]) };
+  });
   chunks.push({
     raw: source.legacy.slice(),
     updates: source.updates.slice(-1).map((u) => u.slice()),

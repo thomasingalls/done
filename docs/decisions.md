@@ -7293,3 +7293,10 @@ Do not replace the old unconditional scoped capture with a weaker tag-only pass 
 **Date:** 2026-11-04 · **Commit:** pending patch406
 
 An empty sandbox CoreGraphics display list means unknown, not off. Use the unchanged observer/harness outside sandbox, preserving the operator's display requirement and real power assertions. Apply the already approved240s hang guard only after the full-unit120s timeout, and retain actual126.44s suite time; other deadlines/gates remain. Explicit examples count toward fast-check numRuns, so record six random and six example histories rather than claiming twelve random histories or exhaustive coverage. [406 evidence](development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md).
+
+
+### Share the test page partitioner while preserving each reader's real preconditions
+
+**Date:** 2026-11-04 · **Commit:** pending patch407
+
+Reuse independent signed originals to vary physical receipt layout in every saved semantic caller; do not borrow authority or checkpoint admission from a parser projection. Membership/replacement use genuine certified fixtures. The handoff property uses no checkpoint and separate publishers/Yjs identities, while existing real admitted-cut controls remain. No production optimization or trust change follows from this test-only consolidation. [407 evidence](development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md).

@@ -190,26 +190,27 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** Full317files/3125cases/one existing skip pass126.44s with
-approved240s full-unit guard after retained120s timeout. Every other deadline and
-gate stays. Types,111 focused and4 unchanged generation controls pass, with registry/
-inventory review. [Mixed replay/control](./development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md)
-adds full/continuation/index agreement and a discriminating permanent stale-turn
-fault. No old test or runtime edits. New-test setup/type/timeout failures remain.
-Sandbox display absence was unknown, not off; unchanged outside-sandbox observations
-confirm the operator's awake displays/caffeinate-d. No display wait remains.
+**Latest checks.** Full318files/3128cases/one existing skip pass122.51s with
+approved240s full-unit guard (406 retains its120s timeout). Every other deadline
+and gate stays. Types,138 focused and18 unchanged legacy controls pass. [Mixed
+saved readers](./development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md)
+adds membership/handoff/replacement properties to406's full/continuation/indexed
+ledger and permanent stale-turn control. App code and old tests stay exact; two test
+helpers change. New-test type errors remain. These are aged-clock unit checks,
+with no physical native-cold/acceptance credit. Display observations outside the
+sandbox confirm the awake displays/caffeinate-d; sandbox absence was unknown.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Extend the mixed binary/legacy property through the
-other semantic readers: retained membership, handoff and replacement; share genuine
-signed fixtures while retaining their own scope/cut/coverage checks. Full/indexed
-ledger properties and the permanent stale-turn control are closed in406, with no
-exhaustive-history claim. Then finish owned per-load/live syntax and dense writing,
-dual audit units and G8/B.
+**Active bounded outcome.** Finish the indirect reader census, then the explicit
+per-load owned-syntax lifetime and live dense writer. Full/indexed mixed replay,
+permanent stale-turn fault and all four saved semantic-caller properties are now
+covered without an exhaustive-history claim. Preserve exact retained-row evidence,
+record-scoped syntax, per-entry verification/coverage and erasure; no parse object or
+trust crosses the Window/Worker boundary. Then dual audit units and G8/B.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
