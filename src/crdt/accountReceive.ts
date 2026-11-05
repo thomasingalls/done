@@ -257,10 +257,10 @@ async function openAccountReceiveOwner(
   const options = captureAccountOptions(input);
   const rangeWrites = receiveRangeWriterEnabled(import.meta.env?.['VITE_ACCOUNT_RANGE_RECEIVE']);
   const incremental = ledgerMode === 'incremental';
+  const recordOwnership =
+    incremental && import.meta.env?.['VITE_ACCOUNT_RECORD_OWNERSHIP'] !== '0' ? 'shared' : 'cloned';
   const verified = createVerifiedRecords<AccountLedgerView>({
-    ...(incremental && import.meta.env?.['VITE_ACCOUNT_RECORD_OWNERSHIP'] !== '0'
-      ? { ownResults: true as const }
-      : {}),
+    ...(recordOwnership === 'shared' ? { ownResults: true as const } : {}),
   });
   let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
@@ -743,6 +743,7 @@ async function openAccountReceiveOwner(
               counter,
               subtle,
               memo.ownedBytes(),
+              recordOwnership,
             );
             if (indexes) result.indexes = indexes;
           }
@@ -772,7 +773,7 @@ async function openAccountReceiveOwner(
                     base,
                     publicKey,
                     subtleFor(task),
-                    { memo, current: () => task.step(() => {}) },
+                    { memo, current: () => task.step(() => {}), recordOwnership },
                     () => coverage.prepare(records) === 'equivalent',
                   );
                   if (!next) return;
@@ -808,7 +809,10 @@ async function openAccountReceiveOwner(
                   const result = { ...next, inbound };
                   // Recheck the fresh retained graph after replay adds originals/proofs. Dropping
                   // indexes preserves the verified state and selects the full reference next turn.
-                  if (!accountLedgerIndexUsage(result, records, memo.ownedBytes()).eligible)
+                  if (
+                    !accountLedgerIndexUsage(result, records, memo.ownedBytes(), recordOwnership)
+                      .eligible
+                  )
                     delete result.indexes;
                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
                   auditDue ||=

@@ -829,7 +829,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "39d4db0d87a7bdd4e597b8cc4a03a2e2b4016ff1e52d84e56971447576f9f503"
+      "sha256": "37b1836522e8fc7f86fbf1d525f275e794dcbe3c426314c3fef6d0174531e560"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1113,7 +1113,7 @@
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
-      "sha256": "fa9a9efa545ea00a2376bf22865d79a2c3b0c7c7bcee523e5ad4ae844409f7a2"
+      "sha256": "1a7a09c658fa551608b7bcc0f3c823b5c6a20075d629f27c6995f9da6538321d"
     },
     {
       "path": "src/crdt/index.ts",
@@ -2151,15 +2151,15 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 239
+          "line": 249
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 299
+          "line": 317
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 377
+          "line": 395
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
@@ -2229,7 +2229,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 840
+          "line": 844
         }
       ]
     },
@@ -2363,15 +2363,15 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 206
+          "line": 216
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 238
+          "line": 248
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 299
+          "line": 317
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
@@ -4179,11 +4179,11 @@
       "sites": [
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 299
+          "line": 317
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 342
+          "line": 360
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",

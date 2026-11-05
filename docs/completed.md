@@ -19116,3 +19116,12 @@ The operator approves validation/application with an actual immediate-Goals-focu
 
 
 **Phase401 qualification, 2026-11-04 (before freezing).** Static review of `createVerifiedRecords` found that non-owning mode clones the view and then separately copies records. The candidate-graph union measured in401 is exact for shared ownership, not this subsequent duplication. Actual accounting across both modes stays open; fix clone-mode accounting before binary eligibility. The passing unit/source results remain, with this explicit limit. No additional timing measurement or acceptance credit.
+
+
+### Close prospective ownership accounting for cloned cache installation
+
+**Date:** 2026-11-04 · **Commit:** pending patch402 · **Stage:** partial Stage3.2
+
+**Exit.** The401 clone-mode qualification is closed: the actual unchanged constructors match shared union versus cloned view plus separately copied records. One existing ownership expression drives installation and initial/extend/final budget checks. Six controls fail before;89 focused,4 unchanged generation and full312files/3103cases/one existing skip pass113.93s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md).
+
+**Limits.** Fixture-observer contamination and AST finder mistake preserved and corrected; no old test edits or app failure. Binary fallback remains. Per-load/mixed/dual-audit/writer/lifecycle/final gates stay open. No RAM/performance acceptance claim. Outcome recorded before updating this seat's active state.

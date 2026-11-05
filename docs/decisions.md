@@ -7258,3 +7258,10 @@ The existing393 backing-buffer accountant belongs in verificationOwnership and i
 
 
 **Phase401 accounting follow-up, 2026-11-04.** Keep binary fallback while accounting for the existing clone mode's separate retained-record copy. Treat the ownership mode as an explicit budget input and prove both installed graph shapes; a union of candidate buffers cannot stand in for two later allocations. This is a remaining hardening obligation, not a change to limits or trust.
+
+
+### Make the existing cache ownership mode an explicit byte-budget input
+
+**Date:** 2026-11-04 · **Commit:** pending patch402
+
+The same existing flag expression controls cache installation and prospective accounting. Shared mode counts the union; clone mode counts the cloned view plus each independent visible record copy. Keep the real memo charge, old ceilings and full-reference fallback. Actual constructor observations prove both graph shapes. This closes401's qualification without changing trust, flags or constructors. [402 evidence](development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md).
