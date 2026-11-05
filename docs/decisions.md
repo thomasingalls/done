@@ -7496,3 +7496,10 @@ Keep the failed formatting attempt. Normalize the mutable construction registry 
 **Date:**2026-11-04 · **Commit:**pending patch435
 
 Normalize this mutable registry’s layout rather than remove or relax the formatter. Verify both its entire token sequence and parsed values independently, then update only its inventory source hash. This does not authorize or apply the earlier deferred test/harness formatting patch. [Evidence](development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
+
+
+### Close the segmented checkpoint without hiding harness repairs or unit growth
+
+**Date:**2026-11-05 · **Commit:**pending patch436
+
+Keep passing source-pinned segments and every earlier failed attempt. Do not rerun unchanged long commands merely to obscure their history, and do not call the segmented checkpoint a single byte-identical83-command run. The approved240s hang guard applies to the complete recovery unit suite too; focused recovery stays120s. Record actual times for all ten full suites. B continuous-native and actual index fallback proofs still precedeStage5and the commit pause. [Evidence](development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).

@@ -19437,3 +19437,12 @@ The two self-contained extents are7,531bytes each original-to-Joined and7,529byt
 **Exit.** The first-authority format check is green with only registry layout and its derived inventory hash changed; all construction tokens and security obligations stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
 
 **Limits.** Bookkeeping correction only; no app, test body, assertion, format contract, deadline, trust or gate change. The failed434attempt remains. Ten commands73–82remain; B functional fairness/past-index is still open. The broader deferred test/harness formatting patch remains untouched. No Stage5, signing, push, release preparation, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Complete the functional checkpoint with actual full-unit times
+
+**Date:**2026-11-05 · **Commit:**pending patch436 · **Stage:**partial Stage3.2
+
+**Exit.** The coherent functional checkpoint has passing segments for all83commands, with unchanged runtime source since429 and actual full-unit times131.05–145.64s. Only the approved recovery full-unit guard/timing and exact derived inventory change in436. [Evidence](development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
+
+**Limits.** Functional checkpoint only, not Stage3closure or Stage5/performance/format/RAM/release acceptance. All original functional/security/performance predicates and focused deadlines stay; only the already approved full-unit hang guard is240s. Continuous native B fairness/past-index remains open and has no prior functional credit; private apparatus drafts have not been built/run. No new lab, computer use, signing, push, release preparation, publication or deployment. The operator requires a commit pause beforeStage5. Outcome precedes advancing this seat.

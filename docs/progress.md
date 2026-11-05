@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: receive-control anchor, remaining functional checkpoint and B fairness/past-index evidence
+blocks_on: B continuous-native fairness and actual past-index evidence, then commit pause
 updated: 2026-11-04
 ```
 
@@ -191,15 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Normalize construction registry layout without changing its tokens](./development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
-All99construction entries, source addresses, source pins, schema/vector hashes, statuses and blockers are exact. Every non-whitespace JSON token is byte-identical. The only derived inventory input change is constructions.json; all other graph fields, counts and obligations are exact. The full first-authority command passes in21.61s, including its unchanged formatter and every contract, verifier, vector and lint stage.17registry checks, inventory and10inventory controls pass. All449runtime source hashes stay exact.
+**Latest checks.** [Complete the functional checkpoint with actual full-unit times](./development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
+All ten remaining commands pass every stage without timeout. Each full unit suite reports330files,3,210passes and the same one existing skip. In root order73–82, Vitest durations are145.64, 135.04, 139.08, 136.65, 135.49, 135.41, 136.14, 139.94, 132.37, 131.05s (131.05–145.64s); separate child stage elapsedMs and240000ms guards are preserved for each.62existing wrapper controls,17registry checks, scoped lint/format, inventory and10inventory controls pass. All59,817source files and membership remain exact in both directions. Live computed runtime census equals the immutable429census; no later frozen phase changed a runtime path. All83root commands now have passing segments:432(0–62),433(63),434(64–71),435(72),436(73–82). This is not a claim that all83ran on one byte-identical harness tree.432and434failures and the review collector failure remain. Focused prerequisite stages are retained separately; their recovery-contract labels do not imply another full unit invocation.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze435. Apply the already approved240s full-unit hang guard to the overlooked recovery-contract full-suite invocation only, preserving recovery-regressions120s and all other guards; record actual suite times. Complete commands73–82, then close continuous B native fairness and actual past-index fallback. PAUSE FOR COMMITS beforeStage5.
+**Active bounded outcome.** Freeze436. Declare and implement the bounded B native functional family: both prepared-backlog and initially caught-up conditions include continuous writing, normal and server-withheld hints, real same-publisher wire batches, independent accepted/native positions, a genuine unfair-selection control, actor-local Undo and ordinary offline process-cold. Then observe actual32MiB index fallback and continued exact writing/cold in a separate bounded phase. Freeze each sequential patch, then PAUSE FOR COMMITS; do not startStage5cells or refresh their fixtures.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -217,7 +217,7 @@ Genuine frozen old Page/Worker active and cold app refusals, queued old native-r
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine
-Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy and its genuine stale-turn control pass in425; the broader coherent checkpoint is in flight. After the completed functional checkpoint and remaining B proofs, PAUSE FOR COMMITS. Do not start Stage5cells or fixture/timing runs until the operator resumes after commits. Stage5and Stage6remain later work.
+Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy and its genuine stale-turn control pass in425; the broader coherent functional checkpoint has passing source-pinned segments for all83commands in436. After the completed functional checkpoint and remaining B proofs, PAUSE FOR COMMITS. Do not start Stage5cells or fixture/timing runs until the operator resumes after commits. Stage5and Stage6remain later work.
 Binary native cold is observed on the forced-cut fixture in421. The430same-tree ARM64image/rollback component evidence is established for its recorded tree; final signed-source artifacts, RAM and performance acceptance remain unestablished. Service automation stays off.
 
 This seat replaces only its own document; the other seat above is unchanged.

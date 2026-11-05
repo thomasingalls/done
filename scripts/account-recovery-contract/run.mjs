@@ -81,6 +81,7 @@ const save = () =>
 save();
 async function run(name, args, timeout = 60000) {
   console.log('Starting ' + name);
+  const stageStarted = performance.now();
   const log = createWriteStream(join(output, name + '.log'));
   const evidenceDir = join(output, name);
   mkdirSync(evidenceDir, { recursive: true });
@@ -125,6 +126,15 @@ async function run(name, args, timeout = 60000) {
   clearTimeout(forced);
   clearInterval(heartbeat);
   await new Promise((resolve) => log.end(resolve));
+  if (name === 'unit')
+    writeFileSync(
+      join(output, 'unit-timing.json'),
+      JSON.stringify(
+        { elapsedMs: performance.now() - stageStarted, deadlineMs: timeout, code, timedOut },
+        null,
+        2,
+      ) + '\n',
+    );
   summary.stages.push({
     name,
     command: [process.execPath, ...args],
@@ -226,7 +236,11 @@ try {
   ];
   for (const [name, args] of stages)
     if (
-      !(await run(name, args, name === 'unit' || name === 'recovery-regressions' ? 120000 : 60000))
+      !(await run(
+        name,
+        args,
+        name === 'unit' ? 240000 : name === 'recovery-regressions' ? 120000 : 60000,
+      ))
     )
       throw Error(name + ' failed');
   summary.status = 'passed';
