@@ -235,7 +235,9 @@ export function createPreparationJournal(options: {
   };
   const entries = new Map<string, Receipt>(),
     pending = new Map<string, Receipt>();
-  const began = (options.now ?? performance.now.bind(performance))();
+  // Reopening and authenticating a saved prefix must not exhaust the next fresh slice.
+  // The wall clock starts on its first miss; existing atomic verification/interrupt guards stay.
+  let began: number | undefined;
   let closed = false,
     bytes = 0,
     misses = 0,
@@ -292,7 +294,9 @@ export function createPreparationJournal(options: {
           hits++;
           return decodePreparationValue(prior.result) as T;
         }
-        if (pending.size && now() - began >= slice) throw new PreparationPause();
+        const freshAt = now();
+        began ??= freshAt;
+        if (pending.size && freshAt - began >= slice) throw new PreparationPause();
         const value = await verify();
         let result: Bytes | undefined;
         try {

@@ -6857,3 +6857,7 @@ Do not treat millions of one-record async comparison calls as full-ledgerreplays
 ## 2026-11-02 — Hardening 335: preserve capacity as a refusal, not permission
 
 Catch only PreparationCapacity at the automatic removal boundary and reuse the existing skipped/capacity policy. Keep journals, caps, retry clock and integrity/storage halts. Share the error class through a small canonical module with compatibility re-exports; record only a closed owner-error code. Follow the operator’s November 2 stage order, no new lab work or format approval inferred.
+
+## 2026-11-02 — Hardening 336: preserve the existing slice guard with a fresh start
+
+Exclude saved-prefix replay before the first miss; start the existing wall-clock slice there. Keep pauses before fresh verification, all freshness/digest/erasure checks and the one-indivisible-call boundary. This is the approved S behavior, not a new latency/throughput claim or a changed budget.

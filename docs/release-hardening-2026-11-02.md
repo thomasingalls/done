@@ -109,5 +109,5 @@ approval, no released build may write the new rows.
 
 ## Current checkpoint
 
-Stage 1.1 is complete (patch 335); Stage 1.2 is active. Capacity mapping has focused evidence; the Stage 1 full-suite checkpoint is still pending. No new format is approved.
+Stages 1.1 and 1.2 are complete (patches 335–336); Stage 1.3 is active. Focused checks pass; the Stage 1 full-suite checkpoint is still pending. No new format is approved.
 Checkpoint evidence will be appended to completed.md before advancing this state.

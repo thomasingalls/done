@@ -18515,3 +18515,7 @@ Signed93preparedcommits241–333inorder, verifiedeverytree,parentandSSHsignature
 ## 2026-11-02 — Hardening 335: narrow preparation capacity mapping
 
 All five preparation ceilings use the existing parked capacity path, preserving journals and bounds. Content-free owner diagnostics distinguish LocalBaselineError. Five real-site injections, native encrypted-journal reopen/byte preservation and halt controls pass: 55 focused cases, strict types. Harness/type failures retained. [Evidence](development-evidence/2026-11-02-release-hardening/335-capacity/README.md). Outcome recorded before advancing the active hardening slice.
+
+## 2026-11-02 — Hardening 336: measure preparation slices from fresh work
+
+Start the existing two-second clock at the first fresh receipt miss, preserving every interruption/expiry/capacity guard and atomic check. Replayed-prefix progress, fresh bound and quiet/drain scheduling controls pass with existing owner/storage/mutation regressions:37focusedcases. [Evidence](development-evidence/2026-11-02-release-hardening/336-fresh-slice/README.md). Recorded before advancing to Y.
