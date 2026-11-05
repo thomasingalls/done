@@ -6927,3 +6927,12 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Orientation.** PRD v9/TRD v8 and the operator's resume require authentic failure boundaries and retained evidence. The old R-01 fixture mixed current modules with three old substitutions and failed on a missing new export before reaching its cases.
 
 **Decision.** Use the existing bounded complete-source historical builder at the original revision, with genuine capture/spool/delivery owner exports. Independently check every archived file against fresh Git bytes; retain dependency equality, module escape, case assertions, deadlines and aggregate blocks. Do not add a compatibility stub or change application code to make an old fixture compile.
+
+
+### Preserve the real-report refusal after repairing the grouped HTTP fixture
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 345
+
+**Orientation.** The hardening procedure requires independent evidence consumers, preserves inconvenient results and stops on an existing check that needs a guard change. Native campaign success and synthetic adapter success are distinct from reconciling the actual native reports.
+
+**Decision.** Retain the original seeded population and all exact writing/source/prefix/cold checks while serving the actual batched HTTP route and modeling its pages. Run the whole campaign and all wrapper controls. Preserve the resulting real-report source-kind refusal, whose guard is unchanged from signed base; do not silently admit system sources. Return that narrowly identified boundary to the operator before continuing. No documentation policy, runtime trust, format, budget or deadline changes.

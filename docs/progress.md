@@ -185,20 +185,20 @@ Both editor messages remain current. All old browser tests/assertions remain unc
 
 **Now.** Native Worker fixture repairs pass startup/editor 15/15 and cut 8/8
 ([341](./development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md));
-21 omission/concurrency/counter controls pass
-([342](./development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md)).
-The operator-approved asset predicate retains all eight phase236 refusals and
-upgrade checks pass 8 cases with the existing predecessor skip; first-authority
-passes after a JSON-identical registry layout repair
-([343](./development-evidence/2026-11-02-release-hardening/343-reviewed-inventory-and-assets/README.md)).
-Both historical oversized-writer cases now pass within their original 240-second
-deadlines, with all 168 pinned source files independently checked
-([344](./development-evidence/2026-11-02-release-hardening/344-historical-writer/README.md)).
-Application source remains unchanged after Stage1. Next are the generated-receive
-fixture, existing whole-tree receipt refresh, and unchanged 120-second full-unit
-wrapper deadlines. If a case needs
-an application change or a further guard relaxation, report the full list
-first. Continue Stage2 only after the checkpoint is green.
+21 omission/concurrency/counter controls pass (342). The approved asset predicate
+retains all eight phase236 refusals; upgrade checks pass 8 with the old skip, and
+first-authority passes (343). Both historical oversized-writer cases pass their
+original deadlines with all 168 pinned files checked (344).
+
+The complete receive-transport campaign now passes, including 16 generated
+histories, and all 55 wrapper unit tests pass. **Actual-report reconciliation is
+still red**: the old unchanged source guard accepts only `human`, while the real
+setup includes an initial `system` capture. [345](./development-evidence/2026-11-02-release-hardening/345-receive-model-guard-hold/README.md)
+preserves the refusal. Hold under the operator's guard-change stop rule; do not
+broaden the source-kind predicate without review. Six old 120-second full-unit
+wrapper deadlines and existing whole-tree receipt refresh also remain. Other
+previously failed campaigns' unrerun nested steps are not credited. Application
+source remains unchanged after Stage1. Stage2 has not started.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

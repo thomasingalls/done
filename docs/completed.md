@@ -18585,3 +18585,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Exit.** Both old R-01 sealed/submitted cases pass within their unchanged 240-second deadlines, preserving all writing, size-refusal, retry-budget and cold assertions. Independently reproduce the pinned archive and match all 168 files plus bundle identity. Four adapter tests and ten inventory controls pass; classifications/counts and aggregate blocks remain. [Evidence](development-evidence/2026-11-02-release-hardening/344-historical-writer/README.md).
 
 **Notes.** The runner hashes the shared builder. Replace source-shape expectations with the genuine complete historical bridge, retaining old metadata pins and limits; no aggregate credit inferred. No app source changed. The generated receive fixture and unit-wrapper deadlines still hold the checkpoint. Recorded before advancing the active slice.
+
+
+### Generated HTTP fixture repaired; actual report source guard holds the checkpoint
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 345 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** All five native receive-transport stages pass, including 16 seeded histories, with original case/child deadlines and exact writing/prefix/source/cold assertions. All 55 wrapper unit cases pass. Actual-report reconciliation remains red: the unchanged old guard accepts human sources only, while every native setup includes a system initializer. [Evidence and retained refusal](development-evidence/2026-11-02-release-hardening/345-receive-model-guard-hold/README.md).
+
+**Notes.** Repair the missing batch HTTP mock and model grouped progress independently of the app result. Keep framing, false-progress and corruption controls and the 4 MiB artifact cap. Do not widen the source-kind guard. Under the operator's stop rule, hold for that policy boundary; no Stage2, app change, commit or release work. Six existing 120-second full-unit wrapper timeouts and stale whole-tree receipts remain. Outcome recorded before updating the active slice.

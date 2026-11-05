@@ -1,4 +1,8 @@
 import {
+  encodeInboundBatch,
+  encodeInboundBatchPages,
+} from '../../account-protocol/inboundBatch.ts';
+import {
   boundsCampaign,
   boundsCampaignStage,
   boundsSteps,
@@ -1687,6 +1691,7 @@ function receiveTransportEvidence() {
     'compact',
     'restart',
     'receive',
+    'receive',
     'restart',
   ];
   const h = {
@@ -1694,7 +1699,7 @@ function receiveTransportEvidence() {
     completed: true,
     initial: 'base',
     before,
-    wires: ['aa', 'bb'],
+    wires: ['aa', 'bb', 'cc'],
     observations: [],
     requests: [],
   };
@@ -1705,46 +1710,76 @@ function receiveTransportEvidence() {
   const status = () => ({
     state: 'ready',
     receivedThrough: through,
-    observedThrough: through ? 2 : 0,
+    observedThrough: through ? 3 : 0,
     link,
   });
   for (const action of actions) {
     let outcome = null;
     if (['lost', 'corrupt', 'receive'].includes(action)) {
-      const q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
-      q[10] = through;
-      q[11] = 1;
-      const request = Buffer.from(JSON.stringify(q)).toString('hex'),
-        nextLink = (through ? 'bb' : 'aa').repeat(32),
-        page = [
-          'done/private-read-page/v2',
-          2,
-          createHash('sha256').update(Buffer.from(request, 'hex')).digest('hex'),
-          2,
-          through + 1,
-          [[h.wires[through], 'proof']],
-          'signature',
-        ],
-        candidatePage = Buffer.from(JSON.stringify(page)).toString('hex');
+      const width = through === 0 || through === 3 ? 1 : Math.min(2, 3 - through),
+        batch = width > 1,
+        pages = Array.from({ length: width }, (_, index) => {
+          const at = through + index,
+            present = at < 3,
+            q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
+          q[10] = at;
+          q[11] = 1;
+          const request = Buffer.from(JSON.stringify(q)).toString('hex'),
+            nextLink = present ? ['aa', 'bb', 'cc'][at].repeat(32) : link,
+            page = [
+              'done/private-read-page/v2',
+              2,
+              createHash('sha256').update(Buffer.from(request, 'hex')).digest('hex'),
+              3,
+              at + (present ? 1 : 0),
+              present ? [[h.wires[at], 'proof']] : [],
+              'signature',
+            ];
+          return {
+            request,
+            candidatePage: Buffer.from(JSON.stringify(page)).toString('hex'),
+            link: nextLink,
+          };
+        }),
+        request = batch
+          ? Buffer.from(
+              encodeInboundBatch(pages.map((p) => new Uint8Array(Buffer.from(p.request, 'hex')))),
+            ).toString('hex')
+          : pages[0].request,
+        response = batch
+          ? Buffer.from(
+              encodeInboundBatchPages(
+                pages.map((p) => new Uint8Array(Buffer.from(p.candidatePage, 'hex'))),
+              ),
+            ).toString('hex')
+          : pages[0].candidatePage;
       h.requests.push({
         mode: action,
+        batch,
         request,
-        candidatePage,
+        pages,
         responseBody:
           action === 'lost'
             ? null
             : action === 'corrupt'
               ? Buffer.from('bad page').toString('hex')
-              : candidatePage,
-        link: nextLink,
+              : response,
       });
       if (action === 'receive') {
-        text = `R${through} ` + text;
-        through++;
-        link = nextLink;
-        outcome = { kind: 'received', recorded: true, status: status() };
-      } else if (action === 'lost') outcome = { kind: 'unknown' };
-      else outcome = { error: 'AdmissionError: invalid page' };
+        const progress = Math.min(width, 3 - through);
+        for (let n = 0; n < progress; n++) text = `R${through++} ` + text;
+        link = pages.at(-1).link;
+        outcome = {
+          kind: progress ? 'received' : 'empty',
+          recorded: progress > 0,
+          status: status(),
+          ...(batch ? { kinds: pages.map(() => 'received') } : {}),
+        };
+      } else if (action === 'lost') outcome = { kind: 'unknown', recorded: false };
+      else
+        outcome = {
+          error: batch ? 'Error: Invalid inbound batch' : 'AdmissionError: invalid page',
+        };
     } else if (action === 'local') {
       text += 'L';
       current.push(local);
@@ -1763,10 +1798,12 @@ function receiveTransportEvidence() {
   const r = {
     'generated.json': {
       status: 'passed',
+      model: 'grouped-http-v2',
       seed: 9112042,
       runs: 16,
       histories: Array.from({ length: 16 }, () => structuredClone(h)),
       coverage,
+      transports: { single: 48, batch: 32 },
     },
   };
   for (const mode of ['queue', 'flight', 'bound', 'drain'])
@@ -1966,9 +2003,25 @@ test('160 generated receive-transport corruptions reject false progress, source 
     (h) => h.final.captures.pop(),
     (h) => (h.final.visible += 'L'),
     (h) => (h.requests[0].request += '00'),
-    (h) => (h.requests[2].responseBody = h.requests[2].candidatePage),
+    (h) => (h.requests[2].responseBody = h.requests[2].pages[0].candidatePage),
     (h) => (h.wires[0] = 'bb'),
+    (h) => h.requests.find((r) => r.batch && r.mode === 'receive').pages.reverse(),
+    (h) => {
+      const r = h.requests.find((r) => r.batch && r.mode === 'receive');
+      r.responseBody = r.responseBody.slice(0, -2);
+    },
+    (h) => {
+      const r = h.requests.find((r) => r.batch && r.mode === 'receive');
+      r.request = r.pages[0].request;
+    },
+    (h) => h.observations[6].outcome.kinds.pop(),
+    (h) => (h.observations[7].outcome.recorded = true),
   ];
+  for (const alter of alters) {
+    const bad = structuredClone(r);
+    alter(bad['generated.json'].histories[0]);
+    assert.throws(() => reconcileReceiveTransportEvidence(bad));
+  }
   fc.assert(
     fc.property(fc.nat(15), fc.nat(alters.length - 1), (i, k) => {
       const bad = structuredClone(r);
