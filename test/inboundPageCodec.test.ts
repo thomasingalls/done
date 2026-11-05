@@ -1,6 +1,5 @@
 // @vitest-environment node
 import { expect, it } from 'vitest';
-import fc from 'fast-check';
 import {
   decodeInboundPageRecord,
   decodeInboundReceipt,
@@ -26,15 +25,10 @@ it('matches the independent approved binary offsets and exact original signed by
 });
 it('round trips every contiguous admitted extent for two publishers, including interior cuts', () => {
   const fixtures = [pageFixture(A), pageFixture(B)];
-  fc.assert(
-    fc.property(
-      fc.integer({ min: 0, max: 1 }),
-      fc.integer({ min: 0, max: 7 }),
-      fc.integer({ min: 1, max: 8 }),
-      (publisher, first, width) => {
-        const f = fixtures[publisher]!,
-          count = Math.min(width, 8 - first),
-          record = {
+  for (const f of fixtures)
+    for (let first = 0; first < 8; first++)
+      for (let count = 1; first + count <= 8; count++) {
+        const record = {
             ...f.record,
             firstEntry: first,
             entryCount: count,
@@ -45,10 +39,7 @@ it('round trips every contiguous admitted extent for two publishers, including i
           bytes = referenceBytes(record);
         expect(encodeInboundPageRecord(record)).toEqual(bytes);
         expect(decodeInboundPageRecord(bytes)).toEqual(record);
-      },
-    ),
-    { seed: 375, numRuns: 160 },
-  );
+      }
 });
 it('allows a complete single-entry original request without relabelling it as legacy v2', () => {
   const { record } = pageFixture(A, 1);

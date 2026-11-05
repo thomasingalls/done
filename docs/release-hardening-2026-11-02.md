@@ -127,3 +127,18 @@ documentation procedure or second active-state home.
 ## Operator amendment — display-controlled native campaigns,2026-11-03
 
 The operator's Mac power-log review places every full observer failure from363/365/374 in display-off intervals and the full clear/trim passing retries in display-on intervals; the Mac never slept. After a complete display-on storage:editor run at the same2,400s outer budget as374-20, all12normal cases and3mutants pass in phase380. Keep all earlier failed evidence. Subsequent macOS native campaigns use `caffeinate -d` and record actual display power state in each5s host log. No wait, deadline, assertion, gate, limit, budget, trust or format decision changes; no new lab phase or performance/causal credit.
+
+
+## Operator amendment — unit hang guard and exhaustive extents, 2026-11-03
+
+The operator reports restarting the continuously busy fseventsd after phase383.
+Rerun the nine failed commands with the original120s full-unit stage first, adding
+explicit fseventsd CPU and swap use to every five-second host observation. Record
+actual full-unit elapsed time on every run. If any cleaned-host full-unit stage
+still exceeds120s, only that class of hang guard is approved to increase to240s.
+No other deadline, wait or assertion changes. Preserve every383failure.
+
+Replace the codec property's160seeded draws with all72distinct logical extents:
+two publishers, every first/count with count positive and first+count<=8. Retain
+all existing byte assertions. This is exhaustive coverage of the old logical
+input domain, including extents absent from the fixed seed; no test is removed.

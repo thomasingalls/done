@@ -7129,3 +7129,10 @@ The actual app timer omission is detected in both projects, so retain touchend r
 **Date:** 2026-11-03 · **Commit:** pending patch383 · **Orientation:** approved geometry repair is proven; nine remaining wrappers reach their original120s full-unit limit. PRD/TRD remain unchanged from signed89b11fe2; the operator's hardening note governs this diagnostic.
 
 **Decision.** Preserve every failure and the unrun downstream stages. A focused codec pass or231-file partial unit diagnostic cannot close a298-file suite or any failed wrapper. Keep all case populations, assertions, deadlines and guards; do not advance format integration on partial credit. Actual producer executions, rather than edited receipts, repair freshness; `.receipts` is the live machine home. Record the collector-only schema error separately from app results. Host activity is context, not a proven explanation. [Evidence383](development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md).
+
+
+### Exhaust the finite codec domain and retain full-unit elapsed time
+
+**Date:** 2026-11-03 · **Commit:** pending patch384 · **Orientation:** operator's383unit-stop review; PRD/TRD unchanged from89b11fe2. The hardening-note amendment records the latest authority.
+
+**Decision.** Replace160seeded draws by all72distinct logical extents, preserving the byte assertions and every other test. Keep run summaries exact and write monotonic unit durations to sidecars. Attempt the nine original commands at120s on the cleaned host;240s is approved only after a cleaned-host full-unit overrun. No other bounds or checks change. Dedicated CPU/RSS/swap observations reveal the original daemon still active, so hold the cleaned-host retries rather than infer that the reported restart succeeded. [Evidence384](development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md).

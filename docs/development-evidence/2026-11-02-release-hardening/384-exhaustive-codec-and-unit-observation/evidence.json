@@ -1,0 +1,2705 @@
+{
+  "phase": 384,
+  "scope": "approved exhaustive test and observation; no app change or new lab phase",
+  "operatorDecision": "72logicalextents replace160seeded draws; runnine originalcommandsat120first; only a cleaned-host unit-stage overrun authorizes240.",
+  "independentReview": {
+    "phase": 384,
+    "testCases": 12,
+    "allExpectationStatementsExact": 29,
+    "otherElevenTestsExact": true,
+    "actualCallbackLogicalExtents": [
+      [
+        "A",
+        0,
+        1
+      ],
+      [
+        "A",
+        0,
+        2
+      ],
+      [
+        "A",
+        0,
+        3
+      ],
+      [
+        "A",
+        0,
+        4
+      ],
+      [
+        "A",
+        0,
+        5
+      ],
+      [
+        "A",
+        0,
+        6
+      ],
+      [
+        "A",
+        0,
+        7
+      ],
+      [
+        "A",
+        0,
+        8
+      ],
+      [
+        "A",
+        1,
+        1
+      ],
+      [
+        "A",
+        1,
+        2
+      ],
+      [
+        "A",
+        1,
+        3
+      ],
+      [
+        "A",
+        1,
+        4
+      ],
+      [
+        "A",
+        1,
+        5
+      ],
+      [
+        "A",
+        1,
+        6
+      ],
+      [
+        "A",
+        1,
+        7
+      ],
+      [
+        "A",
+        2,
+        1
+      ],
+      [
+        "A",
+        2,
+        2
+      ],
+      [
+        "A",
+        2,
+        3
+      ],
+      [
+        "A",
+        2,
+        4
+      ],
+      [
+        "A",
+        2,
+        5
+      ],
+      [
+        "A",
+        2,
+        6
+      ],
+      [
+        "A",
+        3,
+        1
+      ],
+      [
+        "A",
+        3,
+        2
+      ],
+      [
+        "A",
+        3,
+        3
+      ],
+      [
+        "A",
+        3,
+        4
+      ],
+      [
+        "A",
+        3,
+        5
+      ],
+      [
+        "A",
+        4,
+        1
+      ],
+      [
+        "A",
+        4,
+        2
+      ],
+      [
+        "A",
+        4,
+        3
+      ],
+      [
+        "A",
+        4,
+        4
+      ],
+      [
+        "A",
+        5,
+        1
+      ],
+      [
+        "A",
+        5,
+        2
+      ],
+      [
+        "A",
+        5,
+        3
+      ],
+      [
+        "A",
+        6,
+        1
+      ],
+      [
+        "A",
+        6,
+        2
+      ],
+      [
+        "A",
+        7,
+        1
+      ],
+      [
+        "B",
+        0,
+        1
+      ],
+      [
+        "B",
+        0,
+        2
+      ],
+      [
+        "B",
+        0,
+        3
+      ],
+      [
+        "B",
+        0,
+        4
+      ],
+      [
+        "B",
+        0,
+        5
+      ],
+      [
+        "B",
+        0,
+        6
+      ],
+      [
+        "B",
+        0,
+        7
+      ],
+      [
+        "B",
+        0,
+        8
+      ],
+      [
+        "B",
+        1,
+        1
+      ],
+      [
+        "B",
+        1,
+        2
+      ],
+      [
+        "B",
+        1,
+        3
+      ],
+      [
+        "B",
+        1,
+        4
+      ],
+      [
+        "B",
+        1,
+        5
+      ],
+      [
+        "B",
+        1,
+        6
+      ],
+      [
+        "B",
+        1,
+        7
+      ],
+      [
+        "B",
+        2,
+        1
+      ],
+      [
+        "B",
+        2,
+        2
+      ],
+      [
+        "B",
+        2,
+        3
+      ],
+      [
+        "B",
+        2,
+        4
+      ],
+      [
+        "B",
+        2,
+        5
+      ],
+      [
+        "B",
+        2,
+        6
+      ],
+      [
+        "B",
+        3,
+        1
+      ],
+      [
+        "B",
+        3,
+        2
+      ],
+      [
+        "B",
+        3,
+        3
+      ],
+      [
+        "B",
+        3,
+        4
+      ],
+      [
+        "B",
+        3,
+        5
+      ],
+      [
+        "B",
+        4,
+        1
+      ],
+      [
+        "B",
+        4,
+        2
+      ],
+      [
+        "B",
+        4,
+        3
+      ],
+      [
+        "B",
+        4,
+        4
+      ],
+      [
+        "B",
+        5,
+        1
+      ],
+      [
+        "B",
+        5,
+        2
+      ],
+      [
+        "B",
+        5,
+        3
+      ],
+      [
+        "B",
+        6,
+        1
+      ],
+      [
+        "B",
+        6,
+        2
+      ],
+      [
+        "B",
+        7,
+        1
+      ]
+    ],
+    "uniqueExtents": 72,
+    "eachExtentAssertionCalls": 2,
+    "old128RawTuplesCoverSame72LogicalExtents": true,
+    "enumerationObserverUsesStubsOnly": true,
+    "realCodecValidatedSeparately": "384-focused-codec",
+    "runnerReviews": [
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "onlyTwoObservationStatementsAdded": true,
+        "allOldASTAndDeadlinesExact": true
+      }
+    ]
+  },
+  "inventoryReview": {
+    "phase": 384,
+    "added": [],
+    "removed": [],
+    "changed": [
+      "scripts/account-checkpoint-contract/run.mjs",
+      "scripts/account-counter-contract/run.mjs",
+      "scripts/account-ledger-contract/run.mjs",
+      "scripts/account-local-custody/run.mjs",
+      "scripts/account-local-provenance/run.mjs",
+      "scripts/account-promotion-contract/run.mjs",
+      "scripts/account-service-custody/run.mjs",
+      "scripts/account-store-contract/run.mjs",
+      "scripts/account-transport-contract/run.mjs",
+      "test/inboundPageCodec.test.ts"
+    ],
+    "reviewedCallSiteLineShifts": [
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 169,
+        "after": 179,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 172,
+        "after": 182,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 176,
+        "after": 186,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 185,
+        "after": 195,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 192,
+        "after": 202,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 201,
+        "after": 211,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 205,
+        "after": 215,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 212,
+        "after": 222,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 216,
+        "after": 226,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 220,
+        "after": 230,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 224,
+        "after": 234,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 228,
+        "after": 238,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 235,
+        "after": 245,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 239,
+        "after": 249,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 272,
+        "after": 282,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-checkpoint-contract/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 98,
+        "after": 99,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 157,
+        "after": 167,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 160,
+        "after": 170,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 164,
+        "after": 174,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 173,
+        "after": 183,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 180,
+        "after": 190,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 189,
+        "after": 199,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 193,
+        "after": 203,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 200,
+        "after": 210,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 204,
+        "after": 214,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 208,
+        "after": 218,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 241,
+        "after": 251,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-counter-contract/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 86,
+        "after": 87,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 156,
+        "after": 166,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 159,
+        "after": 169,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 163,
+        "after": 173,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 172,
+        "after": 182,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 179,
+        "after": 189,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 188,
+        "after": 198,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 192,
+        "after": 202,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 199,
+        "after": 209,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 232,
+        "after": 242,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-ledger-contract/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 85,
+        "after": 86,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 166,
+        "after": 176,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 169,
+        "after": 179,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 173,
+        "after": 183,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 182,
+        "after": 192,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 189,
+        "after": 199,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 198,
+        "after": 208,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 202,
+        "after": 212,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 209,
+        "after": 219,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 213,
+        "after": 223,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 217,
+        "after": 227,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 221,
+        "after": 231,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 260,
+        "after": 270,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-custody/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 95,
+        "after": 96,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 174,
+        "after": 184,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 177,
+        "after": 187,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 181,
+        "after": 191,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 190,
+        "after": 200,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 197,
+        "after": 207,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 206,
+        "after": 216,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 210,
+        "after": 220,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 217,
+        "after": 227,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 221,
+        "after": 231,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 225,
+        "after": 235,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 229,
+        "after": 239,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 243,
+        "after": 253,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 247,
+        "after": 257,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 280,
+        "after": 290,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-local-provenance/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 103,
+        "after": 104,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 152,
+        "after": 162,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 155,
+        "after": 165,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 159,
+        "after": 169,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 168,
+        "after": 178,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 175,
+        "after": 185,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 184,
+        "after": 194,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 188,
+        "after": 198,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 192,
+        "after": 202,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 230,
+        "after": 240,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-promotion-contract/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 81,
+        "after": 82,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 153,
+        "after": 163,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 155,
+        "after": 165,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 156,
+        "after": 166,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 159,
+        "after": 169,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 168,
+        "after": 178,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 175,
+        "after": 185,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 184,
+        "after": 194,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 193,
+        "after": 203,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 202,
+        "after": 212,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 211,
+        "after": 221,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 263,
+        "after": 273,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-service-custody/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 80,
+        "after": 81,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 164,
+        "after": 174,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 167,
+        "after": 177,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 171,
+        "after": 181,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 180,
+        "after": 190,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 187,
+        "after": 197,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 196,
+        "after": 206,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 200,
+        "after": 210,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 207,
+        "after": 217,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 209,
+        "after": 219,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 212,
+        "after": 222,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 266,
+        "after": 276,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-store-contract/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 93,
+        "after": 94,
+        "shift": 1
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 152,
+        "after": 162,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 154,
+        "after": 164,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 155,
+        "after": 165,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 158,
+        "after": 168,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 167,
+        "after": 177,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 174,
+        "after": 184,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 183,
+        "after": 193,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "testArgs",
+        "before": 192,
+        "after": 202,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "runCallSites",
+        "form": "run",
+        "before": 234,
+        "after": 244,
+        "shift": 10
+      },
+      {
+        "path": "scripts/account-transport-contract/run.mjs",
+        "field": "processCallSites",
+        "form": "spawn",
+        "before": 79,
+        "after": 80,
+        "shift": 1
+      }
+    ],
+    "propertyFamilyChange": {
+      "path": "test/inboundPageCodec.test.ts",
+      "before": [
+        {
+          "line": 30,
+          "form": "fc.property"
+        }
+      ],
+      "after": [],
+      "reason": "Approved exhaustive72logicalextents replace the seeded fc.property; test and assertions retained."
+    },
+    "otherDifferences": [],
+    "counts": {
+      "packageScripts": 145,
+      "campaigns": 78,
+      "testFiles": 688,
+      "requiredTestFiles": 682,
+      "excludedProductTestFiles": 6,
+      "catalogues": 12,
+      "vectorCorpora": 30,
+      "constructions": 99,
+      "vectorChainConsumers": 18
+    }
+  },
+  "checks": [
+    {
+      "name": "typecheck",
+      "argv": [
+        "pnpm",
+        "typecheck"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "pnpm",
+        "typecheck"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 180,
+      "started": 1793725849.7271209,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75040,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793725850.845525
+    },
+    {
+      "name": "scoped-lint",
+      "argv": [
+        "pnpm",
+        "exec",
+        "oxlint",
+        "test/inboundPageCodec.test.ts",
+        "scripts/account-transport-contract/run.mjs",
+        "scripts/account-service-custody/run.mjs",
+        "scripts/account-promotion-contract/run.mjs",
+        "scripts/account-ledger-contract/run.mjs",
+        "scripts/account-counter-contract/run.mjs",
+        "scripts/account-store-contract/run.mjs",
+        "scripts/account-local-custody/run.mjs",
+        "scripts/account-checkpoint-contract/run.mjs",
+        "scripts/account-local-provenance/run.mjs"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "pnpm",
+        "exec",
+        "oxlint",
+        "test/inboundPageCodec.test.ts",
+        "scripts/account-transport-contract/run.mjs",
+        "scripts/account-service-custody/run.mjs",
+        "scripts/account-promotion-contract/run.mjs",
+        "scripts/account-ledger-contract/run.mjs",
+        "scripts/account-counter-contract/run.mjs",
+        "scripts/account-store-contract/run.mjs",
+        "scripts/account-local-custody/run.mjs",
+        "scripts/account-checkpoint-contract/run.mjs",
+        "scripts/account-local-provenance/run.mjs"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793725852.438658,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75078,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793725853.2429812
+    },
+    {
+      "name": "format",
+      "argv": [
+        "pnpm",
+        "exec",
+        "oxfmt",
+        "--check",
+        "test/inboundPageCodec.test.ts",
+        "scripts/account-transport-contract/run.mjs",
+        "scripts/account-service-custody/run.mjs",
+        "scripts/account-promotion-contract/run.mjs",
+        "scripts/account-ledger-contract/run.mjs",
+        "scripts/account-counter-contract/run.mjs",
+        "scripts/account-store-contract/run.mjs",
+        "scripts/account-local-custody/run.mjs",
+        "scripts/account-checkpoint-contract/run.mjs",
+        "scripts/account-local-provenance/run.mjs"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "pnpm",
+        "exec",
+        "oxfmt",
+        "--check",
+        "test/inboundPageCodec.test.ts",
+        "scripts/account-transport-contract/run.mjs",
+        "scripts/account-service-custody/run.mjs",
+        "scripts/account-promotion-contract/run.mjs",
+        "scripts/account-ledger-contract/run.mjs",
+        "scripts/account-counter-contract/run.mjs",
+        "scripts/account-store-contract/run.mjs",
+        "scripts/account-local-custody/run.mjs",
+        "scripts/account-checkpoint-contract/run.mjs",
+        "scripts/account-local-provenance/run.mjs"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793725855.055608,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75115,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793725855.872622
+    },
+    {
+      "name": "focused-codec",
+      "argv": [
+        "env",
+        "-u",
+        "ACCOUNT_REPORT_DIR",
+        "-u",
+        "LOCAL_STARTUP_REPORT",
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2",
+        "--reporter=verbose",
+        "test/inboundPageCodec.test.ts"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "env",
+        "-u",
+        "ACCOUNT_REPORT_DIR",
+        "-u",
+        "LOCAL_STARTUP_REPORT",
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2",
+        "--reporter=verbose",
+        "test/inboundPageCodec.test.ts"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793725857.528666,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75161,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793725860.5402281
+    },
+    {
+      "name": "crypto-census",
+      "argv": [
+        "node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793725862.1411982,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75188,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793725862.976634
+    },
+    {
+      "name": "inventory-record",
+      "argv": [
+        "node",
+        "scripts/release-validation/check.mjs",
+        "--record"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "node",
+        "scripts/release-validation/check.mjs",
+        "--record"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793726268.279509,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75720,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793726269.968947
+    },
+    {
+      "name": "inventory-check",
+      "argv": [
+        "node",
+        "scripts/release-validation/check.mjs"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "node",
+        "scripts/release-validation/check.mjs"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793726271.579087,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75739,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793726272.944214
+    },
+    {
+      "name": "inventory-tests",
+      "argv": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "test/release-validation/inventory.test.mjs"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "test/release-validation/inventory.test.mjs"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 120,
+      "started": 1793726274.550808,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75755,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793726275.4039261
+    }
+  ],
+  "runs": [
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-crypto-census",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/account-crypto-prep/run.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/account-crypto-prep/run.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793725862.1411982,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75188,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793725862.976634
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793725862.14127,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 100.0,
+              "rssBytes": 8425095168,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 100.0,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20335.38M  free = 1168.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20335.38,
+            "freeMiB": 1168.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-focused-codec",
+      "run": {
+        "argv": [
+          "env",
+          "-u",
+          "ACCOUNT_REPORT_DIR",
+          "-u",
+          "LOCAL_STARTUP_REPORT",
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=2",
+          "--reporter=verbose",
+          "test/inboundPageCodec.test.ts"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "env",
+          "-u",
+          "ACCOUNT_REPORT_DIR",
+          "-u",
+          "LOCAL_STARTUP_REPORT",
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=2",
+          "--reporter=verbose",
+          "test/inboundPageCodec.test.ts"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793725857.528666,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75161,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793725860.5402281
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793725857.5287302,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 96.4,
+              "rssBytes": 5890850816,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 96.4,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20335.38M  free = 1168.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20335.38,
+            "freeMiB": 1168.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-format",
+      "run": {
+        "argv": [
+          "pnpm",
+          "exec",
+          "oxfmt",
+          "--check",
+          "test/inboundPageCodec.test.ts",
+          "scripts/account-transport-contract/run.mjs",
+          "scripts/account-service-custody/run.mjs",
+          "scripts/account-promotion-contract/run.mjs",
+          "scripts/account-ledger-contract/run.mjs",
+          "scripts/account-counter-contract/run.mjs",
+          "scripts/account-store-contract/run.mjs",
+          "scripts/account-local-custody/run.mjs",
+          "scripts/account-checkpoint-contract/run.mjs",
+          "scripts/account-local-provenance/run.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "exec",
+          "oxfmt",
+          "--check",
+          "test/inboundPageCodec.test.ts",
+          "scripts/account-transport-contract/run.mjs",
+          "scripts/account-service-custody/run.mjs",
+          "scripts/account-promotion-contract/run.mjs",
+          "scripts/account-ledger-contract/run.mjs",
+          "scripts/account-counter-contract/run.mjs",
+          "scripts/account-store-contract/run.mjs",
+          "scripts/account-local-custody/run.mjs",
+          "scripts/account-checkpoint-contract/run.mjs",
+          "scripts/account-local-provenance/run.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793725855.055608,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75115,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793725855.872622
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793725855.055742,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 97.9,
+              "rssBytes": 6404571136,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 97.9,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20335.38M  free = 1168.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20335.38,
+            "freeMiB": 1168.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-inventory-check",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/release-validation/check.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/release-validation/check.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793726271.579087,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75739,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793726272.944214
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793726271.579166,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 99.7,
+              "rssBytes": 6788595712,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 99.7,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20311.38M  free = 1192.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20311.38,
+            "freeMiB": 1192.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-inventory-record",
+      "run": {
+        "argv": [
+          "node",
+          "scripts/release-validation/check.mjs",
+          "--record"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "scripts/release-validation/check.mjs",
+          "--record"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793726268.279509,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75720,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793726269.968947
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793726268.279553,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 97.9,
+              "rssBytes": 7448756224,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 97.9,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20311.38M  free = 1192.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20311.38,
+            "freeMiB": 1192.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-inventory-tests",
+      "run": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-reporter=spec",
+          "test/release-validation/inventory.test.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "node",
+          "--test",
+          "--test-reporter=spec",
+          "test/release-validation/inventory.test.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793726274.550808,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75755,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793726275.4039261
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793726274.5508952,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 120.6,
+              "rssBytes": 7754629120,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 120.6,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20311.38M  free = 1192.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20311.38,
+            "freeMiB": 1192.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-scoped-lint",
+      "run": {
+        "argv": [
+          "pnpm",
+          "exec",
+          "oxlint",
+          "test/inboundPageCodec.test.ts",
+          "scripts/account-transport-contract/run.mjs",
+          "scripts/account-service-custody/run.mjs",
+          "scripts/account-promotion-contract/run.mjs",
+          "scripts/account-ledger-contract/run.mjs",
+          "scripts/account-counter-contract/run.mjs",
+          "scripts/account-store-contract/run.mjs",
+          "scripts/account-local-custody/run.mjs",
+          "scripts/account-checkpoint-contract/run.mjs",
+          "scripts/account-local-provenance/run.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "exec",
+          "oxlint",
+          "test/inboundPageCodec.test.ts",
+          "scripts/account-transport-contract/run.mjs",
+          "scripts/account-service-custody/run.mjs",
+          "scripts/account-promotion-contract/run.mjs",
+          "scripts/account-ledger-contract/run.mjs",
+          "scripts/account-counter-contract/run.mjs",
+          "scripts/account-store-contract/run.mjs",
+          "scripts/account-local-custody/run.mjs",
+          "scripts/account-checkpoint-contract/run.mjs",
+          "scripts/account-local-provenance/run.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 120,
+        "started": 1793725852.438658,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75078,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793725853.2429812
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793725852.43875,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 98.3,
+              "rssBytes": 6472499200,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 98.3,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20335.38M  free = 1168.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20335.38,
+            "freeMiB": 1168.62
+          }
+        }
+      ]
+    },
+    {
+      "directory": "/private/tmp/done-release-hardening-20261102/384-typecheck",
+      "run": {
+        "argv": [
+          "pnpm",
+          "typecheck"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "pnpm",
+          "typecheck"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793725849.7271209,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 75040,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793725850.845525
+      },
+      "displaySamples": 1,
+      "offTransitions": [],
+      "fseventsd": [
+        {
+          "utcEpoch": 1793725849.727165,
+          "fseventsd": [
+            {
+              "pid": 354,
+              "cpuPercent": 87.0,
+              "rssBytes": 6144770048,
+              "process": "fseventsd"
+            }
+          ],
+          "fseventsdCpuPercent": 87.0,
+          "swap": {
+            "raw": "total = 21504.00M  used = 20335.38M  free = 1168.62M  (encrypted)",
+            "totalMiB": 21504.0,
+            "usedMiB": 20335.38,
+            "freeMiB": 1168.62
+          }
+        }
+      ]
+    }
+  ],
+  "hostReadback": {
+    "observedEpoch": 1793726356.105391,
+    "fseventsd": [
+      {
+        "pid": 354,
+        "cpuPercent": 100.0,
+        "rssBytes": 7472054272,
+        "lifetime": "Thu Jun 11 23:23:20 2026     144-19:55:56"
+      }
+    ],
+    "swap": "vm.swapusage: total = 21504.00M  used = 20311.38M  free = 1192.62M  (encrypted)",
+    "userReportedRestart": true,
+    "nineRetriesStarted": false,
+    "reasonForHold": "Observed original PID354 with144day lifetime and continuing highCPU/RSS; verify restart before treating retry as cleaned-host."
+  },
+  "hostVerifiedClean": false,
+  "nineRetriesStarted": false,
+  "unitGuardMs": 120000,
+  "allOtherDeadlinesAndOldExpectStatementsExact": true,
+  "original383FailurePreserved": true,
+  "unitTiming": "Nine existing runners write unit-timing.json after the actual unit child closes: elapsedMs monotonic, deadlineMs, code, timedOut. Existing summary schema and subprocess/timer behavior remain exact. Runtime sidecars will be checked in the actual nine-command retry.",
+  "coverageQualification": "The actual test callback is executed with enumeration-only stubs to prove72distinctextents and144unchanged byte assertions. The independent expected domain walks last/first; all128oldrawtuples map to the same72logical extents. Real codec separately passesall12tests. This is not a timing comparison: both host state and case population differ from383.",
+  "inventoryQualification": "Ten input hashes,110source-call line shifts and removal of the approved fc.property syntax marker only. All counts, obligations, dispositions, limits and exclusions stay exact. Initial over-strict review failures remain; final reviewed record/check and10inventory controls pass.",
+  "releaseCredit": false,
+  "evidence": [
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-checkpoint-contract/run.mjs",
+      "artifact": "objects/288461675d0fdeff5862d6b289aede2af97e8b7d713da3cd989dacbfb4af2cb8.gz",
+      "sha256": "288461675d0fdeff5862d6b289aede2af97e8b7d713da3cd989dacbfb4af2cb8",
+      "bytes": 9659
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-counter-contract/run.mjs",
+      "artifact": "objects/8c75414d7284eacb57f9a349c52e0a300210728a12eb7476e70f684bc1465e31.gz",
+      "sha256": "8c75414d7284eacb57f9a349c52e0a300210728a12eb7476e70f684bc1465e31",
+      "bytes": 8667
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-ledger-contract/run.mjs",
+      "artifact": "objects/53b4cca05e510faf309626d44f32b01fd548342603650edb55d9f86b919a85b9.gz",
+      "sha256": "53b4cca05e510faf309626d44f32b01fd548342603650edb55d9f86b919a85b9",
+      "bytes": 8473
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-local-custody/run.mjs",
+      "artifact": "objects/9966ee9c515d48c99de41a49b58b018899fd5877369ddb7795ee17f01df69d10.gz",
+      "sha256": "9966ee9c515d48c99de41a49b58b018899fd5877369ddb7795ee17f01df69d10",
+      "bytes": 9301
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-local-provenance/run.mjs",
+      "artifact": "objects/351c289f18e0c6f813c7d64e762fcc9ccb57e825088164280dce018298e5bbb0.gz",
+      "sha256": "351c289f18e0c6f813c7d64e762fcc9ccb57e825088164280dce018298e5bbb0",
+      "bytes": 10009
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-promotion-contract/run.mjs",
+      "artifact": "objects/144fafabcdd713f3fdb3e5cc6b55e25439e04d37105fd9453bb18cd7982b12f1.gz",
+      "sha256": "144fafabcdd713f3fdb3e5cc6b55e25439e04d37105fd9453bb18cd7982b12f1",
+      "bytes": 8488
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-service-custody/run.mjs",
+      "artifact": "objects/050a85045cc0249ee47f6c5cb497d920bce648075999c0707bc7ad9420926765.gz",
+      "sha256": "050a85045cc0249ee47f6c5cb497d920bce648075999c0707bc7ad9420926765",
+      "bytes": 9451
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-store-contract/run.mjs",
+      "artifact": "objects/250bfaff5fd111fedbad56c9d4318a7860886f86bd65b8a92ba867a64154cbfd.gz",
+      "sha256": "250bfaff5fd111fedbad56c9d4318a7860886f86bd65b8a92ba867a64154cbfd",
+      "bytes": 9424
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-transport-contract/run.mjs",
+      "artifact": "objects/9a40ef5613d0be0a7d14e71f1d4567133c5c760bbf61b382169770cca98e7a5c.gz",
+      "sha256": "9a40ef5613d0be0a7d14e71f1d4567133c5c760bbf61b382169770cca98e7a5c",
+      "bytes": 8522
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/inboundPageCodec.test.ts",
+      "artifact": "objects/629ee12ef1131476e1693e1fca928f673652a407d8495e0269c3e1677c586319.gz",
+      "sha256": "629ee12ef1131476e1693e1fca928f673652a407d8495e0269c3e1677c586319",
+      "bytes": 7966
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-checkpoint-contract/run.mjs",
+      "artifact": "objects/231a063bf7136671454c60463feeeea8f224d862e5e3bd35421470c89f1f208f.gz",
+      "sha256": "231a063bf7136671454c60463feeeea8f224d862e5e3bd35421470c89f1f208f",
+      "bytes": 9371
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-counter-contract/run.mjs",
+      "artifact": "objects/c52af5528b5963812da70d32fc98fe070ed5c32b526b93c735eedd30fd429a77.gz",
+      "sha256": "c52af5528b5963812da70d32fc98fe070ed5c32b526b93c735eedd30fd429a77",
+      "bytes": 8379
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-ledger-contract/run.mjs",
+      "artifact": "objects/c7208b0e18846cb3a2eefe0e57c57ed245c846ac534c8716f3b659516be69e3f.gz",
+      "sha256": "c7208b0e18846cb3a2eefe0e57c57ed245c846ac534c8716f3b659516be69e3f",
+      "bytes": 8185
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-local-custody/run.mjs",
+      "artifact": "objects/c66d84664e61739fffd53a058c149e8a632759c1d6f18d71a7286fd78b3896df.gz",
+      "sha256": "c66d84664e61739fffd53a058c149e8a632759c1d6f18d71a7286fd78b3896df",
+      "bytes": 9013
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-local-provenance/run.mjs",
+      "artifact": "objects/2cb0064456a16adff8c75fc849935394b9b8eea2420c46df7adbc6a1e3641701.gz",
+      "sha256": "2cb0064456a16adff8c75fc849935394b9b8eea2420c46df7adbc6a1e3641701",
+      "bytes": 9721
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-promotion-contract/run.mjs",
+      "artifact": "objects/d30c929c27f9470c93e7fe1ce8dbd2ca6acb9e1d902890045ff8a7ca6874d209.gz",
+      "sha256": "d30c929c27f9470c93e7fe1ce8dbd2ca6acb9e1d902890045ff8a7ca6874d209",
+      "bytes": 8200
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-service-custody/run.mjs",
+      "artifact": "objects/df952c8289c8649c4c95da6b50e0ff8245b6a74ba4a81d64b359761597d8a448.gz",
+      "sha256": "df952c8289c8649c4c95da6b50e0ff8245b6a74ba4a81d64b359761597d8a448",
+      "bytes": 9163
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-store-contract/run.mjs",
+      "artifact": "objects/43e02d612594115cf049f47513d26b1c13bb6d00d270f6bd249ed2b318358c0e.gz",
+      "sha256": "43e02d612594115cf049f47513d26b1c13bb6d00d270f6bd249ed2b318358c0e",
+      "bytes": 9136
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/scripts/account-transport-contract/run.mjs",
+      "artifact": "objects/e22ad76126ede082f7b74772692e681052206eea7b63879dbe411824ddbb7f48.gz",
+      "sha256": "e22ad76126ede082f7b74772692e681052206eea7b63879dbe411824ddbb7f48",
+      "bytes": 8234
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-before/test/inboundPageCodec.test.ts",
+      "artifact": "objects/02c49eaad889f2c7c13e825335e23c88b1ba489a229aa2d5e52f1a5aca54930f.gz",
+      "sha256": "02c49eaad889f2c7c13e825335e23c88b1ba489a229aa2d5e52f1a5aca54930f",
+      "bytes": 8175
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/child.log",
+      "artifact": "objects/f5de55a73804f6092528930d5566e15a4b1e99e58d83e62735b4723f6758f1f9.gz",
+      "sha256": "f5de55a73804f6092528930d5566e15a4b1e99e58d83e62735b4723f6758f1f9",
+      "bytes": 308
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/host-load.jsonl",
+      "artifact": "objects/37ab1e562819bfaa2a5d22a61fb4f8279c160372d40057fe375fca06d823284a.gz",
+      "sha256": "37ab1e562819bfaa2a5d22a61fb4f8279c160372d40057fe375fca06d823284a",
+      "bytes": 1510
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/power-assertions-before.txt",
+      "artifact": "objects/85aa90a7bbf6c23c93c28251eecdc2f0d9b77b729e67e881b4b380f7b1df18b6.gz",
+      "sha256": "85aa90a7bbf6c23c93c28251eecdc2f0d9b77b729e67e881b4b380f7b1df18b6",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/power-log-after.txt",
+      "artifact": "objects/51e07a677017cedc50a233524d3f4988a10bff480a507fde06117746178b3765.gz",
+      "sha256": "51e07a677017cedc50a233524d3f4988a10bff480a507fde06117746178b3765",
+      "bytes": 3409911
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/power-log-before.txt",
+      "artifact": "objects/d297c6698c3703fad5c7a6027637e41be870dc43459e53fb2b5048f4e38cc016.gz",
+      "sha256": "d297c6698c3703fad5c7a6027637e41be870dc43459e53fb2b5048f4e38cc016",
+      "bytes": 3409452
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-crypto-census/run.json",
+      "artifact": "objects/fd69eb7c835e448ef6f5cb1532b5c86a3720dad08c69496994c9e124143dac8f.gz",
+      "sha256": "fd69eb7c835e448ef6f5cb1532b5c86a3720dad08c69496994c9e124143dac8f",
+      "bytes": 676
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-declaration.json",
+      "artifact": "objects/dd735a2952feb75779cb9b8ed6b96fcc6548fe077321e719664e245153e2e3f4.gz",
+      "sha256": "dd735a2952feb75779cb9b8ed6b96fcc6548fe077321e719664e245153e2e3f4",
+      "bytes": 213225
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-first-graph-review-rerun.log",
+      "artifact": "objects/8b6a924f067e650cc9db9acf364c2c461ba90edc2e57fc143b14f2cc410c1be1.gz",
+      "sha256": "8b6a924f067e650cc9db9acf364c2c461ba90edc2e57fc143b14f2cc410c1be1",
+      "bytes": 396340
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-first-graph-review.mjs",
+      "artifact": "objects/d9cff33bbc0991ff8274db129f54b47dfd3fcb6bcc449cde6193908fa1db795b.gz",
+      "sha256": "d9cff33bbc0991ff8274db129f54b47dfd3fcb6bcc449cde6193908fa1db795b",
+      "bytes": 1144
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/child.log",
+      "artifact": "objects/ff73600f4e3af3ccceef529a5a11a489c40d532371f0b338f40bbcdce6863fa0.gz",
+      "sha256": "ff73600f4e3af3ccceef529a5a11a489c40d532371f0b338f40bbcdce6863fa0",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/host-load.jsonl",
+      "artifact": "objects/9cdca9eb60a5c277ea74c299bc4c6e638a5cd9ed4881a9d9d233dea22ae0ef6f.gz",
+      "sha256": "9cdca9eb60a5c277ea74c299bc4c6e638a5cd9ed4881a9d9d233dea22ae0ef6f",
+      "bytes": 1510
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/power-assertions-before.txt",
+      "artifact": "objects/ff47eafb47ac69b692dfeb3a43a9e2f211983c392ada93700b2e03e98a3566bf.gz",
+      "sha256": "ff47eafb47ac69b692dfeb3a43a9e2f211983c392ada93700b2e03e98a3566bf",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/power-log-after.txt",
+      "artifact": "objects/bcc2ec029297061703a032c121cd3f473d56db84669c82d04a17770d06411edc.gz",
+      "sha256": "bcc2ec029297061703a032c121cd3f473d56db84669c82d04a17770d06411edc",
+      "bytes": 3409452
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/power-log-before.txt",
+      "artifact": "objects/0f1642bf97f08621aa89ffcbd212512fa5be0cdff894e378ae5e62cc18d98b0a.gz",
+      "sha256": "0f1642bf97f08621aa89ffcbd212512fa5be0cdff894e378ae5e62cc18d98b0a",
+      "bytes": 3408993
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-focused-codec/run.json",
+      "artifact": "objects/3f257fac7b47599ee02fcd075d9a430b30dc04c1ba81765b626b716059d81287.gz",
+      "sha256": "3f257fac7b47599ee02fcd075d9a430b30dc04c1ba81765b626b716059d81287",
+      "bytes": 1028
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/child.log",
+      "artifact": "objects/5ba5fed102edbaa5143b7132aa4806dadd0dcce47da4ec8e92cc102a16146264.gz",
+      "sha256": "5ba5fed102edbaa5143b7132aa4806dadd0dcce47da4ec8e92cc102a16146264",
+      "bytes": 113
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/host-load.jsonl",
+      "artifact": "objects/6a9617e13d74f4060362e1755759c242f74808411047063ba3139982e57c11a0.gz",
+      "sha256": "6a9617e13d74f4060362e1755759c242f74808411047063ba3139982e57c11a0",
+      "bytes": 1502
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/power-assertions-before.txt",
+      "artifact": "objects/56d6202a7f4666eb33b706c7b9e0d369d81752f6085d86968ee062d3b27a1b00.gz",
+      "sha256": "56d6202a7f4666eb33b706c7b9e0d369d81752f6085d86968ee062d3b27a1b00",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/power-log-after.txt",
+      "artifact": "objects/edfbb768b8a13c46085a2f28c315071f1b36786d6eec5f69b4dfb1ce56e48cf7.gz",
+      "sha256": "edfbb768b8a13c46085a2f28c315071f1b36786d6eec5f69b4dfb1ce56e48cf7",
+      "bytes": 3408993
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/power-log-before.txt",
+      "artifact": "objects/caf017c1162c7f966316fc371f7a33f7d5a86a6ae4e6109e7a7655700e041e4b.gz",
+      "sha256": "caf017c1162c7f966316fc371f7a33f7d5a86a6ae4e6109e7a7655700e041e4b",
+      "bytes": 3408534
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-format/run.json",
+      "artifact": "objects/9cb8e8c5a81ad687f90f740054e42ce90872a33eb39653927b05d07ffe8f5821.gz",
+      "sha256": "9cb8e8c5a81ad687f90f740054e42ce90872a33eb39653927b05d07ffe8f5821",
+      "bytes": 1607
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-host-readback.json",
+      "artifact": "objects/3c6bf31b90c0397c410acfc45b343102f6f77d9bc44cedb1d6a6c3bf53ed1432.gz",
+      "sha256": "3c6bf31b90c0397c410acfc45b343102f6f77d9bc44cedb1d6a6c3bf53ed1432",
+      "bytes": 516
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-independent-review.json",
+      "artifact": "objects/280e58b72891e7dc81ff52329a16626dd0607a57e11731d713dcc682c2511c2b.gz",
+      "sha256": "280e58b72891e7dc81ff52329a16626dd0607a57e11731d713dcc682c2511c2b",
+      "bytes": 4783
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-instrumentation-amendment.json",
+      "artifact": "objects/435acb0642da447c23e5b7b286dd9f18aca03cccc3cf28b61d803103115b6ef8.gz",
+      "sha256": "435acb0642da447c23e5b7b286dd9f18aca03cccc3cf28b61d803103115b6ef8",
+      "bytes": 340
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/child.log",
+      "artifact": "objects/0f931189d6f6cf2e04c99cca7eefa0600eddc8fb801ff0bd7c462aa2ec639888.gz",
+      "sha256": "0f931189d6f6cf2e04c99cca7eefa0600eddc8fb801ff0bd7c462aa2ec639888",
+      "bytes": 323
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/host-load.jsonl",
+      "artifact": "objects/6307b8e4f92ee7274365a6716ce189ab94258685730730dee20bf16188da2a00.gz",
+      "sha256": "6307b8e4f92ee7274365a6716ce189ab94258685730730dee20bf16188da2a00",
+      "bytes": 1524
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/power-assertions-before.txt",
+      "artifact": "objects/4aa5dc12898dd5a1562cecfa4cf0c0f2663a268053ef9880b1d6a1bccb2ecacf.gz",
+      "sha256": "4aa5dc12898dd5a1562cecfa4cf0c0f2663a268053ef9880b1d6a1bccb2ecacf",
+      "bytes": 1732
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/power-log-after.txt",
+      "artifact": "objects/28c315b7c41930882467b7e20bb57131246226cadd2d6eb5cc6869d005353f84.gz",
+      "sha256": "28c315b7c41930882467b7e20bb57131246226cadd2d6eb5cc6869d005353f84",
+      "bytes": 3416119
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/power-log-before.txt",
+      "artifact": "objects/d2b784fb75ad89fb3ccac33f537471c01e17958146a3fc5d1de3181161260e35.gz",
+      "sha256": "d2b784fb75ad89fb3ccac33f537471c01e17958146a3fc5d1de3181161260e35",
+      "bytes": 3415678
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-check/run.json",
+      "artifact": "objects/e634d2511e14c82cc291823430a1a3a2e465cd3201441a2b97dc6db90b590a81.gz",
+      "sha256": "e634d2511e14c82cc291823430a1a3a2e465cd3201441a2b97dc6db90b590a81",
+      "bytes": 677
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/child.log",
+      "artifact": "objects/f540360545e9758ad263c87801f9da8c10162e4386d2812ac6bebcaf0fe9d126.gz",
+      "sha256": "f540360545e9758ad263c87801f9da8c10162e4386d2812ac6bebcaf0fe9d126",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/host-load.jsonl",
+      "artifact": "objects/baef37edf6d5b9633ae915f661495f9c8b839533b72e7d9ad31e452436ff6390.gz",
+      "sha256": "baef37edf6d5b9633ae915f661495f9c8b839533b72e7d9ad31e452436ff6390",
+      "bytes": 1510
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/power-assertions-before.txt",
+      "artifact": "objects/2d396405f93acd913c62acee585b0bb261d5ce3b536570afd6a40670500d1b4f.gz",
+      "sha256": "2d396405f93acd913c62acee585b0bb261d5ce3b536570afd6a40670500d1b4f",
+      "bytes": 1506
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/power-log-after.txt",
+      "artifact": "objects/9969199ad5dce0ed7cb70bfe94b04e3b6fe75182a2c0f61e6aa8b045a54c810b.gz",
+      "sha256": "9969199ad5dce0ed7cb70bfe94b04e3b6fe75182a2c0f61e6aa8b045a54c810b",
+      "bytes": 3415678
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/power-log-before.txt",
+      "artifact": "objects/a22f81c23a767e3724bb0cb2ea5e650361c30730ed106b4863e0c00e9810262f.gz",
+      "sha256": "a22f81c23a767e3724bb0cb2ea5e650361c30730ed106b4863e0c00e9810262f",
+      "bytes": 3414795
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-record/run.json",
+      "artifact": "objects/9d10d39ccb6e25fa887e8c5509e589f1f690e94b002dfbcc43dda9d7007b7a85.gz",
+      "sha256": "9d10d39ccb6e25fa887e8c5509e589f1f690e94b002dfbcc43dda9d7007b7a85",
+      "bytes": 709
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-results.json",
+      "artifact": "objects/be0b3af093ab8ef01d8f917f0284ea8a99aa878482542675854c1dfa6bd8c08f.gz",
+      "sha256": "be0b3af093ab8ef01d8f917f0284ea8a99aa878482542675854c1dfa6bd8c08f",
+      "bytes": 2410
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-review.json",
+      "artifact": "objects/7ffd7c7e90aef30bfd8b90254e7333b3b3d724290df7868d6f938cce2443f264.gz",
+      "sha256": "7ffd7c7e90aef30bfd8b90254e7333b3b3d724290df7868d6f938cce2443f264",
+      "bytes": 21670
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/child.log",
+      "artifact": "objects/25c7d6fb5b9cfc91a2fdd24e4be596a05dffedfc11af913eefaa887b3a54274d.gz",
+      "sha256": "25c7d6fb5b9cfc91a2fdd24e4be596a05dffedfc11af913eefaa887b3a54274d",
+      "bytes": 1092
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/host-load.jsonl",
+      "artifact": "objects/234d73cd3b56bd3306981fa2621a73f9d2c15ec33f49f1ea4f1462dbd3c7894b.gz",
+      "sha256": "234d73cd3b56bd3306981fa2621a73f9d2c15ec33f49f1ea4f1462dbd3c7894b",
+      "bytes": 1522
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/power-assertions-before.txt",
+      "artifact": "objects/2285aeb5b43e5a561fff350e90c4599307dbecc81566087c1040726bda4e06bd.gz",
+      "sha256": "2285aeb5b43e5a561fff350e90c4599307dbecc81566087c1040726bda4e06bd",
+      "bytes": 1732
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/power-log-after.txt",
+      "artifact": "objects/00f95585d7dbee9c5dfd446e58be9880c19082a850269e8aaa138b778f8c677b.gz",
+      "sha256": "00f95585d7dbee9c5dfd446e58be9880c19082a850269e8aaa138b778f8c677b",
+      "bytes": 3416560
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/power-log-before.txt",
+      "artifact": "objects/de80fd6e29d54bedbf5911d9d756d32101ed9b165ba5974b3d486b230fc8af7c.gz",
+      "sha256": "de80fd6e29d54bedbf5911d9d756d32101ed9b165ba5974b3d486b230fc8af7c",
+      "bytes": 3416119
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-inventory-tests/run.json",
+      "artifact": "objects/089e5da262d5084e590691ecb34ba32beaf1a7cf323296bdfa0062f7ea833f3d.gz",
+      "sha256": "089e5da262d5084e590691ecb34ba32beaf1a7cf323296bdfa0062f7ea833f3d",
+      "bytes": 774
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-quality-results.json",
+      "artifact": "objects/569f0f21aa71375a0ebffd14f12b5c83f8c4e3c3acb6cbdda0b2142ed873ff24.gz",
+      "sha256": "569f0f21aa71375a0ebffd14f12b5c83f8c4e3c3acb6cbdda0b2142ed873ff24",
+      "bytes": 6013
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/child.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/host-load.jsonl",
+      "artifact": "objects/eb770699c94e9e4f51317d202c1ce7c2dae15f6e79f669d911706a1655ca3a55.gz",
+      "sha256": "eb770699c94e9e4f51317d202c1ce7c2dae15f6e79f669d911706a1655ca3a55",
+      "bytes": 1540
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/power-assertions-before.txt",
+      "artifact": "objects/836bcceea5c012ef6c782d7fc4739aed6aa954d543def83054f89d992f5ca53c.gz",
+      "sha256": "836bcceea5c012ef6c782d7fc4739aed6aa954d543def83054f89d992f5ca53c",
+      "bytes": 2017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/power-log-after.txt",
+      "artifact": "objects/8d0ddc78cafa91641a378d954abb27a721b7bc8d70e7d1a4d503b31753e13d17.gz",
+      "sha256": "8d0ddc78cafa91641a378d954abb27a721b7bc8d70e7d1a4d503b31753e13d17",
+      "bytes": 3408534
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/power-log-before.txt",
+      "artifact": "objects/35d8eb4300f6912b855a63f80fccff48dce0aa9a3adf53c5055fbd5146278879.gz",
+      "sha256": "35d8eb4300f6912b855a63f80fccff48dce0aa9a3adf53c5055fbd5146278879",
+      "bytes": 3408075
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-scoped-lint/run.json",
+      "artifact": "objects/d9ac5215632607dd3fe9d58822d2103c247a6010166e6c2643e50d262630b4de.gz",
+      "sha256": "d9ac5215632607dd3fe9d58822d2103c247a6010166e6c2643e50d262630b4de",
+      "bytes": 1580
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-second-graph-review.mjs",
+      "artifact": "objects/51526413d8b9ab8c7000e942bb4810762803e5f69444dff043774b495ca3c847.gz",
+      "sha256": "51526413d8b9ab8c7000e942bb4810762803e5f69444dff043774b495ca3c847",
+      "bytes": 2110
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-second-inventory-review.json",
+      "artifact": "objects/93709e92c018e80cdf2be4a0a50b3aa89331e78bdf99feaad3ed2c52253eb09e.gz",
+      "sha256": "93709e92c018e80cdf2be4a0a50b3aa89331e78bdf99feaad3ed2c52253eb09e",
+      "bytes": 21519
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/child.log",
+      "artifact": "objects/98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535.gz",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/host-load.jsonl",
+      "artifact": "objects/69ac9954a9cb0f853b13349608845159106554d4d31fef2235f2f559995e6ad8.gz",
+      "sha256": "69ac9954a9cb0f853b13349608845159106554d4d31fef2235f2f559995e6ad8",
+      "bytes": 1511
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/power-assertions-before.txt",
+      "artifact": "objects/512f2a6c68b89c60872edcb50460d86f8daf9160db917187d9b885d388fc095d.gz",
+      "sha256": "512f2a6c68b89c60872edcb50460d86f8daf9160db917187d9b885d388fc095d",
+      "bytes": 1791
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/power-log-after.txt",
+      "artifact": "objects/a277e7689ae19d022e145b8c45e909aacedf5c284430d8a8116c10ea6acd3f7f.gz",
+      "sha256": "a277e7689ae19d022e145b8c45e909aacedf5c284430d8a8116c10ea6acd3f7f",
+      "bytes": 3408075
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/power-log-before.txt",
+      "artifact": "objects/12734e4608dd3948aa5af6fed99984bfe3ea890f43853d630f6d24ff0afec545.gz",
+      "sha256": "12734e4608dd3948aa5af6fed99984bfe3ea890f43853d630f6d24ff0afec545",
+      "bytes": 3407165
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/384-typecheck/run.json",
+      "artifact": "objects/065793aa6cadc076d055483978ec07f333930fed7c2ba384e80097fff3f96029.gz",
+      "sha256": "065793aa6cadc076d055483978ec07f333930fed7c2ba384e80097fff3f96029",
+      "bytes": 624
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/graph384.mjs",
+      "artifact": "objects/dd3d89372fafbdaa2f69e6245e01cd63b8ef5fb3f51ee2a076cfa2615d2cabe4.gz",
+      "sha256": "dd3d89372fafbdaa2f69e6245e01cd63b8ef5fb3f51ee2a076cfa2615d2cabe4",
+      "bytes": 2698
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/implement384.py",
+      "artifact": "objects/1348d8116df4341669329c453b7a87945e1bf070db3e13810bec72e4e2c11dd0.gz",
+      "sha256": "1348d8116df4341669329c453b7a87945e1bf070db3e13810bec72e4e2c11dd0",
+      "bytes": 4236
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/inventory384.py",
+      "artifact": "objects/201a9fd037bf31ae1e3b11dcfa135d8eabcfc0be9a27e5df258eb024f63e1775.gz",
+      "sha256": "201a9fd037bf31ae1e3b11dcfa135d8eabcfc0be9a27e5df258eb024f63e1775",
+      "bytes": 806
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/quality384.py",
+      "artifact": "objects/d658b01cc5b65ffed979dbfe9e6a89bd7d6fc93d621e49b23ae69199c6cee428.gz",
+      "sha256": "d658b01cc5b65ffed979dbfe9e6a89bd7d6fc93d621e49b23ae69199c6cee428",
+      "bytes": 992
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/record384.py",
+      "artifact": "objects/bd8942040683f16ca6eef2aecc459216120957d2214110ebac5a870b2282d313.gz",
+      "sha256": "bd8942040683f16ca6eef2aecc459216120957d2214110ebac5a870b2282d313",
+      "bytes": 12526
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/review384.mjs",
+      "artifact": "objects/44cba8149be5d65223f52e7d0c779be299bacce993f31d96dfc5732ce8cdd7e6.gz",
+      "sha256": "44cba8149be5d65223f52e7d0c779be299bacce993f31d96dfc5732ce8cdd7e6",
+      "bytes": 4919
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/run-check-display384.py",
+      "artifact": "objects/724ebe7a9d930ac6bdc975ade8d55e93796d0c4ffc9c33c812984dcadfeea2ee.gz",
+      "sha256": "724ebe7a9d930ac6bdc975ade8d55e93796d0c4ffc9c33c812984dcadfeea2ee",
+      "bytes": 5839
+    }
+  ]
+}

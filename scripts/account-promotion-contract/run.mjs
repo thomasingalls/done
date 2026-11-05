@@ -78,6 +78,7 @@ async function run(name, args, timeout = 60000) {
   const env = { ...process.env };
   if (name === 'unit') delete env.ACCOUNT_REPORT_DIR;
   else env.ACCOUNT_REPORT_DIR = evidenceDir;
+  const stageStarted = performance.now();
   const child = spawn(process.execPath, args, {
     detached: true,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -112,6 +113,15 @@ async function run(name, args, timeout = 60000) {
     });
     child.once('close', (code) => resolve(code ?? 1));
   });
+  if (name === 'unit')
+    writeFileSync(
+      join(output, 'unit-timing.json'),
+      JSON.stringify(
+        { elapsedMs: performance.now() - stageStarted, deadlineMs: timeout, code, timedOut },
+        null,
+        2,
+      ) + '\n',
+    );
   clearTimeout(timer);
   clearTimeout(forced);
   clearInterval(heartbeat);

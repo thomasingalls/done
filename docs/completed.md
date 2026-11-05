@@ -18945,3 +18945,14 @@ The operator approves validation/application with an actual immediate-Goals-focu
 **Evidence.** The unchanged codec file passes12cases, property4200ms. The whole-suite verbose diagnostic reports2577passing cases/one existing skip across231of298files before its unchanged120s stop;67files have no case report and no final summary exists. No failing case is reported there; it does not clear the earlier red result. All50846start pins stay exact, no file is added during execution, index empty, all display samples on. Six actual receipt producers repair freshness without hand edits; a private collector schema error is preserved and the completed store result recovered without a rerun.
 
 **Limits.** Outcome recorded before advancing this seat's progress. This is failure-list closure, not a green checkpoint or Stage5 credit. No app/test/assertion/wait/deadline/limit/budget/trust/format/status change in383. Hold remaining format integration at the functional checkpoint; no release activity.
+
+
+### Exhaustive codec coverage and unit-duration observation are prepared
+
+**Date:** 2026-11-03 · **Commit:** pending patch384 · **Stage:** canonical test/observation preparation
+
+**Exit.** The actual callback visits all72logicalextents once with both old byte assertions; all29expect statements and the other11tests stay exact. Independent last/first enumeration agrees with the entire old128-tuple raw generator domain. Real codec12/12, types, scoped lint, format, census and10inventory controls pass. [All evidence](development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md).
+
+**Observation.** Nine runners add only a monotonic start and unit-timing.json write; all old runner AST/summary/timers/commands and120s limits are exact after stripping those two statements. New host logs explicitly include fseventsd CPU/RSS and swap each5s. Actual unit sidecars await the nine runs. Input pins/source-line/syntax metadata refresh is independently bounded; no count, obligation or block changes. Initial over-strict helper reviews remain.
+
+**Hold.** Fresh readback still shows original PID354/144days/100%CPU/about7GiB RSS despite the reported restart. Nine cleaned-host retries remain unstarted pending host recovery; no240s guard applied.383remains red and immutable. Outcome recorded before advancing progress. No app change or release credit.

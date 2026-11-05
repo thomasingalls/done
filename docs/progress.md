@@ -163,40 +163,38 @@ gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
-scope: clear full-unit checkpoint before remaining approved Stage3.2 hardening
-blocks_on: nine unchanged120s unit-stage deadlines; codec property timing remains qualified
+scope: cleaned-host retry of nine commands with exhaustive codec coverage and unit durations
+blocks_on: observed original fseventsd PID354 at100%CPU/about7GiB; restart confirmation/readback
 updated: 2026-11-03
 ```
 
-**Scope.** [Operator plan](./release-hardening-2026-11-02.md),
-[approved writer-on format](./account-inbound-page-receipts.md), bounded sequential
-patches, all original checks/limits. No new lab work, computer use, commit, push,
-publication or deployment.
+**Scope.** The [hardening plan](./release-hardening-2026-11-02.md), its November3
+unit-guard amendment and the [approved format](./account-inbound-page-receipts.md).
+Bounded sequential patches, all other original checks/limits. No lab work, computer
+use, commit, push, publication or deployment.
 
-**Geometry closed.** [382](./development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md)
-passes complete base/hardened campaigns228cases/32oldskips. Removing the actual focus
-timer fails the new touchend guard on both projects. All eight Cut fault cases
-record seed-drain times, both refusals and actual Worker-abort proof.381stays immutable.
+**Prepared384.** [Evidence](./development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md)
+proves all72logical codec extents, exact old byte assertions/other11tests, real
+12/12pass, types/lint/format/census and10inventory controls. Nine runners add only
+clock observation and unit-duration sidecars, keeping all old commands, summaries,
+timers and120s unit guards. New five-second logs add fseventsd CPU/RSS and swap.
+Inventory changes only the intended input hashes, source locations and the removed
+fc.property syntax marker; all counts/obligations/limits remain.
 
-**Current checkpoint red.** [383](./development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md)
-attempts all42remaining commands:33pass, nine end at original120s unit limits after
-preceding stages pass; subsequent stages are unrun. Counter also reports the new
-codec property failed at5778ms, with no detailed final error before termination.
-Unchanged focused codec passes12cases/property4200ms. Full verbose diagnostic has
-2577passing reports/one existing skip across231of298files before its own unchanged
-120s stop,67files without a case report, no summary. No partial result clears a red
-wrapper.50846start pins stay exact, index empty, sampled displays on. Receipt and
-collector errors are retained and repaired without app/test or guard changes.
+**Now.** Freeze384. Fresh process readback still shows original PID354,144days,
+100%CPU and about7GiB RSS; the operator has been asked to check/retry the reported
+restart. Do not call the host cleaned or start the nine retries until verified.
+Then run the original nine commands at120s, recording actual unit elapsed time.
+A cleaned-host full-unit overrun authorizes240s for that class of hang guard only.
+No240s change has been applied or triggered. Keep every failure.
 
-**Now.** Freeze evidence383. Diagnose full-unit execution cost and the new codec
-property's timing margin without changing its population, checks or deadlines.
-Keep the functional checkpoint open;74of83root commands have segmented passing
-runs across381–383, not a green monolithic check or Stage5 acceptance.
+**Preserved.** [382](./development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md)
+closes geometry; [383](./development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md)
+retains33passes/nine unit deadlines and the codec red report. No later focused
+pass clears that checkpoint. Further format integration stays held until green.
 
-**Afterward.** Authenticated floor acknowledgment and real old-app/pending-writing
-profiles; stored mode/logical readers/owned pages/G8/B; same-tree writer-off rollback
-image. Codec375, metadata376/377 and provenance/native coordination378/379 remain
-partial/unwired;379does not prove Account authentication. Stage5 and Stage6 remain
-required. Optional root lint's unchanged archived-document errors remain deferred.
+**Afterward.** Authenticated floor acknowledgment, old-app/pending-writing
+profiles, stored mode, logical readers, owned pages, G8/B, same-tree writer-off
+rollback image, all Stage5 gates and Stage6 report. No release claim.
 
 This seat edits only this document; the other seat above is unchanged.
