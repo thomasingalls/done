@@ -19,6 +19,8 @@ import { carrierEvidence } from './carrier-fixture.mjs';
 const cases = [
   'C12.genesis',
   'C10.concurrent-creation',
+  'C12.frame-independent-waits',
+  'C12.async-state-waits',
   'C12.reservation-abort',
   'C12.interrupted-creation',
   'C12.completion-abort',

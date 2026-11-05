@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: active
 scope: diagnose the full Stage 1 checkpoint before proceeding to Stage 2
-blocks_on: custody mutation harness diagnosis, final contract reruns and receipt checks
+blocks_on: recovery, checkpoint, local provenance complete reruns and receipt checks
 release_validation: only the operator's declared hardening stages; no publication
 updated: 2026-11-02
 ```
@@ -246,17 +246,19 @@ approved the one-file AST-identical patch;356applies it exactly and the complete
 formatting stage now passes. The whole recovery command still needs rerunning.
 The broader formatting work stays deferred.
 
-Local custody passes13 unmodified cases, but two mutants time out before their
-assertions. A full clean signed89b11fe2 run reproduces both errors with the same
-pinned environment/browser. An earlier run passed both on an identical candidate
-runtime source map; preserve every result. No failed mutant earns detection credit.
-The next bounded phase diagnoses the fixture waits without changing assertions,
-guards or deadlines. Focused controls pass, while the full ordering can time out
-a waiter after the operation has already settled; retain both outcomes. Stop/report if an app change or guard weakening is needed.
+[357](./development-evidence/2026-11-02-release-hardening/357-custody-state-observer/README.md)
+repairs the nonvisual custody observer under its unchanged8s total limit. It
+awaits asynchronous false results and does not depend on renderer frames. The
+complete local-custody command passes:15 native cases (all13 old plus2 regressions),
+all5 original named mutation detections, units, vectors, typecheck/lint/format.
+All60 old assertion arguments, mutations and old cases remain unchanged. Both
+declared old-policy faults fail exact new assertions, and the good helper is
+restored. Preserve the earlier source-equivalent errors and unrepaired pass;
+not every historical timeout's unique cause is proven.
 
-Local custody's later stages, checkpoint, local provenance and receipt/trace refresh
+Recovery whole-command rerun, checkpoint, local provenance and receipt/trace refresh
 remain. No app changes after Stage1; no Stage2, publication or deployment. The
-optional global-lint failure on three unchanged historical evidence files remains.
+broader formatting deferral and older optional global-lint failure remain.
 
 **Working boundaries.** Sequential patchfiles, no new lab phases or unlisted
 measurements, no computer use, no commit/push/merge/deployment. Earlier evidence

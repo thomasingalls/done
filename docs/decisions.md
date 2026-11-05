@@ -7006,3 +7006,10 @@ The two specified controls pass unchanged and full units are green; this is not 
 **Date:**2026-11-02 · **Commit:**pending sequential patch356
 
 **Decision.** The operator approves355-recovery-entry-format-review.patch and explicitly keeps the broader formatting work deferred. Apply exactly those bytes, verify the reviewed AST identity and existing formatter stage, and keep unrelated custody diagnostics in their next patch. A passing repaired format stage is not a new whole-command exit. No assertion or gate changes.
+
+
+### Native fixture progress is observed through awaited state, not paint
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch357
+
+**Decision.** Repair the base-reproduced custody test observer under its original8s limit. Await asynchronous predicate values and use timer polling for crypto/state/native-lock conditions; do not weaken an app guard or count generic mutation timeouts as detection. Add real-crypto regressions for withheld frame callbacks and a predicate that first returns false. Require exact named regression failures when old policies are restored. Keep all old assertions, mutants, cases and broader deferred formatting. Preserve source-equivalent prior passes and later errors; observer robustness does not prove every historical failure had one cause.

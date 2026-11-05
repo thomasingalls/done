@@ -18689,3 +18689,12 @@ Y’s53focusedcases and strict types pass; full units287files/2,880passed/one ex
 **Date:**2026-11-02 · **Commit:**pending sequential patch356 · **Stage:**operator hardening Stage1 checkpoint
 
 **Exit.** Apply the exact approved one-file patch; the original50-file recovery format stage passes. The reviewed complete TypeScript AST is unchanged. The broader formatting patch stays deferred; no assertions, deadlines or runtime changes. The whole recovery command still needs rerunning after custody diagnosis. [Evidence](development-evidence/2026-11-02-release-hardening/356-approved-recovery-format/README.md). Record before advancing progress.
+
+
+### Custody state observation is independent of frames and awaits false asynchronous results
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch357 · **Stage:**operator hardening Stage1 checkpoint
+
+**Exit.** The complete local-custody command passes. Native15/15 includes all13 original cases and2 permanent observer regressions; all5 original mutations fail their original named assertions. The repaired helper awaits asynchronous predicates and polls nonvisual state under the unchanged8000ms total bound, clearing timers on exit. All60 old assertion arguments, mutation definitions and old case definitions/order are unchanged. Two declared old-policy faults fail exact new assertions, then restore the good helper. [Every failed attempt, before-fix pass, sensitivity control and source proof](development-evidence/2026-11-02-release-hardening/357-custody-state-observer/README.md).
+
+**Limits.** Keep the intermittent pre-repair pass and failed first fault-injection draft; do not claim every historical timeout's unique cause is proven. No app/guard/deadline change. The broader formatting deferral is preserved. Recovery, checkpoint, local provenance and receipt/trace refresh remain; record before advancing progress.

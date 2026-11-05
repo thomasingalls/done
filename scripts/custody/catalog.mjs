@@ -1,6 +1,8 @@
 export const cases = [
   ['C12.genesis', 'Generated code confirmation and factor-only cold reopen'],
   ['C10.concurrent-creation', 'Concurrent creators retain exactly one identity and factor'],
+  ['C12.frame-independent-waits', 'Native custody completion is observed without animation frames'],
+  ['C12.async-state-waits', 'Asynchronous native state is observed only after it becomes true'],
   ['C12.reservation-abort', 'Request success cannot acknowledge a reservation transaction'],
   ['C12.interrupted-creation', 'Renderer death preserves root, intent and abandoned reservations'],
   ['C12.completion-abort', 'Atomic protected-custody installation and retry'],
