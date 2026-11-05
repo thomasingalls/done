@@ -7199,3 +7199,10 @@ Use a separate bulk saved-receipt API so the old single-result API cannot silent
 **Date:**2026-11-04 · **Commit:**pending patch393 · **Scope:**approved owned-page and memo hardening
 
 Use one private cache entry whose canonical address includes every ordered actual entry slot, never the first slot alone. Preserve the same exact bytes/context and current/revision checks through one common implementation. Drop the whole proof when any entry address is removed, and keep clone projections independent. Expose actual retained buffer capacity only for forthcoming budget accounting; do not call it RAM savings. Keep the existing journal's portable clear/retain/check type truthful and its validators intact until the separate receipt adapter is implemented. [393evidence](development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md) includes the type and sparse-address development failures.
+
+
+### Keep durable preparation evidence compact without bypassing its grammar
+
+**Date:**2026-11-04 · **Commit:**pending patch394 · **Scope:**approved indirect receipt reader/journal hardening
+
+Extend the journal's closed local roles with exact physical sequence/first original index/count, not an arbitrary blob or page reference. Store one exact approved receipt and closed per-entry received results/originals; verify raw-input equality and every original index/position/link. Keep the existing binary value grammar, MAC domain/context, import capability, slice and limits. The adapter is implemented independently and now truthfully supports the receipt port. Its future consumer must enforce its authenticated floor before reuse. [394evidence](development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md) preserves all development failures and the sole old-helper anchor repair.

@@ -143,6 +143,30 @@ decode its own page. Preserve independent projections and cancellation/erasure
 ownership, including buffers shared by retained views. No owned parse object or
 permission crosses a Window/Worker message.
 
+### Authenticated preparation-journal projection
+
+A page proof in the existing preparation journal uses the closed local role
+`inbound-page:<physicalSequence>:<firstOriginalIndex>:<admittedCount>`. All ordered
+addresses must name that same physical sequence and contiguous original indices,
+within the existing eight-position bound. Its closed value contains one exact raw
+receipt and, for each admitted index, a received result without another `record`
+field plus the exact selected envelope/proof bytes. Never serialize an owned parse
+object, synthetic v2 row, page reference or authority capability into that proof.
+Legacy selected results may use `inbound:<physicalSequence>:<originalIndex>` with
+the unchanged legacy result shape; old unindexed roles remain readable.
+
+The existing binary value grammar, MAC domain/context, exact-input digest, opaque
+import capability, slice, interruption, erasure and capacity rules are unchanged.
+A valid MAC alone does not bypass the closed role/result validator. The first
+exact input must equal the compact value's raw receipt on both fresh and resumed
+checks. This is existing authenticated exact-evidence reuse, with no new authority
+or commit permission. Semantic consumers must establish their own authenticated
+encoding floor before any memo hit and still run the semantic and coverage checks.
+Capacity counts encoded bytes at the same ceiling; a reopened journal that still
+exceeds that ceiling refuses again. Its buffer observer counts retained encoded
+result storage once, not the aliased pending map, transient inputs or process RAM.
+The adapter is hardened in394; no semantic reader uses it yet.
+
 ## Admission, cuts and accounting
 
 Commit original chain order, including when preparation/verifying completes in

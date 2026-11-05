@@ -9,7 +9,7 @@ export const capacitySites = [
   [
     'retentionPreparation.ts',
     'journal-check',
-    '          if (\n            (!prior && entries.size >= PREPARATION_ENTRIES) ||',
+    '        if ((!prior && entries.size >= PREPARATION_ENTRIES) || nextBytes > PREPARATION_VALUE_BYTES)',
   ],
   [
     'retentionPreparation.ts',

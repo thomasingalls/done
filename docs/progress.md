@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight
 scope: approved Stage3.2 format and owned-page hardening
-blocks_on: durable receipt adapter, semantic readers/writer, floor lifecycle and rollback evidence
+blocks_on: semantic readers/writer, floor lifecycle and rollback evidence
 updated: 2026-11-04
 ```
 
@@ -181,25 +181,27 @@ native and independent retained-reading floors, real Page/Worker activation
 controls, explicit saved modes and an unwired binary bulk verifier. The new
 [receipt memo extension](./development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md)
 binds every actual entry address, owns one proof graph and measures backing-buffer
-capacity. It is not used by a semantic reader yet. The portable journal port stays
-at its actual three-method contract. Every phase outcome/failure is in completed.md
+capacity. It is not used by a semantic reader yet. The
+[authenticated journal adapter](./development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md)
+now supports compact receipt proofs with the same old grammar/MAC/input/slice/
+capacity guards. It is not wired into a semantic reader. Every phase outcome/failure is in completed.md
 and its immutable evidence, not repeated here.
 
-**Latest checks.** Full303files/3028cases/one existing skip pass108.23s at the
-original120s guard;240s unused. Types,74focused memo/liveness checks and reviewed
-registry/inventory pass. The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
+**Latest checks.** Full304files/3041cases/one existing skip pass109.26s at the
+original120s guard;240s unused. Types,99focused retention/receipt checks and reviewed
+registry/inventory pass. After the full run only equivalent new sparse-fixture
+syntax changes; all13new cases and quality pass again, runtime/harness unchanged.
+The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Harden the authenticated preparation-journal receipt
-adapter before requiring the new memo extension. Preserve every old slot/result,
-MAC/input/context, interruption, slice and capacity guard. Avoid serializing the
-same full page into every logical result. Its current closed grammar rejects new
-entry-index/group slots: it cannot be bypassed or silently cast to the new port.
-Then integrate the one receipt home and bulk verification through every actual
-semantic reader, with each scope's own authenticated floor.
+**Active bounded outcome.** Wire compact exact-evidence reuse into the bulk saved
+verifier, then integrate the one receipt home through every actual semantic reader,
+with each scope's own authenticated floor before any memo hit. Preserve old result,
+MAC/input/context, interruption, slice/capacity and erasure guards. One physical row
+must remain one witness event while every admitted entry is checked and covered.
 
 **Remaining Stage3.2.** Physical witnesses/counters stay separate from logical
 positions/budgets; enforce actual indices in every cache and retained envelope.
