@@ -1,0 +1,82 @@
+[
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-new-format.log",
+    "copy": "capacity-new-format.log.gz",
+    "sha256": "ea4f223f28e8dc3d3098c08594bb1308a4d670594b74950ae92d7082b2fc9b54"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-sites-integration-attempt1.ts",
+    "copy": "capacity-sites-integration-attempt1.ts.gz",
+    "sha256": "4c4ec8b9f5f8d8ae54b7e1ab31c23548955936587e939594efa2625b9f087857"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-integrated-third.log",
+    "copy": "capacity-integrated-third.log.gz",
+    "sha256": "5af00bd317c07d9c1418bb62094e4aefdbe348437b317fdac04e1543e8ffbd47"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-integrated-first.log",
+    "copy": "capacity-integrated-first.log.gz",
+    "sha256": "3217a05b6a48e177a14a30e9f73709ee45cb6645c44b689b4985801052746397"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-types-second.log",
+    "copy": "capacity-types-second.log.gz",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-types-final.log",
+    "copy": "capacity-types-final.log.gz",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-integrated-second.log",
+    "copy": "capacity-integrated-second.log.gz",
+    "sha256": "f7f6fde8130e81700ab11173c845ff59252750bc0e39e27c69c18972f977bbe7"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-policy-first.log",
+    "copy": "capacity-policy-first.log.gz",
+    "sha256": "ad74057a4fd2a99310181e55cc76a19711f20c27cb21a598d9ddedc9e467c20a"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-sites-second.log",
+    "copy": "capacity-sites-second.log.gz",
+    "sha256": "5dcde40d1b85fd513ea880e616d6dd08e9f2d07143ee6a5c381ded6af898ee1e"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-sites-first.log",
+    "copy": "capacity-sites-first.log.gz",
+    "sha256": "76f172e7ece5782cee6e81eb6af1c4988b21e0328a3592ca2ff94ac9cbb418af"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/start.json",
+    "copy": "start.json.gz",
+    "sha256": "b3633fab7b695186c46ac1a688f4616144d70c07edee5601dc053727e3dca3dc"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-final-focused.log",
+    "copy": "capacity-final-focused.log.gz",
+    "sha256": "fda25c20006f4de21fa60856b2703f9312654faf3fd6a9c990b51717e50b22e2"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-types-first.log",
+    "copy": "capacity-types-first.log.gz",
+    "sha256": "59e7c66a4002eb1414689a8ca85e81a8bb89baba6d6e399938a7952f48472a54"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-sites-attempt1.ts",
+    "copy": "capacity-sites-attempt1.ts.gz",
+    "sha256": "8b078a0b0c42735ebf3f7f869edd847c3997854365e77a90d6d6b0922518fbdd"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/capacity-sites-integration-attempt2.ts",
+    "copy": "capacity-sites-integration-attempt2.ts.gz",
+    "sha256": "e43e50dc05552b4069a694e057dfd7d8a3ce6eafd81ca0f6a7c1b682adc19ec3"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/freeze-first.py",
+    "copy": "freeze-first.py.gz",
+    "sha256": "1f611cf97018b0917b246a913a9b98a5926516cc66beb3b1eb52ab95515048b1"
+  }
+]

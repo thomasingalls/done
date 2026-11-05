@@ -8,6 +8,8 @@ import { fields, hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import type { BaselineAuthentication } from './localBaselineReplay';
 import { eraseVerified, sameBytes } from './verifiedRecords';
+import { PreparationCapacity } from './preparationCapacity';
+export { PreparationCapacity } from './preparationCapacity';
 
 const DOMAIN = 'done/local-preparation/draft-1';
 export const PREPARATION_SLICE_MS = 2000;
@@ -15,11 +17,6 @@ export const PREPARATION_ENTRIES = 131072;
 export class PreparationPause extends Error {
   constructor() {
     super('Preparation slice saved before continuing');
-  }
-}
-export class PreparationCapacity extends Error {
-  constructor() {
-    super('Preparation receipt budget exceeded');
   }
 }
 interface Receipt {

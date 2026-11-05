@@ -18511,3 +18511,7 @@ Completed12declared paired journeys on329fixture; all complete writing/Undo/both
 ### 2026-11-02 — Phase334: signed prepared series and traced slow direction
 
 Signed93preparedcommits241–333inorder, verifiedeverytree,parentandSSHsignature;head2c92793c,cleanbeforeanalysis,no push. Trace-only analysis of30existingpairedjourneys finds Device2’s8.49–10.49sinstrumented prefix spans plus a separate receiver imbalance: Device1 admits64positions during0msimmediatetyping whileDevice2 starts95–96sends; fiveemptychecks/sixsends separate aG8peer revisit by6.009s. Complete native accounting agreeswithfinalprefixes; high-volume prefixevents truncate, aggregatecounterscontinue. No newrun/app/default/format/gate change or acceptancecredit. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md). Outcome recorded before queue advance.
+
+## 2026-11-02 — Hardening 335: narrow preparation capacity mapping
+
+All five preparation ceilings use the existing parked capacity path, preserving journals and bounds. Content-free owner diagnostics distinguish LocalBaselineError. Five real-site injections, native encrypted-journal reopen/byte preservation and halt controls pass: 55 focused cases, strict types. Harness/type failures retained. [Evidence](development-evidence/2026-11-02-release-hardening/335-capacity/README.md). Outcome recorded before advancing the active hardening slice.

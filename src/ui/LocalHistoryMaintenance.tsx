@@ -54,7 +54,7 @@ export function LocalHistoryMaintenance({
           : status.reason === 'activity-or-journal'
             ? 'Maintenance paused to let editing or sync finish. It will retry when this device is quiet.'
             : status.reason === 'capacity'
-              ? 'History could not be reduced because its replacement snapshot is too large. Your existing history is still in place.'
+              ? 'History maintenance reached a preparation or snapshot size limit. Your existing history is still in place. It will check again after new writing or sync changes this device’s history.'
               : status.reason === 'history-required'
                 ? 'Some history needed for a safe reduction is unavailable. Your existing history is kept. Let sync finish before checking again.'
                 : status.reason === 'ineligible'

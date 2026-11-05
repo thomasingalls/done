@@ -4,6 +4,8 @@ import {
   type RetentionProgress,
   type RetentionProgressSink,
 } from './contentMaintenance';
+import { PreparationCapacity } from './preparationCapacity';
+import { LocalBaselineError } from './localBaselineError';
 export interface LocalRetentionHint {
   readonly revision: number;
   readonly records: number;
@@ -27,12 +29,22 @@ export interface LocalRetentionView {
     readonly interruptions: number;
     readonly completions: number;
     readonly events: readonly LocalRetentionStatus['progress'][];
+    readonly ownerError?: string;
   };
 }
 export interface LocalRetentionRuntime extends LocalRetentionView {
   retry(): boolean;
 }
 type Outcome = { kind: string; reason?: string };
+const ownerErrorCode = (cause: unknown): string => {
+  if (cause instanceof LocalBaselineError) {
+    const code: unknown = Object.getOwnPropertyDescriptor(cause, 'reason')?.value;
+    return ['scope', 'integrity', 'ineligible', 'history-required'].includes(code as string)
+      ? `LocalBaselineError:${code as string}`
+      : 'LocalBaselineError';
+  }
+  return cause instanceof Error ? 'Error' : 'non-error';
+};
 export function createAutomaticLocalRetention(options: {
   signal: AbortSignal;
   observe(): { ready: boolean; hint: LocalRetentionHint | undefined };
@@ -52,6 +64,7 @@ export function createAutomaticLocalRetention(options: {
   let progress: LocalRetentionStatus['progress'];
   let attemptEvents: LocalRetentionStatus['progress'][] = [];
   let currentAttempt: object | undefined;
+  let ownerError: string | undefined;
   const listeners = new Set<() => void>();
   let status: LocalRetentionStatus = Object.freeze({ phase: 'idle', reason: undefined });
   const publish = () => {
@@ -149,7 +162,15 @@ export function createAutomaticLocalRetention(options: {
     const started = wakes;
     let again = false;
     try {
-      const result = await options.remove(hint.revision, report);
+      let result: Outcome;
+      try {
+        result = await options.remove(hint.revision, report);
+      } catch (cause) {
+        // All preparation ceilings share this closed class. Saved receipts remain intact;
+        // the existing skipped path parks this exact hint behind the retry clock.
+        if (!(cause instanceof PreparationCapacity)) throw cause;
+        result = { kind: 'skipped', reason: 'capacity' };
+      }
       if (closed) return;
       if (result.kind === 'removed' || result.kind === 'already-removed') {
         completions++;
@@ -177,12 +198,15 @@ export function createAutomaticLocalRetention(options: {
         halted = true;
         reason = 'unexpected-result';
       }
-    } catch {
+    } catch (cause) {
       // The removal owner already closes on uncertain mutation. Never turn integrity/storage
       // failure into an automatic retry or reinterpret it as permission to remove anything.
       if (!closed) {
         halted = true;
         reason = 'owner-error';
+        // Do not read arbitrary error names, messages, causes, stacks or getters.
+        // This closed application class has data-free codes; all other failures stay generic.
+        ownerError = ownerErrorCode(cause);
       }
     } finally {
       if (currentAttempt === stamp) currentAttempt = undefined;
@@ -224,6 +248,7 @@ export function createAutomaticLocalRetention(options: {
         interruptions,
         completions,
         events: Object.freeze(attemptEvents.map((e) => e)),
+        ...(ownerError ? { ownerError } : {}),
       });
     },
     onStatus(listener: () => void) {

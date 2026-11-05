@@ -6853,3 +6853,7 @@ Private lab choice:1000ms input quiet plus no pending foreground jobs,1024new ph
 ### 2026-11-02 — Phase334: keep prefix cost separate from receive-service imbalance
 
 Do not treat millions of one-record async comparison calls as full-ledgerreplays or instrumented elapsed spans as CPU. Preserve exactprefix/byte/header/taskchecks and allfreshauthority/witness/commitchecks. Complete333native logs show already-publishedwriting waiting through alternating sends/emptypublisherchecks; optimizingDevice2alonecannotestablish a peer-latencygain. No V/F, limit/defaultselection, build or hardening. Any next diagnostic must separate observation overhead, exactcomparison machinery and receiver scheduling with originalfairness/gates. [Trace](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md).
+
+## 2026-11-02 — Hardening 335: preserve capacity as a refusal, not permission
+
+Catch only PreparationCapacity at the automatic removal boundary and reuse the existing skipped/capacity policy. Keep journals, caps, retry clock and integrity/storage halts. Share the error class through a small canonical module with compatibility re-exports; record only a closed owner-error code. Follow the operator’s November 2 stage order, no new lab work or format approval inferred.

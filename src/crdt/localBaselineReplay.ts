@@ -5,6 +5,8 @@ import { decodeNetworkEnvelope, openNetworkEnvelope } from '../../account-protoc
 import { decodePositionResponse, ZERO_REFUSAL } from '../../account-protocol/positionDecision';
 import { unhex } from '../../account-protocol/recovery';
 import { type InboundContext, type InboundLifetime } from './accountInbound';
+import { LocalBaselineError } from './localBaselineError';
+export { LocalBaselineError } from './localBaselineError';
 import {
   membershipEventEpoch,
   verifyInstalledMembership,
@@ -85,11 +87,6 @@ export interface LocalReplayInput {
   /** Detached, authenticated opened rows and counter from one settled owner census. */
   records: readonly OpenedRecord[];
   counter: ContentCounter;
-}
-export class LocalBaselineError extends Error {
-  constructor(readonly reason: 'scope' | 'integrity' | 'ineligible' | 'history-required') {
-    super('Local baseline refused: ' + reason);
-  }
 }
 function refuse(reason: LocalBaselineError['reason']): never {
   throw new LocalBaselineError(reason);
