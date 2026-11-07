@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase484 observer ready;3072 fixture then report
+status: in flight # phase485 functional stop: native Worker status request failed
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: 3072 fixture, one returning-reader report, Stage6
+blocks_on: functional Worker request failure during3072fixture growth; then final report and Stage6
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase484 prepares the production-ceiling observation build; five controls pass and no canonical source changes. All36 blocking journeys stand and nine of ten reports are complete. Grow the final fixture through real accepted edits, run one3072 report, write Stage6 and stop. Quiet-host authorization covers the remainder.
-[Record](./development-evidence/2026-11-02-release-hardening/484-production-index-observer/README.md).
+**Active bounded outcome.** Phase485 stops app runs: after76 confirmed additional positions, the native composition-status request fails with WorkerChannelError. Exact code is unavailable; owner closure and writing loss are not established. Read-only stopped-state SQL has77 more accepted decisions. The same plain470/473 build and unchanged recipe guards were used. No retry, fix or further app run. All36 previous blocking passes and nine completed report-only journeys remain; the3072 fixture/report and Stage6 are incomplete. Prepared486 counter controls pass6/6 but its app journey is unrun.
+[Record](./development-evidence/2026-11-02-release-hardening/485-grown-fixture-worker-request-stop/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

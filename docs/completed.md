@@ -20300,3 +20300,13 @@ The private production-32-MiB observer and native inspector builds pass. Five co
 [Record](./development-evidence/2026-11-02-release-hardening/484-production-index-observer/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Stop the final index fixture on a Worker request failure
+
+**Date:** 2026-11-06 · **Phase:** 485.
+
+Growing the final report fixture fails at the native composition-status RPC after 76 confirmed additional positions. Read-only stopped-state SQL contains 77 more accepted decisions; no writing-loss or owner-closure claim follows. Exact Worker error code was not captured. Preserve the 139.286s failed run and stop without an app retry or fix. The 3072 report and Stage6 remain incomplete; prior36 blocking passes and nine completed reports remain recorded.
+[Record](./development-evidence/2026-11-02-release-hardening/485-grown-fixture-worker-request-stop/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

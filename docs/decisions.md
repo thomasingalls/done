@@ -8147,3 +8147,10 @@ against the earlier0msnative timing or alter the original blocking case.
 **Date:** 2026-11-06 · **Phase:** 484.
 
 Keep the production ceiling and all checks exact. Bind the first fallback to uncapped native ordinals and append-only parent capture; a gap or final-count mismatch invalidates the report. Do not infer a fallback from arithmetic.
+
+
+### Keep a failed native fixture request distinct from apparatus and data loss
+
+**Date:** 2026-11-06 · **Phase:** 485.
+
+A fixture-purpose label does not make an app Worker request error a harness failure. Keep this functional stop until the responsible code/guard is identified. Do not retry automatically under the noise rule, which concerns failed latency replicates, or infer data loss from an unsuccessful status poll. Existing logs are insufficient to distinguish a nonterminal refused RPC from owner closure.
