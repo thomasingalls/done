@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase490 report-only3072cell unexposed;Stage6next
+status: in flight # Stage6report written;3072report-only evidence remains open
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: Stage6landing report, including unavailable3,072evidence
+blocks_on: operator next direction; no further hardening/measurement/publication work authorized
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase490records the unexposed3072reader report: fresh setup reached2738positions before its unchanged30-minute ceiling.690service acceptances match690published confirmations; no30sper-position exhaustion or writing-loss claim. Reader/index/Undo/cold metrics are unavailable. All36blocking journeys and9validreports remain; one report-onlycell is not complete. FinishStage6with this debt and the55methodreply census, then stop.
-[Record](./development-evidence/2026-11-02-release-hardening/490-index-report-unavailable/README.md).
+**Active bounded outcome.** Stage 6 report is written and work stops. All 36 final blocking journeys pass their original applicable predicates. Nine report-only journeys are valid; six retain latency misses. The 3,072-position reader is unexposed: fresh setup confirms 690 of 1,024 extra edits before its unchanged 30-minute ceiling, leaving 2,738 backlog positions. Six permanent fixture controls pass. No guard, limit or deadline changed. The report records each target/component outcome, every final journey and earlier failure, 55 Worker reply classifications, requested debts, flag defaults and rollback constraints. Missing index/RAM/phone evidence remains explicit. No commit, push, merge or deployment; final signed artifacts remain separate.
+[Record](./development-evidence/2026-11-02-release-hardening/491-landing-report/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

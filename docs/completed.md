@@ -20360,3 +20360,13 @@ The3,072reader journey is unexposed because fixture preparation stops at2,738pos
 [Record](./development-evidence/2026-11-02-release-hardening/490-index-report-unavailable/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Write the Stage 6 handoff with the unexposed report explicit
+
+**Date:** 2026-11-06 · **Phase:** 491.
+
+The Stage 6 landing report lists every final blocking journey (36 pass), nine valid report-only journeys with six latency-miss cells, and the unexposed 3,072-position report. The unchanged 30-minute setup confirms 690 new positions; missing index/Undo/archive/cold results remain unavailable. The report records target/component checks, earlier failures, lab comparisons, physical/RAM/capacity/audit/sender debts, all 55 Worker reply classifications, flag defaults and valid rollback combinations. All 2,046 app inputs and 125 ordinary assets remain exact. The fixture-only expression and six permanent controls are prepared; no app guard or deadline changed. Final signed image preparation remains separate. Stop after this report.
+[Record](./development-evidence/2026-11-02-release-hardening/491-landing-report/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

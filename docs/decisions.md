@@ -8189,3 +8189,10 @@ Retain both the exact per-position acceptance checks and setup ceiling. Partial 
 **Date:** 2026-11-06 · **Phase:** 490.
 
 Do not infer a cap crossing, exact archive, successful cold reopen or3,072catch-up performance from an unrun reader. Keep real-scale index time/RAM and this missing report explicit. Earlier low-ceiling functional evidence and final blocking acceptance retain their separate scope.
+
+
+### Separate blocking acceptance, report-only misses and unavailable evidence
+
+**Date:** 2026-11-06 · **Phase:** 491.
+
+Keep report-only unavailability open: it is not a pass, gate waiver or evidence of archive/cold correctness. The 36 blocking journeys remain valid on their frozen source. Preserve the capacity and real-scale cost debts, the shipped full-status producer/load/decode debts and the independent 55-handler reply census. Document valid rollback flag combinations; AUTO=0 with RESUME=1 and default writers is rejected by current policy. Do not start new experiments or publication.

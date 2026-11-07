@@ -1,0 +1,1195 @@
+{
+  "kind": "static source census; no timings or security qualification credit",
+  "sourceFilesParsed": 356,
+  "parser": "@babel/parser7.29.7/typescript",
+  "endpoints": [
+    {
+      "path": "src/crdt/accountWorkerClient.ts",
+      "line": 276,
+      "role": "Window",
+      "sourceSha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3",
+      "methods": [
+        {
+          "name": "sessionStatus",
+          "line": 280,
+          "computed": false
+        },
+        {
+          "name": "workspaceOpen",
+          "line": 285,
+          "computed": false
+        },
+        {
+          "name": "workspaceObserve",
+          "line": 313,
+          "computed": false
+        },
+        {
+          "name": "setupActorName",
+          "line": 328,
+          "computed": false
+        },
+        {
+          "name": "setupActorRename",
+          "line": 332,
+          "computed": false
+        },
+        {
+          "name": "workspaceDurable",
+          "line": 336,
+          "computed": false
+        },
+        {
+          "name": "workspacePrepare",
+          "line": 342,
+          "computed": false
+        },
+        {
+          "name": "workspaceApply",
+          "line": 346,
+          "computed": false
+        },
+        {
+          "name": "workspaceFence",
+          "line": 350,
+          "computed": false
+        },
+        {
+          "name": "workspaceContext",
+          "line": 354,
+          "computed": false
+        },
+        {
+          "name": "receiveApply",
+          "line": 358,
+          "computed": false
+        },
+        {
+          "name": "journalBegin",
+          "line": 373,
+          "computed": false
+        },
+        {
+          "name": "journalPage",
+          "line": 379,
+          "computed": false
+        },
+        {
+          "name": "journalFinish",
+          "line": 380,
+          "computed": false
+        },
+        {
+          "name": "journalRemove",
+          "line": 381,
+          "computed": false
+        },
+        {
+          "name": "passkey",
+          "line": 386,
+          "computed": false
+        },
+        {
+          "name": "passkeyCancel",
+          "line": 387,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 176,
+      "role": "Worker",
+      "sourceSha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44",
+      "methods": [
+        {
+          "name": "configuration",
+          "line": 180,
+          "computed": false
+        },
+        {
+          "name": "workspaceHint",
+          "line": 184,
+          "computed": false
+        },
+        {
+          "name": "workspaceFrames",
+          "line": 188,
+          "computed": false
+        },
+        {
+          "name": "workspaceFinish",
+          "line": 192,
+          "computed": false
+        },
+        {
+          "name": "workspaceCommit",
+          "line": 196,
+          "computed": false
+        },
+        {
+          "name": "compositionRemoveLocalHistory",
+          "line": 200,
+          "computed": false
+        },
+        {
+          "name": "compositionLocalHistory",
+          "line": 222,
+          "computed": false
+        },
+        {
+          "name": "sessionCommand",
+          "line": 244,
+          "computed": false
+        },
+        {
+          "name": "compositionRoster",
+          "line": 257,
+          "computed": false
+        },
+        {
+          "name": "compositionStatus",
+          "line": 264,
+          "computed": false
+        },
+        {
+          "name": "receiveRequest",
+          "line": 284,
+          "computed": false
+        },
+        {
+          "name": "receiveFetch",
+          "line": 285,
+          "computed": false
+        },
+        {
+          "name": "receiveBegin",
+          "line": 286,
+          "computed": false
+        },
+        {
+          "name": "receiveInput",
+          "line": 287,
+          "computed": false
+        },
+        {
+          "name": "receiveVerify",
+          "line": 288,
+          "computed": false
+        },
+        {
+          "name": "receiveOutput",
+          "line": 289,
+          "computed": false
+        },
+        {
+          "name": "receiveFinish",
+          "line": 290,
+          "computed": false
+        },
+        {
+          "name": "open",
+          "line": 291,
+          "computed": false
+        },
+        {
+          "name": "beginRecovery",
+          "line": 393,
+          "computed": false
+        },
+        {
+          "name": "recoveryPage",
+          "line": 405,
+          "computed": false
+        },
+        {
+          "name": "finishRecovery",
+          "line": 411,
+          "computed": false
+        },
+        {
+          "name": "appendBatch",
+          "line": 417,
+          "computed": false
+        },
+        {
+          "name": "flushJournal",
+          "line": 424,
+          "computed": false
+        },
+        {
+          "name": "status",
+          "line": 431,
+          "computed": false
+        },
+        {
+          "name": "baselineStatus",
+          "line": 438,
+          "computed": false
+        },
+        {
+          "name": "baselineStart",
+          "line": 446,
+          "computed": false
+        },
+        {
+          "name": "authorityStart",
+          "line": 463,
+          "computed": false
+        },
+        {
+          "name": "baselineFinish",
+          "line": 476,
+          "computed": false
+        },
+        {
+          "name": "activity",
+          "line": 493,
+          "computed": false
+        },
+        {
+          "name": "ready",
+          "line": 497,
+          "computed": false
+        },
+        {
+          "name": "close",
+          "line": 500,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 74,
+      "role": "Worker",
+      "sourceSha256": "cb90c38acdb69845e49803aa81790d1933d75ccd068acdab56efa822d058fbf8",
+      "methods": [
+        {
+          "name": "open",
+          "line": 78,
+          "computed": false
+        },
+        {
+          "name": "ready",
+          "line": 114,
+          "computed": false
+        },
+        {
+          "name": "beginRecovery",
+          "line": 119,
+          "computed": false
+        },
+        {
+          "name": "recoveryPage",
+          "line": 120,
+          "computed": false
+        },
+        {
+          "name": "finishRecovery",
+          "line": 121,
+          "computed": false
+        },
+        {
+          "name": "appendBatch",
+          "line": 122,
+          "computed": false
+        },
+        {
+          "name": "compactContent",
+          "line": 131,
+          "computed": false
+        },
+        {
+          "name": "cancelCompact",
+          "line": 132,
+          "computed": false
+        },
+        {
+          "name": "flushJournal",
+          "line": 133,
+          "computed": false
+        },
+        {
+          "name": "activity",
+          "line": 140,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 69,
+      "role": "Worker",
+      "sourceSha256": "5e5a4f39c37732f3685480a69e4c69d289680862ccd3f815b3b0992fda948df6",
+      "methods": [
+        {
+          "name": "prepareHandoff",
+          "line": 73,
+          "computed": false
+        },
+        {
+          "name": "inspect",
+          "line": 87,
+          "computed": false
+        },
+        {
+          "name": "protect",
+          "line": 88,
+          "computed": false
+        },
+        {
+          "name": "beginGenesis",
+          "line": 100,
+          "computed": false
+        },
+        {
+          "name": "confirmGenesis",
+          "line": 102,
+          "computed": false
+        },
+        {
+          "name": "cancelGenesis",
+          "line": 110,
+          "computed": false
+        },
+        {
+          "name": "resumeGenesis",
+          "line": 114,
+          "computed": false
+        },
+        {
+          "name": "list",
+          "line": 123,
+          "computed": false
+        },
+        {
+          "name": "automatic",
+          "line": 130,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/localStartupClient.ts",
+      "line": 48,
+      "role": "Window",
+      "sourceSha256": "2067da1d7db62f2ce99a1c9ad46d9ff1bfff2dc728e605408494d5fe2e16a83d",
+      "methods": [],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/localWorkerClient.ts",
+      "line": 89,
+      "role": "Window",
+      "sourceSha256": "73dcf037d425a7637ebbedce1f3d972198587e17ded55572a9e20d887f693f1b",
+      "methods": [
+        {
+          "name": "localBind",
+          "line": 93,
+          "computed": false
+        },
+        {
+          "name": "trimBegin",
+          "line": 94,
+          "computed": false
+        },
+        {
+          "name": "trimRow",
+          "line": 109,
+          "computed": false
+        },
+        {
+          "name": "trimPart",
+          "line": 114,
+          "computed": false
+        },
+        {
+          "name": "trimCommit",
+          "line": 119,
+          "computed": false
+        },
+        {
+          "name": "journalObservationBegin",
+          "line": 131,
+          "computed": false
+        },
+        {
+          "name": "journalBegin",
+          "line": 137,
+          "computed": false
+        },
+        {
+          "name": "journalPage",
+          "line": 143,
+          "computed": false
+        },
+        {
+          "name": "journalFinish",
+          "line": 144,
+          "computed": false
+        },
+        {
+          "name": "journalRemove",
+          "line": 145,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 182,
+      "role": "Worker",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233",
+      "methods": [
+        {
+          "name": "prepareHandoff",
+          "line": 186,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 226,
+      "role": "Worker",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233",
+      "methods": [
+        {
+          "name": "setupCommand",
+          "line": 230,
+          "computed": false
+        },
+        {
+          "name": "setupClose",
+          "line": 241,
+          "computed": false
+        },
+        {
+          "name": "configuration",
+          "line": 246,
+          "computed": false
+        },
+        {
+          "name": "activity",
+          "line": 258,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/ui/windowCeremonyUi.ts",
+      "line": 225,
+      "role": "Window",
+      "sourceSha256": "ab0075e479808eaf301a9e99a26f480f692c70b55b604914cf35e3d240893d22",
+      "methods": [],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    },
+    {
+      "path": "src/ui/windowCeremonyUi.ts",
+      "line": 243,
+      "role": "Window",
+      "sourceSha256": "ab0075e479808eaf301a9e99a26f480f692c70b55b604914cf35e3d240893d22",
+      "methods": [
+        {
+          "name": "recoveryRoute",
+          "line": 247,
+          "computed": false
+        },
+        {
+          "name": "credential",
+          "line": 256,
+          "computed": false
+        },
+        {
+          "name": "credentialCancel",
+          "line": 257,
+          "computed": false
+        },
+        {
+          "name": "setupState",
+          "line": 258,
+          "computed": false
+        },
+        {
+          "name": "setupOpen",
+          "line": 269,
+          "computed": false
+        }
+      ],
+      "spreads": [],
+      "sourceCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38"
+    }
+  ],
+  "rawPostMessages": [
+    {
+      "path": "src/appUpdate.ts",
+      "line": 104,
+      "receiver": "worker",
+      "sourceSha256": "7d245fe623a2ccc8b5d5c4b63b7180e35a6d7c4d420fe885c513b3c2e11afd89"
+    },
+    {
+      "path": "src/crdt/accountWorkerClient.ts",
+      "line": 436,
+      "receiver": "worker",
+      "sourceSha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3"
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 504,
+      "receiver": "self",
+      "sourceSha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44"
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 505,
+      "receiver": "self",
+      "sourceSha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44"
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 523,
+      "receiver": "self",
+      "sourceSha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44"
+    },
+    {
+      "path": "src/crdt/enrollmentOwner.worker.ts",
+      "line": 25,
+      "receiver": "self",
+      "sourceSha256": "7b27c11e37c5bf313c593b1fc02a22c64afb95acb041faec0eca2cb58cd248af"
+    },
+    {
+      "path": "src/crdt/firstDeviceOwner.worker.ts",
+      "line": 25,
+      "receiver": "self",
+      "sourceSha256": "6493d2e075ad41c10b6043d711c61b83c4c508ceac0850a80aa62d86511ad320"
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 149,
+      "receiver": "self",
+      "sourceSha256": "cb90c38acdb69845e49803aa81790d1933d75ccd068acdab56efa822d058fbf8"
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 151,
+      "receiver": "self",
+      "sourceSha256": "cb90c38acdb69845e49803aa81790d1933d75ccd068acdab56efa822d058fbf8"
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 163,
+      "receiver": "self",
+      "sourceSha256": "cb90c38acdb69845e49803aa81790d1933d75ccd068acdab56efa822d058fbf8"
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 147,
+      "receiver": "self",
+      "sourceSha256": "5e5a4f39c37732f3685480a69e4c69d289680862ccd3f815b3b0992fda948df6"
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 149,
+      "receiver": "self",
+      "sourceSha256": "5e5a4f39c37732f3685480a69e4c69d289680862ccd3f815b3b0992fda948df6"
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 168,
+      "receiver": "self",
+      "sourceSha256": "5e5a4f39c37732f3685480a69e4c69d289680862ccd3f815b3b0992fda948df6"
+    },
+    {
+      "path": "src/crdt/localStartupClient.ts",
+      "line": 76,
+      "receiver": "worker",
+      "sourceSha256": "2067da1d7db62f2ce99a1c9ad46d9ff1bfff2dc728e605408494d5fe2e16a83d"
+    },
+    {
+      "path": "src/crdt/localWorkerClient.ts",
+      "line": 179,
+      "receiver": "worker",
+      "sourceSha256": "73dcf037d425a7637ebbedce1f3d972198587e17ded55572a9e20d887f693f1b"
+    },
+    {
+      "path": "src/crdt/recoveryOwner.worker.ts",
+      "line": 25,
+      "receiver": "self",
+      "sourceSha256": "fd6aba2119882bfd82f252d9afeed5957723b5d5050c9b809745f0913aa42fe6"
+    },
+    {
+      "path": "src/crdt/runtimePorts.ts",
+      "line": 99,
+      "receiver": "channel",
+      "sourceSha256": "6df40138514581850a80cb49c009e73a3fab09deb4a150ab15602d52c63d94e0"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 199,
+      "receiver": "self",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 206,
+      "receiver": "self",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 216,
+      "receiver": "self",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 218,
+      "receiver": "self",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233"
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 366,
+      "receiver": "self",
+      "sourceSha256": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233"
+    },
+    {
+      "path": "src/crdt/workerChannel.ts",
+      "line": 104,
+      "receiver": "port",
+      "sourceSha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
+    },
+    {
+      "path": "src/crdt/workerChannel.ts",
+      "line": 118,
+      "receiver": "port",
+      "sourceSha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
+    },
+    {
+      "path": "src/crdt/workerChannel.ts",
+      "line": 253,
+      "receiver": "port",
+      "sourceSha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007"
+    },
+    {
+      "path": "src/crdt/workspaceChannel.ts",
+      "line": 29,
+      "receiver": "channel",
+      "sourceSha256": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2"
+    },
+    {
+      "path": "src/crdt/workspaceChannel.ts",
+      "line": 80,
+      "receiver": "channel",
+      "sourceSha256": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2"
+    },
+    {
+      "path": "src/editor/textChannel.ts",
+      "line": 24,
+      "receiver": "channel",
+      "sourceSha256": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1"
+    },
+    {
+      "path": "src/ui/windowCeremonyUi.ts",
+      "line": 396,
+      "receiver": "worker",
+      "sourceSha256": "ab0075e479808eaf301a9e99a26f480f692c70b55b604914cf35e3d240893d22"
+    }
+  ],
+  "workerConstructors": [
+    {
+      "path": "src/crdt/accountWorkerClient.ts",
+      "line": 242,
+      "expression": "new URL('./accountOwner.worker.ts', import.meta.url)",
+      "sourceSha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3"
+    },
+    {
+      "path": "src/crdt/localStartupClient.ts",
+      "line": 47,
+      "expression": "new URL('./localStartup.worker.ts', import.meta.url)",
+      "sourceSha256": "2067da1d7db62f2ce99a1c9ad46d9ff1bfff2dc728e605408494d5fe2e16a83d"
+    },
+    {
+      "path": "src/crdt/localWorkerClient.ts",
+      "line": 88,
+      "expression": "new URL('./localOwner.worker.ts', import.meta.url)",
+      "sourceSha256": "73dcf037d425a7637ebbedce1f3d972198587e17ded55572a9e20d887f693f1b"
+    },
+    {
+      "path": "src/ui/accountEnrollmentWorker.ts",
+      "line": 95,
+      "expression": "new URL('../crdt/enrollmentOwner.worker.ts', import.meta.url)",
+      "sourceSha256": "68b69ddb243c13cef5ec34db9495619f0e31756294c27cd7be96d5d760e5a6c6"
+    },
+    {
+      "path": "src/ui/accountRecoveryWorker.ts",
+      "line": 56,
+      "expression": "new URL('../crdt/recoveryOwner.worker.ts', import.meta.url)",
+      "sourceSha256": "6ad7ea4ca1adf5a8e4ca40b89db7b8565e96b796398f685e02c0fe176fd6fed7"
+    },
+    {
+      "path": "src/ui/firstDeviceSetupWorker.ts",
+      "line": 91,
+      "expression": "new URL('../crdt/firstDeviceOwner.worker.ts', import.meta.url)",
+      "sourceSha256": "894ae5d73d5f7ddd22fc9e2f5116c132eae2be90b1568ef0421672fa43b00211"
+    }
+  ],
+  "counts": {
+    "channelEndpoints": 10,
+    "workerEndpoints": 5,
+    "workerMethods": 55,
+    "windowEndpoints": 5,
+    "rawPostMessages": 29,
+    "workerConstructors": 6
+  },
+  "classifications": [
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 180,
+      "method": "configuration",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 184,
+      "method": "workspaceHint",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 188,
+      "method": "workspaceFrames",
+      "classification": "bounded-stream",
+      "detail": "Framed data, not whole-history array in one reply."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 192,
+      "method": "workspaceFinish",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 196,
+      "method": "workspaceCommit",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 200,
+      "method": "compositionRemoveLocalHistory",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 222,
+      "method": "compositionLocalHistory",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 244,
+      "method": "sessionCommand",
+      "classification": "membership-sized",
+      "detail": "sessionCommand roster branch forwards DeviceRosterSnapshot.devices; other command outcomes are narrow."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 257,
+      "method": "compositionRoster",
+      "classification": "membership-sized",
+      "detail": "sessionCommand roster branch forwards DeviceRosterSnapshot.devices; other command outcomes are narrow."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 264,
+      "method": "compositionStatus",
+      "classification": "full-history-aggregate",
+      "detail": "delivery.submissions/responses + spool.positions/attempts + capture summaries; full native listCaptures load and decode."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 284,
+      "method": "receiveRequest",
+      "classification": "bounded-protocol-read",
+      "detail": "Protocol read/request, result and frame counts; inbound describe contains only state/counters/link."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 285,
+      "method": "receiveFetch",
+      "classification": "bounded-protocol-read",
+      "detail": "Protocol read/request, result and frame counts; inbound describe contains only state/counters/link."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 286,
+      "method": "receiveBegin",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 287,
+      "method": "receiveInput",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 288,
+      "method": "receiveVerify",
+      "classification": "bounded-protocol-read",
+      "detail": "Protocol read/request, result and frame counts; inbound describe contains only state/counters/link."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 289,
+      "method": "receiveOutput",
+      "classification": "bounded-stream",
+      "detail": "Framed data, not whole-history array in one reply."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 290,
+      "method": "receiveFinish",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 291,
+      "method": "open",
+      "classification": "opening-context",
+      "detail": "Local/account opening includes narrow material with previous key pairs; composed Account open itself returns only account/device identity."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 393,
+      "method": "beginRecovery",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 405,
+      "method": "recoveryPage",
+      "classification": "bounded-stream",
+      "detail": "Framed data, not whole-history array in one reply."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 411,
+      "method": "finishRecovery",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 417,
+      "method": "appendBatch",
+      "classification": "operation-sized",
+      "detail": "ContentReceipt.sequences for the append; flush returns contentReceipts from every pending256entry batch."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 424,
+      "method": "flushJournal",
+      "classification": "operation-sized",
+      "detail": "ContentReceipt.sequences for the append; flush returns contentReceipts from every pending256entry batch."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 431,
+      "method": "status",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 438,
+      "method": "baselineStatus",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 446,
+      "method": "baselineStart",
+      "classification": "opening-context",
+      "detail": "Local/account opening includes narrow material with previous key pairs; composed Account open itself returns only account/device identity."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 463,
+      "method": "authorityStart",
+      "classification": "opening-context",
+      "detail": "Local/account opening includes narrow material with previous key pairs; composed Account open itself returns only account/device identity."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 476,
+      "method": "baselineFinish",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 493,
+      "method": "activity",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 497,
+      "method": "ready",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "line": 500,
+      "method": "close",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 78,
+      "method": "open",
+      "classification": "opening-context",
+      "detail": "Local/account opening includes narrow material with previous key pairs; composed Account open itself returns only account/device identity."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 114,
+      "method": "ready",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 119,
+      "method": "beginRecovery",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 120,
+      "method": "recoveryPage",
+      "classification": "bounded-stream",
+      "detail": "Framed data, not whole-history array in one reply."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 121,
+      "method": "finishRecovery",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 122,
+      "method": "appendBatch",
+      "classification": "operation-sized",
+      "detail": "ContentReceipt.sequences for the append; flush returns contentReceipts from every pending256entry batch."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 131,
+      "method": "compactContent",
+      "classification": "full-history-aggregate",
+      "detail": "ContentCompactionReceipt.removed:number[] includes removed content seqs; returned after compaction. Static potential oversized reply, not exercised here."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 132,
+      "method": "cancelCompact",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 133,
+      "method": "flushJournal",
+      "classification": "operation-sized",
+      "detail": "ContentReceipt.sequences for the append; flush returns contentReceipts from every pending256entry batch."
+    },
+    {
+      "path": "src/crdt/localOwner.worker.ts",
+      "line": 140,
+      "method": "activity",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 73,
+      "method": "prepareHandoff",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 87,
+      "method": "inspect",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 88,
+      "method": "protect",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 100,
+      "method": "beginGenesis",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 102,
+      "method": "confirmGenesis",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 110,
+      "method": "cancelGenesis",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 114,
+      "method": "resumeGenesis",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 123,
+      "method": "list",
+      "classification": "route-one",
+      "detail": "Local startup route list is verified to one store."
+    },
+    {
+      "path": "src/crdt/localStartup.worker.ts",
+      "line": 130,
+      "method": "automatic",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 186,
+      "method": "prepareHandoff",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 230,
+      "method": "setupCommand",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 241,
+      "method": "setupClose",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 246,
+      "method": "configuration",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    },
+    {
+      "path": "src/crdt/workerCeremonyUi.ts",
+      "line": 258,
+      "method": "activity",
+      "classification": "constant",
+      "detail": "Fixed result, scalar/enum/progress or acknowledgment."
+    }
+  ],
+  "classificationDefinitions": {
+    "constant": {
+      "meaning": "acknowledgment, scalar status, fixed summary or ordered token; no list of lifetime positions",
+      "notes": "computation can still load/verify history; this is a reply-shape classification, not a speed or safety claim"
+    },
+    "full-history-aggregate": {
+      "meaning": "unpaginated graph grows with retained history; global message guard eventually refuses",
+      "notes": "compositionStatus demonstrated in487b; Local compactContent risk is static only"
+    },
+    "bounded-stream": {
+      "meaning": "total messages grow, each recovery page or byte part is bounded",
+      "notes": "recovery128KiB pages/128parts, frame64KiBparts; existing overall/entry limits and checks remain"
+    },
+    "bounded-protocol-read": {
+      "meaning": "request/page is bounded by wire/read protocol, not lifetime history",
+      "notes": "receiveFetch/Verify include constant inbound summary plus scalar frame counts; payload output is separate stream"
+    },
+    "operation-sized": {
+      "meaning": "array depends on current append/flush work, not every lifetime position",
+      "notes": "append returns sequences; flush returns contentReceipts across all pending batches. Existing input/admission/transport guards do not independently prove every aggregate reply fits"
+    },
+    "membership-sized": {
+      "meaning": "devices array depends on roster cardinality",
+      "notes": "compositionRoster and sessionCommand(roster); no pagination in this reply; only existing global transport cap"
+    },
+    "opening-context": {
+      "meaning": "narrow opening material includes previous-generation key pairs",
+      "notes": "receiver accepts at most128previous pairs; no writing or full recovery records in this result"
+    },
+    "route-one": {
+      "meaning": "authenticated Local stores list",
+      "notes": "matchLocalRoute requires exactly one store; not lifetime-writing growth"
+    }
+  },
+  "independentEndpointCensus": {
+    "astMatchesText": true,
+    "astOnly": [],
+    "textOnly": []
+  },
+  "scope": "Every dedicated Worker constructor and createWorkerChannel endpoint under src;55explicitWorkerhandlers reviewed. Window endpoint methods inventoried as opposite direction, and all29rawpostMessagecalls reviewed for boot/close/BroadcastChannel/transport. Service-worker cache/update traffic is outside dedicated owner RPC.",
+  "limitations": [
+    "static shape/call-graph review; no new stress or safety credit",
+    "computed or future channels outside this source universe are not claimed covered",
+    "global message guard bounds transport but does not make an aggregate producer bounded",
+    "no capacity, transport or format fix authorized from this census"
+  ]
+}
