@@ -8434,3 +8434,10 @@ LiteralCaseA isunavailable onplain510AccountWindow:carrierhasno compactContent,a
 **Date:** 2026-11-07 · **Phase:** 525.
 
 Operator approvedpendingItems>0forAafterpost-resumesynctraffic, preservingthe524unavailable-maintenanceprecondition. Sixstandaloneobservations support(a): allUndoapplyandRedoexactlyrestorewithdepth781; allbusy immediate readsandoneidle readwereunchangedbeforelaterapplication. PreserveB3:pending0atkeydoesnotguaranteeimmediatecompletion(durablechangedfalsebeforekey). Treattimingas10mspoll bounds, notexactcommitinstantsorA/Bspeedestimates; noapp/specfix oracceptancecarryoverauthorized. ERR_ABORTEDexactcauseunsaved; qualify15–20sidlecadenceinterpretation. Finishboundedreportandstop.
+
+
+### Explicit2500msUndo/Redo pollguard approval and stricter-r1carryover
+
+**Date:** 2026-11-07 · **Phase:** 526.
+
+Operatoraccepts525(a)andexplicitlychangesonlyGoalsUndo/Redo completionguards to bounded2500mspolls; exacttextdiffer/restore predicates retained, timingdiagnostics havenothreshold. Bindnewfrozenversionbyhash, cite522r2/525, preserveoldspec/failure. Carry522r1desktop/mobile4x stricterpasses, executeonlyremainingfourreplicatesonplain510underfreshquiet-hostconfirmation, usualstop/noiserules andreadonlysavedprofileinspection. AddERR_ABORTEDunknown-cancellation/serviceacceptedledger andunmeasuredUndoCPUcost debts inStage6, thenstop. Noappchange orothergate/deadlinelimit change.

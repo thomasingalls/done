@@ -20710,3 +20710,13 @@ Completed operator-amended outsideStage5diagnostic,3busyA/3idleB onplain510, no 
 [Record](./development-evidence/2026-11-02-release-hardening/525-undo-pending-diagnostic/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Operator-approved bounded Goals Undo/Redo guard and new frozen spec
+
+**Date:** 2026-11-07 · **Phase:** 526.
+
+Recorded explicitoperator guardchange after525(a): onlytwoimmediateUndo/Redo reads become expect.poll timeout2500; addthreshold-free driverelapsed fields frombeforekeypress topollsuccess. Newfrozen specf57e393f748093d2f4fe45de2dce849038adbaa2872c0b17376b50fed13b35ff; old764f8ca9…immutable. Inverseproof onlylines90/91differ; helpers/config/fixture/analyzer/ordinaryassets exact. Operatorcarries522r1desktop/mobile4x stricterpasses. Fourremainingr2/r3desktop/mobile4xruns declaredonplain510; freshquiet-host replyrecorded, allothergates/deadlines/noiserules unchanged. Per-runreadonlyendpointinspectionretained. Noappchange ornewtimedobserver. Next527thenStage6amendmentandstop.
+[Record](./development-evidence/2026-11-02-release-hardening/526-goals-bounded-undo-guard/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
