@@ -20184,3 +20184,20 @@ observation substituted with zero. Outcome precedes advancing the seat. Thirty
 of36declared blocking journeys are complete; six Goals and all report-only work
 plus Stage6remain. Ask the separate Goals host handshake. No commit, push or
 deployment.
+
+
+### Finish desktop and simulated-mobile Goals journeys
+
+**Date:** 2026-11-06 · **Phase:** 478 · **Scope:** six original Goals cells.
+
+Outcome: **pass3/3 each**. Exact779-character paragraph/return input, Undo/Redo and
+lock/reload archives remain checked on unchanged source/assets and original case/
+analyzer. Each beforeinput/rAF timing and tail is in the
+[record](./development-evidence/2026-11-02-release-hardening/478-goals-journeys/README.md).
+These original diagnostics are not the mutation16msorpeer2.5sgate; mobile4xis
+not a physical-phone measurement. HGoals actual13,407UTF8bytes.
+
+Keep every run, host/windowed power record and qualification. No source/build,
+assertion/wait/deadline or gate change. Outcome precedes advancing the seat.
+All36declared blocking journeys have now run; ten named report-only journeys and
+Stage6remain. No commit, push or deployment.

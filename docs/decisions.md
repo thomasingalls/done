@@ -8062,3 +8062,15 @@ phase476boundary; they grant no trust and do not represent internal lab events.
 Keep each run and the fixed failed-replicate noise rule. A passing cold/archive
 is not an input or peer latency substitute. Obtain a separate host handshake
 before Goals; no assertion, budget, limit or gate change.
+
+
+### Keep Goals timing definitions and measured document size explicit
+
+**Date:** 2026-11-06 · **Phase:** 478 · **Separate quiet-host answer confirmed.**
+
+Run the original desktop/mobile4xparagraph/lifecycle cells without a new timing
+threshold or a profiler. Preserve the original analyzer and all denominators,
+long-task tails and source identities. Key-to-rAF cannot stand in for the16ms
+mutation gate; lock/reload online cannot stand in for offline profile reopen.
+Report actual13,407-byte HGoals and avoid matched-size or physical-phone claims.
+Continue only the operator's named report-only work, then Stage6and stop.

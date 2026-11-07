@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase477 fairness complete; separate Goals handshake next
+status: in flight # phase478 Goals complete; named report-only journeys next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: six remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
+blocks_on: ten named report-only journeys and Stage6landing report
 updated: 2026-11-06
 ```
 
@@ -199,15 +199,15 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase477 finishes all three fairness journeys on
-exact repaired source, ordinary assets, case and analyzer. Outcome: **pass3/3**.
-Ten devices across H6/M2/Q2, six concurrent catch-ups,120-key delivery, durable
-pending writing, automatic post-load convergence, reverse/Undo and exact offline
-profiles retain every original guard. All raw/clock/host/HTTP observations remain.
-[Record](./development-evidence/2026-11-02-release-hardening/477-fairness-gates/README.md).
-Thirty of36blocking journeys completed; six Goals remain before the ten report-
-only journeys and Stage6. Obtain a separate quiet-host confirmation for Goals.
-No app/source/build/guard/wait/deadline change, commit, push or deployment.
+**Active bounded outcome.** Phase478 completes the six original Goals journeys,
+desktop/mobile4x: **pass3/3 each**. Same repaired source, ordinary assets and original
+case/analyzer. Exact paragraph/return input, Undo/Redo and lock/reload archives
+remain; report every beforeinput/rAF timing and tail separately from the existing
+mutation16ms/peer2.5sgates. Actual HGoals13,407UTF8bytes, no physical-phone claim.
+[Record](./development-evidence/2026-11-02-release-hardening/478-goals-journeys/README.md).
+All36declared blocking journeys have executed on the repaired source. Ten named
+report-only journeys and Stage6remain. Keep every failure, clock/host/windowed
+power record and qualification; no publication or commit authorization implied.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

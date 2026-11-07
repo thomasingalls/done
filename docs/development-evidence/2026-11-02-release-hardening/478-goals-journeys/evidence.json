@@ -1,0 +1,1192 @@
+{
+  "phase": 478,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-28-goals-stalls/phase162/reproduction/analyze.py.txt",
+      "sha256": "e1b8f07078b1b74642b5cf9fa933334b143a1fec1865433c4caf4f9cae7fdf31",
+      "bytes": 3431
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/harness/test/account-continuation-lab/stall.spec.ts.gz",
+      "sha256": "4cec0e4e5268d146721aadf5f16c28be9f4bb752a3b019604f6afcc6ee262cf2",
+      "bytes": 3880
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-final-gates.py.gz",
+      "sha256": "760bd264f62d0e6e5298824864f9ed7638fb6bd5d1a01de79bfac62ef5b6b0bc",
+      "bytes": 2103
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-private-files.json",
+      "sha256": "a41cc925ade188bbb3546416f65c359cdd6c47bf7f41b6950e2bb77df176cf84",
+      "bytes": 596233
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-summary.json",
+      "sha256": "aac03eb14eef89390ac54f946d982c2e4b69ce9aff43facd9e075edfbe08b00a",
+      "bytes": 20828
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-declaration.json",
+      "sha256": "199dceed7cf976dd21232ece177179dc5252a7966f5036ecc9612e0be84a4a7e",
+      "bytes": 1956
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-progress.json",
+      "sha256": "65a913650488eb20e1ffca9b02339f47f609b5fef0d9a024dac4ddc1fa83d9f1",
+      "bytes": 19403
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-preparation.json",
+      "sha256": "42202b8b66761707be1f40591557103c3a9fcc33d6f4708f6a7170382e6b6d8c",
+      "bytes": 1868
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-binding-proof.json",
+      "sha256": "74bbdccf510c47e63fd4dc26604939ea97a524a162dac9cf98aceb0400750d50",
+      "bytes": 1185
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/record478.py",
+      "sha256": "80799d0aeeaa0714bdcbbc2e87173fadc15d73dca810924e572d62d1b25d71c3",
+      "bytes": 11083
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/run478.py",
+      "sha256": "5e13e868da379a82ca92ddd9e62e255eabc06dcf05e7d5fb1d180f8c100b284a",
+      "bytes": 4543
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/child.log",
+      "sha256": "d8c3732c9da5d7a6b665d62eccd4cc1bb4ac33b38537de9aa0a8ff091c0416f7",
+      "bytes": 462
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/host-load.jsonl",
+      "sha256": "25004acf01f085e388e876f20ebe4a72465883e4bb20573d1a279cd69b119e3d",
+      "bytes": 61650
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/power-assertions-before.txt",
+      "sha256": "8b510e7837105312463e48bb4c9434b09ab78c2bc13f039549e6971be0bf8a42",
+      "bytes": 1909
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/power-log-after.meta.json",
+      "sha256": "6023518a80ea0c802a330e2ee7fba1116cb4145f396a9a64f8d259ff310ae38e",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/power-log-after.txt",
+      "sha256": "749c19ccfcd9c40124c6eafbe30f8f181f16e684297da6f94feb0095f9ad5bd6",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/power-log-before.meta.json",
+      "sha256": "d1028c5136a432a10e24231b069b106a8feeb3ae5af0385e50053cda37f38854",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-desktop/run.json",
+      "sha256": "cb996749f09a1fe3dbc56b2e1b1effe20d46fd90b0c82a21b796a8cdfe18b36b",
+      "bytes": 2094
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/child.log",
+      "sha256": "32f3acb283b6dce5a97201956a14837e6e13fcff94e82754a9da2e6bcebe87c9",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/host-load.jsonl",
+      "sha256": "889f857d856799c3d0ce4186a1ee19d20cc228a0f56f2a5a97ac7033f917e6f6",
+      "bytes": 61766
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/power-assertions-before.txt",
+      "sha256": "bfac8d37799cb22ab816946a699065b491b38a3d206d2d261fd957278ed472bc",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/power-log-after.meta.json",
+      "sha256": "0db0304f0dd6b81e9745b237a318cb90f0dd667420a00cc1aad33a5531aad229",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/power-log-after.txt",
+      "sha256": "d69fe5f4227504d7f9af06b9885784464556cc6cf2e0a79c190ed0e7ac868d9c",
+      "bytes": 2314
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/power-log-before.meta.json",
+      "sha256": "4a11171a91f075c3dcfa37c4f76898f6eaf88d68ec2fbe6ec9cf0782034d6478",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r1-goals-mobile4x/run.json",
+      "sha256": "a7149b8f30a888edfe75d069c950d13b4ad269e89321f5c62b80634ef647feb8",
+      "bytes": 2094
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/child.log",
+      "sha256": "172e2fa1e7a5fb798b124a8e3634e9d1596cf7b56531087e49d56de3cb7e4d2d",
+      "bytes": 460
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/host-load.jsonl",
+      "sha256": "194baaddfd9a26710c5aea37b0f14bd1cf3af86fddf24bd1a8323ef6386d09f8",
+      "bytes": 60181
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/power-assertions-before.txt",
+      "sha256": "a697ff7b0832b5598f17a2e25aaa18d999a77e8d1f3a79dbb84670650c763631",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/power-log-after.meta.json",
+      "sha256": "e8033a7ab5fc2f85706b2bad22895e1a29dfe8e68fe1463bb22f7ff07bad76cb",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/power-log-after.txt",
+      "sha256": "32975fa3c311d76e7bc1740a4cebe3e4f1d71d572f2449120fd7567cafa76251",
+      "bytes": 229
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/power-log-before.meta.json",
+      "sha256": "56e090f5012c7d3b54644e4f286a237cfb1ccba91402799733bb91cc15d8cf24",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-desktop/run.json",
+      "sha256": "469a4312d90a3978a00044b40242500ef8bf56df5b753eb6dd3118921c7b3727",
+      "bytes": 2091
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/child.log",
+      "sha256": "7576310eb79a660fab706b947fa55016de2d33ae36f830d23422b258dda95468",
+      "bytes": 460
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/host-load.jsonl",
+      "sha256": "8eecaee2a190539286fd1767180e4a7e61dc8c41ab9dcf0a432a400a895191a2",
+      "bytes": 60317
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/power-assertions-before.txt",
+      "sha256": "1a6d7ecde6f59d7252bc09e2fc21cafb606871a33f1eabb02ceff2e85fa5b9bf",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/power-log-after.meta.json",
+      "sha256": "4f04f0411ff100d2b85a79fef8d22e942eed94724dfccc65bf141907c0c07a4c",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/power-log-after.txt",
+      "sha256": "5344bafb95efd8f71fa77755b4bc5c19c143df3d668fbbef87c0f06596c439c7",
+      "bytes": 230
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/power-log-before.meta.json",
+      "sha256": "428585e90b1a3dc7b8ffb70e89de36c97083f7caba78c3e17f18268bec849315",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r2-goals-mobile4x/run.json",
+      "sha256": "c2cb608b1673ccb1d2c62cdba0cc057d17be6a0a775fc67f4540f5feec0867f7",
+      "bytes": 2093
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/child.log",
+      "sha256": "0b2c27811e74e09d67b38498da919514af7e10fbc4c860af7d3649e61f7d67f2",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/host-load.jsonl",
+      "sha256": "a3e0e9e80ad07f249f7cf361f8b67a1fc2d7799fc623325471cc22a17229715a",
+      "bytes": 60239
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/power-assertions-before.txt",
+      "sha256": "81f1e59a4961203442ed5925be627eb8af5c09a5d052dbe2705a15bdfefc14b3",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/power-log-after.meta.json",
+      "sha256": "0b4df54bbf6250285da4d9175e677e9c3a81866c43e6ede6c20f7d237497b4d4",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/power-log-after.txt",
+      "sha256": "85e4bd96c2e15d3fc41f21b9ec025677d1f6541929f1622c1f65dd97cedf78e2",
+      "bytes": 230
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/power-log-before.meta.json",
+      "sha256": "56f8613d7f9a6470260ea9c3f606ac89608b3d7ace9f87b044e5617607ee3562",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-desktop/run.json",
+      "sha256": "1f07af4fbf8160b445b41c5e10ec1cfc101fd889742fe0b86cdad438e712fadc",
+      "bytes": 2091
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/child.log",
+      "sha256": "dbd6fabf6970739ad053ee3188fde06df114230f1adc17ce83807758a19a7737",
+      "bytes": 460
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/host-load.jsonl",
+      "sha256": "5fef721426c85046a939f14647a25b053ecf93e509732cabef5c637758667c57",
+      "bytes": 60372
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/power-assertions-before.txt",
+      "sha256": "6dece26a228dd92c09109b198142afd78a6f1793e3ebd0563db62c4f3369ab01",
+      "bytes": 2371
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/power-log-after.meta.json",
+      "sha256": "3105635dec1082cdce9d356e0950bbab123cf958db2a1c14de2aaeb9794c4346",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/power-log-after.txt",
+      "sha256": "cb8195ea92ebf07cc3304e999cdd17325a0897fcf15e04d39fe847622df8b758",
+      "bytes": 308
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/power-log-before.meta.json",
+      "sha256": "ae5d2b4401689e28eff452f3a2fe1cb51bc0e67aabd982bde3af2a4b85b5caee",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/478-r3-goals-mobile4x/run.json",
+      "sha256": "46f2bd4ae46cdeb2bd099bf8232ed16940d67fa506ed4307566b25abe3287fcd",
+      "bytes": 2094
+    }
+  ],
+  "summary": {
+    "phase": 478,
+    "rows": [
+      {
+        "name": "r1-goals-desktop",
+        "key": "478-r1-goals-desktop",
+        "cell": "goals-desktop",
+        "replicate": 1,
+        "mobile4x": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "completed-diagnostic",
+        "host": {
+          "samples": 39,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12892.44,
+            "last": 12892.44,
+            "min": 12892.44,
+            "max": 12892.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            },
+            {
+              "pid": 95482,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "originalDiagnosticCompleted": true,
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 6.501953125,
+        "rafP95Ms": 15.41455078125,
+        "rafMaxMs": 28.51220703125,
+        "rafOver100Ms": 0,
+        "pageErrors": [],
+        "phases": {
+          "paragraph": {
+            "start": 1793977333467.0999,
+            "end": 1793977450176,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 7293,
+              "p50": 16,
+              "p95": 17.300048828125,
+              "p99": 21.800048828125,
+              "max": 33.900146484375,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1793977450285.5999,
+            "end": 1793977470292.7,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1250,
+              "p50": 16,
+              "p95": 17.099853515625,
+              "p99": 17.199951171875,
+              "max": 18.699951171875,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1793977490304.4365,
+            "end": 1793977510366.7,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1248,
+              "p50": 16,
+              "p95": 18.699951171875,
+              "p99": 24.699951171875,
+              "max": 51.800048828125,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "qualification": "Original Goals diagnostic, not mutation16ms or peer gate; report all timing values without a new threshold.",
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 4556,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "originalPredicatesPassed": true,
+        "failedPredicates": [],
+        "denominatorQuality": true
+      },
+      {
+        "name": "r1-goals-mobile4x",
+        "key": "478-r1-goals-mobile4x",
+        "cell": "goals-mobile4x",
+        "replicate": 1,
+        "mobile4x": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "completed-diagnostic",
+        "host": {
+          "samples": 39,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12892.44,
+            "last": 12892.44,
+            "min": 12892.44,
+            "max": 12892.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 98203,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 29.99775004386902
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "originalDiagnosticCompleted": true,
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 4.272705078125,
+        "rafP95Ms": 32.660888671875,
+        "rafMaxMs": 41.717529296875,
+        "rafOver100Ms": 0,
+        "pageErrors": [],
+        "phases": {
+          "paragraph": {
+            "start": 1793977526506,
+            "end": 1793977643239.1,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 6635,
+              "p50": 16,
+              "p95": 37,
+              "p99": 43.699951171875,
+              "max": 62.5,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1793977643352.7002,
+            "end": 1793977663376.5,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 16.699951171875,
+              "p99": 16.900146484375,
+              "max": 45.5,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1793977683378.297,
+            "end": 1793977703453.1,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1252,
+              "p50": 16,
+              "p95": 16.60009765625,
+              "p99": 16.89990234375,
+              "max": 53.300048828125,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "qualification": "Original Goals diagnostic, not mutation16ms or peer gate; report all timing values without a new threshold.",
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 4762,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "originalPredicatesPassed": true,
+        "failedPredicates": [],
+        "denominatorQuality": true
+      },
+      {
+        "name": "r2-goals-desktop",
+        "key": "478-r2-goals-desktop",
+        "cell": "goals-desktop",
+        "replicate": 2,
+        "mobile4x": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "completed-diagnostic",
+        "host": {
+          "samples": 38,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12892.44,
+            "last": 12892.44,
+            "min": 12892.44,
+            "max": 12892.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 95341,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 561,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 5.00310492515564
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "originalDiagnosticCompleted": true,
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 6.49755859375,
+        "rafP95Ms": 17.5625,
+        "rafMaxMs": 23.774169921875,
+        "rafOver100Ms": 0,
+        "pageErrors": [],
+        "phases": {
+          "paragraph": {
+            "start": 1793977718842.4,
+            "end": 1793977835550.9,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 7285,
+              "p50": 16,
+              "p95": 17.300048828125,
+              "p99": 21.199951171875,
+              "max": 34.300048828125,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1793977835659.8,
+            "end": 1793977855667.9,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 17.099853515625,
+              "p99": 17.199951171875,
+              "max": 17.5,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1793977875673.0159,
+            "end": 1793977895750.9,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1247,
+              "p50": 16,
+              "p95": 19.699951171875,
+              "p99": 25.300048828125,
+              "max": 52.60009765625,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "qualification": "Original Goals diagnostic, not mutation16ms or peer gate; report all timing values without a new threshold.",
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 4073,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "originalPredicatesPassed": true,
+        "failedPredicates": [],
+        "denominatorQuality": true
+      },
+      {
+        "name": "r2-goals-mobile4x",
+        "key": "478-r2-goals-mobile4x",
+        "cell": "goals-mobile4x",
+        "replicate": 2,
+        "mobile4x": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "completed-diagnostic",
+        "host": {
+          "samples": 38,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12892.44,
+            "last": 12892.44,
+            "min": 12892.44,
+            "max": 12892.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            },
+            {
+              "pid": 2291,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 30.003270864486694
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "originalDiagnosticCompleted": true,
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 4.15673828125,
+        "rafP95Ms": 32.556640625,
+        "rafMaxMs": 48.4482421875,
+        "rafOver100Ms": 0,
+        "pageErrors": [],
+        "phases": {
+          "paragraph": {
+            "start": 1793977911095.4,
+            "end": 1793978027826.2,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 6626,
+              "p50": 16,
+              "p95": 37.5,
+              "p99": 44.199951171875,
+              "max": 61.10009765625,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1793978027940.2,
+            "end": 1793978047970.2,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 16.699951171875,
+              "p99": 17.60009765625,
+              "max": 31.800048828125,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1793978067972.5713,
+            "end": 1793978088044.8,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1250,
+              "p50": 16,
+              "p95": 16.60009765625,
+              "p99": 16.89990234375,
+              "max": 18.89990234375,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "qualification": "Original Goals diagnostic, not mutation16ms or peer gate; report all timing values without a new threshold.",
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 2659,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "originalPredicatesPassed": true,
+        "failedPredicates": [],
+        "denominatorQuality": true
+      },
+      {
+        "name": "r3-goals-desktop",
+        "key": "478-r3-goals-desktop",
+        "cell": "goals-desktop",
+        "replicate": 3,
+        "mobile4x": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "completed-diagnostic",
+        "host": {
+          "samples": 38,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12892.44,
+            "last": 12892.44,
+            "min": 12892.44,
+            "max": 12892.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 95341,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 4990,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 5.003387928009033
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "originalDiagnosticCompleted": true,
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 6.367431640625,
+        "rafP95Ms": 17.63525390625,
+        "rafMaxMs": 21.236572265625,
+        "rafOver100Ms": 0,
+        "pageErrors": [],
+        "phases": {
+          "paragraph": {
+            "start": 1793978101196.8,
+            "end": 1793978217906,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 7287,
+              "p50": 16,
+              "p95": 17.300048828125,
+              "p99": 21.89990234375,
+              "max": 34.89990234375,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1793978218016.2,
+            "end": 1793978238018.9,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 17.099853515625,
+              "p99": 17.199951171875,
+              "max": 18.400146484375,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1793978258022.831,
+            "end": 1793978278089.0999,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1252,
+              "p50": 16.099853515625,
+              "p95": 19.099853515625,
+              "p99": 23,
+              "max": 51.699951171875,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "qualification": "Original Goals diagnostic, not mutation16ms or peer gate; report all timing values without a new threshold.",
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 2490,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "originalPredicatesPassed": true,
+        "failedPredicates": [],
+        "denominatorQuality": true
+      },
+      {
+        "name": "r3-goals-mobile4x",
+        "key": "478-r3-goals-mobile4x",
+        "cell": "goals-mobile4x",
+        "replicate": 3,
+        "mobile4x": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "completed-diagnostic",
+        "host": {
+          "samples": 38,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12892.44,
+            "last": 12892.44,
+            "min": 12892.44,
+            "max": 12892.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 7680,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 24.998165130615234
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "originalDiagnosticCompleted": true,
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 4.2890625,
+        "rafP95Ms": 32.5185546875,
+        "rafMaxMs": 51.32568359375,
+        "rafOver100Ms": 0,
+        "pageErrors": [],
+        "phases": {
+          "paragraph": {
+            "start": 1793978292051.5999,
+            "end": 1793978408777.5,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 6607,
+              "p50": 16,
+              "p95": 37.5,
+              "p99": 43.7998046875,
+              "max": 62.199951171875,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1793978408891.2998,
+            "end": 1793978428906.9,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 16.699951171875,
+              "p99": 17.39990234375,
+              "max": 34.39990234375,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1793978448924.0825,
+            "end": 1793978468996.4,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1251,
+              "p50": 16,
+              "p95": 16.60009765625,
+              "p99": 16.800048828125,
+              "max": 66.400146484375,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "qualification": "Original Goals diagnostic, not mutation16ms or peer gate; report all timing values without a new threshold.",
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 2379,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "originalPredicatesPassed": true,
+        "failedPredicates": [],
+        "denominatorQuality": true
+      }
+    ],
+    "cells": {
+      "goals-desktop": {
+        "allOriginalPredicatesPassed": true,
+        "replicates": 3,
+        "attempts": 3
+      },
+      "goals-mobile4x": {
+        "allOriginalPredicatesPassed": true,
+        "replicates": 3,
+        "attempts": 3
+      }
+    },
+    "allOriginalPredicatesPassed": true,
+    "actualDocumentSizes": [
+      {
+        "label": "H",
+        "goalsUtf8Bytes": 13407,
+        "goalsCharacters": 13407
+      },
+      {
+        "label": "M",
+        "goalsUtf8Bytes": 4157,
+        "goalsCharacters": 4157
+      },
+      {
+        "label": "Q",
+        "goalsUtf8Bytes": 1049,
+        "goalsCharacters": 1049
+      }
+    ],
+    "functionalFailures": 0,
+    "noiseRetries": 0,
+    "coldMaximumMs": 4762,
+    "sourceMatchedBlockingCompleted": 36,
+    "sourceMatchedBlockingRemaining": 0,
+    "reportOnlyJourneysRemaining": 10,
+    "claimBoundary": "Original Goals paragraph/lifecycle diagnostic, not mutation16ms, peer latency, physical phone, or native-input equivalence. Key-to-beforeinput and key-to-rAF timing are report-only as in phase320. Reopen is the original lock/reload online case, not an offline profile reopen."
+  },
+  "timedMatrixJourneysStarted": 6,
+  "caseConfigAndAnalyzerExact": true,
+  "ordinaryAssetsVerified": 125,
+  "workingSourceBindingsVerified": 7,
+  "hostHandshake": "operator Ready; keep the host quiet for Goals",
+  "guardWaitDeadlineGateChanges": false,
+  "profiler": false,
+  "appSourceOrShippingChanges": false,
+  "committed": false,
+  "pushed": false,
+  "next": "Named report-only measurements, then Stage6 landing report and stop; no publication"
+}
