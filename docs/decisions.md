@@ -8399,3 +8399,10 @@ Operator accepted518 and carried old-maintenance-normal/withheld, grown-normal/w
 **Date:** 2026-11-07 · **Phase:** 520.
 
 Apply the519operator decision without changing app, gates, limits or format. 6 declared native journeys complete. 6/6 attempts pass; every failed predicate and noise attempt, if any, remains visible. Post-run readonly endpoint metadata is a separate observation on copies, never a timed-run observer or proof of interruption frequency. Continue only the declared sequence, then stop afterStage6amendment.
+
+
+### Preserve frozen fairness conditions and post-run endpoint evidence
+
+**Date:** 2026-11-07 · **Phase:** 521.
+
+Apply the519operator decision without changing app, gates, limits or format. 3 declared fairness journeys complete. 3/3 attempts pass; every failed predicate and noise attempt, if any, remains visible. Post-run readonly endpoint metadata is a separate observation on copies, never a timed-run observer or proof of interruption frequency. Continue only the declared sequence, then stop afterStage6amendment.

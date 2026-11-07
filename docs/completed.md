@@ -20660,3 +20660,13 @@ Completed 6 declared frozen native journeys on plain510, 6/6 passing attempts, 0
 [Record](./development-evidence/2026-11-02-release-hardening/520-source510-native-reruns/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Source510 fairness bounded rerun block
+
+**Date:** 2026-11-07 · **Phase:** 521.
+
+Completed 3 declared frozen fairness journeys on plain510, 3/3 passing attempts, 0 noise retries; all applicable predicates retained. After each run, inspected only copies of saved end profiles; original bytes and native record digests unchanged. No timed observer or app/gate/limit/format change. 9/15 reruns complete alongside21operator-carried runs. Post-reduction typing cost remains unmeasured.
+[Record](./development-evidence/2026-11-02-release-hardening/521-source510-fairness-reruns/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
