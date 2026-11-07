@@ -7752,3 +7752,21 @@ and its15sdeadline. The shared expiry error covers both past expiry and excess
 future lifetime, so use copied historical timestamps to qualify the clock
 hypothesis without declaring its cause proven or changing the security window.
 No automatic retry, clock patch or guard weakening is authorized by this record.
+
+
+### Approve bounded future clock tolerance without expiry grace
+
+**Date:** 2026-11-06 · **Phase:** 456 · **Operator decision.**
+
+The operator authorizes one shared120000msclock-skew allowance at enrollment,
+history exchange, membership locator/checkpoint, successor discovery and removal
+discovery excessive-future checks only. Every expired-at-now test, lifetime
+constant, signature and remaining authority predicate stays unchanged. Add valid
+one-second-lead, beyond-skew and expired controls for each. This explicit product
+decision supersedes the earlier no-guard-change hold only within that scope.
+
+Current fresh-container time is6–8msbehind the host, so do not claim it proves
+yesterday'slead. Keep every observation. Standing permission allows apparatus/
+wrapper repairs with failed attempts preserved, while actual app failures,
+unapproved guard/limit/assertion/gate changes and the tight-cell host handshake
+still require a stop. No deployment or commit permission is added.

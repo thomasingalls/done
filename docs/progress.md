@@ -162,10 +162,10 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: held # phase455 actual enrollment refusal during fixture preparation
+status: in flight # phase456 clock measured; approved future-only skew repair next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: diagnose enrollment refusal before another app run; then fixtures/closures/host handshake
-updated: 2026-11-05
+blocks_on: approved skew repair/unit suites, fresh seed, final closures and host handshake
+updated: 2026-11-06
 ```
 
 **Contract.** Follow the [operator hardening plan](./release-hardening-2026-11-02.md),
@@ -203,18 +203,15 @@ commands have passing segments, not a final all-target-stack check. Earlier reds
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase455is held under the Stage5functional-refusal
-rule. First fresh setup certifies H6with exact archives, then a test-entry SW
-routing precondition fails; preserve and repair only that navigation. The fresh
-retry then shows “Expired enrollment challenge” at stateenrolland fails the
-unchanged15shelper assertion. No further app/timed run. [Record](./development-evidence/2026-11-02-release-hardening/455-enrollment-refusal-hold/README.md).
-Copied closed-DB timestamps show expiry583,588.6msafter host run end; the error
-also covers an excess future lifetime. Clock disagreement is plausible, not
-measured/proven. Diagnose before another setup/journey; then complete current-date
-fixtures, final timed import/process binding and the quiet-host handshake. The
-456native adapter source is prepared but unexecuted.454'sruntime binding and452's
-15functional passes remain; no Stage5timing credit, app/guard/deadline change,
-commit, push or deployment.
+**Active bounded outcome.** Phase456samples the same fresh454APIcontainer
+without a browser/app request. It is6–8msbehind the Mac; that does not prove a
+455lead. [Record](./development-evidence/2026-11-02-release-hardening/456-container-clock-offset/README.md).
+The operator explicitly approves shared120000msfuture-bound tolerance at six
+named protocol checks; expired checks, signatures, lifetime constants and all
+other predicates remain. Add requested controls, run affected suites, freeze the
+repair and rebuild both client/server bindings before rerunning the current-date
+seed. Then finish fixtures/closures and Stage5with the required tight-cell host
+handshake. Preserve all prior failures. No timing credit, commit, push or deploy.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

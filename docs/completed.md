@@ -19765,3 +19765,18 @@ Source DB/inventory stays exact. No expiry, assertion, deadline, gate, budget or
 app change. No timed credit, real-account access, commit, push or deploy. Outcome
 precedes advancing the seat to this explicit hold; all earlier passes/failures
 remain. Native456adapter preparation stays unexecuted until the refusal is resolved.
+
+
+### Measure the same-container clock without an app journey
+
+**Date:** 2026-11-06 · **Phase:** 456 · **Scope:** operator-requested clock diagnostic.
+
+Sixteen clock replies begin60msafter the unchanged454runtime starts. Container
+minus Mac midpoint median is−7ms, conservative intersection[−8,−6]ms, at1–4ms
+round trips. Thus this fresh run does not confirm a service lead in455; its cause
+remains qualified. No browser or application HTTP request, clock change or timing
+credit. [Record](./development-evidence/2026-11-02-release-hardening/456-container-clock-offset/README.md).
+
+Outcome precedes advancing the seat. Next implement the operator-approved six
+future-only skew bounds and unit controls; no expired/signature/lifetime-constant
+change. Keep earlier failed roots. No commit, push or deployment.
