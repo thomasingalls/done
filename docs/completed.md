@@ -20740,3 +20740,13 @@ The scoped matrix is complete: 36 supported passing rows across 12 cells, compri
 [Record](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve current-main Node security baseline and complete release preflight
+
+**Date:** 2026-11-07 · **Phase:** 529.
+
+Reconciled signed hardening head with the already-approved Node 24.22.1 main branch. No app/protocol/storage/verifier/lockfile source changes. Full Node24.22 units pass 3,231 with one existing skip in 333 files; full adapter retry passes178 after the approved three-value fixture correction. Preserve all first failures and 17 private proposal controls. Fifteen source-site line references are byte-proved metadata-only repairs. Inventory retains every old obligation and all release blocks (1,102/551 unresolved). Fresh current-tree traceability receipts wait for the clean signed source and exact assets. Merge ready for signature, then immutable ARM64 artifact checks; no publication/deployment.
+[Record](./development-evidence/2026-11-07-hardened-release/529-current-main-release-baseline/README.md).
+
+Outcome precedes active-seat update.

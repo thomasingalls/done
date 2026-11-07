@@ -82,7 +82,7 @@ try {
   );
   assert.equal(inventory.uid, 65532);
   assert.equal(inventory.gid, 65532);
-  assert.equal(inventory.node, 'v24.18.0');
+  assert.equal(inventory.node, 'v24.22.1');
   assert.deepEqual(inventory.found, []);
   assert.deepEqual(inventory.forbidden, []);
   assert.equal(inventory.data, 0o770);

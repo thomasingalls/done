@@ -159,60 +159,20 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 ## Active slice: release hardening — format contract and idle audit
 
 ```yaml
-gate: release-hardening
+gate: release preparation after Stage 6
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked # Stage 6 amendment complete; awaiting operator instruction
-scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: operator review and next explicit instruction; no further work running
+status: in flight # phase 529 preflight complete; sign merge then build exact artifacts
+scope: signed ARM64 candidate and compatible writer-off rollback; preserve all gates and security guarantees
+blocks_on: signed current-main merge, exact-image tests and current-tree traceability receipts
+release_validation: scoped Stage 5 complete; general manifest blocked at 1102 obligations / 551 unresolved
 updated: 2026-11-07
 ```
 
-**Contract.** Follow the [operator hardening plan](./release-hardening-2026-11-02.md),
-its November3 unit amendment and [approved writer-on format](./account-inbound-page-receipts.md).
-Bounded sequential patches; no new lab or unlisted speed experiments. All other
-checks, gates, limits, budgets and deadlines stay. No computer use, push, publication or deployment. The operator authorized the
-signed patch sequence on November5 and resumed Stage 5 afterward. Latest operator direction: continue after every phase;
-stop only for format/trust/limit/deadline decisions or failures unfixable within
-existing guards. All failed attempts remain evidence.
+**Active bounded outcome.** Phase 529 preserves signed hardening head `154d3da402fd` and integrates main `ed492389` to retain Node 24.22.1's CA distrust update. No editor, Account protocol/service/storage/verifier, Vite or lockfile source changed. The merge is prepared for signature; next freeze its clean allowlisted source and build candidate and compatible rollback images from that exact identity.
 
-**Current implementation.** Stage1 and Stage2 checkpoints are closed; Stage3.1
-is approved. Stage3.2 has the closed binary codec/logical syntax home, authenticated
-native and independent retained-reading floors, real Page/Worker activation
-controls and explicit saved modes. The exact-evidence native/journal receipt memo
-and authenticated compact journal adapter preserve old MAC, input, slice and
-capacity guards. Full ledger, handoff, later membership and replacement-source
-replay now consume every admitted entry under their original coverage/cut/prefix
-checks. All four stored paths have aged binary semantic controls. Census/witness
-stays physical; replay/progress/reading limits stay logical. Index accounting now adds
-logical/owned-buffer ceilings, including the real memo and final fresh replay
-graph in both ownership modes. Fully verified binary views can now build cold indexes with explicit proof-byte
-observation; peer page appends now reuse indexes under exact prefix, canonical,
-logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
-is in completed.md and immutable evidence, not repeated here.
+**Established checks.** Node 24.22.1 units: 333 files, 3,231 pass / one existing skip, 131.96 s suite. Types/lint/contracts/vectors/registry/inventory pass. The original authority failure is repaired by 15 byte-proved line-number updates in four construction records only. Operator-approved three-value old-fixture correction retains all assertions and blocks; full adapter retry is 178/178, after the retained 176/178 first attempt and 17 passing private-copy controls. Current manifest adds existing hardening obligations without removing old IDs or unresolved blocks: 1,102 / 551 unresolved.
 
-**Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
+**Remaining artifact phase.** Build native ARM64 writer-on and compatible writer-off images with the approved 510 effective flags; service-history automation stays off. Test actual final runtimes and container ownership/restart/assets, dense stale-tab rollback and exact offline cold, then packaged upgrades. Origin-isolation/retention/status/limit receipts must be rerun against the settled signed source before traceability; the earlier stale-receipt refusal is preserved. No new Stage 5 timing credit or gate change.
 
-**Active bounded outcome.** Phase 528 completes the source 510 Stage 6 amendment: 36 supported passing rows (21 source carries, nine native/fairness reruns, two stricter Goals r1 carries and four amended Goals passes). The 522-r2 immediate-read failure is retained per accepted 525; new ERR_ABORTED cancellation and Undo CPU-cost debts are explicit, and post-reduction typing cost remains unmeasured. All original source/report qualifications, flags and rollback obligations stay. No app change, additional journey, commit, push or release preparation. STOPPED for operator review.
-[Record](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md).
-
-**Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
-paths and arbitrary mixed full/incremental properties have isolated coverage.
-Original and Joined Workers now have genuine dense admission, nonzero-entry tails,
-31s expiry/offline cold, retained journal recovery, Undo and exact exports in421.
-Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
-full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
-closure/cold control in425; G8/range4 and combined originals
-caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Past-index fallback passes in441using the operator-approved1MiBWorker fixture, with separate32MiBproduction binding in440. Actual later dense positions3–19, full verification, Undo and ordinary offline cold are exact.438/439failed setups remain real-scale debt; these functional proofs do not grant Stage5credit. Later Stage5fairness/3,072cells remain separate. The requested commit pause is complete and the operator has resumed Stage 5. Binary retained-reading installation with writer-off/on
-is covered in423; native floor acknowledgment follows all existing authentication
-and precedes installation effects.
-Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
-Genuine frozen old Page/Worker active and cold app refusals, queued old native-reader refusal, pending-writing recovery and exact current disk-cold/Undo pass in427. Same-tree local ARM64 writer-on/off images and stale-tab dense rollback pass in430, with exact OCI/source/archive records and separate actual-runtime checks. These are unsigned hardening artifacts.
-
-**Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
-pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine
-Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy and its genuine stale-turn control pass in425; the broader coherent functional checkpoint has passing source-pinned segments for all83commands in436. After the completed functional checkpoint and B proofs, the requested commit pause is now complete. The operator has now resumed Stage 5 after commits; finish the required preflight/checkpoint before timings, then write Stage 6 and stop.
-Binary native cold is observed on the forced-cut fixture in421. The430same-tree ARM64image/rollback component evidence is established for its recorded tree; final signed-source artifacts, RAM and performance acceptance remain unestablished. Service automation stays off.
-
-This seat replaces only its own document; the other seat above is unchanged.
+**Source and publication boundary.** [Preflight](./development-evidence/2026-11-07-hardened-release/529-current-main-release-baseline/README.md); [completed matrix and RC debts](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md). The exact predecessor image is retained and its extracted HTML matches production. No candidate image or infrastructure change exists yet. Operator keeps both merge buttons. Pre-release builds cannot reopen devices that wrote dense rows: retain the compatible reader, never clear storage or rewrite receipts.

@@ -95,13 +95,13 @@ test('newly inventoried cryptographic domains remain open qualification obligati
   const result = checkConstructionRegistry(process.cwd());
   assert.deepEqual(result.failures, []);
   assert.equal(result.specified, 78);
-  assert.equal(result.open, 15);
+  assert.equal(result.open, 16);
   const preparation = JSON.parse(
     readFileSync('docs/account-crypto/constructions.json', 'utf8'),
   ).constructions.find((c) => c.id === 'account-local-preparation');
   assert.equal(preparation.status, 'open');
   // This is the same prerequisite enforced before the aggregate closure campaign.
-  assert.throws(() => assert.equal(result.open, 0), /15 !== 0/);
+  assert.throws(() => assert.equal(result.open, 0), /16 !== 0/);
 });
 
 test('campaign aggregation retains the named non-applicable case only after child verification', (t) => {

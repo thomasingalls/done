@@ -141,7 +141,7 @@ try {
     ]),
   );
   assert.equal(inspection.uid, 65532);
-  assert.equal(inspection.node, 'v24.18.0');
+  assert.equal(inspection.node, 'v24.22.1');
   assert(inspection.absent);
   evidence.nodeVersion = inspection.node;
   evidence.ageVersion = output([

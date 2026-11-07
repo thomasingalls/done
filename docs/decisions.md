@@ -8455,3 +8455,10 @@ Use the operator-approved 2,500 ms completion polls, retaining exact Undo-differ
 **Date:** 2026-11-07 · **Phase:** 528.
 
 Apply only the explicit operator carryover and guard approvals. Record three supported passing replicates for each of the 12 cells, with source/spec identity and disposition per row. Preserve the old immediate-read failure outside the amended matrix and the six no-credit diagnostic tries. Unknown cancellation cause and Undo CPU cost remain debts. Stop after this Stage 6 amendment; no app, limit, format, other gate or deadline change and no release action.
+
+
+### Retain main’s Node CA distrust update and independently reconcile release bookkeeping
+
+**Date:** 2026-11-07 · **Phase:** 529.
+
+Release preparation must preserve the main security runtime update rather than rebuilding the older Node base. Use a signed merge, retain all hardening signatures and exact app bytes, regenerate metadata without aggregate credit, and apply only the operator-approved three old-test values. Source-site line fixes require identical source-line and non-line-field proofs. Old receipt failures remain evidence; only fresh same-tree executions may clear traceability.

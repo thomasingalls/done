@@ -5100,31 +5100,31 @@
       "sourceSites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 234,
+          "line": 235,
           "label": "done/enrollment-and-session-assertion/v${c.v}",
           "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 235,
+          "line": 236,
           "label": "done/enrollment-preparation-assertion/v${c.v}",
           "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 224,
+          "line": 225,
           "label": "done/enrollment-preparation-challenge/v${c.v}",
           "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 226,
+          "line": 227,
           "label": "done/enrollment-preparation-possession/v${c.v}",
           "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 229,
+          "line": 230,
           "label": "done/enrollment-preparation-receipt/v${body.v}",
           "kind": "template"
         }
@@ -5179,19 +5179,19 @@
       "sourceSites": [
         {
           "path": "account-protocol/successor.ts",
-          "line": 208,
+          "line": 209,
           "label": "done/admission-successor/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/successor.ts",
-          "line": 371,
+          "line": 372,
           "label": "done/authority-discovery-request/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/successor.ts",
-          "line": 375,
+          "line": 376,
           "label": "done/authority-discovery-response/v1",
           "kind": "literal"
         }
@@ -5743,7 +5743,7 @@
         },
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 195,
+          "line": 196,
           "label": "done/membership-bootstrap/v2",
           "kind": "literal"
         },
@@ -5755,25 +5755,25 @@
         },
         {
           "path": "account-protocol/membershipCheckpoint.ts",
-          "line": 70,
+          "line": 71,
           "label": "done/membership-checkpoint-read/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 248,
+          "line": 249,
           "label": "done/membership-discovery-request/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 294,
+          "line": 295,
           "label": "done/membership-discovery/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 150,
+          "line": 151,
           "label": "done/membership-invitation/v2",
           "kind": "literal"
         },
@@ -5839,13 +5839,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/removalDiscovery.ts",
-          "line": 57,
+          "line": 58,
           "label": "done/removal-discovery-request/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/removalDiscovery.ts",
-          "line": 138,
+          "line": 139,
           "label": "done/removal-discovery/v1",
           "kind": "literal"
         },
