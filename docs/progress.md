@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # read-only reachability complete; stopped for operator carryover decision
+status: in flight # 21runs explicitly carried; 15scoped510reruns declared
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: operator disposition of nine reduced-path candidates and three native-deep saved-end gaps; no timed runs authorized
+blocks_on: complete native/fairness/Goals reruns; Goals quiet-host handshake pending
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase518 replaces517’s blanket36rerun next-step with the requested read-only audit and stop. Ordinary125-file manifests byte-bound; only executable insertion after exact generated-value normalization is if(logical)clearView in six Workers plus deviceDataRemoval. Ten starts+33savedends inspected on copies without app loads, all source/native digests unchanged. Nine reduced-path candidates: native-resumable×3, fairness×3, Goals r2-mobile4x/r3-desktop/r3-mobile4x. Native-context×3 is revision1 complete, statically excluded. Native-deep×3 has receiver0/complete but unsaved ephemeral publisher ends; no whole-journey exclusion claimed. All12maintenance writer and6grown-reader installs follow last measured key/peer; old-reader traces show no install during measured traffic but lack later completion timestamps. Cold fresh-owner firstloadfull. No new journeys, timings, app/gate changes or carryover credit. Post-reduction typing/full-reauth frequency remains unmeasured. Sequential518 prepared; realindexempty. Stop for operator; no release clearance, push or deployment.
-[Record](./development-evidence/2026-11-02-release-hardening/518-readonly-source-reachability/README.md).
+**Active bounded outcome.** Phase519 records operator carryover21runs/7cells citing518 and declares15plain510reruns/5cells. Source510 ordinary125files+42separate unobservednative assets verifiedexact. Frozen specs, fixtures, browser, resourcebounds, gates anddeadlines retained. Post-run readonly copyinspection records baseline revision/historymode, with no observers added to timed runs. Execute520native six,521fairness three,522Goals six afterfreshquiet-host handshake; thenStage6amendment andstop. Noapp/gate/limit/formatchange, publication ordeployment. Post-reduction typing/full-reauth frequency remainsdebt.
+[Record](./development-evidence/2026-11-02-release-hardening/519-source510-carryover-plan/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

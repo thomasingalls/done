@@ -1,0 +1,197 @@
+{
+  "phase": 519,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+      "bytes": 2778
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-source510-rerun-519-20261107/519-private-files.json",
+      "sha256": "ed95f9ade60f7d8c8941532727a79bf12ade1ec812a3044a5227245f4356d1e8",
+      "bytes": 879
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-source510-rerun-519-20261107/519-declaration.json",
+      "sha256": "75b640a12be2622b54741a53fa142e7b167d1b05f20045466baeca97537057da",
+      "bytes": 54289
+    }
+  ],
+  "summary": {
+    "carriedCells": [
+      "old-maintenance-normal",
+      "old-maintenance-withheld",
+      "grown-normal",
+      "grown-withheld",
+      "native-context",
+      "late-normal",
+      "late-withheld"
+    ],
+    "carriedRuns": 21,
+    "rerunPlans": {
+      "native": [
+        {
+          "name": "r1-native-resumable",
+          "replicate": 1,
+          "cell": "native-resumable",
+          "grep": "composed Worker prepares and reduces actual local history without lending a stale journal writer$",
+          "directory": "worker-resumable-history",
+          "outerMs": 180000,
+          "wrapperSeconds": 240,
+          "retries": 0
+        },
+        {
+          "name": "r1-native-deep",
+          "replicate": 1,
+          "cell": "native-deep",
+          "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+          "directory": "composed-receive-1",
+          "outerMs": 180000,
+          "wrapperSeconds": 240,
+          "retries": 0
+        },
+        {
+          "name": "r2-native-resumable",
+          "replicate": 2,
+          "cell": "native-resumable",
+          "grep": "composed Worker prepares and reduces actual local history without lending a stale journal writer$",
+          "directory": "worker-resumable-history",
+          "outerMs": 180000,
+          "wrapperSeconds": 240,
+          "retries": 0
+        },
+        {
+          "name": "r2-native-deep",
+          "replicate": 2,
+          "cell": "native-deep",
+          "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+          "directory": "composed-receive-1",
+          "outerMs": 180000,
+          "wrapperSeconds": 240,
+          "retries": 0
+        },
+        {
+          "name": "r3-native-resumable",
+          "replicate": 3,
+          "cell": "native-resumable",
+          "grep": "composed Worker prepares and reduces actual local history without lending a stale journal writer$",
+          "directory": "worker-resumable-history",
+          "outerMs": 180000,
+          "wrapperSeconds": 240,
+          "retries": 0
+        },
+        {
+          "name": "r3-native-deep",
+          "replicate": 3,
+          "cell": "native-deep",
+          "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+          "directory": "composed-receive-1",
+          "outerMs": 180000,
+          "wrapperSeconds": 240,
+          "retries": 0
+        }
+      ],
+      "fairness": [
+        {
+          "name": "r1-fairness",
+          "cell": "fairness",
+          "replicate": 1,
+          "caseMs": 1200000,
+          "wrapperSeconds": 1260,
+          "retries": 0
+        },
+        {
+          "name": "r2-fairness",
+          "cell": "fairness",
+          "replicate": 2,
+          "caseMs": 1200000,
+          "wrapperSeconds": 1260,
+          "retries": 0
+        },
+        {
+          "name": "r3-fairness",
+          "cell": "fairness",
+          "replicate": 3,
+          "caseMs": 1200000,
+          "wrapperSeconds": 1260,
+          "retries": 0
+        }
+      ],
+      "goals": [
+        {
+          "name": "r1-goals-desktop",
+          "cell": "goals-desktop",
+          "replicate": 1,
+          "mobile": false,
+          "caseMs": 480000,
+          "wrapperSeconds": 540,
+          "retries": 0
+        },
+        {
+          "name": "r1-goals-mobile4x",
+          "cell": "goals-mobile4x",
+          "replicate": 1,
+          "mobile": true,
+          "caseMs": 480000,
+          "wrapperSeconds": 540,
+          "retries": 0
+        },
+        {
+          "name": "r2-goals-desktop",
+          "cell": "goals-desktop",
+          "replicate": 2,
+          "mobile": false,
+          "caseMs": 480000,
+          "wrapperSeconds": 540,
+          "retries": 0
+        },
+        {
+          "name": "r2-goals-mobile4x",
+          "cell": "goals-mobile4x",
+          "replicate": 2,
+          "mobile": true,
+          "caseMs": 480000,
+          "wrapperSeconds": 540,
+          "retries": 0
+        },
+        {
+          "name": "r3-goals-desktop",
+          "cell": "goals-desktop",
+          "replicate": 3,
+          "mobile": false,
+          "caseMs": 480000,
+          "wrapperSeconds": 540,
+          "retries": 0
+        },
+        {
+          "name": "r3-goals-mobile4x",
+          "cell": "goals-mobile4x",
+          "replicate": 3,
+          "mobile": true,
+          "caseMs": 480000,
+          "wrapperSeconds": 540,
+          "retries": 0
+        }
+      ]
+    },
+    "rerunRuns": 15,
+    "ordinaryFiles": 125,
+    "separateNativeFiles": 42,
+    "timedRunsStarted": 0,
+    "noAppGateLimitFormatChanges": true
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

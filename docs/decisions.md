@@ -8385,3 +8385,10 @@ Stop at the source-qualified handoff. The missing report is complete; the full f
 **Date:** 2026-11-07 · **Phase:** 518.
 
 Operator directed a read-only audit, then a stop, before deciding whether old36passes carry to510. No blanket rerun remains scheduled. Preserve all old records, gates and failures; normalize only exact generated bundle names/date/verifier values, separately verify derivatives, inspect saved metadata on copies, and qualify missing ephemeral ends rather than assume them. Nine positive reduced-path candidates plus three native-deep coverage gaps remain for operator disposition. Complete-history native-context baselines are not reduced despite nonzero revision. Maintenance installation stages occur after measured input/peer markers, with old-reader later completion unobserved. No acceptance carryover is granted by this audit; post-reduction typing cost remains unmeasured.
+
+
+### Operator carryover of21runs and scoped source510 rerun of15
+
+**Date:** 2026-11-07 · **Phase:** 519.
+
+Operator accepted518 and carried old-maintenance-normal/withheld, grown-normal/withheld, native-context, late-normal/withheld (21runs). Rerun only native-resumable, native-deep, fairness and bothGoals cells, three replicates each on plain510, frozen conditions unchanged. Inspect saved end profile copies after each run; add no timed observers. Preserve the noise rule and freshGoals handshake. Write Stage6amendment with21carried/15rerun and the unmeasured post-reduction typing debt, then stop. No app/gate/limit/format change.

@@ -20640,3 +20640,13 @@ Operator replaced 517’s blanket matrix rerun with a read-only reachability che
 [Record](./development-evidence/2026-11-02-release-hardening/518-readonly-source-reachability/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Operator source510 carryover and bounded rerun declaration
+
+**Date:** 2026-11-07 · **Phase:** 519.
+
+Recorded the operator’s explicit carryover of seven cells/21runs to source510 citing518. Declared the five remaining cells/15runs before starting, preserving frozen fixtures/specs/analyzers and original gates/deadlines/noise rules. Verified125 ordinary510 files plus42 separate unobserved native-tool assets. Post-run readonly metadata inspection runs only on copies after each timer wrapper exits. Fresh quiet-host handshake required beforeGoals. No app/gate/limit/format change or new timed observation.
+[Record](./development-evidence/2026-11-02-release-hardening/519-source510-carryover-plan/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
