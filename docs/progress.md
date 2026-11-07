@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase462 late cells3/3;15of36blocking journeys pass; maintenance fixtures next
+status: in flight # phase463 old maintenance fixture ready; grow2048next
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: old/grown maintenance writer fixtures, remaining timed blocks and report-only cells
 updated: 2026-11-06
@@ -199,19 +199,17 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase462 passes3/3 normal and3/3 withheld late
-journeys after the operator's host handshake. Original analyzer/guards/waits/
-deadlines stay. Input p953.21–3.62ms, normal peer0.95–0.99s, withheld1.80–1.88s,
-worst marker1.31s. All archives/offline reopens exact;20–32keys after both drains
-per run, withheld post-drain p951.89–1.94s. Whole post-typing remainder bounds
-each cold below15s. [Record](./development-evidence/2026-11-02-release-hardening/462-late-gate-block/README.md).
-The three native cells from461also remain3/3, deep19.264/19.317/19.459s and max
-cold9.688s. All5,656prior private files stay exact. Fifteen of36blocking journeys
-complete across five cells;21remain: old/grown maintenance, fairness and Goals.
-All report-only cells remain. The quiet late block is over. Prepare the old/grown
-maintenance writer fixtures next; obtain the next required tight-cell host
-handshake before its timed block. Current H Goals is13,407bytes versus historical
-5,000; no matched-size comparison. No app change, release prep, commit or deploy.
+**Active bounded outcome.** Phase463 prepares the original1,024maintenance
+writer through real current-app sync. H2fully matches the archive and remains
+unreduced at counter2; original checks/deadlines pass. Other actors/archives/dates/
+backlogs stay exact. Private SQL copies observe1,335accepted rows before/after.
+[Record](./development-evidence/2026-11-02-release-hardening/463-old-maintenance-fixture/README.md).
+Grow2,048through real accepted edits next, then prepare its writer. No timed
+credit for setup. Stage5remains15/36blocking journeys complete: native cells3/3,
+normal/withheld late cells3/3. Late input p953.21–3.62ms, normal peer0.95–0.99s,
+withheld1.80–1.88s; every marker/archive/cold passes. Twenty-one blocking journeys
+and report-only work remain. Obtain a new tight-cell host handshake before the
+next timed block. No app change, release prep, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

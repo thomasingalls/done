@@ -7859,3 +7859,14 @@ All six pass, so the fixed failed-replicate noise rule requests no extra run.
 Canonical461evidence already records9journeys; repair its private sidecar counter
 without changing the frozen patch/tree or historical repo bytes. This corrects
 serialization bookkeeping and changes no documentation requirement or gate.
+
+
+### Refresh maintenance fixture roles without fabricating retained history
+
+**Date:** 2026-11-06 · **Phase:** 463.
+
+Use the original1,024recipe and its unchanged counter/archive checks against the
+current app. Refresh only H2by real sync; retain H1behind and keep all other actor
+snapshots. SQL observations open private copies only. Remove inert lab metadata,
+retain current local automation and the approved writer-on build. Setup has no
+performance credit; grow the larger workload through actual accepted edits.

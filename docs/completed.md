@@ -19894,3 +19894,17 @@ private files stay exact. No failures or noise reruns. Correct only the private
 tree unchanged. Outcome precedes advancing the seat. Fifteen of36blocking
 journeys complete;21and report-only work remain. Host block released. Prepare
 maintenance fixtures next. No app change, commit, push or deployment.
+
+
+### Prepare the original maintenance writer through real sync
+
+**Date:** 2026-11-06 · **Phase:** 463 · **Scope:** untimed fixture preparation.
+
+H2genuinely catches1,024positions and matches the complete archive before capture.
+Original assertions/deadlines and unreduced counter2check pass. Every other actor,
+archive, date and backlog remains exact. Private SQL copies show1,335accepted
+rows before/after: no accepted writing added. [Record](./development-evidence/2026-11-02-release-hardening/463-old-maintenance-fixture/README.md).
+
+Outcome precedes advancing the seat. Stage5still15/36blocking journeys complete;
+this is setup only. Grow2,048through real edits next, then prepare its writer.
+No app source, gate, limit, deadline, commit, push or deployment change.
