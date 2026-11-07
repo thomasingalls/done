@@ -49,6 +49,7 @@
     "test/localClear.test.ts",
     "test/localProperties.test.ts",
     "test/localRecovery.test.ts",
+    "test/maintenanceTurns.test.ts",
     "test/masterLineSelection.test.ts",
     "test/membership.property.test.ts",
     "test/membership.test.ts",

@@ -7939,3 +7939,20 @@ foreground/input interruption, forced audit pressure, every verification and
 mutation fence, and the 120-second completion gate. The trace authorizes no
 new trust, format, budget, retry or deadline. Existing individual-policy unit
 success is not a substitute for the missing queue-interleaving regression.
+
+
+### Arbitrate maintenance arrival instead of relaxing priority interruption
+
+**Date:** 2026-11-06 · **Phase:** 469 · **Operator-authorized repair.**
+
+Use a per-owner FIFO only for warm audit and read-only preparation entry to the
+existing storage queue. Keep ordinary foreground jobs outside it. Preserve the
+original priority-token mutation and refusing guard, every audit due/forced rule,
+all native verification/final mutation checks and existing retry/deadline policy.
+A queued audit precedes later preparation slices; neither maintenance job can
+repeatedly preempt the other's entry. Scheduling carries no verification trust.
+
+Prove the collision with a private no-serialization fault control and keep its
+expected failure. Preserve every old behavioral test; add eight explicit cases
+and exact census accounting. Build and test the app next; a unit pass does not
+close the existing 120-second completion failure or award Stage 5 credit.

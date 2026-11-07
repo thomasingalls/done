@@ -19998,3 +19998,27 @@ Outcome precedes advancing the active seat. Stage 5 stays 15 passing, one failed
 20 unrun. Next is a bounded audit/preparation scheduling repair with an integration
 regression and uninstrumented gate rerun; no repair started here. No commit,
 push, release preparation or deployment.
+
+
+### Arbitrate warm audit and preparation before native queue entry
+
+**Date:** 2026-11-06 · **Phase:** 469 · **Scope:** bounded scheduling repair.
+
+Warm audit and read-only preparation now take per-owner FIFO turns. Foreground
+work bypasses the lane and retains every original interruption guard. An audit
+attempt still follows the same due/forced rules, waits behind the current
+preparation, and precedes later slices. No native task/proof or later mutation
+is covered by scheduling permission; owner abort and cleanup retain lifetime
+ownership. [Record](./development-evidence/2026-11-02-release-hardening/469-maintenance-arbitration/README.md).
+
+Eight new regressions pass; removing serialization in a private control makes
+the held-journal audit-entry test fail as expected. All 115 focused cases pass;
+the complete 332-file suite passes 3,226 cases plus the existing skip in 128.63s.
+Types, lint and 16 census/policy controls pass. All 47 original guard conditions
+and 26 throw arguments match; seven policy/guard files stay byte-identical.
+Exact population adds eight IDs, removes none, and preserves release blocks.
+Runtime census classification is unchanged; reviewed source hashes refresh.
+
+Outcome precedes updating the active seat. Keep failed before runs; no timing
+credit yet. Next build the uninstrumented client and rerun maintenance under the
+same guards/deadlines. No commit, push, release preparation or deployment.

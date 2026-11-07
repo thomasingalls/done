@@ -7,6 +7,7 @@ import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApply
 import { budgetedTask } from './cpuBudget';
 import { maintenanceTask, MaintenanceInterrupted } from './contentMaintenance';
 import { createWarmAuditScheduler, type WarmAuditOutcome } from './warmAuditScheduler';
+import { createMaintenanceTurns } from './maintenanceTurns';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
@@ -328,6 +329,8 @@ export async function openAccountCaptureOwner(
     },
   );
   options.networkLogin?.activate(live);
+  const maintenanceTurns = createMaintenanceTurns(live.signal);
+  cleanups.add(maintenanceTurns.settled);
   let scheduleAudit = () => {};
   let auditScheduler: ReturnType<typeof createWarmAuditScheduler> | undefined;
   const run = <T>(
@@ -388,48 +391,50 @@ export async function openAccountCaptureOwner(
         ),
       run: (mayStart) =>
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
-        run<WarmAuditOutcome>(
-          async (parent) => {
-            if (!mayStart()) return 'deferred' as const;
-            // Reduced baselines also have a full semantic oracle. Input still journals
-            // synchronously, invalidating this discretionary pass before its next effect.
-            const activity = shadowActivity;
-            const check = () => {
-              const foreground = auditScheduler?.foregroundPending() ?? false;
-              if (suspended || activity !== shadowActivity || foreground)
-                throw new MaintenanceInterrupted([
-                  {
-                    suspended,
-                    shadowActivity: activity !== shadowActivity,
-                    queuePriority: foreground,
-                  },
-                ]);
-            };
-            const interruptible: SessionTask = {
-              signal: parent.signal,
-              step: (effect) =>
-                parent.step(() => {
-                  check();
-                  return effect();
-                }),
-              wait: (start) =>
-                parent.wait(() => {
-                  check();
-                  return start();
-                }),
-            };
-            const auditTask = maintenanceTask(
-              import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
-                ? budgetedTask(interruptible)
-                : interruptible,
-              parent.signal,
-            );
-            const completed = await owner!.carrier.auditWarm(auditTask);
-            if (!completed) return false;
-            return extension?.audit ? extension.audit.run(auditTask, owner!) : true;
-          },
-          false,
-          'warm-audit',
+        maintenanceTurns.run(() =>
+          run<WarmAuditOutcome>(
+            async (parent) => {
+              if (!mayStart()) return 'deferred' as const;
+              // Reduced baselines also have a full semantic oracle. Input still journals
+              // synchronously, invalidating this discretionary pass before its next effect.
+              const activity = shadowActivity;
+              const check = () => {
+                const foreground = auditScheduler?.foregroundPending() ?? false;
+                if (suspended || activity !== shadowActivity || foreground)
+                  throw new MaintenanceInterrupted([
+                    {
+                      suspended,
+                      shadowActivity: activity !== shadowActivity,
+                      queuePriority: foreground,
+                    },
+                  ]);
+              };
+              const interruptible: SessionTask = {
+                signal: parent.signal,
+                step: (effect) =>
+                  parent.step(() => {
+                    check();
+                    return effect();
+                  }),
+                wait: (start) =>
+                  parent.wait(() => {
+                    check();
+                    return start();
+                  }),
+              };
+              const auditTask = maintenanceTask(
+                import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
+                  ? budgetedTask(interruptible)
+                  : interruptible,
+                parent.signal,
+              );
+              const completed = await owner!.carrier.auditWarm(auditTask);
+              if (!completed) return false;
+              return extension?.audit ? extension.audit.run(auditTask, owner!) : true;
+            },
+            false,
+            'warm-audit',
+          ),
         ),
     });
     scheduleAudit = auditScheduler.refresh;
@@ -745,75 +750,80 @@ export async function openAccountCaptureOwner(
       ) => Promise<T>,
       preparation = false,
     ) => {
-      const priority = preparationActivity;
-      return run(async (parent) => {
-        if (
-          extension?.version !== 9 ||
-          (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1' &&
-            import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] !== '1')
-        )
-          throw Error('Account baseline experiment is disabled');
-        const activity = shadowActivity;
-        let preparing = true;
-        // This guard belongs to the owner, not the expiring storage task. Only isolated,
-        // read-only preparation evidence may retain it across task settlement.
-        const check = () =>
-          live.write(() => {
-            if (
-              suspended ||
-              activity !== shadowActivity ||
-              (preparing && preparation && priority !== preparationActivity)
-            )
-              throw new MaintenanceInterrupted([
-                {
-                  suspended,
-                  shadowActivity: activity !== shadowActivity,
-                  queuePriority: preparing && preparation && priority !== preparationActivity,
+      const start = () => {
+        const priority = preparationActivity;
+        return run(async (parent) => {
+          if (
+            extension?.version !== 9 ||
+            (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1' &&
+              import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] !== '1')
+          )
+            throw Error('Account baseline experiment is disabled');
+          const activity = shadowActivity;
+          let preparing = true;
+          // This guard belongs to the owner, not the expiring storage task. Only isolated,
+          // read-only preparation evidence may retain it across task settlement.
+          const check = () =>
+            live.write(() => {
+              if (
+                suspended ||
+                activity !== shadowActivity ||
+                (preparing && preparation && priority !== preparationActivity)
+              )
+                throw new MaintenanceInterrupted([
+                  {
+                    suspended,
+                    shadowActivity: activity !== shadowActivity,
+                    queuePriority: preparing && preparation && priority !== preparationActivity,
+                  },
+                ]);
+            });
+          const task: SessionTask = {
+            signal: parent.signal,
+            step: (effect) =>
+              parent.step(() => {
+                check();
+                return effect();
+              }),
+            wait: (start) =>
+              parent.wait(() => {
+                check();
+                return start();
+              }),
+          };
+          const checkJournal = () =>
+            task.step(() => {
+              const entries = owner!.journal.snapshot();
+              try {
+                if (entries.length) throw new MaintenanceInterrupted([{ journal: true }]);
+              } finally {
+                eraseJournalSnapshot(entries);
+              }
+            });
+          try {
+            if (preparation && owner!.journal.asynchronous)
+              return await withPreparationJournalObservation(
+                task,
+                owner!.journal,
+                async (observe) => {
+                  // Only isolated read work sees this captured observation. It cannot populate pinned()
+                  // or survive this task. Final save/removal still reads at its real Window FIFO head.
+                  observe();
+                  return operation(task, owner!, route, observe, check);
                 },
-              ]);
-          });
-        const task: SessionTask = {
-          signal: parent.signal,
-          step: (effect) =>
-            parent.step(() => {
-              check();
-              return effect();
-            }),
-          wait: (start) =>
-            parent.wait(() => {
-              check();
-              return start();
-            }),
-        };
-        const checkJournal = () =>
-          task.step(() => {
-            const entries = owner!.journal.snapshot();
-            try {
-              if (entries.length) throw new MaintenanceInterrupted([{ journal: true }]);
-            } finally {
-              eraseJournalSnapshot(entries);
-            }
-          });
-        try {
-          if (preparation && owner!.journal.asynchronous)
-            return await withPreparationJournalObservation(
-              task,
-              owner!.journal,
-              async (observe) => {
-                // Only isolated read work sees this captured observation. It cannot populate pinned()
-                // or survive this task. Final save/removal still reads at its real Window FIFO head.
-                observe();
-                return operation(task, owner!, route, observe, check);
-              },
-            );
-          checkJournal();
-          return await operation(task, owner!, route, checkJournal, check);
-        } finally {
-          // Queue priority applies only to read-only preparation. A retained proof still checks
-          // input/lifecycle changes, and final mutation/readback must never be interrupted by reads.
-          preparing = false;
-        }
-      }, preparation);
+              );
+            checkJournal();
+            return await operation(task, owner!, route, checkJournal, check);
+          } finally {
+            // Queue priority applies only to read-only preparation. A retained proof still checks
+            // input/lifecycle changes, and final mutation/readback must never be interrupted by reads.
+            preparing = false;
+          }
+        }, preparation);
+      };
+      // The token is captured only when this maintenance turn can join storage.
+      // Ordinary jobs bypass arbitration and retain the existing priority guard.
+      return preparation ? maintenanceTurns.run(start) : start();
     },
     listCaptures: () =>
       run((task) =>

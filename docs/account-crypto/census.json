@@ -48,6 +48,10 @@
       "sha256": "ede51565b6127685197777038fcfc9d2eee818c75eada8ecedaa422af40f4101"
     },
     {
+      "path": "account-protocol/clockSkew.ts",
+      "sha256": "576fe3f22e38d68dc9a6031b102f953882cd89c2b2d2c84d006925bd3df7d858"
+    },
+    {
       "path": "account-protocol/contentCheckpoint.ts",
       "sha256": "b296563ec69f34adc6065065dc8394484ccf3eaee98dd74120cb6e963652e460"
     },
@@ -65,7 +69,7 @@
     },
     {
       "path": "account-protocol/enrollment.ts",
-      "sha256": "bdc9e083eecc61cdb6407fb7059d7c0e6e507392228f464cce1c48494fafb5fc"
+      "sha256": "ee02ca2c59a8602ad5f666aa54ba2c5835665527d98cdbc384a3b4ce4cbfbe3c"
     },
     {
       "path": "account-protocol/envelope.ts",
@@ -81,7 +85,7 @@
     },
     {
       "path": "account-protocol/historyExchange.ts",
-      "sha256": "09f01805cf2a4295722c0af754d74f1f932106d69158aac0f292fcce889afbe3"
+      "sha256": "6ada6ad8a29f5c535b2b97e96ba0bc888d3d20bff56f837a2b510117945a4053"
     },
     {
       "path": "account-protocol/historySourceRefs.ts",
@@ -109,7 +113,7 @@
     },
     {
       "path": "account-protocol/membershipCheckpoint.ts",
-      "sha256": "8904ba9035a8c92b5b5deee16b6a0d1413b530cff49fe337284f2a22328a7a0b"
+      "sha256": "6cd2b1608d3d2346b99feaa6527d1dcfe97beeca3af08f40a6d925acef6b3ce4"
     },
     {
       "path": "account-protocol/membershipDelivery.ts",
@@ -117,7 +121,7 @@
     },
     {
       "path": "account-protocol/membershipLocator.ts",
-      "sha256": "6b5363c297a27f48f50cf5ba34016ff416b7769c1bd16e7782c2b1809baad70e"
+      "sha256": "5ec03456c631560d153fa70c574ede00e83dafd9a376aa82f2e3d31ecfb605c1"
     },
     {
       "path": "account-protocol/positionDecision.ts",
@@ -153,7 +157,7 @@
     },
     {
       "path": "account-protocol/removalDiscovery.ts",
-      "sha256": "73dd369562b6273d2d433a70a68ae25b11bbdcbbd62998b6bef58ddae3091e65"
+      "sha256": "287166c2ecf70109042e6d836a8ffadc4edcd1344c042cbef9627c69bfadb3d7"
     },
     {
       "path": "account-protocol/replacementAcknowledgement.ts",
@@ -193,7 +197,7 @@
     },
     {
       "path": "account-protocol/successor.ts",
-      "sha256": "27d051db0ea7e5228be7d8b65becd0d0e6e4a6d19dbe51659f55804ed73af09d"
+      "sha256": "a82f3f183e0a5d5b0411442bb2d670e5637f47db15cabf82da386357c8cb3034"
     },
     {
       "path": "account-service/acceptance.ts",
@@ -773,7 +777,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "f9abd8db7b7f7a96b95d01c06d6a47e4b4d32c4068f4e3f10b1592b4982a8f36"
+      "sha256": "686d632644bffe1f6d0d8c0a6d45bcc7905816bac188c714c199634db87c3fa6"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -1294,6 +1298,10 @@
     {
       "path": "src/crdt/localWorkerStore.ts",
       "sha256": "1ddcb5a30721a56ee64ebf00300b8f0491eab18e71531fe315bccf03c574d3c1"
+    },
+    {
+      "path": "src/crdt/maintenanceTurns.ts",
+      "sha256": "de1ccf9f716f46256d3ed384c7b610442930127f36516c4dad2adf24157aeeb7"
     },
     {
       "path": "src/crdt/membershipReading.ts",
@@ -2417,7 +2425,7 @@
       "sites": [
         {
           "path": "account-protocol/successor.ts",
-          "line": 208
+          "line": 209
         }
       ]
     },
@@ -2427,7 +2435,7 @@
       "sites": [
         {
           "path": "account-protocol/successor.ts",
-          "line": 371
+          "line": 372
         }
       ]
     },
@@ -2437,7 +2445,7 @@
       "sites": [
         {
           "path": "account-protocol/successor.ts",
-          "line": 375
+          "line": 376
         }
       ]
     },
@@ -2859,7 +2867,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 234
+          "line": 235
         }
       ]
     },
@@ -2929,7 +2937,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 235
+          "line": 236
         }
       ]
     },
@@ -2939,7 +2947,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 224
+          "line": 225
         }
       ]
     },
@@ -2949,7 +2957,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 226
+          "line": 227
         }
       ]
     },
@@ -2959,7 +2967,7 @@
       "sites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 229
+          "line": 230
         }
       ]
     },
@@ -3547,7 +3555,7 @@
       "sites": [
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 195
+          "line": 196
         }
       ]
     },
@@ -3567,7 +3575,7 @@
       "sites": [
         {
           "path": "account-protocol/membershipCheckpoint.ts",
-          "line": 70
+          "line": 71
         }
       ]
     },
@@ -3577,7 +3585,7 @@
       "sites": [
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 248
+          "line": 249
         }
       ]
     },
@@ -3587,7 +3595,7 @@
       "sites": [
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 294
+          "line": 295
         }
       ]
     },
@@ -3597,7 +3605,7 @@
       "sites": [
         {
           "path": "account-protocol/membershipLocator.ts",
-          "line": 150
+          "line": 151
         }
       ]
     },
@@ -3949,7 +3957,7 @@
       "sites": [
         {
           "path": "account-protocol/removalDiscovery.ts",
-          "line": 57
+          "line": 58
         }
       ]
     },
@@ -3959,7 +3967,7 @@
       "sites": [
         {
           "path": "account-protocol/removalDiscovery.ts",
-          "line": 138
+          "line": 139
         }
       ]
     },

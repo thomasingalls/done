@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: held # phase468 identifies warm-audit/preparation priority conflict; bounded repair next
+status: in flight # phase469 scheduling repair and full units pass; maintenance rerun next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: warm-audit/preparation arbitration repair; 120s completion gate; remaining timed/report-only cells
+blocks_on: uninstrumented maintenance rerun; 120s completion gate; remaining timed/report-only cells
 updated: 2026-11-06
 ```
 
@@ -199,21 +199,19 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase 468 reproduces the completion failure and
-identifies its immediate-entry cause. Both durability waits pass on all seven
-attempts. Six post-input retries fail before the preparation callback when a
-warm-audit arrival changes the queue-priority token. Native error IDs are all
-different; each outcome selects the existing 10-second priority-only retry.
-[Record](./development-evidence/2026-11-02-release-hardening/468-maintenance-priority-trace/README.md).
-The private observation diff reverses exactly; 51 assertion/wait ASTs and all
-prior evidence stay exact. Five existing focused unit files pass 85 controls
-without edits. No canonical runtime/test or guard/deadline change and no timing
-credit. Stage 5 remains 15 passing journeys, one failed, 20 unrun; cold not reached
-in this diagnostic. Next bounded work is maintenance arbitration, a deterministic
-interleaving regression and an uninstrumented rerun, preserving audit pressure,
-foreground/lifecycle interruption and the 120-second completion gate. No repair
-is started here. Both fictional maintenance fixtures remain ready. No release
-prep, commit, push or deployment.
+**Active bounded outcome.** Phase 469 gives warm audit and read-only preparation
+FIFO turns before native queue entry, with foreground work bypassing them.
+All original owner guard conditions/throws, audit due/forced rules, retry clocks,
+native verification and mutation checks remain. Eight new regressions pass;
+the no-serialization private fault control fails as expected. All 115 focused
+cases pass and the 332-file full suite passes 3,226 cases plus the existing skip
+in 128.63s. Types, lint and 16 census/policy controls pass; eight IDs added, none
+removed. [Record](./development-evidence/2026-11-02-release-hardening/469-maintenance-arbitration/README.md).
+Next build the uninstrumented hardened release-profile client and rerun the
+approved maintenance case with the operator's quiet-host readiness. Preserve
+phase 467/468 failures and all existing deadlines, including 120s completion.
+No maintenance timing credit yet; Stage 5 remains blocked on its app rerun.
+No commit, push, release preparation or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
