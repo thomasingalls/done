@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 507 counterexample frozen; bounded carrier-view invalidation next
+status: in flight # phase 508 repair passes 149 cases; coherent census and full-suite checkpoint next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: repair and verify interrupted projection installation; original 3072 report remains incomplete
+blocks_on: coherent checks and unobserved browser regression; original 3072 report remains incomplete
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 507 reproduces the stale source catalogue and delivery frontier in three failing cases. Two no-fault/unchanged-identity controls pass. Next invalidate only a returned-but-uninstalled continuation and run the affected security and lifecycle tests.
-[Record](./development-evidence/2026-11-02-release-hardening/507-baseline-projection-counterexample/README.md).
+**Active bounded outcome.** Phase 508 repairs interrupted projection installation by clearing both private views only when continuation returned a new logical projection. All 149 focused cases pass; the weaker flag-only fix fails the repeated-interruption control. Next reconcile five added cases, run full unit/types/lint/policy checks and verify saved-state publication in a plain rebuilt Worker.
+[Record](./development-evidence/2026-11-02-release-hardening/508-baseline-projection-repair/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

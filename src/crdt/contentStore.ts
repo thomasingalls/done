@@ -624,6 +624,9 @@ export const createContentOwner = (
                 openedView.baseline = logical;
               }
             } catch (e) {
+              // advance already owns the new continuation identity. If its detached projection
+              // was not installed, discard both views so a retry authenticates from storage.
+              if (logical) clearView();
               eraseVerified(logical);
               throw e;
             }

@@ -20530,3 +20530,13 @@ Added five deterministic real-crypto/IndexedDB controls. Three fail before repai
 [Record](./development-evidence/2026-11-02-release-hardening/507-baseline-projection-counterexample/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Discard an uninstalled baseline continuation
+
+**Date:** 2026-11-07 · **Phase:** 508.
+
+Applied conditional private-view invalidation after a returned continuation cannot finish installation. All 149 focused cases pass. The private flag-only negative control fails precisely the repeated-interruption case; all old tests are unchanged. Existing source checks and erasure statements are inverse-byte exact.
+[Record](./development-evidence/2026-11-02-release-hardening/508-baseline-projection-repair/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

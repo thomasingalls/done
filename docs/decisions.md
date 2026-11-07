@@ -8308,3 +8308,10 @@ Keep exact-evidence validation and allfresh authority checks. Testwhether baseli
 **Date:** 2026-11-07 · **Phase:** 507.
 
 A private continuation that advanced without installation cannot be retained across interruption. Invalidate that carrier cache on this boundary and authenticate again, rather than publish before fresh checks or retain only a transient full-read flag. Preserve the unchanged-identity warm path.
+
+
+### Invalidate both private views after interrupted installation
+
+**Date:** 2026-11-07 · **Phase:** 508.
+
+Discard both private views at the failed installation boundary; a later interruption must not restore the stale projection. Retain the unchanged-identity warm path. No trust, format, limit or scheduling change is needed.
